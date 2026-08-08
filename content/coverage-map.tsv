@@ -1,0 +1,76 @@
+concept_id	coverage_depth	canonical_markdown_path	section_id	parent_concept_id
+recursive-improvement-loop	chapter	content/chapters/recursive-improvement-loop.md		
+foundation-model-inside-the-loop	chapter	content/chapters/foundation-model-inside-the-loop.md		
+harness-engineering	chapter	content/chapters/harness-engineering.md		
+durable-improvement-workflows	chapter	content/chapters/durable-improvement-workflows.md		
+procedure-internalization	chapter	content/chapters/procedure-internalization.md		
+harness-search	chapter	content/chapters/harness-search.md		
+automated-research	chapter	content/chapters/automated-research.md		
+joint-harness-weight-adaptation	chapter	content/chapters/joint-harness-weight-adaptation.md		
+evaluation-promotion-containment	chapter	content/chapters/evaluation-promotion-containment.md		
+system-state-and-notation	supporting-page	content/concepts/system-state-and-notation.md	candidate-and-protected-envelope	recursive-improvement-loop
+task-improvement	supporting-page	content/concepts/improvement-types.md	task-improvement	recursive-improvement-loop
+persistent-adaptation	supporting-page	content/concepts/improvement-types.md	persistent-adaptation	recursive-improvement-loop
+harness-improvement	supporting-page	content/concepts/improvement-types.md	harness-improvement	recursive-improvement-loop
+successor-improvement	supporting-page	content/concepts/improvement-types.md	successor-improvement	recursive-improvement-loop
+pretraining	supporting-page	content/concepts/model-adaptation.md	pretraining	foundation-model-inside-the-loop
+post-training	supporting-page	content/concepts/model-adaptation.md	post-training	foundation-model-inside-the-loop
+distillation	supporting-page	content/concepts/model-adaptation.md	distillation	foundation-model-inside-the-loop
+reinforcement-learning	supporting-page	content/concepts/model-adaptation.md	reinforcement-learning	foundation-model-inside-the-loop
+multimodal-observation-interface	supporting-page	content/concepts/model-adaptation.md	multimodal-observation-interface	foundation-model-inside-the-loop
+context-construction	supporting-page	content/concepts/harness-components.md	context-construction	harness-engineering
+retrieval	supporting-page	content/concepts/harness-components.md	retrieval	harness-engineering
+memory	supporting-page	content/concepts/harness-components.md	memory	harness-engineering
+tools-and-permissions	supporting-page	content/concepts/harness-components.md	tools-and-permissions	harness-engineering
+filesystem-state	supporting-page	content/concepts/harness-components.md	filesystem-state	harness-engineering
+subagents	supporting-page	content/concepts/harness-components.md	subagents	harness-engineering
+verification-and-recovery	supporting-page	content/concepts/harness-components.md	verification-and-recovery	harness-engineering
+idempotency	supporting-page	content/concepts/durable-execution.md	idempotency	durable-improvement-workflows
+checkpoints	supporting-page	content/concepts/durable-execution.md	checkpoints	durable-improvement-workflows
+prompt-procedure	supporting-page	content/concepts/procedure-representations.md	prompt-procedure	procedure-internalization
+skill-procedure	supporting-page	content/concepts/procedure-representations.md	skill-procedure	procedure-internalization
+script-procedure	supporting-page	content/concepts/procedure-representations.md	script-procedure	procedure-internalization
+workflow-procedure	supporting-page	content/concepts/procedure-representations.md	workflow-procedure	procedure-internalization
+model-behavior-procedure	supporting-page	content/concepts/procedure-representations.md	model-behavior-procedure	procedure-internalization
+context-optimization	supporting-page	content/concepts/harness-search-methods.md	context-optimization	harness-search
+workflow-search	supporting-page	content/concepts/harness-search-methods.md	workflow-search	harness-search
+harness-code-search	supporting-page	content/concepts/harness-search-methods.md	harness-code-search	harness-search
+population-search	supporting-page	content/concepts/harness-search-methods.md	population-search	harness-search
+quality-diversity	supporting-page	content/concepts/harness-search-methods.md	quality-diversity	harness-search
+open-ended-search	supporting-page	content/concepts/harness-search-methods.md	open-ended-search	harness-search
+hypothesis-generation	supporting-page	content/concepts/research-loop-components.md	hypothesis-generation	automated-research
+experiment-design	supporting-page	content/concepts/research-loop-components.md	experiment-design	automated-research
+negative-results	supporting-page	content/concepts/research-loop-components.md	negative-results	automated-research
+research-memory	supporting-page	content/concepts/research-loop-components.md	research-memory	automated-research
+model-harness-distribution-shift	supporting-page	content/concepts/joint-adaptation-methods.md	model-harness-distribution-shift	joint-harness-weight-adaptation
+dagger	supporting-page	content/concepts/joint-adaptation-methods.md	dagger	joint-harness-weight-adaptation
+supervised-relabeling	supporting-page	content/concepts/joint-adaptation-methods.md	supervised-relabeling	joint-harness-weight-adaptation
+process-rewards	supporting-page	content/concepts/joint-adaptation-methods.md	process-rewards	joint-harness-weight-adaptation
+held-out-evaluation	supporting-page	content/concepts/evaluation-and-control.md	held-out-evaluation	evaluation-promotion-containment
+multi-objective-selection	supporting-page	content/concepts/evaluation-and-control.md	multi-objective-selection	evaluation-promotion-containment
+evaluator-independence	supporting-page	content/concepts/evaluation-and-control.md	evaluator-independence	evaluation-promotion-containment
+reward-hacking	supporting-page	content/concepts/evaluation-and-control.md	reward-hacking	evaluation-promotion-containment
+root-tree-budget	supporting-page	content/concepts/evaluation-and-control.md	root-tree-budget	evaluation-promotion-containment
+lineage-and-rollback	supporting-page	content/concepts/evaluation-and-control.md	lineage-and-rollback	evaluation-promotion-containment
+autoresearch	system-reading	content/systems/autoresearch.md		durable-improvement-workflows
+ace	system-reading	content/systems/ace.md		harness-search
+mce	system-reading	content/systems/mce.md		harness-search
+meta-harness	system-reading	content/systems/meta-harness.md		harness-search
+stop	system-reading	content/systems/stop.md		harness-search
+adas	system-reading	content/systems/adas.md		harness-search
+aflow	system-reading	content/systems/aflow.md		harness-search
+self-harness	system-reading	content/systems/self-harness.md		harness-search
+ahe	system-reading	content/systems/ahe.md		harness-search
+dgm	system-reading	content/systems/dgm.md		harness-search
+ai-scientist	system-reading	content/systems/ai-scientist.md		automated-research
+scientistone	worked-example	content/chapters/automated-research.md	scientistone	automated-research
+autodata	worked-example	content/chapters/automated-research.md	autodata	automated-research
+paperbench	worked-example	content/chapters/automated-research.md	paperbench-and-re-bench	automated-research
+rebench	worked-example	content/chapters/automated-research.md	paperbench-and-re-bench	automated-research
+rlm	system-reading	content/systems/rlm.md		joint-harness-weight-adaptation
+continual-harness	system-reading	content/systems/continual-harness.md		joint-harness-weight-adaptation
+sia	system-reading	content/systems/sia.md		joint-harness-weight-adaptation
+pi	worked-example	content/chapters/harness-engineering.md	pi	harness-engineering
+hermes	worked-example	content/chapters/harness-engineering.md	hermes	harness-engineering
+codex	worked-example	content/chapters/harness-engineering.md	codex	harness-engineering
+temporal-workflow	worked-example	content/chapters/evaluation-promotion-containment.md	durable-workflow-boundary	evaluation-promotion-containment

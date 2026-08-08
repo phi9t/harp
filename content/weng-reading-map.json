@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "source_id": "WENG-HARNESS",
+  "source_sha256": "45bc3793c36e42f79749f84af510761798b85960ad18d3123d86f3a403e247ac",
+  "sections": [
+    {
+      "order": 1,
+      "section_id": "system-being-improved",
+      "title": "What system is being improved?",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#case-study-coding-agent-harness",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#case-study-coding-agent-harness",
+      "companion_path": "content/weng/01-system-being-improved.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "autoresearch"
+      ],
+      "exercise_ids": [
+        "identify-the-improved-system"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 2,
+      "section_id": "harness-design-patterns",
+      "title": "Harness design patterns",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#harness-design-patterns",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#harness-design-patterns",
+      "companion_path": "content/weng/02-harness-design-patterns.md",
+      "companion_section": "mechanism",
+      "system_ids": [],
+      "exercise_ids": [
+        "separate-pattern-from-improvement"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 3,
+      "section_id": "harness-layer-vs-core-intelligence",
+      "title": "Harness layer versus core intelligence",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#harness-layer-vs-core-intelligence",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#harness-layer-vs-core-intelligence",
+      "companion_path": "content/weng/03-harness-layer-vs-core-intelligence.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "harness-disentangle",
+        "rlm"
+      ],
+      "exercise_ids": [
+        "cross-model-harness-evaluation"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 4,
+      "section_id": "context-engineering",
+      "title": "Context engineering",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#context-engineering",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#context-engineering",
+      "companion_path": "content/weng/04-context-engineering.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "ace",
+        "mce",
+        "meta-harness"
+      ],
+      "exercise_ids": [
+        "place-context-surfaces"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 5,
+      "section_id": "workflow-design-and-search",
+      "title": "Workflow design and search",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#workflow-design",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#workflow-design",
+      "companion_path": "content/weng/05-workflow-design-and-search.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "ai-scientist",
+        "adas",
+        "aflow"
+      ],
+      "exercise_ids": [
+        "trace-aflow-mcts"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 6,
+      "section_id": "self-improving-harnesses",
+      "title": "Self-improving harnesses",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#self-improving-harness",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#self-improving-harness",
+      "companion_path": "content/weng/06-self-improving-harnesses.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "stop",
+        "self-harness",
+        "ahe"
+      ],
+      "exercise_ids": [
+        "distinguish-round-from-generation"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 7,
+      "section_id": "evolutionary-search",
+      "title": "Evolutionary search",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#evolutionary-search",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#evolutionary-search",
+      "companion_path": "content/weng/07-evolutionary-search.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "alphaevolve",
+        "dgm"
+      ],
+      "exercise_ids": [
+        "archive-versus-promotion"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 8,
+      "section_id": "joint-harness-weight-optimization",
+      "title": "Joint harness and weight optimization",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#joint-optimization-with-model-weights",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#joint-optimization-with-model-weights",
+      "companion_path": "content/weng/08-joint-harness-weight-optimization.md",
+      "companion_section": "mechanism",
+      "system_ids": [
+        "sia",
+        "continual-harness"
+      ],
+      "exercise_ids": [
+        "design-joint-update-ablations"
+      ],
+      "figure_locators": []
+    },
+    {
+      "order": 9,
+      "section_id": "future-challenges",
+      "title": "Future challenges as acceptance criteria",
+      "public_url": "https://lilianweng.github.io/posts/2026-07-04-harness/#future-challenges",
+      "captured_locator": "evidence/weng/artifacts/html/weng-harness.html#future-challenges",
+      "companion_path": "content/weng/09-future-challenges.md",
+      "companion_section": "mechanism",
+      "system_ids": [],
+      "exercise_ids": [
+        "choose-promotion-gates"
+      ],
+      "figure_locators": []
+    }
+  ]
+}

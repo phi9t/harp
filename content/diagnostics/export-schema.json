@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "export_id": "rsi-diagnosis/v2",
+  "required_sections": [
+    "identity",
+    "worksheet",
+    "provenance",
+    "diagnosis",
+    "rules",
+    "sources",
+    "brief-sha256"
+  ],
+  "max_import_bytes": 1048576,
+  "max_commentary_bytes": 262144,
+  "digest_algorithm": "sha256",
+  "commentary_affects_diagnosis": false
+}

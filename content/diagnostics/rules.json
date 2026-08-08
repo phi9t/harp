@@ -1,0 +1,934 @@
+{
+  "schema_version": 1,
+  "classifications": [
+    "output-refinement",
+    "persistent-adaptation",
+    "harness-improvement",
+    "automated-ai-research",
+    "joint-harness-weight-adaptation",
+    "successor-improvement",
+    "recursive-improvement-demonstrated"
+  ],
+  "rules": [
+    {
+      "rule_id": "integrity.evaluator-write",
+      "version": 1,
+      "precedence": 1000,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "candidate-can-write-evaluator",
+        "value": true
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "blocking",
+        "explanation": "Candidate write access to evaluator state invalidates self-certification.",
+        "canonical_concept_id": "evaluator-independence",
+        "evidence_needed": "A capability audit showing evaluator state is read-only to the candidate."
+      }
+    },
+    {
+      "rule_id": "integrity.permissions-internal",
+      "version": 1,
+      "precedence": 990,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "permissions-external",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "blocking",
+        "explanation": "Candidate-controlled permissions make containment and task scores self-certified.",
+        "canonical_concept_id": "evaluator-independence",
+        "evidence_needed": "A permission policy enforced by an authority outside candidate write control."
+      }
+    },
+    {
+      "rule_id": "integrity.archive-internal",
+      "version": 1,
+      "precedence": 980,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "archive-external",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "blocking",
+        "explanation": "A candidate-controlled archive can erase failures or rewrite lineage.",
+        "canonical_concept_id": "lineage-and-rollback",
+        "evidence_needed": "An append-only accepted and rejected lineage archive outside candidate write control."
+      }
+    },
+    {
+      "rule_id": "authority.promotion-internal",
+      "version": 1,
+      "precedence": 970,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "promotion-external",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "blocking",
+        "explanation": "A candidate that promotes itself does not establish an accepted generation.",
+        "canonical_concept_id": "lineage-and-rollback",
+        "evidence_needed": "A promotion receipt issued by an external authority."
+      }
+    },
+    {
+      "rule_id": "budget.incomplete-root-tree",
+      "version": 1,
+      "precedence": 900,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "complete-root-tree-accounting",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "warning",
+        "explanation": "Uncounted retries, branches, or descendants prevent a matched resource comparison.",
+        "canonical_concept_id": "root-tree-budget",
+        "evidence_needed": "One root-tree receipt covering all model calls, tools, retries, descendants, failures, and wall time."
+      }
+    },
+    {
+      "rule_id": "generation.no-protected-edge",
+      "version": 1,
+      "precedence": 890,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "accepted-generation-edge",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "warning",
+        "explanation": "No externally accepted parent-child edge establishes a new generation.",
+        "canonical_concept_id": "lineage-and-rollback",
+        "evidence_needed": "A protected parent, child, and external promotion record."
+      }
+    },
+    {
+      "rule_id": "generation.no-next-cycle-measurement",
+      "version": 1,
+      "precedence": 880,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "next-cycle-gain-measured",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "warning",
+        "explanation": "Task gain does not show that the child produces better later accepted changes.",
+        "canonical_concept_id": "meta-improvement",
+        "evidence_needed": "A matched parent-versus-child comparison on fresh next-cycle improvement work."
+      }
+    },
+    {
+      "rule_id": "evidence.no-heldout-split",
+      "version": 1,
+      "precedence": 870,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "development-heldout-split",
+        "value": false
+      },
+      "effect": {
+        "kind": "finding",
+        "severity": "warning",
+        "explanation": "Without a development and held-out split, search can optimize the reported evaluation directly.",
+        "canonical_concept_id": "evaluator-independence",
+        "evidence_needed": "A frozen held-out split that the proposer cannot inspect or modify."
+      }
+    },
+    {
+      "rule_id": "class.recursive-improvement",
+      "version": 1,
+      "precedence": 700,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-generation-edge",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-child-produces-later-candidates",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "next-cycle-gain-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "next-cycle-gain-positive",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "recursive-improvement-demonstrated"
+      }
+    },
+    {
+      "rule_id": "class.successor-improvement",
+      "version": 1,
+      "precedence": 600,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-generation-edge",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-child-produces-later-candidates",
+            "value": true
+          }
+        ]
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "successor-improvement"
+      }
+    },
+    {
+      "rule_id": "class.joint-harness-weight",
+      "version": 1,
+      "precedence": 500,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "weights"
+          },
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "harness"
+          }
+        ]
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "joint-harness-weight-adaptation"
+      }
+    },
+    {
+      "rule_id": "class.automated-ai-research",
+      "version": 1,
+      "precedence": 400,
+      "predicate": {
+        "kind": "enum-equals",
+        "field_id": "system-kind",
+        "value": "automated-research"
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "automated-ai-research"
+      }
+    },
+    {
+      "rule_id": "class.harness-improvement",
+      "version": 1,
+      "precedence": 300,
+      "predicate": {
+        "kind": "any",
+        "predicates": [
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "harness"
+          },
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "retrospection-policy"
+          }
+        ]
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "harness-improvement"
+      }
+    },
+    {
+      "rule_id": "class.persistent-adaptation",
+      "version": 1,
+      "precedence": 200,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "persistent-artifacts"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "later-consumer-present",
+            "value": true
+          }
+        ]
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "persistent-adaptation"
+      }
+    },
+    {
+      "rule_id": "class.output-refinement",
+      "version": 1,
+      "precedence": 100,
+      "predicate": {
+        "kind": "enum-equals",
+        "field_id": "persistence-scope",
+        "value": "current-task"
+      },
+      "effect": {
+        "kind": "classification",
+        "classification": "output-refinement"
+      }
+    },
+    {
+      "rule_id": "ceiling.recursive-demonstrated",
+      "version": 1,
+      "precedence": 700,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-generation-edge",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "generation-edge-owner",
+            "value": "promotion-authority"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "rejected-lineage-retained",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-child-produces-later-candidates",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "held-out-outcomes",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "evaluator-owner",
+            "value": "external-controller"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "candidate-can-write-evaluator",
+            "value": false
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "development-heldout-split",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "matched-proposal-protocol",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "complete-root-tree-accounting",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "permissions-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "archive-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "promotion-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "rollback-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "next-cycle-gain-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "next-cycle-gain-positive",
+            "value": true
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "recursive-improvement-demonstrated"
+      }
+    },
+    {
+      "rule_id": "ceiling.successor-improvement",
+      "version": 1,
+      "precedence": 600,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-generation-edge",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "generation-edge-owner",
+            "value": "promotion-authority"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "rejected-lineage-retained",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "accepted-child-produces-later-candidates",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "held-out-outcomes",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "evaluator-owner",
+            "value": "external-controller"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "candidate-can-write-evaluator",
+            "value": false
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "development-heldout-split",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "matched-proposal-protocol",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "permissions-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "archive-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "promotion-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "rollback-external",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "successor-improvement"
+      }
+    },
+    {
+      "rule_id": "ceiling.joint-harness-weight",
+      "version": 1,
+      "precedence": 500,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "weights"
+          },
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "harness"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-improved",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "held-out-outcomes",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "evaluator-owner",
+            "value": "external-controller"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "candidate-can-write-evaluator",
+            "value": false
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "permissions-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "promotion-external",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "joint-harness-weight-adaptation"
+      }
+    },
+    {
+      "rule_id": "ceiling.automated-ai-research",
+      "version": 1,
+      "precedence": 400,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "enum-equals",
+            "field_id": "system-kind",
+            "value": "automated-research"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-improved",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "automated-ai-research"
+      }
+    },
+    {
+      "rule_id": "ceiling.harness-improvement",
+      "version": 1,
+      "precedence": 300,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "any",
+            "predicates": [
+              {
+                "kind": "set-contains",
+                "field_id": "editable-components",
+                "value": "harness"
+              },
+              {
+                "kind": "set-contains",
+                "field_id": "editable-components",
+                "value": "retrospection-policy"
+              }
+            ]
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-improved",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "held-out-outcomes",
+            "value": true
+          },
+          {
+            "kind": "enum-equals",
+            "field_id": "evaluator-owner",
+            "value": "external-controller"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "candidate-can-write-evaluator",
+            "value": false
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "permissions-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "archive-external",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "promotion-external",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "harness-improvement"
+      }
+    },
+    {
+      "rule_id": "ceiling.persistent-adaptation",
+      "version": 1,
+      "precedence": 200,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "set-contains",
+            "field_id": "editable-components",
+            "value": "persistent-artifacts"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "later-consumer-present",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "persistent-adaptation"
+      }
+    },
+    {
+      "rule_id": "ceiling.output-refinement",
+      "version": 1,
+      "precedence": 100,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-measured",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "task-outcome-improved",
+            "value": true
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "proposed"
+            }
+          },
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "evidence-status",
+              "value": "missing"
+            }
+          }
+        ]
+      },
+      "effect": {
+        "kind": "claim-ceiling",
+        "classification": "output-refinement"
+      }
+    },
+    {
+      "rule_id": "flag.persistence-established",
+      "version": 1,
+      "precedence": 50,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "not",
+            "predicate": {
+              "kind": "enum-equals",
+              "field_id": "persistence-scope",
+              "value": "none"
+            }
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "later-consumer-present",
+            "value": true
+          }
+        ]
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "persistence-established"
+      }
+    },
+    {
+      "rule_id": "flag.accepted-generation",
+      "version": 1,
+      "precedence": 49,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "accepted-generation-edge",
+        "value": true
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "accepted-generation-established"
+      }
+    },
+    {
+      "rule_id": "flag.matched-envelope",
+      "version": 1,
+      "precedence": 48,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "bool-equals",
+            "field_id": "matched-proposal-protocol",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "complete-root-tree-accounting",
+            "value": true
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "permissions-external",
+            "value": true
+          }
+        ]
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "matched-envelope-established"
+      }
+    },
+    {
+      "rule_id": "flag.evaluator-independent",
+      "version": 1,
+      "precedence": 47,
+      "predicate": {
+        "kind": "all",
+        "predicates": [
+          {
+            "kind": "enum-equals",
+            "field_id": "evaluator-owner",
+            "value": "external-controller"
+          },
+          {
+            "kind": "bool-equals",
+            "field_id": "candidate-can-write-evaluator",
+            "value": false
+          }
+        ]
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "evaluator-independence-established"
+      }
+    },
+    {
+      "rule_id": "flag.root-accounting",
+      "version": 1,
+      "precedence": 46,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "complete-root-tree-accounting",
+        "value": true
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "complete-root-tree-accounting-established"
+      }
+    },
+    {
+      "rule_id": "flag.next-cycle-gain",
+      "version": 1,
+      "precedence": 45,
+      "predicate": {
+        "kind": "bool-equals",
+        "field_id": "next-cycle-gain-measured",
+        "value": true
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "next-cycle-gain-measured"
+      }
+    },
+    {
+      "rule_id": "flag.independent-reproduction",
+      "version": 1,
+      "precedence": 44,
+      "predicate": {
+        "kind": "enum-equals",
+        "field_id": "evidence-status",
+        "value": "independently-reproduced"
+      },
+      "effect": {
+        "kind": "flag",
+        "flag": "independent-reproduction-present"
+      }
+    }
+  ]
+}

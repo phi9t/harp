@@ -1,0 +1,74 @@
+References
+[1] Ekin Akyürek, Mehul Damani, Adam Zweiger, Linlu Qiu, Han Guo, Jyothish Pari, Yoon Kim, and
+Jacob Andreas. The surprising effectiveness of test-time training for few-shot learning. International
+Conference on Machine Learning, 2024.
+13SIA: Self Improving AI with Harness & Weight Updates
+[2] Maayan Baron, Adrian Veres, Samuel L. Wolock, Abigail L. Faust, Renaud Gaujoux, Amedeo Vetere,
+Jennifer Hyoje Ryu, Bridget K. Wagner, Shai S. Shen-Orr, Allon M. Klein, et al. A single-cell transcrip-
+tomic map of the human and mouse pancreas reveals inter- and intra-cell population structure. Cell
+Systems, 3(4):346–360.e4, 2016.
+[3] Shiyi Cao et al. SkyRL-v0: Train real-world long-horizon agents via reinforcement learning. Technical
+report, NovaSky, UC Berkeley, 2025.
+[4] Zixiang Chen, Yihe Deng, Huizhuo Yuan, Kaixuan Ji, and Quanquan Gu. Self-play fine-tuning converts
+weak language models to strong language models. In International Conference on Machine Learning,
+2024.
+[5] D. V. Dijk, Roshan Sharma, J. Nainys, Kristina M. Yim, Pooja Kathail, Ambrose J. Carr, Cassandra
+Burdziak, Kevin R. Moon, Christine L. Chaffer, D. Pattabiraman, et al. Recovering gene interactions
+from single-cell data using data diffusion. Cell, 174(3):716–729.e27, 2018.
+[6] Zhiwei Fei, Xiaoyu Shen, D. Zhu, Fengzhe Zhou, Zhuo Han, Songyang Zhang, Kai Chen, Zongwen Shen,
+and Jidong Ge. LawBench: Benchmarking legal knowledge of large language models. arXiv.org, 2023.
+[7] Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, and Weizhu
+Chen. LoRA: Low-rank adaptation of large language models. In International Conference on Learning
+Representations, 2021.
+[8] Shengran Hu, Cong Lu, and Jeff Clune. Automated design of agentic systems. International Conference
+on Learning Representations, 2024.
+[9] Andrej Karpathy. autoresearch: AI agents running research on single-GPU nanochat training automat-
+ically, 2026.
+[10] Yoonho Lee, Roshen Nair, Qizheng Zhang, Kangwook Lee, Omar Khattab, and Chelsea Finn. Meta-
+harness: End-to-end optimization of model harnesses. International Conference on Machine Learning,
+2026.
+[11] Chris Lu, Cong Lu, Robert Lange, Jakob Foerster, Jeff Clune, and David Ha. The AI scientist: Towards
+fully automated open-ended scientific discovery. arXiv.org, 2024.
+[12] Yecheng Jason Ma, William Liang, Guanzhi Wang, De-An Huang, Osbert Bastani, Dinesh Jayaraman,
+Yuke Zhu, Linxi Fan, and Anima Anandkumar. Eureka: Human-level reward design via coding large
+language models. In International Conference on Learning Representations, 2023.
+[13] Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao, Sarah Wiegreffe, Uri Alon,
+Nouha Dziri, Shrimai Prabhumoye, Yiming Yang, et al. Self-refine: Iterative refinement with self-
+feedback. In Neural Information Processing Systems, volume 36, pages 46534–46594. Neural Information
+Processing Systems Foundation, Inc. (NeurIPS), 2023.
+[14] Alexander Novikov, Ngân V˜u, Marvin Eisenberger, Emilien Dupont, Po-Sen Huang, Adam Zsolt Wag-
+ner, S. Shirobokov, B. Kozlovskii, Francisco J. R. Ruiz, Abbas Mehrabian, et al. AlphaEvolve: A coding
+agent for scientific and algorithmic discovery. arXiv.org, 2025.
+[15] B. Romera-Paredes, M. Barekatain, Alexander Novikov, Matej Balog, M. P. Kumar, Emilien Dupont,
+Francisco J. R. Ruiz, J. Ellenberg, Pengming Wang, Omar Fawzi, et al. Mathematical discoveries from
+program search with large language models. Nature, 625:468–475, 2023.
+[16] Guangming Sheng, Chi Zhang, Zilingfeng Ye, Xibin Wu, Wang Zhang, Ru Zhang, Yanghua Peng, Haibin
+Lin, and Chuan Wu. HybridFlow: A flexible and efficient RLHF framework. In European Conference
+on Computer Systems, 2024.
+[17] Noah Shinn, Federico Cassano, Beck Labash, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao.
+Reflexion: Language agents with verbal reinforcement learning. In Neural Information Processing Sys-
+tems, volume 36, pages 8634–8652. Neural Information Processing Systems Foundation, Inc. (NeurIPS),
+2023.
+14SIA: Self Improving AI with Harness & Weight Updates
+[18] Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and
+Anima Anandkumar. Voyager: An open-ended embodied agent with large language models. Trans.
+Mach. Learn. Res., 2023.
+[19] Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao.
+ReAct: Synergizing reasoning and acting in language models. In International Conference on Learning
+Representations, 2023.
+[20] Mert Yuksekgonul, Daniel Koceja, Xinhao Li, Federico Bianchi, Jed McCaleb, Xiaolong Wang, Jan
+Kautz, Yejin Choi, James Zou, Carlos Guestrin, et al. Learning to discover at test time. arXiv.org,
+2026.
+[21] Eric Zelikman, Yuhuai Wu, and Noah D. Goodman. STaR: Bootstrapping reasoning with reasoning. In
+Advances in Neural Information Processing Systems 35, volume 35, pages 15476–15488. Neural Infor-
+mation Processing Systems Foundation, Inc. (NeurIPS), 2022.
+[22] Jenny Zhang, Shengran Hu, Cong Lu, Robert Lange, and Jeff Clune. Darwin Gödel machine: Open-
+ended evolution of self-improving agents. SuperIntelligence - Robotics - Safety & Alignment, 2(3), 2025.
+[23] Jenny Zhang, Bingchen Zhao, Wannan Yang, Jakob Foerster, Jeff Clune, Minqi Jiang, Sam Devlin, and
+Tatiana Shavrina. Hyperagents. arXiv preprint arXiv:2603.19461, 2026.
+[24] Yaowei Zheng, Richong Zhang, Junhao Zhang, Yanhan Ye, Zheyan Luo, and Yongqiang Ma. LlamaFac-
+tory: Unified efficient fine-tuning of 100+ language models. In Annual Meeting of the Association for
+Computational Linguistics, pages 400–410. Association for Computational Linguistics, 2024.
+[25] Yuxin Zuo, Kaiyan Zhang, Shang Qu, Li Sheng, Xuekai Zhu, Yuchen Zhang, Biqing Qi, Youbang Sun,
+Ganqu Cui, Ning Ding, et al. TTRL: Test-time reinforcement learning. arXiv.org, 2025.
+15

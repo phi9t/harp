@@ -1,0 +1,446 @@
+{
+  "brief_sha256": "927049736bb6fefefd753a9f43bae2b830aa93879bc96e7a80cf12ac63b2ba11",
+  "commentary": null,
+  "corpus_sha256": "7bb7583009a2b392b9d5b2f74d0ff8680d8e5da572db8275ca453c47f5302134",
+  "diagnosis": {
+    "classification": "harness-improvement",
+    "findings": [],
+    "flags": [
+      "evaluator-independence-established",
+      "persistence-established"
+    ],
+    "unresolved_required_fields": []
+  },
+  "identity": {
+    "case_id": "aflow",
+    "method_family": "mcts-workflow-search",
+    "title": "AFlow"
+  },
+  "provenance": [
+    {
+      "field_id": "candidate-name",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4, Algorithm 1",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "editable-components",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§§3.1–4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "output-only",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "persistence-scope",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "persistence-mechanism",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Appendix A.6",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "accepted-generation",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Appendix A.6",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "rejected-branches-recorded",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4; Figure 6",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "child-produces-later-candidates",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "next-cycle-gain-measured",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "held-out-evaluation",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5.1",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "evaluator-owner",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "candidate-evaluator-write-access",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "matched-envelope",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5.1",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "root-tree-accounting-complete",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Figure 4; Appendix D",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "integrity-failure",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "automated-research-loop",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§3.2",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "evidence-status",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Table 1",
+        "source_id": "AFLOW"
+      }
+    },
+    {
+      "field_id": "evidence-locator",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§§4–5; Appendix A.6",
+        "source_id": "AFLOW"
+      }
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "integrity-evaluator-write",
+      "version": 1
+    },
+    {
+      "rule_id": "integrity-authority-failure",
+      "version": 1
+    },
+    {
+      "rule_id": "class-recursive-improvement",
+      "version": 1
+    },
+    {
+      "rule_id": "class-successor-improvement",
+      "version": 1
+    },
+    {
+      "rule_id": "class-joint-adaptation",
+      "version": 1
+    },
+    {
+      "rule_id": "class-automated-research",
+      "version": 1
+    },
+    {
+      "rule_id": "class-harness-improvement",
+      "version": 1
+    },
+    {
+      "rule_id": "class-persistent-adaptation",
+      "version": 1
+    },
+    {
+      "rule_id": "class-output-refinement",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-persistence-established",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-accepted-generation",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-matched-envelope",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-evaluator-independent",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-root-accounting",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-next-cycle-gain",
+      "version": 1
+    },
+    {
+      "rule_id": "flag-independent-reproduction",
+      "version": 1
+    }
+  ],
+  "rules_sha256": "16c19ea895d4f937c33db9fd035ee1f7dfc0945ec0a3b7071d3e80cf9be376ae",
+  "schema_version": "rsi-diagnosis/v1",
+  "sources": [
+    {
+      "locator": "§§3.1–4",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§§4–5; Appendix A.6",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§3.2",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§4",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§4, Algorithm 1",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§4; Figure 6",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§5",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "§5.1",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "Appendix A.6",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "Figure 4; Appendix D",
+      "source_id": "AFLOW"
+    },
+    {
+      "locator": "Table 1",
+      "source_id": "AFLOW"
+    }
+  ],
+  "worksheet": [
+    {
+      "field_id": "candidate-name",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4, Algorithm 1",
+        "source_id": "AFLOW"
+      },
+      "value": "AFlow"
+    },
+    {
+      "field_id": "editable-components",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§§3.1–4",
+        "source_id": "AFLOW"
+      },
+      "value": [
+        "harness",
+        "retrospection"
+      ]
+    },
+    {
+      "field_id": "output-only",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "persistence-scope",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      },
+      "value": "cross-episode"
+    },
+    {
+      "field_id": "persistence-mechanism",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Appendix A.6",
+        "source_id": "AFLOW"
+      },
+      "value": "selected"
+    },
+    {
+      "field_id": "accepted-generation",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Appendix A.6",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "rejected-branches-recorded",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4; Figure 6",
+        "source_id": "AFLOW"
+      },
+      "value": true
+    },
+    {
+      "field_id": "child-produces-later-candidates",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "next-cycle-gain-measured",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "held-out-evaluation",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5.1",
+        "source_id": "AFLOW"
+      },
+      "value": true
+    },
+    {
+      "field_id": "evaluator-owner",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      },
+      "value": "external"
+    },
+    {
+      "field_id": "candidate-evaluator-write-access",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§4",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "matched-envelope",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5.1",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "root-tree-accounting-complete",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Figure 4; Appendix D",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "integrity-failure",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§5",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "automated-research-loop",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§3.2",
+        "source_id": "AFLOW"
+      },
+      "value": false
+    },
+    {
+      "field_id": "evidence-status",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "Table 1",
+        "source_id": "AFLOW"
+      },
+      "value": "source-reported"
+    },
+    {
+      "field_id": "evidence-locator",
+      "provenance": {
+        "kind": "source-backed",
+        "locator": "§§4–5; Appendix A.6",
+        "source_id": "AFLOW"
+      },
+      "value": "§4 Algorithm 1; §5 Table 1; Appendix A.6"
+    }
+  ]
+}

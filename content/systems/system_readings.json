@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "systems": [
+    {
+      "system_id": "autoresearch",
+      "title": "Karpathy Autoresearch",
+      "source_ids": ["KARPATHY-AUTORESEARCH"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/autoresearch.md",
+      "weng_section_ids": ["system-being-improved"],
+      "paper_routes": [
+        {
+          "source_id": "KARPATHY-AUTORESEARCH",
+          "public_url": "https://github.com/karpathy/autoresearch",
+          "captured_locator": "evidence/weng/text/karpathy-autoresearch.txt:1-40",
+          "reading_sequence": {
+            "method": "README, How it works",
+            "algorithm": "README, Design choices; program.md",
+            "main_evaluation": "README, fixed 5-minute budget and val_bpb",
+            "ablation": "not-applicable: repository snapshot reports no controlled ablation",
+            "limitations": "README, Platform support",
+            "appendix": "not-applicable: repository source has no appendix"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": ["ai-scientist"]
+    },
+    {
+      "system_id": "ace",
+      "title": "Agentic Context Engineering",
+      "source_ids": ["ACE"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/ace.md",
+      "weng_section_ids": ["context-engineering"],
+      "paper_routes": [
+        {
+          "source_id": "ACE",
+          "public_url": "https://iclr.cc/virtual/2026/poster/10008343",
+          "captured_locator": "evidence/weng/text/ace.txt:1-40",
+          "reading_sequence": {
+            "method": "§§2–3.2",
+            "algorithm": "§§3.1–3.2",
+            "main_evaluation": "§§4.1–4.5",
+            "ablation": "§4.6",
+            "limitations": "§5, Limitations and Challenges",
+            "appendix": "Appendix A.3–A.6"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/ace.json",
+      "related_system_ids": ["mce", "meta-harness"]
+    },
+    {
+      "system_id": "mce",
+      "title": "Meta Context Engineering",
+      "source_ids": ["MCE"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/mce.md",
+      "weng_section_ids": ["context-engineering"],
+      "paper_routes": [
+        {
+          "source_id": "MCE",
+          "public_url": "https://arxiv.org/abs/2601.21557",
+          "captured_locator": "evidence/weng/text/mce.txt:1-40",
+          "reading_sequence": {
+            "method": "§§3.1–3.3",
+            "algorithm": "§3.4, Algorithm 1",
+            "main_evaluation": "§§4.1–4.2, Table 1",
+            "ablation": "§4.3",
+            "limitations": "§5, Limitations",
+            "appendix": "Appendix A"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/mce.json",
+      "related_system_ids": ["ace", "meta-harness"]
+    },
+    {
+      "system_id": "meta-harness",
+      "title": "Meta-Harness",
+      "source_ids": ["META-HARNESS"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/meta-harness.md",
+      "weng_section_ids": ["context-engineering"],
+      "paper_routes": [
+        {
+          "source_id": "META-HARNESS",
+          "public_url": "https://arxiv.org/abs/2603.28052",
+          "captured_locator": "evidence/weng/text/meta-harness.txt:1-40",
+          "reading_sequence": {
+            "method": "§3",
+            "algorithm": "§3, Algorithm 1",
+            "main_evaluation": "§§4.1–4.2",
+            "ablation": "§4.1, Table 3",
+            "limitations": "§4 and Discussion",
+            "appendix": "Appendix A.1–A.2"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": ["ace", "mce"]
+    },
+    {
+      "system_id": "adas",
+      "title": "Automated Design of Agentic Systems",
+      "source_ids": ["ADAS"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/adas.md",
+      "weng_section_ids": ["workflow-design-and-search"],
+      "paper_routes": [
+        {
+          "source_id": "ADAS",
+          "public_url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/36b7acf6f6010652b3f2a433774a66fe-Paper-Conference.pdf",
+          "captured_locator": "evidence/weng/text/adas.txt:1-40",
+          "reading_sequence": {
+            "method": "§2",
+            "algorithm": "§3, Meta Agent Search",
+            "main_evaluation": "§§4.1–4.3",
+            "ablation": "§4.3 and Appendix G",
+            "limitations": "§6, Discussion and Conclusion",
+            "appendix": "Appendix A and Appendix I"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/adas.json",
+      "related_system_ids": ["aflow"]
+    },
+    {
+      "system_id": "aflow",
+      "title": "AFlow",
+      "source_ids": ["AFLOW"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/aflow.md",
+      "weng_section_ids": ["workflow-design-and-search"],
+      "paper_routes": [
+        {
+          "source_id": "AFLOW",
+          "public_url": "https://openreview.net/forum?id=z5uVAKwmjf",
+          "captured_locator": "evidence/weng/text/aflow.txt:1-40",
+          "reading_sequence": {
+            "method": "§§3.1–3.2",
+            "algorithm": "§4, Algorithm 1",
+            "main_evaluation": "§§5.1–5.2, Table 1",
+            "ablation": "§5.2, Figure 5",
+            "limitations": "§6 and §3.2 Limitations",
+            "appendix": "Appendix A.3–A.6"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/aflow.json",
+      "related_system_ids": ["adas"]
+    },
+    {
+      "system_id": "stop",
+      "title": "Self-Taught Optimizer",
+      "source_ids": ["STOP"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/stop.md",
+      "weng_section_ids": ["self-improving-harnesses"],
+      "paper_routes": [
+        {
+          "source_id": "STOP",
+          "public_url": "https://arxiv.org/abs/2310.02304",
+          "captured_locator": "evidence/weng/text/stop.txt:1-40",
+          "reading_sequence": {
+            "method": "§3",
+            "algorithm": "§4, Algorithm 1",
+            "main_evaluation": "§§5.1–5.3",
+            "ablation": "§5.3",
+            "limitations": "§7, Limitations",
+            "appendix": "Appendix A"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/stop.json",
+      "related_system_ids": ["self-harness", "ahe"]
+    },
+    {
+      "system_id": "self-harness",
+      "title": "Self-Harness",
+      "source_ids": ["SELF-HARNESS"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/self-harness.md",
+      "weng_section_ids": ["self-improving-harnesses"],
+      "paper_routes": [
+        {
+          "source_id": "SELF-HARNESS",
+          "public_url": "https://arxiv.org/abs/2606.09498",
+          "captured_locator": "evidence/weng/text/self-harness.txt:1-40",
+          "reading_sequence": {
+            "method": "§3",
+            "algorithm": "§3, three-stage loop",
+            "main_evaluation": "§4",
+            "ablation": "§4, harness-change analysis",
+            "limitations": "§4 and Discussion",
+            "appendix": "not-applicable: inspected source route names no load-bearing appendix"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/self-harness.json",
+      "related_system_ids": ["stop", "ahe"]
+    },
+    {
+      "system_id": "harness-disentangle",
+      "title": "Harness Updating Is Not Harness Benefit",
+      "source_ids": ["HARNESS-DISENTANGLE"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/harness-disentangle.md",
+      "weng_section_ids": ["harness-layer-vs-core-intelligence"],
+      "paper_routes": [
+        {
+          "source_id": "HARNESS-DISENTANGLE",
+          "public_url": "https://arxiv.org/abs/2605.30621",
+          "captured_locator": "evidence/weng/text/harness-disentangle.txt:1-40",
+          "reading_sequence": {
+            "method": "§§3.1–3.3",
+            "algorithm": "§3, capability decomposition",
+            "main_evaluation": "§4, Tables 2–3",
+            "ablation": "§4, Figure 7",
+            "limitations": "§§6–7",
+            "appendix": "not-applicable: main text contains the required audit controls"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": ["rlm"]
+    },
+    {
+      "system_id": "ahe",
+      "title": "Agentic Harness Engineering",
+      "source_ids": ["AHE"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/ahe.md",
+      "weng_section_ids": ["self-improving-harnesses"],
+      "paper_routes": [
+        {
+          "source_id": "AHE",
+          "public_url": "https://arxiv.org/abs/2604.25850",
+          "captured_locator": "evidence/weng/text/ahe.txt:1-40",
+          "reading_sequence": {
+            "method": "§§2–3",
+            "algorithm": "§4",
+            "main_evaluation": "Experiments and Results",
+            "ablation": "Experiments, observability ablation",
+            "limitations": "Discussion and Limitations",
+            "appendix": "not-applicable: inspected article uses main-text experiment locators"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/ahe.json",
+      "related_system_ids": ["stop", "self-harness"]
+    },
+    {
+      "system_id": "alphaevolve",
+      "title": "AlphaEvolve",
+      "source_ids": ["ALPHAEVOLVE"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/alphaevolve.md",
+      "weng_section_ids": ["evolutionary-search"],
+      "paper_routes": [
+        {
+          "source_id": "ALPHAEVOLVE",
+          "public_url": "https://arxiv.org/abs/2506.13131",
+          "captured_locator": "evidence/weng/text/alphaevolve.txt:1-40",
+          "reading_sequence": {
+            "method": "§§2–3",
+            "algorithm": "§§2–3, evolutionary loop",
+            "main_evaluation": "Application Results sections",
+            "ablation": "not-applicable: white paper reports applications without a matched search ablation",
+            "limitations": "Discussion and Limitations",
+            "appendix": "not-applicable: no load-bearing appendix is cited"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/alphaevolve.json",
+      "related_system_ids": ["dgm"]
+    },
+    {
+      "system_id": "dgm",
+      "title": "Darwin Gödel Machine",
+      "source_ids": ["DGM"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/dgm.md",
+      "weng_section_ids": ["evolutionary-search"],
+      "paper_routes": [
+        {
+          "source_id": "DGM",
+          "public_url": "https://arxiv.org/abs/2505.22954",
+          "captured_locator": "evidence/weng/text/dgm.txt:1-40",
+          "reading_sequence": {
+            "method": "§3",
+            "algorithm": "§3, archive and self-modification loop",
+            "main_evaluation": "§§4.1–4.4",
+            "ablation": "§4.4 and Appendix A.3",
+            "limitations": "§§5–6",
+            "appendix": "Appendix A.1–A.4"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/dgm.json",
+      "related_system_ids": ["alphaevolve"]
+    },
+    {
+      "system_id": "ai-scientist",
+      "title": "AI Scientist",
+      "source_ids": ["AI-SCIENTIST"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/ai-scientist.md",
+      "weng_section_ids": ["workflow-design-and-search"],
+      "paper_routes": [
+        {
+          "source_id": "AI-SCIENTIST",
+          "public_url": "https://www.nature.com/articles/s41586-026-10265-5",
+          "captured_locator": "evidence/weng/text/ai-scientist.txt:1-40",
+          "reading_sequence": {
+            "method": "Methods and Figure 3",
+            "algorithm": "Methods, agentic experiment tree",
+            "main_evaluation": "Human evaluation Results",
+            "ablation": "not-applicable: article reports human evaluation rather than a component ablation",
+            "limitations": "Limitations",
+            "appendix": "not-applicable: short-form article has no required appendix route"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": ["autoresearch"]
+    },
+    {
+      "system_id": "sia",
+      "title": "Self Improving AI",
+      "source_ids": ["SIA"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/sia.md",
+      "weng_section_ids": ["joint-harness-weight-optimization"],
+      "paper_routes": [
+        {
+          "source_id": "SIA",
+          "public_url": "https://arxiv.org/abs/2605.27276",
+          "captured_locator": "evidence/weng/text/sia.txt:1-40",
+          "reading_sequence": {
+            "method": "§5",
+            "algorithm": "§5, configurable improvement loop",
+            "main_evaluation": "§6",
+            "ablation": "§6, harness and weight update ablations",
+            "limitations": "§8, Limitations",
+            "appendix": "not-applicable: main text contains the required method and evaluation"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/sia.json",
+      "related_system_ids": ["continual-harness"]
+    },
+    {
+      "system_id": "continual-harness",
+      "title": "Continual Harness",
+      "source_ids": ["CONTINUAL-HARNESS"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/continual-harness.md",
+      "weng_section_ids": ["joint-harness-weight-optimization"],
+      "paper_routes": [
+        {
+          "source_id": "CONTINUAL-HARNESS",
+          "public_url": "https://arxiv.org/abs/2605.09998",
+          "captured_locator": "evidence/weng/text/continual-harness.txt:1-40",
+          "reading_sequence": {
+            "method": "§§3.1–3.3",
+            "algorithm": "§3, two-loop architecture",
+            "main_evaluation": "§§4.1–4.5",
+            "ablation": "§§4.4–4.6",
+            "limitations": "§6, Discussion",
+            "appendix": "Appendix A"
+          }
+        }
+      ],
+      "diagnostic_case_path": "content/diagnostics/cases/continual-harness.json",
+      "related_system_ids": ["sia"]
+    },
+    {
+      "system_id": "rlm",
+      "title": "Recursive Language Models",
+      "source_ids": ["RLM-PAPER"],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "content/systems/rlm.md",
+      "weng_section_ids": ["harness-layer-vs-core-intelligence"],
+      "paper_routes": [
+        {
+          "source_id": "RLM-PAPER",
+          "public_url": "https://arxiv.org/abs/2512.24601",
+          "captured_locator": "evidence/rlm/text/recursive-language-models-2512.24601v3.txt:1-40",
+          "reading_sequence": {
+            "method": "§2",
+            "algorithm": "§2, Algorithm 1",
+            "main_evaluation": "§§3–4",
+            "ablation": "§4, REPL and recursive sub-call analysis",
+            "limitations": "§7, Limitations and Future Work",
+            "appendix": "Appendix A, Appendix F"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": ["harness-disentangle"]
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "case_id": "self-harness",
+  "system_id": "self-harness",
+  "title": "Self-Harness",
+  "method_family": "held-out-harness-editing",
+  "expected_classification": "harness-improvement",
+  "facts": [
+    {
+      "field_id": "candidate-name",
+      "value": "Self-Harness",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§§3–4"
+      }
+    },
+    {
+      "field_id": "system-kind",
+      "value": "harness-optimizer",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "editable-components",
+      "value": [
+        "harness",
+        "retrospection-policy"
+      ],
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "proposal-owner",
+      "value": "candidate",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "task-outcome-measured",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "task-outcome-improved",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "persistence-scope",
+      "value": "cross-episode",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "persistence-mechanism",
+      "value": "externally-promoted",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "later-consumer-present",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "accepted-generation-edge",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "generation-edge-owner",
+      "value": "evaluator",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "rejected-lineage-retained",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "accepted-child-produces-later-candidates",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "held-out-outcomes",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "evaluator-owner",
+      "value": "external-controller",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "candidate-can-write-evaluator",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "development-heldout-split",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "matched-proposal-protocol",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "complete-root-tree-accounting",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "permissions-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "archive-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "promotion-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "rollback-external",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "next-cycle-gain-measured",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "next-cycle-gain-positive",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    },
+    {
+      "field_id": "evidence-status",
+      "value": "source-reported",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "SELF-HARNESS",
+        "locator": "§4"
+      }
+    }
+  ],
+  "expected_claim_ceiling": "harness-improvement"
+}

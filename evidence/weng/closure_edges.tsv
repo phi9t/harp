@@ -1,0 +1,56 @@
+source_id	relationship	target_id	evidence_locator	status	boundary
+WENG-HARNESS	cites	GOOD-1965	Reference 1	verified	Identity edge only
+WENG-HARNESS	cites	YUDKOWSKY-2008	Reference 2	verified	Identity edge only
+WENG-HARNESS	cites	ASP	Reference 3	verified	Identity edge only
+WENG-HARNESS	cites	ABSOLUTE-ZERO	Reference 4	verified	Identity edge only
+WENG-HARNESS	cites	SELF-REWARDING	Reference 5	verified	Identity edge only
+WENG-HARNESS	cites	SPIN	Reference 6	verified	Identity edge only
+WENG-HARNESS	cites	ACE	Reference 7	verified	Primary source owns claims
+WENG-HARNESS	cites	MCE	Reference 8	verified	Identity edge only
+WENG-HARNESS	cites	META-HARNESS	Reference 9	verified	Primary source owns claims
+WENG-HARNESS	cites	AI-SCIENTIST	Reference 10	verified	Primary source owns claims
+WENG-HARNESS	cites	SCIENTISTONE	Reference 11	verified	Identity edge only
+WENG-HARNESS	cites	AUTODATA	Reference 12	verified	Identity edge only
+WENG-HARNESS	cites	ADAS	Reference 13	verified	Primary source owns claims
+WENG-HARNESS	cites	SELF-REFINE	Reference 14	verified	Identity edge only
+WENG-HARNESS	cites	AFLOW	Reference 15	verified	Primary source owns claims
+WENG-HARNESS	cites	STOP	Reference 16	verified	Primary source owns claims
+WENG-HARNESS	cites	SELF-HARNESS	Reference 17	verified	Primary source owns claims
+WENG-HARNESS	cites	PROMPTBREEDER	Reference 18	verified	Identity edge only
+WENG-HARNESS	cites	GEPA	Reference 19	verified	Identity edge only
+WENG-HARNESS	cites	ALPHAEVOLVE	Reference 20	verified	Primary source owns claims
+WENG-HARNESS	cites	SHINKAEVOLVE	Reference 21	verified	Identity edge only
+WENG-HARNESS	cites	THETAEVOLVE	Reference 22	verified	Identity edge only
+WENG-HARNESS	cites	DGM	Reference 23	verified	Primary source owns claims
+WENG-HARNESS	cites	HYPERAGENTS	Reference 24	verified	Identity edge only
+WENG-HARNESS	cites	LEARNING-DISCOVER	Reference 25	verified	Identity edge only
+WENG-HARNESS	cites	EPISTEMIC-DISCOVERY	Reference 26	verified	Identity edge only
+WENG-HARNESS	cites	SIA	Reference 27	verified	Primary source owns claims
+WENG-HARNESS	cites	NOT-SCIENTISTS	Reference 28	verified	Primary source owns claims
+WENG-HARNESS	cites	GPT5-SCIENCE	Reference 29	verified	Identity edge only
+WENG-HARNESS	cites	PAPERBENCH	Reference 30	verified	Primary source owns claims
+WENG-HARNESS	cites	REBENCH	Reference 31	verified	Primary source owns claims
+WENG-HARNESS	cites	MLEBENCH	Reference 32	verified	Identity edge only
+WENG-HARNESS	cites	SCIENCEAGENTBENCH	Reference 33	verified	Identity edge only
+WENG-HARNESS	cites	COREBENCH	Reference 34	verified	Identity edge only
+WENG-HARNESS	cites	KERNELBENCH	Reference 35	verified	Primary source owns claims
+WENG-HARNESS	cites	HARNESS-DISENTANGLE	Reference 36	verified	Identity edge only
+WENG-HARNESS	cites	AHE	Reference 37	verified	Primary source owns claims
+WENG-HARNESS	cites	CONTINUAL-HARNESS	Reference 38	verified	Identity edge only
+WENG-HARNESS	cites	DEMOEVOLVE	Reference 39	verified	Identity edge only
+WENG-HARNESS	body-links	KARPATHY-AUTORESEARCH	Harness Design Patterns / Workflow Automation	verified	Identity and illustrative relationship only
+WENG-HARNESS	body-links	WENG-REWARD	Self-Improving Harness / reward hacking concern	verified	Secondary safety synthesis
+WENG-HARNESS	body-links	ANTHROPIC-RSI	Introduction / AI progress link	verified	Company framing only
+DGM	extends	GODEL-MACHINE	Abstract and §§1-3	verified	DGM substitutes empirical benchmark selection for proof-certified rewrite
+DGM	requires	QD-2016	§§1-3 and bibliography	verified	Archive diversity foundation
+DGM	compares-with	FUNSEARCH	Related work and bibliography	verified	Program-evolution predecessor, not the same editable object
+ALPHAEVOLVE	extends	FUNSEARCH	Abstract, prior automated discovery methods	verified	AlphaEvolve broadens code and evaluator applications
+WENG-REWARD	extends	CONCRETE-SAFETY	Let's Define Reward Hacking	verified	Secondary synthesis follows primary safety taxonomy
+META-HARNESS	extends	ACE	Abstract and anchor synthesis	inferred	Conceptual progression from context artifact to context-management code
+SELF-HARNESS	extends	STOP	Abstract and anchor synthesis	inferred	Both improve executable scaffolding; direct implementation lineage not claimed
+AHE	critiques	SELF-HARNESS	Abstract and anchor synthesis	inferred	Adds explicit observability and falsifiable edit contracts
+PAPERBENCH	evaluates	AI-SCIENTIST	Benchmark task identity	inferred	Replication benchmark probes one AI-research capability, not the same system
+REBENCH	evaluates	AI-SCIENTIST	Benchmark task identity	inferred	Research-engineering environments probe a subset of autonomous research
+KERNELBENCH	evaluates	ALPHAEVOLVE	Correctness and speed evaluator	inferred	Represents a tractable AI-for-AI engineering sub-loop
+SIA	combines	META-HARNESS	Abstract	inferred	Harness update branch
+SIA	combines	CONTINUAL-HARNESS	Abstract and anchor synthesis	inferred	Adjacent joint-adaptation branch; CONTINUAL-HARNESS contents remain uninspected

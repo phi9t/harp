@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "fields": [
+    {
+      "field_id": "candidate-name",
+      "section": "candidate",
+      "label": "Candidate name",
+      "kind": "text",
+      "required": false
+    },
+    {
+      "field_id": "system-kind",
+      "section": "candidate",
+      "label": "System kind",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "task-agent",
+        "context-manager",
+        "workflow-optimizer",
+        "harness-optimizer",
+        "automated-research",
+        "joint-adaptation",
+        "other"
+      ]
+    },
+    {
+      "field_id": "editable-components",
+      "section": "candidate",
+      "label": "Editable components",
+      "kind": "set",
+      "required": true,
+      "values": [
+        "weights",
+        "harness",
+        "persistent-artifacts",
+        "retrospection-policy"
+      ]
+    },
+    {
+      "field_id": "proposal-owner",
+      "section": "candidate",
+      "label": "Proposal owner",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "candidate",
+        "external-controller",
+        "human",
+        "mixed",
+        "unknown"
+      ]
+    },
+    {
+      "field_id": "task-outcome-measured",
+      "section": "candidate",
+      "label": "Task outcome is measured",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "task-outcome-improved",
+      "section": "candidate",
+      "label": "Task outcome improved",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "persistence-scope",
+      "section": "persistence",
+      "label": "Persistence scope",
+      "kind": "enum",
+      "required": true,
+      "values": ["none", "current-task", "cross-episode", "accepted-generation"]
+    },
+    {
+      "field_id": "persistence-mechanism",
+      "section": "persistence",
+      "label": "Persistence mechanism",
+      "kind": "enum",
+      "required": true,
+      "values": ["none", "automatic", "selected", "externally-promoted"]
+    },
+    {
+      "field_id": "later-consumer-present",
+      "section": "persistence",
+      "label": "A later task or generation consumes the persisted state",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "accepted-generation-edge",
+      "section": "generation",
+      "label": "External authority accepted a parent-child generation edge",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "generation-edge-owner",
+      "section": "generation",
+      "label": "Generation edge owner",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "candidate",
+        "evaluator",
+        "promotion-authority",
+        "human",
+        "unknown"
+      ]
+    },
+    {
+      "field_id": "rejected-lineage-retained",
+      "section": "generation",
+      "label": "Rejected branches remain recorded",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "accepted-child-produces-later-candidates",
+      "section": "generation",
+      "label": "Accepted child produces later candidates",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "held-out-outcomes",
+      "section": "evaluation",
+      "label": "Held-out outcomes are evaluated",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "evaluator-owner",
+      "section": "evaluation",
+      "label": "Evaluator owner",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "candidate",
+        "external-controller",
+        "human",
+        "mixed",
+        "unknown"
+      ]
+    },
+    {
+      "field_id": "candidate-can-write-evaluator",
+      "section": "evaluation",
+      "label": "Candidate can write evaluator state",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "development-heldout-split",
+      "section": "evaluation",
+      "label": "Development and held-out tasks are separated",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "matched-proposal-protocol",
+      "section": "resources-authority",
+      "label": "Parent and child use a matched proposal protocol",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "complete-root-tree-accounting",
+      "section": "resources-authority",
+      "label": "Root-tree accounting includes failed branches and descendants",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "permissions-external",
+      "section": "resources-authority",
+      "label": "Permission policy is external to the candidate",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "archive-external",
+      "section": "resources-authority",
+      "label": "Lineage archive is external to the candidate",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "promotion-external",
+      "section": "resources-authority",
+      "label": "Promotion authority is external to the candidate",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "rollback-external",
+      "section": "resources-authority",
+      "label": "Rollback authority is external to the candidate",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "next-cycle-gain-measured",
+      "section": "generation",
+      "label": "Next-cycle gain is measured",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "next-cycle-gain-positive",
+      "section": "generation",
+      "label": "Measured next-cycle gain is positive",
+      "kind": "boolean",
+      "required": true
+    },
+    {
+      "field_id": "evidence-status",
+      "section": "evidence",
+      "label": "Evidence status",
+      "kind": "enum",
+      "required": true,
+      "values": [
+        "proposed",
+        "source-reported",
+        "executed",
+        "independently-reproduced",
+        "missing"
+      ]
+    },
+    {
+      "field_id": "controls-present",
+      "section": "evidence",
+      "label": "Controls are present",
+      "kind": "boolean",
+      "required": false
+    },
+    {
+      "field_id": "ablations-present",
+      "section": "evidence",
+      "label": "Ablations are present",
+      "kind": "boolean",
+      "required": false
+    }
+  ]
+}

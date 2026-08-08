@@ -1,0 +1,51 @@
+[tools]
+node = "22.22.3"
+rust = "1.92.0"
+
+[tasks.bootstrap]
+description = "Install locked repository dependencies and local Git LFS filters"
+run = """
+set -euo pipefail
+git lfs install --local
+cargo fetch --locked
+cd atlas
+corepack pnpm install --frozen-lockfile
+"""
+
+[tasks.verify-rust]
+description = "Run Rust formatting, linting, tests, corpus, search, and source gates"
+run = """
+set -euo pipefail
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
+cargo run -p harp -- check
+cargo run -p harp -- build --check
+cargo run -p harp -- sources verify
+cargo run -p harp -- search refresh
+cargo run -p harp -- search status
+cargo run -p harp -- search query "recursive improvement" --limit 5 >/dev/null
+"""
+
+[tasks.verify-atlas]
+description = "Run Atlas lint, types, tests, production build, and decoded export test"
+dir = "{{config_root}}/atlas"
+run = """
+set -euo pipefail
+corepack pnpm run lint
+corepack pnpm run typecheck
+corepack pnpm run test
+corepack pnpm run test:export
+"""
+
+[tasks.verify-repository]
+description = "Verify import map, LFS, forbidden references, and generated cleanliness"
+run = """
+set -euo pipefail
+git lfs fsck
+cargo run -p harp -- repository verify
+"""
+
+[tasks.verify]
+description = "Provider-neutral Harp release gate"
+run = "mise run verify-rust && mise run verify-atlas && mise run verify-repository"

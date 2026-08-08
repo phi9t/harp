@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "case_id": "dgm",
+  "system_id": "dgm",
+  "title": "Darwin Gödel Machine",
+  "method_family": "branching-agent-lineage-search",
+  "expected_classification": "harness-improvement",
+  "facts": [
+    {
+      "field_id": "candidate-name",
+      "value": "Darwin Gödel Machine",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§§2–3"
+      }
+    },
+    {
+      "field_id": "system-kind",
+      "value": "harness-optimizer",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "editable-components",
+      "value": [
+        "harness",
+        "retrospection-policy"
+      ],
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "proposal-owner",
+      "value": "candidate",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "task-outcome-measured",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "task-outcome-improved",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "persistence-scope",
+      "value": "accepted-generation",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "persistence-mechanism",
+      "value": "selected",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "later-consumer-present",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "accepted-generation-edge",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "generation-edge-owner",
+      "value": "evaluator",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "rejected-lineage-retained",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§2"
+      }
+    },
+    {
+      "field_id": "accepted-child-produces-later-candidates",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "held-out-outcomes",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "evaluator-owner",
+      "value": "external-controller",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "candidate-can-write-evaluator",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "development-heldout-split",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "matched-proposal-protocol",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "complete-root-tree-accounting",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "permissions-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "archive-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "promotion-external",
+      "value": true,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "rollback-external",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "next-cycle-gain-measured",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "next-cycle-gain-positive",
+      "value": false,
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    },
+    {
+      "field_id": "evidence-status",
+      "value": "source-reported",
+      "provenance": {
+        "kind": "source-backed",
+        "source_id": "DGM",
+        "locator": "§3"
+      }
+    }
+  ],
+  "expected_claim_ceiling": "harness-improvement"
+}

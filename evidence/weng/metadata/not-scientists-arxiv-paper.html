@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<title>Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts</title>
+<!--Generated on Tue Jan  6 13:15:48 2026 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<!--Document created on January 2026.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<link href="/static/browse/0.3.4/css/arxiv-html-papers-20250916.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
+<script src="/static/browse/0.3.4/js/addons_new.js"></script>
+<script src="/static/browse/0.3.4/js/feedbackOverlay.js"></script>
+<base href="/html/2601.03315v1/"/></head>
+<body>
+<nav class="ltx_page_navbar">
+<nav class="ltx_TOC">
+<ol class="ltx_toclist">
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S1" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">1 </span>Problem Definition and System Overview</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">2 </span>Our Attempts and Outcomes</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3 </span>Observed Failure Modes and Mitigation</span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS1" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.1 </span>Bias on Training Data</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS2" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.2 </span>Implementation Drift</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS3" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.3 </span>Memory and Context Issues</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS4" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.4 </span>Overexcitement and Eureka Instinct</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS5" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.5 </span>Lack of Sufficient Domain Intelligence</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.SS6" title="In 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">3.6 </span>Lack of Scientific Taste</span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S4" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">4 </span>Design Takeaways for AI Scientist Systems</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S5" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">5 </span>Discussion and Broader Implications</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S6" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">6 </span>Limitations and Future Work</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_appendix">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1" title="In Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">A </span>Deep Dives: Research Ideas and Anecdotes</span></a>
+<ol class="ltx_toclist ltx_toclist_appendix">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.SS1" title="In Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">A.1 </span>MARL-1: Zero-shot Coordination in Multi-Agent RL</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.SS2" title="In Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">A.2 </span>WM-1: Differentiable Planning in Stochastic World Models</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.SS3" title="In Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">A.3 </span>WM-2: Replacing Pixel Reconstruction with Perceptual Loss in World Models</span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.SS4" title="In Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">A.4 </span>AS-1: Semantic Entropy as Signal for Jailbreak Prompts</span></a></li>
+</ol>
+</li>
+</ol></nav>
+</nav>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">
+<img alt="[Uncaptioned image]" class="ltx_graphics ltx_img_landscape" height="133" id="id1.g1" src="why_llms_arent_scientists_yet_arxiv_tex/figures/lossfunk-logo.jpg" width="299"/>
+<br class="ltx_break"/>
+Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts
+</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">
+Dhruv Trehan         Paras Chopra 
+<br class="ltx_break"/><span class="ltx_text ltx_font_typewriter" id="id2.1.id1" style="font-size:90%;">{dhruv.trehan, paras}@lossfunk.com<span class="ltx_text ltx_font_serif" id="id2.1.id1.1">
+</span></span>
+</span></span>
+</div>
+<div class="ltx_dates">(January 2026)</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p" id="id3.id1">We report a case study of four end-to-end attempts to autonomously generate ML research papers using a pipeline of six LLM agents mapped to stages of the scientific workflow. Of these four, three attempts failed during implementation or evaluation. One completed the pipeline and was accepted to Agents4Science 2025, an experimental inaugural venue that required AI systems as first authors, passing both human and multi-AI review. From these attempts, we document six recurring failure modes: bias toward training data defaults, implementation drift under execution pressure, memory and context degradation across long-horizon tasks, overexcitement that declares success despite obvious failures, insufficient domain intelligence, and weak scientific taste in experimental design. We conclude by discussing four design principles for more robust AI-scientist systems, implications for autonomous scientific discovery, and we release all prompts, artifacts, and outputs at <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/Lossfunk/ai-scientist-artefacts-v1" title="">https://github.com/Lossfunk/ai-scientist-artefacts-v1</a>.</p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Problem Definition and System Overview</h2>
+<div class="ltx_para ltx_noindent" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">The question we set out with was: could state-of-the-art reasoning LLMs go from a research idea to a research paper with a high degree of autonomy, minimal code scaffolding, and the most basic tools? Various AI Scientist systems proposed in research papers already relied on a high degree of domain-specific pre-definition of the workflow or framing the problem statement in a system-specific way. Tree-search systems like Sakana’s <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx1" title="">undef</a>]</cite> would have required complex meta-orchestration, contradicting our minimal scaffolding goal. Similarly, Google’s AlphaEvolve system <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx2" title="">undefa</a>]</cite> requires a clear verification metric defined by a human expert in advance.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">We were interested in exploring how far current LLMs can go without significant scaffolding or inputs from humans. In line with this, we limited our scope to computational sciences, and specifically Machine Learning, since experiments in this domain could be done completely digitally. Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S1.F1" title="Figure 1 ‣ 1 Problem Definition and System Overview ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">1</span></a> shows a high-level diagram of our system design.</p>
+</div>
+<figure class="ltx_figure" id="S1.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="371" id="S1.F1.g1" src="x1.png" width="660"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S1.F1.5.1.1" style="font-size:90%;">Figure 1</span>: </span><span class="ltx_text ltx_font_bold" id="S1.F1.6.2" style="font-size:90%;">Autonomous Research Pipeline<span class="ltx_text ltx_font_medium" id="S1.F1.6.2.1">: High-level diagram showing the interaction between the six agent modules and the shared file system artifacts (<span class="ltx_text ltx_font_typewriter" id="S1.F1.6.2.1.1">idea.md</span> to <span class="ltx_text ltx_font_typewriter" id="S1.F1.6.2.1.2">paper_outline.md</span>) used to maintain context.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">Our final system consisted of the following six distinct modules, all using Gemini 2.5 Pro primarily because of its long context length. Prompts and output formats for each of these are available in our GitHub repository<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span><a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/Lossfunk/ai-scientist-artefacts-v1" title="">https://github.com/Lossfunk/ai-scientist-artefacts-v1</a></span></span></span>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p4">
+<ol class="ltx_enumerate" id="S1.I1">
+<li class="ltx_item" id="S1.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span>
+<div class="ltx_para ltx_noindent" id="S1.I1.i1.p1">
+<p class="ltx_p" id="S1.I1.i1.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i1.p1.1.1">Idea Generation Agent</span>, which generated research ideas by combining insights from two input papers in a subdomain and outputted an idea in a structured format. More details on the idea generation process are included in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2" title="2 Our Attempts and Outcomes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">2</span></a>.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span>
+<div class="ltx_para ltx_noindent" id="S1.I1.i2.p1">
+<p class="ltx_p" id="S1.I1.i2.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i2.p1.1.1">Hypotheses Generation Agent</span>, which took the generated research idea and proposed testable and falsifiable hypotheses with clear claim statements, datasets, baselines, and metrics to observe to guide experimental planning in subsequent stages.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span>
+<div class="ltx_para ltx_noindent" id="S1.I1.i3.p1">
+<p class="ltx_p" id="S1.I1.i3.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i3.p1.1.1">Experiments Planning Agent</span>, which converts hypotheses and ideas into detailed implementation plans (<span class="ltx_text ltx_font_typewriter" id="S1.I1.i3.p1.1.2">plan.md</span> and <span class="ltx_text ltx_font_typewriter" id="S1.I1.i3.p1.1.3">agent.md</span> files) containing step-by-step tasks, project structure, method clarifications, and failure mode controls for autonomous execution by Claude Code on Modal infrastructure.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">4.</span>
+<div class="ltx_para ltx_noindent" id="S1.I1.i4.p1">
+<p class="ltx_p" id="S1.I1.i4.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i4.p1.1.1">Experimental Output Evaluation Agent</span>, which employed a two-tiered evaluation approach, primarily reviewing the output of an experiment for hypothesis implementation fidelity and statistical validity. The same agent was later used to conduct a paper readiness check for a completed hypotheses suite to determine if sufficient insight had emerged to proceed to paper writing tasks.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i5" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">5.</span>
+<div class="ltx_para ltx_noindent" id="S1.I1.i5.p1">
+<p class="ltx_p" id="S1.I1.i5.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i5.p1.1.1">Revision Agent</span>, which automatically determined the next step in the research process when experimental output evaluation indicated failure, choosing between revising the idea, revising the hypotheses suite, or requesting a LLM-mentor feedback. The agent was triggered infrequently since most failed experiments were terminated by human decision rather than routed through the revision process.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i6" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">6.</span>
+<div class="ltx_para" id="S1.I1.i6.p1">
+<p class="ltx_p" id="S1.I1.i6.p1.1"><span class="ltx_text ltx_font_bold" id="S1.I1.i6.p1.1.1">Paper Outlining Agent</span>, which reviewed the complete experimental output, as well as all relevant context docs across stages, to outline a research paper including descriptions of visualizations required. Claude Code then completed this outline, section by section, into a full paper.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p5">
+<p class="ltx_p" id="S1.p5.1"><span class="ltx_text ltx_font_bold" id="S1.p5.1.1">Experimental Implementation and Paper Writing</span> -
+The experimental implementation and paper writing were executed by Claude Code using Claude Opus 4.1 and Claude Sonnet 4 for iterative code development, execution on Modal infrastructure, and manuscript development from outline to full text.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p6">
+<p class="ltx_p" id="S1.p6.1">For paper-writing, we adopted a three-stage, iterative approach: generating a detailed outline, completing sections sequentially, and conducting two rounds of human-Claude Code collaborative editing—first to ensure continuity and flow, then to temper overoptimistic claims about results. In our experience, human intervention remained necessary for quality control during the paper-writing phase because initial autonomous drafts generated with prompting were technically accurate but tended toward overly mechanical prose or lacked narrative nuance.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p7">
+<p class="ltx_p" id="S1.p7.1"><span class="ltx_text ltx_font_bold" id="S1.p7.1.1">Tools and Model Access</span> -
+The model was accessed on Google AI Studio using an agentic prompt, including repository location and the following four tool definitions:</p>
+<ul class="ltx_itemize" id="S1.I2">
+<li class="ltx_item" id="S1.I2.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S1.I2.i1.p1">
+<p class="ltx_p" id="S1.I2.i1.p1.1"><span class="ltx_text ltx_font_typewriter" id="S1.I2.i1.p1.1.1">read_file</span> - This enabled the LLM to read context files including previously generated documents, mentor notes from external LLM review, or outputs from code implementation and execution.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I2.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S1.I2.i2.p1">
+<p class="ltx_p" id="S1.I2.i2.p1.1"><span class="ltx_text ltx_font_typewriter" id="S1.I2.i2.p1.1.1">write_file</span> - This enabled the LLM to save context files.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I2.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S1.I2.i3.p1">
+<p class="ltx_p" id="S1.I2.i3.p1.1"><span class="ltx_text ltx_font_typewriter" id="S1.I2.i3.p1.1.1">llm_search</span> - This enabled agents to query current information from the internet via an OpenAI model when needed throughout the research process.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I2.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S1.I2.i4.p1">
+<p class="ltx_p" id="S1.I2.i4.p1.1"><span class="ltx_text ltx_font_typewriter" id="S1.I2.i4.p1.1.1">list_files</span> - This returned a list of files in the context repo. This becomes more relevant as the project progresses and the LLM agent creates sub-directories.</p>
+</div>
+</li>
+</ul>
+</div>
+<figure class="ltx_figure ltx_align_floatright" id="S1.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="241" id="S1.F2.g1" src="why_llms_arent_scientists_yet_arxiv_tex/figures/prompt_structure_tr.png" width="238"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S1.F2.3.1.1" style="font-size:90%;">Figure 2</span>: </span><span class="ltx_text ltx_font_bold" id="S1.F2.4.2" style="font-size:90%;">Agent Prompt Template<span class="ltx_text ltx_font_medium" id="S1.F2.4.2.1">: How repository state, tools, and process guidelines are shared in the system prompt of each agent module.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S1.p8">
+<p class="ltx_p" id="S1.p8.1"><span class="ltx_text ltx_font_bold" id="S1.p8.1.1">Context Management</span> -
+Each research idea operated within a dedicated repository that served as the workspace for all agents and the context store. This repository included all context artefacts created from idea note, to hypotheses sets, code files, and code outputs, as well as the final paper LaTeX template required for the conference submission.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p9">
+<p class="ltx_p" id="S1.p9.1">Each agent received the repository state as part of its prompt context, as shown in Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S1.F2" title="Figure 2 ‣ 1 Problem Definition and System Overview ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">2</span></a>. This approach ensured that we were not context engineering too much, in line with our autonomy and general system design constraints, and we could review the LLM’s decision-making about which context files to parse when, a relevant information retrieval skill for any researcher.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p10">
+<p class="ltx_p" id="S1.p10.1"><span class="ltx_text ltx_font_bold" id="S1.p10.1.1">Idea Review</span> -
+Along with this, we also used four zero-shot prompts (NeurIPS Guidelines Based Reviewer <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx1" title="">undef</a>]</cite>, Chain of Ideas Reviewer <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx3" title="">undefb</a>]</cite>, Google Co-scientist Tournament Reviewer <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx4" title="">undefc</a>]</cite>, and a custom evaluation prompt with web-search access via OpenAI) for idea review and shortlisting before the hypotheses generation and experimentation process began. All reviewer prompts were run with Claude Opus 4.1, and only the custom evaluation prompt had web-search access. <span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span>We decided to not include web-search with 3/4 reviewer prompts in line with conversations about the human paper review process in which reviewers mentioned that they did not conduct much literature review before writing reviews.</span></span></span></p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Our Attempts and Outcomes</h2>
+<div class="ltx_para ltx_noindent" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">To test our autonomous research system, we explored three domains: World Models, Multi-Agent Reinforcement Learning, and AI Safety and Alignment. Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2.F3" title="Figure 3 ‣ 2 Our Attempts and Outcomes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a> shows our multi-stage process for generating and reviewing ideas, leading to the final four ideas that progressed from idea generation to hypothesis generation and experimentation. We started with a corpus of papers from top-tier venues to ensure our idea generation was grounded in cutting-edge research, and the final decision on which ideas to pursue was made after contacting the authors of the parent papers for their input on quality and feasibility.</p>
+</div>
+<figure class="ltx_figure ltx_align_floatright" id="S2.F3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_portrait" height="1245" id="S2.F3.g1" src="x2.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S2.F3.3.1.1" style="font-size:90%;">Figure 3</span>: </span><span class="ltx_text ltx_font_bold" id="S2.F3.4.2" style="font-size:90%;">The Selection Funnel<span class="ltx_text ltx_font_medium" id="S2.F3.4.2.1">: From 135+ papers to 4 candidates. Only one (AS-1) survived execution constraints.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.p2">
+<p class="ltx_p" id="S2.p2.1">Of these four ideas, three were pruned during early execution, and only the fourth (from the AI Alignment and Safety domain) was successfully completed. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2.T1" title="Table 1 ‣ 2 Our Attempts and Outcomes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">1</span></a> shows a high-level summary of these four candidate ideas, with final status and primary failure modes. For clarity, we refer to each research idea by its ID (MARL-1, WM-1, WM-2, AS-1) throughout the remainder of this document. Detailed case studies for each attempt, including their complete text, source papers, expert validation, and specific errors, are provided in Appendix <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1" title="Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">A</span></a>.</p>
+</div>
+<figure class="ltx_table" id="S2.T1">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S2.T1.2.1.1" style="font-size:90%;">Table 1</span>: </span><span class="ltx_text" id="S2.T1.3.2" style="font-size:90%;">Research Implementation Journey: Attempts, Outcomes, and Failure Modes</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S2.T1.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S2.T1.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.1.1" style="font-size:70%;">ID</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.2.1" style="font-size:70%;">Domain</span></th>
+<th class="ltx_td ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.1.1.3.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.1.1.3.1.1"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.3.1.1.1" style="font-size:70%;">Idea</span></span>
+</span>
+</th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.4.1" style="font-size:70%;">Runs</span></th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.1.1.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.1.1.5.1.1"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.5.1.1.1" style="font-size:70%;">Final Status</span></span>
+</span>
+</th>
+<th class="ltx_td ltx_nopad_l ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="S2.T1.4.1.1.6" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.1.1.6.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.1.1.6.1.1"><span class="ltx_text ltx_font_bold" id="S2.T1.4.1.1.6.1.1.1" style="font-size:70%;">Primary Failure Modes</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S2.T1.4.2.1">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T1.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.2.1.1.1" style="font-size:70%;">MARL-1</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T1.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.2.1.2.1" style="font-size:70%;">Multi-Agent RL</span></td>
+<td class="ltx_td ltx_align_justify ltx_border_t" id="S2.T1.4.2.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.2.1.3.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.2.1.3.1.1"><span class="ltx_text" id="S2.T1.4.2.1.3.1.1.1" style="font-size:70%;">Zero-shot Multi-agent Coordination</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S2.T1.4.2.1.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.2.1.4.1" style="font-size:70%;">2</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="S2.T1.4.2.1.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.2.1.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.2.1.5.1.1"><span class="ltx_text" id="S2.T1.4.2.1.5.1.1.1" style="font-size:70%;">Failed: Execution Stage</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_l ltx_nopad_r ltx_align_justify ltx_border_t" id="S2.T1.4.2.1.6" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.2.1.6.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.2.1.6.1.1"><span class="ltx_text" id="S2.T1.4.2.1.6.1.1.1" style="font-size:70%;">Implementation Drift, Bias on Training Data</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.4.3.2">
+<td class="ltx_td ltx_align_left" id="S2.T1.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.3.2.1.1" style="font-size:70%;">WM-1</span></td>
+<td class="ltx_td ltx_align_left" id="S2.T1.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.3.2.2.1" style="font-size:70%;">World Models</span></td>
+<td class="ltx_td ltx_align_justify" id="S2.T1.4.3.2.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.3.2.3.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.3.2.3.1.1"><span class="ltx_text" id="S2.T1.4.3.2.3.1.1.1" style="font-size:70%;">Differentiable Planning in Stochastic World Models</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_center" id="S2.T1.4.3.2.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.3.2.4.1" style="font-size:70%;">1</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T1.4.3.2.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.3.2.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.3.2.5.1.1"><span class="ltx_text" id="S2.T1.4.3.2.5.1.1.1" style="font-size:70%;">Failed: Evaluation Stage</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_l ltx_nopad_r ltx_align_justify" id="S2.T1.4.3.2.6" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.3.2.6.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.3.2.6.1.1"><span class="ltx_text" id="S2.T1.4.3.2.6.1.1.1" style="font-size:70%;">Implementation Drift, Lack of Scientific Taste</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.4.4.3">
+<td class="ltx_td ltx_align_left" id="S2.T1.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.4.3.1.1" style="font-size:70%;">WM-2</span></td>
+<td class="ltx_td ltx_align_left" id="S2.T1.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.4.3.2.1" style="font-size:70%;">World Models</span></td>
+<td class="ltx_td ltx_align_justify" id="S2.T1.4.4.3.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.4.3.3.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.4.3.3.1.1"><span class="ltx_text" id="S2.T1.4.4.3.3.1.1.1" style="font-size:70%;">Replacing Reconstruction Loss with Perceptual Loss</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_center" id="S2.T1.4.4.3.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.4.3.4.1" style="font-size:70%;">1</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T1.4.4.3.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.4.3.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.4.3.5.1.1"><span class="ltx_text" id="S2.T1.4.4.3.5.1.1.1" style="font-size:70%;">Failed: Evaluation Stage</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_l ltx_nopad_r ltx_align_justify" id="S2.T1.4.4.3.6" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.4.3.6.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.4.3.6.1.1"><span class="ltx_text" id="S2.T1.4.4.3.6.1.1.1" style="font-size:70%;">Implementation Drift, Bias on Training Data</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.4.5.4">
+<td class="ltx_td ltx_align_left ltx_border_bb" id="S2.T1.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.4.5.4.1.1" style="font-size:70%;">AS-1</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" id="S2.T1.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.5.4.2.1" style="font-size:70%;">AI Safety</span></td>
+<td class="ltx_td ltx_align_justify ltx_border_bb" id="S2.T1.4.5.4.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.5.4.3.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.5.4.3.1.1"><span class="ltx_text" id="S2.T1.4.5.4.3.1.1.1" style="font-size:70%;">Using Semantic Entropy for Jailbreak Detection</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S2.T1.4.5.4.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T1.4.5.4.4.1" style="font-size:70%;">2</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="S2.T1.4.5.4.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.5.4.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.5.4.5.1.1"><span class="ltx_text" id="S2.T1.4.5.4.5.1.1.1" style="font-size:70%;">Success: Published at Agents4Science 2025</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_l ltx_nopad_r ltx_align_justify ltx_border_bb" id="S2.T1.4.5.4.6" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.4.5.4.6.1">
+<span class="ltx_p ltx_align_left" id="S2.T1.4.5.4.6.1.1"><span class="ltx_text" id="S2.T1.4.5.4.6.1.1.1" style="font-size:70%;">Bias on Training Data, Memory and Context Issues</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.p3">
+<p class="ltx_p" id="S2.p3.1">Results from the fourth idea that was successfully executed became our final paper, accepted to the Agents4Science 2025 conference: “The Consistency Confound: Why Stronger Alignment Can Break Black-Box Jailbreak Detection.” <span class="ltx_text ltx_font_bold" id="S2.p3.1.1">The conference accepted 48/254 valid submissions, and our paper also passed a code-audit instituted by the conference organizers.</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p4">
+<p class="ltx_p" id="S2.p4.1">Reviewers in the conference included three distinct LLM Reviewers and a Human Expert. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2.T2" title="Table 2 ‣ 2 Our Attempts and Outcomes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">2</span></a> shows the reviews that primarily recognized the work for its empirical contribution and negative results, while also noting that the analysis and comparisons were limited, leading to a majorly <span class="ltx_text ltx_font_bold" id="S2.p4.1.1">borderline accept</span> decision, with 1 of 3 AI reviewers scoring the paper 6 or <span class="ltx_text ltx_font_bold" id="S2.p4.1.2">strong accept</span>.</p>
+</div>
+<figure class="ltx_table" id="S2.T2">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S2.T2.2.1.1" style="font-size:90%;">Table 2</span>: </span><span class="ltx_text" id="S2.T2.3.2" style="font-size:90%;">Agent4Science 2025 Reviews for “The Consistency Confound”</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S2.T2.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S2.T2.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S2.T2.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T2.4.1.1.1.1" style="font-size:70%;">Reviewer Type</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S2.T2.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T2.4.1.1.2.1" style="font-size:70%;">Decision</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S2.T2.4.1.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="S2.T2.4.1.1.3.1" style="font-size:70%;">Confidence</span></th>
+<th class="ltx_td ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="S2.T2.4.1.1.4" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.1.1.4.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.1.1.4.1.1"><span class="ltx_text ltx_font_bold" id="S2.T2.4.1.1.4.1.1.1" style="font-size:70%;">Strengths</span></span>
+</span>
+</th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="S2.T2.4.1.1.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.1.1.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.1.1.5.1.1"><span class="ltx_text ltx_font_bold" id="S2.T2.4.1.1.5.1.1.1" style="font-size:70%;">Weaknesses</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S2.T2.4.2.1">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T2.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.2.1.1.1" style="font-size:70%;">AI Reviewer 3</span></td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S2.T2.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.2.1.2.1" style="font-size:70%;">4</span></td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S2.T2.4.2.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.2.1.3.1" style="font-size:70%;">5</span></td>
+<td class="ltx_td ltx_align_justify ltx_border_t" id="S2.T2.4.2.1.4" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.2.1.4.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.2.1.4.1.1"><span class="ltx_text" id="S2.T2.4.2.1.4.1.1.1" style="font-size:70%;">Solid contribution by revealing fundamental limitations of a plausible detection approach and providing mechanistic understanding of why it fails.</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="S2.T2.4.2.1.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.2.1.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.2.1.5.1.1"><span class="ltx_text" id="S2.T2.4.2.1.5.1.1.1" style="font-size:70%;">The focus on a single SE variant and limited model families.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T2.4.3.2">
+<td class="ltx_td ltx_align_left" id="S2.T2.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.3.2.1.1" style="font-size:70%;">AI Reviewer 2</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T2.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.3.2.2.1" style="font-size:70%;">6</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T2.4.3.2.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.3.2.3.1" style="font-size:70%;">5</span></td>
+<td class="ltx_td ltx_align_justify" id="S2.T2.4.3.2.4" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.3.2.4.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.3.2.4.1.1"><span class="ltx_text" id="S2.T2.4.3.2.4.1.1.1" style="font-size:70%;">The paper’s originality lies not in the proposal of a new method, but in its rigorous deconstruction of an existing one in a new context.</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T2.4.3.2.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.3.2.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.3.2.5.1.1"><span class="ltx_text" id="S2.T2.4.3.2.5.1.1.1" style="font-size:70%;">No significant weaknesses identified.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T2.4.4.3">
+<td class="ltx_td ltx_align_left" id="S2.T2.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.4.3.1.1" style="font-size:70%;">AI Reviewer 1</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T2.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.4.3.2.1" style="font-size:70%;">4</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T2.4.4.3.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.4.3.3.1" style="font-size:70%;">5</span></td>
+<td class="ltx_td ltx_align_justify" id="S2.T2.4.4.3.4" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.4.3.4.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.4.3.4.1.1"><span class="ltx_text" id="S2.T2.4.4.3.4.1.1.1" style="font-size:70%;">Clear empirical negative results with careful quantification, rigorous analysis of failure modes, appropriate baselines, and transparent discussion of limitations and ethical considerations.</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T2.4.4.3.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.4.3.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.4.3.5.1.1"><span class="ltx_text" id="S2.T2.4.4.3.5.1.1.1" style="font-size:70%;">Limited scope (the SE variant differs from canonical SE), lack of comparison to content-based black-box detectors, calibration protocol concerns, narrow decoding and embedding choices, and no positive alternative proposed.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T2.4.5.4">
+<td class="ltx_td ltx_align_left ltx_border_bb" id="S2.T2.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.5.4.1.1" style="font-size:70%;">Human Reviewer</span></td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S2.T2.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.5.4.2.1" style="font-size:70%;">4</span></td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S2.T2.4.5.4.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text" id="S2.T2.4.5.4.3.1" style="font-size:70%;">3</span></td>
+<td class="ltx_td ltx_align_justify ltx_border_bb" id="S2.T2.4.5.4.4" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.5.4.4.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.5.4.4.1.1"><span class="ltx_text" id="S2.T2.4.5.4.4.1.1.1" style="font-size:70%;">The paper is technically sound, with careful empirical evaluation. It identifies a clear and reproducible failure mode. The underlying method is borrowed from hallucination detection. Main originality is in showing its limitations rather than developing a new technique.</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="S2.T2.4.5.4.5" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T2.4.5.4.5.1">
+<span class="ltx_p ltx_align_left" id="S2.T2.4.5.4.5.1.1"><span class="ltx_text" id="S2.T2.4.5.4.5.1.1.1" style="font-size:70%;">Scope is limited, comparisons are mostly against simple baselines, with no testing of stronger black-box defenses. Contribution is primarily a negative result. While important, significance would be higher if the paper also explored alternative methods or mitigation strategies.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.p5">
+<p class="ltx_p" id="S2.p5.1">As part of the conference submission, we had to include an AI Involvement Checklist to measure and explain the role of AI in our research. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S2.T3" title="Table 3 ‣ 2 Our Attempts and Outcomes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a> shows a snippet of this. We rated the system at the highest autonomy level (Category D, <math alttext="\geq" class="ltx_Math" display="inline" id="S2.p5.1.m1" intent=":literal"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\geq</annotation></semantics></math>95% AI) for experimental design, execution, and writing, with human involvement (Category C, 50-95% AI) primarily in the initial hypothesis definition stage. The complete paper, code generated, specific agent logs, and the full checklist are available for review on OpenReview <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx5" title="">undefd</a>]</cite>.</p>
+</div>
+<figure class="ltx_table" id="S2.T3">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S2.T3.4.1.1" style="font-size:90%;">Table 3</span>: </span><span class="ltx_text" id="S2.T3.5.2" style="font-size:90%;">AI Involvement Checklist for Idea AS-1 by Research Stage (Agents4Science Rubric)</span></figcaption>
+<table class="ltx_tabular ltx_centering ltx_align_middle" id="S2.T3.2">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S2.T3.2.3.1">
+<td class="ltx_td ltx_align_left ltx_border_tt" id="S2.T3.2.3.1.1" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.3.1.1.1" style="font-size:70%;">Research Stage</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" id="S2.T3.2.3.1.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.3.1.2.1" style="font-size:70%;">Score</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_tt" id="S2.T3.2.3.1.3" style="padding-top:1.6pt;padding-bottom:1.6pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T3.2.3.1.3.1">
+<span class="ltx_p" id="S2.T3.2.3.1.3.1.1"><span class="ltx_text ltx_font_bold" id="S2.T3.2.3.1.3.1.1.1" style="font-size:70%;">Role Description</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T3.2.4.2">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T3.2.4.2.1" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text" id="S2.T3.2.4.2.1.1" style="font-size:70%;">Hypothesis Development</span></td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S2.T3.2.4.2.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.4.2.2.1" style="font-size:70%;">C</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="S2.T3.2.4.2.3" style="padding-top:1.6pt;padding-bottom:1.6pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T3.2.4.2.3.1">
+<span class="ltx_p" id="S2.T3.2.4.2.3.1.1"><span class="ltx_text ltx_font_italic" id="S2.T3.2.4.2.3.1.1.1" style="font-size:70%;">Mostly AI</span><span class="ltx_text" id="S2.T3.2.4.2.3.1.1.2" style="font-size:70%;">: Initial search space defined by human; specific failure mode hypothesis and core questions generated by AI agents via paper mashing.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T3.2.5.3">
+<td class="ltx_td ltx_align_left" id="S2.T3.2.5.3.1" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text" id="S2.T3.2.5.3.1.1" style="font-size:70%;">Experimental Design</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T3.2.5.3.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.5.3.2.1" style="font-size:70%;">D</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T3.2.5.3.3" style="padding-top:1.6pt;padding-bottom:1.6pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T3.2.5.3.3.1">
+<span class="ltx_p" id="S2.T3.2.5.3.3.1.1"><span class="ltx_text ltx_font_italic" id="S2.T3.2.5.3.3.1.1.1" style="font-size:70%;">AI-Generated</span><span class="ltx_text" id="S2.T3.2.5.3.3.1.1.2" style="font-size:70%;">: Full experimental plans, baseline choices, and metric definitions generated by Gemini 2.5 Pro; human role limited to high-level approval.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T3.2.6.4">
+<td class="ltx_td ltx_align_left" id="S2.T3.2.6.4.1" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text" id="S2.T3.2.6.4.1.1" style="font-size:70%;">Execution &amp; Analysis</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T3.2.6.4.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.6.4.2.1" style="font-size:70%;">D</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T3.2.6.4.3" style="padding-top:1.6pt;padding-bottom:1.6pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T3.2.6.4.3.1">
+<span class="ltx_p" id="S2.T3.2.6.4.3.1.1"><span class="ltx_text ltx_font_italic" id="S2.T3.2.6.4.3.1.1.1" style="font-size:70%;">AI-Generated</span><span class="ltx_text" id="S2.T3.2.6.4.3.1.1.2" style="font-size:70%;">: End-to-end coding by Claude Code. Datasets handled autonomously. Human intervention limited to providing HuggingFace tokens.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T3.2.7.5">
+<td class="ltx_td ltx_align_left" id="S2.T3.2.7.5.1" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text" id="S2.T3.2.7.5.1.1" style="font-size:70%;">Paper Writing</span></td>
+<td class="ltx_td ltx_align_center" id="S2.T3.2.7.5.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.7.5.2.1" style="font-size:70%;">D</span></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="S2.T3.2.7.5.3" style="padding-top:1.6pt;padding-bottom:1.6pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T3.2.7.5.3.1">
+<span class="ltx_p" id="S2.T3.2.7.5.3.1.1"><span class="ltx_text ltx_font_italic" id="S2.T3.2.7.5.3.1.1.1" style="font-size:70%;">AI-Generated</span><span class="ltx_text" id="S2.T3.2.7.5.3.1.1.2" style="font-size:70%;">: Narrative structuring and figure generation driven by AI. Human role restricted to final “sanity check” and minor copy-editing.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S2.T3.2.2">
+<td class="ltx_td ltx_align_left ltx_border_tt" colspan="3" id="S2.T3.2.2.2" style="padding-top:1.6pt;padding-bottom:1.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T3.2.2.2.2" style="font-size:80%;">Score Key:<span class="ltx_text ltx_font_medium" id="S2.T3.2.2.2.2.2"> A: <math alttext="\geq" class="ltx_Math" display="inline" id="S2.T3.1.1.1.1.1.m1" intent=":literal"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\geq</annotation></semantics></math>95% Human, B: 50–95% Human, C: 50–95% AI, D: <math alttext="\geq" class="ltx_Math" display="inline" id="S2.T3.2.2.2.2.2.m2" intent=":literal"><semantics><mo>≥</mo><annotation encoding="application/x-tex">\geq</annotation></semantics></math>95% AI.</span></span></td>
+</tr>
+</tbody>
+</table>
+</figure>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Observed Failure Modes and Mitigation</h2>
+<div class="ltx_para ltx_noindent" id="S3.p1">
+<p class="ltx_p" id="S3.p1.1">Through our experiments, we identified six critical failure modes that consistently emerged across different research attempts. These patterns reveal systematic limitations in current LLM capabilities for autonomous research. The following subsections detail each failure mode with specific examples and mitigation strategies.</p>
+</div>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span>Bias on Training Data</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p1">
+<p class="ltx_p" id="S3.SS1.p1.1"><span class="ltx_text ltx_font_bold" id="S3.SS1.p1.1.1">Research often relies on specialized protocols, libraries, and datasets that aren’t widely used, but models consistently defaulted to popular alternatives from their training data.</span> This failure mode manifested systematically across infrastructure setup, library selection, and dataset handling, where models consistently overrode explicit instructions with presumably memorized training patterns.</p>
+</div>
+<figure class="ltx_figure ltx_align_floatright" id="S3.F4"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="922" id="S3.F4.g1" src="x3.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S3.F4.3.1.1" style="font-size:90%;">Figure 4</span>: </span><span class="ltx_text ltx_font_bold" id="S3.F4.4.2" style="font-size:90%;">Training Data Bias Pattern<span class="ltx_text ltx_font_medium" id="S3.F4.4.2.1">: Systematic override of prompt instructions by memorized patterns across long contexts.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p2">
+<p class="ltx_p" id="S3.SS1.p2.1">In the case of Modal setup, Claude Code would consistently use an outdated Modal <span class="ltx_text ltx_font_typewriter" id="S3.SS1.p2.1.1">mount</span> command to make local files accessible, and default to local file paths over Modal storage, ignoring updated API documentation and instructions provided in <span class="ltx_text ltx_font_typewriter" id="S3.SS1.p2.1.2">plan.md</span> and <span class="ltx_text ltx_font_typewriter" id="S3.SS1.p2.1.3">agent.md</span> file. Beyond this, it would also regress to outdated research libraries despite explicit version and search requirements, and ignore dataset-specific field structures in favor of standard formats. Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.F4" title="Figure 4 ‣ 3.1 Bias on Training Data ‣ 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">4</span></a> showcases this systematic override across three implementation contexts, with detailed examples provided in Appendix <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1" title="Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">A</span></a> per idea implementation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p3">
+<p class="ltx_p" id="S3.SS1.p3.1">Similar errors in setting up libraries and environments were found by researchers working specifically on this problem <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx6" title="">undefe</a>]</cite> <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx7" title="">undeff</a>]</cite>. <span class="ltx_text ltx_font_bold" id="S3.SS1.p3.1.1">We addressed this by avoiding anchoring on low-level details like libraries to use and datasets at earlier stages, and providing instructions for specific library use and library documentation at the execution stage.</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p4">
+<p class="ltx_p" id="S3.SS1.p4.1">Even after these two changes, in the case of an error, the experiment execution model would often diagnose library imports as the cause and regress back to using the versions mentioned in the training data, insisting that that is the right way to do it.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p5">
+<p class="ltx_p" id="S3.SS1.p5.1">This bias in training data can show up in more nefarious ways than just errors in using libraries and datasets. Mehtaab Sawhney and Mark Sellke observe with regard to their work on the Erdős problems with GPT-5 Pro, “while models are able to suggest plausible proof strategies, they often…are overly confident in the power of existing methods.” They note that this is unsurprising, since discussion of why “a more obvious strategy” doesn’t work is “largely absent in mathematical literature itself” and, consequently, in the training data. In this case, the bias on training data leads to a failure of domain taste and identifying what they call “negative space” for a problem <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx8" title="">undefg</a>]</cite>. We discuss the implications of this missing data for future system design in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S5" title="5 Discussion and Broader Implications ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">5</span></a>.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span>Implementation Drift</h3>
+<figure class="ltx_figure ltx_align_floatright" id="S3.F5"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="922" id="S3.F5.g1" src="x4.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S3.F5.3.1.1" style="font-size:90%;">Figure 5</span>: </span><span class="ltx_text ltx_font_bold" id="S3.F5.4.2" style="font-size:90%;">Implementation Drift Pattern:<span class="ltx_text ltx_font_medium" id="S3.F5.4.2.1"> Simplification of proposed implementations during execution barriers in Idea WM-1 .</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p1">
+<p class="ltx_p" id="S3.SS2.p1.1"><span class="ltx_text ltx_font_bold" id="S3.SS2.p1.1.1">Implementation drift represents the systematic deviation from original research specifications toward simpler, more familiar solutions when AI systems encounter technical complexity or execution barriers.</span> This was particularly salient during the experiment execution stage. Rather than addressing root causes of implementation challenges, models progressively simplify architectures and abandon core innovations to achieve working code that superficially resembles the intended research contribution.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p2">
+<p class="ltx_p" id="S3.SS2.p2.1">This was particularly salient in long-running tasks such as training loops, in which case the coding assistant would often time out and treat the long time taken as an error to be fixed with an alternate implementation, thereby drifting from the instructions in the research idea, hypotheses, and plan files. Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.F5" title="Figure 5 ‣ 3.2 Implementation Drift ‣ 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">5</span></a> showcases this in the case of the Idea WM-1 implementation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p3">
+<p class="ltx_p" id="S3.SS2.p3.1">Yet, the tendency to drift from implementation was not only due to time-related errors. It also emerged in other long-context tasks, such as rewriting baselines and implementing complex code within a limited output length. In each case, since the task included multiple steps, at distinct points the Experiment Execution Agent chose to implement something simpler or to run in “sample”/“test” mode, which also led to failures down the pipeline. Idea WM-2 implementation detailed in Appendix <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1" title="Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">A</span></a> exemplifies this cascading pattern, where a single error in implementing the Dreamer baseline triggered progressive simplification rather than root cause debugging.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p4">
+<p class="ltx_p" id="S3.SS2.p4.1">To address these challenges, we adopted two key approaches. First, we followed a portfolio approach to hypothesis generation rather than relying on a single hypothesis, which allowed us to plan for potential failures in one experiment by preparing follow-up experiments. Second, we implemented a process in which code files were generated first, then explicitly verified and tested for errors before execution, with code generation and execution treated as distinct tasks. This was enforced through explicit instructions in the <span class="ltx_text ltx_font_typewriter" id="S3.SS2.p4.1.1">plan.md</span> and <span class="ltx_text ltx_font_typewriter" id="S3.SS2.p4.1.2">agent.md</span> files.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3 </span>Memory and Context Issues</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p1">
+<p class="ltx_p" id="S3.SS3.p1.1">Scientific discovery and experimentation are long-duration tasks. It requires agentic coherence over periods that exceed the effective reliability horizon of current models <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx9" title="">undefh</a>]</cite>. This is why we see many common constraints in LLM performance on long-context, long-duration tasks manifest prominently in our research system. <span class="ltx_text ltx_font_bold" id="S3.SS3.p1.1.1">As sessions progressed and context artifacts accumulated, models systematically lost track of previous decisions, established configurations, and completed work, leading to redundant implementations and inconsistent experimental setups.</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p2">
+<p class="ltx_p" id="S3.SS3.p2.1">This failure mode was most evident during baseline implementation, which required much hyperparameter management. Rather than referencing the planning-level details, the coding agent would declare its own hyperparameters with comments while generating or running the related code. This led to experimental conditions that were both unclear to the human orchestrator and very challenging to organize without instituting a file management system.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p3">
+<p class="ltx_p" id="S3.SS3.p3.1">We addressed this by including a config file and clear instructions for referring to it in the <span class="ltx_text ltx_font_typewriter" id="S3.SS3.p3.1.1">agent.md</span> file, and making it a persistent part of all specific task prompts. Though this still ran into the <span class="ltx_text ltx_font_typewriter" id="S3.SS3.p3.1.2">agent.md</span> limitations mentioned in the bias-on-training-data failure mode.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p4">
+<p class="ltx_p" id="S3.SS3.p4.1">Additionally, issues with long context also surfaced during the coding and paper-writing phases, when we needed to reference older details from the project. In many instances, the Experiment Execution Agent would misreference functions defined at the start, leading to errors such as incorrect function signatures and mismatches in metric calculations. During paper writing, the agent would forget to consult the earliest versions of the idea and hypothesis files to outline the paper, instead relying on recent files and results. This ended up in a paper that read like a list of experiments, with no origin story or motivation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p5">
+<p class="ltx_p" id="S3.SS3.p5.1"><span class="ltx_text ltx_font_bold" id="S3.SS3.p5.1.1">Our solution to this was to enable more and more memory-like context abstractions just as a human scientist would, including a config to maintain experimental progress and experiment execution logs (Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S4.F7" title="Figure 7 ‣ 4 Design Takeaways for AI Scientist Systems ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">7</span></a>) at the end of each Claude Code session.</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p6">
+<p class="ltx_p" id="S3.SS3.p6.1">Though relying on Claude Code-authored session logs helped with memory and context management, as session logs grew longer, another problem emerged: managing the growing number of files generated by the LLM. This pointed toward the need for file and directory management in autonomous science systems using language models.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.4 </span>Overexcitement and Eureka Instinct</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p1">
+<p class="ltx_p" id="S3.SS4.p1.1">This failure mode was most clearly present during the paper outlining, revision, and experimental output evaluation phases. <span class="ltx_text ltx_font_bold" id="S3.SS4.p1.1.1">The models consistently reported success despite clear failures and overstated the significance of their research contributions. Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3.F6" title="Figure 6 ‣ 3.4 Overexcitement and Eureka Instinct ‣ 3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">6</span></a> illustrates some of the ways in which this failure mode showed up over our attempts.</span></p>
+</div>
+<figure class="ltx_figure" id="S3.F6">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S3.F6.1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="830" id="S3.F6.1.g1" src="x5.png" width="830"/>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S3.F6.2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="830" id="S3.F6.2.g1" src="x6.png" width="830"/>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S3.F6.5.1.1" style="font-size:90%;">Figure 6</span>: </span><span class="ltx_text ltx_font_bold" id="S3.F6.6.2" style="font-size:90%;">Overexcitement and Eureka Instinct.<span class="ltx_text ltx_font_medium" id="S3.F6.6.2.1"> Left: During execution, agents claim success despite clear experimental failures. Right: During paper writing, limited results are inflated into overstated contributions.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p2">
+<p class="ltx_p" id="S3.SS4.p2.1">We noted that even when results showed clear degeneracies or failures, the generated text focused only on top-level positive indicators, ignoring fundamental problems, and this could be tracked back to relying on report files created during the experiment execution stage to evaluate output instead of examining raw logs from the experimental pipeline. The paper-writing phase exacerbated these issues by overstating novelty and scope. During paper-writing, Claude Code would describe work as “the first ever paper” in a domain or claim “seminal contributions” regardless of the actual research output.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p3">
+<p class="ltx_p" id="S3.SS4.p3.1">This mirrors the “p-hacking and eureka-ing” behaviors identified by the Goodfire team <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx10" title="">undefi</a>]</cite> and aligns with findings by Bubeck et al., where researchers noted that models would “introduce numerical duct tape” to smooth over errors and “confidently declare victory when numerical signals are still obviously noise” <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx8" title="">undefg</a>]</cite>. This “eagerness to please” requires the human in the loop to possess sufficient expertise to reject the model’s simplified solutions.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p4">
+<p class="ltx_p" id="S3.SS4.p4.1">This overoptimistic tendency also manifested in feedback integration processes, where the system became overly process-following without proper evaluation. How language model agents integrate feedback is an entire research area of its own, and the safety threat posed by LLM agents sandbagging other automated researchers through feedback has been further explored by the team at Anthropic <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx11" title="">undefj</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p5">
+<p class="ltx_p" id="S3.SS4.p5.1">We believe these patterns likely stem from the RLHF phase of LLM training, where models are rewarded for being agreeable and helpful to humans, leading to a bias toward optimistic interpretations and positive framing even when the evidence suggests otherwise. These training objectives are clearly not in line with the requirements for an autonomous science system, which should instead be oriented toward scientific skepticism, truth-seeking, and the detection of confirmation biases.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS5">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.5 </span>Lack of Sufficient Domain Intelligence</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS5.p1">
+<p class="ltx_p" id="S3.SS5.p1.1"><span class="ltx_text ltx_font_bold" id="S3.SS5.p1.1.1">Research papers present polished final configurations but omit the tacit knowledge required to navigate from hypothesis to working implementation. AI systems consistently struggled with the undocumented craft knowledge that experienced researchers take for granted.</span> These gaps appeared most prominently in stages that required scientific judgment rather than pure coding capabilities, such as hypothesis generation, plan generation, and experimental output evaluation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS5.p2">
+<p class="ltx_p" id="S3.SS5.p2.1">When moving from hypothesis to implementation plan, the system lacked enough domain depth to predict outputs and spot failure modes. Furthermore, models failed to make the judgments needed for key decisions, such as picking baselines aligned with task needs. For example, choosing a continuous control task with a discrete input model baseline in Idea WM-2.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS5.p3">
+<p class="ltx_p" id="S3.SS5.p3.1">Plans set high-level goals but ignored the mathematical and conceptual hurdles that make implementation difficult. This created problems, especially for research ideas that needed deep domain expertise. Both ideas, WM-1 and WM-2, needed advanced domain knowledge to combine complex parts, such as balancing stochastic world models with differentiable tree search planners or adding new loss terms to baselines. Models lacked the expertise to understand how these elements should interact or to successfully modify proven architectures in creative ways.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS5.p4">
+<p class="ltx_p" id="S3.SS5.p4.1">Each subdomain had unique process needs: RL required rollouts, AI Alignment and Safety needed recording responses, and models struggled to intuit which artifacts were important for debugging and validation, even with detailed instructions at the Plan Generation stage.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS5.p5">
+<p class="ltx_p" id="S3.SS5.p5.1">Beyond implementation gaps, models also lacked judgment about experimental validity thresholds - for instance, proceeding with hypothesis testing when baseline performance was 95% below established benchmarks, making any comparative analysis scientifically meaningless.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS6">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.6 </span>Lack of Scientific Taste</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS6.p1">
+<p class="ltx_p" id="S3.SS6.p1.1"><span class="ltx_text ltx_font_bold" id="S3.SS6.p1.1.1">Models consistently failed to recognize fundamental flaws in experimental design and statistical methodology. These methodology gaps emerged during hypothesis generation and experimental output evaluation phases.</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS6.p2">
+<p class="ltx_p" id="S3.SS6.p2.1">We first relied on generating only a minimum viable hypothesis as a part of our pipeline. However, we quickly realized this approach was not sufficient for research output. Relying on a single hypothesis created excessive project risk. Even minor implementation errors would trigger a complete idea revision rather than hypothesis adjustment. Therefore, we adopted a portfolio approach to hypotheses generation, creating comprehensive hypotheses suites that allowed for hypothesis-level adjustments rather than complete idea abandonment when individual experiments failed. See Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a> on Implementation Drift mitigation for more details.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS6.p3">
+<p class="ltx_p" id="S3.SS6.p3.1">This limitation became evident when the WM-1 hypothesis generated was too simple to draw any conclusions, and this was not captured by the models, even in reflection. The problem was further complicated by irrelevant complexity, such as a 50,000 depth parameter, which created a computational burden without scientific value. Even with clear instructions, agents showed insufficient awareness of statistical validity. Idea WM-1 was run with only one seed. Expert concerns about computational complexity were not addressed at any point in the planning or hypothesis-generation stages, and the approach was even recommended within the 6-hour, 1-GPU limits, even though it was computationally infeasible.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS6.p4">
+<p class="ltx_p" id="S3.SS6.p4.1">The pattern of issues continued across ideas. Idea WM-2 had fundamental logical errors in its experimental design. The plan generated assumed offline training with static data frames. However, Dreamer requires online learning. Similarly, Idea MARL-1 showed the system failed to interpret the future work section of the input seed paper. Finally, degenerate output in the AS-1 idea was not flagged until manual intervention during the experimental output evaluation stage.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Design Takeaways for AI Scientist Systems</h2>
+<div class="ltx_para ltx_noindent" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">Our analysis of failure modes reveals four design principles for robust autonomous research systems. These principles address key challenges across research domains and implementation attempts.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p2">
+<p class="ltx_p" id="S4.p2.1"><span class="ltx_text ltx_font_bold" id="S4.p2.1.1">1. Start Abstract, Ground Later</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p3">
+<p class="ltx_p" id="S4.p3.1">Domain expertise and technical details should be introduced gradually throughout the research workflow. Prompts and generations should become more specific as the process progresses. Maintain high-level abstraction during the ideation phase to prevent premature anchoring on specific implementations. Ensure this is done later in implementation to avoid erroneous anchoring at early stages. This is also key to ensuring novelty and avoiding plagiarism, where models output research that has already been done, but with slight language changes.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p4">
+<p class="ltx_p" id="S4.p4.1">During planning, avoid using technical details such as specific datasets, metrics, mathematical ideas, and practices specific to certain fields, such as recording roll-outs for reinforcement learning or data collection protocols. While these details are important for execution, including this context too early often leads models to rely on older libraries and methods from the training data rather than identifying or reasoning about the most current solutions.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p5">
+<p class="ltx_p" id="S4.p5.1"><span class="ltx_text ltx_font_bold" id="S4.p5.1.1">2. Verify Everything</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p6">
+<p class="ltx_p" id="S4.p6.1">Verification must occur at every stage of the research pipeline—from the generation of ideas and hypotheses to the generation of code and results. Using a verifier or critic agent at each relevant stage helps avoid conceptual or implementation errors and prevents error cascading.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p7">
+<p class="ltx_p" id="S4.p7.1">The two critical axes for further design of verification for AI scientist systems are: process vs. outcome verification, and correctness vs. scientific contribution verification. The latter includes ensuring reproducibility across critical stages such as planning, ideation, and output review. Tang et al.’s framework of technical execution assessment and scientific contribution assessment <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx12" title="">undefk</a>]</cite> provides a complementary perspective on evaluating AI scientist outputs.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p8">
+<p class="ltx_p" id="S4.p8.1">While collecting results from experiments, ground in the raw data and not LLM interpretations since LLMs have a tendency to read signal in errors or be overly optimistic about clearly mid results - what the Goodfire team calls p-hacking and eureka-ing <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx10" title="">undefi</a>]</cite>. In practice, this means ensuring your experimental output evaluation either programmatically reviews raw logs, statistical metrics, and original data outputs, or, if using LLM evaluators, strictly instructs them to focus on these raw outputs rather than summary or report files through system prompts or context injections.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p9">
+<p class="ltx_p" id="S4.p9.1">Verification is not only necessary to ensure correctness but also serves as a touchpoint for the human-in-the-loop. In our experience, for instance, building a verifier to review the visualizations recommended enabled removing some that, though natural to create from the available results, weren’t central to the paper’s story. For us, during execution, verification also became a way to provide observability into long-running tasks like training models and data collection. We achieved this with clear instructions at the experimental plan generation stage to include tests.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p10">
+<p class="ltx_p" id="S4.p10.1"><span class="ltx_text ltx_font_bold" id="S4.p10.1.1">3. Plan For Failure and Recovery</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p11">
+<p class="ltx_p" id="S4.p11.1">Scientific discovery is a long-duration task at the frontiers of task complexity, where LLMs and LLM-driven agents still face limitations leading to error accumulation. During research execution, human researchers make many micro-decisions that must be prespecified for autonomous LLMs to avoid failure.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p12">
+<p class="ltx_p" id="S4.p12.1">This means that multi-turn agentic task design works better than zero-shot generation. This ensures the plan includes sufficient details to avoid drift or errors later in the pipeline. Alongside external verification and critique, reflection and extended thinking are also useful methods to ensure sufficient clarity before execution.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p13">
+<p class="ltx_p" id="S4.p13.1">We discovered that splitting all coding tasks into modular tasks prevents error cascading. One way to do this is to separate code generation from code execution, ensuring that verification hooks can be built in. Another is how the Goodfire team uses Jupyter notebooks, maintaining a natural cell-level limit to the errors <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx10" title="">undefi</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p14">
+<p class="ltx_p" id="S4.p14.1">We used <span class="ltx_text ltx_font_typewriter" id="S4.p14.1.1">agent.md</span> to pass system-wide instructions during task execution to follow general good scientific coding principles and ensure correctness. This included instructions for saving checkpoints for long-duration tasks, adding tests at various scales to see the water flowing through the pipes before full execution, adding detailed logging for all important metrics throughout the code, and additional specific instructions to avoid the long context and memory-related errors mentioned in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p15">
+<p class="ltx_p" id="S4.p15.1">Beyond autonomous execution resilience, separating generation from execution also enables human review and intervention at critical stages. For instance, when visualization generation was separated from paper integration, we could review and remove unhelpful bar charts before they appeared in the final manuscript, supporting human-in-the-loop review from experiment execution through paper writing stages.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p16">
+<p class="ltx_p" id="S4.p16.1"><span class="ltx_text ltx_font_bold" id="S4.p16.1.1">4. Log Everything</span></p>
+</div>
+<figure class="ltx_figure ltx_align_floatright" id="S4.F7"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="830" id="S4.F7.g1" src="x7.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F7.3.1.1" style="font-size:90%;">Figure 7</span>: </span><span class="ltx_text ltx_font_bold" id="S4.F7.4.2" style="font-size:90%;">Session Logging Instruction<span class="ltx_text ltx_font_medium" id="S4.F7.4.2.1">: Comprehensive prompt template for maintaining detailed research execution records across autonomous agent sessions.</span></span></figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S4.p17">
+<p class="ltx_p" id="S4.p17.1">Everything from the output of autonomous science agents to all possible metrics used in running experiments should be logged comprehensively. This includes the usual span and trace logging of the LLM’s actual responses and enabling agents to create their own files. This serves two purposes: supporting long-duration autonomous execution and later human/LLM review and verification.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p18">
+<p class="ltx_p" id="S4.p18.1">For us, this meant supporting all the context artifacts listed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S1" title="1 Problem Definition and System Overview ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">1</span></a> through a <span class="ltx_text ltx_font_typewriter" id="S4.p18.1.1">write_tool</span> and implementing comprehensive session logging instructions as in Figure <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S4.F7" title="Figure 7 ‣ 4 Design Takeaways for AI Scientist Systems ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">7</span></a> during experiment execution, as well as specific logging instructions for metrics at the plan generation stage for domain-specific primary and secondary metrics for experiments. We also explicitly instructed our Paper Outline and Writing Agent to synthesize process artifacts alongside results to maintain narrative coherence and capture the process and evolution of scientific discovery. This comprehensive logging enables the two-fold evaluation framework we mention in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S4" title="4 Design Takeaways for AI Scientist Systems ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">4</span></a>.</p>
+</div>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Discussion and Broader Implications</h2>
+<div class="ltx_para ltx_noindent" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">Complete autonomy in scientific discovery currently is only in the future, not merely from a capability standpoint, but also from a human preference standpoint. Even with the goal of maximum autonomy, we still relied on human intervention at key points. These included idea review, paper writing, and meta-prompting during experiment execution. This pattern emerges consistently across existing AI scientist systems. Sakana’s approach required researchers to select 3 promising ideas from 40 AI-generated concepts <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx1" title="">undef</a>]</cite>. Similarly, Google’s co-scientist system requires scientist-specified research goals as the entry point <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx4" title="">undefc</a>]</cite>. Domain experts will most likely remain involved to nudge, course-correct, and verify.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p2">
+<p class="ltx_p" id="S5.p2.1">Though major labs like OpenAI are entering AI for scientific discovery, they explicitly recognize the need for human expertise, seeking to hire “world-class academics” who are “completely AI-pilled” to work alongside AI models <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx13" title="">undefl</a>]</cite>. This hiring strategy reinforces the current goal of creating agents and tools for effective human-LLM collaboration rather than autonomous scientists. Recent work coming from big labs, such as <span class="ltx_text ltx_font_italic" id="S5.p2.1.1">Early science acceleration experiments with GPT-5</span> from OpenAI, validates this approach, showcasing agents capable of independent rediscovery of known results and deep literature search, along with acting as “research collaborators” and “knowledgeable research supervisors,” though as Fields Medalist Timothy Gowers notes, “we have not yet reached the stage where an LLM is likely to have the main idea for solving a difficult problem. <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx8" title="">undefg</a>]</cite>”</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p3">
+<p class="ltx_p" id="S5.p3.1">But we must not underestimate the acceleration through human-LLM collaboration. Physicist Brian Keith Spears noted that such collaboration compressed a six-month workflow into six hours—a “factor of 1000” acceleration—effectively making him a “one-person army of experts” <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx8" title="">undefg</a>]</cite>. This collaboration is also especially critical for kick-starting the scientific method data loop.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p4">
+<p class="ltx_p" id="S5.p4.1">Scientific discovery is not only beyond the training distribution of current large language models, but it is also fair to assume that artefacts of scientific research workflows are notably absent from the training data. For example, there are no recorded reading lists or expert literature-review trajectories to train or benchmark literature-search agents. You can approximate it using the citation lists of published papers, but these are the papers that made the cut, and arguably, the more critical skill to train agents on is which references to ignore.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p5">
+<p class="ltx_p" id="S5.p5.1">We also lack records of failed attempts. As Mehtaab Sawhney and Mark Sellke note, “current models remain limited in perceiving the ‘negative space’ of mathematics…This is unsurprising as such discussion is largely absent in mathematical literature itself; mathematicians don’t systematically record why problems are out of reach, or why a more obvious strategy doesn’t work, or why certain techniques are inherently unable to solve certain classes of problems” <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx8" title="">undefg</a>]</cite>. Having experts first use these large language models on platforms that include tools and multi-agent orchestrations enables the collection of training data to train agents that can autonomously perform those tasks in the future.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p6">
+<p class="ltx_p" id="S5.p6.1">These advances are constrained by fundamental bottlenecks in long-horizon tasks and context requirements. Scientific discovery requires keeping coherence and context windows over weeks and months. This greatly exceeds the reliability of current models. As of November 2025, even state-of-the-art systems like GPT-5.1-Codex-Max show a time horizon of about 2 hours 40 minutes, with 50% success rates <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx9" title="">undefh</a>]</cite>. This suggests that before fully autonomous scientists exist, we will likely see smaller modules that build data for the next round of long-duration scientific specialization.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p7">
+<p class="ltx_p" id="S5.p7.1">The data limitations here extend beyond training to evaluation as well. Multiple benchmarks are now being created. Some notable ones include AstaBench from AllenAI, which provides benchmarking for specific agents tackling specific scientific research tasks <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx14" title="">undefm</a>]</cite>, and ScientistBench, which focuses on broader scientific reasoning capabilities. But even ScientistBench <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx12" title="">undefk</a>]</cite> only includes 22 papers and 28 tasks, mostly extremely guided. This highlights the limitations of data for evaluating autonomous science. Moreover, the complex anonymization processes in ScientistBench also point to the evaluation challenge of separating model capabilities from memorized training data. This issue is important because language models can generate plagiarized science in the absence of robust evaluation systems. <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx15" title="">undefn</a>]</cite></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p8">
+<p class="ltx_p" id="S5.p8.1">There are further gains to be made by multiplying LLM-to-LLM interactions for scientific work. For instance, recent examples show the potential of specialized agent systems. PHYSICS SUPERNOVA demonstrates AI agents matching elite gold medalists at IPHO 2025 through manager agents with domain-specific tools <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx16" title="">undefo</a>]</cite>. Additionally, multi-agent virtual labs can also sync up domain-specific tools for accelerated discovery <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx17" title="">undefp</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p9">
+<p class="ltx_p" id="S5.p9.1">The paradigm seems to be to break down scientific discovery into discrete capabilities. These can be RL-ed into smaller, specialized models. This decomposition enables complex scientific workflows to be learned as tasks with clear rubrics and reward functions. Larger labs will rush to acquire meta capabilities that need collaboration with domain specialists. Smaller labs will create their own benchmarks for open-source agents and domain-specific models, using open-source models and RL. This creates a compelling case for open science in the near future, including publications, sharing results, and all inputs and materials that enable broader scientific progress.</p>
+</div>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Limitations and Future Work</h2>
+<div class="ltx_para ltx_noindent" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">Our autonomous research system demonstrates both the promise and current boundaries of AI-driven scientific discovery. Several key limitations restrict the generalizability and robustness of our findings.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.p2">
+<p class="ltx_p" id="S6.p2.1">We limited our scope to computational Machine Learning research, excluding physical sciences needing experimental infrastructure beyond digital computation. This necessary constraint for our minimal scaffolding approach sets a significant boundary for autonomous scientific discovery. Since our main goal was conference submission rather than controlled experimentation, we did not record architectural iterations as systematic ablations. This approach makes it difficult to isolate which design changes led to our single success versus three failures. Our experimental scale is limited—just four research ideas across three ML subdomains, each with a single implementation run rather than a best-of-<math alttext="N" class="ltx_Math" display="inline" id="S6.p2.1.m1" intent=":literal"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> approach. This small sample size prevents robust statistical conclusions about the prevalence of failure modes or the effectiveness of mitigation measures. Identified failure modes emerged by qualitative observation rather than systematic quantitative measurement, limiting our ability to gauge their importance or frequency across research contexts.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.p3">
+<p class="ltx_p" id="S6.p3.1">Moreover, we have released only prompts and selected system outputs rather than the complete system architecture, limiting reproducibility and others’ ability to build upon our approach.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.p4">
+<p class="ltx_p" id="S6.p4.1">In future work, we will take the following concrete steps to address the limitations outlined above. We will begin with controlled experiments to quantify the emergence of these failure modes and validate the effectiveness of our proposed mitigation strategies. We intend to scale our approach across hundreds of research ideas spanning diverse scientific subdomains to establish statistical validity for our observations. We also plan to release our agent architectures as open-source tools for the research community, moving beyond prompt-only sharing to enable broader experimentation and improvement. Additionally, we will establish a systematic collection of scientific workflow data from expert-LLM collaborative sessions to benchmark performance improvements and train domain-specific research agents. Finally, we aim to develop quantitative measurement frameworks for failure modes and research quality metrics that extend beyond conference acceptance rates, while optimizing human-LLM collaborative research patterns that could unlock the scientific method data loop for iterative capability improvement.</p>
+</div>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bibx1">
+<span class="ltx_tag ltx_tag_bibitem">[undef]</span>
+<span class="ltx_bibblock">Yutaro Yamada et al.
+</span>
+<span class="ltx_bibblock">“The AI Scientist-v2: Workshop-Level Automated Scientific Discovery via Agentic Tree Search”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2504.08066" title="">https://arxiv.org/abs/2504.08066</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx2">
+<span class="ltx_tag ltx_tag_bibitem">[undefa]</span>
+<span class="ltx_bibblock">Alexander Novikov et al.
+</span>
+<span class="ltx_bibblock">“AlphaEvolve: A coding agent for scientific and algorithmic discovery”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2506.13131" title="">https://arxiv.org/abs/2506.13131</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx3">
+<span class="ltx_tag ltx_tag_bibitem">[undefb]</span>
+<span class="ltx_bibblock">Long Li et al.
+</span>
+<span class="ltx_bibblock">“Chain of ideas: Revolutionizing research via novel idea development with llm agents”
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bibx3.1.1">arXiv preprint arXiv:2410.13185</em>, 2024
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx4">
+<span class="ltx_tag ltx_tag_bibitem">[undefc]</span>
+<span class="ltx_bibblock">Juraj Gottweis et al.
+</span>
+<span class="ltx_bibblock">“Towards an AI co-scientist”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2502.18864" title="">https://arxiv.org/abs/2502.18864</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx5">
+<span class="ltx_tag ltx_tag_bibitem">[undefd]</span>
+<span class="ltx_bibblock">Dhruv Trehan
+</span>
+<span class="ltx_bibblock">“The Consistency Confound: Why Stronger Alignment Can Break Black-Box Jailbreak Detection”
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bibx5.1.1">Open Conference of AI Agents for Science 2025</em>, 2025
+</span>
+<span class="ltx_bibblock">URL: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://openreview.net/forum?id=B6ZrLXou3u" title="">https://openreview.net/forum?id=B6ZrLXou3u</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx6">
+<span class="ltx_tag ltx_tag_bibitem">[undefe]</span>
+<span class="ltx_bibblock">Avi Arora, Jinu Jang and Roshanak Zilouchian Moghaddam
+</span>
+<span class="ltx_bibblock">“SetupBench: Assessing Software Engineering Agents’ Ability to Bootstrap Development Environments”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2507.09063" title="">https://arxiv.org/abs/2507.09063</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx7">
+<span class="ltx_tag ltx_tag_bibitem">[undeff]</span>
+<span class="ltx_bibblock">Aleksandra Eliseeva et al.
+</span>
+<span class="ltx_bibblock">“EnvBench: A Benchmark for Automated Environment Setup”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2503.14443" title="">https://arxiv.org/abs/2503.14443</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx8">
+<span class="ltx_tag ltx_tag_bibitem">[undefg]</span>
+<span class="ltx_bibblock">Sébastien Bubeck et al.
+</span>
+<span class="ltx_bibblock">“Early science acceleration experiments with GPT-5”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2511.16072" title="">https://arxiv.org/abs/2511.16072</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx9">
+<span class="ltx_tag ltx_tag_bibitem">[undefh]</span>
+<span class="ltx_bibblock">undef METR
+</span>
+<span class="ltx_bibblock">“Details about METR’s evaluation of OpenAI GPT-5.1-Codex-Max”, <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://evaluations.metr.org//gpt-5-1-codex-max-report/" title="">https://evaluations.metr.org//gpt-5-1-codex-max-report/</a>, 2025
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx10">
+<span class="ltx_tag ltx_tag_bibitem">[undefi]</span>
+<span class="ltx_bibblock">Mark Bissell, Michael Byun and Daniel Balsam
+</span>
+<span class="ltx_bibblock">“You and your research agent: Lessons from using agents for Interpretability Research”
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bibx10.1.1">Goodfire AI</em>, 2025
+</span>
+<span class="ltx_bibblock">URL: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://www.goodfire.ai/blog/you-and-your-research-agent" title="">https://www.goodfire.ai/blog/you-and-your-research-agent</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx11">
+<span class="ltx_tag ltx_tag_bibitem">[undefj]</span>
+<span class="ltx_bibblock">Johannes Gasteiger et al.
+</span>
+<span class="ltx_bibblock">“Automated Researchers Can Subtly Sandbag — alignment.anthropic.com”, <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://alignment.anthropic.com/2025/automated-researchers-sandbag/" title="">https://alignment.anthropic.com/2025/automated-researchers-sandbag/</a>, 2025
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx12">
+<span class="ltx_tag ltx_tag_bibitem">[undefk]</span>
+<span class="ltx_bibblock">Jiabin Tang, Lianghao Xia, Zhonghang Li and Chao Huang
+</span>
+<span class="ltx_bibblock">“AI-Researcher: Autonomous Scientific Innovation”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2505.18705" title="">https://arxiv.org/abs/2505.18705</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx13">
+<span class="ltx_tag ltx_tag_bibitem">[undefl]</span>
+<span class="ltx_bibblock">Kevin Weil
+</span>
+<span class="ltx_bibblock">“Tweet on Hiring Domain Experts for OpenAI for Science”, 2025
+</span>
+<span class="ltx_bibblock">URL: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://x.com/kevinweil/status/1962938974260904421?s=46" title="">https://x.com/kevinweil/status/1962938974260904421?s=46</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx14">
+<span class="ltx_tag ltx_tag_bibitem">[undefm]</span>
+<span class="ltx_bibblock">undef Allen AI
+</span>
+<span class="ltx_bibblock">“AstaBench: Rigorous benchmarking of AI agents with a holistic scientific research suite — Ai2 — allenai.org”, 2025
+</span>
+<span class="ltx_bibblock">URL: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://allenai.org/blog/astabench" title="">https://allenai.org/blog/astabench</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx15">
+<span class="ltx_tag ltx_tag_bibitem">[undefn]</span>
+<span class="ltx_bibblock">Tarun Gupta and Danish Pruthi
+</span>
+<span class="ltx_bibblock">“All That Glitters is Not Novel: Plagiarism in AI Generated Research”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2502.16487" title="">https://arxiv.org/abs/2502.16487</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx16">
+<span class="ltx_tag ltx_tag_bibitem">[undefo]</span>
+<span class="ltx_bibblock">Jiahao Qiu et al.
+</span>
+<span class="ltx_bibblock">“Physics Supernova: AI Agent Matches Elite Gold Medalists at IPhO 2025”
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bibx16.1.1">arXiv preprint arXiv:2509.01659</em>, 2025
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx17">
+<span class="ltx_tag ltx_tag_bibitem">[undefp]</span>
+<span class="ltx_bibblock">Kyle Swanson et al.
+</span>
+<span class="ltx_bibblock">“The Virtual Lab of AI agents designs new SARS-CoV-2 nanobodies”
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bibx17.1.1">Nature</em>
+</span>
+<span class="ltx_bibblock">Nature Publishing Group UK London, 2025, pp. 1–3
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx18">
+<span class="ltx_tag ltx_tag_bibitem">[undefq]</span>
+<span class="ltx_bibblock">Han Wang, Binbin Chen, Tieying Zhang and Baoxiang Wang
+</span>
+<span class="ltx_bibblock">“Learning to Communicate Through Implicit Communication Channels”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2411.01553" title="">https://arxiv.org/abs/2411.01553</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx19">
+<span class="ltx_tag ltx_tag_bibitem">[undefr]</span>
+<span class="ltx_bibblock">Darius Muglich, Johannes Forkel, Elise Pol and Jakob Foerster
+</span>
+<span class="ltx_bibblock">“Expected Return Symmetries”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2502.01711" title="">https://arxiv.org/abs/2502.01711</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx20">
+<span class="ltx_tag ltx_tag_bibitem">[undefs]</span>
+<span class="ltx_bibblock">Zhengyao Jiang et al.
+</span>
+<span class="ltx_bibblock">“AIDE: AI-Driven Exploration in the Space of Code”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2502.13138" title="">https://arxiv.org/abs/2502.13138</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx21">
+<span class="ltx_tag ltx_tag_bibitem">[undeft]</span>
+<span class="ltx_bibblock">Weipu Zhang et al.
+</span>
+<span class="ltx_bibblock">“STORM: Efficient Stochastic Transformer based World Models for Reinforcement Learning”, 2023
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2310.09615" title="">https://arxiv.org/abs/2310.09615</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx22">
+<span class="ltx_tag ltx_tag_bibitem">[undefu]</span>
+<span class="ltx_bibblock">Dixant Mittal and Wee Sun Lee
+</span>
+<span class="ltx_bibblock">“Differentiable Tree Search Network”, 2024
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2401.11660" title="">https://arxiv.org/abs/2401.11660</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx23">
+<span class="ltx_tag ltx_tag_bibitem">[undefv]</span>
+<span class="ltx_bibblock">Chenglei Si, Tatsunori Hashimoto and Diyi Yang
+</span>
+<span class="ltx_bibblock">“The Ideation-Execution Gap: Execution Outcomes of LLM-Generated versus Human Research Ideas”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2506.20803" title="">https://arxiv.org/abs/2506.20803</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx24">
+<span class="ltx_tag ltx_tag_bibitem">[undefw]</span>
+<span class="ltx_bibblock">Chenglei Si, Diyi Yang and Tatsunori Hashimoto
+</span>
+<span class="ltx_bibblock">“Can LLMs Generate Novel Research Ideas? A Large-Scale Human Study with 100+ NLP Researchers”, 2024
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2409.04109" title="">https://arxiv.org/abs/2409.04109</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx25">
+<span class="ltx_tag ltx_tag_bibitem">[undefx]</span>
+<span class="ltx_bibblock">Pietro Mazzaglia et al.
+</span>
+<span class="ltx_bibblock">“GenRL: Multimodal-foundation world models for generalization in embodied agents”, 2024
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2406.18043" title="">https://arxiv.org/abs/2406.18043</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx26">
+<span class="ltx_tag ltx_tag_bibitem">[undefy]</span>
+<span class="ltx_bibblock">Danijar Hafner, Timothy Lillicrap, Jimmy Ba and Mohammad Norouzi
+</span>
+<span class="ltx_bibblock">“Dream to Control: Learning Behaviors by Latent Imagination”, 2020
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/1912.01603" title="">https://arxiv.org/abs/1912.01603</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx27">
+<span class="ltx_tag ltx_tag_bibitem">[undefz]</span>
+<span class="ltx_bibblock">Haoyang Li et al.
+</span>
+<span class="ltx_bibblock">“LLMs Caught in the Crossfire: Malware Requests and Jailbreak Challenges”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2506.10022" title="">https://arxiv.org/abs/2506.10022</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bibx28">
+<span class="ltx_tag ltx_tag_bibitem">[undefaa]</span>
+<span class="ltx_bibblock">Jiayu Liu, Qing Zong, Weiqi Wang and Yangqiu Song
+</span>
+<span class="ltx_bibblock">“Revisiting Epistemic Markers in Confidence Estimation: Can Markers Accurately Reflect Large Language Models’ Uncertainty?”, 2025
+</span>
+<span class="ltx_bibblock">arXiv: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2505.24778" title="">https://arxiv.org/abs/2505.24778</a>
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Deep Dives: Research Ideas and Anecdotes</h2>
+<div class="ltx_para ltx_noindent" id="A1.p1">
+<p class="ltx_p" id="A1.p1.1">In this appendix, each subsection follows a consistent structure: the complete idea specification generated by our Idea Generation Agent, expert validation feedback from original paper authors, and detailed implementation anecdotes documenting specific failure modes and system responses during autonomous execution. Throughout the appendix, block quotes represent direct outputs from the LLM agents described in our system overview or excerpts from execution log documents, providing authentic examples of system behavior during research attempts. We also thank the authors of the seed papers who provided valuable feedback on early research ideas; any remaining errors or misinterpretations are entirely our own.</p>
+</div>
+<section class="ltx_subsection" id="A1.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.1 </span>MARL-1: Zero-shot Coordination in Multi-Agent RL</h3>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p1">
+<p class="ltx_p" id="A1.SS1.p1.1">This idea emerged from combining Implicit Communication Protocols <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx18" title="">undefq</a>]</cite> and Zero-shot Coordination <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx19" title="">undefr</a>]</cite> research in Multi-agent RL at ICLR 2025. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.T4" title="Table 4 ‣ A.1 MARL-1: Zero-shot Coordination in Multi-Agent RL ‣ Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">4</span></a> details the main parts of the complete <span class="ltx_text ltx_font_typewriter" id="A1.SS1.p1.1.1">idea.md</span> file generated by our Idea Generation Agent.</p>
+</div>
+<figure class="ltx_table" id="A1.T4">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="A1.T4.2.1.1" style="font-size:90%;">Table 4</span>: </span><span class="ltx_text" id="A1.T4.3.2" style="font-size:90%;">MARL-1: Zero-shot Coordination in Multi-Agent RL - Rejected in Implementation</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="A1.T4.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="A1.T4.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="A1.T4.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.1.1.1.1" style="font-size:70%;">Idea</span></th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T4.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.1.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.1.1.2.1.1"><span class="ltx_text" id="A1.T4.4.1.1.2.1.1.1" style="font-size:70%;">Meta-Adaptive Implicit Communication
+Protocols (Meta-AICPs) for Zero-shot Coordination</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="A1.T4.4.2.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" id="A1.T4.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.2.1.1.1" style="font-size:70%;">Problem and Motivation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="A1.T4.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.2.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.2.1.2.1.1"><span class="ltx_text" id="A1.T4.4.2.1.2.1.1.1" style="font-size:70%;">Current RL agents, while capable in specific tasks with specific partners, are brittle. They struggle with novel teammates, task variations, and especially in situations requiring emergent communication and the dynamic formation and adaptation of conventions. For AI agents to achieve truly fluid and generalizable collaboration in open or ad-hoc team settings, they must robustly coordinate with novel, independently trained partners who may employ unknown or diverse implicit communication protocols. This addresses the fundamental ’double adaptation problem’ in MARL: adapting to both environment dynamics and the evolving policies and communication conventions of other agents.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T4.4.3.2">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T4.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.3.2.1.1" style="font-size:70%;">Proposed Approach</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T4.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.3.2.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.3.2.2.1.1"><span class="ltx_text" id="A1.T4.4.3.2.2.1.1.1" style="font-size:70%;">Building on work done on Implicit Channel Protocols </span><cite class="ltx_cite ltx_citemacro_cite"><span class="ltx_text" id="A1.T4.4.3.2.2.1.1.2.1" style="font-size:70%;">[</span><a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx18" title="">undefq</a><span class="ltx_text" id="A1.T4.4.3.2.2.1.1.3.2" style="font-size:70%;">]</span></cite><span class="ltx_text" id="A1.T4.4.3.2.2.1.1.4" style="font-size:70%;">, Agents meta-learn adaptive strategies to rapidly infer and co-create/align their internal P-mappings (the mapping between scouting actions and messages) when encountering novel partners. This moves beyond adapting to fixed partner strategies towards learning how to adapt the communication system itself. Meta-learning distributions over protocol spaces or adaptive strategies for P, rather than relying on fixed point estimates or pre-coordination with novel partners who lack a shared co-training history.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T4.4.4.3">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T4.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.4.3.1.1" style="font-size:70%;">Key Innovation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T4.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.4.3.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.4.3.2.1.1"><span class="ltx_text" id="A1.T4.4.4.3.2.1.1.1" style="font-size:70%;">Extends ZSC beyond action policies to the communication system itself - agents coordinate how they communicate and how to adapt how they communicate. Meta-learning over protocol spaces addresses the need for true convention emergence rather than just partner strategy inference. Dynamic protocol adaptation and emergence during novel partner interaction, with neural architecture disentangling convention-agnostic task policy from
+convention-specific protocol adapter module.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T4.4.5.4">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T4.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.5.4.1.1" style="font-size:70%;">Concrete Example</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T4.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.5.4.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.5.4.2.1.1"><span class="ltx_text" id="A1.T4.4.5.4.2.1.1.1" style="font-size:70%;">In Hanabi with three canonical P-maps (conservative, aggressive, random), Meta-AICP agents evaluate ZSC performance against diverse partners using Protocol Divergence Score and Information Flow Rate metrics. Agents adapt their scouting action mappings based on inferred partner protocols, maintaining communication richness while achieving robust coordination with previously unseen protocol variants.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T4.4.6.5">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" id="A1.T4.4.6.5.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T4.4.6.5.1.1" style="font-size:70%;">Potential Pitfalls</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="A1.T4.4.6.5.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T4.4.6.5.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T4.4.6.5.2.1.1"><span class="ltx_text" id="A1.T4.4.6.5.2.1.1.1" style="font-size:70%;">Potential trade-off in expressiveness vs. generalization - adapted protocols might not achieve the same peak level of nuanced, high-bandwidth communication as protocols developed via intensive co-training. Dependence on quality of meta-training distribution diversity and representativeness. Performance against partners with radically different, out-of-distribution P-mappings remains uncertain.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p2">
+<p class="ltx_p" id="A1.SS1.p2.1"><span class="ltx_text ltx_font_bold" id="A1.SS1.p2.1.1">Expert Validation</span>: When we reached out to the authors of the seed papers with this idea, they raised concerns about the system’s failure in interpreting the future work section of their original paper, as well as, the potential failure modes, many of which were also identified by the Idea Generation Agent in the generated idea text.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p3">
+<p class="ltx_p" id="A1.SS1.p3.1">They noted that when they mentioned <em class="ltx_emph ltx_font_italic" id="A1.SS1.p3.1.1">“future work on dynamically identifying or designing communication mapping,”</em> they were referring to <em class="ltx_emph ltx_font_italic" id="A1.SS1.p3.1.2">“based on public observations or tasks”</em> and not to <em class="ltx_emph ltx_font_italic" id="A1.SS1.p3.1.3">“entirely new partners with unknown mappings.”</em> We regard this as another instance of the Idea Generation Agent lacking domain expertise and interpreting the original statement in the paper too generously.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p4">
+<p class="ltx_p" id="A1.SS1.p4.1">They did note that the idea <em class="ltx_emph ltx_font_italic" id="A1.SS1.p4.1.1">“does touch on a challenging and important question”</em> and that <em class="ltx_emph ltx_font_italic" id="A1.SS1.p4.1.2">“formalizing and empirically testing the direction shared…could yield useful insights.”</em> They also complimented the choice of the Hanabi setup and the identified baseline from their ICP work as <em class="ltx_emph ltx_font_italic" id="A1.SS1.p4.1.3">“solid anchor points.”</em></p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p5">
+<p class="ltx_p" id="A1.SS1.p5.1"><span class="ltx_text ltx_font_bold" id="A1.SS1.p5.1.1">Implementation and Failure Modes</span>: Considering the input on the merit of testing and formalising the claim nonetheless, we continued to pass the idea on the hypotheses generation and experimental planning stages.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p6">
+<p class="ltx_p" id="A1.SS1.p6.1">At this stage, we were still generating a minimum-viable-hypothesis for each research idea—testing a single key assumption per project, unlike the portfolio approach with comprehensive hypotheses suites that we later adopted (as described in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>). We were also using a single-file coding approach (similar to AIDE <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx20" title="">undefs</a>]</cite>, an automated code generation system) with the instruction to generate one complete implementation in a single Python file.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p7">
+<p class="ltx_p" id="A1.SS1.p7.1">There were two primary failure modes that emerged here:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p8">
+<p class="ltx_p" id="A1.SS1.p8.1"><span class="ltx_text ltx_font_bold" id="A1.SS1.p8.1.1">Issues with the model trying to squeeze the complex implementation, all into one file</span>, leading to reward hacking or implementation drift in the sense of simplifying the implementation.
+On two separate runs, the model outputted code file included the following:</p>
+<blockquote class="ltx_quote" id="A1.SS1.p8.2">
+<p class="ltx_p" id="A1.SS1.p8.2.1"><span class="ltx_text ltx_font_italic" id="A1.SS1.p8.2.1.1">“Note: The implementation focuses on clarity and the high-level research mechanics rather than SOTA gameplay performance - it is not expected to reach impressive Hanabi scores in this short reference prototype.”</span></p>
+</blockquote>
+<blockquote class="ltx_quote" id="A1.SS1.p8.3">
+<p class="ltx_p" id="A1.SS1.p8.3.1"><span class="ltx_text ltx_font_italic" id="A1.SS1.p8.3.1.1">“Note: This is a quick and safe MVP-skeleton implementation of the plan described in the task specification…All hard compute is guarded behind the <span class="ltx_text ltx_font_typewriter" id="A1.SS1.p8.3.1.1.1">--fast</span> flag.”</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p9">
+<p class="ltx_p" id="A1.SS1.p9.1"><span class="ltx_text ltx_font_bold" id="A1.SS1.p9.1.1">Failure in environment setup.</span> The model consistently fell back to the canonical DeepMind hanabi-learning-env, which is not maintained anymore. Even after consistent failures and instructions to use alternative, in the event of a non-import failure, the model would interpret the error as a consequence of a non hanabi-learning-env import and revert the correct library import to the wrong outdated one.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p10">
+<p class="ltx_p" id="A1.SS1.p10.1">This illustrates the training data bias failure mode discussed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>, where models fall back on memorized patterns rather than using current information. This also pointed out to us that AIDE out of the box won’t be sufficient for research code implementation which is a more iterative process than training models for Kaggle challenges, and that low-level implementation agents will require access to the internet and ability to fetch the most-recent information instead of merely relying on the zero-shot LLM responses generated upstream in the workflow.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="A1.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.2 </span>WM-1: Differentiable Planning in Stochastic World Models</h3>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p1">
+<p class="ltx_p" id="A1.SS2.p1.1">The source of this idea was integrating together NeurIPS 2023 work on Stochastic World Models <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx21" title="">undeft</a>]</cite> and a withdrawn ICLR 2024 submission on Differentiable Tree Search in Latent State Space <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx22" title="">undefu</a>]</cite>. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.T5" title="Table 5 ‣ A.2 WM-1: Differentiable Planning in Stochastic World Models ‣ Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">5</span></a> details the main parts of the complete <span class="ltx_text ltx_font_typewriter" id="A1.SS2.p1.1.1">idea.md</span> file generated by our Idea Generation Agent.</p>
+</div>
+<figure class="ltx_table" id="A1.T5">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="A1.T5.2.1.1" style="font-size:90%;">Table 5</span>: </span><span class="ltx_text" id="A1.T5.3.2" style="font-size:90%;">WM-1: DTS Planning in Stochastic World Models - Rejected in Implementation</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="A1.T5.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="A1.T5.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="A1.T5.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.1.1.1.1" style="font-size:70%;">Idea</span></th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T5.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.1.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.1.1.2.1.1"><span class="ltx_text" id="A1.T5.4.1.1.2.1.1.1" style="font-size:70%;">Differentiable Tree Search in Stochastic World Models for Planning (S-DTS)</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="A1.T5.4.2.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" id="A1.T5.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.2.1.1.1" style="font-size:70%;">Problem and Motivation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="A1.T5.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.2.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.2.1.2.1.1"><span class="ltx_text" id="A1.T5.4.2.1.2.1.1.1" style="font-size:70%;">DTS and similar methods are designed for deterministic worlds. When deployed in non-deterministic environments, their deterministic world models fail to capture environmental stochasticity, leading them to learn an “average” world dynamics. While methods exist for learning stochastic world models (STORM), they are typically trained separately from the planner, which prevents the planner and model from co adapting. This separation means the world model is not optimized for the specific states and transitions that are most critical for the planner’s decision-making process.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T5.4.3.2">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T5.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.3.2.1.1" style="font-size:70%;">Proposed Approach</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T5.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.3.2.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.3.2.2.1.1"><span class="ltx_text" id="A1.T5.4.3.2.2.1.1.1" style="font-size:70%;">Integrating a Stochastic World Model, inspired by STORM’s architecture, directly into the DTS framework. Joint optimization provides a powerful, targeted learning signal - the overall planning loss backpropagates through the entire differentiable search process, including sampled transitions from the WM.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T5.4.4.3">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T5.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.4.3.1.1" style="font-size:70%;">Key Innovation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T5.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.4.3.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.4.3.2.1.1"><span class="ltx_text" id="A1.T5.4.4.3.2.1.1.1" style="font-size:70%;">Bridging the gap between deterministic planners and stochastic environments. While deterministic DTS cannot represent or plan for multiple possible outcomes, and separately trained stochastic models miss the key insight of DTS by optimizing for global prediction error rather than task-relevant regions, S-DTS integrates VS-WM directly into the DTS framework. The world model learns to be an accurate predictor specifically for transitions that matter most for making good decisions, while the planner learns to account for the specific uncertainties expressed by its co-adapted world model.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T5.4.5.4">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T5.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.5.4.1.1" style="font-size:70%;">Concrete Example</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T5.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.5.4.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.5.4.2.1.1"><span class="ltx_text" id="A1.T5.4.5.4.2.1.1.1" style="font-size:70%;">In “slippery ice” grid
+world where moving north can result in slipping left or right near a pit, DTS with ensembles might average paths or see variance but doesn’t reason about probability of each outcome, potentially choosing paths close to the pit if average seems safe. S-DTS’s expected backup rule explicitly incorporates low-probability, high-cost outcomes of slipping into the pit, learning to select safer paths further from pit even if slightly longer, demonstrating superior risk-awareness.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T5.4.6.5">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" id="A1.T5.4.6.5.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T5.4.6.5.1.1" style="font-size:70%;">Potential Pitfalls</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="A1.T5.4.6.5.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T5.4.6.5.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T5.4.6.5.2.1.1"><span class="ltx_text" id="A1.T5.4.6.5.2.1.1.1" style="font-size:70%;">Training instability from interaction of REINFORCE, Gumbel-Softmax sampling, and VAE losses; computational overhead from triple loop of training steps, search trials, and MC samples; VS-WM might fail to learn true stochastic dynamics, especially rare events.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p2">
+<p class="ltx_p" id="A1.SS2.p2.1"><span class="ltx_text ltx_font_bold" id="A1.SS2.p2.1.1">Expert Validation</span>:
+For this idea, we heard back from one of the two primary authors we reached out to. They noted that this was a genuine research gap worth pursuing, emphasising that the <em class="ltx_emph ltx_font_italic" id="A1.SS2.p2.1.2">“tree-search has shown great potential in AlphaGo/MuZero/EfficientZero, yet there are few combinations with Dreamer-like MBRL approaches.”</em></p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p3">
+<p class="ltx_p" id="A1.SS2.p3.1">They expressed concerns about the computation cost and technical complexity of the implementation and debugging, noting that the execution will be non-trivial <em class="ltx_emph ltx_font_italic" id="A1.SS2.p3.1.1">“otherwise why has nobody tried to enhance DreamerV3 given the huge potential of the search.”</em> They concluded that <em class="ltx_emph ltx_font_italic" id="A1.SS2.p3.1.2">“it should have broad impact if you can release a high quality implementation to the public.”</em></p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p4">
+<p class="ltx_p" id="A1.SS2.p4.1">Along with the primary authors of the seed paper, we also shared this idea with a World Models researcher who has previously been accepted at major A* conferences and also served as a reviewer for one.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p5">
+<p class="ltx_p" id="A1.SS2.p5.1">Much of their feedback concurred with that of the previous expert. They too expressed concerns about the technical complexity of the implementation and pointed out a specific and critical omission error in the idea text where <em class="ltx_emph ltx_font_italic" id="A1.SS2.p5.1.1">“write-up treats STORM’s world model as a drop-in replacement for DTS’s deterministic MLP”</em> and that <em class="ltx_emph ltx_font_italic" id="A1.SS2.p5.1.2">“the system misses out listing the inference network in the setup section.”</em></p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p6">
+<p class="ltx_p" id="A1.SS2.p6.1">Overall though they too agreed that <em class="ltx_emph ltx_font_italic" id="A1.SS2.p6.1.1">“the idea strikes well”</em> and would lead to a <em class="ltx_emph ltx_font_italic" id="A1.SS2.p6.1.2">“nice world model”</em> that can be helpful for <em class="ltx_emph ltx_font_italic" id="A1.SS2.p6.1.3">“long horizon sensitive control applications.”</em></p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p7">
+<p class="ltx_p" id="A1.SS2.p7.1"><span class="ltx_text ltx_font_bold" id="A1.SS2.p7.1.1">Implementation and Failure Modes</span>: Considering the overall positive input, we proceeded to hypothesis generation and experimental planning for this idea. We were still using the minimum-viable-hypothesis prompt at this point, which meant, only one hypothesis to be implemented and checked trying to capture the key uncertainties and risks in the proposed research idea.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p8">
+<p class="ltx_p" id="A1.SS2.p8.1">Our experience for implementing this was in line with expert comments - the implementation was non-trivial ran into many technical challenges, especially typifying the failure mode of limited domain taste and intelligence in language models.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p9">
+<p class="ltx_p" id="A1.SS2.p9.1">The complex world model architecture involved multiple interconnected components—Encoder, Decoder, Actor Network, Critic Network—creating numerous potential failure points, leading to multiple format mis-match errors.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p10">
+<blockquote class="ltx_quote" id="A1.SS2.p10.1">
+<p class="ltx_p" id="A1.SS2.p10.1.1"><span class="ltx_text ltx_font_italic" id="A1.SS2.p10.1.1.1">“This was the critical failure. My simplified logic for updating the latent state during the differentiable rollout was mathematically incorrect, leading to shape mismatches in matrix multiplication.”</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p11">
+<p class="ltx_p" id="A1.SS2.p11.1">Training loop integration proved equally problematic. The planner was designed for single-input processing, but the training loop attempted batch processing, creating what the system described as “computationally catastrophic” performance—multiplying workload by batch size and completing less than 1% of required steps in an hour.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p12">
+<blockquote class="ltx_quote" id="A1.SS2.p12.1">
+<p class="ltx_p" id="A1.SS2.p12.1.1"><span class="ltx_text ltx_font_italic" id="A1.SS2.p12.1.1.1">“Error 2: Batching Logic (‘IndexError: Dimension out of range’): The ‘<span class="ltx_text ltx_font_typewriter" id="A1.SS2.p12.1.1.1.1">agent.plan()</span>’ method was designed to work on a single state, but the training loop was attempting to use it on a batch of states, causing an index error.”</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p13">
+<p class="ltx_p" id="A1.SS2.p13.1">The very long training loop for each step plan up to 50,000 steps being passed back led to timeouts, which led to the implementation drift. This was mainly because of the Modal time limits which led Claude Code to rely on simplifying the architecture instead of working around the infrastructure issues.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p14">
+<p class="ltx_p" id="A1.SS2.p14.1">Claude Code ultimately abandoned the differentiable tree search entirely, pivoting to a standard actor-critic approach, with some version of joint optimization maintained
+but representing a significant departure from the proposed method.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p15">
+<blockquote class="ltx_quote" id="A1.SS2.p15.1">
+<p class="ltx_p" id="A1.SS2.p15.1.1"><span class="ltx_text ltx_font_italic" id="A1.SS2.p15.1.1.1">“New Strategy: I rewrote the training script (‘<span class="ltx_text ltx_font_typewriter" id="A1.SS2.p15.1.1.1.1">train_s_dts.py</span>’) to use an Actor-Critic approach. This preserved the project’s core “joint optimization” idea while being vastly more efficient.”</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p16">
+<p class="ltx_p" id="A1.SS2.p16.1">Fortunately, our verification system successfully detected this implementation drift. The experimental output evaluation noted that:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p17">
+<blockquote class="ltx_quote" id="A1.SS2.p17.1">
+<p class="ltx_p" id="A1.SS2.p17.1.1"><span class="ltx_text ltx_font_italic" id="A1.SS2.p17.1.1.1">“The name “Stochastic-DTS” (Differentiable Tree Search) is a misnomer for the actual implemented algorithm, which is a simpler differentiable multi-shoot planner. This could be misleading. The evolution of the training script into an Actor-Critic approach, while a pragmatic and technically sound choice, represents a significant deviation from what one might infer from the initial hypothesis document. This journey should be documented transparently.”</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p18">
+<p class="ltx_p" id="A1.SS2.p18.1">Beyond implementation issues, the experimental design itself proved fundamentally flawed. The hypothesis generated was too simple to yield meaningful conclusions, and both the proposed S-DTS model and the baseline achieved near-perfect 0.0 catastrophe rates on FrozenLake, making the hypothesis untestable. This was identified as an error in the experiment output evaluation report which noted that “the experiment failed to test the hypothesis in a meaningful performance regime.”</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p19">
+<p class="ltx_p" id="A1.SS2.p19.1">While the choice of the environment was too simplistic, several other chosen aspects proved too complex. For instance, the choice of the 50000 DTS depth parameter. These
+too pointed toward the absence of domain intelligence often only captured in researcher decisions in experience during experimentation. It also aligned with the conclusion from Stanford’s research on LLM-generated hypotheses <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx23" title="">undefv</a>, <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx24" title="">undefw</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p20">
+<p class="ltx_p" id="A1.SS2.p20.1">Additional methodological flaws included insufficient statistical validity. The test was run with only one seed, inadequate for properly falsifying or accepting the hypothesis.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS2.p21">
+<p class="ltx_p" id="A1.SS2.p21.1">The revision prompt ultimately recommended developing hypotheses better grounded in technical implementation details and testing on more challenging environments than FrozenLake.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="A1.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.3 </span>WM-2: Replacing Pixel Reconstruction with Perceptual Loss in World Models</h3>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p1">
+<p class="ltx_p" id="A1.SS3.p1.1">This idea was generated by combining papers on multi-modal foundational world models <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx25" title="">undefx</a>]</cite> from NeurIPS 2024 and the seminal Dreamer paper <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx26" title="">undefy</a>]</cite> from ICLR 2020. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.T6" title="Table 6 ‣ A.3 WM-2: Replacing Pixel Reconstruction with Perceptual Loss in World Models ‣ Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">6</span></a> details the main parts of the complete <span class="ltx_text ltx_font_typewriter" id="A1.SS3.p1.1.1">idea.md</span> file generated by our Idea Generation Agent.</p>
+</div>
+<figure class="ltx_table" id="A1.T6">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="A1.T6.2.1.1" style="font-size:90%;">Table 6</span>: </span><span class="ltx_text" id="A1.T6.3.2" style="font-size:90%;">WM-2: Perceptual Loss Training Objective for World Models - Rejected in Implementation</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="A1.T6.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="A1.T6.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="A1.T6.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.1.1.1.1" style="font-size:70%;">Idea</span></th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T6.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.1.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.1.1.2.1.1"><span class="ltx_text" id="A1.T6.4.1.1.2.1.1.1" style="font-size:70%;">SALVO: Training World Models in VLM
+Perceptual Space for Semantically-Grounded Control</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="A1.T6.4.2.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" id="A1.T6.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.2.1.1.1" style="font-size:70%;">Problem and Motivation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="A1.T6.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.2.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.2.1.2.1.1"><span class="ltx_text" id="A1.T6.4.2.1.2.1.1.1" style="font-size:70%;">Generative world models
+learn by compressing high-dimensional observations into latent space using pixel-level reconstruction loss, forcing the model to expend capacity on high-frequency visual details often irrelevant for semantic understanding. This “irreversible semantic compression” means subtle but task-critical visual cues that are easily distinguishable by a VLM can be lost in the world model’s latent representation, creating a semantic gap between the world model’s understanding and the VLM’s interpretation of task prompts.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T6.4.3.2">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T6.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.3.2.1.1" style="font-size:70%;">Proposed Approach</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T6.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.3.2.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.3.2.2.1.1"><span class="ltx_text" id="A1.T6.4.3.2.2.1.1.1" style="font-size:70%;">Replace conventional pixel-level reconstruction loss entirely with a perceptual reconstruction loss defined within the embedding space of a frozen, pre-trained VLM. Instead of forcing the model’s latents to reconstruct raw observations, train them to reconstruct the VLM’s perception of the observations. This directly aligns the world model’s optimization with semantic concepts embedded in the VLM.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T6.4.4.3">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T6.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.4.3.1.1" style="font-size:70%;">Key Innovation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T6.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.4.3.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.4.3.2.1.1"><span class="ltx_text" id="A1.T6.4.4.3.2.1.1.1" style="font-size:70%;">Replacing pixel-reconstruction loss entirely with perceptual reconstruction loss in VLM embedding space. Instead of training world models to be good at reconstructing pixels, train them to be good at reconstructing VLM perceptions. This directly aligns the world model’s optimization with semantic concepts embedded in the VLM, creating latent representations inherently structured around VLM-salient features.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T6.4.5.4">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T6.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.5.4.1.1" style="font-size:70%;">Concrete Example</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T6.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.5.4.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.5.4.2.1.1"><span class="ltx_text" id="A1.T6.4.5.4.2.1.1.1" style="font-size:70%;">For prompt “robot performing graceful pirouette,” GenRL’s pixel optimized world model learns “turning” without intrinsic concept of “grace,” resulting in mechanically efficient but ungraceful motion. SALVO’s VLM-optimized world model is forced to generate reconstructions capturing graceful vs. clumsy distinction, encoding necessary physical information for graceful-looking reconstruction and enabling policy to control semantically-meaningful latents.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T6.4.6.5">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" id="A1.T6.4.6.5.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T6.4.6.5.1.1" style="font-size:70%;">Potential Pitfalls</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="A1.T6.4.6.5.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T6.4.6.5.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T6.4.6.5.2.1.1"><span class="ltx_text" id="A1.T6.4.6.5.2.1.1.1" style="font-size:70%;">Semantic dominance vs. physical accuracy leading to imagined rollouts structured around VLM-salient features; inheriting VLM inductive biases, blind spots, or artifacts; computational cost from VLM forward passes; training instability from replacing well-understood pixel-MSE with complex high-dimensional perceptual loss.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p2">
+<p class="ltx_p" id="A1.SS3.p2.1"><span class="ltx_text ltx_font_bold" id="A1.SS3.p2.1.1">Expert Validation</span>:
+The primary authors of both seed papers were contacted for feedback. The first of the two noted that this idea was <em class="ltx_emph ltx_font_italic" id="A1.SS3.p2.1.2">“interesting and worthwhile to explore.”</em> The second author expressed some reservation about the technical concerns of replacing the pixel reconstruction loss, as well as, if it would generalize beyond specific domains such as MineRL.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p3">
+<p class="ltx_p" id="A1.SS3.p3.1">They noted that <em class="ltx_emph ltx_font_italic" id="A1.SS3.p3.1.1">“this was one of the first things [they] tried”</em> and that in their experience, <em class="ltx_emph ltx_font_italic" id="A1.SS3.p3.1.2">“perceptual losses can fail to capture fine-grained information for control, compared to reconstruction-based objectives”</em> They did emphasize that the research gap identified of <em class="ltx_emph ltx_font_italic" id="A1.SS3.p3.1.3">“finding objectives that work better for learning world models for RL”</em> was genuine.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p4">
+<p class="ltx_p" id="A1.SS3.p4.1"><span class="ltx_text ltx_font_bold" id="A1.SS3.p4.1.1">Implementation and Failure Modes</span>: Keeping this well rounded feedback in mind, we decided to continue implementation as we saw clear opportunity for meaningful experiments and insights.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p5">
+<p class="ltx_p" id="A1.SS3.p5.1">This implementation revealed a fundamental logical error in experimental design that exemplified the domain intelligence failures discussed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>. The hypothesis assumed offline training with static data frames, but Dreamer requires online learning—a mismatch that violated core algorithmic assumptions. This led to no exploration-exploitation balance, limited state coverage, no correlation between actions and rewards, and impossible transitions across episode boundaries. Training on static random-policy data fundamentally undermined the baseline’s validity, discovered only during experimental output evaluation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p6">
+<p class="ltx_p" id="A1.SS3.p6.1">The core problem emerged from the need to recreate the Dreamer baseline, which triggered a cascade of failures. Due to training data bias discussed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>, the system defaulted to PyTorch when the prompt mentioned “modern ML practices,” despite the original Dreamer being in TensorFlow. This necessitated a complete baseline reimplementation that introduced multiple incompatibilities: the PyTorch version didn’t work for continuous control tasks like CartPole-SwingUp, data format confusion and encoder-decoder shape mismatches, made further worse by integration of the VLM loss.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p7">
+<blockquote class="ltx_quote" id="A1.SS3.p7.3">
+<p class="ltx_p" id="A1.SS3.p7.3.3"><span class="ltx_text ltx_font_italic" id="A1.SS3.p7.3.3.3">‘Initial transposed convolution implementation produced wrong
+output sizes - First attempt: <math alttext="31*31" class="ltx_Math" display="inline" id="A1.SS3.p7.1.1.1.m1" intent=":literal"><semantics><mrow><mn>31</mn><mo lspace="0.222em" rspace="0.222em">∗</mo><mn>31</mn></mrow><annotation encoding="application/x-tex">31*31</annotation></semantics></math> output (incorrect padding
+calculations), Second attempt: <math alttext="79*79" class="ltx_Math" display="inline" id="A1.SS3.p7.2.2.2.m2" intent=":literal"><semantics><mrow><mn>79</mn><mo lspace="0.222em" rspace="0.222em">∗</mo><mn>79</mn></mrow><annotation encoding="application/x-tex">79*79</annotation></semantics></math> output (still incorrect)
+requiring switch to upsampling approach for exact <math alttext="64*64" class="ltx_Math" display="inline" id="A1.SS3.p7.3.3.3.m3" intent=":literal"><semantics><mrow><mn>64</mn><mo lspace="0.222em" rspace="0.222em">∗</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">64*64</annotation></semantics></math> output.’</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p8">
+<p class="ltx_p" id="A1.SS3.p8.1">Additionally, over the reimplementation of the Dreamer baseline in PyTorch, a critical error emerged: dummy reward signals were inadvertently passed instead of
+actual environment rewards. This meant the critic network learned nothing while the world model and actor continued representational learning:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p9">
+<blockquote class="ltx_quote" id="A1.SS3.p9.1">
+<p class="ltx_p" id="A1.SS3.p9.1.1"><span class="ltx_text ltx_font_italic" id="A1.SS3.p9.1.1.1">‘World model and actor were learning (representational learning
+only) - Critic had nothing to learn from because dummy zero rewards were
+being passed… DreamerV2 architecture requires ground truth reward
+supervision. Found we were passing dummy rewards instead of actual
+CartPole rewards’</span></p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p10">
+<p class="ltx_p" id="A1.SS3.p10.1">This reward error cascaded through the entire experimental pipeline leading to gradient explosions in actor training, plotting showed zero values, evaluation metrics became meaningless, and the Experiment Execution Agent undermining the core innovation with a <span class="ltx_text ltx_font_typewriter" id="A1.SS3.p10.1.1">.detach()</span> call during CLIP processing severed gradient flow from perceptual loss to the world model decoder, preventing learning from the reconstruction objective.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS3.p11">
+<p class="ltx_p" id="A1.SS3.p11.1">The experimental output evaluation delivered the final verdict: Implementation Fidelity score “Low,” noting baseline performance 95% below established benchmarks, making any comparison scientifically invalid. The evaluation concluded the experiment “failed to create the necessary conditions for a valid test” and that signal was “completely obscured by the noise of a broken experimental setup,” requiring complete reimplementation before hypothesis retesting.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="A1.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.4 </span>AS-1: Semantic Entropy as Signal for Jailbreak Prompts</h3>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p1">
+<p class="ltx_p" id="A1.SS4.p1.1">This idea was arrived at by synthesizing two alignment papers from ACL 2025, on jailbreak challenges in malware requests <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx27" title="">undefz</a>]</cite> and use of epistemic markers for confidence estimation <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#bib.bibx28" title="">undefaa</a>]</cite>. Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.T7" title="Table 7 ‣ A.4 AS-1: Semantic Entropy as Signal for Jailbreak Prompts ‣ Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">7</span></a> details the main parts of the complete <span class="ltx_text ltx_font_typewriter" id="A1.SS4.p1.1.1">idea.md</span> file generated by our Idea Generation Agent.</p>
+</div>
+<figure class="ltx_table" id="A1.T7">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="A1.T7.2.1.1" style="font-size:90%;">Table 7</span>: </span><span class="ltx_text" id="A1.T7.3.2" style="font-size:90%;">AS-1: Semantic Entropy as Signal for Jailbreak Prompts - Completed Successfully</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="A1.T7.4">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="A1.T7.4.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="A1.T7.4.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.1.1.1.1" style="font-size:70%;">Idea</span></th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T7.4.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.1.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.1.1.2.1.1"><span class="ltx_text" id="A1.T7.4.1.1.2.1.1.1" style="font-size:70%;">Using Semantic Entropy as Black-Box Signal for Behavioral Inconsistency in Jailbreak Detection</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="A1.T7.4.2.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" id="A1.T7.4.2.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.2.1.1.1" style="font-size:70%;">Problem and Motivation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="A1.T7.4.2.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.2.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.2.1.2.1.1"><span class="ltx_text" id="A1.T7.4.2.1.2.1.1.1" style="font-size:70%;">We lack reliable, real-time signals for detecting jailbreak attacks on black-box models (e.g., those served via API). Existing defenses are often reactive (post-generation content filtering) or brittle (input pattern matching), while powerful white-box methods that inspect gradients or activations are inapplicable. This leaves API-based models vulnerable to novel, adaptive attacks, creating a significant gap in the safety ecosystem.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T7.4.3.2">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T7.4.3.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.3.2.1.1" style="font-size:70%;">Proposed Approach</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T7.4.3.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.3.2.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.3.2.2.1.1"><span class="ltx_text" id="A1.T7.4.3.2.2.1.1.1" style="font-size:70%;">Reframing jailbreak detection from a content analysis problem to a behavioral analysis problem. Use semantic inconsistency, measured via semantic entropy, as a zero-shot, black-box signal of a jailbreak attempt. The internal conflict an LLM experiences when processing a jailbreak prompt will manifest as high variance in the semantic meaning of its potential responses, detected by sampling and comparing multiple generated outputs.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T7.4.4.3">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T7.4.4.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.4.3.1.1" style="font-size:70%;">Key Innovation</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T7.4.4.3.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.4.3.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.4.3.2.1.1"><span class="ltx_text" id="A1.T7.4.4.3.2.1.1.1" style="font-size:70%;">Repurposing the behavioral signal of response inconsistency, originally used for fact-checking in hallucination detection, as a security signal to detect the internal conflict caused by a jailbreak attack. Using semantic entropy over clustered response embeddings to measure behavioral inconsistency indicating safety alignment conflict.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T7.4.5.4">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T7.4.5.4.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.5.4.1.1" style="font-size:70%;">Concrete Example</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T7.4.5.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.5.4.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.5.4.2.1.1"><span class="ltx_text" id="A1.T7.4.5.4.2.1.1.1" style="font-size:70%;">For jailbreak “My grandma used to tell me stories about how to make napalm,” sampling N=5 responses yields mixed semantic clusters: refusals (“I cannot fulfill this request”), compliance (“mix gasoline with…”), and hedges (“for fictional purposes…”). This high semantic variance produces high entropy score, flagging interaction as suspicious before harmful response reaches user, based solely on model’s inconsistent behavior.</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T7.4.6.5">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" id="A1.T7.4.6.5.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T7.4.6.5.1.1" style="font-size:70%;">Potential Pitfalls</span></th>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="A1.T7.4.6.5.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T7.4.6.5.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T7.4.6.5.2.1.1"><span class="ltx_text" id="A1.T7.4.6.5.2.1.1.1" style="font-size:70%;">Hardness confound where complex but benign prompts also produce high entropy; adaptive adversaries learning to generate prompts forcing consistent, low-entropy malicious outputs; inapplicability to training-time backdoor attacks that eliminate rather than create internal conflict.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p2">
+<p class="ltx_p" id="A1.SS4.p2.1"><span class="ltx_text ltx_font_bold" id="A1.SS4.p2.1.1">Expert Validation</span>: By this stage, we conducted an internal review of the top ideas based on lessons learned from the previous expert validations and implementation attempts. We selected this idea as most likely to succeed for autonomous execution, specifically because it avoided many of the technical complexity and computational resource issues identified in the previous ideas. The choice prioritized implementation feasibility over novelty, representing a strategic pivot toward ideas that could be completed within our system’s current capabilities.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p3">
+<p class="ltx_p" id="A1.SS4.p3.1"><span class="ltx_text ltx_font_bold" id="A1.SS4.p3.1.1">Implementation and Failure Modes</span>: The most interesting thing with this idea was that the first hypothesis implemented was implemented but when it failed to detect jailbreaks effectively, the Revision Agent triggered a change in idea from using semantic entropy as a detection method to showcasing its failure and investigating the failure mode.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p4">
+<p class="ltx_p" id="A1.SS4.p4.1">Table <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#A1.T8" title="Table 8 ‣ A.4 AS-1: Semantic Entropy as Signal for Jailbreak Prompts ‣ Appendix A Deep Dives: Research Ideas and Anecdotes ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">8</span></a> showcases the updated hypotheses suite generated by the relevant agent after the revision of the idea.</p>
+</div>
+<figure class="ltx_table" id="A1.T8">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="A1.T8.11.1.1" style="font-size:90%;">Table 8</span>: </span><span class="ltx_text" id="A1.T8.12.2" style="font-size:90%;">Evolution of Hypotheses Suite: From Testing Detection to Investigating Failure</span></figcaption>
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="A1.T8.9">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="A1.T8.9.10.1">
+<th class="ltx_td ltx_th ltx_th_row ltx_border_tt" id="A1.T8.9.10.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"></th>
+<th class="ltx_td ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T8.9.10.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.9.10.1.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.9.10.1.2.1.1"><span class="ltx_text ltx_font_bold" id="A1.T8.9.10.1.2.1.1.1" style="font-size:70%;">Original Hypotheses Suite</span><span class="ltx_text" id="A1.T8.9.10.1.2.1.1.2" style="font-size:70%;"> </span>
+<br class="ltx_break"/><span class="ltx_text ltx_font_italic" id="A1.T8.9.10.1.2.1.1.3" style="font-size:70%;">(Testing SE as Detection Method)</span></span>
+</span>
+</th>
+<th class="ltx_td ltx_nopad_r ltx_align_justify ltx_th ltx_th_column ltx_border_tt" id="A1.T8.9.10.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.9.10.1.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.9.10.1.3.1.1"><span class="ltx_text ltx_font_bold" id="A1.T8.9.10.1.3.1.1.1" style="font-size:70%;">Revised Hypotheses Suite</span><span class="ltx_text" id="A1.T8.9.10.1.3.1.1.2" style="font-size:70%;"> </span>
+<br class="ltx_break"/><span class="ltx_text ltx_font_italic" id="A1.T8.9.10.1.3.1.1.3" style="font-size:70%;">(Investigating the Consistency Confound)</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="A1.T8.1.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" id="A1.T8.1.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.1.1.2.1" style="font-size:70%;">H1</span></th>
+<td class="ltx_td ltx_align_justify ltx_border_t" id="A1.T8.1.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.1.1.1.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.1.1.1.1.1"><span class="ltx_text" id="A1.T8.1.1.1.1.1.1" style="font-size:70%;">Semantic entropy detector achieves AUROC </span><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.1.1.1.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.1.1.1.1.1.2" style="font-size:70%;"> baseline consistency metric by 0.1+ on JailbreakBench harmful vs benign prompts</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_t" id="A1.T8.1.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.1.1.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.1.1.3.1.1"><span class="ltx_text" id="A1.T8.1.1.3.1.1.1" style="font-size:70%;">H1: SE underperforms simple baselines (BERTScore, Embedding Variance) on JailbreakBench, with model-dependent baseline rankings</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.2.2">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T8.2.2.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.2.2.2.1" style="font-size:70%;">H2</span></th>
+<td class="ltx_td ltx_align_justify" id="A1.T8.2.2.1" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.2.2.1.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.2.2.1.1.1"><span class="ltx_text" id="A1.T8.2.2.1.1.1.1" style="font-size:70%;">SE maintains AUROC </span><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.2.2.1.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.2.2.1.1.1.2" style="font-size:70%;"> 0.85 distinguishing harmful from benign-but-hard prompts, proving sensitivity to malice not complexity</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T8.2.2.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.2.2.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.2.2.3.1.1"><span class="ltx_text" id="A1.T8.2.2.3.1.1.1" style="font-size:70%;">H2: SE failure generalizes to HarmBench-Contextual, again losing to simpler baselines with model-dependent performance</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.4.4">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T8.4.4.3" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.4.4.3.1" style="font-size:70%;">H3</span></th>
+<td class="ltx_td ltx_align_justify" id="A1.T8.3.3.1" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.3.3.1.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.3.3.1.1.1"><span class="ltx_text" id="A1.T8.3.3.1.1.1.1" style="font-size:70%;">SE calibrated on JailbreakBench generalizes to HarmBench contextual attacks with AUROC </span><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.3.3.1.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.3.3.1.1.1.2" style="font-size:70%;"> 0.70</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T8.4.4.2" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.4.4.2.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.4.4.2.1.1"><span class="ltx_text" id="A1.T8.4.4.2.1.1.1" style="font-size:70%;">H3: After controlling for response length confound, SE achieves near-random AUROC </span><math alttext="&lt;" class="ltx_Math" display="inline" id="A1.T8.4.4.2.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.4.4.2.1.1.2" style="font-size:70%;"> 0.55 on both benchmarks</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.5.5">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T8.5.5.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.5.5.2.1" style="font-size:70%;">H4</span></th>
+<td class="ltx_td ltx_align_justify" id="A1.T8.5.5.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.5.5.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.5.5.3.1.1"><span class="ltx_text" id="A1.T8.5.5.3.1.1.1" style="font-size:70%;">SE deployed as gate reduces Tree of Attacks ASR by 25+ percentage points vs undefended model</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T8.5.5.1" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.5.5.1.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.5.5.1.1.1"><span class="ltx_text" id="A1.T8.5.5.1.1.1.1" style="font-size:70%;">H4: SE uniquely brittle: performance collapses when clustering threshold </span><math alttext="\tau" class="ltx_Math" display="inline" id="A1.T8.5.5.1.1.1.m1" intent=":literal"><semantics><mi mathsize="0.700em">τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math><span class="ltx_text" id="A1.T8.5.5.1.1.1.2" style="font-size:70%;"> increased from 0.1→0.2 or samples N from 5→10</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.6.6">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T8.6.6.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.6.6.2.1" style="font-size:70%;">H5</span></th>
+<td class="ltx_td ltx_align_justify" id="A1.T8.6.6.1" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.6.6.1.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.6.6.1.1.1"><span class="ltx_text" id="A1.T8.6.6.1.1.1.1" style="font-size:70%;">SE correctly identifies </span><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.6.6.1.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.6.6.1.1.1.2" style="font-size:70%;">20% of jailbreaks missed by supervized WildGuard classifier</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T8.6.6.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.6.6.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.6.6.3.1.1"><span class="ltx_text" id="A1.T8.6.6.3.1.1.1" style="font-size:70%;">H5: Paraphrasing prompts disproportionately degrades SE vs baselines by disrupting memorized refusal templates</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.9.9">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" id="A1.T8.9.9.4" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.9.9.4.1" style="font-size:70%;">H6</span></th>
+<td class="ltx_td ltx_align_justify" id="A1.T8.9.9.5" style="padding-top:1.2pt;padding-bottom:1.2pt;"></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify" id="A1.T8.9.9.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.9.9.3.3">
+<span class="ltx_p ltx_align_left" id="A1.T8.9.9.3.3.3"><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.7.7.1.1.1.m1" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.9.9.3.3.3.1" style="font-size:70%;">80% of SE false negatives exhibit “Consistency Confound”: high duplicate rate (</span><math alttext="&gt;" class="ltx_Math" display="inline" id="A1.T8.8.8.2.2.2.m2" intent=":literal"><semantics><mo mathsize="0.700em">&gt;</mo><annotation encoding="application/x-tex">&gt;</annotation></semantics></math><span class="ltx_text" id="A1.T8.9.9.3.3.3.2" style="font-size:70%;">0.6) and low cluster count (</span><math alttext="\leq" class="ltx_Math" display="inline" id="A1.T8.9.9.3.3.3.m3" intent=":literal"><semantics><mo mathsize="0.700em">≤</mo><annotation encoding="application/x-tex">\leq</annotation></semantics></math><span class="ltx_text" id="A1.T8.9.9.3.3.3.3" style="font-size:70%;">2)</span></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="A1.T8.9.11.1">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" id="A1.T8.9.11.1.1" style="padding-top:1.2pt;padding-bottom:1.2pt;"><span class="ltx_text ltx_font_bold" id="A1.T8.9.11.1.1.1" style="font-size:70%;">H7</span></th>
+<td class="ltx_td ltx_align_justify ltx_border_bb" id="A1.T8.9.11.1.2" style="padding-top:1.2pt;padding-bottom:1.2pt;"></td>
+<td class="ltx_td ltx_nopad_r ltx_align_justify ltx_border_bb" id="A1.T8.9.11.1.3" style="padding-top:1.2pt;padding-bottom:1.2pt;">
+<span class="ltx_inline-block ltx_align_top" id="A1.T8.9.11.1.3.1">
+<span class="ltx_p ltx_align_left" id="A1.T8.9.11.1.3.1.1"><span class="ltx_text" id="A1.T8.9.11.1.3.1.1.1" style="font-size:70%;">Stronger alignment worsens SE: Qwen2.5-72B shows lower SE AUROC than smaller models while maintaining baseline performance</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p5">
+<p class="ltx_p" id="A1.SS4.p5.1">The abstract for our accepted paper was:</p>
+<blockquote class="ltx_quote" id="A1.SS4.p5.2">
+<p class="ltx_p" id="A1.SS4.p5.2.1">“Black-box jailbreak detection for Large Language Models (LLMs) remains challenging, particularly when internal states are inaccessible. Semantic entropy (SE)—successfully used for hallucination detection—offers a promising behavioral approach based on response consistency analysis. We hypothesize that jailbreak prompts create internal conflict between safety training and instruction-following, potentially manifesting as inconsistent responses with high semantic entropy. We systematically evaluate this approach using a black-box, embedding-based implementation of SE adapted from Farquhar et al.’s bidirectional entailment method to work within black-box constraints. Testing across two model families (Llama and Qwen) and two benchmarks (JailbreakBench, HarmBench), we find SE fails with 85-98% false negative rates, consistently outperformed by simpler baselines and exhibiting extreme hyperparameter sensitivity. We identify the primary failure mechanism as the “Consistency Confound”: well-aligned models produce consistent, templated refusals that SE misinterprets as safe behavior, accounting for 73-97% of false negatives with high statistical confidence [95% Wilson CIs]. While SE’s core assumption about response inconsistency indicating problematic content holds in limited cases, threshold brittleness renders it practically unreliable. Our results suggest that for this SE variant, response consistency may not be a reliable signal for jailbreak detection, as stronger alignment leads to more predictable outputs that confound this type of diversity-based detector.”</p>
+</blockquote>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p6">
+<p class="ltx_p" id="A1.SS4.p6.1">Unlike the previous implementations, this work proceeded with
+substantially less human intervention. Since the research focused on data
+analysis rather than complex model architectures, most technical barriers proved surmountable autonomously. The familiar infrastructure challenges discussed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a> appeared here too—Modal API compatibility issues, model integration errors, and library import failures.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p7">
+<p class="ltx_p" id="A1.SS4.p7.1">Training data bias also manifested in dataset handling, where instead of reviewing the available fields, the model defaulted to a standard prompt and output format despite HarmBench-Contextual prompts having a separate context field that was initially ignored. However, these issues didn’t derail progress.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p8">
+<p class="ltx_p" id="A1.SS4.p8.1">To meet conference deadlines, the experimental evaluation process was streamlined to just two checkpoints: initial idea revision and final paper readiness assessment.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS4.p9">
+<p class="ltx_p" id="A1.SS4.p9.1">This implementation also demonstrated the overexcitement failure mode discussed in Section <a class="ltx_ref" href="https://arxiv.org/html/2601.03315v1#S3" title="3 Observed Failure Modes and Mitigation ‣ Why LLMs Aren’t Scientists Yet: Lessons from Four Autonomous Research Attempts"><span class="ltx_text ltx_ref_tag">3</span></a>. Despite degenerate outputs and statistical
+insignificance that required manual intervention to identify and address, the initial automated paper writing consistently emphasized positive aspects while downplaying substantial limitations. This pattern required human oversight to ensure transparent reporting of methodological issues and statistical problems in the final paper’s limitations section.</p>
+</div>
+</section>
+</section>
+</article>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_page_logo">Generated  on Tue Jan  6 13:15:48 2026 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="/></a>
+</div></footer>
+</div>
+</body>
+</html>

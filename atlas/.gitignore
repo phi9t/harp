@@ -1,0 +1,5 @@
+node_modules
+dist/*
+!dist/harp-atlas.html
+!dist/harp-atlas.receipt.json
+*.tsbuildinfo

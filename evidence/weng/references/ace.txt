@@ -1,0 +1,1018 @@
+REFERENCES
+General Data Protection Regulation (GDPR) Article 17: Right to Erasure. EU Regulation 2016/679,
+2016.
+California Consumer Privacy Act, Civil Code §1798.105: Right to Delete. State of California Civil
+Code, 2018.
+Rishabh Agarwal, Avi Singh, Lei Zhang, Bernd Bohnet, Luis Rosias, Stephanie Chan, Biao Zhang,
+Ankesh Anand, Zaheer Abbas, Azade Nova, et al. Many-Shot In-Context Learning. Advances in
+Neural Information Processing Systems (NeurIPS), 37:76930–76966, 2024.
+Lakshya A Agrawal, Shangyin Tan, Dilara Soylu, Noah Ziems, Rishi Khare, Krista Opsahl-Ong,
+Arnav Singhvi, Herumb Shandilya, Michael J Ryan, Meng Jiang, et al. GEPA: Reflective Prompt
+Evolution Can Outperform Reinforcement Learning. arXiv preprint arXiv:2507.19457, 2025.
+AppWorld. Leaderboard. https://appworld.dev/leaderboard. Accessed: 09/2025.
+Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, and Hannaneh Hajishirzi. Self-RAG: Learning to
+Retrieve, Generate, andCritiquethroughSelf-Reflection. InTheTwelfthInternationalConference
+on Learning Representations (ICLR), 2024.
+Sebastian Borgeaud, Arthur Mensch, Jordan Hoffmann, Trevor Cai, Eliza Rutherford, Katie Milli-
+can, George Bm Van Den Driessche, Jean-Baptiste Lespiau, Bogdan Damoc, Aidan Clark, et al.
+Improving Language Models by Retrieving from Trillions of Tokens. In International Conference
+on Machine Learning (ICML), pp. 2206–2240. PMLR, 2022.
+Lucas Bourtoule, Varun Chandrasekaran, Christopher Choquette-Choo, Hengrui Jia, Adelin Travers,
+Baiwu Zhang, David Lie, and Nicolas Papernot. Machine Unlearning. In IEEE Symposium on
+Security and Privacy (IEEE S&P), 2021.
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal,
+Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language Models are
+Few-Shot Learners. Advances in Neural Information Processing Systems (NeurIPS), 33:1877–
+1901, 2020.
+11Published as a conference paper at ICLR 2026
+Yinzhi Cao and Junfeng Yang. Towards Making Systems Forget with Machine Unlearning. In IEEE
+Symposium on Security and Privacy (IEEE S&P), 2015.
+Tianxiang Chen, Zhentao Tan, Xiaofan Bo, Yue Wu, Tao Gong, Qi Chu, Jieping Ye, and Neng-
+hai Yu. Flora: Effortless Context Construction to Arbitrary Length and Scale. arXiv preprint
+arXiv:2507.19786, 2025.
+Yeounoh Chung, Gaurav T Kakkar, Yu Gan, Brenton Milne, and Fatma Özcan. Is Long Context
+All You Need? Leveraging LLM’s Extended Context for NL2SQL. Proceedings of the VLDB
+Endowment, 18(8):2735–2747, 2025.
+DSPy. dspy.GEPA: Reflective Prompt Optimizer. https://dspy.ai/api/optimizers/
+GEPA/overview/, a. Accessed: 09/2025.
+DSPy. dspy.MIPROv2: Multiprompt Instruction PRoposal Optimizer Version 2. https://dspy.
+ai/api/optimizers/MIPROv2/, b. Accessed: 09/2025.
+Arsene Fansi Tchango, Rishab Goel, Zhi Wen, Julien Martel, and Joumana Ghosn. DDXPlus:
+A New Dataset For Automatic Medical Diagnosis. Advances in neural information processing
+systems (NeurIPS), 2022.
+Shuzheng Gao, Chaozheng Wang, Cuiyun Gao, Xiaoqian Jiao, Chun Yong Chong, Shan Gao, and
+Michael Lyu. The Prompt Alchemist: Automated LLM-Tailored Prompt Optimization for Test
+Case Generation. arXiv preprint arXiv:2501.01329, 2025.
+In Gim, Guojun Chen, Seung-seob Lee, Nikhil Sarda, Anurag Khandelwal, and Lin Zhong. Prompt
+Cache: Modular Attention Reuse for Low-Latency Inference. Proceedings of Machine Learning
+and Systems (MLSys), 6:325–338, 2024.
+Neel Guha, Julian Nyarko, Daniel Ho, Christopher Ré, Adam Chilton, Alex Chohlas-Wood, Austin
+Peters, Brandon Waldon, Daniel Rockmore, Diego Zambrano, et al. LegalBench: A Collabora-
+tively Built Benchmark for Measuring Legal Reasoning in Large Language Models. Advances in
+neural information processing systems (NeurIPS), 2023.
+Ishaan Gulrajani and David Lopez-Paz. In Search of Lost Domain Generalization. In International
+Conference on Learning Representations (ICLR), 2021.
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang,
+and Weizhu Chen. LoRA: Low-Rank Adaptation of Large Language Models. In The Tenth
+International Conference on Learning Representations (ICLR), 2022.
+Maxwell L Hutchinson, Erin Antono, Brenna M Gibbons, Sean Paradiso, Julia Ling, and Bryce
+Meredig. Overcoming Data Scarcity with Transfer Learning. arXiv preprint arXiv:1711.05099,
+2017.
+Mingjian Jiang, Yangjun Ruan, Luis Lastras, Pavan Kapanipathi, and Tatsunori Hashimoto. Putting
+It All into Context: Simplifying Agents with LCLMs. arXiv preprint arXiv:2505.08120, 2025.
+Tushar Khot, Harsh Trivedi, Matthew Finlayson, Yao Fu, Kyle Richardson, Peter Clark, and Ashish
+Sabharwal. Decomposed Prompting: A Modular Approach for Solving Complex Tasks. In Inter-
+national Conference on Learning Representations (ICLR), 2023.
+Pang Wei Koh, Shiori Sagawa, Henrik Marklund, Sang Michael Xie, Marvin Zhang, Akshay Bal-
+subramani, Weihua Hu, Michihiro Yasunaga, Richard Lanas Phillips, Irena Gao, et al. WILDS: A
+Benchmark of in-the-Wild Distribution Shifts. In International conference on machine learning
+(ICML), 2021.
+Ben Krause, Emmanuel Kahembwe, Iain Murray, and Steve Renals. Dynamic Evaluation of Trans-
+former Language Models. arXiv preprint arXiv:1904.08378, 2019.
+Wonbeom Lee, Jungi Lee, Junghwan Seo, and Jaewoong Sim. InfiniGen: Efficient Generative
+Inference of Large Language Models with Dynamic KV Cache Management. In 18th USENIX
+Symposium on Operating Systems Design and Implementation (OSDI 24), pp. 155–172, 2024.
+12Published as a conference paper at ICLR 2026
+Brian Lester, Rami Al-Rfou, and Noah Constant. The Power of Scale for Parameter-Efficient Prompt
+Tuning. In Proceedings of the 2021 conference on empirical methods in natural language pro-
+cessing (EMNLP), pp. 3045–3059, 2021.
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal,
+Heinrich Küttler, Mike Lewis, Wen-tau Yih, Tim Rocktäschel, et al. Retrieval-Augmented Gen-
+eration for Knowledge-Intensive NLP Tasks. Advances in neural information processing systems
+(NeurIPS), 2020.
+Hanchen Li, Qiuyang Mang, Runyuan He, Qizheng Zhang, Huanzhi Mao, Xiaokun Chen, Hangrui
+Zhou, Alvin Cheung, Joseph Gonzalez, and Ion Stoica. Continuum: Efficient and Robust Multi-
+Turn LLM Agent Scheduling with KV Cache Time-to-Live. arXiv preprint arXiv:2511.02230,
+2025.
+Jinyang Li, Binyuan Hui, Ge Qu, Jiaxi Yang, Binhua Li, Bowen Li, Bailin Wang, Bowen Qin,
+Ruiying Geng, Nan Huo, et al. Can LLM Already Serve as A Database Interface? A BIg Bench
+for Large-Scale Database Grounded Text-to-SQLs. Advances in Neural Information Processing
+Systems (NeurIPS), 2023.
+Xiang Lisa Li and Percy Liang. Prefix-Tuning: Optimizing Continuous Prompts for Generation. In
+Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the
+11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers),
+pp. 4582–4597, 2021.
+Aixin Liu, Bei Feng, Bing Xue, Bingxuan Wang, Bochao Wu, Chengda Lu, Chenggang Zhao,
+ChengqiDeng, ChenyuZhang, ChongRuan, etal. DeepSeek-V3TechnicalReport. arXivpreprint
+arXiv:2412.19437, 2024a.
+Sijia Liu, Yuanshun Yao, Jinghan Jia, Stephen Casper, Nathalie Baracaldo, Peter Hase, Yuguang
+Yao, Chris Yuhao Liu, Xiaojun Xu, Hang Li, et al. Rethinking Machine Unlearning for Large
+Language Models. Nature Machine Intelligence, 7(2):181–194, 2025a.
+Yuhan Liu, Hanchen Li, Yihua Cheng, Siddhant Ray, Yuyang Huang, Qizheng Zhang, Kuntai Du,
+Jiayi Yao, Shan Lu, Ganesh Ananthanarayanan, et al. CacheGen: KV Cache Compression and
+Streaming for Fast Large Language Model Serving. In Proceedings of the ACM SIGCOMM 2024
+Conference, pp. 38–56, 2024b.
+Zhining Liu, Rana Ali Amjad, Ravinarayana Adkathimar, Tianxin Wei, and Hanghang Tong. Self-
+Elicit: Your Language Model Secretly Knows Where is the Relevant Evidence. In Proceedings
+of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long
+Papers), pp. 9153–9173, 2025b.
+Zirui Liu, Jiayi Yuan, Hongye Jin, Shaochen Zhong, Zhaozhuo Xu, Vladimir Braverman, Beidi
+Chen, and Xia Hu. KIVI: A Tuning-Free Asymmetric 2bit Quantization for KV Cache. In
+International Conference on Machine Learning (ICML), 2024c.
+Lefteris Loukas, Manos Fergadiotis, Ilias Chalkidis, Eirini Spyropoulou, Prodromos Malakasiotis,
+Ion Androutsopoulos, and Georgios Paliouras. FiNER: Financial Numeric Entity Recognition for
+XBRL Tagging. In Proceedings of the 60th Annual Meeting of the Association for Computational
+Linguistics (Volume 1: Long Papers), pp. 4419–4431, 2022.
+Qiuyang Mang, Wenhao Chai, Zhifei Li, Huanzhi Mao, Shang Zhou, Alexander Du, Hanchen Li,
+Shu Liu, Edwin Chen, Yichuan Wang, et al. FrontierCS: Evolving Challenges for Evolving Intel-
+ligence. arXiv preprint arXiv:2512.15699, 2025.
+Yansheng Mao, Jiaqi Li, Fanxu Meng, Jing Xiong, Zilong Zheng, and Muhan Zhang. LIFT:
+Improving Long Context Understanding Through Long Input Fine-Tuning. arXiv preprint
+arXiv:2412.13626, 2024.
+SamiMarreed, AlonOved, AviYaeli, SegevShlomov, IdoLevy, OfferAkrabi, AviadSela, AsafAdi,
+and Nir Mashkif. Towards Enterprise-Ready Computer Using Generalist Agent. arXiv preprint
+arXiv:2503.01861, 2025.
+13Published as a conference paper at ICLR 2026
+OpenAI. GPT-4o mini: Advancing Cost-Efficient Intelligence. https://openai.com/
+index/gpt-4o-mini-advancing-cost-efficient-intelligence/, 2024.
+Krista Opsahl-Ong, Michael J Ryan, Josh Purtell, David Broman, Christopher Potts, Matei Zaharia,
+and Omar Khattab. Optimizing Instructions and Demonstrations for Multi-Stage Language Model
+Programs. In Proceedings of the 2024 Conference on Empirical Methods in Natural Language
+Processing (EMNLP), pp. 9340–9366, 2024.
+Sinno Jialin Pan and Qiang Yang. A Survey on Transfer Learning. IEEE Transactions on Knowledge
+and Data Engineering, 22(10):1345–1359, 2010.
+Shishir G Patil, Tianjun Zhang, Xin Wang, and Joseph E Gonzalez. Gorilla: Large Language Model
+Connected with Massive APIs. Advances in Neural Information Processing Systems (NeurIPS),
+2024.
+BowenPeng, JeffreyQuesnelle, HongluFan, andEnricoShippole. YaRN:EfficientContextWindow
+Extension of Large Language Models. In The Twelfth International Conference on Learning
+Representations (ICLR), 2024.
+Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao. Reflex-
+ion: Language Agents with Verbal Reinforcement Learning. Advances in Neural Information
+Processing Systems (NeurIPS), 2023.
+Mirac Suzgun, Mert Yuksekgonul, Federico Bianchi, Dan Jurafsky, and James Zou. Dy-
+namic Cheatsheet: Test-Time Learning with Adaptive Memory. https://github.com/
+suzgunmirac/dynamic-cheatsheet. Accessed: 09/2025.
+Mirac Suzgun, Mert Yuksekgonul, Federico Bianchi, Dan Jurafsky, and James Zou. Dynamic Cheat-
+sheet: Test-Time Learning with Adaptive Memory. arXiv preprint arXiv:2504.07952, 2025.
+Harsh Trivedi, Tushar Khot, Mareike Hartmann, Ruskin Manku, Vinty Dong, Edward Li, Shashank
+Gupta, Ashish Sabharwal, and Niranjan Balasubramanian. AppWorld: A Controllable World
+of Apps and People for Benchmarking Interactive Coding Agents. In Proceedings of the 62nd
+Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pp.
+16022–16076, 2024.
+Dannong Wang, Jaisal Patel, Daochen Zha, Steve Y Yang, and Xiao-Yang Liu. FinLoRA:
+Benchmarking LoRA Methods for Fine-Tuning LLMs on Financial Datasets. arXiv preprint
+arXiv:2505.19819, 2025a.
+Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowd-
+hery, and Denny Zhou. Self-Consistency Improves Chain of Thought Reasoning in Language
+Models. In The Eleventh International Conference on Learning Representations (ICLR), 2023.
+Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, and Graham Neubig. Agent Workflow Memory. In
+Forty-second International Conference on Machine Learning (ICML), 2025b.
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny
+Zhou, etal. Chain-of-ThoughtPromptingElicitsReasoninginLargeLanguageModels. Advances
+in neural information processing systems (NeurIPS), 35:24824–24837, 2022.
+Cheng-Kuang Wu, Zhi R Tam, Chieh-Yen Lin, Yun-Nung Chen, and Hung-yi Lee. StreamBench:
+Towards Benchmarking Continuous Improvement of Language Agents. Advances in Neural In-
+formation Processing Systems (NeurIPS), 2024.
+Wujiang Xu, Kai Mei, Hang Gao, Juntao Tan, Zujie Liang, and Yongfeng Zhang. A-Mem: Agentic
+Memory for LLM Agents. Advances in neural information processing systems (NeurIPS), 2025.
+John Yang, Carlos E Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik Narasimhan,
+and Ofir Press. SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineer-
+ing. Advances in Neural Information Processing Systems (NeurIPS), 2024.
+14Published as a conference paper at ICLR 2026
+Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William Cohen, Ruslan Salakhutdinov,
+and Christopher D Manning. HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question
+Answering. In Proceedings of the 2018 conference on empirical methods in natural language
+processing (EMNLP), pp. 2369–2380, 2018.
+Jiayi Yao, Hanchen Li, Yuhan Liu, Siddhant Ray, Yihua Cheng, Qizheng Zhang, Kuntai Du, Shan
+Lu, and Junchen Jiang. CacheBlend: Fast Large Language Model Serving for RAG with Cached
+Knowledge Fusion . In Proceedings of the Twentieth European Conference on Computer Systems
+(EuroSys), pp. 94–109, 2025.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao.
+ReAct: Synergizing Reasoning and Acting in Language Models. In International Conference on
+Learning Representations (ICLR), 2023.
+Jiacheng Ye, Chengzu Li, Lingpeng Kong, and Tao Yu. Generating Data for Symbolic Language
+with Large Language Models. In Proceedings of the 2023 conference on empirical methods in
+natural language processing (EMNLP), pp. 8418–8443, 2023.
+Mert Yuksekgonul, Federico Bianchi, Joseph Boen, Sheng Liu, Pan Lu, Zhi Huang, Carlos Guestrin,
+and James Zou. Optimizing Generative AI by Backpropagating Language Model Feedback. Na-
+ture, 639(8055):609–616, 2025.
+Matei Zaharia, Omar Khattab, Lingjiao Chen, Jared Quincy Davis, Heather Miller, Chris Potts,
+James Zou, Michael Carbin, Jonathan Frankle, Naveen Rao, and Ali Ghodsi. The Shift from
+Models to Compound AI Systems. https://bair.berkeley.edu/blog/2024/02/
+18/compound-ai-systems/, 2024.
+Genghan Zhang, Weixin Liang, Olivia Hsu, and Kunle Olukotun. Adaptive Self-Improvement LLM
+Agentic System for ML Library Development. In Forty-second International Conference on Ma-
+chine Learning (ICML), 2025a.
+Genghan Zhang, Shaowei Zhu, Anjiang Wei, Zhenyu Song, Allen Nie, Zhen Jia, Nandita Vijayku-
+mar, Yida Wang, and Kunle Olukotun. AccelOpt: A Self-Improving LLM Agentic System for AI
+Accelerator Kernel Optimization. arXiv preprint arXiv:2511.15915, 2025b.
+Qizheng Zhang, Ali Imran, Enkeleda Bardhi, Tushar Swamy, Nathan Zhang, Muhammad Shahbaz,
+and Kunle Olukotun. Caravan: Practical Online Learning of In-Network ML Models with La-
+beling Agents. In 18th USENIX Symposium on Operating Systems Design and Implementation
+(OSDI), pp. 325–345, 2024.
+Qizheng Zhang, Michael Wornow, and Kunle Olukotun. Agentic Plan Caching: Test-Time Mem-
+ory for Fast and Cost-Efficient LLM Agents. In The Thirty-ninth Annual Conference on Neural
+Information Processing Systems (NeurIPS), 2025c.
+Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang,
+Zi Lin, Zhuohan Li, Dacheng Li, Eric Xing, et al. Judging LLM-as-a-Judge with MT-Bench and
+Chatbot Arena. Advances in neural information processing systems (NeurIPS), 36:46595–46623,
+2023.
+Huichi Zhou, Yihang Chen, Siyuan Guo, Xue Yan, Kin Hei Lee, Zihan Wang, Ka Yiu Lee, Guchun
+Zhang, Kun Shao, Linyi Yang, et al. AgentFly: Fine-tuning LLM Agents without Fine-tuning
+LLMs. arXiv preprint arXiv:2508.16153, 2025.
+Yujun Zhou, Yufei Han, Haomin Zhuang, Kehan Guo, Zhenwen Liang, Hongyan Bao, and Xian-
+gliang Zhang. Defending Jailbreak Prompts via In-Context Adversarial Game. In Proceedings
+of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP), pp.
+20084–20105, 2024.
+Fuzhen Zhuang, Zhiyuan Qi, Keyu Duan, Dongbo Xi, Yongchun Zhu, Hengshu Zhu, Hui Xiong,
+and Qing He. A Comprehensive Survey on Transfer Learning. arXiv:1911.02685, 2019.
+15Published as a conference paper at ICLR 2026
+A EXTENDED RESULTS
+A.1 GENERALIZATION ACROSS DIFFERENT LLMS
+ACE is a model-agnostic framework that operates on execution traces and contextual deltas, and
+does not rely on any architectural or training-specific features of DeepSeek-V3.1 (the default back-
+bone we use in the main text). We evaluated ACE with three additional models of varying size,
+cost, and capability: GPT-OSS-120B (Table 5 and 7), GPT-5.1 (Table 6 and 8), and Llama-3.3-70B-
+Instruct (Table 9). In each case, the Generator, Reflector, and Curator were all switched to the new
+model without changes to the algorithm.
+Analysis Across all four LLM families we tested (DeepSeek-V3.1, GPT-OSS-120B, GPT-5.1, and
+Llama-3.3-70B-Instruct), ACE consistently improves performance over both the base LLM/agent,
+GEPA, and other baselines, often by 5 to 12 points depending on the task and supervision setting.
+The relative gains of ACE remain stable even when switching to models that differ significantly
+in size, cost, and training recipe, and ACE delivers benefits with or without ground-truth labels,
+validating the robustness of its context adaptation mechanism. The online variant reliably achieves
+the strongest performance across all models.
+We note that the magnitude of improvement can vary across model families: for example, Llama-
+3.3-70B-Instruct shows smaller gains compared to GPT-5.1 or GPT-OSS-120B. This is expected
+since ACE relies on the quality of intermediate reflections and calibrations, and smaller or weaker
+models naturally generate noisier feedback. Even in these cases, however, ACE remains beneficial,
+demonstrating that the framework is broadly applicable while still reflecting the inherent capability
+limits of the underlying LLM, as we discussed in the “Limitations and Challenges” paragraph in §5.
+Method GT Labels
+Test-Normal Test-Challenge
+Average
+TGC↑ SGC↑ TGC↑ SGC↑
+GPT-OSS-120B as Base LLM
+ReAct 54.8 33.9 34.5 15.1 34.6
+Offline Adaptation
+ReAct + GEPA ✓ 56.0+1.2 33.9+0.0 40.1+5.6 20.9+5.8 37.7+3.1
+ReAct + ACE ✓ 61.3+6.5 39.3+5.4 40.3+5.8 20.9+5.8 40.5+5.9
+ReAct + ACE ✗ 58.3+3.5 41.1+7.2 39.6+5.1 18.7+3.6 39.4+4.8
+Online Adaptation
+ReAct + DC (CU) ✗ 49.4−5.4 33.9+0.0 30.8−3.7 18.2+3.1 33.1−1.5
+ReAct + ACE ✗ 60.7+5.9 44.6+10.7 43.2+8.7 20.1+5.0 42.2+7.6
+Table 5: Results on the AppWorld Agent Benchmark (GPT-OSS-120B as the Base LLM). “GT
+labels” indicates whether ground-truth labels are available to the Reflector during adaptation. We
+evaluate the ACE framework against multiple baselines on top of the official ReAct implementa-
+tion, both for offline and online context adaptation.
+A.2 BEYOND FINANCE: ADDITIONAL DOMAIN TASKS
+We evaluate ACE on two additional domain tasks from StreamBench (Wu et al., 2024) under the
+non-streaming setting (i.e., offline adaptation): DDXPlus (Fansi Tchango et al., 2022) for medical
+reasoning (Table 10) and BIRD-SQL (Li et al., 2023) for Text-to-SQL generation (Table 11). For
+ACE, we perform offline adaptation using 1000 randomly sampled training examples. For GEPA,
+we use the same 1000 examples for training, and reserve a separate validation set of 500 examples
+for BIRD-SQL or 372 examples for DDXPlus (StreamBench provides 1372 train/val examples for
+DDXPlus in total). All other settings follow the main-text configuration unless stated otherwise.
+Analysis On DDXPlus, ACE substantially improves over the base LLM, rising from 75.2 to 90.2
+accuracy (+15.0). In contrast, GEPA yields a much smaller gain (76.4, +1.2). This suggests that
+ACE’s test-time evolving context transfers well to multi-step, domain-heavy diagnostic reasoning.
+16Published as a conference paper at ICLR 2026
+Method GT Labels
+Test-Normal
+Average
+TGC↑ SGC↑
+GPT-5.1 as Base LLM
+ReAct 61.9 46.4 54.2
+Offline Adaptation
+ReAct + GEPA ✓ 64.3+2.4 48.2+1.8 56.2+2.0
+ReAct + ACE ✓ 66.7+4.8 53.6+7.2 60.2+6.0
+ReAct + ACE ✗ 67.3+5.4 55.4+9.0 61.3+7.1
+Online Adaptation
+ReAct + DC (CU) ✗ 62.5+0.6 55.4+9.0 58.9+4.7
+ReAct + ACE ✗ 72.6+10.7 58.9+12.5 65.8+11.6
+Table 6: Results on the AppWorld Agent Benchmark (GPT-5.1 as the Base LLM). “GT labels”
+indicates whether ground-truth labels are available to the Reflector during adaptation. We evaluate
+the ACE framework against multiple baselines on top of the official ReAct implementation, both
+for offline and online context adaptation.
+Method GT Labels FiNER (Acc↑) Formula (Acc↑) Average
+GPT-OSS-120B as Base LLM
+Base LLM 66.6 71.5 69.1
+Offline Adaptation
+GEPA ✓ 67.9+1.3 71.5+0.0 69.7+0.6
+ACE ✓ 73.8+7.2 88.5+17.0 81.2+12.1
+ACE ✗ 69.7+3.1 84.0+12.5 76.9+7.8
+Online Adaptation
+DC ✗ 55.8−10.8 66.0−5.5 60.9−8.2
+ACE ✗ 70.5+3.9 85.0+13.5 77.8+8.7
+Table 7: Results on Financial Analysis Benchmark (GPT-OSS-120B as the Base LLM). “GT
+labels” indicates whether ground-truth labels are available to the Reflector during adaptation.
+Method GT Labels FiNER (Acc↑) Formula (Acc↑) Average
+GPT-5.1 as Base LLM
+Base LLM 73.5 73.0 73.3
+Offline Adaptation
+GEPA ✓ 74.5+1.0 73.0+0.0 73.8+0.5
+ACE ✓ 81.0+7.5 84.5+11.5 82.8+9.5
+ACE ✗ 78.2+4.7 76.5+3.5 77.4+4.1
+Online Adaptation
+DC ✗ 70.0−3.5 69.0−4.0 69.5−3.8
+ACE ✗ 75.2+1.7 79.0+6.0 77.1+3.8
+Table 8: Results on Financial Analysis Benchmark (GPT-5.1 as the Base LLM). “GT labels”
+indicates whether ground-truth labels are available to the Reflector during adaptation.
+On BIRD-SQL, ACE also improves consistently over the base model on all splits, achieving better
+overall average (52.9, +5.1). The gains are driven mainly by the Simple subset (53.5, +7.1). While
+GEPA yields larger gains on Moderate and Challenging, ACE still improves over the base model on
+both splits. Overall, these results indicate that ACE generalizes beyond finance to both knowledge-
+intensive reasoning and structured code generation tasks.
+17Published as a conference paper at ICLR 2026
+Method GT Labels FiNER (Acc↑)
+Llama-3.3-70B-Instruct as Base LLM
+Base LLM 62.5
+Offline Adaptation
+GEPA ✓ 59.41−3.09
+ACE ✓ 64.9+2.4
+ACE ✗ 64.2+1.7
+Online Adaptation
+DC ✗ 59.0−3.5
+ACE ✗ 63.6+1.1
+Table 9: Results on Financial Analysis Benchmark (Llama-3.3-70B-Instruct as the Base LLM).
+“GT labels” indicates whether ground-truth labels are available to the Reflector during adaptation.
+Method Accuracy (↑)
+DeepSeek-V3.1 as Base LLM
+Base LLM 75.2
+Offline Adaptation
+GEPA 76.4+1.2
+ACE 90.2+15.0
+Table 10: Results on Medical Reasoning Benchmark (DeepSeek-V3.1-671B as the Base LLM).
+We use DDXPlus from StreamBench.
+Method Simple (↑) Moderate (↑) Challenging (↑) Average
+DeepSeek-V3.1 as Base LLM
+Base LLM 46.4 48.2 55.1 47.8
+Offline Adaptation
+GEPA 51.6+5.2 51.9+3.7 57.2+2.1 52.2+4.4
+ACE 53.5+7.1 50.7+2.5 56.6+1.5 52.9+5.1
+Table 11: Results on Text-to-SQL Benchmark (DeepSeek-V3.1-671B as the Base LLM). We use
+BIRD-SQL from StreamBench.
+A.3 FINE-GRAINED COST ANALYSIS
+We perform a fine-grained cost analysis of ACE and GEPA for both the adaptation and evaluation
+stages (offline adaptation setting), using AppWorld as a representative application. For ACE, we
+run offline adaptation with 1 epoch and 1 reflector refinement round. While increasing the number
+of epochs or refinement rounds will increase cost, the qualitative trends below should remain: ACE
+avoids expensive validation-time re-evaluation and performs localized updates rather than repeated
+full rewrites. For GEPA, we use the official DSPy implementation (DSPy, b) with auto="heavy"
+to maximize optimization strength.
+Adaptation Stage Across adaptation (Table 12 and Table 13), ACE reduces input-token usage by
+80.8% relative to GEPA (204.1M → 39.3M) and output-token usage by 83.6% (1.87M → 0.31M).
+This gap is primarily driven by (1) GEPA’s prompt-validation loop, which repeatedly evaluates
+candidate prompts on a held-out validation set (57 queries), incurring substantial additional LLM
+calls and validation tokens, and (2) ACE’s incremental context updates, which replace full prompt
+rewrites with localized Generator-Reflector-Curator updates.
+Evaluation Stage At evaluation time (Table 14 and Table 15), ACE uses more raw input tokens
+per query than GEPA due to its richer, more actionable playbook. However, output-token usage
+18Published as a conference paper at ICLR 2026
+is similar (115.0 vs. 101.8), and the number of rollouts is comparable across methods. Moreover,
+under modern prompt/KV-caching infrastructures, the additional input tokens can be largely amor-
+tized: using OpenAI’s default prompt caching, 91.8% of ACE’s input tokens are served from cache,
+resulting in an 82.6% reduction in billed input-token cost (see §4.7).
+Method Total # input tokens Total # output tokens Total # rollouts Total # queries
+GEPA (prompt generation) 65,005,192 1,266,090 429 90
+GEPA (prompt validation) 139,070,904 604,098 1,026 57
+GEPA (total) 204,076,096 1,870,188 1,455 147
+ACE (Generator) 31,012,122 198,847 1,790 90
+ACE (Reflector) 4,685,840 70,487 161 90
+ACE (Curator) 3,552,963 37,794 124 90
+ACE (total) 39,250,925 (-80.8%) 307,128 (-83.6%) 2,075 (+42.6%) 90 (-38.8%)
+Table 12: Adaptation-Stage Aggregate Cost Statistics on AppWorld. The percentages compare
+ACE (total) against GEPA (total).
+Method Avg # input / rollout Avg # output / rollout Avg # input / query Avg # output / query Total # rollouts Total # queries
+GEPA (prompt generation) 151,600.4 2,951.4 722,279.9 14,067.7 429 90
+GEPA (prompt validation) 135,550.8 589.2 2,439,840.4 10,600.0 1,026 57
+GEPA (total) 140,291.8 1,285.4 1,387,538.4 12,721.7 1,455 147
+ACE (Generator) 17,326.6 111.1 344,579.1 2,209.4 1,790 90
+ACE (Reflector) 29,112.4 437.3 52,064.9 783.2 161 90
+ACE (Curator) 28,667.4 304.8 39,477.4 420.0 124 90
+ACE (total) 18,914.9 (-86.5%) 148.0 (-88.5%) 436,121.4 (-68.6%) 3,412.5 (-73.2%) 2,075 (+42.6%) 90 (-38.8%)
+Table 13: Adaptation-Stage Average Cost Statistics on AppWorld. The percentages compare
+ACE (total) against GEPA (total).
+Method Total # input tokens Total # output tokens Total # rollouts Total # eval queries
+Base ReAct 27,460,411 289,802 2,430 160
+GEPA 26,960,675 251,442 2,470 160
+ACE 58,623,267 (+117.4%) 270,652 (+7.6%) 2,354 (-4.7%) 160 (+0.0%)
+Table 14: Evaluation-Stage Aggregate Cost Statistics on AppWorld. The percentages compare
+ACE against GEPA.
+Method Avg # input / rollout Avg # output / rollout Avg # input / query Avg # output / query Total # rollouts Total # eval queries
+Base ReAct 11,298.5 119.3 171,627.6 1,811.3 2,430 160
+GEPA 10,918.5 101.8 168,504.2 1,571.5 2,470 160
+ACE 24,912.4 (+128.2%) 115.0 (+13.0%) 366,395.4 (+117.4%) 1,691.6 (+7.6%) 2,354 (-4.7%) 160 (+0.0%)
+Table 15: Evaluation-Stage Average Cost Statistics on AppWorld. The percentages compare
+ACE against GEPA.
+A.4 ROBUSTNESS TO REFLECTION QUALITY
+We conduct two analyses to evaluate ACE’s sensitivity to reflection quality. Unless otherwise noted,
+experiments are run on FiNER with ACE offline adaptation.
+Using Weaker Reflector Models To test whether ACE requires a strong reflector, we vary the
+Reflector across three models with substantially different capability: GPT-OSS-120B, DeepSeek-
+V3.1-671B, and GPT-5.1 (Table 16). Across all choices, ACE consistently improves over the base
+LLM, including when the Reflector is much weaker. While stronger reflectors yield larger gains, the
+method remains effective across a wide range of reflector strengths.
+Robustness to Noisy or Harmful Reflector Feedback We further stress-test ACE with actively
+harmful reflector outputs by injecting adversarial or conflicting bullets: we invoke a “harmful” re-
+flector that is explicitly instructed to inject harmful reflection once every X adaptation steps, where
+19Published as a conference paper at ICLR 2026
+Method Generator LLM Reflector LLM Curator LLM Accuracy (↑)
+Base LLM DeepSeek-V3.1 - - 70.7
+ACE DeepSeek-V3.1 GPT-OSS-120B DeepSeek-V3.1 76.6 (+5.9)
+ACE DeepSeek-V3.1 DeepSeek-V3.1 DeepSeek-V3.1 78.3 (+7.6)
+ACE DeepSeek-V3.1 GPT-5.1 DeepSeek-V3.1 78.5 (+7.8)
+Table 16: Weaker Reflector Models on FiNER. We vary the Reflector while keeping the Genera-
+tor/Curator fixed. Parentheses report deltas vs. the base LLM.
+Harmful Reflector Frequency (every X iters) Accuracy (↑)
+base LLM 70.7
+1 66.7 (-4.0)
+5 76.1 (+5.4)
+10 77.0 (+6.3)
+25 77.8 (+7.1)
+50 78.2 (+7.5)
+100 78.2 (+7.5)
+No harmful reflector 78.3 (+7.6)
+Table 17: Robustness to Noisy or Harmful Reflector Feedback on FiNER. We invoke a harmful
+reflector once every X adaptation steps. Parentheses report deltas vs. the base LLM.
+larger X means less frequent corruption (Table 17). ACE is robust to moderate noise levels: per-
+formance degrades gradually as corruption becomes more frequent and stays above the base LLM
+except in the extreme case of injecting harmful updates every iteration. This suggests that ACE’s
+update mechanism tolerates substantial noise in the reflection stream, with failures emerging only
+under intentionally adversarial conditions.
+Takeaway and Mitigation ACE is not highly sensitive to reflector quality: (1) weaker reflectors
+still provide substantial gains, (2) moderate noise or conflicting updates are largely tolerated, and (3)
+performance drops below the base model only under sustained adversarial corruption. In practice,
+ACE’s bullet-point analyzer (“grow-and-refine”; §3.2), which merges and deduplicates semantically
+similar bullets and can filter entries flagged as potentially harmful via metadata, serves as a first line
+of defense against context noise. Additional safeguards (e.g., contradiction detection, prompting the
+Curatortoprioritizehigh-confidenceupdates, orperiodicpruningofoutdatedentries)arecompatible
+extensions that could further improve playbook compactness and consistency (Zhou et al., 2024).
+A.5 ABLATION ON INCREMENTAL CONTEXT UPDATE
+In this ablation, we run offline context adaptation on AppWorld using ACE with and without in-
+cremental context updates, and evaluate on the test-normal split with DeepSeek-V3.1. We find that
+incremental updates are critical: by preserving useful information that would otherwise be lost to
+context collapse, they account for a large share of ACE ’s gains.
+Method Test-Normal TGC (↑) Test-Normal SGC (↑) Average
+DeepSeek-V3.1 as Base LLM
+ReAct 63.7 42.9 53.3
+Offline Adaptation
+ReAct + ACE (no incremental update) 67.3+3.6 46.4+3.5 56.9+3.6
+ReAct + ACE (with incremental update) 76.2+12.5 64.3+21.4 70.3+17.0
+Table 18: Ablation on Incremental Context Updates (AppWorld, DeepSeek-V3.1). We run
+offline context adaptation with ACE with/without incremental updates and evaluate on test-normal.
+Improvements are relative to ReAct.
+20Published as a conference paper at ICLR 2026
+A.6 SENSITIVITY ANALYSIS ON HYPERPARAMETER CHOICE
+Reflection Iterations This parameter trades off (1) extracting enough high-quality insights from
+the inference traces and (2) avoiding “overthinking” that introduces noisy or unnecessary updates.
+Empirically, 5 rounds offers a good balance. On AppWorld, 1 round under-extracts useful strategy
+fragments and leaves clear headroom, while too many rounds (e.g., 10) can degrade performance.
+# Reflection Iterations Test-Normal TGC (↑) Test-Normal SGC (↑) Average
+DeepSeek-V3.1 as Base LLM
+N/A (without ACE) 63.7 42.9 53.3
+Offline Adaptation
+1 69.0+5.3 53.6+10.7 61.3+8.0
+3 74.4+10.7 57.1+14.2 65.8+12.5
+5 72.6+8.9 62.5+19.6 67.6+14.3
+10 71.4+7.7 58.9+16.0 65.2+11.9
+Table 19: Effect of Reflection Iterations (AppWorld, DeepSeek-V3.1). We report test-normal
+results under offline context adaptation. Improvements are relative to running ReAct without ACE.
+Deduplication Threshold This controls how aggressively newly extracted insights are merged
+with existing entries. On FiNER, performance changes only mildly across the tested range, suggest-
+ing ACE is robust to moderate variation in dedup aggressiveness.
+Deduplication Threshold FiNER (Acc ↑)
+DeepSeek-V3.1 as Base LLM
+N/A (without ACE) 70.7
+Offline Adaptation
+50% 77.0+6.3
+70% 73.9+3.2
+90% 78.6+7.9
+Table 20: Effect of Deduplication Threshold (FiNER, DeepSeek-V3.1).
+Pruning Trigger (Maximum Context Length) This threshold determines when ACE merges and
+prunes older or low-utility entries to prevent unbounded growth. It balances (1) retaining enough
+accumulated context to improve learning from experience and (2) keeping the context compact to
+reduce cost and limit noise. On FiNER, performance is stable from 10K to 100K tokens, indicating
+ACE does not require finely tuned length thresholds; pruning mainly removes stale or harmful
+fragments while preserving core reusable strategies.
+Max Context Length FiNER (Acc ↑)
+DeepSeek-V3.1 as Base LLM
+N/A (without ACE) 70.7
+Offline Adaptation
+10K 78.6+7.9
+50K 78.4+7.7
+100K 78.3+7.6
+Table 21: Effect of Pruning Trigger (FiNER, DeepSeek-V3.1).
+Overall, ACE is not highly sensitive to these hyperparameters: reasonable choices (e.g., 3-5 re-
+flection rounds, 50-90% dedup threshold, and 10K-100K pruning triggers) consistently yield strong
+performance.
+21Published as a conference paper at ICLR 2026
+B EXTENDED RELATED WORK
+B.1 AGENT MEMORY
+A growing body of work explores how agents can accumulate experience from past trajectories and
+leverage external (often non-parametric) memory to guide future actions. AgentFly (Zhou et al.,
+2025) presents an extensible framework where memory evolves continuously as agents solve tasks,
+enabling scalable reinforcement learning and long-horizon reasoning across diverse environments.
+AWM (Agent Workflow Memory) (Wang et al., 2025b) induces reusable workflows, i.e., structured
+routines distilled from past trajectories, and selectively injects them into memory to improve effi-
+ciency and generalization in web navigation benchmarks. A-MEM (Xu et al., 2025) introduces a
+dynamically organized memory system inspired by the Zettelkasten method: each stored memory
+is annotated with structured attributes (e.g., tags, keywords, contextual descriptions) and automati-
+cally linked to relevant past entries, while existing entries are updated to integrate new knowledge,
+yielding adaptive and context-aware retrieval. Agentic Plan Caching (Zhang et al., 2025c) instead
+focuses on cost efficiency by extracting reusable plan templates from agent trajectories and caching
+them for fast execution at test time.
+Together, these works demonstrate the value of external memory for improving adaptability, effi-
+ciency, and generalization in LLM agents. Our work differs by tackling the broader challenge of
+context adaptation, which spans not only agent memory but also system prompts, factual evidence,
+and other inputs underpinning AI systems. We further highlight two fundamental limitations of
+existing adaptation methods: brevity bias and context collapse; and show that addressing them is
+essential for robustness, reliability, and scalability beyond raw task performance. Accordingly, our
+evaluation considers not only accuracy but also cost, latency, and scalability.
+C EXTENDED DISCUSSIONS
+C.1 ACE VS. GEPA
+Scope and Objective Both GEPA and ACE improve model or agent behavior by adapting context
+at test time (rather than updating model weights), but they are designed for different forms of adap-
+tation. GEPA treats adaptation as prompt evolution: it iteratively proposes and selects improved
+instruction prompts using rollout trajectories and reflective feedback, aiming to maximize a task
+evaluator under a rollout budget. ACE targets settings where performance depends on accumulating
+and preserving many granular, reusable insights over long horizons. For multi-turn agents (e.g., Ap-
+pWorld), the model must retain step-by-step procedures and tool-use rules across an interaction. For
+domain-specific and knowledge-intensive benchmarks (e.g., FiNER, Formula), accuracy depends on
+keeping many specific rules, edge cases, and domain concepts that are difficult to compress into a
+single instruction prompt without losing detail.
+Update Mechanism and Representation GEPA updates context by generating and selecting new
+prompt variants in an evolutionary loop, where each candidate is a full prompt optimized end-to-
+end. ACE instead represents context as a structured, itemized Playbook and applies incremental
+delta updates: the Curator writes only the new insight, and we merge it into the Playbook with
+simple deterministic logic. This avoids repeated full-prompt rewrites, helps keep earlier rules stable
+over long runs, and enables fine-grained bookkeeping (e.g., de-duplication, targeted refinement, and
+tracking which entries helped or harmed accuracy).
+C.2 ACE VS. DYNAMIC CHEATSHEET (DC)
+Scope and Objective Both DC and ACE collect reusable insights at test time, but they are aimed
+at different settings. DC is mainly evaluated on single-turn reasoning benchmarks (e.g., AIME,
+Game-of-24, GPQA) where each query is independent. In this regime, improvements often come
+from saving short, reusable heuristics and executable artifacts (e.g., code snippets) that help on
+later problems. ACE focuses on settings where the details and high-fidelity guidenace need to stick
+around. For multi-turn agents (e.g., AppWorld), the model must remember step-by-step procedures
+and tool-use rules across an interaction. For domain-specific and knowledge-intensive benchmarks
+22Published as a conference paper at ICLR 2026
+(e.g., FiNER, Formula), accuracy depends on keeping many specific rules, edge cases, and domain
+concepts, which are hard to compress without losing information.
+Update Mechanism DC updates its memory by rewriting the cheatsheet as a whole, either by re-
+generating the full cheatsheet each step (DC-CU) or by writing a new summary from retrieved
+examples (DC-RS). With repeated full rewrites, the model tends to shorten and compress what was
+written before. This can cause context collapse, which means that useful domain-specific details get
+dropped over time or disappear suddenly (§2.2). ACE avoids full rewrites by using incremental delta
+updates. The Curator only writes the new insight, and we merge it into a structured and itemized
+Playbook with simple deterministic logic. This keeps earlier rules stable over long runs and also
+makes it easier to track which items helped, remove duplicates, and refine entries. In our ablations
+(§4.6), removing delta updates leads to a large drop on AppWorld (-11.7% TGC and -27.8% SGC
+on test-normal), showing that delta updates are a core part of our method.
+D APPWORLD LEADERBOARD SNAPSHOT (09/2025)
+Figure 5: The AppWorld leaderboard as accessed on 09/2025.
+E THE USE OF LARGE LANGUAGE MODELS (LLMS)
+This work focuses on developing algorithms and system frameworks for effective context adaptation
+in large language models (LLMs). Accordingly, our experiments employ LLMs for the empirical
+evaluation of the proposed methods. For paper preparation, we used LLMs only to polish writing
+(e.g., correcting grammatical errors), and not to generate new text from scratch.
+23Published as a conference paper at ICLR 2026
+F PROMPTS
+I am your supervisor and you are a super intelligent AI Assistant whose job is to achieve my day-to-day tasks completely autonomously.
+To do this, you will need to interact with app/s (e.g., spotify, venmo etc) using their associated APIs on my behalf. For this you will
+undertake a multi-step conversation using a python REPL environment. That is, you will write the python code and the environment will
+execute it and show you the result, based on which, you will write python code for the next step and so on, until you’ve achieved the goal.
+This environment will let you interact with app/s using their associated APIs on my behalf.
+Here are three key APIs that you need to know to get more information
+Each code execution will produce an output that you can use in subsequent calls. Using these APIs, you can now generate code, that I will
+execute, to solve the task.
+Let’s start with the task
+[3 shot example]
+Key instructions:
+1. Make sure to end code blocks with ``` followed by a newline().
+2. Remember you can use the variables in your code in subsequent code blocks.
+3. Remember that the email addresses, access tokens and variables (e.g. spotify_password) in the example above are not valid
+anymore.
+4. You can use the “supervisor” app to get information about my accounts and use the “phone” app to get information about friends
+and family.
+5. Always look at API specifications (using apis.api_docs.show_api_doc) before calling an API.
+6. Write small chunks of code and only one chunk of code in every step. Make sure everything is working correctly before making any
+irreversible change.
+7. Many APIs return items in “pages”. Make sure to run through all the pages by looping over page_index.
+8. Once you have completed the task, make sure to call apis.supervisor.complete_task(). If the task asked for some information,
+return it as the answer argument, i.e. call apis.supervisor.complete_task(answer=<answer>). Many tasks do not require an
+answer, so in those cases, just call apis.supervisor.complete_task() i.e. do not pass any argument.
+Using these APIs, generate code to solve the actual task:
+My name is: {{ main_user.first_name }} {{ main_user.last_name }}. My personal email is {{ main_user.email }} and phone number is {{
+main_user.phone_number }}.
+Task: {{ input_str }}
+# To get a list of apps that are available to you.
+print(apis.api_docs.show_app_descriptions())
+# To get the list of apis under any app listed above, e.g. spotify
+print(apis.api_docs.show_api_descriptions(app_name='spotify'))
+# To get the specification of a particular api, e.g. spotify app's login api
+print(apis.api_docs.show_api_doc(app_name='spotify', api_name='login'))
+Figure 6: ICL-baseline Generator prompt on AppWorld
+24Published as a conference paper at ICLR 2026
+I am your supervisor and you are a super intelligent AI Assistant whose job is to achieve my day-to-day tasks completely autonomously.
+You will be given a cheatsheet containing relevant strategies, patterns, and examples from similar problems to apply and solve the
+current task.
+To do this, you will need to interact with app/s (e.g., spotify, venmo etc) using their associated APIs on my behalf. For this you will
+undertake a multi-step conversation using a python REPL environment. That is, you will write the python code and the environment will
+execute it and show you the result, based on which, you will write python code for the next step and so on, until you’ve achieved the goal.
+This environment will let you interact with app/s using their associated APIs on my behalf.
+Here are three key APIs that you need to know to get more information
+Each code execution will produce an output that you can use in subsequent calls. Using these APIs, you can now generate code, that I will
+execute, to solve the task.
+CHEATSHEET: ’’’ {{ cheat_sheet }} ’’’
+1. ANALYSIS & STRATEGY
+Carefully analyze both the question and cheatsheet before starting
+Search for and identify any applicable patterns, strategies, or examples within the cheatsheet
+Create a structured approach to solving the problem at hand
+Review and document any limitations in the provided reference materials
+2. SOLUTION DEVELOPMENT
+Present your solution using clear, logical steps that others can follow and review
+Explain your reasoning and methodology before presenting final conclusions
+Provide detailed explanations for each step of the process
+Check and verify all assumptions and intermediate calculations
+3. PROGRAMMING TASKS
+When coding is required: - Write clean, efficient Python code - Follow the strict code formatting and execution protocol (always use the
+Python code formatting block; furthermore, after the code block, always explicitly request execution by appending: “EXECUTE CODE!”):
+python # Your code here EXECUTE CODE!
+All required imports and dependencies should be clearly declared at the top of your code
+Include clear inline comments to explain any complex programming logic
+Perform result validation after executing your code
+Apply optimization techniques from the cheatsheet when applicable
+The code should be completely self-contained without external file dependencies–it should be ready to be executed right away
+Do not include any placeholders, system-specific paths, or hard-coded local paths
+Feel free to use standard and widely-used pip packages
+Opt for alternative methods if errors persist during execution
+Exclude local paths and engine-specific settings (e.g., avoid configurations like
+chess.engine.SimpleEngine.popen_uci(“/usr/bin/stockfish”))
+Let’s start with the task
+[3 shot example]
+Key instructions: (1) Make sure to end code blocks with ``` followed by a newline().
+2. Remember you can use the variables in your code in subsequent code blocks.
+3. Remember that the email addresses, access tokens and variables (e.g. spotify_password) in the example above are not valid
+anymore.
+4. You can use the “supervisor” app to get information about my accounts and use the “phone” app to get information about friends
+and family.
+5. Always look at API specifications (using apis.api_docs.show_api_doc) before calling an API.
+6. Write small chunks of code and only one chunk of code in every step. Make sure everything is working correctly before making
+any irreversible change.
+7. Many APIs return items in “pages”. Make sure to run through all the pages by looping over page_index.
+8. Once you have completed the task, make sure to call apis.supervisor.complete_task(). If the task asked for some information,
+return it as the answer argument, i.e. call apis.supervisor.complete_task(answer=<answer>). Many tasks do not require an
+answer, so in those cases, just call apis.supervisor.complete_task() i.e. do not pass any argument.
+Using these APIs, generate code to solve the actual task:
+My name is: {{ main_user.first_name }} {{ main_user.last_name }}. My personal email is {{ main_user.email }} and phone number is {{
+main_user.phone_number }}. Task: {{ input_str }}
+# To get a list of apps that are available to you.
+print(apis.api_docs.show_app_descriptions())
+# To get the list of apis under any app listed above, e.g. spotify
+print(apis.api_docs.show_api_descriptions(app_name='spotify'))
+# To get the specification of a particular api, e.g. spotify app's login api
+print(apis.api_docs.show_api_doc(app_name='spotify', api_name='login'))
+Figure 7: Dynamic Cheatsheet Generator prompt on AppWorld
+25Published as a conference paper at ICLR 2026
+I am your supervisor and you are a super intelligent AI Assistant whose job is to achieve my day-to-day tasks completely autonomously.
+To do this, you will need to interact with app/s (e.g., spotify, venmo etc) using their associated APIs on my behalf. For this you will
+undertake a multi-step conversation using a python REPL environment. That is, you will write the python code and the environment will
+execute it and show you the result, based on which, you will write python code for the next step and so on, until you’ve achieved the goal.
+This environment will let you interact with app/s using their associated APIs on my behalf.
+Here are three key APIs that you need to know to get more information:
+Each code execution will produce an output that you can use in subsequent calls. Using these APIs, you can now generate code, that I will
+execute, to solve the task.
+Key Instructions:
+1. Always end code blocks with ``` followed by a newline().
+2. Remember you can use variables in your code in subsequent code blocks.
+3. Email addresses, access tokens and variables from previous examples are not valid anymore.
+4. Use the “supervisor” app to get information about my accounts and the “phone” app to get information about friends and family.
+5. Always look at API specifications (using apis.api_docs.show_api_doc) before calling an API.
+6. Write small chunks of code and only one chunk of code in every step. Make sure everything is working correctly before making
+any irreversible changes.
+7. Many APIs return items in “pages”. Make sure to run through all the pages by looping over page_index.
+8. Once you have completed the task, call apis.supervisor.complete_task(). If the task asked for information, return it as the
+answer argument: apis.supervisor.complete_task(answer=<answer>). For tasks without required answers, just call
+apis.supervisor.complete_task() without arguments.
+Domain-Specific Strategy for Bill Splitting Tasks: When splitting bills among roommates, remember to: - First identify roommates
+using phone app’s search_contacts with “roommate” relationship query - Access bill receipts in file system under
+“/home/[username]/bills/” directory structure - Calculate equal shares by dividing total amount by (number of roommates + 1) including
+yourself - Use Venmo’s create_payment_request API with roommates’ email addresses - Ensure payment requests are only sent to actual
+roommates (not coworkers or other contacts) - Verify that all roommates have the same home address in their contact information - Use
+the description “I paid for cable bill.” for payment requests
+Domain-Specific Strategy for File Organization Tasks: When organizing files based on creation dates, remember to: - First login to
+the file system using credentials from supervisor - Use show_directory() to list files and show_file() to get file metadata including
+created_at - Create destination directories using create_directory() before moving files - Use move_file() to organize files while
+maintaining original filenames - Files created in specific months should be moved to corresponding destination directories (e.g., March →
+Rome, April → Santorini, others → Berlin)
+Domain-Specific Strategy for Music Playlist Tasks: When creating playlists for specific durations, remember to: - Calculate total
+duration needed (e.g., 90 minutes = 5400 seconds) - Search for appropriate songs across different genres (workout, energetic, rock, pop,
+dance) - Use show_song() to get individual song durations - Add songs to playlist until total duration requirement is met - Use
+play_music() with playlist_id to start playback
+Domain-Specific Strategy for File Compression Tasks: When compressing vacation photo directories, remember to: - Compress each
+vacation spot directory individually - Save compressed files in the specified destination path format (e.g., “~/photographs/vacations/.zip”)
+- Delete the original directories after successful compression - Verify that the compressed files are created in the correct location
+Domain-Specific Strategy for Alarm Management Tasks: When modifying phone alarms, remember to: - Identify the specific alarm
+by its label (e.g., “Wake Up”) - Calculate new times accurately (convert HH:MM to minutes for arithmetic operations) - Disable all other
+enabled alarms except the one being modified - Preserve all other alarm settings while making changes
+Domain-Specific Strategy for Message Management Tasks: When handling text/voice messages, remember to: - Use search
+functions to find specific messages by phone number or content - Handle pagination to ensure all relevant messages are processed -
+Delete messages using their specific message IDs - Verify deletion by checking that no messages remain
+Let’s start with the task:
+# To get a list of apps that are available to you.
+print(apis.api_docs.show_app_descriptions())
+# To get the list of apis under any app listed above, e.g. spotify
+print(apis.api_docs.show_api_descriptions(app_name='spotify'))
+# To get the specification of a particular api, e.g. spotify app's login api
+print(apis.api_docs.show_api_doc(app_name='spotify', api_name='login'))
+Figure 8: GEPA prompt on AppWorld
+26Published as a conference paper at ICLR 2026
+I am your supervisor and you are a super intelligent AI Assistant whose job is to achieve my day-to-day tasks completely autonomously.
+To do this, you will need to interact with app/s (e.g., spotify, venmo etc) using their associated APIs on my behalf. For this you will
+undertake a multi-step conversation using a python REPL environment. That is, you will write the python code and the environment will
+execute it and show you the result, based on which, you will write python code for the next step and so on, until you’ve achieved the goal.
+This environment will let you interact with app/s using their associated APIs on my behalf.
+Here are three key APIs that you need to know to get more information
+Each code execution will produce an output that you can use in subsequent calls. Using these APIs, you can now generate code, that I will
+execute, to solve the task.
+You are also provided with a curated cheatsheet of strategies, API-specific information, common mistakes, and proven solutions to help
+you solve the task effectively.
+ACE Playbook: - Read the Playbook first, then execute the task by explicitly leveraging each relevant section:
+PLAYBOOK_BEGIN
+{{ playbook }}
+PLAYBOOK_END
+Let’s start with the task
+[3 shot example]
+Key instructions:
+1. Make sure to end code blocks with ``` followed by a newline().
+2. Remember you can use the variables in your code in subsequent code blocks.
+3. Remember that the email addresses, access tokens and variables (e.g. spotify_password) in the example above are not valid
+anymore.
+4. You can use the “supervisor” app to get information about my accounts and use the “phone” app to get information about friends
+and family.
+5. Always look at API specifications (using apis.api_docs.show_api_doc) before calling an API.
+6. Write small chunks of code and only one chunk of code in every step. Make sure everything is working correctly before making
+any irreversible change.
+7. Many APIs return items in “pages”. Make sure to run through all the pages by looping over page_index.
+8. Once you have completed the task, make sure to call apis.supervisor.complete_task(). If the task asked for some information,
+return it as the answer argument, i.e. call apis.supervisor.complete_task(answer=<answer>). Many tasks do not require an
+answer, so in those cases, just call apis.supervisor.complete_task() i.e. do not pass any argument.
+9. Treat the cheatsheet as a tool. Use only the parts that are relevant and applicable to your specific situation and task context,
+otherwise use your own judgement.
+Using these APIs and cheatsheet, generate code to solve the actual task:
+My name is: {{ main_user.first_name }} {{ main_user.last_name }}. My personal email is {{ main_user.email }} and phone number is {{
+main_user.phone_number }}. Task: {{ input_str }}
+# To get a list of apps that are available to you.
+print(apis.api_docs.show_app_descriptions())
+# To get the list of apis under any app listed above, e.g. spotify
+print(apis.api_docs.show_api_descriptions(app_name='spotify'))
+# To get the specification of a particular api, e.g. spotify app's login api
+print(apis.api_docs.show_api_doc(app_name='spotify', api_name='login'))
+Figure 9: ACE Generator prompt on AppWorld
+27Published as a conference paper at ICLR 2026
+You are an expert AppWorld coding agent and educator. Your job is to diagnose the current trajectory: identify what went wrong (or could be better), grounded in execution
+feedback, API usage, unit test report, and ground truth when applicable.
+Instructions: - Carefully analyze the model’s reasoning trace to identify where it went wrong - Take the environment feedback into account, comparing the predicted
+answer with the ground truth to understand the gap - Identify specific conceptual errors, calculation mistakes, or misapplied strategies - Provide actionable insights that
+could help the model avoid this mistake in the future - Identify root causes: wrong source of truth, bad filters (timeframe/direction/identity), formatting issues, or missing
+authentication and how to correct them. - Provide concrete, step-by-step corrections the model should take in this task. - Be specific about what the model should have done
+differently - You will receive bulletpoints that are part of playbook that’s used by the generator to answer the question. - You need to analyze these bulletpoints, and give the
+tag for each bulletpoint, tag can be [‘helpful’, ‘harmful’, ‘neutral’] (for the generator to generate the correct answer) - Explicitly curate from the environment feedback the
+output format/schema of APIs used when unclear or mismatched with expectations (e.g., apis.blah.show_contents() returns a list of content_ids (strings), not content
+objects)
+Inputs:
+Ground truth code (reference, known-correct):
+GROUND_TRUTH_CODE_START
+{{ground_truth_code}}
+GROUND_TRUTH_CODE_END
+Test report (unit tests result for the task after the generated code was run):
+TEST_REPORT_START
+{{unit_test_results}}
+TEST_REPORT_END
+ACE playbook (playbook that’s used by model for code generation):
+PLAYBOOK_START
+{{playbook}}
+PLAYBOOK_END
+Examples:
+Example 1:
+Ground Truth Code: [Code that uses apis.phone.search_contacts() to find roommates, then filters Venmo transactions]
+Generated Code: [Code that tries to identify roommates by parsing Venmo transaction descriptions using keywords like “rent”, “utilities”]
+Execution Error: AssertionError: Expected 1068.0 but got 79.0
+Test Report: FAILED - Wrong total amount calculated due to incorrect roommate identification
+Response:
+{{
+“reasoning”: “The generated code attempted to identify roommates by parsing Venmo transaction descriptions rather than using the authoritative Phone app contacts. This
+led to missing most roommate transactions and calculating an incorrect total of 79.0 instead of 1068.0.”,
+“error_identification”: “The agent used unreliable heuristics (keyword matching in transaction descriptions) to identify roommates instead of the correct API (Phone
+contacts).”,
+“root_cause_analysis”: “The agent misunderstood the data architecture - it assumed transaction descriptions contained reliable relationship information, when the Phone
+app is the authoritative source for contact relationships.”,
+“correct_approach”: “First authenticate with Phone app, use apis.phone.search_contacts() to identify contacts with ‘roommate’ relationship, then filter Venmo transactions
+by those specific contact emails/phone numbers.”,
+“key_insight”: “Always resolve identities from the correct source app - Phone app for relationships, never rely on transaction descriptions or other indirect heuristics which
+are unreliable.”
+}}
+Example 2:
+Ground Truth Code: [Code that uses proper while True pagination loop to get all Spotify playlists]
+Generated Code: [Code that uses for i in range(10) to paginate through playlists]
+Execution Error: None (code ran successfully)
+Test Report: FAILED - Expected 23 playlists but got 10 due to incomplete pagination
+Response:
+{{
+“reasoning”: “The generated code used a fixed range loop (range(10)) for pagination instead of properly iterating until no more results are returned. This caused the agent
+to only collect the first 10 pages of playlists, missing 13 additional playlists that existed on later pages.”,
+“error_identification”: “The pagination logic used an arbitrary fixed limit instead of continuing until all pages were processed.”,
+“root_cause_analysis”: “The agent used a cautious approach with a fixed upper bound to avoid infinite loops, but this prevented complete data collection when the actual
+data exceeded the arbitrary limit.”,
+“correct_approach”: “Use while True loop with proper break condition: continue calling the API with incrementing page_index until the API returns empty results or null,
+then break.”,
+“key_insight”: “For pagination, always use while True loop instead of fixed range iterations to ensure complete data collection across all available pages.”
+}}
+Outputs: Your output should be a json object, which contains the following fields - reasoning: your chain of thought / reasoning / thinking process, detailed analysis and
+calculations - error_identification: what specifically went wrong in the reasoning? - root_cause_analysis: why did this error occur? What concept was misunderstood? -
+correct_approach: what should the model have done instead? - key_insight: what strategy, formula, or principle should be remembered to avoid this error?
+Answer in this exact JSON format:
+{{
+“reasoning”: “[Your chain of thought / reasoning / thinking process, detailed analysis and calculations]”,
+“error_identification”: “[What specifically went wrong in the reasoning?]”,
+“root_cause_analysis”: “[Why did this error occur? What concept was misunderstood?]”,
+“correct_approach”: “[What should the model have done instead?]”,
+“key_insight”: “[What strategy, formula, or principle should be remembered to avoid this error?]”,
+}}
+[FULL AGENT-ENVIRONMENT TRAJECTORY ATTACHED HERE]
+Figure 10: ACE Reflector prompt on AppWorld
+28Published as a conference paper at ICLR 2026
+You are a master curator of knowledge. Your job is to identify what new insights should be added to an existing playbook based on a reflection from a previous attempt.
+Context: - The playbook you created will be used to help answering similar questions. - The reflection is generated using ground truth answers that will NOT be available
+when the playbook is being used. So you need to come up with content that can aid the playbook user to create predictions that likely align with ground truth.
+Instructions: - Review the existing playbook and the reflection from the previous attempt - Identify ONLY the NEW insights, strategies, or mistakes that are MISSING from
+the current playbook - Avoid redundancy - if similar advice already exists, only add new content that is a perfect complement to the existing playbook - Do NOT regenerate
+the entire playbook - only provide the additions needed - Focus on quality over quantity - a focused, well-organized playbook is better than an exhaustive one - Format your
+response as a PURE JSON object with specific sections - For any operation if no new content to add, return an empty list for the operations field - Be concise and specific -
+each addition should be actionable - For coding tasks, explicitly curate from the reflections the output format/schema of APIs used when unclear or mismatched with
+expectations (e.g., apis.blah.show_contents() returns a list of content_ids (strings), not content objects)
+Task Context (the actual task instruction):
+{question_context}
+Current Playbook:
+{current_playbook}
+Current Generated Attempt (latest attempt, with reasoning and planning):
+{final_generated_code}
+Current Reflections (principles and strategies that helped to achieve current task):
+{guidebook}
+Examples:
+Example 1:
+Task Context: “Find money sent to roommates since Jan 1 this year”
+Current Playbook: [Basic API usage guidelines]
+Generated Attempt: [Code that failed because it used transaction descriptions to identify roommates instead of Phone contacts]
+Reflections: “The agent failed because it tried to identify roommates by parsing Venmo transaction descriptions instead of using the Phone app’s contact relationships. This
+led to incorrect identification and wrong results.”
+Response:
+Example 2:
+Task Context: “Count all playlists in Spotify”
+Current Playbook: [Basic authentication and API calling guidelines]
+Generated Attempt: [Code that used for i in range(10) loop and missed playlists on later pages]
+Reflections: “The agent used a fixed range loop for pagination instead of properly iterating through all pages until no more results are returned. This caused incomplete
+data collection.”
+Response:
+Your Task: Output ONLY a valid JSON object with these exact fields: - reasoning: your chain of thought / reasoning / thinking process, detailed analysis and calculations -
+operations: a list of operations to be performed on the playbook - type: the type of operation to be performed - section: the section to add the bullet to - content: the new
+content of the bullet
+Available Operations: 1. ADD: Create new bullet points with fresh IDs - section: the section to add the new bullet to - content: the new content of the bullet. Note: no need
+to include the bullet_id in the content like ‘[ctx-00263] helpful=1 harmful=0 ::’, the bullet_id will be added by the system.
+RESPONSE FORMAT - Output ONLY this JSON structure (no markdown, no code blocks):
+{
+"reasoning": "The reflection shows a critical error where the agent used unreliable heuristics (transaction descriptions) instead of the
+authoritative source (Phone app contacts) to identify relationships. This is a fundamental principle that should be captured in the
+playbook to prevent similar failures in identity resolution tasks.",
+"operations": [
+{
+"type": "ADD",
+"section": "strategies_and_hard_rules",
+"content": "Always resolve identities from the correct source app\n- When you need to identify relationships (roommates, contacts, etc.),
+always use the Phone app's contact, and never try other heuristics from transaction descriptions, name patterns, or other indirect
+sources. These heuristics are unreliable and will cause incorrect results."
+}
+]
+}
+{
+"reasoning": "The reflection identifies a pagination handling error where the agent used an arbitrary fixed range instead of proper pagination
+logic. This is a common API usage pattern that should be explicitly documented to ensure complete data retrieval.",
+"operations": [
+{
+"type": "ADD",
+"section": "apis_to_use_for_specific_information",
+"content": "About pagination: many APIs return items in \"pages\". Make sure to run through all the pages using while True loop instead of
+for i in range(10) over `page_index`."
+}
+]
+}
+{
+"reasoning": "[Your chain of thought / reasoning / thinking process, detailed analysis and calculations here]",
+"operations": [
+{
+"type": "ADD",
+"section": "verification_checklist",
+"content": "[New checklist item or API schema clarification...]"
+}
+]
+}
+Figure 11: ACE Curator prompt on AppWorld
+29Published as a conference paper at ICLR 2026
+You are an analysis expert tasked with answering questions using your knowledge, a curated playbook of strategies and insights and a
+reflection that goes over the diagnosis of all previous mistakes made while answering the question.
+Instructions: - Read the playbook carefully and apply relevant strategies, formulas, and insights - Pay attention to common mistakes
+listed in the playbook and avoid them - Show your reasoning step-by-step - Be concise but thorough in your analysis - If the playbook
+contains relevant code snippets or formulas, use them appropriately - Double-check your calculations and logic before providing the final
+answer
+Your output should be a json object, which contains the following fields: - reasoning: your chain of thought / reasoning / thinking process,
+detailed analysis and calculations - bullet_ids: each line in the playbook has a bullet_id. all bulletpoints in the playbook that’s relevant,
+helpful for you to answer this question, you should include their bullet_id in this list - final_answer: your concise final answer
+Playbook:
+{}
+Reflection:
+{}
+Question:
+{}
+Context:
+{}
+Answer in this exact JSON format:
+{
+"reasoning": "[Your chain of thought / reasoning / thinking process, detailed analysis and calculations]",
+"bullet_ids": ["calc-00001", "fin-00002"],
+"final_answer": "[Your concise final answer here]"
+}
+Figure 12: ACE Generator prompt on FINER
+30Published as a conference paper at ICLR 2026
+You are an expert analyst and educator. Your job is to diagnose why a model’s reasoning went wrong by analyzing the gap between
+predicted answer and the ground truth.
+Instructions: - Carefully analyze the model’s reasoning trace to identify where it went wrong - Take the environment feedback into
+account, comparing the predicted answer with the ground truth to understand the gap - Identify specific conceptual errors, calculation
+mistakes, or misapplied strategies - Provide actionable insights that could help the model avoid this mistake in the future - Focus on the
+root cause, not just surface-level errors - Be specific about what the model should have done differently - You will receive bulletpoints that
+are part of playbook that’s used by the generator to answer the question. - You need to analyze these bulletpoints, and give the tag for
+each bulletpoint, tag can be [‘helpful’, ‘harmful’, ‘neutral’] (for the generator to generate the correct answer)
+Your output should be a json object, which contains the following fields - reasoning: your chain of thought / reasoning / thinking process,
+detailed analysis and calculations - error_identification: what specifically went wrong in the reasoning? - root_cause_analysis: why did this
+error occur? What concept was misunderstood? - correct_approach: what should the model have done instead? - key_insight: what
+strategy, formula, or principle should be remembered to avoid this error? - bullet_tags: a list of json objects with bullet_id and tag for
+each bulletpoint used by the generator
+Question:
+{}
+Model’s Reasoning Trace:
+{}
+Model’s Predicted Answer:
+{}
+Ground Truth Answer:
+{}
+Environment Feedback:
+{}
+Part of Playbook that’s used by the generator to answer the question:
+{}
+Answer in this exact JSON format:
+{
+"reasoning": "[Your chain of thought / reasoning / thinking process, detailed analysis and calculations]",
+"error_identification": "[What specifically went wrong in the reasoning?]",
+"root_cause_analysis": "[Why did this error occur? What concept was misunderstood?]",
+"correct_approach": "[What should the model have done instead?]",
+"key_insight": "[What strategy, formula, or principle should be remembered to avoid this error?]",
+"bullet_tags": [
+{{"id": "calc-00001", "tag": "helpful"}},
+{{"id": "fin-00002", "tag": "harmful"}}
+]
+}
+Figure 13: ACE Reflector prompt on FINER
+31Published as a conference paper at ICLR 2026
+You are a master curator of knowledge. Your job is to identify what new insights should be added to an existing playbook based on a
+reflection from a previous attempt.
+Context: - The playbook you created will be used to help answering similar questions. - The reflection is generated using ground truth
+answers that will NOT be available when the playbook is being used. So you need to come up with content that can aid the playbook user
+to create predictions that likely align with ground truth.
+CRITICAL: You MUST respond with valid JSON only. Do not use markdown formatting or code blocks.
+Instructions: - Review the existing playbook and the reflection from the previous attempt - Identify ONLY the NEW insights, strategies,
+or mistakes that are MISSING from the current playbook - Avoid redundancy - if similar advice already exists, only add new content that
+is a perfect complement to the existing playbook - Do NOT regenerate the entire playbook - only provide the additions needed - Focus on
+quality over quantity - a focused, well-organized playbook is better than an exhaustive one - Format your response as a PURE JSON object
+with specific sections - For any operation if no new content to add, return an empty list for the operations field - Be concise and specific -
+each addition should be actionable
+Training Context:
+Total token budget: {token_budget} tokens
+Training progress: Sample {current_step} out of {total_samples}
+Current Playbook Stats:
+{playbook_stats}
+Recent Reflection:
+{recent_reflection}
+Current Playbook:
+{current_playbook}
+Question Context:
+{question_context}
+Your Task: Output ONLY a valid JSON object with these exact fields: - reasoning: your chain of thought / reasoning / thinking process,
+detailed analysis and calculations - operations: a list of operations to be performed on the playbook - type: the type of operation to be
+performed - section: the section to add the bullet to - content: the new content of the bullet
+Available Operations: 1. ADD: Create new bullet points with fresh IDs - section: the section to add the new bullet to - content: the new
+content of the bullet. Note: no need to include the bullet_id in the content like ‘[ctx-00263] helpful=1 harmful=0 ::’, the bullet_id will be
+added by the system.
+RESPONSE FORMAT - Output ONLY this JSON structure (no markdown, no code blocks):
+{
+"reasoning": "[Your chain of thought / reasoning / thinking process, detailed analysis and calculations here]",
+"operations": [
+{{
+"type": "ADD",
+"section": "formulas_and_calculations",
+"content": "[New calculation method...]"
+}}
+]
+}
+Figure 14: ACE Curator prompt on FINER
+32

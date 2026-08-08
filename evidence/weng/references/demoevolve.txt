@@ -1,0 +1,447 @@
+9References
+[1] Yoshua Bengio, Jérôme Louradour, Ronan Collobert, and Jason Weston. Curriculum learning.
+In Proceedings of the 26th Annual International Conference on Machine Learning, pages 41–48.
+Association for Computing Machinery, 2009.
+[2] Coder. Balatrobench. https://balatrobench.com/, 2026. Accessed May 2, 2026.
+[3] Coder. BalatroLLM: Play Balatro with LLMs. https://github.com/coder/balatrollm,
+2026. Accessed May 2, 2026.
+[4] Jinhao Duan, Renming Zhang, James Diffenderfer, Bhavya Kailkhura, Lichao Sun, Elias
+Stengel-Eskin, Mohit Bansal, Tianlong Chen, and Kaidi Xu. Gtbench: Uncovering the strategic
+reasoning limitations of llms via game-theoretic evaluations, 2024. URL https://arxiv.
+org/abs/2402.12348.
+[5] Adrien Ecoffet, Joost Huizinga, Joel Lehman, Kenneth O. Stanley, and Jeff Clune. First return,
+then explore. Nature, 590(7847):580–586, 2021.
+[6] Carlos Florensa, David Held, Markus Wulfmeier, Michael Zhang, and Pieter Abbeel. Reverse
+curriculum generation for reinforcement learning. In Conference on Robot Learning, pages
+482–495, 2017.
+[7] Lingyue Fu, Xin Ding, Linyue Pan, Yaoming Zhu, Shao Zhang, Lin Qiu, Weiwen Liu, Weinan
+Zhang, Xuezhi Cao, Xunliang Cai, Jiaxin Ding, and Yong Yu. Catarena: Evaluating evolutionary
+capabilities of code agents via iterative tournaments, 2025. URL https://arxiv.org/abs/
+2510.26852.
+[8] Leon Guertler, Bobby Cheng, Simon Yu, Bo Liu, Leshem Choshen, and Cheston Tan. Textarena,
+2025. URL https://arxiv.org/abs/2504.11442.
+[9] Todd Hester, Mel Vecerik, Olivier Pietquin, Marc Lanctot, Tom Schaul, Bilal Piot, Jean-Baptiste
+Lespiau, Laurent Sartran, and Guillaume Beaudoin. Deep q-learning from demonstrations.
+Proceedings of the AAAI Conference on Artificial Intelligence, 32(1), 2018.
+[10] Jonathan Ho and Stefano Ermon. Generative adversarial imitation learning. In Advances in
+Neural Information Processing Systems, 2016.
+[11] Lanxiang Hu, Qiyu Li, Anze Xie, Nan Jiang, Ion Stoica, Haojian Jin, and Hao Zhang.
+Gamearena: Evaluating llm reasoning through live computer games, 2024. URL https:
+//arxiv.org/abs/2412.06394.
+[12] Shengran Hu, Cong Lu, and Jeff Clune. Automated design of agentic systems. In The
+Thirteenth International Conference on Learning Representations, October 2024. URL https:
+//openreview.net/forum?id=t9U3LW7JVX.
+[13] Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and
+Karthik R. Narasimhan. Swe-bench: Can language models resolve real-world github issues?
+In The Twelfth International Conference on Learning Representations, October 2023. URL
+https://openreview.net/forum?id=VTF8yNQM66.
+[14] M. Pawan Kumar, Benjamin Packer, and Daphne Koller. Self-paced learning for latent variable
+models. Advances in Neural Information Processing Systems, 23, 2010.
+[15] Yoonho Lee, Roshen Nair, Qizheng Zhang, Kangwook Lee, Omar Khattab, and Chelsea
+Finn. Meta-harness: End-to-end optimization of model harnesses, March 2026. URL http:
+//arxiv.org/abs/2603.28052.
+[16] Wenhao Li, Wenwu Li, Chuyun Shen, Junjie Sheng, Zixiao Huang, Di Wu, Yun Hua, Wei
+Yin, Xiangfeng Wang, Hongyuan Zha, and Bo Jin. Textatari: 100k frames game playing with
+language agents, 2025. URL https://arxiv.org/abs/2506.04098.
+[17] Jiahang Lin, Shichun Liu, Chengjun Pan, Lizhi Lin, Shihan Dou, Xuanjing Huang, Hang Yan,
+Zhenhua Han, and Tao Gui. Agentic harness engineering: Observability-driven automatic evo-
+lution of coding-agent harnesses, April 2026. URL http://arxiv.org/abs/2604.25850.
+10[18] Xinghua Lou, Miguel Lázaro-Gredilla, Antoine Dedieu, Carter Wendelken, Wolfgang Lehrach,
+and Kevin P. Murphy. Autoharness: improving llm agents by automatically synthesizing a code
+harness, 2026. URL https://arxiv.org/abs/2603.03329.
+[19] Ziyu Ma, Shidong Yang, Yuxiang Ji, Xucong Wang, Yong Wang, Yiming Hu, Tongwen Huang,
+and Xiangxiang Chu. Skillclaw: Let skills evolve collectively with agentic evolver, April 2026.
+URL http://arxiv.org/abs/2604.08377.
+[20] Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao, Sarah Wiegreffe, Uri
+Alon, Nouha Dziri, Shrimai Prabhumoye, Yiming Yang, Shashank Gupta, Bodhisattwa Prasad
+Majumder, Katherine Hermann, Sean Welleck, Amir Yazdanbakhsh, and Peter Clark. Self-
+refine: Iterative refinement with self-feedback. In Thirty-Seventh Conference on Neural Infor-
+mation Processing Systems, November 2023. URL https://openreview.net/forum?id=
+S37hOerQLB.
+[21] Mike A. Merrill, Alexander G. Shaw, Nicholas Carlini, Boxuan Li, Harsh Raj, Ivan Bercovich,
+Lin Shi, Jeong Yeon Shin, Thomas Walshe, E. Kelly Buchanan, Junhong Shen, Guanghao Ye,
+Haowei Lin, Jason Poulos, Maoyu Wang, Marianna Nezhurina, Jenia Jitsev, Di Lu, Orfeas Menis
+Mastromichalakis, Zhiwei Xu, Zizhao Chen, Yue Liu, Robert Zhang, Leon Liangyu Chen,
+Anurag Kashyap, Jan-Lucas Uslu, Jeffrey Li, Jianbo Wu, Minghao Yan, Song Bian, Vedang
+Sharma, Ke Sun, Steven Dillmann, Akshay Anand, Andrew Lanpouthakoun, Bardia Koopah,
+Changran Hu, Etash Guha, Gabriel H. S. Dreiman, Jiacheng Zhu, Karl Krauth, Li Zhong,
+Niklas Muennighoff, Robert Amanfu, Shangyin Tan, Shreyas Pimpalgaonkar, Tushar Aggarwal,
+Xiangning Lin, Xin Lan, Xuandong Zhao, Yiqing Liang, Yuanli Wang, Zilong Wang, Changzhi
+Zhou, David Heineman, Hange Liu, Harsh Trivedi, John Yang, Junhong Lin, Manish Shetty,
+Michael Yang, Nabil Omi, Negin Raoof, Shanda Li, Terry Yue Zhuo, Wuwei Lin, Yiwei
+Dai, Yuxin Wang, Wenhao Chai, Shang Zhou, Dariush Wahdany, Ziyu She, Jiaming Hu,
+Zhikang Dong, Yuxuan Zhu, Sasha Cui, Ahson Saiyed, Arinbjörn Kolbeinsson, Jesse Hu,
+Christopher Michael Rytting, Ryan Marten, Yixin Wang, Alex Dimakis, Andy Konwinski, and
+Ludwig Schmidt. Terminal-bench: Benchmarking agents on hard, realistic tasks in command
+line interfaces, January 2026. URL http://arxiv.org/abs/2601.11868.
+[22] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A. Rusu, Joel Veness, Marc G.
+Bellemare, Alex Graves, Martin Riedmiller, Andreas K. Fidjeland, Georg Ostrovski, et al.
+Human-level control through deep reinforcement learning. Nature, 518(7540):529–533, 2015.
+doi: 10.1038/nature14236.
+[23] Ashvin Nair, Bob McGrew, Marcin Andrychowicz, Wojciech Zaremba, and Pieter Abbeel. Over-
+coming exploration in reinforcement learning with demonstrations. In 2018 IEEE International
+Conference on Robotics and Automation (ICRA), pages 6292–6299, 2018.
+[24] AlexanderNovikov, NgânVũ, MarvinEisenberger, EmilienDupont, Po-SenHuang, AdamZsolt
+Wagner, Sergey Shirobokov, Borislav Kozlovskii, Francisco J. R. Ruiz, Abbas Mehrabian,
+M. Pawan Kumar, Abigail See, Swarat Chaudhuri, George Holland, Alex Davies, Sebastian
+Nowozin, Pushmeet Kohli, and Matej Balog. Alphaevolve: A coding agent for scientific and
+algorithmic discovery, June 2025. URL http://arxiv.org/abs/2506.13131.
+[25] Davide Paglieri, Bartlomiej Cupial, Samuel Coward, Ulyana Piterbarg, Maciej Wolczyk, Akbir
+Khan, Eduardo Pignatelli, Lukasz Kucinski, Lerrel Pinto, Rob Fergus, Jakob Nicolaus Foerster,
+Jack Parker-Holder, and Tim Rocktaschel. Balrog: Benchmarking agentic llm and vlm reasoning
+on games, 2024. URL https://arxiv.org/abs/2411.13543.
+[26] Dongmin Park, Minkyu Kim, Beongjun Choi, Junhyuck Kim, Keon Lee, Jonghyun Lee,
+Inkyu Park, Byeong-Uk Lee, Jaeyoung Hwang, Jaewoo Ahn, Ameya S. Mahabaleshwarkar,
+Bilal Kartal, Pritam Biswas, Yoshi Suhara, Kangwook Lee, and Jaewoong Cho. Orak: A
+foundational benchmark for training and evaluating llm agents on diverse video games, 2025.
+URL https://arxiv.org/abs/2506.03610.
+[27] Aravind Rajeswaran, Vikash Kumar, Abhishek Gupta, Giulia Vezzani, John Schulman, Emanuel
+Todorov, and Sergey Levine. Learning complex dexterous manipulation with deep reinforcement
+learning and demonstrations. In Robotics: Science and Systems, 2018.
+11[28] Maxime Robeyns, Martin Szummer, and Laurence Aitchison. A self-improving coding agent,
+2025. URL https://arxiv.org/abs/2504.15228.
+[29] Stéphane Ross, Geoffrey Gordon, and Drew Bagnell. A reduction of imitation learning and
+structured prediction to no-regret online learning. In Proceedings of the Fourteenth International
+Conference on Artificial Intelligence and Statistics, pages 627–635, 2011.
+[30] Asankhaya Sharma. Openevolve: an open-source evolutionary coding agent. https://github.
+com/algorithmicsuperintelligence/openevolve, 2025. URL https://github.com/
+algorithmicsuperintelligence/openevolve. GitHub repository.
+[31] Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik R. Narasimhan, and Shunyu Yao.
+Reflexion: Language agents with verbal reinforcement learning. In Thirty-Seventh Conference
+on Neural Information Processing Systems, November 2023. URL https://openreview.
+net/forum?id=vAElhFcKW6.
+[32] Richard S. Sutton and Andrew G. Barto. Reinforcement Learning: An Introduction. MIT Press,
+2 edition, 2018.
+[33] Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan,
+and Anima Anandkumar. Voyager: An open-ended embodied agent with large language models,
+October 2023. URL http://arxiv.org/abs/2305.16291.
+[34] Wenyi Wang, Piotr Piekos, Nanbo Li, Firas Laakom, Yimeng Chen, Mateusz Ostaszewski,
+Mingchen Zhuge, and Jurgen Schmidhuber. Huxley-godel machine: Human-level coding
+agent development by an approximation of the optimal self-improving machine, 2025. URL
+https://arxiv.org/abs/2510.21614.
+[35] Chunqiu Steven Xia, Zhe Wang, Yan Yang, Yuxiang Wei, and Lingming Zhang. Live-swe-agent:
+Can software engineering agents self-evolve on the fly?, 2025. URL https://arxiv.org/
+abs/2511.13646.
+[36] Peng Xia, Jianwen Chen, Hanyang Wang, Jiaqi Liu, Kaide Zeng, Yu Wang, Siwei Han, Yiyang
+Zhou, Xujiang Zhao, Haifeng Chen, Zeyu Zheng, Cihang Xie, and Huaxiu Yao. Skillrl:
+Evolving agents via recursive skill-augmented reinforcement learning, February 2026. URL
+http://arxiv.org/abs/2602.08234.
+[37] Yiming Xiong, Shengran Hu, and Jeff Clune. Learning to continually learn via meta-learning
+agentic memory designs. In OpenReview, 2026. URL https://api.semanticscholar.
+org/CorpusID:285454009.
+[38] Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik R. Narasimhan, and
+Yuan Cao. React: Synergizing reasoning and acting in language models. In The Eleventh
+International Conference on Learning Representations, 2022. URL https://openreview.
+net/forum?id=WE_vluYUL-X.
+[39] Haoran Ye, Xuning He, Vincent Arak, Haonan Dong, and Guojie Song. Meta context engineer-
+ing via agentic skill evolution. arXiv preprint arXiv:2601.21557, 2026.
+[40] Guibin Zhang, Haotian Ren, Chong Zhan, Zhenhong Zhou, Junhao Wang, He Zhu, Wangchun-
+shu Zhou, and Shuicheng Yan. Memevolve: Meta-evolution of agent memory systems. arXiv
+preprint arXiv:2512.18746, 2025.
+[41] Jenny Zhang, Shengran Hu, Cong Lu, Robert Lange, and Jeff Clune. Darwin godel machine:
+Open-ended evolution of self-improving agents, 2026. URL https://arxiv.org/abs/2505.
+22954.
+[42] Jiayi Zhang, Jinyu Xiang, Zhaoyang Yu, Fengwei Teng, Xiong-Hui Chen, Jiaqi Chen, Mingchen
+Zhuge, Xin Cheng, Sirui Hong, Jinlin Wang, Bingnan Zheng, Bang Liu, Yuyu Luo, and
+Chenglin Wu. Aflow: Automating agentic workflow generation. In The Thirteenth International
+Conference on Learning Representations, October 2024. URL https://openreview.net/
+forum?id=z5uVAKwmjf.
+12[43] Qizheng Zhang, Changran Hu, Shubhangi Upasani, Boyuan Ma, Fenglu Hong, Vamsidhar
+Kamanuru, Jay Rainton, Chen Wu, Mengmeng Ji, Hanchen Li, Urmish Thakker, James Zou,
+and Kunle Olukotun. Agentic context engineering: Evolving contexts for self-improving
+language models. In The Fourteenth International Conference on Learning Representations,
+October 2025. URL https://openreview.net/forum?id=eC4ygDs02R.
+[44] Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, and Gao Huang. Expel:
+Llm agents are experiential learners, December 2024. URL http://arxiv.org/abs/2308.
+10144.
+13A TextArena Liar’s Dice Details
+This appendix gives additional details for the TextArena Liar’s Dice experiments reported in Sec-
+tion 4.1. These experiments serve as a lightweight positive control: they test whether self-rollout
+harness evolution works when feedback is relatively short-horizon and attributable, before moving to
+the longer-horizon Balatro setting.
+Game variants. We report two two-player Liar’s Dice variants. Small3 uses the
+LiarsDice-v0-small environment: each player starts with three dice, ones are not wild, play-
+ers alternately bid a quantity/face pair or call the previous bid, and losing a challenge removes one
+die. OneCall-Wild1 uses the LiarsDice-v0-onecall environment: each player starts with five
+dice, ones are wild until face 1 is bid, and the first [Call] immediately ends the match without dice
+loss or rerolls. These variants are interactive and stochastic, with hidden dice, opponent pressure,
+legal-action constraints, and sequential bidding decisions. However, compared with Balatro, each
+episode is short enough that terminal outcomes can usually be traced back to a small number of bid
+or call decisions. They therefore provide a cleaner setting for testing whether self-generated rollout
+traces can support harness edits.
+Role as a lightweight positive control. We use TextArena Liar’s Dice to check that the outer-loop
+machinery can improve a frozen-model agent when failures are attributable and the search signal is
+relatively dense. The point of this experiment is not to show that self-rollout feedback is sufficient for
+sparse, long-horizon games. Instead, it establishes a positive case: when the task horizon is short and
+rollout failures are easy to localize, self-rollout harness evolution can convert observed failures into
+useful executable harness structure.
+Search and selection. For each target/opponent/task cell, the outer-loop proposer modifies only
+the external harness around a frozen target model. Candidate selection uses development/search
+rollouts only; held-out seeds are not visible during candidate proposal or selection. The search
+budget is deliberately small: candidate evaluations usually use N = 5 logical development seeds,
+while some later Small3 candidates and baselines use N = 10. The selected harness is chosen
+according to development reward only. One OneCall-Wild1 GPT self-play run had a pre-declared
+development-only tie-break: two candidates both reached development reward 0.700, and the clean
+tie-break selected the later candidate. This tie-break did not use held-out performance.
+Held-out paired evaluation. Final evaluation uses 30 matched logical held-out seeds for every
+base/evolved comparison. Small3 uses held-out logical seeds 120000–120029, and OneCall-Wild1
+uses held-out logical seeds 130000–130029. The same seed set is used for the base harness and the
+selected evolved harness within each cell.
+We run held-out evaluation with paired-side control. Each logical seed is evaluated as two raw games
+with the same environment seed and swapped player slots. The reported paired reward averages the
+two legs, so a win receives reward 1, a draw receives reward 0.5, and a loss receives reward 0. Thus
+N = 30 means 30 paired logical matches, or 60 raw games, for each base or evolved row. This
+controls for first-player and seat-order effects while keeping the stochastic dice rolls fixed across the
+base and evolved comparisons.
+Metrics and clean-run criteria. The primary metric is mean held-out paired reward over the 30
+logical seeds, with standard errors computed across paired rewards. The paper-level aggregate is
+task-balanced: we average run-level means within Small3 and OneCall-Wild1, then average the two
+task means. In the clean tie-break package, this gives 0.392 for the base harness and 0.800 for the
+selected evolved harness, an absolute gain of +0.408.
+A row is included in the clean main result only if all 30 base and 30 evolved paired summaries are
+present, paired-side evaluation succeeds for all logical seeds, and there are no LLM fallback, error, or
+timeout events on either target or opponent side. Invalid actions and parse fallbacks are logged as
+behavioral audit metrics rather than infrastructure failures.
+Artifact regeneration. The reported TextArena numbers are generated from archived clean tie-
+break artifacts containing raw held-out traces, held-out summaries, macro summaries, audit files,
+140 1 2 3 4 5 6
+0.0
+0.5
+1.0
+Small3
+dev reward
+1.00
+GPT-5.4-low self
+0 1 2 3 4 5 6
+0.90
+Qwen-3.5-4B vs GPT-5.4-low
+0 1 2 3 4 5 6
+1.00
+Qwen-3.5-4B self
+0 1 2 3 4 5
+Iteration
+0.0
+0.5
+1.0
+OneCall-Wild1
+dev reward
+0.70
+0 1 2 3 4 5
+Iteration
+0.70
+0 1 2 3 4 5
+Iteration
+1.00
+Candidate mean Best so far
+Figure 5: Development/search progress for TextArena Liar’s Dice. Iteration 0 is the base harness.
+Points show candidate development reward, and lines show the best development reward observed so
+far. Candidate selection uses only development/search rollouts; held-out seeds are not used during
+search.
+source snapshots, and per-candidate search-progress records. Execution parallelism only controls
+concurrency and does not repeat evaluation on the same seed. As with any evaluation using hosted or
+locally served LLMs, exact bit-for-bit replay can depend on model-serving implementation, endpoint
+availability, and retry behavior. The reported numbers are therefore tied to the archived raw traces and
+summaries, while the seeded protocol specifies the stochastic game instances used for reproduction.
+B Qualitative Analysis of Evolved Liar’s Dice Harnesses
+This section qualitatively inspects selected Liar’s Dice harnesses from the TextArena experiments
+in Section 4.1. The goal is not to present the full source code, but to understand what kinds of
+executable heuristics self-rollout harness evolution discovered. Across the selected harnesses, we
+observe a recurring pattern: the outer loop moves brittle decision computations out of free-form
+language-model reasoning and into executable scaffolding. Depending on the base model and game
+variant, this scaffolding ranges from near-symbolic control to a neuro-symbolic division of labor.
+Case A: Near-symbolic threshold control for a weaker model. In the Small3 Qwen self-play
+setting, the selected harness largely bypasses the language model at decision time. It parses the
+observation, estimates whether the current bid is true, calls when the bid appears sufficiently unlikely,
+and otherwise raises to a minimally legal bid with acceptable probability. A simplified sketch is:
+state = parse_observation(observation)
+if no_current_bid:
+return opening_bid_from_own_dice(state)
+p_true = P(current_bid_is_true | own_dice, unknown_opponent_dice)
+if p_true < 0.30:
+return "[Call]"
+raise = smallest_legal_raise_with_probability_at_least(0.50)
+return raise
+This case is useful precisely because it is close to a limiting case. Harness evolution is not constrained
+to preserve a fixed role for the language model. When the base model is weak or unstable for the
+15local game mechanics, the search can improve the overall frozen-model agent by shifting more of the
+decision procedure into deterministic code. In this lightweight setting, the resulting “skill” resembles
+a compact rule-of-thumb policy rather than improved model reasoning: the optimized object is the
+full model–harness system.
+Case B: Opponent-aware expected-value scoring. In the Small3 GPT-5.4 self-play setting, the
+selected harness keeps a more hybrid structure. The harness parses the accumulated observation
+history, constructs a simple opponent face prior from the opponent’s bids in the current round,
+computes binomial-tail probabilities for the current claim and candidate raises, and ranks legal actions
+by expected value. A simplified sketch is:
+opp_prior = compute_opp_face_prior(opponent_bids_this_round)
+p_current = P(current_bid_true | own_dice, opp_dice_count, opp_prior)
+ev_call = 2 * (1 - p_current) - 1
+for raise in legal_raises(current_bid):
+p_raise = P(raise_true | own_dice, opp_dice_count, opp_prior)
+ev_raise = 2 * p_raise - 1
+return best_action_by_ev([call] + legal_raises)
+This harness does not merely decide what text to show the model. It computes decision-relevant
+variables that the model is brittle at maintaining across turns: legal raises, claim probabilities,
+opponent-conditioned priors, and call-versus-raise tradeoffs. The language model can still be used for
+residual strategic judgment or action verbalization, but the fragile arithmetic and legality constraints
+are stabilized outside the model.
+Case C: Bayesian pile-on guard in OneCall-Wild1. OneCall-Wild1 is a harder Liar’s Dice variant
+because ones are wild and a single call ends the match. In the selected GPT-5.4 harness, the evolved
+logic adds a state-conditioned guard for deep same-face escalation. The harness estimates the truth
+probability of the current bid, estimates the best follow-up raise under a Bayesian pile-on model
+conditioned on the opponent’s last bid, and overrides continued raising when calling has higher
+expected value by a margin:
+p_truth = P(current_bid_true | own_dice, wild_rule)
+best_raise = argmax_raise P(raise_true | opponent_last_bid, wild_rule)
+ev_call = 1.0 - p_truth
+ev_raise = P(best_raise_true | bayesian_pile_on_model)
+if own_contribution >= 2 and ev_call > ev_raise + margin:
+action = "[Call]"
+else:
+action = best_raise
+This case illustrates a more explicitly neuro-symbolic pattern. The harness handles rule interpretation,
+probability estimation, legal-action validation, and a high-risk override, while still allowing model-
+facing analysis or recommendations in ambiguous states. The intervention is state-conditioned
+rather than seed-conditioned: it fires on a structural pattern in the bidding trajectory rather than on a
+particular development seed.
+Takeaway. The Liar’s Dice case studies show that self-rollout harness evolution can discover
+compact executable game heuristics. In easier or weaker-model settings, the selected harness may
+become nearly symbolic, replacing the model’s unstable local decisions with deterministic thresholds
+and guards. In harder variants or with stronger models, the harness tends to form a hybrid system:
+symbolic code handles explicit rules, probabilities, legal actions, and safety constraints, while the
+frozen language model handles residual semantic and strategic judgment. This supports the view that
+harness evolution optimizes the behavior of the entire model–harness system, not merely the prompt
+or the model’s standalone generation quality.
+16C Balatro Background and Terminology
+C.1 Game Rules and Terminology
+Ante /
+round
+progress
+Boss blind
+effect
+Voucher
+offer
+Pack
+offers
+Current
+money
+Hands /
+discards
+remaining
+Target
+score
+Chips / Mult Active joker
+(a) Blind progression (b) Shop economy (c) Context-dependent scoring
+Figure 6: Annotated Balatro screenshots illustrating the mechanics used in our analysis. (a) Blind
+progression defines the survival objective: the agent must clear increasing target scores with limited
+hands and discards, while boss blinds add special constraints. (b) The shop phase turns money into a
+long-horizon resource, since the agent must choose among purchases, rerolls, and saving for future
+shops. (c) Scoring is build-dependent: the same played hand can have different value depending on
+chips, multipliers, remaining resources, and active jokers.
+This section provides a compact introduction to Balatro for readers who have not played the game.
+We focus on the mechanics needed to interpret our benchmark, metrics, and behavioral analyses.
+Run structure. A Balatro run consists of a sequence of antes, each containing several blinds. To
+clear a blind, the player must reach a target score before exhausting the available hands and discards.
+Failure to reach the target ends the run. We therefore use a rollout’s final round as a coarse measure
+of survival depth.
+Scoring and hand play. During each blind, the player plays poker-style hands. The score of a
+played hand depends on the hand category, card values, hand levels, multipliers, and active modifiers.
+As a result, the best action is often not the strongest conventional poker hand in isolation; it depends
+on the current build, available scaling effects, and remaining resources.
+Shops and economy. After blinds, the player enters a shop phase and can spend money on jokers,
+vouchers, booster packs, consumables, or rerolls. Money is therefore a strategic resource rather than
+a purely local reward signal. Spending aggressively may improve immediate survival, but preserving
+money can enable stronger future shops and more flexible scaling. This motivates our analysis of
+shop-entry money as a long-horizon behavioral probe.
+Jokers and synergies. Jokers are persistent modifiers that often define a run’s strategy. Their value
+is highly compositional: a joker may be weak on its own, strong only with particular deck edits or
+consumables, or useful early but less valuable later. This context dependence makes action values
+difficult to interpret without considering the current joker set, deck composition, and stage of the run.
+Randomness and seeds. Balatro contains substantial stochasticity, including shop inventories, pack
+contents, boss blind effects, and card draws. Fixing a seed makes a run reproducible, but repeated
+optimization on a small set of seeds can still exploit seed-specific opportunities rather than learn
+generally useful strategies. We therefore distinguish between development seeds used during harness
+evolution and held-out evaluation seeds used only for final evaluation.
+Terminology used in the main text. The main paper uses several Balatro-specific terms:
+• Blind: a scoring challenge that must be cleared to continue the run.
+17• Ante: a stage of the run containing multiple blinds; later antes generally require higher
+scores.
+• Shop-entry money: the amount of money available when entering a shop after a blind.
+• Joker set: the current collection of jokers shaping the run’s scoring, economy, and scaling
+behavior.
+• Boss blind: a blind with an additional constraint or effect that can disrupt otherwise strong
+tactics.
+• Reroll: spending money to refresh the shop’s offerings.
+C.2 Experimental Protocol
+Fixed seeds and split. We use the fixed-seed setup from BalatroBench [2]. Each selected harness
+is evaluated on five deterministic Balatro seeds, with three independent rollouts per seed. For
+readability, we abbreviate the concrete seed strings AAAAAAA–EEEEEEE as A–E. Seeds A/B/C are
+used as development seeds during evolution, while seeds D/E are held out and used only for final
+evaluation. The proposer never observes rollouts, scores, or traces from D/E during evolution.
+Search and selection. For each evolution condition, we start from the same BalatroLLM harness [3]
+and run a 10-iteration outer loop. In each iteration, the coding proposer typically produces two
+candidate harnesses. Each candidate is evaluated on seeds A/B/C with one rollout per seed during
+search. Following the Meta-Harness protocol [15], the proposer may inspect the archive of previous
+harnesses, scores, self-generated rollouts, and execution traces, and may choose which prior version
+to build on. After the search budget is exhausted, we select the candidate with the highest mean final
+round on A/B/C, using completion rate on A/B/C as the tie-breaker when necessary. The selected
+candidate is then re-evaluated from scratch on all five seeds A–E with three independent rollouts per
+seed.
+Rationale for the fixed-seed low-sample protocol. BalatroBench was originally designed as a
+fixed-seed model-evaluation setting rather than as a harness-evolution benchmark. We adopt fixed
+seeds because they make candidate comparisons diagnosable during outer-loop search: if each
+candidate were evaluated on different game instances, score changes would conflate harness edits
+with seed-level variation. At the same time, evaluating every candidate on many seeds and rollouts
+would make each evolution step slow and expensive, since every candidate requires full long-horizon
+LLM-agent rollouts. Our protocol therefore uses a low-sample development budget during search
+and a fixed-seed re-evaluation of the selected candidate. This is an engineering trade-off rather than a
+claim that the resulting scores are variance-free estimates of average Balatro skill. We interpret the
+fixed-seed results together with held-out-seed transfer, functional audits, and behavioral analyses.
+Condition-specific inputs. BalatroLLM is the fixed BalatroLLM harness without outer-loop
+evolution and is evaluated only under the final evaluation protocol. Meta-Harness exposes only the
+archive of prior harness code, development-seed scores, self-generated rollouts, and raw execution
+traces. OpenResearch additionally gives the proposer web-search access and encourages it to search
+for external task information, such as rules, tutorials, strategy guides, or reference code, but provides
+no human trajectories. DemoEvolve provides nine competent human trajectories, consisting of three
+trajectories for each development seed A/B/C. No human trajectories are provided for held-out seeds
+D/E.
+Models and controls. All Balatro task-execution agents use GPT-5.4-low as the frozen model, and
+all evolution conditions use Claude Opus 4.7 Max as the coding proposer. Across Meta-Harness,
+OpenResearch, and DemoEvolve, the initial harness, search budget, proposer model, candidate-
+selection rule, and final evaluation protocol are held fixed.
+Compute and API cost. We estimate the Balatro rollout cost using GPT-5.4-low pricing. The final
+fixed-seed evaluation uses five seeds with three rollouts per seed, i.e., 15 rollouts in total, and costs
+approximately $32, or about $2.13 per rollout. A typical evolution run uses 10 iterations, with about
+two candidate harnesses per iteration; each candidate is evaluated on three development seeds. This
+gives 10 × 2 × 3 = 60 development rollouts, corresponding to approximately $128. Including the
+18final fixed-seed evaluation of the selected harness, the total rollout cost is about $160 per evolution
+run. This estimate only includes task-execution rollouts and excludes the cost of the coding proposer.
+C.3 Functional Audit of the Selected Candidate
+This appendix audits the final candidate selected by the Meta-Harness self-rollout baseline as its
+best Balatro harness under the A/B/C development-seed selection rule. The selected candidate
+was face_exposure_shop_hook. It proposed a SHOP-phase hook for face-card-dependent builds,
+intended to warn the agent before The Plant, a boss blind that debuffs all face cards. The source
+contained a guarded prompt block:
+{ % if hooks.face_exposure % } ... Face-Card Exposure Metrics ...
+and candidate selection favored this version on the A/B/C development rollouts.
+We audited the rendered model requests to test whether the proposed mechanism actually reached the
+model. Across the three A/B/C validation rollouts, we inspected 517 requests in requests.jsonl.
+None of the distinctive hook strings appeared:
+Expected hook string Occurrences
+Face-Card Exposure Metrics 0
+Deck face cards 0
+face-dependent jokers 0
+The Plant boss disables 0
+Thus, although the source diff was non-empty, the advertised face-exposure intervention was absent
+from the model-facing context. The candidate’s development-set gain therefore cannot be attributed
+to the proposed hook.
+This illustrates the noisy-selection failure mode in Balatro. Even with the same fixed seed and nearly
+identical prompts, a frontier LLM can produce different early actions; a single shop purchase, discard,
+or played hand can change the future state distribution and final outcome. With only a few long
+rollouts per candidate during search, an inert edit can be selected when ordinary rollout variance
+makes its score appear better than the reference. This is a credit-assignment failure: the optimizer
+observes a higher sparse reward and attributes it to the candidate diff, while the executed-context
+audit shows that the claimed mechanism was inactive.
+For long-horizon harness evolution, source-level diffs are therefore insufficient. Selected edits should
+be audited at the rendered-context or execution level to verify that the intended prompt block, hook
+output, memory entry, or tool schema is active at the decision states where it is supposed to apply.
+19

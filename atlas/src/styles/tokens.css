@@ -1,0 +1,85 @@
+:root {
+  --blueprint: #F2F5FF;
+  --navy: #171B33;
+  --cobalt: #2447D8;
+  --orange: #EF5B2A;
+  --orange-dark: #84280D;
+  --mint: #8ED7C6;
+  --violet: #7768AE;
+  --paper: #ffffff;
+  --paper-blue: #e9eeff;
+  --line: #cbd3eb;
+  --line-strong: #99a7d0;
+  --muted: #5b6482;
+  --quiet: #7a84a2;
+  --danger-soft: #fff0e9;
+  --mint-soft: #e0f4ee;
+  --violet-soft: #eeeafd;
+  --cobalt-soft: #e0e7ff;
+  --font-display: "Futura", "Century Gothic", Arial, sans-serif;
+  --font-reading: "Charter", "Iowan Old Style", Georgia, serif;
+  --font-utility: "SFMono-Regular", "Cascadia Code", "Roboto Mono", monospace;
+  --shadow-paper: 0 14px 36px rgb(23 27 51 / 0.07);
+  --shadow-focus: 0 0 0 3px rgb(36 71 216 / 0.22);
+  font-family: var(--font-reading);
+  color: var(--navy);
+  background: var(--blueprint);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--blueprint);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(rgb(36 71 216 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(36 71 216 / 0.035) 1px, transparent 1px),
+    var(--blueprint);
+  background-size: 32px 32px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--mint);
+  color: var(--navy);
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  box-shadow: var(--shadow-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

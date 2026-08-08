@@ -1,0 +1,203 @@
+References
+[1] Lingyue Fu, Xin Ding, Linyue Pan, Yaoming Zhu, Shao Zhang, Lin Qiu, Weiwen Liu, Weinan
+Zhang, Xuezhi Cao, Xunliang Cai, Jiaxin Ding, and Yong Yu. Catarena: Evaluation of llm
+agents through iterative tournament competitions. In International Conference on Machine
+Learning. PMLR, 2026.
+[2] GLM-5 Team. Glm-5: from vibe coding to agentic engineering, 2026. URL https://arxiv.
+org/abs/2602.15763.
+[3] Shengran Hu, Cong Lu, and Jeff Clune. Automated design of agentic systems, 2025. URL
+https://arxiv.org/abs/2408.08435.
+[4] LangChain. Deepagents, 2026. URL https://github.com/langchain-ai/deepagents.
+Software framework.
+[5] Yoonho Lee, Roshen Nair, Qizheng Zhang, Kangwook Lee, Omar Khattab, and Chelsea Finn.
+Meta-harness: End-to-end optimization of model harnesses, 2026. URL https://arxiv.org/
+abs/2603.28052.
+[6] Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman
+Goyal, Heinrich Kuttler, Mike Lewis, Wen-tau Yih, Tim Rocktaschel, Sebastian Riedel, and
+DouweKiela. Retrieval-augmentedgenerationforknowledge-intensivenlptasks. InAdvancesin
+Neural Information Processing Systems, 2020. URL https://arxiv.org/abs/2005.11401.
+[7] Yongyuan Liang, Shijie Zhou, Yu Gu, Hao Tan, Gang Wu, Franck Dernoncourt, Jihyung Kil,
+Ryan A Rossi, and Ruiyi Zhang. Anticipatory planning for multimodal ai agents. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 5925–5935,
+2026.
+[8] Jiahang Lin, Shichun Liu, Chengjun Pan, Lizhi Lin, Shihan Dou, Zhiheng Xi, Xuanjing
+Huang, Hang Yan, Zhenhua Han, Tao Gui, and Yu-Gang Jiang. Agentic harness engineering:
+Observability-driven automatic evolution of coding-agent harnesses, 2026. URL https://
+arxiv.org/abs/2604.25850.
+[9] Jiacheng Liu, Xiaohan Zhao, Xinyi Shang, and Zhiqiang Shen. Dive into claude code: The
+design space of today’s and future ai agent systems, 2026. URL https://arxiv.org/abs/
+2604.14228.
+[10] Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig.
+Pre-train, prompt, and predict: A systematic survey of prompting methods in natural language
+processing, 2021. URL https://arxiv.org/abs/2107.13586.
+14[11] Chris Lu, Cong Lu, Robert Tjarko Lange, Jakob Foerster, Jeff Clune, and David Ha. The
+ai scientist: Towards fully automated open-ended scientific discovery, 2024. URL https:
+//arxiv.org/abs/2408.06292.
+[12] Lingrui Mei, Jiayu Yao, Yuyao Ge, Yiwei Wang, Baolong Bi, Yujun Cai, Jiazhi Liu, Mingyu
+Li, Zhong-Zhi Li, Duzhen Zhang, Chenlin Zhou, Jiayi Mao, Tianze Xia, Jiafeng Guo, and
+Shenghua Liu. A survey of context engineering for large language models, 2025. URL
+https://arxiv.org/abs/2507.13334.
+[13] Mike A. Merrill, Alexander G. Shaw, Nicholas Carlini, Boxuan Li, Harsh Raj, Ivan Bercovich,
+Lin Shi, Jeong Yeon Shin, Thomas Walshe, E. Kelly Buchanan, Junhong Shen, Guanghao Ye,
+Haowei Lin, Jason Poulos, Maoyu Wang, Marianna Nezhurina, Jenia Jitsev, Di Lu, Orfeas Menis
+Mastromichalakis, Zhiwei Xu, Zizhao Chen, Yue Liu, Robert Zhang, Leon Liangyu Chen,
+Anurag Kashyap, Jan-Lucas Uslu, Jeffrey Li, Jianbo Wu, Minghao Yan, Song Bian, Vedang
+Sharma, Ke Sun, Steven Dillmann, Akshay Anand, Andrew Lanpouthakoun, Bardia Koopah,
+Changran Hu, Etash Guha, Gabriel H. S. Dreiman, Jiacheng Zhu, Karl Krauth, Li Zhong,
+Niklas Muennighoff, Robert Amanfu, Shangyin Tan, Shreyas Pimpalgaonkar, Tushar Aggarwal,
+Xiangning Lin, Xin Lan, Xuandong Zhao, Yiqing Liang, Yuanli Wang, Zilong Wang, Changzhi
+Zhou, David Heineman, Hange Liu, Harsh Trivedi, John Yang, Junhong Lin, Manish Shetty,
+Michael Yang, Nabil Omi, Negin Raoof, Shanda Li, Terry Yue Zhuo, Wuwei Lin, Yiwei
+Dai, Yuxin Wang, Wenhao Chai, Shang Zhou, Dariush Wahdany, Ziyu She, Jiaming Hu,
+Zhikang Dong, Yuxuan Zhu, Sasha Cui, Ahson Saiyed, Arinbjörn Kolbeinsson, Jesse Hu,
+Christopher Michael Rytting, Ryan Marten, Yixin Wang, Alex Dimakis, Andy Konwinski, and
+Ludwig Schmidt. Terminal-bench: Benchmarking agents on hard, realistic tasks in command
+line interfaces, 2026. URL https://arxiv.org/abs/2601.11868.
+[14] MiniMax. Minimax m2.5: Built for real-world productivity, February 2026. URL https:
+//www.minimax.io/news/minimax-m25. Official model report.
+[15] Alexander Novikov, Ngan Vu, Marvin Eisenberger, Emilien Dupont, Po-Sen Huang, Adam Zsolt
+Wagner, Sergey Shirobokov, Borislav Kozlovskii, Francisco J. R. Ruiz, Abbas Mehrabian,
+M. Pawan Kumar, Abigail See, Swarat Chaudhuri, George Holland, Alex Davies, Sebastian
+Nowozin, Pushmeet Kohli, and Matej Balog. Alphaevolve: A coding agent for scientific and
+algorithmic discovery, 2025. URL https://arxiv.org/abs/2506.13131.
+[16] OpenAI. Codex, 2026. URL https://openai.com/codex/. Product page.
+[17] Charles Packer, Sarah Wooders, Kevin Lin, Vivian Fang, Shishir G. Patil, Ion Stoica, and
+Joseph E. Gonzalez. Memgpt: Towards llms as operating systems, 2024. URL https:
+//arxiv.org/abs/2310.08560.
+[18] Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan Yan, Yaxi Lu, Yankai Lin, Xin Cong,
+Xiangru Tang, Bill Qian, Sihan Zhao, Runchu Tian, Ruobing Xie, Jie Zhou, Mark Gerstein,
+Dahai Li, Zhiyuan Liu, and Maosong Sun. Toolllm: Facilitating large language models to
+master 16000+ real-world apis, 2023. URL https://arxiv.org/abs/2307.16789.
+[19] Jiahao Qiu, Xuan Qi, Tongcheng Zhang, Xinzhe Juan, Jiacheng Guo, Yifu Lu, Yimin Wang,
+Zixin Yao, Qihan Ren, Xun Jiang, Xing Zhou, Dongrui Liu, Ling Yang, Yue Wu, Kaixuan
+Huang, Shilong Liu, Hongru Wang, and Mengdi Wang. Alita: Generalist agent enabling
+scalable agentic reasoning with minimal predefinition and maximal self-evolution, 2025. URL
+https://arxiv.org/abs/2505.20286.
+[20] Qwen Team. Qwen3.5: Towards native multimodal agents, February 2026. URL https:
+//qwen.ai/blog?id=qwen3.5. Official model report and model card for Qwen3.5-35B-A3B.
+[21] Sander Schulhoff, Michael Ilie, Nishant Balepur, Konstantine Kahadze, Amanda Liu, Chenglei
+Si, Yinheng Li, Aayush Gupta, HyoJung Han, Sevien Schulhoff, Pranav Sandeep Dulepet,
+Saurav Vidyadhara, Dayeon Ki, Sweta Agrawal, Chau Pham, Gerson Kroiz, Feileen Li, Hudson
+Tao, Ashay Srivastava, Hevander Da Costa, Saloni Gupta, Megan L. Rogers, Inna Goncearenco,
+Giuseppe Sarli, Igor Galynker, Denis Peskoff, Marine Carpuat, Jules White, Shyamal Anadkat,
+Alexander Hoyle, and Philip Resnik. The prompt report: A systematic survey of prompt
+engineering techniques, 2025. URL https://arxiv.org/abs/2406.06608.
+15[22] Melanie Sclar, Yejin Choi, Yulia Tsvetkov, and Alane Suhr. Quantifying language models’
+sensitivity to spurious features in prompt design or: How i learned to start worrying about
+prompt formatting, 2024. URL https://arxiv.org/abs/2310.11324.
+[23] Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, and
+Shunyu Yao. Reflexion: Language agents with verbal reinforcement learning, 2023. URL
+https://arxiv.org/abs/2303.11366.
+[24] Xingyao Wang, Boxuan Li, Yufan Song, Frank F Xu, Xiangru Tang, Mingchen Zhuge, Jiayi
+Pan, Yueqi Song, Bowen Li, Jaskirat Singh, et al. Openhands: An open platform for ai software
+developers as generalist agents. In International Conference on Learning Representations,
+volume 2025, pages 65882–65919, 2025.
+[25] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi,
+Quoc Le, and Denny Zhou. Chain-of-thought prompting elicits reasoning in large language
+models. In Advances in Neural Information Processing Systems, 2022. URL https://arxiv.
+org/abs/2201.11903.
+[26] Siyuan Xu, Shiyang Li, Xin Liu, Tianyi Liu, Yixiao Li, Zhan Shi, Zixuan Zhang, Zilong Wang,
+Qingyu Yin, Jianshu Chen, et al. Controllable and verifiable tool-use data synthesis for agentic
+reinforcement learning. arXiv preprint arXiv:2604.09813, 2026.
+[27] Yutaro Yamada, Robert Tjarko Lange, Cong Lu, Shengran Hu, Chris Lu, Jakob Foerster, Jeff
+Clune, and David Ha. The ai scientist-v2: Workshop-level automated scientific discovery via
+agentic tree search, 2025. URL https://arxiv.org/abs/2504.08066.
+[28] John Yang, Carlos E. Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik
+Narasimhan, and Ofir Press. Swe-agent: Agent-computer interfaces enable automated software
+engineering, 2024. URL https://arxiv.org/abs/2405.15793.
+[29] Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan
+Cao. React: Synergizing reasoning and acting in language models, 2023. URL https:
+//arxiv.org/abs/2210.03629.
+[30] XunjianYin, XinyiWang, LiangmingPan, LiLin, XiaojunWan, andWilliamYangWang. Gödel
+agent: A self-referential agent framework for recursively self-improvement. In Proceedings of
+the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long
+Papers), pages 27890–27913, 2025. doi: 10.18653/v1/2025.acl-long.1354. URL https:
+//aclanthology.org/2025.acl-long.1354/.
+[31] Eric Zelikman, Eliana Lorch, Lester Mackey, and Adam Tauman Kalai. Self-taught optimizer
+(stop): Recursively self-improving code generation, 2024. URL https://arxiv.org/abs/
+2310.02304.
+[32] Hangfan Zhang, Siyuan Xu, Zhimeng Guo, Huaisheng Zhu, Shicheng Liu, Xinrun Wang,
+Qiaosheng Zhang, Yang Chen, Peng Ye, Lei Bai, et al. The path of self-evolving large
+language models: Achieving data-efficient learning via intrinsic feedback. arXiv preprint
+arXiv:2510.02752, 2025.
+[33] Jenny Zhang, Shengran Hu, Cong Lu, Robert Lange, and Jeff Clune. Darwin gödel machine:
+Open-ended evolution of self-improving agents, 2025. URL https://arxiv.org/abs/2505.
+22954.
+[34] Qizheng Zhang, Changran Hu, Shubhangi Upasani, Boyuan Ma, Fenglu Hong, Vamsidhar
+Kamanuru, Jay Rainton, Chen Wu, Mengmeng Ji, Hanchen Li, Urmish Thakker, James Zou,
+and Kunle Olukotun. Agentic context engineering: Evolving contexts for self-improving
+language models, 2026. URL https://arxiv.org/abs/2510.04618. ICLR 2026.
+[35] Shao Zhang, Xihuai Wang, Wenhao Zhang, Chaoran Li, Junru Song, Tingyu Li, Lin Qiu, Xuezhi
+Cao, Xunliang Cai, Wen Yao, Weinan Zhang, Xinbing Wang, and Ying Wen. Leveraging dual
+process theory in language agent framework for real-time simultaneous human-AI collaboration.
+In Wanxiang Che, Joyce Nabende, Ekaterina Shutova, and Mohammad Taher Pilehvar, editors,
+Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics
+16(Volume 1: Long Papers), pages 4081–4108, Vienna, Austria, July 2025. Association for
+Computational Linguistics. ISBN 979-8-89176-251-0. doi: 10.18653/v1/2025.acl-long.206.
+URL https://aclanthology.org/2025.acl-long.206/.
+[36] Ningyan Zhu, Huacan Wang, Jie Zhou, Feiyu Chen, Shuo Zhang, Ge Chen, Chen Liu, Jiarou Wu,
+Wangyi Chen, Xiaofeng Mou, and Yi Xu. Semaclaw: A step towards general-purpose personal
+ai agents through harness engineering, 2026. URL https://arxiv.org/abs/2604.11548.
+[37] Mingchen Zhuge, Wenyi Wang, Louis Kirsch, Francesco Faccio, Dmitrii Khizbullin, and
+Juergen Schmidhuber. Language agents as optimizable graphs, 2024. URL https://arxiv.
+org/abs/2402.16823.
+17A Additional Implementation Details
+A.1 Experimental details
+Model inference services MiniMax M2.5 and GLM-5 were accessed through hosted inference
+services, using MiniMax’s hosted API and OpenRouter, respectively.2
+Qwen3.5-35B-A3B was
+deployed locally on four NVIDIA H200 GPUs using an internal image derived from the public
+SGLang Docker image lmsysorg/sglang:v0.5.12-cu129.3
+Terminal-Bench-2.0 configuration. We use Harbor4
+as the execution environment for all Terminal-
+Bench-2.0 tasks. Evaluations are run on an isolated machine with 64 CPU cores, 256 GB of memory,
+and a 2 MB/s outbound network bandwidth cap. We use a default concurrency of 32 tasks for
+MiniMax M2.5 and GLM-5, and a concurrency of 48 tasks for the locally deployed Qwen3.5-35B-
+A3B backend. To reduce failures caused by incidental network latency rather than agent behavior,
+we mirror a subset of external resources required by Terminal-Bench-2.0 tasks when the original
+resources are stable but slow to download. Tasks that depend on external resources that cannot be
+accessed reliably, as well as tasks requiring multimodal inputs unsupported by the initial harness, are
+excluded from the main 64-case evaluation set. This configuration keeps the benchmark environment
+controlled while preserving the core terminal-interaction setting of Terminal-Bench-2.0.
+A.2 Additional GLM-5 analysis
+Figure 9: Case study of a GLM-5 harness edit on the Terminal-Bench-2.0 build-pov-ray task.
+Left: a failed trace under the initial harness, where long monolithic external downloads consume
+large tool budgets and the agent later finalizes despite repeated non-zero sanity checks. Right: a
+successful trace under the edited harness, where the agent uses bounded staged operations, checks
+external archive evidence before committing more work, and repairs the failed sanity check before
+finalizing.
+2MiniMax token plan: https://platform.minimax.io/subscribe/token-plan; OpenRouter GLM-5 endpoint:
+https://openrouter.ai/z-ai/glm-5. Accessed on 2026/05.
+3https://hub.docker.com/r/lmsysorg/sglang/tags?name=v0.5.12-cu129.
+4https://www.harborframework.com/docs/tutorials/running-terminal-bench.
+180 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
+Iterations
+46
+50
+54
+58
+Pass (%)
+46.1
+50.8
+53.9
+56.3
+57.0
+accepted harness candidate rejected harness candidate abandoned branch
+Initial harness
+Late artifacts
+> write early; force cleanup
+External compute
+> bound, stage, inspect
+Session-scoped tools
+> persist PATH and verify
+Implementation nudge
+> shift to build/test
+(a) Self-Harness evolution trajectory. Green markers denote accepted harness candidates and gray crosses denote rejected
+harness candidates. Step lines connect accepted candidates and keep performance flat across rejected iterations. Two early
+branches were discarded due to no further improvement. The remaining lane becomes the final accepted harness.
+(b) Differences for the four harness modifications accepted by Self-Harness and retained in the final harness. Red rows denote
+code removed from the initial harness, and green rows denote the updated harness behavior.
+Figure 10: GLM-5 Self-Harness run. Panel (a) summarizes the Self-Harness evolution trajectory,
+while panel (b) expands the accepted updates from this trajectory into their retained code-level edits
+in the final harness.
+19

@@ -1,0 +1,1055 @@
+References
+Eshaan Agarwal, Joykirat Singh, Vivek Dani, Raghav
+Magazine, Tanuja Ganu, and Akshay Nambi. 2024.
+Promptwizard: Task-aware prompt optimization
+framework. arXiv preprint arXiv:2405.18369.
+Sandhini Agarwal, Lama Ahmad, Jason Ai, Sam Alt-
+man, Andy Applebaum, Edwin Arbus, Rahul K
+Arora, Yu Bai, Bowen Baker, Haiming Bao, et al.
+2025. gpt-oss-120b & gpt-oss-20b model card. arXiv
+preprint arXiv:2508.10925.
+Lakshya A Agrawal, Shangyin Tan, Dilara Soylu,
+Noah Ziems, Rishi Khare, Krista Opsahl-Ong, Ar-
+nav Singhvi, Herumb Shandilya, Michael J Ryan,
+Meng Jiang, Christopher Potts, Koushik Sen, Alex
+Dimakis, Ion Stoica, Dan Klein, Matei Zaharia, and
+Omar Khattab. 2026. GEPA: Reflective prompt evo-
+lution can outperform reinforcement learning. In
+The Fourteenth International Conference on Learn-
+ing Representations.
+Salaheddin Alzubi, Noah Provenzano, Jaydon Bingham,
+Weiyuan Chen, and Tu Vu. 2026. Evoskill: Auto-
+mated skill discovery for multi-agent systems. arXiv
+preprint arXiv:2603.02766.
+Anthropic. 2025. Claude haiku 4.5 system card.
+Anthropic. 2026a. Claude opus 4.6 system card.
+Anthropic. 2026b. Claude sonnet 4.6 system card.
+Chaithanya Bandi, Ben Hertzberg, Geobio Boo, Tejas
+Polakam, Jeff Da, Sami Hassaan, Manasi Sharma,
+Andrew Park, Ernesto Hernandez, Dan Rambado,
+et al. 2026. Mcp-atlas: A large-scale benchmark for
+tool-use competency with real mcp servers. arXiv
+preprint arXiv:2602.00933.
+Guoxin Chen, Zhong Zhang, Xin Cong, Fangda Guo,
+Yesai Wu, Yankai Lin, Wenzheng Feng, and Yasheng
+Wang. 2025. Learning evolving tools for large lan-
+guage models. In The Thirteenth International Con-
+ference on Learning Representations.
+Jizhan Fang, Xinle Deng, Haoming Xu, Ziyan Jiang,
+Yuqi Tang, Ziwen Xu, Shumin Deng, Yunzhi Yao,
+Mengru Wang, Shuofei Qiao, Huajun Chen, and
+NingyuZhang.2026. Lightmem: Lightweightandef-
+ficient memory-augmented generation. In The Four-
+teenth International Conference on Learning Repre-
+sentations.
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou,
+Mantas Mazeika, Dawn Song, and Jacob Steinhardt.
+2020. Measuring massive multitask language under-
+standing. arXiv preprint arXiv:2009.03300.
+Xinyi Hou, Yanjie Zhao, Shenao Wang, and Haoyu
+Wang. 2025. Model context protocol (mcp): Land-
+scape, security threats, and future research direc-
+tions. ACM Transactions on Software Engineering
+and Methodology.
+Sihang Jiang, Lipeng Ma, Zhonghua Hong, Keyi Wang,
+Zhiyu Lu, Shisong Chen, Jinghao Zhang, Tian-
+jun Pan, Weijia Zhou, Jiaqing Liang, et al. 2026.
+Sea-eval: A benchmark for evaluating self-evolving
+agents beyond episodic assessment. arXiv preprint
+arXiv:2604.08988.
+Carlos E Jimenez, John Yang, Alexander Wettig,
+Shunyu Yao, Kexin Pei, Ofir Press, and Karthik
+Narasimhan. 2024. Swe-bench: Can language mod-
+els resolve real-world github issues? In International
+Conference on Learning Representations, volume
+2024, pages 54107–54157.
+Yoonho Lee, Roshen Nair, Qizheng Zhang, Kangwook
+Lee, Omar Khattab, and Chelsea Finn. 2026. Meta-
+harness: End-to-end optimization of model harnesses.
+arXiv preprint arXiv:2603.28052.
+9Haotian Li, Shijun Yang, Weizhen Qi, Silei Zhao,
+Rui Hua, Mingzhu Song, Xiaojian Yang, and
+Chao Peng. 2026a. Yunjue agent tech report: A
+fully reproducible, zero-start in-situ self-evolving
+agent system for open-ended tasks. arXiv preprint
+arXiv:2601.18226.
+Xiangyi Li, Wenbo Chen, Yimin Liu, Shenghan Zheng,
+Xiaokun Chen, Yifeng He, Yubo Li, Bingran You,
+Haotian Shen, Jiankai Sun, et al. 2026b. Skillsbench:
+Benchmarking how well agent skills work across
+diverse tasks. arXiv preprint arXiv:2602.12670.
+Minhua Lin, Enyan Dai, Hui Liu, Xianfeng Tang, Yu-
+liang Yan, Zhenwei Dai, Jingying Zeng, Zhiwei
+Zhang, Fali Wang, Hongcheng Gao, Chen Luo, Xi-
+ang Zhang, Qi He, and Suhang Wang. 2026a. How
+far are LLMs from professional poker players? re-
+visiting game-theoretic reasoning with agentic tool
+use. In The Fourteenth International Conference on
+Learning Representations.
+Minhua Lin, Hanqing Lu, Zhan Shi, Bing He, Rui Mao,
+Zhiwei Zhang, Zongyu Wu, Xianfeng Tang, Hui
+Liu, Zhenwei Dai, Rui Zhang, Xiang Zhang, Suhang
+Wang, Benoit Dumoulin, and Jian Pei. 2026b. Posi-
+tion: Agentic evolution is the path to evolving LLMs.
+In First Workshop on Agent Skills.
+Minhua Lin, Zongyu Wu, Zhichao Xu, Hui Liu, Xian-
+feng Tang, Qi He, Charu Aggarwal, Xiang Zhang,
+and Suhang Wang. 2025. A comprehensive survey on
+reinforcement learning-based agentic search: Foun-
+dations, roles, optimizations, evaluations, and appli-
+cations. arXiv preprint arXiv:2510.16724.
+Minhua Lin, Zhiwei Zhang, Hanqing Lu, Hui Liu,
+Xianfeng Tang, Qi He, Xiang Zhang, and Suhang
+Wang. 2026c. Memma: Coordinating the memory
+cycle through multi-agent reasoning and in-situ self-
+evolution. arXiv preprint arXiv:2603.18718.
+Dawei Liu, Zongxia Li, Hongyang Du, Xiyang Wu, Shi-
+hang Gui, Yongbei Kuang, and Lichao Sun. 2026.
+Graph of skills: Dependency-aware structural re-
+trieval for massive agent skills. arXiv preprint
+arXiv:2604.05333.
+Weiwen Liu, Xu Huang, Xingshan Zeng, Shuai Yu,
+Dexun Li, Shuai Wang, Weinan Gan, Zhengying Liu,
+Yuanqing Yu, Zezhong WANG, et al. 2025. Toolace:
+Winning the points of llm function calling. In Inter-
+national Conference on Learning Representations,
+volume 2025, pages 41359–41381.
+Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler
+Hallinan, Luyu Gao, Sarah Wiegreffe, Uri Alon,
+Nouha Dziri, Shrimai Prabhumoye, Yiming Yang,
+et al. 2023. Self-refine: Iterative refinement with
+self-feedback. Advances in neural information pro-
+cessing systems, 36:46534–46594.
+Mike A Merrill, Alexander G Shaw, Nicholas Carlini,
+Boxuan Li, Harsh Raj, Ivan Bercovich, Lin Shi,
+Jeong Yeon Shin, Thomas Walshe, E Kelly Buchanan,
+et al. 2026. Terminal-bench: Benchmarking agents
+on hard, realistic tasks in command line interfaces.
+arXiv preprint arXiv:2601.11868.
+Xuying Ning, Katherine Tieu, Dongqi Fu, Tianxin Wei,
+Zihao Li, Yuanchen Bei, Jiaru Zou, Mengting Ai,
+Zhining Liu, Ting-Wei Li, et al. 2026. Code as agent
+harness. arXiv preprint arXiv:2605.18747.
+Siru Ouyang, Jun Yan, I Hsu, Yanfei Chen, Ke Jiang,
+Zifeng Wang, Rujun Han, Long T Le, Samira Daruki,
+Xiangru Tang, et al. 2025. Reasoningbank: Scaling
+agent self-evolving with reasoning memory. arXiv
+preprint arXiv:2509.25140.
+Linyue Pan, Lexiao Zou, Shuo Guo, Jingchen Ni, and
+Hai-Tao Zheng. 2026. Natural-language agent har-
+nesses. arXiv preprint arXiv:2603.25723.
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan
+Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang,
+Bill Qian, et al. 2024. Toolllm: Facilitating large
+language models to master 16000+ real-world apis.
+In International Conference on Learning Representa-
+tions, volume 2024, pages 9695–9717.
+Team Qwen. 2026. Qwen3.5: Accelerating productivity
+with native multimodal agents.
+Alec Radford, Karthik Narasimhan, Tim Salimans, Ilya
+Sutskever, et al. 2018. Improving language under-
+standing by generative pre-training.
+Noah Shinn, Federico Cassano, Ashwin Gopinath,
+Karthik Narasimhan, and Shunyu Yao. 2023. Re-
+flexion: Language agents with verbal reinforcement
+learning. Advances in neural information processing
+systems, 36:8634–8652.
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier
+Martinet, Marie-Anne Lachaux, Timothée Lacroix,
+Baptiste Rozière, Naman Goyal, Eric Hambro,
+Faisal Azhar, et al. 2023. Llama: Open and effi-
+cient foundation language models. arXiv preprint
+arXiv:2302.13971.
+Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Man-
+dlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and
+Anima Anandkumar. 2023. Voyager: An open-ended
+embodied agent with large language models. arXiv
+preprint arXiv:2305.16291.
+Ruonan Wang, Runxi Wang, Yunwen Shen, Chengfeng
+Wu, Qinglin Zhou, and Rohitash Chandra. 2025.
+Evaluation of llms for mathematical problem solving.
+arXiv preprint arXiv:2506.00309.
+Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, and
+Graham Neubig. 2024. Agent workflow memory.
+arXiv preprint arXiv:2409.07429.
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten
+Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny Zhou,
+et al. 2022. Chain-of-thought prompting elicits rea-
+soning in large language models. Advances in neural
+information processing systems, 35:24824–24837.
+10Tianxin Wei, Noveen Sachdeva, Benjamin Coleman,
+Zhankui He, Yuanchen Bei, Xuying Ning, Mengting
+Ai, Yunzhe Li, Jingrui He, Ed H Chi, et al. 2025.
+Evo-memory: Benchmarking llm agent test-time
+learning with self-evolving memory. arXiv preprint
+arXiv:2511.20857.
+Rong Wu, Xiaoman Wang, Jianbiao Mei, Pinlong Cai,
+Daocheng Fu, Cheng Yang, Licheng Wen, Xuemeng
+Yang, Yufan Shen, Yuxin Wang, et al. 2025. Evolver:
+Self-evolving llm agents through an experience-
+driven lifecycle. arXiv preprint arXiv:2510.16079.
+Peng Xia, Jianwen Chen, Hanyang Wang, Jiaqi Liu,
+Kaide Zeng, Yu Wang, Siwei Han, Yiyang Zhou, Xu-
+jiang Zhao, Haifeng Chen, et al. 2026. Skillrl: Evolv-
+ing agents via recursive skill-augmented reinforce-
+ment learning. arXiv preprint arXiv:2602.08234.
+Wujiang Xu, Zujie Liang, Kai Mei, Hang Gao, Juntao
+Tan, and Yongfeng Zhang. 2026. A-mem: Agentic
+memory for llm agents. Advances in Neural Informa-
+tion Processing Systems, 38:17577–17604.
+Sikuan Yan, Xiufeng Yang, Zuchao Huang, Ercong Nie,
+Zifeng Ding, Zonggen Li, Xiaowen Ma, Jinhe Bi,
+Kristian Kersting, Jeff Z Pan, et al. 2025. Memory-
+r1: Enhancing large language model agents to man-
+age and utilize memories via reinforcement learning.
+arXiv preprint arXiv:2508.19828.
+An Yang, Anfeng Li, Baosong Yang, Beichen Zhang,
+Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao,
+Chengen Huang, Chenxu Lv, et al. 2025. Qwen3
+technical report. arXiv preprint arXiv:2505.09388.
+Chengrun Yang, Xuezhi Wang, Yifeng Lu, Hanxiao
+Liu, Quoc V Le, Denny Zhou, and Xinyun Chen.
+2024a. Large language models as optimizers. In In-
+ternational Conference on Learning Representations,
+volume 2024, pages 12028–12068.
+John Yang, Carlos E Jimenez, Alexander Wettig, Kilian
+Lieret, Shunyu Yao, Karthik Narasimhan, and Ofir
+Press. 2024b. Swe-agent: Agent-computer interfaces
+enable automated software engineering. Advances in
+Neural Information Processing Systems, 37:50528–
+50652.
+Yutao Yang, Junsong Li, Qianjun Pan, Bihao Zhan, Yux-
+uan Cai, Lin Du, Jie Zhou, Kai Chen, Qin Chen, Xin
+Li, et al. 2026. Autoskill: Experience-driven life-
+long learning via skill self-evolution. arXiv preprint
+arXiv:2603.01145.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak
+Shafran, Karthik Narasimhan, and Yuan Cao. 2022.
+React: Synergizing reasoning and acting in language
+models. arXiv preprint arXiv:2210.03629.
+Mert Yuksekgonul, Federico Bianchi, Joseph Boen,
+Sheng Liu, Zhi Huang, Carlos Guestrin, and James
+Zou. 2024. Textgrad: Automatic" differentiation" via
+text. arXiv preprint arXiv:2406.07496.
+Guibin Zhang, Haotian Ren, Chong Zhan, Zhenhong
+Zhou, Junhao Wang, He Zhu, Wangchunshu Zhou,
+and Shuicheng Yan. 2025a. Memevolve: Meta-
+evolution of agent memory systems. arXiv preprint
+arXiv:2512.18746.
+Qizheng Zhang, Changran Hu, Shubhangi Upasani,
+Boyuan Ma, Fenglu Hong, Vamsidhar Kamanuru,
+Jay Rainton, Chen Wu, Mengmeng Ji, Hanchen Li,
+et al. 2025b. Agentic context engineering: Evolving
+contexts for self-improving language models. arXiv
+preprint arXiv:2510.04618.
+Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu
+Lin, Yong-Jin Liu, and Gao Huang. 2024. Expel:
+Llm agents are experiential learners. In Proceedings
+of the AAAI Conference on Artificial Intelligence,
+volume 38, pages 19632–19642.
+Chenyu Zhou, Huacan Chai, Wenteng Chen, Zihan Guo,
+Rong Shan, Yuanyi Song, Tianyi Xu, Yingxuan Yang,
+Aofan Yu, Weiming Zhang, et al. 2026. Externaliza-
+tion in llm agents: A unified review of memory, skills,
+protocols and harness engineering. arXiv preprint
+arXiv:2604.08224.
+Xiyuan Zhou, Xinlei Wang, Yirui He, Yang Wu, Ruixi
+Zou, Yuheng Cheng, Yulu Xie, Wenxuan Liu, Huan
+Zhao, Yan Xu, et al. 2025. Engibench: A benchmark
+for evaluating large language models on engineering
+problem solving. arXiv preprint arXiv:2509.17677.
+Yongchao Zhou, Andrei Ioan Muresanu, Ziwen Han,
+Keiran Paster, Silviu Pitis, Harris Chan, and Jimmy
+Ba. 2022. Large language models are human-level
+prompt engineers. In The eleventh international con-
+ference on learning representations.
+11A Full Details of Related Works
+In this section, we provide the full version of the
+related works in Sec. 2.
+A.1 Harness Engineering
+LLM agents are increasingly deployed as com-
+pound systems in which a frozen model is sur-
+rounded by external artifacts that shape reasoning,
+tool use, memory access, skill invocation, and en-
+vironment interaction. We refer to this external
+layer as the agent harness. Prior work studies sev-
+eral forms of harness artifacts. Prompts encode
+standing behavioral rules, task policies, and rea-
+soning procedures in natural language (Zhou et al.,
+2022; Yao et al., 2022; Yang et al., 2024b; Pan
+et al., 2026). Tools expose external services and
+specify the action schemas, invocation formats,
+and validation rules through which agents inter-
+act with them (Hou et al., 2025; Qin et al., 2024;
+Liu et al., 2025; Lin et al., 2025, 2026a). Memory
+stores prior observations, facts, task outcomes, and
+reusable strategies for later retrieval or consolida-
+tion (Ouyang et al., 2025; Xu et al., 2026; Fang
+et al., 2026). Skills package reusable procedures
+into callable modules or task-specific guidance ar-
+tifacts, as studied in skill benchmarks and skill-
+library systems (Li et al., 2026b; Liu et al., 2026).
+Code treats the harness itself as executable source
+that can implement tools, validators, orchestration
+logic, and prompt assembly (Ning et al., 2026; Lee
+et al., 2026).
+These works establish harnesses as editable
+agent state rather than passive context. Our work
+is complementary: instead of proposing a new har-
+ness representation, we analyze the model capa-
+bilities involved in updating harness artifacts and
+benefiting from the resulting updates.
+A.2 Self Evolution of LLM agents
+Beyond what the harness contains, a complemen-
+tary line asks how harness artifacts are updated
+from execution experience. Early systems operate
+at the task-attempt level. Reflexion (Shinn et al.,
+2023) stores verbal self-reflections from prior at-
+tempts, Self-Refine (Madaan et al., 2023) itera-
+tively improves outputs through self-feedback, and
+ExpeL (Zhao et al., 2024) extracts reusable natural-
+language insights from training trajectories for later
+retrieval. These methods show that language feed-
+back can improve future behavior, but the persis-
+tent artifact is usually a single textual reflection or
+lesson, rather than a structured, multi-component
+harness state.
+More recent methods make persistent harness
+components the unit of self-evolution. Prompt-
+level methods update natural-language instructions
+or prompt programs: PromptWizard (Agarwal
+et al., 2024) refines prompts through feedback-
+driven critique and synthesis, ACE (Zhang et al.,
+2025b) evolves contextual playbooks through struc-
+tured generation, reflection, and curation, and
+GEPA (Agrawal et al., 2026) evolves prompts
+through trajectory-level reflection. Memory-level
+methods write experience into persistent stores that
+can be retrieved, refined, or reorganized across
+future tasks: EvolveR (Wu et al., 2025) con-
+nects offline strategy distillation with online re-
+trieval, MemEvolve (Zhang et al., 2025a) stud-
+ies meta-evolution of agent memory systems,
+and MemMA (Lin et al., 2026c) improves long-
+horizon memory through construction, retrieval,
+and feedback-driven repair. Skill- and workflow-
+level methods package successful behavior into
+reusable procedures: Voyager (Wang et al., 2023)
+accumulates executable skills, AWM (Wang et al.,
+2024) induces workflows from successful trajecto-
+ries, SkillRL (Xia et al., 2026) recursively expands
+a skill library through reinforcement learning, and
+EvoSkill (Alzubi et al., 2026) studies automated
+skill discovery from agent experience. Tool-level
+self-evolution further allows agents to synthesize,
+revise, or accumulate tools and tool-use knowledge
+over time (Chen et al., 2025; Li et al., 2026a).
+Collectively, these methods show that writing
+execution experience back into persistent harness
+components can improve downstream task perfor-
+mance. However, their evaluations typically report
+the end-to-end gain of one update procedure paired
+with one agent on one benchmark (Li et al., 2026b;
+Jiang et al., 2026; Wei et al., 2025). Such scores of-
+ten conflate multiple sources of improvement: the
+agent’s base capability under the initial harness, the
+evolver’s harness-updating capability in producing
+useful harness updates, and the agent’s harness-
+benefit capability in acting on those updates. Our
+work complements this line with a controlled capa-
+bility analysis: we vary agents and evolvers inde-
+pendently, measure harness-updating and harness-
+benefitseparately, andtestwhethereithercapability
+simply tracks base capability.
+12Table 4: Dataset statistics. Nb is the number of tasks; the rightmost column lists the static resources each task
+exposes to the agent.
+Substrate Nb #Domains Resources per task
+SWE-bench Verified 500 12 repositories Codebase snapshot, issue description, hidden
+test suite
+MCP-Atlas 500 36 MCP servers 220 tools (shared across servers); 3–6 tool
+calls required per task
+SkillsBench 86 11 task domains Workspace files, deterministic verifier
+B Experimental Setup Details
+B.1 Dataset Details
+We evaluate on three representative agentic bench-
+marks that cover complementary agent capabilities:
+long-horizon code repair with SWE-bench Verified,
+multi-server tool orchestration with MCP-Atlas,
+and skill-based execution across diverse domains
+with SkillsBench. Dataset statistics are in Tab. 4:
+• SWE-bench Verified (Jimenez et al., 2024).
+This is a human-validated subset of SWE-bench
+containing 500 tasks drawn from real GitHub is-
+sues across 12 popular Python repositories. Each
+task provides a codebase snapshot and an issue
+description; the solver must produce a patch that
+resolves the issue. A task passes if its patch satis-
+fies the hidden test suite associated with the issue.
+We use the full 500-task subset.
+• MCP-Atlas (Bandi et al., 2026). This is a bench-
+mark for multi-server tool-use competency over
+real Model Context Protocol servers. Each task
+is a natural-language request whose completion
+requires the solver to identify and orchestrate 3–6
+tool calls across 36 real MCP servers exposing
+220 tools. Scoring uses a claims-based rubric
+that awards credit per factual claim satisfied in
+the final answer; we report pass rate as the frac-
+tion of tasks for which all claims are satisfied.
+We use the 500-task public subset released by the
+authors.
+• SkillsBench (Li et al., 2026b). This is a 86-
+task benchmark spanning 11 domains (e.g., soft-
+ware, data analysis, document processing, au-
+dio synthesis) with a deterministic per-task ver-
+ifier. Each task provides workspace files and a
+natural-language instruction; the agent must com-
+plete the task using the workspace and any skills
+available in its harness. The native benchmark
+ships with curated skills, but in our setup the no-
+evolution baseline starts from an empty skill set,
+and evolved cells use only the skills produced by
+the evolver from earlier in-situ tasks.
+B.2 Models
+We use seven LLM backbones, spanning open-
+source and closed-source families across ca-
+pability tiers. The closed-source models are
+Claude Opus 4.6 (Anthropic, 2026a), Claude
+Sonnet 4.6 (Anthropic, 2026b), and Claude
+Haiku 4.5 (Anthropic, 2025). The open-source
+models are Qwen3-235B-A22B and Qwen3-
+32B (Yang et al., 2025), Qwen3.5-9B (Qwen,
+2026), and GPT-OSS-120B (Agarwal et al., 2025).
+For the agent-side analysis, we use the six
+LLMs (Opus 4.6, Sonnet 4.6, Haiku 4.5, Qwen3-
+235B-A22B, Qwen3-32B, GPT-OSS-120B) as
+task-solving agent backbones. For the evolver-
+side analysis, we use all seven models, including
+Qwen3.5-9B (the smallest model in our paper), to
+test whether a substantially smaller open model can
+still produce useful harness updates. Across all ex-
+periments we query each model through its official
+API or inference endpoint; no model weights are
+updated during evolution.
+B.3 Metrics
+Scoring function. For all four metrics in §3.3, we
+use pass rate as the scoring function JX : each task
+x ∈ X receives a per-task score from the bench-
+mark’s grader, and JX is the mean over X. Pass
+rates and average scores are reported in percent;
+gains are reported in percentage points.
+Per-benchmark scoring. The scoring function JX
+instantiates the standard grading procedure of each
+benchmark:
+• SWE-bench Verified (Jimenez et al., 2024): per-
+task binary resolved score (1 if the submitted
+patch passes the designated fail-to-pass and pass-
+to-pass test suite, 0 otherwise). The mean over
+tasks is the standard pass rate.
+• MCP-Atlas (Bandi et al., 2026): per-task claim-
+fulfillment score in [0,1], computed as the frac-
+13tion of reference claims satisfied by the agent’s
+final answer. We report both the strict pass rate
+(mean of binarized per-task scores) and the aver-
+age claim-fulfillment score (mean of continuous
+per-task scores).
+• SkillsBench (Li et al., 2026b): per-task binary
+score averaged over 5 trials following Terminal-
+Bench (Merrill et al., 2026). We report the av-
+erage score (mean across tasks and trials) as the
+primary metric.
+For each benchmark, JX in the metric definitions
+of §3.3 refers to the mean of these per-task scores
+aggregated over the task stream.
+In-situ evaluation. We evaluate in an in-situ set-
+ting: thesametaskstreamX =
+ST
+t=1 Xt thatdrives
+evolution also serves as the evaluation set. Con-
+cretely, at step t, each task x ∈ Xt is scored under
+the harness Ht−1 at the time of its attempt; the
+score is locked in before (τt,x,yt,x) enters Dt and
+produces Ht. The pass rate of any individual task
+is thus not influenced by harness updates derived
+from that task itself.
+B.4 Implementation Details
+Evolvable Harness Artifacts The editable harness
+scope is benchmark-specific. SWE-bench Verified
+and SkillsBench allow edits only to the skills di-
+rectory, while MCP-Atlas additionally allows edits
+to prompts/system.md and append-only updates
+to memory/ JSONL files. The tools/ directory
+and evaluation files are read-only for all bench-
+marks. These permissions are passed to the evolver
+at each cycle; the evolver system prompt itself is
+fixed across benchmarks and model backbones.
+Task-solving Agent Prompt Templates. Within
+each benchmark, all task-solving agents use the
+same system prompt; only the task-specific user
+prompt varies across tasks. For SWE-bench Ver-
+ified, the solver prompt (Tab. 8) is an 828-byte
+procedural guide that scopes the agent to GitHub-
+issue patching and encourages minimal, focused
+edits. For MCP-Atlas, the solver prompt (Tab. 9)
+is a 1,309-byte API-agent guide that instructs the
+agent to satisfy task queries through tool calls and
+not ask the user for clarification. For SkillsBench,
+we follow the original setting (Li et al., 2026b) to
+use no system prompt for the task-solving agent.
+Evolver Prompt Template. All evolver backbones
+use the same system prompt, shown in Tab. 10.
+At each evolution cycle, the user message fol-
+lows a fixed wrapper containing the cycle index,
+Table 5: Full evolver-side matrix. Within each bench-
+mark block, entries under the three anchor agents are
+pass rates (%) for that agent-evolver pairing; the ∆update
+column reports the corresponding harness-updating
+score (pp); see Sec. 3.3. The NONE row is the no-
+evolution baseline. Bold and underlining in the ∆update
+column mark the best and worst evolvers, respectively.
+Evolver Opus 4.6 Sonnet 4.6 Qwen3-235B ∆update
+SWE
+NONE 74.2 73.2 20.7 —
+Opus 4.6 76.4 76.0 38.0 7.4
+Sonnet 4.6 76.8 75.6 37.8 7.4
+Haiku 4.5 77.8 74.8 39.4 8.0
+Qwen3-235B 76.6 76.0 40.0 8.2
+Qwen3-32B 76.2 75.4 39.8 7.8
+Qwen3.5-9B 76.4 73.2 38.8 6.8
+GPT-OSS-120B 75.2 75.6 35.0 5.9
+MCP
+NONE 61.0 54.0 25.0 —
+Opus 4.6 64.4 57.2 29.3 3.6
+Sonnet 4.6 64.6 57.0 26.1 2.6
+Haiku 4.5 64.4 58.2 24.2 2.3
+Qwen3-235B 61.6 55.8 24.3 0.6
+Qwen3-32B 63.8 57.4 25.7 2.3
+Qwen3.5-9B 62.6 55.6 24.9 1.0
+GPT-OSS-120B 62.6 55.6 27.6 1.9
+SB
+NONE 25.6 24.4 4.7 —
+Opus 4.6 30.2 27.9 3.5 2.3
+Sonnet 4.6 29.1 25.6 3.5 1.2
+Haiku 4.5 31.4 25.6 5.8 2.7
+Qwen3-235B 31.4 22.1 5.8 1.5
+Qwen3-32B 30.2 22.1 4.6 0.7
+Qwen3.5-9B 26.7 31.4 8.1 3.8
+GPT-OSS-120B 31.4 22.1 5.8 1.5
+the writable-scope block, and the canonicalized
+execution-evidence payload. Thus, across bench-
+marks and model backbones, the prompt format
+is fixed; only the task evidence and benchmark-
+specific writable scope vary.
+C Evolver-side Analysis Details in Sec. 4.2
+C.1 Additional Results for Observation 1
+Tab. 5 reports the pass rate of each anchor agent
+(Opus 4.6, Sonnet 4.6, Qwen3-235B) under each
+evolver on the three benchmarks, alongside the
+resulting ∆update. These are the per-cell numbers
+underlying the bars in Fig. 3.
+C.2 More Details of the Case Study
+We elaborate on the case study from Sec. 4.2. We
+examine the SkillsBench task flink-query with
+the agent backbone fixed at Opus 4.6, comparing its
+trajectories under three evolver conditions (Fig. 4):
+no evolver, Qwen3.5-9B as evolver, and Opus 4.6
+as evolver. Without an evolver, the agent omits the
+FINISH-event filter and scores 0.67; with either
+14Opus4.6
+Sonnet4.6
+Qwen3-235B
+Agent(basemodel)
+20
+30
+40
+50
+60
+70
+80
+Pass rate (%)
+SWE
+Opus4.6
+Sonnet4.6
+Qwen3-235B
+Agent(basemodel)
+5
+10
+15
+20
+25
+30
+SB
+evolved(n=7) no-evolvebaseline
+Figure 8: Post-evolution scores across evolvers for anchor agents on SWE (left) and SB (right) datasets. Each
+anchor task-solving agent is instantiated with a different LLM backbone: Opus 4.6, Sonnet 4.6, or Qwen3-235B.
+Blue dots show scores obtained with the seven evolvers, and the black tick marks the no-evolution baseline.
+Table 6: Extreme agent-evolver pairings across benchmarks. For each benchmark, W is the weakest anchor
+task-solving agent and S is the strongest anchor task-solving agent. We pair W with its best-performing evolver and
+S with its worst-performing evolver among the seven evolvers. Scores are pass rates (%); the gap is the strong-agent
+score minus the weak-agent score, reported in percentage points (pp).
+SWE MCP SB
+weak anchor agent W Q3-235B Q3-235B Q3-235B
+best evolver for W Q3-235B Opus Q3.5-9B
+score of W with best evolver 40.0 29.3 8.1
+strong anchor agent S Opus Opus Opus
+worst evolver for S GPT-OSS Q3-235B Q3.5-9B
+score of S with worst evolver 75.2 61.6 26.7
+gap: strong-worst minus weak-best (pp) 35.2 32.3 18.6
+evolved skill injected at turn 0, the same agent
+solves the task (score 1.0).
+Inspecting the two evolved skills, we find that
+they encode the same five problem-solving steps:
+• Filter SUBMIT events.
+• Filter FINISH events.
+• Count each SUBMIT separately.
+• Emit (jobId, count).
+• Apply a 10-minute session window.
+The two skills differ only in implementation
+surface details: Qwen3.5-9B specifies the gap
+as 10 minutes with manual batch sessioniza-
+tion, while Opus 4.6 specifies 10 minutes with
+a KeyedProcessFunction. Despite these sur-
+face differences, both skills yield identical down-
+stream pass rates (1.0) when injected into the same
+Opus 4.6 agent.
+C.3 Additional Results for Observation 2
+This subsection extends Observation 2 in Sec. 4.2
+to the other two benchmarks, SWE-bench Veri-
+fied and SkillsBench. We observe the same two
+patterns: within-agent variation across evolvers re-
+mains smaller than between-agent differences in
+base capability, and even extreme agent-evolver
+pairings still favor the stronger agent.
+Within-agent spread versus between-agent gap.
+Fig. 8 extends the post-evolution score view of
+Fig. 5 to SWE and SB. On SWE, the largest within-
+agent spread across seven evolvers is 5.0 pp, at-
+tained by Qwen3-235B. On SB, the largest spread
+is 9.3 pp, attained by Sonnet 4.6, whose evolved
+scores range from 22.1% to 31.4%. By compari-
+son, the base-capability gap between Opus 4.6 and
+Qwen3-235Bis53.5pponSWEand20.9pponSB.
+Thus, the between-agent gap exceeds the within-
+agent spread by a factor of 11 on SWE and 2.2 on
+SB. SB is the tightest of the three benchmarks, but
+the same inequality still holds.
+15Table 7: Full agent-side matrix underlying ∆benefit. Each cell reports pass rate (%) for a task-solving model under
+a given evolver. The NONE row is the no-evolution baseline. ∆benefit is the maximum gain over NONE across the
+three anchor evolvers, reported in percentage points (pp). Bold marks the largest ∆benefit value in each benchmark
+block, and underlining marks the smallest.
+Benchmark Evolver Qwen3-32B Qwen3-235B GPT-OSS-120B Haiku 4.5 Sonnet 4.6 Opus 4.6
+SWE-bench Verified
+NONE 3.6 20.7 26.2 66.0 73.2 74.2
+Opus 4.6 8.0 38.0 37.2 65.0 76.0 76.4
+Sonnet 4.6 7.6 37.8 37.6 68.4 75.6 76.8
+Qwen3-235B 8.0 40.0 42.0 65.4 76.0 76.6
+∆benefit 4.4 19.3 15.8 2.4 2.8 2.6
+MCP-Atlas
+NONE 3.6 25.0 28.0 42.4 54.0 61.0
+Opus 4.6 4.6 29.3 35.0 46.0 57.2 64.4
+Sonnet 4.6 4.0 26.1 32.0 42.8 57.0 64.6
+Qwen3-235B 2.8 24.3 29.1 41.0 55.8 61.6
+∆benefit 1.0 4.3 7.0 3.6 3.2 3.6
+SkillsBench
+NONE 0.0 4.7 0.0 5.8 24.4 25.6
+Opus 4.6 3.5 3.5 7.0 20.9 27.9 30.2
+Sonnet 4.6 3.5 3.5 4.6 18.6 25.6 29.1
+Qwen3-235B 5.8 5.8 7.0 15.1 22.1 31.4
+∆benefit 5.8 1.1 7.0 15.1 3.5 5.8
+Extreme pairings across benchmarks. Tab. 6
+compares the weakest anchor agent W paired with
+its best-performing evolver against the strongest
+anchor agent S paired with its worst-performing
+evolver, separately for each benchmark. Even un-
+der this unfavorable comparison for the strong
+agent, S still outperforms W by 18.6 to 35.2 pp
+on every benchmark. On SB, the same evolver,
+Qwen3.5-9B, appears on both sides of the com-
+parison, because it is the best evolver for Qwen3-
+235B and the worst evolver for Opus 4.6. This
+reinforces the main conclusion that post-evolution
+performance is dominated more by the task-solving
+agent than by evolver identity.
+D Agent-side Analysis Details in Sec. 4.3
+D.1 Case Studies for the Two Agent-Side
+Failure Modes
+We elaborate on the two failure cases in Fig. 7, both
+produced by Qwen3-32B on SkillsBench under the
+same harness and runner.
+Activation Failure: threejs. At turn 0, Qwen3-
+32B correctly identifies the relevant skill, but in-
+stead of emitting load_skill as a standalone ac-
+tion, it produces a single multi-key JSON action
+that bundles analysis (free-form reasoning), plan
+(a step list), and load_skill. The SkillsBench
+format gate accepts only single-key actions and re-
+jects this composite as malformed. The skill body
+never enters the agent’s context, and the agent pro-
+ceeds without the procedural guidance the harness
+was meant to provide. The failure is at the action-
+protocol layer: the agent knows which skill to load,
+but cannot translate that intent into the runner’s
+expected format.
+Adherence Failure: pg-essay-to-audiobook.
+The loaded skill prescribes a TTS-fallback chain:
+try a primary text-to-speech route, then fall back
+to alternative routes if the primary fails. Qwen3-
+32B successfully loads the skill at turn 0, but treats
+the chain as a literal script to execute rather than a
+contingent procedure. The first prescribed step hits
+a FileNotFoundError on turn 1; the agent then
+continues through subsequent turns without ever
+invoking the fallback steps. By turn 10, the agent
+emits task_complete:true despite the absence
+of a valid task output, ending the trajectory below
+grader threshold. The failure is at the procedural-
+execution layer: the agent has loaded the skill but
+does not follow its contingent structure under un-
+expected runtime conditions.
+Common pattern. Both cases show that
+Qwen3-32B’s weak-tier deficits are not in task
+understanding (it identifies the right skill in
+threejs; it follows the skill’s first step in
+pg-essay-to-audiobook) but in protocol-level
+and procedural execution. This pattern is consistent
+with the activation and adherence trends in Tab. 2
+and the per-phase drift in Tab. 3: weak-tier models
+do not fail to read the harness, they fail to operate
+under it.
+D.2 More results of ∆benefit in Sec. 4.3
+Full Agent-Evolver Pass Rate. Tab. 7 reports the
+full pass-rate matrix underlying the ∆benefit values
+in Tab. 1. For each benchmark and task-solving
+1610 20 30 40 50 60
+Basepassrate(%)
+0
+2
+4
+6
+8
+benefit (points) MCP
+0 5 10 15 20 25
+Basepassrate(%)
+0.0
+2.5
+5.0
+7.5
+10.0
+12.5
+15.0
+17.5
+SB
+Opus4.6 Sonnet4.6 Haiku4.5 Qwen3-235B Qwen3-32B GPT-OSS-120B
+Figure 9: ∆benefit versus base pass rate on MCP (left) and SB (right) datasets. Each point corresponds to one
+LLM backbone used as the task-solving agent; points are connected in ascending base pass rate.
+model, we report the no-evolution baseline and the
+pass rate under each of the three anchor evolvers,
+E⋆ = {Opus 4.6,Sonnet 4.6,Qwen3-235B}. The
+∆benefit row gives the maximum gain over the
+NONE baseline across these anchor evolvers.
+Analysis on SB and MCP datasets. Fig. 9 reports
+the MCP and SB analogues of Fig. 6. We observe
+two patterns:
+• The MCP trend is still non-monotonic, but
+milder. On MCP-Atlas, ∆benefit peaks at GPT-
+OSS-120B (7.0 pp at 28.0% base pass rate), and
+decreases toward both weaker and stronger mod-
+els. This mirrors the SWE trend, but with a
+smaller gain range.
+• The SB trend is noisier in the low-base regime.
+On SkillsBench, several models start from very
+low base pass rates: Qwen3-32B and GPT-OSS-
+120B start at 0.0%, Qwen3-235B at 4.7%, and
+Haiku 4.5 at 5.8%. Haiku 4.5 reaches the largest
+SB gain (15.1 pp), while Qwen3-235B gains only
+1.1 pp despite a similar low base rate. Thus, SWE
+and MCP provide the clearest evidence for the
+non-monotonic harness-benefit pattern, while SB
+suggests that the low-base regime can be more
+variable across task domains.
+D.3 Judge Details for Harness-Following Rate
+We use an LLM judge to measure whether an agent
+follows a loaded harness artifact during task solv-
+ing. All judged trajectories are blinded by replac-
+ing model identifiers with the placeholder <MODEL>.
+Claude Sonnet 4.6 is used as the judge model.
+Harness-Following Rate. For each SkillsBench
+trajectory in which at least one skill is loaded, the
+judge receives the loaded skill body and the agent
+trajectory. The judge first converts the skill body
+into a locked rubric of atomic procedural instruc-
+tions, and then checks whether the trajectory fol-
+lows that rubric. A trajectory is marked as follow-
+ing the skill if the judge determines that the re-
+quired guidance is carried out in the trajectory. The
+Harness-Following Rate (HFR) measures whether
+a model follows a skill once the skill is loaded. Let
+Nload
+f denote the number of skill-loaded trajecto-
+ries for model f, and Nfollow
+f the subset judged as
+following the loaded skill. Then
+HFR(f) =
+Nfollow
+f
+Nload
+f
+.
+The prompt templates used for rubric extraction
+and trajectory judging are shown in Tab. 12 and 13.
+D.4 Judge Details for Phase-Level Adherence
+Score
+In addition to trajectory-level HFR, we conduct a
+separate phase-level adherence analysis for Tab. 3.
+This analysis uses a separate judge prompt from the
+HFR pipeline (Tab. 13), with Claude Sonnet 4.6
+as the LLM judge. The input is the same fixed
+rubric and blinded trajectory used for HFR judging.
+The judge partitions each trajectory into three ref-
+erence phases: harness loaded, mid turn, and final
+turn. For each phase, it assigns a 0–1 adherence
+score measuring how closely the agent follows the
+17Table 8: Task-sovling agent-side seed system prompt
+for SWE-bench Verified.
+SWE-Bench Verified solver seed prompt
+You are an expert software engineer tasked
+with resolving GitHub issues by producing
+code patches.
+Approach
+1. Understand the issue: Read the issue de-
+scription carefully. Identify the root cause.
+2. Locate relevant code: Use search tools to
+find the files and functions involved.
+3. Plan the fix: Think step-by-step about
+what needs to change and why.
+4. Implement the fix: Make minimal, pre-
+cise edits. Avoid unnecessary changes.
+5. Verify: Run existing tests to confirm the
+fix works and doesn’t break anything.
+Guidelines
+• Prefer small, focused patches over large
+rewrites.
+• Always check for edge cases the issue de-
+scription mentions.
+• If the issue includes a reproduction script,
+use it to verify your fix.
+• When in doubt, look at how similar patterns
+are handled elsewhere in the codebase.
+loaded harness guidance during that stage of exe-
+cution. These phase-level scores are used only to
+analyze adherence drift over long-horizon execu-
+tion and are reported separately from HFR. The
+phase-adherence prompt is shown in Tab. 14.
+E Information about AI Assistants
+We used an OpenAI LLM (GPT-5.5) as a writ-
+ing and formatting assistant. In particular, it
+helped refine grammar and phrasing, improve clar-
+ity, and suggest edits to figure/table captions and
+layout (e.g., column alignment, caption length,
+placement). The LLM did not contribute to re-
+search ideation, experimental design, implemen-
+tation, data analysis, or technical content beyond
+surface-level edits. All outputs were reviewed and
+edited by the authors, who take full responsibility
+for the final text and visuals.
+18Table 9: Task-solving agent-side seed system prompt
+for MCP-Atlas.
+MCP-Atlas solver seed prompt
+You are an expert API agent that completes
+tasks by making precise tool calls via the
+Model Context Protocol (MCP).
+Approach
+1. Understand the task: Read the task de-
+scription and identify what needs to be
+accomplished.
+2. Review available tools: Check the tool
+schemas to understand available opera-
+tions and their parameters.
+3. Plan the call sequence: Determine which
+tools to call and in what order.
+4. Execute: Make tool calls with correctly
+formatted JSON parameters.
+5. Validate: Check the return values and han-
+dle errors gracefully.
+Guidelines
+• NEVER ask the user for clarification. You
+must use the available tools to find all in-
+formation needed to complete the task. If
+the task mentions calendar events, sched-
+ules, or appointments, use the calendar/-
+workspace tools to look them up.
+• Always validate parameters against the
+tool’s JSON schema before calling.
+• Use the most specific tool available for the
+task.
+• Handle pagination for list operations.
+• Chain tool calls logically: use output from
+one call as input to the next.
+• If a tool call fails, read the error message
+carefully before retrying.
+• When the task references personal data (cal-
+endar events, files, databases, memory), al-
+waysquerytherelevanttoolsfirsttoretrieve
+that data before answering.
+19Table 10: Fixed system prompt for the evolver. The prompt is held constant across all evolver backbones and
+benchmarks; benchmark-specific permissions determine which workspace artifacts are writable.
+Evolver system prompt
+You are an evolver for an LLM agent. Your goal is to improve the agent’s future task-solving
+performance by editing permitted harness artifacts in its workspace.
+The workspace may contain the following artifact directories:
+• prompts/: standing instructions and system prompts.
+• skills/: reusable skill definitions and procedural knowledge.
+• memory/: persistent observations and high-level lessons.
+• tools/: tool implementations and interfaces.
+At each evolution cycle, you will receive execution evidence from recent task attempts, including
+trajectories, outputs, and benchmark feedback. Analyze this evidence to identify recurring failures,
+reusable procedures, and opportunities to improve the harness.
+You may use the provided workspace bash tool to inspect and edit files. Only modify artifacts that
+are permitted by the workspace-permission block in the user message. Do not modify evaluation
+scripts, hidden tests, model weights, or files outside the permitted workspace scope.
+When updating the harness:
+• Prefer concise, reusable updates over task-specific patches.
+• Create or revise skills only when they are likely to help future tasks.
+• Keep prompts and memory entries actionable and non-redundant.
+• Use precise file edits and inspect your changes before finishing.
+20Table 11: Per-evolution user message template for the evolver. The wrapper is fixed across all benchmarks and LLM
+backbones.
+Evolver per-cycle user message template
+Workspace scope. [A benchmark-specific permission block specifies which harness artifacts may
+be edited. SWE-bench Verified and SkillsBench allow edits to skills/. MCP-Atlas allows edits to
+prompts/ and skills/, and append-only updates to memory/. The tools/ directory is read-only
+for all benchmarks.]
+Execution evidence. [The message includes a canonicalized JSON payload containing the current
+batch’s task identifiers, trajectories, outputs, scores, and grader feedback.]
+Editing instructions. [The evolver is instructed to:
+• analyze the evidence for recurring failures and reusable patterns;
+• edit only artifacts allowed by the workspace scope;
+• prefer small, targeted harness updates over broad rewrites;
+• use the workspace tool to inspect and modify files;
+• check the resulting changes before finishing.
+]
+21Table 12: The prompt template used for rubric extraction of the HFR pipeline.
+HFR Stage 1: Locked Rubric Extraction
+Role: You are auditing a procedural skill document used by an LLM agent. You will output a strict
+JSON rubric that captures the imperative procedural instructions of the skill, suitable for downstream
+automated adherence judging. Output JSON only, no prose.
+Input: The full body of one SKILL.md file (placeholder {skill_body}, inserted between
+<SKILL_BODY> and </SKILL_BODY> delimiters in the user message).
+Task:
+1. Identify procedural instructions directly entailed by imperative or normative language in
+SKILL_BODY. Do NOT extract advice, rationale, examples, or motivational text as instructions.
+2. For each instruction, provide:
+• id: stable identifier (e.g., "step_1").
+• source_span: EXACT quoted text from SKILL_BODY that grounds this instruction (must be a
+substring of SKILL_BODY, max 250 characters).
+• text: paraphrased instruction in one imperative sentence.
+• type: "required" (must execute) | "conditional" (must execute if trigger occurs) |
+"optional".
+• trigger: for conditional only; describe the condition (e.g., "if pip install fails"). null
+otherwise.
+• success_criteria: one-sentence test for a FOLLOWED verdict.
+• violation_criteria: one-sentence test for a VIOLATED verdict (commission or omission).
+Constraints: Aim for 3–8 instructions. Do not pad with low-salience items. Reject SKILL_BODY
+content that is purely descriptive or motivational.
+Output format (JSON only):
+{
+"skill_id": "<skill folder name>",
+"instructions": [
+{
+"id": "step_1",
+"source_span": "...",
+"text": "...",
+"type": "required|conditional|optional",
+"trigger": null,
+"success_criteria": "...",
+"violation_criteria": "..."
+}
+]
+}
+22Table 13: The prompt template used for the trajectory judging of the HFR pipeline.
+HFR Stage 2: Per-Cell Adherence + Phase Classification
+Role: You are evaluating an LLM agent trajectory against a fixed procedural rubric. Apply the rubric
+exactly as given; do not add or remove instructions. The trajectory is BLINDED: every occurrence
+of a model-family token (Claude, Opus, Sonnet, Haiku, Qwen, GPT-OSS) has been replaced with
+the literal string <MODEL>. Score adherence based on observable actions only. Output JSON only, no
+prose.
+Inputs: The Stage 1 rubric JSON (placeholder {rubric_json}, inserted between <RUBRIC> and
+</RUBRIC>) and the blinded trajectory text (placeholder {trajectory_text}, inserted between
+<TRAJECTORY> and </TRAJECTORY>, formatted as a sequence of Turn i / INPUT / OUTPUT
+blocks).
+Verdicts. For each instruction in RUBRIC, classify the trajectory as one of:
+• FOLLOWED: the trajectory explicitly satisfies success_criteria. Cite turn_idx and quote the
+action.
+• VIOLATED_COMMISSION: the trajectory took an action that directly contradicts the instruction. Cite
+turn_idx and quote the action.
+• VIOLATED_OMISSION: the instruction is required (or its conditional trigger occurred), the trajectory
+ran long enough to act on it, but did not. Cite the latest turn_idx by which the omission was clear.
+• REQUIRED_BUT_UNOBSERVED: the instruction is required but the trajectory terminated too early to
+observe whether it would have been followed.
+• NOT_APPLICABLE: conditional instruction whose trigger did not occur, or optional instruction the
+agent chose not to take.
+• INSUFFICIENT_EVIDENCE: trajectory is ambiguous; cannot determine.
+Violation timing (required for any VIOLATED_COMMISSION or VIOLATED_OMISSION verdict):
+• violation_earliest_possible_turn: smallest turn_idx where the trajectory could have first
+violated this instruction.
+• violation_confirmed_turn: turn_idx where the violation became unambiguous.
+• violation_type: "commission" | "omission" | "premature_stop" | "wrong_strategy".
+Output format (JSON only):
+{
+"verdicts": [
+{"instruction_id": "step_1",
+"verdict": "FOLLOWED|VIOLATED_COMMISSION|VIOLATED_OMISSION|REQUIRED_BUT_UNOBSERVED|NOT_APPLICABLE
+|INSUFFICIENT_EVIDENCE",
+"turn_idx": <int or null>,
+"evidence": "quoted action or omission description"}
+],
+"violations": [
+{"instruction_id": "step_1",
+"violation_type": "commission|omission|premature_stop|wrong_strategy",
+"earliest_possible_turn": <int>,
+"confirmed_turn": <int>}
+],
+"summary": "1-sentence neutral description"
+}
+23Table 14: The prompt template used for the phase-level
+adherence analysis (Tab. 3), produced by a judge call
+separate from the HFR judge in Tab. 13.
+Phase-Adherence Judge
+Role: You are evaluating how closely an
+LLM agent adheres to a fixed procedural
+rubric across the successive phases of its tra-
+jectory. Apply the rubric exactly as given; do
+not add or remove instructions. The trajec-
+tory is BLINDED: every model-family token
+has been replaced with <MODEL>. Judge ad-
+herence from observable actions only. Output
+JSON only, no prose.
+Inputs: The locked rubric JSON
+({rubric_json}) and the blinded tra-
+jectory ({trajectory_text}).
+Task. Partition the trajectory into five
+turn-position phases: skill_loaded = turn
+1; first_action = first action turn af-
+ter; midpoint = middle 50% of turns;
+pre_final = last 25% excluding the final
+turn; final_validation = final turn. For
+each phase, output one adherence score in
+[0,1] measuring how well the agent’s actions
+within that phase’s turns follow the rubric
+instructions in scope during that phase. A
+score of 1.0 means every in-scope, observable
+rubric instruction in that phase was followed;
+0.0 means none were.
+Output format (JSON only):
+{
+"phase_adherence": {
+"harness_loaded": 0.0,
+"first_action": 0.0,
+"midpoint": 0.0,
+"pre_final": 0.0,
+"final_validation": 0.0
+},
+"rationale": "1-sentence neutral description
+of where adherence shifts"
+}
+24

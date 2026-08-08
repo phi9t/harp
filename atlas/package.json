@@ -1,0 +1,46 @@
+{
+  "name": "harp-atlas",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "predev": "corepack pnpm run content:build",
+    "dev": "vite",
+    "content:build": "cd .. && cargo run --quiet -p harp -- build",
+    "prebuild": "corepack pnpm run content:build",
+    "build": "tsc -b && vite build",
+    "export:html": "corepack pnpm run build && node scripts/export-static.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern target",
+    "pretest": "corepack pnpm run content:build",
+    "test": "vitest run",
+    "test:export": "corepack pnpm run export:html && node tests/static-export.test.mjs",
+    "pretypecheck": "corepack pnpm run content:build",
+    "typecheck": "tsc -b",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@eslint/js": "^9.39.4",
+    "eslint": "9.39.4",
+    "globals": "^16.5.0",
+    "jsdom": "^29.1.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.59.2",
+    "vite": "8.0.13",
+    "vitest": "^4.1.10"
+  },
+  "type": "module"
+}

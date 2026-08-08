@@ -1,0 +1,68 @@
+label	source_id	relationship	target_id	evidence_locator	status	boundary
+EVIDENCE	SEED	anchors-scope	WENG-HARNESS	User request	verified	Seed is orientation input, not independent evidence
+EVIDENCE	WENG-HARNESS	cites	GOOD-1965	Reference 1	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	YUDKOWSKY-2008	Reference 2	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	ASP	Reference 3	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	ABSOLUTE-ZERO	Reference 4	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	SELF-REWARDING	Reference 5	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	SPIN	Reference 6	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	ACE	Reference 7	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	MCE	Reference 8	verified	Primary source owns bi-level mechanism, results, and limitations
+EVIDENCE	WENG-HARNESS	cites	META-HARNESS	Reference 9	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	AI-SCIENTIST	Reference 10	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	SCIENTISTONE	Reference 11	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	AUTODATA	Reference 12	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	ADAS	Reference 13	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	SELF-REFINE	Reference 14	verified	Primary source owns iterative-refinement mechanism, results, and limitations
+EVIDENCE	WENG-HARNESS	cites	AFLOW	Reference 15	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	STOP	Reference 16	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	SELF-HARNESS	Reference 17	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	PROMPTBREEDER	Reference 18	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	GEPA	Reference 19	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	ALPHAEVOLVE	Reference 20	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	SHINKAEVOLVE	Reference 21	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	THETAEVOLVE	Reference 22	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	DGM	Reference 23	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	HYPERAGENTS	Reference 24	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	LEARNING-DISCOVER	Reference 25	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	EPISTEMIC-DISCOVERY	Reference 26	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	SIA	Reference 27	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	NOT-SCIENTISTS	Reference 28	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	GPT5-SCIENCE	Reference 29	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	PAPERBENCH	Reference 30	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	REBENCH	Reference 31	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	MLEBENCH	Reference 32	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	SCIENCEAGENTBENCH	Reference 33	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	COREBENCH	Reference 34	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	KERNELBENCH	Reference 35	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	HARNESS-DISENTANGLE	Reference 36	verified	Primary source owns capability decomposition, reported results, and limitations
+EVIDENCE	WENG-HARNESS	cites	AHE	Reference 37	verified	Primary source owns claims
+EVIDENCE	WENG-HARNESS	cites	CONTINUAL-HARNESS	Reference 38 and Joint Optimization with Model Weights	verified	Primary source owns co-learning mechanism and reported results
+EVIDENCE	WENG-HARNESS	cites	DEMOEVOLVE	Reference 39	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	body-links	KARPATHY-AUTORESEARCH	Harness Design Patterns / Workflow Automation	verified	Pinned source owns current workflow, mutation-boundary, budget, metric, logging, and keep/discard behavior; no RSI efficacy claim
+EVIDENCE	WENG-HARNESS	body-links	WENG-REWARD	Self-Improving Harness / reward hacking concern	verified	Secondary safety synthesis
+EVIDENCE	WENG-HARNESS	body-links	ANTHROPIC-RSI	Introduction / AI progress link	verified	Company framing only
+EVIDENCE	DGM	extends	GODEL-MACHINE	Abstract and §§1-3	verified	DGM substitutes empirical benchmark selection for proof-certified rewrite
+EVIDENCE	DGM	requires	QD-2016	§§1-3 and bibliography	verified	Archive diversity foundation
+EVIDENCE	DGM	compares-with	FUNSEARCH	Related work and bibliography	verified	Program-evolution predecessor, not the same editable object
+EVIDENCE	ALPHAEVOLVE	extends	FUNSEARCH	Abstract, prior automated discovery methods	verified	AlphaEvolve broadens code and evaluator applications
+EVIDENCE	WENG-REWARD	extends	CONCRETE-SAFETY	Let's Define Reward Hacking	verified	Secondary synthesis follows primary safety taxonomy
+EVIDENCE	META-HARNESS	extends	ACE	Abstract and anchor synthesis	inferred	Conceptual progression from context artifact to context-management code
+EVIDENCE	SELF-HARNESS	extends	STOP	Abstract and anchor synthesis	inferred	Both improve executable scaffolding; direct implementation lineage not claimed
+EVIDENCE	AHE	critiques	SELF-HARNESS	Abstract and anchor synthesis	inferred	Adds explicit observability and falsifiable edit contracts
+EVIDENCE	PAPERBENCH	evaluates	AI-SCIENTIST	Benchmark task identity	inferred	Replication benchmark probes one AI-research capability, not the same system
+EVIDENCE	REBENCH	evaluates	AI-SCIENTIST	Benchmark task identity	inferred	Research-engineering environments probe a subset of autonomous research
+EVIDENCE	KERNELBENCH	evaluates	ALPHAEVOLVE	Correctness and speed evaluator	inferred	Represents a tractable AI-for-AI engineering sub-loop
+INFERENCE	SIA	combines	META-HARNESS	Abstract	inferred	Harness update branch
+INFERENCE	SIA	combines	CONTINUAL-HARNESS	Abstract and anchor synthesis	inferred	Adjacent joint-adaptation branches; direct implementation lineage is not claimed
+INFERENCE	PI-MONO	implements-harness-pattern	WENG-HARNESS	packages/agent/src/agent-loop.ts and packages/coding-agent/README.md	verified-current-source	Implementation example only; no direct lineage or RSI claim
+INFERENCE	HERMES-AGENT	implements-harness-pattern	WENG-HARNESS	AGENTS.md agent loop, delegation, and curator sections	verified-current-source	Implementation example only; project self-improvement claims remain unvalidated here
+INFERENCE	CODEX-REPO	implements-harness-pattern	WENG-HARNESS	codex-rs/core context manager, world state, client, compaction, replay, memories, tools, thread manager, and sandboxing paths	verified-current-source	Implementation example only; no autonomous harness optimizer observed
+EVIDENCE	ARC-AGI3-BENCH	implements-baseline-and-server-state	OPENAI-ARC-ARTICLE	benchmarking/agent.py and benchmarking/runtime_adapters.py at git:86d72170ce3155551712a9fafd290bab471d6eee	verified-current-source	Implements the compared harness mechanisms; does not independently reproduce the article's score claims
+EVIDENCE	CODEX-REPO	implements-state-continuity	OPENAI-ARC-ARTICLE	codex-rs/core context manager, client, compaction, rollout reconstruction, and memories paths at git:1e85ca099e4265bf89f4016772d299816e231bb3	verified-current-source	Richer Codex architecture is an implementation overlay, not the exact optimized ARC harness
+EVIDENCE	OPENAI-COMPACTION-DOC	documents	CODEX-REPO	Server-side compaction and standalone compact endpoint sections	verified-mutable-source	Documents API contract, not Codex implementation correctness or semantic-fidelity guarantees
+CLAIM	OPENAI-RESPONSES-FEATURE	contextualizes	CODEX-REPO	User-provided claim packet	blocked-live-source	Company continuity and token-use claim; only the encrypted-reasoning request shape is source-confirmed here
+EVIDENCE	A1ZHANG-X-POST	announces	A1ZHANG-HARNESS-BLOG	X status 2079203524395573442	verified	The blog is the canonical substantive source
+INFERENCE	A1ZHANG-HARNESS-BLOG	parallel-anchor	WENG-HARNESS	Opening through The capacity for compositional generalization can live in the harness	verified	Complementary RSI anchors; the RLM blog post-dates Weng and is not part of Weng's bibliography
+EVIDENCE	A1ZHANG-HARNESS-BLOG	uses	RLM-PAPER	RLM mechanism and experiment sections	verified	The blog trains the root model inside the RLM harness introduced by the paper
+EVIDENCE	RLM-REPO	implements	RLM-PAPER	README at git:72d6940142ddfb84ee6be573dc999a37e633e671	verified-current-source	Metadata and README evidence only; upstream code was not executed

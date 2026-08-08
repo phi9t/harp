@@ -1,0 +1,76 @@
+concept_id	source_ids
+recursive-improvement-loop	SEED,YUDKOWSKY-2008,GODEL-MACHINE
+foundation-model-inside-the-loop	
+harness-engineering	WENG-HARNESS
+durable-improvement-workflows	
+procedure-internalization	HARNESS-DISENTANGLE
+harness-search	HYPERAGENTS
+automated-research	NOT-SCIENTISTS,GPT5-SCIENCE
+joint-harness-weight-adaptation	
+evaluation-promotion-containment	
+system-state-and-notation	
+task-improvement	SELF-REFINE
+persistent-adaptation	
+harness-improvement	
+successor-improvement	GOOD-1965,ANTHROPIC-RSI
+pretraining	
+post-training	SPIN
+distillation	
+reinforcement-learning	ASP,ABSOLUTE-ZERO,SELF-REWARDING
+multimodal-observation-interface	
+context-construction	
+retrieval	
+memory	
+tools-and-permissions	
+filesystem-state	
+subagents	
+verification-and-recovery	
+idempotency	
+checkpoints	
+prompt-procedure	
+skill-procedure	
+script-procedure	
+workflow-procedure	
+model-behavior-procedure	
+context-optimization	PROMPTBREEDER,GEPA
+workflow-search	
+harness-code-search	
+population-search	SHINKAEVOLVE,DEMOEVOLVE
+quality-diversity	QD-2016
+open-ended-search	ALPHAEVOLVE,THETAEVOLVE,FUNSEARCH
+hypothesis-generation	LEARNING-DISCOVER
+experiment-design	EPISTEMIC-DISCOVERY
+negative-results	
+research-memory	
+model-harness-distribution-shift	
+dagger	
+supervised-relabeling	
+process-rewards	
+held-out-evaluation	MLEBENCH,SCIENCEAGENTBENCH,COREBENCH,KERNELBENCH
+multi-objective-selection	
+evaluator-independence	
+reward-hacking	WENG-REWARD,CONCRETE-SAFETY
+root-tree-budget	
+lineage-and-rollback	
+autoresearch	KARPATHY-AUTORESEARCH
+ace	ACE
+mce	MCE
+meta-harness	META-HARNESS
+stop	STOP
+adas	ADAS
+aflow	AFLOW
+self-harness	SELF-HARNESS
+ahe	AHE
+dgm	DGM
+ai-scientist	AI-SCIENTIST
+scientistone	SCIENTISTONE
+autodata	AUTODATA
+paperbench	PAPERBENCH
+rebench	REBENCH
+rlm	A1ZHANG-X-POST,A1ZHANG-HARNESS-BLOG,RLM-PAPER,RLM-REPO
+continual-harness	CONTINUAL-HARNESS
+sia	SIA
+pi	PI-MONO
+hermes	HERMES-AGENT
+codex	CODEX-REPO,ARC-AGI3-BENCH,OPENAI-ARC-ARTICLE,OPENAI-COMPACTION-DOC,OPENAI-RESPONSES-FEATURE
+temporal-workflow	

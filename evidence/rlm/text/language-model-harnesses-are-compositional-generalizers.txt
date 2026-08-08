@@ -1,0 +1,185 @@
+Alex L. Zhang
+
+Toggle navigation
+
+- about
+- blog
+- publications and pre-prints
+- projects
+- academics
+- ctrl k
+
+Language model harnesses are compositional generalizers
+
+Harnesses can lead to compositional generalization: we observe a property in training RLMs, in which similarly structured tasks are viewed as isomorphic and all individual LM calls in the harness become in-distribution.
+
+Modern post-training has become a brute-force paradigm of curating ever more environments and ever longer training horizons. In large part, this is because frontier Transformers are still poor at compositional generalization, the ability to solve unseen problems by composing familiar ones. Unless our models compose the individual lessons they learn, scaling will have slower returns than it should, as every new domain will demand its own investment in the form of training data.
+
+Training data is not the only lever, of course. For the past few years, we’ve attacked harder tasks by scaffolding the Transformer, first with chain-of-thought reasoning, then with tool use, and so on. Yet across all of this, generalization itself has been left to the underlying neural network and to its 2017 token-level inductive biases. We argue that better generalization is largely the job of what today is called a harness. A harness is the program that sits between the external world and the neural network: it decides how to encode the current state of the environment, which can be arbitrarily long and complex, into one or more inputs to the LLM and how to determine the next action. The primary job of the harness should be to carry a higher-level inductive bias that can reduce unfamiliar and complex problems to compositions of simpler ones for the underlying neural network.
+
+Concretely, we think a good harness is one that shapes each call to the underlying Transformer so that every observation is locally in-distribution, i.e. each Transformer call handles a prompt that is in-distribution with respect to its training data. In fact, a good harness can frequently reduce problems that seem to require breakthroughs in post-training into almost mundane capabilities of the existing generation of language models. We first showed a version of this for long context processing nearly a year ago and, in this post, we show that this principle extends to the efficiency of learning itself. That is, what a model learns through a well-designed harness generalizes across task lengths and across domains far better than training the neural network on its own does.
+
+We test this by using reinforcement learning (RL) to train a Recursive Language Model (RLM), a harness in which the model offloads its context and defers execution to programmatic decomposition and recursive sub-calls. The results are summarized in Figure 1. Training on only short tasks generalizes to held-out tasks 8–32x longer, with roughly 10x the eval lift with the same train lift over training the underlying Transformer directly. Moreover, training on one domain transfers to other domains at a far better rate than that of a vanilla Transformer.
+
+[Figure 1: Length and strategy generalization lift]
+
+We observe this generalization effect because the RLM harness induces an equivalence relation between tasks with latent similarities, meaning the RLM’s main context sees nearly the same token-level trajectory between these tasks. This is illustrated in Figure 2. These results suggest that, similar to tuning model architectures and training recipes, well-designed harnesses can reduce the cost of curating more data and generating longer rollouts while increasing the coverage of tasks solvable through post-training.
+
+[Figure 2: RLM trajectory isomorphism across BrowseComp-Plus and OOLONG]
+
+Better scaling requires compositional generalization.
+
+Open problems in AI often boil down to challenges of getting deep neural networks (DNNs) to generalize. This is the issue that modern post-training attempts to bandage with targeted environments based on perceived applications. In this post, we argue that the perhaps boring old concept of compositional generalization, which is the ability to solve unseen problems by composing familiar concepts and patterns, is becoming painfully clear as a necessary and scalable meta-capability that we must begin to prioritize in modern AI systems.
+
+We argued before, via the Mismanaged Geniuses Hypothesis (MGH) , that tasks which humans care about solving, can apparently almost always be decomposed rather naturally into sub-tasks that are not only far simpler but also which are not far beyond the current generation of language models. Compositional generalization is key for leveraging this in practice and enabling our systems’ reachable task space to extend beyond their training set’s direct coverage, especially for tasks that may look nothing alike in their surface-level tokens while sharing some underlying structure.
+
+[Figure 3: MGH long-task decomposition]
+
+Sadly, if the past few years of astronomic spending on training language models are any indication, Transformers and other existing neural sequence models are, at best, unreliable at compositional generalization. Though it seems very plausible that compositional generalization may emerge at a vanilla neural level, it just doesn’t seem that the basic differentiable neural operations put together 5 years after AlexNet are particularly optimal when it comes to encoding the inductive biases we need for training our language systems. Indeed, precisely because we now have such powerful priors and models of language, we think it is time to seriously ask whether our inductive biases that aren’t simply geometric or about simple symmetries but which can begin to live at a far higher level of abstraction.
+
+The capacity for compositional generalization can live in the harness.
+
+We’re often interested in agents, which describes any loop in which some policy observes some state $s$ and perform an action $a$ to interact with an environment $E$. Given a state $s$, it’s tempting to simply serialize $s$ into a prompt and tokenize that as-is for a Transformer to become our policy. But because the state and action space can be arbitrarily large and complex, we learned the hard way as a field to introduce a harness $H: s \rightarrow a$ which is the program that sits between the external world and the neural network: it decides how to encode the current state of the environment, which can be arbitrarily long and complex, into one or more inputs to the LLM and how to determine the next action.
+
+Traditionally, we think of harnesses like Claude Code or Codex as necessary because of their ability to invoke external tools inside a complicated environment. But that’s just part of the agent. We think that a more fundamental power of the harness is the ability to simplify the arbitrarily complex state $s$ into potentially many smaller observations $o$ that each individual LM call in the harness can properly handle. We know that Transformers are unreliable at compositional generalization, so we can rely on the harness to define higher-level inductive biases. Designing anything may trigger your bitter-lesson instincts, but there’s no free lunch: it is scalable inductive biases that allow our neural networks to learn and generalize in the first place.
+
+Luckily, we can put this in a way that facilitates improved scaling. A good harness is a harness that reduces unfamiliar problems to familiar ones and reduces complex problems to simple ones. In other words, even if the state $s$ is out-of-distribution (OOD) to what any individual language model call was trained for, a good harness produces observations $o$ that are locally in-distribution (LID), which we define as every individual LM call over this observation being in-distribution with respect to the training data.
+
+[Figure 4: Locally in-distribution LM systems]
+
+Sadly, existing harness designs such as Claude Code and Codex fail at facilitating locally in-distribution (LID) observations for the underlying neural network. In particular, they fundamentally rely on flooding the context window of the Transformer with interleaved task-specific information, tool call outputs, and reasoning that get continuously appended. Yes, this supplies plenty of context to the model, but these bloated histories quickly fall out of the training distribution, manifesting in the “context rot” phenomenon that we often observe in practice.
+
+Instead, we propose that a good harness should enable individual LM calls to see structurally similar tasks as isomorphic, enabling compositional generalization. Formally, a harness induces an equivalence operator $\sim_{H}$ over the set of all task states $\mathcal{T}$, meaning structurally similar tasks fall under the same harness-induced equivalence classFor the sake of being pedantic, in order for this equivalence class construction to hold, we need some notion of "equivalence" to be based on fitting inside of an epsilon-ball centered at some point in trajectory / token-space under some distance metric, rather than purely distance between two trajectories. If this doesn't make sense just ignore it, but if you're curious how we can collapse "similar" trajectories to the same equivalence class without breaking transitivity, this is how. and produce similar sets of observations for the neural network involved. For most harnesses that use a main LM with sub-agents, we can understand this argument with respect to the main context, assuming the sub-agents deal with small, individually in-distribution sub-tasks.
+
+Good harnesses induce equivalence classes over tasks, and thereby enable far better and more composable learning. A well-designed harness not only reduces the space of learnable trajectories to a small $\mathcal{T} / \sim_{H}$, but it also generalizes to a wider class of trajectories than the set of available training tasks, including those that do not fit in the base model’s context window.
+
+RLMs are surprisingly good at compositional generalization.
+
+Equivalence classes over trajectories induced by the RLM harness.
+
+An ideal harness decomposes a task such that the main context is abstracted to literally appear token-for-token similar for similar problems, i.e. those that fall under the same harness-induced equivalence class $[\tau^\prime] = \lbrace\tau \in \mathcal{T} : \tau^\prime \sim \tau\rbrace$. This isomorphism enables generalizations of the form: if a system can solve task X, it should transitively be able to solve task Y.
+
+[Figure 5: Context offloading and programmatic sub-agent calling]
+
+The Recursive Language Model (RLM) harness is designed around abstracting tasks by their decomposition and deferring input-specific information to sub-calls. In this sense, RLMs view similarly decomposed problems as isomorphicNotably, the argument below holds recursively, as we can treat each offloaded sub-agent as its own instance with its own “main” context. This is the intended design of an RLM being recursive, but it is not strictly necessary for maintaining locally in-distribution observations., and it achieves this by:
+
+(1) Context offloading, where input-specific context is passed as a symbolic variable so the root language model call does not directly see it, enables different problems to appear similar at the first step. Recently, several scaffolds have adopted this feature as a form of context management (see Anthropic’s Managed Agents blog). On its own, context offloading does not prevent environment feedback and/or sub-agent information from returning back to the main context. Over long trajectory horizons, the main context becomes OOD, breaking LID.
+
+(2) Programmatic sub-agent calling, where sub-agents and also normal tools are treated as functions in a code REPL, allow the root LM to selectively choose information and pass around information across further tool calls and sub-agents without the root LM itself ever needing to see it. This includes tool and sub-call outputs, which can be stored in variables in memory directly and accessed by future sub-calls. Programmatic sub-calling is equally as important as context offloading for abstracting task-specific information away from the main context.
+
+RLMs can train on short tasks and generalize to longer, unseen tasks.
+
+It is widely known that training Transformer-based LMs on a domain at a particular context length does not necessarily generalize to longer context lengths . A large chunk of mid-training and post-training work in production models like Qwen 3.x, Kimi K2.x, GLM 5.x, etc. has been dedicated to carefully introducing longer and longer data into the training mix so LMs can learn to handle those context lengths, and then again many modern applications commonly exceed those lengths. The length generalization issue especially impacts standard agent designs like ReAct , CodeAct , Claude Code, Codex, etc. which as we mentioned, rely on appending observations to a growing prefix history of context.
+
+We hypothesize that for RLMs, similar tasks of a different length can fall under the same equivalence class under $\sim_{RLM}$. In the following experiment, we explore how training only the root LM of an RLM exclusively on short sequences can generalize sequences an order of magnitude longer, as we posit that the decomposition, and hence the trajectory the RLM’s root LM sees on both settings, are nearly identical.
+
+We consider a suite of 6 different environments across different axes of length: varying the input length, output length, and number of instructions. We explicitly train only on a split containing short tasks, and evaluate on a split only containing significantly longer tasks within the same domain. Across all the settings below, we train for 150 steps (batch size 64, 4 rollouts per) with prime-rl (Decoupled PPO with GRPO-like advantages + KL loss) and evaluate every 10 steps.
+
+- MRCRv2 (64k, 2-needle setting to 2M, 8-needle setting). A commonly reported benchmark in frontier model reports, the premise is to find the $i$th instance of needle sentence that answers some query within a large corpus of conversation data.
+- GraphWalks (<128K to >1M setting). Another commonly reported benchmark in frontier model reports, the premise is to extract nodes from a graph that satisfy some simple constraint.
+- LongBenchPro (32k to 256k setting, English-only). A suite of multiple choice-style questions spanning 11 different QA, code, and reasoning style problems.
+- OOLONG [trec-coarse] (32k to 256k setting). A set of aggregation style questions to answer statistics about a dataset of information.
+- OOLONG-Pairs (8k to 32k input, 7k to 146k output setting). A modified variant of OOLONG to find pairs of elements in the OOLONG dataset satisfying certain constraints.
+- Ada-LEval [best-answer] (8k to 128k setting). Given a question and a large number of potential candidate and distractor answers, pick out the most suitable to answer the question.
+
+We plot both the training reward on short tasks (translucent) and the evaluation reward (dark) on the longer version of the tasks. We compare training an RLM, an RLM where we nudge it to state the decomposition it wants to perform, and a base Transformer (with YaRN for longer settings). We use Qwen3-30B-A3B-Instruct-2507 as the model for all settings.
+
+[Figure 6: Length generalization training curves]
+
+Across all six tasks, the RLM yields significantly better eval results on long tasks by training exclusively on short tasks, beating out the base Transformer by a significant margin even when starting with a lower step-0 eval performance. On MRCRv2, GraphWalks, OOLONG, and OOLONG-Pairs, the trained Qwen3-30B-A3B-Instruct-2507 RLM approaches or exceeds an RLM with a frontier model, GPT-5.5 on the long eval, while far exceeding the base Transformer.
+
+RLM eval performance on longer tasks more closely matches the train reward on shorter tasks. On all six tasks, the RLM yields significant improvements in performance on the long eval relative to its starting, step-0 eval performance. The base Transformer generally yields flat eval performance despite the train reward growing and often exceeding the train reward of the RLM, suggesting what is learned by the Transformer does not extrapolate to the longer setting.
+
+Why length generalization occurs and where it fails. In all of the environments above, the strategy the RLM learns to solve the short tasks is roughly equivalent to that of the strategy needed to solve the longer tasks, and because the root LM’s view of the long task with the context offloaded looks near token-for-token identical to the short task, the RLM has effectively seen the same task during training. In other words, many tasks share the same equivalence class across length. The primary difference is the number of sub-calls and the content of the sub-calls themselves, each of which handle an in-distribution sub-task. Length generalization occurs because the RLM learns a generalizable strategy, but this is not always guaranteed. In many of the short settings above, one viable strategy is to just offload the entire problem to a single sub-call and return this as a solution, effectively becoming equivalent to the long-context Transformer baseline.
+
+We include the “nudge to decompose” user message variant (a condensed version of the addendum in the RLM repository) to illustrate this point, which helps in the case of MRCRv2, where the RLM does not learn the right, generalizable strategy across length. In the training of RLMs and locally in-distribution LM systems as a whole, a whole area of study is how much supervision / distillation is required to get the system to converge to a generalizable solution over a non-generalizable solution. Our intuition is that at scale, no supervision is necessary, but for the sake of sample efficient learning, some form of supervision or hint is helpful.
+
+RLMs can generalize to unseen tasks that share latent structure observed in training.
+
+The previous section showed that RLMs can learn to view tasks and their length-extrapolated variants as isomorphic by abstracting them as the same task in the root model. For length extrapolation in particular, if the RLM learns a length-agnostic strategy, it quickly generalizes to longer lengths. We can take this intuition to generalization on tasks with shared decompositions: if the RLM learns a strategy that generalizes from one domain to another (e.g. applying sorting, filter and search, MapReduce, etc.) it can similarly generalize by abstracting away the domain-specific tokens, and viewing the two problems as equivalent.
+
+We consider 3 domains in which the context and query are referring to completely different domains, but the actual underlying strategy is roughly the same.
+
+- OOLONG (trec-coarse questions → spam questions). Training on aggregation tasks about Jeopardy TREC questions and evaluating on aggregation tasks about questions whose answer is either SPAM or HAM.
+- OBLIQ-Bench Analogues (writing → math). Training on tasks about searching for essays that seem to be written by the same author, and evaluating on tasks about searching for math problems that require the same reasoning process. Train and eval metric are nDCG@10.
+- OBLIQ-Bench Descriptive (Twitter stance → Wildchat errors). Training on tasks about finding tweets that satisfy a certain stance, and evaluating on tasks about searching for Wildchat conversations containing errors. Train and eval metric are nDCG@10.
+
+[Figure 7: Strategy generalization training curves]
+
+We similarly find that the RLM exhibits clear generalization capabilities on completely different domains than the one it trained on, while the base Transformer struggles to meaningfully improve. Similar to in the length generalization experiments, initial improvements in eval performance on OBLIQ-Bench during the base Transformer training generally come from learning to follow the proper answer format, which quickly diminishes. Interestingly, the train reward of the base Transformer generally exceeds that of the RLM despite clear gaps in performance on the eval. Instead, the train reward of the RLM closely matches the trend of the eval reward, despite being on a completely different domain.
+
+Even more than the length generalization, these experiments have completely different token distributions between train and test, as the main similarity is in the latent task structure that the model must learn to exploit. Like in length generalization, these results suggest the internal mechanisms of the Transformer struggle to decompose the tasks into composable patterns that generalize.
+
+On the cost of training harnesses like RLMs. On similarly-sized tasks, the RLM incurs an extra runtime and memory cost over naively training a Transformer. In particular, across both the length and strategy generalization experiments, the runtime of RLM training is 1.5-3x longer than the base Transformer counterparts due to multiple steps per sample and waiting on sub-calls. However, this cost scales well with task complexity, as training a Transformer on longer context / horizon tasks is significantly more expensive. Even training a simple ReAct agent on the tasks above on an 8xH100 is difficult for a 30B model due to context bloat.
+
+How close are unseen RLM task trajectories to train trajectories?
+
+It is rather difficult to characterize whether a prompt $x$ is “in-distribution” for a language model, but we can use benchmark performance as a proxy for this kind of thing — e.g., LMs can solve most AIME problems, so we consider these tasks to be “in-distribution”. For agent trajectories, which are often long, multiple turns, and filled with extra fluff like tool calls and harness tokens, it is even harder to determine whether two trajectories will exhibit the same output distribution behavior.
+
+If the RLM produces a trajectory on an unseen task that is token-for-token identical to a trajectory generated during a training task, then we could easily argue that these two tasks are in the same equivalence class under $\sim_{RLM}$ and are viewed as isomorphic. Unfortunately, even small, one-token perturbations can semantically change the meaning of a text sequence, so arguing that $P_x$ and $P_{x^\prime}$ have some bounded difference is difficult. In the Appendix, we discuss some proxies for determining whether two trajectories fall under the same equivalence class. Below, we provide various examples of eval trajectories from our experiments that are similar to some train trajectory on a different task.
+
+← Prev
+
+Next →
+
+Train
+
+Loading…
+
+Eval
+
+Loading…
+
+Remark. The ideal behavior is for the root LM to learn to abstract away information about the domain, and isolate decomposable behavior about a task, while deferring domain-specific information to sub-calls. In many cases, the RLM will still choose to print out task-specific information and pass it back to the main context. While this behavior is often undesirable from a generalization perspective (and can likely be trained out if done carefully), we still find that across all experiments, the strategies used by the RLM during evals closely mimic those learned during training. This includes both general, programmatic sub-agent calling strategies like chunking and fanning out sub-calls, as well as general programmatic strategies like regex calls.
+
+The Scaling Picture and Moving Forward
+
+It is easy to walk away from these powerful early results thinking that we should all be tinkering with harness designs or imposing our problem-specific intuitions around overly structured programmatic strategies such as MapReduce or dynamic programming. But make no mistake, doing that we will inevitably run afoul of the bitter lesson and fall by the wayside within months.
+
+Instead, we’re making a different argument. Scaling data will remain the biggest driver of progress, but the machinery that we feed that data into and its inductive biases are what will determine the coefficients of that scaling. And as things stand today, it seems that the returns on scaling Transformers and related neural architectures are just not budging in terms of being poor compositional generalizers. We think this is because their narrow design space of mostly differentiable neural operators misses something fundamental.
+
+But thanks to language as a powerful substrate for which we have been able to train at scale for the past several years, the architecture of our AI systems is no longer limited to simple differentiable operators or to low-level geometric inductive biases. We can now encode far higher-level and more symbolic inductive biases and train our systems end-to-end with RL, and we have shown in this post that through context offloading and programmatic sub-agents, the RLM architecture is one that can be far superior to a vanilla Transformer at generalization, across lengths and domains. And at its core, this all is about an extremely simple but important idea in harness design: make sure these systems can learn to reduce complex problems to sequences of individually and locally in-distribution observations.
+
+In short, better returns on scaling require compositional generalization, and the capacity for compositional generalization looks like it has to largely live in what today we refer to as a harness, but which in the future may blur quite seriously with what we consider the fundamental architecture of our frontier AI systems.
+
+Appendix
+
+Recall that we are interested in characterizing how close harness trajectories on unseen tasks are to what they learned during training. It is rare for two LM trajectories to be token-for-token identical, but taking some liberties with rough smoothness assumptions on the LM as a function of its input, what we really care about is whether two trajectories are close enough under some metric so their output distributions are almost the same.
+
+It is very hard to formalize the above in an empirically meaningful way; we would need to know some properties about the function defined by the LM, a distance metric on input prompts that are within some $\delta$-ball, and a distance metric on the output logits that are within some $\epsilon$-ball. As a basic start, we are interested in, for some distance metric $d(\cdot,\cdot)$, the difference between the root LM trajectory of the RLM during evaluation and training. We can define “isomorphic” here loosely as two prompts have some distance less than $\epsilon$, but as mentioned earlier a more rigorous treatment of this topic is likely necessary. We generally just want to understand and find, for this distance metric, what is the average distance of the closest training pair to the evaluation rollouts? In other words, at training step $t$, for trajectories $x$, the set of evaluation samples $\mathcal{E}_t$, and the set of training samples $\mathcal{T}_{\leq t}$ that occurred before, we compute (with a bit of abuse of notation):
+
+$$ \mathbb{E}_{e \sim \mathcal{E}_t} \left[\min_{\tau \in \mathcal{T}_{\leq t}} d(x_{\tau},x_{e}) \right] \approx \frac{1}{|\mathcal{E}_t|} \sum_{e \in \mathcal{E}_t}\min_{\tau \in \mathcal{T}_{\leq t}} d(x_{\tau},x_{e}) $$
+
+We plot the similarity, i.e. $1 - d(\cdot,\cdot)$, of the average eval rollout of the best RLM vs. base Transformer checkpoint to any training trajectory that occurred before it. We consider the following distance metrics:
+
+  Plot label         Metric                                                Distance definition $d(x_{\text{train}}, x_{\text{eval}})$
+  ------------------ ----------------------------------------------------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Edit               Token-level, length-normalized Levenshtein Distance   Let $\mathrm{Lev}(\cdot,\cdot)$ be token-level Levenshtein distance and define normalized similarity $\mathrm{LevSim}(a,b)=1-\dfrac{\mathrm{Lev}(a,b)}{\max(\lVert a\rVert,\lVert b\rVert)}$. Then $d(a,b)=1-\mathrm{LevSim}(a,b)=\dfrac{\mathrm{Lev}(a,b)}{\max(\lVert a\rVert,\lVert b\rVert)}.$
+  Contain            3-gram word containment                               Let $N_3(x)$ be the multiset of word 3-grams in $x$. Then (asymmetric): $d(x_{\text{train}},x_{\text{eval}})=1-\frac{\lvert N_3(x_{\text{eval}})\cap N_3(x_{\text{train}})\rvert}{\lvert N_3(x_{\text{eval}})\rvert}.$
+  Jaccard            3-gram Jaccard                                        $d(x_{\text{train}},x_{\text{eval}})=1-\frac{\lvert N_3(x_{\text{eval}})\cap N_3(x_{\text{train}})\rvert}{\lvert N_3(x_{\text{eval}})\cup N_3(x_{\text{train}})\rvert}.$
+  Weighted Jaccard   Weighted Jaccard                                      Let $c_x(t)$ be the token (or n-gram) count of type $t$ in $x$. Then $d(x_{\text{train}},x_{\text{eval}})=1-\frac{\sum_t \min\!\big(c_{x_{\text{train}}}(t),c_{x_{\text{eval}}}(t)\big)}{\sum_t \max\!\big(c_{x_{\text{train}}}(t),c_{x_{\text{eval}}}(t)\big)}.$
+  Length             Length Ratio                                          (Content-blind) with sequence length $\lVert x\rVert$: $d(x_{\text{train}},x_{\text{eval}})=1-\frac{\min(\lVert x_{\text{train}}\rVert,\lVert x_{\text{eval}}\rVert)}{\max(\lVert x_{\text{train}}\rVert,\lVert x_{\text{eval}}\rVert)}.$
+
+[Figure 8: Similarity of eval vs closest train trajectories]
+
+Figure 8 illustrates the general point that the root LM’s trajectories share more similarities to the trajectories it sees during training, which primarily comes from context offloading. However, the plots above don’t fully capture the semantic similarities between these trajectories (e.g. it doesn’t say anything about if the RLM generally chooses the same decomposition strategy as its train trajectories).
+
+A more principled distance metric will factor in token similarity and semantic similarity, but it is at least clear from the proxy metrics above that what the RLM’s individual LM calls see, even across a longer time horizon, are much closer to what they may see during training than just a base LM call.
+
+Acknowledgements
+
+Special thanks to Braden Hancock and the Laude Institute for generously providing several 8xH100 nodes on short notice to help run these experiments through the Laude Slingshots program. This research is supported by the NVIDIA Academic Grant Program. Alex thanks his wonderful labmates at MIT OASYS and Noah Ziems for helpful feedback while writing the blog.
+
+Citation
+
+You can cite this blog here:
+
+    @article{zhang2026harnesses,
+      title   = "Language model harnesses are compositional generalizers",
+      author  = "Zhang, Alex and Khattab, Omar",
+      year    = "2026",
+      month   = "July",
+      url     = "https://alexzhang13.github.io/blog/2026/harness/"
+    }
+
+© Copyright 2026 Alex L. Zhang.

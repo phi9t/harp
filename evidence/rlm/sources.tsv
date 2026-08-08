@@ -1,0 +1,5 @@
+source_id	kind	title	relationship	original_locator	resolved_version	license_status	claim_ceiling
+A1ZHANG-X-POST	local-clipping	Post by @a1zhang on X	announces A1ZHANG-HARNESS-BLOG	https://x.com/a1zhang/status/2079203524395573442	X status 2079203524395573442	unknown	Author summary and thread framing only
+A1ZHANG-HARNESS-BLOG	primary-blog	Language model harnesses are compositional generalizers	forms the RLM mechanism anchor alongside RLM-PAPER	https://alexzhang13.github.io/blog/2026/harness/	2026-07-20 capture	copyright notice; no reuse license located	Author claims, experiment configuration, reported results, caveats, and open questions
+RLM-PAPER	primary-preprint	Recursive Language Models	introduces the RLM mechanism used by A1ZHANG-HARNESS-BLOG	https://arxiv.org/abs/2512.24601	arXiv:2512.24601v3	CC BY 4.0	Mechanism and author-reported results at arXiv v3; no independent replication claim
+RLM-REPO	implementation-metadata	alexzhang13/rlm	implements RLM-PAPER and supports A1ZHANG-HARNESS-BLOG	https://github.com/alexzhang13/rlm	git:72d6940142ddfb84ee6be573dc999a37e633e671	MIT	README and license behavior at the pinned commit; upstream code was not executed

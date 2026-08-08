@@ -1,0 +1,974 @@
+References
+[1] J. Abramson, J. Adler, J. Dunger, R. Evans, T. Green, A. Pritzel, O. Ronneberger, L. Will-
+more, A. J. Ballard, J. Bambrick, et al. Accurate structure prediction of biomolecular
+interactions with alphafold 3. Nature, 630(8016):493–500, 2024.
+[2] V. Aglietti, I. Ktena, J. Schrouff, E. Sgouritsa, F. J. R. Ruiz, A. Malek, A. Bellot, and
+S. Chiappa. FunBO: Discovering acquisition functions for Bayesian optimization with
+FunSearch. In International Conference on Machine Learning, 2025.
+[3] AlphaProof and AlphaGeometry teams. AI achieves silver-medal standard solving
+International Mathematical Olympiad problems, 2024. URL https://deepmind.g
+oogle/discover/blog/ai-solves-imo-problems-at-silver-medal-lev
+el.
+[4] D. Bahdanau, K. Cho, and Y. Bengio. Neural machine translation by jointly learning
+to align and translate. arXiv preprint arXiv:1409.0473, 2014.
+[5] W. Banzhaf, P. Nordin, R. E. Keller, and F. D. Francone. Genetic Programming: An
+Introduction on the Automatic Evolution of computer programs and its Applications. The
+Morgan Kaufmann Series in Artificial Intelligence, 1998.
+[6] J. Bausch, A. W. Senior, F. J. H. Heras, T. Edlich, A. Davies, M. Newman, C. Jones,
+K. Satzinger, M. Y. Niu, S. Blackwell, G. Holland, D. Kafri, J. Atalaya, C. Gidney,
+D. Hassabis, S. Boixo, H. Neven, and P. Kohli. Learning high-accuracy error decoding
+for quantum processors. Nature, 635(8040):834–840, 2024. doi: 10.1038/s41586-0
+24-08148-8.
+[7] D. A. Boiko, R. MacKnight, B. Kline, and G. Gomes. Autonomous chemical research
+with large language models. Nature, 624(7992):570–578, 2023. doi: 10.1038/s415
+86-023-06792-0.
+[8] P. Boyvalenkov, S. Dodunekov, and O. Musin. A survey on the kissing numbers. Serdica
+Math. J., 38(4):507–522, 2012. ISSN 1310-6600.
+[9] J. Bradbury, R. Frostig, P. Hawkins, M. J. Johnson, C. Leary, D. Maclaurin, G. Necula,
+A. Paszke, J. VanderPlas, S. Wanderman-Milne, and Q. Zhang. JAX: composable
+transformations of Python+NumPy programs, 2018. URL http://github.com/j
+ax-ml/jax.
+23AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[10] A.M.Bran, S.Cox, O.Schilter, C.Baldassari, A.D.White, andP.Schwaller. Augmenting
+large language models with chemistry tools. Nature Machine Intelligence, 6(5):525–
+535, 2024. doi: 10.1038/s42256-024-00832-8.
+[11] A. M. Bran, T. A. Neukomm, D. P. Armstrong, Z. Jončev, and P. Schwaller. Chemical
+reasoning in LLMs unlocks steerable synthesis planning and reaction mechanism
+elucidation. In arXiv preprint arXiv:2503.08537, 2025.
+[12] M. Caldas Ramos, C. J. Collison, and A. D. White. A review of large language models
+and autonomous agents in chemistry. Chemical Science, 16:2514–2572, 2025. doi:
+10.1039/D4SC03921A.
+[13] P. S. Castro, N. Tomasev, A. Anand, N. Sharma, R. Mohanta, A. Dev, K. Perlin, S. Jain,
+K. Levin, N. Éltető, W. Dabney, A. Novikov, G. C. Turner, M. K. Eckstein, N. D. Daw,
+K. J. Miller, and K. L. Stachenfeld. Discovering symbolic cognitive models from human
+and animal behavior. In International Conference on Machine Learning, 2025.
+[14] A. Chen, D. M. Dohan, and D. R. So. EvoPrompting: Language models for code-level
+neural architecture search. In Advances in Neural Information Processing Systems,
+2023.
+[15] T. Chen, B. Xu, and K. Devleker. Automating GPU kernel generation with DeepSeek-R1
+and inference time scaling, 2025. URL https://developer.nvidia.com/blog/
+automating-gpu-kernel-generation-with-deepseek-r1-and-inference
+-time-scaling.
+[16] X. Chen, C. Liang, D. Huang, E. Real, K. Wang, H. Pham, X. Dong, T. Luong, C.-J.
+Hsieh, Y. Lu, and Q. V. Le. Symbolic discovery of optimization algorithms. Advances
+in Neural Information Processing Systems, 2023.
+[17] A. Cloninger and S. Steinerberger. On suprema of autoconvolutions with an application
+to Sidon sets. Proceedings of the American Mathematical Society, 145(8):3191–3200,
+2017.
+[18] H. Cohn and F. Gonçalves. An optimal uncertainty principle in twelve dimensions via
+modular forms. Inventiones mathematicae, 217:799–831, 2019.
+[19] K. M. Collins, A. Q. Jiang, S. Frieder, L. Wong, M. Zilka, U. Bhatt, T. Lukasiewicz, Y. Wu,
+J. B. Tenenbaum, W. Hart, et al. Evaluating language models for mathematics through
+interactions. Proceedings of the National Academy of Sciences, 121(24):e2318124121,
+2024.
+[20] K. D. Cooper, D. Subramanian, and L. Torczon. Adaptive optimizing compilers for the
+21st century. The Journal of Supercomputing, 23:7–22, 2002.
+[21] M. Cranmer. Interpretable machine learning for science with pysr and symbolicre-
+gression. jl. arXiv preprint arXiv:2305.01582, 2023.
+[22] T. Dao, D. Fu, S. Ermon, A. Rudra, and C. Ré. Flashattention: Fast and memory-
+efficient exact attention with io-awareness. Advances in neural information processing
+systems, 35:16344–16359, 2022.
+24AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[23] A. Davies, P. Veličković, L. Buesing, S. Blackwell, D. Zheng, N. Tomašev, R. Tanburn,
+P. Battaglia, C. Blundell, A. Juhász, M. Lackenby, G. Williamson, D. Hassabis, and
+P. Kohli. Advancing mathematics by guiding human intuition with AI. Nature, 600
+(7887):70–74, 2021. doi: 10.1038/s41586-021-04086-x.
+[24] J. S. Ellenberg, C. S. Fraser-Taliente, T. R. Harvey, K. Srivastava, and A. V. Sutherland.
+Generative modelling for mathematical discovery. arXiv preprint arXiv:2503.11061,
+2025.
+[25] P. Erdős. Some remarks on number theory. Riveon Lematematika, 9:45–48, 1955.
+[26] A.Fawzi, M.Balog, A.Huang, T.Hubert, B.Romera-Paredes, M.Barekatain, A.Novikov,
+F. J. R. Ruiz, J. Schrittwieser, G. Swirszcz, D. Silver, D. Hassabis, and P. Kohli. Discov-
+ering faster matrix multiplication algorithms with reinforcement learning. Nature,
+610(7930):47–53, 2022. doi: 10.1038/s41586-022-05172-4.
+[27] C. Fernando, D. Banarse, H. Michalewski, S. Osindero, and T. Rocktäschel. Prompt-
+breeder: Self-referential self-improvement via prompt evolution. arXiv preprint
+arXiv:2309.16797, 2023.
+[28] N. Ferruz and B. Höcker. Controllable protein design with language models. Nature
+Machine Intelligence, 4(6):521–532, 2022.
+[29] E. Friedman. Erich’s Packing Center. https://erich-friedman.github.io/pa
+cking/, 2025. Accessed: 2025-04-22.
+[30] F. Frohnert, X. Gu, M. Krenn, and E. van Nieuwenburg. Discovering emergent connec-
+tions in quantum physics research via dynamic word embeddings. Machine Learning:
+Science and Technology, 6(1):015029, 2025. doi: 10.1088/2632-2153/adb00a.
+[31] M. Ganzhinov. Highly symmetric lines. In arXiv preprint arXiv:2207.08266v1, 2022.
+[32] Gemini team. Gemini 2.5: Our most intelligent AI model, 2025. URL https:
+//blog.google/technology/google-deepmind/gemini-model-thinking-u
+pdates-march-2025.
+[33] F. Gonçalves, D. O. e Silva, and S. Steinerberger. Hermite polynomials, linear flows
+on the torus, and an uncertainty principle for roots. Journal of Mathematical Analysis
+and Applications, 451(2):678–711, 2017.
+[34] J. Gottweis, W.-H. Weng, A. Daryin, T. Tu, A. Palepu, P. Sirkovic, A. Myaskovsky,
+F. Weissenberger, K. Rong, R. Tanno, K. Saab, D. Popovici, J. Blum, F. Zhang, K. Chou,
+A. Hassidim, B. Gokturk, A. Vahdat, P. Kohli, Y. Matias, A. Carroll, K. Kulkarni,
+N. Tomasev, Y. Guan, V. Dhillon, E. D. Vaishnav, B. Lee, T. R. D. Costa, J. R. Penadés,
+G. Peltz, Y. Xu, A. Pawlosky, A. Karthikesalingam, and V. Natarajan. Towards an AI
+co-scientist. arXiv preprint arXiv:2502.18864, 2025.
+[35] A. Grayeli, A. Sehgal, O. Costilla Reyes, M. Cranmer, and S. Chaudhuri. Symbolic
+regression with a learned concept library. Advances in Neural Information Processing
+Systems, 37:44678–44709, 2024.
+25AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[36] M. Gridach, J. Nanavati, C. Mack, K. Z. E. Abidine, and L. Mendes. Agentic AI for
+scientific discovery: A survey of progress, challenges, and future directions. In ICLR
+Workshop: Towards Agentic AI for Science: Hypothesis Generation, Comprehension,
+Quantification, and Validation, 2025.
+[37] X. Gu and M. Krenn. Interesting scientific idea generation using knowledge
+graphs and LLMs: Evaluations with 100 research group leaders. In arXiv preprint
+arXiv:2405.17044, 2024.
+[38] S. Guo, A. H. Shariatmadari, G. Xiong, and A. Zhang. Embracing foundation models
+for advancing scientific discovery. In Proceedings of the IEEE International Conference
+on Big Data, pages 1746–1755, 2024. doi: 10.1109/bigdata62323.2024.10825618.
+[39] K. Gyarmati, F. Hennecart, and I. Z. Ruzsa. Sums and differences of finite sets.
+Functiones et Approximatio Commentarii Mathematici, 37(1):175–186, 2007.
+[40] J. K. Haugland. The minimum overlap problem revisited. arXiv preprint
+arXiv:1609.08000, 2016.
+[41] E. Hemberg, S. Moskal, and U.-M. O’Reilly. Evolving code with a large language
+model. Genetic Programming and Evolvable Machines, 25(2):21, 2024. doi: 10.1007/
+s10710-024-09494-2.
+[42] J. E. Hopcroft and L. R. Kerr. On minimizing the number of multiplications necessary
+for matrix multiplication. SIAM J. Appl. Math., 20(1):30–36, Jan. 1971. ISSN 0036-
+1399. doi: 10.1137/0120004.
+[43] K. Huang, Y. Qu, H. Cousins, W. A. Johnson, D. Yin, M. Shah, D. Zhou, R. Altman,
+M. Wang, and L. Cong. CRISPR-GPT: An LLM agent for automated design of gene-
+editing experiments. In arXiv preprint arXiv:2404.18021, 2024.
+[44] L. Huang, W. Yu, W. Ma, W. Zhong, Z. Feng, H. Wang, Q. Chen, W. Peng, X. Feng,
+B. Qin, et al. A survey on hallucination in large language models: Principles, taxonomy,
+challenges, and open questions. ACM Transactions on Information Systems, 43(2):
+1–55, 2025.
+[45] S. Jia, C. Zhang, and V. Fung. LLMatDesign: Autonomous materials discovery with
+large language models. In arXiv preprint arXiv:2406.13163, 2024.
+[46] J. Jumper, R. Evans, A. Pritzel, T. Green, M. Figurnov, O. Ronneberger, K. Tunyasuvu-
+nakool, R. Bates, A. Žídek, A. Potapenko, A. Bridgland, C. Meyer, S. A. A. Kohl, A. J.
+Ballard, A. Cowie, B. Romera-Paredes, S. Nikolov, R. Jain, J. Adler, T. Back, S. Petersen,
+D. Reiman, E. Clancy, M. Zielinski, M. Steinegger, M. Pacholska, T. Berghammer, S. Bo-
+denstein, D. Silver, O. Vinyals, A. W. Senior, K. Kavukcuoglu, P. Kohli, and D. Hassabis.
+Highly accurate protein structure prediction with AlphaFold. Nature, 596(7873):
+583–589, 2021. doi: 10.1038/s41586-021-03819-2.
+[47] M. Kauers and J. Moosbauer. Flip graphs for matrix multiplication. In Proceedings
+of the 2023 International Symposium on Symbolic and Algebraic Computation, pages
+381–388, 2023.
+26AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[48] M. Kauers and J. Moosbauer. Some new non-commutative matrix multiplication
+algorithms of size (𝑛, 𝑚,6). ACM Commun. Comput. Algebra, 58(1):1–11, Jan. 2025.
+ISSN 1932-2232. doi: 10.1145/3712020.3712021.
+[49] M. Kauers and I. Wood. Consequences of the Moosbauer-Poole algorithms. arXiv
+preprint arXiv:2505.05896, 2025.
+[50] D. P. Kingma and J. Ba. Adam: A method for stochastic optimization. In International
+Conference on Learning Representations (ICLR), 2015.
+[51] J. R. Koza. Genetic programming as a means for programming computers by natural
+selection. Statistics and Computing, 4(2):87–112, 1994. doi: 10.1007/BF00175355.
+[52] J. D. Laderman. A noncommutative algorithm for multiplying 3 × 3 matrices using
+23 multiplications. Bulletin of the American Mathematical Society, 82(1):126 – 128,
+1976.
+[53] R. Lam, A. Sanchez-Gonzalez, M. Willson, P. Wirnsberger, M. Fortunato, F. Alet,
+S. Ravuri, T. Ewalds, Z. Eaton-Rosen, W. Hu, A. Merose, S. Hoyer, G. Holland,
+O. Vinyals, J. Stott, A. Pritzel, S. Mohamed, and P. Battaglia. Learning skillful
+medium-range global weather forecasting. Science, 382(6677):1416–1421, 2023. doi:
+10.1126/science.adi2336.
+[54] W. B. Langdon and R. Poli. Foundations of genetic programming. Springer Science &
+Business Media, 2013.
+[55] R. Lange, Y. Tian, and Y. Tang. Large language models as evolution strategies. In
+ProceedingsoftheGeneticandEvolutionaryComputationConferenceCompanion, GECCO
+’24 Companion, pages 579–582. Association for Computing Machinery, 2024. doi:
+10.1145/3638530.3654238.
+[56] R. T. Lange, A. Prasad, Q. Sun, M. Faldor, Y. Tang, and D. Ha. The AI CUDA engineer:
+Agentic CUDA kernel discovery, optimization and composition. Technical report,
+Sakana AI, 02 2025.
+[57] J. Lehman, J. Gordon, S. Jain, K. Ndousse, C. Yeh, and K. O. Stanley. Evolution through
+large models. In Handbook of evolutionary machine learning, pages 331–366. Springer,
+2023.
+[58] J. Lehman, J. Gordon, S. Jain, K. Ndousse, C. Yeh, and K. O. Stanley. Evolution
+Through Large Models, pages 331–366. Springer Nature Singapore, 2024. doi:
+10.1007/978-981-99-3814-8\_11.
+[59] P.-H. Li, Y.-Y. Sun, H.-F. Juan, C.-Y. Chen, H.-K. Tsai, and J.-H. Huang. A large language
+model framework for literature-based disease–gene association prediction. Briefings in
+Bioinformatics, 26(1):bbaf070, 02 2025. ISSN 1477-4054. doi: 10.1093/bib/bbaf070.
+[60] Y. Li, D. Choi, J. Chung, N. Kushman, J. Schrittwieser, R. Leblond, T. Eccles, J. Keeling,
+F. Gimeno, A. D. Lago, T. Hubert, P. Choy, C. de Masson d’Autume, I. Babuschkin,
+X. Chen, P.-S. Huang, J. Welbl, S. Gowal, A. Cherepanov, J. Molloy, D. J. Mankowitz,
+27AlphaEvolve: A coding agent for scientific and algorithmic discovery
+E. S. Robson, P. Kohli, N. de Freitas, K. Kavukcuoglu, and O. Vinyals. Competition-
+level code generation with AlphaCode. Science, 378(6624):1092–1097, 2022. doi:
+10.1126/science.abq1158.
+[61] H. Lin, M. Maas, M. Roquemore, A. Hasanzadeh, F. Lewis, Y. Simonson, T.-W. Yang,
+A. Yazdanbakhsh, D. Altinbüken, F. Papa, et al. ECO: An LLM-driven efficient code
+optimizer for warehouse scale computers. arXiv preprint arXiv:2503.15669, 2025.
+[62] Z. Lin, H. Akin, R. Rao, B. Hie, Z. Zhu, W. Lu, N. Smetanin, R. Verkuil, O. Kabeli,
+Y. Shmueli, A. dos Santos Costa, M. Fazel-Zarandi, T. Sercu, S. Candido, and A. Rives.
+Evolutionary-scale prediction of atomic-level protein structure with a language model.
+Science, 379(6637):1123–1130, 2023. doi: 10.1126/science.ade2574.
+[63] F. Liu, X. Tong, M. Yuan, X. Lin, F. Luo, Z. Wang, Z. Lu, and Q. Zhang. Evolution of
+heuristics: Towards efficient automatic algorithm design using large language model.
+arXiv preprint arXiv:2401.02051, 2024.
+[64] F. Luo, J. Zhang, Q. Wang, and C. Yang. Leveraging prompt engineering in large
+language models for accelerating chemical research. ACS Central Science, 2025. doi:
+10.1021/acscentsci.4c01935.
+[65] Z. Luo, Z. Yang, Z. Xu, W. Yang, and X. Du. LLM4SR: A survey on large language
+models for scientific research. In arXiv preprint arXiv:2501.04306, 2025.
+[66] H. Ma, A. Narayanaswamy, P. Riley, and L. Li. Evolving symbolic density functionals.
+Science Advances, 8(36):eabq0279, 2022. doi: 10.1126/sciadv.abq0279.
+[67] A. Madani, B. Krause, E. R. Greene, S. Subramanian, B. P. Mohr, J. M. Holton, J. L.
+Olmos, C. Xiong, Z. Z. Sun, R. Socher, J. S. Fraser, and N. Naik. Large language models
+generate functional protein sequences across diverse families. Nature Biotechnology, 41
+(8):1099–1106, August 2023. ISSN 1087-0156. doi: 10.1038/s41587-022-01618-2.
+[68] D. J. Mankowitz, A. Michi, A. Zhernov, M. Gelmi, M. Selvi, C. Paduraru, E. Leurent,
+S. Iqbal, J.-B. Lespiau, A. Ahern, T. Köppe, K. Millikin, S. Gaffney, S. Elster, J. Broshear,
+C. Gamble, K. Milan, R. Tung, M. Hwang, T. Cemgil, M. Barekatain, Y. Li, A. Mandhane,
+T. Hubert, J. Schrittwieser, D. Hassabis, P. Kohli, M. Riedmiller, O. Vinyals, and D. Silver.
+Faster sorting algorithms discovered using deep reinforcement learning. Nature, 618
+(7964):257–263, 2023. doi: 10.1038/s41586-023-06004-9.
+[69] H. Massalin. Superoptimizer - A look at the smallest program. In R. H. Katz and
+M. Freeman, editors, Proceedings of the Second International Conference on Architectural
+Support for Programming Languages and Operating Systems (ASPLOS II), Palo Alto,
+California, USA, October 5-8, 1987, pages 122–126. ACM Press, 1987. doi: 10.1145/
+36206.36194.
+[70] M. Matolcsi and C. Vinuesa. Improved bounds on the supremum of autoconvolutions.
+Journal of mathematical analysis and applications, 372(2):439–447, 2010.
+[71] S. Miret and N. M. A. Krishnan. Are LLMs ready for real-world materials discovery?
+In arXiv preprint arXiv:2402.05200, 2024.
+28AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[72] J. Moosbauer and M. Poole. Flip graphs with symmetry and new matrix multiplication
+schemes. arXiv preprint arXiv:2502.04514, 2025.
+[73] C. Morris, M. Jurado, and J. Zutty. Llm guided evolution-the automation of mod-
+els advancing models. In Proceedings of the Genetic and Evolutionary Computation
+Conference, pages 377–384, 2024.
+[74] J.-B. Mouret and J. Clune. Illuminating search spaces by mapping elites. arXiv preprint
+arXiv:1504.04909, 2015.
+[75] V. Naumov, D. Zagirova, S. Lin, Y. Xie, W. Gou, A. Urban, N. Tikhonova, K. Alawi,
+M. Durymanov, F. Galkin, S. Chen, D. Sidorenko, M. Korzinkin, M. Scheibye-Knudsen,
+A. Aspuru-Guzik, E. Izumchenko, D. Gennert, F. W. Pun, M. Zhang, P. Kamya, A. Aliper,
+F. Ren, and A. Zhavoronkov. DORA AI scientist: Multi-agent virtual research team
+for scientific exploration discovery and automated report generation. In bioRxiv
+preprint:10.1101/2025.03.06.641840. Cold Spring Harbor Laboratory, 2025. doi:
+10.1101/2025.03.06.641840.
+[76] OpenAI. Introducing OpenAI o3 and o4-mini, 2025. URL https://openai.com/i
+ndex/introducing-o3-and-o4-mini/.
+[77] OpenXLA. XLA: composable transformations of Python+NumPy programs. URL
+https://github.com/openxla/xla.
+[78] H. Pan, N. Mudur, W. Taranto, M. Tikhanovskaya, S. Venugopalan, Y. Bahri, M. P.
+Brenner, and E.-A. Kim. Quantum many-body physics calculations with large language
+models. Communications Physics, 8(1):49, 2025. doi: 10.1038/s42005-025-01956-y.
+[79] D. Pantiukhin, B. Shapkin, I. Kuznetsov, A. A. Jost, and N. Koldunov. Accelerating Earth
+science discovery via multi-agent LLM systems. In arXiv preprint arXiv:2503.05854,
+2025.
+[80] Z. Rasheed, M. Waseem, A. Ahmad, K.-K. Kemell, W. Xiaofeng, A. N. Duc, and P. Abra-
+hamsson. Can large language models serve as data analysts? a multi-agent assisted
+approach for qualitative data analysis. arXiv preprint arXiv:2402.01386, 2024.
+[81] S. Ren, P. Jian, Z. Ren, C. Leng, C. Xie, and J. Zhang. Towards scientific intelligence:
+A survey of LLM-based scientific agents. In arXiv preprint arXiv:2503.24047, 2025.
+[82] A. Rives, J. Meier, T. Sercu, S. Goyal, Z. Lin, J. Liu, D. Guo, M. Ott, C. L. Zitnick, J. Ma,
+and R. Fergus. Biological structure and function emerge from scaling unsupervised
+learning to 250 million protein sequences. Proceedings of the National Academy of
+Sciences, 118(15):e2016239118, 2021. doi: 10.1073/pnas.2016239118.
+[83] B. Romera-Paredes, M. Barekatain, A. Novikov, M. Balog, M. P. Kumar, E. Dupont,
+F. J. R. Ruiz, J. Ellenberg, P. Wang, O. Fawzi, P. Kohli, and A. Fawzi. Mathematical
+discoveries from program search with large language models. Nature, 625(7995):
+468–475, 2023. doi: 10.1038/s41586-023-06924-6.
+29AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[84] F. J. R. Ruiz, T. Laakkonen, J. Bausch, M. Balog, M. Barekatain, F. J. H. Heras,
+A. Novikov, N. Fitzpatrick, B. Romera-Paredes, J. van de Wetering, A. Fawzi, K. Me-
+ichanetzidis, and P. Kohli. Quantum circuit optimization with AlphaTensor. Nature
+Machine Intelligence, 7(3):374–385, 2025. doi: 10.1038/s42256-025-01001-1.
+[85] O. A. Sarumi and D. Heider. Large language models and their applications in bioinfor-
+matics. Computational and Structural Biotechnology Journal, 23:3498–3505, 2024.
+ISSN 2001-0370. doi: https://doi.org/10.1016/j.csbj.2024.09.031.
+[86] E. Schkufza, R. Sharma, and A. Aiken. Stochastic superoptimization. In V. Sarkar and
+R. Bodík, editors, Architectural Support for Programming Languages and Operating
+Systems, ASPLOS 2013, Houston, TX, USA, March 16-20, 2013, pages 305–316. ACM,
+2013. doi: 10.1145/2451116.2451150.
+[87] M. Schmidt and H. Lipson. Distilling free-form natural laws from experimental data.
+Science, 324(5923):81–85, 2009. doi: 10.1126/science.1165893.
+[88] N. Shinn, F. Cassano, A. Gopinath, K. Narasimhan, and S. Yao. Reflexion: Language
+agents with verbal reinforcement learning. Advances in Neural Information Processing
+Systems, 36:8634–8652, 2023.
+[89] P. Shojaee, K. Meidani, S. Gupta, A. B. Farimani, and C. K. Reddy. LLM-SR: Scientific
+equation discovery via programming with large language models. In International
+Conference on Learning Representations, 2025.
+[90] C. Si, D. Yang, and T. Hashimoto. Can LLMs generate novel research ideas? a large-
+scale human study with 100+ NLP researchers. In International Conference on Learning
+Representations, 2025.
+[91] A. Smirnov. Several bilinear algorithms for matrix multiplication problems ⟨3, 𝑃, 𝑄⟩.
+https://www.researchgate.net/publication/350897049_Several_Bilin
+ear_Algorithms_for_Matrix_Multiplication_Problems_3_P_Q, 04 2021.
+[92] A. Smirnov. Bilinear algorithm for matrix multiplication ⟨4×4×9;104⟩. an irreducibly
+irrational solution of the brent system? https://www.researchgate.net/pub
+lication/364167198_Bilinear_Algorithm_for_Matrix_Multiplication_
+4x4x9_104_An_irreducibly_irrational_solution_of_the_Brent_system,
+10 2022.
+[93] A. V. Smirnov. The bilinear complexity and practical algorithms for matrix multipli-
+cation. Computational Mathematics and Mathematical Physics, 53(12):1781–1795,
+2013.
+[94] Z. Song, M. Ju, C. Ren, Q. Li, C. Li, Q. Zhou, and J. Wang. LLM-Feynman: Leveraging
+large language models for universal scientific formula and theory discovery. In arXiv
+preprint arXiv:2503.06512, 2025.
+[95] V. Strassen. Gaussian elimination is not optimal. Numerische mathematik, 13(4):
+354–356, 1969.
+30AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[96] A. Surina, A. Mansouri, L. Quaedvlieg, A. Seddas, M. Viazovska, E. Abbe, and C. Gul-
+cehre. Algorithm discovery with LLMs: Evolutionary search meets reinforcement
+learning. In arXiv preprint arXiv:2504.05108, 2025.
+[97] R. Tanese. Distributed genetic algorithms for function optimization. University of
+Michigan, 1989.
+[98] A. Thakur, G. Tsoukalas, Y. Wen, J. Xin, and S. Chaudhuri. An in-context learning
+agent for formal theorem-proving. In Conference on Language Models, 2024.
+[99] T. H. Trinh, Y. Wu, Q. V. Le, H. He, and T. Luong. Solving olympiad geometry without
+human demonstrations. Nature, 625(7995):476–482, 2024.
+[100] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and
+I. Polosukhin. Attention is all you need. In Advances in Neural Information Processing
+Systems, 2017.
+[101] P. Veličković, A. Vitvitskyi, L. Markeeva, B. Ibarz, L. Buesing, M. Balog, and A. Novikov.
+Amplifying human performance in combinatorial competitive programming. 2024.
+[102] A. Verma, L. Pedrosa, M. Korupolu, D. Oppenheimer, E. Tune, and J. Wilkes. Large-
+scale cluster management at Google with Borg. In Proceedings of the Tenth European
+Conference on Computer Systems, EuroSys ’15, New York, NY, USA, 2015. Association
+for Computing Machinery. ISBN 9781450332385. doi: 10.1145/2741948.2741964.
+[103] S. Verma, A. Goyal, A. Mathur, A. Anand, and S. Ranu. GRAIL: Graph edit distance
+and node alignment using llm-generated code. In International Conference on Machine
+Learning, 2025.
+[104] C. Vinuesa del Rio. Generalized Sidon sets. PhD thesis, Universidad Autónoma de
+Madrid, 2010.
+[105] H. Wang, M. Skreta, C. T. Ser, W. Gao, L. Kong, F. Strieth-Kalthoff, C. Duan, Y. Zhuang,
+Y. Yu, Y. Zhu, Y. Du, A. Aspuru-Guzik, K. Neklyudov, and C. Zhang. Efficient evo-
+lutionary search over chemical space with large language models. In International
+Conference on Learning Representations, 2025.
+[106] Q. Wang, D. Downey, H. Ji, and T. Hope. SciMON: Scientific inspiration machines
+optimized for novelty. In Proceedings of the 62nd Annual Meeting of the Association for
+ComputationalLinguistics(Volume1: LongPapers), pages279–299, Bangkok, Thailand,
+2024. Association for Computational Linguistics. doi: 10.18653/v1/2024.acl-long.18.
+[107] E. P. White. A new bound for Erdős’ minimum overlap problem. Acta Arithmetica,
+208:235–255, 2023.
+[108] Q. Wu, G. Bansal, J. Zhang, Y. Wu, B. Li, E. Zhu, L. Jiang, X. Zhang, S. Zhang, J. Liu,
+A. H. Awadallah, R. W. White, D. Burger, and C. Wang. AutoGen: Enabling next-gen
+LLM applications via multi-agent conversation. In arXiv preprint arXiv:2308.08155,
+2023.
+31AlphaEvolve: A coding agent for scientific and algorithmic discovery
+[109] Y. Xia, P. Jin, S. Xie, L. He, C. Cao, R. Luo, G. Liu, Y. Wang, Z. Liu, Y.-J. Chen, Z. Guo,
+Y. Bai, P. Deng, Y. Min, Z. Lu, H. Hao, H. Yang, J. Li, C. Liu, J. Zhang, J. Zhu, R. Bi,
+K. Wu, W. Zhang, K. Gao, Q. Pei, Q. Wang, X. Liu, Y. Li, H. Zhu, Y. Lu, M. Ma, Z. Wang,
+T. Xie, K. Maziarz, M. Segler, Z. Yang, Z. Chen, Y. Shi, S. Zheng, L. Wu, C. Hu, P. Dai,
+T.-Y. Liu, H. Liu, and T. Qin. Nature language model: Deciphering the language of
+nature for scientific discovery. In arXiv preprint arXiv:2502.07527v2, 2025.
+[110] K. Yang, A. Swope, A. Gu, R. Chalamala, P. Song, S. Yu, S. Godil, R. J. Prenger, and
+A. Anandkumar. Leandojo: Theorem proving with retrieval-augmented language
+models. Advances in Neural Information Processing Systems, 36:21573–21612, 2023.
+[111] K. Yang, G. Poesia, J. He, W. Li, K. Lauter, S. Chaudhuri, and D. Song. Formal
+mathematical reasoning: A new frontier in AI. arXiv preprint arXiv:2412.16075, 2024.
+[112] Z. Yang, X. Du, J. Li, J. Zheng, S. Poria, and E. Cambria. Large language models for
+automated open-domain scientific hypotheses discovery. In Findings of the Associa-
+tion for Computational Linguistics: ACL 2024, pages 13545–13565. Association for
+Computational Linguistics, 2024. doi: 10.18653/v1/2024.findings-acl.804.
+[113] Z. Yang, W. Liu, B. Gao, T. Xie, Y. Li, W. Ouyang, S. Poria, E. Cambria, and D. Zhou.
+MOOSE-Chem: Large language models for rediscovering unseen chemistry scientific
+hypotheses. In International Conference on Learning Representations, 2025.
+[114] S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao. React: Synergizing
+reasoning and acting in language models. In International Conference on Learning
+Representations (ICLR), 2023.
+[115] S. Yao, F. Liu, X. Lin, Z. Lu, Z. Wang, and Q. Zhang. Multi-objective evolution of
+heuristic using large language model. In AAAI Conference on Artificial Intelligence,
+volume 39, pages 27144–27152, 2025. doi: 10.1609/aaai.v39i25.34922.
+[116] G. Ye, X. Cai, H. Lai, X. Wang, J. Huang, L. Wang, W. Liu, and X. Zeng. DrugAssist: A
+large language model for molecule optimization. In arXiv preprint arXiv:2401.10334,
+2023.
+[117] H. Ye, J. Wang, Z. Cao, F. Berto, C. Hua, H. Kim, J. Park, and G. Song. ReEvo: Large
+language models as hyper-heuristics with reflective evolution. In Advances in Neural
+Information Processing Systems, volume 37, 2024.
+[118] F. Zhang, S. Nguyen, Y. Mei, and M. Zhang. Genetic Programming for Production
+Scheduling. Springer, 2021.
+[119] H. Zhang, Y. Song, Z. Hou, S. Miret, and B. Liu. HoneyComb: A flexible LLM-based
+agent system for materials science. In Y. Al-Onaizan, M. Bansal, and Y.-N. Chen,
+editors, Findings of the Association for Computational Linguistics: EMNLP 2024, pages
+3369–3382. Association for Computational Linguistics, Nov. 2024. doi: 10.18653/v1/
+2024.findings-emnlp.192.
+[120] Y. Zhou, H. Liu, T. Srivastava, H. Mei, and C. Tan. Hypothesis generation with large
+language models. In L. Peled-Cohen, N. Calderon, S. Lissak, and R. Reichart, editors,
+32AlphaEvolve: A coding agent for scientific and algorithmic discovery
+Proceedings of the 1st Workshop on NLP for Science (NLP4Science), pages 117–139.
+Association for Computational Linguistics, 2024. doi: 10.18653/v1/2024.nlp4scien
+ce-1.10.
+33AlphaEvolve: A coding agent for scientific and algorithmic discovery
+A. Faster matrix multiplication: Full results
+Full table of results. We provide the best ranks obtained by AlphaEvolve in Table 3. Overall,
+we considered 54 matrix multiplication sizes in our experiments. These were chosen roughly
+representing sizes ⟨𝑚, 𝑛, 𝑝⟩ where 2 ≤ 𝑚, 𝑛 ≤ 5, with some reasonable cutoff for 𝑝. Due to
+symmetries of the underlying matrix multiplication tensor, there exist equivalent algorithms
+for any permutations of the three axes, hence we focus on sorted sizes 𝑚 ≤ 𝑛 ≤ 𝑝.
+In all but two considered sizes, AlphaEvolve discovered programs which either match or
+surpass the best known rank. Anecdotally, we encountered some difficulty when increasing
+the problem size: when we run the discovered programs on sizes beyond ⟨5,5,5⟩ on 1000
+random seeds on evaluators with a single GPU accelerator, we often run out of memory.
+Hence, extending our setup to larger matrix sizes requires further optimization.
+⟨𝑚, 𝑛, 𝑝⟩
+best known
+[reference]
+AlphaEvolve
+⟨2,2,2⟩ 7 [95] 7
+⟨2,2,3⟩ 11 [93] 11
+⟨2,2,4⟩ 14 [93] 14
+⟨2,2,5⟩ 18 [93] 18
+⟨2,2,6⟩ 21 [93] 21
+⟨2,2,7⟩ 25 [93] 25
+⟨2,2,8⟩ 28 [93] 28
+⟨2,2,9⟩ 32 [93] 32
+⟨2,2,10⟩ 35 [93] 35
+⟨2,2,11⟩ 39 [93] 39
+⟨2,2,12⟩ 42 [93] 42
+⟨2,2,13⟩ 46 [93] 46
+⟨2,2,14⟩ 49 [93] 49
+⟨2,2,15⟩ 53 [93] 53
+⟨2,2,16⟩ 56 [93] 56
+⟨2,3,3⟩ 15 [93] 15
+⟨2,3,4⟩ 20 [93] 20
+⟨2,3,5⟩ 25 [93] 25
+⟨𝑚, 𝑛, 𝑝⟩
+best known
+[reference]
+AlphaEvolve
+⟨2,3,6⟩ 30 [93] 30
+⟨2,3,7⟩ 35 [93] 35
+⟨2,3,8⟩ 40 [93] 40
+⟨2,3,9⟩ 45 [93] 45
+⟨2,3,10⟩ 50 [93] 50
+⟨2,4,4⟩ 26 [93] 26
+⟨2,4,5⟩ 33 [42] 32
+⟨2,4,6⟩ 39 [93] 39
+⟨2,4,7⟩ 46 [93] 45
+⟨2,4,8⟩ 52 [93] 51
+⟨2,5,5⟩ 40 [93] 40
+⟨2,5,6⟩ 48 [93] 47
+⟨3,3,3⟩ 23 [52] 23
+⟨3,3,4⟩ 29 [93] 29
+⟨3,3,5⟩ 36 [93] 36
+⟨3,3,6⟩ 40 [93] 40
+⟨3,3,7⟩ 49 [93] 49
+⟨3,3,8⟩ 55 [93] 55
+⟨𝑚, 𝑛, 𝑝⟩
+best known
+[reference]
+AlphaEvolve
+⟨3,4,4⟩ 38 [93] 38
+⟨3,4,5⟩ 47 [26] 47
+⟨3,4,6⟩ 56 [48] 54
+⟨3,4,7⟩ 66 [91] 63
+⟨3,4,8⟩ 75 [91] 74
+⟨3,5,5⟩ 58 [91] 58
+⟨3,5,6⟩ 70 [48] 68
+⟨3,5,7⟩ 82 [91] 80
+⟨4,4,4⟩ 49 [95] 48
+⟨4,4,5⟩ 62 [47] 61
+⟨4,4,6⟩ 73 [48] 73
+⟨4,4,7⟩ 87 [93, 95] 85
+⟨4,4,8⟩ 98 [95] 96
+⟨4,4,9⟩ 104 [92] 108
+⟨4,5,5⟩ 76 [26] 76
+⟨4,5,6⟩ 93 [48] 90
+⟨5,5,5⟩ 93 [72] 93
+⟨6,6,6⟩ 153 [72] 156
+Table 3 | Full version of Table 2, showing the best ranks obtained by AlphaEvolve for tensor
+decomposition for all considered parameters. Of the 54 targets, AlphaEvolve matches the
+state of the art in 38 cases, surpasses it in 14 cases (green), and falls behind in 2 cases
+(red). In all cases, AlphaEvolve provides exact algorithms, using integer or half-integer entries
+in the decomposition. For ⟨3,4,7⟩, ⟨4,4,4⟩, and ⟨4,4,8⟩, the algorithms discovered by
+AlphaEvolve use complex-valued multiplications which can be used for exact multiplication
+of complex or real-valued matrices. The decompositions shown in this table can be found in
+the accompanying Google Colab.
+Note: Concurrent work [49] has also found a rank-90 algorithm for ⟨4,5,6⟩.
+Magnified version of Figure 4 (left). In Figures 9a to 9c, we show a magnified version of
+Figure 4 (left), which corresponds to the program that discovers a decomposition of rank 48
+for the 3D tensor representing the operation of multiplying two 4 × 4 matrices.
+34AlphaEvolve: A coding agent for scientific and algorithmic discovery
+1 @@ -45,9 +45,14 @@
+2 # EVOLVE -BLOCK -START
+3 def _get_optimizer(self) -> optax.GradientTransformation:
+4 """Returns optimizer."""
+5 - return optax.adam(self.hypers.learning_rate)
+6 + return optax.adamw(
+7 + self.hypers.learning_rate , weight_decay=self.hypers.weight_decay
+8 + )
+9
+10 def _get_init_fn(self) -> jax.nn.initializers.Initializer:
+11 """Returns initializer function."""
+12 - return initializers.normal(0.0, self.hypers.init_scale , jnp.complex64)
+13 + # Initialize with a smaller scale to encourage finding low-rank
+solutions.
+14 + # Increase scale slightly for better exploration.
+15 + scale = self.hypers.init_scale
+16 + return initializers.normal(0 + 1j * 0, scale * 0.2, jnp.complex64)
+17
+18 @@ -80,6 +85,66 @@
+19 # Gradient updates.
+20 updates , opt_state = self.opt.update(grads , opt_state , decomposition)
+21 decomposition = optax.apply_updates(decomposition , updates)
+22 + # Add a small amount of gradient noise to help with exploration
+23 + rng, g_noise_rng = jax.random.split(rng)
+24 + decomposition = jax.tree_util.tree_map(
+25 + lambda x: x
+26 + + self.hypers.grad_noise_std * jax.random.normal(g_noise_rng , x.
+shape),
+27 + decomposition ,
+28 + )
+29 +
+30 + # Add noise to the decomposition parameters (exploration).
+31 + _, noise_rng = jax.random.split(rng)
+32 + noise_std = self._linear_schedule(
+33 + global_step , start=self.hypers.noise_std , end=0.0
+34 + )
+35 + decomposition = jax.tree_util.tree_map(
+36 + lambda x: x + noise_std * jax.random.normal(noise_rng , x.shape),
+37 + decomposition ,
+38 + )
+39 +
+40 + # Cyclical annealing for clipping threshold.
+41 + cycle_length = 2000 # Number of steps per cycle
+42 + cycle_progress = (
+43 + global_step % cycle_length
+44 + ) / cycle_length # Normalized progress within the current cycle [0,
+1)
+45 +
+46 + # Map cycle progress to a sinusoidal curve. Ranges from 0 to 1.
+47 + clip_threshold_multiplier = (1 + jnp.cos(2 * jnp.pi * cycle_progress))
+/ 2
+48 +
+49 + clip_threshold = self.hypers.clip_min + clip_threshold_multiplier * (
+50 + self.hypers.clip_max - self.hypers.clip_min
+51 + )
+52 +
+53 + def soft_clip(x, threshold):
+54 + # Clipping the real and imaginary parts separately.
+55 + x_re = jnp.real(x)
+56 + x_im = jnp.imag(x)
+57 +
+58 + x_re_clipped = jnp.where(
+59 + x_re > threshold , threshold + (x_re - threshold) * 0.1, x_re
+60 + )
+61 + x_re_clipped = jnp.where(
+62 + x_re_clipped < -threshold ,
+63 + -threshold + (x_re_clipped + threshold) * 0.1,
+64 + x_re_clipped ,
+65 + )
+Figure 9a | Magnified version of Figure 4(left), giving the program that discovers a faster
+algorithm to multiply 4 × 4 matrices (1/3).
+35AlphaEvolve: A coding agent for scientific and algorithmic discovery
+66 +
+67 + x_im_clipped = jnp.where(
+68 + x_im > threshold , threshold + (x_im - threshold) * 0.1, x_im
+69 + )
+70 + x_im_clipped = jnp.where(
+71 + x_im_clipped < -threshold ,
+72 + -threshold + (x_im_clipped + threshold) * 0.1,
+73 + x_im_clipped ,
+74 + )
+75 +
+76 + return x_re_clipped + 1j * x_im_clipped
+77 +
+78 + decomposition = jax.tree_util.tree_map(
+79 + lambda x: soft_clip(x, clip_threshold), decomposition
+80 + )
+81 +
+82 return decomposition , opt_state , loss
+83
+84 def _loss_fn(
+85 @@ -91,13 +156,86 @@
+86 """Computes (batched) loss on learned decomposition."""
+87 # Compute reconstruction loss.
+88 rec_tensor = self._decomposition_to_tensor(decomposition) # (B, N, M,
+P)
+89 +
+90 + # Add noise to the target tensor (robustness).
+91 + rng, noise_rng = jax.random.split(rng)
+92 + target_noise = self.hypers.target_noise_std * jax.random.normal(
+93 + noise_rng , self.target_tensor.shape
+94 + )
+95 + noisy_target_tensor = self.target_tensor + target_noise
+96 +
+97 + # Hallucination loss (encourages exploration by randomly replacing
+values)
+98 + hallucination_prob = self.hypers.hallucination_prob
+99 + hallucination_scale = self.hypers.hallucination_scale
+100 +
+101 + def hallucinate(x, hallucination_rng):
+102 + mask = jax.random.bernoulli(hallucination_rng , p=hallucination_prob)
+103 + noise = hallucination_scale * jax.random.normal(
+104 + hallucination_rng , x.shape
+105 + )
+106 + return jnp.where(mask, noise , x)
+107 +
+108 + _, factor_rng = jax.random.split(rng)
+109 + decomposition = jax.tree_util.tree_map(
+110 + lambda x: hallucinate(x, jax.random.split(factor_rng)[0]),
+111 + decomposition ,
+112 + )
+113 +
+114 # Add a batch dimension to `target_tensor ` to ensure correct
+broadcasting.
+115 # Define the loss as the L2 reconstruction error.
+116 - rec_loss = l2_loss_complex(self.target_tensor[None, ...], rec_tensor)
+117 + rec_loss = l2_loss_complex(noisy_target_tensor[None, ...], rec_tensor)
+118
+119 # We must return a real -valued loss.
+120 - return jnp.real(rec_loss)
+121
+122 + # Discretization loss (encourage entries to be multiples of 1/2 or
+integer).
+123 + def dist_to_half_ints(x):
+124 + x_re = jnp.real(x)
+125 + x_im = jnp.imag(x)
+126 + return jnp.minimum(
+127 + jnp.abs(x_re - jnp.round(x_re * 2) / 2),
+128 + jnp.abs(x_im - jnp.round(x_im * 2) / 2),
+129 + )
+130 +
+Figure 9b | Magnified version of Figure 4(left), giving the program that discovers a faster
+algorithm to multiply 4 × 4 matrices (2/3).
+36AlphaEvolve: A coding agent for scientific and algorithmic discovery
+131 + def dist_to_ints(x):
+132 + return jnp.abs(x - jnp.round(x))
+133 +
+134 + discretization_loss = 0.0
+135 + for factor in decomposition:
+136 + discretization_loss += jnp.mean(dist_to_half_ints(factor))
+137 + discretization_loss += jnp.mean(dist_to_ints(factor))
+138 +
+139 + discretization_loss /= (
+140 + len(decomposition) * 2
+141 + ) # average across all factors and loss components
+142 +
+143 + discretization_weight = self._linear_schedule(
+144 + global_step , start=0.0, end=self.hypers.discretization_weight
+145 + )
+146 +
+147 + # Cosine annealing for half-integer loss.
+148 + cycle_length = self.config.training_steps // 4 # Number of steps per
+cycle
+149 + cycle_progress = (
+150 + global_step % cycle_length
+151 + ) / cycle_length # Normalized progress within the current cycle [0,
+1)
+152 + half_int_multiplier = (1 + jnp.cos(jnp.pi * cycle_progress)) / 2
+153 + half_int_multiplier = (
+154 + 1 - self.hypers.half_int_start
+155 + ) * half_int_multiplier + self.hypers.half_int_start
+156 +
+157 + total_loss = (
+158 + rec_loss
+159 + + discretization_weight * discretization_loss *
+half_int_multiplier
+160 + )
+161 +
+162 + # Add penalty for large values (stability).
+163 + large_value_penalty = 0.0
+164 + for factor in decomposition:
+165 + large_value_penalty += jnp.mean(jnp.abs(factor) ** 2)
+166 + large_value_penalty /= len(decomposition)
+167 + total_loss += self.hypers.large_value_penalty_weight *
+large_value_penalty
+168 +
+169 + return jnp.real(total_loss)
+170 +
+171
+172 def l2_loss_complex(x: jnp.ndarray , y: jnp.ndarray) -> jnp.ndarray:
+173 """Elementwise L2 loss for complex numbers."""
+174 @@ -117,6 +255,18 @@
+175 return hyper.zipit([
+176 - hyper.uniform('init_scale', hyper.interval(0.2, 1.5)),
+177 - hyper.uniform('learning_rate', hyper.interval(0.05, 0.3)),
+178 + hyper.uniform('init_scale', hyper.interval(0.1, 1.0)),
+179 + hyper.uniform('learning_rate', hyper.interval(0.01, 0.2)),
+180 + hyper.uniform('discretization_weight', hyper.interval(0.0, 0.1)),
+181 + hyper.uniform('hallucination_prob', hyper.interval(0.0, 0.2)),
+182 + hyper.uniform('hallucination_scale', hyper.interval(0.0, 0.2)),
+183 + hyper.uniform('noise_std', hyper.interval(0.0, 0.01)),
+184 + hyper.uniform('target_noise_std', hyper.interval(0.0, 0.01)),
+185 + hyper.uniform('weight_decay', hyper.interval(0.00001, 0.001)),
+186 + hyper.uniform('clip_min', hyper.interval(0.0, 0.5)),
+187 + hyper.uniform('clip_max', hyper.interval(1.0, 3.0)),
+188 + hyper.uniform('large_value_penalty_weight', hyper.interval(0.0,
+0.01)),
+189 + # Add noise to the gradient to aid in exploration.
+190 + hyper.uniform('grad_noise_std', hyper.interval(0.0, 0.001)),
+191 + hyper.uniform('half_int_start', hyper.interval(0.0, 1.0)),
+192 ])
+193 # EVOLVE -BLOCK -END
+Figure 9c | Magnified version of Figure 4(left), giving the program that discovers a faster
+algorithm to multiply 4 × 4 matrices (3/3). Here hyper is a user-provided library for
+generating hyperparameter sweeps.
+37AlphaEvolve: A coding agent for scientific and algorithmic discovery
+B. Details of mathematical discoveries of AlphaEvolve
+The data and verification code for all constructions reported in this section appear in the
+accompanying Google Colab.
+B.1. First autocorrelation inequality
+For any function 𝑓 : ℝ → ℝ, define the autoconvolution of 𝑓 as
+𝑓 ∗ 𝑓(𝑡) B
+∫
+ℝ
+𝑓(𝑡 − 𝑥)𝑓(𝑥) 𝑑𝑥.
+Let 𝐶1 denote the largest constant satisfying
+max
+−1/2≤𝑡≤1/2
+𝑓 ∗ 𝑓(𝑡) ≥ 𝐶1
+∫ 1/4
+−1/4
+𝑓(𝑥) 𝑑𝑥
+2
+(1)
+for all non-negative 𝑓 : ℝ → ℝ. This problem arises in additive combinatorics, relating to
+the size of Sidon sets. It is currently known that
+1.28 ≤ 𝐶1 ≤ 1.5098,
+with the lower bound achieved in [17] and the upper bound achieved in [70] via a step
+function construction. AlphaEvolve found a step function with 600 equally-spaced intervals
+on [−1/4,1/4] that gives a slightly better upper bound 𝐶1 ≤ 1.5053.
+B.2. Second autocorrelation inequality
+Let 𝐶2 be the smallest constant for which one has
+∥𝑓 ∗ 𝑓∥2
+2 ≤ 𝐶2∥𝑓 ∗ 𝑓∥1∥𝑓 ∗ 𝑓∥∞
+for all non-negative 𝑓 : ℝ → ℝ. It is known that
+0.88922 ≤ 𝐶2 ≤ 1
+with the lower bound coming from a step function construction [70]. AlphaEvolve found
+a step function with 50 equally-spaced intervals on [−1/4,1/4] that gives a slightly better
+lower bound 0.8962 ≤ 𝐶2.
+B.3. Third autocorrelation inequality
+Let 𝐶3 be the largest constant satisfying
+max
+−1/2≤𝑡≤1/2
+|𝑓 ∗ 𝑓(𝑡)| ≥ 𝐶3
+∫ 1/4
+−1/4
+𝑓(𝑥) 𝑑𝑥
+2
+for any function 𝑓 : ℝ → ℝ. Clearly 𝐶3 ≤ 𝐶1, since we now allow 𝑓 to take positive and
+negative values. There is a step function that gives the upper bound 𝐶3 ≤ 1.45810 [104, page
+75]. AlphaEvolve found a step function with 400 equally-spaced intervals on [−1/4,1/4] that
+gives a slightly better upper bound 𝐶3 ≤ 1.4557.
+38AlphaEvolve: A coding agent for scientific and algorithmic discovery
+B.4. An uncertainty inequality
+Given a function 𝑓 : ℝ → ℝ, define the Fourier transform ˆ 𝑓(𝜉) :=
+∫
+ℝ
+𝑓(𝑥)𝑒−2𝜋𝑖𝑥𝜉
+𝑑𝑥 and
+𝐴(𝑓) := inf{𝑟 > 0 : 𝑓(𝑥) ≥ 0 for all |𝑥| ≥ 𝑟}.
+Let 𝐶4 be the largest constant for which one has
+𝐴(𝑓)𝐴(ˆ 𝑓) ≥ 𝐶4
+for all even 𝑓 with max(𝑓(0), ˆ 𝑓(0)) < 0. It is known [33] that
+0.2025 ≤ 𝐶4 ≤ 0.3523.
+(The upper bound is stated as 0.353 in the paper, but rounding their solution to the fourth
+digit gives 0.3523). We improved the upper bound to 𝐶4 ≤ 0.3521 with a similar linear
+combination as in [33], but with refined constants that were found by AlphaEvolve.
+To obtain upper bounds for 𝐶4, one constructs a specific "test function" 𝑓 satisfying the
+conditions and calculates the value 𝐴(𝑓)𝐴(ˆ 𝑓) for this function, which provides an upper
+bound 𝐶4 ≤ 𝐴(𝑓)𝐴(ˆ 𝑓). Following the approach in [33], the test function is sought in the form
+𝑓(𝑥) = 𝑃(𝑥)𝑒−𝜋𝑥2
+, where 𝑃(𝑥) is an even polynomial constructed as a linear combination of
+Hermite polynomials 𝐻4𝑘(𝑥). This form is particularly useful because the Fourier transform of
+𝐻𝑛(𝑥)𝑒−𝜋𝑥2
+is 𝑖𝑛
+𝐻𝑛(𝜉)𝑒−𝜋𝜉2
+. For an even polynomial 𝑃(𝑥) =
+Í
+𝑐4𝑘𝐻4𝑘(𝑥), the Fourier transform
+of 𝑓(𝑥) is ˆ 𝑓(𝜉) =
+Í
+𝑐4𝑘𝑖4𝑘
+𝐻4𝑘(𝜉)𝑒−𝜋𝜉2
+= (
+Í
+𝑐4𝑘𝐻4𝑘(𝜉))𝑒−𝜋𝜉2
+= 𝑃(𝜉)𝑒−𝜋𝜉2
+. Thus, 𝐴(𝑓) is related
+to the largest positive root of 𝑃(𝑥), and 𝐴(ˆ 𝑓) is related to the largest positive root of 𝑃(𝜉).
+Specifically, if 𝑃(𝑥) ≥ 0 for large |𝑥|, 𝐴(𝑓) is the largest positive root of 𝑃(𝑥), and 𝐴(ˆ 𝑓) is the
+largest positive root of 𝑃(𝜉), implying 𝐴(𝑓) = 𝐴(ˆ 𝑓). The inequality becomes 𝐶4 ≤ (𝐴(𝑓))2.
+The method involves finding coefficients 𝑐0, 𝑐1, 𝑐2, . . . for the polynomial 𝑃(𝑥) = 𝑐0𝐻0(𝑥)+
+𝑐1𝐻4(𝑥)+𝑐2𝐻8(𝑥)+. . . suchthat 𝑃(𝑥) satisfiescertainconstraints(relatedto 𝑓(0) < 0, ˆ 𝑓(0) < 0
+and being positive for large |𝑥|) and minimizes the largest positive root of 𝑃(𝑥). In our
+approach, the polynomial 𝑃(𝑥) is constructed such that 𝑃(0) = 0 (a condition used in the
+optimization process to simplify constraints), meaning 𝑃(𝑥) has a factor of 𝑥2. The largest
+positive root 𝑟max of 𝑃(𝑥) is then the largest positive root of 𝑃(𝑥)/𝑥2. The upper bound on 𝐶4
+derived from this construction is 𝑟2
+max/(2𝜋).
+The refined constants found by AlphaEvolve for 𝑃(𝑥) = 𝑐0𝐻0(𝑥) + 𝑐1𝐻4(𝑥) + 𝑐2𝐻8(𝑥) are
+[𝑐0, 𝑐1, 𝑐2] ≈ [0.32925,−0.01159,−8.9216 × 10−5]. Using these coefficients to construct
+𝑃(𝑥), finding its largest positive root 𝑟max (by finding the largest positive root of 𝑃(𝑥)/𝑥2),
+and calculating 𝑟2
+max/(2𝜋) yields the improved upper bound 𝐶4 ≤ 0.3521. Qualitatively our
+linear combination is very similar to the one found in [33], thus empirically confirming their
+hypothesis the construction is nearly optimal.
+Note: After publishing the first version of this manuscript, Henry Cohn pointed out that in
+a recent paper [18] they used a similar, but more refined approach to get the better constant
+0.3284. By incorporating their refined approach into AlphaEvolve, we improved our reported
+constant further to 0.3216. For details, we refer to the accompanying Google Colab.
+39AlphaEvolve: A coding agent for scientific and algorithmic discovery
+0.2 0.1 0.0 0.1 0.2
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Figure 10 | Construction found by AlphaEvolve for the minimum overlap problem of Erdős.
+B.5. Erdős’ minimum overlap problem
+Let 𝐶5 be the largest constant for which
+sup
+𝑥∈[−2,2]
+∫ 1
+−1
+𝑓(𝑡)𝑔(𝑥 + 𝑡) 𝑑𝑡 ≥ 𝐶5
+for all non-negative 𝑓, 𝑔 : [−1,1] → [0,1] with 𝑓 + 𝑔 = 1 on [−1,1] and
+∫
+𝑓 = 1, where we
+extend 𝑓, 𝑔 by zero outside of [−1,1]. This constant controls the asymptotics of the Minimum
+Overlap Problem of [25]. The bounds
+0.379005 ≤ 𝐶5 ≤ 0.380927
+are known, where the lower bound was obtained in [107] via convex programming methods.
+It is known (see [40]) that this constant is equal to the infimum, over all step functions ℎ
+on [0,2] with values in [0,1] and satisfying
+∫ 2
+0
+ℎ(𝑥)𝑑𝑥 = 1 of
+max
+𝑘
+∫
+ℎ(𝑥)(1 − ℎ(𝑥 + 𝑘))𝑑𝑥.
+The upper bound to the Erdős minimum overlap problem was then obtained by using this
+result, in [40] by a step function construction. The step function depicted in Figure 10 does
+ever so slightly better than the previous bound, giving the upper bound of 𝐶5 ≤ 0.380924.
+B.6. Sums and differences of finite sets
+Let 𝐶6 be the largest constant for which the following statement holds: there exist arbitrarily
+large finite sets of integers 𝐴, 𝐵 with |𝐴 + 𝐵| ≪ |𝐴| and |𝐴 − 𝐵| ≫ |𝐴 + 𝐵|𝐶6. (Here 𝐴 + 𝐵 =
+{𝑎 + 𝑏 : 𝑎 ∈ 𝐴, 𝑏 ∈ 𝐵} and 𝐴 − 𝐵 = {𝑎 − 𝑏 : 𝑎 ∈ 𝐴, 𝑏 ∈ 𝐵} denote the sumset and difference set,
+respectively. The notation 𝑋 ≪ 𝑌 means that 𝑋 ≤ 𝐶𝑌 for some constant 𝐶 independent of the
+sets 𝐴, 𝐵 (for sufficiently large sets 𝐴, 𝐵). The notation 𝑋 ≫ 𝑌 means that 𝑋 ≥ 𝐶′𝑌 for some
+positive constant 𝐶′ independent of the sets 𝐴, 𝐵 (for sufficiently large sets 𝐴, 𝐵).)
+1.14465 ≤ 𝐶6 ≤
+4
+3
+; (2)
+40AlphaEvolve: A coding agent for scientific and algorithmic discovery
+Figure 11 | Constructions of the packing problems found by AlphaEvolve. Left: Packing 11
+unit hexagons into a regular hexagon of side length 3.931. Right: Packing 12 unit hexagons
+into a regular hexagon of side length 3.942.
+see [39, Corollary 3] for the upper bound and [39, Theorem 1] for the lower bound. The
+main tool for the lower bound is the following result of Gyarmati et al. [39]:
+𝐶6 ≥ 1 +
+log |𝑈−𝑈|
+|𝑈+𝑈|
+log(2max(𝑈) + 1)
+(3)
+for any finite set 𝑈 of non-negative integers containing zero satisfying |𝑈 −𝑈| ≤ 2max(𝑈) +1.
+AlphaEvolve found a set 𝑈1 of size 2003 improving the lower bound to 1.1479 ≤ 𝐶6, and
+another set 𝑈2 of size 54265 further improving the lower bound to 1.1584 ≤ 𝐶6.
+B.7. Packing unit regular hexagons inside a regular hexagon
+Consider the problem of packing 𝑛 disjoint regular hexagons with unit side length into a
+larger regular hexagon, minimizing the side length of the outer hexagon. For 𝑛 = 11 and
+𝑛 = 12, the best known constructions use outer hexagons of side lengths 3.943 and 4.0,
+respectively [29]. AlphaEvolve found packing arrangements that improve these bounds to
+3.931 and 3.942, respectively. These arrangements are shown in Figure 11.
+B.8. Minimizing the ratio of maximum to minimum distance
+For any 𝑛 and 𝑑, the goal of this problem is to find 𝑛 points in the 𝑑-dimensional space so as
+to minimize the ratio between the maximum and minimum pairwise distances. AlphaEvolve
+found two new constructions improving the best known bounds. The found constructions
+are shown in Figure 12.
+In 2 dimensions, AlphaEvolve found 16 points with ratio ≈
+√
+12.889266112, improving
+the best known bound of
+√
+12.890 [29]. (In this reference, instead of the ratio itself, the
+square of the ratio is reported, and we use the same convention.)
+41AlphaEvolve: A coding agent for scientific and algorithmic discovery
+Figure 12 | Left: 16 points in 2 dimensions achieving a ratio of maximum distance to
+minimum distance of ≈
+√
+12.889266112. Right: 14 points in 3 dimensions achieving a ratio
+of ≈
+√
+4.165849767. Both constructions improve the best known bounds.
+In 3 dimensions, AlphaEvolve found 14 points with ratio ≈
+√
+4.165849767, improving the
+best known bound of
+√
+4.168 [29].
+B.9. The Heilbronn problem for triangles
+The goal of this problem is to find 𝑛 points on or inside a triangle with unit area so that the
+area of the smallest triangle formed by these points is maximized. For 𝑛 = 11, the SOTA was
+0.036 [29], and AlphaEvolve found a construction with minimum area larger than 0.0365,
+which is shown in Figure 13 (left).
+B.10. The Heilbronn problem for convex regions
+The goal of this problem is to find 𝑛 points on or inside a convex region with unit area so that
+the area of the smallest triangle formed by these points is maximized. AlphaEvolve improved
+two of the best known bounds.
+For 𝑛 = 13, the SOTA was 0.0306 [29], and AlphaEvolve improved it to 0.0309 (see
+Figure 13 (middle)). For 𝑛 = 14, the SOTA was 0.0277 [29] and AlphaEvolve improved it to
+0.0278 (see Figure 13 (right)).
+B.11. Kissing number in dimension 11
+The kissing problem asks how many disjoint unit spheres can be packed tangent to a given
+unit sphere. The maximum such number in 𝑑 dimensions is called the 𝑑-dimensional kissing
+number [8]. For 𝑑 = 11, the best known lower bound was 592 [31] and AlphaEvolve improved
+42AlphaEvolve: A coding agent for scientific and algorithmic discovery
+Figure 13 | New constructions found by AlphaEvolve improving the best known bounds on
+two variants of the Heilbronn problem. Left: 11 points in a unit-area triangle with all formed
+triangles having area ≥ 0.0365. Middle: 13 points inside a convex region with unit area with
+all formed triangles having area ≥ 0.0309. Right: 14 points inside a unit convex region with
+minimum area ≥ 0.0278.
+this to 593. To prove the lower bound of 593 for the kissing number in dimension 11,
+AlphaEvolve found 593 many 11-dimensional non-zero points with integral coordinates such
+that the maximum norm of these points is smaller than their minimum pairwise distance. By
+the following lemma, this implies the kissing number in dimension 11 is at least 593.
+Lemma 1. Let 𝐶 ⊂ ℝ𝑑
+be a set of points satisfying 0 ∉ 𝐶 and
+min{∥𝑥 − 𝑦∥ : 𝑥 ≠ 𝑦 ∈ 𝐶} ≥ max{∥𝑥∥ : 𝑥 ∈ 𝐶} .
+Then unit spheres centred at
+n
+2𝑥
+∥𝑥∥ : 𝑥 ∈ 𝐶
+o
+form a valid kissing configuration in dimension 𝑑. In
+particular, the kissing number in dimension 𝑑 is at least |𝐶|.
+Proof. For any 𝑥 ≠ 𝑦 ∈ 𝐶, the inequality ∥𝑥 − 𝑦∥2 ≥ max{∥𝑥∥2, ∥𝑦∥2} implies
+2⟨𝑥, 𝑦⟩ ≤ ∥𝑥∥2
++ ∥𝑦∥2
+− max{∥𝑥∥2
+, ∥𝑦∥2
+} = min{∥𝑥∥2
+, ∥𝑦∥2
+} ≤ ∥𝑥∥ · ∥𝑦∥, (4)
+where the last inequality holds because the minimum of two positive numbers is less than or
+equal to their geometric mean. The points
+n
+2𝑥
+∥𝑥∥ : 𝑥 ∈ 𝐶
+o
+have norm 2, so unit spheres centred
+at them are tangent to a unit sphere centred at the origin. The last step is to show that these
+spheres do not overlap. This is equivalent to showing, for all 𝑥 ≠ 𝑦 ∈ 𝐶, that
+2𝑥
+∥𝑥∥
+−
+2𝑦
+∥𝑦∥
+≥ 2.
+After simplifying, this is equivalent to 2⟨𝑥, 𝑦⟩ ≤ ∥𝑥∥ · ∥𝑦∥, which we have proved in (4). Thus
+unit spheres centred at
+n
+2𝑥
+∥𝑥∥ : 𝑥 ∈ 𝐶
+o
+form a valid kissing configuration in dimension 𝑑, as
+required. □
+B.12. Packing circles inside a unit square to maximize sum of radii
+Given a positive integer 𝑛, the problem is to pack 𝑛 disjoint circles inside a unit square so as
+to maximize the sum of their radii. AlphaEvolve found two new constructions improving the
+state of the art [29].
+43AlphaEvolve: A coding agent for scientific and algorithmic discovery
+For 𝑛 = 26, the SOTA was 2.634, and AlphaEvolve improved it to 2.635; see Figure 14
+(left). For 𝑛 = 32, the SOTA was 2.936, and AlphaEvolve improved it to 2.937; see Figure 14
+(middle).
+B.13. Packing circles inside a rectangle of perimeter 4 to maximize sum of radii
+Given a positive integer 𝑛, the problem is to pack 𝑛 disjoint circles inside a rectangle of
+perimeter 4 so as to maximize the sum of their radii. AlphaEvolve found a new construction
+for 𝑛 = 21, improving the state of the art from 2.364 [29] to 2.3658; see Figure 14 (right).
+Figure 14 | New constructions found by AlphaEvolve improving the best known bounds on
+packing circles to maximize their sum of radii. Left: 26 circles in a unit square with sum
+of radii ≥ 2.635. Middle: 32 circles in a unit square with sum of radii ≥ 2.937. Right: 21
+circles in a rectangle with perimeter 4, with sum of radii ≥ 2.365.
+44

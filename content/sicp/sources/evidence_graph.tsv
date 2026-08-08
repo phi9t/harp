@@ -1,0 +1,12 @@
+label	source_id	relation	target_id	anchor	boundary
+EVIDENCE	SICP-2E-UF	licensed-under	CC-BY-SA-4.0	PDF p. 2	License notice and artifact identity
+EVIDENCE	SICP-2E-UF	compared-by-course-with	PI-MONO	content/sicp/course/	Modern systems comparison only; not a historical claim about SICP or Pi
+EVIDENCE	SICP-2E-UF	compared-by-course-with	HERMES-AGENT	content/sicp/course/	Modern systems comparison only; not a historical claim about SICP or Hermes Agent
+EVIDENCE	SICP-2E-UF	compared-by-course-with	CODEX-SICP	content/sicp/course/	Modern systems comparison only; not a historical claim about SICP or Codex
+EVIDENCE	SICP-2E-UF	credits-lisp-lineage-to	MCCARTHY-1960	preface printed p. xxiv, PDF p. 24; bibliography printed p. 840, PDF p. 868	Do not reconstruct McCarthy's paper from SICP
+EVIDENCE	SICP-2E-UF	credits-lambda-calculus-lineage-to	CHURCH-1941	preface printed p. xxiv, PDF p. 24; bibliography printed p. 835, PDF p. 863	Do not reconstruct Church's book from SICP
+EVIDENCE	SICP-2E-UF	cites-scheme-interpreter-lineage	STEELE-SUSSMAN-1975	bibliography printed p. 842, PDF p. 870	Bibliographic edge only until fetched
+EVIDENCE	SICP-2E-UF	credits-analyzed-interpreter-to	REES-ADAMS-1982	§4.1.7 note 28, printed p. 535, PDF p. 563	Attribution only until fetched
+EVIDENCE	SICP-2E-UF	credits-independent-analysis-technique-to	FEELEY-1986	§4.1.7 note 28, printed p. 535, PDF p. 563	Attribution only until fetched
+EVIDENCE	SICP-2E-UF	points-from-analysis-to-code-generation	FEELEY-LAPALME-1987	§4.1.7 note 28, printed p. 535, PDF p. 563	Citation context only until fetched
+CLAIM	SICP-2E-UF	claims-examples-conform-to	IEEE-SCHEME-1990	preface printed p. xx, PDF p. 20	Source claim; conformance not independently checked

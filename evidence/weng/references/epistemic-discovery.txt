@@ -1,0 +1,793 @@
+References
+Moloud Abdar, Farhad Pourpanah, Sadiq Hussain, Dana Rezazadegan, Li Liu, Mohammad
+Ghavamzadeh, Paul Fieguth, Xiaochun Cao, Abbas Khosravi, U Rajendra Acharya, et al. A
+review of uncertainty quantification in deep learning: Techniques, applications and challenges.
+Information fusion, 76:243–297, 2021.
+Dhruv Agarwal, Bodhisattwa Prasad Majumder, Reece Adamson, Megha Chakravorty,
+Satvika Reddy Gavireddy, Aditya Parashar, Harshit Surana, Bhavana Dalvi Mishra, Andrew Mc-
+Callum, Ashish Sabharwal, et al. Autodiscovery: Open-ended scientific discovery via bayesian
+surprise. arXiv preprint arXiv:2507.00310, 2025.
+Ekin Akyürek, Mehul Damani, Adam Zweiger, Linlu Qiu, Han Guo, Jyothish Pari, Yoon Kim, and
+Jacob Andreas. The surprising effectiveness of test-time training for few-shot learning. arXiv
+preprint arXiv:2411.07279, 2024.
+Oleksandr Balabanov and Hampus Linander. Uncertainty quantification in fine-tuned llms using
+lora ensembles. arXiv preprint arXiv:2402.12264, 2024.
+João Caldeira and Brian Nord. Deeply uncertain: comparing methods of uncertainty quantification
+in deep learning algorithms. Machine Learning: Science and Technology, 2(1):015002, 2021.
+Xiaofeng Cao and Ivor W Tsang. Bayesian active learning by disagreements: A geometric perspec-
+tive. arXiv preprint arXiv:2105.02543, 2021.
+Bertrand Charpentier, Ransalu Senanayake, Mykel Kochenderfer, and Stephan Günnemann. Dis-
+entangling epistemic and aleatoric uncertainty in reinforcement learning. arXiv preprint
+arXiv:2206.01558, 2022.
+Daixuan Cheng, Shaohan Huang, Xuekai Zhu, Bo Dai, Xin Zhao, Zhenliang Zhang, and Furu Wei.
+Reasoning with exploration: An entropy perspective. In Proceedings of the AAAI Conference on
+Artificial Intelligence, volume 40, pages 30377–30385, 2026.
+Runpeng Dai, Linfeng Song, Haolin Liu, Zhenwen Liang, Dian Yu, Haitao Mi, Zhaopeng Tu, Rui
+Liu, Tong Zheng, Hongtu Zhu, et al. Cde: Curiosity-driven exploration for efficient reinforcement
+learning in large language models. arXiv preprint arXiv:2509.09675, 2025.
+Yuqing Du, Olivia Watkins, Zihan Wang, Cédric Colas, Trevor Darrell, Pieter Abbeel, Abhishek
+Gupta, and Jacob Andreas. Guiding pretraining in reinforcement learning with large language
+models. In International Conference on Machine Learning, pages 8657–8677. PMLR, 2023.
+Vikranth Dwaracherla, Seyed Mohammad Asghari, Botao Hao, and Benjamin Van Roy. Efficient
+exploration for llms. arXiv preprint arXiv:2402.00396, 2024.
+Ekaterina Fadeeva, Roman Vashurin, Akim Tsvigun, Artem Vazhentsev, Sergey Petrakov, Kirill
+Fedyanin, Daniil Vasilev, Elizaveta Goncharova, Alexander Panchenko, Maxim Panov, et al. Lm-
+polygraph: Uncertainty estimation for language models. In Proceedings of the 2023 Conference
+on Empirical Methods in Natural Language Processing: System Demonstrations, pages 446–461,
+2023.
+Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, and Yarin Gal. Detecting hallucinations in large
+language models using semantic entropy. Nature, 630(8017):625–630, 2024.
+Jingtong Gao, Ling Pan, Yejing Wang, Rui Zhong, Chi Lu, Maolin Wang, Qingpeng Cai, Peng Jiang,
+and Xiangyu Zhao. Navigate the unknown: Enhancing llm reasoning with intrinsic motivation
+guided exploration. arXiv preprint arXiv:2505.17621, 2025.
+10Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu, Runxin Xu, Ruoyu
+Zhang, Shirong Ma, Xiao Bi, et al. Deepseek-r1 incentivizes reasoning in llms through reinforce-
+ment learning. Nature, 645(8081):633–638, 2025.
+Moritz Hardt and Yu Sun. Test-time training on nearest neighbors for large language models. arXiv
+preprint arXiv:2305.18466, 2023.
+Alex Havrilla, Yuqing Du, Sharath Chandra Raparthy, Christoforos Nalmpantis, Jane Dwivedi-Yu,
+Maksym Zhuravinskyi, Eric Hambro, Sainbayar Sukhbaatar, and Roberta Raileanu. Teaching
+large language models to reason with reinforcement learning. arXiv preprint arXiv:2403.04642,
+2024.
+Jianfeng He, Linlin Yu, Changbin Li, Runing Yang, Fanglan Chen, Kangshuo Li, Min Zhang, Shuo
+Lei, Xuchao Zhang, Mohammad Beigi, et al. Survey of uncertainty estimation in llms-sources,
+methods, applications, and challenges. Information Fusion, page 104057, 2025a.
+Kaifeng He, Mingwei Liu, Chong Wang, Zike Li, Yanlin Wang, Xin Peng, and Zibin Zheng.
+Adadec: Uncertainty-guided adaptive decoding for llm-based code generation. arXiv e-prints,
+pages arXiv–2506, 2025b. Lookahead reranking at high-entropy tokens.
+Haitao Hong, Yuchen Yan, Xingyu Wu, Guiyang Hou, Wenqi Zhang, Weiming Lu, Yongliang Shen,
+and Jun Xiao. Cooper: Co-optimizing policy and reward models in reinforcement learning for
+large language models. arXiv preprint arXiv:2508.05613, 2025.
+Neil Houlsby, Ferenc Huszár, Zoubin Ghahramani, and Máté Lengyel. Bayesian active learning for
+classification and preference learning. arXiv preprint arXiv:1112.5745, 2011.
+Jinwu Hu, Zhitian Zhang, Guohao Chen, Xutao Wen, Chao Shuai, Wei Luo, Bin Xiao, Yuanqing Li,
+andMingkuiTan. Test-timelearningforlargelanguagemodels. arXivpreprintarXiv:2505.20633,
+2025.
+Yuheng Huang, Jiayang Song, Zhijie Wang, Shengming Zhao, Huaming Chen, Felix Juefei-Xu, and
+Lei Ma. Look before you leap: An exploratory study of uncertainty analysis for large language
+models. IEEE Transactions on Software Engineering, 51(2):413–429, 2025.
+Eyke Hüllermeier and Willem Waegeman. Aleatoric and epistemic uncertainty in machine learning:
+An introduction to concepts and methods. Machine learning, 110(3):457–506, 2021.
+Hadi Khalaf, Claudio Mayrink Verdun, Alex Oesterling, Himabindu Lakkaraju, and Flavio
+du Pin Calmon. Inference-time reward hacking in large language models. arXiv preprint
+arXiv:2506.19248, 2025.
+Guillaume Levy, Cédric Colas, Pierre-Yves Oudeyer, Thomas Carta, and Clément Romac.
+Worldllm: Improving llms’ world modeling using curiosity-driven theory-making. arXiv preprint
+arXiv:2506.06725, 2025.
+Ang Li, Zhihang Yuan, Yang Zhang, Shouda Liu, and Yisen Wang. Know when to ex-
+plore: Difficulty-aware certainty as a guide for llm reinforcement learning. arXiv preprint
+arXiv:2509.00125, 2025.
+Mengqi Liao, Xiangyu Xi, Chen Ruinian, Jia Leng, Yangen Hu, Ke Zeng, Shuai Liu, and Huaiyu
+Wan. Enhancing efficiency and exploration in reinforcement learning for llms. In Proceedings of
+the 2025 Conference on Empirical Methods in Natural Language Processing, pages 1451–1463,
+2025.
+Xiaoou Liu, Tiejin Chen, Longchao Da, Chacha Chen, Zhen Lin, and Hua Wei. Uncertainty quantifi-
+cation and confidence calibration in large language models: A survey. In Proceedings of the 31st
+ACM SIGKDD Conference on Knowledge Discovery and Data Mining V. 2, pages 6107–6117,
+2025.
+Mohammad Mahdi Moradi, Hossam Amer, Sudhir Mudur, Weiwei Zhang, Yang Liu, and Walid
+Ahmed. Continuous self-improvement of large language models by test-time training with
+verifier-driven sample selection. arXiv preprint arXiv:2505.19475, 2025.
+11Alexander Novikov, Ngân Vũ, Marvin Eisenberger, Emilien Dupont, Po-Sen Huang, Adam Zsolt
+Wagner, Sergey Shirobokov, Borislav Kozlovskii, Francisco JR Ruiz, Abbas Mehrabian,
+et al. Alphaevolve: A coding agent for scientific and algorithmic discovery. arXiv preprint
+arXiv:2506.13131, 2025.
+Biqing Qi, Kaiyan Zhang, Haoxiang Li, Kai Tian, Sihang Zeng, Zhang-Ren Chen, and Bowen Zhou.
+Large language models are zero shot hypothesis proposers. arXiv preprint arXiv:2311.05965,
+2023.
+Rafael Rafailov, Yaswanth Chittepu, Ryan Park, Harshit Sushil Sikchi, Joey Hejna, Brad Knox,
+Chelsea Finn, and Scott Niekum. Scaling laws for reward model overoptimization in direct align-
+ment algorithms. Advances in Neural Information Processing Systems, 37:126207–126242, 2024.
+Bojana Ranković, Ryan-Rhys Griffiths, and Philippe Schwaller. Large language models as
+uncertainty-calibrated optimizers for experimental discovery. arXiv preprint arXiv:2504.06265,
+2025.
+Christopher D Rosin. Multi-armed bandits with episode context. Annals of Mathematics and Artifi-
+cial Intelligence, 61(3):203–230, 2011.
+Ola Shorinwa, Zhiting Mei, Justin Lidard, Allen Z Ren, and Anirudha Majumdar. A survey on
+uncertainty quantification of large language models: Taxonomy, open research challenges, and
+future directions. ACM Computing Surveys, 58(3):1–38, 2025.
+Linwei Tao, Yi-Fan Yeh, Minjing Dong, Tao Huang, Philip Torr, and Chang Xu. Revisiting un-
+certainty estimation and calibration of large language models. arXiv preprint arXiv:2505.23854,
+2025.
+Morgan Thomas, Albert Bou, and Gianni De Fabritiis. Test-time training scaling laws for chemical
+explorationindrugdesign. JournalofChemicalInformationandModeling, 65(24):13178–13186,
+2025a.
+Morgan Thomas, Albert Bou, and Gianni De Fabritiis. Test-time training scaling laws for chemical
+explorationindrugdesign. JournalofChemicalInformationandModeling, 65(24):13178–13186,
+2025b.
+Christos Thrampoulidis, Sadegh Mahdavi, and Wenlong Deng. Advantage shaping as surrogate
+reward maximization: Unifying pass@ k policy gradients. arXiv preprint arXiv:2510.23049,
+2025.
+Roman Vashurin, Ekaterina Fadeeva, Artem Vazhentsev, Lyudmila Rvanova, Daniil Vasilev, Akim
+Tsvigun, Sergey Petrakov, Rui Xing, Abdelrahman Sadallah, Kirill Grishchenkov, et al. Bench-
+marking uncertainty quantification methods for large language models with lm-polygraph. Trans-
+actions of the Association for Computational Linguistics, 13:220–248, 2025.
+Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xionghui Chen,
+Jianxin Yang, Zhenru Zhang, et al. Beyond the 80/20 rule: High-entropy minority tokens drive
+effective reinforcement learning for llm reasoning. arXiv preprint arXiv:2506.01939, 2025.
+Xi Wang, Laurence Aitchison, and Maja Rudolph. Lora ensembles for large language model fine-
+tuning. arXiv preprint arXiv:2310.00035, 2023.
+Zhiqiu Xia, Jinxuan Xu, Yuqian Zhang, and Hang Liu. A survey of uncertainty estimation methods
+on large language models. In Findings of the Association for Computational Linguistics: ACL
+2025, pages 21381–21396, 2025.
+Yasin Abbasi Yadkori, Ilja Kuzborskij, András György, and Csaba Szepesvári. To believe or not to
+believe your llm. arXiv preprint arXiv:2406.02543, 2024.
+An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, Bowen Yu,
+Chang Gao, Chengen Huang, Chenxu Lv, et al. Qwen3 technical report. arXiv preprint
+arXiv:2505.09388, 2025.
+12Zhengmao Ye, Dengchun Li, Zetao Hu, Tingfeng Lan, Jian Sha, Sicong Zhang, Lei Duan, Jie Zuo,
+Hui Lu, Yuanchun Zhou, and Mingjie Tang. mLoRA: Fine-tuning LoRA adapters via highly-
+efficient pipeline parallelism in multiple GPUs. arXiv:2312.02515, 2024.
+Mingqi Yuan, Man-On Pun, and Dong Wang. Rényi state entr opy maximization for exploration
+acceleration in reinforcement learning. IEEE transactions on artificial intelligence, 4(5):1154–
+1164, 2022.
+Mert Yuksekgonul, Daniel Koceja, Xinhao Li, Federico Bianchi, Jed McCaleb, Xiaolong Wang, Jan
+Kautz, Yejin Choi, James Zou, Carlos Guestrin, et al. Learning to discover at test time. arXiv
+preprint arXiv:2601.16175, 2026a.
+Mert Yuksekgonul, Daniel Koceja, Xinhao Li, Federico Bianchi, Jed McCaleb, Xiaolong Wang, Jan
+Kautz, Yejin Choi, James Zou, Carlos Guestrin, et al. Learning to discover at test time. arXiv
+preprint arXiv:2601.16175, 2026b.
+Yuanzhao Zhai, Han Zhang, Yu Lei, Yue Yu, Kele Xu, Dawei Feng, Bo Ding, and Huaimin Wang.
+Uncertainty-penalized reinforcement learning from human feedback with diverse reward lora en-
+sembles. arXiv preprint arXiv:2401.00243, 2023.
+Yuanzhao Zhai, Yu Lei, Han Zhang, Yue Yu, Kele Xu, Dawei Feng, Bo Ding, and Huaimin Wang.
+Uncertainty-penalized reinforcement learning from human feedback with diversified reward lora
+ensembles. Information Processing & Management, 63(3):104548, 2026.
+13Appendix
+A Baseline objective: TTT-DISCOVER in full notation
+We collect here, for reference, the TTT-DISCOVER training signal that UG-TTT builds on. TTT-
+DISCOVER optimises a state-conditional entropic objective with an adaptive temperature β(s),
+Jβ(θ) = Es∼reuse(H)
+"
+1
+β(s)
+log Ea∼πθ(·|q,s)
+
+eβ(s)Rexec(s,a)
+
+#
+, (9)
+which interpolates between expected reward (β → 0) and the per-state maximum (β → ∞). The
+outer expectation is over parent states s drawn from the reuse distribution over the PUCT history H,
+and the inner expectation is over rollouts a sampled from the policy at prompt q and parent s. For
+every group, β(s) is selected as the unique β > 0 such that the softmax qβ(a) ∝ exp(βRexec(a))
+has a fixed ln2 KL budget against uniform,
+KL qβ Unif
+
+= ln2, (10)
+which exists and is unique whenever the within-group rewards are not all identical, since
+KL(qβ∥Unif) is continuous and strictly increasing in β on (0,∞) with limits 0 and lnG. We
+solve Eq. (10) by 60 iterations of bisection on [0,106
+]; on the degenerate equal-reward set, the bi-
+section saturates at the upper bracket and we fall back to Ai ≡ 0. Given β(s), rollout i∈{1,...,G}
+receives the leave-one-out entropic weight and advantage
+wi =
+exp β R
+(i)
+exec
+
+1
+G−1
+P
+j̸=i exp β R
+(j)
+exec
+, Ai = wi − 1, (11)
+which centres the advantage within each group without a learned value function. The rollouts are
+trained with the clipped importance-sampling loss
+LPG(θ) = −
+|o|
+X
+t=1
+min
+h
+ρt(θ)Ai, clip ρt(θ), 1−ϵ, 1+ϵ
+
+Ai
+i
+, (12)
+with likelihood ratio ρt(θ) = πθ(ot | q,o<t)/πθold
+(ot | q,o<t), reducing to plain importance
+sampling when ϵ is disabled. A KL-to-base penalty λKL KL(πθ∥πbase) is added when λKL >0.
+The per-adapter form used inside UG-TTT replaces Ai with Ashaped
+i (Eq. (6)):
+L
+(k)
+PG(θk) = −
+|o|
+X
+t=1
+min
+h
+ρ
+(k)
+t (θk)Ashaped
+i , clip ρ
+(k)
+t , 1−ϵ, 1+ϵ
+
+Ashaped
+i
+i
+, (13)
+with per-adapter ratio ρ
+(k)
+t (θk) = πθk
+(ot | q,o<t)/πθk,old
+(ot | q,o<t).
+Token-wise KL adjustment. When λKL > 0, the scalar Ashaped
+i is broadcast to a per-token ten-
+sor and the token-wise correction of Yuksekgonul et al. [2026b] is applied before the clipped-IS
+reduction. Concretely, for each position t the advantage entry is adjusted by −λKL logπθ(ot |
+q,o<t)−logπbase(ot | q,o<t)
+
+, which under sampling from πθ gives the standard k1 single-sample
+stochastic estimator of ∇θ λKLKL(πθ∥πbase) folded into the per-token PG target—no second auto-
+grad pass through the policy is needed. The transcription is identical to the reference implementation
+and is stated here only to fix notation used in the proof of Proposition 1.
+14B Full training algorithm
+Algorithm 1 UG-TTT training step (one group of G rollouts).
+Require: Ensemble {θk}K
+k=1; parent state s from PUCT buffer; group size G.
+Require: Coefficients α, βref, γmax, λKL, λNNM.
+Ensure: Updated ensemble {θk}K
+k=1.
+1: // Stage 1: Rollout generation (round-robin over adapters)
+2: Build prompt q from (d,s).
+3: for i = 1,...,G do
+4: ki ← (i − 1) mod K
+
++ 1 ▷ 1-indexed; K | G so the assignment pattern
+(1,2,...,K,1,2,...) repeats identically every group
+5: oi ∼ πθki
+(· | q,s)
+6: R
+(i)
+exec ← PROGRAMCHECKER(s,oi)
+7: end for
+8: // Stage 2: Mutual-information scoring (single GPU pass)
+9: {pθk
+}K
+k=1 ← CHUNKEDSCOREALLADAPTERS(o1:G)
+10: for i = 1,...,G do
+11: for t = 1,...,|oi| do
+12: p̄t ← 1
+K
+PK
+k=1 pθk
+(· | q,o
+(i)
+<t)
+13: MI
+(i)
+t ← H(p̄t) − 1
+K
+PK
+k=1 H pθk
+(· | q,o
+(i)
+<t)
+
+▷ Eq. (2)
+14: end for
+15: Ui ← top-7%-meant MI
+(i)
+t ▷ Eq. (3)
+16: end for
+17: // Stage 3: Adaptive temperature and LOO advantage (on Rexec only)
+18: β(s) ← BISECTIONSOLVE
+
+β > 0 : KL(qβ ∥Unif) = ln2 on {R
+(i)
+exec}
+▷ Eq. (10)
+19: for i = 1,...,G do
+20: wi ← exp(βR
+(i)
+exec)
+ 1
+G−1
+P
+j̸=i exp(βR
+(j)
+exec)
+21: Ai ← wi − 1 ▷ Eq. (11)
+22: end for
+23: // Stage 4: MI-shaped advantage
+24: U ← 1
+G
+P
+i Ui; σU ← stdunbiased(U) (cf. Eq. (4)); |A| ← 1
+G
+P
+j |Aj|
+25: γeff(s) ← α · min β(s)/βref, γmax
+
+▷ Eq. (5)
+26: for i = 1,...,G do
+27: Ũi ← clip (Ui − U)/σU, −3, 3
+
+▷ Eq. (4)
+28: Ashaped
+i ← Ai + γeff(s) · |A| · Ũi ▷ Eq. (6)
+29: end for
+30: if λKL > 0 then
+31: Broadcast Ashaped
+i per-token; add token-wise KL correction against πbase (Appendix A)
+32: end if
+33: // Stage 5: Per-adapter backward, NNM backward, then optimiser step
+34: for k = 1,...,K do
+35: Compute 1
+K L
+(k)
+PG(θk) over all G rollouts and call backward(); gradients accumulate into
+θk.grad ▷ Eq. (13)
+36: Release adapter k’s computation graph before advancing
+37: end for
+// KL-to-base contribution is already inside L
+(k)
+PG via the Stage 4 token-wise correction
+(App. A)
+38: Compute λNNM LNNM and call backward(); gradients accumulate into all {θk} ▷ Eq. (7)
+39: for k = 1,...,K do
+40: AdamW step on θk using its accumulated gradient; zero θk.grad
+41: end for
+15C Proofs
+C.1 Proof of Proposition 1 (bounded scale perturbation of the shaped advantage)
+Fix a parent state s and its group of G rollouts. If σU =0, Eq. (4) sets Ũi ≡ 0 by convention, and
+Ashaped
+i = Ai identically. Otherwise
+G X
+i=1
+Ũi =
+G X
+i=1
+clip
+
+Ui − U
+σU
+, −3, 3
+
+.
+Let zi := (Ui − U)/σU and C = {i : |zi| > 3}. By centring,
+PG
+i=1 zi = 0, so
+G X
+i=1
+Ũi =
+X
+i/ ∈C
+zi +
+X
+i∈C
+sign(zi) · 3 = −
+X
+i∈C
+zi +
+X
+i∈C
+sign(zi) · 3 =
+X
+i∈C
+sign(zi) · 3 − zi
+
+.
+For i ∈ C we have |zi| > 3, and a direct case split on sign(zi) gives |sign(zi)·3−zi| = |zi|−3, so
+by the triangle inequality
+G X
+i=1
+Ũi ≤
+X
+i∈C
+|zi| − 3
+
+.
+By Cauchy–Schwarz,
+P
+i∈C |zi| ≤
+p
+|C|
+P
+i z2
+i =
+p
+|C|(G − 1) (using σU unbiased, so
+P
+i z2
+i =
+G − 1); a looser but more interpretable bound uses |zi| ≤
+√
+G − 1 to give
+P
+i∈C |zi| − 3
+
+≤
+|C|(
+√
+G − 1 − 3). When C = ∅ both sides are exactly 0; note in particular that |zi| ≤
+√
+G − 1
+forces C = ∅ whenever G ≤ 10, so the looser bound is non-vacuous only in the regime G ≥ 11
+(where
+√
+G − 1 − 3 > 0). Substituting into Eq. (6) and using that neither γeff(s) nor |A| depends
+on i,
+G X
+i=1
+Ashaped
+i −
+G X
+i=1
+Ai = γeff(s)|A|
+G X
+i=1
+Ũi ≤ γeff(s)|A||C|
+√
+G − 1 − 3
+
+,
+which is the statement of the proposition.
+We emphasise that this is strictly weaker than unbiasedness of the policy-gradient estimator P
+i Ai ∇logπ(oi) in the standard sense [Thrampoulidis et al., 2025]: because Ũi depends on roll-
+out i through Ui, the substitution Ai 7→Ashaped
+i does not preserve the expected gradient. The bonus
+is deliberately biased; the directional bias toward high-MI rollouts is the exploration mechanism.
+Proposition 1 isolates the bias to the gradient direction by bounding the residual perturbation to the
+aggregate within-group magnitude. □
+C.2 Proof of Proposition 2 (the global maximum is subspace-orthogonal)
+Fix a layer ℓ and write Ak := A
+(k)
+ℓ ∈ Rr×din
+. The problem is
+max
+A1,...,AK
+W ∗
+, W =
+
+A1;...;AK
+
+∈ RKr×din
+, ∥Ak∥F = c ∀k.
+Let σ1,...,σm denote the nonzero singular values of W, where m = rank(W) ≤ min(Kr,din) =
+Kr (using the hypothesis Kr ≤ din). By Cauchy–Schwarz applied to (σ1,...,σm) and the all-ones
+vector,
+∥W∥2
+∗ =
+ m X
+i=1
+σi
+2
+≤ m
+m X
+i=1
+σ2
+i ≤ Kr · ∥W∥2
+F = Kr
+K X
+k=1
+c2
+= K2
+rc2
+,
+with equality in both inequalities iff m = Kr (i.e. W has full row rank, which requires and is
+feasible exactly when Kr ≤ din, the standing hypothesis) and all Kr singular values are equal. Let
+s denote this common singular value; then ∥W∥2
+F = Krs2
+= Kc2
+gives s = c/
+√
+r. Under the
+full-row-rank hypothesis just established, equal singular values are equivalent to WW⊤
+= s2
+IKr,
+i.e. the rows of W are mutually orthogonal with common norm s. Restricted to a single block Ak,
+this forces Ak to have r equal singular values all equal to s = c/
+√
+r. Across blocks, mutual row
+orthogonality of W forces the row spaces of A1,...,AK to be mutually orthogonal subspaces of
+Rdin
+; this is feasible iff Kr ≤ din, which holds by hypothesis. The global maximum of ∥W∥∗ on
+the constraint set therefore satisfies both conditions, as claimed. □
+16C.3 Proof of Proposition 3 (TTT-DISCOVER as a special case)
+Under either branch the ensemble’s mixture p̄t in Eq. (2) coincides with each member’s distribution:
+in (a) trivially because K = 1, and in (b) because identical weights yield identical pθk
+. Each
+term of the decomposition H(p̄t) − 1
+K
+P
+k H(pθk
+) then equals the same quantity, so MIt ≡ 0.
+Consequently Ui ≡ 0, U = 0, σU = 0, and by the convention stated below Eq. (4) we set Ũi ≡ 0.
+The shaped advantage reduces to Ashaped
+i = Ai and Eq. (13) reduces to Eq. (12). The hypothesis
+λNNM = 0 removes LNNM from Eq. (8) outright (this assumption is required even in branch (a),
+since for K = 1 the regulariser −∥A
+(1)
+ℓ ∥∗ is a non-trivial function of θ1 that would otherwise perturb
+the policy update). What remains of Eq. (8) is LPG(θ1) + λKLKL(πθ∥πbase), which is the TTT-
+DISCOVER objective of Yuksekgonul et al. [2026b]. In branch (b), identical-init plus shared-data
+training (Sec. 2.5) keeps the K adapters tied at every step, so the per-adapter update is byte-identical
+to baseline’s single-adapter update. □
+D Implementation notes
+Chunked MI and base-logprob scoring. Two distinct logit tensors arise during scoring. (i) The
+ensemble MI path materialises an (K, chunk, V ) fp32 logit tensor inside the chunked LM head; for
+Qwen3-8B with K =5, V =152,064, and chunk=256 this peaks at ≈0.78GB per chunk. The MI
+decomposition of Eq. (2) is summed into a running per-rollout buffer that reuses the same chunk’s
+logsoftmax (already computed for target-token gather), so the MI contribution costs <0.1% of the
+LM-head matmul. (ii) The base-model logprob path needed for the per-token KL-to-base correction
+(App. A) materialises a (1,T,V ) fp32 logit tensor; for T =26k this would peak at ≈16GB without
+chunking, and we reduce it to ≈ 8.1GB by streaming logsoftmax over the same chunk = 256
+granularity and releasing each chunk’s allocation before the next is loaded.
+Top-7% threshold. Wang et al. [2025] shows that the RL signal in LLMs should concentrate on
+the high-entropy minority of tokens, the pivotal decision points, rather than be diluted across boiler-
+plate. The top-7% choice is motivated in §2.2; it adapts to sequence length so an n-token response
+contributes ⌈0.07n⌉ positions, which remains well-calibrated across the 7k–15k-token range typical
+of reasoning outputs.
+Sequential per-adapter backward. A single joint K-adapter forward–backward retains K par-
+allel computation graphs and scales as O(K·T ·L·D) activation memory, exceeding 80GB on our
+setup. We therefore iterate over adapters in Stage 5 of Algorithm 1 (the mLoRA scheme cited in
+§2.5): each adapter’s forward and backward are computed in turn, the computation graph is freed
+before the next adapter’s forward, and gradients are accumulated into a shared buffer for the final
+AdamW step.
+Restricting regularisation to A(k)
+. In pilot runs, regularising both A(k)
+and B(k)
+produced os-
+cillatory optimisation: a penalty applied to B(k)
+was absorbed by a compensating rescaling of A(k)
+,
+and vice versa, giving no net increase in subspace diversity while destabilising the RL loss. This
+matches the empirical observation of Zhai et al. [2023]. Leaving B(k)
+free removes the degeneracy.
+E Hyperparameters
+Tables 3 and 4 list every hyperparameter used in all reported runs. Values are identical across
+problems unless noted; per-problem deviations are listed in the notes column.
+17Table 3: Shared hyperparameters (identical for TTT-DISCOVER and UG-TTT on all four prob-
+lems).
+Hyperparameter Value Notes
+Model
+Base model Qwen3-8B fp16 precision
+LoRA target modules q, k, v, o projections all attention projections
+LoRA rank r 16
+LoRA alpha 32 effective scale = α/r = 2
+LoRA dropout 0.05
+Optimiser
+Optimiser AdamW
+Learning rate 4 × 10−5
+RL training
+Training epochs 6
+Group size G 8 rollouts per PUCT node
+Groups per batch 8 gradient accumulation
+Rollout temperature 1.0
+Advantage estimator entropic adaptive-β Eq. (9)
+βref 2.0 bisection target for KL= ln2
+IS clip ϵ 0.2
+KL penalty λKL 0.01
+Remove constant-reward groups yes
+Sampling and context
+Sampler PUCT backprop
+Context window 32768 tokens Qwen3-8B native
+Phase-1 (thinking) token cap 26000 hard cap on thinking tokens
+Phase-2 wrap budget 6000 tokens code phase; streaming runs only
+Table 4: UG-TTT-specific hyperparameters. The baseline sets K=1, α=0, λNNM=0, and dis-
+ables streaming MI.
+Hyperparameter Value Notes
+Ensemble
+Number of adapters K 5 round-robin rollout assignment
+MI exploration bonus (Sec. 2.3)
+MI metric true MI, top-7% tokens Eq. (2), Eq. (3)
+MI coefficient α 0.1 base exploration strength
+γmax ratio 10.0 clips γeff/α
+MI clip range [−3,3] on standardised Ũi
+Nuclear-norm regularisation (Sec. 2.4)
+NNM coefficient λNNM 0.075 applied to A(k)
+matrices only
+Frobenius-normalised variant no raw nuclear norm used
+Streaming MI early-stop (Appendix F)
+Enabled AC1, CP26 disabled on AC2 and Erdős
+Window size W 4096 tokens
+Check interval C 2048 tokens
+Min generation before check 4096 tokens
+MI threshold percentile 25th of historical window MI
+Warmup epochs 3 no streaming before epoch 3
+18F Streaming MI early-stop and length-reward diagnostic
+Mechanism as logged. The streaming early-stop is implemented as a hard cap on the thinking
+phase: when a rollout reaches 4096 thinking tokens (occasionally 6144 on Erdős where the cap
+was widened), the windowed ensemble MI is compared to the running 25th
+percentile of historical
+MI; if the rollout is below threshold, the thinking phase is closed and the rollout is forced into a
+bounded code phase. The MI check is evaluated once, at the cap: rollouts below the historical 25th
+percentile are truncated to a bounded code phase, while rollouts above threshold continue past the
+cap to natural termination. The recorded streaming mi stop step therefore coincides with the
+cap (it is the step at which the gate is queried), but the gate itself is the MI threshold, not the cap; the
+50.0%/55.6% firing rates on AC1 and CP26 are the rates at which the MI check chose to truncate,
+not a fixed length cut. Non-streamed rollouts within the same run either emitted </think> before
+the cap or were above threshold at the cap and continued to natural termination.
+Per-problem firing and savings.
+Problem Firing rate Mean tokens saved per rollout Mean tokens saved per firing Streaming setting in Table 1
+AC1 50.0% 569 1,138 enabled
+CP26 55.6% 757 1,363 enabled
+AC2 disabled — — disabled
+Erdős disabled — — disabled
+Paired AC2/Erdős comparison (epochs 3–5). We forked AC2 from a shared epoch-2 checkpoint
+and ran the remaining three epochs with and without streaming; on Erdős we ran the two configura-
+tions as separate full runs and aligned epochs 3–5 for the comparison.
+Rmax (stream) Rmax (no stream) Mean rollout length (stream) Mean rollout length (no stream)
+AC2 0.8415 0.8563 5,312 8,711
+Erdős 2.6150 2.6167 5,255 8,720
+Length–reward diagnostic. We test whether the within-run rank correlation between rollout
+length and execution reward separates the four problems. Restricting to correct rollouts and pars-
+ing the </think> marker to split thinking from code tokens (streamed rollouts use the logged
+phase1 tokens / phase2 tokens fields directly), we report Spearman ρ for epochs 0–2 and for all
+epochs:
+Epochs 0–2 All epochs
+Problem ρthink ρcode ρtotal ρthink ρcode ρtotal
+AC1 −0.30 +0.52 −0.19 −0.51 +0.48 −0.43
+CP26 +0.16 −0.10 +0.15 −0.34 −0.14 −0.41
+AC2 −0.28 +0.39 −0.21 −0.18 +0.36 −0.11
+Erdős −0.18 +0.12 −0.16 −0.11 +0.07 −0.10
+The thinking-phase correlation is not significantly positive on any problem and is significantly nega-
+tive on AC1; the code-phase correlation is positive on AC1 and AC2, weakly positive on Erdős, and
+null on CP26. No single test on length predicts whether streaming will help or hurt Rmax on a given
+problem; the per-problem calibration in this paper is therefore empirical (paired pilot on AC2/Erdős)
+rather than diagnosable in advance from a length–reward test.
+What streaming-truncated rollouts look like in practice. On AC1 and CP26 the rollouts that
+achieve the Table 1 Rmax are themselves streaming-truncated: AC1 Rmax=0.6406 from a rollout
+of length 5,116 (streaming mi stopped=1); CP26 Rmax=2.6359 from a rollout of length 5,318
+(alsotruncated). OnAC2andErdőstheTable1entriesareproducedfromno-streamingruns(lengths
+5,642 and 7,316 respectively). We report this asymmetry directly because it is recoverable from the
+trajectory logs.
+19Table 5: Method-exclusive discoveries (idea emergence). For each problem, the algorithmic fam-
+ily used by the highest-reward rollout, its adoption among the 30 best rollouts, and its adoption
+among all correct rollouts during training. Top-30: number of the 30 highest-reward rollouts that
+contain the motif. Adoption: motif uses divided by total correct rollouts. The baseline never crosses
+1/30 on any problem.
+Top-30 (count) Adoption (%)
+Problem Winning template Baseline UG-TTT Baseline UG-TTT
+AC1 target sum =
+√
+2n (Cauchy–Schwarz) 1/30 18/30 3.0 28.0
+AC2 scipy diff evo ∪ gradient-based 0/30 13/30 0.9 21.6
+CP26 non-uniform rows, e.g. [5,5,5,5,6] 1/30 13/30 17.6 22.4
+Erdős Fourier init h(x) = a + bsin(kx) 0/30 6/30 0 6.9
+G Method-exclusive discoveries
+Preserving entropy is only useful if the surviving families produce better programs. The surviv-
+ing families translate into winning motifs the baseline reaches at most 1/30 times on any problem
+(Table 5); two are mathematically substantive—the Cauchy–Schwarz target
+√
+2n on AC1 (a closed-
+form symmetry bounding C1 from below) and the Fourier ansatz h(x)=a+bsin(kx) on Erdős—and
+both lie inside families the baseline extinguishes by the final epoch (Fig. 3). Preserved ensemble di-
+versity is the precondition for entering them at all.
+H Broader impact
+UG-TTT reduces the compute required for LLM-driven scientific discovery, reaching competitive
+discovery ceilings in 6 training epochs where TTT-DISCOVER requires 50, on an identical Qwen3-
+8B base model on a single GPU. The mechanism is dual use under any task admitting a cheap
+programmatic verifier, since rewarding verifier-uncertain regions under a loosely specified verifier
+(for instance, automated exploit search) would actively seek loopholes. Two mitigations follow
+directly from the method. First, the verifier should be audited prior to scaling compute. Second,
+ensemble mutual information should be monitored as a leading indicator of stalled exploration.
+I Qualitative case study on AC2
+The +0.0031 flip on AC2 (Tab. 1) and the 0/30 versus 13/30 adoption gap on the
+scipy.optimize.differential evolution family (Tab. 5) admit a concrete reading at the pro-
+gram level. We compare the highest-reward correct rollout produced by TTT-DISCOVER and by
+UG-TTT over identical training budgets on the autocorrelation lower-bound problem. Both panels
+report the verbatim algorithmic core of the model-emitted Python program, abridged where boiler-
+plate (clipping, time guards, fallback rebuilds of the initial guess set) is repeated across rollouts.
+Problem statement (AC2)
+Construct a sequence h∈R1000
+≥0 of step-function heights whose autocorrelation lower bound
+C2 (returned by the closed-form checker evaluate sequence) is as large as possible, subject
+to
+P
+i hi ≥ 0.01 and hi ∈ [0,1000]. Reward equals C2 truncated at correctness; a ground-
+truth Cauchy–Schwarz construction height sequence 1 is exposed as a global hint. Higher
+is better.
+TTT-DISCOVER (best of 384 rollouts, Rmax = 0.8532, hand-rolled genetic algorithm)
+POPULATION_SIZE = 200; MAX_GENERATIONS = 500
+MUTATION_RATE_INITIAL , MUTATION_RATE_FINAL = 0.25, 0.05
+# half: perturb height_sequence_1; half: random uniform over [0, 200]
+20population = generate_initial_population()
+for gen in range(MAX_GENERATIONS):
+fitness = [evaluate_sequence(s) for s in population]
+if max(fitness) > best_value:
+best_value , best_seq , stamina = max(fitness), argmax_seq , 0
+else:
+stamina += 1
+if stamina > 80: # restart on stagnation
+population = generate_initial_population(); stamina = 0
+parents = [tournament_selection(population , fitness , size=5)
+for _ in range(POPULATION_SIZE)]
+new_pop = [parents[0]] # elitism
+while len(new_pop) < POPULATION_SIZE:
+p1, p2 = random.sample(parents , 2)
+w = random.uniform(0.3, 0.7) # blend crossover
+child = [p1[i]*w + p2[i]*(1-w) for i in range(SEQ_LENGTH)]
+rate = MUTATION_RATE_INITIAL - (gen/MAX_GENERATIONS)*(
+MUTATION_RATE_INITIAL - MUTATION_RATE_FINAL)
+for i in range(SEQ_LENGTH):
+if random.random() < rate:
+child[i] = clip(child[i] + random.gauss(0, 1.5))
+new_pop.append(child)
+best_seq = local_search(best_seq) # +/- delta sweep on elite
+population = new_pop
+Algorithmic family. Pure-Python evolutionary loop. Tournament selection of size 5, blend
+crossover with weight in [0.3,0.7], Gaussian mutation with rate decaying linearly from 0.25
+to 0.05, restart-on-stagnation after 80 generations without improvement, and a coordinate-wise
+delta sweep as elite refinement. No external optimiser is invoked. Across all 384 baseline
+rollouts, 0 entered the top-30 via scipy.optimize.differential evolution (Tab. 5); the
+family is reachable in principle but not in practice under the unregularised ensemble.
+UG-TTT (best of 384 rollouts, Rmax = 0.8563, structured-seed differential evolution)
+from scipy.optimize import differential_evolution
+length = 1000
+bounds = [(0.0, 1000.0)] * length
+initial_guesses = []
+if ’height_sequence_1’ in globals(): # exploit the hint
+initial_guesses.append(np.clip(np.array(height_sequence_1), 0, 1000)
+)
+for _ in range(50): # uniform low-magnitude
+initial_guesses.append(np.clip(np.random.rand(length)*0.1, 0, 1000))
+for _ in range(50): # gaussian , small mean
+initial_guesses.append(np.clip(np.random.normal(0.03, 0.1, length),
+0, 1000))
+for _ in range(50): # sorted gaussian (monotone
+prior)
+s = np.sort(np.clip(np.random.normal(0.05, 0.1, length), 0, 1000))
+initial_guesses.append(s)
+popsize = 100
+initial_guesses = initial_guesses[:popsize]
+result = differential_evolution(
+lambda x: -evaluate_sequence(x.tolist()),
+bounds ,
+popsize = popsize ,
+21maxiter = 500,
+mutation = (0.5, 1.0), # dithered scale factor
+recombination = 0.8,
+tol = 1e-5,
+strategy = ’best1bin’,
+init = np.array(initial_guesses),
+)
+return np.clip(result.x, 0, 1000).tolist()
+Algorithmic family. A single call to scipy.optimize.differential evolution replaces
+the hand-rolled loop. The contribution sits in the initialisation, namely a structured pool of
+151 seeds spanning the closed-form Cauchy–Schwarz hint, three statistically distinct random
+priors (clamped uniform, low-mean Gaussian, monotone sorted Gaussian), and a population
+size matched to the seed pool. The search uses dithered mutation in [0.5,1.0] and the best1bin
+strategy. This program belongs to the scipy diff evo family that the unregularised ensemble
+emits in 0/30 top rollouts and the UG-TTT ensemble emits in 13/30 (Tab. 5).
+Why UG-TTT reaches the better program
+The two programs differ less in their search effort than in the algorithmic family they in-
+voke. The TTT-DISCOVER rollout reimplements the components of differential evolution
+(population, mutation, recombination, elitism) inside a 130-line Python loop, while the UG-
+TTT rollout delegates the loop to the scipy solver and concentrates novelty in a struc-
+tured seed pool. Reaching that delegation requires the policy to explore a code region
+the unregularised ensemble has effectively extinguished; the family-entropy curve on AC2
+(Fig. 3b) shows TTT-DISCOVER contracting onto hand-rolled evolutionary loops by epoch
+3, whereas UG-TTT retains weight on scipy solvers and gradient-based families throughout
+training. The mutual-information bonus of Sec. 2.3 pays out precisely on the tokens where
+the policy chooses from scipy.optimize import differential evolution over def
+construct function with a manual loop, since adapter disagreement is highest on those
+import-and-API-name positions and lowest inside the body of either choice once committed.
+The nuclear-norm regulariser of Sec. 2.4 is what keeps that disagreement available on AC2,
+and removing it collapses adoption to the TTT-DISCOVER pattern (Tab. 2).
+22

@@ -1,0 +1,13 @@
+/target/
+/.build/
+/.harp/
+/.sources/
+/.worktrees/
+/atlas/node_modules/
+/atlas/dist/client/
+/atlas/.vite/
+**/__pycache__/
+**/*.pyc
+**/*.dSYM/
+*.part
+.DS_Store

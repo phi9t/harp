@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "lessons": [
+    {
+      "order": 1,
+      "lesson_id": "self-refine-vs-persistence",
+      "title": "Self-Refine versus persistent adaptation",
+      "canonical_markdown_path": "content/lessons/01-self-refine-vs-persistence.md",
+      "case_ids": ["self-refine", "ace"],
+      "system_ids": ["ace"],
+      "prompt_ids": ["editable-state", "persistence-scope", "claim-ceiling"],
+      "concept_ids": ["task-improvement", "persistent-adaptation"],
+      "transfer_case_ids": ["self-refine", "ace"]
+    },
+    {
+      "order": 2,
+      "lesson_id": "ace-vs-mce",
+      "title": "ACE versus MCE",
+      "canonical_markdown_path": "content/lessons/02-ace-vs-mce.md",
+      "case_ids": ["ace", "mce"],
+      "system_ids": ["ace", "mce"],
+      "prompt_ids": ["editable-state", "update-procedure", "claim-ceiling"],
+      "concept_ids": ["context-optimization", "harness-improvement"],
+      "transfer_case_ids": ["ace", "mce"]
+    },
+    {
+      "order": 3,
+      "lesson_id": "adas-vs-aflow",
+      "title": "ADAS versus AFlow",
+      "canonical_markdown_path": "content/lessons/03-adas-vs-aflow.md",
+      "case_ids": ["adas", "aflow"],
+      "system_ids": ["adas", "aflow"],
+      "prompt_ids": ["search-state", "expansion-policy", "resource-accounting"],
+      "concept_ids": ["workflow-search", "root-tree-budget"],
+      "transfer_case_ids": ["adas", "aflow"]
+    },
+    {
+      "order": 4,
+      "lesson_id": "stop-vs-self-harness-ahe",
+      "title": "STOP versus Self-Harness and AHE",
+      "canonical_markdown_path": "content/lessons/04-stop-vs-self-harness-ahe.md",
+      "case_ids": ["stop", "self-harness", "ahe"],
+      "system_ids": ["stop", "self-harness", "ahe"],
+      "prompt_ids": ["improver-recursion", "acceptance-gate", "observability"],
+      "concept_ids": ["harness-code-search", "held-out-evaluation", "verification-and-recovery"],
+      "transfer_case_ids": ["stop", "self-harness", "ahe"]
+    },
+    {
+      "order": 5,
+      "lesson_id": "alphaevolve-vs-dgm",
+      "title": "AlphaEvolve versus DGM",
+      "canonical_markdown_path": "content/lessons/05-alphaevolve-vs-dgm.md",
+      "case_ids": ["alphaevolve", "dgm"],
+      "system_ids": ["alphaevolve", "dgm"],
+      "prompt_ids": ["editable-object", "archive-lineage", "next-cycle-gain"],
+      "concept_ids": ["population-search", "lineage-and-rollback", "successor-improvement"],
+      "transfer_case_ids": ["alphaevolve", "dgm"]
+    },
+    {
+      "order": 6,
+      "lesson_id": "sia-vs-continual-harness",
+      "title": "SIA versus Continual Harness",
+      "canonical_markdown_path": "content/lessons/06-sia-vs-continual-harness.md",
+      "case_ids": ["sia", "continual-harness"],
+      "system_ids": ["sia", "continual-harness"],
+      "prompt_ids": ["update-routing", "on-policy-state", "claim-ceiling"],
+      "concept_ids": ["model-harness-distribution-shift", "process-rewards", "dagger"],
+      "transfer_case_ids": ["sia", "continual-harness"]
+    }
+  ]
+}

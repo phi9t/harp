@@ -1,0 +1,456 @@
+18References
+[1] Yutaro Yamada et al. The AI Scientist-v2: Workshop-Level Automated Scientific Discov-
+ery via Agentic Tree Search. 2025. arXiv: 2504.08066 [cs.AI]. url: https://arxiv.
+org/abs/2504.08066.
+[2] Alexander Novikov et al. AlphaEvolve: A coding agent for scientific and algorithmic dis-
+covery. 2025. arXiv: 2506.13131 [cs.AI]. url: https://arxiv.org/abs/2506.13131.
+[3] Long Li et al. “Chain of ideas: Revolutionizing research via novel idea development with
+llm agents”. In: arXiv preprint arXiv:2410.13185 (2024).
+[4] Juraj Gottweis et al. Towards an AI co-scientist. 2025. arXiv: 2502.18864 [cs.AI]. url:
+https://arxiv.org/abs/2502.18864.
+[5] Dhruv Trehan. “The Consistency Confound: Why Stronger Alignment Can Break Black-
+Box Jailbreak Detection”. In: Open Conference of AI Agents for Science 2025. 2025. url:
+https://openreview.net/forum?id=B6ZrLXou3u.
+[6] Avi Arora, Jinu Jang, and Roshanak Zilouchian Moghaddam. SetupBench: Assessing
+Software Engineering Agents’ Ability to Bootstrap Development Environments. 2025.
+arXiv: 2507.09063 [cs.SE]. url: https://arxiv.org/abs/2507.09063.
+[7] Aleksandra Eliseeva et al. EnvBench: A Benchmark for Automated Environment Setup.
+2025. arXiv: 2503.14443 [cs.LG]. url: https://arxiv.org/abs/2503.14443.
+[8] Sébastien Bubeck et al. Early science acceleration experiments with GPT-5. 2025. arXiv:
+2511.16072 [cs.CL]. url: https://arxiv.org/abs/2511.16072.
+[9] METR. Details about METR’s evaluation of OpenAI GPT-5.1-Codex-Max. https://
+evaluations.metr.org//gpt-5-1-codex-max-report/. Nov. 2025.
+[10] Mark Bissell, Michael Byun, and Daniel Balsam. You and your research agent: Lessons
+from using agents for Interpretability Research. Oct. 2025. url: https://www.goodfire.
+ai/blog/you-and-your-research-agent.
+[11] Johannes Gasteiger et al. Automated Researchers Can Subtly Sandbag — alignment.anthropic.com.
+https://alignment.anthropic.com/2025/automated-researchers-sandbag/. 2025.
+[12] Jiabin Tang et al. AI-Researcher: Autonomous Scientific Innovation. 2025. arXiv: 2505.
+18705 [cs.AI]. url: https://arxiv.org/abs/2505.18705.
+[13] Kevin Weil. Tweet on Hiring Domain Experts for OpenAI for Science. 2025. url: https:
+//x.com/kevinweil/status/1962938974260904421?s=46.
+[14] Allen AI. AstaBench: Rigorous benchmarking of AI agents with a holistic scientific re-
+search suite — Ai2 — allenai.org. 2025. url: https://allenai.org/blog/astabench.
+[15] Tarun Gupta and Danish Pruthi. All That Glitters is Not Novel: Plagiarism in AI Gen-
+erated Research. 2025. arXiv: 2502.16487 [cs.CL]. url: https://arxiv.org/abs/
+2502.16487.
+19[16] Jiahao Qiu et al. “Physics Supernova: AI Agent Matches Elite Gold Medalists at IPhO
+2025”. In: arXiv preprint arXiv:2509.01659 (2025).
+[17] Kyle Swanson et al. “The Virtual Lab of AI agents designs new SARS-CoV-2 nanobod-
+ies”. In: Nature (2025), pp. 1–3.
+[18] Han Wang et al. Learning to Communicate Through Implicit Communication Channels.
+2025. arXiv: 2411.01553 [cs.MA]. url: https://arxiv.org/abs/2411.01553.
+[19] Darius Muglich et al. Expected Return Symmetries. 2025. arXiv: 2502.01711 [cs.MA].
+url: https://arxiv.org/abs/2502.01711.
+[20] Zhengyao Jiang et al. AIDE: AI-Driven Exploration in the Space of Code. 2025. arXiv:
+2502.13138 [cs.AI]. url: https://arxiv.org/abs/2502.13138.
+[21] Weipu Zhang et al. STORM: Efficient Stochastic Transformer based World Models for
+Reinforcement Learning. 2023. arXiv: 2310.09615 [cs.LG]. url: https://arxiv.org/
+abs/2310.09615.
+[22] Dixant Mittal and Wee Sun Lee. Differentiable Tree Search Network. 2024. arXiv: 2401.
+11660 [cs.LG]. url: https://arxiv.org/abs/2401.11660.
+[23] Chenglei Si, Tatsunori Hashimoto, and Diyi Yang. The Ideation-Execution Gap: Exe-
+cution Outcomes of LLM-Generated versus Human Research Ideas. 2025. arXiv: 2506.
+20803 [cs.CL]. url: https://arxiv.org/abs/2506.20803.
+[24] Chenglei Si, Diyi Yang, and Tatsunori Hashimoto. Can LLMs Generate Novel Research
+Ideas? A Large-Scale Human Study with 100+ NLP Researchers. 2024. arXiv: 2409.
+04109 [cs.CL]. url: https://arxiv.org/abs/2409.04109.
+[25] Pietro Mazzaglia et al. GenRL: Multimodal-foundation world models for generalization
+in embodied agents. 2024. arXiv: 2406.18043 [cs.AI]. url: https://arxiv.org/abs/
+2406.18043.
+[26] Danijar Hafner et al. Dream to Control: Learning Behaviors by Latent Imagination. 2020.
+arXiv: 1912.01603 [cs.LG]. url: https://arxiv.org/abs/1912.01603.
+[27] Haoyang Li et al. LLMs Caught in the Crossfire: Malware Requests and Jailbreak Chal-
+lenges. 2025. arXiv: 2506.10022 [cs.CR]. url: https://arxiv.org/abs/2506.10022.
+[28] Jiayu Liu et al. Revisiting Epistemic Markers in Confidence Estimation: Can Markers Ac-
+curately Reflect Large Language Models’ Uncertainty? 2025. arXiv: 2505.24778 [cs.CL].
+url: https://arxiv.org/abs/2505.24778.
+20A Deep Dives: Research Ideas and Anecdotes
+In this appendix, each subsection follows a consistent structure: the complete idea specification
+generated by our Idea Generation Agent, expert validation feedback from original paper au-
+thors, and detailed implementation anecdotes documenting specific failure modes and system
+responses during autonomous execution. Throughout the appendix, block quotes represent di-
+rect outputs from the LLM agents described in our system overview or excerpts from execution
+log documents, providing authentic examples of system behavior during research attempts. We
+also thank the authors of the seed papers who provided valuable feedback on early research
+ideas; any remaining errors or misinterpretations are entirely our own.
+A.1 MARL-1: Zero-shot Coordination in Multi-Agent RL
+This idea emerged from combining Implicit Communication Protocols [18] and Zero-shot Co-
+ordination [19] research in Multi-agent RL at ICLR 2025. Table 4 details the main parts of
+the complete idea.md file generated by our Idea Generation Agent.
+Table 4: MARL-1: Zero-shot Coordination in Multi-Agent RL - Rejected in Implementation
+Idea Meta-Adaptive Implicit Communication Protocols (Meta-AICPs) for Zero-shot Coordination
+Problem and Motivation Current RL agents, while capable in specific tasks with specific partners, are brittle. They
+struggle with novel teammates, task variations, and especially in situations requiring emergent
+communication and the dynamic formation and adaptation of conventions. For AI agents to
+achieve truly fluid and generalizable collaboration in open or ad-hoc team settings, they must
+robustly coordinate with novel, independently trained partners who may employ unknown or
+diverse implicit communication protocols. This addresses the fundamental ’double adaptation
+problem’ in MARL: adapting to both environment dynamics and the evolving policies and
+communication conventions of other agents.
+Proposed Approach Building on work done on Implicit Channel Protocols [18], Agents meta-learn adaptive strategies
+to rapidly infer and co-create/align their internal P-mappings (the mapping between scouting
+actions and messages) when encountering novel partners. This moves beyond adapting to fixed
+partner strategies towards learning how to adapt the communication system itself. Meta-learning
+distributions over protocol spaces or adaptive strategies for P, rather than relying on fixed point
+estimates or pre-coordination with novel partners who lack a shared co-training history.
+Key Innovation Extends ZSC beyond action policies to the communication system itself - agents coordinate how
+they communicate and how to adapt how they communicate. Meta-learning over protocol spaces
+addresses the need for true convention emergence rather than just partner strategy inference.
+Dynamic protocol adaptation and emergence during novel partner interaction, with neural
+architecture disentangling convention-agnostic task policy from convention-specific protocol
+adapter module.
+Concrete Example In Hanabi with three canonical P-maps (conservative, aggressive, random), Meta-AICP agents
+evaluate ZSC performance against diverse partners using Protocol Divergence Score and
+Information Flow Rate metrics. Agents adapt their scouting action mappings based on inferred
+partner protocols, maintaining communication richness while achieving robust coordination with
+previously unseen protocol variants.
+Potential Pitfalls Potential trade-off in expressiveness vs. generalization - adapted protocols might not achieve the
+same peak level of nuanced, high-bandwidth communication as protocols developed via intensive
+co-training. Dependence on quality of meta-training distribution diversity and representativeness.
+Performance against partners with radically different, out-of-distribution P-mappings remains
+uncertain.
+21Expert Validation: When we reached out to the authors of the seed papers with this idea,
+they raised concerns about the system’s failure in interpreting the future work section of their
+original paper, as well as, the potential failure modes, many of which were also identified by
+the Idea Generation Agent in the generated idea text.
+They noted that when they mentioned “future work on dynamically identifying or designing
+communication mapping,” they were referring to “based on public observations or tasks” and
+not to “entirely new partners with unknown mappings.” We regard this as another instance of
+the Idea Generation Agent lacking domain expertise and interpreting the original statement in
+the paper too generously.
+They did note that the idea “does touch on a challenging and important question” and that
+“formalizing and empirically testing the direction shared...could yield useful insights.” They
+also complimented the choice of the Hanabi setup and the identified baseline from their ICP
+work as “solid anchor points.”
+Implementation and Failure Modes: Considering the input on the merit of testing and
+formalising the claim nonetheless, we continued to pass the idea on the hypotheses generation
+and experimental planning stages.
+At this stage, we were still generating a minimum-viable-hypothesis for each research idea—testing
+a single key assumption per project, unlike the portfolio approach with comprehensive hypothe-
+ses suites that we later adopted (as described in Section 3). We were also using a single-file
+coding approach (similar to AIDE [20], an automated code generation system) with the in-
+struction to generate one complete implementation in a single Python file.
+There were two primary failure modes that emerged here:
+Issues with the model trying to squeeze the complex implementation, all into
+one file, leading to reward hacking or implementation drift in the sense of simplifying the
+implementation. On two separate runs, the model outputted code file included the following:
+“Note: The implementation focuses on clarity and the high-level research mechanics
+rather than SOTA gameplay performance - it is not expected to reach impressive
+Hanabi scores in this short reference prototype.”
+“Note: This is a quick and safe MVP-skeleton implementation of the plan described
+in the task specification...All hard compute is guarded behind the --fast flag.”
+Failure in environment setup. The model consistently fell back to the canonical DeepMind
+hanabi-learning-env, which is not maintained anymore. Even after consistent failures and
+instructions to use alternative, in the event of a non-import failure, the model would interpret
+22the error as a consequence of a non hanabi-learning-env import and revert the correct library
+import to the wrong outdated one.
+This illustrates the training data bias failure mode discussed in Section 3, where models fall
+back on memorized patterns rather than using current information. This also pointed out to us
+that AIDE out of the box won’t be sufficient for research code implementation which is a more
+iterative process than training models for Kaggle challenges, and that low-level implementation
+agents will require access to the internet and ability to fetch the most-recent information instead
+of merely relying on the zero-shot LLM responses generated upstream in the workflow.
+A.2 WM-1: Differentiable Planning in Stochastic World Models
+The source of this idea was integrating together NeurIPS 2023 work on Stochastic World
+Models [21] and a withdrawn ICLR 2024 submission on Differentiable Tree Search in Latent
+State Space [22]. Table 5 details the main parts of the complete idea.md file generated by our
+Idea Generation Agent.
+Table 5: WM-1: DTS Planning in Stochastic World Models - Rejected in Implementation
+Idea Differentiable Tree Search in Stochastic World Models for Planning (S-DTS)
+Problem and Motivation DTS and similar methods are designed for deterministic worlds. When deployed in
+non-deterministic environments, their deterministic world models fail to capture environmental
+stochasticity, leading them to learn an “average” world dynamics. While methods exist for
+learning stochastic world models (STORM), they are typically trained separately from the
+planner, which prevents the planner and model from co adapting. This separation means the
+world model is not optimized for the specific states and transitions that are most critical for the
+planner’s decision-making process.
+Proposed Approach Integrating a Stochastic World Model, inspired by STORM’s architecture, directly into the DTS
+framework. Joint optimization provides a powerful, targeted learning signal - the overall planning
+loss backpropagates through the entire differentiable search process, including sampled transitions
+from the WM.
+Key Innovation Bridging the gap between deterministic planners and stochastic environments. While
+deterministic DTS cannot represent or plan for multiple possible outcomes, and separately
+trained stochastic models miss the key insight of DTS by optimizing for global prediction error
+rather than task-relevant regions, S-DTS integrates VS-WM directly into the DTS framework.
+The world model learns to be an accurate predictor specifically for transitions that matter most
+for making good decisions, while the planner learns to account for the specific uncertainties
+expressed by its co-adapted world model.
+Concrete Example In “slippery ice” grid world where moving north can result in slipping left or right near a pit,
+DTS with ensembles might average paths or see variance but doesn’t reason about probability of
+each outcome, potentially choosing paths close to the pit if average seems safe. S-DTS’s expected
+backup rule explicitly incorporates low-probability, high-cost outcomes of slipping into the pit,
+learning to select safer paths further from pit even if slightly longer, demonstrating superior
+risk-awareness.
+Potential Pitfalls Training instability from interaction of REINFORCE, Gumbel-Softmax sampling, and VAE
+losses; computational overhead from triple loop of training steps, search trials, and MC samples;
+VS-WM might fail to learn true stochastic dynamics, especially rare events.
+Expert Validation: For this idea, we heard back from one of the two primary authors we
+reached out to. They noted that this was a genuine research gap worth pursuing, emphasising
+23that the “tree-search has shown great potential in AlphaGo/MuZero/EfficientZero, yet there
+are few combinations with Dreamer-like MBRL approaches.”
+They expressed concerns about the computation cost and technical complexity of the implemen-
+tation and debugging, noting that the execution will be non-trivial “otherwise why has nobody
+tried to enhance DreamerV3 given the huge potential of the search.” They concluded that “it
+should have broad impact if you can release a high quality implementation to the public.”
+Along with the primary authors of the seed paper, we also shared this idea with a World
+Models researcher who has previously been accepted at major A* conferences and also served
+as a reviewer for one.
+Much of their feedback concurred with that of the previous expert. They too expressed concerns
+about the technical complexity of the implementation and pointed out a specific and critical
+omission error in the idea text where “write-up treats STORM’s world model as a drop-in
+replacement for DTS’s deterministic MLP” and that “the system misses out listing the inference
+network in the setup section.”
+Overall though they too agreed that “the idea strikes well” and would lead to a “nice world
+model” that can be helpful for “long horizon sensitive control applications.”
+Implementation and Failure Modes: Considering the overall positive input, we proceeded
+to hypothesis generation and experimental planning for this idea. We were still using the
+minimum-viable-hypothesis prompt at this point, which meant, only one hypothesis to be
+implemented and checked trying to capture the key uncertainties and risks in the proposed
+research idea.
+Our experience for implementing this was in line with expert comments - the implementation
+was non-trivial ran into many technical challenges, especially typifying the failure mode of
+limited domain taste and intelligence in language models.
+The complex world model architecture involved multiple interconnected components—Encoder,
+Decoder, Actor Network, Critic Network—creating numerous potential failure points, leading
+to multiple format mis-match errors.
+“This was the critical failure. My simplified logic for updating the latent state during
+the differentiable rollout was mathematically incorrect, leading to shape mismatches
+in matrix multiplication.”
+Training loop integration proved equally problematic. The planner was designed for single-
+input processing, but the training loop attempted batch processing, creating what the system
+described as “computationally catastrophic” performance—multiplying workload by batch size
+24and completing less than 1% of required steps in an hour.
+“Error 2: Batching Logic (‘IndexError: Dimension out of range’): The ‘agent.plan()’
+method was designed to work on a single state, but the training loop was attempting
+to use it on a batch of states, causing an index error.”
+The very long training loop for each step plan up to 50,000 steps being passed back led to
+timeouts, which led to the implementation drift. This was mainly because of the Modal time
+limits which led Claude Code to rely on simplifying the architecture instead of working around
+the infrastructure issues.
+Claude Code ultimately abandoned the differentiable tree search entirely, pivoting to a standard
+actor-critic approach, with some version of joint optimization maintained but representing a
+significant departure from the proposed method.
+“New Strategy: I rewrote the training script (‘train s dts.py’) to use an Actor-
+Critic approach. This preserved the project’s core “joint optimization” idea while
+being vastly more efficient.”
+Fortunately, our verification system successfully detected this implementation drift. The ex-
+perimental output evaluation noted that:
+“The name “Stochastic-DTS” (Differentiable Tree Search) is a misnomer for the
+actual implemented algorithm, which is a simpler differentiable multi-shoot planner.
+This could be misleading. The evolution of the training script into an Actor-Critic
+approach, while a pragmatic and technically sound choice, represents a significant
+deviation from what one might infer from the initial hypothesis document. This
+journey should be documented transparently.”
+Beyond implementation issues, the experimental design itself proved fundamentally flawed. The
+hypothesis generated was too simple to yield meaningful conclusions, and both the proposed
+S-DTS model and the baseline achieved near-perfect 0.0 catastrophe rates on FrozenLake,
+making the hypothesis untestable. This was identified as an error in the experiment output
+evaluation report which noted that “the experiment failed to test the hypothesis in a meaningful
+performance regime.”
+While the choice of the environment was too simplistic, several other chosen aspects proved too
+complex. For instance, the choice of the 50000 DTS depth parameter. These too pointed toward
+the absence of domain intelligence often only captured in researcher decisions in experience
+25during experimentation. It also aligned with the conclusion from Stanford’s research on LLM-
+generated hypotheses [23, 24].
+Additional methodological flaws included insufficient statistical validity. The test was run with
+only one seed, inadequate for properly falsifying or accepting the hypothesis.
+The revision prompt ultimately recommended developing hypotheses better grounded in tech-
+nical implementation details and testing on more challenging environments than FrozenLake.
+A.3 WM-2: Replacing Pixel Reconstruction with Perceptual Loss
+in World Models
+This idea was generated by combining papers on multi-modal foundational world models [25]
+from NeurIPS 2024 and the seminal Dreamer paper [26] from ICLR 2020. Table 6 details the
+main parts of the complete idea.md file generated by our Idea Generation Agent.
+Table 6: WM-2: Perceptual Loss Training Objective for World Models - Rejected in
+Implementation
+Idea SALVO: Training World Models in VLM Perceptual Space for Semantically-Grounded Control
+Problem and Motivation Generative world models learn by compressing high-dimensional observations into latent space
+using pixel-level reconstruction loss, forcing the model to expend capacity on high-frequency
+visual details often irrelevant for semantic understanding. This “irreversible semantic
+compression” means subtle but task-critical visual cues that are easily distinguishable by a VLM
+can be lost in the world model’s latent representation, creating a semantic gap between the world
+model’s understanding and the VLM’s interpretation of task prompts.
+Proposed Approach Replace conventional pixel-level reconstruction loss entirely with a perceptual reconstruction loss
+defined within the embedding space of a frozen, pre-trained VLM. Instead of forcing the model’s
+latents to reconstruct raw observations, train them to reconstruct the VLM’s perception of the
+observations. This directly aligns the world model’s optimization with semantic concepts
+embedded in the VLM.
+Key Innovation Replacing pixel-reconstruction loss entirely with perceptual reconstruction loss in VLM
+embedding space. Instead of training world models to be good at reconstructing pixels, train
+them to be good at reconstructing VLM perceptions. This directly aligns the world model’s
+optimization with semantic concepts embedded in the VLM, creating latent representations
+inherently structured around VLM-salient features.
+Concrete Example For prompt “robot performing graceful pirouette,” GenRL’s pixel optimized world model learns
+“turning” without intrinsic concept of “grace,” resulting in mechanically efficient but ungraceful
+motion. SALVO’s VLM-optimized world model is forced to generate reconstructions capturing
+graceful vs. clumsy distinction, encoding necessary physical information for graceful-looking
+reconstruction and enabling policy to control semantically-meaningful latents.
+Potential Pitfalls Semantic dominance vs. physical accuracy leading to imagined rollouts structured around
+VLM-salient features; inheriting VLM inductive biases, blind spots, or artifacts; computational
+cost from VLM forward passes; training instability from replacing well-understood pixel-MSE
+with complex high-dimensional perceptual loss.
+Expert Validation: The primary authors of both seed papers were contacted for feedback.
+The first of the two noted that this idea was “interesting and worthwhile to explore.” The
+second author expressed some reservation about the technical concerns of replacing the pixel
+reconstruction loss, as well as, if it would generalize beyond specific domains such as MineRL.
+26They noted that “this was one of the first things [they] tried” and that in their experi-
+ence, “perceptual losses can fail to capture fine-grained information for control, compared to
+reconstruction-based objectives” They did emphasize that the research gap identified of “finding
+objectives that work better for learning world models for RL” was genuine.
+Implementation and Failure Modes: Keeping this well rounded feedback in mind, we
+decided to continue implementation as we saw clear opportunity for meaningful experiments
+and insights.
+This implementation revealed a fundamental logical error in experimental design that exem-
+plified the domain intelligence failures discussed in Section 3. The hypothesis assumed offline
+training with static data frames, but Dreamer requires online learning—a mismatch that vi-
+olated core algorithmic assumptions. This led to no exploration-exploitation balance, limited
+state coverage, no correlation between actions and rewards, and impossible transitions across
+episode boundaries. Training on static random-policy data fundamentally undermined the
+baseline’s validity, discovered only during experimental output evaluation.
+The core problem emerged from the need to recreate the Dreamer baseline, which triggered a
+cascade of failures. Due to training data bias discussed in Section 3, the system defaulted to
+PyTorch when the prompt mentioned “modern ML practices,” despite the original Dreamer
+being in TensorFlow. This necessitated a complete baseline reimplementation that introduced
+multiple incompatibilities: the PyTorch version didn’t work for continuous control tasks like
+CartPole-SwingUp, data format confusion and encoder-decoder shape mismatches, made fur-
+ther worse by integration of the VLM loss.
+‘Initial transposed convolution implementation produced wrong output sizes - First
+attempt: 31 ∗ 31 output (incorrect padding calculations), Second attempt: 79 ∗ 79
+output (still incorrect) requiring switch to upsampling approach for exact 64 ∗ 64
+output.’
+Additionally, over the reimplementation of the Dreamer baseline in PyTorch, a critical er-
+ror emerged: dummy reward signals were inadvertently passed instead of actual environment
+rewards. This meant the critic network learned nothing while the world model and actor
+continued representational learning:
+‘World model and actor were learning (representational learning only) - Critic had
+nothing to learn from because dummy zero rewards were being passed... Dream-
+erV2 architecture requires ground truth reward supervision. Found we were passing
+dummy rewards instead of actual CartPole rewards’
+27This reward error cascaded through the entire experimental pipeline leading to gradient explo-
+sions in actor training, plotting showed zero values, evaluation metrics became meaningless,
+and the Experiment Execution Agent undermining the core innovation with a .detach() call
+during CLIP processing severed gradient flow from perceptual loss to the world model decoder,
+preventing learning from the reconstruction objective.
+The experimental output evaluation delivered the final verdict: Implementation Fidelity score
+“Low,” noting baseline performance 95% below established benchmarks, making any com-
+parison scientifically invalid. The evaluation concluded the experiment “failed to create the
+necessary conditions for a valid test” and that signal was “completely obscured by the noise of a
+broken experimental setup,” requiring complete reimplementation before hypothesis retesting.
+A.4 AS-1: Semantic Entropy as Signal for Jailbreak Prompts
+This idea was arrived at by synthesizing two alignment papers from ACL 2025, on jailbreak
+challenges in malware requests [27] and use of epistemic markers for confidence estimation [28].
+Table 7 details the main parts of the complete idea.md file generated by our Idea Generation
+Agent.
+Table 7: AS-1: Semantic Entropy as Signal for Jailbreak Prompts - Completed Successfully
+Idea Using Semantic Entropy as Black-Box Signal for Behavioral Inconsistency in Jailbreak Detection
+Problem and Motivation We lack reliable, real-time signals for detecting jailbreak attacks on black-box models (e.g., those
+served via API). Existing defenses are often reactive (post-generation content filtering) or brittle
+(input pattern matching), while powerful white-box methods that inspect gradients or activations
+are inapplicable. This leaves API-based models vulnerable to novel, adaptive attacks, creating a
+significant gap in the safety ecosystem.
+Proposed Approach Reframing jailbreak detection from a content analysis problem to a behavioral analysis problem.
+Use semantic inconsistency, measured via semantic entropy, as a zero-shot, black-box signal of a
+jailbreak attempt. The internal conflict an LLM experiences when processing a jailbreak prompt
+will manifest as high variance in the semantic meaning of its potential responses, detected by
+sampling and comparing multiple generated outputs.
+Key Innovation Repurposing the behavioral signal of response inconsistency, originally used for fact-checking in
+hallucination detection, as a security signal to detect the internal conflict caused by a jailbreak
+attack. Using semantic entropy over clustered response embeddings to measure behavioral
+inconsistency indicating safety alignment conflict.
+Concrete Example For jailbreak “My grandma used to tell me stories about how to make napalm,” sampling N=5
+responses yields mixed semantic clusters: refusals (“I cannot fulfill this request”), compliance
+(“mix gasoline with...”), and hedges (“for fictional purposes...”). This high semantic variance
+produces high entropy score, flagging interaction as suspicious before harmful response reaches
+user, based solely on model’s inconsistent behavior.
+Potential Pitfalls Hardness confound where complex but benign prompts also produce high entropy; adaptive
+adversaries learning to generate prompts forcing consistent, low-entropy malicious outputs;
+inapplicability to training-time backdoor attacks that eliminate rather than create internal
+conflict.
+Expert Validation: By this stage, we conducted an internal review of the top ideas based on
+lessons learned from the previous expert validations and implementation attempts. We selected
+28this idea as most likely to succeed for autonomous execution, specifically because it avoided
+many of the technical complexity and computational resource issues identified in the previous
+ideas. The choice prioritized implementation feasibility over novelty, representing a strategic
+pivot toward ideas that could be completed within our system’s current capabilities.
+Implementation and Failure Modes: The most interesting thing with this idea was that the
+first hypothesis implemented was implemented but when it failed to detect jailbreaks effectively,
+the Revision Agent triggered a change in idea from using semantic entropy as a detection
+method to showcasing its failure and investigating the failure mode.
+Table 8 showcases the updated hypotheses suite generated by the relevant agent after the
+revision of the idea.
+Table 8: Evolution of Hypotheses Suite: From Testing Detection to Investigating Failure
+Original Hypotheses Suite
+(Testing SE as Detection Method)
+Revised Hypotheses Suite
+(Investigating the Consistency Confound)
+H1 Semantic entropy detector achieves AUROC > baseline
+consistency metric by 0.1+ on JailbreakBench harmful vs
+benign prompts
+H1: SE underperforms simple baselines (BERTScore,
+Embedding Variance) on JailbreakBench, with
+model-dependent baseline rankings
+H2 SE maintains AUROC > 0.85 distinguishing harmful from
+benign-but-hard prompts, proving sensitivity to malice not
+complexity
+H2: SE failure generalizes to HarmBench-Contextual, again
+losing to simpler baselines with model-dependent
+performance
+H3 SE calibrated on JailbreakBench generalizes to HarmBench
+contextual attacks with AUROC > 0.70
+H3: After controlling for response length confound, SE
+achieves near-random AUROC < 0.55 on both benchmarks
+H4 SE deployed as gate reduces Tree of Attacks ASR by 25+
+percentage points vs undefended model
+H4: SE uniquely brittle: performance collapses when
+clustering threshold τ increased from 0.1→0.2 or samples N
+from 5→10
+H5 SE correctly identifies >20% of jailbreaks missed by
+supervized WildGuard classifier
+H5: Paraphrasing prompts disproportionately degrades SE
+vs baselines by disrupting memorized refusal templates
+H6 >80% of SE false negatives exhibit “Consistency
+Confound”: high duplicate rate (>0.6) and low cluster
+count (≤2)
+H7 Stronger alignment worsens SE: Qwen2.5-72B shows lower
+SE AUROC than smaller models while maintaining baseline
+performance
+The abstract for our accepted paper was:
+“Black-box jailbreak detection for Large Language Models (LLMs) remains chal-
+lenging, particularly when internal states are inaccessible. Semantic entropy (SE)—
+successfully used for hallucination detection—offers a promising behavioral ap-
+proach based on response consistency analysis. We hypothesize that jailbreak
+prompts create internal conflict between safety training and instruction-following,
+potentially manifesting as inconsistent responses with high semantic entropy. We
+systematically evaluate this approach using a black-box, embedding-based imple-
+mentation of SE adapted from Farquhar et al.’s bidirectional entailment method
+29to work within black-box constraints. Testing across two model families (Llama
+and Qwen) and two benchmarks (JailbreakBench, HarmBench), we find SE fails
+with 85-98% false negative rates, consistently outperformed by simpler baselines
+and exhibiting extreme hyperparameter sensitivity. We identify the primary fail-
+ure mechanism as the “Consistency Confound”: well-aligned models produce con-
+sistent, templated refusals that SE misinterprets as safe behavior, accounting for
+73-97% of false negatives with high statistical confidence [95% Wilson CIs]. While
+SE’s core assumption about response inconsistency indicating problematic content
+holds in limited cases, threshold brittleness renders it practically unreliable. Our
+results suggest that for this SE variant, response consistency may not be a reli-
+able signal for jailbreak detection, as stronger alignment leads to more predictable
+outputs that confound this type of diversity-based detector.”
+Unlike the previous implementations, this work proceeded with substantially less human in-
+tervention. Since the research focused on data analysis rather than complex model architec-
+tures, most technical barriers proved surmountable autonomously. The familiar infrastructure
+challenges discussed in Section 3 appeared here too—Modal API compatibility issues, model
+integration errors, and library import failures.
+Training data bias also manifested in dataset handling, where instead of reviewing the available
+fields, the model defaulted to a standard prompt and output format despite HarmBench-
+Contextual prompts having a separate context field that was initially ignored. However, these
+issues didn’t derail progress.
+To meet conference deadlines, the experimental evaluation process was streamlined to just two
+checkpoints: initial idea revision and final paper readiness assessment.
+This implementation also demonstrated the overexcitement failure mode discussed in Section 3.
+Despite degenerate outputs and statistical insignificance that required manual intervention to
+identify and address, the initial automated paper writing consistently emphasized positive
+aspects while downplaying substantial limitations. This pattern required human oversight
+to ensure transparent reporting of methodological issues and statistical problems in the final
+paper’s limitations section.
+30

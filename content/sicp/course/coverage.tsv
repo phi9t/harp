@@ -1,0 +1,23 @@
+section_id	section_title	seminar_id	treatment	reading_mode	printed_page_start	printed_page_end	pdf_page_start	pdf_page_end
+1.1	The Elements of Programming	01	focused	skim	6	39	34	67
+1.2	Procedures and the Processes They Generate	01	deep	required	40	73	68	101
+1.3	Formulating Abstractions with Higher-Order Procedures	01	deep	required	74	106	102	134
+2.1	Introduction to Data Abstraction	02	deep	required	112	131	140	159
+2.2	Hierarchical Data and the Closure Property	03	deep	required	132	191	160	219
+2.3	Symbolic Data	04	focused	required	192	228	220	256
+2.4	Multiple Representations for Abstract Data	04	deep	required	229	253	257	281
+2.5	Systems with Generic Operations	04	deep	required	254	293	282	321
+3.1	Assignment and Local State	05	deep	required	296	319	324	347
+3.2	The Environment Model of Evaluation	05	deep	required	320	340	348	368
+3.3	Modeling with Mutable Data	06	deep	required	341	400	369	428
+3.4	Concurrency: Time Is of the Essence	07	deep	required	401	427	429	455
+3.5	Streams	08	deep	required	428	486	456	514
+4.1	The Metacircular Evaluator	09	deep	required	492	540	520	568
+4.2	Variations on a Scheme — Lazy Evaluation	10	deep	required	541	558	569	586
+4.3	Variations on a Scheme — Nondeterministic Computing	10	deep	required	559	593	587	621
+4.4	Logic Programming	11	focused	required	594	665	622	693
+5.1	Designing Register Machines	12	deep	required	668	695	696	723
+5.2	A Register-Machine Simulator	12	deep	required	696	722	724	750
+5.3	Storage Allocation and Garbage Collection	12	deep	required	723	740	751	768
+5.4	The Explicit-Control Evaluator	12	deep	required	741	766	769	794
+5.5	Compilation	12	deep	required	767	833	795	861
