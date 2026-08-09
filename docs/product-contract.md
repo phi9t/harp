@@ -52,6 +52,24 @@ Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
 paper mechanisms or result claims.
 
+## Weng teaching curriculum
+
+`content/weng-sources/` is the canonical authority for the 42 five-field
+source cards. `content/weng-source-cards.tsv` is the exact roster, order, and
+assignment matrix for 39 numbered references and three substantive body
+links.
+
+`reference/` and `lessons/` are non-authoritative teaching projections.
+`scripts/build_weng_course.py --check` validates the four deterministic
+references, and Rust curriculum tests validate the ten lessons. The course
+state machine is `building` -> `cards-complete` -> `complete`; `complete`
+requires 42 cards, ten lessons, four references, and nine section IDs.
+Retrieval begins at `unseen`, and page exposure does not establish mastery.
+
+Teaching files remain outside canonical Atlas compilation unless explicitly
+registered later. They do not change the 56-document, 75-concept, or other
+canonical corpus counts above.
+
 ## Search
 
 The search index includes:
@@ -88,4 +106,6 @@ There is no repository-wide license. Captured works are not relicensed.
 
 `mise run verify` is the complete provider-neutral release gate. A clean
 `git clone --no-local`, followed by `git lfs pull`, `mise run bootstrap`, and
-`mise run verify`, must pass without any other source checkout available.
+`mise run verify`, must pass without any other source checkout available. The
+gate includes the offline Weng course-builder check and performs no network
+fetch.

@@ -22,6 +22,7 @@ cargo test --workspace
 cargo run -p harp -- check
 cargo run -p harp -- build --check
 cargo run -p harp -- sources verify
+python3 scripts/build_weng_course.py --check
 cargo run -p harp -- search refresh
 cargo run -p harp -- search status
 cargo run -p harp -- search query "recursive improvement" --limit 5 >/dev/null
