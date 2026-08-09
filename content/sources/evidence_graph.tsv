@@ -1,11 +1,11 @@
 label	source_id	relationship	target_id	evidence_locator	status	boundary
 EVIDENCE	SEED	anchors-scope	WENG-HARNESS	User request	verified	Seed is orientation input, not independent evidence
-EVIDENCE	WENG-HARNESS	cites	GOOD-1965	Reference 1	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	YUDKOWSKY-2008	Reference 2	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	ASP	Reference 3	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	ABSOLUTE-ZERO	Reference 4	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	SELF-REWARDING	Reference 5	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	SPIN	Reference 6	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	GOOD-1965	Reference 1	verified	Historical ultraintelligence and intelligence-explosion framing only
+EVIDENCE	WENG-HARNESS	cites	YUDKOWSKY-2008	Reference 2	verified	Recursive cognitive-machinery/optimization framing only
+EVIDENCE	WENG-HARNESS	cites	ASP	Reference 3	verified	Primary paper owns anchored self-play mechanism, cross-source repair results, limitations
+EVIDENCE	WENG-HARNESS	cites	ABSOLUTE-ZERO	Reference 4	verified	Primary paper owns proposer-solver weight-training mechanism, author results, safety caveats
+EVIDENCE	WENG-HARNESS	cites	SELF-REWARDING	Reference 5	verified	Primary paper owns self-instruction/self-judging iterative alignment mechanism and author results
+EVIDENCE	WENG-HARNESS	cites	SPIN	Reference 6	verified	Primary paper owns iterative self-play fine-tuning mechanism and author results
 EVIDENCE	WENG-HARNESS	cites	ACE	Reference 7	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	MCE	Reference 8	verified	Primary source owns bi-level mechanism, results, and limitations
 EVIDENCE	WENG-HARNESS	cites	META-HARNESS	Reference 9	verified	Primary source owns claims

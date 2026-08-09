@@ -114,7 +114,7 @@ Every `content/weng-sources/<slug>.md` uses this exact shape:
 ```markdown
 ---
 source_id: ACE
-title: Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models
+title: "Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models"
 weng_locator: reference-7
 section_id: context-engineering
 primary_url: https://iclr.cc/virtual/2026/poster/10008343
@@ -167,8 +167,15 @@ The body headings are required exactly once. Quantitative text names benchmark,
 task count, model, metric, and reproduction status when those facts are
 material.
 
-Frontmatter values are one-line scalars. `lesson_ids` uses a comma-separated
-scalar such as `0001,0002`, not YAML sequence syntax.
+Frontmatter values are one-line scalars. Plain scalars must avoid YAML-significant
+forms: leading indicators, boolean or null words, numeric or date-like values,
+` #` comments, `: ` mappings, tabs or control characters, and `[]` or `{}`
+flow delimiters. Plain values ending in `:` and base-prefixed numbers such as
+`0xFF`, `0o77`, or `0b101` are also rejected. Values containing those forms use
+JSON-style double-quoted strings, which validators decode before matrix and
+registry comparisons.
+`lesson_ids` uses a comma-separated plain scalar such as `0001,0002`, not YAML
+sequence syntax.
 
 Every card includes `0010` because the synthesis lesson samples the complete
 card corpus. It also includes each topical lesson that directly teaches it.
@@ -792,17 +799,91 @@ class Card:
     sections: dict[str, str]
 
 
+def _decode_frontmatter_scalar(raw: str) -> str:
+    if raw.startswith('"') or raw.endswith('"'):
+        if not (raw.startswith('"') and raw.endswith('"')):
+            raise ValueError("frontmatter scalar has mismatched quotes")
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError as error:
+            raise ValueError("frontmatter scalar must use JSON string quoting") from error
+        if not isinstance(value, str):
+            raise ValueError("frontmatter quoted scalar must decode to a string")
+        if not value or "\n" in value or "\r" in value:
+            raise ValueError("frontmatter scalar must be a nonempty one-line string")
+        return value
+    if _plain_scalar_requires_quotes(raw):
+        raise ValueError("frontmatter plain scalar uses YAML-significant syntax")
+    return raw
+
+
+def _plain_scalar_requires_quotes(raw: str) -> bool:
+    yaml_indicators = "-?:,[]{}#&*!|>'\"%@`"
+    yaml_keywords = {
+        "null",
+        "true",
+        "false",
+        "yes",
+        "no",
+        "on",
+        "off",
+        "~",
+        ".nan",
+        ".inf",
+        "+.inf",
+        "-.inf",
+    }
+    return (
+        not raw
+        or raw[0] in yaml_indicators
+        or raw.casefold() in yaml_keywords
+        or _numeric_or_date_scalar(raw)
+        or " #" in raw
+        or ": " in raw
+        or raw.endswith(":")
+        or any(
+            character in "[]{}\t"
+            or ord(character) < 0x20
+            or ord(character) == 0x7F
+            for character in raw
+        )
+    )
+
+
+def _numeric_or_date_scalar(raw: str) -> bool:
+    if re.fullmatch(r"\d{4}-\d{1,2}-\d{1,2}(?:[Tt ].+)?", raw):
+        return True
+    if re.fullmatch(
+        r"[+-]?(?:0[xX][0-9A-Fa-f_]+|0[oO][0-7_]+|0[bB][01_]+)",
+        raw,
+    ):
+        return True
+    try:
+        float(raw.replace("_", ""))
+    except ValueError:
+        return False
+    return True
+
+
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
     if not text.startswith("---\n"):
         raise ValueError("card must start with frontmatter")
-    frontmatter, body = text[4:].split("\n---\n", 1)
+    try:
+        frontmatter, body = text[4:].split("\n---\n", 1)
+    except ValueError as error:
+        raise ValueError("card must close frontmatter") from error
     metadata: dict[str, str] = {}
     for line in frontmatter.splitlines():
+        if not line or line.startswith((" ", "\t")) or ":" not in line:
+            raise ValueError("frontmatter must contain top-level key/value scalars")
         key, value = line.split(":", 1)
         key = key.strip()
+        raw_value = value.strip()
+        if not key or not raw_value:
+            raise ValueError("frontmatter keys and values must be nonempty")
         if key in metadata:
             raise ValueError(f"duplicate frontmatter key: {key}")
-        metadata[key] = value.strip()
+        metadata[key] = _decode_frontmatter_scalar(raw_value)
     if tuple(metadata) != CARD_METADATA:
         raise ValueError(f"unexpected card metadata: {tuple(metadata)}")
     return metadata, body

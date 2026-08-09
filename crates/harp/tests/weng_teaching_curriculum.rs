@@ -108,6 +108,8 @@ const CARD_METADATA: [&str; 13] = [
     "canonical_route",
 ];
 
+const MAX_CARD_PROSE_WORDS: usize = 240;
+
 const SECTION_IDS: [&str; 9] = [
     "system-being-improved",
     "harness-design-patterns",
@@ -119,6 +121,46 @@ const SECTION_IDS: [&str; 9] = [
     "joint-harness-weight-optimization",
     "future-challenges",
 ];
+
+#[derive(Clone, Debug)]
+struct SourceRegistryRow {
+    label: String,
+    source_id: String,
+    depth: String,
+    cohort: String,
+    access_status: String,
+    artifact: String,
+    relationship: String,
+    primary_locator: String,
+    version_or_digest: String,
+    venue_status: String,
+    inspected_on: String,
+    claim_ceiling: String,
+}
+
+impl SourceRegistryRow {
+    fn assert_nonempty(&self) {
+        for (field, value) in [
+            ("label", self.label.as_str()),
+            ("source_id", self.source_id.as_str()),
+            ("depth", self.depth.as_str()),
+            ("cohort", self.cohort.as_str()),
+            ("access_status", self.access_status.as_str()),
+            ("artifact", self.artifact.as_str()),
+            ("relationship", self.relationship.as_str()),
+            ("primary_locator", self.primary_locator.as_str()),
+            ("version_or_digest", self.version_or_digest.as_str()),
+            ("venue_status", self.venue_status.as_str()),
+            ("inspected_on", self.inspected_on.as_str()),
+            ("claim_ceiling", self.claim_ceiling.as_str()),
+        ] {
+            assert!(
+                !value.is_empty(),
+                "source registry {field} must be nonempty"
+            );
+        }
+    }
+}
 
 fn workspace_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -181,10 +223,27 @@ fn course_state() -> String {
         .to_owned()
 }
 
-fn source_registry() -> BTreeMap<String, String> {
+fn source_registry() -> BTreeMap<String, SourceRegistryRow> {
     row_maps("content/sources/source_registry.tsv")
         .into_iter()
-        .map(|row| (row["source_id"].clone(), row["label"].clone()))
+        .map(|row| {
+            let registry_row = SourceRegistryRow {
+                label: row["label"].clone(),
+                source_id: row["source_id"].clone(),
+                depth: row["depth"].clone(),
+                cohort: row["cohort"].clone(),
+                access_status: row["access_status"].clone(),
+                artifact: row["artifact"].clone(),
+                relationship: row["relationship"].clone(),
+                primary_locator: row["primary_locator"].clone(),
+                version_or_digest: row["version_or_digest"].clone(),
+                venue_status: row["venue_status"].clone(),
+                inspected_on: row["inspected_on"].clone(),
+                claim_ceiling: row["claim_ceiling"].clone(),
+            };
+            registry_row.assert_nonempty();
+            (registry_row.source_id.clone(), registry_row)
+        })
         .collect()
 }
 
@@ -306,14 +365,51 @@ fn assert_matrix_locators(rows: &[BTreeMap<String, String>], expected: &BTreeMap
 
 fn assert_all_sources_promoted(
     rows: &[BTreeMap<String, String>],
-    registry: &BTreeMap<String, String>,
+    registry: &BTreeMap<String, SourceRegistryRow>,
 ) {
     for row in rows {
         let source_id = &row["source_id"];
-        let label = registry
+        let registry_row = registry
             .get(source_id)
             .unwrap_or_else(|| panic!("{source_id} is absent from the source registry"));
-        assert_ne!(label, "MISSING", "{source_id} remains identity-only");
+        assert_ne!(
+            registry_row.label, "MISSING",
+            "{source_id} remains identity-only"
+        );
+    }
+}
+
+fn assert_registry_parity(
+    source_id: &str,
+    matrix: &BTreeMap<String, String>,
+    metadata: &BTreeMap<String, String>,
+    registry: &SourceRegistryRow,
+) {
+    assert_eq!(
+        matrix["title"], registry.artifact,
+        "{source_id} title disagrees with source registry"
+    );
+    assert_eq!(
+        matrix["primary_url"], registry.primary_locator,
+        "{source_id} primary_url disagrees with source registry"
+    );
+    assert_eq!(
+        metadata["publication_state"], registry.venue_status,
+        "{source_id} publication_state disagrees with source registry"
+    );
+    assert_eq!(
+        matrix["claim_ceiling"], registry.claim_ceiling,
+        "{source_id} claim_ceiling disagrees with source registry"
+    );
+    if matrix["evidence_state"] == "card-complete" {
+        assert_eq!(
+            registry.label, "EVIDENCE",
+            "{source_id} card-complete registry label must be EVIDENCE"
+        );
+        assert!(
+            registry.access_status == "inspected" || registry.access_status.ends_with("-inspected"),
+            "{source_id} card-complete registry access_status must end in inspected"
+        );
     }
 }
 
@@ -342,13 +438,14 @@ fn card_frontmatter(text: &str) -> BTreeMap<String, String> {
             .split_once(':')
             .expect("source-card frontmatter key/value");
         let key = key.trim();
-        let value = value.trim();
+        let raw_value = value.trim();
         assert!(
-            !key.is_empty() && !value.is_empty(),
+            !key.is_empty() && !raw_value.is_empty(),
             "source-card frontmatter key/value must be nonempty"
         );
+        let value = decode_frontmatter_scalar(raw_value);
         assert!(
-            values.insert(key.to_owned(), value.to_owned()).is_none(),
+            values.insert(key.to_owned(), value).is_none(),
             "duplicate source-card frontmatter key {key}"
         );
         ordered_keys.push(key.to_owned());
@@ -358,6 +455,89 @@ fn card_frontmatter(text: &str) -> BTreeMap<String, String> {
         "unexpected source-card frontmatter schema"
     );
     values
+}
+
+fn decode_frontmatter_scalar(raw: &str) -> String {
+    if raw.starts_with('"') || raw.ends_with('"') {
+        assert!(
+            raw.starts_with('"') && raw.ends_with('"'),
+            "source-card frontmatter scalar has mismatched quotes"
+        );
+        let value: String =
+            serde_json::from_str(raw).expect("source-card quoted scalar must be a JSON string");
+        assert!(
+            !value.is_empty() && !value.contains(['\n', '\r']),
+            "source-card scalar must be a nonempty one-line string"
+        );
+        value
+    } else {
+        assert!(
+            !plain_scalar_requires_quotes(raw),
+            "source-card plain scalar uses YAML-significant syntax"
+        );
+        raw.to_owned()
+    }
+}
+
+fn plain_scalar_requires_quotes(raw: &str) -> bool {
+    const YAML_INDICATORS: &str = "-?:,[]{}#&*!|>'\"%@`";
+    const YAML_KEYWORDS: [&str; 12] = [
+        "null", "true", "false", "yes", "no", "on", "off", "~", ".nan", ".inf", "+.inf", "-.inf",
+    ];
+    raw.is_empty()
+        || raw
+            .chars()
+            .next()
+            .is_some_and(|character| YAML_INDICATORS.contains(character))
+        || YAML_KEYWORDS
+            .iter()
+            .any(|keyword| raw.eq_ignore_ascii_case(keyword))
+        || numeric_or_date_scalar(raw)
+        || raw.contains(" #")
+        || raw.contains(": ")
+        || raw.ends_with(':')
+        || raw.chars().any(|character| {
+            matches!(character, '[' | ']' | '{' | '}' | '\t')
+                || character <= '\u{001f}'
+                || character == '\u{007f}'
+        })
+}
+
+fn numeric_or_date_scalar(raw: &str) -> bool {
+    let unsigned = raw.strip_prefix(['+', '-']).unwrap_or(raw);
+    let base_prefixed = [
+        ("0x", "0123456789abcdefABCDEF_"),
+        ("0X", "0123456789abcdefABCDEF_"),
+        ("0o", "01234567_"),
+        ("0O", "01234567_"),
+        ("0b", "01_"),
+        ("0B", "01_"),
+    ]
+    .iter()
+    .any(|(prefix, digits)| {
+        unsigned
+            .strip_prefix(prefix)
+            .is_some_and(|suffix| !suffix.is_empty() && suffix.chars().all(|c| digits.contains(c)))
+    });
+    if base_prefixed {
+        return true;
+    }
+    let date_end = raw.find(['T', 't', ' ']).unwrap_or(raw.len());
+    let date = &raw[..date_end];
+    let date_parts = date.split('-').collect::<Vec<_>>();
+    let date_like = date_parts.len() == 3
+        && date_parts[0].len() == 4
+        && (1..=2).contains(&date_parts[1].len())
+        && (1..=2).contains(&date_parts[2].len())
+        && date_parts
+            .iter()
+            .all(|part| part.bytes().all(|byte| byte.is_ascii_digit()))
+        && (date_end == raw.len() || date_end + 1 < raw.len());
+    if date_like {
+        return true;
+    }
+    let numeric = raw.replace('_', "");
+    !numeric.is_empty() && numeric.parse::<f64>().is_ok()
 }
 
 fn is_ordered_list_item(line: &str) -> bool {
@@ -488,6 +668,14 @@ fn card_sections(text: &str, expected_title: &str) -> BTreeMap<String, String> {
     assert_eq!(
         ordered_headings, REQUIRED_HEADINGS,
         "unexpected source-card section schema"
+    );
+    let word_count = sections
+        .values()
+        .map(|section| section.split_whitespace().count())
+        .sum::<usize>();
+    assert!(
+        word_count <= MAX_CARD_PROSE_WORDS,
+        "source-card prose exceeds {MAX_CARD_PROSE_WORDS} words for {expected_title}: {word_count}"
     );
     sections
 }
@@ -1262,6 +1450,98 @@ fn card_frontmatter_rejects_missing_unknown_and_reordered_metadata() {
 }
 
 #[test]
+fn card_frontmatter_accepts_json_quoted_colon_titles_and_rejects_unsafe_scalars() {
+    let valid = [
+        "source_id: TEST",
+        "title: \"Absolute Zero: Reinforced Self-play Reasoning with Zero Data\"",
+        "weng_locator: reference-1",
+        "section_id: system-being-improved",
+        "primary_url: https://example.com",
+        "captured_path: evidence/test.txt",
+        "publication_state: preprint",
+        "evidence_state: card-complete",
+        "edited_object_family: harness",
+        "claim_ceiling: Test claim",
+        "lesson_ids: 0001,0010",
+        "card_path: content/weng-sources/test.md",
+        "canonical_route: content/test.md",
+    ];
+    let card = format!("---\n{}\n---\n", valid.join("\n"));
+    assert_eq!(
+        card_frontmatter(&card)["title"],
+        "Absolute Zero: Reinforced Self-play Reasoning with Zero Data"
+    );
+
+    for safe_plain in [
+        "Author-reported mechanism; no independent reproduction",
+        "ICML 2026 official poster",
+    ] {
+        assert_eq!(decode_frontmatter_scalar(safe_plain), safe_plain);
+    }
+    for unsafe_plain in [
+        "plain # comment",
+        "[one, two]",
+        "true",
+        "*alias",
+        "@reserved",
+        "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        "foo:",
+        "0xFF",
+        "0b101",
+        "0o77",
+        "2026-08-08",
+        "42",
+    ] {
+        assert!(
+            std::panic::catch_unwind(|| decode_frontmatter_scalar(unsafe_plain)).is_err(),
+            "unsafe plain scalar unexpectedly passed: {unsafe_plain}"
+        );
+    }
+    for (quoted, expected) in [
+        ("\"plain # comment\"", "plain # comment"),
+        ("\"[one, two]\"", "[one, two]"),
+        ("\"true\"", "true"),
+        ("\"*alias\"", "*alias"),
+        ("\"@reserved\"", "@reserved"),
+        (
+            "\"Absolute Zero: Reinforced Self-play Reasoning with Zero Data\"",
+            "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        ),
+        ("\"foo:\"", "foo:"),
+        ("\"0xFF\"", "0xFF"),
+        ("\"0b101\"", "0b101"),
+        ("\"0o77\"", "0o77"),
+    ] {
+        assert_eq!(decode_frontmatter_scalar(quoted), expected);
+    }
+
+    for invalid_title in [
+        "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        "\"Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        "Absolute Zero\"",
+        "\"Absolute Zero\\q\"",
+    ] {
+        let frontmatter = valid
+            .iter()
+            .enumerate()
+            .map(|(index, line)| {
+                if index == 1 {
+                    format!("title: {invalid_title}")
+                } else {
+                    (*line).to_owned()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        let card = format!("---\n{frontmatter}\n---\n");
+        assert!(
+            std::panic::catch_unwind(|| card_frontmatter(&card)).is_err(),
+            "unsafe scalar unexpectedly passed: {invalid_title}"
+        );
+    }
+}
+
+#[test]
 fn card_sections_reject_empty_and_markdown_or_html_prose() {
     let headings = format!("\n# Test Card\n\n{}", REQUIRED_HEADINGS.join("\n"));
     assert!(
@@ -1308,6 +1588,98 @@ fn card_sections_reject_empty_and_markdown_or_html_prose() {
         card_sections(&punctuation, "Test Card").len(),
         REQUIRED_HEADINGS.len()
     );
+}
+
+#[test]
+fn card_sections_accept_240_words_and_reject_241() {
+    let body = |word_count: usize| {
+        let section_words = [word_count - 4, 1, 1, 1, 1];
+        format!(
+            "\n# Test Card\n\n{}",
+            REQUIRED_HEADINGS
+                .iter()
+                .zip(section_words)
+                .map(|(heading, count)| format!("{heading}\n{}", vec!["word"; count].join(" ")))
+                .collect::<Vec<_>>()
+                .join("\n")
+        )
+    };
+
+    assert_eq!(
+        card_sections(&body(240), "Test Card").len(),
+        REQUIRED_HEADINGS.len()
+    );
+    assert!(
+        std::panic::catch_unwind(|| card_sections(&body(241), "Test Card")).is_err(),
+        "241-word source card unexpectedly passed"
+    );
+}
+
+#[test]
+fn registry_parity_rejects_divergent_card_authority() {
+    let matrix = BTreeMap::from([
+        ("source_id".to_owned(), "TEST".to_owned()),
+        ("title".to_owned(), "Test title".to_owned()),
+        ("primary_url".to_owned(), "https://example.test".to_owned()),
+        ("evidence_state".to_owned(), "card-complete".to_owned()),
+        ("claim_ceiling".to_owned(), "Test ceiling".to_owned()),
+    ]);
+    let metadata = BTreeMap::from([
+        ("source_id".to_owned(), "TEST".to_owned()),
+        ("title".to_owned(), "Test title".to_owned()),
+        ("primary_url".to_owned(), "https://example.test".to_owned()),
+        ("publication_state".to_owned(), "preprint".to_owned()),
+        ("evidence_state".to_owned(), "card-complete".to_owned()),
+        ("claim_ceiling".to_owned(), "Test ceiling".to_owned()),
+    ]);
+    let registry = SourceRegistryRow {
+        label: "EVIDENCE".to_owned(),
+        source_id: "TEST".to_owned(),
+        depth: "1".to_owned(),
+        cohort: "test".to_owned(),
+        access_status: "vendored-inspected".to_owned(),
+        artifact: "Test title".to_owned(),
+        relationship: "cited by WENG-HARNESS".to_owned(),
+        primary_locator: "https://example.test".to_owned(),
+        version_or_digest: "test".to_owned(),
+        venue_status: "preprint".to_owned(),
+        inspected_on: "2026-08-08".to_owned(),
+        claim_ceiling: "Test ceiling".to_owned(),
+    };
+    assert_registry_parity("TEST", &matrix, &metadata, &registry);
+    let mut fetched = registry.clone();
+    fetched.access_status = "fetched-local-inspected".to_owned();
+    assert_registry_parity("TEST", &matrix, &metadata, &fetched);
+
+    let mut invalid_rows = Vec::new();
+    let mut invalid = registry.clone();
+    invalid.artifact = "Wrong title".to_owned();
+    invalid_rows.push(invalid);
+    let mut invalid = registry.clone();
+    invalid.primary_locator = "https://wrong.example".to_owned();
+    invalid_rows.push(invalid);
+    let mut invalid = registry.clone();
+    invalid.venue_status = "accepted".to_owned();
+    invalid_rows.push(invalid);
+    let mut invalid = registry.clone();
+    invalid.claim_ceiling = "Wrong ceiling".to_owned();
+    invalid_rows.push(invalid);
+    let mut invalid = registry.clone();
+    invalid.label = "MISSING".to_owned();
+    invalid_rows.push(invalid);
+    let mut invalid = registry.clone();
+    invalid.access_status = "vendored-uninspected".to_owned();
+    invalid_rows.push(invalid);
+
+    for invalid in invalid_rows {
+        assert!(
+            std::panic::catch_unwind(|| {
+                assert_registry_parity("TEST", &matrix, &metadata, &invalid)
+            })
+            .is_err(),
+            "registry divergence unexpectedly passed: {invalid:?}"
+        );
+    }
 }
 
 #[test]
@@ -1554,10 +1926,13 @@ fn weng_teaching_curriculum_has_complete_observable_contract() {
         lesson_id_set(&row["lesson_ids"], source_id);
 
         if expected_numbered.contains(source_id) {
-            let label = registry
+            let registry_row = registry
                 .get(source_id)
                 .unwrap_or_else(|| panic!("{source_id} is absent from the source registry"));
-            assert_ne!(label, "MISSING", "{source_id} remains identity-only");
+            assert_ne!(
+                registry_row.label, "MISSING",
+                "{source_id} remains identity-only"
+            );
         }
 
         let card_path =
@@ -1566,6 +1941,10 @@ fn weng_teaching_curriculum_has_complete_observable_contract() {
             .unwrap_or_else(|error| panic!("read {}: {error}", card_path.display()));
         let metadata = card_frontmatter(&card_text);
         card_sections(&card_text, &metadata["title"]);
+        let registry_row = registry
+            .get(source_id)
+            .unwrap_or_else(|| panic!("{source_id} is absent from the source registry"));
+        assert_registry_parity(source_id, row, &metadata, registry_row);
 
         for field in [
             "source_id",

@@ -27,12 +27,6 @@ No community participation preference has been established yet. Future sessions 
 
 Local captures exist for every source below, but primary-source interpretation is pending.
 
-- `GOOD-1965`
-- `YUDKOWSKY-2008`
-- `ASP`
-- `ABSOLUTE-ZERO`
-- `SELF-REWARDING`
-- `SPIN`
 - `SCIENTISTONE`
 - `AUTODATA`
 - `PROMPTBREEDER`

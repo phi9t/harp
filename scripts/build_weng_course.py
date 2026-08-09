@@ -17,6 +17,7 @@ STATUS = ROOT / "content/weng-course-status.json"
 CARD_ROOT = ROOT / "content/weng-sources"
 REFERENCE_ROOT = ROOT / "reference"
 EVIDENCE_GRAPH = ROOT / "content/sources/evidence_graph.tsv"
+SOURCE_REGISTRY = ROOT / "content/sources/source_registry.tsv"
 
 FIELDS = (
     "source_id",
@@ -129,6 +130,21 @@ CARD_METADATA = (
     "card_path",
     "canonical_route",
 )
+SOURCE_REGISTRY_FIELDS = (
+    "label",
+    "source_id",
+    "depth",
+    "cohort",
+    "access_status",
+    "artifact",
+    "relationship",
+    "primary_locator",
+    "version_or_digest",
+    "venue_status",
+    "inspected_on",
+    "claim_ceiling",
+)
+MAX_CARD_PROSE_WORDS = 240
 ALLOWED_STATES = {"building", "cards-complete", "complete"}
 BODY_LINK_LOCATORS = {
     "KARPATHY-AUTORESEARCH": "body-link-workflow-automation",
@@ -141,6 +157,70 @@ BODY_LINK_LOCATORS = {
 class Card:
     metadata: dict[str, str]
     sections: dict[str, str]
+
+
+def _decode_frontmatter_scalar(raw: str) -> str:
+    if raw.startswith('"') or raw.endswith('"'):
+        if not (raw.startswith('"') and raw.endswith('"')):
+            raise ValueError("frontmatter scalar has mismatched quotes")
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError as error:
+            raise ValueError("frontmatter scalar must use JSON string quoting") from error
+        if not isinstance(value, str):
+            raise ValueError("frontmatter quoted scalar must decode to a string")
+        if not value or "\n" in value or "\r" in value:
+            raise ValueError("frontmatter scalar must be a nonempty one-line string")
+        return value
+    if _plain_scalar_requires_quotes(raw):
+        raise ValueError("frontmatter plain scalar uses YAML-significant syntax")
+    return raw
+
+
+def _plain_scalar_requires_quotes(raw: str) -> bool:
+    yaml_indicators = "-?:,[]{}#&*!|>'\"%@`"
+    yaml_keywords = {
+        "null",
+        "true",
+        "false",
+        "yes",
+        "no",
+        "on",
+        "off",
+        "~",
+        ".nan",
+        ".inf",
+        "+.inf",
+        "-.inf",
+    }
+    return (
+        not raw
+        or raw[0] in yaml_indicators
+        or raw.casefold() in yaml_keywords
+        or _numeric_or_date_scalar(raw)
+        or " #" in raw
+        or ": " in raw
+        or raw.endswith(":")
+        or any(
+            character in "[]{}\t" or ord(character) < 0x20 or ord(character) == 0x7F
+            for character in raw
+        )
+    )
+
+
+def _numeric_or_date_scalar(raw: str) -> bool:
+    if re.fullmatch(r"\d{4}-\d{1,2}-\d{1,2}(?:[Tt ].+)?", raw):
+        return True
+    if re.fullmatch(
+        r"[+-]?(?:0[xX][0-9A-Fa-f_]+|0[oO][0-7_]+|0[bB][01_]+)",
+        raw,
+    ):
+        return True
+    try:
+        float(raw.replace("_", ""))
+    except ValueError:
+        return False
+    return True
 
 
 def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
@@ -156,12 +236,12 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
             raise ValueError("frontmatter must contain top-level key/value scalars")
         key, value = line.split(":", 1)
         key = key.strip()
-        value = value.strip()
-        if not key or not value:
+        raw_value = value.strip()
+        if not key or not raw_value:
             raise ValueError("frontmatter keys and values must be nonempty")
         if key in metadata:
             raise ValueError(f"duplicate frontmatter key: {key}")
-        metadata[key] = value
+        metadata[key] = _decode_frontmatter_scalar(raw_value)
     if tuple(metadata) != CARD_METADATA:
         raise ValueError(f"unexpected card metadata: {tuple(metadata)}")
     return metadata, body
@@ -212,6 +292,12 @@ def parse_sections(body: str, expected_title: str) -> dict[str, str]:
         sections[current] = _plain_section(current, section_lines)
     if tuple(sections) != HEADINGS:
         raise ValueError(f"unexpected card sections: {tuple(sections)}")
+    word_count = sum(len(section.split()) for section in sections.values())
+    if word_count > MAX_CARD_PROSE_WORDS:
+        raise ValueError(
+            f"card prose exceeds {MAX_CARD_PROSE_WORDS} words for "
+            f"{expected_title}: {word_count}"
+        )
     return sections
 
 
@@ -348,6 +434,54 @@ def _existing_file_beneath(relative: str, base: Path, field: str) -> Path:
     return resolved
 
 
+def load_source_registry() -> dict[str, dict[str, str]]:
+    with SOURCE_REGISTRY.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        if tuple(reader.fieldnames or ()) != SOURCE_REGISTRY_FIELDS:
+            raise ValueError("unexpected source registry header")
+        rows = list(reader)
+    if any(None in row or None in row.values() for row in rows):
+        raise ValueError("malformed source registry row")
+    if any(not all(row[field].strip() for field in SOURCE_REGISTRY_FIELDS) for row in rows):
+        raise ValueError("source registry row contains an empty field")
+    registry: dict[str, dict[str, str]] = {}
+    for row in rows:
+        source_id = row["source_id"]
+        if source_id in registry:
+            raise ValueError(f"duplicate source registry ID: {source_id}")
+        registry[source_id] = row
+    return registry
+
+
+def validate_registry_parity(
+    row: dict[str, str],
+    metadata: dict[str, str],
+    registry_row: dict[str, str],
+) -> None:
+    source_id = row["source_id"]
+    comparisons = (
+        ("title", row["title"], registry_row["artifact"]),
+        ("primary_url", row["primary_url"], registry_row["primary_locator"]),
+        (
+            "publication_state",
+            metadata["publication_state"],
+            registry_row["venue_status"],
+        ),
+        ("claim_ceiling", row["claim_ceiling"], registry_row["claim_ceiling"]),
+    )
+    for field, actual, expected in comparisons:
+        if actual != expected:
+            raise ValueError(f"{source_id} {field} disagrees with source registry")
+    if row["evidence_state"] == "card-complete":
+        if registry_row["label"] != "EVIDENCE":
+            raise ValueError(f"{source_id} card-complete registry label must be EVIDENCE")
+        access_status = registry_row["access_status"]
+        if access_status != "inspected" and not access_status.endswith("-inspected"):
+            raise ValueError(
+                f"{source_id} card-complete registry access_status must end in inspected"
+            )
+
+
 def load_cards() -> list[Card]:
     with MATRIX.open(newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
@@ -367,6 +501,7 @@ def load_cards() -> list[Card]:
         raise ValueError("invalid lesson_ids")
     expected_locators = load_expected_locators()
     validate_matrix_locators(rows, expected_locators)
+    registry = load_source_registry()
 
     cards = []
     for row in rows:
@@ -400,6 +535,10 @@ def load_cards() -> list[Card]:
         _existing_file_beneath(
             metadata["canonical_route"], ROOT / "content", "canonical_route"
         )
+        registry_row = registry.get(row["source_id"])
+        if registry_row is None:
+            raise ValueError(f"{row['source_id']} is absent from the source registry")
+        validate_registry_parity(row, metadata, registry_row)
         cards.append(Card(metadata, parse_sections(body, metadata["title"])))
 
     locator_order = {
@@ -761,6 +900,147 @@ def write_or_check(path: Path, content: str, check: bool) -> None:
 
 
 def run_self_tests() -> None:
+    quoted_frontmatter = "\n".join(
+        (
+            "---",
+            "source_id: TEST",
+            'title: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data"',
+            "weng_locator: reference-1",
+            "section_id: system-being-improved",
+            "primary_url: https://example.test",
+            "captured_path: evidence/test.txt",
+            "publication_state: preprint",
+            "evidence_state: card-complete",
+            "edited_object_family: harness",
+            "claim_ceiling: Test claim",
+            "lesson_ids: 0001,0010",
+            "card_path: content/weng-sources/test.md",
+            "canonical_route: content/test.md",
+            "---",
+            "",
+        )
+    )
+    metadata, _ = parse_frontmatter(quoted_frontmatter)
+    if metadata["title"] != "Absolute Zero: Reinforced Self-play Reasoning with Zero Data":
+        raise AssertionError("quoted colon title did not decode")
+    for safe_plain in (
+        "Author-reported mechanism; no independent reproduction",
+        "ICML 2026 official poster",
+    ):
+        if _decode_frontmatter_scalar(safe_plain) != safe_plain:
+            raise AssertionError(f"safe plain scalar did not round-trip: {safe_plain}")
+    for unsafe_plain in (
+        "plain # comment",
+        "[one, two]",
+        "true",
+        "*alias",
+        "@reserved",
+        "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        "foo:",
+        "0xFF",
+        "0b101",
+        "0o77",
+        "2026-08-08",
+        "42",
+    ):
+        try:
+            _decode_frontmatter_scalar(unsafe_plain)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"unsafe plain scalar unexpectedly passed: {unsafe_plain}")
+    for quoted, expected in (
+        ('"plain # comment"', "plain # comment"),
+        ('"[one, two]"', "[one, two]"),
+        ('"true"', "true"),
+        ('"*alias"', "*alias"),
+        ('"@reserved"', "@reserved"),
+        ('"Absolute Zero: Reinforced Self-play Reasoning with Zero Data"', "Absolute Zero: Reinforced Self-play Reasoning with Zero Data"),
+        ('"foo:"', "foo:"),
+        ('"0xFF"', "0xFF"),
+        ('"0b101"', "0b101"),
+        ('"0o77"', "0o77"),
+    ):
+        if _decode_frontmatter_scalar(quoted) != expected:
+            raise AssertionError(f"quoted scalar did not decode: {quoted}")
+    for invalid_title in (
+        "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+        '"Absolute Zero: Reinforced Self-play Reasoning with Zero Data',
+        'Absolute Zero"',
+        '"Absolute Zero\\q"',
+    ):
+        invalid = quoted_frontmatter.replace(
+            'title: "Absolute Zero: Reinforced Self-play Reasoning with Zero Data"',
+            f"title: {invalid_title}",
+        )
+        try:
+            parse_frontmatter(invalid)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"unsafe frontmatter scalar unexpectedly passed: {invalid_title}")
+
+    def word_boundary_body(word_count: int) -> str:
+        counts = (word_count - 4, 1, 1, 1, 1)
+        sections = "\n".join(
+            f"## {heading}\n{' '.join(['word'] * count)}"
+            for heading, count in zip(HEADINGS, counts, strict=True)
+        )
+        return f"\n# Test Card\n\n{sections}"
+
+    parse_sections(word_boundary_body(240), "Test Card")
+    try:
+        parse_sections(word_boundary_body(241), "Test Card")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("241-word source card unexpectedly passed")
+
+    matrix_row = {
+        "source_id": "TEST",
+        "title": "Test title",
+        "primary_url": "https://example.test",
+        "evidence_state": "card-complete",
+        "claim_ceiling": "Test ceiling",
+    }
+    card_metadata = {
+        "source_id": "TEST",
+        "title": "Test title",
+        "primary_url": "https://example.test",
+        "publication_state": "preprint",
+        "evidence_state": "card-complete",
+        "claim_ceiling": "Test ceiling",
+    }
+    registry_row = {
+        "label": "EVIDENCE",
+        "artifact": "Test title",
+        "primary_locator": "https://example.test",
+        "venue_status": "preprint",
+        "access_status": "vendored-inspected",
+        "claim_ceiling": "Test ceiling",
+    }
+    validate_registry_parity(matrix_row, card_metadata, registry_row)
+    validate_registry_parity(
+        matrix_row,
+        card_metadata,
+        {**registry_row, "access_status": "fetched-local-inspected"},
+    )
+    for field, value in (
+        ("artifact", "Wrong title"),
+        ("primary_locator", "https://wrong.example"),
+        ("venue_status", "accepted"),
+        ("claim_ceiling", "Wrong ceiling"),
+        ("label", "MISSING"),
+        ("access_status", "vendored-uninspected"),
+    ):
+        invalid_registry = {**registry_row, field: value}
+        try:
+            validate_registry_parity(matrix_row, card_metadata, invalid_registry)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"registry divergence unexpectedly passed: {field}")
+
     if (
         _reference_locator("Reference 38 and Joint Optimization with Model Weights")
         != "reference-38"
