@@ -1406,5 +1406,5 @@ pub(super) fn normalize_link_path(base: &Path, destination: &Path) -> Option<Pat
             _ => return None,
         }
     }
-    resolved.starts_with("content").then_some(resolved)
+    (resolved.starts_with("content") || resolved.starts_with("knowledge")).then_some(resolved)
 }

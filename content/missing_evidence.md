@@ -26,6 +26,17 @@ Mode: `DOMAIN ORIENTATION`.
 
 **MISSING.** An independent reproduction of DGM, Meta-Harness, Self-Harness, AHE, or SIA across the same tasks, models, budgets, and acceptance rules.
 
+**MISSING.** A Meta-Harness reproduction that reconstructs the original
+candidate archive, per-dataset validation history, raw traces, proposer
+configuration, resource spend, and final held-out evaluation. The local TRAE
+run validates only proposal and write boundaries; its three candidates are
+interface-invalid.
+
+**MISSING.** A matched Meta-Harness next-cycle test showing that an accepted
+harness becomes a better producer of later accepted harnesses under the same
+proposer, evaluator, task distribution, permissions, archive policy, and total
+budget.
+
 **MISSING.** A generally accepted evaluation for research taste, importance, negative results, safety, and long-term scientific value that is robust to optimization pressure.
 
 **MISSING.** Evidence that a public system autonomously chooses an important general AI research problem, builds a more capable successor, independently validates it, controls deployment, and repeats the whole cycle.

@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meta-Harness: End-to-End Optimization of Model Harnesses</title>
+    <link rel="canonical" href="https://yoonholee.com/meta-harness/" />
+    <meta name="robots" content="index, follow" />
+
+    <meta
+      name="description"
+      content="Meta-Harness automatically optimizes model harnesses — the code determining what to store, retrieve, and present to an LLM — surpassing hand-designed systems on text classification, math reasoning, and agentic coding."
+    />
+    <meta name="author" content="Yoonho Lee" />
+    <meta property="og:site_name" content="Yoonho Lee" />
+    <meta property="og:title" content="Meta-Harness: End-to-End Optimization of Model Harnesses" />
+    <meta
+      property="og:description"
+      content="Meta-Harness automatically optimizes model harnesses — the code determining what to store, retrieve, and present to an LLM — surpassing hand-designed systems on text classification, math reasoning, and agentic coding."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://yoonholee.com/meta-harness/" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:image" content="https://yoonholee.com/meta-harness/static/images/method.webp" />
+    <meta property="og:image:alt" content="Diagram of the Meta-Harness search loop" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@yoonholeee" />
+    <meta name="twitter:title" content="Meta-Harness: End-to-End Optimization of Model Harnesses" />
+    <meta
+      name="twitter:description"
+      content="Meta-Harness automatically optimizes model harnesses across text classification, math reasoning, and agentic coding."
+    />
+    <meta name="twitter:url" content="https://yoonholee.com/meta-harness/" />
+    <meta name="twitter:image" content="https://yoonholee.com/meta-harness/static/images/method.webp" />
+    <meta name="twitter:image:alt" content="Diagram of the Meta-Harness search loop" />
+    <meta name="citation_title" content="Meta-Harness: End-to-End Optimization of Model Harnesses" />
+    <meta name="citation_author" content="Lee, Yoonho" />
+    <meta name="citation_author" content="Nair, Roshen" />
+    <meta name="citation_author" content="Zhang, Qizheng" />
+    <meta name="citation_author" content="Lee, Kangwook" />
+    <meta name="citation_author" content="Khattab, Omar" />
+    <meta name="citation_author" content="Finn, Chelsea" />
+    <meta name="citation_publication_date" content="2026" />
+    <meta name="citation_conference_title" content="Conference on Language Modeling (COLM) 2026" />
+    <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2603.28052" />
+
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site summary" />
+    <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Yoonho Lee essays" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "@id": "https://yoonholee.com/meta-harness/#paper",
+        "headline": "Meta-Harness: End-to-End Optimization of Model Harnesses",
+        "description": "Meta-Harness automatically optimizes model harnesses across text classification, math reasoning, and agentic coding.",
+        "author": [
+          { "@type": "Person", "name": "Yoonho Lee" },
+          { "@type": "Person", "name": "Roshen Nair" },
+          { "@type": "Person", "name": "Qizheng Zhang" },
+          { "@type": "Person", "name": "Kangwook Lee" },
+          { "@type": "Person", "name": "Omar Khattab" },
+          { "@type": "Person", "name": "Chelsea Finn" }
+        ],
+        "datePublished": "2026",
+        "url": "https://yoonholee.com/meta-harness/",
+        "mainEntityOfPage": "https://yoonholee.com/meta-harness/",
+        "image": "https://yoonholee.com/meta-harness/static/images/method.webp",
+        "sameAs": ["https://arxiv.org/abs/2603.28052", "https://github.com/stanford-iris-lab/meta-harness"]
+      }
+    </script>
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="assets/fonts/SourceSerif4-Regular-subset.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/SourceSans3-Variable-subset.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Inline critical CSS -->
+    <link rel="stylesheet" href="static/css/style.css" />
+  </head>
+  <body>
+    <div style="text-align: center; font-size: 0.75rem; color: #aaa; padding: 0.5rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06)">
+      Best viewed on a desktop browser. Interactive elements use mouse hover, and margin figures need a wide screen.
+    </div>
+    <nav class="section-nav" id="sectionNav">
+      <a href="#demo">Demo</a>
+      <a href="#method">Approach</a>
+      <a href="#results">Results</a>
+      <a href="#text-clf" class="nested">Text Classification</a>
+      <a href="#math" class="nested">Math Reasoning</a>
+      <a href="#agentic" class="nested">Agentic Coding</a>
+    </nav>
+    <div class="container">
+      <header>
+        <h1 style="max-width: none; margin-left: -2rem; margin-right: -2rem">Meta-Harness: End-to-End Optimization of Model Harnesses</h1>
+        <div class="authors">Yoonho Lee, Roshen Nair, Qizheng Zhang, Kangwook Lee, Omar Khattab, Chelsea Finn</div>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2603.28052">Paper</a>
+          <a href="https://github.com/stanford-iris-lab/meta-harness">Code</a>
+          <a href="https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact">Artifact</a>
+        </div>
+      </header>
+    </div>
+
+    <!-- Evolution Stepper (wider) -->
+    <div class="container-wide">
+      <section class="evo-section">
+        <h2 id="demo">TerminalBench-2: Harness Evolution</h2>
+        <p style="margin-bottom: 0.75rem; color: var(--text-light); font-size: 0.95rem">
+          This is not the run that produced our final reported harness. It is an earlier, smaller search run that we find especially instructive for
+          understanding what Meta-Harness does internally. We deliberately chose a
+          <strong style="color: var(--text-color)">hard 19-task subset</strong> where most agents struggle (note the low baseline scores), so that
+          improvements from pure harness changes would be clearly visible. Starting from Terminus-KIRA (28.5%), the search reaches
+          <strong style="color: var(--text-color)">46.5%</strong> by iteration 7.
+        </p>
+        <p style="margin-bottom: 1.25rem; color: var(--text-light); font-size: 0.95rem">
+          Step through the iterations to see the proposer's reasoning. It performs counterfactual diagnosis across execution traces, identifies
+          specific failure modes by reading raw logs through the filesystem, and proposes targeted fixes. Each proposal is grounded in concrete
+          evidence from prior runs. Full-benchmark results on all 89 tasks are in the
+          <a href="#results" style="color: var(--theme-color)">Results</a>
+          section below. Click any dot or use arrow keys to inspect code changes.
+        </p>
+        <div class="evo-chart-row">
+          <div class="evo-leaderboard" id="evoLeaderboard"></div>
+          <div class="evo-chart-wrap">
+            <canvas id="evoChart" width="960" height="360"></canvas>
+          </div>
+          <div class="evo-hover-diff" id="evoHoverDiff"></div>
+        </div>
+        <div class="evo-controls">
+          <button id="evoPrev" onclick="evoStep(-1)">&larr; Prev</button>
+          <span class="evo-step-label" id="evoLabel">Iteration 1 / 10</span>
+          <button id="evoNext" onclick="evoStep(1)">Next &rarr;</button>
+        </div>
+        <div class="evo-card" id="evoCard"></div>
+      </section>
+    </div>
+
+    <div class="container">
+      <div class="figure">
+        <img
+          src="static/images/method.webp"
+          alt="Meta-Harness search loop: an agent proposes harness code using a filesystem of prior source code, execution traces, scores, and reflections."
+          width="4691"
+          height="1494"
+        />
+        <div class="figure-caption">
+          <strong>Meta-Harness search loop.</strong> (1) An agent reads a filesystem containing all prior candidates' source code, execution traces,
+          and scores, and proposes a new harness. (2) We evaluate the proposed harness on held-out tasks. (3) All logs are stored in the filesystem,
+          and the loop repeats.
+        </div>
+      </div>
+
+      <section>
+        <h2 id="method">What Makes This Different</h2>
+        <p>
+          There are many methods for optimizing text and code with LLM feedback. The key difference is how much the optimizer gets to see. Most prior
+          methods compress everything into a short summary, a scalar score, or a sliding window of recent candidates. That works for small problems,
+          but harness engineering produces failures that are hard to diagnose without seeing the raw execution trace.
+        </p>
+        <p>
+          Meta-Harness takes a different approach: it gives the proposer a filesystem containing the full source code, scores, and execution traces of
+          every prior candidate. The proposer is a coding agent (Claude Code) that reads what it needs via <code>grep</code>, <code>cat</code>, and
+          other standard tools. In practice, this means up to 10M tokens of diagnostic context per step, vs. at most 26K for all prior methods we
+          surveyed. The result is that the proposer can trace a failure back to the specific harness decision that caused it, rather than guessing
+          from a score. See <a href="https://arxiv.org/abs/2603.28052" style="color: var(--theme-color)">the paper</a> for details.
+        </p>
+
+        <div style="position: relative">
+          <div class="table-wrap">
+            <table class="results-table" id="methodTable">
+              <thead>
+                <tr>
+                  <th style="text-align: left">Method</th>
+                  <th style="text-align: left">History</th>
+                  <th style="text-align: left">Log content</th>
+                  <th>Mtok/iter&thinsp;&uarr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  data-desc="<strong>Context available:</strong> the current output only, plus an LLM-generated critique of that output. No prior candidates, no scores, no history. Each iteration starts fresh."
+                >
+                  <td>Self-Refine</td>
+                  <td>Last</td>
+                  <td>output + self-generated critique</td>
+                  <td>0.001</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> ~20 prior instruction strings, each paired with a scalar accuracy score. No per-example outcomes, no error messages, no reasoning traces. The proposer knows <em>which</em> instructions scored higher but not <em>why</em>."
+                >
+                  <td>OPRO</td>
+                  <td>Window</td>
+                  <td>past (solution, score) pairs</td>
+                  <td>0.002</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> the current candidate's output on one example, plus the evaluation result. The backward pass produces a textual critique but cannot see other candidates or any history. Strictly single-example, single-iteration."
+                >
+                  <td>TextGrad</td>
+                  <td>Last</td>
+                  <td>LLM textual gradient</td>
+                  <td>0.015</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> a handful of successful execution traces (bootstrapped demos) and the program's module structure. Never sees failures or error traces. Candidate selection is via Bayesian optimization over (instruction, demo) combinations."
+                >
+                  <td>MIPRO</td>
+                  <td>Summary</td>
+                  <td>bootstrapped program traces</td>
+                  <td>0.003</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> the current program's code and score, a few top-scoring programs from the population, and &ldquo;inspiration programs&rdquo; selected for diversity via MAP-Elites. Sees code and scores but no execution traces or per-example diagnostics."
+                >
+                  <td>AlphaEvolve</td>
+                  <td>Window</td>
+                  <td>program database + eval. scores</td>
+                  <td>0.022</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> the richest prior method. Sees full rollout traces (every module's input and output), aggregate scores, and LLM-generated textual feedback per example. But all of this is serialized into a single prompt; the proposer cannot selectively query for more."
+                >
+                  <td>GEPA</td>
+                  <td>Summary</td>
+                  <td>rollout traces (reasoning + tools)</td>
+                  <td>0.008</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> the current best candidate plus an ordered list of pairwise comparison rationales (e.g., &ldquo;attempt 3 was rejected because the ring system was too rigid&rdquo;). History resets each time a new best is found, so the proposer only sees feedback relative to the current best."
+                >
+                  <td>Feedback Descent</td>
+                  <td>Summary</td>
+                  <td>pairwise comparison + feedback</td>
+                  <td>0.012</td>
+                </tr>
+                <tr
+                  data-desc="<strong>Context available:</strong> the problem statement plus one prior solution selected via PUCT. Unlike other methods, TTT-Discover does RL weight updates rather than in-context optimization, so the &ldquo;context&rdquo; is partially encoded in the model's updated weights rather than in the prompt."
+                >
+                  <td>TTT-Discover</td>
+                  <td>Window</td>
+                  <td>prev. solution fragment</td>
+                  <td>0.026</td>
+                </tr>
+                <tr
+                  class="ours-best"
+                  data-desc="<strong>Context available:</strong> a filesystem containing every prior candidate's source code, evaluation scores, and full execution traces (prompts, model outputs, tool calls, errors). The proposer navigates this via grep, cat, and other tools, reading only what it needs. In practice, up to 10M tokens of diagnostic information per step."
+                >
+                  <td><strong>Meta-Harness</strong></td>
+                  <td><strong>Full</strong></td>
+                  <td><strong>all logs and scores</strong></td>
+                  <td><strong>10.0</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="table-caption">
+              Context available per optimization step. Mtok/iter = estimated context per evaluation in each paper's largest setting. Hover a row for
+              details.
+            </p>
+          </div>
+          <div
+            id="methodDesc"
+            style="
+              position: absolute;
+              left: 100%;
+              top: 0;
+              margin-left: 2rem;
+              width: 340px;
+              font-size: 0.78rem;
+              color: var(--text-light);
+              line-height: 1.5;
+              transition: opacity 0.2s;
+              opacity: 0;
+            "
+          ></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="results">Results</h2>
+
+        <h3 id="text-clf">Text Classification</h3>
+        <p>
+          We follow the online text classification setup of ACE: an LLM receives labeled examples one at a time, updates its memory, and is evaluated
+          on a held-out test set. We search over harnesses using three datasets — LawBench (215 classes), Symptom2Disease (22 classes), and USPTO-50k
+          (180 classes) — with GPT-OSS-120B as the model. We ran 20 evolution iterations with two candidates per iteration, producing 40 candidate
+          harnesses. All test sets are held out until the final evaluation.
+        </p>
+        <div class="callout">
+          The best discovered harness (<em>Label-Primed Query</em>) achieves <strong>48.6%</strong> vs. ACE&rsquo;s 40.9% — a
+          <strong>7.7-point improvement</strong> using <strong>4&times; fewer context tokens</strong>. Gains concentrate on tasks with large,
+          confusable label spaces: LawBench (215 classes) sees +16 points, Symptom2Disease +9 points. None of the discovered harnesses require
+          additional LLM calls beyond the main task-solving call.
+        </div>
+
+        <div style="position: relative">
+          <div class="table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left">Harness</th>
+                  <th>USPTO&thinsp;&uarr;</th>
+                  <th>S2D&thinsp;&uarr;</th>
+                  <th>Law&thinsp;&uarr;</th>
+                  <th>Acc&thinsp;&uarr;</th>
+                  <th>Ctx (K)&thinsp;&darr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-pareto="Zero-Shot">
+                  <td>Zero-shot</td>
+                  <td>12.0</td>
+                  <td>63.2</td>
+                  <td>7.0</td>
+                  <td>27.4</td>
+                  <td>0</td>
+                </tr>
+                <tr data-pareto="Few-Shot (N=4)">
+                  <td>Few-shot (N=4)</td>
+                  <td>11.0</td>
+                  <td>68.4</td>
+                  <td>18.0</td>
+                  <td>32.5</td>
+                  <td>4.0</td>
+                </tr>
+                <tr data-pareto="Few-Shot (N=8)">
+                  <td>Few-shot (N=8)</td>
+                  <td>14.0</td>
+                  <td>67.9</td>
+                  <td>21.0</td>
+                  <td>34.3</td>
+                  <td>8.0</td>
+                </tr>
+                <tr data-pareto="Few-Shot (N=16)">
+                  <td>Few-shot (N=16)</td>
+                  <td>15.0</td>
+                  <td>67.0</td>
+                  <td>20.0</td>
+                  <td>34.0</td>
+                  <td>15.4</td>
+                </tr>
+                <tr data-pareto="Few-Shot (N=32)">
+                  <td>Few-shot (N=32)</td>
+                  <td>13.0</td>
+                  <td>72.2</td>
+                  <td>21.0</td>
+                  <td>35.4</td>
+                  <td>31.5</td>
+                </tr>
+                <tr data-pareto="Few-Shot (all)">
+                  <td>Few-shot (all)</td>
+                  <td>15.0</td>
+                  <td>78.3</td>
+                  <td>29.0</td>
+                  <td>40.8</td>
+                  <td>49.3</td>
+                </tr>
+                <tr data-pareto="ACE">
+                  <td>ACE</td>
+                  <td><strong>16.0</strong></td>
+                  <td>77.8</td>
+                  <td>29.0</td>
+                  <td>40.9</td>
+                  <td>203.0</td>
+                </tr>
+                <tr data-pareto="MCE">
+                  <td>MCE</td>
+                  <td>14.0</td>
+                  <td>83.0</td>
+                  <td>23.0</td>
+                  <td>40.0</td>
+                  <td>114.0</td>
+                </tr>
+                <tr class="ours-best" data-pareto="Meta-Harness (best)">
+                  <td>Meta-Harness (Ours)</td>
+                  <td>14.0</td>
+                  <td><strong>86.8</strong></td>
+                  <td><strong>45.0</strong></td>
+                  <td><strong>48.6</strong></td>
+                  <td>45.5</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="table-caption">
+              Test accuracy on three text classification benchmarks (GPT-OSS-120B). Ctx = average additional input context (thousands of characters).
+            </p>
+          </div>
+          <div class="margin-figure" style="position: absolute; left: 100%; top: 0; margin-left: 2rem; width: 448px">
+            <canvas id="paretoChart" width="896" height="576" style="width: 100%; height: auto; cursor: default"></canvas>
+            <div
+              id="paretoTooltip"
+              style="
+                position: absolute;
+                display: none;
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 0.3rem 0.5rem;
+                font-size: 0.7rem;
+                pointer-events: none;
+                white-space: nowrap;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+              "
+            ></div>
+          </div>
+        </div>
+
+        <p>
+          We also directly compare Meta-Harness against two representative program-search methods, OpenEvolve and TTT-Discover (with PUCT selection),
+          giving each the same proposer and evaluation budget. Meta-Harness matches their final accuracy with
+          <strong>10&times; fewer evaluations</strong>, and its final accuracy surpasses theirs by more than 10 points. We attribute this to the
+          filesystem-based interface: both OpenEvolve and PUCT compress history into a fixed prompt format, discarding the execution traces that
+          Meta-Harness uses for targeted diagnosis.
+        </p>
+
+        <div class="figure">
+          <img
+            src="static/images/learning_curves.svg"
+            alt="Meta-Harness learning curves vs baselines"
+            width="231"
+            height="142"
+            loading="lazy"
+            style="width: 100%"
+          />
+          <div class="figure-caption">
+            <strong>Search progress over ~60 proposals.</strong> Meta-Harness (red) outperforms all baselines and reaches the next-best
+            optimizer&rsquo;s final accuracy in just 4 iterations. TTT-Discover, Best-of-N, OpenEvolve, ACE, few-shot, and zero-shot shown for
+            comparison.
+          </div>
+        </div>
+
+        <h3 id="math">Math Reasoning</h3>
+        <p>
+          We study retrieval-augmented math solving: a language model is given retrieved examples from a large corpus before attempting each problem.
+          Meta-Harness searches over retrieval programs that can implement arbitrary filtering, branching, and formatting logic using corpus metadata
+          and BM25 scores. The corpus contains &ge;500K problems drawn from eight open-source datasets. We evolve a single retrieval harness on a
+          250-problem search set, then evaluate it on 200 held-out IMO-level problems. The same harness is then tested on five models unseen during
+          search, directly measuring transfer.
+        </p>
+        <div class="callout">
+          A single discovered retrieval harness improves accuracy by <strong>+4.7 points</strong> on average (34.1% &rarr; 38.8%) across five held-out
+          models. It matches or exceeds the strongest fixed baselines on average, outperforming BM25 retrieval by 1.3 points overall.
+        </div>
+
+        <div class="table-wrap">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th style="text-align: left">Method</th>
+                <th>GPT-5.4n&thinsp;&uarr;</th>
+                <th>GPT-5.4m&thinsp;&uarr;</th>
+                <th>Gem-3.1FL&thinsp;&uarr;</th>
+                <th>Gem-3F&thinsp;&uarr;</th>
+                <th>GPT-20B&thinsp;&uarr;</th>
+                <th>Avg&thinsp;&uarr;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>No Retriever</td>
+                <td>23.0</td>
+                <td>28.8</td>
+                <td>28.6</td>
+                <td>42.6</td>
+                <td>47.6</td>
+                <td>34.1</td>
+              </tr>
+              <tr>
+                <td>Random Few-shot</td>
+                <td>23.1 <small style="color: #2a7a2a">(+0.1)</small></td>
+                <td>24.5 <small style="color: #b91c1c">(-4.3)</small></td>
+                <td>31.0 <small style="color: #2a7a2a">(+2.4)</small></td>
+                <td>40.4 <small style="color: #b91c1c">(-2.2)</small></td>
+                <td>41.8 <small style="color: #b91c1c">(-5.8)</small></td>
+                <td>32.2 <small style="color: #b91c1c">(-1.9)</small></td>
+              </tr>
+              <tr>
+                <td>BM25 Retrieval</td>
+                <td>30.2 <small style="color: #2a7a2a">(+7.2)</small></td>
+                <td>29.2 <small style="color: #2a7a2a">(+0.4)</small></td>
+                <td>32.8 <small style="color: #2a7a2a">(+4.2)</small></td>
+                <td>46.6 <small style="color: #2a7a2a">(+4.0)</small></td>
+                <td>48.9 <small style="color: #2a7a2a">(+1.3)</small></td>
+                <td>37.5 <small style="color: #2a7a2a">(+3.4)</small></td>
+              </tr>
+              <tr class="ours-best">
+                <td>Meta-Harness (Ours)</td>
+                <td>31.7 <small style="color: #2a7a2a">(+8.7)</small></td>
+                <td>30.4 <small style="color: #2a7a2a">(+1.6)</small></td>
+                <td>34.9 <small style="color: #2a7a2a">(+6.3)</small></td>
+                <td>46.3 <small style="color: #2a7a2a">(+3.7)</small></td>
+                <td>50.6 <small style="color: #2a7a2a">(+3.0)</small></td>
+                <td><strong>38.8</strong> <small style="color: #2a7a2a">(+4.7)</small></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="table-caption">
+            Retrieval-augmented math reasoning on 200 IMO-level problems (pass@1, avg. over 3 samples). Absolute improvement over no retriever in
+            parentheses. The discovered Meta-Harness retrieval strategy improves reasoning across all five held-out models, with a 4.7-point average
+            gain.
+          </p>
+        </div>
+
+        <h3 id="agentic">Agentic Coding (TerminalBench-2)</h3>
+        <p>
+          TerminalBench-2 evaluates LLM agents on 89 Dockerized tasks spanning code translation, distributed ML setup, systems programming,
+          bioinformatics, and cryptanalysis, with binary pass/fail grading and 5 independent trials per task. These tasks are difficult because they
+          require long-horizon, fully autonomous execution under complex dependencies, truncated terminal outputs, and substantial domain knowledge.
+        </p>
+        <p>
+          Meta-Harness evolves the full coding harness (system prompts, tool definitions, completion-checking logic, and context management). The
+          proposer reads per-task execution traces (command logs, error messages, timeout behavior) to diagnose failure modes and propose targeted
+          fixes. We initialize search from two strong open baselines, Terminus 2 and Terminus-KIRA.
+        </p>
+        <div class="callout">
+          On <strong>Claude Opus 4.6</strong>, Meta-Harness achieves <strong>76.4%</strong> pass rate, surpassing Terminus-KIRA (74.7%) and ranking
+          <strong>#2</strong> among all Opus 4.6 agents. On <strong>Claude Haiku 4.5</strong>, Meta-Harness achieves <strong>37.6%</strong>,
+          outperforming the next-best agent (Goose, 35.5%) and ranking <strong>#1</strong> among all Haiku 4.5 agents.
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 1.5rem 0">
+          <div class="table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left">Claude Opus 4.6</th>
+                  <th>Pass&thinsp;%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Claude Code</td>
+                  <td>58.0</td>
+                </tr>
+                <tr>
+                  <td>Terminus 2</td>
+                  <td>62.9</td>
+                </tr>
+                <tr>
+                  <td>Mux</td>
+                  <td>66.5</td>
+                </tr>
+                <tr>
+                  <td>Factory Droid</td>
+                  <td>69.9</td>
+                </tr>
+                <tr>
+                  <td>TongAgents</td>
+                  <td>71.9</td>
+                </tr>
+                <tr>
+                  <td>MAYA-V2</td>
+                  <td>72.1</td>
+                </tr>
+                <tr>
+                  <td>Terminus-KIRA</td>
+                  <td>74.7</td>
+                </tr>
+                <tr>
+                  <td>Capy</td>
+                  <td>75.3</td>
+                </tr>
+                <tr class="ours-best">
+                  <td>Meta-Harness (Ours)</td>
+                  <td>76.4</td>
+                </tr>
+                <tr>
+                  <td>ForgeCode</td>
+                  <td><strong>81.8</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left">Claude Haiku 4.5</th>
+                  <th>Pass&thinsp;%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>OpenHands</td>
+                  <td>13.9</td>
+                </tr>
+                <tr>
+                  <td>Claude Code</td>
+                  <td>27.5</td>
+                </tr>
+                <tr>
+                  <td>Terminus 2</td>
+                  <td>28.3</td>
+                </tr>
+                <tr>
+                  <td>Mini-SWE-Agent</td>
+                  <td>29.8</td>
+                </tr>
+                <tr>
+                  <td>Terminus-KIRA</td>
+                  <td>33.7</td>
+                </tr>
+                <tr>
+                  <td>Goose</td>
+                  <td>35.5</td>
+                </tr>
+                <tr class="ours-best">
+                  <td>Meta-Harness (Ours)</td>
+                  <td><strong>37.6</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="table-caption">
+          Pass rate on TerminalBench-2. Results for others are from the official leaderboard.
+          <strong>Meta-Harness ranks #2 among all Opus 4.6 agents and #1 among all Haiku 4.5 agents.</strong>
+        </p>
+      </section>
+
+      <hr class="section-rule" />
+
+      <section>
+        <h2 id="bibtex">BibTeX</h2>
+        <div class="bibtex-block">
+          <button class="copy-btn" onclick="copyBibtex()">Copy</button>
+          <pre><code id="bibtex">@inproceedings{lee2026metaharness,
+  title={Meta-Harness: End-to-End Optimization of Model Harnesses},
+  author={Lee, Yoonho and Nair, Roshen and Zhang, Qizheng and Lee, Kangwook and Khattab, Omar and Finn, Chelsea},
+  booktitle={Conference on Language Modeling (COLM)},
+  year={2026}
+}</code></pre>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        Design inspired by <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page</a> /
+        <a href="https://nerfies.github.io">Nerfies</a>, heavily modified.
+      </div>
+    </footer>
+
+    <!-- Inline data (eliminates 2 fetch round-trips) -->
+    <script src="static/data/evo.js"></script>
+    <script src="static/data/pareto.js"></script>
+
+    <!-- Chart + nav scripts (defer = parse after HTML, execute in order) -->
+    <script defer src="static/js/evo-chart.js"></script>
+    <script defer src="static/js/pareto-chart.js"></script>
+    <script defer src="static/js/nav.js"></script>
+    <script defer src="static/js/init.js"></script>
+  </body>
+</html>

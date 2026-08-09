@@ -58,6 +58,7 @@ fn write_complete_fixture(repo: &Path) {
         }
     }
     for (document_id, path) in AUXILIARY_DOCUMENTS {
+        fs::create_dir_all(repo.join(path).parent().unwrap()).unwrap();
         fs::write(
             repo.join(path),
             format!(
@@ -831,6 +832,54 @@ fn context_engineering_companion_preserves_reader_and_source_contract() {
 }
 
 #[test]
+fn meta_harness_deep_dive_preserves_evidence_tiers_and_claim_ceiling() {
+    let corpus = compile(workspace_root()).unwrap();
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "meta-harness-deep-dive")
+        .unwrap();
+
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/meta_harness/meta_harness_deep_dive.md"
+    );
+    for required in [
+        "Source tiers and claim ceilings",
+        "arXiv v1 paper",
+        "dated project page",
+        "pinned public repositories",
+        "local TRAE proposal experiment",
+        "Candidate, archive, proposer, evaluator, and Pareto flow",
+        "Text-classification contract",
+        "TerminalBench-2 boundaries",
+        "Experimental Harbor controller",
+        "illustrative, not the final reported run",
+        "valid candidate count is zero",
+        "Held-out leakage",
+        "Candidate import execution",
+        "Proposer privilege",
+        "Archive growth",
+        "Score-only selection",
+        "Trace contamination",
+        "Malformed candidates",
+        "Weak reproduction evidence",
+        "ACE",
+        "MCE",
+        "Harness optimization is not demonstrated recursive successor improvement",
+        "No benchmark score, paid model evaluation, or held-out result was reproduced",
+        "evidence/meta_harness/trae_run/normalized/validation.json",
+        "evidence/implementations/meta_harness/snapshot/reference_examples/text_classification/meta_harness.py",
+        "evidence/implementations/meta_harness/snapshot/experimental/harbor_meta_harness/controller.py",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "Meta-Harness deep dive is missing {required}"
+        );
+    }
+}
+
+#[test]
 fn verifies_the_nine_chapter_spine_and_native_source_folds() {
     let repo = fixture();
     write_complete_fixture(repo.path());
@@ -1043,6 +1092,15 @@ fn resolves_parent_links_without_allowing_repository_escape() {
     assert_eq!(
         normalize_link_path(Path::new("content"), Path::new("../../../secret")),
         None
+    );
+    assert_eq!(
+        normalize_link_path(
+            Path::new("content/systems"),
+            Path::new("../../knowledge/meta_harness/meta_harness_deep_dive.md"),
+        ),
+        Some(PathBuf::from(
+            "knowledge/meta_harness/meta_harness_deep_dive.md"
+        ))
     );
 }
 

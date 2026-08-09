@@ -27,10 +27,19 @@ CONCRETE-SAFETY → WENG-REWARD → evaluator-integrity boundary
 RLM-PAPER → RLM-REPO
           └→ A1ZHANG-HARNESS-BLOG → harness-induced transfer evidence
 WENG-HARNESS ⇄ A1ZHANG-HARNESS-BLOG → complementary RSI anchors
+META-HARNESS-SITE → META-HARNESS
+META-HARNESS-REPO → META-HARNESS
+META-HARNESS-TB2-ARTIFACT → META-HARNESS-REPO
+META-HARNESS-TRAE-RUN → META-HARNESS-REPO
 ```
 
 **INFERENCE — historical edge boundary.** The last relationship is conceptual rather than bibliographic. The RLM blog post-dates Weng's article and is represented by the typed `parallel-anchor` edge, not by a fabricated citation edge.
 
-**INFERENCE — graph reading rule.** `extends` means a source presents itself as advancing a predecessor's mechanism; `implements` means it realizes a named loop or representation; `evaluates` means it supplies an evaluation surface; `critiques` means it exposes a limitation; and `requires` means the target is a prerequisite for understanding the source's role in this map.
+**INFERENCE. Graph reading rule.** `extends` means a source presents itself as advancing a predecessor's mechanism; `implements` means it realizes a named loop or representation; `evaluates` means it supplies an evaluation surface; `critiques` means it exposes a limitation; and `requires` means the target is a prerequisite for understanding the source's role in this map.
+
+`reports-on` keeps a dated project page subordinate to the paper it discusses.
+`instantiates` links a released artifact to the implementation it specializes.
+`evaluates-interface` records a local compatibility experiment without
+promoting it to benchmark or reproduction evidence.
 
 **MISSING.** No graph edge demonstrates that the current public systems form one integrated, repeatedly self-improving successor pipeline.

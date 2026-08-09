@@ -1,0 +1,30 @@
+{
+  "benchmark_invoked": false,
+  "benchmark_score_reproduced": false,
+  "candidate_count": 3,
+  "candidate_interfaces_assessed": true,
+  "candidate_interfaces_passed": false,
+  "command_returncode": 0,
+  "first_model_reaching_attempt": 2,
+  "first_schema_valid_attempt": 3,
+  "held_out_test_invoked": false,
+  "invalid_candidates_retained": true,
+  "limitations": [
+    "candidate quality was not evaluated",
+    "per-dataset validation history was not reconstructed",
+    "raw upstream traces were not reconstructed",
+    "site aggregates are first-party reported state"
+  ],
+  "model": "gpt-5.4",
+  "paid_model_evaluation_reproduced": false,
+  "proposal_schema_validated": true,
+  "raw_archive_bytes": 56647,
+  "raw_archive_sha256": "25a0f71cf589ee86a441ef2139acb69dc741c23697b5096e1a5bac0f3c20cb99",
+  "repository_revision": "44b9942127847f7421db70d8c7e48407f09a3c70",
+  "repository_source_id": "META-HARNESS-REPO",
+  "schema_version": "harp-meta-harness-trae-run/v1",
+  "secret_scan": "passed-without-redaction",
+  "source_id": "META-HARNESS-TRAE-RUN",
+  "valid_candidate_count": 0,
+  "workspace_boundary_validated": true
+}

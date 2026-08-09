@@ -25,6 +25,7 @@ cargo run -p harp -- sources verify
 cargo run -p harp -- search refresh
 cargo run -p harp -- search status
 cargo run -p harp -- search query "recursive improvement" --limit 5 >/dev/null
+python3 -m unittest discover -s labs/meta_harness_trae/tests -v
 """
 
 [tasks.verify-atlas]

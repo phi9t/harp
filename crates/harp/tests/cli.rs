@@ -38,15 +38,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 55,
+            "canonical_documents": 56,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 59,
-            "evidence_edges": 67
+            "source_registry_rows": 63,
+            "evidence_edges": 71
         })
     );
 }
@@ -100,12 +100,19 @@ fn search_status_rejects_a_missing_index() {
 fn search_refresh_status_and_query_share_a_digest_receipt() {
     let repo = TempDir::new().expect("temp repository");
     fs::create_dir_all(repo.path().join("content")).expect("content");
+    fs::create_dir_all(repo.path().join("knowledge/meta_harness")).expect("knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
         repo.path().join("content/intro.md"),
         "# Recursive improvement\n\nA bounded recursive improvement loop.\n",
     )
     .expect("content file");
+    fs::write(
+        repo.path()
+            .join("knowledge/meta_harness/meta_harness_deep_dive.md"),
+        "# Meta Harness\n\nPackage identity is an executable candidate contract.\n",
+    )
+    .expect("knowledge file");
     fs::write(
         repo.path().join("evidence/weng/text/source.txt"),
         "Harness evidence for recursive improvement.",
@@ -137,6 +144,20 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"path\":\"content/intro.md\""));
+    harp()
+        .current_dir(repo.path())
+        .args([
+            "--format",
+            "json",
+            "search",
+            "query",
+            "\"package identity\"",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/meta_harness/meta_harness_deep_dive.md\"",
+        ));
 
     fs::write(
         repo.path().join("content/intro.md"),
@@ -159,8 +180,9 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
-        .stdout(predicate::str::contains("\"snapshot_files\":31"))
-        .stdout(predicate::str::contains("\"binary_objects\":49"));
+        .stdout(predicate::str::contains("\"snapshot_files\":78"))
+        .stdout(predicate::str::contains("\"binary_objects\":54"))
+        .stdout(predicate::str::contains("\"implementation_sources\":8"));
 }
 
 #[test]

@@ -1,0 +1,32 @@
+{
+  "available_inputs": [
+    "pinned MemorySystem interface",
+    "pinned no_memory baseline",
+    "pinned fewshot_memory baseline",
+    "pinned fewshot_all baseline",
+    "dated first-party Pareto data"
+  ],
+  "local_measurements": [],
+  "missing_inputs": [
+    "per-dataset validation history",
+    "frontier_val.json",
+    "validation traces",
+    "raw upstream proposer traces",
+    "benchmark history",
+    "held-out results"
+  ],
+  "paper_source_id": "META-HARNESS",
+  "reported_site_state": {
+    "ace_accuracy": 40.9,
+    "ace_context_characters": 203000,
+    "best_accuracy": 48.6,
+    "best_context_characters": 45500,
+    "measurement_status": "first-party-reported-not-local",
+    "reported_improvement_points": 7.7
+  },
+  "repository_revision": "44b9942127847f7421db70d8c7e48407f09a3c70",
+  "repository_source_id": "META-HARNESS-REPO",
+  "schema_version": "harp-meta-harness-reference-state/v1",
+  "site_last_modified": "Tue, 04 Aug 2026 03:07:36 GMT",
+  "site_source_id": "META-HARNESS-SITE"
+}

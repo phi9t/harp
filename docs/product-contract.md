@@ -4,11 +4,15 @@
 
 Harp owns the standalone RSI technical atlas:
 
-- canonical RSI and SICP Markdown under `content/`;
+- canonical RSI and SICP Markdown under `content/`, plus the registered
+  Meta-Harness topic packet under `knowledge/meta_harness/`;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
-- Weng, RLM, SICP, and public implementation evidence under `evidence/`;
+- Weng, RLM, SICP, Meta-Harness, and public implementation evidence under
+  `evidence/`;
 - the runnable SICP evaluator supplement under `labs/sicp-evaluator/`;
+- the opt-in Meta-Harness TRAE proposal supplement under
+  `labs/meta_harness_trae/`;
 - the React Atlas and offline export under `atlas/`; and
 - local SQLite full-text search.
 
@@ -34,15 +38,15 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 55 compiled documents;
+- 56 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
 - 29 diagnostic rules;
 - 12 diagnostic cases;
 - six lessons;
-- 59 source-registry rows; and
-- 67 evidence edges.
+- 63 source-registry rows; and
+- 71 evidence edges.
 
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
@@ -53,6 +57,7 @@ paper mechanisms or result claims.
 The search index includes:
 
 - all `content/**/*.md`;
+- all `knowledge/meta_harness/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 
@@ -68,6 +73,8 @@ receipt. Status and query reject missing or stale indexes.
 - captured artifact size and SHA-256 manifests;
 - source-specific license records;
 - every narrow public-source snapshot and revision identity;
+- the offline-complete Meta-Harness project page and dated capture receipt;
+- the normalized Meta-Harness TRAE receipt and bounded raw archive;
 - every maintained local evidence locator; and
 - Git LFS attributes for binary evidence.
 

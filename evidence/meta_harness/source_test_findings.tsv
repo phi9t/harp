@@ -1,0 +1,4 @@
+surface	command	result	boundary
+text-classification	UV_PROJECT_ENVIRONMENT=/tmp/harp-meta-harness-verify/text uv sync --native-tls --project reference_examples/text_classification --no-install-project; PYTHONPATH=.. python -m unittest discover -s tests -v	28 passed	Provider-free source tests only; no model calls or benchmark reproduction
+terminal-bench-2	UV_PROJECT_ENVIRONMENT=/tmp/harp-meta-harness-verify/tb2 uv sync --native-tls --project reference_examples/terminal_bench_2 --no-install-project	dependency-resolution-failed	Pinned terminal-bench Git revision 1a6ffa9674b571da0ed040c470cb40c4d85f9b9b was not resolvable; static review only
+experimental-harbor	UV_PROJECT_ENVIRONMENT=/tmp/harp-meta-harness-verify/harbor uv sync --native-tls --project experimental/harbor_meta_harness	dependency-build-failed	LiteLLM Rust bridge resolved AWS crates requiring rustc 1.94.1 while Harp pins rustc 1.92.0; static syntax and boundary review only

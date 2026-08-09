@@ -82,7 +82,13 @@
     {
       "system_id": "meta-harness",
       "title": "Meta-Harness",
-      "source_ids": ["META-HARNESS"],
+      "source_ids": [
+        "META-HARNESS",
+        "META-HARNESS-SITE",
+        "META-HARNESS-REPO",
+        "META-HARNESS-TB2-ARTIFACT",
+        "META-HARNESS-TRAE-RUN"
+      ],
       "treatment": "full",
       "publication_state": "published",
       "canonical_markdown_path": "content/systems/meta-harness.md",

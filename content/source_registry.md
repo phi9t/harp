@@ -24,4 +24,11 @@ Mode: `DOMAIN ORIENTATION`.
 
 **INFERENCE — implementation overlay.** Rows with depth `NA` and cohort `implementation-snapshot` are local source checkouts or pinned repository metadata added to make harness mechanisms concrete. They are excluded from the Weng-rooted closure, and their claim ceiling is present-day behavior at the recorded commit rather than historical capability, benchmark quality, or RSI efficacy.
 
+**EVIDENCE. Meta-Harness tiers.** [META-HARNESS-SITE] is a dated first-party
+page capture, [META-HARNESS-REPO] and [META-HARNESS-TB2-ARTIFACT] are pinned
+implementation snapshots, and [META-HARNESS-TRAE-RUN] is a local
+proposal-interface experiment. None inherits the paper's result authority.
+“COLM 2026” remains a site claim because no official venue record was located;
+the artifact's missing license remains explicit.
+
 **MISSING.** Most 2026 preprints in Weng's bibliography have not been interpreted beyond registration even though their source representations are now vendored. The RLM paper's 51 parsed citations and the blog's 11-entry bibliography likewise have not been admitted automatically. They remain available for bounded later expansion without inventing their contents.

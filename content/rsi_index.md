@@ -98,6 +98,11 @@ ACE → MCE → Meta-Harness route from learned artifacts to learned learning
 procedures, then crosses that learning ladder with runtime selection,
 activation, state continuity, compaction, and replay.
 
+[Meta-Harness implementation deep dive](../knowledge/meta_harness/meta_harness_deep_dive.md) separates
+the paper, dated project page, pinned repositories, and one local TRAE proposal
+iteration. Use it for implementation and evidence boundaries rather than
+treating the cleaned public code as a reproduction.
+
 The [SICP systems and evaluator course](sicp/sicp_index.md) is the nested
 foundations reader for executable semantics and system design. It preserves
 its twelve-seminar book order, exercise and dialogue contracts, evaluator

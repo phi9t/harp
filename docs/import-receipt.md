@@ -31,11 +31,14 @@ tracked file that names the source repository.
   local Git LFS object store.
 - Every hydrated object matched its pointer's SHA-256 and recorded size before
   import.
-- The standalone tree contains 49 binary evidence objects: 41 PDFs and eight
-  RLM images. The planning estimate named seven images; the immutable source
-  tree contains eight, so all eight were preserved.
-- Root `.gitattributes` tracks every evidence PDF, PNG, JPG, and JPEG through
-  Harp's own Git LFS filter.
+- The initial standalone tree contained 49 binary evidence objects: 41 PDFs
+  and eight RLM images. The planning estimate named seven images; the immutable
+  source tree contains eight, so all eight were preserved.
+- The maintained tree now contains 54 binary evidence objects. The
+  Meta-Harness extension adds one captured WebP, three captured WOFF2 font
+  files, and one deterministic raw TRAE archive.
+- Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
+  fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
 ## Rewrites and removals
 
@@ -55,9 +58,32 @@ tracked file that names the source repository.
   general Knowledge Atlas references were omitted or replaced.
 - No repository-wide license was imported or added.
 
+## Post-import Meta-Harness extension
+
+The original 521-row import map remains a fixed account of the initial
+standalone import and was not reinterpreted.
+
+The maintained product now also contains:
+
+- a 13-file offline-complete capture of the dated Meta-Harness project page;
+- 42 narrow files from the main repository at
+  `44b9942127847f7421db70d8c7e48407f09a3c70`;
+- all five files from the TerminalBench-2 artifact repository at
+  `57fefdb2ff84af3fd81b69d67814acbe69bd0743`;
+- the preserved MIT license for the main repository and an explicit missing
+  license status for the artifact revision;
+- one normalized local TRAE proposal receipt and one deterministic raw archive;
+  and
+- one additional canonical Markdown deep dive under
+  `knowledge/meta_harness/` and its regenerated Atlas outputs.
+
+These additions are Harp maintenance after the initial import. They do not
+change the source repository identity, source commit, source path counts, or
+dispositions recorded above.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`1d3dcad85b57074b940215bca8fccee720423c84df48f31ffe4268870f8440f8`
+`04a23c2ded3c01fcca3a953eb801b9bc001e5dce2d0c5822ec96839de47e7b4a`

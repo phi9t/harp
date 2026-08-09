@@ -5,7 +5,8 @@ documentation dependencies on another local checkout.
 
 ## Canonical ownership
 
-- `content/` is the only authority for technical prose.
+- `content/` and the registered topic packet under `knowledge/meta_harness/`
+  are the only authorities for technical prose.
 - `atlas/src/content/generated/corpus.json` and
   `atlas/dist/harp-atlas.html` are derived and must be regenerated together
   with their canonical inputs.

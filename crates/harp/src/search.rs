@@ -236,6 +236,7 @@ pub fn query(repo_root: &Path, query: &str, limit: usize) -> Result<Vec<SearchRe
 fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), AppError> {
     let roots = [
         ("content", "canonical-markdown", "md"),
+        ("knowledge/meta_harness", "canonical-markdown", "md"),
         ("evidence/weng/text", "weng-source", "txt"),
         ("evidence/rlm/text", "rlm-source", "txt"),
     ];

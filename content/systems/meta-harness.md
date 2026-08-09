@@ -11,30 +11,31 @@ related:
     target: rsi-system-ace
 attachments:
   - content/context_engineering_deep_dive.md
+  - knowledge/meta_harness/meta_harness_deep_dive.md
 claims: []
 human_review: null
 ---
 
 # Meta-Harness: search over executable context policy
 
-## Search object
+## Canonical route
 
-**EVIDENCE — [META-HARNESS], §3.** A candidate harness is a stateful program
+**EVIDENCE. [META-HARNESS], §3.** A candidate harness is a stateful program
 that controls what experience to store, retrieve, transform, and present. A
 coding-agent proposer navigates a filesystem containing previous harness code,
 execution traces, and scores, then writes another candidate.
 
-## Outer loop
+[Open the evidence-tiered Meta-Harness deep dive](../../knowledge/meta_harness/meta_harness_deep_dive.md)
+for the paper mechanism, dated project-page claims, pinned text-classification
+and TerminalBench-2 implementations, experimental Harbor controller, local TRAE
+proposal experiment, failure modes, and claim ceiling.
 
-1. Select retained candidates and their evidence.
-2. Let the proposer inspect source, traces, and scores with tools.
-3. Generate a new executable harness.
-4. Run it on evaluation tasks.
-5. retain useful candidates, including cost/performance Pareto points.
-6. Repeat under a fixed evaluation budget.
+The important evidence split is:
 
-Raw traces provide causal clues that scalar scores omit, but they also consume
-substantial context and may expose task-specific details.
+- paper claims remain arXiv v1 author reports;
+- project-page tables and trajectories remain dated first-party reports;
+- pinned repositories support source behavior only; and
+- the local experiment supports proposal-schema and boundary findings only.
 
 <details>
 <summary>Original sources for this mechanism</summary>
@@ -43,26 +44,24 @@ substantial context and may expose task-specific details.
 - Trace and feedback ablations: [Meta-Harness, §4.1](https://arxiv.org/abs/2603.28052).
 - Reported text, math, and coding results: [Meta-Harness, §4](https://arxiv.org/abs/2603.28052).
 - Checked-in text: `evidence/weng/text/meta-harness.txt`.
+- Dated page capture: `evidence/meta_harness/site/index.html`.
+- Pinned repository: `evidence/implementations/meta_harness/snapshot/`.
+- Local run receipt: `evidence/meta_harness/trae_run/receipt.json`.
 
 </details>
 
-## Evaluation and limits
-
-The preprint reports a 7.7-point text-classification gain with four times fewer
-context tokens, held-out math gains, and TerminalBench-2 results over compared
-harnesses. It also compares access to scores, summaries, and raw traces.
-
-The proposer, evaluator, tasks, model, and outer-loop budget remain external.
-This packet contains no independent reproduction.
-
 ## Claim ceiling
 
-Meta-Harness demonstrates author-reported automated harness-code search. It
-does not show that an accepted harness becomes a better producer of later
-accepted harnesses under matched conditions.
+Meta-Harness supports author-reported automated harness-code search. The public
+repository is cleaned paper code, not an independent reproduction. The local
+TRAE iteration produced three schema-valid proposals but zero
+upstream-interface-valid candidates and ran no benchmark. No inspected tier
+shows that an accepted harness becomes a better producer of later accepted
+harnesses under matched conditions.
 
 ## Reading routes
 
+- [Meta-Harness evidence-tiered deep dive](../../knowledge/meta_harness/meta_harness_deep_dive.md)
 - [Context engineering deep dive](../context_engineering_deep_dive.md)
 - [Searching for better harnesses](../chapters/harness-search.md)
 - [Original paper](https://arxiv.org/abs/2603.28052)

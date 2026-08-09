@@ -1,0 +1,22 @@
+{
+  "candidates": [
+    {
+      "name": "label_signature_memory",
+      "path": "agents/label_signature_memory.py",
+      "axis": "label token signatures",
+      "hypothesis": "Aggregating per-label token signatures will give the LLM a compact class-specific prior without needing full-example replay."
+    },
+    {
+      "name": "recency_window_memory",
+      "path": "agents/recency_window_memory.py",
+      "axis": "recent example replay",
+      "hypothesis": "A small rolling window of the most recent labeled examples will adapt quickly when task phrasing shifts across batches."
+    },
+    {
+      "name": "error_driven_memory",
+      "path": "agents/error_driven_memory.py",
+      "axis": "mistake correction rules",
+      "hypothesis": "Feeding back only corrected mistakes will focus scarce context on the failure modes most likely to recur."
+    }
+  ]
+}

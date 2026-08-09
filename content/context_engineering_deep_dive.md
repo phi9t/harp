@@ -51,6 +51,11 @@ The primary-paper route for each learning system is:
 | [MCE original paper](https://arxiv.org/abs/2601.21557) | §§3.1–3.4 → §§4.1–4.3 → §5 → Appendix A | Bi-level objective, agentic crossover, base-level execution, fixed-versus-evolved skill comparison, and limitations. |
 | [Meta-Harness original paper](https://arxiv.org/abs/2603.28052) | §3 and Algorithm 1 → §§4.1–4.3 → Appendix A.1–A.2 | Code-space search, filesystem feedback, Pareto retention, trace ablation, and proposer behavior. |
 
+For source-code and project-page behavior, use the
+[evidence-tiered Meta-Harness deep dive](../knowledge/meta_harness/meta_harness_deep_dive.md). It keeps
+arXiv claims, dated site results, pinned repository interfaces, and the local
+TRAE proposal run separate rather than extending this cross-system ladder.
+
 The checked-in source texts are `evidence/weng/text/ace.txt`,
 `evidence/weng/text/mce.txt`, and
 `evidence/weng/text/meta-harness.txt`.
@@ -414,6 +419,11 @@ The primary limitation is model capability: weak agents may not create or
 execute useful higher-order skills.
 
 ## Meta-Harness: search the complete executable context policy
+
+This section keeps the cross-system mechanism comparison. The dedicated
+[Meta-Harness implementation deep dive](../knowledge/meta_harness/meta_harness_deep_dive.md) owns source
+locators, project-page trajectory analysis, implementation boundaries, and the
+local proposer experiment.
 
 ### Search object
 

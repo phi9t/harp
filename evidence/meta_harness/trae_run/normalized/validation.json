@@ -1,0 +1,47 @@
+{
+  "benchmark_invoked": false,
+  "candidate_count": 3,
+  "candidates": [
+    {
+      "error": "candidate label_signature_memory import or interface failure: Traceback (most recent call last):\n  File \"<string>\", line 29, in <module>\n    spec.loader.exec_module(module)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"<frozen importlib._bootstrap_external>\", line 1026, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"<workspace>/agents/label_signature_memory.py\", line 8, in <module>\n    from reference.text_classification.memory_system import MemorySystem, extract_json_field\nModuleNotFoundError: No module ",
+      "name": "label_signature_memory",
+      "path": "agents/label_signature_memory.py",
+      "sha256": "d6f6ac0ff27507ae2a4cc1cfb05f49c438d05bc76d2923dd84800f4514a3f10e",
+      "valid": false
+    },
+    {
+      "error": "candidate recency_window_memory import or interface failure: Traceback (most recent call last):\n  File \"<string>\", line 29, in <module>\n    spec.loader.exec_module(module)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"<frozen importlib._bootstrap_external>\", line 1026, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"<workspace>/agents/recency_window_memory.py\", line 6, in <module>\n    from reference.text_classification.memory_system import MemorySystem, extract_json_field\nModuleNotFoundError: No module n",
+      "name": "recency_window_memory",
+      "path": "agents/recency_window_memory.py",
+      "sha256": "a281da1c6af5e1283abddbf96fd2be2252f22806b33c1c48f3b700dfa9d8bff6",
+      "valid": false
+    },
+    {
+      "error": "candidate error_driven_memory import or interface failure: Traceback (most recent call last):\n  File \"<string>\", line 29, in <module>\n    spec.loader.exec_module(module)\n    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^\n  File \"<frozen importlib._bootstrap_external>\", line 1026, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"<workspace>/agents/error_driven_memory.py\", line 6, in <module>\n    from reference.text_classification.memory_system import MemorySystem, extract_json_field\nModuleNotFoundError: No module nam",
+      "name": "error_driven_memory",
+      "path": "agents/error_driven_memory.py",
+      "sha256": "927349c1ba463ef32b6548b8fb9dedf926e9ff86ac1766963725538d3cceddbe",
+      "valid": false
+    }
+  ],
+  "held_out_test_invoked": false,
+  "interface_checks_passed": false,
+  "schema_version": "harp-meta-harness-trae-validation/v1",
+  "valid_candidate_count": 0,
+  "workspace_boundary_passed": true,
+  "workspace_files": [
+    "agents/error_driven_memory.py",
+    "agents/label_signature_memory.py",
+    "agents/recency_window_memory.py",
+    "logs/pending_eval.json",
+    "reference/reference-state.json",
+    "reference/site-pareto.js",
+    "reference/text_classification/__init__.py",
+    "reference/text_classification/agents/__init__.py",
+    "reference/text_classification/agents/fewshot_all.py",
+    "reference/text_classification/agents/fewshot_memory.py",
+    "reference/text_classification/agents/no_memory.py",
+    "reference/text_classification/llm.py",
+    "reference/text_classification/memory_system.py"
+  ]
+}

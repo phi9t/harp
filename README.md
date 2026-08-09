@@ -3,18 +3,18 @@
 Harp is a standalone, local-first technical atlas for recursive
 self-improvement research. It combines:
 
-- canonical Markdown chapters, concept pages, implementation studies, and a
-  nested SICP evaluator course;
-- captured Weng, RLM, and SICP evidence with byte-level manifests and
-  source-specific license records;
-- narrow public-source snapshots for Pi, Hermes Agent, Codex, ARC-AGI-3, and
-  Autoresearch;
+- canonical Markdown under `content/` and the dedicated
+  `knowledge/meta_harness/` topic packet;
+- captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
+  and source-specific license records;
+- narrow public-source snapshots for Pi, Hermes Agent, Codex, ARC-AGI-3,
+  Autoresearch, and Meta-Harness;
 - a Rust validator/compiler and deterministic diagnosis contract;
 - a React 19 Atlas with a checked-in offline single-file export; and
 - a local SQLite FTS5 index.
 
-Markdown under `content/` is the technical-prose authority. Generated JSON and
-HTML are derived artifacts.
+Markdown under `content/` and `knowledge/meta_harness/` is the technical-prose
+authority. Generated JSON and HTML are derived artifacts.
 
 ## Setup
 
@@ -51,6 +51,10 @@ cargo run -p harp -- sources materialize --all
 
 Materialized repositories live under ignored `.sources/`; tracked snapshots
 under `evidence/implementations/` remain the offline evidence.
+
+The opt-in proposer supplement is under `labs/meta_harness_trae/`. Its
+deterministic tests and recorded run are part of offline verification; invoking
+a new live proposer is intentionally outside `mise run verify`.
 
 ## Atlas
 

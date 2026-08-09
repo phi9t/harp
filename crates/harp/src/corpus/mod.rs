@@ -62,7 +62,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 7] = [
     ),
     ("sources", "Sources", "content/source_registry.md"),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 2] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 3] = [
     (
         "codex-state-continuity",
         "content/codex_state_continuity_and_compaction.md",
@@ -70,6 +70,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 2] = [
     (
         "context-engineering-deep-dive",
         "content/context_engineering_deep_dive.md",
+    ),
+    (
+        "meta-harness-deep-dive",
+        "knowledge/meta_harness/meta_harness_deep_dive.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
