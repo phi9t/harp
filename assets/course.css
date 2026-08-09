@@ -1,0 +1,103 @@
+:root {
+  color-scheme: light;
+  --ink: #18201f;
+  --muted: #5c6865;
+  --paper: #f8f6ef;
+  --panel: #ffffff;
+  --line: #cfd7d2;
+  --accent: #0b6b5d;
+  --evidence: #e5f3ee;
+  --limit: #fff0dc;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+}
+
+main {
+  width: min(72ch, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+p,
+li {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+nav,
+form,
+[data-source-card],
+.reference-panel {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--panel);
+  padding: 1rem;
+}
+
+[data-card-list] {
+  display: grid;
+  gap: 1rem;
+}
+
+.card-field[aria-labelledby$="-reported-evidence"] {
+  background: var(--evidence);
+}
+
+.card-field[aria-labelledby$="-key-limitation"] {
+  background: var(--limit);
+}
+
+.card-field {
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  margin-block: 0.75rem;
+}
+
+.eyebrow,
+.source-id {
+  color: var(--muted);
+  font: 600 0.8rem/1.4 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media print {
+  nav,
+  form,
+  script {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  [data-source-card] {
+    break-inside: avoid;
+    border-color: #777;
+  }
+}
