@@ -25,8 +25,7 @@ No community participation preference has been established yet. Future sessions 
 
 ## Gaps
 
-All numbered Weng references now have primary-source interpretation.
-
-One substantive body-linked source remains pending primary-source interpretation:
-
-- `ANTHROPIC-RSI`
+All 39 numbered Weng references and all three substantive body-linked sources
+now have primary-source or source-specific interpretation. Lessons, generated
+references, and the course remain incomplete while the curriculum state is
+`building`.

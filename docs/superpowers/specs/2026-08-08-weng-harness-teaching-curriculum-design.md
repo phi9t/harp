@@ -132,6 +132,7 @@ Use one primary family:
 
 - historical RSI framing;
 - model self-play or weight adaptation;
+- within-episode output refinement;
 - context artifact;
 - context-management mechanism;
 - workflow or agent-program search;

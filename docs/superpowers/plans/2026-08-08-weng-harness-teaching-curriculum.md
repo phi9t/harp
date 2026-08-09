@@ -1645,7 +1645,17 @@ For each source:
 4. compress into the five-field card; and
 5. preserve non-reproduction language.
 
-Do not promote a claim beyond the existing inspected source ceiling.
+Default: do not broaden an existing inspected source ceiling.
+
+Exception: Task 7 may refine a stale ceiling or publication state only when the
+local primary capture directly supports it; canonical `content/` already owns
+the claim or an accurate five-field card requires it; independent
+source-to-claim review approves it; card, matrix, and registry remain in exact
+parity; and `no independent reproduction` stays explicit.
+
+Acquisition manifests, receipts, and `sources.tsv` remain immutable historical
+records. `content/sources/source_registry.tsv` owns current interpretation
+status.
 
 - [ ] **Step 2: Write the 22 cards**
 
@@ -1661,6 +1671,14 @@ body-link-ai-progress
 `evidence/weng/text/anthropic-rsi.txt`, promote its source row to bounded
 company-essay evidence, and state that it owns framing rather than experimental
 proof.
+
+For Task 7, classify `SELF-REFINE` as `within-episode-output-refinement`.
+It refines one output through feedback within an episode; it does not search
+workflow or agent-program structure.
+
+`KARPATHY-AUTORESEARCH` uses `section_id=harness-design-patterns`; its
+Lesson 1 assignment remains cross-cutting and does not change the primary Weng
+section.
 
 - [ ] **Step 3: Complete the 42-row matrix**
 
