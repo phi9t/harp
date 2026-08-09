@@ -29,7 +29,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 8] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 9] = [
     (
         "thesis",
         "Thesis",
@@ -66,8 +66,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 8] = [
         "Agentic eval/apply",
         "content/sicp/agentic_eval_apply.md",
     ),
+    (
+        "benchmarks",
+        "Benchmarks",
+        "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 10] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 11] = [
     ("agentic-eval-apply", "content/sicp/agentic_eval_apply.md"),
     (
         "sicp-seminar-09-eval-apply",
@@ -101,6 +106,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 10] = [
     (
         "meta-harness-deep-dive",
         "knowledge/meta_harness/meta_harness_deep_dive.md",
+    ),
+    (
+        "harness-benchmark-field-guide",
+        "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [

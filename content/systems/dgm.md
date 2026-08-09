@@ -305,6 +305,7 @@ solvers.
 
 ## Reading routes
 
+- [Benchmark field guide](../../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
 - [Weng: evolutionary search](../weng/07-evolutionary-search.md)
 - [AlphaEvolve versus DGM lesson](../lessons/05-alphaevolve-vs-dgm.md)
 - [Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md)

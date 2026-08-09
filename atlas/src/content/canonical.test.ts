@@ -110,6 +110,11 @@ const validV5Fixture: unknown = {
       label: "Agentic eval/apply",
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
+    {
+      route_id: "benchmarks",
+      label: "Benchmarks",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
   ],
   documents: [
     ...chapterIds.map((id) => ({

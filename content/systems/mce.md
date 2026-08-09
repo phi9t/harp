@@ -63,6 +63,7 @@ matched envelope.
 
 ## Reading routes
 
+- [Benchmark field guide and complete MCE protocol](../../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
 - [Context engineering deep dive](../context_engineering_deep_dive.md)
 - [ACE versus MCE lesson](../lessons/02-ace-vs-mce.md)
 - [Original paper](https://arxiv.org/abs/2601.21557)

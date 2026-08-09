@@ -338,6 +338,7 @@ provides that comparison.
 
 ## Reading routes
 
+- [Harness benchmark field guide](../harness_benchmarks/harness_benchmark_field_guide.md)
 - [Meta-Harness system reading](../../content/systems/meta-harness.md)
 - [Context-engineering deep dive](../../content/context_engineering_deep_dive.md)
 - [Evaluator integrity and promotion](../../content/evaluator_integrity_and_promotion.md)

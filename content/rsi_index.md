@@ -211,6 +211,8 @@ The supporting layer is separate from the reading spine:
   [[codex_harness_deep_dive]] retain exact implementation paths and revisions.
 - [[claim_evidence_ledger]] contains exact claim locators and limits; [[missing_evidence]] prevents unavailable or unverified material from becoming a stronger claim.
 - [[source_registry]] and [[evidence_graph]] document the authoritative TSV registries under `sources/`.
+- The [harness benchmark field guide](../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
+  compares evaluator boundaries and preserves the complete MCE experiment protocol.
 - [[bounded_transitive_closure]] records the Weng-rooted expansion rule, retained branches, stop predicate, and closure status.
 - `evidence/weng/` vendors the Weng anchor's bounded two-hop external closure. `evidence/rlm/` captures the RLM anchor paper, implementation metadata, training/generalization blog, figures, and parsed citations.
 

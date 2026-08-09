@@ -61,6 +61,7 @@ harnesses under matched conditions.
 
 ## Reading routes
 
+- [Benchmark field guide](../../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
 - [Meta-Harness evidence-tiered deep dive](../../knowledge/meta_harness/meta_harness_deep_dive.md)
 - [Context engineering deep dive](../context_engineering_deep_dive.md)
 - [Searching for better harnesses](../chapters/harness-search.md)

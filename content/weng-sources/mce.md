@@ -35,3 +35,7 @@ The source fixes MiniMax M2.1 as its default meta-agent and uses budget-constrai
 ## Why Weng cites it
 
 Weng lines 117–136 uses MCE to separate the mechanism for managing context from the resulting context, moving the editable object from an artifact toward the procedure that creates it.
+
+The complete paper-derived protocol, including Appendix A–E contracts and the
+explicit no-local-reproduction boundary, is maintained at
+knowledge/harness_benchmarks/harness_benchmark_field_guide.md.

@@ -13,6 +13,7 @@ use walkdir::WalkDir;
 use crate::error::AppError;
 
 const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
+const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
 const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
 const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
@@ -165,6 +166,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         &mut expected_digests,
     )?;
     let sicp = verify_sicp_manifest(repo_root, &mut expected_digests)?;
+    let benchmarks = verify_benchmark_manifest(repo_root)?;
     let meta_harness = verify_meta_harness_bundle(repo_root)?;
     let _verified_raw_archive = (
         meta_harness.raw_archive_members,
@@ -227,6 +229,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         evidence_artifacts: weng
             + rlm
             + sicp
+            + benchmarks
             + meta_harness.site_artifacts
             + meta_harness.normalized_artifacts,
         snapshot_files: snapshot_rows.len(),
@@ -923,6 +926,175 @@ fn verify_sicp_manifest(
         expected_digests.insert(relative, digest);
     }
     Ok(rows.len().saturating_sub(1))
+}
+
+fn verify_benchmark_manifest(repo_root: &Path) -> Result<usize, AppError> {
+    let manifest = Path::new(BENCHMARK_MANIFEST);
+    let rows = read_tsv(repo_root, manifest)?;
+    const HEADER: &str = "benchmark\ttask_id\tartifact_role\tsource_url\timmutable_identity\tlocal_path\tbytes\tsha256\tvisibility\tlicense_status";
+    if rows.first().map(|row| row.join("\t")).as_deref() != Some(HEADER) {
+        return Err(benchmark_manifest_error(manifest, 1, "unexpected header"));
+    }
+
+    let mut seen = BTreeSet::new();
+    for (index, columns) in rows.iter().enumerate().skip(1) {
+        let line = index + 1;
+        if columns.len() != 10 {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "expected ten columns",
+            ));
+        }
+        let (
+            benchmark,
+            task_id,
+            role,
+            source_url,
+            identity,
+            local,
+            bytes,
+            digest,
+            visibility,
+            license,
+        ) = (
+            &columns[0],
+            &columns[1],
+            &columns[2],
+            &columns[3],
+            &columns[4],
+            &columns[5],
+            &columns[6],
+            &columns[7],
+            &columns[8],
+            &columns[9],
+        );
+        if [
+            benchmark, task_id, role, source_url, identity, visibility, license,
+        ]
+        .iter()
+        .any(|value| value.trim() != **value || value.is_empty())
+            || (local != "-" && local.trim() != local)
+        {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "fields must be canonical trimmed strings",
+            ));
+        }
+        if !source_url.starts_with("https://") {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "source_url must use HTTPS",
+            ));
+        }
+        let immutable_git = identity.strip_prefix("git:").is_some_and(|value| {
+            value.len() == 40 && value.bytes().all(|byte| byte.is_ascii_hexdigit())
+        });
+        let immutable_blob = identity.strip_prefix("sha256:").is_some_and(valid_digest);
+        if !immutable_git && !immutable_blob {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "immutable_identity must be git:<40 hex> or sha256:<64 lowercase hex>",
+            ));
+        }
+        if !matches!(visibility.as_str(), "reader-facing" | "verifier-only") {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "visibility must be reader-facing or verifier-only",
+            ));
+        }
+        if !matches!(
+            license.as_str(),
+            "MIT"
+                | "Apache-2.0"
+                | "BSD-3-Clause"
+                | "CC-BY-4.0"
+                | "unconfirmed"
+                | "not-redistributable"
+        ) {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "license_status must be explicit",
+            ));
+        }
+        if !seen.insert((benchmark, task_id, role)) {
+            return Err(benchmark_manifest_error(
+                manifest,
+                line,
+                "duplicate benchmark/task_id/artifact_role row",
+            ));
+        }
+        if local == "-" {
+            let _ = bytes
+                .parse::<u64>()
+                .map_err(|_| benchmark_manifest_error(manifest, line, "invalid bytes"))?;
+            let expected_digest = digest.strip_prefix("sha256:").unwrap_or(digest);
+            if !valid_digest(expected_digest) {
+                return Err(benchmark_manifest_error(
+                    manifest,
+                    line,
+                    "remote receipts require a 64-character lowercase hex sha256",
+                ));
+            }
+        } else {
+            if visibility == "reader-facing" {
+                return Err(benchmark_manifest_error(
+                    manifest,
+                    line,
+                    "reader-facing receipts must remain remote-only",
+                ));
+            }
+            let local_path = safe_relative_path(local, "benchmark local_path")?;
+            if !local_path.starts_with("evidence/benchmarks/") {
+                return Err(benchmark_manifest_error(
+                    manifest,
+                    line,
+                    "local_path must remain below evidence/benchmarks",
+                ));
+            }
+            let expected_bytes = bytes
+                .parse::<u64>()
+                .map_err(|_| benchmark_manifest_error(manifest, line, "invalid bytes"))?;
+            let expected_digest = digest.strip_prefix("sha256:").unwrap_or(digest);
+            if !valid_digest(expected_digest) {
+                return Err(benchmark_manifest_error(
+                    manifest,
+                    line,
+                    "sha256 must be a 64-character lowercase hex digest",
+                ));
+            }
+            verify_file(
+                repo_root,
+                &local_path,
+                expected_bytes,
+                expected_digest,
+                "benchmark receipt",
+            )
+            .map_err(|error| {
+                benchmark_manifest_error(manifest, line, &format!("vendored receipt: {error}"))
+            })?;
+        }
+    }
+    if rows.len() == 1 {
+        return Err(benchmark_manifest_error(
+            manifest,
+            1,
+            "manifest has no receipts",
+        ));
+    }
+    Ok(rows.len() - 1)
+}
+
+fn benchmark_manifest_error(manifest: &Path, line: usize, detail: &str) -> AppError {
+    AppError::invalid_input(
+        "sources.benchmark_manifest",
+        format!("{} line {line}: {detail}", manifest.display()),
+    )
 }
 
 fn load_snapshot_rows(repo_root: &Path) -> Result<Vec<SnapshotRow>, AppError> {
@@ -1643,6 +1815,7 @@ fn slash_path(path: &Path) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use tempfile::tempdir;
 
     fn workspace_root() -> &'static Path {
         Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -1659,5 +1832,60 @@ mod tests {
         assert!(report.normalized_artifacts >= 8);
         assert!(report.raw_archive_members >= 7);
         assert!(report.raw_archive_bytes > 0);
+    }
+
+    #[test]
+    fn benchmark_manifest_requires_immutable_unique_and_rights_aware_receipts() {
+        let repo = tempdir().unwrap();
+        let evidence = repo.path().join("evidence/benchmarks/swe-bench");
+        fs::create_dir_all(&evidence).unwrap();
+        fs::write(evidence.join("evaluator.py"), "print('verified')\n").unwrap();
+        fs::write(
+            repo.path().join("evidence/benchmarks/manifest.tsv"),
+            concat!(
+                "benchmark\ttask_id\tartifact_role\tsource_url\timmutable_identity\tlocal_path\tbytes\tsha256\tvisibility\tlicense_status\n",
+                "SWE-bench Verified\tastropy__astropy-12907\tevaluator\t",
+                "https://github.com/princeton-nlp/SWE-bench/blob/0123456789abcdef0123456789abcdef01234567/swebench/harness/test_spec.py\t",
+                "git:0123456789abcdef0123456789abcdef01234567\t",
+                "evidence/benchmarks/swe-bench/evaluator.py\t18\t",
+                "8cc8c1fbd30e5c5c5f5ddf3aec94740b51e3f6c2e2f3f461bd0a9a5df97c07b7\t",
+                "verifier-only\tMIT\n",
+                "Terminal-Bench 2\textract-elf\ttask\t",
+                "https://github.com/laude-institute/terminal-bench/blob/89abcdef0123456789abcdef0123456789abcdef/tasks/extract-elf/task.yaml\t",
+                "git:89abcdef0123456789abcdef0123456789abcdef\t-\t0\t",
+                "f7f9ee0c130c8fd37a4b9b5134aeedfaf52ec35f4de2b2817650f4760edb684b\t",
+                "reader-facing\tunconfirmed\n"
+            ),
+        )
+        .unwrap();
+
+        let error = verify_benchmark_manifest(repo.path()).unwrap_err();
+        assert_eq!(error.code(), "sources.benchmark_manifest");
+
+        let text =
+            fs::read_to_string(repo.path().join("evidence/benchmarks/manifest.tsv")).unwrap();
+        let corrected = text.replace(
+            "8cc8c1fbd30e5c5c5f5ddf3aec94740b51e3f6c2e2f3f461bd0a9a5df97c07b7",
+            &sha256_file(&evidence.join("evaluator.py")).unwrap(),
+        );
+        fs::write(
+            repo.path().join("evidence/benchmarks/manifest.tsv"),
+            corrected,
+        )
+        .unwrap();
+        assert_eq!(verify_benchmark_manifest(repo.path()).unwrap(), 2);
+
+        let duplicate = {
+            let manifest =
+                fs::read_to_string(repo.path().join("evidence/benchmarks/manifest.tsv")).unwrap();
+            format!("{manifest}{}", manifest.lines().nth(1).unwrap())
+        };
+        fs::write(
+            repo.path().join("evidence/benchmarks/manifest.tsv"),
+            duplicate,
+        )
+        .unwrap();
+        let error = verify_benchmark_manifest(repo.path()).unwrap_err();
+        assert_eq!(error.code(), "sources.benchmark_manifest");
     }
 }

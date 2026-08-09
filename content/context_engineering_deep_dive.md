@@ -55,6 +55,8 @@ For source-code and project-page behavior, use the
 [evidence-tiered Meta-Harness deep dive](../knowledge/meta_harness/meta_harness_deep_dive.md). It keeps
 arXiv claims, dated site results, pinned repository interfaces, and the local
 TRAE proposal run separate rather than extending this cross-system ladder.
+For evaluator boundaries and the full paper-derived MCE experiment protocol,
+use the [harness benchmark field guide](../knowledge/harness_benchmarks/harness_benchmark_field_guide.md).
 
 The checked-in source texts are `evidence/weng/text/ace.txt`,
 `evidence/weng/text/mce.txt`, and

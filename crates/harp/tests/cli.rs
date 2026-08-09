@@ -38,15 +38,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 63,
+            "canonical_documents": 64,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 64,
-            "evidence_edges": 72
+            "source_registry_rows": 68,
+            "evidence_edges": 79
         })
     );
 }

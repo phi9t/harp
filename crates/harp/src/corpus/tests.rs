@@ -930,6 +930,59 @@ fn meta_harness_deep_dive_preserves_evidence_tiers_and_claim_ceiling() {
 }
 
 #[test]
+fn benchmark_field_guide_is_registered_and_preserves_protocol_boundaries() {
+    let corpus = compile(workspace_root()).unwrap();
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "benchmarks"
+            && route.label == "Benchmarks"
+            && route.canonical_markdown_path
+                == "knowledge/harness_benchmarks/harness_benchmark_field_guide.md"
+    }));
+
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "harness-benchmark-field-guide")
+        .unwrap();
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/harness_benchmarks/harness_benchmark_field_guide.md"
+    );
+    for required in [
+        "Evidence tiers and claim ceilings",
+        "Terminal-Bench 2",
+        "extract-elf",
+        "astropy__astropy-12907",
+        "cpp__all-your-base",
+        "flink-query",
+        "Meta-Harness",
+        "Darwin Gödel Machine",
+        "Self-Harness",
+        "Agentic Harness Engineering",
+        "Harness Disentangle",
+        "Appendix A — Task and generator contracts",
+        "FiNER",
+        "USPTO-50k",
+        "Symptom2Disease",
+        "LawBench",
+        "AEGIS2",
+        "Appendix B — Agent-prompt contracts",
+        "Meta-agent contract",
+        "Base-agent contract",
+        "Appendix C — Candidate skill representations",
+        "Appendix D — Evolved task strategies",
+        "Appendix E — Utility implementation contract",
+        "five context-optimization epochs",
+        "No local reproduction",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "benchmark field guide is missing {required}"
+        );
+    }
+}
+
+#[test]
 fn verifies_the_nine_chapter_spine_and_native_source_folds() {
     let repo = fixture();
     write_complete_fixture(repo.path());
@@ -985,7 +1038,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "weng",
             "experiment",
             "sources",
-            "agentic-eval-apply"
+            "agentic-eval-apply",
+            "benchmarks"
         ]
     );
     for route in &corpus.reader_routes {
