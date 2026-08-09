@@ -57,7 +57,9 @@ paper mechanisms or result claims.
 `content/weng-sources/` is the canonical authority for the 42 five-field
 source cards. `content/weng-source-cards.tsv` is the exact roster, order, and
 assignment matrix for 39 numbered references and three substantive body
-links.
+links. `content/weng-comparison-matrix.tsv` owns the ordered comparison data,
+and `content/weng-claim-ladder.json` owns the five-level claim ladder and its
+canonical concept links.
 
 `reference/` and `lessons/` are non-authoritative teaching projections.
 `scripts/build_weng_course.py --check` validates the four deterministic

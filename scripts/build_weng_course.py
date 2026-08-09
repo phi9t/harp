@@ -3,16 +3,19 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import io
 import json
 import os
 import re
 import stat
 import tempfile
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX = ROOT / "content/weng-source-cards.tsv"
+COMPARISON_MATRIX = ROOT / "content/weng-comparison-matrix.tsv"
+CLAIM_LADDER = ROOT / "content/weng-claim-ladder.json"
 STATUS = ROOT / "content/weng-course-status.json"
 CARD_ROOT = ROOT / "content/weng-sources"
 REFERENCE_ROOT = ROOT / "reference"
@@ -151,6 +154,16 @@ BODY_LINK_LOCATORS = {
     "WENG-REWARD": "body-link-reward-hacking",
     "ANTHROPIC-RSI": "body-link-ai-progress",
 }
+COMPARISON_FIELDS = (
+    "source_id",
+    "edited_object",
+    "persistence",
+    "evaluator",
+    "update_operator",
+    "model_weight_change",
+    "evidence_class",
+    "comparison_claim_ceiling",
+)
 COMPARISON_COLUMNS = (
     "edited object",
     "persistence",
@@ -160,449 +173,153 @@ COMPARISON_COLUMNS = (
     "evidence class",
     "claim ceiling",
 )
-COMPARISONS = {
-    "GOOD-1965": (
-        "machine intelligence",
-        "hypothetical successor redesign",
-        "none; conceptual argument",
-        "hypothetical machine self-redesign",
-        "unspecified",
-        "conceptual",
-        "speculative intelligence-explosion framing, not an experiment",
-    ),
-    "YUDKOWSKY-2008": (
-        "cognitive machinery",
-        "hypothetical successor system",
-        "none; essay argument",
-        "recursive self-modification",
-        "unspecified",
-        "conceptual",
-        "optimization-dynamics framing without experimental validation",
-    ),
-    "ASP": (
-        "code-repair model weights",
-        "trained checkpoint",
-        "BUGSOURCEBENCH tests",
-        "anchored generator-fixer self-play training",
-        "yes",
-        "author-reported",
-        "bounded code-repair self-play gains, not harness improvement",
-    ),
-    "ABSOLUTE-ZERO": (
-        "reasoning model weights",
-        "trained checkpoint",
-        "code executor and task benchmarks",
-        "proposer-solver reinforcement learning",
-        "yes",
-        "author-reported",
-        "zero-data reasoning adaptation under executable verification",
-    ),
-    "SELF-REWARDING": (
-        "instruction policy and judge weights",
-        "checkpoint per iteration",
-        "self-judgments and instruction benchmarks",
-        "self-instruction plus iterative DPO",
-        "yes",
-        "author-reported",
-        "instruction and reward-model gains, not harness recursion",
-    ),
-    "SPIN": (
-        "language-model weights",
-        "checkpoint per iteration",
-        "human-versus-self response objective and benchmarks",
-        "iterative self-play fine-tuning",
-        "yes",
-        "author-reported",
-        "self-play weight gains bounded by a fixed human distribution",
-    ),
-    "ACE": (
-        "context playbook",
-        "cross-task context artifact",
-        "task reward and reflective feedback",
-        "incremental reflection, curation, and update",
-        "no",
-        "author-reported",
-        "learned-context gains with cost and benchmark limits",
-    ),
-    "MCE": (
-        "skills and context-management policy",
-        "cross-task skill library",
-        "base-task benchmark outcomes",
-        "bi-level skill and context evolution",
-        "no",
-        "author-reported",
-        "bi-level context evolution without a successor-producer test",
-    ),
-    "META-HARNESS": (
-        "end-to-end model harness",
-        "filesystem archive of candidates",
-        "search tasks and held-out tasks",
-        "outer-loop proposal, execution, and selection",
-        "no; base model fixed",
-        "author-reported",
-        "held-out harness gains without matched recursive gain",
-    ),
-    "AI-SCIENTIST": (
-        "research ideas, plans, code, results, figures, and manuscripts",
-        "saved code, results, and paper",
-        "experiment metrics and review signals",
-        "idea-to-experiment-to-paper workflow",
-        "no",
-        "author-reported",
-        "end-to-end research automation in the reported scope",
-    ),
-    "SCIENTISTONE": (
-        "research plan and evidence chain",
-        "durable chain-of-evidence artifacts",
-        "integrity audit and research outcomes",
-        "three-stage evidence-grounded workflow",
-        "no",
-        "author-reported",
-        "research workflow and integrity results, not RSI",
-    ),
-    "AUTODATA": (
-        "synthetic training data",
-        "saved dataset and downstream checkpoint",
-        "downstream model performance",
-        "agentic self-instruct data generation",
-        "yes; downstream training",
-        "author-reported",
-        "synthetic-data gains under a strong-solver boundary",
-    ),
-    "ADAS": (
-        "agent program",
-        "retained program candidate",
-        "held-out agent benchmarks",
-        "meta-agent program generation and selection",
-        "no",
-        "author-reported",
-        "agent-program search and transfer under reported budgets",
-    ),
-    "SELF-REFINE": (
-        "current task output",
-        "same episode only",
-        "task-specific feedback and metrics",
-        "feedback then refinement",
-        "no",
-        "author-reported",
-        "within-episode task refinement with no persistent adaptation",
-    ),
-    "AFLOW": (
-        "agent workflow graph",
-        "retained workflow candidate",
-        "task benchmark score",
-        "MCTS-guided workflow generation",
-        "no",
-        "author-reported",
-        "workflow-search gains, not recursive improvement",
-    ),
-    "STOP": (
-        "LM-calling improver code",
-        "improver generation",
-        "meta-utility on downstream programs",
-        "self-application of the improver",
-        "no; language model fixed",
-        "author-reported",
-        "bounded recursive scaffolding optimization, not full RSI",
-    ),
-    "SELF-HARNESS": (
-        "model-specific harness",
-        "accepted harness iteration",
-        "held-in and held-out tasks",
-        "trace mining, minimal edits, and promotion",
-        "no; task model fixed",
-        "author-reported",
-        "measured harness gain without a next-cycle improver test",
-    ),
-    "PROMPTBREEDER": (
-        "task prompts and mutation prompts",
-        "evolutionary population",
-        "task fitness",
-        "mutation-prompt and task-prompt evolution",
-        "no",
-        "author-reported",
-        "prompt evolution within a fixed prompting topology",
-    ),
-    "GEPA": (
-        "compound-system prompts",
-        "Pareto archive",
-        "benchmark score and textual feedback",
-        "reflective mutation, merge, and selection",
-        "no",
-        "author-reported",
-        "reflective prompt evolution under evaluator-dependent limits",
-    ),
-    "ALPHAEVOLVE": (
-        "algorithm implementation",
-        "program database",
-        "executable problem evaluator",
-        "LLM edits plus evolutionary selection",
-        "no",
-        "author-reported",
-        "program discoveries inside fixed problems and evaluators",
-    ),
-    "SHINKAEVOLVE": (
-        "program and search scaffold",
-        "island archive",
-        "tests and problem score",
-        "LLM mutation, crossover, and island selection",
-        "no",
-        "author-reported",
-        "sample-efficient program evolution in bounded tasks",
-    ),
-    "THETAEVOLVE": (
-        "program environment and optional adapters",
-        "candidate archive and optional checkpoint",
-        "open-problem reward",
-        "program evolution with optional reward-shaped training",
-        "optional",
-        "author-reported",
-        "test-time search and optional training under evaluator caveats",
-    ),
-    "DGM": (
-        "coding-agent repository",
-        "branching lineage archive",
-        "external coding benchmarks",
-        "agent code mutation and archive selection",
-        "no; foundation model fixed",
-        "author-reported",
-        "open-ended agent-code lineage without matched recursive gain",
-    ),
-    "HYPERAGENTS": (
-        "unified editable task-and-meta-agent program",
-        "candidate archive",
-        "held-out paper-review quality",
-        "self-referential task-and-meta logic rewrite plus archive selection",
-        "no",
-        "author-reported",
-        "bounded agent-quality gain with fixed outer loop and evaluator",
-    ),
-    "LEARNING-DISCOVER": (
-        "model weights and discovery archive",
-        "test-time checkpoint and archive",
-        "continuous verifier on GPUMode",
-        "test-time training with archive reuse",
-        "yes",
-        "author-reported",
-        "problem-specific discovery gain under continuous verification",
-    ),
-    "EPISTEMIC-DISCOVERY": (
-        "LoRA ensemble weights",
-        "test-time adapter ensemble",
-        "verifier reward and epistemic uncertainty",
-        "uncertainty-guided test-time training",
-        "yes",
-        "author-reported",
-        "single-seed discovery evidence with verifier and ensemble costs",
-    ),
-    "SIA": (
-        "harness and model weights",
-        "generation-specific or selected-best scaffold and LoRA checkpoint",
-        "three domain evaluators",
-        "joint harness and weight updates",
-        "yes",
-        "author-reported",
-        "joint adaptation gains with reported confounds",
-    ),
-    "NOT-SCIENTISTS": (
-        "research ideas, hypotheses, plans, code, results, and manuscript",
-        "project artifacts",
-        "human assessment of four attempts",
-        "autonomous research execution",
-        "no reported training",
-        "case report",
-        "failure-mode evidence from four attempts, not improvement proof",
-    ),
-    "GPT5-SCIENCE": (
-        "scientific artifact",
-        "case-study outputs",
-        "expert verification",
-        "human-directed prompting and tool use",
-        "no reported training",
-        "company report",
-        "science-collaboration cases, not benchmark or RSI validation",
-    ),
-    "PAPERBENCH": (
-        "research reproduction artifact",
-        "per-run reproduction artifact; reported aggregates include three runs per paper and human best@3",
-        "8,316-item rubric and judge",
-        "agent reproduction workflow",
-        "no",
-        "benchmark",
-        "research-replication capability in a 20-paper benchmark",
-    ),
-    "REBENCH": (
-        "AI R&D solution",
-        "independent timed attempts aggregated through score@k",
-        "task score and score@k",
-        "agent R&D execution",
-        "no",
-        "benchmark",
-        "frontier-agent R&D capability under fixed time budgets",
-    ),
-    "MLEBENCH": (
-        "ML engineering solution",
-        "per-seed competition artifact; headline result aggregates 16 seeds",
-        "private-leaderboard medal metric",
-        "agent modeling and code iteration",
-        "no",
-        "benchmark",
-        "offline Kaggle engineering performance with split caveats",
-    ),
-    "SCIENCEAGENTBENCH": (
-        "scientific analysis program",
-        "three independent runs per task with selected-best and mean accounting",
-        "execution and task-success checks",
-        "agent planning, coding, and self-debugging",
-        "no",
-        "benchmark",
-        "data-driven science-agent capability on 102 tasks",
-    ),
-    "COREBENCH": (
-        "computational reproduction artifact",
-        "three-run CORE-Agent accounting with separate pass@1 and pass@3 retries",
-        "task tests and pass accounting",
-        "CORE-Agent execution and retries",
-        "no",
-        "benchmark",
-        "computational reproducibility on a 270-task benchmark",
-    ),
-    "KERNELBENCH": (
-        "GPU kernel code",
-        "candidate within an attempt",
-        "correctness tests and fast_p speed metric",
-        "generation with execution feedback",
-        "no",
-        "benchmark",
-        "kernel generation efficiency under fixed hardware and tasks",
-    ),
-    "HARNESS-DISENTANGLE": (
-        "harness update and use capabilities",
-        "observed capability, not an accepted edit",
-        "activation, adherence, and task benchmarks",
-        "controlled harness perturbation",
-        "no; fixed-weight study",
-        "benchmark",
-        "capability decomposition; harness updating is not harness benefit",
-    ),
-    "AHE": (
-        "coding-agent harness",
-        "accepted harness version",
-        "task outcome and observability predictions",
-        "trace analysis, edit proposal, and selection",
-        "no",
-        "author-reported",
-        "observability-driven harness evolution with transfer limits",
-    ),
-    "CONTINUAL-HARNESS": (
-        "online harness and policy state",
-        "reset-free state across refinement cycles within one continuing episode",
-        "completion, process reward, and teacher labels",
-        "harness refinement plus DAgger-style relabeling",
-        "yes",
-        "author-reported",
-        "online co-learning under game, teacher, and evaluator limits",
-    ),
-    "DEMOEVOLVE": (
-        "executable agentic harness",
-        "evolution archive",
-        "fixed-seed game reward",
-        "demonstration-guided harness evolution and selection",
-        "no; model frozen",
-        "author-reported",
-        "sparse-feedback harness gain with causal-audit limits",
-    ),
-    "KARPATHY-AUTORESEARCH": (
-        "training program",
-        "git state and experiment log",
-        "fixed-time validation loss",
-        "edit, train, measure, keep or revert",
-        "yes; each experiment trains",
-        "implementation snapshot",
-        "pinned workflow behavior without benchmark reproduction",
-    ),
-    "WENG-REWARD": (
-        "not applicable; secondary reward-hacking synthesis",
-        "varies by cited case",
-        "varies by cited case",
-        "not applicable; synthesis of failure modes and mitigations",
-        "varies by cited case",
-        "secondary synthesis",
-        "reward-hacking and evaluator-bias framing",
-    ),
-    "ANTHROPIC-RSI": (
-        "not one controlled object; company successor-development framing",
-        "varies across self-reported cases",
-        "internal observations and case-specific metrics",
-        "not one controlled update loop",
-        "varies or is unspecified across cases",
-        "company essay",
-        "successor-development framing with an explicit not-yet-RSI boundary",
-    ),
-}
-CLAIM_LEVELS = (
-    (
-        "task iteration",
-        "A fixed process produces a better answer or action in the same run under a matched evaluator and budget.",
-        "Self-Refine uses feedback and revision to improve the current output without creating cross-episode state.",
-        "Calling a refined answer durable learning, harness improvement, or recursive improvement.",
-        "../reference/weng-source-cards.html#source-SELF-REFINE",
-        (
-            ("Improvement types", "../content/concepts/improvement-types.md"),
-            ("System state", "../content/concepts/system-state-and-notation.md"),
-        ),
-    ),
-    (
-        "persistent adaptation",
-        "A named state artifact survives the episode boundary, is read later, and causally improves later behavior against a no-update control.",
-        "ACE retains and reuses an evolving context playbook across tasks; its evidence remains author-reported and benchmark-bounded.",
-        "Treating persistence alone as proof that the stored state is useful, that the harness improved, or that recursion occurred.",
-        "../content/systems/ace.md",
-        (
-            ("Improvement types", "../content/concepts/improvement-types.md"),
-            ("Procedure representations", "../content/concepts/procedure-representations.md"),
-        ),
-    ),
-    (
-        "harness improvement",
-        "Executable harness policy changes and beats the prior harness with model, evaluator, permissions, and root-tree budget held fixed, including added cost.",
-        "Self-Harness reports held-in and held-out promotion of model-specific harness edits while keeping the task model fixed.",
-        "Calling one accepted harness gain evidence that the accepted harness is better at producing its next harness.",
-        "../content/systems/self-harness.md",
-        (
-            ("Harness components", "../content/concepts/harness-components.md"),
-            ("Evaluation and control", "../content/concepts/evaluation-and-control.md"),
-        ),
-    ),
-    (
-        "successor improvement",
-        "After an accepted Cₜ → Cₜ₊₁ transition, estimate the proposal-quality functional Q for parent and child under the same proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget. Require positive RGₜ = Q(Cₜ₊₁) − Q(Cₜ), not one lucky stronger grandchild.",
-        "No Harp source card qualifies at this level. A qualifying experiment would produce a positive matched estimate of RGₜ under the complete fixed proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget contract.",
-        "Using self-edit access, a branching lineage, or a better child task score as a substitute for measured later improvement production.",
-        "../content/chapters/recursive-improvement-loop.md#state-transition-and-recursion-test",
-        (
-            ("System state", "../content/concepts/system-state-and-notation.md"),
-            ("Improvement types", "../content/concepts/improvement-types.md"),
-        ),
-    ),
-    (
-        "demonstrated recursive improvement",
-        "The matched successor-production gain repeats across accepted generations, fresh tasks or evaluators, and independent lineages with full cost, failure, and integrity accounting.",
-        "No Harp source card qualifies at this level. A positive example would reproduce positive recursive gain across multiple protected successor generations.",
-        "Generalizing from one lineage, one benchmark, one immediate gain, or a fixed-model scaffolding result to demonstrated RSI.",
-        "../content/chapters/recursive-improvement-loop.md#what-would-weaken-the-mechanism",
-        (
-            ("Improvement types", "../content/concepts/improvement-types.md"),
-            ("Evaluation and control", "../content/concepts/evaluation-and-control.md"),
-        ),
-    ),
+CLAIM_LEVEL_FIELDS = (
+    "name",
+    "required_evidence",
+    "positive_example",
+    "common_overclaim",
+    "example_route",
+    "canonical_concept_links",
 )
-
-
+CONCEPT_LINK_FIELDS = ("name", "route")
+CLAIM_LEVEL_NAMES = (
+    "task iteration",
+    "persistent adaptation",
+    "harness improvement",
+    "successor improvement",
+    "demonstrated recursive improvement",
+)
 @dataclass(frozen=True)
 class Card:
     metadata: dict[str, str]
     sections: dict[str, str]
+
+
+@dataclass(frozen=True)
+class ConceptLink:
+    name: str
+    route: str
+
+
+@dataclass(frozen=True)
+class ClaimLevel:
+    name: str
+    required_evidence: str
+    positive_example: str
+    common_overclaim: str
+    example_route: str
+    canonical_concept_links: tuple[ConceptLink, ...]
+
+
+def _nonempty_one_line(value: object, field: str) -> str:
+    if not isinstance(value, str) or not value.strip() or value != value.strip():
+        raise ValueError(f"{field} must be a nonempty string without outer whitespace")
+    if "\n" in value or "\r" in value or "\t" in value:
+        raise ValueError(f"{field} must be a one-line string")
+    return value
+
+
+def _repository_route(value: object, field: str) -> str:
+    route = _nonempty_one_line(value, field)
+    path_text, separator, fragment = route.partition("#")
+    route_path = PurePosixPath(path_text)
+    if (
+        not path_text
+        or path_text.startswith("/")
+        or "\\" in path_text
+        or route_path.is_absolute()
+        or ".." in route_path.parts
+        or "." in route_path.parts
+        or not separator and "#" in fragment
+        or (separator and (not fragment or "#" in fragment))
+        or any(character.isspace() for character in route)
+        or "?" in route
+        or ":" in route_path.parts[0]
+    ):
+        raise ValueError(f"{field} must be a safe repository-relative route")
+    return route
+
+
+def parse_comparison_matrix_text(
+    text: str, expected_source_ids: tuple[str, ...]
+) -> dict[str, tuple[str, ...]]:
+    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
+    if tuple(reader.fieldnames or ()) != COMPARISON_FIELDS:
+        raise ValueError("unexpected Weng comparison matrix header")
+    rows = list(reader)
+    if any(None in row or None in row.values() for row in rows):
+        raise ValueError("malformed Weng comparison matrix row")
+    if len(rows) != len(expected_source_ids):
+        raise ValueError("Weng comparison matrix must contain the exact source roster")
+    source_ids = tuple(
+        _nonempty_one_line(row["source_id"], "comparison source_id") for row in rows
+    )
+    if source_ids != expected_source_ids or len(set(source_ids)) != len(source_ids):
+        raise ValueError("Weng comparison matrix source order does not match the roster")
+    comparisons: dict[str, tuple[str, ...]] = {}
+    for row in rows:
+        source_id = row["source_id"]
+        comparisons[source_id] = tuple(
+            _nonempty_one_line(row[field], f"{source_id} {field}")
+            for field in COMPARISON_FIELDS[1:]
+        )
+    return comparisons
+
+
+def parse_claim_ladder_text(text: str) -> tuple[ClaimLevel, ...]:
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError as error:
+        raise ValueError("invalid Weng claim-ladder JSON") from error
+    if not isinstance(payload, dict) or tuple(payload) != ("schema_version", "levels"):
+        raise ValueError("unexpected Weng claim-ladder schema")
+    if payload["schema_version"] != 1 or not isinstance(payload["levels"], list):
+        raise ValueError("unexpected Weng claim-ladder contract")
+    if len(payload["levels"]) != len(CLAIM_LEVEL_NAMES):
+        raise ValueError("Weng claim ladder must contain exactly five levels")
+
+    levels: list[ClaimLevel] = []
+    for index, raw_level in enumerate(payload["levels"]):
+        if not isinstance(raw_level, dict) or tuple(raw_level) != CLAIM_LEVEL_FIELDS:
+            raise ValueError("unexpected Weng claim-level schema")
+        name = _nonempty_one_line(raw_level["name"], "claim level name")
+        if name != CLAIM_LEVEL_NAMES[index]:
+            raise ValueError("Weng claim-level order does not match the contract")
+        raw_links = raw_level["canonical_concept_links"]
+        if not isinstance(raw_links, list) or not raw_links:
+            raise ValueError(f"{name} canonical_concept_links must be a nonempty list")
+        links: list[ConceptLink] = []
+        seen_names: set[str] = set()
+        seen_routes: set[str] = set()
+        for raw_link in raw_links:
+            if not isinstance(raw_link, dict) or tuple(raw_link) != CONCEPT_LINK_FIELDS:
+                raise ValueError(f"unexpected {name} concept-link schema")
+            link = ConceptLink(
+                _nonempty_one_line(raw_link["name"], f"{name} concept-link name"),
+                _repository_route(raw_link["route"], f"{name} concept-link route"),
+            )
+            if link.name in seen_names or link.route in seen_routes:
+                raise ValueError(f"{name} contains a duplicate canonical concept link")
+            seen_names.add(link.name)
+            seen_routes.add(link.route)
+            links.append(link)
+        levels.append(
+            ClaimLevel(
+                name,
+                _nonempty_one_line(
+                    raw_level["required_evidence"], f"{name} required_evidence"
+                ),
+                _nonempty_one_line(
+                    raw_level["positive_example"], f"{name} positive_example"
+                ),
+                _nonempty_one_line(
+                    raw_level["common_overclaim"], f"{name} common_overclaim"
+                ),
+                _repository_route(raw_level["example_route"], f"{name} example_route"),
+                tuple(links),
+            )
+        )
+    return tuple(levels)
 
 
 def _decode_frontmatter_scalar(raw: str) -> str:
@@ -1021,6 +738,21 @@ def load_status() -> str:
     return state
 
 
+def load_comparison_matrix(cards: list[Card]) -> dict[str, tuple[str, ...]]:
+    source_ids = tuple(card.metadata["source_id"] for card in cards)
+    return parse_comparison_matrix_text(
+        COMPARISON_MATRIX.read_text(encoding="utf-8"), source_ids
+    )
+
+
+def load_claim_ladder() -> tuple[ClaimLevel, ...]:
+    return parse_claim_ladder_text(CLAIM_LADDER.read_text(encoding="utf-8"))
+
+
+def reference_href(route: str) -> str:
+    return f"../{route}"
+
+
 def paragraphs(text: str) -> str:
     blocks = [block.strip() for block in text.split("\n\n") if block.strip()]
     return "".join(
@@ -1120,9 +852,8 @@ def render_harness_map(cards: list[Card]) -> str:
 
 def comparison_rows(
     cards: list[Card],
-    comparisons: dict[str, tuple[str, ...]] | None = None,
+    comparisons: dict[str, tuple[str, ...]],
 ) -> list[tuple[Card, tuple[str, ...]]]:
-    comparisons = COMPARISONS if comparisons is None else comparisons
     card_ids = {card.metadata["source_id"] for card in cards}
     comparison_ids = set(comparisons)
     missing = card_ids - comparison_ids
@@ -1143,30 +874,23 @@ def comparison_rows(
     return [(card, comparisons[card.metadata["source_id"]]) for card in cards]
 
 
-def render_claim_ladder() -> str:
+def render_claim_ladder(claim_levels: tuple[ClaimLevel, ...]) -> str:
     levels = "".join(
         (
             f'<li id="claim-level-{index}" class="reference-panel">'
-            f"<h2>{index}. {html.escape(name)}</h2>"
-            f"<p><strong>Required evidence:</strong> {html.escape(required)}</p>"
-            f'<p><strong>Positive example:</strong> <a href="{html.escape(example_route, quote=True)}">'
-            f"{html.escape(example)}</a></p>"
-            f"<p><strong>Common overclaim:</strong> {html.escape(overclaim)}</p>"
+            f"<h2>{index}. {html.escape(level.name)}</h2>"
+            f"<p><strong>Required evidence:</strong> {html.escape(level.required_evidence)}</p>"
+            f'<p><strong>Positive example:</strong> <a href="{html.escape(reference_href(level.example_route), quote=True)}">'
+            f"{html.escape(level.positive_example)}</a></p>"
+            f"<p><strong>Common overclaim:</strong> {html.escape(level.common_overclaim)}</p>"
             "<p><strong>Canonical Harp concepts:</strong> "
             + " · ".join(
-                f'<a href="{html.escape(route, quote=True)}">{html.escape(title)}</a>'
-                for title, route in concepts
+                f'<a href="{html.escape(reference_href(link.route), quote=True)}">{html.escape(link.name)}</a>'
+                for link in level.canonical_concept_links
             )
             + "</p></li>"
         )
-        for index, (
-            name,
-            required,
-            example,
-            overclaim,
-            example_route,
-            concepts,
-        ) in enumerate(CLAIM_LEVELS, start=1)
+        for index, level in enumerate(claim_levels, start=1)
     )
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
@@ -1174,10 +898,9 @@ def render_claim_ladder() -> str:
         "<title>RSI Claim Ladder</title>"
         '<link rel="stylesheet" href="../assets/course.css"></head>'
         "<body><main><h1>RSI Claim Ladder</h1>"
-        '<p class="reference-panel">Generated from canonical Harp concepts under '
-        '<code>content/concepts/</code>, the '
-        '<a href="../content/chapters/recursive-improvement-loop.md">'
-        "recursive-improvement chapter</a>, and the canonical source cards. "
+        '<p class="reference-panel">Generated from '
+        '<a href="../content/weng-claim-ladder.json">'
+        "content/weng-claim-ladder.json</a> and its canonical Harp concept links. "
         "This HTML is derived and non-authoritative. Harp does not claim to have "
         "demonstrated recursive self-improvement.</p>"
         "<ol>"
@@ -1186,7 +909,9 @@ def render_claim_ladder() -> str:
     )
 
 
-def render_comparison_matrix(cards: list[Card]) -> str:
+def render_comparison_matrix(
+    cards: list[Card], comparisons: dict[str, tuple[str, ...]]
+) -> str:
     headers = "".join(f"<th scope=\"col\">{html.escape(column)}</th>" for column in COMPARISON_COLUMNS)
     rows = "".join(
         (
@@ -1197,7 +922,7 @@ def render_comparison_matrix(cards: list[Card]) -> str:
             + "".join(f"<td>{html.escape(value)}</td>" for value in comparison)
             + "</tr>"
         )
-        for card, comparison in comparison_rows(cards)
+        for card, comparison in comparison_rows(cards, comparisons)
     )
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
@@ -1206,6 +931,8 @@ def render_comparison_matrix(cards: list[Card]) -> str:
         '<link rel="stylesheet" href="../assets/course.css"></head>'
         "<body><main><h1>Harness Comparison Matrix</h1>"
         '<p class="reference-panel">Generated from '
+        '<a href="../content/weng-comparison-matrix.tsv">'
+        "content/weng-comparison-matrix.tsv</a>, "
         '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
         '<code>content/weng-sources/</code>, and the '
         '<a href="../content/sources/source_registry.tsv">source registry</a>. '
@@ -1472,85 +1199,136 @@ def write_or_check(path: Path, content: str, check: bool) -> None:
 
 
 def run_self_tests() -> None:
-    cards = load_cards()
-    expected_comparison_updates = {
-        "HYPERAGENTS": (
-            "unified editable task-and-meta-agent program",
-            "self-referential task-and-meta logic rewrite plus archive selection",
+    comparison_header = "\t".join(
+        (
+            "source_id",
+            "edited_object",
+            "persistence",
+            "evaluator",
+            "update_operator",
+            "model_weight_change",
+            "evidence_class",
+            "comparison_claim_ceiling",
+        )
+    )
+    comparison_rows_text = "\n".join(
+        (
+            comparison_header,
+            "SOURCE-A\tobject a\tpersistence a\tevaluator a\tupdate a\tno\tclass a\tceiling a",
+            "SOURCE-B\tobject b\tpersistence b\tevaluator b\tupdate b\tyes\tclass b\tceiling b",
+            "",
+        )
+    )
+    parsed_comparisons = parse_comparison_matrix_text(
+        comparison_rows_text, ("SOURCE-A", "SOURCE-B")
+    )
+    if tuple(parsed_comparisons) != ("SOURCE-A", "SOURCE-B"):
+        raise AssertionError("comparison parser did not preserve semantic order")
+    invalid_comparison_inputs = (
+        comparison_rows_text.replace("edited_object", "unknown", 1),
+        comparison_rows_text.replace("SOURCE-A", "SOURCE-B", 1),
+        comparison_rows_text.replace(
+            "SOURCE-A\tobject a\tpersistence a\tevaluator a\tupdate a\tno\tclass a\tceiling a\n",
+            "",
+            1,
         ),
-        "CONTINUAL-HARNESS": (
-            "reset-free state across refinement cycles within one continuing episode",
+        comparison_rows_text.replace(
+            "SOURCE-B\tobject b\tpersistence b\tevaluator b\tupdate b\tyes\tclass b\tceiling b\n",
+            "SOURCE-C\tobject c\tpersistence c\tevaluator c\tupdate c\tno\tclass c\tceiling c\n",
+            1,
         ),
-        "DEMOEVOLVE": (
-            "executable agentic harness",
-            "demonstration-guided harness evolution and selection",
-        ),
-        "PAPERBENCH": (
-            "per-run reproduction artifact; reported aggregates include three runs per paper and human best@3",
-        ),
-        "REBENCH": ("independent timed attempts aggregated through score@k",),
-        "MLEBENCH": (
-            "per-seed competition artifact; headline result aggregates 16 seeds",
-        ),
-        "SCIENCEAGENTBENCH": (
-            "three independent runs per task with selected-best and mean accounting",
-        ),
-        "COREBENCH": (
-            "three-run CORE-Agent accounting with separate pass@1 and pass@3 retries",
-        ),
-        "SIA": (
-            "generation-specific or selected-best scaffold and LoRA checkpoint",
-        ),
-        "AI-SCIENTIST": (
-            "research ideas, plans, code, results, figures, and manuscripts",
-        ),
-        "NOT-SCIENTISTS": (
-            "research ideas, hypotheses, plans, code, results, and manuscript",
-        ),
-    }
-    for source_id, expected_values in expected_comparison_updates.items():
-        comparison = COMPARISONS[source_id]
-        for expected_value in expected_values:
-            if expected_value not in comparison:
-                raise AssertionError(
-                    f"{source_id} comparison is missing reviewed value: {expected_value}"
-                )
-    if COMPARISONS["WENG-REWARD"][:5] != (
-        "not applicable; secondary reward-hacking synthesis",
-        "varies by cited case",
-        "varies by cited case",
-        "not applicable; synthesis of failure modes and mitigations",
-        "varies by cited case",
-    ):
-        raise AssertionError("WENG-REWARD mechanism columns exceed secondary evidence")
-    if COMPARISONS["ANTHROPIC-RSI"][:5] != (
-        "not one controlled object; company successor-development framing",
-        "varies across self-reported cases",
-        "internal observations and case-specific metrics",
-        "not one controlled update loop",
-        "varies or is unspecified across cases",
-    ):
-        raise AssertionError("ANTHROPIC-RSI mechanism columns imply one controlled loop")
+        comparison_rows_text.replace("\tobject a\t", "\t\t", 1),
+        comparison_rows_text.replace("ceiling a", "ceiling a\ncontinued", 1),
+    )
+    for invalid in invalid_comparison_inputs:
+        try:
+            parse_comparison_matrix_text(invalid, ("SOURCE-A", "SOURCE-B"))
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("invalid canonical comparison TSV unexpectedly passed")
 
-    successor = next(level for level in CLAIM_LEVELS if level[0] == "successor improvement")
-    for required_text in (
-        "proposal protocol",
-        "task distribution",
-        "model access",
-        "selection rule",
-        "root-tree budget",
-        "RGₜ = Q(Cₜ₊₁) − Q(Cₜ)",
-        "not one lucky stronger grandchild",
+    claim_level_names = (
+        "task iteration",
+        "persistent adaptation",
+        "harness improvement",
+        "successor improvement",
+        "demonstrated recursive improvement",
+    )
+    claim_levels_payload = {
+        "schema_version": 1,
+        "levels": [
+            {
+                "name": name,
+                "required_evidence": f"Required evidence for {name}.",
+                "positive_example": f"Positive example for {name}.",
+                "common_overclaim": f"Common overclaim for {name}.",
+                "example_route": "content/concepts/improvement-types.md",
+                "canonical_concept_links": [
+                    {
+                        "name": "Improvement types",
+                        "route": "content/concepts/improvement-types.md",
+                    },
+                    {
+                        "name": "System state",
+                        "route": "content/concepts/system-state-and-notation.md#notation",
+                    },
+                ],
+            }
+            for name in claim_level_names
+        ],
+    }
+    claim_levels_text = json.dumps(claim_levels_payload)
+    parsed_levels = parse_claim_ladder_text(claim_levels_text)
+    if tuple(level.name for level in parsed_levels) != claim_level_names:
+        raise AssertionError("claim-ladder parser did not preserve level order")
+    invalid_claim_payloads = []
+    for mutate in (
+        lambda value: value.update({"unknown": True}),
+        lambda value: value.pop("schema_version"),
+        lambda value: value["levels"][0].update({"unknown": "field"}),
+        lambda value: value["levels"][0].pop("required_evidence"),
+        lambda value: value["levels"].reverse(),
+        lambda value: value["levels"].pop(),
+        lambda value: value["levels"].append(dict(value["levels"][-1])),
+        lambda value: value["levels"][0].update({"required_evidence": ""}),
+        lambda value: value["levels"][0].update(
+            {"positive_example": "first line\nsecond line"}
+        ),
+        lambda value: value["levels"][0].update(
+            {"example_route": "../outside.md"}
+        ),
+        lambda value: value["levels"][0].update(
+            {"example_route": "content/concepts/improvement-types.md?view=unsafe"}
+        ),
+        lambda value: value["levels"][0]["canonical_concept_links"].append(
+            dict(value["levels"][0]["canonical_concept_links"][0])
+        ),
+        lambda value: value["levels"][0]["canonical_concept_links"].append(
+            {
+                "name": "Duplicate route",
+                "route": value["levels"][0]["canonical_concept_links"][0]["route"],
+            }
+        ),
+        lambda value: value["levels"][0]["canonical_concept_links"][0].pop("route"),
+        lambda value: value["levels"][0]["canonical_concept_links"][0].update(
+            {"route": "https://example.test/unsafe"}
+        ),
     ):
-        if required_text not in successor[1]:
-            raise AssertionError(
-                f"successor required evidence is missing canonical contract: {required_text}"
-            )
-    if (
-        "No Harp source card qualifies" not in successor[2]
-        or "positive matched estimate of RGₜ" not in successor[2]
-    ):
-        raise AssertionError("successor positive example overstates Harp evidence")
+        invalid = json.loads(claim_levels_text)
+        mutate(invalid)
+        invalid_claim_payloads.append(json.dumps(invalid))
+    for invalid in invalid_claim_payloads:
+        try:
+            parse_claim_ladder_text(invalid)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("invalid canonical claim-ladder JSON unexpectedly passed")
+
+    cards = load_cards()
+    comparisons = load_comparison_matrix(cards)
+    claim_levels = load_claim_ladder()
 
     source_cards = render_source_cards(cards)
     if source_cards.count("<article data-source-card") != 42:
@@ -1566,12 +1344,12 @@ def run_self_tests() -> None:
             raise AssertionError(f"source-card reference must contain 42 {attribute} attributes")
     if "42 of 42 sources" not in source_cards:
         raise AssertionError("source-card reference must expose its initial live count")
-    comparison_matrix = render_comparison_matrix(cards)
+    comparison_matrix = render_comparison_matrix(cards, comparisons)
     if comparison_matrix.count("<tr data-comparison-row>") != 42:
         raise AssertionError("comparison matrix must contain 42 source rows")
     if comparison_matrix.count('href="weng-source-cards.html#source-') != 42:
         raise AssertionError("comparison matrix must link all 42 source cards")
-    claim_ladder = render_claim_ladder()
+    claim_ladder = render_claim_ladder(claim_levels)
     if claim_ladder.count('<li id="claim-level-') != 5:
         raise AssertionError("claim ladder must contain five ordered levels")
     harness_map = render_harness_map(cards)
@@ -1579,7 +1357,7 @@ def run_self_tests() -> None:
         raise AssertionError("harness map must contain nine sections")
 
     first_source_id = cards[0].metadata["source_id"]
-    incomplete = dict(COMPARISONS)
+    incomplete = dict(comparisons)
     incomplete.pop(first_source_id)
     try:
         comparison_rows(cards, incomplete)
@@ -2021,6 +1799,8 @@ def main() -> None:
         raise SystemExit("teaching references require cards-complete state")
     if len(cards) != 42:
         raise SystemExit(f"expected 42 source cards, found {len(cards)}")
+    comparisons = load_comparison_matrix(cards)
+    claim_levels = load_claim_ladder()
     publish_outputs(
         [
             (
@@ -2033,11 +1813,11 @@ def main() -> None:
             ),
             (
                 REFERENCE_ROOT / "rsi-claim-ladder.html",
-                render_claim_ladder(),
+                render_claim_ladder(claim_levels),
             ),
             (
                 REFERENCE_ROOT / "harness-comparison-matrix.html",
-                render_comparison_matrix(cards),
+                render_comparison_matrix(cards, comparisons),
             ),
         ],
         args.check,

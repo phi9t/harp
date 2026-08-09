@@ -86,4 +86,4 @@ dispositions recorded above.
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`eb0511d3e21e9619cdfad72002ad146b288f7c695c0e14a473131efbf1c326cd`
+`43238894e88ba3f7c39b81d7bfce519747c28e0b0a28703ad9e1b149329dd8cd`

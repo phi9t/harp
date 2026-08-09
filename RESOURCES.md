@@ -26,6 +26,7 @@ No community participation preference has been established yet. Future sessions 
 ## Gaps
 
 All 39 numbered Weng references and all three substantive body-linked sources
-now have primary-source or source-specific interpretation. Lessons, generated
-references, and the course remain incomplete while the curriculum state is
-`building`.
+have primary-source or source-specific interpretation. The curriculum is
+`complete`: 42 source cards, four generated references, and ten lessons are
+present. Retrieval states remain `unseen`; completion and page exposure make
+no learner-mastery claim.
