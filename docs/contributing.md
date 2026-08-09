@@ -23,6 +23,11 @@ Do not duplicate technical explanations in TypeScript. New canonical Markdown
 must have one stable role, one source/claim ceiling, valid local links, and
 coverage ownership where applicable.
 
+For source-backed research summaries, technical articles, and deep dives, use
+the [credible technical documentation style guide](writing-style/STYLE_GUIDE.md).
+Material claims follow a clickable route from main prose to a heading-based
+claim-ledger entry and then to the exact local source locator.
+
 ## Evidence changes
 
 Do not edit captured upstream bytes to normalize formatting, names, or paths.
