@@ -28,12 +28,12 @@ EVIDENCE	WENG-HARNESS	cites	LEARNING-DISCOVER	Reference 25	verified	Primary sour
 EVIDENCE	WENG-HARNESS	cites	EPISTEMIC-DISCOVERY	Reference 26	verified	Primary source owns uncertainty-guided LoRA-ensemble test-time training, the bounded CP26 reward and entropy result, and single-seed verifier and ensemble-cost limits; no independent reproduction
 EVIDENCE	WENG-HARNESS	cites	SIA	Reference 27	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	NOT-SCIENTISTS	Reference 28	verified	Primary source owns claims
-EVIDENCE	WENG-HARNESS	cites	GPT5-SCIENCE	Reference 29	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	GPT5-SCIENCE	Reference 29	verified	Primary source owns the company-authored case-study structure, four human-verified mathematics results, and expert-input, prompt-sensitivity, and reproducibility limits; not benchmark validation; no independent reproduction
 EVIDENCE	WENG-HARNESS	cites	PAPERBENCH	Reference 30	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	REBENCH	Reference 31	verified	Primary source owns claims
-EVIDENCE	WENG-HARNESS	cites	MLEBENCH	Reference 32	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	SCIENCEAGENTBENCH	Reference 33	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	COREBENCH	Reference 34	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	MLEBENCH	Reference 32	verified	Primary source owns the offline Kaggle benchmark, private-leaderboard medal metric, o1-preview with AIDE 16-seed mean-and-SEM endpoint, public-versus-private leaderboard discrepancy, human-comparator caveats, and contamination, split, scope, and resource limits; no independent reproduction
+EVIDENCE	WENG-HARNESS	cites	SCIENCEAGENTBENCH	Reference 33	verified	Primary source owns expert-and-annotator validation, Table 3 selected-best versus Appendix E.1 mean accounting, Claude-3.5-Sonnet self-debug and o1-preview endpoints and costs, taxonomy discrepancy, contamination mitigations, human rubric evaluation, and Ethics and Limitations public-data and laboratory-access boundaries; no independent reproduction
+EVIDENCE	WENG-HARNESS	cites	COREBENCH	Reference 34	verified	Primary source owns the unresolved manuscript, arXiv, and Weng venue identity, Table 5 and Appendix A3 three-run CORE-Agent with GPT-4o mean and 95% CI, Appendix C.3 pass@1/pass@3 accounting, GPT-4o-mini comparison, and cost, safety, and construct limits; no independent reproduction
 EVIDENCE	WENG-HARNESS	cites	KERNELBENCH	Reference 35	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	HARNESS-DISENTANGLE	Reference 36	verified	Primary source owns capability decomposition, reported results, and limitations
 EVIDENCE	WENG-HARNESS	cites	AHE	Reference 37	verified	Primary source owns claims

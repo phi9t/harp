@@ -25,9 +25,8 @@ No community participation preference has been established yet. Future sessions 
 
 ## Gaps
 
-Local captures exist for every source below, but primary-source interpretation is pending.
+All numbered Weng references now have primary-source interpretation.
 
-- `GPT5-SCIENCE`
-- `MLEBENCH`
-- `SCIENCEAGENTBENCH`
-- `COREBENCH`
+One substantive body-linked source remains pending primary-source interpretation:
+
+- `ANTHROPIC-RSI`
