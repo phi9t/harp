@@ -77,7 +77,7 @@ flowchart LR
 | MISSING | Direct evidence that any individual prompt is actually in the unknown model-training distribution. | Benchmark success and trace similarity are proxies, not training-data membership tests. |
 | MISSING | A matched comparison at equal total tokens, FLOPs, model calls, wall-clock time, and dollar cost. | The blog reports a 1.5–3× RLM runtime premium on similarly sized tasks. |
 | MISSING | Transfer to task pairs not chosen because they share an anticipated decomposition. | The reported domain pairs are constructed around aggregation, retrieval, filtering, or analogous strategies. |
-| MISSING | Independent reproduction of the July 2026 RL experiments. | The capture includes the author blog, predecessor paper, and official repository metadata only. |
+| MISSING | Independent reproduction of the July 2026 RL experiments. | The capture includes the author blog, predecessor paper, and narrow official-code snapshots, but no rerun of the training or evaluation. |
 
 ## Internal actions versus external signals
 
@@ -118,4 +118,5 @@ flowchart LR
 - [A1ZHANG-X-POST] `knowledge/capture/clippings/Post by @a1zhang on X.md`
 - [A1ZHANG-HARNESS-BLOG] `evidence/rlm/artifacts/html/language-model-harnesses-are-compositional-generalizers.html`
 - [RLM-PAPER] `evidence/rlm/artifacts/pdf/recursive-language-models-2512.24601v3.pdf`
-- [RLM-REPO] `evidence/rlm/artifacts/git/README.md`
+- [RLM-REPO] `evidence/implementations/rlm/snapshot/`
+- [RLM-MINIMAL] `evidence/implementations/rlm-minimal/snapshot/`

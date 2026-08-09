@@ -52,7 +52,7 @@ Mode: `DOMAIN ORIENTATION`.
 
 ## Closure accounting
 
-**EVIDENCE — `sources/source_registry.tsv`.** The Weng-rooted citation closure contains two seeds, all 39 numbered first-hop references, three retained body-linked sources, and four second-hop foundations: 48 nodes total. The registry contains seven additional non-closure nodes: the RLM paper and blog as research anchors, the announcing X clipping, and four implementation snapshots—Pi, Hermes Agent, OpenAI Codex, and pinned RLM repository metadata. These nodes do not retroactively enter `C*` or trigger another Weng-citation expansion. Every node has one stable ID, depth, access status, cohort, locator, and claim ceiling.
+**EVIDENCE — `sources/source_registry.tsv`.** The Weng-rooted citation closure contains two seeds, all 39 numbered first-hop references, three retained body-linked sources, and four second-hop foundations: 48 nodes total. The registry also contains non-closure research anchors, announcement records, benchmark receipts, and implementation snapshots. The RLM overlay now includes narrow pinned snapshots of the full and minimal repositories. These nodes do not retroactively enter `C*` or trigger another Weng-citation expansion. Every node has one stable ID, depth, access status, cohort, locator, and claim ceiling.
 
 **EVIDENCE — `sources/evidence_graph.tsv`.** Every numbered reference has a `cites` edge from [WENG-HARNESS]. Retained conceptual and implementation relationships use separate typed edges such as `extends`, `implements`, `critiques`, `evaluates`, and `requires`.
 

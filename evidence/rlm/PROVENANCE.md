@@ -21,6 +21,11 @@ official implementation metadata, the blog's 11-entry bibliography, and 51
 structured outgoing references from the paper. Those outgoing references are
 parsed but not automatically admitted or fetched in this pass.
 
+Harp later added narrow source snapshots of the full and minimal official
+repositories under `evidence/implementations/`. Those files are governed by
+`evidence/implementations/manifest.tsv` and do not change this bundle's
+original artifact inventory or capture receipt.
+
 ## Captured representations
 
 - The complete blog HTML, a plain-text sidecar, its eight first-party figures,
@@ -28,7 +33,8 @@ parsed but not automatically admitted or fetched in this pass.
 - The arXiv v3 PDF, abstract/license metadata, semantic HTML, a plain-text
   sidecar, and 51 structured `ltx_bibitem` citation records.
 - The official repository README and MIT license at the pinned commit. No
-  source tree was materialized and no upstream code was executed.
+  source tree was materialized in this bundle and no upstream benchmark was
+  executed.
 - The announcement identity is retained in `sources.tsv`; the substantive
   evidence is the captured first-party blog.
 

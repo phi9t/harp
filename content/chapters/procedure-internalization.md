@@ -108,7 +108,8 @@ The internalization claim weakens if `Score(C)` does not improve over `Score(A)`
 <summary>Reference records and operational metadata</summary>
 
 - Exact paper identities, access states, and claim ceilings are in [the source registry](../source_registry.md).
-- The RLM implementation was not executed in this packet; the anchor preserves paper, blog, and pinned metadata evidence.
+- Harp inspected narrow pinned full and minimal code snapshots but did not run the
+  RLM training or benchmark recipe.
 - Internalization remains a mechanism claim unless a complete four-way receipt is available.
 
 </details>

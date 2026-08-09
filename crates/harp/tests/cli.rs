@@ -45,8 +45,8 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 68,
-            "evidence_edges": 79
+            "source_registry_rows": 69,
+            "evidence_edges": 80
         })
     );
 }
@@ -180,9 +180,9 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
-        .stdout(predicate::str::contains("\"snapshot_files\":95"))
+        .stdout(predicate::str::contains("\"snapshot_files\":105"))
         .stdout(predicate::str::contains("\"binary_objects\":54"))
-        .stdout(predicate::str::contains("\"implementation_sources\":9"));
+        .stdout(predicate::str::contains("\"implementation_sources\":11"));
 }
 
 #[test]

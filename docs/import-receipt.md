@@ -81,9 +81,27 @@ These additions are Harp maintenance after the initial import. They do not
 change the source repository identity, source commit, source path counts, or
 dispositions recorded above.
 
+## Post-import RLM implementation extension
+
+The maintained product also adds narrow implementation evidence for the RLM
+mechanism:
+
+- four selected files from `alexzhang13/rlm-minimal` at
+  `973f8d4acf3af2c86dc170af91607bf8b0c4d0ea`;
+- six selected files from `alexzhang13/rlm` at
+  `72d6940142ddfb84ee6be573dc999a37e633e671`;
+- the MIT license and immutable remote/revision sidecars for each snapshot; and
+- manifest-bound byte counts and SHA-256 digests under
+  `evidence/implementations/manifest.tsv`.
+
+The snapshots support mechanism and present-day implementation inspection.
+They do not reproduce the paper benchmarks, later post-training experiments,
+cloud-adapter safety, or production behavior. This extension does not alter the
+fixed 521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`c69483426c22487c8dded50ff8a7a79cec8eb97462da6f54c6beff503318a0e6`
+`fdab76c333eb6efdefc0a10bd20cd2d67a7bee2eaf93c32bcb6065bd638b833d`

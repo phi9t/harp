@@ -214,7 +214,10 @@ The supporting layer is separate from the reading spine:
 - The [harness benchmark field guide](../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
   compares evaluator boundaries and preserves the complete MCE experiment protocol.
 - [[bounded_transitive_closure]] records the Weng-rooted expansion rule, retained branches, stop predicate, and closure status.
-- `evidence/weng/` vendors the Weng anchor's bounded two-hop external closure. `evidence/rlm/` captures the RLM anchor paper, implementation metadata, training/generalization blog, figures, and parsed citations.
+- `evidence/weng/` vendors the Weng anchor's bounded two-hop external closure.
+  `evidence/rlm/` captures the RLM paper, training/generalization blog, figures,
+  and parsed citations. Narrow full and minimal code snapshots live under
+  `evidence/implementations/`.
 
 ## Baseline five-minute route
 
@@ -230,6 +233,6 @@ The supporting layer is separate from the reading spine:
 
 **CLAIM — research-domain-orientation skill.** Every non-trivial prose statement in this packet is marked `CLAIM`, `EVIDENCE`, `INFERENCE`, or `SPECULATION`; absent or inaccessible evidence is marked `MISSING`.
 
-**EVIDENCE — anchor manifests.** Lilian Weng's 2026 article and the RLM paper → implementation → blog lineage are first-class anchors. Weng's 39 numbered references are registered and vendored exactly once, whether interpreted or not. The RLM capture preserves its two substantive texts, pinned implementation metadata, 11-entry blog bibliography, and 51 parsed paper citations without silently admitting all of those citations into the maintained synthesis.
+**EVIDENCE — anchor manifests.** Lilian Weng's 2026 article and the RLM paper → implementation → blog lineage are first-class anchors. Weng's 39 numbered references are registered and vendored exactly once, whether interpreted or not. The RLM capture preserves its two substantive texts, narrow pinned full and minimal code snapshots, 11-entry blog bibliography, and 51 parsed paper citations without silently admitting all of those citations into the maintained synthesis.
 
 **MISSING.** The packet contains no independent, matched-budget reproduction of a recursively improving system across multiple accepted generations.

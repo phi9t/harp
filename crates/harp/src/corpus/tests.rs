@@ -855,6 +855,45 @@ fn agentic_eval_apply_is_discoverable_and_links_to_registered_documents() {
 }
 
 #[test]
+fn rlm_system_reading_links_eval_apply_and_preserves_code_boundaries() {
+    let corpus = compile(workspace_root()).unwrap();
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "rlm")
+        .unwrap();
+
+    for required in [
+        "href=\"#documents/agentic-eval-apply\"",
+        "rlm-minimal",
+        "seven registered adapters",
+        "Local, IPython, and Docker",
+        "not a reliable tree-wide cap",
+        "selected full-repository files",
+        "lossy, model-generated context projection",
+        "depth-one training adapter",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "RLM system reading is missing {required}"
+        );
+    }
+
+    let system = corpus
+        .systems
+        .iter()
+        .find(|system| system.system_id == "rlm")
+        .unwrap();
+    assert_eq!(
+        system.source_ids,
+        ["RLM-PAPER", "RLM-REPO", "RLM-MINIMAL"],
+        "RLM system source ownership must include the paper and both code pins"
+    );
+    assert_eq!(system.paper_routes.len(), 1);
+    assert_eq!(system.paper_routes[0].source_id, "RLM-PAPER");
+}
+
+#[test]
 fn context_engineering_companion_preserves_reader_and_source_contract() {
     let corpus = compile(workspace_root()).unwrap();
     let document = corpus
