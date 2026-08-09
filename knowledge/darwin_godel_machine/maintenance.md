@@ -4,7 +4,7 @@ title: DGM packet maintenance
 type: runbook
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, maintenance, provenance, verification]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -66,8 +66,43 @@ Every file must:
 - link back to `darwin_godel_machine_index.md`, except the index itself;
 - use repository-relative links for local artifacts;
 - avoid absolute local paths;
-- distinguish `EVIDENCE`, `CLAIM`, `INFERENCE`, and `MISSING`; and
+- distinguish `EVIDENCE`, `SOURCE CLAIM`, `INFERENCE`, and `MISSING`;
+- route every reader-facing material claim through an exact heading in
+  `claim_evidence_crosswalk.md`;
 - retain the relevant claim ceiling and reproduction status.
+
+## Credible-documentation route
+
+The packet follows
+[the credible technical documentation style](../../docs/writing-style/STYLE_GUIDE.md):
+
+```text
+reader-facing claim block
+  -> exact DGM-* heading in claim_evidence_crosswalk.md
+  -> exact captured paper or pinned implementation locator
+```
+
+`claim_evidence_crosswalk.md` is the packet's canonical claim ledger. Its
+`## DGM-*` entries own class, wording, source identity, exact locator, scope,
+reproduction status, confidence, caveat, relationships, and inference
+falsifiers. Tables below those entries are scan indexes only.
+
+`source_registry.md` owns source identity and claim ceiling. It must retain
+heading-based records for `DGM`, `DGM-REPO`, `HARP-DGM`, and `HARP-RSI`.
+
+Do not:
+
+- add bare `CLAIM`;
+- cite canonical prose as the primary evidence locator;
+- let one claim block mix source content and packet inference;
+- merge contradictory source values;
+- treat quote or paraphrase as an evidence class; or
+- infer reproduction from source inspection.
+
+Use `SOURCE CLAIM` for author-reported outcomes and interpretations. Use
+`EVIDENCE` for directly inspected paper or source content. A synthesis,
+recommendation, causal explanation, or claim-ceiling judgment is `INFERENCE`.
+An unresolved evidence requirement is `MISSING`.
 
 ## Immutable source identities
 
@@ -285,7 +320,11 @@ The packet test verifies:
 - repository-relative links;
 - absence of local absolute paths and placeholders;
 - pinned implementation revision;
-- claim-crosswalk schema; and
+- heading-based claim-ledger schema;
+- reader claim class/ID/anchor correspondence;
+- direct underlying-evidence locators;
+- required inference falsifiers and missing-evidence resolution conditions;
+- absence of deprecated bare `CLAIM`; and
 - packet source IDs.
 
 This test checks packet integrity. It does not validate every technical claim.
@@ -402,18 +441,21 @@ Do not rewrite captured evidence to make it agree with current terminology.
 
 Before declaring a packet update complete, answer:
 
-1. Does every material claim have a canonical home?
-2. Does every paper result name task and metric scope?
-3. Does every code claim name the pinned revision?
-4. Are paper, source, and packet evidence classes distinct?
-5. Are source inconsistencies visible?
-6. Is non-reproduction explicit?
-7. Is the candidate/protected-envelope boundary current?
-8. Is objective hacking still represented?
-9. Is the missing next-cycle test explicit?
-10. Do all sixteen files pass the integrity test?
-11. Are generated Atlas artifacts current if canonical content changed?
-12. Did `mise run verify` pass on the actual final tree?
+1. Does every material claim have a canonical `## DGM-*` ledger entry?
+2. Does each reader-facing claim link to that exact entry?
+3. Does every ledger locator open captured paper or pinned implementation
+   evidence rather than another prose summary?
+4. Does every paper result name task and metric scope?
+5. Does every code claim name the pinned revision?
+6. Are paper, source, and packet evidence classes distinct?
+7. Are source inconsistencies visible as linked entries?
+8. Is non-reproduction explicit?
+9. Is the candidate/protected-envelope boundary current?
+10. Is objective hacking still represented?
+11. Is the missing next-cycle test explicit?
+12. Do all sixteen files pass the integrity test?
+13. Are generated Atlas artifacts current if canonical content changed?
+14. Did `mise run verify` pass on the actual final tree?
 
 If any answer is uncertain, the update is not complete.
 

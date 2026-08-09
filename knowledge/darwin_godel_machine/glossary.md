@@ -4,7 +4,7 @@ title: DGM glossary
 type: concept
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, glossary, notation]
 confidence: high
 canonical: ../../content/concepts/system-state-and-notation.md
@@ -38,6 +38,7 @@ Canonical source: [harness search methods](../../content/concepts/harness-search
 
 ## Candidate
 
+**[EVIDENCE - DGM-001](claim_evidence_crosswalk.md#dgm-001-dgm-evolves-an-editable-coding-agent-repository).**
 The mutable object under evaluation. In DGM, it is the coding-agent
 implementation assembled from its ancestor patch lineage.
 
@@ -202,6 +203,7 @@ Canonical source: [evaluation and control](../../content/concepts/evaluation-and
 
 ## Open-ended exploration
 
+**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
 Search intended to keep generating useful new stepping stones rather than
 converging quickly to one fixed target. DGM implements a bounded form through
 archive retention and non-zero parent selection.
@@ -298,6 +300,7 @@ Canonical source: [harness search methods](../../content/concepts/harness-search
 
 ## Successor improvement
 
+**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
 A child produces better later candidates than its parent under the same
 protected evaluation and budget conditions.
 

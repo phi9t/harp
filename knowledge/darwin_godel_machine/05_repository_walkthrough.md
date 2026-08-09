@@ -4,7 +4,7 @@ title: DGM repository walkthrough
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, source-code, runtime, implementation]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -96,6 +96,7 @@ Nodes whose metadata cannot be loaded are skipped as ineligible.
 
 ### Parent selection
 
+**[EVIDENCE - DGM-005](claim_evidence_crosswalk.md#dgm-005-parent-selection-combines-score-and-underexploration).**
 The default `score_child_prop` branch:
 
 1. maps accuracy through a sigmoid centered at 0.5;
@@ -122,7 +123,17 @@ detecting repeated long-input errors.
 
 For Polyglot, selection normally samples from empty and unresolved tasks.
 
+**[EVIDENCE - DGM-063](claim_evidence_crosswalk.md#dgm-063-empty-swe-unresolved-lists-can-reach-random-choice).**
+The SWE guard compares `unresolved_ids`, a list, with integer zero. If the list
+is empty and no earlier special branch fires, `random.choice` can receive an
+empty list.
+
 ### Parallel self-improvement
+
+**[EVIDENCE - DGM-061](claim_evidence_crosswalk.md#dgm-061-released-defaults-can-schedule-two-attempts-per-generation).**
+The captured CLI defaults to 80 outer generations and two attempts per
+generation. A literal default run can therefore schedule up to 160 child
+attempts; this is not the same accounting unit as the paper's 80 iterations.
 
 The controller submits each `(parent_commit, entry)` pair to a
 `ThreadPoolExecutor`. Each future calls `self_improve`. The inner self-edit
@@ -150,7 +161,7 @@ The generation record includes:
 
 ### Snapshot defects
 
-Two defects matter when reading the release.
+Several defects matter when reading the release.
 
 First, the CLI choices omit a comma:
 
@@ -164,6 +175,10 @@ The default still works.
 Second, the direct `best` implementation sorts scores ascending and takes the
 first entries. If invoked programmatically, it selects the lowest scores
 rather than the best scores described by its comment.
+
+**[EVIDENCE - DGM-062](claim_evidence_crosswalk.md#dgm-062-released-parent-selection-omits-the-papers-perfect-score-filter).**
+The paper excludes perfect-score agents from parent eligibility. The captured
+candidate builder has no corresponding explicit score filter.
 
 These defects do not invalidate the paper's default
 `score_child_prop` mechanism. They show why paper pseudocode and released code
@@ -515,6 +530,15 @@ The expanded Polyglot evaluation is stored in
 released search therefore selects parents using shallow results even after a
 deeper evaluation has run.
 
+### Disconnected full SWE evaluation
+
+**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+The outer loop computes a full-evaluation threshold and passes it to
+`self_improve`; that function also loads the `big` SWE subset. The captured
+runner never consumes either value and dispatches only the initial and medium
+stages. The paper's 200-task protocol therefore cannot be reproduced from this
+visible path without another revision or code repair.
+
 ## Error and timeout table
 
 | Boundary | Captured behavior | Consequence |
@@ -569,6 +593,11 @@ The snapshot is research code, not a durable workflow engine.
 - Expanded Polyglot results do not feed released parent selection.
 - The outer 1.5-hour future timeout does not bound unfinished attempts.
 - The pinned Polyglot self-modification model conflicts with the paper.
+- The visible full SWE threshold and `big` subset are disconnected from
+  evaluation dispatch.
+- An empty SWE unresolved list can reach `random.choice`.
+- The paper's perfect-score eligibility filter is absent.
+- Dataset and dependency identity are incomplete for bit-for-bit replay.
 - Historical experiment artifacts are linked upstream but not present in this
   narrow snapshot.
 

@@ -4,7 +4,7 @@ title: DGM evaluation analysis
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, evaluation, benchmarks, ablations, cost]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -27,6 +27,9 @@ After this chapter, you should be able to:
 - state which claims remain author-reported rather than reproduced.
 
 ## Claim boundary
+
+**[EVIDENCE - DGM-071](claim_evidence_crosswalk.md#dgm-071-captured-paper-identifies-iclr-2026-publication).**
+The pinned paper capture identifies the work as published at ICLR 2026.
 
 All measurements below are author-reported in [DGM](../../evidence/weng/text/dgm.txt).
 Harp has not rerun the 80-iteration searches, independently scored the final
@@ -57,6 +60,12 @@ The search uses:
 The 60-task subset is based on SWE-bench-verified-mini. A candidate proceeds to
 200 tasks when its 60-task success exceeds 40% and it ranks among the top two
 archive performers at that point.
+
+**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+That is the paper protocol. The pinned release passes a full-evaluation
+threshold and loads the `big` subset but never consumes either in the captured
+SWE harness dispatch, so the visible source implements only the initial and
+medium stages.
 
 ### Polyglot
 
@@ -337,9 +346,20 @@ variance. Polyglot's released harness rejects repeated evaluations.
 
 ### Feature-selection leakage
 
+**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
 The diagnostic planner can inspect private SWE-bench tests and result logs.
 Even when the generated task solver never sees those tests, the search process
 can select general harness features using privileged information.
+
+### Statistical uncertainty
+
+**[INFERENCE - DGM-069](claim_evidence_crosswalk.md#dgm-069-staged-point-estimates-create-winners-curse-risk).**
+At a true success rate of 0.5, the binomial standard deviation of raw accuracy
+is about 15.8 percentage points for 10 tasks, 6.5 points for 60 tasks, and 3.5
+points for 200 tasks. Passing those unequal-precision point estimates through a
+steep score selector creates winner's-curse risk. A successor should use
+posterior sampling, confidence-aware racing, or another uncertainty-aware
+allocation rule.
 
 ## Contamination boundary
 
@@ -420,6 +440,7 @@ The [successor design](10_successor_design.md) develops this experiment.
 
 ## Evaluation judgment
 
+**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
 The reported evidence is substantial for automated harness search and stronger
 than a single best-score anecdote because it includes ablations, transfer,
 lineage analysis, and limited repeated runs.

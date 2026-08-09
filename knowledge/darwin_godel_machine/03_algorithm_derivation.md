@@ -4,7 +4,7 @@ title: DGM algorithm derivation
 type: derivation
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, algorithm, parent-selection, archive-search]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -73,9 +73,13 @@ loaded. It does not contain a separate explicit `score < 1` filter in the
 captured `choose_selfimproves` path. The equation is therefore the paper
 contract; the snapshot is evidence for the particular released implementation.
 
+**[EVIDENCE - DGM-062](claim_evidence_crosswalk.md#dgm-062-released-parent-selection-omits-the-papers-perfect-score-filter).**
+This is a paper-to-code mismatch, not evidence that the historical experiment
+used the released candidate set.
+
 ## Performance term
 
-For candidate score \(\alpha_i\), the paper defines:
+For candidate score $\alpha_i$
 
 $$
 s_i =
@@ -98,7 +102,7 @@ The sigmoid has two effects:
 This is not a calibrated probability that the candidate is good. It is a
 search heuristic that turns benchmark accuracy into a bounded weight.
 
-## Underexploration term
+## Under-exploration term
 
 Let \(n_i\) be the number of functioning children already attributed to agent
 \(i\). The paper calls:
@@ -138,6 +142,11 @@ $$
 The paper uses \(k=2\) for SWE-bench and \(k=4\) for Polyglot. Sampling with
 replacement means one parent can receive more than one self-modification
 attempt in the same generation.
+
+**[EVIDENCE - DGM-005](claim_evidence_crosswalk.md#dgm-005-parent-selection-combines-score-and-underexploration).**
+The released default implements the same sigmoid-score times inverse-child-count
+weight, but the quantity called novelty is lineage underexploration rather than
+behavioral distance.
 
 ## Worked example
 
@@ -226,6 +235,11 @@ This division separates:
 It also introduces a confound: the improvement mechanism includes a fixed,
 strong external diagnostic model and privileged evaluation evidence.
 
+**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
+The benchmark subset therefore serves partly as an architecture-development
+channel, even though the ordinary task-solving agent remains blind to private
+tests.
+
 ## Staged evaluation
 
 The search does not score every child on every task.
@@ -236,6 +250,10 @@ The search does not score every child on every task.
 2. If the child reaches the configured threshold, run 50 more tasks.
 3. For selected high-scoring archive members, run 140 more tasks.
 4. Report a 200-task score for those fully evaluated candidates.
+
+**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+These four steps describe the paper. The captured release wires only the first
+two evaluation stages; its full threshold and `big` subset are not consumed.
 
 ### Polyglot
 
@@ -321,6 +339,7 @@ Multiple functioning lineages remain available.
 
 ## What the algorithm establishes
 
+**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
 The algorithm establishes a persistent, branching harness-search process in
 which descendant code can influence later self-modification. It does not by
 itself establish that the search becomes more efficient or effective over

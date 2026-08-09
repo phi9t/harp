@@ -137,11 +137,13 @@ threshold, and computes a fuller SWE threshold from archive metadata. The
 subset file bytes are not part of the narrow implementation snapshot, so task
 counts remain paper evidence rather than source-snapshot evidence.
 
-**EVIDENCE — [DGM-REPO], `DGM_outer.py:192-219`;
-`self_improve_step.py:125-178`.** For SWE-bench, if a child clears the additional-evaluation threshold, the
-runner evaluates the medium subset, then `get_full_eval_threshold` can require
-fuller evaluation based on the second-highest full-evaluated archive score with
-a floor of `0.4`.
+**EVIDENCE — [DGM-REPO], `DGM_outer.py:192-219`, `:270-299`;
+`self_improve_step.py:125-178`, `:223-258`, `:385-397`.** For SWE-bench, if a child clears the additional-evaluation threshold, the
+runner evaluates the medium subset. The outer controller computes and passes a
+`full_eval_threshold`, and `self_improve` loads the `big` subset, but the
+captured runner never reads the threshold or calls a third evaluation cycle.
+The visible release path therefore implements the initial and medium stages,
+not the paper's full 10→60→200 SWE-bench schedule.
 
 **EVIDENCE — [DGM-REPO], `swe_bench/harness.py:73-135`, `:147-169`,
 `:205-258`; `swe_bench/report.py:37-79`.** SWE-bench evaluation builds task
@@ -276,10 +278,24 @@ paper identifies this as objective hacking.
 - **Selection caveat — [DGM-REPO], `self_improve_step.py:180-220`;
   `DGM_outer.py:58-67`.** Expanded Polyglot results are stored separately but
   are not used by the released parent selector.
+- **Selection caveat — [DGM-REPO], `DGM_outer.py:143-148`.** The SWE entry
+  selector compares the unresolved-ID list with integer zero. An empty list
+  does not satisfy that check, so `random.choice` can receive an empty list if
+  no earlier special objective was selected.
+- **Specification caveat — [DGM], Appendix C.2; [DGM-REPO],
+  `DGM_outer.py:56-75`.** The paper excludes perfect-score agents from the
+  eligible parent set. The captured source builds candidates from every archive
+  node with readable metadata and has no explicit `accuracy_score < 1` filter.
+- **Reproducibility caveat — [DGM-REPO], `self_improve_step.py:245-258`,
+  `:311-313`; `swe_bench/harness.py:205-207`.** The release loads
+  SWE-bench Verified by mutable dataset name and reinstalls the mutable
+  candidate's `requirements.txt` during a run. The narrow snapshot does not
+  contain a lockfile, Dockerfile, or dependency manifest proving an immutable
+  environment for the published experiment.
 
 ## The disputed recursive step
 
-**CLAIM — [DGM], §§1–3.** The paper argues that better coding-benchmark
+**SOURCE CLAIM — [DGM], §§1–3.** The paper argues that better coding-benchmark
 performance indicates a better ability to modify and improve the coding-agent
 repository, because self-modification is itself a coding task.
 

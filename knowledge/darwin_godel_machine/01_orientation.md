@@ -4,7 +4,7 @@ title: DGM orientation
 type: concept
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, orientation, recursive-self-improvement]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -37,6 +37,11 @@ use its coding ability to edit the code that defines the coding agent itself.
 The system then tests the resulting child agent on coding benchmarks and keeps
 viable descendants in an archive.
 
+**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+The precise object of search is the agent scaffold: prompts, tools, workflow,
+context handling, retry logic, verification, and model-call plumbing around
+frozen foundation models.
+
 The central loop is:
 
 1. choose a parent agent;
@@ -61,6 +66,7 @@ provable under a realistic environment model.
 
 ### Darwin Gödel Machine
 
+**[EVIDENCE - DGM-001](claim_evidence_crosswalk.md#dgm-001-dgm-evolves-an-editable-coding-agent-repository).**
 DGM replaces proof with empirical evaluation:
 
 | Dimension | Gödel Machine | DGM |
@@ -90,6 +96,11 @@ how those models are prompted, equipped, sequenced, retried, and evaluated
 inside the coding agent.
 
 This is harness improvement, not model-weight improvement.
+
+**[INFERENCE - DGM-066](claim_evidence_crosswalk.md#dgm-066-patch-lineage-is-the-genotype-and-agent-behavior-the-phenotype).**
+In evolutionary terms, the ordered patch lineage is the genotype and the
+stochastic tool-using behavior under a model and task environment is the
+phenotype.
 
 ## What remains external?
 
@@ -124,6 +135,10 @@ The paper's key argument is:
 
 The first step is direct. The second is measured on SWE-bench and Polyglot.
 The third is plausible but not directly tested by those benchmark scores.
+
+**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+Task score measures current problem-solving fitness. It does not directly
+measure the expected valid gain produced by the agent's future children.
 
 A stronger experiment would compare parent and child on the quality of the
 next children they produce. That experiment is developed in

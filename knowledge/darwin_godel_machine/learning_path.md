@@ -4,7 +4,7 @@ title: DGM learning path
 type: learning-path
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, curriculum, exercises, system-design]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -32,6 +32,7 @@ the next improvement cycle.
 
 ## Level 1: explain the system
 
+**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
 Read:
 
 1. [orientation](01_orientation.md);
@@ -379,6 +380,7 @@ parent-versus-child improvement-yield test is missing.
 
 ## Level 5: design the successor experiment
 
+**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
 Read:
 
 1. [successor design](10_successor_design.md); and
@@ -509,6 +511,7 @@ Your design must state:
 
 ## Completion standard
 
+**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
 You understand DGM when you can hold these two statements together:
 
 1. DGM is a real self-referential harness-evolution mechanism whose

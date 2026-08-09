@@ -4,7 +4,7 @@ title: DGM successor experiment design
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, successor-improvement, experiment-design, evaluation]
 confidence: high
 canonical: ../../content/chapters/recursive-improvement-loop.md
@@ -28,6 +28,7 @@ After this chapter, you should be able to:
 
 ## Objective
 
+**[INFERENCE - DGM-070](claim_evidence_crosswalk.md#dgm-070-a-stronger-successor-should-separate-fitness-productivity-and-diversity).**
 Test the claim DGM currently treats as a proxy:
 
 > Does a child agent that scores better on coding tasks become a better
@@ -345,6 +346,14 @@ counted.
 - next-child validity in a canary generation;
 - rollback success; and
 - reconstruction success.
+
+Keep three measurement families separate:
+
+1. current task fitness;
+2. valid held-out descendant gain per attempt; and
+3. behavioral diversity under the protected evaluator.
+
+Do not let a high value in one family certify either of the others.
 
 ## Utility and hard gates
 

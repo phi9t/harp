@@ -4,7 +4,7 @@ title: DGM open-endedness
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, open-endedness, stepping-stones, diversity]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -102,6 +102,7 @@ Full DGM:
 4. discounts parents that already have many functioning children; and
 5. permits non-best nodes to receive further mutations.
 
+**[SOURCE CLAIM - DGM-034](claim_evidence_crosswalk.md#dgm-034-paper-reports-two-score-dips-in-the-best-lineage).**
 The paper's SWE-bench lineage contains two reported score dips on the ancestry
 of the final best agent. That observation supports the narrow stepping-stone
 claim:
@@ -114,6 +115,7 @@ same archive policy is optimal.
 
 ## Why `keep_all` matters
 
+**[EVIDENCE - DGM-009](claim_evidence_crosswalk.md#dgm-009-archive-admission-does-not-require-score-improvement).**
 The released controller defaults to adding every child that passes the
 functioning-agent predicate.
 
@@ -154,6 +156,11 @@ This is an exploration-exploitation policy:
 - explore candidates that have not produced many descendants.
 
 The policy does not know *why* two agents differ.
+
+**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+The exact mechanism is archive-based, non-greedy program search. It is
+open-ended only in the bounded sense that old executable lineages remain
+selectable and branching can continue under fixed tasks and control policy.
 
 ## Lineage diversity versus behavioral diversity
 
@@ -310,6 +317,7 @@ under a valid counterfactual reconstruction.
 
 ### Unequal evaluation precision
 
+**[INFERENCE - DGM-069](claim_evidence_crosswalk.md#dgm-069-staged-point-estimates-create-winners-curse-risk).**
 Nodes evaluated on 10, 60, and 200 tasks can coexist. Parent selection can use
 scores with different uncertainty.
 
@@ -370,6 +378,7 @@ leaves this as future work.
 
 ### Cross-generation improvement metrics
 
+**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
 Select partly on the quality and diversity of children a node produces, not
 only its task score.
 
@@ -405,6 +414,7 @@ problem.
 
 ## Design-review judgment
 
+**[INFERENCE - DGM-070](claim_evidence_crosswalk.md#dgm-070-a-stronger-successor-should-separate-fitness-productivity-and-diversity).**
 DGM's archive is a meaningful advance over one-incumbent harness search. It
 preserves recoverable alternatives and creates a direct route through
 non-monotone lineages.

@@ -4,7 +4,7 @@ title: DGM packet source registry
 type: source-registry
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, sources, provenance]
 confidence: high
 canonical: ../../content/sources/source_registry.tsv
@@ -30,6 +30,63 @@ canonical: ../../content/sources/source_registry.tsv
 | ALPHAEVOLVE | Comparison system | [Canonical article](../../content/systems/alphaevolve.md) | Program evolution against executable evaluators | DGM's agent-lineage mechanism |
 | ADAS | Comparison system | [Canonical article](../../content/systems/adas.md) | Fixed meta-agent search over agent programs | DGM's evolving modifier claim |
 | STOP | Comparison system | [Canonical article](../../content/systems/stop.md) | Recursive improver-program optimization | DGM's branching archive result |
+
+## DGM: ICLR 2026 paper
+
+- Class: `primary paper`
+- Title: Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents
+- Artifact: [Captured paper text](../../evidence/weng/text/dgm.txt)
+- Public page: [ICLR 2026 poster](https://iclr.cc/virtual/2026/poster/10007327)
+- Stability: `pinned`
+- Immutable identity: `arXiv:2505.22954v3`
+- Digest record: [DGM acquisition receipt](../../evidence/weng/receipts/dgm.tsv)
+- Publication status: The captured v3 text identifies the work as an ICLR 2026
+  conference paper.
+- Semantic locators: abstract, numbered sections, figures, tables, algorithms,
+  and appendices.
+- Can prove: Paper wording, method, reported experiments, limitations, cost
+  estimates, model assignments, and author-described safety measures.
+- Cannot prove: Independent reproduction, behavior of the released source
+  snapshot, or the historical code revision used for every experiment.
+
+## DGM-REPO: pinned implementation
+
+- Class: `pinned implementation`
+- Title: Released DGM implementation snapshot
+- Artifact: [Snapshot entrypoint](../../evidence/implementations/dgm/snapshot/README.md)
+- Stability: `pinned`
+- Immutable identity: `git:a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`
+- Revision record: [REVISION](../../evidence/implementations/dgm/REVISION)
+- Remote record: [REMOTE](../../evidence/implementations/dgm/REMOTE)
+- License record: [LICENSE_STATUS](../../evidence/implementations/dgm/LICENSE_STATUS)
+- Semantic locators: captured file path plus physical line anchor.
+- Can prove: Source behavior of the captured files at the pinned revision.
+- Cannot prove: Historical experiment identity, runtime behavior not executed
+  here, benchmark reproduction, or files intentionally omitted from the narrow
+  snapshot.
+
+## HARP-DGM: canonical synthesis
+
+- Class: `canonical Harp synthesis`
+- Title: DGM system article
+- Artifact: [Canonical DGM article](../../content/systems/dgm.md)
+- Stability: `repository versioned`
+- Immutable identity: The Harp commit containing the cited statement.
+- Semantic locators: article heading.
+- Can prove: Harp's maintained terminology, reconciliations, and claim ceiling.
+- Cannot prove: New facts about the paper, source behavior, or runtime results.
+
+## HARP-RSI: canonical evaluation framework
+
+- Class: `canonical Harp framework`
+- Title: Recursive-improvement and evaluation framework
+- Artifact: [Recursive improvement loop](../../content/chapters/recursive-improvement-loop.md)
+- Stability: `repository versioned`
+- Immutable identity: The Harp commit containing the cited framework.
+- Semantic locators: chapter or concept heading.
+- Can prove: Harp's definitions for candidate state, protected envelope,
+  successor improvement, root-tree accounting, and promotion.
+- Cannot prove: DGM-specific implementation behavior or empirical outcomes.
 
 ## Immutable identities
 
@@ -103,6 +160,9 @@ canonical: ../../content/sources/source_registry.tsv
 5. Paper claims and released-code behavior may differ. Record both rather than
    silently choosing one.
 6. The packet does not treat its own prose as evidence.
+7. Main prose links to the exact heading-based entry in
+   [the claim ledger](claim_evidence_crosswalk.md); the ledger then links to the
+   underlying paper or source artifact.
 
 ## Reproduction status
 

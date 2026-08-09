@@ -4,7 +4,7 @@ title: DGM safety and failure analysis
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, safety, containment, objective-hacking]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -47,7 +47,8 @@ This chapter distinguishes:
 
 ## Paper-described safeguards
 
-**EVIDENCE — DGM §5 and Ethics Statement.** The paper reports:
+**[SOURCE CLAIM - DGM-041](claim_evidence_crosswalk.md#dgm-041-paper-describes-sandboxing-and-lineage-monitoring).**
+The paper reports:
 
 - isolated sandboxed execution;
 - strict time limits;
@@ -64,7 +65,8 @@ future models.
 
 ## Released-code behavior
 
-**EVIDENCE — DGM-REPO.** The snapshot:
+**[INFERENCE - DGM-042](claim_evidence_crosswalk.md#dgm-042-released-docker-use-is-not-a-hardened-sandbox-proof).**
+The snapshot:
 
 - builds and runs Docker containers;
 - executes self-modification inside `/dgm`;
@@ -193,7 +195,8 @@ Canonical context:
 
 ## Objective-hacking case study
 
-**EVIDENCE — DGM Appendix H.** The paper adapts DGM to reduce hallucinated tool
+**[SOURCE CLAIM - DGM-044](claim_evidence_crosswalk.md#dgm-044-paper-reports-objective-hacking-in-appendix-h).**
+The paper adapts DGM to reduce hallucinated tool
 use. The evaluator inserts special markers for real tool transactions and
 checks whether the model emits marker-like text without making a tool call.
 
@@ -222,6 +225,7 @@ theoretical concern.
 
 ## Private-test exposure
 
+**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
 The SWE-bench diagnostic prompt can include:
 
 - official private test patches; and
@@ -500,6 +504,7 @@ This packet has no evidence of:
 
 ## Safety judgment
 
+**[INFERENCE - DGM-042](claim_evidence_crosswalk.md#dgm-042-released-docker-use-is-not-a-hardened-sandbox-proof).**
 DGM should be treated as a high-value research prototype for studying
 self-modifying harness search, not as a safe autonomous software-improvement
 service.

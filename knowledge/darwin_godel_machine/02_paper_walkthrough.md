@@ -4,7 +4,7 @@ title: DGM paper walkthrough
 type: deep-dive
 status: active
 created: 2026-08-08
-updated: 2026-08-08
+updated: 2026-08-09
 tags: [darwin-godel-machine, paper-reading, research]
 confidence: high
 canonical: ../../content/systems/dgm.md
@@ -28,6 +28,9 @@ After this chapter, you should be able to:
 Primary source: [captured DGM paper text](../../evidence/weng/text/dgm.txt),
 arXiv `2505.22954v3`.
 
+**[EVIDENCE - DGM-071](claim_evidence_crosswalk.md#dgm-071-captured-paper-identifies-iclr-2026-publication).**
+The captured v3 text identifies the paper as published at ICLR 2026.
+
 ## Argument map
 
 The paper's causal argument is:
@@ -47,6 +50,10 @@ The paper's causal argument is:
 Steps 1 through 6 define the system. Step 7 is the key proxy assumption. Step 8
 tests downstream performance and components, not the proxy assumption
 directly.
+
+**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
+No section reports the matched parent-versus-child next-cycle comparison that
+would directly test step 7.
 
 ## Abstract
 
@@ -209,8 +216,18 @@ The headline reported results are:
 The system discovers finer-grained editing, context handling, retries,
 candidate ranking, and history-aware attempts.
 
+**[SOURCE CLAIM - DGM-026](claim_evidence_crosswalk.md#dgm-026-paper-reports-a-higher-functioning-child-rate).**
+Appendix A.4 reports a 51.3% functioning-child rate for DGM versus 32.5% for
+each main baseline. These process measurements have not been independently
+reproduced here.
+
 Figure 3 shows two temporary score dips in the final best lineage. That is the
 paper's strongest visual evidence for retaining non-monotone stepping stones.
+
+**[SOURCE CLAIM - DGM-034](claim_evidence_crosswalk.md#dgm-034-paper-reports-two-score-dips-in-the-best-lineage).**
+The paper interprets those dips as evidence for stepping-stone search. The
+lineage alone does not establish that either intermediate change causally
+enabled the final descendant.
 
 The transfer experiments test different models, benchmarks, and programming
 languages. They reduce the likelihood of narrow overfitting, but they do not
@@ -295,6 +312,7 @@ fine-grained editing. Nodes targeting similar functionality score 23.3% and
 
 ### Appendix H
 
+**[SOURCE CLAIM - DGM-044](claim_evidence_crosswalk.md#dgm-044-paper-reports-objective-hacking-in-appendix-h).**
 Shows the tool-hallucination optimization and objective-hacking case. A node
 gets a perfect detector score by removing the logging markers used by the
 detector.
