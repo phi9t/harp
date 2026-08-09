@@ -431,8 +431,25 @@ It explicitly lacks partial viewing and partial editing. The paper reports
 that evolved agents discover line-range viewing and string replacement. Those
 changes repair a clear seed limitation and reduce context and overwrite cost.
 
+**[SOURCE CLAIM - DGM-072](claim_evidence_crosswalk.md#dgm-072-evolved-agents-add-fine-grained-file-inspection-and-editing).**
+The paper's Appendix F patches make both mechanisms concrete, while Appendix G
+reports different outcomes for two implementations aimed at fine-grained
+editing.
+
 This observation calibrates the result: some discovered features are useful
 agent engineering, but they begin from an intentionally minimal baseline.
+
+## Reported workflow evolution
+
+The paper reports changes beyond the editor:
+
+- [context-limit summarization](claim_evidence_crosswalk.md#dgm-073-evolved-agents-summarize-history-at-the-context-limit);
+- [multiple candidate generation](claim_evidence_crosswalk.md#dgm-074-evolved-agents-generate-multiple-candidate-solutions);
+- [model-based candidate judging](claim_evidence_crosswalk.md#dgm-075-evolved-agents-use-model-based-candidate-judging); and
+- [previous-attempt reuse](claim_evidence_crosswalk.md#dgm-076-evolved-agents-reuse-previous-attempt-evidence).
+
+These are author-reported mechanisms reconstructed from the paper's lineage
+patches. Harp has not replayed those evolved agents.
 
 ## 9. `utils/evo_utils.py`: lineage and viability
 

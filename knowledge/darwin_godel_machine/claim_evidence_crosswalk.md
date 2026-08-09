@@ -624,6 +624,107 @@ captured paper or pinned implementation evidence.
 - Caveat: The local capture proves what arXiv v3 states; the external ICLR page
   remains a mutable public navigation source.
 
+## DGM-072: Evolved agents add fine-grained file inspection and editing
+
+- Class: `SOURCE CLAIM`
+- Statement: The paper reports evolved editor mechanisms for line-range file
+  viewing and exact string replacement instead of relying only on whole-file
+  viewing and overwrite; Appendix G reports 23.3% and 40.5% for two lineages
+  targeting fine-grained editing with different implementations.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
+- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
+  [line-range patch, lines 2280-2420](../../evidence/weng/text/dgm.txt#L2280),
+  [string-replacement patch, lines 2520-2608](../../evidence/weng/text/dgm.txt#L2520),
+  and [Appendix G comparison, lines 3835-3844](../../evidence/weng/text/dgm.txt#L3835)
+- Scope: Author-reported modifications in the best-agent lineage and captured
+  Appendix F patches.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: The result prose names both mechanisms and Appendix F
+  contains their source diffs.
+- Caveat: The node scores are selected-run benchmark outcomes, not a controlled
+  ablation isolating only the editor implementation.
+
+## DGM-073: Evolved agents summarize history at the context limit
+
+- Class: `SOURCE CLAIM`
+- Statement: The paper reports an evolved mechanism that detects context-length
+  errors, summarizes older conversation history, preserves recent messages,
+  and retries the model call with the compressed history.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
+- Locator: [Figure 3 mechanism label, lines 393-405](../../evidence/weng/text/dgm.txt#L393)
+  and [Appendix F patch, lines 2704-2807](../../evidence/weng/text/dgm.txt#L2704)
+- Scope: Captured best-agent lineage patch for context-limit recovery.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: The lineage label and patch implement error detection,
+  summarization, and retry.
+- Caveat: The fallback can still discard older detail, and Harp has not measured
+  whether the compressed history preserves task-critical evidence.
+
+## DGM-074: Evolved agents generate multiple candidate solutions
+
+- Class: `SOURCE CLAIM`
+- Statement: The paper reports evolved workflows that reset to the base commit,
+  generate several independent candidate patches, test them, and retain
+  candidate reports for selection.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
+- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426)
+  and [Appendix F patch, lines 2830-2923](../../evidence/weng/text/dgm.txt#L2830)
+- Scope: Author-reported multi-attempt workflow in the SWE-bench lineage.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: The prose names multiple attempts and the patch introduces
+  `num_candidates`, reset-per-attempt behavior, and candidate collections.
+- Caveat: More attempts also increase inference and test cost; the paper does
+  not isolate gain per added attempt.
+
+## DGM-075: Evolved agents use model-based candidate judging
+
+- Class: `SOURCE CLAIM`
+- Statement: The paper reports an evolved workflow that scores candidate
+  patches with regression-test reports and invokes another foundation-model
+  call to rank or break ties among candidate solutions.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
+- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
+  [candidate-selection patch, lines 2901-2941](../../evidence/weng/text/dgm.txt#L2901),
+  and [tie-aware revision, lines 3063-3107](../../evidence/weng/text/dgm.txt#L3063)
+- Scope: Author-reported proposer-and-judge workflow in the evolved agent.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: The result prose names another-FM selection and Appendix F
+  calls `score_tie_breaker` over candidate patches and test reports.
+- Caveat: The judge is another stochastic model call and can add cost, bias, or
+  correlated failure rather than independent verification.
+
+## DGM-076: Evolved agents reuse previous-attempt evidence
+
+- Class: `SOURCE CLAIM`
+- Statement: The paper reports evolved workflows that preserve prior candidate
+  patches and test outcomes, expose them to later attempts, and ask subsequent
+  attempts to address earlier limitations or explore another approach.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
+- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
+  [SWE history-aware patch, lines 2965-3055](../../evidence/weng/text/dgm.txt#L2965),
+  and [Polyglot attempt-history patch, lines 3130-3281](../../evidence/weng/text/dgm.txt#L3130)
+- Scope: Author-reported history-aware patch-generation workflows in Appendix F.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: The prose names previous-attempt reuse and both benchmark
+  lineages contain explicit attempt-history data flow.
+- Caveat: This is within-task episodic reuse, not persistent cross-task memory
+  or learned model state.
+
 ## Review crosswalk
 
 | Claim ID | Class | Claim | Canonical home | Primary evidence | Locator | Reproduction status | Confidence | Caveat |

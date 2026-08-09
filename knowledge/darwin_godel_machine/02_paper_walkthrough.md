@@ -213,8 +213,92 @@ The headline reported results are:
 | Polyglot search subset | 14.0% | 38.0% | 50 tasks |
 | Polyglot full benchmark | 14.2% | 30.7% | Full benchmark |
 
-The system discovers finer-grained editing, context handling, retries,
-candidate ranking, and history-aware attempts.
+## Discovered mechanisms
+
+The reported changes are recognizable coding-agent design patterns. That is
+scientifically useful: DGM searches over mechanisms that human harness
+engineers also treat as first-class design choices.
+
+### Fine-grained inspection and editing
+
+**[SOURCE CLAIM - DGM-072](claim_evidence_crosswalk.md#dgm-072-evolved-agents-add-fine-grained-file-inspection-and-editing).**
+The paper reports line-range viewing and exact string replacement instead of
+whole-file-only inspection and overwrite. Appendix G compares two lineages
+targeting fine-grained editing: one scores 23.3% and another 40.5%. These are
+author-reported selected-run outcomes, not an independent ablation, but they
+show that the implementation of a tool matters beyond its feature label.
+
+### Context-length management
+
+**[SOURCE CLAIM - DGM-073](claim_evidence_crosswalk.md#dgm-073-evolved-agents-summarize-history-at-the-context-limit).**
+One evolved patch detects context-length errors, summarizes older user and
+assistant messages, retains recent messages, and retries with the compressed
+history. This makes context policy part of the evolved program rather than
+external bookkeeping. The mechanism has not been independently reproduced
+here.
+
+Conceptually:
+
+$$
+\text{effective capability}
+=
+f(\text{base model},
+\text{visible evidence},
+\text{compression policy},
+\text{tool trace},
+\text{retry state}).
+$$
+
+### Multiple independent attempts
+
+**[SOURCE CLAIM - DGM-074](claim_evidence_crosswalk.md#dgm-074-evolved-agents-generate-multiple-candidate-solutions).**
+The paper reports an evolved workflow that resets to the base commit, generates
+several candidate patches, runs regression tests, and stores the valid patches
+and reports for later selection.
+
+$$
+x_1,\ldots,x_k \sim \pi_g(\cdot \mid \text{task})
+$$
+
+The added search breadth also adds model and test cost, which the paper does not
+isolate from the mechanism's benefit.
+
+### Model-based candidate judging
+
+**[SOURCE CLAIM - DGM-075](claim_evidence_crosswalk.md#dgm-075-evolved-agents-use-model-based-candidate-judging).**
+Another evolved workflow scores candidates with test reports and uses a further
+foundation-model call to compare solutions or break ties. This is a small
+proposer-and-judge architecture, not independent formal verification, and it
+has not been reproduced here.
+
+### Previous-attempt reuse
+
+**[SOURCE CLAIM - DGM-076](claim_evidence_crosswalk.md#dgm-076-evolved-agents-reuse-previous-attempt-evidence).**
+The paper reports history-aware workflows that carry prior patches and test
+outcomes into later attempts, asking the next attempt to repair observed
+limitations or explore another approach. This is within-task episodic reuse,
+not persistent learned memory.
+
+Together these mechanisms span:
+
+$$
+\text{harness}
+=
+\text{observation policy}
++
+\text{context policy}
++
+\text{tool interface}
++
+\text{search policy}
++
+\text{verification policy}
++
+\text{memory policy}.
+$$
+
+DGM's contribution is to make this program a search object rather than leaving
+every dimension fixed by a human harness designer.
 
 **[SOURCE CLAIM - DGM-026](claim_evidence_crosswalk.md#dgm-026-paper-reports-a-higher-functioning-child-rate).**
 Appendix A.4 reports a 51.3% functioning-child rate for DGM versus 32.5% for

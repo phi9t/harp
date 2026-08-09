@@ -53,11 +53,12 @@ const AUTHORITY_NOTICE: &str = concat!(
     "> `evidence/`."
 );
 
-const DGM_LEDGER_IDS: [&str; 32] = [
+const DGM_LEDGER_IDS: [&str; 37] = [
     "DGM-001", "DGM-005", "DGM-009", "DGM-013", "DGM-020", "DGM-022", "DGM-026", "DGM-029A",
     "DGM-029B", "DGM-029C", "DGM-034", "DGM-041", "DGM-042", "DGM-044", "DGM-049", "DGM-050",
     "DGM-056", "DGM-057", "DGM-058", "DGM-059", "DGM-060", "DGM-061", "DGM-062", "DGM-063",
     "DGM-064", "DGM-065", "DGM-066", "DGM-067", "DGM-068", "DGM-069", "DGM-070", "DGM-071",
+    "DGM-072", "DGM-073", "DGM-074", "DGM-075", "DGM-076",
 ];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
