@@ -27,11 +27,7 @@ No community participation preference has been established yet. Future sessions 
 
 Local captures exist for every source below, but primary-source interpretation is pending.
 
-- `HYPERAGENTS`
-- `LEARNING-DISCOVER`
-- `EPISTEMIC-DISCOVERY`
 - `GPT5-SCIENCE`
 - `MLEBENCH`
 - `SCIENCEAGENTBENCH`
 - `COREBENCH`
-- `DEMOEVOLVE`

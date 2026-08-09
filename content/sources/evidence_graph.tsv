@@ -23,9 +23,9 @@ EVIDENCE	WENG-HARNESS	cites	ALPHAEVOLVE	Reference 20	verified	Primary source own
 EVIDENCE	WENG-HARNESS	cites	SHINKAEVOLVE	Reference 21	verified	Primary source owns island program evolution, bounded AIME 2024 scaffold-search results, 2023/2025 transfer and contamination caveats, ablations, and limitations
 EVIDENCE	WENG-HARNESS	cites	THETAEVOLVE	Reference 22	verified	Primary source owns the dynamic program environment, reward-shaped weight training, matched results, and evaluator caveats
 EVIDENCE	WENG-HARNESS	cites	DGM	Reference 23	verified	Primary source owns claims
-EVIDENCE	WENG-HARNESS	cites	HYPERAGENTS	Reference 24	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	LEARNING-DISCOVER	Reference 25	verified	Identity edge only
-EVIDENCE	WENG-HARNESS	cites	EPISTEMIC-DISCOVERY	Reference 26	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	HYPERAGENTS	Reference 24	verified	Primary source owns the editable task-and-meta-agent program, archive search, held-out agent-quality result, fixed outer-loop and evaluator limits, and safety discussion; no independent reproduction
+EVIDENCE	WENG-HARNESS	cites	LEARNING-DISCOVER	Reference 25	verified	Primary source owns test-time weight training with archive reuse, the bounded GPUMode TriMul discovery result, and continuous-verifier and problem-specific compute limits; no independent reproduction
+EVIDENCE	WENG-HARNESS	cites	EPISTEMIC-DISCOVERY	Reference 26	verified	Primary source owns uncertainty-guided LoRA-ensemble test-time training, the bounded CP26 reward and entropy result, and single-seed verifier and ensemble-cost limits; no independent reproduction
 EVIDENCE	WENG-HARNESS	cites	SIA	Reference 27	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	NOT-SCIENTISTS	Reference 28	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	GPT5-SCIENCE	Reference 29	verified	Identity edge only
@@ -38,7 +38,7 @@ EVIDENCE	WENG-HARNESS	cites	KERNELBENCH	Reference 35	verified	Primary source own
 EVIDENCE	WENG-HARNESS	cites	HARNESS-DISENTANGLE	Reference 36	verified	Primary source owns capability decomposition, reported results, and limitations
 EVIDENCE	WENG-HARNESS	cites	AHE	Reference 37	verified	Primary source owns claims
 EVIDENCE	WENG-HARNESS	cites	CONTINUAL-HARNESS	Reference 38 and Joint Optimization with Model Weights	verified	Primary source owns co-learning mechanism and reported results
-EVIDENCE	WENG-HARNESS	cites	DEMOEVOLVE	Reference 39	verified	Identity edge only
+EVIDENCE	WENG-HARNESS	cites	DEMOEVOLVE	Reference 39	verified	Primary source owns demonstration-guided frozen-model harness evolution, the bounded fixed-seed Balatro result, the causal-audit warning, and task-coverage limits; no independent reproduction
 EVIDENCE	WENG-HARNESS	body-links	KARPATHY-AUTORESEARCH	Harness Design Patterns / Workflow Automation	verified	Pinned source owns current workflow, mutation-boundary, budget, metric, logging, and keep/discard behavior; no RSI efficacy claim
 EVIDENCE	WENG-HARNESS	body-links	WENG-REWARD	Self-Improving Harness / reward hacking concern	verified	Secondary safety synthesis
 EVIDENCE	WENG-HARNESS	body-links	ANTHROPIC-RSI	Introduction / AI progress link	verified	Company framing only

@@ -1515,9 +1515,9 @@ Use:
 | Source | Family |
 |---|---|
 | `HYPERAGENTS` | `harness-code-search` |
-| `LEARNING-DISCOVER` | `evolutionary-program-or-population-search` |
-| `EPISTEMIC-DISCOVERY` | `evolutionary-program-or-population-search` |
-| `DEMOEVOLVE` | `evolutionary-program-or-population-search` |
+| `LEARNING-DISCOVER` | `model-self-play-or-weight-adaptation` |
+| `EPISTEMIC-DISCOVERY` | `model-self-play-or-weight-adaptation` |
+| `DEMOEVOLVE` | `harness-code-search` |
 
 The reported-evidence field must state whether the evaluation targets agent
 quality, problem discovery, uncertainty, or sparse-feedback improvement.
