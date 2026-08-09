@@ -1022,6 +1022,50 @@ fn benchmark_field_guide_is_registered_and_preserves_protocol_boundaries() {
 }
 
 #[test]
+fn evaluator_integrity_packet_is_registered_and_keeps_claims_conditional() {
+    let corpus = compile(workspace_root()).unwrap();
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "evaluator-integrity"
+            && route.label == "Evaluator integrity"
+            && route.canonical_markdown_path
+                == "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md"
+    }));
+
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "evaluator-integrity-benchmark-suite")
+        .unwrap();
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md"
+    );
+    for required in [
+        "GDPval",
+        "DeepSWE",
+        "FrontierCode 1.1",
+        "SWE-bench Verified",
+        "Access boundary",
+        "Contamination history",
+        "Pre-exposure resistance",
+        "Live-evaluation resistance",
+        "Evaluator disclosure",
+        "Benchmark-selection protocol",
+        "repository-repair capability",
+        "long-horizon engineering execution",
+        "tool/internet-policy robustness",
+        "economically meaningful knowledge-work output",
+        "No cross-benchmark ranking",
+        "Under the documented access policy",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "evaluator-integrity benchmark packet is missing {required}"
+        );
+    }
+}
+
+#[test]
 fn verifies_the_nine_chapter_spine_and_native_source_folds() {
     let repo = fixture();
     write_complete_fixture(repo.path());
@@ -1078,7 +1122,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "experiment",
             "sources",
             "agentic-eval-apply",
-            "benchmarks"
+            "benchmarks",
+            "evaluator-integrity"
         ]
     );
     for route in &corpus.reader_routes {

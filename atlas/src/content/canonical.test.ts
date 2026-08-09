@@ -115,6 +115,11 @@ const validV5Fixture: unknown = {
       label: "Benchmarks",
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
+    {
+      route_id: "evaluator-integrity",
+      label: "Evaluator integrity",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
   ],
   documents: [
     ...chapterIds.map((id) => ({

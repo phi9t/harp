@@ -26,6 +26,12 @@ Mode: `TECHNICAL DEEP DIVE`.
 
 **MISSING.** This packet contains no executed, multi-generation experiment satisfying the protocol proposed below. The protocol is therefore a research design, not a reported result.
 
+For a source- and receipt-grounded comparison of GDPval, DeepSWE,
+FrontierCode 1.1, and SWE-bench Verified, read the
+[evaluator-integrity benchmark suite](../knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md).
+It separates contamination history from the live access boundary and does not
+convert different benchmark scores into a common capability ranking.
+
 ## Reading contract
 
 **EVIDENCE** denotes an observed source statement, captured artifact, or inspected code path at the cited locator. **CLAIM** denotes a source author's interpretation or design intent. **INFERENCE** denotes this document's synthesis or proposed design. **SPECULATION** denotes a hypothesis worth testing. **MISSING** records an absent proof or parameter rather than filling it in.

@@ -213,6 +213,10 @@ The supporting layer is separate from the reading spine:
 - [[source_registry]] and [[evidence_graph]] document the authoritative TSV registries under `sources/`.
 - The [harness benchmark field guide](../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
   compares evaluator boundaries and preserves the complete MCE experiment protocol.
+- The [evaluator-integrity benchmark suite](../knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md)
+  compares GDPval, DeepSWE, FrontierCode 1.1, and SWE-bench Verified without
+  collapsing their different access, contamination, and verifier boundaries
+  into a capability ranking.
 - [[bounded_transitive_closure]] records the Weng-rooted expansion rule, retained branches, stop predicate, and closure status.
 - `evidence/weng/` vendors the Weng anchor's bounded two-hop external closure.
   `evidence/rlm/` captures the RLM paper, training/generalization blog, figures,

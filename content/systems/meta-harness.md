@@ -62,6 +62,7 @@ harnesses under matched conditions.
 ## Reading routes
 
 - [Benchmark field guide](../../knowledge/harness_benchmarks/harness_benchmark_field_guide.md)
+- [Evaluator-integrity benchmark suite](../../knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md)
 - [Meta-Harness evidence-tiered deep dive](../../knowledge/meta_harness/meta_harness_deep_dive.md)
 - [Context engineering deep dive](../context_engineering_deep_dive.md)
 - [Searching for better harnesses](../chapters/harness-search.md)

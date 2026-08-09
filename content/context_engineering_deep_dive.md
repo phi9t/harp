@@ -57,6 +57,9 @@ arXiv claims, dated site results, pinned repository interfaces, and the local
 TRAE proposal run separate rather than extending this cross-system ladder.
 For evaluator boundaries and the full paper-derived MCE experiment protocol,
 use the [harness benchmark field guide](../knowledge/harness_benchmarks/harness_benchmark_field_guide.md).
+For the separate GDPval, DeepSWE, FrontierCode 1.1, and SWE-bench Verified
+comparison, use the
+[evaluator-integrity benchmark suite](../knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md).
 
 The checked-in source texts are `evidence/weng/text/ace.txt`,
 `evidence/weng/text/mce.txt`, and

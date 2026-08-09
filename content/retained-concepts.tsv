@@ -7,7 +7,7 @@ procedure-internalization	HARNESS-DISENTANGLE
 harness-search	HYPERAGENTS
 automated-research	NOT-SCIENTISTS,GPT5-SCIENCE
 joint-harness-weight-adaptation	
-evaluation-promotion-containment	BENCH-SWE,BENCH-TB2,BENCH-POLYGLOT,BENCH-SKILLS
+evaluation-promotion-containment	BENCH-SWE,BENCH-TB2,BENCH-POLYGLOT,BENCH-SKILLS,GDPVAL,DEEPSWE,FRONTIERCODE-1-1
 system-state-and-notation	
 task-improvement	SELF-REFINE
 persistent-adaptation	

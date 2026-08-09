@@ -197,6 +197,11 @@ agents, prompts, tools, and SWE-bench/Polyglot harness glue. This local
 snapshot is evidence for present-day source behavior at the pinned commit; it
 is not evidence that Harp reproduced the benchmark numbers.
 
+For the distinct question of what a repository-repair benchmark can establish,
+see the [evaluator-integrity benchmark suite](../../knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md).
+It treats SWE-bench Verified as a historical-public-task control and keeps
+benchmark identity, exposure history, and live access policy separate.
+
 ## Paper results and accounting boundary
 
 **EVIDENCE — [DGM], Abstract and §4.4.** The paper reports that DGM improves

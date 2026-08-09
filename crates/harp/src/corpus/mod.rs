@@ -29,7 +29,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 9] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 10] = [
     (
         "thesis",
         "Thesis",
@@ -71,8 +71,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 9] = [
         "Benchmarks",
         "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
     ),
+    (
+        "evaluator-integrity",
+        "Evaluator integrity",
+        "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 11] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 12] = [
     ("agentic-eval-apply", "content/sicp/agentic_eval_apply.md"),
     (
         "sicp-seminar-09-eval-apply",
@@ -110,6 +115,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 11] = [
     (
         "harness-benchmark-field-guide",
         "knowledge/harness_benchmarks/harness_benchmark_field_guide.md",
+    ),
+    (
+        "evaluator-integrity-benchmark-suite",
+        "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
