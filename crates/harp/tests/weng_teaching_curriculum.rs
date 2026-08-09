@@ -1164,6 +1164,64 @@ fn assert_local_targets_resolve(path: &Path, targets: &[&str]) {
     }
 }
 
+fn reference_target_may_be_pending(state: &str, target: &str) -> bool {
+    state == "cards-complete"
+        && LESSONS
+            .iter()
+            .any(|lesson| target == format!("../{lesson}"))
+}
+
+fn assert_pending_lesson_target_is_safe(document_path: &Path, target: &str) {
+    LESSONS
+        .iter()
+        .find(|lesson| target == format!("../{lesson}"))
+        .unwrap_or_else(|| panic!("unexpected pending lesson target: {target}"));
+    let root = fs::canonicalize(workspace_root()).expect("resolve Harp workspace root");
+    let mut current = fs::canonicalize(document_path.parent().expect("reference parent"))
+        .expect("resolve reference parent");
+    assert!(
+        current.starts_with(&root),
+        "pending lesson target base must stay beneath the repository root"
+    );
+    let relative = Path::new(local_target_path(target));
+    for component in relative.components() {
+        match component {
+            Component::CurDir => {}
+            Component::ParentDir => assert!(
+                current.pop() && current.starts_with(&root),
+                "pending lesson target escapes the repository root"
+            ),
+            Component::Normal(name) => current.push(name),
+            Component::RootDir | Component::Prefix(_) => {
+                panic!("pending lesson target must be repository-relative: {target}")
+            }
+        }
+        match fs::symlink_metadata(&current) {
+            Ok(metadata) => assert!(
+                !metadata.file_type().is_symlink(),
+                "pending lesson target must not traverse a symlink: {}",
+                current.display()
+            ),
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return,
+            Err(error) => panic!(
+                "inspect pending lesson target {}: {error}",
+                current.display()
+            ),
+        }
+    }
+    canonical_workspace_file(&current, "pending lesson target");
+}
+
+fn assert_reference_targets_resolve(path: &Path, targets: &[&str], state: &str) {
+    for target in targets {
+        if reference_target_may_be_pending(state, target) {
+            assert_pending_lesson_target_is_safe(path, target);
+        } else {
+            resolve_local_target(path, target, "local HTML target", true);
+        }
+    }
+}
+
 fn assert_stylesheet(path: &Path, document: &HtmlDocument) {
     let stylesheet = document.tags_named("link").find(|tag| {
         tag.attribute("rel").is_some_and(|rel| {
@@ -1261,7 +1319,7 @@ fn target_resolves_to(
         .is_some_and(|resolved| resolved == expected)
 }
 
-fn validate_references() {
+fn validate_references(state: &str) {
     for relative in REFERENCES {
         let path = strict_workspace_file(relative, "teaching reference");
         let html = fs::read_to_string(&path)
@@ -1274,7 +1332,7 @@ fn validate_references() {
         assert_stylesheet(&path, &document);
         assert_scripts_have_sources(&path, &document);
         assert_no_absolute_local_paths(&path, &document, &targets);
-        assert_local_targets_resolve(&path, &targets);
+        assert_reference_targets_resolve(&path, &targets, state);
     }
 }
 
@@ -1860,6 +1918,68 @@ fn local_target_validation_rejects_symlink_traversal() {
 }
 
 #[test]
+fn cards_complete_permits_only_exact_expected_missing_lessons() {
+    let sandbox = TempDir::new_in(workspace_root()).expect("temporary lesson-link fixture");
+    let reference = sandbox.path().join("reference");
+    fs::create_dir(&reference).expect("temporary reference directory");
+    let document = reference.join("map.html");
+    fs::write(&document, "<!doctype html>").expect("temporary reference document");
+    for lesson in LESSONS {
+        let target = format!("../{lesson}");
+        assert!(
+            reference_target_may_be_pending("cards-complete", &target),
+            "cards-complete did not permit expected lesson {target}"
+        );
+        assert_reference_targets_resolve(&document, &[&target], "cards-complete");
+    }
+    for target in [
+        "../lessons/not-a-course-lesson.html",
+        "../lessons/0001-system-being-improved.html?draft=true",
+        "../lessons/0001-system-being-improved.html#draft",
+        "../content/missing.md",
+    ] {
+        assert!(
+            !reference_target_may_be_pending("cards-complete", target),
+            "unexpected pending target passed: {target}"
+        );
+        assert!(
+            std::panic::catch_unwind(|| {
+                assert_reference_targets_resolve(&document, &[target], "cards-complete");
+            })
+            .is_err(),
+            "unexpected missing target resolved: {target}"
+        );
+    }
+    assert!(!reference_target_may_be_pending(
+        "cards-complete",
+        "../../lessons/0001-system-being-improved.html"
+    ));
+}
+
+#[test]
+fn complete_rejects_missing_lesson_targets() {
+    let sandbox = TempDir::new_in(workspace_root()).expect("temporary lesson-link fixture");
+    let reference = sandbox.path().join("reference");
+    fs::create_dir(&reference).expect("temporary reference directory");
+    let document = reference.join("map.html");
+    fs::write(&document, "<!doctype html>").expect("temporary reference document");
+    for lesson in LESSONS {
+        let target = format!("../{lesson}");
+        assert!(
+            !reference_target_may_be_pending("complete", &target),
+            "complete state permitted missing target {target}"
+        );
+        assert!(
+            std::panic::catch_unwind(|| {
+                assert_reference_targets_resolve(&document, &[&target], "complete");
+            })
+            .is_err(),
+            "complete state resolved missing target {target}"
+        );
+    }
+}
+
+#[test]
 fn weng_teaching_curriculum_has_complete_observable_contract() {
     let expected_locators = weng_source_locators();
     let numbered = expected_locators
@@ -2020,7 +2140,7 @@ fn weng_teaching_curriculum_has_complete_observable_contract() {
     }
 
     if matches!(state.as_str(), "cards-complete" | "complete") {
-        validate_references();
+        validate_references(&state);
     }
     if state == "complete" {
         validate_lessons(&rows);

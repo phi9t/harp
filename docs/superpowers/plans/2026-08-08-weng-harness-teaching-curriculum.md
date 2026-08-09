@@ -558,6 +558,11 @@ When `state` is `cards-complete` or `complete`, for every reference:
 - reject absolute local paths; and
 - validate local `href` and `src` targets.
 
+At `cards-complete`, the exact ten Task 9 `../lessons/*.html` targets may be
+absent while the harness map already emits its real lesson links. No other
+missing target, query or fragment variant, symlink, or escaping path is
+permitted. At `complete`, all ten lesson targets must resolve normally.
+
 - [ ] **Step 3: Run the test and confirm the intended red state**
 
 Run:

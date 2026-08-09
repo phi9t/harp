@@ -151,6 +151,452 @@ BODY_LINK_LOCATORS = {
     "WENG-REWARD": "body-link-reward-hacking",
     "ANTHROPIC-RSI": "body-link-ai-progress",
 }
+COMPARISON_COLUMNS = (
+    "edited object",
+    "persistence",
+    "evaluator",
+    "update operator",
+    "model-weight change",
+    "evidence class",
+    "claim ceiling",
+)
+COMPARISONS = {
+    "GOOD-1965": (
+        "machine intelligence",
+        "hypothetical successor redesign",
+        "none; conceptual argument",
+        "hypothetical machine self-redesign",
+        "unspecified",
+        "conceptual",
+        "speculative intelligence-explosion framing, not an experiment",
+    ),
+    "YUDKOWSKY-2008": (
+        "cognitive machinery",
+        "hypothetical successor system",
+        "none; essay argument",
+        "recursive self-modification",
+        "unspecified",
+        "conceptual",
+        "optimization-dynamics framing without experimental validation",
+    ),
+    "ASP": (
+        "code-repair model weights",
+        "trained checkpoint",
+        "BUGSOURCEBENCH tests",
+        "anchored generator-fixer self-play training",
+        "yes",
+        "author-reported",
+        "bounded code-repair self-play gains, not harness improvement",
+    ),
+    "ABSOLUTE-ZERO": (
+        "reasoning model weights",
+        "trained checkpoint",
+        "code executor and task benchmarks",
+        "proposer-solver reinforcement learning",
+        "yes",
+        "author-reported",
+        "zero-data reasoning adaptation under executable verification",
+    ),
+    "SELF-REWARDING": (
+        "instruction policy and judge weights",
+        "checkpoint per iteration",
+        "self-judgments and instruction benchmarks",
+        "self-instruction plus iterative DPO",
+        "yes",
+        "author-reported",
+        "instruction and reward-model gains, not harness recursion",
+    ),
+    "SPIN": (
+        "language-model weights",
+        "checkpoint per iteration",
+        "human-versus-self response objective and benchmarks",
+        "iterative self-play fine-tuning",
+        "yes",
+        "author-reported",
+        "self-play weight gains bounded by a fixed human distribution",
+    ),
+    "ACE": (
+        "context playbook",
+        "cross-task context artifact",
+        "task reward and reflective feedback",
+        "incremental reflection, curation, and update",
+        "no",
+        "author-reported",
+        "learned-context gains with cost and benchmark limits",
+    ),
+    "MCE": (
+        "skills and context-management policy",
+        "cross-task skill library",
+        "base-task benchmark outcomes",
+        "bi-level skill and context evolution",
+        "no",
+        "author-reported",
+        "bi-level context evolution without a successor-producer test",
+    ),
+    "META-HARNESS": (
+        "end-to-end model harness",
+        "filesystem archive of candidates",
+        "search tasks and held-out tasks",
+        "outer-loop proposal, execution, and selection",
+        "no; base model fixed",
+        "author-reported",
+        "held-out harness gains without matched recursive gain",
+    ),
+    "AI-SCIENTIST": (
+        "research ideas, plans, code, results, figures, and manuscripts",
+        "saved code, results, and paper",
+        "experiment metrics and review signals",
+        "idea-to-experiment-to-paper workflow",
+        "no",
+        "author-reported",
+        "end-to-end research automation in the reported scope",
+    ),
+    "SCIENTISTONE": (
+        "research plan and evidence chain",
+        "durable chain-of-evidence artifacts",
+        "integrity audit and research outcomes",
+        "three-stage evidence-grounded workflow",
+        "no",
+        "author-reported",
+        "research workflow and integrity results, not RSI",
+    ),
+    "AUTODATA": (
+        "synthetic training data",
+        "saved dataset and downstream checkpoint",
+        "downstream model performance",
+        "agentic self-instruct data generation",
+        "yes; downstream training",
+        "author-reported",
+        "synthetic-data gains under a strong-solver boundary",
+    ),
+    "ADAS": (
+        "agent program",
+        "retained program candidate",
+        "held-out agent benchmarks",
+        "meta-agent program generation and selection",
+        "no",
+        "author-reported",
+        "agent-program search and transfer under reported budgets",
+    ),
+    "SELF-REFINE": (
+        "current task output",
+        "same episode only",
+        "task-specific feedback and metrics",
+        "feedback then refinement",
+        "no",
+        "author-reported",
+        "within-episode task refinement with no persistent adaptation",
+    ),
+    "AFLOW": (
+        "agent workflow graph",
+        "retained workflow candidate",
+        "task benchmark score",
+        "MCTS-guided workflow generation",
+        "no",
+        "author-reported",
+        "workflow-search gains, not recursive improvement",
+    ),
+    "STOP": (
+        "LM-calling improver code",
+        "improver generation",
+        "meta-utility on downstream programs",
+        "self-application of the improver",
+        "no; language model fixed",
+        "author-reported",
+        "bounded recursive scaffolding optimization, not full RSI",
+    ),
+    "SELF-HARNESS": (
+        "model-specific harness",
+        "accepted harness iteration",
+        "held-in and held-out tasks",
+        "trace mining, minimal edits, and promotion",
+        "no; task model fixed",
+        "author-reported",
+        "measured harness gain without a next-cycle improver test",
+    ),
+    "PROMPTBREEDER": (
+        "task prompts and mutation prompts",
+        "evolutionary population",
+        "task fitness",
+        "mutation-prompt and task-prompt evolution",
+        "no",
+        "author-reported",
+        "prompt evolution within a fixed prompting topology",
+    ),
+    "GEPA": (
+        "compound-system prompts",
+        "Pareto archive",
+        "benchmark score and textual feedback",
+        "reflective mutation, merge, and selection",
+        "no",
+        "author-reported",
+        "reflective prompt evolution under evaluator-dependent limits",
+    ),
+    "ALPHAEVOLVE": (
+        "algorithm implementation",
+        "program database",
+        "executable problem evaluator",
+        "LLM edits plus evolutionary selection",
+        "no",
+        "author-reported",
+        "program discoveries inside fixed problems and evaluators",
+    ),
+    "SHINKAEVOLVE": (
+        "program and search scaffold",
+        "island archive",
+        "tests and problem score",
+        "LLM mutation, crossover, and island selection",
+        "no",
+        "author-reported",
+        "sample-efficient program evolution in bounded tasks",
+    ),
+    "THETAEVOLVE": (
+        "program environment and optional adapters",
+        "candidate archive and optional checkpoint",
+        "open-problem reward",
+        "program evolution with optional reward-shaped training",
+        "optional",
+        "author-reported",
+        "test-time search and optional training under evaluator caveats",
+    ),
+    "DGM": (
+        "coding-agent repository",
+        "branching lineage archive",
+        "external coding benchmarks",
+        "agent code mutation and archive selection",
+        "no; foundation model fixed",
+        "author-reported",
+        "open-ended agent-code lineage without matched recursive gain",
+    ),
+    "HYPERAGENTS": (
+        "unified editable task-and-meta-agent program",
+        "candidate archive",
+        "held-out paper-review quality",
+        "self-referential task-and-meta logic rewrite plus archive selection",
+        "no",
+        "author-reported",
+        "bounded agent-quality gain with fixed outer loop and evaluator",
+    ),
+    "LEARNING-DISCOVER": (
+        "model weights and discovery archive",
+        "test-time checkpoint and archive",
+        "continuous verifier on GPUMode",
+        "test-time training with archive reuse",
+        "yes",
+        "author-reported",
+        "problem-specific discovery gain under continuous verification",
+    ),
+    "EPISTEMIC-DISCOVERY": (
+        "LoRA ensemble weights",
+        "test-time adapter ensemble",
+        "verifier reward and epistemic uncertainty",
+        "uncertainty-guided test-time training",
+        "yes",
+        "author-reported",
+        "single-seed discovery evidence with verifier and ensemble costs",
+    ),
+    "SIA": (
+        "harness and model weights",
+        "generation-specific or selected-best scaffold and LoRA checkpoint",
+        "three domain evaluators",
+        "joint harness and weight updates",
+        "yes",
+        "author-reported",
+        "joint adaptation gains with reported confounds",
+    ),
+    "NOT-SCIENTISTS": (
+        "research ideas, hypotheses, plans, code, results, and manuscript",
+        "project artifacts",
+        "human assessment of four attempts",
+        "autonomous research execution",
+        "no reported training",
+        "case report",
+        "failure-mode evidence from four attempts, not improvement proof",
+    ),
+    "GPT5-SCIENCE": (
+        "scientific artifact",
+        "case-study outputs",
+        "expert verification",
+        "human-directed prompting and tool use",
+        "no reported training",
+        "company report",
+        "science-collaboration cases, not benchmark or RSI validation",
+    ),
+    "PAPERBENCH": (
+        "research reproduction artifact",
+        "per-run reproduction artifact; reported aggregates include three runs per paper and human best@3",
+        "8,316-item rubric and judge",
+        "agent reproduction workflow",
+        "no",
+        "benchmark",
+        "research-replication capability in a 20-paper benchmark",
+    ),
+    "REBENCH": (
+        "AI R&D solution",
+        "independent timed attempts aggregated through score@k",
+        "task score and score@k",
+        "agent R&D execution",
+        "no",
+        "benchmark",
+        "frontier-agent R&D capability under fixed time budgets",
+    ),
+    "MLEBENCH": (
+        "ML engineering solution",
+        "per-seed competition artifact; headline result aggregates 16 seeds",
+        "private-leaderboard medal metric",
+        "agent modeling and code iteration",
+        "no",
+        "benchmark",
+        "offline Kaggle engineering performance with split caveats",
+    ),
+    "SCIENCEAGENTBENCH": (
+        "scientific analysis program",
+        "three independent runs per task with selected-best and mean accounting",
+        "execution and task-success checks",
+        "agent planning, coding, and self-debugging",
+        "no",
+        "benchmark",
+        "data-driven science-agent capability on 102 tasks",
+    ),
+    "COREBENCH": (
+        "computational reproduction artifact",
+        "three-run CORE-Agent accounting with separate pass@1 and pass@3 retries",
+        "task tests and pass accounting",
+        "CORE-Agent execution and retries",
+        "no",
+        "benchmark",
+        "computational reproducibility on a 270-task benchmark",
+    ),
+    "KERNELBENCH": (
+        "GPU kernel code",
+        "candidate within an attempt",
+        "correctness tests and fast_p speed metric",
+        "generation with execution feedback",
+        "no",
+        "benchmark",
+        "kernel generation efficiency under fixed hardware and tasks",
+    ),
+    "HARNESS-DISENTANGLE": (
+        "harness update and use capabilities",
+        "observed capability, not an accepted edit",
+        "activation, adherence, and task benchmarks",
+        "controlled harness perturbation",
+        "no; fixed-weight study",
+        "benchmark",
+        "capability decomposition; harness updating is not harness benefit",
+    ),
+    "AHE": (
+        "coding-agent harness",
+        "accepted harness version",
+        "task outcome and observability predictions",
+        "trace analysis, edit proposal, and selection",
+        "no",
+        "author-reported",
+        "observability-driven harness evolution with transfer limits",
+    ),
+    "CONTINUAL-HARNESS": (
+        "online harness and policy state",
+        "reset-free state across refinement cycles within one continuing episode",
+        "completion, process reward, and teacher labels",
+        "harness refinement plus DAgger-style relabeling",
+        "yes",
+        "author-reported",
+        "online co-learning under game, teacher, and evaluator limits",
+    ),
+    "DEMOEVOLVE": (
+        "executable agentic harness",
+        "evolution archive",
+        "fixed-seed game reward",
+        "demonstration-guided harness evolution and selection",
+        "no; model frozen",
+        "author-reported",
+        "sparse-feedback harness gain with causal-audit limits",
+    ),
+    "KARPATHY-AUTORESEARCH": (
+        "training program",
+        "git state and experiment log",
+        "fixed-time validation loss",
+        "edit, train, measure, keep or revert",
+        "yes; each experiment trains",
+        "implementation snapshot",
+        "pinned workflow behavior without benchmark reproduction",
+    ),
+    "WENG-REWARD": (
+        "not applicable; secondary reward-hacking synthesis",
+        "varies by cited case",
+        "varies by cited case",
+        "not applicable; synthesis of failure modes and mitigations",
+        "varies by cited case",
+        "secondary synthesis",
+        "reward-hacking and evaluator-bias framing",
+    ),
+    "ANTHROPIC-RSI": (
+        "not one controlled object; company successor-development framing",
+        "varies across self-reported cases",
+        "internal observations and case-specific metrics",
+        "not one controlled update loop",
+        "varies or is unspecified across cases",
+        "company essay",
+        "successor-development framing with an explicit not-yet-RSI boundary",
+    ),
+}
+CLAIM_LEVELS = (
+    (
+        "task iteration",
+        "A fixed process produces a better answer or action in the same run under a matched evaluator and budget.",
+        "Self-Refine uses feedback and revision to improve the current output without creating cross-episode state.",
+        "Calling a refined answer durable learning, harness improvement, or recursive improvement.",
+        "../reference/weng-source-cards.html#source-SELF-REFINE",
+        (
+            ("Improvement types", "../content/concepts/improvement-types.md"),
+            ("System state", "../content/concepts/system-state-and-notation.md"),
+        ),
+    ),
+    (
+        "persistent adaptation",
+        "A named state artifact survives the episode boundary, is read later, and causally improves later behavior against a no-update control.",
+        "ACE retains and reuses an evolving context playbook across tasks; its evidence remains author-reported and benchmark-bounded.",
+        "Treating persistence alone as proof that the stored state is useful, that the harness improved, or that recursion occurred.",
+        "../content/systems/ace.md",
+        (
+            ("Improvement types", "../content/concepts/improvement-types.md"),
+            ("Procedure representations", "../content/concepts/procedure-representations.md"),
+        ),
+    ),
+    (
+        "harness improvement",
+        "Executable harness policy changes and beats the prior harness with model, evaluator, permissions, and root-tree budget held fixed, including added cost.",
+        "Self-Harness reports held-in and held-out promotion of model-specific harness edits while keeping the task model fixed.",
+        "Calling one accepted harness gain evidence that the accepted harness is better at producing its next harness.",
+        "../content/systems/self-harness.md",
+        (
+            ("Harness components", "../content/concepts/harness-components.md"),
+            ("Evaluation and control", "../content/concepts/evaluation-and-control.md"),
+        ),
+    ),
+    (
+        "successor improvement",
+        "After an accepted Cₜ → Cₜ₊₁ transition, estimate the proposal-quality functional Q for parent and child under the same proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget. Require positive RGₜ = Q(Cₜ₊₁) − Q(Cₜ), not one lucky stronger grandchild.",
+        "No Harp source card qualifies at this level. A qualifying experiment would produce a positive matched estimate of RGₜ under the complete fixed proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget contract.",
+        "Using self-edit access, a branching lineage, or a better child task score as a substitute for measured later improvement production.",
+        "../content/chapters/recursive-improvement-loop.md#state-transition-and-recursion-test",
+        (
+            ("System state", "../content/concepts/system-state-and-notation.md"),
+            ("Improvement types", "../content/concepts/improvement-types.md"),
+        ),
+    ),
+    (
+        "demonstrated recursive improvement",
+        "The matched successor-production gain repeats across accepted generations, fresh tasks or evaluators, and independent lineages with full cost, failure, and integrity accounting.",
+        "No Harp source card qualifies at this level. A positive example would reproduce positive recursive gain across multiple protected successor generations.",
+        "Generalizing from one lineage, one benchmark, one immediate gain, or a fixed-model scaffolding result to demonstrated RSI.",
+        "../content/chapters/recursive-improvement-loop.md#what-would-weaken-the-mechanism",
+        (
+            ("Improvement types", "../content/concepts/improvement-types.md"),
+            ("Evaluation and control", "../content/concepts/evaluation-and-control.md"),
+        ),
+    ),
+)
 
 
 @dataclass(frozen=True)
@@ -577,7 +1023,13 @@ def load_status() -> str:
 
 def paragraphs(text: str) -> str:
     blocks = [block.strip() for block in text.split("\n\n") if block.strip()]
-    return "".join(f"<p>{html.escape(block)}</p>" for block in blocks)
+    return "".join(
+        f"<p>{html.escape(block).replace('/', '&#47;')}</p>" for block in blocks
+    )
+
+
+def heading_slug(heading: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", heading.casefold()).strip("-")
 
 
 def render_card(card: Card) -> str:
@@ -585,22 +1037,27 @@ def render_card(card: Card) -> str:
     source_id = metadata["source_id"]
     fields = "".join(
         (
-            f'<section class="card-field" aria-labelledby="{source_id}-{heading.lower().replace(" ", "-")}">'
-            f'<h3 id="{source_id}-{heading.lower().replace(" ", "-")}">{html.escape(heading)}</h3>'
+            f'<section class="card-field" aria-labelledby="source-{html.escape(source_id)}-{heading_slug(heading)}">'
+            f'<h3 id="source-{html.escape(source_id)}-{heading_slug(heading)}">'
+            f"{html.escape(heading)}</h3>"
             f"{paragraphs(card.sections[heading])}</section>"
         )
         for heading in HEADINGS
     )
     return (
-        f'<article id="source-{html.escape(source_id)}" data-source-card '
+        f'<article data-source-card id="source-{html.escape(source_id)}" '
         f'data-source-id="{html.escape(source_id)}" '
+        f'data-locator="{html.escape(metadata["weng_locator"])}" '
         f'data-section="{html.escape(metadata["section_id"])}" '
-        f'data-family="{html.escape(metadata["edited_object_family"])}">'
+        f'data-family="{html.escape(metadata["edited_object_family"])}" '
+        f'data-evidence-state="{html.escape(metadata["evidence_state"])}">'
         f'<p class="source-id">{html.escape(source_id)}</p>'
         f'<h2>{html.escape(metadata["title"])}</h2>'
         f"{fields}"
-        f'<p><a href="{html.escape(metadata["primary_url"])}">Primary source</a></p>'
-        f'<p><a href="../{html.escape(metadata["canonical_route"])}">Canonical Harp route</a></p>'
+        f'<p><a href="{html.escape(metadata["primary_url"], quote=True)}">'
+        "Primary source</a></p>"
+        f'<p><a href="../{html.escape(metadata["canonical_route"], quote=True)}">'
+        "Canonical Harp route</a></p>"
         "</article>"
     )
 
@@ -613,9 +1070,16 @@ def render_source_cards(cards: list[Card]) -> str:
         "<title>Weng Source Cards</title>"
         '<link rel="stylesheet" href="../assets/course.css"></head>'
         "<body><main><h1>Weng Source Cards</h1>"
-        '<form aria-label="Filter source cards"><label for="source-query">Filter</label>'
-        '<input id="source-query" data-source-query type="search"></form>'
-        f'<p data-result-count aria-live="polite">{len(cards)} sources</p>'
+        '<p class="reference-panel">Generated from the canonical inputs '
+        '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
+        '<code>content/weng-sources/</code>, and the '
+        '<a href="../content/sources/source_registry.tsv">source registry</a>. '
+        "This HTML is a derived, non-authoritative teaching projection.</p>"
+        '<form aria-label="Filter source cards">'
+        '<label for="source-query">Search source cards</label>'
+        '<input id="source-query" data-source-query type="search" '
+        'placeholder="Source, section, family, or text"></form>'
+        f'<p data-result-count aria-live="polite">{len(cards)} of {len(cards)} sources</p>'
         f"<div data-card-list>{card_html}</div>"
         '</main><script src="../assets/coverage.js"></script></body></html>\n'
     )
@@ -629,9 +1093,9 @@ def render_harness_map(cards: list[Card]) -> str:
     sections = "".join(
         f'<li data-section="{html.escape(section)}">'
         f"<strong>{html.escape(title)}</strong>: {count} sources · "
-        f'<a href="{html.escape(original)}">Original</a> · '
-        f'<a href="{html.escape(companion)}">Companion</a> · '
-        f'<a href="{html.escape(lesson)}">Lesson</a></li>'
+        f'<a href="{html.escape(original, quote=True)}">Original public anchor</a> · '
+        f'<a href="{html.escape(companion, quote=True)}">Canonical companion</a> · '
+        f'<a href="{html.escape(lesson, quote=True)}">Matching lesson</a></li>'
         for section, title, original, companion, lesson in SECTION_META
         for count in (section_counts.get(section, 0),)
     )
@@ -641,8 +1105,116 @@ def render_harness_map(cards: list[Card]) -> str:
         "<title>Weng Harness Map</title>"
         '<link rel="stylesheet" href="../assets/course.css"></head>'
         "<body><main><h1>Weng Harness Map</h1>"
-        "<p>prompts → structured context → workflow → harness code → optimizer code</p>"
-        f"<ol>{sections}</ol></main></body></html>\n"
+        '<p class="reference-panel">Generated from '
+        '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
+        '<code>content/weng-sources/</code>, and the '
+        '<a href="../content/sources/source_registry.tsv">source registry</a>. '
+        "This map is a derived, non-authoritative teaching projection.</p>"
+        "<p><strong>Optimization ladder:</strong> prompts -&gt; structured context "
+        "-&gt; workflow -&gt; harness code -&gt; optimizer code</p>"
+        f"<ol>{sections}</ol>"
+        f"<p><strong>Total:</strong> {sum(section_counts.values())} sources.</p>"
+        "</main></body></html>\n"
+    )
+
+
+def comparison_rows(
+    cards: list[Card],
+    comparisons: dict[str, tuple[str, ...]] | None = None,
+) -> list[tuple[Card, tuple[str, ...]]]:
+    comparisons = COMPARISONS if comparisons is None else comparisons
+    card_ids = {card.metadata["source_id"] for card in cards}
+    comparison_ids = set(comparisons)
+    missing = card_ids - comparison_ids
+    extra = comparison_ids - card_ids
+    if missing or extra:
+        raise ValueError(
+            "comparison registry must exactly match source cards: "
+            f"missing={sorted(missing)}, extra={sorted(extra)}"
+        )
+    for source_id, comparison in comparisons.items():
+        if len(comparison) != len(COMPARISON_COLUMNS):
+            raise ValueError(
+                f"comparison registry row for {source_id} must contain "
+                f"{len(COMPARISON_COLUMNS)} columns"
+            )
+        if not all(value.strip() for value in comparison):
+            raise ValueError(f"comparison registry row for {source_id} has an empty value")
+    return [(card, comparisons[card.metadata["source_id"]]) for card in cards]
+
+
+def render_claim_ladder() -> str:
+    levels = "".join(
+        (
+            f'<li id="claim-level-{index}" class="reference-panel">'
+            f"<h2>{index}. {html.escape(name)}</h2>"
+            f"<p><strong>Required evidence:</strong> {html.escape(required)}</p>"
+            f'<p><strong>Positive example:</strong> <a href="{html.escape(example_route, quote=True)}">'
+            f"{html.escape(example)}</a></p>"
+            f"<p><strong>Common overclaim:</strong> {html.escape(overclaim)}</p>"
+            "<p><strong>Canonical Harp concepts:</strong> "
+            + " · ".join(
+                f'<a href="{html.escape(route, quote=True)}">{html.escape(title)}</a>'
+                for title, route in concepts
+            )
+            + "</p></li>"
+        )
+        for index, (
+            name,
+            required,
+            example,
+            overclaim,
+            example_route,
+            concepts,
+        ) in enumerate(CLAIM_LEVELS, start=1)
+    )
+    return (
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        "<title>RSI Claim Ladder</title>"
+        '<link rel="stylesheet" href="../assets/course.css"></head>'
+        "<body><main><h1>RSI Claim Ladder</h1>"
+        '<p class="reference-panel">Generated from canonical Harp concepts under '
+        '<code>content/concepts/</code>, the '
+        '<a href="../content/chapters/recursive-improvement-loop.md">'
+        "recursive-improvement chapter</a>, and the canonical source cards. "
+        "This HTML is derived and non-authoritative. Harp does not claim to have "
+        "demonstrated recursive self-improvement.</p>"
+        "<ol>"
+        f"{levels}"
+        "</ol></main></body></html>\n"
+    )
+
+
+def render_comparison_matrix(cards: list[Card]) -> str:
+    headers = "".join(f"<th scope=\"col\">{html.escape(column)}</th>" for column in COMPARISON_COLUMNS)
+    rows = "".join(
+        (
+            "<tr data-comparison-row>"
+            f'<th scope="row"><a href="weng-source-cards.html#source-{html.escape(card.metadata["source_id"], quote=True)}">'
+            f"{html.escape(card.metadata['title'])}</a>"
+            f'<span class="source-id">{html.escape(card.metadata["source_id"])}</span></th>'
+            + "".join(f"<td>{html.escape(value)}</td>" for value in comparison)
+            + "</tr>"
+        )
+        for card, comparison in comparison_rows(cards)
+    )
+    return (
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        "<title>Harness Comparison Matrix</title>"
+        '<link rel="stylesheet" href="../assets/course.css"></head>'
+        "<body><main><h1>Harness Comparison Matrix</h1>"
+        '<p class="reference-panel">Generated from '
+        '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
+        '<code>content/weng-sources/</code>, and the '
+        '<a href="../content/sources/source_registry.tsv">source registry</a>. '
+        "This comparison is a derived, non-authoritative teaching projection; "
+        "its evidence classes and claim ceilings bound rather than extend the "
+        "canonical cards.</p>"
+        '<table><thead><tr><th scope="col">source</th>'
+        f"{headers}</tr></thead><tbody>{rows}</tbody></table>"
+        "</main></body></html>\n"
     )
 
 
@@ -900,6 +1472,122 @@ def write_or_check(path: Path, content: str, check: bool) -> None:
 
 
 def run_self_tests() -> None:
+    cards = load_cards()
+    expected_comparison_updates = {
+        "HYPERAGENTS": (
+            "unified editable task-and-meta-agent program",
+            "self-referential task-and-meta logic rewrite plus archive selection",
+        ),
+        "CONTINUAL-HARNESS": (
+            "reset-free state across refinement cycles within one continuing episode",
+        ),
+        "DEMOEVOLVE": (
+            "executable agentic harness",
+            "demonstration-guided harness evolution and selection",
+        ),
+        "PAPERBENCH": (
+            "per-run reproduction artifact; reported aggregates include three runs per paper and human best@3",
+        ),
+        "REBENCH": ("independent timed attempts aggregated through score@k",),
+        "MLEBENCH": (
+            "per-seed competition artifact; headline result aggregates 16 seeds",
+        ),
+        "SCIENCEAGENTBENCH": (
+            "three independent runs per task with selected-best and mean accounting",
+        ),
+        "COREBENCH": (
+            "three-run CORE-Agent accounting with separate pass@1 and pass@3 retries",
+        ),
+        "SIA": (
+            "generation-specific or selected-best scaffold and LoRA checkpoint",
+        ),
+        "AI-SCIENTIST": (
+            "research ideas, plans, code, results, figures, and manuscripts",
+        ),
+        "NOT-SCIENTISTS": (
+            "research ideas, hypotheses, plans, code, results, and manuscript",
+        ),
+    }
+    for source_id, expected_values in expected_comparison_updates.items():
+        comparison = COMPARISONS[source_id]
+        for expected_value in expected_values:
+            if expected_value not in comparison:
+                raise AssertionError(
+                    f"{source_id} comparison is missing reviewed value: {expected_value}"
+                )
+    if COMPARISONS["WENG-REWARD"][:5] != (
+        "not applicable; secondary reward-hacking synthesis",
+        "varies by cited case",
+        "varies by cited case",
+        "not applicable; synthesis of failure modes and mitigations",
+        "varies by cited case",
+    ):
+        raise AssertionError("WENG-REWARD mechanism columns exceed secondary evidence")
+    if COMPARISONS["ANTHROPIC-RSI"][:5] != (
+        "not one controlled object; company successor-development framing",
+        "varies across self-reported cases",
+        "internal observations and case-specific metrics",
+        "not one controlled update loop",
+        "varies or is unspecified across cases",
+    ):
+        raise AssertionError("ANTHROPIC-RSI mechanism columns imply one controlled loop")
+
+    successor = next(level for level in CLAIM_LEVELS if level[0] == "successor improvement")
+    for required_text in (
+        "proposal protocol",
+        "task distribution",
+        "model access",
+        "selection rule",
+        "root-tree budget",
+        "RGₜ = Q(Cₜ₊₁) − Q(Cₜ)",
+        "not one lucky stronger grandchild",
+    ):
+        if required_text not in successor[1]:
+            raise AssertionError(
+                f"successor required evidence is missing canonical contract: {required_text}"
+            )
+    if (
+        "No Harp source card qualifies" not in successor[2]
+        or "positive matched estimate of RGₜ" not in successor[2]
+    ):
+        raise AssertionError("successor positive example overstates Harp evidence")
+
+    source_cards = render_source_cards(cards)
+    if source_cards.count("<article data-source-card") != 42:
+        raise AssertionError("source-card reference must contain 42 cards")
+    for attribute in (
+        "data-source-id=",
+        "data-locator=",
+        "data-section=",
+        "data-family=",
+        "data-evidence-state=",
+    ):
+        if source_cards.count(attribute) != 42:
+            raise AssertionError(f"source-card reference must contain 42 {attribute} attributes")
+    if "42 of 42 sources" not in source_cards:
+        raise AssertionError("source-card reference must expose its initial live count")
+    comparison_matrix = render_comparison_matrix(cards)
+    if comparison_matrix.count("<tr data-comparison-row>") != 42:
+        raise AssertionError("comparison matrix must contain 42 source rows")
+    if comparison_matrix.count('href="weng-source-cards.html#source-') != 42:
+        raise AssertionError("comparison matrix must link all 42 source cards")
+    claim_ladder = render_claim_ladder()
+    if claim_ladder.count('<li id="claim-level-') != 5:
+        raise AssertionError("claim ladder must contain five ordered levels")
+    harness_map = render_harness_map(cards)
+    if harness_map.count("<li data-section=") != 9:
+        raise AssertionError("harness map must contain nine sections")
+
+    first_source_id = cards[0].metadata["source_id"]
+    incomplete = dict(COMPARISONS)
+    incomplete.pop(first_source_id)
+    try:
+        comparison_rows(cards, incomplete)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("incomplete comparison registry unexpectedly passed")
+
     quoted_frontmatter = "\n".join(
         (
             "---",
@@ -1342,6 +2030,14 @@ def main() -> None:
             (
                 REFERENCE_ROOT / "weng-harness-map.html",
                 render_harness_map(cards),
+            ),
+            (
+                REFERENCE_ROOT / "rsi-claim-ladder.html",
+                render_claim_ladder(),
+            ),
+            (
+                REFERENCE_ROOT / "harness-comparison-matrix.html",
+                render_comparison_matrix(cards),
             ),
         ],
         args.check,
