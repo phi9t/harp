@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 1: What system is being improved?</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0002-harness-design-patterns.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 1 of 10</p>
+      <h1>What system is being improved?</h1>
+      <p><strong>Matching Weng section:</strong> introduction and coding-agent case study. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#case-study-coding-agent-harness">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Given a system change, identify whether it edits model weights, the training pipeline, or the deployment harness, and state what extra evidence a successor claim needs.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Start with the edited boundary</h2>
+      <dl>
+        <dt><strong>Model weights</strong></dt>
+        <dd>The checkpoint changes through training or fine-tuning.</dd>
+        <dt><strong>Training pipeline</strong></dt>
+        <dd>Data, objectives, code, or evaluation machinery that produces a checkpoint changes.</dd>
+        <dt><strong>Deployment harness</strong></dt>
+        <dd>Context, tools, memory, control flow, subagents, verification, or persistence around a checkpoint changes.</dd>
+      </dl>
+      <p>A successor boundary is stricter: an externally accepted child must become the next parent. Immediate task gain is not evidence that the child is better at producing another valid child.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <p><a href="../reference/weng-source-cards.html#source-GOOD-1965">GOOD-1965</a> and <a href="../reference/weng-source-cards.html#source-YUDKOWSKY-2008">YUDKOWSKY-2008</a> frame recursive successor improvement conceptually. <a href="../reference/weng-source-cards.html#source-ASP">ASP</a>, <a href="../reference/weng-source-cards.html#source-ABSOLUTE-ZERO">ABSOLUTE-ZERO</a>, <a href="../reference/weng-source-cards.html#source-SELF-REWARDING">SELF-REWARDING</a>, and <a href="../reference/weng-source-cards.html#source-SPIN">SPIN</a> report bounded self-play or weight-training results; they are adjacent evidence, not harness-improvement demonstrations.</p>
+      <p><a href="../reference/weng-source-cards.html#source-KARPATHY-AUTORESEARCH">KARPATHY-AUTORESEARCH</a> is a concrete harness-design pattern. <a href="../reference/weng-source-cards.html#source-ANTHROPIC-RSI">ANTHROPIC-RSI</a> is company framing that explicitly says the system is not yet RSI.</p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Compare: Absolute Zero and Autoresearch</h2>
+      <p>Absolute Zero changes reasoning-model weights through proposer–solver reinforcement learning under executable verification. Autoresearch changes a training program, then each experiment trains candidate weights for a fixed five-minute window and scores validation bits per byte. In both cases, objectives, evaluators, budgets, permissions, and promotion rules remain externally fixed. Neither source tests whether an accepted child improves the next successor-production cycle.</p>
+      <h3>Free recall</h3>
+      <p>Without looking back, classify these changes: a LoRA update; an edit to <code>train.py</code>; adding a tool retry policy; accepting a checkpoint and asking it to redesign the next training run. For the fourth, name the missing matched evidence before calling it recursive improvement.</p>
+    </section>
+
+    <form data-quiz data-answer="harness" aria-label="Retrieval quiz: classify the changed system">
+      <fieldset>
+        <legend>A fixed checkpoint gains a filesystem memory and a verifier. What changed?</legend>
+        <label><input type="radio" name="answer" value="weights"> Model weights</label>
+        <label><input type="radio" name="answer" value="training"> Training pipeline</label>
+        <label><input type="radio" name="answer" value="harness"> Deployment harness</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary source for <a href="https://arxiv.org/abs/2505.03335">Absolute Zero</a>, then inspect the pinned <a href="https://github.com/karpathy/autoresearch">Autoresearch repository</a>. Track the edited object and the external controls separately.</p>
+      <p><strong>Ask your teacher</strong> to challenge one of your classifications and invite you to defend the successor boundary.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

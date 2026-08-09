@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 4: Context engineering</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0003-harness-vs-core-intelligence.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0005-workflow-design-and-auto-research.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 4 of 10</p>
+      <h1>Context engineering</h1>
+      <p><strong>Matching Weng section:</strong> Context Engineering. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#context-engineering">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Classify a context system by its exact edited object: artifact, mechanism, or executable harness code.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Artifact → mechanism → code</h2>
+      <p>The final prompt does not identify which layer changed. Record provenance for the artifact, update mechanism, and executable policy separately.</p>
+      <p>A stored item may exist but remain ineligible, unselected, badly rendered, never activated, or abandoned. A useful evaluator must distinguish those failures from bad content.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <ol>
+        <li><a href="../reference/weng-source-cards.html#source-ACE">ACE</a> edits a structured context artifact: an itemized playbook updated from rollout feedback.</li>
+        <li><a href="../reference/weng-source-cards.html#source-MCE">MCE</a> edits context-engineering skills and procedures that construct or update context.</li>
+        <li><a href="../reference/weng-source-cards.html#source-META-HARNESS">META-HARNESS</a> searches executable context-management harness code that stores, retrieves, transforms, and presents information.</li>
+      </ol>
+      <h3>Fixed boundaries</h3>
+      <p>These sources do not support silently attributing every gain to model intelligence. ACE and MCE operate around fixed base-level models in their reported setups. Meta-Harness fixes the base model while an outer proposer and evaluator search harness candidates. Task rewards, held-out evaluations, budgets, and promotion remain outside the editable object.</p>
+      <p>In Meta-Harness, the outer proposer, search tasks, and held-out evaluator remain controls beyond the candidate harness's editable code.</p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Card recall and discrimination</h2>
+      <p><strong>Card recall:</strong> Close the source-card page and state the edited object, persistence form, and evaluator for ACE.</p>
+      <p><strong>Discrimination:</strong> A system rewrites the function that chooses memories for a prompt. Is the primary edit the memory item, the context-construction procedure, or model weights? What additional evidence would show that this procedure improves held-out behavior rather than only increasing context or calls?</p>
+    </section>
+
+    <form data-quiz data-answer="mechanism" aria-label="Retrieval quiz: context optimization layer">
+      <fieldset>
+        <legend>A candidate changes the skill that selects and compresses stored items, but not the items or weights. What is the closest edited layer?</legend>
+        <label><input type="radio" name="answer" value="artifact"> Structured context item</label>
+        <label><input type="radio" name="answer" value="mechanism"> Context update procedure</label>
+        <label><input type="radio" name="answer" value="weights"> Base-model weight update</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary sources for <a href="https://iclr.cc/virtual/2026/poster/10008343">ACE</a>, <a href="https://arxiv.org/abs/2601.21557">MCE</a>, and <a href="https://arxiv.org/abs/2603.28052">Meta-Harness</a>. Write one sentence naming the mutable surface in each.</p>
+      <p><strong>Ask your teacher</strong> to hide the system names and invite you to reconstruct the artifact–mechanism–code ladder from mechanisms alone.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

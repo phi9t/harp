@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 8: Joint harness and weight optimization</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0007-evolutionary-search.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0009-future-challenges-and-evaluation.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 8 of 10</p>
+      <h1>Joint harness and weight optimization</h1>
+      <p><strong>Matching Weng section:</strong> Joint Optimization with Model Weights. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#joint-optimization-with-model-weights">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Use a four-cell crossed evaluation to attribute gains to harness changes, weight changes, or their interaction.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">The required four cells</h2>
+      <table>
+        <thead>
+          <tr><th scope="col">Cell</th><th scope="col">Question</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>W_old/H_old</code></th><td>What is the unchanged baseline?</td></tr>
+          <tr><th scope="row"><code>W_old/H_new</code></th><td>What does the new harness add with weights fixed?</td></tr>
+          <tr><th scope="row"><code>W_new/H_old</code></th><td>What do the new weights add under the old harness?</td></tr>
+          <tr><th scope="row"><code>W_new/H_new</code></th><td>What does the co-adapted composite achieve?</td></tr>
+        </tbody>
+      </table>
+      <p>Compare the harness contrast, weight contrast, and any non-additive interaction. Keep tasks, evaluator, permissions, teacher identity, and complete root-tree budget matched.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <p><a href="../reference/weng-source-cards.html#source-SIA">SIA</a>'s Feedback-Agent selects either a harness update or a weight update at a step; across the overall SIA-W+H run, generation-specific or selected-best composites can contain both changed harness and changed LoRA weights. Reported gains retain model-choice and baseline confounds.</p>
+      <p><a href="../reference/weng-source-cards.html#source-CONTINUAL-HARNESS">CONTINUAL-HARNESS</a> refines prompt, subagents, skills, and memory without resetting the environment. Low-reward windows are scored, relabeled by a stronger teacher, and used for soft policy updates. The teacher, process reward, and game evaluator remain external.</p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Compare cells and confounds</h2>
+      <p>Each update changes the other's data distribution. A stronger teacher may supply the decisive capability. A learned policy may exploit evaluator leakage. A new harness may help old weights but interfere with new weights. Goodhart pressure can raise the measured reward without improving the intended behavior.</p>
+      <h3>Free recall</h3>
+      <p>Draw the four cells from memory. Circle the contrast that isolates the harness, underline the contrast that isolates weights, and write the equation or comparison that tests interaction.</p>
+    </section>
+
+    <form data-quiz data-answer="harness" aria-label="Retrieval quiz: crossed evaluation">
+      <fieldset>
+        <legend>Which comparison most directly isolates the new harness with weights fixed?</legend>
+        <label><input type="radio" name="answer" value="harness"> <code>W_old/H_new</code> versus <code>W_old/H_old</code></label>
+        <label><input type="radio" name="answer" value="weights"> <code>W_new/H_old</code> versus <code>W_old/H_old</code></label>
+        <label><input type="radio" name="answer" value="joint"> <code>W_new/H_new</code> versus <code>W_old/H_old</code></label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary sources for <a href="https://arxiv.org/abs/2605.27276">SIA</a> and <a href="https://arxiv.org/abs/2605.09998">Continual Harness</a>. Reconstruct which crossed cells or controls each source reports and which remain missing or confounded.</p>
+      <p><strong>Ask your teacher</strong> to remove one crossed cell and invite you to explain exactly which attribution becomes impossible.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

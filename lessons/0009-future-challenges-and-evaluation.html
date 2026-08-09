@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 9: Future challenges and evaluation</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0008-joint-harness-weight-optimization.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0010-synthesis-and-oral-defense.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 9 of 10</p>
+      <h1>Future challenges and evaluation</h1>
+      <p><strong>Matching Weng section:</strong> Future Challenges. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#future-challenges">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Classify research evidence by construct and state the ceiling beyond which its score cannot support a claim.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Challenges become promotion gates</h2>
+      <p>Weng identifies weak or fuzzy evaluators, context and memory lifecycle, retention of negative results, diversity collapse, reward hacking, long-term maintainability, and human oversight. Treat these as separate checks rather than hiding them in one score.</p>
+      <p>A benchmark score is evidence about its declared construct. It is not by itself evidence of scientific taste, discovery, agenda choice, maintainable successor design, or recursive self-improvement.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <h3>Eight sources, eight constructs</h3>
+      <dl>
+        <dt><strong>Autonomous-research attempt case report</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-NOT-SCIENTISTS">NOT-SCIENTISTS</a> provides failure-mode case evidence from four autonomous research attempts. It is not a benchmark or proof of autonomous discovery.</dd>
+        <dt><strong>Expert-mediated science-collaboration report</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-GPT5-SCIENCE">GPT5-SCIENCE</a> is a company-authored report of human-directed, expert-verified science collaboration case studies. It is not a benchmark or proof of autonomous discovery.</dd>
+        <dt><strong>Paper replication</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-PAPERBENCH">PAPERBENCH</a> evaluates reproducing 20 AI papers against a detailed rubric.</dd>
+        <dt><strong>Timed ML R&amp;D</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-REBENCH">REBENCH</a> evaluates frontier agents and human experts under fixed time budgets.</dd>
+        <dt><strong>Offline Kaggle engineering</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-MLEBENCH">MLEBENCH</a> evaluates ML engineering through private-leaderboard medal metrics.</dd>
+        <dt><strong>Scientific Python and data workflow</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-SCIENCEAGENTBENCH">SCIENCEAGENTBENCH</a> evaluates planning, coding, execution, and self-debugging on scientific tasks.</dd>
+        <dt><strong>Computational reproducibility</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-COREBENCH">COREBENCH</a> evaluates reproducing computational artifacts and passing task tests.</dd>
+        <dt><strong>Correct and faster kernels</strong></dt>
+        <dd><a href="../reference/weng-source-cards.html#source-KERNELBENCH">KERNELBENCH</a> evaluates GPU-kernel correctness and speed against a baseline.</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Classification and evidence ceiling</h2>
+      <p><strong>Classification:</strong> A benchmark gives an agent a published repository and asks it to recreate result artifacts that pass tests. Which construct is closest? What would distinguish it from paper replication scored by a manuscript-specific rubric?</p>
+      <p><strong>Evidence-ceiling comparison:</strong> Compare a company case report about expert collaboration with a timed R&amp;D benchmark. State one claim each can support and one shared claim neither can support.</p>
+    </section>
+
+    <form data-quiz data-answer="kernel" aria-label="Retrieval quiz: benchmark classification">
+      <fieldset>
+        <legend>A score requires functionally correct GPU code and runtime speedup over a baseline. Which construct is measured?</legend>
+        <label><input type="radio" name="answer" value="replication"> Paper replication quality</label>
+        <label><input type="radio" name="answer" value="kernel"> Correct and faster kernels</label>
+        <label><input type="radio" name="answer" value="workflow"> Scientific data workflow</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary sources for <a href="https://proceedings.mlr.press/v267/starace25a.html">PaperBench</a> and <a href="https://proceedings.mlr.press/v267/wijk25a.html">RE-Bench</a>. Compare task unit, time or attempt accounting, evaluator, and construct limits.</p>
+      <p><strong>Ask your teacher</strong> to present a headline benchmark score and invite you to state its strongest defensible claim and first unsupported extrapolation.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

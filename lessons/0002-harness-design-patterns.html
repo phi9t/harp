@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 2: Harness design patterns</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0001-system-being-improved.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0003-harness-vs-core-intelligence.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 2 of 10</p>
+      <h1>Harness design patterns</h1>
+      <p><strong>Matching Weng section:</strong> Harness Design Patterns. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#harness-design-patterns">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Distinguish a transient execution loop from persistent adaptation and explain why inspectable state is necessary but not sufficient for improvement.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Three prerequisites</h2>
+      <ul>
+        <li><strong>Loops:</strong> expose plan, execute, test, decide, and stop transitions.</li>
+        <li><strong>File persistence:</strong> retain artifacts, checkpoints, logs, and handoffs where later runs can inspect them.</li>
+        <li><strong>Subagents or backend jobs:</strong> provide bounded specialization or parallel work, with explicit ownership and resource accounting.</li>
+      </ul>
+      <p>These patterns make state inspectable and recovery possible. Persistence alone is not improvement: a stored artifact must be consumed later and causally beat a no-update control.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <p>In <a href="../reference/weng-source-cards.html#source-KARPATHY-AUTORESEARCH">KARPATHY-AUTORESEARCH</a>, the agent edits <code>train.py</code>; the human edits <code>program.md</code>. Each run trains for five minutes, reports <code>val_bpb</code> (validation bits per byte), and ends in a keep, discard, or crash decision. Git state and an experiment log persist. The objective, evaluator, data, time budget, permissions, and agenda remain fixed outside the agent.</p>
+      <p>This is an inspectable training-program search pattern. It does not by itself establish a better research process, agenda autonomy, or recursive successor gain.</p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Compare the state</h2>
+      <dl>
+        <dt><strong>Transient transcript</strong></dt>
+        <dd>A retry or critique exists only in the current run and disappears afterward.</dd>
+        <dt><strong>Durable artifact</strong></dt>
+        <dd>A versioned edit, checkpoint, or failure record survives and can affect a later run.</dd>
+      </dl>
+      <h3>Compare-or-classify</h3>
+      <p>Classify each as task iteration, persistent adaptation, or neither: retry after a failed test; write the failure to a file that no later run reads; load the file in the next run and avoid the failure; fan out three child agents. State what causal comparison is still needed.</p>
+    </section>
+
+    <form data-quiz data-answer="persistent" aria-label="Retrieval quiz: task iteration versus persistence">
+      <fieldset>
+        <legend>Which observation is strongest evidence of persistent adaptation?</legend>
+        <label><input type="radio" name="answer" value="retry"> A retry succeeds later in the same transcript</label>
+        <label><input type="radio" name="answer" value="persistent"> A saved lesson helps a later run beat control</label>
+        <label><input type="radio" name="answer" value="fanout"> Parallel subagents find distinct answers in one run</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Inspect the public <a href="https://github.com/karpathy/autoresearch">Autoresearch repository</a>. Identify the editable file, durable state, evaluator, budget, and acceptance decision before reading any result as improvement evidence.</p>
+      <p><strong>Ask your teacher</strong> to give you a workflow trace and invite you to label every transient and durable state boundary.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

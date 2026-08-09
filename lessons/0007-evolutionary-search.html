@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 7: Evolutionary search</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0006-self-improving-harnesses.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0008-joint-harness-weight-optimization.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 7 of 10</p>
+      <h1>Evolutionary search</h1>
+      <p><strong>Matching Weng section:</strong> Evolutionary Search. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#evolutionary-search">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Classify an evolutionary system by edited object, population or archive, update operator, and evaluator without mistaking archive membership for promotion.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Population is not authority</h2>
+      <p>Evolution supplies parent selection, mutation, evaluation, diversity, and archive policy. DGM's foundation model and outer evolutionary loop remain fixed while coding-agent repositories branch. A branching archive preserves lineage and possible stepping stones. It does not authorize deployment: external promotion still requires integrity and held-out checks.</p>
+      <p>The evaluator remains outside evolution. Search pressure amplifies its objective, including its gaps.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <h3>Four edited-object families</h3>
+      <table>
+        <thead>
+          <tr><th scope="col">Family</th><th scope="col">Systems</th><th scope="col">What evolves</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Prompt</th>
+            <td><a href="../reference/weng-source-cards.html#source-PROMPTBREEDER">PROMPTBREEDER</a>, <a href="../reference/weng-source-cards.html#source-GEPA">GEPA</a></td>
+            <td>Task or compound-system prompts; Promptbreeder also evolves mutation prompts, while GEPA retains a Pareto archive and uses reflective feedback.</td>
+          </tr>
+          <tr>
+            <th scope="row">Solution program</th>
+            <td><a href="../reference/weng-source-cards.html#source-ALPHAEVOLVE">ALPHAEVOLVE</a>, <a href="../reference/weng-source-cards.html#source-SHINKAEVOLVE">SHINKAEVOLVE</a>, <a href="../reference/weng-source-cards.html#source-THETAEVOLVE">THETAEVOLVE</a></td>
+            <td>Algorithm or program candidates under executable evaluators; ThetaEvolve can optionally add reward-shaped weight training.</td>
+          </tr>
+          <tr>
+            <th scope="row">Harness</th>
+            <td><a href="../reference/weng-source-cards.html#source-DGM">DGM</a>, <a href="../reference/weng-source-cards.html#source-HYPERAGENTS">HYPERAGENTS</a>, <a href="../reference/weng-source-cards.html#source-DEMOEVOLVE">DEMOEVOLVE</a></td>
+            <td>Agent or harness code. Hyperagents uses one unified editable task-and-meta program. DemoEvolve uses demonstrations as diagnostic inputs; demonstrations are not its edited object.</td>
+          </tr>
+          <tr>
+            <th scope="row">Problem-specific weights</th>
+            <td><a href="../reference/weng-source-cards.html#source-LEARNING-DISCOVER">LEARNING-DISCOVER</a>, <a href="../reference/weng-source-cards.html#source-EPISTEMIC-DISCOVERY">EPISTEMIC-DISCOVERY</a></td>
+            <td>Test-time checkpoints or LoRA ensembles guided by continuous verifiers. These are not frozen program search.</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Ten-system comparison</h3>
+      <table>
+        <thead>
+          <tr><th scope="col">System</th><th scope="col">Edited object and population</th><th scope="col">Update</th><th scope="col">Evaluator</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Promptbreeder</th><td>Task and mutation prompts in a population</td><td>Prompt mutation and selection</td><td>Task fitness</td></tr>
+          <tr><th scope="row">GEPA</th><td>Compound-system prompts in a Pareto archive</td><td>Reflective mutation, merge, and selection</td><td>Benchmark score and textual feedback</td></tr>
+          <tr><th scope="row">AlphaEvolve</th><td>Algorithm programs in a program database</td><td>LM edits and evolutionary selection</td><td>Executable problem score</td></tr>
+          <tr><th scope="row">ShinkaEvolve</th><td>Programs and search scaffolds in island archives</td><td>LM mutation, crossover, and island selection</td><td>Tests and problem score</td></tr>
+          <tr><th scope="row">ThetaEvolve</th><td>Programs and optional adapters in an archive</td><td>Program evolution with optional training</td><td>Open-problem reward</td></tr>
+          <tr><th scope="row">DGM</th><td>Coding-agent repositories in a branching archive</td><td>Agent-code mutation and archive selection</td><td>External coding benchmarks</td></tr>
+          <tr><th scope="row">Hyperagents</th><td>Unified task-and-meta programs in an archive</td><td>Self-referential program rewrite and selection</td><td>Held-out paper-review quality</td></tr>
+          <tr><th scope="row">DemoEvolve</th><td>Executable harnesses in an archive</td><td>Demonstration-guided harness evolution</td><td>Fixed-seed game reward</td></tr>
+          <tr><th scope="row">Learning to Discover</th><td>Weights and discovery results in an archive</td><td>Test-time training with archive reuse</td><td>Continuous verifier reward</td></tr>
+          <tr><th scope="row">Epistemic Discovery</th><td>LoRA ensemble weights</td><td>Uncertainty-guided test-time training</td><td>Verifier reward and epistemic uncertainty</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Classify an unfamiliar system</h2>
+      <p>A system keeps an island archive, asks an LM to mutate executable candidates, scores each with tests, and never trains the LM. Write four lines: edited object, population structure, update operator, evaluator. Then compare archive admission with production promotion and list one reason they must differ.</p>
+    </section>
+
+    <form data-quiz data-answer="weights" aria-label="Retrieval quiz: evolutionary system family">
+      <fieldset>
+        <legend>A method updates a LoRA ensemble at test time and uses verifier reward plus uncertainty. Which family fits best?</legend>
+        <label><input type="radio" name="answer" value="prompt"> Compound-system prompt evolution</label>
+        <label><input type="radio" name="answer" value="harness"> Frozen-model harness-code search</label>
+        <label><input type="radio" name="answer" value="weights"> Test-time model-weight discovery</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Compare the public primary sources for <a href="https://arxiv.org/abs/2506.13131">AlphaEvolve</a>, <a href="https://arxiv.org/abs/2505.22954">DGM</a>, and <a href="https://arxiv.org/abs/2601.16175">Learning to Discover at Test Time</a>. Do not compare scores until you have named the edited object.</p>
+      <p><strong>Ask your teacher</strong> to invent a hybrid system and invite you to classify every mutable surface before deciding which family label is primary.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

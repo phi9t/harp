@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 3: Harness versus core intelligence</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0002-harness-design-patterns.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0004-context-engineering.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 3 of 10</p>
+      <h1>Harness versus core intelligence</h1>
+      <p><strong>Matching Weng section:</strong> Harness Layer vs Core Intelligence? <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#harness-layer-vs-core-intelligence">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Explain how an external procedure can improve fixed-weight behavior while separating activation, adherence, and outcome.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Same weights, different procedure</h2>
+      <p>A harness can select context, call tools, externalize state, and route subproblems without changing model weights. Compare the same checkpoint under two matched harnesses to measure the procedure's contribution.</p>
+      <p>Possible internalization is a prediction, not a proven general law: a later weight update might preserve behavior after removing the external procedure. That requires a direct ablation. Tool and environment interfaces may remain external even when some procedure is learned.</p>
+      <h3>Do not compress three boundaries</h3>
+      <ol>
+        <li><strong>Activation:</strong> was the relevant skill, memory, or procedure loaded or invoked?</li>
+        <li><strong>Adherence:</strong> did the agent continue to follow it?</li>
+        <li><strong>Outcome:</strong> did following it improve the task result?</li>
+      </ol>
+      <p>HARNESS-DISENTANGLE separates harness updating from harness benefit and audits these use boundaries under fixed weights.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards and complementary source</h2>
+      <p><a href="../reference/weng-source-cards.html#source-HARNESS-DISENTANGLE">HARNESS-DISENTANGLE</a> is the assigned Weng source card for the fixed-weight activation, adherence, and outcome decomposition.</p>
+      <p><a href="../content/systems/rlm.md">Recursive Language Models</a> externalize long input into a REPL and permit programmatic or recursive model calls. Recursion is in the inference procedure, not an added Transformer layer or a learned successor loop. Read the <a href="https://arxiv.org/abs/2512.24601">public RLM paper</a>. RLM is complementary and outside the 42-card Weng roster.</p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Compare activation, adherence, and outcome</h2>
+      <h3>Compare-or-classify</h3>
+      <p>Hold weights fixed. Harness A exposes a relevant skill but never loads it. Harness B loads it, follows it for half the trajectory, then abandons it before validation. Name the first failed boundary for each and explain why neither outcome diagnoses update quality.</p>
+    </section>
+
+    <form data-quiz data-answer="adherence" aria-label="Retrieval quiz: activation, adherence, and outcome">
+      <fieldset>
+        <legend>The agent loads the right skill, follows it briefly, then stops before final validation. What failed first?</legend>
+        <label><input type="radio" name="answer" value="activation"> Activation of the procedure</label>
+        <label><input type="radio" name="answer" value="adherence"> Sustained adherence to it</label>
+        <label><input type="radio" name="answer" value="outcome"> Measurement of final outcome</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary source for <a href="https://arxiv.org/abs/2605.30621">Harness Disentangle</a> and compare its fixed-weight audit with the RLM inference procedure.</p>
+      <p><strong>Ask your teacher</strong> to propose two same-weight harnesses and invite you to design the matched ablation.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 6: Self-improving harnesses</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0005-workflow-design-and-auto-research.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0007-evolutionary-search.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 6 of 10</p>
+      <h1>Self-improving harnesses</h1>
+      <p><strong>Matching Weng section:</strong> Self-Improving Harness. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#self-improving-harness">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Specify a bounded harness-improvement generation and distinguish immediate harness gain from recursive successor gain.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Code is a broad representation</h2>
+      <p>Executable code can represent prompts, tools, memory, permissions, control flow, and subagents. That breadth enables useful edits and enlarges the attack surface. A safe generation declares the parent, editable files, evidence, candidate delta, evaluation, integrity checks, and external promotion decision.</p>
+      <h3>Keep authority outside the editable loop</h3>
+      <p>The evaluator, hidden tests, permissions, complete root-tree budget, rejected-candidate archive, and promotion authority must not be candidate-writable. A prompt that says “do not edit” is not an enforced boundary.</p>
+      <p>An accepted harness that beats its parent supports immediate harness gain. Successor recursive gain requires a later matched test showing that the accepted child produces better valid successors than its parent under the same proposal and selection envelope.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <ul>
+        <li><a href="../reference/weng-source-cards.html#source-STOP">STOP</a> self-applies LM-calling improver code while the language model remains fixed.</li>
+        <li><a href="../reference/weng-source-cards.html#source-SELF-HARNESS">SELF-HARNESS</a> uses a bounded propose–evaluate–accept loop over model-specific harness edits.</li>
+        <li><a href="../reference/weng-source-cards.html#source-HARNESS-DISENTANGLE">HARNESS-DISENTANGLE</a> asks whether an update activates, is followed, and benefits the task agent.</li>
+        <li><a href="../reference/weng-source-cards.html#source-AHE">AHE</a> grounds edits in traces and requires predicted effects, while protecting runs, verifier, and model configuration.</li>
+        <li><a href="../reference/weng-source-cards.html#source-WENG-REWARD">WENG-REWARD</a> warns that optimization can exploit proxy evaluators rather than improve the intended capability.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Card recall and boundary check</h2>
+      <p><strong>Card recall:</strong> Pick STOP, Self-Harness, or AHE. State the edited object, fixed model boundary, evaluator, and strongest supported claim.</p>
+      <p><strong>Boundary check:</strong> A candidate improves held-out score but edits the test runner and hides two rejected branches. List the integrity failures before discussing task gain.</p>
+    </section>
+
+    <form data-quiz data-answer="promotion" aria-label="Retrieval quiz: protected improvement boundary">
+      <fieldset>
+        <legend>Which control must remain outside candidate write authority?</legend>
+        <label><input type="radio" name="answer" value="prompt"> Candidate-owned system instructions</label>
+        <label><input type="radio" name="answer" value="tool"> Candidate-owned tool implementation</label>
+        <label><input type="radio" name="answer" value="promotion"> External evaluation and promotion</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Read the public primary sources for <a href="https://arxiv.org/abs/2310.02304">STOP</a>, <a href="https://arxiv.org/abs/2606.09498">Self-Harness</a>, and <a href="https://arxiv.org/abs/2604.25850">AHE</a>. Mark every control that candidates cannot edit.</p>
+      <p><strong>Ask your teacher</strong> to play a hostile candidate and invite you to defend the evaluator, budget, archive, permissions, and promotion boundary.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

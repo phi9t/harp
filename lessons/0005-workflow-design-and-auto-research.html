@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson 5: Workflow design and auto-research</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+  <main>
+    <nav aria-label="Course navigation">
+      <a href="0004-context-engineering.html">Previous lesson</a>
+      <a href="../reference/weng-harness-map.html">Course map</a>
+      <a href="0006-self-improving-harnesses.html">Next lesson</a>
+    </nav>
+
+    <header>
+      <p class="eyebrow">Weng harness course · Lesson 5 of 10</p>
+      <h1>Workflow design and auto-research</h1>
+      <p><strong>Matching Weng section:</strong> Workflow Design. <a href="https://lilianweng.github.io/posts/2026-07-04-harness/#workflow-design">Read the public original</a>.</p>
+    </header>
+
+    <section aria-labelledby="win">
+      <h2 id="win">Learner win</h2>
+      <p>Distinguish an expert-designed research workflow from agent-program search, workflow-graph search, within-episode refinement, and generated training data.</p>
+    </section>
+
+    <section aria-labelledby="explanation">
+      <h2 id="explanation">Search needs four contracts</h2>
+      <p>Declare the representation, proposal or mutation operator, evaluator, and archive or tree policy. ADAS proposes agent code directly. AFlow selects, expands, evaluates, and backpropagates scores through a workflow-search tree. The search procedure is not the task solver it searches for.</p>
+      <p>Paper production is also not identical to scientific discovery. A generated manuscript can document an experiment without establishing good problem choice, scientific taste, novelty, causal validity, or durable knowledge.</p>
+    </section>
+
+    <section aria-labelledby="sources">
+      <h2 id="sources">Source cards</h2>
+      <ul>
+        <li><a href="../reference/weng-source-cards.html#source-AI-SCIENTIST">AI-SCIENTIST</a> is an expert-designed idea-to-experiment-to-paper workflow.</li>
+        <li><a href="../reference/weng-source-cards.html#source-SCIENTISTONE">SCIENTISTONE</a> is an expert-designed, evidence-grounded research workflow with a chain-of-evidence standard.</li>
+        <li><a href="../reference/weng-source-cards.html#source-AUTODATA">AUTODATA</a> is an expert-designed synthetic-data workflow evaluated through downstream training.</li>
+        <li><a href="../reference/weng-source-cards.html#source-ADAS">ADAS</a> uses a meta-agent to generate and select agent programs.</li>
+        <li><a href="../reference/weng-source-cards.html#source-SELF-REFINE">SELF-REFINE</a> refines the current output using feedback within one episode; it does not persist a new workflow across episodes.</li>
+        <li><a href="../reference/weng-source-cards.html#source-AFLOW">AFLOW</a> uses Monte Carlo tree search over executable workflow graphs.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">Card recall and adjacent discrimination</h2>
+      <p><strong>Card recall:</strong> Choose ADAS or AFlow. From memory, name its candidate representation, update operator, evaluator, and persistence structure.</p>
+      <p><strong>Adjacent discrimination:</strong> A system critiques one answer three times, then discards the transcript. Another retains a workflow graph selected by held-out score. Which is within-episode refinement, and which is workflow search? What cost-matched control would you request?</p>
+    </section>
+
+    <form data-quiz data-answer="graph" aria-label="Retrieval quiz: workflow system classification">
+      <fieldset>
+        <legend>Which system class uses MCTS to search retained executable workflow candidates?</legend>
+        <label><input type="radio" name="answer" value="refinement"> Same-episode response refinement</label>
+        <label><input type="radio" name="answer" value="graph"> Persistent workflow-graph search</label>
+        <label><input type="radio" name="answer" value="data"> Synthetic training-data generation</label>
+      </fieldset>
+      <button type="submit">Check answer</button>
+      <p data-feedback></p>
+    </form>
+
+    <section aria-labelledby="next">
+      <h2 id="next">Continue</h2>
+      <p>Compare the public primary sources for <a href="https://proceedings.iclr.cc/paper_files/paper/2025/file/36b7acf6f6010652b3f2a433774a66fe-Paper-Conference.pdf">ADAS</a> and <a href="https://openreview.net/forum?id=z5uVAKwmjf">AFlow</a>. Inspect how each represents and evaluates a candidate.</p>
+      <p><strong>Ask your teacher</strong> to name an unfamiliar auto-research system and invite you to classify its edited object before discussing its score.</p>
+    </section>
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>
