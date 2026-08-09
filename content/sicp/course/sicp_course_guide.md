@@ -57,10 +57,13 @@ Start with the [Scheme reading primer](scheme_reading_primer.md), then proceed i
 7. [Seminar 7 — Concurrency, serialization, and interleavings](seminars/07-concurrency-serialization-and-interleavings.md)
 8. [Seminar 8 — Streams, delay, and infinite processes](seminars/08-streams-delay-and-infinite-processes.md)
 9. [Seminar 9 — Eval/apply and executable semantics](seminars/09-eval-apply-and-executable-semantics.md)
-10. [Seminar 10 — Lazy evaluation and nondeterministic search](seminars/10-lazy-evaluation-and-nondeterministic-search.md)
-11. [Seminar 11 — Logic programming and declarative query](seminars/11-logic-programming-and-declarative-query.md)
-12. [Seminar 12 — Machines, storage, control, and compilation](seminars/12-machines-storage-control-and-compilation.md)
-13. [Capstone — Agent-harness architecture dossier](capstone/agent_harness_architecture_dossier.md)
+10. Optional [agentic eval/apply MTS synthesis](../agentic_eval_apply.md), a
+    semantic-bridge transfer supplement before the capstone, not a source or
+    evaluator-semantics authority and not a replacement for Seminar 9.
+11. [Seminar 10 — Lazy evaluation and nondeterministic search](seminars/10-lazy-evaluation-and-nondeterministic-search.md)
+12. [Seminar 11 — Logic programming and declarative query](seminars/11-logic-programming-and-declarative-query.md)
+13. [Seminar 12 — Machines, storage, control, and compilation](seminars/12-machines-storage-control-and-compilation.md)
+14. [Capstone — Agent-harness architecture dossier](capstone/agent_harness_architecture_dossier.md)
 
 ## Concept routes
 
@@ -84,7 +87,7 @@ Read [Seminar 9](seminars/09-eval-apply-and-executable-semantics.md) before [Sem
 
 ### Agent-harness design
 
-Read [Seminar 2](seminars/02-data-abstraction-and-immutable-representation.md), [Seminar 5](seminars/05-state-identity-and-environments.md), [Seminar 7](seminars/07-concurrency-serialization-and-interleavings.md), [Seminar 9](seminars/09-eval-apply-and-executable-semantics.md), and [Seminar 12](seminars/12-machines-storage-control-and-compilation.md), then complete the [Capstone](capstone/agent_harness_architecture_dossier.md). This route traces a harness from representation and authority boundaries through durable state, scheduling, semantic dispatch, and explicit resource control.
+Read [Seminar 2](seminars/02-data-abstraction-and-immutable-representation.md), [Seminar 5](seminars/05-state-identity-and-environments.md), [Seminar 7](seminars/07-concurrency-serialization-and-interleavings.md), [Seminar 9](seminars/09-eval-apply-and-executable-semantics.md), the optional [agentic eval/apply MTS synthesis](../agentic_eval_apply.md), and [Seminar 12](seminars/12-machines-storage-control-and-compilation.md), then complete the [Capstone](capstone/agent_harness_architecture_dossier.md). The synthesis bridges semantic dispatch to external-effect boundaries without replacing Seminar 9 or the capstone; this route traces a harness from representation and authority boundaries through durable state, scheduling, semantic dispatch, external-effect boundaries, and explicit resource control.
 
 ## Resume the dialogue
 
@@ -92,4 +95,4 @@ Open [dialogue_state.md](dialogue_state.md), follow the single `CURRENT` link to
 
 ## Source and license boundary
 
-The canonical course artifact is the vendored [SICP PDF](../../../../evidence/sicp/sicp.pdf). Consult the [source registry](../sources/source_registry.tsv) for provenance and use constraints, and preserve the boundary described by the vendored [license text](../../../../evidence/sicp/LICENSE.txt). Course notes paraphrase and point into the source; they do not replace or silently relicense it.
+The canonical course artifact is the vendored [SICP PDF](../../../evidence/sicp/sicp.pdf). Consult the [source registry](../sources/source_registry.tsv) for provenance and use constraints, and preserve the boundary described by the vendored [license text](../../../evidence/sicp/LICENSE.txt). Course notes paraphrase and point into the source; they do not replace or silently relicense it.

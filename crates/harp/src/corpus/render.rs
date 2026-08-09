@@ -220,5 +220,5 @@ pub(super) fn offline_link_destination_with_sources(
         return format!("#documents/{}", auxiliary_document_id(&source.path));
     }
     let suffix = fragment.map_or(String::new(), |fragment| format!("#{fragment}"));
-    format!("../../../../../{resolved}{suffix}")
+    format!("../../{resolved}{suffix}")
 }

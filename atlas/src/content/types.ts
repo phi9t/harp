@@ -29,7 +29,8 @@ export type ReaderRouteId =
   | "harnesses"
   | "weng"
   | "experiment"
-  | "sources";
+  | "sources"
+  | "agentic-eval-apply";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
   "thesis",
@@ -39,6 +40,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "weng",
   "experiment",
   "sources",
+  "agentic-eval-apply",
 ];
 
 export type RetainedConcept = {

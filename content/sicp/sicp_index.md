@@ -5,7 +5,7 @@ Interpretation of Computer Programs*, second edition, Unofficial Texinfo Format
 `2.andresraba5.6`, registered as `SICP-2E-UF` in the
 [source registry](sources/source_registry.tsv). The exact PDF, license,
 manifest, and capture metadata live under
-[`evidence/sicp/`](../../../evidence/sicp/).
+[`evidence/sicp/`](../../evidence/sicp/).
 
 ## Start the course
 
@@ -35,16 +35,19 @@ sequential course for dependencies the shorter path omits.
   then use the [eval/apply companion](eval-apply-reader-companion.md) or the
   [metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md).
 - **Trace an evaluator down to a machine.** Follow the [runtime and compiler mechanisms](course/sicp_course_guide.md#runtime-and-compiler-mechanisms) route
-  before using the [runnable Rust evaluator lab](../../../labs/sicp-evaluator/).
+  before using the [runnable Rust evaluator lab](../../labs/sicp-evaluator/).
 - **Transfer the material into an agent harness.** Follow the [agent-harness design](course/sicp_course_guide.md#agent-harness-design) route, complete the
-  [capstone dossier](course/capstone/agent_harness_architecture_dossier.md), and
-  treat the linked Pi, Hermes, and Codex profiles as separate implementation
-  overlays rather than evidence about the SICP source.
+  optional [agentic eval/apply MTS synthesis](agentic_eval_apply.md) as the
+  bridge from Seminar 9 to effectful runtime semantics, then complete the
+  [capstone dossier](course/capstone/agent_harness_architecture_dossier.md).
+  The synthesis supplements rather than replaces either; treat the linked Pi,
+  Hermes, and Codex profiles as separate implementation overlays rather than
+  evidence about the SICP source.
 - **Check source authority and open gaps.** Start with the [domain orientation](domain_orientation.md),
   then use the [source
   registry](sources/source_registry.tsv), [evidence
   graph](sources/evidence_graph.tsv), [missing-evidence ledger](missing_evidence.md),
-  and [run receipt](run_receipt.md). The course currently has one fetched
+  and [capture provenance](../../evidence/sicp/PROVENANCE.md). The course currently has one fetched
   source; the linked harness material does not expand that source boundary.
 
 ## Categorized course map
@@ -89,10 +92,13 @@ prerequisite for a focused question.
 - [Capstone — agent-harness architecture dossier](course/capstone/agent_harness_architecture_dossier.md)
   applies the course mechanisms to a coding-agent harness while keeping its
   authority, state, scheduling, and evidence boundaries explicit.
+- [Agentic eval/apply MTS synthesis](agentic_eval_apply.md) supplements
+  Seminar 9 with an effectful-runtime bridge to the capstone; it does not
+  replace either or establish source authority.
 - [Eval/apply compatibility pointer](eval-apply-reader-companion.md) and
   [metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md)
   provide the maintained evaluator supplements; the [runnable Rust evaluator
-  lab](../../../labs/sicp-evaluator/) is executable learning code, not source
+  lab](../../labs/sicp-evaluator/) is executable learning code, not source
   evidence.
 - [Pi harness deep dive](../pi_harness_deep_dive.md), [Hermes harness deep
   dive](../hermes_harness_deep_dive.md), and [Codex harness deep
@@ -101,7 +107,7 @@ prerequisite for a focused question.
 - [domain orientation](domain_orientation.md), [source
   registry](sources/source_registry.tsv), [evidence
   graph](sources/evidence_graph.tsv), [missing-evidence ledger](missing_evidence.md),
-  and [run receipt](run_receipt.md) hold the packet's source, gap, and
+  and [capture provenance](../../evidence/sicp/PROVENANCE.md) hold the packet's source, gap, and
   provenance records.
 
 ## Resume the dialogue
@@ -114,13 +120,16 @@ understanding.
 
 ## Quick links
 
+- [Agentic eval/apply MTS synthesis](agentic_eval_apply.md) — optional
+  Seminar 9-to-capstone supplement for effectful runtime semantics; not source
+  authority
 - [Eval/apply compatibility pointer](eval-apply-reader-companion.md)
 - [Metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md)
-- [Runnable Rust evaluator lab](../../../labs/sicp-evaluator/)
+- [Runnable Rust evaluator lab](../../labs/sicp-evaluator/)
 - [Pi harness deep dive](../pi_harness_deep_dive.md)
 - [Hermes harness deep dive](../hermes_harness_deep_dive.md)
 - [Codex harness deep dive](../codex_harness_deep_dive.md)
 - [Source registry](sources/source_registry.tsv)
 - [Evidence graph](sources/evidence_graph.tsv)
 - [Missing-evidence ledger](missing_evidence.md)
-- [Run receipt](run_receipt.md)
+- [Capture provenance](../../evidence/sicp/PROVENANCE.md)

@@ -29,7 +29,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 7] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 8] = [
     (
         "thesis",
         "Thesis",
@@ -61,8 +61,35 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 7] = [
         "content/evaluator_integrity_and_promotion.md",
     ),
     ("sources", "Sources", "content/source_registry.md"),
+    (
+        "agentic-eval-apply",
+        "Agentic eval/apply",
+        "content/sicp/agentic_eval_apply.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 3] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 10] = [
+    ("agentic-eval-apply", "content/sicp/agentic_eval_apply.md"),
+    (
+        "sicp-seminar-09-eval-apply",
+        "content/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+    ),
+    (
+        "sicp-evaluator-deep-dive",
+        "content/sicp/metacircular_evaluator_deep_dive.md",
+    ),
+    ("pi-harness-deep-dive", "content/pi_harness_deep_dive.md"),
+    (
+        "hermes-harness-deep-dive",
+        "content/hermes_harness_deep_dive.md",
+    ),
+    (
+        "codex-harness-deep-dive",
+        "content/codex_harness_deep_dive.md",
+    ),
+    (
+        "agent-harness-architecture-dossier",
+        "content/sicp/course/capstone/agent_harness_architecture_dossier.md",
+    ),
     (
         "codex-state-continuity",
         "content/codex_state_continuity_and_compaction.md",

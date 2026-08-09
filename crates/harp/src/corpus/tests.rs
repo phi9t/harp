@@ -2,7 +2,9 @@ use std::fs;
 
 use tempfile::TempDir;
 
-use super::contracts::{normalize_link_path, parse_coverage_row, validate_evidence_graph};
+use super::contracts::{
+    normalize_link_path, parse_coverage_row, validate_evidence_graph, validate_local_links,
+};
 use super::render::{offline_link_destination, render_markdown};
 use super::rules::PrimaryClassification;
 use super::*;
@@ -50,6 +52,7 @@ fn write_complete_fixture(repo: &Path) {
     }
     for (_, _, path) in READER_ROUTES {
         if !repo.join(path).exists() {
+            fs::create_dir_all(repo.join(path).parent().unwrap()).unwrap();
             fs::write(
                 repo.join(path),
                 "# Route document\n\n## Canonical route content\n\nRoute text.\n",
@@ -769,6 +772,12 @@ fn auxiliary_technical_documents_are_compiled_and_routable() {
         "# Context engineering\n\n## Mechanism\n\nContext.\n",
     )
     .unwrap();
+    fs::create_dir_all(repo.path().join("content/sicp")).unwrap();
+    fs::write(
+        repo.path().join("content/sicp/agentic_eval_apply.md"),
+        "# Agentic eval/apply\n\n## Mechanism\n\nEvaluate before applying.\n",
+    )
+    .unwrap();
     let harness = repo.path().join("content/chapters/harness-engineering.md");
     let mut markdown = fs::read_to_string(&harness).unwrap();
     markdown.push_str("\n[Codex continuity](../codex_state_continuity_and_compaction.md)\n");
@@ -785,6 +794,11 @@ fn auxiliary_technical_documents_are_compiled_and_routable() {
         .iter()
         .find(|document| document.concept_id == "context-engineering-deep-dive")
         .unwrap();
+    let agentic_eval_apply_document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "agentic-eval-apply")
+        .unwrap();
     let harness = corpus
         .documents
         .iter()
@@ -799,9 +813,45 @@ fn auxiliary_technical_documents_are_compiled_and_routable() {
         context_document.canonical_markdown_path,
         "content/context_engineering_deep_dive.md"
     );
+    assert_eq!(
+        agentic_eval_apply_document.canonical_markdown_path,
+        "content/sicp/agentic_eval_apply.md"
+    );
     assert!(harness
         .html
         .contains("href=\"#documents/codex-state-continuity\""));
+}
+
+#[test]
+fn agentic_eval_apply_is_discoverable_and_links_to_registered_documents() {
+    let corpus = compile(workspace_root()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "agentic-eval-apply"
+            && route.label == "Agentic eval/apply"
+            && route.canonical_markdown_path == "content/sicp/agentic_eval_apply.md"
+    }));
+
+    let essay = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "agentic-eval-apply")
+        .unwrap();
+    for target in [
+        "sicp-seminar-09-eval-apply",
+        "sicp-evaluator-deep-dive",
+        "pi-harness-deep-dive",
+        "hermes-harness-deep-dive",
+        "codex-harness-deep-dive",
+        "agent-harness-architecture-dossier",
+    ] {
+        assert!(
+            essay
+                .html
+                .contains(&format!("href=\"#documents/{target}\"")),
+            "agentic eval/apply is missing the offline route for {target}"
+        );
+    }
 }
 
 #[test]
@@ -934,7 +984,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "harnesses",
             "weng",
             "experiment",
-            "sources"
+            "sources",
+            "agentic-eval-apply"
         ]
     );
     for route in &corpus.reader_routes {
@@ -1027,7 +1078,7 @@ fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
 }
 
 #[test]
-fn rewrites_offline_links_to_chapter_routes_and_repository_files() {
+fn rewrites_offline_links_to_chapter_routes_and_static_export_repository_files() {
     let coverage = vec![CoverageEntry {
         concept_id: "target".into(),
         coverage_depth: CoverageDepth::Chapter,
@@ -1042,11 +1093,27 @@ fn rewrites_offline_links_to_chapter_routes_and_repository_files() {
     );
     assert_eq!(
         offline_link_destination(
-            "../pi_harness_deep_dive.md",
-            Path::new("content/chapters"),
+            "../../../../evidence/sicp/sicp.pdf#page=12",
+            Path::new("content/sicp/course/capstone"),
             &coverage,
         ),
-        "../../../../../content/pi_harness_deep_dive.md"
+        "../../evidence/sicp/sicp.pdf#page=12"
+    );
+    assert_eq!(
+        offline_link_destination(
+            "../../../../labs/sicp-evaluator/",
+            Path::new("content/sicp/course/capstone"),
+            &coverage,
+        ),
+        "../../labs/sicp-evaluator"
+    );
+    assert_eq!(
+        offline_link_destination(
+            "../../../../crates/harp/src/sources.rs",
+            Path::new("content/sicp/course/capstone"),
+            &coverage,
+        ),
+        "../../crates/harp/src/sources.rs"
     );
 }
 
@@ -1095,6 +1162,13 @@ fn resolves_parent_links_without_allowing_repository_escape() {
     );
     assert_eq!(
         normalize_link_path(
+            Path::new("content"),
+            Path::new("../../evidence/sicp/sicp.pdf")
+        ),
+        None
+    );
+    assert_eq!(
+        normalize_link_path(
             Path::new("content/systems"),
             Path::new("../../knowledge/meta_harness/meta_harness_deep_dive.md"),
         ),
@@ -1102,6 +1176,26 @@ fn resolves_parent_links_without_allowing_repository_escape() {
             "knowledge/meta_harness/meta_harness_deep_dive.md"
         ))
     );
+}
+
+#[test]
+fn validates_local_links_in_product_roots() {
+    let repo = fixture();
+    let evidence = repo.path().join("evidence/sicp/sicp.pdf");
+    fs::create_dir_all(evidence.parent().unwrap()).unwrap();
+    fs::write(evidence, b"captured source").unwrap();
+    fs::create_dir_all(repo.path().join("labs/sicp-evaluator")).unwrap();
+    let source = repo.path().join("crates/harp/src/sources.rs");
+    fs::create_dir_all(source.parent().unwrap()).unwrap();
+    fs::write(source, b"// materializer\n").unwrap();
+    let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
+
+    validate_local_links(
+        "content/sicp/course/capstone/guide.md",
+        "[source](../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../labs/sicp-evaluator/)\n[materializer](../../../../crates/harp/src/sources.rs)\n",
+        &repository,
+    )
+    .unwrap();
 }
 
 #[test]

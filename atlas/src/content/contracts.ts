@@ -602,7 +602,7 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
     || new Set(readerRoutes.map((route) => route.route_id)).size
       !== readerRouteIds.length
   ) {
-    throw new Error("Canonical RSI corpus must contain seven reader routes");
+    throw new Error("Canonical RSI corpus must contain every reader route");
   }
   for (const routeId of readerRouteIds) {
     const route = readerRoutes.find((candidate) => candidate.route_id === routeId);

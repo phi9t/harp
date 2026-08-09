@@ -1377,15 +1377,12 @@ pub(super) fn validate_local_links(
         } else {
             normalize_link_path(parent, Path::new(without_fragment))
         };
-        let exists = resolved.as_ref().is_some_and(|resolved| {
-            repository
-                .read_optional_regular_file_bounded(
-                    resolved,
-                    "canonical RSI local link",
-                    MAX_MARKDOWN_BYTES,
-                )
-                .is_ok_and(|value| value.is_some())
-        });
+        let exists = match resolved.as_ref() {
+            Some(resolved) => {
+                repository.regular_file_or_directory_exists(resolved, "canonical RSI local link")?
+            }
+            None => false,
+        };
         if !exists {
             return Err(invalid(
                 "knowledge.rsi.local_link",
@@ -1406,5 +1403,10 @@ pub(super) fn normalize_link_path(base: &Path, destination: &Path) -> Option<Pat
             _ => return None,
         }
     }
-    (resolved.starts_with("content") || resolved.starts_with("knowledge")).then_some(resolved)
+    (resolved.starts_with("content")
+        || resolved.starts_with("knowledge")
+        || resolved.starts_with("evidence")
+        || resolved.starts_with("labs")
+        || resolved.starts_with("crates"))
+    .then_some(resolved)
 }
