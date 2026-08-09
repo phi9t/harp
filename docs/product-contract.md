@@ -45,8 +45,8 @@ The required parity contract is:
 - 29 diagnostic rules;
 - 12 diagnostic cases;
 - six lessons;
-- 63 source-registry rows; and
-- 71 evidence edges.
+- 64 source-registry rows; and
+- 72 evidence edges.
 
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not

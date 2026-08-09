@@ -45,6 +45,7 @@ EVIDENCE	WENG-HARNESS	body-links	ANTHROPIC-RSI	Introduction / AI progress link	v
 EVIDENCE	DGM	extends	GODEL-MACHINE	Abstract and §§1-3	verified	DGM substitutes empirical benchmark selection for proof-certified rewrite
 EVIDENCE	DGM	requires	QD-2016	§§1-3 and bibliography	verified	Archive diversity foundation
 EVIDENCE	DGM	compares-with	FUNSEARCH	Related work and bibliography	verified	Program-evolution predecessor, not the same editable object
+EVIDENCE	DGM-REPO	implements	DGM	DGM_outer.py, self_improve_step.py, coding_agent.py, and benchmark harnesses at git:a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2	verified-current-source	Present-day released implementation only; does not prove historical experiment identity or reproduce reported results
 EVIDENCE	ALPHAEVOLVE	extends	FUNSEARCH	Abstract, prior automated discovery methods	verified	AlphaEvolve broadens code and evaluator applications
 EVIDENCE	WENG-REWARD	extends	CONCRETE-SAFETY	Let's Define Reward Hacking	verified	Secondary synthesis follows primary safety taxonomy
 EVIDENCE	META-HARNESS	extends	ACE	Abstract and anchor synthesis	inferred	Conceptual progression from context artifact to context-management code
