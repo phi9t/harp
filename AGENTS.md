@@ -5,8 +5,10 @@ documentation dependencies on another local checkout.
 
 ## Canonical ownership
 
-- `content/` and the registered topic packet under `knowledge/meta_harness/`
-  are the only authorities for technical prose.
+- Managed Markdown under `knowledge/rsi/` and registered topic packets under
+  `knowledge/` are the only authorities for technical prose. `content/` is
+  reserved for structured machine-readable contracts and diagnostics; do not
+  add Markdown beneath it.
 - `atlas/src/content/generated/corpus.json` and
   `atlas/dist/harp-atlas.html` are derived and must be regenerated together
   with their canonical inputs.

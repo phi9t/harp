@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, curriculum, exercises, system-design]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # DGM learning path
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## How to use this path
 
@@ -385,7 +385,7 @@ Read:
 
 1. [successor design](10_successor_design.md); and
 2. canonical
-   [evaluation, promotion, and containment](../../content/chapters/evaluation-promotion-containment.md).
+   [evaluation, promotion, and containment](../rsi/chapters/evaluation-promotion-containment.md).
 
 ### Exercise 11 — parent versus child
 

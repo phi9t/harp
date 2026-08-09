@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 
 use pulldown_cmark::{BrokenLink, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
-const EXPECTED_FILES: [&str; 16] = [
+const EXPECTED_FILES: [&str; 17] = [
     "01_orientation.md",
     "02_paper_walkthrough.md",
     "03_algorithm_derivation.md",
@@ -16,6 +16,7 @@ const EXPECTED_FILES: [&str; 16] = [
     "08_safety_and_failure.md",
     "09_critical_review.md",
     "10_successor_design.md",
+    "11_hyperagents_successor.md",
     "claim_evidence_crosswalk.md",
     "darwin_godel_machine_index.md",
     "glossary.md",
@@ -48,17 +49,17 @@ const ALLOWED_TYPES: [&str; 8] = [
 ];
 
 const AUTHORITY_NOTICE: &str = concat!(
-    "> This file is a learning projection. Canonical claims live under `content/`;\n",
-    "> primary-source captures and pinned implementation files live under\n",
-    "> `evidence/`."
+    "> This file is a maintained Harp technical packet. It separates Harp's\n",
+    "> synthesis from primary-source claims; primary-source captures and pinned\n",
+    "> implementation files live under `evidence/`."
 );
 
-const DGM_LEDGER_IDS: [&str; 37] = [
+const DGM_LEDGER_IDS: [&str; 40] = [
     "DGM-001", "DGM-005", "DGM-009", "DGM-013", "DGM-020", "DGM-022", "DGM-026", "DGM-029A",
     "DGM-029B", "DGM-029C", "DGM-034", "DGM-041", "DGM-042", "DGM-044", "DGM-049", "DGM-050",
     "DGM-056", "DGM-057", "DGM-058", "DGM-059", "DGM-060", "DGM-061", "DGM-062", "DGM-063",
     "DGM-064", "DGM-065", "DGM-066", "DGM-067", "DGM-068", "DGM-069", "DGM-070", "DGM-071",
-    "DGM-072", "DGM-073", "DGM-074", "DGM-075", "DGM-076",
+    "DGM-072", "DGM-073", "DGM-074", "DGM-075", "DGM-076", "DGM-077", "DGM-078", "DGM-079",
 ];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -1145,16 +1146,16 @@ fn link_validation_covers_supported_and_broken_forms() {
         "[anchor](#section)\n",
         "[external](https://example.com/path_(x))\n",
         "![image](../../evidence/implementations/dgm/LICENSE \"license\")\n",
-        "[local](../../content/systems/dgm.md#problem-and-rsi-relevance)\n",
+        "[local](../rsi/systems/dgm.md#problem-and-rsi-relevance)\n",
         "[reference][dgm]\n\n",
-        "[dgm]: ../../content/systems/dgm.md \"DGM\"\n",
+        "[dgm]: ../rsi/systems/dgm.md \"DGM\"\n",
     );
     validate_local_links(&document, valid).expect("supported Markdown links");
 
     for invalid in [
-        "[broken](../../content/does-not-exist.md)",
+        "[broken](../rsi/does-not-exist.md)",
         "![broken](../../evidence/does-not-exist.png)",
-        "[unclosed](../../content/systems/dgm.md",
+        "[unclosed](../rsi/systems/dgm.md",
         "[undefined][missing]",
         "![undefined][missing-image]",
     ] {

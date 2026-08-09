@@ -3,8 +3,9 @@
 Harp is a standalone, local-first technical atlas for recursive
 self-improvement research. It combines:
 
-- canonical Markdown under `content/` and the dedicated
-  `knowledge/meta_harness/` topic packet;
+- managed RSI Markdown under `knowledge/rsi/` and registered topic packets
+  under `knowledge/darwin_godel_machine/`, `knowledge/meta_harness/`, and
+  `knowledge/harness_benchmarks/`;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
 - narrow public-source snapshots for Pi, Hermes Agent, Codex, ARC-AGI-3,
@@ -13,8 +14,9 @@ self-improvement research. It combines:
 - a React 19 Atlas with a checked-in offline single-file export; and
 - a local SQLite FTS5 index.
 
-Markdown under `content/` and `knowledge/meta_harness/` is the technical-prose
-authority. Generated JSON and HTML are derived artifacts.
+Managed Markdown under `knowledge/` is the technical-prose authority.
+`content/` contains structured contracts and diagnostics. Generated JSON and
+HTML are derived artifacts.
 
 ## Setup
 

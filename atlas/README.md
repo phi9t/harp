@@ -1,15 +1,16 @@
 # Harp Atlas
 
 Harp Atlas is the Weng-first technical reader for canonical chapters, concepts,
-system readings, and comparison lessons under `content/`. Interaction
+system readings, and comparison lessons under `knowledge/rsi/`. Interaction
 code supplies navigation, prediction/reveal state, deterministic diagnosis,
 and local exports. It does not contain a second technical explanation.
 
-[Return to the canonical RSI orientation packet](../content/rsi_index.md).
+[Return to the canonical RSI orientation packet](../knowledge/rsi/rsi_index.md).
 [Open the checked-in offline atlas](dist/harp-atlas.html).
 
-The app does not fetch source material at runtime. Markdown and
-`coverage-map.tsv` remain the content authority. `cargo run -p harp -- build`
+The app does not fetch source material at runtime. Markdown under
+`knowledge/rsi/` and `coverage-map.tsv` under `content/` remain the content
+authority. `cargo run -p harp -- build`
 validates those files and produces
 `src/content/generated/corpus.json` with rendered HTML and source digests.
 That JSON is derived build input, not a second prose source. The production

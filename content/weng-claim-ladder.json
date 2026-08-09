@@ -10,11 +10,11 @@
       "canonical_concept_links": [
         {
           "name": "Improvement types",
-          "route": "content/concepts/improvement-types.md"
+          "route": "knowledge/rsi/concepts/improvement-types.md"
         },
         {
           "name": "System state",
-          "route": "content/concepts/system-state-and-notation.md"
+          "route": "knowledge/rsi/concepts/system-state-and-notation.md"
         }
       ]
     },
@@ -23,15 +23,15 @@
       "required_evidence": "A named state artifact survives the episode boundary, is read later, and causally improves later behavior against a no-update control.",
       "positive_example": "ACE retains and reuses an evolving context playbook across tasks; its evidence remains author-reported and benchmark-bounded.",
       "common_overclaim": "Treating persistence alone as proof that the stored state is useful, that the harness improved, or that recursion occurred.",
-      "example_route": "content/systems/ace.md",
+      "example_route": "knowledge/rsi/systems/ace.md",
       "canonical_concept_links": [
         {
           "name": "Improvement types",
-          "route": "content/concepts/improvement-types.md"
+          "route": "knowledge/rsi/concepts/improvement-types.md"
         },
         {
           "name": "Procedure representations",
-          "route": "content/concepts/procedure-representations.md"
+          "route": "knowledge/rsi/concepts/procedure-representations.md"
         }
       ]
     },
@@ -40,15 +40,15 @@
       "required_evidence": "Executable harness policy changes and beats the prior harness with model, evaluator, permissions, and root-tree budget held fixed, including added cost.",
       "positive_example": "Self-Harness reports held-in and held-out promotion of model-specific harness edits while keeping the task model fixed.",
       "common_overclaim": "Calling one accepted harness gain evidence that the accepted harness is better at producing its next harness.",
-      "example_route": "content/systems/self-harness.md",
+      "example_route": "knowledge/rsi/systems/self-harness.md",
       "canonical_concept_links": [
         {
           "name": "Harness components",
-          "route": "content/concepts/harness-components.md"
+          "route": "knowledge/rsi/concepts/harness-components.md"
         },
         {
           "name": "Evaluation and control",
-          "route": "content/concepts/evaluation-and-control.md"
+          "route": "knowledge/rsi/concepts/evaluation-and-control.md"
         }
       ]
     },
@@ -57,15 +57,15 @@
       "required_evidence": "After an accepted Cₜ → Cₜ₊₁ transition, estimate the proposal-quality functional Q for parent and child under the same proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget. Require positive RGₜ = Q(Cₜ₊₁) − Q(Cₜ), not one lucky stronger grandchild.",
       "positive_example": "No Harp source card qualifies at this level. A qualifying experiment would produce a positive matched estimate of RGₜ under the complete fixed proposal protocol, task distribution, model access, evaluator, selection rule, permissions, and root-tree budget contract.",
       "common_overclaim": "Using self-edit access, a branching lineage, or a better child task score as a substitute for measured later improvement production.",
-      "example_route": "content/chapters/recursive-improvement-loop.md#state-transition-and-recursion-test",
+      "example_route": "knowledge/rsi/chapters/recursive-improvement-loop.md#state-transition-and-recursion-test",
       "canonical_concept_links": [
         {
           "name": "System state",
-          "route": "content/concepts/system-state-and-notation.md"
+          "route": "knowledge/rsi/concepts/system-state-and-notation.md"
         },
         {
           "name": "Improvement types",
-          "route": "content/concepts/improvement-types.md"
+          "route": "knowledge/rsi/concepts/improvement-types.md"
         }
       ]
     },
@@ -74,15 +74,15 @@
       "required_evidence": "The matched successor-production gain repeats across accepted generations, fresh tasks or evaluators, and independent lineages with full cost, failure, and integrity accounting.",
       "positive_example": "No Harp source card qualifies at this level. A positive example would reproduce positive recursive gain across multiple protected successor generations.",
       "common_overclaim": "Generalizing from one lineage, one benchmark, one immediate gain, or a fixed-model scaffolding result to demonstrated RSI.",
-      "example_route": "content/chapters/recursive-improvement-loop.md#what-would-weaken-the-mechanism",
+      "example_route": "knowledge/rsi/chapters/recursive-improvement-loop.md#what-would-weaken-the-mechanism",
       "canonical_concept_links": [
         {
           "name": "Improvement types",
-          "route": "content/concepts/improvement-types.md"
+          "route": "knowledge/rsi/concepts/improvement-types.md"
         },
         {
           "name": "Evaluation and control",
-          "route": "content/concepts/evaluation-and-control.md"
+          "route": "knowledge/rsi/concepts/evaluation-and-control.md"
         }
       ]
     }

@@ -81,12 +81,12 @@ fn build_rejects_outputs_outside_the_generated_directory() {
 #[test]
 fn search_status_rejects_a_missing_index() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("content")).expect("content");
+    fs::create_dir_all(repo.path().join("knowledge/rsi")).expect("RSI knowledge");
     fs::write(
-        repo.path().join("content/intro.md"),
+        repo.path().join("knowledge/rsi/intro.md"),
         "# Recursive improvement\n\nA bounded improvement loop.\n",
     )
-    .expect("content file");
+    .expect("RSI document");
 
     harp()
         .current_dir(repo.path())
@@ -99,14 +99,22 @@ fn search_status_rejects_a_missing_index() {
 #[test]
 fn search_refresh_status_and_query_share_a_digest_receipt() {
     let repo = TempDir::new().expect("temp repository");
-    fs::create_dir_all(repo.path().join("content")).expect("content");
+    fs::create_dir_all(repo.path().join("knowledge/rsi")).expect("RSI knowledge");
+    fs::create_dir_all(repo.path().join("knowledge/darwin_godel_machine")).expect("DGM packet");
     fs::create_dir_all(repo.path().join("knowledge/meta_harness")).expect("knowledge");
+    fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
+    fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
-        repo.path().join("content/intro.md"),
+        repo.path().join("knowledge/rsi/intro.md"),
         "# Recursive improvement\n\nA bounded recursive improvement loop.\n",
     )
-    .expect("content file");
+    .expect("RSI document");
+    fs::write(
+        repo.path().join("knowledge/private/draft.md"),
+        "# Private draft\n\nThis must not enter the search index.\n",
+    )
+    .expect("loose document");
     fs::write(
         repo.path()
             .join("knowledge/meta_harness/meta_harness_deep_dive.md"),
@@ -143,7 +151,16 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ])
         .assert()
         .success()
-        .stdout(predicate::str::contains("\"path\":\"content/intro.md\""));
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/rsi/intro.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
+        .args(["--format", "json", "search", "query", "\"private draft\""])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("\"data\":[]"))
+        .stdout(predicate::str::contains("knowledge/private/draft.md").not());
     harp()
         .current_dir(repo.path())
         .args([
@@ -160,10 +177,10 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ));
 
     fs::write(
-        repo.path().join("content/intro.md"),
+        repo.path().join("knowledge/rsi/intro.md"),
         "# Recursive improvement\n\nThe corpus changed.\n",
     )
-    .expect("mutated content");
+    .expect("mutated RSI document");
     harp()
         .current_dir(repo.path())
         .args(["search", "status"])

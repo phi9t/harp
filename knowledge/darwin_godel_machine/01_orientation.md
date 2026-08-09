@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, orientation, recursive-self-improvement]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # DGM orientation
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Learning outcomes
 
@@ -53,7 +53,7 @@ The central loop is:
 7. allow retained children to become future parents.
 
 Paper basis: DGM §§1-3. Canonical synthesis:
-[DGM system article](../../content/systems/dgm.md).
+[DGM system article](../rsi/systems/dgm.md).
 
 ## Gödel Machine versus Darwin Gödel Machine
 

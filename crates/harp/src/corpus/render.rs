@@ -45,7 +45,7 @@ fn auxiliary_document_id(path: &str) -> String {
         .file_stem()
         .and_then(|stem| stem.to_str())
         .and_then(|stem| {
-            if path.starts_with("content/systems/") {
+            if path.starts_with("knowledge/rsi/systems/") {
                 return Some(stem.to_owned());
             }
             stem.split_once('-')

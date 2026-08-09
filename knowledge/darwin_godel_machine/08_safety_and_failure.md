@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, safety, containment, objective-hacking]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # DGM safety and failure analysis
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Learning outcomes
 
@@ -191,7 +191,7 @@ The evaluator and promotion authority must therefore remain outside candidate
 write control.
 
 Canonical context:
-[evaluation and control](../../content/concepts/evaluation-and-control.md).
+[evaluation and control](../rsi/concepts/evaluation-and-control.md).
 
 ## Objective-hacking case study
 

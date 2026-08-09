@@ -17,7 +17,7 @@ MATRIX = ROOT / "content/weng-source-cards.tsv"
 COMPARISON_MATRIX = ROOT / "content/weng-comparison-matrix.tsv"
 CLAIM_LADDER = ROOT / "content/weng-claim-ladder.json"
 STATUS = ROOT / "content/weng-course-status.json"
-CARD_ROOT = ROOT / "content/weng-sources"
+CARD_ROOT = ROOT / "knowledge/rsi/weng-sources"
 REFERENCE_ROOT = ROOT / "reference"
 EVIDENCE_GRAPH = ROOT / "content/sources/evidence_graph.tsv"
 SOURCE_REGISTRY = ROOT / "content/sources/source_registry.tsv"
@@ -58,63 +58,63 @@ SECTION_META = (
         "system-being-improved",
         "What system is being improved?",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#case-study-coding-agent-harness",
-        "../content/weng/01-system-being-improved.md",
+        "../knowledge/rsi/weng/01-system-being-improved.md",
         "../lessons/0001-system-being-improved.html",
     ),
     (
         "harness-design-patterns",
         "Harness design patterns",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#harness-design-patterns",
-        "../content/weng/02-harness-design-patterns.md",
+        "../knowledge/rsi/weng/02-harness-design-patterns.md",
         "../lessons/0002-harness-design-patterns.html",
     ),
     (
         "harness-layer-vs-core-intelligence",
         "Harness layer versus core intelligence",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#harness-layer-vs-core-intelligence",
-        "../content/weng/03-harness-layer-vs-core-intelligence.md",
+        "../knowledge/rsi/weng/03-harness-layer-vs-core-intelligence.md",
         "../lessons/0003-harness-vs-core-intelligence.html",
     ),
     (
         "context-engineering",
         "Context engineering",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#context-engineering",
-        "../content/weng/04-context-engineering.md",
+        "../knowledge/rsi/weng/04-context-engineering.md",
         "../lessons/0004-context-engineering.html",
     ),
     (
         "workflow-design-and-search",
         "Workflow design and search",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#workflow-design",
-        "../content/weng/05-workflow-design-and-search.md",
+        "../knowledge/rsi/weng/05-workflow-design-and-search.md",
         "../lessons/0005-workflow-design-and-auto-research.html",
     ),
     (
         "self-improving-harnesses",
         "Self-improving harnesses",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#self-improving-harness",
-        "../content/weng/06-self-improving-harnesses.md",
+        "../knowledge/rsi/weng/06-self-improving-harnesses.md",
         "../lessons/0006-self-improving-harnesses.html",
     ),
     (
         "evolutionary-search",
         "Evolutionary search",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#evolutionary-search",
-        "../content/weng/07-evolutionary-search.md",
+        "../knowledge/rsi/weng/07-evolutionary-search.md",
         "../lessons/0007-evolutionary-search.html",
     ),
     (
         "joint-harness-weight-optimization",
         "Joint harness and weight optimization",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#joint-optimization-with-model-weights",
-        "../content/weng/08-joint-harness-weight-optimization.md",
+        "../knowledge/rsi/weng/08-joint-harness-weight-optimization.md",
         "../lessons/0008-joint-harness-weight-optimization.html",
     ),
     (
         "future-challenges",
         "Future challenges",
         "https://lilianweng.github.io/posts/2026-07-04-harness/#future-challenges",
-        "../content/weng/09-future-challenges.md",
+        "../knowledge/rsi/weng/09-future-challenges.md",
         "../lessons/0009-future-challenges-and-evaluation.html",
     ),
 )
@@ -696,7 +696,7 @@ def load_cards() -> list[Card]:
         if metadata["canonical_route"] == metadata["card_path"]:
             raise ValueError(f"canonical route must differ from card path for {card_path}")
         _existing_file_beneath(
-            metadata["canonical_route"], ROOT / "content", "canonical_route"
+            metadata["canonical_route"], ROOT / "knowledge/rsi", "canonical_route"
         )
         registry_row = registry.get(row["source_id"])
         if registry_row is None:
@@ -804,7 +804,7 @@ def render_source_cards(cards: list[Card]) -> str:
         "<body><main><h1>Weng Source Cards</h1>"
         '<p class="reference-panel">Generated from the canonical inputs '
         '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
-        '<code>content/weng-sources/</code>, and the '
+        '<code>knowledge/rsi/weng-sources/</code>, and the '
         '<a href="../content/sources/source_registry.tsv">source registry</a>. '
         "This HTML is a derived, non-authoritative teaching projection.</p>"
         '<form aria-label="Filter source cards">'
@@ -839,7 +839,7 @@ def render_harness_map(cards: list[Card]) -> str:
         "<body><main><h1>Weng Harness Map</h1>"
         '<p class="reference-panel">Generated from '
         '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
-        '<code>content/weng-sources/</code>, and the '
+        '<code>knowledge/rsi/weng-sources/</code>, and the '
         '<a href="../content/sources/source_registry.tsv">source registry</a>. '
         "This map is a derived, non-authoritative teaching projection.</p>"
         "<p><strong>Optimization ladder:</strong> prompts -&gt; structured context "
@@ -934,7 +934,7 @@ def render_comparison_matrix(
         '<a href="../content/weng-comparison-matrix.tsv">'
         "content/weng-comparison-matrix.tsv</a>, "
         '<a href="../content/weng-source-cards.tsv">content/weng-source-cards.tsv</a>, '
-        '<code>content/weng-sources/</code>, and the '
+        '<code>knowledge/rsi/weng-sources/</code>, and the '
         '<a href="../content/sources/source_registry.tsv">source registry</a>. '
         "This comparison is a derived, non-authoritative teaching projection; "
         "its evidence classes and claim ceilings bound rather than extend the "
@@ -1263,15 +1263,15 @@ def run_self_tests() -> None:
                 "required_evidence": f"Required evidence for {name}.",
                 "positive_example": f"Positive example for {name}.",
                 "common_overclaim": f"Common overclaim for {name}.",
-                "example_route": "content/concepts/improvement-types.md",
+                "example_route": "knowledge/rsi/concepts/improvement-types.md",
                 "canonical_concept_links": [
                     {
                         "name": "Improvement types",
-                        "route": "content/concepts/improvement-types.md",
+                        "route": "knowledge/rsi/concepts/improvement-types.md",
                     },
                     {
                         "name": "System state",
-                        "route": "content/concepts/system-state-and-notation.md#notation",
+                        "route": "knowledge/rsi/concepts/system-state-and-notation.md#notation",
                     },
                 ],
             }
@@ -1299,7 +1299,7 @@ def run_self_tests() -> None:
             {"example_route": "../outside.md"}
         ),
         lambda value: value["levels"][0].update(
-            {"example_route": "content/concepts/improvement-types.md?view=unsafe"}
+            {"example_route": "knowledge/rsi/concepts/improvement-types.md?view=unsafe"}
         ),
         lambda value: value["levels"][0]["canonical_concept_links"].append(
             dict(value["levels"][0]["canonical_concept_links"][0])
@@ -1380,8 +1380,8 @@ def run_self_tests() -> None:
             "edited_object_family: harness",
             "claim_ceiling: Test claim",
             "lesson_ids: 0001,0010",
-            "card_path: content/weng-sources/test.md",
-            "canonical_route: content/test.md",
+            "card_path: knowledge/rsi/weng-sources/test.md",
+            "canonical_route: knowledge/rsi/test.md",
             "---",
             "",
         )

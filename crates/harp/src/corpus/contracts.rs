@@ -100,7 +100,26 @@ pub(super) struct ValidatedCanonicalSource {
     pub(super) entries: Vec<CoverageEntry>,
 }
 
+fn validate_no_content_markdown(repository: &HeldDirectory) -> Result<(), AppError> {
+    let markdown = repository.regular_files_with_extension(
+        Path::new(CONTENT_ROOT),
+        "md",
+        "structured RSI content",
+    )?;
+    if let Some(path) = markdown.first() {
+        return Err(invalid(
+            "knowledge.rsi.content_markdown",
+            format!(
+                "technical Markdown must live under knowledge/, not {}",
+                path.display()
+            ),
+        ));
+    }
+    Ok(())
+}
+
 pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, AppError> {
+    validate_no_content_markdown(repository)?;
     let retained_concepts = load_retained_concepts(repository)?;
     let coverage = load_coverage(repository)?;
     validate_coverage(&coverage, &retained_concepts)?;
@@ -258,7 +277,7 @@ fn load_system_registry(
         let path = Path::new(&system.canonical_markdown_path);
         if !system
             .canonical_markdown_path
-            .starts_with("content/systems/")
+            .starts_with("knowledge/rsi/systems/")
             || !system.canonical_markdown_path.ends_with(".md")
             || path
                 .components()
@@ -479,7 +498,7 @@ fn load_weng_map(
             ));
         }
         let companion = Path::new(&section.companion_path);
-        if !section.companion_path.starts_with("content/weng/")
+        if !section.companion_path.starts_with("knowledge/rsi/weng/")
             || !section.companion_path.ends_with(".md")
             || companion
                 .components()
@@ -1112,8 +1131,8 @@ pub(super) fn parse_coverage_row(
         }
     };
     let section_id = optional_cell(cells[3]);
-    let is_concept_path = cells[2].starts_with("content/concepts/");
-    let is_system_path = cells[2].starts_with("content/systems/");
+    let is_concept_path = cells[2].starts_with("knowledge/rsi/concepts/");
+    let is_system_path = cells[2].starts_with("knowledge/rsi/systems/");
     let valid_section = match coverage_depth {
         CoverageDepth::Chapter => section_id.is_none(),
         CoverageDepth::SupportingPage => section_id.is_some() && is_concept_path,
@@ -1140,9 +1159,9 @@ pub(super) fn parse_coverage_row(
 
 fn normalize_canonical_path(value: &str, line_number: usize) -> Result<String, AppError> {
     let path = Path::new(value);
-    let allowed_root = value.starts_with("content/chapters/")
-        || value.starts_with("content/concepts/")
-        || value.starts_with("content/systems/");
+    let allowed_root = value.starts_with("knowledge/rsi/chapters/")
+        || value.starts_with("knowledge/rsi/concepts/")
+        || value.starts_with("knowledge/rsi/systems/");
     let canonical = !value.contains('\\')
         && value.ends_with(".md")
         && path

@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, self-improvement, open-ended-search, coding-agents]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # Darwin Gödel Machine
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 This packet teaches the Darwin Gödel Machine as an engineered system. It
 reconstructs the ICLR 2026 paper, follows the pinned implementation, separates
@@ -187,7 +187,8 @@ Use this route for a design review or architecture assessment:
 2. [Repository walkthrough](05_repository_walkthrough.md)
 3. [Evaluation analysis](06_evaluation_analysis.md)
 4. [Critical review](09_critical_review.md)
-5. [Successor design](10_successor_design.md)
+5. [Hyperagents successor case study](11_hyperagents_successor.md)
+6. [Successor design](10_successor_design.md)
 
 Expected reading time: 90 to 150 minutes.
 
@@ -204,8 +205,9 @@ Use this route to learn the mechanism from first principles:
 7. [Evaluation analysis](06_evaluation_analysis.md)
 8. [Safety and failure](08_safety_and_failure.md)
 9. [Critical review](09_critical_review.md)
-10. [Successor design](10_successor_design.md)
-11. [Learning path](learning_path.md)
+10. [Hyperagents successor case study](11_hyperagents_successor.md)
+11. [Successor design](10_successor_design.md)
+12. [Learning path](learning_path.md)
 
 Expected reading time: 4 to 7 hours, including exercises.
 
@@ -219,6 +221,7 @@ Expected reading time: 4 to 7 hours, including exercises.
 | How does the released code implement the paper? | [Repository walkthrough](05_repository_walkthrough.md) | [System architecture](04_system_architecture.md) |
 | What do the benchmark numbers include? | [Evaluation analysis](06_evaluation_analysis.md) | [Claim crosswalk](claim_evidence_crosswalk.md) |
 | Does DGM demonstrate recursive self-improvement? | [Critical review](09_critical_review.md) | [Successor design](10_successor_design.md) |
+| How does DGM-H change the editable object? | [Hyperagents successor case study](11_hyperagents_successor.md) | [Successor design](10_successor_design.md) |
 | What could go wrong? | [Safety and failure](08_safety_and_failure.md) | [Critical review](09_critical_review.md) |
 | How would I build a stronger experiment? | [Successor design](10_successor_design.md) | [Learning path](learning_path.md) |
 
@@ -259,6 +262,8 @@ Expected reading time: 4 to 7 hours, including exercises.
 
 ### Design and teaching
 
+- [Hyperagents successor case study](11_hyperagents_successor.md) separates DGM-H's
+  editable task-plus-meta-agent program from the still-protected outer loop.
 - [Successor design](10_successor_design.md) specifies a more rigorous DGM-like
   experiment.
 - [Learning path](learning_path.md) moves from explanation to experiment
@@ -271,7 +276,7 @@ Expected reading time: 4 to 7 hours, including exercises.
 The packet relies on three evidence classes:
 
 1. **Canonical Harp synthesis.** The main entry is
-   [the canonical DGM system article](../../content/systems/dgm.md).
+   [the canonical DGM system article](../rsi/systems/dgm.md).
 2. **Primary paper evidence.** The checked-in paper text is
    [the DGM capture](../../evidence/weng/text/dgm.txt), corresponding to
    arXiv `2505.22954v3`.
@@ -302,7 +307,7 @@ children under a matched protected envelope.
 - Repository snapshot:
   `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`.
 - Independent benchmark reproduction: not performed.
-- Packet authority: learning projection only.
+- Packet authority: maintained Harp technical packet.
 
 Use [maintenance](maintenance.md) before updating any result, implementation
 claim, or source identity.

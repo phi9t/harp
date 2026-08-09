@@ -25,7 +25,7 @@ fn fixture() -> TempDir {
         .prefix("rsi-")
         .tempdir_in(target)
         .unwrap();
-    let root = repo.path().join("content");
+    let root = repo.path().join("knowledge/rsi");
     fs::create_dir_all(root.join("chapters")).unwrap();
     fs::create_dir_all(root.join("concepts")).unwrap();
     fs::create_dir_all(repo.path().join("atlas/src/content/generated")).unwrap();
@@ -114,7 +114,7 @@ fn write_diagnostic_fixture(repo: &Path) {
         fs::create_dir_all(output.parent().unwrap()).unwrap();
         fs::copy(root.join(path), output).unwrap();
     }
-    let lesson_path = "content/lessons/01-self-refine.md";
+    let lesson_path = "knowledge/rsi/lessons/01-self-refine.md";
     let manifest = serde_json::json!({
         "schema_version": 1,
         "lessons": [{
@@ -207,7 +207,7 @@ fn write_complete_system_registry_fixture(repo: &Path) {
                 "source_ids": [source_id],
                 "treatment": "full",
                 "publication_state": "planned",
-                "canonical_markdown_path": format!("content/systems/{system_id}.md"),
+                "canonical_markdown_path": format!("knowledge/rsi/systems/{system_id}.md"),
                 "weng_section_ids": [section_id],
                 "paper_routes": [{
                     "source_id": source_id,
@@ -311,7 +311,7 @@ fn write_complete_weng_fixture(repo: &Path) {
         .iter()
         .enumerate()
         .map(|(index, (section_id, title))| {
-            let companion_path = format!("content/weng/{:02}-{section_id}.md", index + 1);
+            let companion_path = format!("knowledge/rsi/weng/{:02}-{section_id}.md", index + 1);
             let system_ids = system_rows
                 .iter()
                 .filter(|row| {
@@ -421,7 +421,7 @@ fn weng_map_compiles_each_guided_companion_exactly_once() {
         .filter(|document| {
             document
                 .canonical_markdown_path
-                .starts_with("content/weng/")
+                .starts_with("knowledge/rsi/weng/")
         })
         .collect::<Vec<_>>();
 
@@ -460,11 +460,14 @@ fn v5_payload_contains_ordered_weng_sections() {
 
 #[test]
 fn system_reading_coverage_requires_a_system_markdown_path_without_a_section() {
-    let row = "aflow\tsystem-reading\tcontent/systems/aflow.md\t\tharness-search";
+    let row = "aflow\tsystem-reading\tknowledge/rsi/systems/aflow.md\t\tharness-search";
     let entry = parse_coverage_row(2, row).unwrap();
 
     assert_eq!(entry.coverage_depth, CoverageDepth::SystemReading);
-    assert_eq!(entry.canonical_markdown_path, "content/systems/aflow.md");
+    assert_eq!(
+        entry.canonical_markdown_path,
+        "knowledge/rsi/systems/aflow.md"
+    );
     assert_eq!(entry.section_id, None);
 }
 
@@ -475,8 +478,8 @@ fn a_published_system_compiles_as_a_system_reading_document() {
     write_complete_system_registry_fixture(repo.path());
     write_complete_weng_fixture(repo.path());
 
-    let aflow_path = "content/systems/aflow.md";
-    fs::create_dir_all(repo.path().join("content/systems")).unwrap();
+    let aflow_path = "knowledge/rsi/systems/aflow.md";
+    fs::create_dir_all(repo.path().join("knowledge/rsi/systems")).unwrap();
     fs::write(
         repo.path().join(aflow_path),
         "# AFlow\n\n## Algorithm\n\nMCTS workflow search.\n\n<details>\n<summary>Original sources for this mechanism</summary>\n\n- Official paper.\n\n</details>\n\n## Evaluation\n\nAuthor-reported evaluation.\n\n## Claim ceiling\n\nNo independent RSI claim.\n",
@@ -763,22 +766,25 @@ fn auxiliary_technical_documents_are_compiled_and_routable() {
     write_complete_fixture(repo.path());
     fs::write(
         repo.path()
-            .join("content/codex_state_continuity_and_compaction.md"),
+            .join("knowledge/rsi/codex_state_continuity_and_compaction.md"),
         "# Codex continuity\n\n## Mechanism\n\nState.\n",
     )
     .unwrap();
     fs::write(
-        repo.path().join("content/context_engineering_deep_dive.md"),
+        repo.path()
+            .join("knowledge/rsi/context_engineering_deep_dive.md"),
         "# Context engineering\n\n## Mechanism\n\nContext.\n",
     )
     .unwrap();
-    fs::create_dir_all(repo.path().join("content/sicp")).unwrap();
+    fs::create_dir_all(repo.path().join("knowledge/rsi/sicp")).unwrap();
     fs::write(
-        repo.path().join("content/sicp/agentic_eval_apply.md"),
+        repo.path().join("knowledge/rsi/sicp/agentic_eval_apply.md"),
         "# Agentic eval/apply\n\n## Mechanism\n\nEvaluate before applying.\n",
     )
     .unwrap();
-    let harness = repo.path().join("content/chapters/harness-engineering.md");
+    let harness = repo
+        .path()
+        .join("knowledge/rsi/chapters/harness-engineering.md");
     let mut markdown = fs::read_to_string(&harness).unwrap();
     markdown.push_str("\n[Codex continuity](../codex_state_continuity_and_compaction.md)\n");
     fs::write(harness, markdown).unwrap();
@@ -807,15 +813,15 @@ fn auxiliary_technical_documents_are_compiled_and_routable() {
 
     assert_eq!(
         document.canonical_markdown_path,
-        "content/codex_state_continuity_and_compaction.md"
+        "knowledge/rsi/codex_state_continuity_and_compaction.md"
     );
     assert_eq!(
         context_document.canonical_markdown_path,
-        "content/context_engineering_deep_dive.md"
+        "knowledge/rsi/context_engineering_deep_dive.md"
     );
     assert_eq!(
         agentic_eval_apply_document.canonical_markdown_path,
-        "content/sicp/agentic_eval_apply.md"
+        "knowledge/rsi/sicp/agentic_eval_apply.md"
     );
     assert!(harness
         .html
@@ -829,7 +835,7 @@ fn agentic_eval_apply_is_discoverable_and_links_to_registered_documents() {
     assert!(corpus.reader_routes.iter().any(|route| {
         route.route_id == "agentic-eval-apply"
             && route.label == "Agentic eval/apply"
-            && route.canonical_markdown_path == "content/sicp/agentic_eval_apply.md"
+            && route.canonical_markdown_path == "knowledge/rsi/sicp/agentic_eval_apply.md"
     }));
 
     let essay = corpus
@@ -1149,6 +1155,34 @@ fn current_fixture_payload_is_byte_stable() {
 }
 
 #[test]
+fn rejects_markdown_beneath_the_structured_content_root() {
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+    fs::write(repo.path().join("content/forbidden.md"), "# Forbidden\n").unwrap();
+
+    let error = compile(repo.path()).unwrap_err();
+
+    assert_eq!(error.code(), "knowledge.rsi.content_markdown");
+    assert!(error.message.contains("content/forbidden.md"));
+}
+
+#[cfg(unix)]
+#[test]
+fn rejects_symlinks_while_scanning_the_structured_content_root() {
+    use std::os::unix::fs::symlink;
+
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+    let outside = tempfile::tempdir().unwrap();
+    fs::write(outside.path().join("forbidden.md"), "# Forbidden\n").unwrap();
+    symlink(outside.path(), repo.path().join("content/linked")).unwrap();
+
+    let error = compile(repo.path()).unwrap_err();
+
+    assert_eq!(error.code(), "fs.symlink");
+}
+
+#[test]
 fn rejects_a_retained_concept_omitted_from_the_coverage_map() {
     let repo = fixture();
     write_complete_fixture(repo.path());
@@ -1166,7 +1200,7 @@ fn rejects_a_retained_concept_omitted_from_the_coverage_map() {
 fn rejects_a_supporting_page_without_a_concept_section() {
     let error = parse_coverage_row(
             2,
-            "task-improvement	supporting-page	content/chapters/recursive-improvement-loop.md		recursive-improvement-loop",
+            "task-improvement	supporting-page	knowledge/rsi/chapters/recursive-improvement-loop.md		recursive-improvement-loop",
         )
         .unwrap_err();
 
@@ -1177,7 +1211,9 @@ fn rejects_a_supporting_page_without_a_concept_section() {
 fn rejects_a_malformed_original_source_fold() {
     let repo = fixture();
     write_complete_fixture(repo.path());
-    let chapter = repo.path().join("content/chapters/harness-engineering.md");
+    let chapter = repo
+        .path()
+        .join("knowledge/rsi/chapters/harness-engineering.md");
     let source = fs::read_to_string(&chapter).unwrap();
     fs::write(&chapter, source.replace("</details>", "")).unwrap();
 
@@ -1192,7 +1228,7 @@ fn preserves_native_details_in_rendered_html() {
         &format!(
             "# Test\n\n## Mechanism\n\nText.\n\n<details>\n{SOURCE_SUMMARY}\n\n- Source.\n\n</details>\n"
         ),
-        "content/chapters/test.md",
+        "knowledge/rsi/chapters/test.md",
         &[],
     );
 
@@ -1205,7 +1241,7 @@ fn preserves_native_details_in_rendered_html() {
 fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
     let rendered = render_markdown(
         "# Test\n\n| Field | Value |\n|---|---|\n| state | durable |\n",
-        "content/chapters/test.md",
+        "knowledge/rsi/chapters/test.md",
         &[],
     );
 
@@ -1220,35 +1256,35 @@ fn rewrites_offline_links_to_chapter_routes_and_static_export_repository_files()
     let coverage = vec![CoverageEntry {
         concept_id: "target".into(),
         coverage_depth: CoverageDepth::Chapter,
-        canonical_markdown_path: "content/chapters/target.md".into(),
+        canonical_markdown_path: "knowledge/rsi/chapters/target.md".into(),
         section_id: None,
         parent_concept_id: None,
     }];
 
     assert_eq!(
-        offline_link_destination("target.md", Path::new("content/chapters"), &coverage,),
+        offline_link_destination("target.md", Path::new("knowledge/rsi/chapters"), &coverage,),
         "#chapters/target"
     );
     assert_eq!(
         offline_link_destination(
-            "../../../../evidence/sicp/sicp.pdf#page=12",
-            Path::new("content/sicp/course/capstone"),
+            "../../../../../evidence/sicp/sicp.pdf#page=12",
+            Path::new("knowledge/rsi/sicp/course/capstone"),
             &coverage,
         ),
         "../../evidence/sicp/sicp.pdf#page=12"
     );
     assert_eq!(
         offline_link_destination(
-            "../../../../labs/sicp-evaluator/",
-            Path::new("content/sicp/course/capstone"),
+            "../../../../../labs/sicp-evaluator/",
+            Path::new("knowledge/rsi/sicp/course/capstone"),
             &coverage,
         ),
         "../../labs/sicp-evaluator"
     );
     assert_eq!(
         offline_link_destination(
-            "../../../../crates/harp/src/sources.rs",
-            Path::new("content/sicp/course/capstone"),
+            "../../../../../crates/harp/src/sources.rs",
+            Path::new("knowledge/rsi/sicp/course/capstone"),
             &coverage,
         ),
         "../../crates/harp/src/sources.rs"
@@ -1259,15 +1295,15 @@ fn rewrites_offline_links_to_chapter_routes_and_static_export_repository_files()
 fn lesson_links_route_to_owned_system_documents() {
     let mut sources = BTreeMap::new();
     sources.insert(
-        "content/systems/aflow.md".to_owned(),
+        "knowledge/rsi/systems/aflow.md".to_owned(),
         contracts::ValidatedCanonicalSource {
-            path: "content/systems/aflow.md".to_owned(),
+            path: "knowledge/rsi/systems/aflow.md".to_owned(),
             markdown: "# AFlow\n".to_owned(),
             body_sha256: sha256(b"# AFlow\n"),
             entries: vec![CoverageEntry {
                 concept_id: "aflow".to_owned(),
                 coverage_depth: CoverageDepth::SystemReading,
-                canonical_markdown_path: "content/systems/aflow.md".to_owned(),
+                canonical_markdown_path: "knowledge/rsi/systems/aflow.md".to_owned(),
                 section_id: None,
                 parent_concept_id: Some("harness-search".to_owned()),
             }],
@@ -1277,7 +1313,7 @@ fn lesson_links_route_to_owned_system_documents() {
     assert_eq!(
         render::offline_link_destination_with_sources(
             "../systems/aflow.md",
-            Path::new("content/lessons"),
+            Path::new("knowledge/rsi/lessons"),
             &[],
             &sources,
         ),
@@ -1289,10 +1325,10 @@ fn lesson_links_route_to_owned_system_documents() {
 fn resolves_parent_links_without_allowing_repository_escape() {
     assert_eq!(
         normalize_link_path(
-            Path::new("content/chapters"),
+            Path::new("knowledge/rsi/chapters"),
             Path::new("../source_registry.md")
         ),
-        Some(PathBuf::from("content/source_registry.md"))
+        Some(PathBuf::from("knowledge/rsi/source_registry.md"))
     );
     assert_eq!(
         normalize_link_path(Path::new("content"), Path::new("../../../secret")),
@@ -1307,8 +1343,8 @@ fn resolves_parent_links_without_allowing_repository_escape() {
     );
     assert_eq!(
         normalize_link_path(
-            Path::new("content/systems"),
-            Path::new("../../knowledge/meta_harness/meta_harness_deep_dive.md"),
+            Path::new("knowledge/rsi/systems"),
+            Path::new("../../meta_harness/meta_harness_deep_dive.md"),
         ),
         Some(PathBuf::from(
             "knowledge/meta_harness/meta_harness_deep_dive.md"
@@ -1329,8 +1365,8 @@ fn validates_local_links_in_product_roots() {
     let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
     validate_local_links(
-        "content/sicp/course/capstone/guide.md",
-        "[source](../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../labs/sicp-evaluator/)\n[materializer](../../../../crates/harp/src/sources.rs)\n",
+        "knowledge/rsi/sicp/course/capstone/guide.md",
+        "[source](../../../../../evidence/sicp/sicp.pdf)\n[lab](../../../../../labs/sicp-evaluator/)\n[materializer](../../../../../crates/harp/src/sources.rs)\n",
         &repository,
     )
     .unwrap();
@@ -1412,18 +1448,19 @@ fn rejects_each_declared_content_integrity_failure() {
     fn duplicate_owner(repo: &Path) {
         let path = repo.join(COVERAGE_PATH);
         let mut coverage = fs::read_to_string(&path).unwrap();
-        coverage
-            .push_str("harness-engineering	chapter	content/chapters/harness-engineering.md		\n");
+        coverage.push_str(
+            "harness-engineering	chapter	knowledge/rsi/chapters/harness-engineering.md		\n",
+        );
         fs::write(path, coverage).unwrap();
     }
     fn missing_chapter(repo: &Path) {
-        fs::remove_file(repo.join("content/chapters/harness-engineering.md")).unwrap();
+        fs::remove_file(repo.join("knowledge/rsi/chapters/harness-engineering.md")).unwrap();
     }
     fn absent_worked_example(repo: &Path) {
         let path = repo.join(COVERAGE_PATH);
         let mut coverage = fs::read_to_string(&path).unwrap();
         coverage.push_str(
-                "example	worked-example	content/chapters/harness-engineering.md	absent	harness-engineering\n",
+                "example	worked-example	knowledge/rsi/chapters/harness-engineering.md	absent	harness-engineering\n",
             );
         fs::write(path, coverage).unwrap();
         let roster = repo.join(RETAINED_CONCEPTS_PATH);
@@ -1432,18 +1469,18 @@ fn rejects_each_declared_content_integrity_failure() {
         fs::write(roster, retained).unwrap();
     }
     fn broken_local_link(repo: &Path) {
-        let path = repo.join("content/chapters/harness-engineering.md");
+        let path = repo.join("knowledge/rsi/chapters/harness-engineering.md");
         let mut markdown = fs::read_to_string(&path).unwrap();
         markdown.push_str("\n[Missing](../concepts/absent.md)\n");
         fs::write(path, markdown).unwrap();
     }
     fn malformed_fold(repo: &Path) {
-        let path = repo.join("content/chapters/harness-engineering.md");
+        let path = repo.join("knowledge/rsi/chapters/harness-engineering.md");
         let markdown = fs::read_to_string(&path).unwrap().replace("</details>", "");
         fs::write(path, markdown).unwrap();
     }
     fn metadata_first(repo: &Path) {
-        let path = repo.join("content/chapters/harness-engineering.md");
+        let path = repo.join("knowledge/rsi/chapters/harness-engineering.md");
         let markdown = fs::read_to_string(&path)
             .unwrap()
             .replace("## Technical mechanism", "## Source registry");
@@ -1452,8 +1489,8 @@ fn rejects_each_declared_content_integrity_failure() {
     fn registry_as_chapter(repo: &Path) {
         let path = repo.join(COVERAGE_PATH);
         let coverage = fs::read_to_string(&path).unwrap().replace(
-            "content/chapters/harness-engineering.md",
-            "content/source_registry.md",
+            "knowledge/rsi/chapters/harness-engineering.md",
+            "knowledge/rsi/source_registry.md",
         );
         fs::write(path, coverage).unwrap();
     }

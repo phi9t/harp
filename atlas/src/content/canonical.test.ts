@@ -30,7 +30,7 @@ const wengSectionIds: readonly string[] = [
 ];
 
 const chapterPath = (id: string): string =>
-  `content/chapters/${id}.md`;
+  `knowledge/rsi/chapters/${id}.md`;
 
 const companionId = (id: string): string => `weng-${id}`;
 
@@ -134,7 +134,7 @@ const validV5Fixture: unknown = {
       concept_id: companionId(id),
       title: id,
       canonical_markdown_path:
-        `content/weng/${String(index + 1).padStart(2, "0")}-${id}.md`,
+        `knowledge/rsi/weng/${String(index + 1).padStart(2, "0")}-${id}.md`,
       markdown_sha256: digest,
       html_sha256: digest,
       html: `<h1>${id}</h1>`,
@@ -148,7 +148,7 @@ const validV5Fixture: unknown = {
       source_ids: [source],
       treatment: "full",
       publication_state: "planned",
-      canonical_markdown_path: `content/systems/${id}.md`,
+      canonical_markdown_path: `knowledge/rsi/systems/${id}.md`,
       weng_section_ids: [systemSection(index)],
       paper_routes: [
         {

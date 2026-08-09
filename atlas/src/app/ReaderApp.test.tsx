@@ -55,7 +55,7 @@ describe("RSI technical reader", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "content/chapters/evaluation-promotion-containment.md",
+        "knowledge/rsi/chapters/evaluation-promotion-containment.md",
       ),
     ).toBeInTheDocument();
   });
@@ -90,7 +90,7 @@ describe("RSI technical reader", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "content/rsi_harness_by_lil_log_deconstructed.md",
+        "knowledge/rsi/rsi_harness_by_lil_log_deconstructed.md",
       ),
     ).toBeInTheDocument();
   });

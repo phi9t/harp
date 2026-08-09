@@ -80,9 +80,9 @@ test("exports an offline single-file Harp atlas", () => {
     /api[-_]?key|endpoint configuration|credential configuration/i,
   );
   assert.doesNotMatch(decodedModule, /\bfetch\s*\(/);
-  assert.match(decodedModule, /content\/chapters\/harness-engineering\.md/);
+  assert.match(decodedModule, /knowledge\/rsi\/chapters\/harness-engineering\.md/);
   assert.match(
     decodedModule,
-    /content\/rsi_harness_by_lil_log_deconstructed\.md/,
+    /knowledge\/rsi\/rsi_harness_by_lil_log_deconstructed\.md/,
   );
 });

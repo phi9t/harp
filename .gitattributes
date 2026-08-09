@@ -6,3 +6,4 @@ evidence/**/*.webp filter=lfs diff=lfs merge=lfs -text
 evidence/**/*.woff2 filter=lfs diff=lfs merge=lfs -text
 evidence/**/*.tar.gz filter=lfs diff=lfs merge=lfs -text
 evidence/implementations/*/snapshot/** -whitespace
+content/coverage-map.tsv whitespace=-trailing-space

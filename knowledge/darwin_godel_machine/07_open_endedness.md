@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, open-endedness, stepping-stones, diversity]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # DGM open-endedness
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Learning outcomes
 
@@ -220,11 +220,11 @@ behavior-space archive. Calling its child-count term "novelty" should not hide
 that distinction.
 
 Canonical context:
-[harness search methods](../../content/concepts/harness-search-methods.md).
+[harness search methods](../rsi/concepts/harness-search-methods.md).
 
 ## Relation to admitted program-search systems
 
-[AlphaEvolve](../../content/systems/alphaevolve.md) and
+[AlphaEvolve](../rsi/systems/alphaevolve.md) and
 [FunSearch](../../content/sources/source_registry.tsv) provide Harp's admitted
 program-search comparison. They retain executable solution programs and use
 external evaluators to guide later proposals.

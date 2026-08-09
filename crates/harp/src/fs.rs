@@ -95,6 +95,28 @@ impl HeldDirectory {
         }
     }
 
+    pub fn regular_files_with_extension(
+        &self,
+        relative: &Path,
+        extension: &str,
+        label: &str,
+    ) -> Result<Vec<PathBuf>, AppError> {
+        let root = self.resolve_read_target(relative, label)?;
+        let metadata = fs::symlink_metadata(&root)
+            .map_err(|error| AppError::io("fs.metadata", label, error))?;
+        if !metadata.is_dir() {
+            return Err(AppError::invalid_input(
+                "fs.type",
+                format!("{label} must be a real directory"),
+            ));
+        }
+
+        let mut files = Vec::new();
+        self.collect_regular_files_with_extension(relative, extension, label, &mut files)?;
+        files.sort();
+        Ok(files)
+    }
+
     pub fn compare_and_replace_public_regular_file(
         &self,
         relative: &Path,
@@ -178,6 +200,42 @@ impl HeldDirectory {
             ));
         }
         Ok(file)
+    }
+
+    fn collect_regular_files_with_extension(
+        &self,
+        relative: &Path,
+        extension: &str,
+        label: &str,
+        files: &mut Vec<PathBuf>,
+    ) -> Result<(), AppError> {
+        let directory = self.resolve_read_target(relative, label)?;
+        let mut entries = fs::read_dir(&directory)
+            .map_err(|error| AppError::io("fs.read_dir", label, error))?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| AppError::io("fs.read_dir", label, error))?;
+        entries.sort_by_key(|entry| entry.file_name());
+
+        for entry in entries {
+            let name = entry.file_name();
+            let child = relative.join(&name);
+            let metadata = fs::symlink_metadata(entry.path())
+                .map_err(|error| AppError::io("fs.metadata", label, error))?;
+            if metadata.file_type().is_symlink() {
+                return Err(AppError::invalid_input(
+                    "fs.symlink",
+                    format!("{label} cannot traverse a symlink: {}", child.display()),
+                ));
+            }
+            if metadata.is_dir() {
+                self.collect_regular_files_with_extension(&child, extension, label, files)?;
+            } else if metadata.is_file()
+                && child.extension().and_then(|value| value.to_str()) == Some(extension)
+            {
+                files.push(child);
+            }
+        }
+        Ok(())
     }
 
     fn resolve_read_target(&self, relative: &Path, label: &str) -> Result<PathBuf, AppError> {

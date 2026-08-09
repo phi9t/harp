@@ -208,7 +208,6 @@ fn verify_forbidden_references(repo_root: &Path) -> Result<usize, AppError> {
         String::from_utf8(vec![0x74, 0x61, 0x72, 0x6f, 0x63, 0x63, 0x6f]).expect("ASCII");
     let patterns = [
         source_name,
-        ["knowledge", "rsi"].join("/"),
         ["third", "party"].join("_") + "/rsi",
         ["source", "graph"].join("_"),
         ["/Users", "bytedance", "workspace"].join("/"),
@@ -498,6 +497,18 @@ mod tests {
         let after = payload_digest(repo.path()).unwrap();
 
         assert_eq!(after, before);
+    }
+
+    #[test]
+    fn forbidden_reference_check_allows_the_managed_rsi_root() {
+        let repo = TempDir::new().unwrap();
+        run_git(repo.path(), ["init", "--quiet"]);
+        let document = repo.path().join("knowledge/rsi/intro.md");
+        fs::create_dir_all(document.parent().unwrap()).unwrap();
+        fs::write(document, "# Recursive improvement\n").unwrap();
+        run_git(repo.path(), ["add", "knowledge/rsi/intro.md"]);
+
+        assert_eq!(verify_forbidden_references(repo.path()).unwrap(), 0);
     }
 
     fn run_git<const N: usize>(root: &Path, arguments: [&str; N]) {

@@ -12,9 +12,9 @@ canonical: ../../content/sources/source_registry.tsv
 
 # DGM packet source registry
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Source classes
 
@@ -22,14 +22,15 @@ canonical: ../../content/sources/source_registry.tsv
 |---|---|---|---|---|
 | DGM | Primary paper | [Captured text](../../evidence/weng/text/dgm.txt) and [arXiv](https://arxiv.org/abs/2505.22954) | Paper method, author-reported experiments, appendices, limitations | Independent reproduction or released-code correctness |
 | DGM-REPO | Pinned implementation | [Snapshot root](../../evidence/implementations/dgm/snapshot/README.md) | Source behavior at commit `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2` | Historical experiment identity, runtime safety, benchmark reproduction |
-| HARP-DGM | Canonical synthesis | [DGM system article](../../content/systems/dgm.md) | Harp's maintained claim boundary and paper/code reconciliation | New primary evidence |
-| HARP-RSI | Canonical framework | [Recursive loop](../../content/chapters/recursive-improvement-loop.md), [state notation](../../content/concepts/system-state-and-notation.md), [evaluation](../../content/chapters/evaluation-promotion-containment.md) | Candidate/envelope vocabulary and RSI classification rules | DGM-specific empirical results |
+| HARP-DGM | Canonical synthesis | [DGM system article](../rsi/systems/dgm.md) | Harp's maintained claim boundary and paper/code reconciliation | New primary evidence |
+| HYPERAGENTS | Primary paper | [Captured text](../../evidence/weng/text/hyperagents.txt) and [arXiv](https://arxiv.org/abs/2603.19461) | DGM-H method, author-reported task and transfer experiments, stated outer-loop boundary | Independent reproduction, implementation behavior, or a complete editable-envelope result |
+| HARP-RSI | Canonical framework | [Recursive loop](../rsi/chapters/recursive-improvement-loop.md), [state notation](../rsi/concepts/system-state-and-notation.md), [evaluation](../rsi/chapters/evaluation-promotion-containment.md) | Candidate/envelope vocabulary and RSI classification rules | DGM-specific empirical results |
 | GODEL-MACHINE | Historical source record | [Harp source registry](../../content/sources/source_registry.tsv) | Identity and theoretical lineage at the admitted claim ceiling | Full proof details beyond the captured record |
 | QD-2016 | Quality-diversity source | [Harp source registry](../../content/sources/source_registry.tsv) | Quality-diversity taxonomy admitted by Harp | That DGM implements a full QD algorithm |
 | FUNSEARCH | Program-search comparison | [Harp source registry](../../content/sources/source_registry.tsv) | Predecessor mechanism and executable-evaluator comparison | Self-referential coding-agent improvement |
-| ALPHAEVOLVE | Comparison system | [Canonical article](../../content/systems/alphaevolve.md) | Program evolution against executable evaluators | DGM's agent-lineage mechanism |
-| ADAS | Comparison system | [Canonical article](../../content/systems/adas.md) | Fixed meta-agent search over agent programs | DGM's evolving modifier claim |
-| STOP | Comparison system | [Canonical article](../../content/systems/stop.md) | Recursive improver-program optimization | DGM's branching archive result |
+| ALPHAEVOLVE | Comparison system | [Canonical article](../rsi/systems/alphaevolve.md) | Program evolution against executable evaluators | DGM's agent-lineage mechanism |
+| ADAS | Comparison system | [Canonical article](../rsi/systems/adas.md) | Fixed meta-agent search over agent programs | DGM's evolving modifier claim |
+| STOP | Comparison system | [Canonical article](../rsi/systems/stop.md) | Recursive improver-program optimization | DGM's branching archive result |
 
 ## DGM: ICLR 2026 paper
 
@@ -65,11 +66,30 @@ canonical: ../../content/sources/source_registry.tsv
   here, benchmark reproduction, or files intentionally omitted from the narrow
   snapshot.
 
+## HYPERAGENTS: DGM-H successor paper
+
+- Class: `primary paper`
+- Title: Hyperagents
+- Artifact: [Captured paper text](../../evidence/weng/text/hyperagents.txt)
+- Public page: [arXiv abstract](https://arxiv.org/abs/2603.19461)
+- Stability: `pinned`
+- Immutable identity: `arXiv:2603.19461v1`
+- Digest record: [Hyperagents acquisition receipt](../../evidence/weng/receipts/hyperagents.tsv)
+- Publication status: The captured version is a preprint; a peer-reviewed venue
+  has not been verified in this packet.
+- Semantic locators: abstract, §3–§6, Appendix E.5, and the conclusion.
+- Can prove: The paper's DGM-H construction, its editable task-plus-meta-agent
+  definition, author-reported task/transfer outcomes, and stated limits of the
+  main outer loop.
+- Cannot prove: Behavior of the unpinned upstream repository, independent
+  reproduction, fully editable evaluation and selection, or a matched
+  successor-productivity comparison.
+
 ## HARP-DGM: canonical synthesis
 
 - Class: `canonical Harp synthesis`
 - Title: DGM system article
-- Artifact: [Canonical DGM article](../../content/systems/dgm.md)
+- Artifact: [Canonical DGM article](../rsi/systems/dgm.md)
 - Stability: `repository versioned`
 - Immutable identity: The Harp commit containing the cited statement.
 - Semantic locators: article heading.
@@ -80,7 +100,7 @@ canonical: ../../content/sources/source_registry.tsv
 
 - Class: `canonical Harp framework`
 - Title: Recursive-improvement and evaluation framework
-- Artifact: [Recursive improvement loop](../../content/chapters/recursive-improvement-loop.md)
+- Artifact: [Recursive improvement loop](../rsi/chapters/recursive-improvement-loop.md)
 - Stability: `repository versioned`
 - Immutable identity: The Harp commit containing the cited framework.
 - Semantic locators: chapter or concept heading.

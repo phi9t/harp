@@ -7,28 +7,28 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, maintenance, provenance, verification]
 confidence: high
-canonical: ../../content/systems/dgm.md
+canonical: ../rsi/systems/dgm.md
 ---
 
 # DGM packet maintenance
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Ownership
 
-The packet under `knowledge/darwin_godel_machine/` is a learning projection.
+The packet under `knowledge/darwin_godel_machine/` is a maintained Harp technical packet.
 It does not own material technical claims.
 
 Authority order:
 
-1. `content/` owns Harp technical prose and claim boundaries.
+1. `knowledge/rsi/` owns Harp technical prose and claim boundaries; `content/` owns structured contracts and diagnostics.
 2. `evidence/` owns captured upstream bytes, provenance, licenses, and pinned
    source snapshots.
 3. `knowledge/darwin_godel_machine/` owns navigation, pedagogy, exercises, and
    source-linked learning routes.
-4. generated Atlas JSON and HTML are derived from canonical `content/`.
+4. generated Atlas JSON and HTML are derived from canonical `knowledge/rsi/`.
 
 A packet-only claim is a maintenance defect. Add or update canonical content
 first, then project it here.
@@ -147,7 +147,7 @@ If a new paper version appears:
 3. register the new immutable identity and digest;
 4. compare sections, figures, tables, appendices, and references;
 5. identify changed claims, not only changed wording;
-6. update canonical `content/systems/dgm.md`;
+6. update canonical `knowledge/rsi/systems/dgm.md`;
 7. update source and evidence graph records;
 8. update the packet's paper walkthrough, evaluation table, safety analysis,
    claim crosswalk, and source registry;
@@ -293,8 +293,8 @@ For a material technical change:
 1. update evidence and receipts;
 2. update `content/sources/source_registry.tsv`;
 3. update `content/sources/evidence_graph.tsv` if relationships change;
-4. update `content/systems/dgm.md`;
-5. update `content/claim_evidence_ledger.md` if the canonical claim set changes;
+4. update `knowledge/rsi/systems/dgm.md`;
+5. update `knowledge/rsi/claim_evidence_ledger.md` if the canonical claim set changes;
 6. update this learning packet;
 7. update the claim crosswalk;
 8. regenerate Atlas JSON and HTML together; and
@@ -400,7 +400,7 @@ that:
 |---|---|
 | What changed in the paper? | Paper diff and source registry |
 | What changed in code? | Snapshot diff and implementation manifest |
-| Which canonical claim changed? | `content/systems/dgm.md` |
+| Which canonical claim changed? | `knowledge/rsi/systems/dgm.md` |
 | Which packet route changed? | Packet diff |
 | Are all numbers scoped? | `06_evaluation_analysis.md` |
 | Are all claims traceable? | `claim_evidence_crosswalk.md` |

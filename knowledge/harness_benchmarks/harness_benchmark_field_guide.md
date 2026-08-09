@@ -279,9 +279,9 @@ accepted children under the same protected envelope.
 
 ## Reading routes
 
-- [Meta-Harness system reading](../../content/systems/meta-harness.md)
-- [DGM system reading](../../content/systems/dgm.md)
-- [MCE system reading](../../content/systems/mce.md)
-- [Harness Disentangle system reading](../../content/systems/harness-disentangle.md)
-- [Evaluator integrity and promotion](../../content/evaluator_integrity_and_promotion.md)
+- [Meta-Harness system reading](../rsi/systems/meta-harness.md)
+- [DGM system reading](../rsi/systems/dgm.md)
+- [MCE system reading](../rsi/systems/mce.md)
+- [Harness Disentangle system reading](../rsi/systems/harness-disentangle.md)
+- [Evaluator integrity and promotion](../rsi/evaluator_integrity_and_promotion.md)
 - [Benchmark receipt manifest](../../evidence/benchmarks/manifest.tsv)

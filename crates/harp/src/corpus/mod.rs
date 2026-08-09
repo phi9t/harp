@@ -20,6 +20,7 @@ pub(super) const COVERAGE_PATH: &str = "content/coverage-map.tsv";
 pub(super) const COVERAGE_HEADER: &str =
     "concept_id\tcoverage_depth\tcanonical_markdown_path\tsection_id\tparent_concept_id";
 pub(super) const RETAINED_CONCEPTS_PATH: &str = "content/retained-concepts.tsv";
+pub(super) const CONTENT_ROOT: &str = "content";
 const RETAINED_CONCEPTS_HEADER: &str = "concept_id\tsource_ids";
 const SOURCE_SUMMARY: &str = "<summary>Original sources for this mechanism</summary>";
 const REFERENCE_SUMMARY: &str = "<summary>Reference records and operational metadata</summary>";
@@ -33,38 +34,38 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 10] = [
     (
         "thesis",
         "Thesis",
-        "content/chapters/recursive-improvement-loop.md",
+        "knowledge/rsi/chapters/recursive-improvement-loop.md",
     ),
     (
         "loop",
         "Loop",
-        "content/concepts/system-state-and-notation.md",
+        "knowledge/rsi/concepts/system-state-and-notation.md",
     ),
     (
         "methods",
         "Methods",
-        "content/concepts/harness-search-methods.md",
+        "knowledge/rsi/concepts/harness-search-methods.md",
     ),
     (
         "harnesses",
         "Harnesses",
-        "content/chapters/harness-engineering.md",
+        "knowledge/rsi/chapters/harness-engineering.md",
     ),
     (
         "weng",
         "Weng",
-        "content/rsi_harness_by_lil_log_deconstructed.md",
+        "knowledge/rsi/rsi_harness_by_lil_log_deconstructed.md",
     ),
     (
         "experiment",
         "Experiment",
-        "content/evaluator_integrity_and_promotion.md",
+        "knowledge/rsi/evaluator_integrity_and_promotion.md",
     ),
-    ("sources", "Sources", "content/source_registry.md"),
+    ("sources", "Sources", "knowledge/rsi/source_registry.md"),
     (
         "agentic-eval-apply",
         "Agentic eval/apply",
-        "content/sicp/agentic_eval_apply.md",
+        "knowledge/rsi/sicp/agentic_eval_apply.md",
     ),
     (
         "benchmarks",
@@ -78,35 +79,41 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 10] = [
     ),
 ];
 pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 12] = [
-    ("agentic-eval-apply", "content/sicp/agentic_eval_apply.md"),
+    (
+        "agentic-eval-apply",
+        "knowledge/rsi/sicp/agentic_eval_apply.md",
+    ),
     (
         "sicp-seminar-09-eval-apply",
-        "content/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
+        "knowledge/rsi/sicp/course/seminars/09-eval-apply-and-executable-semantics.md",
     ),
     (
         "sicp-evaluator-deep-dive",
-        "content/sicp/metacircular_evaluator_deep_dive.md",
+        "knowledge/rsi/sicp/metacircular_evaluator_deep_dive.md",
     ),
-    ("pi-harness-deep-dive", "content/pi_harness_deep_dive.md"),
+    (
+        "pi-harness-deep-dive",
+        "knowledge/rsi/pi_harness_deep_dive.md",
+    ),
     (
         "hermes-harness-deep-dive",
-        "content/hermes_harness_deep_dive.md",
+        "knowledge/rsi/hermes_harness_deep_dive.md",
     ),
     (
         "codex-harness-deep-dive",
-        "content/codex_harness_deep_dive.md",
+        "knowledge/rsi/codex_harness_deep_dive.md",
     ),
     (
         "agent-harness-architecture-dossier",
-        "content/sicp/course/capstone/agent_harness_architecture_dossier.md",
+        "knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier.md",
     ),
     (
         "codex-state-continuity",
-        "content/codex_state_continuity_and_compaction.md",
+        "knowledge/rsi/codex_state_continuity_and_compaction.md",
     ),
     (
         "context-engineering-deep-dive",
-        "content/context_engineering_deep_dive.md",
+        "knowledge/rsi/context_engineering_deep_dive.md",
     ),
     (
         "meta-harness-deep-dive",
@@ -124,36 +131,36 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 12] = [
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
     (
         "recursive-improvement-loop",
-        "content/chapters/recursive-improvement-loop.md",
+        "knowledge/rsi/chapters/recursive-improvement-loop.md",
     ),
     (
         "foundation-model-inside-the-loop",
-        "content/chapters/foundation-model-inside-the-loop.md",
+        "knowledge/rsi/chapters/foundation-model-inside-the-loop.md",
     ),
     (
         "harness-engineering",
-        "content/chapters/harness-engineering.md",
+        "knowledge/rsi/chapters/harness-engineering.md",
     ),
     (
         "durable-improvement-workflows",
-        "content/chapters/durable-improvement-workflows.md",
+        "knowledge/rsi/chapters/durable-improvement-workflows.md",
     ),
     (
         "procedure-internalization",
-        "content/chapters/procedure-internalization.md",
+        "knowledge/rsi/chapters/procedure-internalization.md",
     ),
-    ("harness-search", "content/chapters/harness-search.md"),
+    ("harness-search", "knowledge/rsi/chapters/harness-search.md"),
     (
         "automated-research",
-        "content/chapters/automated-research.md",
+        "knowledge/rsi/chapters/automated-research.md",
     ),
     (
         "joint-harness-weight-adaptation",
-        "content/chapters/joint-harness-weight-adaptation.md",
+        "knowledge/rsi/chapters/joint-harness-weight-adaptation.md",
     ),
     (
         "evaluation-promotion-containment",
-        "content/chapters/evaluation-promotion-containment.md",
+        "knowledge/rsi/chapters/evaluation-promotion-containment.md",
     ),
 ];
 

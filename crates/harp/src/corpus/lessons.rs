@@ -123,7 +123,7 @@ pub(super) fn load(
         let path = Path::new(&lesson.canonical_markdown_path);
         if !lesson
             .canonical_markdown_path
-            .starts_with("content/lessons/")
+            .starts_with("knowledge/rsi/lessons/")
             || !lesson.canonical_markdown_path.ends_with(".md")
             || path
                 .components()

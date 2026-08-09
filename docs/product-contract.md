@@ -4,8 +4,9 @@
 
 Harp owns the standalone RSI technical atlas:
 
-- canonical RSI and SICP Markdown under `content/`, plus the registered
-  Meta-Harness topic packet under `knowledge/meta_harness/`;
+- canonical RSI and SICP Markdown under `knowledge/rsi/`, plus the registered
+  topic packets under `knowledge/darwin_godel_machine/`,
+  `knowledge/meta_harness/`, and `knowledge/harness_benchmarks/`;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
 - Weng, RLM, SICP, Meta-Harness, and public implementation evidence under
@@ -54,7 +55,7 @@ paper mechanisms or result claims.
 
 ## Weng teaching curriculum
 
-`content/weng-sources/` is the canonical authority for the 42 five-field
+`knowledge/rsi/weng-sources/` is the canonical authority for the 42 five-field
 source cards. `content/weng-source-cards.tsv` is the exact roster, order, and
 assignment matrix for 39 numbered references and three substantive body
 links. `content/weng-comparison-matrix.tsv` owns the ordered comparison data,
@@ -76,8 +77,10 @@ canonical corpus counts above.
 
 The search index includes:
 
-- all `content/**/*.md`;
+- all `knowledge/rsi/**/*.md`;
+- all `knowledge/darwin_godel_machine/**/*.md`;
 - all `knowledge/meta_harness/**/*.md`;
+- all `knowledge/harness_benchmarks/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 

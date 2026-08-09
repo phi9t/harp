@@ -1480,8 +1480,8 @@ fn card_frontmatter_rejects_missing_unknown_and_reordered_metadata() {
         "edited_object_family: harness",
         "claim_ceiling: Test claim",
         "lesson_ids: 0001,0010",
-        "card_path: content/weng-sources/test.md",
-        "canonical_route: content/test.md",
+        "card_path: knowledge/rsi/weng-sources/test.md",
+        "canonical_route: knowledge/rsi/test.md",
     ];
     let cases = [
         valid[..12].join("\n"),
@@ -1521,8 +1521,8 @@ fn card_frontmatter_accepts_json_quoted_colon_titles_and_rejects_unsafe_scalars(
         "edited_object_family: harness",
         "claim_ceiling: Test claim",
         "lesson_ids: 0001,0010",
-        "card_path: content/weng-sources/test.md",
-        "canonical_route: content/test.md",
+        "card_path: knowledge/rsi/weng-sources/test.md",
+        "canonical_route: knowledge/rsi/test.md",
     ];
     let card = format!("---\n{}\n---\n", valid.join("\n"));
     assert_eq!(
@@ -2055,8 +2055,11 @@ fn weng_teaching_curriculum_has_complete_observable_contract() {
             );
         }
 
-        let card_path =
-            assert_resolved_file_beneath(&row["card_path"], "content/weng-sources", "card_path");
+        let card_path = assert_resolved_file_beneath(
+            &row["card_path"],
+            "knowledge/rsi/weng-sources",
+            "card_path",
+        );
         let card_text = fs::read_to_string(&card_path)
             .unwrap_or_else(|error| panic!("read {}: {error}", card_path.display()));
         let metadata = card_frontmatter(&card_text);
@@ -2116,7 +2119,8 @@ fn weng_teaching_curriculum_has_complete_observable_contract() {
             canonical_route, &row["card_path"],
             "{source_id} canonical_route must differ from card_path"
         );
-        let canonical = assert_resolved_file_beneath(canonical_route, "content", "canonical_route");
+        let canonical =
+            assert_resolved_file_beneath(canonical_route, "knowledge/rsi", "canonical_route");
         assert_ne!(
             canonical, card_path,
             "{source_id} canonical_route must not resolve to card_path"

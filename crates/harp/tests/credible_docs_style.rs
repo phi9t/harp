@@ -1112,7 +1112,7 @@ fn locators_must_target_underlying_evidence() {
     )
     .replace(
         "- Locator: [Paper](../../evidence/weng/text/dgm.txt)",
-        "- Locator: [Prose summary](../../content/systems/dgm.md#claim-ceiling)",
+        "- Locator: [Prose summary](../../rsi/systems/dgm.md#claim-ceiling)",
     );
     assert!(validate_claim_entries(&prose_locator)
         .expect_err("canonical prose cannot substitute for evidence")
@@ -1255,7 +1255,7 @@ fn evidence_locators_cannot_escape_evidence_through_symlinks() {
     let evidence = workspace_root().join("evidence");
     let inside = tempfile::tempdir_in(&evidence).expect("create evidence temp directory");
     let link = inside.path().join("escape.md");
-    symlink(workspace_root().join("content/systems/dgm.md"), &link)
+    symlink(workspace_root().join("knowledge/rsi/systems/dgm.md"), &link)
         .expect("create evidence escape symlink");
     let relative = link
         .strip_prefix(&evidence)

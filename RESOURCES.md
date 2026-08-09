@@ -12,7 +12,7 @@
   Maintained citation topology for Weng and related sources. Use for: numbered-reference and body-link coverage.
 - [`evidence/weng/text/`](evidence/weng/text/)
   Local primary-text captures for Weng's cited sources. Use for: source-grounded interpretation before drafting cards.
-- [`content/rsi_harness_by_lil_log_deconstructed.md`](content/rsi_harness_by_lil_log_deconstructed.md)
+- [`knowledge/rsi/rsi_harness_by_lil_log_deconstructed.md`](knowledge/rsi/rsi_harness_by_lil_log_deconstructed.md)
   Canonical Harp synthesis of Weng's practical RSI argument. Use for: cross-section explanation and claim ceilings.
 - [`knowledge/darwin_godel_machine/darwin_godel_machine_index.md`](knowledge/darwin_godel_machine/darwin_godel_machine_index.md)
   Deeper Darwin Gödel Machine packet index. Use for: evolutionary harness-code search and bounded self-improvement.

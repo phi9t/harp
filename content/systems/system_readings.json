@@ -4,11 +4,15 @@
     {
       "system_id": "autoresearch",
       "title": "Karpathy Autoresearch",
-      "source_ids": ["KARPATHY-AUTORESEARCH"],
+      "source_ids": [
+        "KARPATHY-AUTORESEARCH"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/autoresearch.md",
-      "weng_section_ids": ["system-being-improved"],
+      "canonical_markdown_path": "knowledge/rsi/systems/autoresearch.md",
+      "weng_section_ids": [
+        "system-being-improved"
+      ],
       "paper_routes": [
         {
           "source_id": "KARPATHY-AUTORESEARCH",
@@ -25,16 +29,22 @@
         }
       ],
       "diagnostic_case_path": null,
-      "related_system_ids": ["ai-scientist"]
+      "related_system_ids": [
+        "ai-scientist"
+      ]
     },
     {
       "system_id": "ace",
       "title": "Agentic Context Engineering",
-      "source_ids": ["ACE"],
+      "source_ids": [
+        "ACE"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/ace.md",
-      "weng_section_ids": ["context-engineering"],
+      "canonical_markdown_path": "knowledge/rsi/systems/ace.md",
+      "weng_section_ids": [
+        "context-engineering"
+      ],
       "paper_routes": [
         {
           "source_id": "ACE",
@@ -51,16 +61,23 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/ace.json",
-      "related_system_ids": ["mce", "meta-harness"]
+      "related_system_ids": [
+        "mce",
+        "meta-harness"
+      ]
     },
     {
       "system_id": "mce",
       "title": "Meta Context Engineering",
-      "source_ids": ["MCE"],
+      "source_ids": [
+        "MCE"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/mce.md",
-      "weng_section_ids": ["context-engineering"],
+      "canonical_markdown_path": "knowledge/rsi/systems/mce.md",
+      "weng_section_ids": [
+        "context-engineering"
+      ],
       "paper_routes": [
         {
           "source_id": "MCE",
@@ -77,7 +94,10 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/mce.json",
-      "related_system_ids": ["ace", "meta-harness"]
+      "related_system_ids": [
+        "ace",
+        "meta-harness"
+      ]
     },
     {
       "system_id": "meta-harness",
@@ -91,8 +111,10 @@
       ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/meta-harness.md",
-      "weng_section_ids": ["context-engineering"],
+      "canonical_markdown_path": "knowledge/rsi/systems/meta-harness.md",
+      "weng_section_ids": [
+        "context-engineering"
+      ],
       "paper_routes": [
         {
           "source_id": "META-HARNESS",
@@ -109,16 +131,23 @@
         }
       ],
       "diagnostic_case_path": null,
-      "related_system_ids": ["ace", "mce"]
+      "related_system_ids": [
+        "ace",
+        "mce"
+      ]
     },
     {
       "system_id": "adas",
       "title": "Automated Design of Agentic Systems",
-      "source_ids": ["ADAS"],
+      "source_ids": [
+        "ADAS"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/adas.md",
-      "weng_section_ids": ["workflow-design-and-search"],
+      "canonical_markdown_path": "knowledge/rsi/systems/adas.md",
+      "weng_section_ids": [
+        "workflow-design-and-search"
+      ],
       "paper_routes": [
         {
           "source_id": "ADAS",
@@ -135,16 +164,22 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/adas.json",
-      "related_system_ids": ["aflow"]
+      "related_system_ids": [
+        "aflow"
+      ]
     },
     {
       "system_id": "aflow",
       "title": "AFlow",
-      "source_ids": ["AFLOW"],
+      "source_ids": [
+        "AFLOW"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/aflow.md",
-      "weng_section_ids": ["workflow-design-and-search"],
+      "canonical_markdown_path": "knowledge/rsi/systems/aflow.md",
+      "weng_section_ids": [
+        "workflow-design-and-search"
+      ],
       "paper_routes": [
         {
           "source_id": "AFLOW",
@@ -161,16 +196,22 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/aflow.json",
-      "related_system_ids": ["adas"]
+      "related_system_ids": [
+        "adas"
+      ]
     },
     {
       "system_id": "stop",
       "title": "Self-Taught Optimizer",
-      "source_ids": ["STOP"],
+      "source_ids": [
+        "STOP"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/stop.md",
-      "weng_section_ids": ["self-improving-harnesses"],
+      "canonical_markdown_path": "knowledge/rsi/systems/stop.md",
+      "weng_section_ids": [
+        "self-improving-harnesses"
+      ],
       "paper_routes": [
         {
           "source_id": "STOP",
@@ -187,16 +228,23 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/stop.json",
-      "related_system_ids": ["self-harness", "ahe"]
+      "related_system_ids": [
+        "self-harness",
+        "ahe"
+      ]
     },
     {
       "system_id": "self-harness",
       "title": "Self-Harness",
-      "source_ids": ["SELF-HARNESS"],
+      "source_ids": [
+        "SELF-HARNESS"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/self-harness.md",
-      "weng_section_ids": ["self-improving-harnesses"],
+      "canonical_markdown_path": "knowledge/rsi/systems/self-harness.md",
+      "weng_section_ids": [
+        "self-improving-harnesses"
+      ],
       "paper_routes": [
         {
           "source_id": "SELF-HARNESS",
@@ -213,16 +261,23 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/self-harness.json",
-      "related_system_ids": ["stop", "ahe"]
+      "related_system_ids": [
+        "stop",
+        "ahe"
+      ]
     },
     {
       "system_id": "harness-disentangle",
       "title": "Harness Updating Is Not Harness Benefit",
-      "source_ids": ["HARNESS-DISENTANGLE"],
+      "source_ids": [
+        "HARNESS-DISENTANGLE"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/harness-disentangle.md",
-      "weng_section_ids": ["harness-layer-vs-core-intelligence"],
+      "canonical_markdown_path": "knowledge/rsi/systems/harness-disentangle.md",
+      "weng_section_ids": [
+        "harness-layer-vs-core-intelligence"
+      ],
       "paper_routes": [
         {
           "source_id": "HARNESS-DISENTANGLE",
@@ -239,16 +294,22 @@
         }
       ],
       "diagnostic_case_path": null,
-      "related_system_ids": ["rlm"]
+      "related_system_ids": [
+        "rlm"
+      ]
     },
     {
       "system_id": "ahe",
       "title": "Agentic Harness Engineering",
-      "source_ids": ["AHE"],
+      "source_ids": [
+        "AHE"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/ahe.md",
-      "weng_section_ids": ["self-improving-harnesses"],
+      "canonical_markdown_path": "knowledge/rsi/systems/ahe.md",
+      "weng_section_ids": [
+        "self-improving-harnesses"
+      ],
       "paper_routes": [
         {
           "source_id": "AHE",
@@ -265,16 +326,23 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/ahe.json",
-      "related_system_ids": ["stop", "self-harness"]
+      "related_system_ids": [
+        "stop",
+        "self-harness"
+      ]
     },
     {
       "system_id": "alphaevolve",
       "title": "AlphaEvolve",
-      "source_ids": ["ALPHAEVOLVE"],
+      "source_ids": [
+        "ALPHAEVOLVE"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/alphaevolve.md",
-      "weng_section_ids": ["evolutionary-search"],
+      "canonical_markdown_path": "knowledge/rsi/systems/alphaevolve.md",
+      "weng_section_ids": [
+        "evolutionary-search"
+      ],
       "paper_routes": [
         {
           "source_id": "ALPHAEVOLVE",
@@ -291,16 +359,22 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/alphaevolve.json",
-      "related_system_ids": ["dgm"]
+      "related_system_ids": [
+        "dgm"
+      ]
     },
     {
       "system_id": "dgm",
       "title": "Darwin Gödel Machine",
-      "source_ids": ["DGM"],
+      "source_ids": [
+        "DGM"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/dgm.md",
-      "weng_section_ids": ["evolutionary-search"],
+      "canonical_markdown_path": "knowledge/rsi/systems/dgm.md",
+      "weng_section_ids": [
+        "evolutionary-search"
+      ],
       "paper_routes": [
         {
           "source_id": "DGM",
@@ -317,16 +391,22 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/dgm.json",
-      "related_system_ids": ["alphaevolve"]
+      "related_system_ids": [
+        "alphaevolve"
+      ]
     },
     {
       "system_id": "ai-scientist",
       "title": "AI Scientist",
-      "source_ids": ["AI-SCIENTIST"],
+      "source_ids": [
+        "AI-SCIENTIST"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/ai-scientist.md",
-      "weng_section_ids": ["workflow-design-and-search"],
+      "canonical_markdown_path": "knowledge/rsi/systems/ai-scientist.md",
+      "weng_section_ids": [
+        "workflow-design-and-search"
+      ],
       "paper_routes": [
         {
           "source_id": "AI-SCIENTIST",
@@ -343,16 +423,22 @@
         }
       ],
       "diagnostic_case_path": null,
-      "related_system_ids": ["autoresearch"]
+      "related_system_ids": [
+        "autoresearch"
+      ]
     },
     {
       "system_id": "sia",
       "title": "Self Improving AI",
-      "source_ids": ["SIA"],
+      "source_ids": [
+        "SIA"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/sia.md",
-      "weng_section_ids": ["joint-harness-weight-optimization"],
+      "canonical_markdown_path": "knowledge/rsi/systems/sia.md",
+      "weng_section_ids": [
+        "joint-harness-weight-optimization"
+      ],
       "paper_routes": [
         {
           "source_id": "SIA",
@@ -369,16 +455,22 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/sia.json",
-      "related_system_ids": ["continual-harness"]
+      "related_system_ids": [
+        "continual-harness"
+      ]
     },
     {
       "system_id": "continual-harness",
       "title": "Continual Harness",
-      "source_ids": ["CONTINUAL-HARNESS"],
+      "source_ids": [
+        "CONTINUAL-HARNESS"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/continual-harness.md",
-      "weng_section_ids": ["joint-harness-weight-optimization"],
+      "canonical_markdown_path": "knowledge/rsi/systems/continual-harness.md",
+      "weng_section_ids": [
+        "joint-harness-weight-optimization"
+      ],
       "paper_routes": [
         {
           "source_id": "CONTINUAL-HARNESS",
@@ -395,16 +487,24 @@
         }
       ],
       "diagnostic_case_path": "content/diagnostics/cases/continual-harness.json",
-      "related_system_ids": ["sia"]
+      "related_system_ids": [
+        "sia"
+      ]
     },
     {
       "system_id": "rlm",
       "title": "Recursive Language Models",
-      "source_ids": ["RLM-PAPER", "RLM-REPO", "RLM-MINIMAL"],
+      "source_ids": [
+        "RLM-PAPER",
+        "RLM-REPO",
+        "RLM-MINIMAL"
+      ],
       "treatment": "full",
       "publication_state": "published",
-      "canonical_markdown_path": "content/systems/rlm.md",
-      "weng_section_ids": ["harness-layer-vs-core-intelligence"],
+      "canonical_markdown_path": "knowledge/rsi/systems/rlm.md",
+      "weng_section_ids": [
+        "harness-layer-vs-core-intelligence"
+      ],
       "paper_routes": [
         {
           "source_id": "RLM-PAPER",
@@ -421,7 +521,9 @@
         }
       ],
       "diagnostic_case_path": null,
-      "related_system_ids": ["harness-disentangle"]
+      "related_system_ids": [
+        "harness-disentangle"
+      ]
     }
   ]
 }

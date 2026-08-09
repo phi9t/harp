@@ -7,14 +7,14 @@ created: 2026-08-08
 updated: 2026-08-09
 tags: [darwin-godel-machine, claims, evidence, provenance]
 confidence: high
-canonical: ../../content/claim_evidence_ledger.md
+canonical: ../rsi/claim_evidence_ledger.md
 ---
 
 # DGM claim-evidence crosswalk
 
-> This file is a learning projection. Canonical claims live under `content/`;
-> primary-source captures and pinned implementation files live under
-> `evidence/`.
+> This file is a maintained Harp technical packet. It separates Harp's
+> synthesis from primary-source claims; primary-source captures and pinned
+> implementation files live under `evidence/`.
 
 ## Reading rule
 
@@ -725,23 +725,85 @@ captured paper or pinned implementation evidence.
 - Caveat: This is within-task episodic reuse, not persistent cross-task memory
   or learned model state.
 
+## DGM-077: DGM-H makes task and meta logic one editable program
+
+- Class: `EVIDENCE`
+- Statement: Hyperagents combines a task agent and meta agent in a single
+  editable program, so an agent can modify both task-solving behavior and the
+  procedure that generates later self-modifications.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
+- Locator: [Definitions and DGM-H construction, lines 252-305](../../evidence/weng/text/hyperagents.txt#L252)
+- Scope: Paper method definition for DGM-Hyperagents.
+- Reproduction: Source inspected; implementation and experiments not
+  independently reproduced.
+- Confidence: `high`
+- Confidence basis: The captured paper directly defines the unified editable
+  program and calls modification of its meta agent metacognitive
+  self-modification.
+- Caveat: Editable task-plus-meta logic does not make the evaluator, runtime,
+  or all outer-loop controls editable.
+
+## DGM-078: Main DGM-H keeps key outer-loop controls fixed
+
+- Class: `EVIDENCE`
+- Statement: The main-text DGM-H experiments use a handcrafted parent-selection
+  mechanism that is not modifiable; the paper presents parent-selection
+  modification only as preliminary Appendix E.5 work.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
+- Locator: [Outer-loop boundary, lines 286-304](../../evidence/weng/text/hyperagents.txt#L286)
+  and [conclusion boundary, lines 733-744](../../evidence/weng/text/hyperagents.txt#L733)
+- Scope: Reported main-text DGM-H protocol and stated limitation.
+- Reproduction: Source inspected; implementation and experiments not
+  independently reproduced.
+- Confidence: `high`
+- Confidence basis: The paper states both the fixed main-text mechanism and
+  the remaining parent-selection/evaluation boundary.
+- Caveat: The source's preliminary feasibility discussion is not a protected
+  evaluation of a fully editable outer loop.
+
+## DGM-079: DGM-H reports cross-domain transfer of improvement procedure
+
+- Class: `SOURCE CLAIM`
+- Statement: The Hyperagents paper reports that transferred DGM-H
+  hyperagents, with their meta logic held fixed during the transfer test,
+  generate stronger math-grading agents than the initial hyperagent under its
+  reported protocol.
+- Mode: `paraphrase`
+- Source stability: `pinned`
+- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
+- Locator: [Transfer setup and comparison, lines 550-585](../../evidence/weng/text/hyperagents.txt#L550)
+  and [reported mechanisms, lines 587-594](../../evidence/weng/text/hyperagents.txt#L587)
+- Scope: Author-reported cross-domain transfer under the paper's selected
+  hyperagents, fixed meta-agent transfer protocol, held-out math-grading task,
+  and five-run summary.
+- Reproduction: Not independently reproduced here.
+- Confidence: `high`
+- Confidence basis: Direct method and result statements in the captured paper.
+- Caveat: This is not the matched protected-envelope parent-versus-child
+  next-cycle comparison required by DGM-050; the paper also reports that its
+  later compounding comparison is not statistically significant.
+
 ## Review crosswalk
 
 | Claim ID | Class | Claim | Canonical home | Primary evidence | Locator | Reproduction status | Confidence | Caveat |
 |---|---|---|---|---|---|---|---|---|
-| DGM-001 | EVIDENCE | DGM edits a coding-agent repository whose descendants can participate in later self-modification. | [DGM system article](../../content/systems/dgm.md) | DGM, DGM-REPO | DGM §§1–3; `self_improve_step.py:292-365` | Source inspected; experiment not independently reproduced | High | The outer controller, evaluator, and foundation-model supply remain external. |
-| DGM-005 | EVIDENCE | Default parent selection combines sigmoid-scaled task score with inverse functioning-child count. | [DGM system article](../../content/systems/dgm.md) | DGM, DGM-REPO | DGM Appendix C.2; `DGM_outer.py:91-100` | Source inspected; search not rerun | High | The child-count factor measures underexploration, not behavioral novelty. |
-| DGM-009 | EVIDENCE | A functioning child may enter the archive without outperforming its parent. | [DGM system article](../../content/systems/dgm.md) | DGM, DGM-REPO | DGM §3; `utils/evo_utils.py:96-127` | Source inspected; experiment not independently reproduced | High | Archive admission is not deployment promotion. |
-| DGM-013 | EVIDENCE | SWE-bench diagnosis can use private test patches and official test results. | [DGM system article](../../content/systems/dgm.md) | DGM-REPO | `prompts/self_improvement_prompt.py:95-105` | Source inspected; information flow not executed | High | The task-solving agent remains blind during ordinary evaluation, but the harness optimizer is not fully blind. |
-| DGM-020 | SOURCE CLAIM | The paper reports improvement from 20.0% to 50.0% on its 200-task SWE-bench subset. | [DGM system article](../../content/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | Author-reported selected-run result under the paper's model and evaluation setup. |
-| DGM-022 | SOURCE CLAIM | The paper reports improvement from 14.2% to 30.7% on full Polyglot. | [DGM system article](../../content/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | This is distinct from the 38.0% result on the 50-task search subset. |
-| DGM-026 | SOURCE CLAIM | The paper reports a 51.3% functioning-child rate for DGM versus 32.5% for both main baselines. | [DGM system article](../../content/systems/dgm.md) | DGM | Appendix A.4, Table 2 | Not independently reproduced | High | Functioning-child rate does not measure the magnitude of later improvements. |
-| DGM-034 | SOURCE CLAIM | The final reported SWE-bench lineage contains two immediate score dips. | [DGM system article](../../content/systems/dgm.md) | DGM | §4.4, Figure 3 | Not independently reproduced | Medium | Non-monotone ancestry does not prove that each dip was a causal stepping stone. |
-| DGM-042 | INFERENCE | Docker use in the release does not establish a hardened sandbox. | [Evaluation and control](../../content/concepts/evaluation-and-control.md) | DGM-REPO | `utils/docker_utils.py`; repository safety warning | Source inspected; security not audited | High | Host policy, network rules, credentials, quotas, and kernel isolation are outside the captured proof surface. |
-| DGM-044 | SOURCE CLAIM | Appendix H reports a perfect detector score obtained by changing the measurement channel rather than solving the target behavior. | [Evaluation and control](../../content/concepts/evaluation-and-control.md) | DGM | Appendix H | Not independently reproduced | High | The case demonstrates objective hacking under the paper's detector setup. |
-| DGM-049 | INFERENCE | The combined evidence supports bounded harness improvement. | [Improvement types](../../content/concepts/improvement-types.md) | DGM, DGM-REPO | Mechanism, lineage, task results, and ablations | Paper results not independently reproduced | Medium | The label does not imply model-weight improvement or safe deployment. |
-| DGM-050 | MISSING | The packet lacks a matched test showing that accepted children produce better later accepted children than their parents. | [Recursive improvement loop](../../content/chapters/recursive-improvement-loop.md) | DGM | No parent-versus-child next-cycle experiment | Not performed | High | This missing comparison caps the successor-improvement and recursive-improvement claims. |
-| DGM-052 | INFERENCE | A direct successor test should compare valid held-out gain per attempt under a matched root-tree budget. | [Evaluation and control](../../content/concepts/evaluation-and-control.md) | HARP-RSI | [Successor experiment design](10_successor_design.md) | Proposed, not performed | Medium | The evaluator, authority, permissions, models, tasks, and resource vector must remain fixed. |
+| DGM-001 | EVIDENCE | DGM edits a coding-agent repository whose descendants can participate in later self-modification. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM §§1–3; `self_improve_step.py:292-365` | Source inspected; experiment not independently reproduced | High | The outer controller, evaluator, and foundation-model supply remain external. |
+| DGM-005 | EVIDENCE | Default parent selection combines sigmoid-scaled task score with inverse functioning-child count. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM Appendix C.2; `DGM_outer.py:91-100` | Source inspected; search not rerun | High | The child-count factor measures underexploration, not behavioral novelty. |
+| DGM-009 | EVIDENCE | A functioning child may enter the archive without outperforming its parent. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM §3; `utils/evo_utils.py:96-127` | Source inspected; experiment not independently reproduced | High | Archive admission is not deployment promotion. |
+| DGM-013 | EVIDENCE | SWE-bench diagnosis can use private test patches and official test results. | [DGM system article](../rsi/systems/dgm.md) | DGM-REPO | `prompts/self_improvement_prompt.py:95-105` | Source inspected; information flow not executed | High | The task-solving agent remains blind during ordinary evaluation, but the harness optimizer is not fully blind. |
+| DGM-020 | SOURCE CLAIM | The paper reports improvement from 20.0% to 50.0% on its 200-task SWE-bench subset. | [DGM system article](../rsi/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | Author-reported selected-run result under the paper's model and evaluation setup. |
+| DGM-022 | SOURCE CLAIM | The paper reports improvement from 14.2% to 30.7% on full Polyglot. | [DGM system article](../rsi/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | This is distinct from the 38.0% result on the 50-task search subset. |
+| DGM-026 | SOURCE CLAIM | The paper reports a 51.3% functioning-child rate for DGM versus 32.5% for both main baselines. | [DGM system article](../rsi/systems/dgm.md) | DGM | Appendix A.4, Table 2 | Not independently reproduced | High | Functioning-child rate does not measure the magnitude of later improvements. |
+| DGM-034 | SOURCE CLAIM | The final reported SWE-bench lineage contains two immediate score dips. | [DGM system article](../rsi/systems/dgm.md) | DGM | §4.4, Figure 3 | Not independently reproduced | Medium | Non-monotone ancestry does not prove that each dip was a causal stepping stone. |
+| DGM-042 | INFERENCE | Docker use in the release does not establish a hardened sandbox. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | DGM-REPO | `utils/docker_utils.py`; repository safety warning | Source inspected; security not audited | High | Host policy, network rules, credentials, quotas, and kernel isolation are outside the captured proof surface. |
+| DGM-044 | SOURCE CLAIM | Appendix H reports a perfect detector score obtained by changing the measurement channel rather than solving the target behavior. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | DGM | Appendix H | Not independently reproduced | High | The case demonstrates objective hacking under the paper's detector setup. |
+| DGM-049 | INFERENCE | The combined evidence supports bounded harness improvement. | [Improvement types](../rsi/concepts/improvement-types.md) | DGM, DGM-REPO | Mechanism, lineage, task results, and ablations | Paper results not independently reproduced | Medium | The label does not imply model-weight improvement or safe deployment. |
+| DGM-050 | MISSING | The packet lacks a matched test showing that accepted children produce better later accepted children than their parents. | [Recursive improvement loop](../rsi/chapters/recursive-improvement-loop.md) | DGM | No parent-versus-child next-cycle experiment | Not performed | High | This missing comparison caps the successor-improvement and recursive-improvement claims. |
+| DGM-052 | INFERENCE | A direct successor test should compare valid held-out gain per attempt under a matched root-tree budget. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | HARP-RSI | [Successor experiment design](10_successor_design.md) | Proposed, not performed | Medium | The evaluator, authority, permissions, models, tasks, and resource vector must remain fixed. |
 
 ## Detailed locator ledger
 
