@@ -2,7 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use pulldown_cmark::{Event, Options, Parser, Tag};
+use pulldown_cmark::{BrokenLink, Event, Options, Parser, Tag};
 
 const EXPECTED_FILES: [&str; 16] = [
     "01_orientation.md",
@@ -83,6 +83,16 @@ fn frontmatter(text: &str) -> &str {
         .0
 }
 
+fn document_body(text: &str) -> &str {
+    if let Some(rest) = text.strip_prefix("---\n") {
+        rest.split_once("\n---\n")
+            .expect("packet document must close YAML frontmatter")
+            .1
+    } else {
+        text
+    }
+}
+
 fn parse_frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     let mut values = BTreeMap::new();
     for (index, line) in frontmatter(text).lines().enumerate() {
@@ -129,12 +139,32 @@ fn validate_frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
             || value.starts_with('{')
             || value.contains('#')
             || value.contains('\t')
+            || ((value.starts_with('"') || value.starts_with('\''))
+                && value.as_bytes().last() != value.as_bytes().first())
         {
             return Err(format!("{key} must be a nonempty scalar value"));
         }
     }
     for key in ["created", "updated"] {
-        let value = values[key].as_bytes();
+        let raw = values[key];
+        let value = raw.as_bytes();
+        let parse_part = |range: std::ops::Range<usize>| {
+            raw.get(range)
+                .and_then(|part| part.parse::<u32>().ok())
+                .unwrap_or(0)
+        };
+        let year = parse_part(0..4);
+        let month = parse_part(5..7);
+        let day = parse_part(8..10);
+        let leap =
+            year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400));
+        let max_day = match month {
+            1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+            4 | 6 | 9 | 11 => 30,
+            2 if leap => 29,
+            2 => 28,
+            _ => 0,
+        };
         if value.len() != 10
             || value[4] != b'-'
             || value[7] != b'-'
@@ -142,12 +172,26 @@ fn validate_frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
                 .iter()
                 .enumerate()
                 .any(|(index, byte)| index != 4 && index != 7 && !byte.is_ascii_digit())
+            || year == 0
+            || day == 0
+            || day > max_day
         {
             return Err(format!("{key} must use YYYY-MM-DD"));
         }
     }
     let tags = values["tags"];
-    if !tags.starts_with('[') || !tags.ends_with(']') || tags.len() <= 2 {
+    if !tags.starts_with('[')
+        || !tags.ends_with(']')
+        || !tags[1..tags.len() - 1]
+            .split(',')
+            .map(str::trim)
+            .all(|tag| {
+                !tag.is_empty()
+                    && tag
+                        .bytes()
+                        .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-')
+            })
+    {
         return Err("tags must be a nonempty inline list".to_owned());
     }
     let canonical = values["canonical"];
@@ -223,18 +267,59 @@ fn prose_outside_fences(text: &str) -> String {
     prose
 }
 
-fn markdown_targets(text: &str) -> Vec<String> {
+fn display_math_ranges(text: &str) -> Vec<std::ops::Range<usize>> {
+    let mut ranges = Vec::new();
+    let mut open = None;
+    let mut offset = 0;
+
+    for line in text.split_inclusive('\n') {
+        if line.trim() == "$$" {
+            if let Some(start) = open.take() {
+                ranges.push(start..offset + line.len());
+            } else {
+                open = Some(offset);
+            }
+        }
+        offset += line.len();
+    }
+    if let Some(start) = open {
+        ranges.push(start..text.len());
+    }
+    ranges
+}
+
+fn markdown_targets(text: &str) -> Result<Vec<String>, String> {
     let options = Options::ENABLE_TABLES
         | Options::ENABLE_FOOTNOTES
         | Options::ENABLE_STRIKETHROUGH
-        | Options::ENABLE_TASKLISTS;
-    Parser::new_ext(text, options)
+        | Options::ENABLE_TASKLISTS
+        | Options::ENABLE_MATH;
+    let math_ranges = display_math_ranges(text);
+    let mut broken_references = Vec::new();
+    let mut callback = |link: BrokenLink<'_>| {
+        if !math_ranges
+            .iter()
+            .any(|range| range.start <= link.span.start && link.span.end <= range.end)
+        {
+            broken_references.push(link.reference.to_string());
+        }
+        None
+    };
+    let targets = Parser::new_with_broken_link_callback(text, options, Some(&mut callback))
         .filter_map(|event| match event {
             Event::Start(Tag::Link { dest_url, .. })
             | Event::Start(Tag::Image { dest_url, .. }) => Some(dest_url.to_string()),
             _ => None,
         })
-        .collect()
+        .collect::<Vec<_>>();
+    if broken_references.is_empty() {
+        Ok(targets)
+    } else {
+        Err(format!(
+            "undefined reference links: {}",
+            broken_references.join(", ")
+        ))
+    }
 }
 
 fn malformed_inline_links(text: &str) -> Vec<String> {
@@ -266,22 +351,67 @@ fn normalize_link_target(target: &str) -> &str {
     target.split('#').next().expect("link path")
 }
 
-fn has_forbidden_absolute_path(text: &str) -> bool {
+fn forbidden_absolute_path(text: &str) -> Option<String> {
+    fn allowed_sandbox_path(token: &str) -> bool {
+        let relative = if matches!(token, "/dgm" | "/dgm/" | "/testbed" | "/testbed/") {
+            return true;
+        } else if let Some(relative) = token.strip_prefix("/dgm/") {
+            relative
+        } else if let Some(relative) = token.strip_prefix("/testbed/") {
+            relative
+        } else {
+            return false;
+        };
+
+        relative
+            .trim_end_matches('/')
+            .split('/')
+            .all(|component| !matches!(component, "" | "." | ".."))
+    }
+
     let lower = text.to_ascii_lowercase();
-    lower.contains("/users/")
-        || lower.contains("/home/")
-        || lower.contains("/tmp/")
-        || lower.contains("file://")
-        || text.as_bytes().windows(3).any(|window| {
-            window[0].is_ascii_alphabetic() && window[1] == b':' && window[2] == b'\\'
-        })
+    let bytes = text.as_bytes();
+    let windows_absolute = bytes.windows(3).enumerate().any(|(index, window)| {
+        let boundary = index == 0
+            || bytes[index - 1].is_ascii_whitespace()
+            || matches!(
+                bytes[index - 1],
+                b'`' | b'\'' | b'"' | b'(' | b'[' | b'{' | b',' | b';'
+            );
+        boundary
+            && window[0].is_ascii_alphabetic()
+            && window[1] == b':'
+            && matches!(window[2], b'\\' | b'/')
+    });
+    if lower.contains("file://") {
+        return Some("file://".to_owned());
+    }
+    if windows_absolute {
+        return Some("Windows absolute path".to_owned());
+    }
+
+    text.split(|character: char| {
+        character.is_whitespace()
+            || matches!(
+                character,
+                '`' | '\'' | '"' | '(' | ')' | '[' | ']' | '{' | '}' | ',' | ';'
+            )
+    })
+    .map(|token| token.trim_end_matches(|character: char| ".:!?".contains(character)))
+    .find(|token| token != &"/" && token.starts_with('/') && !allowed_sandbox_path(token))
+    .map(str::to_owned)
+}
+
+fn has_forbidden_absolute_path(text: &str) -> bool {
+    forbidden_absolute_path(text).is_some()
 }
 
 fn validate_local_links(path: &Path, text: &str) -> Result<(), String> {
+    let text = document_body(text);
     if let Some(line) = malformed_inline_links(text).first() {
         return Err(format!("malformed inline link in {line:?}"));
     }
-    for target in markdown_targets(text) {
+    for target in markdown_targets(text)? {
         if target.is_empty() || is_external_target(&target) {
             continue;
         }
@@ -355,11 +485,12 @@ fn dgm_knowledge_packet_has_complete_observable_contract() {
                 path.display()
             );
         }
-        assert!(
-            !has_forbidden_absolute_path(&text),
-            "{} contains an absolute local path",
-            path.display()
-        );
+        if let Some(forbidden) = forbidden_absolute_path(&text) {
+            panic!(
+                "{} contains an absolute local path: {forbidden}",
+                path.display()
+            );
+        }
 
         if path.file_name().and_then(|name| name.to_str()) != Some("darwin_godel_machine_index.md")
         {
@@ -435,8 +566,13 @@ fn frontmatter_validation_rejects_malformed_shapes() {
         valid.replace("title: Example\n", ""),
         valid.replace("type: concept", "type: unsupported"),
         valid.replace("tags: [example]", "tags: []"),
+        valid.replace("tags: [example]", "tags: [ ]"),
+        valid.replace("tags: [example]", "tags: [example, ]"),
         valid.replace("title: Example", "title: [Example]"),
+        valid.replace("title: Example", "title: \"unterminated"),
         valid.replace("created: 2026-08-08", "created: today"),
+        valid.replace("created: 2026-08-08", "created: 2026-99-99"),
+        valid.replace("created: 2026-08-08", "created: 2026-02-30"),
         valid.replace(
             "canonical: ../../content/example.md",
             "canonical: /tmp/example.md",
@@ -501,6 +637,8 @@ fn link_validation_covers_supported_and_broken_forms() {
         "[broken](../../content/does-not-exist.md)",
         "![broken](../../evidence/does-not-exist.png)",
         "[unclosed](../../content/systems/dgm.md",
+        "[undefined][missing]",
+        "![undefined][missing-image]",
     ] {
         assert!(
             validate_local_links(&document, invalid).is_err(),
@@ -516,13 +654,24 @@ fn prose_guards_ignore_fenced_examples_but_reject_real_placeholders_and_paths() 
     assert!(!["TODO", "TBD", "FIXME"]
         .iter()
         .any(|placeholder| prose.contains(placeholder)));
+    assert!(!has_forbidden_absolute_path(
+        "work in /dgm and /testbed/task"
+    ));
 
     for invalid in [
         "TODO: replace this",
         "TBD",
         "FIXME",
         "read /home/user/file",
+        "read /opt/tool/file",
+        "read /var/tmp/file",
+        "read /etc/passwd",
+        "read /private/tmp/file",
+        "read /workspace/file",
+        "read /dgm/../../etc/passwd",
+        "read /testbed/../private/key",
         "read C:\\work\\file",
+        "read C:/work/file",
         "open file://local/path",
     ] {
         assert!(
