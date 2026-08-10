@@ -165,6 +165,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         2,
         &mut expected_digests,
     )?;
+    let self_improving_agents_survey = verify_artifact_inventory(
+        repo_root,
+        Path::new("evidence/self_improving_agents_survey/artifact_inventory.tsv"),
+        0,
+        2,
+        3,
+        &mut expected_digests,
+    )?;
     let sicp = verify_sicp_manifest(repo_root, &mut expected_digests)?;
     let benchmarks = verify_benchmark_manifest(repo_root)?;
     let meta_harness = verify_meta_harness_bundle(repo_root)?;
@@ -228,6 +236,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     Ok(SourcesReport {
         evidence_artifacts: weng
             + rlm
+            + self_improving_agents_survey
             + sicp
             + benchmarks
             + meta_harness.site_artifacts

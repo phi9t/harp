@@ -6,11 +6,12 @@ Harp owns the standalone RSI technical atlas:
 
 - canonical RSI and SICP Markdown under `knowledge/rsi/`, plus the registered
   topic packets under `knowledge/darwin_godel_machine/`,
-  `knowledge/meta_harness/`, and `knowledge/harness_benchmarks/`;
+  `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
+  `knowledge/self_improving_agents_survey/`;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
-- Weng, RLM, SICP, Meta-Harness, and public implementation evidence under
-  `evidence/`;
+- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, and public
+  implementation evidence under `evidence/`;
 - the runnable SICP evaluator supplement under `labs/sicp-evaluator/`;
 - the opt-in Meta-Harness TRAE proposal supplement under
   `labs/meta_harness_trae/`;
@@ -39,15 +40,15 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 56 compiled documents;
+- 69 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
 - 29 diagnostic rules;
 - 12 diagnostic cases;
 - six lessons;
-- 64 source-registry rows; and
-- 72 evidence edges.
+- 76 source-registry rows; and
+- 98 evidence edges.
 
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
@@ -81,6 +82,7 @@ The search index includes:
 - all `knowledge/darwin_godel_machine/**/*.md`;
 - all `knowledge/meta_harness/**/*.md`;
 - all `knowledge/harness_benchmarks/**/*.md`;
+- all `knowledge/self_improving_agents_survey/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 

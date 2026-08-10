@@ -30,7 +30,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 10] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 11] = [
     (
         "thesis",
         "Thesis",
@@ -77,8 +77,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 10] = [
         "Evaluator integrity",
         "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
     ),
+    (
+        "survey",
+        "Survey",
+        "knowledge/self_improving_agents_survey/synthesis.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 12] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 16] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -126,6 +131,22 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 12] = [
     (
         "evaluator-integrity-benchmark-suite",
         "knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite.md",
+    ),
+    (
+        "self-improving-agents-survey-synthesis",
+        "knowledge/self_improving_agents_survey/synthesis.md",
+    ),
+    (
+        "self-improving-agents-survey-source-registry",
+        "knowledge/self_improving_agents_survey/source_registry.md",
+    ),
+    (
+        "self-improving-agents-survey-claim-evidence-ledger",
+        "knowledge/self_improving_agents_survey/claim_evidence_ledger.md",
+    ),
+    (
+        "self-improving-agents-survey-gap-map",
+        "knowledge/self_improving_agents_survey/gap_map.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [

@@ -1129,7 +1129,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "sources",
             "agentic-eval-apply",
             "benchmarks",
-            "evaluator-integrity"
+            "evaluator-integrity",
+            "survey"
         ]
     );
     for route in &corpus.reader_routes {

@@ -34,9 +34,10 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 54 binary evidence objects. The
+- The maintained tree now contains 56 binary evidence objects. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
-  files, and one deterministic raw TRAE archive.
+  files, and one deterministic raw TRAE archive. The Self-Improving Agents
+  Survey extension adds one captured PNG and one arXiv PDF.
 - Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
   fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
@@ -99,9 +100,31 @@ They do not reproduce the paper benchmarks, later post-training experiments,
 cloud-adapter safety, or production behavior. This extension does not alter the
 fixed 521-row initial import account.
 
+## Post-import Self-Improving Agents Survey extension
+
+The maintained product also adds a bounded survey-anchor packet for
+`https://selfimproving-agent.github.io/`:
+
+- a dated capture of the project hub and same-site overview figure;
+- arXiv `2607.13104v1` metadata, abstract page, PDF, and derived reading text;
+- pinned GitHub Pages source bytes at
+  `d8af6607ced118351108670f823cd106649cb757`;
+- update-repository metadata, README, and MIT license text for
+  `selfimproving-agent/Awesome-Self-Improving-Agents` at
+  `57a1d89e5bafcd65db7feb51e809422700aeb48a`;
+- a one-hop link inventory that records hub topology without crawling child
+  bibliographies; and
+- four canonical Markdown packet documents under
+  `knowledge/self_improving_agents_survey/` with regenerated Atlas outputs.
+
+The packet supports survey taxonomy, dated hub topology, and source identity.
+It does not validate linked-paper mechanisms, benchmark results, venue status,
+or linked-repository implementation behavior. This extension does not alter the
+fixed 521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`9878bebec041ae9933a868ab2c6875ca979057b7a58bba5052ce871547427777`
+`05bd3ec9b564871814e05a9f4d2e4bc8e8f1e8079b96eda5062f5e00faaff982`

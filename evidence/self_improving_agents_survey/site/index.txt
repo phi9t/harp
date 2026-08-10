@@ -1,0 +1,825 @@
+2026 survey webpage
+
+Self-Improvements in Modern Agentic Systems
+
+A survey of how foundation model-based agents improve themselves through
+model updates, intrinsic demonstrations, intrinsic evaluative feedback,
+extrinsic experience, prompt evolution, memory, tool use, and recursive
+scaffolding.
+
+Browse curated papers View taxonomy GitHub repository Community &
+feedback
+
+Abstract
+
+Foundation model-based agents are moving from static prompt-following
+systems toward systems that can improve themselves over time. This
+survey organizes self-improvement mechanisms into two major branches:
+foundation model improvement, which updates the model itself, and
+scaffolding improvement, which updates surrounding components such as
+prompts, memory, tools, and executable agent logic. A third branch,
+evaluation & benchmarking, organizes how improvement is measured and
+compared.
+
+Across the survey, the central distinction is between improving the
+underlying foundation model and improving the scaffolding around it.
+This distinction provides a practical way to compare methods, interpret
+learning signals, and connect representative papers to broader research
+trends.
+
+The paper list is organized so that readers can move directly from the
+taxonomy to representative works and then to broader literature within
+each mechanism.
+
+Overview
+
+[Overview of self-improvement mechanisms in foundation model-based
+agentic systems]
+
+Overview of self-improvement mechanisms in foundation model-based
+agentic systems.
+
+Click the figure to view full screen.
+
+Core distinction. Self-improvement can be framed by asking what is being
+updated.
+
+- Foundation model improvement changes the model itself and tends to be
+  slower, more persistent, and more training-centric.
+- Scaffolding improvement changes the operational shell around the model
+  and tends to be faster, cheaper, and more reversible.
+- The paper library below follows this logic so that taxonomy and
+  literature map onto each other directly.
+
+Taxonomy
+
+The survey can be read as a structured map of how an FM-based agent
+improves itself. Each item below links directly into the corresponding
+literature section.
+
+1. Foundation Model Improvement 77 papers
+
+- 1.1 Intrinsic Generative Demonstrations 23
+- 1.2 Intrinsic Evaluative Feedback 21
+- 1.3.1 Grounded Executable Environments 18
+- 1.3.2 Generative World Models 15
+
+2. Scaffolding Improvement 176 papers
+
+- 2.1 Prompt Optimization 39
+- 2.2 Memory 65
+- 2.3 Tool 51
+- 2.4 Full Scaffolding 21
+
+3. Evaluation & Benchmarking 59 entries
+
+- 3.1 Measuring Improvement 19
+- 3.2 Benchmarking Improvement 40
+
+The Curated Paper Library now follows three top-level branches: 1.
+Foundation Model Improvement (77 entries), 2. Scaffolding Improvement
+(176 entries), and 3. Evaluation & Benchmarking (59 categorized
+entries), for 312 categorized entries in total. Evaluation benchmarks
+may intentionally appear in more than one 3.x subsection because the
+evaluation taxonomy is multi-perspective.
+
+Quick start: representative papers
+
+These are not the only important papers in the survey. They are included
+here as a first reading path for readers who want to understand the
+landscape quickly before diving into the full library.
+
+Self-Instruct
+
+2023 · 1.1 Intrinsic Generative Demonstrations
+
+A canonical example of self-synthetic instruction generation for model
+alignment.
+
+Constitutional AI
+
+2022 · 1.2 Intrinsic Evaluative Feedback
+
+An influential AI-feedback framework where model-based judgments are
+used for alignment and policy optimization.
+
+WebRL
+
+2025 · 1.3.1 Grounded Executable Environments
+
+A representative web-agent training setup built around reinforcement
+learning and evolving curricula.
+
+Web Agents with World Models
+
+2025 · 1.3.2 Generative World Models
+
+A concrete example of using learned environment dynamics to improve web
+agents.
+
+Self-Refine
+
+2023 · 2.1.2 Qualitative-Feedback Refinement
+
+A classic self-feedback loop for iterative improvement at the
+prompt/output level.
+
+TextGrad
+
+2025 · 2.1.4 Textual Gradient Optimization
+
+An influential formulation of automatic optimization via textual
+gradients.
+
+MemoryBank
+
+2024 · 2.2.2 Memory Structure
+
+A representative long-term memory architecture for LLM-based agents.
+
+Voyager
+
+2023 · 2.3.1 Dynamic Tool Routing
+
+An open-ended embodied agent that accumulates skills and uses tools in a
+growing scaffold.
+
+Darwin Godel Machine
+
+2025 · 2.4 Full Scaffolding
+
+A strong representative for recursive self-improving agents that modify
+their broader operating logic.
+
+Curated paper library
+
+The literature below is organized to match the survey taxonomy across
+three branches: foundation model improvement, scaffolding improvement,
+and evaluation & benchmarking. Within each subsection, entries are
+presented in roughly chronological order.
+
+All
+
+Foundation model
+
+Scaffolding
+
+Evaluation
+
+2025+
+
+Has code
+
+312 visible library entries
+
+1.1 Intrinsic Generative Demonstrations
+
+The agent or model improves by synthesizing demonstrations, instruction
+sets, reasoning traces, or task distributions that can be used for
+imitation-style parameter updates.
+
+23 papers
+
+  Year   Title                                                                                                                      Venue     Links
+  ------ -------------------------------------------------------------------------------------------------------------------------- --------- --------------
+  2023   Self-Instruct: Aligning Language Models with Self-Generated Instructions                                                   ACL       Paper · Code
+  2023   Large Language Models Can Self-Improve                                                                                     EMNLP     Paper · Code
+  2023   Orca: Progressive Learning from Complex Explanation Traces of GPT-4                                                        arXiv     Paper · Code
+  2024   SELF: Self-Evolution with Language Feedback                                                                                arXiv     Paper · Code
+  2024   SELF-GUIDE: Better Task-Specific Instruction Following via Self-Synthetic Finetuning                                       COLM      Paper · Code
+  2025   Improving Model Alignment Through Collective Intelligence of Open-Source LLMS                                              ICML      Paper · Code
+  2025   Superficial Self-Improved Reasoners Benefit from Model Merging                                                             EMNLP     Paper · Code
+  2025   Will Pre-Training Ever End? A First Step Toward Next-Generation Foundation MLLMs via Self-Improving Systematic Cognition   arXiv     Paper · Code
+  2025   TaskCraft: Automated Generation of Agentic Tasks                                                                           arXiv     Paper · Code
+  2025   Iterative Tool Usage Exploration for Multimodal Agents via Step-wise Preference Tuning                                     NeurIPS   Paper · Code
+  2025   Maximizing Confidence Alone Improves Reasoning                                                                             arXiv     Paper · Code
+  2025   DIVE: Diversified Iterative Self-Improvement                                                                               arXiv     Paper · Code
+  2025   Self-Adapting Language Models                                                                                              NeurIPS   Paper · Code
+  2025   First SFT, Second RL, Third UPT: Continual Improving Multi-Modal LLM Reasoning via Unsupervised Post-Training              NeurIPS   Paper · Code
+  2025   LADDER: Self-Improving LLMs Through Recursive Problem Decomposition                                                        arXiv     Paper · Code
+  2025   Self-Consistency Preference Optimization                                                                                   ICML      Paper · Code
+  2025   Adapting While Learning: Grounding LLMs for Scientific Problems with Tool Usage Adaptation                                 ICML      Paper · Code
+  2026   Reinforcing General Reasoning Without Verifiers                                                                            ICLR      Paper · Code
+  2026   SAGE: Multi-Agent Self-Evolution for LLM Reasoning                                                                         arXiv     Paper · Code
+  2026   ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment                                      arXiv     Paper · Code
+  2026   EvoGround: Self-Evolving Video Agents for Video Temporal Grounding                                                         arXiv     Paper · Code
+  2026   From Self-Evolving Synthetic Data to Verifiable-Reward RL: Post-Training Multi-turn Interactive Tool-Using Agents          arXiv     Paper · Code
+  2026   RAGShaper: Eliciting Sophisticated Agentic RAG Skills via Automated Data Synthesis                                         arXiv     Paper · Code
+
+1.2 Intrinsic Evaluative Feedback
+
+The system derives its own reward, critique, verification signal, or
+intrinsic supervision to guide further updates.
+
+21 papers
+
+  Year   Title                                                                                                   Venue                           Links
+  ------ ------------------------------------------------------------------------------------------------------- ------------------------------- --------------
+  2025   STRIVE: Structured Reasoning for Self-Improvement in Claim Verification                                 MIR                             Paper · Code
+  2025   Beyond Accuracy: The Role of Calibration in Self-Improving Large Language Models                        arXiv                           Paper · Code
+  2022   Constitutional AI: Harmlessness from AI Feedback                                                        arXiv                           Paper · Code
+  2023   ReST meets ReAct: Self-Improvement for Multi-Step Reasoning LLM Agent                                   arXiv                           Paper · Code
+  2025   Self-Evolved Reward Learning for LLMs                                                                   ICLR                            Paper · Code
+  2025   Sample, Predict, then Proceed: Self-Verification Sampling for Tool Use of LLMs                          arXiv                           Paper · Code
+  2025   RLSR: Reinforcement Learning from Self Reward                                                           arXiv                           Paper · Code
+  2025   Right Question is Already Half the Answer: Fully Unsupervised LLM Reasoning Incentivization             NeurIPS                         Paper · Code
+  2025   TTRL: Test-Time Reinforcement Learning                                                                  NeurIPS                         Paper · Code
+  2025   Can Large Reasoning Models Self-Train?                                                                  arXiv                           Paper · Code
+  2025   Self Rewarding Self Improving                                                                           arXiv                           Paper · Code
+  2025   Self-Evolving Curriculum for LLM Reasoning                                                              arXiv                           Paper · Code
+  2025   Reflect, Retry, Reward: Self-Improving LLMs via Reinforcement Learning                                  arXiv                           Paper · Code
+  2025   Adaptive Self-improvement LLM Agentic System for ML Library Development                                 ICML                            Paper · Code
+  2026   Learning to Reason without External Rewards                                                             ICLR                            Paper · Code
+  2026   Structured Reasoning for Large Language Models                                                          arXiv                           Paper · Code
+  2026   iReasoner: Trajectory-Aware Intrinsic Reasoning Supervision for Self-Evolving Large Multimodal Models   arXiv                           Paper · Code
+  2026   STRIVE: Structured Reasoning for Self-improvement in Claim Verification                                 machine intelligence research   Paper · Code
+  2026   UniCorn: Towards Self-Improving Unified Multimodal Models through Self-Generated Supervision            arXiv                           Paper · Code
+  2026   Retrospective Progress-Aware Self-Refinement for LLM Agent Training                                     arXiv                           Paper · Code
+  2026   EVE-Agent: Evidence-Verifiable Self-Evolving Agents                                                     arXiv                           Paper · Code
+
+1.3 Extrinsic Exploratory Experience
+
+The agent improves through trajectories gathered from interaction with
+environments or learned simulators.
+
+33 papers
+
+1.3.1 Grounded Executable Environments 18 papers
+
+Learning from trajectories, rewards, or observations obtained by acting
+in executable environments such as code runtimes, web interfaces, games,
+GUI systems, or robotics simulators.
+
+  Year   Title                                                                                         Venue     Links
+  ------ --------------------------------------------------------------------------------------------- --------- --------------
+  2023   RoboCat: A Self-Improving Generalist Agent for Robotic Manipulation                           TMLR      Paper · Code
+  2025   Tool-Star: Empowering LLM-Brained Multi-Tool Reasoner via Reinforcement Learning              arXiv     Paper · Code
+  2025   CodeARC: Benchmarking Reasoning Capabilities of LLM Agents for Inductive Program Synthesis    COLM      Paper · Code
+  2025   LLMs are Greedy Agents: Effects of RL Fine-tuning on Decision-Making Abilities                arXiv     Paper · Code
+  2025   Agent-RLVR: Training Software Engineering Agents via Guidance and Environment Rewards         arXiv     Paper · Code
+  2025   WebRL: Training LLM Web Agents via Self-Evolving Online Curriculum Reinforcement Learning     ICLR      Paper · Code
+  2025   Self-Improving Language Models for Evolutionary Program Synthesis: A Case Study on ARC-AGI    ICML      Paper · Code
+  2025   DeepResearcher: Scaling Deep Research via Reinforcement Learning in Real-world Environments   arXiv     Paper · Code
+  2025   Agentic Reasoning and Tool Integration for LLMs via Reinforcement Learning                    arXiv     Paper · Code
+  2025   UI-Genie: A Self-Improving Approach for Iteratively Boosting MLLM-based Mobile GUI Agents     NeurIPS   Paper · Code
+  2025   RAGEN: Understanding Self-Evolution in LLM Agents via Multi-Turn Reinforcement Learning       arXiv     Paper · Code
+  2025   SEAgent: Self-Evolving Computer Use Agent with Autonomous Learning from Experience            arXiv     Paper · Code
+  2026   WebGym: Scaling Training Environments for Visual Web Agents with Realistic Tasks              arXiv     Paper · Code
+  2026   Kevin: Multi-Turn RL for Generating CUDA Kernels                                              ICLR      Paper · Code
+  2026   Tool-R0: Self-Evolving LLM Agents for Tool-Learning from Zero Data                            arXiv     Paper · Code
+  2026   Socratic-SWE: Self-Evolving Coding Agents via Trace-Derived Agent Skills                      arXiv     Paper · Code
+  2026   Self-evolving LLM Agents with In-Distribution Optimization                                    ICML      Paper · Code
+  2026   Skill Self-Play: Pushing the Frontier of LLM Capability with Co-Evolving Skills               arXiv     Paper · Code
+
+1.3.2 Generative World Models 15 papers
+
+Using learned world models, simulators, or imagined rollouts to improve
+agent behavior.
+
+  Year   Title                                                                                                 Venue      Links
+  ------ ----------------------------------------------------------------------------------------------------- ---------- --------------
+  2023   Language Models Meet World Models: Embodied Experiences Enhance Language Models                       NeurIPS    Paper · Code
+  2024   Agent Planning with World Knowledge Model                                                             NeurIPS    Paper · Code
+  2025   Web Agents with World Models: Learning and Leveraging Environment Dynamics in Web Navigation          ICLR       Paper · Code
+  2025   Understanding World or Predicting Future? A Comprehensive Survey of World Models                      ACM CSUR   Paper · Code
+  2025   General agents contain world models                                                                   ICML       Paper · Code
+  2025   WebEvolver: Enhancing Web Agent Self-Improvement with Coevolving World Model                          EMNLP      Paper · Code
+  2025   WebSynthesis: World-Model-Guided MCTS for Efficient WebUI-Trajectory Synthesis                        arXiv      Paper · Code
+  2025   GAWM: Global-Aware World Model for Multi-Agent Reinforcement Learning                                 arXiv      Paper · Code
+  2025   WMPO: World Model-based Policy Optimization for Vision-Language-Action Models                         arXiv      Paper · Code
+  2025   Internalizing World Models via Self-Play Finetuning for Agentic RL                                    arXiv      Paper · Code
+  2026   AlignUSER: Human-Aligned LLM Agents via World Models for Recommender System Evaluation                arXiv      Paper · Code
+  2026   Self-Evolving World Models for LLM Agent Planning                                                     arXiv      Paper · Code
+  2025   NavMorph: A Self-Evolving World Model for Vision-and-Language Navigation in Continuous Environments   ICCV       Paper · Code
+  2025   EvoWorld: Evolving Panoramic World Generation with Explicit 3D Memory                                 arXiv      Paper · Code
+  2026   RISE: Self-Improving Robot Policy with Compositional World Model                                      RSS        Paper · Code
+
+2.1 Prompt Optimization
+
+The agent improves the prompt layer through scoring, reflection,
+evolutionary search, or textual-gradient style updates.
+
+39 papers
+
+2.1.1 Scalar-Feedback Optimization 10 papers
+
+Optimizing prompts with scalar objectives, scores, or evaluation
+signals.
+
+  Year   Title                                                                                                       Venue   Links
+  ------ ----------------------------------------------------------------------------------------------------------- ------- --------------
+  2022   Large Language Models Are Human-Level Prompt Engineers                                                      arXiv   Paper · Code
+  2024   Large Language Models as Optimizers                                                                         ICLR    Paper · Code
+  2024   Prompt Refinement with Image Pivot for Text-to-Image Generation                                             ACL     Paper · Code
+  2024   Learning from Contrastive Prompts: Automated Optimization and Adaptation                                    arXiv   Paper · Code
+  2024   PRompt Optimization in Multi-Step Tasks (PROMST): Integrating Human Feedback and Heuristic-based Sampling   EMNLP   Paper · Code
+  2025   The Prompt Alchemist: Automated LLM-Tailored Prompt Optimization for Test Case Generation                   arXiv   Paper · Code
+  2025   DRO-InstructZero: Distributionally Robust Prompt Optimization for Large Language Models                     arXiv   Paper · Code
+  2025   CoolPrompt: Automatic Prompt Optimization Framework for Large Language Models                               FRUCT   Paper · Code
+  2026   SePO: Self-Evolving Prompt Agent for System Prompt Optimization                                             arXiv   Paper · Code
+  2026   SAGE: Stochastic Prompt Optimization via Agent-Guided Exploration                                           arXiv   Paper · Code
+
+2.1.2 Qualitative-Feedback Refinement 11 papers
+
+Improving prompts through critiques, revisions, hindsight, or other
+natural-language feedback.
+
+  Year   Title                                                                                                                        Venue           Links
+  ------ ---------------------------------------------------------------------------------------------------------------------------- --------------- --------------
+  2023   Self-Refine: Iterative Refinement with Self-Feedback                                                                         arXiv           Paper · Code
+  2023   Chain of Hindsight Aligns Language Models with Feedback                                                                      arXiv           Paper · Code
+  2023   Reflexion: Language Agents with Verbal Reinforcement Learning                                                                NeurIPS         Paper · Code
+  2023   Encouraging Divergent Thinking in Large Language Models through Multi-Agent Debate                                           arXiv           Paper · Code
+  2024   Self-Improving Customer Review Response Generation Based on LLMs                                                             COLING          Paper · Code
+  2024   Prompt Optimization with Human Feedback                                                                                      ICML Workshop   Paper · Code
+  2024   Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs                                           EMNLP           Paper · Code
+  2025   CriSPO: Multi-Aspect Critique-Suggestion-guided Automatic Prompt Optimization for Text Generation                            AAAI            Paper · Code
+  2025   Boosting Private Domain Understanding of Efficient MLLMs: A Tuning-free, Adaptive, Universal Prompt Optimization Framework   arXiv           Paper · Code
+  2026   GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning                                                      ICLR            Paper · Code
+  2026   FORGE: Self-Evolving Agent Memory With No Weight Updates via Population Broadcast                                            CAIS            Paper · Code
+
+2.1.3 Population-Based Evolution 6 papers
+
+Evolving prompt populations with selection, mutation, or other
+population-based search methods.
+
+  Year   Title                                                                                                                              Venue     Links
+  ------ ---------------------------------------------------------------------------------------------------------------------------------- --------- --------------
+  2024   EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers                                          ICLR      Paper · Code
+  2024   WizardLM: Empowering large pre-trained language models to follow complex instructions                                              ICLR      Paper · Code
+  2025   Tournament of Prompts: Evolving LLM Instructions Through Structured Debates and Elo Ratings                                        KDD       Paper · Code
+  2023   Promptbreeder: Self-Referential Self-Improvement Via Prompt Evolution                                                              arXiv     Paper · Code
+  2025   DelvePO: Direction-Guided Self-Evolving Framework for Flexible Prompt Optimization                                                 arXiv     Paper · Code
+  2025   How to Auto-optimize Prompts for Domain Tasks? Adaptive Prompting and Reasoning through Evolutionary Domain Knowledge Adaptation   NeurIPS   Paper · Code
+
+2.1.4 Textual Gradient Optimization 12 papers
+
+Treating language feedback like gradients for automatic textual
+optimization.
+
+  Year   Title                                                                                                             Venue              Links
+  ------ ----------------------------------------------------------------------------------------------------------------- ------------------ --------------
+  2023   Automatic Prompt Optimization with "Gradient Descent" and Beam Search                                             EMNLP              Paper · Code
+  2024   How to Correctly do Semantic Backpropagation on Language-based Agentic Systems                                    arXiv              Paper · Code
+  2024   Trace is the Next AutoDiff: Generative Optimization with Rich Feedback, Execution Traces, and LLMs                NeurIPS            Paper · Code
+  2025   TextGrad: Automatic "Differentiation" via Text                                                                    Nature             Paper · Code
+  2025   metaTextGrad: Automatically optimizing language model optimizers                                                  NeurIPS            Paper · Code
+  2025   MAPGD: Multi-Agent Prompt Gradient Descent for Collaborative Prompt Optimization                                  NeurIPS Workshop   Paper · Code
+  2025   Scaling Textual Gradients via Sampling-Based Momentum                                                             ICML               Paper · Code
+  2026   Pick Your Textual Gradients                                                                                       arXiv              Paper · Code
+  2026   SkillOpt: Executive Strategy for Self-Evolving Agent Skills                                                       arXiv              Paper · Code
+  2026   VASO: Formally Verifiable Self-Evolving Skills for Physical AI Agents                                             arXiv              Paper · Code
+  2026   Learning to Evolve: A Self-Improving Framework for Multi-Agent Systems via Textual Parameter Graph Optimization   ACL Findings       Paper · Code
+  2026   Learning to Learn-at-Test-Time: Language Agents with Learnable Adaptation Policies                                arXiv              Paper · Code
+
+2.2 Memory
+
+The agent improves what it stores, how memory is structured, and how
+memory is processed across interactions.
+
+65 papers
+
+2.2.1 Memory Object 17 papers
+
+What is stored in memory, such as notes, summaries, trajectories, or
+latent states.
+
+  Year   Title                                                                                                                 Venue     Links
+  ------ --------------------------------------------------------------------------------------------------------------------- --------- --------------
+  2023   Learning to Reason and Memorize with Self-Notes                                                                       NeurIPS   Paper · Code
+  2024   ExpeL: LLM Agents Are Experiential Learners                                                                           AAAI      Paper · Code
+  2024   A Human-Inspired Reading Agent with Gist Memory of Very Long Contexts                                                 ICML      Paper · Code
+  2024   CodeAgent: Enhancing Code Generation with Tool-Integrated Agent Systems for Real-World Repo-level Coding Challenges   ACL       Paper · Code
+  2024   MEMORYLLM: Towards Self-Updatable Large Language Models                                                               ICML      Paper · Code
+  2025   Agent Workflow Memory                                                                                                 ICML      Paper · Code
+  2025   ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory                                                      arXiv     Paper · Code
+  2025   Seeing, Listening, Remembering, and Reasoning: A Multimodal Agent with Long-Term Memory                               arXiv     Paper · Code
+  2025   Dynamic Cheatsheet: Test-Time Learning with Adaptive Memory                                                           arXiv     Paper · Code
+  2025   PRIME: Planning and Retrieval-Integrated Memory for Enhanced Reasoning                                                AAAI      Paper · Code
+  2025   Contextual Memory Reweaving in Large Language Models Using Layered Latent State Reconstruction                        arXiv     Paper · Code
+  2025   MemGen: Weaving Generative Latent Memory for Self-Evolving Agents                                                     arXiv     Paper · Code
+  2025   M+: Extending MemoryLLM with Scalable Long-Term Memory                                                                arXiv     Paper · Code
+  2026   Seeing, Listening, Remembering, and Reasoning: A Multimodal Agent with Long-Term Memory                               ICLR      Paper · Code
+  2026   Thought-Retriever: Don't Just Retrieve Raw Data, Retrieve Thoughts for Memory-Augmented Agentic Systems               arXiv     Paper · Code
+  2026   Better with Experience: Self-Evolving LLM Agents for Evidence-Grounded Health Community Notes                         arXiv     Paper · Code
+  2026   Agon: An Autonomous Large-Scale Omnidisciplinary Research System Built on Prompt Economy                              arXiv     Paper · Code
+
+2.2.2 Memory Structure 25 papers
+
+How memory is organized, indexed, retrieved, or represented over time.
+
+  Year   Title                                                                                                    Venue          Links
+  ------ -------------------------------------------------------------------------------------------------------- -------------- --------------
+  2022   XMem: Long-Term Video Object Segmentation with an Atkinson-Shiffrin Memory Model                         ECCV           Paper · Code
+  2023   Generative Agents: Interactive Simulacra of Human Behavior                                               UIST'23        Paper · Code
+  2024   MemoryBank: Enhancing Large Language Models with Long-Term Memory                                        arXiv          Paper · Code
+  2024   MovieChat: From Dense Token to Sparse Memory for Long Video Understanding                                CVPR           Paper · Code
+  2024   Explore, Select, Derive, and Recall: Augmenting LLM with Human-like Memory for Mobile Task Automation    ACM MobiCom    Paper · Code
+  2024   Scene-Driven Multimodal Knowledge Graph Construction for Embodied AI                                     IEEE TKDE      Paper · Code
+  2025   SCM: Enhancing Large Language Model with Self-Controlled Memory Framework                                DASFAA         Paper · Code
+  2025   Hierarchical Memory for High-Efficiency Long-Term Reasoning in LLM Agents                                arXiv          Paper · Code
+  2025   SALM: A Multi-Agent Framework for Language Model-Driven Social Network Simulation                        arXiv          Paper · Code
+  2025   Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory                                 arXiv          Paper · Code
+  2025   G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems                                            NeurIPS        Paper · Code
+  2025   Zep: A Temporal Knowledge Graph Architecture for Agent Memory                                            arXiv          Paper · Code
+  2025   SGMem: Sentence Graph Memory for Long-Term Conversational Agents                                         arXiv          Paper · Code
+  2025   CausalRAG: Integrating Causal Graphs into Retrieval-Augmented Generation                                 ACL            Paper · Code
+  2025   GraphVideoAgent: Enhancing Long-form Video Understanding with Entity Relation Graphs                     MM'25          Paper · Code
+  2025   Decentralizing AI Memory: SHIMI, a Semantic Hierarchical Memory Index for Scalable Agent Reasoning       arXiv          Paper · Code
+  2025   From Knowledge to Noise: CTIM-Rover and the Pitfalls of Episodic Memory in Software Engineering Agents   ACL Workshop   Paper · Code
+  2025   In Prospect and Retrospect: Reflective Memory Management for Long-term Personalized Dialogue Agents      ACL            Paper · Code
+  2025   MrSteve: Instruction-Following Agents in Minecraft with What-Where-When Memory                           ICLR           Paper · Code
+  2026   EvolveMem: Self-Evolving Memory Architecture via AutoResearch for LLM Agents                             arXiv          Paper · Code
+  2026   SAGE: A Self-Evolving Agentic Graph-Memory Engine for Structure-Aware Associative Memory                 arXiv          Paper · Code
+  2026   Prism: An Evolutionary Memory Substrate for Multi-Agent Open-Ended Discovery                             arXiv          Paper · Code
+  2026   DecentMem: Self-Evolving Multi-Agent Systems via Decentralized Memory                                    arXiv          Paper · Code
+  2026   EXG: Self-Evolving Agents with Experience Graphs                                                         arXiv          Paper · Code
+  2026   CLAG: Adaptive Memory Organization via Agent-Driven Clustering for Small Language Model Agents           ACL Findings   Paper · Code
+
+2.2.3 Memory Processing 23 papers
+
+How memory is created, updated, compressed, retrieved, and otherwise
+processed over time.
+
+  Year   Title                                                                                                             Venue     Links
+  ------ ----------------------------------------------------------------------------------------------------------------- --------- --------------
+  2023   Generative Agents: Interactive Simulacra of Human Behavior                                                        UIST      Paper · Code
+  2024   WizardLM: Empowering large pre-trained language models to follow complex instructions                             ICLR      Paper · Code
+  2025   SEDM: Scalable Self-Evolving Distributed Memory for Agents                                                        ICLR      Paper · Code
+  2025   MemInsight: Autonomous Memory Augmentation for LLM Agents                                                         arXiv     Paper · Code
+  2025   MemGen: Weaving Generative Latent Memory for Self-Evolving Agents                                                 arXiv     Paper · Code
+  2025   A-MEM: Agentic Memory for LLM Agents                                                                              NeurIPS   Paper · Code
+  2025   G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems                                                     arXiv     Paper · Code
+  2025   Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory                                          arXiv     Paper · Code
+  2025   Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG                                                   arXiv     Paper · Code
+  2025   Memory OS of AI Agent                                                                                             EMNLP     Paper · Code
+  2025   SCM: Enhancing Large Language Model with Self-Controlled Memory Framework                                         DASFAA    Paper · Code
+  2025   Dynamic Cheatsheet: Test-Time Learning with Adaptive Memory                                                       arXiv     Paper · Code
+  2025   MLC-Agent: Cognitive Model based on Memory-Learning Collaboration in LLM Empowered Agent Simulation Environment   arXiv     Paper · Code
+  2025   MemInsight: Autonomous Memory Augmentation for LLM Agents                                                         arXiv     Paper · Code
+  2025   PBFT-Backed Semantic Voting for Multi-Agent Memory Pruning                                                        arXiv     Paper · Code
+  2026   Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models                                 ICLR      Paper · Code
+  2026   MemRL: Self-Evolving Agents via Runtime Reinforcement Learning on Episodic Memory                                 arXiv     Paper · Code
+  2026   TMEM: Scaling Self-Evolving Agents via Parametric Memory                                                          arXiv     Paper · Code
+  2026   MemQ: Integrating Q-Learning into Self-Evolving Memory Agents over Provenance DAGs                                arXiv     Paper · Code
+  2026   Memory Beyond Recall: A Dual-Process Cognitive Memory System for Self-Evolving LLM Agents                         arXiv     Paper · Code
+  2026   AEL: Agent Evolving Learning for Open-Ended Environments                                                          arXiv     Paper · Code
+  2026   Metis: Bridging Text and Code Memory for Self-Evolving Agents                                                     arXiv     Paper · Code
+  2026   Mem^2Evolve: Towards Self-Evolving Agents via Co-Evolutionary Capability Expansion and Experience Distillation    ACL       Paper · Code
+
+2.3 Tool
+
+The agent improves which tools it uses, how tools are routed, and
+whether it can refine or create new tools itself.
+
+51 papers
+
+2.3.1 Dynamic Tool Routing 24 papers
+
+Choosing, orchestrating, and routing among available tools as tasks and
+contexts evolve.
+
+  Year   Title                                                                                                               Venue              Links
+  ------ ------------------------------------------------------------------------------------------------------------------- ------------------ --------------
+  2023   Voyager: An Open-Ended Embodied Agent with Large Language Models                                                    arXiv              Paper · Code
+  2024   ToolNet: Connecting Large Language Models with Massive Tools via Tool Graph                                         arXiv              Paper · Code
+  2025   AgentOrchestra: Orchestrating Hierarchical Multi-Agent Intelligence with the Tool-Environment-Agent(TEA) Protocol   arXiv              Paper · Code
+  2025   MetaAgent: Toward Self-Evolving Agent via Tool Meta-Learning                                                        arXiv              Paper · Code
+  2025   OrchDAG: Complex Tool Orchestration in Multi-Turn Interactions with Plan DAGs                                       NeurIPS Workshop   Paper · Code
+  2025   AutoTIR: Autonomous Tools Integrated Reasoning via Reinforcement Learning                                           arXiv              Paper · Code
+  2025   MCP-Flow: Facilitating LLM Agents to Master Real-World, Diverse and Scaling MCP Tools                               arXiv              Paper · Code
+  2025   In-the-Flow Agentic System Optimization for Effective Planning and Tool Use                                         NeurIPS            Paper · Code
+  2025   MassTool: A Multi-Task Search-Based Tool Retrieval Framework for Large Language Models                              arXiv              Paper · Code
+  2025   AgentOrchestra: Orchestrating Multi-Agent Intelligence with the Tool-Environment-Agent(TEA) Protocol                arXiv              Paper · Code
+  2025   Iterative Tool Usage Exploration for Multimodal Agents via Step-wise Preference Tuning                              NeurIPS            Paper · Code
+  2025   Tool-Star: Empowering LLM-Brained Multi-Tool Reasoner via Reinforcement Learning                                    arXiv              Paper · Code
+  2025   MCP-Zero: Active Tool Discovery for Autonomous LLM Agents                                                           arXiv              Paper · Code
+  2025   AskToAct: Enhancing LLMs Tool Use via Self-Correcting Clarification                                                 arXiv              Paper · Code
+  2025   MemTool: Optimizing Short-Term Memory Management for Dynamic Tool Calling in LLM Agent Multi-Turn Conversations     arXiv              Paper · Code
+  2025   Tool-Planner: Task Planning with Clusters across Multiple Tools                                                     ICLR               Paper · Code
+  2025   Tool-to-Agent Retrieval: Bridging Tools and Agents for Scalable LLM Multi-Agent Systems                             arXiv              Paper · Code
+  2025   ToolGen: Unified Tool Retrieval and Calling via Generation                                                          ICLR               Paper · Code
+  2026   ToolACE-R: Model-aware Iterative Training and Adaptive Refinement for Tool Learning                                 AAAI               Paper · Code
+  2026   DeepAgent: A General Reasoning Agent with Scalable Toolsets                                                         WWW                Paper · Code
+  2026   DeepEyesV2: Toward Agentic Multimodal Model                                                                         ICLR               Paper · Code
+  2026   In-the-Flow Agentic System Optimization for Effective Planning and Tool Use                                         ICLR               Paper · Code
+  2026   GenericAgent: A Token-Efficient Self-Evolving LLM Agent via Contextual Information Density Maximization             arXiv              Paper · Code
+  2026   ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment                               arXiv              Paper · Code
+
+2.3.2 Iterative Tool Refinement 11 papers
+
+Improving tool use through iterative practice, feedback, debugging, or
+skill refinement.
+
+  Year   Title                                                                                         Venue   Links
+  ------ --------------------------------------------------------------------------------------------- ------- --------------
+  2023   Voyager: An Open-Ended Embodied Agent with Large Language Models                              arXiv   Paper · Code
+  2025   STELLA: Self-Evolving LLM Agent for Biomedical Research                                       arXiv   Paper · Code
+  2025   SkillWeaver: Web Agents can Self-Improve by Discovering and Honing Skills                     arXiv   Paper · Code
+  2025   PyVision: Agentic Vision with Dynamic Tooling                                                 arXiv   Paper · Code
+  2025   From Exploration to Mastery: Enabling LLMs to Master Tools via Self-Driven Interactions       ICLR    Paper · Code
+  2025   LLMLOOP: Improving LLM-Generated Code and Tests Through Automated Iterative Feedback Loops    ICSME   Paper · Code
+  2025   Helping LLMs Improve Code Generation Using Feedback from Testing and Static Analysis          arXiv   Paper · Code
+  2026   RewardHarness: Self-Evolving Agentic Post-Training                                            arXiv   Paper · Code
+  2026   MUSE-Autoskill: Self-Evolving Agents via Skill Creation, Memory, Management, and Evaluation   arXiv   Paper · Code
+  2026   CODESKILL: Learning Self-Evolving Skills for Coding Agents                                    arXiv   Paper · Code
+  2026   PFAgent: A Tractable and Self-Evolving Power-Flow Agent for Interactive Grid Analysis         arXiv   Paper · Code
+
+2.3.3 Autonomous Tool Creation 16 papers
+
+Generating or assembling new tools, services, or agent capabilities on
+demand.
+
+  Year   Title                                                                                                               Venue   Links
+  ------ ------------------------------------------------------------------------------------------------------------------- ------- --------------
+  2023   Voyager: An Open-Ended Embodied Agent with Large Language Models                                                    arXiv   Paper · Code
+  2025   Alita: Generalist Agent Enabling Scalable Agentic Reasoning with Minimal Predefinition and Maximal Self-Evolution   arXiv   Paper · Code
+  2024   Large Language Models as Tool Makers                                                                                arXiv   Paper · Code
+  2025   Alita-G: Self-Evolving Generative Agent for Agent Generation                                                        arXiv   Paper · Code
+  2025   LLM Agents Making Agent Tools                                                                                       ACL     Paper · Code
+  2024   OS-Copilot: Towards Generalist Computer Agents with Self-Improvement                                                ICLR    Paper · Code
+  2025   Advanced Tool Learning and Selection System (ATLASS): A Closed-Loop Framework Using LLM                             SOSE    Paper · Code
+  2025   Code2MCP: Transforming Code Repositories into MCP Services                                                          arXiv   Paper · Code
+  2025   STELLA: Self-Evolving LLM Agent for Biomedical Research                                                             arXiv   Paper · Code
+  2025   PyVision: Agentic Vision with Dynamic Tooling                                                                       arXiv   Paper · Code
+  2025   AgentOrchestra: Orchestrating Multi-Agent Intelligence with the Tool-Environment-Agent(TEA) Protocol                arXiv   Paper · Code
+  2025   Enhancing Open-Domain Task-Solving Capability of LLMs via Autonomous Tool Integration from GitHub                   ACL     Paper · Code
+  2026   OpenSkill: Open-World Self-Evolution for LLM Agents                                                                 arXiv   Paper · Code
+  2026   EvoDS: Self-Evolving Autonomous Data Science Agent with Skill Learning and Context Management                       arXiv   Paper · Code
+  2026   Autonomous Evolution of EDA Tools: Multi-Agent Self-Evolved ABC                                                     DAC     Paper · Code
+  2026   CoEvoSkills: Self-Evolving Agent Skills via Co-Evolutionary Verification                                            arXiv   Paper · Code
+
+2.4 Full Scaffolding
+
+The most ambitious setting: the agent revises its own broader
+operational logic or executable scaffold.
+
+21 papers
+
+  Year   Title                                                                                                                  Venue     Links
+  ------ ---------------------------------------------------------------------------------------------------------------------- --------- --------------
+  2024   Language Agents as Optimizable Graphs                                                                                  ICML      Paper · Code
+  2024   Self-Taught Optimizer (STOP): Recursively Self-Improving Code Generation                                               COLM      Paper · Code
+  2024   Automated Design of Agentic Systems                                                                                    NeurIPS   Paper · Code
+  2024   Symbolic Learning Enables Self-Evolving Agents                                                                         arXiv     Paper · Code
+  2025   Darwin Godel Machine: Open-Ended Evolution of Self-Improving Agents                                                    arXiv     Paper · Code
+  2025   Huxley-Gödel Machine: Human-Level Coding Agent Development by an Approximation of the Optimal Self-Improving Machine   arXiv     Paper · Code
+  2025   Gödel Agent: A Self-Referential Agent Framework for Recursive Self-Improvement                                         ACL       Paper · Code
+  2025   AlphaEvolve: A coding agent for scientific and algorithmic discovery                                                   arXiv     Paper · Code
+  2025   ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution                                                arXiv     Paper · Code
+  2025   Live-SWE-agent: Can Software Engineering Agents Self-Evolve on the Fly?                                                arXiv     Paper · Code
+  2026   AgentDevel: Reframing Self-Evolving LLM Agents as Release Engineering                                                  arXiv     Paper · Code
+  2026   JudgeFlow: Agentic Workflow Optimization via Block Judge                                                               arXiv     Paper · Code
+  2026   RoboPhD: Self-Improving Text-to-SQL Through Autonomous Agent Evolution                                                 arXiv     Paper · Code
+  2026   Adaptive Auto-Harness: Sustained Self-Improvement for Agentic System Deployment on Open-Ended Task Streams             arXiv     Paper · Code
+  2026   MOSS: Self-Evolution through Source-Level Rewriting in Autonomous Agent Systems                                        arXiv     Paper · Code
+  2026   Recursive Self-Evolving Agents via Held-Out Selection                                                                  arXiv     Paper · Code
+  2026   Continual Harness: Online Adaptation for Self-Improving Foundation Agents                                              arXiv     Paper · Code
+  2026   The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators                                                   arXiv     Paper · Code
+  2026   Group-Evolving Agents: Open-Ended Self-Improvement via Experience Sharing                                              arXiv     Paper · Code
+  2026   Hyperagents                                                                                                            arXiv     Paper · Code
+  2026   Harness-R1: Learning to Edit Executable Runtime Harnesses from Agent Failure Trajectories                              arXiv     Paper · Code
+
+3. Evaluation & Benchmarking
+
+Evaluation and benchmark literature is integrated here as the third
+branch of the Curated Paper Library.
+
+59 entries
+
+3.1 Measuring Improvement
+
+3.1.1 Metric-Based Measurement14 entries
+
+  Year   Title                                                                                                                 Venue     Links
+  ------ --------------------------------------------------------------------------------------------------------------------- --------- --------------
+  2023   Mind2Web: Towards a Generalist Agent for the Web                                                                      NeurIPS   Paper · Code
+  2023   ManiSkill2: A Unified Benchmark for Generalizable Manipulation Skills                                                 ICLR      Paper · Code
+  2024   CORE-Bench: Fostering the Credibility of Published Research Through a Computational Reproducibility Agent Benchmark   TMLR      Paper · Code
+  2024   SWE-Bench+: Enhanced Coding Benchmark for LLMs                                                                        arXiv     Paper · Code
+  2024   WebLINX: Real-World Website Navigation with Multi-Turn Dialogue                                                       ICML      Paper · Code
+  2024   GAIA: A Benchmark for General AI Assistants                                                                           ICLR      Paper · Code
+  2024   MINT: Evaluating LLMs in Multi-Turn Interaction with Tools and Language Feedback                                      ICLR      Paper · Code
+  2024   WorkArena: How Capable Are Web Agents at Solving Common Knowledge Work Tasks?                                         ICML      Paper · Code
+  2025   AgentGym: Evolving Large Language Model-Based Agents across Diverse Environments                                      ACL       Paper · Code
+  2025   GitTaskBench: A Benchmark for Code Agents Solving Real-World Tasks Through Code Repository Leveraging                 arXiv     Paper · Code
+  2025   SafeAgentBench: A Benchmark for Safe Task Planning of Embodied LLM Agents                                             arXiv     Paper · Code
+  2026   DrunkAgent: Stealthy Memory Corruption in LLM-Powered Recommender Agents                                              WWW       Paper · Code
+  2026   ST-WebAgentBench: A Benchmark for Evaluating Safety and Trustworthiness in Web Agents                                 ICLR      Paper · Code
+  2026   ClawBench: A Benchmark for Evaluating AI Agents on Real-World Online Tasks                                            arXiv     Paper · Code
+
+3.1.2 Judge-Based Measurement5 entries
+
+  Year   Title                                                                                          Venue            Links
+  ------ ---------------------------------------------------------------------------------------------- ---------------- --------------
+  2025   Agent-as-a-Judge: Evaluate Agents with Agents                                                  ICML             Paper · Code
+  2025   Evaluation Agent: Efficient and Promptable Evaluation Framework for Visual Generative Models   ACL              Paper · Code
+  2025   EvalAgent: Discovering Implicit Evaluation Criteria from the Web                               COLM             Paper · Code
+  2025   Learning to Align Multi-Faceted Evaluation: A Unified and Robust Framework (ARJudge)           ACL Findings     Paper · Code
+  2025   VerifiAgent: A Unified Verification Agent in Language Model Reasoning                          EMNLP Findings   Paper · Code
+
+3.2 Benchmarking Improvement
+
+3.2.1 Mechanism Benchmarks9 entries
+
+Foundation-Model-Level
+
+  Year   Title                                                                                                   Venue   Links
+  ------ ------------------------------------------------------------------------------------------------------- ------- --------------
+  2024   SWE-Bench+: Enhanced Coding Benchmark for LLMs                                                          arXiv   Paper · Code
+  2024   Identifying the Risks of LM Agents with an LM-Emulated Sandbox                                          ICLR    Paper · Code
+  2025   GitTaskBench: A Benchmark for Code Agents Solving Real-World Tasks Through Code Repository Leveraging   arXiv   Paper · Code
+
+Scaffold-Level
+
+  Year   Title                                                                                                            Venue     Links
+  ------ ---------------------------------------------------------------------------------------------------------------- --------- --------------
+  2024   MINT: Evaluating LLMs in Multi-Turn Interaction with Tools and Language Feedback                                 ICLR      Paper · Code
+  2024   TaskBench: Benchmarking Large Language Models for Task Automation                                                NeurIPS   Paper · Code
+  2024   MetaTool Benchmark for Large Language Models: Deciding Whether to Use Tools and Which to Use                     ICLR      Paper · Code
+  2025   The Berkeley Function Calling Leaderboard (BFCL): From Tool Use to Agentic Evaluation of Large Language Models   ICML      Paper · Code
+  2026   DrunkAgent: Stealthy Memory Corruption in LLM-Powered Recommender Agents                                         WWW       Paper · Code
+  2026   RSI-Bench: Multi-Axis Benchmark for Recursive Self-Improvement                                                   GitHub    Paper · Code
+
+3.2.2 Domain Benchmarks31 entries
+
+Software Engineering
+
+  Year   Title                                                                                           Venue     Links
+  ------ ----------------------------------------------------------------------------------------------- --------- --------------
+  2024   SWE-bench: Can Language Models Resolve Real-World GitHub Issues?                                ICLR      Paper · Code
+  2024   SWE-Bench+: Enhanced Coding Benchmark for LLMs                                                  arXiv     Paper · Code
+  2024   SWT-Bench: Testing and Validating Real-World Bug-Fixes with Code Agents                         NeurIPS   Paper · Code
+  2024   TDD-Bench Verified: Can LLMs Generate Tests for Issues Before They Get Resolved?                arXiv     Paper · Code
+  2025   LoCoBench-Agent: An Interactive Benchmark for LLM Agents in Long-Context Software Engineering   arXiv     Paper · Code
+  2025   DevAI: Automated AI Development Benchmark                                                       ICML      Paper · Code
+
+Web Navigation
+
+  Year   Title                                                                                   Venue           Links
+  ------ --------------------------------------------------------------------------------------- --------------- --------------
+  2023   Mind2Web: Towards a Generalist Agent for the Web                                        NeurIPS         Paper · Code
+  2024   WebArena: A Realistic Web Environment for Building Autonomous Agents                    ICLR            Paper · Code
+  2024   VisualWebArena: Evaluating Multimodal Agents on Realistic Visual Web Tasks              ICLR Workshop   Paper · Code
+  2024   WebCanvas: Benchmarking Web Agents in Online Environments                               ICML Workshop   Paper · Code
+  2026   ST-WebAgentBench: A Benchmark for Evaluating Safety and Trustworthiness in Web Agents   ICLR            Paper · Code
+
+Gaming & Strategy
+
+  Year   Title                                                                                                                                             Venue              Links
+  ------ ------------------------------------------------------------------------------------------------------------------------------------------------- ------------------ --------------
+  2023   clembench: Using Game Play to Evaluate Chat-Optimized Language Models as Conversational Agents                                                    EMNLP              Paper · Code
+  2024   clembench-2024: A Challenging, Dynamic, Complementary, Multilingual Benchmark and Underlying Flexible Framework for LLMs as Multi-Action Agents   arXiv              Paper · Code
+  2024   GameBench: Evaluating Strategic Reasoning Abilities of LLM Agents                                                                                 NeurIPS Workshop   Paper · Code
+  2024   LLM-Deliberation: Evaluating LLMs with Interactive Multi-Agent Negotiation Game                                                                   ICLR Workshop      Paper · Code
+  2024   GTBench: Uncovering the Strategic Reasoning Capabilities of LLMs via Game-Theoretic Evaluations                                                   NeurIPS            Paper · Code
+
+Scientific Discovery
+
+  Year   Title                                                                                                                 Venue                           Links
+  ------ --------------------------------------------------------------------------------------------------------------------- ------------------------------- --------------
+  2024   CORE-Bench: Fostering the Credibility of Published Research Through a Computational Reproducibility Agent Benchmark   TMLR                            Paper · Code
+  2024   DiscoveryWorld: A Virtual Environment for Developing and Evaluating Automated Scientific Discovery Agents             NeurIPS Datasets & Benchmarks   Paper · Code
+  2025   PaperBench: Evaluating AI's Ability to Replicate AI Research                                                          arXiv                           Paper · Code
+  2025   PhysGym: Benchmarking LLMs in Interactive Physics Discovery with Controlled Priors                                    NeurIPS Datasets & Benchmarks   Paper · Code
+  2026   AstaBench: Rigorous Benchmarking of AI Agents with a Scientific Research Suite                                        ICLR                            Paper · Code
+  2026   MLS-Bench: A Holistic and Rigorous Assessment of AI Systems on Building Better AI                                     arXiv                           Paper · Code
+
+Embodied AI
+
+  Year   Title                                                                                                           Venue   Links
+  ------ --------------------------------------------------------------------------------------------------------------- ------- --------------
+  2023   ManiSkill2: A Unified Benchmark for Generalizable Manipulation Skills                                           ICLR    Paper · Code
+  2025   SafeAgentBench: A Benchmark for Safe Task Planning of Embodied LLM Agents                                       arXiv   Paper · Code
+  2025   EmbodiedBench: Comprehensive Benchmarking Multi-Modal Large Language Models for Vision-Driven Embodied Agents   ICML    Paper · Code
+
+General Computer Control
+
+  Year   Title                                                                                                            Venue     Links
+  ------ ---------------------------------------------------------------------------------------------------------------- --------- --------------
+  2024   OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments                       NeurIPS   Paper · Code
+  2024   AppWorld: A Controllable World of Apps and People for Benchmarking Interactive Coding Agents                     ACL       Paper · Code
+  2024   Identifying the Risks of LM Agents with an LM-Emulated Sandbox                                                   ICLR      Paper · Code
+  2024   MetaTool Benchmark for Large Language Models: Deciding Whether to Use Tools and Which to Use                     ICLR      Paper · Code
+  2025   Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale                                                   ICML      Paper · Code
+  2025   The Berkeley Function Calling Leaderboard (BFCL): From Tool Use to Agentic Evaluation of Large Language Models   ICML      Paper · Code
+
+How to read this survey
+
+If you are new to the area
+
+Start with the overview and taxonomy, then read one representative paper
+from each branch in the quick-start section.
+
+After that, use the paper library to go deeper into whichever mechanism
+matches your interests: model updates, prompt evolution, memory, tools,
+or recursive scaffolds.
+
+If you are using the page as a reference
+
+Jump directly to the literature tables. The search bar works best for
+titles and venues, while the filter buttons quickly separate
+foundation-model improvement, scaffolding improvement, and evaluation &
+benchmarking entries.
+
+For deeper reading, use the search bar and filters to move between broad
+categories and more specific mechanisms.
+
+Open research community
+
+Community & Feedback
+
+This survey is maintained as a living research map. Read the discussion,
+suggest missing work, report corrections, or help improve the taxonomy.
+
+★ Star on GitHub —
+
+📈 Project pulse
+
+Live public activity from the GitHub repository.
+
+—Stars
+
+—Forks
+
+—Open issues
+
+Loading live repository data…
+
+💬 Join the conversation
+
+Discuss the survey and follow its public community activity.
+
+GitHub DiscussionsOpen ↗ Discord communityJoin ↗ Hugging Face paper
+pageView ↗
+
+🧭 Help improve the map
+
+Every correction and missing reference makes the survey more useful.
+
+Suggest a paperIssue ↗ Submit a pull requestContribute ↗ Report a
+correctionIssue ↗
+
+Discussion & comments
+
+Leave a question, reading note, or suggestion directly from this page.
+Comments are attached to a public GitHub thread, so the conversation
+remains searchable and easy to moderate.
+
+GitHub sign-in is required to comment. No separate account or website
+database is needed.
+
+GitHub-powered comments The comment panel appears here after the
+Utterances app is enabled for the repository.
+
+Authors
+
+Zhe RenSchool of Artificial Intelligence, Jilin University
+
+Yimeng Chen^(*)King Abdullah University of Science and Technology
+(KAUST)
+
+Dandan Guo^(*)School of Artificial Intelligence, Jilin University ·
+KAUST
+
+Guowei RongSchool of Artificial Intelligence, Jilin University
+
+Tonghui LiSchool of Artificial Intelligence, Jilin University
+
+R. B. XiongIndependent Researcher
+
+Qingfeng LanUniversity of Alberta
+
+Wenyi WangKing Abdullah University of Science and Technology (KAUST)
+
+Li NanboKing Abdullah University of Science and Technology (KAUST)
+
+Yibo YangKing Abdullah University of Science and Technology (KAUST)
+
+Mingchen ZhugeKing Abdullah University of Science and Technology (KAUST)
+
+Jürgen SchmidhuberKing Abdullah University of Science and Technology
+(KAUST) · The Swiss AI Lab IDSIA/USI/SUPSI
+
+Contact
+
+* Corresponding authors
+
+guodandan@jlu.edu.cn, {renzhe25, ronggw25, lith}@mails.jlu.edu.cn,
+{yimeng.chen, wenyi.wang, nanbo.li, yibo.yang, mingchen.zhuge,
+juergen.schmidhuber}@kaust.edu.sa,
+qlan3@ualberta.ca, rbxiong1@outlook.com
+
+Citation
+
+Please cite this survey as follows.
+
+    @misc{ren2026selfimprovementsmodernagenticsystems,
+          title={Self-Improvements in Modern Agentic Systems: A Survey}, 
+          author={Zhe Ren and Yimeng Chen and Dandan Guo and Guowei Rong and Tonghui Li and R. B. Xiong and Qingfeng Lan and Wenyi Wang and Li Nanbo and Yibo Yang and Mingchen Zhuge and Jürgen Schmidhuber},
+          year={2026},
+          eprint={2607.13104},
+          archivePrefix={arXiv},
+          primaryClass={cs.AI},
+          url={https://arxiv.org/abs/2607.13104}, 
+    }

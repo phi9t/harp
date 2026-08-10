@@ -1448,9 +1448,11 @@ def run_self_tests() -> None:
 
     def word_boundary_body(word_count: int) -> str:
         counts = (word_count - 4, 1, 1, 1, 1)
+        if len(HEADINGS) != len(counts):
+            raise AssertionError("self-test heading and word-count shapes diverged")
         sections = "\n".join(
             f"## {heading}\n{' '.join(['word'] * count)}"
-            for heading, count in zip(HEADINGS, counts, strict=True)
+            for heading, count in zip(HEADINGS, counts)
         )
         return f"\n# Test Card\n\n{sections}"
 

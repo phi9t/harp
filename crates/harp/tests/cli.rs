@@ -38,15 +38,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 65,
+            "canonical_documents": 69,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 72,
-            "evidence_edges": 85
+            "source_registry_rows": 76,
+            "evidence_edges": 98
         })
     );
 }
@@ -103,6 +103,8 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     fs::create_dir_all(repo.path().join("knowledge/darwin_godel_machine")).expect("DGM packet");
     fs::create_dir_all(repo.path().join("knowledge/meta_harness")).expect("knowledge");
     fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
+    fs::create_dir_all(repo.path().join("knowledge/self_improving_agents_survey"))
+        .expect("survey packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
@@ -121,6 +123,12 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         "# Meta Harness\n\nPackage identity is an executable candidate contract.\n",
     )
     .expect("knowledge file");
+    fs::write(
+        repo.path()
+            .join("knowledge/self_improving_agents_survey/synthesis.md"),
+        "# Survey\n\nModern self-improving agents pair model parameters with scaffold state.\n",
+    )
+    .expect("survey file");
     fs::write(
         repo.path().join("evidence/weng/text/source.txt"),
         "Harness evidence for recursive improvement.",
@@ -175,6 +183,14 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .stdout(predicate::str::contains(
             "\"path\":\"knowledge/meta_harness/meta_harness_deep_dive.md\"",
         ));
+    harp()
+        .current_dir(repo.path())
+        .args(["--format", "json", "search", "query", "\"scaffold state\""])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/self_improving_agents_survey/synthesis.md\"",
+        ));
 
     fs::write(
         repo.path().join("knowledge/rsi/intro.md"),
@@ -198,7 +214,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .success()
         .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
         .stdout(predicate::str::contains("\"snapshot_files\":105"))
-        .stdout(predicate::str::contains("\"binary_objects\":54"))
+        .stdout(predicate::str::contains("\"binary_objects\":56"))
         .stdout(predicate::str::contains("\"implementation_sources\":11"));
 }
 
