@@ -313,8 +313,8 @@ resource accounting, held-out protocol, and repeated outcomes.
 
 | System | Main mutable object | Update mechanism | External fixed points |
 |---|---|---|---|
-| ACE | Structured context bullets or playbook state | Generator, reflector, and curator apply incremental updates from feedback. | Task model, workflow schema, evaluator, and update roles. |
-| MCE | A context-engineering skill plus the context artifacts it produces | Outer meta-agent evolves the learning procedure; inner agent executes it. | Meta-agent, base model, task/evaluator set, and skill runtime. |
+| [ACE](https://arxiv.org/abs/2510.04618) | Structured context bullets or playbook state | Generator, reflector, and curator apply incremental updates from feedback. | Task model, workflow schema, evaluator, and update roles. |
+| [MCE](https://arxiv.org/abs/2601.21557) | A context-engineering skill plus the context artifacts it produces | Outer meta-agent evolves the learning procedure; inner agent executes it. | Meta-agent, base model, task/evaluator set, and skill runtime. |
 | Meta-Harness | Full executable harness code around a fixed model | Coding-agent proposer queries archived code, scores, and traces; controller evaluates and retains candidates. | Proposer, evaluator, tasks, model, archive policy, and promotion authority. |
 
 The ladder increases the mutable surface from artifact to learning procedure to
