@@ -1,4 +1,6 @@
+pub mod canonical;
 pub mod policy;
+pub mod release;
 pub mod repository_state;
 pub mod routing;
 pub mod schema;
@@ -12,6 +14,7 @@ pub use schema::{ContextItemKind, ProviderId, WorkflowChoice, WorkflowId};
 pub const WORKFLOW_SCHEMA: &str = "harp-workflow/v1";
 pub const ROUTING_SCHEMA: &str = "harp-routing/v1";
 pub const CONTEXT_SCHEMA: &str = "harp-context-schema/v1";
+pub const CONTEXT_TEMPLATE_SCHEMA: &str = "harp-context-template/v1";
 pub const VERIFICATION_SCHEMA: &str = "harp-verification/v1";
 pub const OUTCOME_RULES_SCHEMA: &str = "harp-outcome-rules/v1";
 pub const CONTEXT_ITEM_SCHEMA: &str = "harp-context-item/v1";

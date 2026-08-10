@@ -23,6 +23,10 @@ mod secure {
 
     const DIRECTORY_MODE: u32 = 0o700;
     const FILE_MODE: u32 = 0o600;
+    const INTERNAL_NAMESPACE: &str = ".harp-internal";
+    const RELEASE_AUTHORIZATIONS: &str = "release-authorizations";
+    const RELEASE_AUTHORIZATION_FILE: &str = "authorization.json";
+    const STAGING_NAMESPACE: &str = "staging";
     const LOCK_WAIT_LIMIT: Duration = Duration::from_secs(10);
     const LOCK_RETRY_DELAY: Duration = Duration::from_millis(5);
 
@@ -188,18 +192,74 @@ mod secure {
         }
 
         pub fn create_private_directory(&self, relative: &Path) -> Result<PathBuf, AppError> {
-            let components = canonical_relative_components(relative, "private directory")?;
+            let components = public_relative_components(relative, "private directory")?;
             let directory = self.directory.walk_or_create(&components)?;
             directory.verify_namespace()?;
             Ok(self.root.join(relative))
         }
 
         pub fn snapshot_private_file(&self, relative: &Path) -> Result<FileSnapshot, AppError> {
-            let (parent, name) = self.resolve_parent(relative, false, "private file")?;
+            let components = public_relative_components(relative, "private file")?;
+            let (parent, name) = self.resolve_parent_components(&components, false)?;
             parent.verify_namespace()?;
             let snapshot = parent.read_snapshot(&name).map(|(_, snapshot)| snapshot)?;
             parent.verify_namespace()?;
             Ok(snapshot)
+        }
+
+        pub fn list_private_directory(&self, relative: &Path) -> Result<Vec<String>, AppError> {
+            let components = public_relative_components(relative, "private directory")?;
+            let directory = self.directory.walk(&components)?;
+            directory.verify_namespace()?;
+            let names = directory
+                .entry_names()?
+                .into_iter()
+                .map(|name| {
+                    name.into_string().map_err(|_| {
+                        state_error("state.path", "private directory entry is not UTF-8")
+                    })
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            directory.verify_namespace()?;
+            Ok(names)
+        }
+
+        pub fn read_private_file_bounded(
+            &self,
+            relative: &Path,
+            max_bytes: usize,
+        ) -> Result<Vec<u8>, AppError> {
+            self.read_private_file_bounded_with_hooks(relative, max_bytes, || {})
+        }
+
+        #[cfg(test)]
+        pub(super) fn read_private_file_bounded_with_hook<F>(
+            &self,
+            relative: &Path,
+            max_bytes: usize,
+            hook: F,
+        ) -> Result<Vec<u8>, AppError>
+        where
+            F: FnOnce(),
+        {
+            self.read_private_file_bounded_with_hooks(relative, max_bytes, hook)
+        }
+
+        fn read_private_file_bounded_with_hooks<F>(
+            &self,
+            relative: &Path,
+            max_bytes: usize,
+            hook: F,
+        ) -> Result<Vec<u8>, AppError>
+        where
+            F: FnOnce(),
+        {
+            let components = public_relative_components(relative, "private file")?;
+            let (parent, name) = self.resolve_parent_components(&components, false)?;
+            parent.verify_namespace()?;
+            let bytes = parent.read_file_bounded_with_hook(&name, max_bytes, hook)?;
+            parent.verify_namespace()?;
+            Ok(bytes)
         }
 
         pub fn write_private_atomic(
@@ -216,7 +276,7 @@ mod secure {
             relative: &Path,
             members: &BTreeMap<PathBuf, Vec<u8>>,
         ) -> Result<(), AppError> {
-            let target_components = canonical_relative_components(relative, "immutable tree")?;
+            let target_components = public_relative_components(relative, "immutable tree")?;
             let normalized_members = validate_tree_members(members)?;
             let mut publication_lock =
                 self.acquire_publication_lock_components(&target_components, LockSetupFault::None)?;
@@ -226,6 +286,39 @@ mod secure {
                 &normalized_members,
             );
             finish_publication(result, &mut publication_lock)
+        }
+
+        pub(crate) fn publish_release_authorization(
+            &self,
+            release_id: &str,
+            bytes: &[u8],
+        ) -> Result<(), AppError> {
+            let target_components = release_authorization_components(release_id)?;
+            let members =
+                BTreeMap::from([(PathBuf::from(RELEASE_AUTHORIZATION_FILE), bytes.to_vec())]);
+            let normalized_members = validate_tree_members(&members)?;
+            let mut publication_lock =
+                self.acquire_publication_lock_components(&target_components, LockSetupFault::None)?;
+            let result = self.publish_immutable_tree_locked(
+                &target_components,
+                &members,
+                &normalized_members,
+            );
+            finish_publication(result, &mut publication_lock)
+        }
+
+        pub(crate) fn read_release_authorization(
+            &self,
+            release_id: &str,
+            max_bytes: usize,
+        ) -> Result<Vec<u8>, AppError> {
+            let mut components = release_authorization_components(release_id)?;
+            components.push(cstring(RELEASE_AUTHORIZATION_FILE)?);
+            let (parent, name) = self.resolve_parent_components(&components, false)?;
+            parent.verify_namespace()?;
+            let bytes = parent.read_file_bounded_with_hook(&name, max_bytes, || {})?;
+            parent.verify_namespace()?;
+            Ok(bytes)
         }
 
         #[cfg(test)]
@@ -268,7 +361,7 @@ mod secure {
             F: FnOnce(),
             G: FnOnce(),
         {
-            let components = canonical_relative_components(relative, "private file")?;
+            let components = public_relative_components(relative, "private file")?;
             let mut publication_lock =
                 self.acquire_publication_lock_components(&components, LockSetupFault::None)?;
             let result = self.write_private_atomic_locked(
@@ -341,7 +434,7 @@ mod secure {
                     return Ok(());
                 }
                 return Err(state_error(
-                    "state.conflict",
+                    "state.immutable_collision",
                     format!(
                         "immutable tree conflicts with existing bytes: {}",
                         display_name(&name)
@@ -349,7 +442,10 @@ mod secure {
                 ));
             }
 
-            let mut staging = parent.create_staged_directory(".harp-tree")?;
+            let staging_parent = self
+                .directory
+                .walk_or_create(&[cstring(INTERNAL_NAMESPACE)?, cstring(STAGING_NAMESPACE)?])?;
+            let mut staging = staging_parent.create_staged_directory(".harp-tree")?;
             for (member, bytes) in members {
                 let member_components =
                     canonical_relative_components(member, "immutable-tree member")?;
@@ -360,13 +456,24 @@ mod secure {
             }
             sync_tree_directories(&staging.directory)?;
 
+            staging_parent.verify_namespace()?;
+            staging_parent.verify_entry_matches(
+                &staging.name,
+                staging.identity,
+                EntryKind::Directory,
+            )?;
             parent.verify_namespace()?;
-            parent.verify_entry_matches(&staging.name, staging.identity, EntryKind::Directory)?;
-            match parent.publish_staged_directory_inner(&staging.name, &name) {
+            match renameat_noreplace(
+                staging_parent.fd.as_raw_fd(),
+                &staging.name,
+                parent.fd.as_raw_fd(),
+                &name,
+            ) {
                 Ok(()) => {
                     staging.disarm();
                     parent.verify_entry_matches(&name, staging.identity, EntryKind::Directory)?;
                     parent.sync()?;
+                    staging_parent.sync()?;
                     parent.verify_namespace()?;
                     Ok(())
                 }
@@ -383,7 +490,7 @@ mod secure {
                             Ok(())
                         }
                         Some(_) => Err(state_error(
-                            "state.conflict",
+                            "state.immutable_collision",
                             format!(
                                 "immutable tree conflicts with concurrent publication: {}",
                                 display_name(&name)
@@ -397,16 +504,6 @@ mod secure {
                 }
                 Err(error) => Err(state_io("publish immutable tree", error)),
             }
-        }
-
-        fn resolve_parent(
-            &self,
-            relative: &Path,
-            create: bool,
-            label: &str,
-        ) -> Result<(Directory, CString), AppError> {
-            let components = canonical_relative_components(relative, label)?;
-            self.resolve_parent_components(&components, create)
         }
 
         fn resolve_parent_components(
@@ -990,6 +1087,72 @@ mod secure {
                     digest: Sha256::digest(bytes).into(),
                 },
             ))
+        }
+
+        fn read_file_bounded_with_hook<F>(
+            &self,
+            name: &CStr,
+            max_bytes: usize,
+            hook: F,
+        ) -> Result<Vec<u8>, AppError>
+        where
+            F: FnOnce(),
+        {
+            self.verify_namespace()?;
+            let fd = unsafe {
+                libc::openat(
+                    self.fd.as_raw_fd(),
+                    name.as_ptr(),
+                    libc::O_RDONLY | libc::O_NOFOLLOW | libc::O_CLOEXEC,
+                )
+            };
+            if fd < 0 {
+                return Err(classify_open_error(
+                    self.fd.as_raw_fd(),
+                    name,
+                    std::io::Error::last_os_error(),
+                ));
+            }
+            let mut file = unsafe { File::from_raw_fd(fd) };
+            let before = file
+                .metadata()
+                .map_err(|error| state_io("inspect opened private file", error))?;
+            validate_metadata(&before, EntryKind::File, "private file")?;
+            if before.len() > max_bytes as u64 {
+                return Err(state_error(
+                    "state.size",
+                    format!("private file exceeds {max_bytes} bytes"),
+                ));
+            }
+            let before_version = file_version(&before);
+            hook();
+            self.verify_entry_matches(name, before_version.identity, EntryKind::File)?;
+            self.verify_namespace()?;
+
+            let limit = u64::try_from(max_bytes).unwrap_or(u64::MAX);
+            let mut bytes = Vec::with_capacity(max_bytes.min(before.len() as usize));
+            Read::by_ref(&mut file)
+                .take(limit.saturating_add(1))
+                .read_to_end(&mut bytes)
+                .map_err(|error| state_io("read private file", error))?;
+            if bytes.len() > max_bytes {
+                return Err(state_error(
+                    "state.size",
+                    format!("private file exceeds {max_bytes} bytes"),
+                ));
+            }
+            let after = file
+                .metadata()
+                .map_err(|error| state_io("reinspect private file", error))?;
+            if before_version != file_version(&after) || bytes.len() as u64 != after.len() {
+                return Err(state_error(
+                    "state.conflict",
+                    "private file changed while it was read",
+                ));
+            }
+            self.verify_entry_matches(name, before_version.identity, EntryKind::File)?;
+            self.verify_namespace()?;
+            Ok(bytes)
         }
 
         fn read_optional_snapshot(&self, name: &CStr) -> Result<Option<FileSnapshot>, AppError> {
@@ -1975,6 +2138,35 @@ mod secure {
         Ok(components)
     }
 
+    fn public_relative_components(relative: &Path, label: &str) -> Result<Vec<CString>, AppError> {
+        let components = canonical_relative_components(relative, label)?;
+        if components
+            .first()
+            .is_some_and(|component| component.as_bytes() == INTERNAL_NAMESPACE.as_bytes())
+        {
+            return Err(state_error(
+                "state.path",
+                "private path uses a reserved internal namespace",
+            ));
+        }
+        Ok(components)
+    }
+
+    fn release_authorization_components(release_id: &str) -> Result<Vec<CString>, AppError> {
+        if release_id.is_empty()
+            || release_id.contains('/')
+            || release_id.as_bytes().contains(&0)
+            || matches!(release_id, "." | "..")
+        {
+            return Err(state_path("release authorization ID"));
+        }
+        Ok(vec![
+            cstring(INTERNAL_NAMESPACE)?,
+            cstring(RELEASE_AUTHORIZATIONS)?,
+            cstring(release_id)?,
+        ])
+    }
+
     fn validate_tree_members(
         members: &BTreeMap<PathBuf, Vec<u8>>,
     ) -> Result<BTreeSet<PathBuf>, AppError> {
@@ -2697,6 +2889,18 @@ mod unsupported {
             Err(unsupported())
         }
 
+        pub fn list_private_directory(&self, _relative: &Path) -> Result<Vec<String>, AppError> {
+            Err(unsupported())
+        }
+
+        pub fn read_private_file_bounded(
+            &self,
+            _relative: &Path,
+            _max_bytes: usize,
+        ) -> Result<Vec<u8>, AppError> {
+            Err(unsupported())
+        }
+
         pub fn write_private_atomic(
             &self,
             _relative: &Path,
@@ -2711,6 +2915,22 @@ mod unsupported {
             _relative: &Path,
             _members: &BTreeMap<PathBuf, Vec<u8>>,
         ) -> Result<(), AppError> {
+            Err(unsupported())
+        }
+
+        pub(crate) fn publish_release_authorization(
+            &self,
+            _release_id: &str,
+            _bytes: &[u8],
+        ) -> Result<(), AppError> {
+            Err(unsupported())
+        }
+
+        pub(crate) fn read_release_authorization(
+            &self,
+            _release_id: &str,
+            _max_bytes: usize,
+        ) -> Result<Vec<u8>, AppError> {
             Err(unsupported())
         }
     }
@@ -3130,11 +3350,76 @@ mod tests {
                 .publish_immutable_tree(relative, &conflicting)
                 .unwrap_err()
                 .code(),
-            "state.conflict"
+            "state.immutable_collision"
         );
         assert_eq!(
             fs::read(fixture.root().join(relative).join("identity.json")).unwrap(),
             b"identity"
+        );
+        let release_entries = fs::read_dir(fixture.root().join("releases"))
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name().into_string().unwrap())
+            .collect::<Vec<_>>();
+        assert_eq!(release_entries, vec!["sha256-example"]);
+        assert!(fixture.root().join(".harp-internal/staging").is_dir());
+    }
+
+    #[test]
+    fn public_state_apis_reject_the_internal_namespace() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+
+        assert_eq!(
+            state
+                .create_private_directory(Path::new(".harp-internal/caller"))
+                .unwrap_err()
+                .code(),
+            "state.path"
+        );
+        assert_eq!(
+            state
+                .publish_immutable_tree(
+                    Path::new(".harp-internal/caller"),
+                    &BTreeMap::from([(PathBuf::from("value"), b"value".to_vec())]),
+                )
+                .unwrap_err()
+                .code(),
+            "state.path"
+        );
+        assert_eq!(
+            state
+                .read_private_file_bounded(
+                    Path::new(".harp-internal/release-authorizations/value"),
+                    16,
+                )
+                .unwrap_err()
+                .code(),
+            "state.path"
+        );
+    }
+
+    #[test]
+    fn release_authorization_is_create_only_and_descriptor_relative() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let release_id = "sha256-authorization";
+
+        state
+            .publish_release_authorization(release_id, b"authorized")
+            .unwrap();
+        state
+            .publish_release_authorization(release_id, b"authorized")
+            .unwrap();
+        assert_eq!(
+            state
+                .publish_release_authorization(release_id, b"forged")
+                .unwrap_err()
+                .code(),
+            "state.immutable_collision"
+        );
+        assert_eq!(
+            state.read_release_authorization(release_id, 32).unwrap(),
+            b"authorized"
         );
     }
 
@@ -3228,7 +3513,7 @@ mod tests {
                 .filter_map(|(_, result)| result.as_ref().err())
                 .map(|error| error.code())
                 .collect::<Vec<_>>(),
-            vec!["state.conflict"]
+            vec!["state.immutable_collision"]
         );
         let published = fs::read(
             fixture
@@ -3303,6 +3588,91 @@ mod tests {
                 relative.display()
             );
         }
+    }
+
+    #[test]
+    fn descriptor_relative_reads_are_sorted_bounded_and_private() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let members = BTreeMap::from([
+            (PathBuf::from("z.json"), b"z".to_vec()),
+            (PathBuf::from("a.json"), b"alpha".to_vec()),
+        ]);
+        state
+            .publish_immutable_tree(Path::new("releases/sha256-example"), &members)
+            .expect("immutable release");
+
+        assert_eq!(
+            state
+                .list_private_directory(Path::new("releases/sha256-example"))
+                .unwrap(),
+            vec!["a.json".to_owned(), "z.json".to_owned()]
+        );
+        assert_eq!(
+            state
+                .read_private_file_bounded(
+                    Path::new("releases/sha256-example/a.json"),
+                    b"alpha".len(),
+                )
+                .unwrap(),
+            b"alpha"
+        );
+        assert_eq!(
+            state
+                .read_private_file_bounded(
+                    Path::new("releases/sha256-example/a.json"),
+                    b"alpha".len() - 1,
+                )
+                .unwrap_err()
+                .code(),
+            "state.size"
+        );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn descriptor_relative_read_rejects_release_directory_namespace_swap() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let release = Path::new("releases/sha256-example");
+        state
+            .publish_immutable_tree(
+                release,
+                &BTreeMap::from([(PathBuf::from("identity.json"), b"approved".to_vec())]),
+            )
+            .expect("immutable release");
+
+        let outside = fixture.base.join("outside-release");
+        fs::create_dir(&outside).expect("outside release");
+        fs::set_permissions(&outside, fs::Permissions::from_mode(0o700))
+            .expect("private outside release");
+        let outside_identity = outside.join("identity.json");
+        fs::write(&outside_identity, b"external").expect("outside identity");
+        fs::set_permissions(&outside_identity, fs::Permissions::from_mode(0o600))
+            .expect("private outside identity");
+
+        let detached = fixture.root().join("releases/sha256-detached");
+        let error = state
+            .read_private_file_bounded_with_hook(
+                Path::new("releases/sha256-example/identity.json"),
+                64,
+                || {
+                    fs::rename(fixture.root().join(release), &detached)
+                        .expect("detach approved release");
+                    std::os::unix::fs::symlink(
+                        &outside,
+                        fixture.root().join("releases/sha256-example"),
+                    )
+                    .expect("replace release with symlink");
+                },
+            )
+            .unwrap_err();
+
+        assert!(
+            matches!(error.code(), "state.conflict" | "state.symlink"),
+            "unexpected error: {error:?}"
+        );
+        assert_eq!(fs::read(outside_identity).unwrap(), b"external");
     }
 
     #[test]

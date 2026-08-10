@@ -19,18 +19,6 @@ fn context_control_skeletons_return_typed_not_implemented_errors() {
         "provider.not_implemented",
     );
     assert_error_code(
-        &["--format", "json", "releases", "compile"],
-        "context_control.not_implemented",
-    );
-    assert_error_code(
-        &["--format", "json", "releases", "list"],
-        "context_control.not_implemented",
-    );
-    assert_error_code(
-        &["--format", "json", "releases", "inspect", "sha256-example"],
-        "context_control.not_implemented",
-    );
-    assert_error_code(
         &[
             "--format",
             "json",
@@ -80,6 +68,51 @@ fn run_accepts_every_documented_context_control_option_value() {
 
         assert_error_code_for_case(&args, "run.not_implemented", name);
     }
+}
+
+#[test]
+fn releases_compile_list_and_inspect_return_the_same_stable_id() {
+    let temp = tempfile::tempdir().expect("isolated HARP_HOME parent");
+    let home = std::fs::canonicalize(temp.path())
+        .expect("canonical HARP_HOME parent")
+        .join("harp-state");
+
+    let compiled = run_release_json(&home, &["releases", "compile"]);
+    let release_id = compiled["data"]["release_id"]
+        .as_str()
+        .expect("compile release ID")
+        .to_owned();
+    assert!(release_id.starts_with("sha256-"));
+    assert_eq!(compiled["command"], "releases.compile");
+
+    let compiled_again = run_release_json(&home, &["releases", "compile"]);
+    assert_eq!(compiled_again["data"]["release_id"], release_id);
+
+    let listed = run_release_json(&home, &["releases", "list"]);
+    assert_eq!(listed["command"], "releases.list");
+    assert_eq!(listed["data"]["releases"], serde_json::json!([release_id]));
+
+    let inspected = run_release_json(&home, &["releases", "inspect", &release_id]);
+    assert_eq!(inspected["command"], "releases.inspect");
+    assert_eq!(inspected["data"]["release_id"], release_id);
+    assert_eq!(
+        inspected["data"]["identity"]["schema_version"],
+        "harp-context-release-identity/v1"
+    );
+}
+
+fn run_release_json(home: &std::path::Path, args: &[&str]) -> Value {
+    let output = harp()
+        .env("HARP_HOME", home)
+        .env_remove("HOME")
+        .args(["--format", "json"])
+        .args(args)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+    serde_json::from_slice(&output).expect("JSON success envelope")
 }
 
 fn assert_error_code(args: &[&str], expected_code: &str) {

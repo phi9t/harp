@@ -367,16 +367,33 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
                 ))
             }
         },
-        Command::Releases { command } => {
-            let _release_id = match command {
-                ReleasesCommand::Compile | ReleasesCommand::List => None,
-                ReleasesCommand::Inspect { release_id } => Some(release_id),
-            };
-            Err(AppError::external(
-                "context_control.not_implemented",
-                "context-control release commands are not implemented",
-            ))
-        }
+        Command::Releases { command } => match command {
+            ReleasesCommand::Compile => {
+                let release = harp::context_control::release::compile_and_publish_baseline()?;
+                Ok((
+                    "releases.compile",
+                    format!("compiled context release {}", release.release_id),
+                    serde_json::to_value(release).expect("release summary serializes"),
+                ))
+            }
+            ReleasesCommand::List => {
+                let releases = harp::context_control::release::list_releases()?;
+                let count = releases.releases.len();
+                Ok((
+                    "releases.list",
+                    format!("found {count} context releases"),
+                    serde_json::to_value(releases).expect("release list serializes"),
+                ))
+            }
+            ReleasesCommand::Inspect { release_id } => {
+                let release = harp::context_control::release::inspect_release(release_id)?;
+                Ok((
+                    "releases.inspect",
+                    format!("validated context release {release_id}"),
+                    serde_json::to_value(release).expect("release inspection serializes"),
+                ))
+            }
+        },
         Command::Run {
             provider,
             workflow,
