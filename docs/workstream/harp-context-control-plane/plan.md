@@ -1540,8 +1540,9 @@ typed run options:
 - assert a disabled `.harp/context-control.json` fails before launch; and
 - assert a policy budget can lower but not raise the workflow budget.
 
-Add a stdout contract assertion: provider JSONL is the only stdout. Harp
-lifecycle messages and the final episode ID are on stderr.
+Add a stdout contract assertion: byte-exact provider stdout requested in JSONL
+mode is the only stdout, including malformed bytes. Harp lifecycle messages and
+the final episode ID are on stderr.
 
 - [ ] **Step 2: Run tests and confirm failure**
 
@@ -1579,11 +1580,13 @@ pub fn run(request: RunRequest, reporter: &mut dyn RunReporter) -> Result<RunRes
 
 Execute phases in this exact order:
 
-1. resolve repository root, secure state root, strict repository policy, and
-   pre-run Git snapshot;
+1. resolve repository root and secure state root, capture the pre-run Git
+   snapshot, then load the strict repository policy so policy failures can be
+   namespaced and published;
 2. locate and probe the provider;
-3. route one workflow and apply policy restrictions;
-4. compile or resolve the compatible baseline release;
+3. compile or resolve the compatible immutable baseline release;
+4. route one workflow from that inspected release and apply policy
+   restrictions;
 5. resolve the bounded context and build the invocation;
 6. publish manifest and context, then execute and capture the provider; and
 7. capture post-run Git state, publish completion, and report episode identity.
@@ -1652,7 +1655,8 @@ Document:
 
 - `HARP_HOME`, `XDG_STATE_HOME`, and fallback precedence;
 - `.harp/context-control.json` as a restrictions-only repository policy;
-- raw provider JSONL on stdout and Harp lifecycle records on stderr;
+- byte-exact provider stdout requested in JSONL mode on stdout, including
+  malformed bytes, and Harp lifecycle records on stderr;
 - native provider config and rules remain enabled;
 - no live provider call occurs in `mise run verify`;
 - V1 context-manifest completeness is partial; and

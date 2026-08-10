@@ -15,31 +15,31 @@ Harp currently has:
 - a typed Rust CLI with schema-versioned JSON envelopes;
 - canonical technical prose under =knowledge/=;
 - strict repository, corpus, evidence, and generated-artifact gates;
-- an opt-in =labs/meta_harness_trae/= experiment with bounded workspace,
-  secret-scan, deterministic archive, and raw/normalized evidence patterns; and
-- installed local Trae CLI and Codex CLI binaries exposing non-interactive
-  JSONL execution and experimental App Server surfaces.
+- secure local state, immutable releases, all four workflow packages,
+  deterministic routing and bounded context selection;
+- typed Trae CLI and Codex CLI capability probes and invocation builders;
+- durable pre-launch episodes, byte-exact provider process capture, and the
+  reviewed shared =harp run= lifecycle for both providers.
 
-Harp does not yet own a runtime context control plane, provider abstraction,
-episode store, workflow registry, context release, or optimizer candidate
-registry. The current =docs/product-contract.md= explicitly places
-agent-runtime execution outside Harp's product boundary; implementation must
-update that contract deliberately.
+Harp does not yet own normalized provider events, outcome labels, a sanitized
+learning export, ACE/MCE candidate generation or evaluation, App Server
+adapters, or a promotion registry. Those remain explicit later work rather
+than implied observation-milestone behavior.
 
 * Gap Map
 
 | Area | Current | Target | Gap |
 |------+---------+--------+-----|
-| Product boundary | Technical atlas and bounded research labs | Local context learning control plane plus atlas | Product contract and CLI surface |
-| Provider support | One lab-specific Trae command builder | Typed Trae and Codex adapters | Capability probing, launch, streaming, fixtures |
-| Workflows | Research taxonomy only | =ci_repair=, =code_review=, =dependency_update=, =general_coding= | Declarative package schemas and routing |
-| Releases | No runtime release object | Immutable content-addressed context releases | Canonical identity, publication, compatibility |
-| Runtime context | No provider-neutral resolver | Deterministic bounded =ContextBundle= | Selection, rendering, token accounting |
-| Evidence | Meta-Harness-specific raw archive | Private per-repository episodes | Secure state root, manifests, normalized events |
+| Product boundary | Local atlas plus governed provider observation | Local context learning control plane plus atlas | Later learning plane |
+| Provider support | Shared =harp run= lifecycle for Trae and Codex | Provider-assisted attribution and resume | App Server adapter and full-run regression gaps |
+| Workflows | Four embedded packages with deterministic routing | Same, plus learned candidates | ACE/MCE deferred |
+| Releases | Immutable content-addressed local releases | Governed candidate lifecycle | Evaluation and promotion deferred |
+| Runtime context | Deterministic bounded =ContextBundle= | Provider-assisted complete attribution | V1 manifest remains partial |
+| Evidence | Private pre-launch episodes and byte-exact raw capture | Normalized events and outcomes | =HCCP-006= |
 | Outcomes | Research-run receipts | Typed deterministic and human labels | Label contract, attachments, claim ceilings |
 | Learning | Research analysis only | Reviewable ACE and MCE candidates | Sanitized export, candidate schemas, replay |
 | Promotion | Repository commits only | Modeled release lifecycle | V1 stops at human review |
-| Verification | Provider-neutral offline gate | Same, with fake-provider integration tests | Fixtures, adversarial state and stream tests |
+| Verification | Adversarial unit and fake-provider tests, including shared run orchestration | Complete offline milestone gate | Final =mise run verify= and full-run regression gaps |
 
 * Work Items
 
@@ -97,7 +97,7 @@ future App Server adapters.
 
 *** Verification Evidence
 
-- Commit =b5ccfeeae42a859a4b6a3cf783af760f6bbdd633=.
+- Commit =4b2bf6d14cecf3da2e9d3868fd3da4634758be1a=.
 - =cargo fmt --all -- --check= passed.
 - =cargo test -p harp context_control --lib= passed: 3 tests.
 - =cargo test -p harp --test context_control_cli= passed: 3 tests.
@@ -168,7 +168,7 @@ side-effect and identity guarantees match the design.
 *** Verification Evidence
 
 - Secure-state commit
-  =f6bd1cf= (integrated from reviewed commit
+  =1a3d4cf= (integrated from reviewed commit
   =685cfcb48ac99f81499cc09df7d3177097bb6079=).
 - =cargo test -p harp context_control::state --lib -- --test-threads=1=
   passed: 35 tests.
@@ -250,7 +250,7 @@ to the release or adapter layer.
 *** Verification Evidence
 
 - Workflow package commit
-  =d382dae= (integrated from reviewed commit
+  =0183254= (integrated from reviewed commit
   =1bf988cf2c5a6099cd512ca0baea76e7a83d4b7a=).
 - =cargo fmt --all -- --check= passed.
 - =cargo test -p harp context_control::workflow --lib= passed: 8 tests.
@@ -258,7 +258,7 @@ to the release or adapter layer.
 - All 24 package members are embedded, and all 20 declared member digests were
   independently recomputed during review.
 - Routing commit
-  =44149c1= (integrated from reviewed commit
+  =e5dbb2e= (integrated from reviewed commit
   =8819f8e921f2378e44d71718a012d4d2cfc11e83=).
 - =cargo test -p harp context_control::routing --lib= passed: 11 tests.
 
@@ -273,15 +273,15 @@ to the release or adapter layer.
 
 *** Follow-ups
 
-** IMPLEMENTING Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
+** REVIEW Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
 :PROPERTIES:
 :ID: HCCP-004
 :DESIGN_SECTION: Provider adapters; Chosen architecture
-:BRANCH: feat/context-control-providers
-:WORKTREE: .worktrees/context-control-providers
-:OWNER: Euler
+:BRANCH: feat/context-control-observation
+:WORKTREE: .worktrees/context-control-observation
+:OWNER: primary
 :AGENT_RUN: 019fea3f-ea27-70f0-8415-96da273600d7
-:MODEL:
+:MODEL: inherited default
 :STARTED: 2026-08-09
 :COMPLETED:
 :END:
@@ -321,19 +321,35 @@ CLI.
 
 *** Verification Evidence
 
+- Provider-probe commit
+  =91745a4= (integrated from reviewed commit
+  =90873d2962bb22835acfd4758740c629a670db2c=).
+- Bounded fake-provider fixtures cover supported capabilities, malformed and
+  nonzero output, stream limits, timeouts, missing executables, and executable
+  replacement.
+- =cargo test -p harp context_control::provider::probe --lib
+  -- --test-threads=1= and
+  =cargo test -p harp --test context_control_cli -- --test-threads=1= are the
+  focused integrated checks.
+
 *** Review Notes
+
+- Provider capability parsing is declaration-row based and versioned; doctor
+  performs no network or authentication probe.
+- Final completion remains gated on the observation milestone's offline release
+  verification.
 
 *** Follow-ups
 
-** IMPLEMENTING Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
+** REVIEW Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
 :PROPERTIES:
 :ID: HCCP-005
 :DESIGN_SECTION: Run lifecycle; Context and episode manifests; Provider adapters
-:BRANCH: feat/context-control-repository
-:WORKTREE: .worktrees/context-control-repository
-:OWNER: Arendt
+:BRANCH: feat/context-control-run
+:WORKTREE: .worktrees/context-control-run
+:OWNER: primary
 :AGENT_RUN: 019fea3f-e8fe-7731-9662-52fbe19181f0
-:MODEL:
+:MODEL: inherited default
 :STARTED: 2026-08-09
 :COMPLETED:
 :END:
@@ -362,10 +378,11 @@ forwarding, and private raw capture.
 - Both providers receive byte-identical rendered Harp context for the same
   normalized request.
 - Harp preserves native config and repository rules.
-- Harp never broadens sandbox, approvals, network, tools, or MCP capability.
+- Harp does not synthesize or silently widen privileges; explicit user-selected
+  native overrides remain visible in the invocation.
 - The running manifest and context bundle are durable before provider launch.
-- Raw stdout JSONL, stderr, exit status, command, final message, and provider
-  identity are sealed after the run.
+- Raw stdout bytes requested in JSONL mode, stderr, exit status, command, final
+  message, and provider identity are sealed after the run.
 - Crash, signal, and capture failure leave inspectable partial evidence.
 
 *** Implementation Notes
@@ -382,9 +399,46 @@ The task begins after =--=. It is not a provider-argument channel.
 
 *** Verification Evidence
 
+- Episode and invocation integration commits =5c4220a=, =1fa99bf=, and
+  =6c11f54=.
+- Provider execution commit
+  =cf8f99c= (integrated from reviewed commit
+  =3d3cec9d8bfbb77f2d36677c21072dbb712d9c59=).
+- Session 11 verification passed with 273 library tests and nine provider
+  process tests, plus the invocation compile-fail authority test,
+  =context_control_run= API test, Rust formatting, and Clippy with only
+  Session 12's not-yet-wired dead code exempted.
+- Session 12 orchestration commit
+  =b65d0b5f78076b3b8b44ee9129a8bc67a2250b51=.
+- Final focused verification passed:
+  - =cargo test -p harp context_control --lib -- --test-threads=1=: 236
+    passed;
+  - =cargo test -p harp --test context_control_cli -- --test-threads=1=: 8
+    passed;
+  - =cargo test -p harp --test context_control_run -- --test-threads=1=: 9
+    passed;
+  - =cargo clippy --workspace --all-targets -- -D warnings=,
+    =cargo fmt --all -- --check=, and =git diff --check= passed.
+- The disabled-policy regression test failed before the fix because provider
+  probes still ran, then passed after policy enablement moved ahead of provider
+  discovery and release publication.
+
 *** Review Notes
 
+- Invocation authority is consuming and opaque, one durable
+  launch claim precedes spawn, raw members are descriptor-relative, canonical
+  archives are deterministic, and completion revalidation is cheap under
+  publication locks.
+- Provider stdout and stderr are captured byte-for-byte; process groups receive
+  forwarded =SIGINT=, =SIGTERM=, and =SIGHUP=.
+- Independent specification and code-quality/security reviews approved the
+  Session 12 diff after the disabled-policy ordering fix.
+
 *** Follow-ups
+
+- Add full-run regressions for malformed non-UTF-8 stdout, signal-to-exit-code
+  mapping, and capture-failure inspection. The process and episode layers cover
+  these contracts; the remaining gap is end-to-end orchestration coverage.
 
 ** BACKLOG Normalize Events And Account For Outcomes :code:tests:
 :PROPERTIES:
@@ -688,11 +742,15 @@ are mature.
 
 *** Follow-ups
 
-* Agent Dispatch Log
+* Milestone Resolution Matrix
 
-No implementation agent has been dispatched. The design session remained in
-the primary checkout and changed only the canonical design document, derived
-Atlas artifacts, the workstream pointer, and this tracker.
+| Resolving action | Enabling context | Tools and evidence | Skills or workflow |
+|------------------+------------------+--------------------+--------------------|
+| Constrain state and publication | Local-first trust boundary and immutable releases | Held directory descriptors, canonical JSON, race and symlink tests | TDD plus adversarial security review |
+| Route all four workflows | Provider-neutral package contract and token budgets | Embedded package bytes, golden routing matrix, deterministic context tests | Schema-first implementation and focused review |
+| Pin provider capability | Native policy must remain authoritative | Bounded version/help probes, executable identity snapshots, fake CLIs | Capability-first adapter review |
+| Authenticate one provider run | Manifest-before-launch and byte-exact observation requirements | Consuming invocation authority, process groups, descriptor-relative raw members, deterministic archive | TDD, spec review, then code-quality review |
+| Keep milestone claims bounded | Observation cannot prove the complete provider prompt | Completeness enum, tracker evidence, deferred-work gates | Evidence-calibrated documentation review |
 
 * Decisions
 
@@ -717,9 +775,10 @@ under =HARP_HOME=.
 The first adapters use =exec --json=. App Server integration is a later adapter
 behind the same Harp contracts.
 
-** DONE D-005 Observation And Suggestions Only
+** DONE D-005 Observation Only; Suggestions Deferred
 
-V1 cannot automatically install, promote, or migrate context releases.
+The observation milestone cannot generate, install, promote, or migrate ACE/MCE
+context candidates or releases.
 
 ** DONE D-006 Canonical Prose Stays In Knowledge
 
@@ -755,11 +814,6 @@ Provider streams can contain repository content, user requests, commands,
 credentials, and tenant identifiers. Private archive and sanitized export must
 remain separate.
 
-** Product-Boundary Migration
-
-The current product contract excludes agent-runtime execution. HCCP-001 must
-land before code expands Harp's CLI.
-
 ** Repository Receipt Churn
 
 Tracked changes alter =docs/import-receipt.md='s payload digest. Refresh the
@@ -789,12 +843,17 @@ The observation milestone is complete when:
 
 - both providers launch through Harp using one immutable baseline release;
 - all four workflow packages route deterministically;
-- provider security and repository contracts remain unchanged;
-- manifests, context bundles, raw events, normalized events, Git-state
-  receipts, and completion receipts are durable and schema-valid;
+- provider-native security enforcement and repository contracts remain active,
+  explicit user-selected native overrides remain visible, and Harp introduces
+  no hidden bypasses;
+- manifests, context bundles, raw provider streams, Git-state receipts, and
+  completion receipts are durable and schema-valid;
 - failed and interrupted episodes remain inspectable;
 - raw evidence round-trips byte-for-byte;
-- sanitized export fails closed;
 - no active release changes during an episode; and
 - =mise run verify= passes offline without provider binaries, credentials,
   another checkout, or network access.
+
+Normalized events, outcome labels, sanitized export, ACE/MCE suggestions,
+evaluation, canarying, promotion, and rollback are not completion criteria for
+this milestone.

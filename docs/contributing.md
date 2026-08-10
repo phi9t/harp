@@ -28,6 +28,11 @@ the [credible technical documentation style guide](writing-style/STYLE_GUIDE.md)
 Material claims follow a clickable route from main prose to a heading-based
 claim-ledger entry and then to the exact local source locator.
 
+When authored material encounters an AlphaXiv reference, resolve the paper and
+link its canonical `https://arxiv.org/abs/...` abstract page. Do not rewrite
+AlphaXiv strings or any other references inside captured evidence; captured
+upstream bytes remain byte-faithful.
+
 ## Evidence changes
 
 Do not edit captured upstream bytes to normalize formatting, names, or paths.
@@ -75,6 +80,27 @@ corepack pnpm run test:export
 
 The decoded export test must inspect the inlined JavaScript rather than only
 checking that an HTML file exists.
+
+## Context-control changes
+
+Keep repository policy restrictions-only. `.harp/context-control.json` may
+disable Harp, narrow workflows, pin a release, lower a context budget, or
+declare required verification labels; it must not inject prompts, choose
+executables, or broaden sandbox, approval, network, tool, MCP, or
+authentication authority. Labels are currently validated and included in the
+policy digest, but no verifier or outcome gate enforces them yet.
+
+Provider tests use fake executables for the selected Trae CLI or Codex CLI
+adapter. Preserve the `harp run` stream contract in every end-to-end test:
+byte-exact provider stdout requested in JSONL mode is the only stdout, while
+Harp lifecycle records and the final episode ID use stderr. Preserve malformed
+provider output unchanged. `mise run verify` must never launch a real provider
+or require provider credentials.
+
+Document context manifests as partial until a provider exposes enough
+telemetry to reconstruct the complete effective prompt, native skill
+selection, and compaction state. Do not describe ACE/MCE suggestion generation,
+evaluation, canarying, promotion, or rollback as implemented.
 
 ## Licensing
 
