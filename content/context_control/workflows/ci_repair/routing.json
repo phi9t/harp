@@ -1,0 +1,16 @@
+{
+  "schema_version": "harp-routing/v1",
+  "positive_phrases": [
+    "ci failed",
+    "test failure",
+    "tests failing",
+    "lint failed",
+    "typecheck failed",
+    "build failed",
+    "reproduce failure"
+  ],
+  "negative_phrases": [
+    "review this diff",
+    "upgrade dependency"
+  ]
+}

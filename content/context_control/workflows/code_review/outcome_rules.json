@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-outcome-rules/v1",
+  "verified_success": [
+    "Every reported finding is actionable and verified against the relevant source and contract."
+  ],
+  "weak_signals": [
+    "An assistant claim or zero process exit alone is not verified success."
+  ]
+}

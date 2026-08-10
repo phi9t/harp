@@ -1,0 +1,4 @@
+{"schema_version":"harp-context-item/v1","id":"reproduce-narrowest-failure","kind":"workflow_step","body":"Reproduce the narrowest failure"}
+{"schema_version":"harp-context-item/v1","id":"classify-before-editing","kind":"workflow_step","body":"Classify before editing"}
+{"schema_version":"harp-context-item/v1","id":"do-not-weaken-tests","kind":"anti_pattern","body":"Do not weaken tests"}
+{"schema_version":"harp-context-item/v1","id":"rerun-original-verification-mode","kind":"verification_recipe","body":"Rerun the original verification mode"}

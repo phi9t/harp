@@ -1,0 +1,4 @@
+{"schema_version":"harp-context-item/v1","id":"identify-direct-transitive-change","kind":"workflow_step","body":"Identify direct and transitive change"}
+{"schema_version":"harp-context-item/v1","id":"preserve-lockfile-consistency","kind":"repository_invariant","body":"Preserve lockfile consistency"}
+{"schema_version":"harp-context-item/v1","id":"avoid-unrelated-upgrades","kind":"anti_pattern","body":"Avoid unrelated upgrades"}
+{"schema_version":"harp-context-item/v1","id":"run-compatibility-verification","kind":"verification_recipe","body":"Run compatibility verification"}

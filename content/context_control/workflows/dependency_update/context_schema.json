@@ -1,0 +1,8 @@
+{
+  "schema_version": "harp-context-schema/v1",
+  "required_sections": [
+    "repository_contracts",
+    "dependency_graph",
+    "compatibility_checks"
+  ]
+}

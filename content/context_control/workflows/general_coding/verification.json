@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-verification/v1",
+  "recipes": [
+    {
+      "id": "repository-verification",
+      "description": "Run the repository verification required by the local contracts for the changed surface."
+    }
+  ]
+}

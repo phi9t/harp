@@ -1,0 +1,4 @@
+{"schema_version":"harp-context-item/v1","id":"inspect-diff-before-conclusions","kind":"workflow_step","body":"Inspect the diff before conclusions"}
+{"schema_version":"harp-context-item/v1","id":"report-actionable-findings","kind":"review_preference","body":"Report only actionable findings"}
+{"schema_version":"harp-context-item/v1","id":"verify-findings-against-source","kind":"verification_recipe","body":"Verify each finding against source"}
+{"schema_version":"harp-context-item/v1","id":"avoid-style-only-inflation","kind":"anti_pattern","body":"Avoid style-only inflation"}

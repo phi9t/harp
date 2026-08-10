@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-verification/v1",
+  "recipes": [
+    {
+      "id": "compatibility-verification",
+      "description": "Run the repository compatibility checks that cover the updated dependency and its affected consumers."
+    }
+  ]
+}

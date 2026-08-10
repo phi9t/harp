@@ -1,0 +1,4 @@
+{"schema_version":"harp-context-item/v1","id":"restate-bounded-requirement","kind":"workflow_step","body":"Restate the bounded requirement"}
+{"schema_version":"harp-context-item/v1","id":"inspect-local-contracts","kind":"repository_invariant","body":"Inspect local contracts before editing"}
+{"schema_version":"harp-context-item/v1","id":"smallest-causal-change","kind":"workflow_step","body":"Make the smallest causal change"}
+{"schema_version":"harp-context-item/v1","id":"run-repository-verification","kind":"verification_recipe","body":"Run repository verification"}

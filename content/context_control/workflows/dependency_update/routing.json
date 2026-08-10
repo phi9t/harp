@@ -1,0 +1,14 @@
+{
+  "schema_version": "harp-routing/v1",
+  "positive_phrases": [
+    "upgrade dependency",
+    "update dependency",
+    "bump version",
+    "refresh lockfile",
+    "toolchain update"
+  ],
+  "negative_phrases": [
+    "review this diff",
+    "test failure"
+  ]
+}

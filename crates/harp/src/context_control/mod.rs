@@ -1,4 +1,5 @@
 pub mod schema;
+pub mod workflow;
 
 pub use schema::{ContextItemKind, ProviderId, WorkflowChoice, WorkflowId};
 

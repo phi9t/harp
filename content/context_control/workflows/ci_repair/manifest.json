@@ -1,0 +1,15 @@
+{
+  "schema_version": "harp-workflow/v1",
+  "id": "ci_repair",
+  "title": "CI repair",
+  "context_budget_tokens": 2200,
+  "selector_version": "v1",
+  "renderer_version": "v1",
+  "members": {
+    "context_schema.json": "3315a745672e30d20883622c469491bfc73a1ec9791fbd52a7588651b60a2cc6",
+    "outcome_rules.json": "703816dc33c0ae36475f3d83cce2ce073f25f2dda367a7c6df36ce678259d169",
+    "playbook.jsonl": "0e3355ffa22af9137c6eebe80bb394ce2e7fda236fe39d44fb3bc97fb3b31035",
+    "routing.json": "086124634e80767874c1156cdceed04d2e02f70c187f899a1c9339e831b9e44a",
+    "verification.json": "91e570da594bbf6166c77f04c256a96d8a54b60e975d2bc279cd54de6cb766ac"
+  }
+}

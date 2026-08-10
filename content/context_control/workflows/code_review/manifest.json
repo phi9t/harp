@@ -1,0 +1,15 @@
+{
+  "schema_version": "harp-workflow/v1",
+  "id": "code_review",
+  "title": "Code review",
+  "context_budget_tokens": 1800,
+  "selector_version": "v1",
+  "renderer_version": "v1",
+  "members": {
+    "context_schema.json": "43544ec0d5bcb6599a68c3454aca5529fea1a0566e45f847d67a47a5091eac93",
+    "outcome_rules.json": "b9903ff8a973ccaa6cb1e76bfb9a6d14205361d92897fef33b24bd3eb2d04201",
+    "playbook.jsonl": "858cec6342baa06fbc2f83ac6bc66fb73bdacfddf05f77d9523778a325ba5f54",
+    "routing.json": "fd5390b3f21976e84a2f9ae5064394bd136bb22d66d740196d91b6e9946da1ee",
+    "verification.json": "0237ddf967541fcca5f55f209bdbc6004242e6771dfb2aafd75ce3ed90bc9a13"
+  }
+}

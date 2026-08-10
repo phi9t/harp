@@ -1,0 +1,15 @@
+{
+  "schema_version": "harp-workflow/v1",
+  "id": "general_coding",
+  "title": "General coding",
+  "context_budget_tokens": 1600,
+  "selector_version": "v1",
+  "renderer_version": "v1",
+  "members": {
+    "context_schema.json": "0b900d9de6940d7b5dca084b042f43c8a06f50ca5a542a87d2601224d5676944",
+    "outcome_rules.json": "954e0a2a39ecc83cea6d436e3eb7c032aabe4604265949997c3641398c3cbacd",
+    "playbook.jsonl": "d6e468cc5b547de3c760b9553bde9aa8213653815c4e568adf4e7a4289cf0818",
+    "routing.json": "79fd3dbe84e060917d34c8c678cc611a9bcdc5a280f3a12b3a1934a901ec2125",
+    "verification.json": "e20f8b9b1cd104cde881b443eb2d6fa9b7dc30cfa6928eb03296688bf4013f10"
+  }
+}

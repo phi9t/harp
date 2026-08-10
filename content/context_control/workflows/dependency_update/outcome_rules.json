@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-outcome-rules/v1",
+  "verified_success": [
+    "The direct and transitive changes are understood, the lockfile is consistent, and compatibility verification passes."
+  ],
+  "weak_signals": [
+    "An assistant claim or zero process exit alone is not verified success."
+  ]
+}

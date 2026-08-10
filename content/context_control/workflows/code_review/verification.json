@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-verification/v1",
+  "recipes": [
+    {
+      "id": "verify-findings-against-source",
+      "description": "Inspect each reported finding against the changed source and its local contract before reporting it."
+    }
+  ]
+}

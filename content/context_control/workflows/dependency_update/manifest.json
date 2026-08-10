@@ -1,0 +1,15 @@
+{
+  "schema_version": "harp-workflow/v1",
+  "id": "dependency_update",
+  "title": "Dependency update",
+  "context_budget_tokens": 2000,
+  "selector_version": "v1",
+  "renderer_version": "v1",
+  "members": {
+    "context_schema.json": "67430c1aca5bf3845d66e639ed71840f36ab49f790f6b33bd2c73f4c46cd53bf",
+    "outcome_rules.json": "dd3561d1d7919b11d29e65d5e6dd8239106082f848603c45a8ce975ac464b69e",
+    "playbook.jsonl": "683134eae5c119ef1e969eb8263c87a44c1f564b0e0ac6b68439b998c8b411af",
+    "routing.json": "112ec765836a4480fb2afa053ed234d1143122a285f15eb20dcc1372e714d18e",
+    "verification.json": "0fbd9bdfda3ee64b13150149a91d2ac57f1f93663014ae39e951e0940451e512"
+  }
+}

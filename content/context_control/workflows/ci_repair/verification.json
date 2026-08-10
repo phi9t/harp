@@ -1,0 +1,9 @@
+{
+  "schema_version": "harp-verification/v1",
+  "recipes": [
+    {
+      "id": "rerun-original-mode",
+      "description": "Rerun the original failing command in the same verification mode and require its relevant assertions to pass."
+    }
+  ]
+}
