@@ -226,7 +226,20 @@ to the release or adapter layer.
 
 *** Verification Evidence
 
+- Workflow package commit
+  =d382dae= (integrated from reviewed commit
+  =1bf988cf2c5a6099cd512ca0baea76e7a83d4b7a=).
+- =cargo fmt --all -- --check= passed.
+- =cargo test -p harp context_control::workflow --lib= passed: 8 tests.
+- =cargo clippy -p harp --all-targets -- -D warnings= passed.
+- All 24 package members are embedded, and all 20 declared member digests were
+  independently recomputed during review.
+
 *** Review Notes
+
+- Workflow-package spec review passed.
+- Code-quality review approved after validated package state was made private
+  and exposed only through immutable accessors.
 
 *** Follow-ups
 
