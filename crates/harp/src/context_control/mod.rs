@@ -1,5 +1,6 @@
 pub mod canonical;
 pub mod policy;
+pub mod provider;
 pub mod release;
 pub mod repository_state;
 pub mod routing;

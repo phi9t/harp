@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
+use std::env;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
@@ -6,6 +7,7 @@ use std::process::ExitCode;
 use std::str::FromStr;
 
 use clap::{Parser, Subcommand, ValueEnum};
+use harp::context_control::provider::{locate, probe};
 use harp::context_control::{ProviderId, WorkflowChoice, WorkflowId};
 use harp::{build_corpus, check_corpus, AppError, BuildMode};
 use harp_artifacts::ArtifactStore;
@@ -360,10 +362,36 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
         Command::Rlm { command } => run_rlm(root, command),
         Command::Providers { command } => match command {
             ProvidersCommand::Doctor { provider } => {
-                let _provider = provider.map(ProviderId::from);
-                Err(AppError::external(
-                    "provider.not_implemented",
-                    "provider doctor is not implemented",
+                let path_env = env::var_os("PATH").ok_or_else(|| {
+                    AppError::external("provider.path", "PATH is required for provider discovery")
+                })?;
+                let providers = match provider {
+                    Some(provider) => vec![ProviderId::from(*provider)],
+                    None => vec![ProviderId::Trae, ProviderId::Codex],
+                };
+                let snapshots = providers
+                    .into_iter()
+                    .map(|provider| {
+                        let executable = locate(provider, &path_env)?;
+                        probe(provider, &executable)
+                    })
+                    .collect::<Result<Vec<_>, AppError>>()?;
+                let message = snapshots
+                    .iter()
+                    .map(|snapshot| {
+                        format!(
+                            "{} executable={} version={} capabilities=ready",
+                            snapshot.provider,
+                            snapshot.executable.display(),
+                            snapshot.version
+                        )
+                    })
+                    .collect::<Vec<_>>()
+                    .join("\n");
+                Ok((
+                    "providers.doctor",
+                    message,
+                    serde_json::to_value(snapshots).expect("provider snapshots serialize"),
                 ))
             }
         },
