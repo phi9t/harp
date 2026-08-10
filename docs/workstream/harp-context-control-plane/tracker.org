@@ -39,7 +39,7 @@ than implied observation-milestone behavior.
 | Outcomes | Research-run receipts | Typed deterministic and human labels | Label contract, attachments, claim ceilings |
 | Learning | Research analysis only | Reviewable ACE and MCE candidates | Sanitized export, candidate schemas, replay |
 | Promotion | Repository commits only | Modeled release lifecycle | V1 stops at human review |
-| Verification | Adversarial unit and fake-provider tests, including shared run orchestration | Complete offline milestone gate | Final =mise run verify= and full-run regression gaps |
+| Verification | Adversarial unit and fake-provider tests, including shared run orchestration | Complete offline milestone gate | Full-run regression gaps |
 
 * Work Items
 
@@ -112,7 +112,7 @@ future App Server adapters.
 
 *** Follow-ups
 
-** IMPLEMENTING Build Secure Local State And Immutable Releases :storage:security:code:
+** DONE Build Secure Local State And Immutable Releases :storage:security:code:
 :PROPERTIES:
 :ID: HCCP-002
 :DESIGN_SECTION: Release compiler; Local storage
@@ -122,7 +122,7 @@ future App Server adapters.
 :AGENT_RUN: 019fe970-2927-7d71-b388-77ee45ea666e; 019fe9cf-bf01-79d1-9c9d-13f1dbd1eb88; 019fe986-c9a6-7920-9af4-90f6e096b7d5; 019fea28-4fd2-7272-bd86-d4d222ac640d; 019fea3f-e741-7962-bd7e-2d675661168d
 :MODEL: inherited default
 :STARTED: 2026-08-09
-:COMPLETED:
+:COMPLETED: 2026-08-10
 :END:
 
 *** Scope
@@ -194,7 +194,7 @@ side-effect and identity guarantees match the design.
 
 *** Follow-ups
 
-** IMPLEMENTING Add Workflow Packages And Deterministic Context Resolution :workflow:code:tests:
+** DONE Add Workflow Packages And Deterministic Context Resolution :workflow:code:tests:
 :PROPERTIES:
 :ID: HCCP-003
 :DESIGN_SECTION: Workflow registry; Context resolver
@@ -204,7 +204,7 @@ side-effect and identity guarantees match the design.
 :AGENT_RUN: 019fe970-277b-7310-8fc5-6d4fe62051c6
 :MODEL: inherited default
 :STARTED: 2026-08-09
-:COMPLETED:
+:COMPLETED: 2026-08-10
 :END:
 
 *** Scope
@@ -273,7 +273,7 @@ to the release or adapter layer.
 
 *** Follow-ups
 
-** REVIEW Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
+** DONE Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
 :PROPERTIES:
 :ID: HCCP-004
 :DESIGN_SECTION: Provider adapters; Chosen architecture
@@ -283,7 +283,7 @@ to the release or adapter layer.
 :AGENT_RUN: 019fea3f-ea27-70f0-8415-96da273600d7
 :MODEL: inherited default
 :STARTED: 2026-08-09
-:COMPLETED:
+:COMPLETED: 2026-08-10
 :END:
 
 *** Scope
@@ -336,12 +336,18 @@ CLI.
 
 - Provider capability parsing is declaration-row based and versioned; doctor
   performs no network or authentication probe.
-- Final completion remains gated on the observation milestone's offline release
-  verification.
+- Aggregate security review found and blocked release on a Unix probe cleanup
+  race that reaped the process-group leader before final group signaling.
+  The fix observes exit with =waitid(...WNOWAIT)=, retains the leader through
+  residual-group cleanup, and reaps exactly once afterward.
+- A second review approved the fix after stale macOS =EPERM= handling was
+  hardened to require a fresh unreaped-leader observation. The two regressions
+  failed before their fixes and passed afterward; the final 30-test probe suite
+  and strict workspace Clippy passed.
 
 *** Follow-ups
 
-** REVIEW Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
+** DONE Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
 :PROPERTIES:
 :ID: HCCP-005
 :DESIGN_SECTION: Run lifecycle; Context and episode manifests; Provider adapters
@@ -351,7 +357,7 @@ CLI.
 :AGENT_RUN: 019fea3f-e8fe-7731-9662-52fbe19181f0
 :MODEL: inherited default
 :STARTED: 2026-08-09
-:COMPLETED:
+:COMPLETED: 2026-08-10
 :END:
 
 *** Scope
