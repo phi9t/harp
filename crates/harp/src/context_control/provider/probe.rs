@@ -12,7 +12,6 @@ use std::time::{Duration, Instant};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest as _, Sha256};
 use tempfile::NamedTempFile;
-use wait_timeout::ChildExt;
 
 use crate::context_control::{ProviderId, PROVIDER_CAPABILITIES_SCHEMA};
 use crate::AppError;
@@ -289,7 +288,7 @@ fn run_probe_with_readiness(
         )?;
     }
 
-    let status = wait_bounded(
+    let exit = wait_bounded(
         &mut child,
         process_group,
         &stdout,
@@ -297,7 +296,7 @@ fn run_probe_with_readiness(
         timeout,
         &command_label,
     )?;
-    terminate_and_reap(&mut child, process_group, true, &command_label)?;
+    let status = terminate_and_reap(&mut child, process_group, Some(exit), &command_label)?;
 
     let stdout_bytes = read_temp_file(&mut stdout, "stdout", &command_label)?;
     let _stderr_bytes = read_temp_file(&mut stderr, "stderr", &command_label)?;
@@ -327,27 +326,18 @@ fn await_probe_readiness(
             .and_then(|_| check_output_limit(stderr, "stderr", command_label))
         {
             return Err(cleanup_preserving_primary(error, || {
-                terminate_and_reap(child, process_group, false, command_label)
+                terminate_and_reap(child, process_group, None, command_label).map(drop)
             }));
         }
-        if child
-            .try_wait()
-            .map_err(|error| {
-                provider_io(
-                    format!("could not inspect provider command {command_label} for readiness"),
-                    error,
-                )
-            })?
-            .is_some()
-        {
-            terminate_and_reap(child, process_group, true, command_label)?;
+        if let Some(exit) = inspect_child_exit(child, command_label)? {
+            terminate_and_reap(child, process_group, Some(exit), command_label)?;
             return Err(AppError::external(
                 "provider.test_fixture",
                 format!("provider command {command_label} exited before fixture readiness"),
             ));
         }
         if started.elapsed() >= PROBE_TIMEOUT {
-            terminate_and_reap(child, process_group, false, command_label)?;
+            terminate_and_reap(child, process_group, None, command_label)?;
             return Err(AppError::external(
                 "provider.test_fixture",
                 format!("provider command {command_label} did not signal fixture readiness"),
@@ -364,17 +354,20 @@ fn wait_bounded(
     stderr: &NamedTempFile,
     timeout: Duration,
     command_label: &str,
-) -> Result<ExitStatus, AppError> {
+) -> Result<ProbeExit, AppError> {
     let started = Instant::now();
     loop {
         if let Err(error) = check_output_limit(stdout, "stdout", command_label)
             .and_then(|_| check_output_limit(stderr, "stderr", command_label))
         {
             return Err(cleanup_preserving_primary(error, || {
-                terminate_and_reap(child, process_group, false, command_label)
+                terminate_and_reap(child, process_group, None, command_label).map(drop)
             }));
         }
 
+        if let Some(exit) = inspect_child_exit(child, command_label)? {
+            return Ok(exit);
+        }
         let remaining = timeout.saturating_sub(started.elapsed());
         if remaining.is_zero() {
             let timeout_error = AppError::external(
@@ -385,18 +378,10 @@ fn wait_bounded(
                 ),
             );
             return Err(cleanup_preserving_primary(timeout_error, || {
-                terminate_and_reap(child, process_group, false, command_label)
+                terminate_and_reap(child, process_group, None, command_label).map(drop)
             }));
         }
-        let wait = remaining.min(OUTPUT_POLL_INTERVAL);
-        if let Some(status) = child.wait_timeout(wait).map_err(|error| {
-            provider_io(
-                format!("could not wait for provider command {command_label}"),
-                error,
-            )
-        })? {
-            return Ok(status);
-        }
+        thread::sleep(remaining.min(OUTPUT_POLL_INTERVAL));
     }
 }
 
@@ -439,6 +424,13 @@ impl ProbeProcessGroup {
     }
 }
 
+enum ProbeExit {
+    #[cfg(unix)]
+    Unreaped,
+    #[cfg(not(unix))]
+    Reaped(ExitStatus),
+}
+
 #[cfg(unix)]
 fn configure_process_group(command: &mut Command) {
     use std::os::unix::process::CommandExt;
@@ -450,59 +442,114 @@ fn configure_process_group(command: &mut Command) {
 fn configure_process_group(_command: &mut Command) {}
 
 #[cfg(unix)]
+fn inspect_child_exit(
+    child: &mut std::process::Child,
+    command_label: &str,
+) -> Result<Option<ProbeExit>, AppError> {
+    child_has_exited(child.id())
+        .map(|exited| exited.then_some(ProbeExit::Unreaped))
+        .map_err(|error| {
+            provider_io(
+                format!("could not inspect provider command {command_label}"),
+                error,
+            )
+        })
+}
+
+#[cfg(not(unix))]
+fn inspect_child_exit(
+    child: &mut std::process::Child,
+    command_label: &str,
+) -> Result<Option<ProbeExit>, AppError> {
+    child
+        .try_wait()
+        .map(|status| status.map(ProbeExit::Reaped))
+        .map_err(|error| {
+            provider_io(
+                format!("could not inspect provider command {command_label}"),
+                error,
+            )
+        })
+}
+
+#[cfg(unix)]
+fn child_has_exited(process: u32) -> std::io::Result<bool> {
+    let process = libc::id_t::try_from(process).map_err(|_| {
+        std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "provider process ID does not fit waitid",
+        )
+    })?;
+    loop {
+        // Keep the leader unreaped so its PID pins the process-group identity
+        // until all residual descendants have been terminated.
+        let mut info: libc::siginfo_t = unsafe { std::mem::zeroed() };
+        let result = unsafe {
+            libc::waitid(
+                libc::P_PID,
+                process,
+                &mut info,
+                libc::WEXITED | libc::WNOHANG | libc::WNOWAIT,
+            )
+        };
+        if result == 0 {
+            return Ok(unsafe { info.si_pid() } != 0);
+        }
+        let error = std::io::Error::last_os_error();
+        if error.kind() != std::io::ErrorKind::Interrupted {
+            return Err(error);
+        }
+    }
+}
+
+#[cfg(unix)]
 fn terminate_and_reap(
     child: &mut std::process::Child,
     process_group: ProbeProcessGroup,
-    mut direct_child_reaped: bool,
+    _exit: Option<ProbeExit>,
     command_label: &str,
-) -> Result<(), AppError> {
-    if signal_process_group(process_group, libc::SIGTERM, command_label)? {
-        let started = Instant::now();
-        if !direct_child_reaped
-            && child
-                .wait_timeout(TERMINATION_GRACE)
-                .map_err(|error| {
-                    provider_io(
-                        format!(
-                            "could not wait for provider command {command_label} during termination"
-                        ),
-                        error,
-                    )
-                })?
-                .is_some()
-        {
-            direct_child_reaped = true;
-        }
-        thread::sleep(TERMINATION_GRACE.saturating_sub(started.elapsed()));
-        signal_process_group(process_group, libc::SIGKILL, command_label)?;
+) -> Result<ExitStatus, AppError> {
+    let leader_exited = inspect_exited_leader_for_cleanup(child, command_label)?;
+    if leader_exited {
+        signal_process_group(process_group, libc::SIGKILL, child, command_label)?;
+    } else if signal_process_group(process_group, libc::SIGTERM, child, command_label)? {
+        thread::sleep(TERMINATION_GRACE);
+        signal_process_group(process_group, libc::SIGKILL, child, command_label)?;
     }
-    if direct_child_reaped {
-        Ok(())
-    } else {
-        reap_direct_child(child, command_label)
-    }
+    reap_direct_child(child, command_label)
+}
+
+#[cfg(unix)]
+fn inspect_exited_leader_for_cleanup(
+    child: &std::process::Child,
+    command_label: &str,
+) -> Result<bool, AppError> {
+    child_has_exited(child.id()).map_err(|error| {
+        provider_io(
+            format!("could not inspect provider command {command_label} during cleanup"),
+            error,
+        )
+    })
 }
 
 #[cfg(not(unix))]
 fn terminate_and_reap(
     child: &mut std::process::Child,
     _process_group: ProbeProcessGroup,
-    direct_child_reaped: bool,
+    exit: Option<ProbeExit>,
     command_label: &str,
-) -> Result<(), AppError> {
-    if direct_child_reaped {
-        return Ok(());
+) -> Result<ExitStatus, AppError> {
+    if let Some(ProbeExit::Reaped(status)) = exit {
+        return Ok(status);
     }
-    if child
-        .try_wait()
-        .map_err(|error| {
-            provider_io(
-                format!("could not inspect provider command {command_label}"),
-                error,
-            )
-        })?
-        .is_none()
-    {
+    if let Some(status) = child.try_wait().map_err(|error| {
+        provider_io(
+            format!("could not inspect provider command {command_label}"),
+            error,
+        )
+    })? {
+        return Ok(status);
+    } else {
         child.kill().map_err(|error| {
             provider_io(
                 format!("could not kill provider command {command_label}"),
@@ -513,20 +560,23 @@ fn terminate_and_reap(
     reap_direct_child(child, command_label)
 }
 
-fn reap_direct_child(child: &mut std::process::Child, command_label: &str) -> Result<(), AppError> {
+fn reap_direct_child(
+    child: &mut std::process::Child,
+    command_label: &str,
+) -> Result<ExitStatus, AppError> {
     child.wait().map_err(|error| {
         provider_io(
             format!("could not reap provider command {command_label}"),
             error,
         )
-    })?;
-    Ok(())
+    })
 }
 
 #[cfg(unix)]
 fn signal_process_group(
     process_group: ProbeProcessGroup,
     signal: libc::c_int,
+    child: &std::process::Child,
     command_label: &str,
 ) -> Result<bool, AppError> {
     // SAFETY: the child is launched as leader of this dedicated process group.
@@ -535,7 +585,28 @@ fn signal_process_group(
         return Ok(true);
     }
     let error = std::io::Error::last_os_error();
+    classify_process_group_signal_error(
+        error,
+        || inspect_exited_leader_for_cleanup(child, command_label),
+        signal,
+        command_label,
+    )
+}
+
+#[cfg(unix)]
+fn classify_process_group_signal_error(
+    error: std::io::Error,
+    leader_has_exited: impl FnOnce() -> Result<bool, AppError>,
+    signal: libc::c_int,
+    command_label: &str,
+) -> Result<bool, AppError> {
     if error.raw_os_error() == Some(libc::ESRCH) {
+        return Ok(false);
+    }
+    // macOS can report EPERM when only the unreaped leader remains. Recheck at
+    // the error boundary so a leader that exited after the pre-signal poll is
+    // still reaped without treating the stale observation as authoritative.
+    if error.raw_os_error() == Some(libc::EPERM) && leader_has_exited()? {
         return Ok(false);
     }
     Err(provider_io(
@@ -895,14 +966,16 @@ mod tests {
     use std::io::{Seek, SeekFrom};
     use std::os::unix::fs::{symlink, PermissionsExt};
     use std::path::{Path, PathBuf};
+    use std::process::{Command, Stdio};
     use std::thread;
     use std::time::{Duration, Instant};
 
-    use tempfile::TempDir;
+    use tempfile::{NamedTempFile, TempDir};
 
     use super::{
-        cleanup_preserving_primary, locate, parse_optional_help, parse_version, probe,
-        probe_with_timeout, read_temp_file, run_probe_with_readiness, HelpDialect,
+        classify_process_group_signal_error, cleanup_preserving_primary, configure_process_group,
+        locate, parse_optional_help, parse_version, probe, probe_with_timeout, read_temp_file,
+        run_probe_with_readiness, terminate_and_reap, wait_bounded, HelpDialect, ProbeProcessGroup,
         MAX_OUTPUT_BYTES,
     };
     use crate::context_control::{ProviderId, PROVIDER_CAPABILITIES_SCHEMA};
@@ -1292,6 +1365,60 @@ Options:
         assert_cleanup_failure_preserves_primary("provider.output_limit");
     }
 
+    #[test]
+    fn bounded_wait_keeps_exited_group_leader_unreaped_until_cleanup() {
+        let stdout = NamedTempFile::new().unwrap();
+        let stderr = NamedTempFile::new().unwrap();
+        let mut command = Command::new("/bin/sh");
+        command
+            .args(["-c", "exit 0"])
+            .stdout(Stdio::from(stdout.as_file().try_clone().unwrap()))
+            .stderr(Stdio::from(stderr.as_file().try_clone().unwrap()));
+        configure_process_group(&mut command);
+        let mut child = command.spawn().unwrap();
+        let process_group = ProbeProcessGroup::for_child(&child).unwrap();
+
+        let exit = wait_bounded(
+            &mut child,
+            process_group,
+            &stdout,
+            &stderr,
+            Duration::from_secs(1),
+            "exit probe",
+        )
+        .unwrap();
+
+        assert_unreaped_child_exit(child.id());
+        terminate_and_reap(&mut child, process_group, Some(exit), "exit probe").unwrap();
+    }
+
+    #[test]
+    fn process_group_eperm_requires_a_fresh_exited_leader_observation() {
+        let mut observations = 0;
+        let handled = classify_process_group_signal_error(
+            std::io::Error::from_raw_os_error(libc::EPERM),
+            || {
+                observations += 1;
+                Ok(true)
+            },
+            libc::SIGTERM,
+            "exit probe",
+        )
+        .unwrap();
+
+        assert!(!handled);
+        assert_eq!(observations, 1);
+
+        let error = classify_process_group_signal_error(
+            std::io::Error::from_raw_os_error(libc::EPERM),
+            || Ok(false),
+            libc::SIGTERM,
+            "running probe",
+        )
+        .unwrap_err();
+        assert_eq!(error.code(), "provider.io");
+    }
+
     #[cfg(unix)]
     #[test]
     fn output_limit_terminates_term_resistant_descendants_before_returning() {
@@ -1651,6 +1778,26 @@ done
         assert_eq!(error.code(), primary_code);
         assert!(error.message.contains("cleanup also failed: provider.io"));
         assert!(!error.message.contains("sensitive cleanup detail"));
+    }
+
+    fn assert_unreaped_child_exit(pid: u32) {
+        let process = libc::id_t::try_from(pid).unwrap();
+        let mut info: libc::siginfo_t = unsafe { std::mem::zeroed() };
+        let result = unsafe {
+            libc::waitid(
+                libc::P_PID,
+                process,
+                &mut info,
+                libc::WEXITED | libc::WNOHANG | libc::WNOWAIT,
+            )
+        };
+        assert_eq!(
+            result,
+            0,
+            "exited probe leader was already reaped: {}",
+            std::io::Error::last_os_error()
+        );
+        assert_ne!(unsafe { info.si_pid() }, 0);
     }
 
     #[cfg(unix)]
