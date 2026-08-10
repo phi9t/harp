@@ -116,10 +116,10 @@ future App Server adapters.
 :PROPERTIES:
 :ID: HCCP-002
 :DESIGN_SECTION: Release compiler; Local storage
-:BRANCH: feat/context-control-observation
-:WORKTREE: .worktrees/context-control-observation
-:OWNER: primary
-:AGENT_RUN: 019fe970-2927-7d71-b388-77ee45ea666e; 019fe9cf-bf01-79d1-9c9d-13f1dbd1eb88; 019fe986-c9a6-7920-9af4-90f6e096b7d5; 019fea28-4fd2-7272-bd86-d4d222ac640d
+:BRANCH: feat/context-control-releases
+:WORKTREE: .worktrees/context-control-releases
+:OWNER: Kuhn
+:AGENT_RUN: 019fe970-2927-7d71-b388-77ee45ea666e; 019fe9cf-bf01-79d1-9c9d-13f1dbd1eb88; 019fe986-c9a6-7920-9af4-90f6e096b7d5; 019fea28-4fd2-7272-bd86-d4d222ac640d; 019fea3f-e741-7962-bd7e-2d675661168d
 :MODEL: inherited default
 :STARTED: 2026-08-09
 :COMPLETED:
@@ -273,16 +273,16 @@ to the release or adapter layer.
 
 *** Follow-ups
 
-** BACKLOG Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
+** IMPLEMENTING Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
 :PROPERTIES:
 :ID: HCCP-004
 :DESIGN_SECTION: Provider adapters; Chosen architecture
-:BRANCH: feat/context-control-observation
-:WORKTREE: .worktrees/context-control-observation
-:OWNER: primary
-:AGENT_RUN:
+:BRANCH: feat/context-control-providers
+:WORKTREE: .worktrees/context-control-providers
+:OWNER: Euler
+:AGENT_RUN: 019fea3f-ea27-70f0-8415-96da273600d7
 :MODEL:
-:STARTED:
+:STARTED: 2026-08-09
 :COMPLETED:
 :END:
 
@@ -325,16 +325,16 @@ CLI.
 
 *** Follow-ups
 
-** BACKLOG Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
+** IMPLEMENTING Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
 :PROPERTIES:
 :ID: HCCP-005
 :DESIGN_SECTION: Run lifecycle; Context and episode manifests; Provider adapters
-:BRANCH: feat/context-control-observation
-:WORKTREE: .worktrees/context-control-observation
-:OWNER: primary
-:AGENT_RUN:
+:BRANCH: feat/context-control-repository
+:WORKTREE: .worktrees/context-control-repository
+:OWNER: Arendt
+:AGENT_RUN: 019fea3f-e8fe-7731-9662-52fbe19181f0
 :MODEL:
-:STARTED:
+:STARTED: 2026-08-09
 :COMPLETED:
 :END:
 
