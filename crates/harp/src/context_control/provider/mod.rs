@@ -1,8 +1,8 @@
 mod invocation;
 mod probe;
-
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-pub(crate) use invocation::ProviderRawMember;
+mod process;
+
 pub use invocation::{
     build_invocation, encode_provider_command, ApprovalPolicy, ProviderArgumentPlan,
     ProviderCapabilitySnapshot, ProviderInvocation, ProviderRunOptions, SandboxMode,
@@ -10,9 +10,11 @@ pub use invocation::{
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 pub use invocation::{
     BoundProviderInvocation, EpisodeProviderRawPath, EpisodeRawDirectoryAuthority,
-    MaterializedProviderInvocation,
+    MaterializedProviderInvocation, SealedProviderEvidence,
 };
 pub use probe::{locate, probe, ProviderCapabilities};
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub use process::{execute, ProviderExecution, ProviderProcessResult};
 
 use std::path::Path;
 

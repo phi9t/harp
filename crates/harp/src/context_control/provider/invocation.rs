@@ -22,7 +22,8 @@ use serde::{Deserialize, Serialize};
 use super::ProviderCapabilities;
 use crate::context_control::canonical::{json_bytes, sha256_hex};
 use crate::context_control::context::ContextBundle;
-use crate::context_control::episode::RawEvidenceSummary;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+use crate::context_control::repository_state::repository_id;
 use crate::context_control::{
     ProviderId, RepositorySnapshot, CONTEXT_BUNDLE_SCHEMA, PROVIDER_CAPABILITIES_SCHEMA,
     PROVIDER_INVOCATION_SCHEMA,
@@ -42,6 +43,41 @@ const COMMAND_PLAN_ENCODING_MAGIC: &[u8] = b"harp-provider-command-plan-v1\0";
 const PROMPT_ENCODING_MAGIC: &[u8] = b"harp-provider-prompt-v1\n";
 const MAX_VERSION_BYTES: usize = 128;
 const MAX_VERSION_IDENTIFIER_BYTES: usize = 64;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) const MAX_STDOUT_BYTES: usize = 64 * 1024 * 1024;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) const MAX_STDERR_BYTES: usize = 64 * 1024 * 1024;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) const MAX_FINAL_MESSAGE_BYTES: usize = 16 * 1024 * 1024;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const TAR_BLOCK_BYTES: usize = 512;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const TAR_END_BYTES: usize = 2 * TAR_BLOCK_BYTES;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const DEFLATE_STORED_BLOCK_BYTES: usize = 16 * 1024;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const DEFLATE_STORED_BLOCK_OVERHEAD: usize = 5;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const GZIP_WRAPPER_BYTES: usize = 18;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const MAX_RAW_TAR_BYTES: usize = tar_member_bound(MAX_STDOUT_BYTES)
+    + tar_member_bound(MAX_STDERR_BYTES)
+    + tar_member_bound(MAX_FINAL_MESSAGE_BYTES)
+    + TAR_END_BYTES;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) const MAX_RAW_ARCHIVE_BYTES: usize = MAX_RAW_TAR_BYTES
+    + div_ceil(MAX_RAW_TAR_BYTES, DEFLATE_STORED_BLOCK_BYTES) * DEFLATE_STORED_BLOCK_OVERHEAD
+    + GZIP_WRAPPER_BYTES;
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const fn div_ceil(value: usize, divisor: usize) -> usize {
+    value.div_ceil(divisor)
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const fn tar_member_bound(member_bytes: usize) -> usize {
+    TAR_BLOCK_BYTES + div_ceil(member_bytes, TAR_BLOCK_BYTES) * TAR_BLOCK_BYTES
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "kebab-case")]
@@ -106,9 +142,8 @@ pub enum ProviderArgumentPlan {
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-#[allow(dead_code)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum ProviderRawMember {
+pub(super) enum ProviderRawMember {
     StdoutJsonl,
     StderrBin,
     FinalMessage,
@@ -132,13 +167,6 @@ impl ProviderRawMember {
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-const PROVIDER_ARCHIVE_MEMBERS: [ProviderRawMember; 3] = [
-    ProviderRawMember::StdoutJsonl,
-    ProviderRawMember::StderrBin,
-    ProviderRawMember::FinalMessage,
-];
-
-#[cfg(any(target_os = "macos", target_os = "linux"))]
 const PROVIDER_RAW_MEMBERS: [ProviderRawMember; 6] = [
     ProviderRawMember::StdoutJsonl,
     ProviderRawMember::StderrBin,
@@ -154,6 +182,87 @@ struct RawMemberEvidence {
     member: ProviderRawMember,
     bytes: Vec<u8>,
     sha256: String,
+    version: RawFileVersion,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct RawFileVersion {
+    identity: FileIdentity,
+    length: u64,
+    modified_seconds: i64,
+    modified_nanoseconds: i64,
+    changed_seconds: i64,
+    changed_nanoseconds: i64,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+struct DirectoryStream {
+    directory: Option<std::ptr::NonNull<libc::DIR>>,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+impl DirectoryStream {
+    fn open(directory_fd: OwnedFd) -> Result<Self, AppError> {
+        let raw_fd = directory_fd.into_raw_fd();
+        let directory = unsafe { libc::fdopendir(raw_fd) };
+        let Some(directory) = std::ptr::NonNull::new(directory) else {
+            let error = std::io::Error::last_os_error();
+            unsafe {
+                drop(OwnedFd::from_raw_fd(raw_fd));
+            }
+            return Err(AppError::io(
+                "provider.raw_member",
+                "could not open provider raw directory stream",
+                error,
+            ));
+        };
+        Ok(Self {
+            directory: Some(directory),
+        })
+    }
+
+    fn as_ptr(&self) -> *mut libc::DIR {
+        self.directory
+            .expect("open directory stream retains its pointer")
+            .as_ptr()
+    }
+
+    fn close(mut self) -> Result<(), AppError> {
+        let directory = self
+            .directory
+            .take()
+            .expect("open directory stream closes exactly once");
+        if unsafe { libc::closedir(directory.as_ptr()) } != 0 {
+            return Err(AppError::io(
+                "provider.raw_member",
+                "could not close provider raw directory stream",
+                std::io::Error::last_os_error(),
+            ));
+        }
+        Ok(())
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+impl Drop for DirectoryStream {
+    fn drop(&mut self) {
+        if let Some(directory) = self.directory.take() {
+            unsafe {
+                libc::closedir(directory.as_ptr());
+            }
+        }
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(super) struct RawEvidenceSummary {
+    pub(super) capture_complete: bool,
+    pub(super) stdout_sha256: String,
+    pub(super) stderr_sha256: String,
+    pub(super) final_message_sha256: Option<String>,
+    pub(super) raw_archive_sha256: String,
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -668,98 +777,89 @@ impl EpisodeRawDirectoryAuthority {
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-#[derive(Debug)]
+/// Consuming authority for one provider launch.
+///
+/// Command material remains private so callers must pass this token to
+/// [`super::execute`] instead of spawning the provider independently.
+///
+/// ```compile_fail
+/// use harp::context_control::provider::BoundProviderInvocation;
+///
+/// fn bypass_harp(invocation: BoundProviderInvocation) {
+///     let _ = invocation.executable();
+/// }
+/// ```
 pub struct BoundProviderInvocation {
     invocation: MaterializedProviderInvocation,
     authority: HeldProviderRawDirectory,
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
+impl std::fmt::Debug for BoundProviderInvocation {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("BoundProviderInvocation")
+            .finish_non_exhaustive()
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Debug)]
+pub(super) struct ClaimedProviderInvocation {
+    invocation: MaterializedProviderInvocation,
+    authority: HeldProviderRawDirectory,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub struct SealedProviderEvidence {
+    invocation: MaterializedProviderInvocation,
+    authority: HeldProviderRawDirectory,
+    entries: Vec<SealedRawMember>,
+    summary: RawEvidenceSummary,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+impl std::fmt::Debug for SealedProviderEvidence {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("SealedProviderEvidence")
+            .finish_non_exhaustive()
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct SealedRawMember {
+    member: ProviderRawMember,
+    version: RawFileVersion,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 impl BoundProviderInvocation {
-    pub fn provider(&self) -> ProviderId {
-        self.invocation.plan.provider()
-    }
-
-    pub fn executable(&self) -> &Path {
-        self.invocation.plan.executable()
-    }
-
-    pub fn arguments(&self) -> &[OsString] {
-        self.invocation.arguments()
-    }
-
-    pub fn working_directory(&self) -> &Path {
-        self.invocation.plan.working_directory()
-    }
-
-    pub fn stdin_bytes(&self) -> &[u8] {
-        self.invocation.plan.stdin_bytes()
-    }
-
-    pub fn command_sha256(&self) -> &str {
-        self.invocation.command_sha256()
-    }
-
-    pub fn command_plan_sha256(&self) -> &str {
-        self.invocation.command_plan_sha256()
-    }
-
-    pub fn prompt_sha256(&self) -> &str {
-        self.invocation.prompt_sha256()
-    }
-
-    pub(crate) fn provider_version(&self) -> &str {
-        self.invocation.provider_version()
-    }
-
-    pub(crate) fn provider_capabilities_sha256(&self) -> &str {
-        self.invocation.provider_capabilities_sha256()
-    }
-
-    pub(crate) fn repository(&self) -> &RepositorySnapshot {
-        self.invocation.repository()
-    }
-
-    pub(crate) fn raw_path(&self) -> &EpisodeProviderRawPath {
-        self.invocation.raw_path()
-    }
-
-    pub fn final_message_path(&self) -> &Path {
-        self.invocation.final_message_path()
-    }
-
     /// Revalidate immediately before spawning the provider.
     ///
-    /// Harp retains the directory descriptor and verifies the original absolute
-    /// route plus an absent leaf. Same-UID code can still race the provider's
-    /// pathname open after this check; that mutation is outside the V1 guarantee.
-    pub fn verify_before_spawn(&self) -> Result<(), AppError> {
+    /// Harp verifies the executable, repository snapshot, raw-directory route,
+    /// and absent output leaf adjacent to `spawn`. Same-UID code can still
+    /// replace the executable or repository after this final check, and can
+    /// rewrite evidence after Harp exits; those races are outside the V1
+    /// authenticity guarantee.
+    fn verify_before_spawn(&self) -> Result<(), AppError> {
         self.invocation.plan.capabilities.validate()?;
-        validate_repository_root(self.working_directory())?;
+        validate_repository_root(self.invocation.plan.working_directory())?;
         validate_repository_association(
-            self.working_directory(),
+            self.invocation.plan.working_directory(),
             self.invocation.plan.repository(),
         )?;
         self.authority.verify_before_spawn()
     }
 
-    pub fn read_final_message(&self, max_bytes: usize) -> Result<Option<Vec<u8>>, AppError> {
-        self.invocation.plan.capabilities.validate()?;
-        self.authority
-            .read_raw_member(ProviderRawMember::FinalMessage, max_bytes)
-    }
-
-    pub(crate) fn launch_claim_bytes(&self) -> &[u8] {
-        &self.invocation.launch_claim_bytes
-    }
-
-    pub(crate) fn claim_launch(&self) -> Result<(), AppError> {
+    pub(super) fn claim_launch(self) -> Result<ClaimedProviderInvocation, AppError> {
         self.verify_before_spawn()?;
         let mut claim = self
             .authority
             .create_raw_member(ProviderRawMember::LaunchClaim)?;
         claim
-            .write_all(self.launch_claim_bytes())
+            .write_all(&self.invocation.launch_claim_bytes)
             .map_err(|error| {
                 AppError::io(
                     "provider.launch_claim",
@@ -779,22 +879,99 @@ impl BoundProviderInvocation {
             .authority
             .read_raw_member(ProviderRawMember::LaunchClaim, 4096)?
         {
-            Some(bytes) if bytes == self.launch_claim_bytes() => Ok(()),
+            Some(bytes) if bytes == self.invocation.launch_claim_bytes => {
+                Ok(ClaimedProviderInvocation {
+                    invocation: self.invocation,
+                    authority: self.authority,
+                })
+            }
             _ => Err(invocation_path(
                 "provider launch claim changed while it was published",
             )),
         }
     }
+}
 
-    pub(crate) fn verify_raw_evidence(
-        &self,
-        capture_complete: bool,
-    ) -> Result<RawEvidenceSummary, AppError> {
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+impl ClaimedProviderInvocation {
+    pub(super) fn executable(&self) -> &Path {
+        self.invocation.plan.executable()
+    }
+
+    pub(super) fn arguments(&self) -> &[OsString] {
+        self.invocation.arguments()
+    }
+
+    pub(super) fn working_directory(&self) -> &Path {
+        self.invocation.plan.working_directory()
+    }
+
+    pub(super) fn stdin_bytes(&self) -> &[u8] {
+        self.invocation.plan.stdin_bytes()
+    }
+
+    pub(super) fn verify_before_spawn(&self) -> Result<(), AppError> {
         self.invocation.plan.capabilities.validate()?;
+        validate_repository_root(self.working_directory())?;
         validate_repository_association(
             self.working_directory(),
             self.invocation.plan.repository(),
         )?;
+        self.authority.verify_before_spawn()
+    }
+
+    pub(super) fn create_raw_member(&self, member: ProviderRawMember) -> Result<File, AppError> {
+        self.authority.create_raw_member(member)
+    }
+
+    pub(super) fn read_raw_member_bounded(
+        &self,
+        member: ProviderRawMember,
+        max_bytes: usize,
+    ) -> Result<Option<Vec<u8>>, AppError> {
+        self.authority.read_raw_member(member, max_bytes)
+    }
+
+    pub(super) fn sync_raw_directory(&self) -> Result<(), AppError> {
+        self.authority.sync_directory()
+    }
+
+    pub(super) fn seal(self, capture_complete: bool) -> Result<SealedProviderEvidence, AppError> {
+        self.seal_after(capture_complete, || {})
+    }
+
+    #[cfg(test)]
+    fn seal_with_revalidation_hook(
+        self,
+        capture_complete: bool,
+        before_final_revalidation: impl FnOnce(),
+    ) -> Result<SealedProviderEvidence, AppError> {
+        self.seal_after(capture_complete, before_final_revalidation)
+    }
+
+    fn seal_after(
+        self,
+        capture_complete: bool,
+        before_final_revalidation: impl FnOnce(),
+    ) -> Result<SealedProviderEvidence, AppError> {
+        let (entries, summary) =
+            self.authenticate_raw_evidence(capture_complete, before_final_revalidation)?;
+        Ok(SealedProviderEvidence {
+            invocation: self.invocation,
+            authority: self.authority,
+            entries,
+            summary,
+        })
+    }
+
+    fn authenticate_raw_evidence(
+        &self,
+        capture_complete: bool,
+        before_final_revalidation: impl FnOnce(),
+    ) -> Result<(Vec<SealedRawMember>, RawEvidenceSummary), AppError> {
+        self.invocation.plan.capabilities.validate()?;
+        validate_repository_root(self.working_directory())?;
+        validate_repository_identity(self.working_directory(), self.invocation.plan.repository())?;
         self.authority.verify_namespace()?;
         let entries = self.authority.list_raw_members()?;
         let allowed = PROVIDER_RAW_MEMBERS
@@ -813,21 +990,21 @@ impl BoundProviderInvocation {
         let launch = self
             .read_evidence_member(ProviderRawMember::LaunchClaim, 4096)?
             .ok_or_else(|| raw_evidence("provider launch claim is missing"))?;
-        if launch.bytes != self.launch_claim_bytes() {
+        if launch.bytes != self.invocation.launch_claim_bytes {
             return Err(raw_evidence(
                 "provider launch claim does not match the bound invocation",
             ));
         }
         let stdout = self
-            .read_evidence_member(ProviderRawMember::StdoutJsonl, 64 * 1024 * 1024)?
+            .read_evidence_member(ProviderRawMember::StdoutJsonl, MAX_STDOUT_BYTES)?
             .ok_or_else(|| raw_evidence("provider stdout capture is missing"))?;
         let stderr = self
-            .read_evidence_member(ProviderRawMember::StderrBin, 64 * 1024 * 1024)?
+            .read_evidence_member(ProviderRawMember::StderrBin, MAX_STDERR_BYTES)?
             .ok_or_else(|| raw_evidence("provider stderr capture is missing"))?;
         let final_message =
-            self.read_evidence_member(ProviderRawMember::FinalMessage, 16 * 1024 * 1024)?;
+            self.read_evidence_member(ProviderRawMember::FinalMessage, MAX_FINAL_MESSAGE_BYTES)?;
         let archive = self
-            .read_evidence_member(ProviderRawMember::RawArchive, 128 * 1024 * 1024)?
+            .read_evidence_member(ProviderRawMember::RawArchive, MAX_RAW_ARCHIVE_BYTES)?
             .ok_or_else(|| raw_evidence("provider raw archive is missing"))?;
         let members_manifest = self
             .read_evidence_member(ProviderRawMember::RawMembersManifest, 4096)?
@@ -844,21 +1021,37 @@ impl BoundProviderInvocation {
             &stderr,
             final_message.as_ref(),
         )?;
-        validate_raw_archive(&archive.bytes, &stdout, &stderr, final_message.as_ref())?;
+        validate_canonical_raw_archive(&archive.bytes, &stdout, &stderr, final_message.as_ref())?;
+
+        let mut sealed = vec![
+            sealed_member(&launch),
+            sealed_member(&stdout),
+            sealed_member(&stderr),
+            sealed_member(&archive),
+            sealed_member(&members_manifest),
+        ];
+        if let Some(final_message) = &final_message {
+            sealed.push(sealed_member(final_message));
+        }
+        sealed.sort_by_key(|member| member.member.name());
+        before_final_revalidation();
+        self.authority.revalidate_sealed_members(&sealed)?;
         if self.authority.list_raw_members()? != entries {
             return Err(raw_evidence(
                 "provider raw directory changed during evidence verification",
             ));
         }
         self.authority.verify_namespace()?;
-
-        Ok(RawEvidenceSummary {
-            capture_complete,
-            stdout_sha256: stdout.sha256,
-            stderr_sha256: stderr.sha256,
-            final_message_sha256: final_message.map(|member| member.sha256),
-            raw_archive_sha256: archive.sha256,
-        })
+        Ok((
+            sealed,
+            RawEvidenceSummary {
+                capture_complete,
+                stdout_sha256: stdout.sha256,
+                stderr_sha256: stderr.sha256,
+                final_message_sha256: final_message.map(|member| member.sha256),
+                raw_archive_sha256: archive.sha256,
+            },
+        ))
     }
 
     fn read_evidence_member(
@@ -867,32 +1060,82 @@ impl BoundProviderInvocation {
         max_bytes: usize,
     ) -> Result<Option<RawMemberEvidence>, AppError> {
         self.authority
-            .read_raw_member(member, max_bytes)
-            .map(|bytes| {
-                bytes.map(|bytes| RawMemberEvidence {
+            .read_raw_member_evidence(member, max_bytes)
+            .map(|evidence| {
+                evidence.map(|(bytes, version)| RawMemberEvidence {
                     member,
                     sha256: sha256_prefixed(&bytes),
                     bytes,
+                    version,
                 })
             })
     }
+}
 
-    #[allow(dead_code)]
-    pub(crate) fn create_raw_member(&self, member: ProviderRawMember) -> Result<File, AppError> {
-        self.authority.create_raw_member(member)
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+impl SealedProviderEvidence {
+    pub(crate) fn provider(&self) -> ProviderId {
+        self.invocation.provider()
     }
 
-    #[allow(dead_code)]
-    pub(crate) fn read_raw_member_bounded(
-        &self,
-        member: ProviderRawMember,
-        max_bytes: usize,
-    ) -> Result<Option<Vec<u8>>, AppError> {
-        self.authority.read_raw_member(member, max_bytes)
+    pub(crate) fn provider_version(&self) -> &str {
+        self.invocation.provider_version()
     }
 
-    pub(crate) fn sync_raw_directory(&self) -> Result<(), AppError> {
-        self.authority.sync_directory()
+    pub(crate) fn provider_capabilities_sha256(&self) -> &str {
+        self.invocation.provider_capabilities_sha256()
+    }
+
+    pub(crate) fn command_sha256(&self) -> &str {
+        self.invocation.command_sha256()
+    }
+
+    pub(crate) fn prompt_sha256(&self) -> &str {
+        self.invocation.prompt_sha256()
+    }
+
+    pub(crate) fn repository(&self) -> &RepositorySnapshot {
+        self.invocation.repository()
+    }
+
+    pub(crate) fn raw_path(&self) -> &EpisodeProviderRawPath {
+        self.invocation.raw_path()
+    }
+
+    pub(super) fn summary(&self) -> &RawEvidenceSummary {
+        &self.summary
+    }
+
+    pub(crate) fn capture_complete(&self) -> bool {
+        self.summary.capture_complete
+    }
+
+    pub(crate) fn stdout_sha256(&self) -> &str {
+        &self.summary.stdout_sha256
+    }
+
+    pub(crate) fn stderr_sha256(&self) -> &str {
+        &self.summary.stderr_sha256
+    }
+
+    pub(crate) fn final_message_sha256(&self) -> Option<&str> {
+        self.summary.final_message_sha256.as_deref()
+    }
+
+    pub(crate) fn raw_archive_sha256(&self) -> &str {
+        &self.summary.raw_archive_sha256
+    }
+
+    pub(crate) fn revalidate(&self) -> Result<(), AppError> {
+        self.authority.revalidate_sealed_members(&self.entries)
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn sealed_member(member: &RawMemberEvidence) -> SealedRawMember {
+    SealedRawMember {
+        member: member.member,
+        version: member.version,
     }
 }
 
@@ -994,42 +1237,37 @@ impl HeldProviderRawDirectory {
         let current =
             std::ffi::CString::new(".").expect("fixed provider directory component has no NUL");
         let directory_fd = open_directory_at(self.fd.as_raw_fd(), &current)?;
-        let directory = unsafe { libc::fdopendir(directory_fd.into_raw_fd()) };
-        if directory.is_null() {
-            return Err(AppError::io(
-                "provider.raw_member",
-                "could not open provider raw directory stream",
-                std::io::Error::last_os_error(),
-            ));
-        }
-        let mut names = Vec::new();
-        loop {
-            set_errno_zero();
-            let entry = unsafe { libc::readdir(directory) };
-            if entry.is_null() {
-                let error = std::io::Error::last_os_error();
-                unsafe {
-                    libc::closedir(directory);
+        let directory = DirectoryStream::open(directory_fd)?;
+        let result = (|| {
+            let mut names = Vec::new();
+            loop {
+                set_errno_zero();
+                let entry = unsafe { libc::readdir(directory.as_ptr()) };
+                if entry.is_null() {
+                    let error = std::io::Error::last_os_error();
+                    if error.raw_os_error().unwrap_or(0) == 0 {
+                        break;
+                    }
+                    return Err(AppError::io(
+                        "provider.raw_member",
+                        "could not list provider raw directory",
+                        error,
+                    ));
                 }
-                if error.raw_os_error().unwrap_or(0) == 0 {
-                    break;
+                let name = unsafe { std::ffi::CStr::from_ptr((*entry).d_name.as_ptr()) };
+                if name.to_bytes() == b"." || name.to_bytes() == b".." {
+                    continue;
                 }
-                return Err(AppError::io(
-                    "provider.raw_member",
-                    "could not list provider raw directory",
-                    error,
-                ));
+                let name = name.to_str().map_err(|_| {
+                    invocation_path("provider raw directory contains a non-UTF-8 member")
+                })?;
+                names.push(name.to_owned());
             }
-            let name = unsafe { std::ffi::CStr::from_ptr((*entry).d_name.as_ptr()) };
-            if name.to_bytes() == b"." || name.to_bytes() == b".." {
-                continue;
-            }
-            let name = name.to_str().map_err(|_| {
-                invocation_path("provider raw directory contains a non-UTF-8 member")
-            })?;
-            names.push(name.to_owned());
-        }
-        names.sort();
+            names.sort();
+            Ok(names)
+        })();
+        directory.close()?;
+        let names = result?;
         self.verify_namespace()?;
         Ok(names)
     }
@@ -1083,6 +1321,15 @@ impl HeldProviderRawDirectory {
         member: ProviderRawMember,
         max_bytes: usize,
     ) -> Result<Option<Vec<u8>>, AppError> {
+        self.read_raw_member_evidence(member, max_bytes)
+            .map(|evidence| evidence.map(|(bytes, _version)| bytes))
+    }
+
+    fn read_raw_member_evidence(
+        &self,
+        member: ProviderRawMember,
+        max_bytes: usize,
+    ) -> Result<Option<(Vec<u8>, RawFileVersion)>, AppError> {
         let read_limit = max_bytes.checked_add(1).ok_or_else(|| {
             AppError::invalid_input(
                 raw_member_limit_code(member),
@@ -1137,7 +1384,41 @@ impl HeldProviderRawDirectory {
             )));
         }
         self.verify_namespace()?;
-        Ok(Some(bytes))
+        Ok(Some((bytes, raw_file_version(&after))))
+    }
+
+    fn raw_member_version(&self, member: ProviderRawMember) -> Result<RawFileVersion, AppError> {
+        self.verify_namespace()?;
+        let name = raw_member_name(member);
+        let file = open_raw_member_at(self.fd.as_raw_fd(), &name, member)?.ok_or_else(|| {
+            raw_evidence(format!("provider raw member {} is missing", member.name()))
+        })?;
+        let metadata = validate_open_raw_member(self.fd.as_raw_fd(), &name, &file, member)?;
+        self.verify_namespace()?;
+        Ok(raw_file_version(&metadata))
+    }
+
+    fn revalidate_sealed_members(&self, entries: &[SealedRawMember]) -> Result<(), AppError> {
+        self.verify_namespace()?;
+        let actual = self.list_raw_members()?;
+        let expected = entries
+            .iter()
+            .map(|entry| entry.member.name().to_owned())
+            .collect::<Vec<_>>();
+        if actual != expected {
+            return Err(raw_evidence(
+                "sealed provider raw directory member set changed",
+            ));
+        }
+        for entry in entries {
+            if self.raw_member_version(entry.member)? != entry.version {
+                return Err(raw_evidence(format!(
+                    "sealed provider raw member {} changed",
+                    entry.member.name()
+                )));
+            }
+        }
+        self.verify_namespace()
     }
 
     fn sync_directory(&self) -> Result<(), AppError> {
@@ -1217,7 +1498,7 @@ fn validate_open_raw_member(
             member.name()
         )));
     }
-    if entry_identity(parent, name)? != metadata_identity(&metadata) {
+    if entry_identity(parent, name, member)? != metadata_identity(&metadata) {
         return Err(invocation_path(format!(
             "provider raw-member pathname identity changed: {}",
             member.name()
@@ -1227,15 +1508,15 @@ fn validate_open_raw_member(
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-fn raw_file_version(metadata: &fs::Metadata) -> (FileIdentity, u64, i64, i64, i64, i64) {
-    (
-        metadata_identity(metadata),
-        metadata.len(),
-        metadata.mtime(),
-        metadata.mtime_nsec(),
-        metadata.ctime(),
-        metadata.ctime_nsec(),
-    )
+fn raw_file_version(metadata: &fs::Metadata) -> RawFileVersion {
+    RawFileVersion {
+        identity: metadata_identity(metadata),
+        length: metadata.len(),
+        modified_seconds: metadata.mtime(),
+        modified_nanoseconds: metadata.mtime_nsec(),
+        changed_seconds: metadata.ctime(),
+        changed_nanoseconds: metadata.ctime_nsec(),
+    }
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -1245,45 +1526,12 @@ fn validate_raw_members_manifest(
     stderr: &RawMemberEvidence,
     final_message: Option<&RawMemberEvidence>,
 ) -> Result<(), AppError> {
-    let text = std::str::from_utf8(bytes)
-        .map_err(|_| raw_evidence("provider raw-members manifest is not UTF-8"))?;
-    let mut actual = Vec::new();
-    for line in text.strip_suffix('\n').unwrap_or(text).split('\n') {
-        if line.is_empty() {
-            return Err(raw_evidence(
-                "provider raw-members manifest contains an empty row",
-            ));
-        }
-        let mut fields = line.split('\t');
-        let digest = fields
-            .next()
-            .ok_or_else(|| raw_evidence("provider raw-members digest is missing"))?;
-        let size = fields
-            .next()
-            .and_then(|value| value.parse::<usize>().ok())
-            .ok_or_else(|| raw_evidence("provider raw-members size is invalid"))?;
-        let name = fields
-            .next()
-            .ok_or_else(|| raw_evidence("provider raw-members name is missing"))?;
-        if fields.next().is_some()
-            || !digest
-                .strip_prefix("sha256:")
-                .is_some_and(is_lowercase_sha256_hex)
-            || !PROVIDER_ARCHIVE_MEMBERS
-                .iter()
-                .any(|member| member.name() == name)
-        {
-            return Err(raw_evidence("provider raw-members manifest row is invalid"));
-        }
-        actual.push((name.to_owned(), size, digest.to_owned()));
-    }
-
-    let mut expected = vec![evidence_manifest_row(stdout), evidence_manifest_row(stderr)];
-    if let Some(final_message) = final_message {
-        expected.push(evidence_manifest_row(final_message));
-    }
-    expected.sort();
-    if actual != expected {
+    let expected = canonical_raw_members_manifest(
+        &stdout.bytes,
+        &stderr.bytes,
+        final_message.map(|member| member.bytes.as_slice()),
+    );
+    if bytes != expected {
         return Err(raw_evidence(
             "provider raw-members manifest does not match captured members",
         ));
@@ -1292,80 +1540,116 @@ fn validate_raw_members_manifest(
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-fn evidence_manifest_row(member: &RawMemberEvidence) -> (String, usize, String) {
-    (
-        member.member.name().to_owned(),
-        member.bytes.len(),
-        member.sha256.clone(),
-    )
-}
-
-#[cfg(any(target_os = "macos", target_os = "linux"))]
-fn validate_raw_archive(
+fn validate_canonical_raw_archive(
     bytes: &[u8],
     stdout: &RawMemberEvidence,
     stderr: &RawMemberEvidence,
     final_message: Option<&RawMemberEvidence>,
 ) -> Result<(), AppError> {
-    let mut expected = std::collections::BTreeMap::from([
-        (stdout.member.name(), stdout.bytes.as_slice()),
-        (stderr.member.name(), stderr.bytes.as_slice()),
-    ]);
-    if let Some(final_message) = final_message {
-        expected.insert(final_message.member.name(), final_message.bytes.as_slice());
-    }
-
-    let decoder = flate2::read::GzDecoder::new(std::io::Cursor::new(bytes));
-    let mut archive = tar::Archive::new(decoder);
-    let entries = archive
-        .entries()
-        .map_err(|error| raw_evidence(format!("provider raw archive is invalid: {error}")))?;
-    let mut actual = std::collections::BTreeMap::new();
-    for entry in entries {
-        let mut entry = entry
-            .map_err(|error| raw_evidence(format!("provider raw archive is invalid: {error}")))?;
-        if !entry.header().entry_type().is_file() {
-            return Err(raw_evidence(
-                "provider raw archive contains a non-file member",
-            ));
-        }
-        let path = entry
-            .path()
-            .map_err(|error| raw_evidence(format!("provider archive path is invalid: {error}")))?;
-        let name = path
-            .to_str()
-            .filter(|name| !name.contains('/') && !name.is_empty())
-            .ok_or_else(|| raw_evidence("provider raw archive member path is invalid"))?
-            .to_owned();
-        let expected_bytes = expected
-            .get(name.as_str())
-            .ok_or_else(|| raw_evidence("provider raw archive contains an unexpected member"))?;
-        let read_limit = expected_bytes
-            .len()
-            .checked_add(1)
-            .ok_or_else(|| raw_evidence("provider raw archive member size is invalid"))?;
-        let mut member_bytes = Vec::with_capacity(expected_bytes.len());
-        std::io::Read::by_ref(&mut entry)
-            .take(u64::try_from(read_limit).unwrap_or(u64::MAX))
-            .read_to_end(&mut member_bytes)
-            .map_err(|error| {
-                raw_evidence(format!(
-                    "could not read provider raw archive member: {error}"
-                ))
-            })?;
-        if member_bytes.as_slice() != *expected_bytes || actual.insert(name, member_bytes).is_some()
-        {
-            return Err(raw_evidence(
-                "provider raw archive member does not match captured bytes",
-            ));
-        }
-    }
-    if actual.len() != expected.len() {
+    let expected = canonical_raw_archive(
+        &stdout.bytes,
+        &stderr.bytes,
+        final_message.map(|member| member.bytes.as_slice()),
+    )?;
+    if bytes != expected {
         return Err(raw_evidence(
-            "provider raw archive is missing a captured member",
+            "provider raw archive is not the canonical archive of captured members",
         ));
     }
     Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) fn canonical_raw_members_manifest(
+    stdout: &[u8],
+    stderr: &[u8],
+    final_message: Option<&[u8]>,
+) -> Vec<u8> {
+    let mut rows = vec![(STDERR_NAME, stderr), (STDOUT_NAME, stdout)];
+    if let Some(final_message) = final_message {
+        rows.push((FINAL_MESSAGE_NAME, final_message));
+    }
+    rows.sort_by_key(|(name, _)| *name);
+    let mut bytes = Vec::new();
+    for (name, member) in rows {
+        use std::fmt::Write as _;
+        let mut row = String::new();
+        writeln!(
+            row,
+            "{}\t{}\t{}",
+            sha256_prefixed(member),
+            member.len(),
+            name
+        )
+        .expect("writing a String cannot fail");
+        bytes.extend_from_slice(row.as_bytes());
+    }
+    bytes
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(super) fn canonical_raw_archive(
+    stdout: &[u8],
+    stderr: &[u8],
+    final_message: Option<&[u8]>,
+) -> Result<Vec<u8>, AppError> {
+    let mut members = vec![(STDERR_NAME, stderr), (STDOUT_NAME, stdout)];
+    if let Some(final_message) = final_message {
+        members.push((FINAL_MESSAGE_NAME, final_message));
+    }
+    members.sort_by_key(|(name, _)| *name);
+
+    let mut bytes = Vec::new();
+    {
+        let encoder = flate2::GzBuilder::new()
+            .mtime(0)
+            .operating_system(255)
+            .write(&mut bytes, flate2::Compression::default());
+        let mut archive = tar::Builder::new(encoder);
+        for (name, member) in members {
+            let mut header = tar::Header::new_old();
+            header.set_size(u64::try_from(member.len()).map_err(|_| {
+                raw_evidence("provider raw member size does not fit archive format")
+            })?);
+            header.set_mode(0o644);
+            header.set_uid(0);
+            header.set_gid(0);
+            header.set_mtime(0);
+            header.set_entry_type(tar::EntryType::Regular);
+            header.set_cksum();
+            archive
+                .append_data(&mut header, name, std::io::Cursor::new(member))
+                .map_err(|error| {
+                    AppError::io(
+                        "provider.raw_archive",
+                        "could not build canonical provider raw archive",
+                        error,
+                    )
+                })?;
+        }
+        archive.finish().map_err(|error| {
+            AppError::io(
+                "provider.raw_archive",
+                "could not finish canonical provider raw archive",
+                error,
+            )
+        })?;
+        let encoder = archive.into_inner().map_err(|error| {
+            AppError::io(
+                "provider.raw_archive",
+                "could not recover canonical provider archive encoder",
+                error,
+            )
+        })?;
+        encoder.finish().map_err(|error| {
+            AppError::io(
+                "provider.raw_archive",
+                "could not finish canonical provider archive compression",
+                error,
+            )
+        })?;
+    }
+    Ok(bytes)
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -1661,20 +1945,24 @@ fn ensure_leaf_absent(parent: i32, member: &str) -> Result<(), AppError> {
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-fn entry_identity(parent: i32, member: &std::ffi::CStr) -> Result<FileIdentity, AppError> {
+fn entry_identity(
+    parent: i32,
+    name: &std::ffi::CStr,
+    member: ProviderRawMember,
+) -> Result<FileIdentity, AppError> {
     let mut stat = std::mem::MaybeUninit::<libc::stat>::zeroed();
     let result = unsafe {
         libc::fstatat(
             parent,
-            member.as_ptr(),
+            name.as_ptr(),
             stat.as_mut_ptr(),
             libc::AT_SYMLINK_NOFOLLOW,
         )
     };
     if result != 0 {
         return Err(AppError::io(
-            "provider.final_message",
-            "could not revalidate provider final-message member",
+            raw_member_error_code(member),
+            "could not revalidate provider raw member",
             std::io::Error::last_os_error(),
         ));
     }
@@ -2158,6 +2446,19 @@ fn validate_repository_association(
     Ok(())
 }
 
+fn validate_repository_identity(
+    repository_root: &Path,
+    expected: &RepositorySnapshot,
+) -> Result<(), AppError> {
+    if repository_id(repository_root)? != expected.repository_id {
+        return Err(AppError::invalid_input(
+            "provider.repository_changed",
+            "repository identity does not match the invocation working directory",
+        ));
+    }
+    Ok(())
+}
+
 #[cfg(unix)]
 fn os_starts_with_hyphen(value: &OsStr) -> bool {
     value.as_bytes().first() == Some(&b'-')
@@ -2236,12 +2537,15 @@ mod tests {
     use tempfile::TempDir;
 
     use super::{
-        build_invocation, encode_provider_command, encode_provider_command_plan,
-        executable_identity, provider_executable_name, sha256_prefixed, ApprovalPolicy,
+        build_invocation, canonical_raw_archive, canonical_raw_members_manifest, div_ceil,
+        encode_provider_command, encode_provider_command_plan, executable_identity,
+        provider_executable_name, sha256_prefixed, tar_member_bound, ApprovalPolicy,
         EpisodeProviderRawPath, EpisodeRawDirectoryAuthority, LegacyCapabilityDigest,
         ProviderArgumentPlan, ProviderCapabilitySnapshot, ProviderInvocation, ProviderRawMember,
         ProviderRunOptions, SandboxMode, COMMAND_ENCODING_MAGIC, COMMAND_PLAN_ENCODING_MAGIC,
-        PROMPT_ENCODING_MAGIC,
+        DEFLATE_STORED_BLOCK_BYTES, DEFLATE_STORED_BLOCK_OVERHEAD, GZIP_WRAPPER_BYTES,
+        MAX_FINAL_MESSAGE_BYTES, MAX_RAW_ARCHIVE_BYTES, MAX_RAW_TAR_BYTES, MAX_STDERR_BYTES,
+        MAX_STDOUT_BYTES, PROMPT_ENCODING_MAGIC, TAR_END_BYTES,
     };
     use crate::context_control::canonical::sha256_hex;
     use crate::context_control::context::ContextBundle;
@@ -2285,19 +2589,77 @@ mod tests {
         let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
         let first = fixture.bind(&plan, ProviderId::Trae);
         let second = fixture.bind(&plan, ProviderId::Trae);
+        let expected = first.invocation.launch_claim_bytes.clone();
 
-        first.claim_launch().unwrap();
+        let first = first.claim_launch().unwrap();
 
         assert_eq!(
             first
                 .read_raw_member_bounded(ProviderRawMember::LaunchClaim, 4096)
                 .unwrap(),
-            Some(first.launch_claim_bytes().to_vec())
+            Some(expected)
         );
         assert_eq!(
             second.claim_launch().unwrap_err().code(),
             "provider.output_exists"
         );
+    }
+
+    #[test]
+    fn bound_invocation_debug_output_does_not_expose_command_material() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let bound = fixture.bind(&plan, ProviderId::Trae);
+
+        let debug = format!("{bound:?}");
+
+        assert_eq!(debug, "BoundProviderInvocation { .. }");
+        assert!(!debug.contains(
+            fixture
+                .executable(ProviderId::Trae)
+                .to_string_lossy()
+                .as_ref()
+        ));
+        assert!(!debug.contains(TASK));
+        assert!(!debug.contains(&fixture.repository.to_string_lossy().into_owned()));
+    }
+
+    #[test]
+    fn sealed_evidence_debug_output_does_not_expose_command_material() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let claimed = fixture
+            .bind(&plan, ProviderId::Trae)
+            .claim_launch()
+            .unwrap();
+        let stdout = b"stdout\n";
+        let stderr = b"stderr\n";
+        let archive = canonical_raw_archive(stdout, stderr, None).unwrap();
+        let manifest = canonical_raw_members_manifest(stdout, stderr, None);
+        for (member, bytes) in [
+            (ProviderRawMember::StdoutJsonl, stdout.as_slice()),
+            (ProviderRawMember::StderrBin, stderr.as_slice()),
+            (ProviderRawMember::RawArchive, archive.as_slice()),
+            (ProviderRawMember::RawMembersManifest, manifest.as_slice()),
+        ] {
+            let mut file = claimed.create_raw_member(member).unwrap();
+            file.write_all(bytes).unwrap();
+            file.sync_all().unwrap();
+        }
+        claimed.sync_raw_directory().unwrap();
+        let evidence = claimed.seal(true).unwrap();
+
+        let debug = format!("{evidence:?}");
+
+        assert_eq!(debug, "SealedProviderEvidence { .. }");
+        assert!(!debug.contains(
+            fixture
+                .executable(ProviderId::Trae)
+                .to_string_lossy()
+                .as_ref()
+        ));
+        assert!(!debug.contains(TASK));
+        assert!(!debug.contains(&fixture.repository.to_string_lossy().into_owned()));
     }
 
     #[test]
@@ -2377,7 +2739,6 @@ mod tests {
 
         for provider in [ProviderId::Trae, ProviderId::Codex] {
             let plan = fixture.plan(provider, &options);
-            let bound = fixture.bind(&plan, provider);
             let expected = vec![
                 OsString::from("exec"),
                 OsString::from("--cd"),
@@ -2395,14 +2756,16 @@ mod tests {
                 OsString::from("approval_policy=\"on-request\""),
                 OsString::from("-"),
             ];
+            let materialized = plan.materialize(&fixture.raw_path_plan(provider)).unwrap();
 
-            assert_eq!(bound.provider(), provider);
-            assert_eq!(bound.executable(), fixture.executable(provider));
-            assert_eq!(bound.arguments(), expected);
-            assert_eq!(bound.working_directory(), fixture.repository);
-            assert!(!bound.final_message_path().exists());
-            assert_no_forbidden_arguments(bound.arguments());
-            prompts.push(bound.stdin_bytes().to_vec());
+            assert_eq!(plan.provider(), provider);
+            assert_eq!(plan.executable(), fixture.executable(provider));
+            assert_eq!(materialized.arguments(), expected);
+            assert_eq!(plan.working_directory(), fixture.repository);
+            assert!(!materialized.final_message_path().exists());
+            assert_no_forbidden_arguments(materialized.arguments());
+            prompts.push(plan.stdin_bytes().to_vec());
+            materialized.bind(fixture.authority(provider)).unwrap();
         }
 
         assert_eq!(prompts[0], prompts[1]);
@@ -2425,10 +2788,12 @@ mod tests {
     fn optional_arguments_preserve_fixed_prefix_and_stdin_marker() {
         let fixture = InvocationFixture::new();
         let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
-        let bound = fixture.bind(&plan, ProviderId::Trae);
+        let materialized = plan
+            .materialize(&fixture.raw_path_plan(ProviderId::Trae))
+            .unwrap();
 
         assert_eq!(
-            bound.arguments(),
+            materialized.arguments(),
             [
                 OsString::from("exec"),
                 OsString::from("--cd"),
@@ -2441,6 +2806,11 @@ mod tests {
                 OsString::from("-"),
             ]
         );
+        materialized
+            .bind(fixture.authority(ProviderId::Trae))
+            .unwrap()
+            .claim_launch()
+            .unwrap();
     }
 
     #[test]
@@ -2464,14 +2834,19 @@ mod tests {
                 ..ProviderRunOptions::default()
             },
         );
-        let bound = fixture.bind(&plan, ProviderId::Trae);
+        let materialized = plan
+            .materialize(&fixture.raw_path_plan(ProviderId::Trae))
+            .unwrap();
 
-        assert_eq!(bound.arguments()[7], OsStr::new("model with spaces"));
-        assert_eq!(bound.arguments()[9], OsStr::new("profile\"quoted"));
-        assert!(!bound
+        assert_eq!(materialized.arguments()[7], OsStr::new("model with spaces"));
+        assert_eq!(materialized.arguments()[9], OsStr::new("profile\"quoted"));
+        assert!(!materialized
             .arguments()
             .iter()
             .any(|argument| argument == OsStr::new("'model with spaces'")));
+        materialized
+            .bind(fixture.authority(ProviderId::Trae))
+            .unwrap();
     }
 
     #[test]
@@ -3005,21 +3380,63 @@ mod tests {
     fn reads_final_message_through_held_directory_authority() {
         let fixture = InvocationFixture::new();
         let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
-        let bound = fixture.bind(&plan, ProviderId::Trae);
+        let materialized = plan
+            .materialize(&fixture.raw_path_plan(ProviderId::Trae))
+            .unwrap();
+        let final_message_path = materialized.final_message_path().to_owned();
+        let claimed = materialized
+            .bind(fixture.authority(ProviderId::Trae))
+            .unwrap()
+            .claim_launch()
+            .unwrap();
 
-        assert_eq!(bound.read_final_message(64).unwrap(), None);
         assert_eq!(
-            bound.read_final_message(usize::MAX).unwrap_err().code(),
+            claimed
+                .read_raw_member_bounded(ProviderRawMember::FinalMessage, 64)
+                .unwrap(),
+            None
+        );
+        assert_eq!(
+            claimed
+                .read_raw_member_bounded(ProviderRawMember::FinalMessage, usize::MAX)
+                .unwrap_err()
+                .code(),
             "provider.final_message_limit"
         );
-        fs::write(bound.final_message_path(), b"final response").unwrap();
+        fs::write(final_message_path, b"final response").unwrap();
         assert_eq!(
-            bound.read_final_message(64).unwrap(),
+            claimed
+                .read_raw_member_bounded(ProviderRawMember::FinalMessage, 64)
+                .unwrap(),
             Some(b"final response".to_vec())
         );
         assert_eq!(
-            bound.read_final_message(4).unwrap_err().code(),
+            claimed
+                .read_raw_member_bounded(ProviderRawMember::FinalMessage, 4)
+                .unwrap_err()
+                .code(),
             "provider.final_message_limit"
+        );
+    }
+
+    #[test]
+    fn detects_final_message_created_after_claim_before_spawn() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let materialized = plan
+            .materialize(&fixture.raw_path_plan(ProviderId::Trae))
+            .unwrap();
+        let final_message_path = materialized.final_message_path().to_owned();
+        let claimed = materialized
+            .bind(fixture.authority(ProviderId::Trae))
+            .unwrap()
+            .claim_launch()
+            .unwrap();
+        fs::write(final_message_path, b"raced final message").unwrap();
+
+        assert_eq!(
+            claimed.verify_before_spawn().unwrap_err().code(),
+            "provider.output_exists"
         );
     }
 
@@ -3027,7 +3444,10 @@ mod tests {
     fn fixed_raw_members_are_descriptor_relative_and_revalidated() {
         let fixture = InvocationFixture::new();
         let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
-        let bound = fixture.bind(&plan, ProviderId::Trae);
+        let bound = fixture
+            .bind(&plan, ProviderId::Trae)
+            .claim_launch()
+            .unwrap();
         let cases = [
             (ProviderRawMember::StdoutJsonl, b"stdout".as_slice()),
             (ProviderRawMember::StderrBin, b"stderr".as_slice()),
@@ -3052,6 +3472,106 @@ mod tests {
                 "provider.output_exists"
             );
         }
+    }
+
+    #[test]
+    fn seal_rejects_byte_distinct_noncanonical_archive() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let claimed = fixture
+            .bind(&plan, ProviderId::Trae)
+            .claim_launch()
+            .unwrap();
+        let stdout = b"stdout\n";
+        let stderr = b"stderr\n";
+        for (member, bytes) in [
+            (ProviderRawMember::StdoutJsonl, stdout.as_slice()),
+            (ProviderRawMember::StderrBin, stderr.as_slice()),
+        ] {
+            let mut file = claimed.create_raw_member(member).unwrap();
+            file.write_all(bytes).unwrap();
+            file.sync_all().unwrap();
+        }
+        let mut archive = canonical_raw_archive(stdout, stderr, None).unwrap();
+        archive.push(0);
+        let mut archive_file = claimed
+            .create_raw_member(ProviderRawMember::RawArchive)
+            .unwrap();
+        archive_file.write_all(&archive).unwrap();
+        archive_file.sync_all().unwrap();
+        let manifest = canonical_raw_members_manifest(stdout, stderr, None);
+        let mut manifest_file = claimed
+            .create_raw_member(ProviderRawMember::RawMembersManifest)
+            .unwrap();
+        manifest_file.write_all(&manifest).unwrap();
+        manifest_file.sync_all().unwrap();
+        claimed.sync_raw_directory().unwrap();
+
+        assert_eq!(
+            claimed.seal(true).unwrap_err().code(),
+            "provider.raw_evidence"
+        );
+    }
+
+    #[test]
+    fn seal_rejects_member_replacement_during_final_revalidation() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let claimed = fixture
+            .bind(&plan, ProviderId::Trae)
+            .claim_launch()
+            .unwrap();
+        let stdout = b"stdout\n";
+        let stderr = b"stderr\n";
+        let archive = canonical_raw_archive(stdout, stderr, None).unwrap();
+        let manifest = canonical_raw_members_manifest(stdout, stderr, None);
+        for (member, bytes) in [
+            (ProviderRawMember::StdoutJsonl, stdout.as_slice()),
+            (ProviderRawMember::StderrBin, stderr.as_slice()),
+            (ProviderRawMember::RawArchive, archive.as_slice()),
+            (ProviderRawMember::RawMembersManifest, manifest.as_slice()),
+        ] {
+            let mut file = claimed.create_raw_member(member).unwrap();
+            file.write_all(bytes).unwrap();
+            file.sync_all().unwrap();
+        }
+        claimed.sync_raw_directory().unwrap();
+        let raw = fixture.raw_path(ProviderId::Trae);
+        let stdout_path = raw.join(ProviderRawMember::StdoutJsonl.name());
+        let displaced = fixture.root.join("displaced-stdout");
+
+        let error = claimed
+            .seal_with_revalidation_hook(true, || {
+                fs::rename(&stdout_path, &displaced).unwrap();
+                fs::write(&stdout_path, b"xxxxxx\n").unwrap();
+                fs::set_permissions(&stdout_path, fs::Permissions::from_mode(0o600)).unwrap();
+            })
+            .unwrap_err();
+
+        assert_eq!(error.code(), "provider.raw_evidence");
+    }
+
+    #[test]
+    fn archive_limit_covers_every_accepted_member_at_its_maximum() {
+        let archive_limit = std::hint::black_box(MAX_RAW_ARCHIVE_BYTES);
+        let accepted_member_bytes =
+            std::hint::black_box(MAX_STDOUT_BYTES + MAX_STDERR_BYTES + MAX_FINAL_MESSAGE_BYTES);
+
+        assert_eq!(
+            MAX_RAW_TAR_BYTES,
+            tar_member_bound(MAX_STDOUT_BYTES)
+                + tar_member_bound(MAX_STDERR_BYTES)
+                + tar_member_bound(MAX_FINAL_MESSAGE_BYTES)
+                + TAR_END_BYTES
+        );
+        assert!(archive_limit > accepted_member_bytes);
+        assert_eq!(
+            MAX_RAW_ARCHIVE_BYTES,
+            MAX_RAW_TAR_BYTES
+                + div_ceil(MAX_RAW_TAR_BYTES, DEFLATE_STORED_BLOCK_BYTES)
+                    * DEFLATE_STORED_BLOCK_OVERHEAD
+                + GZIP_WRAPPER_BYTES
+        );
     }
 
     #[cfg(target_os = "linux")]

@@ -9,8 +9,8 @@ use super::canonical::{json_bytes, sha256_hex};
 use super::context::ContextBundle;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 use super::provider::{
-    BoundProviderInvocation, EpisodeProviderRawPath, EpisodeRawDirectoryAuthority,
-    MaterializedProviderInvocation,
+    EpisodeProviderRawPath, EpisodeRawDirectoryAuthority, MaterializedProviderInvocation,
+    SealedProviderEvidence,
 };
 use super::state::{HeldPrivateDirectory, PrivateFileExpectation, ReplacePolicy, StateRoot};
 use super::{
@@ -26,16 +26,6 @@ const MAX_MANIFEST_BYTES: usize = 1024 * 1024;
 const MAX_CONTEXT_BYTES: usize = 16 * 1024 * 1024;
 const MAX_COMPLETION_BYTES: usize = 1024 * 1024;
 static ID_COUNTER: AtomicU32 = AtomicU32::new(0);
-
-#[cfg(any(target_os = "macos", target_os = "linux"))]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub(crate) struct RawEvidenceSummary {
-    pub(crate) capture_complete: bool,
-    pub(crate) stdout_sha256: String,
-    pub(crate) stderr_sha256: String,
-    pub(crate) final_message_sha256: Option<String>,
-    pub(crate) raw_archive_sha256: String,
-}
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "snake_case")]
@@ -457,11 +447,11 @@ impl<'a> EpisodeWriter<'a> {
     pub(crate) fn complete(
         &self,
         completion: &CompletionReceipt,
-        invocation: &BoundProviderInvocation,
+        evidence: &SealedProviderEvidence,
     ) -> Result<(), AppError> {
         self.complete_transaction(
             completion,
-            invocation,
+            evidence,
             |relative, bytes, expectations, verify| {
                 self.state.write_private_create_only_after_validating_with(
                     relative,
@@ -477,7 +467,7 @@ impl<'a> EpisodeWriter<'a> {
     fn complete_with_revalidation_hook<F>(
         &self,
         completion: &CompletionReceipt,
-        invocation: &BoundProviderInvocation,
+        evidence: &SealedProviderEvidence,
         revalidation_hook: F,
     ) -> Result<(), AppError>
     where
@@ -485,16 +475,15 @@ impl<'a> EpisodeWriter<'a> {
     {
         self.complete_transaction(
             completion,
-            invocation,
+            evidence,
             |relative, bytes, expectations, verify| {
                 self.state.write_private_create_only_after_validating_with(
                     relative,
                     bytes,
                     expectations,
                     || {
-                        verify()?;
                         revalidation_hook();
-                        Ok(())
+                        verify()
                     },
                 )
             },
@@ -504,7 +493,7 @@ impl<'a> EpisodeWriter<'a> {
     fn complete_transaction<T>(
         &self,
         completion: &CompletionReceipt,
-        invocation: &BoundProviderInvocation,
+        evidence: &SealedProviderEvidence,
         transaction: T,
     ) -> Result<(), AppError>
     where
@@ -516,7 +505,8 @@ impl<'a> EpisodeWriter<'a> {
         ) -> Result<(), AppError>,
     {
         completion.validate_for(&self.manifest)?;
-        validate_bound_invocation(self.state, &self.manifest, invocation)?;
+        validate_sealed_evidence(self.state, &self.manifest, evidence)?;
+        validate_completion_evidence(completion, evidence)?;
         let manifest_relative = self.relative_directory.join(MANIFEST_FILE);
         let context_relative = self.relative_directory.join(CONTEXT_FILE);
         let completion_relative = self.relative_directory.join(COMPLETION_FILE);
@@ -533,11 +523,7 @@ impl<'a> EpisodeWriter<'a> {
                 max_bytes: MAX_CONTEXT_BYTES,
             },
         ];
-        let expected = completion.clone();
-        let verify = Box::new(move || {
-            let evidence = invocation.verify_raw_evidence(expected.capture_complete)?;
-            validate_completion_evidence(&expected, &evidence)
-        });
+        let verify = Box::new(move || evidence.revalidate());
         let result = transaction(
             &completion_relative,
             &completion_bytes,
@@ -738,10 +724,10 @@ fn validate_materialized_invocation(
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-fn validate_bound_invocation(
+fn validate_sealed_evidence(
     state: &StateRoot,
     manifest: &EpisodeManifest,
-    invocation: &BoundProviderInvocation,
+    evidence: &SealedProviderEvidence,
 ) -> Result<(), AppError> {
     let expected_path = EpisodeWriter::plan_provider_raw_path(
         state,
@@ -749,13 +735,13 @@ fn validate_bound_invocation(
         &manifest.episode_id,
         manifest.provider,
     )?;
-    if invocation.provider() != manifest.provider
-        || invocation.provider_version() != manifest.provider_version
-        || invocation.provider_capabilities_sha256() != manifest.provider_capabilities_sha256
-        || invocation.command_sha256() != manifest.invocation.command_sha256
-        || invocation.prompt_sha256() != manifest.invocation.prompt_sha256
-        || invocation.repository() != &manifest.repository
-        || invocation.raw_path() != &expected_path
+    if evidence.provider() != manifest.provider
+        || evidence.provider_version() != manifest.provider_version
+        || evidence.provider_capabilities_sha256() != manifest.provider_capabilities_sha256
+        || evidence.command_sha256() != manifest.invocation.command_sha256
+        || evidence.prompt_sha256() != manifest.invocation.prompt_sha256
+        || evidence.repository() != &manifest.repository
+        || evidence.raw_path() != &expected_path
     {
         return Err(AppError::invalid_input(
             "episode.mismatch",
@@ -768,13 +754,13 @@ fn validate_bound_invocation(
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 fn validate_completion_evidence(
     completion: &CompletionReceipt,
-    evidence: &RawEvidenceSummary,
+    evidence: &SealedProviderEvidence,
 ) -> Result<(), AppError> {
-    if completion.capture_complete != evidence.capture_complete
-        || completion.stdout_sha256 != evidence.stdout_sha256
-        || completion.stderr_sha256 != evidence.stderr_sha256
-        || completion.final_message_sha256 != evidence.final_message_sha256
-        || completion.raw_archive_sha256 != evidence.raw_archive_sha256
+    if completion.capture_complete != evidence.capture_complete()
+        || completion.stdout_sha256 != evidence.stdout_sha256()
+        || completion.stderr_sha256 != evidence.stderr_sha256()
+        || completion.final_message_sha256.as_deref() != evidence.final_message_sha256()
+        || completion.raw_archive_sha256 != evidence.raw_archive_sha256()
     {
         return Err(invalid_completion(
             "completion receipt does not match authenticated raw evidence",
@@ -927,7 +913,6 @@ fn invalid_preflight(message: impl Into<String>) -> AppError {
 mod tests {
     use std::cell::RefCell;
     use std::fs;
-    use std::io::Write as _;
     use std::path::Path;
     use std::sync::{mpsc, Arc, Barrier};
     use std::thread;
@@ -941,11 +926,10 @@ mod tests {
     use super::*;
     use crate::context_control::canonical::{json_bytes, sha256_hex};
     use crate::context_control::context::ContextBundle;
-    use crate::context_control::provider::ProviderRawMember;
     #[cfg(any(target_os = "macos", target_os = "linux"))]
     use crate::context_control::provider::{
-        build_invocation, probe_snapshot, BoundProviderInvocation, MaterializedProviderInvocation,
-        ProviderRunOptions,
+        build_invocation, execute, probe_snapshot, MaterializedProviderInvocation,
+        ProviderRunOptions, SealedProviderEvidence,
     };
     use crate::context_control::routing::{RouteConsideration, RouteDecision};
     use crate::context_control::state::{with_lock_release_faults, StateRoot};
@@ -1134,14 +1118,14 @@ mod tests {
             materialized.command_sha256(),
             materialized.command_plan_sha256()
         );
-        let command_sha256 = materialized.command_sha256().to_owned();
-        let bound = materialized
+        let command_plan_sha256 = materialized.command_plan_sha256().to_owned();
+        let final_message_path = materialized.final_message_path().to_owned();
+        materialized
             .bind(episode.raw_directory_authority().unwrap())
             .unwrap();
-        assert_eq!(bound.command_sha256(), command_sha256);
-        assert_eq!(bound.command_plan_sha256(), plan.command_plan_sha256());
+        assert_eq!(command_plan_sha256, plan.command_plan_sha256());
         assert_eq!(
-            bound.final_message_path(),
+            final_message_path,
             fixture
                 .root
                 .join(episode.relative_directory())
@@ -1177,13 +1161,13 @@ mod tests {
     fn completion_is_separate_create_only_and_manifest_is_immutable() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
         let manifest_relative = episode.relative_directory().join("manifest.json");
         let manifest_before = fixture
             .state
             .read_private_file_bounded(&manifest_relative, 1024 * 1024)
             .unwrap();
-        episode.complete(&completion, &bound).unwrap();
+        episode.complete(&completion, &evidence).unwrap();
 
         let manifest_after = fixture
             .state
@@ -1201,7 +1185,7 @@ mod tests {
             json_bytes(&completion).unwrap()
         );
         assert_eq!(
-            episode.complete(&completion, &bound).unwrap_err().code(),
+            episode.complete(&completion, &evidence).unwrap_err().code(),
             "state.exists"
         );
     }
@@ -1210,10 +1194,10 @@ mod tests {
     fn completion_commit_ignores_cleanup_errors_after_attempting_every_lock() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
 
         let (result, attempted_releases): (Result<(), AppError>, usize) =
-            with_lock_release_faults(|| episode.complete(&completion, &bound));
+            with_lock_release_faults(|| episode.complete(&completion, &evidence));
 
         result.unwrap();
         assert_eq!(attempted_releases, 4);
@@ -1233,7 +1217,7 @@ mod tests {
     fn completion_revalidates_persisted_context_before_publication() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
         let context_relative = episode.relative_directory().join(CONTEXT_FILE);
         let snapshot = fixture
             .state
@@ -1249,7 +1233,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            episode.complete(&completion, &bound).unwrap_err().code(),
+            episode.complete(&completion, &evidence).unwrap_err().code(),
             "episode.mismatch"
         );
         assert!(!fixture
@@ -1260,10 +1244,62 @@ mod tests {
     }
 
     #[test]
+    fn completion_rejects_raw_evidence_mutated_after_sealing() {
+        let fixture = EpisodeFixture::new();
+        let context = context_fixture();
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
+        let stdout = fixture
+            .root
+            .join(episode.relative_directory())
+            .join("raw/trae/stdout.jsonl");
+        let original = fs::read(&stdout).unwrap();
+        fs::write(&stdout, vec![b'x'; original.len()]).unwrap();
+
+        assert_eq!(
+            episode.complete(&completion, &evidence).unwrap_err().code(),
+            "provider.raw_evidence"
+        );
+        assert!(!fixture
+            .root
+            .join(episode.relative_directory())
+            .join(COMPLETION_FILE)
+            .exists());
+    }
+
+    #[test]
+    fn completion_accepts_post_run_repository_changes_with_stable_identity() {
+        let fixture = EpisodeFixture::new();
+        let context = context_fixture();
+        let (manifest, episode, evidence, mut completion) =
+            begin_sealed_episode(&fixture, &context);
+        fs::write(
+            fixture.repository.join("provider-created.txt"),
+            b"provider-created\n",
+        )
+        .unwrap();
+        completion.post_repository = RepositorySnapshot::capture(&fixture.repository).unwrap();
+
+        assert_ne!(completion.post_repository, manifest.repository);
+        assert_eq!(
+            completion.post_repository.repository_id,
+            manifest.repository.repository_id
+        );
+        episode.complete(&completion, &evidence).unwrap();
+
+        let inspection = inspect_episode(
+            &fixture.state,
+            &manifest.repository.repository_id,
+            &manifest.episode_id,
+        )
+        .unwrap();
+        assert_eq!(inspection.completion(), Some(&completion));
+    }
+
+    #[test]
     fn completion_serializes_a_context_replacement_after_publication() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
         let context_relative = episode.relative_directory().join(CONTEXT_FILE);
         let context_snapshot = fixture
             .state
@@ -1276,7 +1312,7 @@ mod tests {
         let (finished_tx, finished_rx) = mpsc::channel();
 
         episode
-            .complete_with_revalidation_hook(&completion, &bound, || {
+            .complete_with_revalidation_hook(&completion, &evidence, || {
                 writer.replace(Some(thread::spawn(move || {
                     let state = StateRoot::open_or_create(&root).unwrap();
                     started_tx.send(()).unwrap();
@@ -1345,22 +1381,16 @@ mod tests {
         let episode =
             EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized)
                 .unwrap();
-        let competing_materialized = invocation_plan(&fixture, &context)
-            .materialize(&episode.provider_raw_path().unwrap())
-            .unwrap();
-        let first_bound = materialized
+        let bound = materialized
             .bind(episode.raw_directory_authority().unwrap())
             .unwrap();
-        let second_bound = competing_materialized
-            .bind(episode.raw_directory_authority().unwrap())
-            .unwrap();
-        populate_raw_evidence(&first_bound, true);
-        let evidence = first_bound.verify_raw_evidence(true).unwrap();
+        let execution = execute(bound).unwrap();
+        let evidence = Arc::new(execution.evidence);
         let mut completion = completion_fixture(&manifest);
-        completion.stdout_sha256 = evidence.stdout_sha256;
-        completion.stderr_sha256 = evidence.stderr_sha256;
-        completion.final_message_sha256 = evidence.final_message_sha256;
-        completion.raw_archive_sha256 = evidence.raw_archive_sha256;
+        completion.stdout_sha256 = execution.result.stdout_sha256;
+        completion.stderr_sha256 = execution.result.stderr_sha256;
+        completion.final_message_sha256 = execution.result.final_message_sha256;
+        completion.raw_archive_sha256 = execution.result.raw_archive_sha256;
         let root = fixture.root.clone();
         let barrier = Arc::new(Barrier::new(3));
 
@@ -1371,17 +1401,17 @@ mod tests {
         }];
         let results = completions
             .into_iter()
-            .zip([first_bound, second_bound])
-            .map(|(completion, bound)| {
+            .map(|completion| {
                 let root = root.clone();
                 let barrier = Arc::clone(&barrier);
+                let evidence = Arc::clone(&evidence);
                 let repository_id = manifest.repository.repository_id.clone();
                 let episode_id = manifest.episode_id.clone();
                 thread::spawn(move || {
                     let state = StateRoot::open_or_create(&root).unwrap();
                     let episode = open_episode(&state, &repository_id, &episode_id).unwrap();
                     barrier.wait();
-                    episode.complete(&completion, &bound)
+                    episode.complete(&completion, &evidence)
                 })
             })
             .collect::<Vec<_>>();
@@ -1551,12 +1581,12 @@ mod tests {
     fn completion_rejects_episode_directory_with_loosened_permissions() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
+        let (_manifest, episode, evidence, completion) = begin_sealed_episode(&fixture, &context);
         let episode_path = fixture.root.join(episode.relative_directory());
         fs::set_permissions(&episode_path, fs::Permissions::from_mode(0o770)).unwrap();
 
         assert_eq!(
-            episode.complete(&completion, &bound).unwrap_err().code(),
+            episode.complete(&completion, &evidence).unwrap_err().code(),
             "state.permissions"
         );
         assert!(!episode_path.join(COMPLETION_FILE).exists());
@@ -1802,13 +1832,13 @@ mod tests {
     }
 
     #[cfg(any(target_os = "macos", target_os = "linux"))]
-    fn begin_bound_episode<'a>(
+    fn begin_sealed_episode<'a>(
         fixture: &'a EpisodeFixture,
         context: &ContextBundle,
     ) -> (
         EpisodeManifest,
         EpisodeWriter<'a>,
-        BoundProviderInvocation,
+        SealedProviderEvidence,
         CompletionReceipt,
     ) {
         let (manifest, materialized) = prepared_episode(fixture, context);
@@ -1817,88 +1847,13 @@ mod tests {
         let bound = materialized
             .bind(episode.raw_directory_authority().unwrap())
             .unwrap();
-        populate_raw_evidence(&bound, true);
-        let evidence = bound.verify_raw_evidence(true).unwrap();
+        let execution = execute(bound).unwrap();
         let mut completion = completion_fixture(&manifest);
-        completion.stdout_sha256 = evidence.stdout_sha256;
-        completion.stderr_sha256 = evidence.stderr_sha256;
-        completion.final_message_sha256 = evidence.final_message_sha256;
-        completion.raw_archive_sha256 = evidence.raw_archive_sha256;
-        (manifest, episode, bound, completion)
-    }
-
-    #[cfg(any(target_os = "macos", target_os = "linux"))]
-    fn populate_raw_evidence(bound: &BoundProviderInvocation, final_message: bool) {
-        bound.claim_launch().unwrap();
-        let members = [
-            (ProviderRawMember::StdoutJsonl, b"stdout\n".as_slice()),
-            (ProviderRawMember::StderrBin, b"stderr\n".as_slice()),
-        ];
-        for (member, bytes) in members {
-            let mut file = bound.create_raw_member(member).unwrap();
-            file.write_all(bytes).unwrap();
-            file.sync_all().unwrap();
-        }
-        if final_message {
-            let mut file = bound
-                .create_raw_member(ProviderRawMember::FinalMessage)
-                .unwrap();
-            file.write_all(b"final response\n").unwrap();
-            file.sync_all().unwrap();
-        }
-
-        let mut archive_bytes = Vec::new();
-        {
-            let encoder =
-                flate2::write::GzEncoder::new(&mut archive_bytes, flate2::Compression::default());
-            let mut archive = tar::Builder::new(encoder);
-            for (name, bytes) in [
-                ("final_message.bin", b"final response\n".as_slice()),
-                ("stderr.bin", b"stderr\n".as_slice()),
-                ("stdout.jsonl", b"stdout\n".as_slice()),
-            ] {
-                if name == "final_message.bin" && !final_message {
-                    continue;
-                }
-                let mut header = tar::Header::new_gnu();
-                header.set_size(bytes.len() as u64);
-                header.set_mode(0o644);
-                header.set_uid(0);
-                header.set_gid(0);
-                header.set_mtime(0);
-                header.set_cksum();
-                archive.append_data(&mut header, name, bytes).unwrap();
-            }
-            archive.into_inner().unwrap().finish().unwrap();
-        }
-        let mut archive = bound
-            .create_raw_member(ProviderRawMember::RawArchive)
-            .unwrap();
-        archive.write_all(&archive_bytes).unwrap();
-        archive.sync_all().unwrap();
-
-        let mut rows = vec![
-            ("stderr.bin", b"stderr\n".as_slice()),
-            ("stdout.jsonl", b"stdout\n".as_slice()),
-        ];
-        if final_message {
-            rows.push(("final_message.bin", b"final response\n".as_slice()));
-        }
-        rows.sort_by_key(|(name, _)| *name);
-        let rows = rows
-            .into_iter()
-            .map(|(name, bytes)| raw_member_row(name, bytes))
-            .collect::<String>();
-        let mut manifest = bound
-            .create_raw_member(ProviderRawMember::RawMembersManifest)
-            .unwrap();
-        manifest.write_all(rows.as_bytes()).unwrap();
-        manifest.sync_all().unwrap();
-        bound.sync_raw_directory().unwrap();
-    }
-
-    fn raw_member_row(name: &str, bytes: &[u8]) -> String {
-        format!("sha256:{}\t{}\t{name}\n", sha256_hex(bytes), bytes.len())
+        completion.stdout_sha256 = execution.result.stdout_sha256;
+        completion.stderr_sha256 = execution.result.stderr_sha256;
+        completion.final_message_sha256 = execution.result.final_message_sha256;
+        completion.raw_archive_sha256 = execution.result.raw_archive_sha256;
+        (manifest, episode, execution.evidence, completion)
     }
 
     struct EpisodeFixture {

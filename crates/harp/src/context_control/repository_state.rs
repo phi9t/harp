@@ -99,6 +99,14 @@ impl RepositorySnapshot {
     }
 }
 
+pub(crate) fn repository_id(repository_root: &Path) -> Result<String, AppError> {
+    repository_id_with_runner_and_limit(
+        repository_root,
+        &ProcessGitRunner::git(),
+        MAX_GIT_OUTPUT_BYTES,
+    )
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct GitInvocation {
     current_dir: PathBuf,
@@ -327,14 +335,7 @@ fn capture_with_runner_and_limit(
     runner: &impl GitRunner,
     limit: usize,
 ) -> Result<RepositorySnapshot, AppError> {
-    let common_dir = run_hardened_git(
-        repository_root,
-        runner,
-        limit,
-        ["rev-parse", "--path-format=absolute", "--git-common-dir"],
-    )?;
-    let common_dir = single_line(&common_dir, "repository.common_dir")?;
-    let repository_id = sha256_id(common_dir);
+    let repository_id = repository_id_with_runner_and_limit(repository_root, runner, limit)?;
 
     let head = run_hardened_git(
         repository_root,
@@ -403,6 +404,21 @@ fn capture_with_runner_and_limit(
     };
     snapshot.validate()?;
     Ok(snapshot)
+}
+
+fn repository_id_with_runner_and_limit(
+    repository_root: &Path,
+    runner: &impl GitRunner,
+    limit: usize,
+) -> Result<String, AppError> {
+    let common_dir = run_hardened_git(
+        repository_root,
+        runner,
+        limit,
+        ["rev-parse", "--path-format=absolute", "--git-common-dir"],
+    )?;
+    let common_dir = single_line(&common_dir, "repository.common_dir")?;
+    Ok(sha256_id(common_dir))
 }
 
 fn run_hardened_git(
@@ -1008,6 +1024,23 @@ mod tests {
             );
             linked
         }
+    }
+
+    #[test]
+    fn repository_identity_reads_only_the_common_git_directory() {
+        let runner = FakeRunner::with_results([output(b"/private/repository/.git\n")]);
+
+        let repository_id =
+            repository_id_with_runner_and_limit(Path::new("/target/repository"), &runner, 4096)
+                .unwrap();
+
+        assert_eq!(repository_id, sha256_id(b"/private/repository/.git"));
+        let invocations = runner.invocations.borrow();
+        assert_eq!(invocations.len(), 1);
+        assert_eq!(
+            invocations[0].arguments,
+            ["rev-parse", "--path-format=absolute", "--git-common-dir"].map(str::to_owned)
+        );
     }
 
     fn git(repository: &Path, arguments: &[&str]) {
