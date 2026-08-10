@@ -49,15 +49,27 @@ pub fn route(task: &str, choice: WorkflowChoice) -> Result<RouteDecision, AppErr
         .into_iter()
         .map(|workflow| WorkflowPackage::builtin(workflow).map(|package| (workflow, package)))
         .collect::<Result<Vec<_>, _>>()?;
-    let configs = packages
+    let rules = packages
         .iter()
-        .map(|(workflow, package)| RoutingConfig {
-            workflow: *workflow,
-            rules: package.routing(),
-        })
+        .map(|(workflow, package)| (*workflow, package.routing()))
         .collect::<Vec<_>>();
 
-    Ok(evaluate_route(task, choice, &configs))
+    Ok(route_with_rules(task, choice, &rules))
+}
+
+pub(crate) fn route_with_rules(
+    task: &str,
+    choice: WorkflowChoice,
+    rules: &[(WorkflowId, &RoutingRules)],
+) -> RouteDecision {
+    let configs = rules
+        .iter()
+        .map(|(workflow, rules)| RoutingConfig {
+            workflow: *workflow,
+            rules,
+        })
+        .collect::<Vec<_>>();
+    evaluate_route(task, choice, &configs)
 }
 
 fn evaluate_route(
