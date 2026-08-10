@@ -43,17 +43,17 @@ update that contract deliberately.
 
 * Work Items
 
-** TODO Confirm Product Boundary And Schema Vocabulary :docs:
+** DONE Confirm Product Boundary And Schema Vocabulary :docs:
 :PROPERTIES:
 :ID: HCCP-001
 :DESIGN_SECTION: Product boundary; Trust and authority layers
-:BRANCH:
-:WORKTREE:
-:OWNER:
-:AGENT_RUN:
-:MODEL:
-:STARTED:
-:COMPLETED:
+:BRANCH: feat/context-control-observation
+:WORKTREE: .worktrees/context-control-observation
+:OWNER: primary
+:AGENT_RUN: 019fe958-3808-77d0-af55-7d8b0321d1eb; 019fe961-849f-7c40-9bb7-543de97e7cdc; 019fe967-15ef-78e3-92c2-ea71e8914075
+:MODEL: inherited default
+:STARTED: 2026-08-09
+:COMPLETED: 2026-08-09
 :END:
 
 *** Scope
@@ -97,20 +97,31 @@ future App Server adapters.
 
 *** Verification Evidence
 
+- Commit =b5ccfeeae42a859a4b6a3cf783af760f6bbdd633=.
+- =cargo fmt --all -- --check= passed.
+- =cargo test -p harp context_control --lib= passed: 3 tests.
+- =cargo test -p harp --test context_control_cli= passed: 3 tests.
+- =cargo clippy -p harp --all-targets -- -D warnings= passed.
+
 *** Review Notes
+
+- Spec-compliance review passed after adding exact =releases list= error
+  coverage and naming repository rules in the protected authority boundary.
+- Code-quality review approved after removing the accidental
+  =WorkflowChoice= Serde contract and covering every documented CLI enum value.
 
 *** Follow-ups
 
-** BACKLOG Build Secure Local State And Immutable Releases :storage:security:code:
+** IMPLEMENTING Build Secure Local State And Immutable Releases :storage:security:code:
 :PROPERTIES:
 :ID: HCCP-002
 :DESIGN_SECTION: Release compiler; Local storage
-:BRANCH:
-:WORKTREE:
-:OWNER:
-:AGENT_RUN:
-:MODEL:
-:STARTED:
+:BRANCH: feat/context-control-state
+:WORKTREE: .worktrees/context-control-state
+:OWNER: Kant
+:AGENT_RUN: 019fe970-2927-7d71-b388-77ee45ea666e
+:MODEL: inherited default
+:STARTED: 2026-08-09
 :COMPLETED:
 :END:
 
@@ -160,16 +171,16 @@ side-effect and identity guarantees match the design.
 
 *** Follow-ups
 
-** BACKLOG Add Workflow Packages And Deterministic Context Resolution :workflow:code:tests:
+** IMPLEMENTING Add Workflow Packages And Deterministic Context Resolution :workflow:code:tests:
 :PROPERTIES:
 :ID: HCCP-003
 :DESIGN_SECTION: Workflow registry; Context resolver
-:BRANCH:
-:WORKTREE:
-:OWNER:
-:AGENT_RUN:
-:MODEL:
-:STARTED:
+:BRANCH: feat/context-control-workflows
+:WORKTREE: .worktrees/context-control-workflows
+:OWNER: Wegener
+:AGENT_RUN: 019fe970-277b-7310-8fc5-6d4fe62051c6
+:MODEL: inherited default
+:STARTED: 2026-08-09
 :COMPLETED:
 :END:
 
@@ -223,9 +234,9 @@ to the release or adapter layer.
 :PROPERTIES:
 :ID: HCCP-004
 :DESIGN_SECTION: Provider adapters; Chosen architecture
-:BRANCH:
-:WORKTREE:
-:OWNER:
+:BRANCH: feat/context-control-observation
+:WORKTREE: .worktrees/context-control-observation
+:OWNER: primary
 :AGENT_RUN:
 :MODEL:
 :STARTED:
@@ -275,9 +286,9 @@ CLI.
 :PROPERTIES:
 :ID: HCCP-005
 :DESIGN_SECTION: Run lifecycle; Context and episode manifests; Provider adapters
-:BRANCH:
-:WORKTREE:
-:OWNER:
+:BRANCH: feat/context-control-observation
+:WORKTREE: .worktrees/context-control-observation
+:OWNER: primary
 :AGENT_RUN:
 :MODEL:
 :STARTED:
