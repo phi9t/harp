@@ -1,5 +1,6 @@
 pub mod canonical;
 pub mod context;
+pub mod episode;
 pub mod policy;
 pub mod provider;
 pub mod release;

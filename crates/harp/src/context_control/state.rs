@@ -1,3 +1,11 @@
+use std::path::Path;
+
+pub(crate) struct PrivateFileExpectation<'a> {
+    pub relative: &'a Path,
+    pub expected_bytes: &'a [u8],
+    pub max_bytes: usize,
+}
+
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 mod secure {
     use std::collections::{BTreeMap, BTreeSet};
@@ -19,6 +27,7 @@ mod secure {
 
     use sha2::{Digest as _, Sha256};
 
+    use super::PrivateFileExpectation;
     use crate::AppError;
 
     const DIRECTORY_MODE: u32 = 0o700;
@@ -37,6 +46,15 @@ mod secure {
         static CREATION_FAULT: RefCell<Option<(String, CreationFault)>> = const {
             RefCell::new(None)
         };
+        static LOCK_RELEASE_FAULTS: RefCell<Option<LockReleaseFaults>> = const {
+            RefCell::new(None)
+        };
+    }
+
+    #[cfg(test)]
+    #[derive(Default)]
+    struct LockReleaseFaults {
+        attempted: BTreeSet<Vec<u8>>,
     }
 
     #[cfg(test)]
@@ -52,6 +70,7 @@ mod secure {
         FileSync,
         FileMetadata,
         DirectoryPostMkdir,
+        TreePostRename,
     }
 
     #[cfg(test)]
@@ -77,6 +96,54 @@ mod secure {
             };
             operation()
         })
+    }
+
+    #[cfg(test)]
+    pub(crate) fn with_lock_release_faults<T>(operation: impl FnOnce() -> T) -> (T, usize) {
+        LOCK_RELEASE_FAULTS.with(|configured| {
+            let previous = configured.replace(Some(LockReleaseFaults::default()));
+            struct RestoreFaults<'a> {
+                configured: &'a RefCell<Option<LockReleaseFaults>>,
+                previous: Option<LockReleaseFaults>,
+            }
+            impl Drop for RestoreFaults<'_> {
+                fn drop(&mut self) {
+                    self.configured.replace(self.previous.take());
+                }
+            }
+            let restore = RestoreFaults {
+                configured,
+                previous,
+            };
+            let result = operation();
+            let attempted = configured
+                .borrow()
+                .as_ref()
+                .map_or(0, |faults| faults.attempted.len());
+            drop(restore);
+            (result, attempted)
+        })
+    }
+
+    fn inject_lock_release_fault(name: &CStr) -> Result<(), AppError> {
+        #[cfg(test)]
+        {
+            let injected = LOCK_RELEASE_FAULTS.with(|configured| {
+                configured
+                    .borrow_mut()
+                    .as_mut()
+                    .is_some_and(|faults| faults.attempted.insert(name.to_bytes().to_vec()))
+            });
+            if injected {
+                return Err(state_error(
+                    "state.lock",
+                    "injected publication-lock release failure",
+                ));
+            }
+        }
+        #[cfg(not(test))]
+        let _ = name;
+        Ok(())
     }
 
     fn inject_creation_fault(name: &CStr, fault: CreationFault) -> Result<(), AppError> {
@@ -159,10 +226,38 @@ mod secure {
         CompareAndReplace(FileSnapshot),
     }
 
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    enum TreePublishPolicy {
+        Idempotent,
+        CreateOnly,
+    }
+
     #[derive(Debug)]
     pub struct StateRoot {
         root: PathBuf,
         directory: Directory,
+    }
+
+    #[derive(Debug)]
+    pub(crate) struct HeldPrivateDirectory {
+        relative_path: PathBuf,
+        absolute_path: PathBuf,
+        directory: Directory,
+    }
+
+    impl HeldPrivateDirectory {
+        pub(crate) fn duplicate_parts(&self) -> Result<(PathBuf, PathBuf, OwnedFd), AppError> {
+            self.directory.verify_namespace()?;
+            self.directory.verify_mode(DIRECTORY_MODE)?;
+            self.directory.verify_owner()?;
+            let duplicate = self.directory.duplicate()?;
+            duplicate.verify_namespace()?;
+            Ok((
+                self.relative_path.clone(),
+                self.absolute_path.clone(),
+                duplicate.fd,
+            ))
+        }
     }
 
     impl StateRoot {
@@ -276,16 +371,208 @@ mod secure {
             relative: &Path,
             members: &BTreeMap<PathBuf, Vec<u8>>,
         ) -> Result<(), AppError> {
+            self.publish_tree(
+                relative,
+                members,
+                &BTreeSet::new(),
+                TreePublishPolicy::Idempotent,
+            )
+        }
+
+        #[cfg(test)]
+        pub(crate) fn publish_private_tree_create_only(
+            &self,
+            relative: &Path,
+            members: &BTreeMap<PathBuf, Vec<u8>>,
+            directories: &BTreeSet<PathBuf>,
+        ) -> Result<(), AppError> {
+            self.publish_tree(
+                relative,
+                members,
+                directories,
+                TreePublishPolicy::CreateOnly,
+            )
+        }
+
+        pub(crate) fn publish_private_tree_create_only_holding_directory(
+            &self,
+            relative: &Path,
+            members: &BTreeMap<PathBuf, Vec<u8>>,
+            directories: &BTreeSet<PathBuf>,
+            held_relative: &Path,
+        ) -> Result<HeldPrivateDirectory, AppError> {
             let target_components = public_relative_components(relative, "immutable tree")?;
-            let normalized_members = validate_tree_members(members)?;
+            let normalized_directories = validate_tree_layout(members, directories)?;
+            if !normalized_directories.contains(held_relative) {
+                return Err(state_error(
+                    "state.path",
+                    "held private directory must be part of the published tree",
+                ));
+            }
+            let held_components =
+                canonical_relative_components(held_relative, "held private directory")?;
+            let mut publication_lock =
+                self.acquire_publication_lock_components(&target_components, LockSetupFault::None)?;
+            let result = self
+                .publish_immutable_tree_locked(
+                    &target_components,
+                    members,
+                    &normalized_directories,
+                    TreePublishPolicy::CreateOnly,
+                    Some(&held_components),
+                )
+                .and_then(|directory| {
+                    directory.ok_or_else(|| {
+                        state_error(
+                            "state.conflict",
+                            "create-only tree publication did not retain its directory",
+                        )
+                    })
+                })
+                .map(|directory| HeldPrivateDirectory {
+                    relative_path: relative.join(held_relative),
+                    absolute_path: self.root.join(relative).join(held_relative),
+                    directory,
+                });
+            finish_committed_publication(result, &mut publication_lock)
+        }
+
+        pub(crate) fn hold_private_directory(
+            &self,
+            relative: &Path,
+        ) -> Result<HeldPrivateDirectory, AppError> {
+            let components = public_relative_components(relative, "private directory")?;
+            let directory = self.directory.walk(&components)?;
+            directory.verify_namespace()?;
+            directory.verify_mode(DIRECTORY_MODE)?;
+            directory.verify_owner()?;
+            Ok(HeldPrivateDirectory {
+                relative_path: relative.to_path_buf(),
+                absolute_path: self.root.join(relative),
+                directory,
+            })
+        }
+
+        fn publish_tree(
+            &self,
+            relative: &Path,
+            members: &BTreeMap<PathBuf, Vec<u8>>,
+            directories: &BTreeSet<PathBuf>,
+            policy: TreePublishPolicy,
+        ) -> Result<(), AppError> {
+            let target_components = public_relative_components(relative, "immutable tree")?;
+            let normalized_members = validate_tree_layout(members, directories)?;
             let mut publication_lock =
                 self.acquire_publication_lock_components(&target_components, LockSetupFault::None)?;
             let result = self.publish_immutable_tree_locked(
                 &target_components,
                 members,
                 &normalized_members,
+                policy,
+                None,
             );
-            finish_publication(result, &mut publication_lock)
+            match policy {
+                TreePublishPolicy::Idempotent => {
+                    finish_publication(result, &mut publication_lock).map(|_| ())
+                }
+                TreePublishPolicy::CreateOnly => {
+                    finish_committed_publication(result, &mut publication_lock).map(|_| ())
+                }
+            }
+        }
+
+        pub(crate) fn write_private_create_only_after_validating(
+            &self,
+            relative: &Path,
+            bytes: &[u8],
+            expectations: &[PrivateFileExpectation<'_>],
+        ) -> Result<(), AppError> {
+            self.write_private_create_only_after_validating_inner(
+                relative,
+                bytes,
+                expectations,
+                || {},
+            )
+        }
+
+        #[cfg(test)]
+        pub(crate) fn write_private_create_only_after_validating_with_hook<F>(
+            &self,
+            relative: &Path,
+            bytes: &[u8],
+            expectations: &[PrivateFileExpectation<'_>],
+            revalidation_hook: F,
+        ) -> Result<(), AppError>
+        where
+            F: FnOnce(),
+        {
+            self.write_private_create_only_after_validating_inner(
+                relative,
+                bytes,
+                expectations,
+                revalidation_hook,
+            )
+        }
+
+        fn write_private_create_only_after_validating_inner<F>(
+            &self,
+            relative: &Path,
+            bytes: &[u8],
+            expectations: &[PrivateFileExpectation<'_>],
+            revalidation_hook: F,
+        ) -> Result<(), AppError>
+        where
+            F: FnOnce(),
+        {
+            let target_components = public_relative_components(relative, "private file")?;
+            let mut lock_targets = expectations
+                .iter()
+                .map(|expectation| {
+                    public_relative_components(expectation.relative, "private file prerequisite")
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            if target_components.len() > 1 {
+                lock_targets.push(target_components[..target_components.len() - 1].to_vec());
+            }
+            lock_targets.push(target_components.clone());
+            lock_targets.sort_by(|left, right| {
+                left.iter()
+                    .map(|component| component.as_bytes())
+                    .cmp(right.iter().map(|component| component.as_bytes()))
+            });
+            lock_targets.dedup();
+
+            let mut locks = Vec::with_capacity(lock_targets.len());
+            for components in &lock_targets {
+                locks.push(
+                    self.acquire_publication_lock_components(components, LockSetupFault::None)?,
+                );
+            }
+
+            let result = (|| {
+                for expectation in expectations {
+                    let actual = self
+                        .read_private_file_bounded(expectation.relative, expectation.max_bytes)?;
+                    if actual != expectation.expected_bytes {
+                        return Err(state_error(
+                            "state.validation",
+                            format!(
+                                "private file prerequisite changed: {}",
+                                expectation.relative.display()
+                            ),
+                        ));
+                    }
+                }
+                revalidation_hook();
+                self.write_private_atomic_locked(
+                    &target_components,
+                    bytes,
+                    &ReplacePolicy::CreateOnly,
+                    || {},
+                    || {},
+                )
+            })();
+            finish_committed_publications(result, &mut locks)
         }
 
         pub(crate) fn publish_release_authorization(
@@ -303,8 +590,10 @@ mod secure {
                 &target_components,
                 &members,
                 &normalized_members,
+                TreePublishPolicy::Idempotent,
+                None,
             );
-            finish_publication(result, &mut publication_lock)
+            finish_publication(result, &mut publication_lock).map(|_| ())
         }
 
         pub(crate) fn read_release_authorization(
@@ -425,27 +714,33 @@ mod secure {
             components: &[CString],
             members: &BTreeMap<PathBuf, Vec<u8>>,
             expected_directories: &BTreeSet<PathBuf>,
-        ) -> Result<(), AppError> {
+            policy: TreePublishPolicy,
+            held_components: Option<&[CString]>,
+        ) -> Result<Option<Directory>, AppError> {
             let (parent, name) = self.resolve_parent_components(components, true)?;
             parent.verify_namespace()?;
             if let Some(existing) = parent.open_optional_directory(&name)? {
-                if immutable_tree_matches(&existing, members, expected_directories)? {
+                if policy == TreePublishPolicy::Idempotent
+                    && immutable_tree_matches(&existing, members, expected_directories)?
+                {
                     parent.verify_namespace()?;
-                    return Ok(());
+                    return Ok(None);
                 }
-                return Err(state_error(
-                    "state.immutable_collision",
-                    format!(
-                        "immutable tree conflicts with existing bytes: {}",
-                        display_name(&name)
-                    ),
-                ));
+                return Err(tree_collision(policy, &name, false));
             }
 
             let staging_parent = self
                 .directory
                 .walk_or_create(&[cstring(INTERNAL_NAMESPACE)?, cstring(STAGING_NAMESPACE)?])?;
             let mut staging = staging_parent.create_staged_directory(".harp-tree")?;
+            for directory in expected_directories {
+                let directory_components =
+                    canonical_relative_components(directory, "immutable-tree directory")?;
+                staging
+                    .directory
+                    .walk_or_create(&directory_components)?
+                    .verify_namespace()?;
+            }
             for (member, bytes) in members {
                 let member_components =
                     canonical_relative_components(member, "immutable-tree member")?;
@@ -455,6 +750,9 @@ mod secure {
                 member_parent.create_file(&member_name, bytes)?;
             }
             sync_tree_directories(&staging.directory)?;
+            let held_identity = held_components
+                .map(|components| staging.directory.walk(components)?.identity())
+                .transpose()?;
 
             staging_parent.verify_namespace()?;
             staging_parent.verify_entry_matches(
@@ -463,6 +761,9 @@ mod secure {
                 EntryKind::Directory,
             )?;
             parent.verify_namespace()?;
+            let published_parent = (policy == TreePublishPolicy::CreateOnly)
+                .then(|| parent.duplicate())
+                .transpose()?;
             match renameat_noreplace(
                 staging_parent.fd.as_raw_fd(),
                 &staging.name,
@@ -470,32 +771,55 @@ mod secure {
                 &name,
             ) {
                 Ok(()) => {
-                    staging.disarm();
+                    if policy == TreePublishPolicy::CreateOnly {
+                        staging.parent = published_parent.ok_or_else(|| {
+                            state_error(
+                                "state.conflict",
+                                "create-only publication lost its cleanup parent",
+                            )
+                        })?;
+                        staging.name = name.clone();
+                        inject_creation_fault(&name, CreationFault::TreePostRename)?;
+                    } else {
+                        staging.disarm();
+                    }
                     parent.verify_entry_matches(&name, staging.identity, EntryKind::Directory)?;
+                    let held_directory = held_components
+                        .map(|components| {
+                            let published = parent.open_directory(&name)?;
+                            let held = published.walk(components)?;
+                            if Some(held.identity()?) != held_identity {
+                                return Err(state_error(
+                                    "state.conflict",
+                                    "held private directory identity changed during publication",
+                                ));
+                            }
+                            held.verify_namespace()?;
+                            Ok(held)
+                        })
+                        .transpose()?;
                     parent.sync()?;
                     staging_parent.sync()?;
                     parent.verify_namespace()?;
-                    Ok(())
+                    if policy == TreePublishPolicy::CreateOnly {
+                        staging.disarm();
+                    }
+                    Ok(held_directory)
                 }
                 Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
                     match parent.open_optional_directory(&name)? {
                         Some(existing)
-                            if immutable_tree_matches(
-                                &existing,
-                                members,
-                                expected_directories,
-                            )? =>
+                            if policy == TreePublishPolicy::Idempotent
+                                && immutable_tree_matches(
+                                    &existing,
+                                    members,
+                                    expected_directories,
+                                )? =>
                         {
                             parent.verify_namespace()?;
-                            Ok(())
+                            Ok(None)
                         }
-                        Some(_) => Err(state_error(
-                            "state.immutable_collision",
-                            format!(
-                                "immutable tree conflicts with concurrent publication: {}",
-                                display_name(&name)
-                            ),
-                        )),
+                        Some(_) => Err(tree_collision(policy, &name, true)),
                         None => Err(state_error(
                             "state.conflict",
                             "immutable-tree target changed during publication",
@@ -1791,6 +2115,7 @@ mod secure {
             if self.released {
                 return Ok(());
             }
+            inject_lock_release_fault(&self.name)?;
             remove_lock_entry(
                 &self.parent,
                 &self.name,
@@ -1996,16 +2321,55 @@ mod secure {
         locks.sync()
     }
 
-    fn finish_publication(
-        result: Result<(), AppError>,
+    fn finish_publication<T>(
+        result: Result<T, AppError>,
         lock: &mut PublicationLock,
-    ) -> Result<(), AppError> {
+    ) -> Result<T, AppError> {
         match result {
             Err(error) => {
                 let _cleanup_result = lock.release();
                 Err(error)
             }
-            Ok(()) => lock.release(),
+            Ok(value) => {
+                lock.release()?;
+                Ok(value)
+            }
+        }
+    }
+
+    fn finish_committed_publication<T>(
+        result: Result<T, AppError>,
+        lock: &mut PublicationLock,
+    ) -> Result<T, AppError> {
+        match result {
+            Err(error) => {
+                let _cleanup_result = lock.release();
+                Err(error)
+            }
+            Ok(value) => {
+                let _cleanup_result = lock.release();
+                Ok(value)
+            }
+        }
+    }
+
+    fn finish_committed_publications(
+        result: Result<(), AppError>,
+        locks: &mut [PublicationLock],
+    ) -> Result<(), AppError> {
+        match result {
+            Err(error) => {
+                for lock in locks.iter_mut().rev() {
+                    let _cleanup_result = lock.release();
+                }
+                Err(error)
+            }
+            Ok(()) => {
+                for lock in locks.iter_mut().rev() {
+                    let _cleanup_result = lock.release();
+                }
+                Ok(())
+            }
         }
     }
 
@@ -2170,7 +2534,41 @@ mod secure {
     fn validate_tree_members(
         members: &BTreeMap<PathBuf, Vec<u8>>,
     ) -> Result<BTreeSet<PathBuf>, AppError> {
-        let mut directories = BTreeSet::new();
+        validate_tree_layout(members, &BTreeSet::new())
+    }
+
+    fn validate_tree_layout(
+        members: &BTreeMap<PathBuf, Vec<u8>>,
+        explicit_directories: &BTreeSet<PathBuf>,
+    ) -> Result<BTreeSet<PathBuf>, AppError> {
+        let mut directories = explicit_directories.clone();
+        for directory in explicit_directories {
+            canonical_relative_components(directory, "immutable-tree directory")?;
+            if members.contains_key(directory) {
+                return Err(state_error(
+                    "state.path",
+                    format!(
+                        "immutable-tree path is both a file and directory: {}",
+                        directory.display()
+                    ),
+                ));
+            }
+            for parent in directory.ancestors().skip(1) {
+                if parent.as_os_str().is_empty() {
+                    break;
+                }
+                if members.contains_key(parent) {
+                    return Err(state_error(
+                        "state.path",
+                        format!(
+                            "immutable-tree member is also a parent: {}",
+                            parent.display()
+                        ),
+                    ));
+                }
+                directories.insert(parent.to_path_buf());
+            }
+        }
         for member in members.keys() {
             canonical_relative_components(member, "immutable-tree member")?;
             for parent in member.ancestors().skip(1) {
@@ -2190,6 +2588,31 @@ mod secure {
             }
         }
         Ok(directories)
+    }
+
+    fn tree_collision(policy: TreePublishPolicy, name: &CStr, concurrent: bool) -> AppError {
+        match policy {
+            TreePublishPolicy::Idempotent => state_error(
+                "state.immutable_collision",
+                format!(
+                    "immutable tree conflicts with {}bytes: {}",
+                    if concurrent {
+                        "concurrently published "
+                    } else {
+                        "existing "
+                    },
+                    display_name(name)
+                ),
+            ),
+            TreePublishPolicy::CreateOnly => state_error(
+                "state.exists",
+                format!(
+                    "private tree {}already exists: {}",
+                    if concurrent { "concurrently " } else { "" },
+                    display_name(name)
+                ),
+            ),
+        }
     }
 
     fn immutable_tree_matches(
@@ -2848,14 +3271,19 @@ mod secure {
     }
 }
 
+#[cfg(all(test, any(target_os = "macos", target_os = "linux")))]
+pub(crate) use secure::with_lock_release_faults;
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+pub(crate) use secure::HeldPrivateDirectory;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 pub use secure::{resolve_state_root, FileSnapshot, ReplacePolicy, StateRoot};
 
 #[cfg(not(any(target_os = "macos", target_os = "linux")))]
 mod unsupported {
-    use std::collections::BTreeMap;
+    use std::collections::{BTreeMap, BTreeSet};
     use std::path::{Path, PathBuf};
 
+    use super::PrivateFileExpectation;
     use crate::AppError;
 
     #[derive(Clone, Debug, Eq, PartialEq)]
@@ -2871,6 +3299,9 @@ mod unsupported {
 
     #[derive(Debug)]
     pub struct StateRoot;
+
+    #[derive(Debug)]
+    pub(crate) struct HeldPrivateDirectory;
 
     impl StateRoot {
         pub fn open_from_environment() -> Result<Self, AppError> {
@@ -2918,6 +3349,56 @@ mod unsupported {
             Err(unsupported())
         }
 
+        #[cfg(test)]
+        pub(crate) fn publish_private_tree_create_only(
+            &self,
+            _relative: &Path,
+            _members: &BTreeMap<PathBuf, Vec<u8>>,
+            _directories: &BTreeSet<PathBuf>,
+        ) -> Result<(), AppError> {
+            Err(unsupported())
+        }
+
+        pub(crate) fn publish_private_tree_create_only_holding_directory(
+            &self,
+            _relative: &Path,
+            _members: &BTreeMap<PathBuf, Vec<u8>>,
+            _directories: &BTreeSet<PathBuf>,
+            _held_relative: &Path,
+        ) -> Result<HeldPrivateDirectory, AppError> {
+            Err(unsupported())
+        }
+
+        pub(crate) fn hold_private_directory(
+            &self,
+            _relative: &Path,
+        ) -> Result<HeldPrivateDirectory, AppError> {
+            Err(unsupported())
+        }
+
+        pub(crate) fn write_private_create_only_after_validating(
+            &self,
+            _relative: &Path,
+            _bytes: &[u8],
+            _expectations: &[PrivateFileExpectation<'_>],
+        ) -> Result<(), AppError> {
+            Err(unsupported())
+        }
+
+        #[cfg(test)]
+        pub(crate) fn write_private_create_only_after_validating_with_hook<F>(
+            &self,
+            _relative: &Path,
+            _bytes: &[u8],
+            _expectations: &[PrivateFileExpectation<'_>],
+            _revalidation_hook: F,
+        ) -> Result<(), AppError>
+        where
+            F: FnOnce(),
+        {
+            Err(unsupported())
+        }
+
         pub(crate) fn publish_release_authorization(
             &self,
             _release_id: &str,
@@ -2955,6 +3436,8 @@ mod unsupported {
 }
 
 #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+pub(crate) use unsupported::HeldPrivateDirectory;
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 pub use unsupported::{resolve_state_root, FileSnapshot, ReplacePolicy, StateRoot};
 
 #[cfg(all(test, target_os = "macos"))]
@@ -2967,12 +3450,14 @@ use secure::{
 
 #[cfg(all(test, any(target_os = "macos", target_os = "linux")))]
 mod tests {
-    use std::collections::BTreeMap;
+    use std::cell::RefCell;
+    use std::collections::{BTreeMap, BTreeSet};
     use std::fs::{self, OpenOptions};
     use std::path::{Path, PathBuf};
     use std::sync::atomic::{AtomicBool, Ordering as AtomicOrdering};
-    use std::sync::{Arc, Barrier};
+    use std::sync::{mpsc, Arc, Barrier};
     use std::thread;
+    use std::time::Duration;
 
     #[cfg(unix)]
     use std::os::unix::fs::{OpenOptionsExt, PermissionsExt};
@@ -3362,6 +3847,209 @@ mod tests {
             .collect::<Vec<_>>();
         assert_eq!(release_entries, vec!["sha256-example"]);
         assert!(fixture.root().join(".harp-internal/staging").is_dir());
+    }
+
+    #[test]
+    fn private_tree_is_create_only_and_preserves_explicit_empty_directories() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let relative = Path::new("repositories/repository/episodes/episode");
+        let members = BTreeMap::from([
+            (PathBuf::from("context.json"), b"context".to_vec()),
+            (PathBuf::from("manifest.json"), b"manifest".to_vec()),
+        ]);
+        let directories = BTreeSet::from([PathBuf::from("raw"), PathBuf::from("raw/trae")]);
+
+        state
+            .publish_private_tree_create_only(relative, &members, &directories)
+            .expect("initial private tree");
+        assert_eq!(
+            state
+                .publish_private_tree_create_only(relative, &members, &directories)
+                .unwrap_err()
+                .code(),
+            "state.exists"
+        );
+        assert_eq!(
+            state
+                .list_private_directory(&relative.join("raw"))
+                .expect("raw namespace"),
+            ["trae"]
+        );
+        assert!(state
+            .list_private_directory(&relative.join("raw/trae"))
+            .expect("provider namespace")
+            .is_empty());
+    }
+
+    #[test]
+    fn held_private_directory_tracks_published_identity_and_rejects_a_swap() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let relative = Path::new("repositories/repository/episodes/episode");
+        let held_relative = Path::new("raw/provider");
+        let members = BTreeMap::from([(PathBuf::from("manifest.json"), b"manifest".to_vec())]);
+        let directories = BTreeSet::from([held_relative.to_path_buf()]);
+
+        let held = state
+            .publish_private_tree_create_only_holding_directory(
+                relative,
+                &members,
+                &directories,
+                held_relative,
+            )
+            .expect("published held directory");
+        let (held_path, absolute_path, _) = held.duplicate_parts().expect("held directory parts");
+        assert_eq!(held_path, relative.join(held_relative));
+        assert_eq!(absolute_path, fixture.root().join(&held_path));
+
+        fs::rename(
+            &absolute_path,
+            absolute_path.with_file_name("provider-replaced"),
+        )
+        .expect("replace held directory pathname");
+        fs::create_dir(&absolute_path).expect("replacement private directory");
+        fs::set_permissions(&absolute_path, fs::Permissions::from_mode(0o700))
+            .expect("private replacement mode");
+
+        assert_eq!(held.duplicate_parts().unwrap_err().code(), "state.conflict");
+    }
+
+    #[test]
+    fn failed_private_tree_staging_leaves_no_target_and_can_be_retried() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let relative = Path::new("repositories/repository/episodes/episode");
+        let members = BTreeMap::from([
+            (PathBuf::from("context.json"), b"context".to_vec()),
+            (PathBuf::from("manifest.json"), b"manifest".to_vec()),
+        ]);
+        let directories = BTreeSet::from([PathBuf::from("raw"), PathBuf::from("raw/trae")]);
+
+        assert_eq!(
+            with_creation_fault("manifest.json", CreationFault::FileWrite, || {
+                state.publish_private_tree_create_only(relative, &members, &directories)
+            })
+            .unwrap_err()
+            .code(),
+            "state.io"
+        );
+        assert!(!fixture.root().join(relative).exists());
+        assert_no_entry_prefix(&fixture.root().join(".harp-internal/staging"), ".harp-tree");
+
+        state
+            .publish_private_tree_create_only(relative, &members, &directories)
+            .expect("retry private tree");
+        assert_eq!(
+            fs::read(fixture.root().join(relative).join("manifest.json")).unwrap(),
+            b"manifest"
+        );
+    }
+
+    #[test]
+    fn failed_private_tree_after_rename_removes_visible_tree_and_can_be_retried() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let relative = Path::new("repositories/repository/episodes/episode");
+        let members = BTreeMap::from([
+            (PathBuf::from("context.json"), b"context".to_vec()),
+            (PathBuf::from("manifest.json"), b"manifest".to_vec()),
+        ]);
+        let directories = BTreeSet::from([PathBuf::from("raw"), PathBuf::from("raw/trae")]);
+
+        assert_eq!(
+            with_creation_fault("episode", CreationFault::TreePostRename, || {
+                state.publish_private_tree_create_only(relative, &members, &directories)
+            })
+            .unwrap_err()
+            .code(),
+            "state.io"
+        );
+        assert!(!fixture.root().join(relative).exists());
+
+        state
+            .publish_private_tree_create_only(relative, &members, &directories)
+            .expect("retry private tree after renamed-tree rollback");
+        assert_eq!(
+            fs::read(fixture.root().join(relative).join("manifest.json")).unwrap(),
+            b"manifest"
+        );
+    }
+
+    #[test]
+    fn validated_create_only_write_holds_prerequisite_locks_through_publication() {
+        let fixture = StateFixture::new();
+        let state = fixture.open();
+        let manifest = Path::new("episodes/episode/manifest.json");
+        let context = Path::new("episodes/episode/context.json");
+        let completion = Path::new("episodes/episode/completion.json");
+        state
+            .write_private_atomic(manifest, b"manifest", ReplacePolicy::CreateOnly)
+            .unwrap();
+        state
+            .write_private_atomic(context, b"context", ReplacePolicy::CreateOnly)
+            .unwrap();
+
+        let context_snapshot = state.snapshot_private_file(context).unwrap();
+        let root = fixture.root();
+        let writer = RefCell::new(None);
+        let (started_tx, started_rx) = mpsc::channel();
+        let (finished_tx, finished_rx) = mpsc::channel();
+        state
+            .write_private_create_only_after_validating_with_hook(
+                completion,
+                b"completion",
+                &[
+                    PrivateFileExpectation {
+                        relative: manifest,
+                        expected_bytes: b"manifest",
+                        max_bytes: 64,
+                    },
+                    PrivateFileExpectation {
+                        relative: context,
+                        expected_bytes: b"context",
+                        max_bytes: 64,
+                    },
+                ],
+                || {
+                    writer.replace(Some(thread::spawn(move || {
+                        let state = StateRoot::open_or_create(&root).unwrap();
+                        started_tx.send(()).unwrap();
+                        let result = state.write_private_atomic(
+                            context,
+                            b"changed",
+                            ReplacePolicy::CompareAndReplace(context_snapshot),
+                        );
+                        finished_tx.send(()).unwrap();
+                        result
+                    })));
+                    started_rx
+                        .recv_timeout(Duration::from_secs(1))
+                        .expect("writer started");
+                    assert!(matches!(
+                        finished_rx.recv_timeout(Duration::from_millis(100)),
+                        Err(mpsc::RecvTimeoutError::Timeout)
+                    ));
+                },
+            )
+            .expect("validated completion publication");
+
+        finished_rx
+            .recv_timeout(Duration::from_secs(1))
+            .expect("writer resumed after publication");
+        writer
+            .borrow_mut()
+            .take()
+            .expect("writer handle")
+            .join()
+            .expect("writer thread")
+            .expect("context replacement after lock release");
+        assert_eq!(
+            state
+                .read_private_file_bounded(completion, 64)
+                .expect("published completion"),
+            b"completion"
+        );
     }
 
     #[test]
