@@ -252,3 +252,50 @@ fn repository_verify_checks_import_and_generated_contracts() {
         .stdout(predicate::str::contains("\"import_rows\":521"))
         .stdout(predicate::str::contains("\"forbidden_references\":0"));
 }
+
+#[test]
+fn rlm_checkpoint_reports_default_state_paths() {
+    let repo = TempDir::new().expect("temp repository");
+    let output = harp()
+        .current_dir(repo.path())
+        .args(["--format", "json", "rlm", "checkpoint"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let envelope: Value = serde_json::from_slice(&output).expect("JSON envelope");
+    assert_eq!(envelope["command"], "rlm.checkpoint");
+    assert_eq!(envelope["status"], "ok");
+    assert!(envelope["data"]["state_path"]
+        .as_str()
+        .unwrap()
+        .ends_with(".harp/rlm/state.sqlite"));
+}
+
+#[test]
+fn rlm_resume_requires_exactly_one_selection_mode() {
+    harp()
+        .current_dir(repo_root())
+        .args(["rlm", "resume"])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "provide exactly one run id or --all-incomplete",
+        ));
+
+    harp()
+        .current_dir(repo_root())
+        .args([
+            "rlm",
+            "resume",
+            "018f22e2-7c3b-7def-8123-456789abcdef",
+            "--all-incomplete",
+        ])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "provide exactly one run id or --all-incomplete",
+        ));
+}

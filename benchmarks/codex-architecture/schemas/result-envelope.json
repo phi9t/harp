@@ -1,0 +1,147 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "logicalSchema": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mediaType": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "permittedRanges": {
+          "items": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "sizeBytes": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uri": {
+          "maxLength": 82,
+          "minLength": 82,
+          "pattern": "^artifact://sha256/[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "sha256",
+        "mediaType",
+        "sizeBytes"
+      ],
+      "type": "object"
+    },
+    "ResultStatus": {
+      "enum": [
+        "success",
+        "failed",
+        "partial",
+        "cancelled"
+      ],
+      "type": "string"
+    },
+    "TaskId": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^(?!\\.{1,2}$)[A-Za-z0-9_.-]{1,128}$",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "answerRef": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "confidence": {
+      "format": "double",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/ArtifactRef"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "failureClass": {
+      "maxLength": 256,
+      "minLength": 1,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schemaVersion": {
+      "const": 1,
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/ResultStatus"
+    },
+    "summary": {
+      "maxLength": 4096,
+      "type": "string"
+    },
+    "taskId": {
+      "$ref": "#/$defs/TaskId"
+    },
+    "tokenUsage": {
+      "format": "uint64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "traceRef": {
+      "$ref": "#/$defs/ArtifactRef"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "taskId",
+    "status",
+    "evidence",
+    "traceRef",
+    "summary",
+    "tokenUsage"
+  ],
+  "title": "ResultEnvelope",
+  "type": "object"
+}

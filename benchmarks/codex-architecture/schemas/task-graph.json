@@ -1,0 +1,229 @@
+{
+  "$defs": {
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "logicalSchema": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mediaType": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "permittedRanges": {
+          "items": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "sha256": {
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "sizeBytes": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uri": {
+          "maxLength": 82,
+          "minLength": 82,
+          "pattern": "^artifact://sha256/[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uri",
+        "sha256",
+        "mediaType",
+        "sizeBytes"
+      ],
+      "type": "object"
+    },
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "maxStorageBytes": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "maxTokens": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "maxTokens",
+        "timeoutSeconds",
+        "maxStorageBytes"
+      ],
+      "type": "object"
+    },
+    "NodeKind": {
+      "enum": [
+        "analysis",
+        "reducer"
+      ],
+      "type": "string"
+    },
+    "RetryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "maxTransientAttempts": {
+          "format": "uint8",
+          "maximum": 3,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "maxTransientAttempts"
+      ],
+      "type": "object"
+    },
+    "TaskId": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^(?!\\.{1,2}$)[A-Za-z0-9_.-]{1,128}$",
+      "type": "string"
+    },
+    "TaskNode": {
+      "additionalProperties": false,
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/TaskId"
+          },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "instruction": {
+          "maxLength": 16384,
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/NodeKind"
+        },
+        "modelPolicy": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "outputSchema": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "permissionProfile": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "retryPolicy": {
+          "$ref": "#/$defs/RetryPolicy"
+        },
+        "role": {
+          "$ref": "#/$defs/TaskRole"
+        },
+        "taskId": {
+          "$ref": "#/$defs/TaskId"
+        },
+        "workspaceMode": {
+          "$ref": "#/$defs/WorkspaceMode"
+        }
+      },
+      "required": [
+        "taskId",
+        "kind",
+        "role",
+        "instruction",
+        "dependencies",
+        "inputs",
+        "workspaceMode",
+        "modelPolicy",
+        "permissionProfile",
+        "budget",
+        "outputSchema",
+        "retryPolicy"
+      ],
+      "type": "object"
+    },
+    "TaskRole": {
+      "enum": [
+        "explore",
+        "classify",
+        "implement",
+        "verify",
+        "critic",
+        "reduce"
+      ],
+      "type": "string"
+    },
+    "WorkspaceMode": {
+      "enum": [
+        "readOnly",
+        "scratch",
+        "gitWorktree",
+        "copyOnWrite"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/TaskNode"
+      },
+      "maxItems": 64,
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "nodes"
+  ],
+  "title": "TaskGraph",
+  "type": "object"
+}

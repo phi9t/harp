@@ -2,6 +2,11 @@
 node = "22.22.3"
 rust = "1.92.0"
 
+[env]
+HARP_TARGET_DIR = "{{config_root}}/.build/harp-target"
+HARP_INPROCESS_TARGET_DIR = "{{config_root}}/.build/codex-inprocess-target"
+CARGO_INCREMENTAL = "0"
+
 [tasks.bootstrap]
 description = "Install locked repository dependencies and local Git LFS filters"
 run = """
@@ -12,32 +17,79 @@ cd atlas
 corepack pnpm install --frozen-lockfile
 """
 
+[tasks.test]
+description = "Run workspace tests with the compact test profile"
+run = 'CARGO_TARGET_DIR="$HARP_TARGET_DIR" cargo test --profile test-small --workspace'
+
+[tasks.test-shell]
+description = "Run compact build-policy shell regressions"
+run = """
+set -euo pipefail
+scripts/test_clean_build.sh
+scripts/test_check_no_dwarf.sh
+"""
+
+[tasks.fmt]
+description = "Check Rust formatting without creating build artifacts"
+run = 'cargo fmt --all --check'
+
+[tasks.clippy]
+description = "Lint all Rust targets with the compact test profile"
+run = 'CARGO_TARGET_DIR="$HARP_TARGET_DIR" cargo clippy --profile test-small --workspace --all-targets -- -D warnings'
+
+[tasks.build]
+description = "Build the stripped Harp executable with the size profile"
+run = 'CARGO_TARGET_DIR="$HARP_TARGET_DIR" cargo build --profile size -p harp'
+
+[tasks.no-dwarf]
+description = "Reject dSYM output and embedded DWARF in the size-profile executable"
+depends = ["build"]
+run = 'scripts/check_no_dwarf.sh "$HARP_TARGET_DIR/size/harp"'
+
+[tasks.clean-build]
+description = "Remove only configured worktree-local Rust target directories"
+run = 'scripts/clean_build.sh "{{config_root}}" "$HARP_TARGET_DIR" "$HARP_INPROCESS_TARGET_DIR"'
+
 [tasks.verify-rust]
 description = "Run Rust formatting, linting, tests, corpus, search, and source gates"
 run = """
 set -euo pipefail
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
-cargo run -p harp -- check
-cargo run -p harp -- build --check
-cargo run -p harp -- sources verify
-python3 scripts/build_weng_course.py --check
-cargo run -p harp -- search refresh
-cargo run -p harp -- search status
-cargo run -p harp -- search query "recursive improvement" --limit 5 >/dev/null
+mise run fmt
+mise run clippy
+mise run test
+mise run test-shell
+mise run no-dwarf
+"$HARP_TARGET_DIR/size/harp" check
+"$HARP_TARGET_DIR/size/harp" build --check
+"$HARP_TARGET_DIR/size/harp" sources verify
+"$HARP_TARGET_DIR/size/harp" search refresh
+"$HARP_TARGET_DIR/size/harp" search status
+"$HARP_TARGET_DIR/size/harp" search query "recursive improvement" --limit 5 >/dev/null
 python3 -m unittest discover -s labs/meta_harness_trae/tests -v
 """
 
 [tasks.verify-atlas]
 description = "Run Atlas lint, types, tests, production build, and decoded export test"
-dir = "{{config_root}}/atlas"
+depends = ["build"]
 run = """
 set -euo pipefail
-corepack pnpm run lint
-corepack pnpm run typecheck
-corepack pnpm run test
-corepack pnpm run test:export
+config_root="{{config_root}}"
+atlas_dir="$config_root/atlas"
+(
+  cd "$config_root"
+  "$HARP_TARGET_DIR/size/harp" build
+  "$HARP_TARGET_DIR/size/harp" build --check
+)
+(
+  cd "$atlas_dir"
+  corepack pnpm exec eslint . --ignore-pattern dist --ignore-pattern target
+  corepack pnpm exec tsc -b
+  corepack pnpm exec vitest run
+  corepack pnpm exec tsc -b
+  corepack pnpm exec vite build
+  node scripts/export-static.mjs
+  node tests/static-export.test.mjs
+)
 """
 
 [tasks.verify-repository]
@@ -45,9 +97,10 @@ description = "Verify import map, LFS, forbidden references, and generated clean
 run = """
 set -euo pipefail
 git lfs fsck
-cargo run -p harp -- repository verify
+mise run build
+"$HARP_TARGET_DIR/size/harp" repository verify
 """
 
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
-run = "mise run verify-rust && mise run verify-atlas && mise run verify-repository"
+run = "mise run verify-atlas && mise run verify-rust && mise run verify-repository"

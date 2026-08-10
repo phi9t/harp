@@ -1,0 +1,16 @@
+[package]
+name = "harp-artifacts"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+harp-contracts = { path = "../harp-contracts" }
+libc.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

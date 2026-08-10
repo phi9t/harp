@@ -3,6 +3,7 @@ name = "harp"
 version = "0.1.0"
 edition.workspace = true
 publish.workspace = true
+default-run = "harp"
 
 [[bin]]
 name = "harp"
@@ -10,6 +11,13 @@ path = "src/main.rs"
 
 [dependencies]
 clap.workspace = true
+harp-artifacts = { path = "../harp-artifacts" }
+harp-cli-process = { path = "../harp-cli-process" }
+harp-cli-test-support = { path = "../harp-cli-test-support", optional = true }
+harp-contracts = { path = "../harp-contracts" }
+harp-engine = { path = "../harp-engine" }
+harp-runtime = { path = "../harp-runtime" }
+harp-state = { path = "../harp-state" }
 libc.workspace = true
 pulldown-cmark.workspace = true
 rusqlite.workspace = true
@@ -20,10 +28,15 @@ flate2.workspace = true
 tar.workspace = true
 tempfile.workspace = true
 thiserror.workspace = true
+tokio.workspace = true
 url.workspace = true
 walkdir.workspace = true
+
+[features]
+test-cli-fixture = ["dep:harp-cli-test-support", "harp-cli-process/test-cli-fixture"]
 
 [dev-dependencies]
 assert_cmd.workspace = true
 predicates.workspace = true
 tempfile.workspace = true
+toml.workspace = true
