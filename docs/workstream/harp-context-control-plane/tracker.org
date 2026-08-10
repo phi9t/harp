@@ -1,0 +1,736 @@
+#+TITLE: Harp Context Control Plane Workstream Tracker
+#+TODO: BACKLOG TODO IMPLEMENTING REVIEW BLOCKED | DONE CANCELED
+#+TAGS: docs code tests migration traecli codex security storage workflow ace mce risk
+
+* Current Situation
+
+The approved system design is canonical in
+[[../../../knowledge/meta_harness/meta_harness_deep_dive.md][the Meta-Harness deep dive]], section
+"Harp context control plane for Trae CLI and Codex CLI".
+
+Harp currently has:
+
+- a typed Rust CLI with schema-versioned JSON envelopes;
+- canonical technical prose under =knowledge/=;
+- strict repository, corpus, evidence, and generated-artifact gates;
+- an opt-in =labs/meta_harness_trae/= experiment with bounded workspace,
+  secret-scan, deterministic archive, and raw/normalized evidence patterns; and
+- installed local Trae CLI and Codex CLI binaries exposing non-interactive
+  JSONL execution and experimental App Server surfaces.
+
+Harp does not yet own a runtime context control plane, provider abstraction,
+episode store, workflow registry, context release, or optimizer candidate
+registry. The current =docs/product-contract.md= explicitly places
+agent-runtime execution outside Harp's product boundary; implementation must
+update that contract deliberately.
+
+* Gap Map
+
+| Area | Current | Target | Gap |
+|------+---------+--------+-----|
+| Product boundary | Technical atlas and bounded research labs | Local context learning control plane plus atlas | Product contract and CLI surface |
+| Provider support | One lab-specific Trae command builder | Typed Trae and Codex adapters | Capability probing, launch, streaming, fixtures |
+| Workflows | Research taxonomy only | =ci_repair=, =code_review=, =dependency_update=, =general_coding= | Declarative package schemas and routing |
+| Releases | No runtime release object | Immutable content-addressed context releases | Canonical identity, publication, compatibility |
+| Runtime context | No provider-neutral resolver | Deterministic bounded =ContextBundle= | Selection, rendering, token accounting |
+| Evidence | Meta-Harness-specific raw archive | Private per-repository episodes | Secure state root, manifests, normalized events |
+| Outcomes | Research-run receipts | Typed deterministic and human labels | Label contract, attachments, claim ceilings |
+| Learning | Research analysis only | Reviewable ACE and MCE candidates | Sanitized export, candidate schemas, replay |
+| Promotion | Repository commits only | Modeled release lifecycle | V1 stops at human review |
+| Verification | Provider-neutral offline gate | Same, with fake-provider integration tests | Fixtures, adversarial state and stream tests |
+
+* Work Items
+
+** TODO Confirm Product Boundary And Schema Vocabulary :docs:
+:PROPERTIES:
+:ID: HCCP-001
+:DESIGN_SECTION: Product boundary; Trust and authority layers
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Turn the approved design into stable product-contract language and choose the
+public schema names for workflow, release, context, episode, outcome, provider,
+and candidate objects.
+
+*** Non-goals
+
+- No runtime code.
+- No generated corpus migration.
+- No change to provider configuration or installed skills.
+
+*** Owned Files
+
+- =docs/product-contract.md=
+- =README.md=
+- new structured schemas below =content/context_control/=
+- focused Rust schema tests if needed to validate the contract
+
+*** Acceptance Criteria
+
+- Harp's product boundary explicitly includes local provider observation.
+- Protected provider and repository authority remains outside learner control.
+- Schema names and versions are internally consistent and free of provider
+  branding except provider discriminants.
+- Structured runtime contracts remain under =content/=; technical explanation
+  remains in =knowledge/=.
+
+*** Implementation Notes
+
+Keep one public vocabulary across Trae CLI, Codex CLI, fake-provider tests, and
+future App Server adapters.
+
+*** Verification Plan
+
+- =cargo test -p harp corpus::tests --lib -- --test-threads=1=
+- =cargo test -p harp --test cli=
+- =cargo run -p harp -- check=
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Build Secure Local State And Immutable Releases :storage:security:code:
+:PROPERTIES:
+:ID: HCCP-002
+:DESIGN_SECTION: Release compiler; Local storage
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Implement =HARP_HOME= resolution, secure state-root opening, repository
+identity, canonical JSON, content-addressed release publication, and immutable
+release inspection.
+
+*** Non-goals
+
+- No provider process launch.
+- No optimizer.
+- No shared registry.
+
+*** Owned Files
+
+- new Rust state and release modules under =crates/harp/src/=
+- focused unit and CLI tests
+- structured baseline workflow packages below =content/context_control/=
+
+*** Acceptance Criteria
+
+- State-root precedence is =HARP_HOME=, =XDG_STATE_HOME=, then
+  =~/.local/state/harp=.
+- Symlinked, wrongly owned, or group/world-accessible private roots fail closed.
+- Release identity excludes timestamps and target repository revision.
+- Existing release files are never replaced.
+- Concurrent publication of identical bytes is idempotent; conflicting bytes
+  fail.
+
+*** Implementation Notes
+
+Reuse Harp's held-directory and compare-and-replace primitives where their
+side-effect and identity guarantees match the design.
+
+*** Verification Plan
+
+- Unit tests for traversal, symlink, permission, ownership, lock, and
+  replacement-race behavior.
+- CLI tests for deterministic baseline release identity.
+- =cargo test -p harp --workspace=
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Add Workflow Packages And Deterministic Context Resolution :workflow:code:tests:
+:PROPERTIES:
+:ID: HCCP-003
+:DESIGN_SECTION: Workflow registry; Context resolver
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Define and load all four built-in workflow packages, implement deterministic
+auto-routing, compile the baseline release, and render bounded context bundles.
+
+*** Non-goals
+
+- No model-based router.
+- No executable selector scripts.
+- No learned playbook items.
+
+*** Owned Files
+
+- =content/context_control/workflows/=
+- new Rust workflow and context modules
+- golden routing and rendering fixtures
+
+*** Acceptance Criteria
+
+- All four workflows have positive and negative routing boundaries.
+- Explicit workflow selection wins over auto-routing.
+- Ambiguity falls back to =general_coding=.
+- Routing emits considered candidates and rejection reasons.
+- Context selection is read-only, network-free, subprocess-free,
+  deterministic, and token-bounded.
+- Identical normalized inputs produce identical context bytes for both
+  providers.
+
+*** Implementation Notes
+
+Avoid provider branches in workflow packages. Provider compatibility belongs
+to the release or adapter layer.
+
+*** Verification Plan
+
+- Golden task matrix for every workflow and ambiguous cases.
+- Stable-ordering and budget-boundary property tests.
+- No-write and no-subprocess tests.
+- =cargo test -p harp --workspace=
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Implement Provider Doctor And Capability Snapshots :traecli:codex:code:tests:
+:PROPERTIES:
+:ID: HCCP-004
+:DESIGN_SECTION: Provider adapters; Chosen architecture
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Add =harp providers doctor= and typed capability probes for Trae CLI and Codex
+CLI.
+
+*** Non-goals
+
+- No provider launch.
+- No network or authentication probe.
+- No App Server client.
+
+*** Owned Files
+
+- new Rust provider modules
+- CLI command and tests
+- fake provider binaries or test fixtures
+
+*** Acceptance Criteria
+
+- Probe records exact executable identity, version, and supported required
+  capabilities.
+- Missing binary and unsupported version/capability have typed errors.
+- Help output is parsed through bounded, versioned adapters rather than broad
+  substring assumptions.
+- Provider capabilities are content-addressed and can be pinned in an episode.
+- Offline tests require no real provider binary.
+
+*** Verification Plan
+
+- Fake-binary integration tests for supported, unsupported, malformed, timeout,
+  and nonzero probe results.
+- =cargo test -p harp --test cli=
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Implement Harp Run And Raw Episode Capture :traecli:codex:code:storage:security:
+:PROPERTIES:
+:ID: HCCP-005
+:DESIGN_SECTION: Run lifecycle; Context and episode manifests; Provider adapters
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Implement =harp run= for both providers using =exec --json=, initial request
+construction, pre-launch manifest publication, terminal streaming, signal
+forwarding, and private raw capture.
+
+*** Non-goals
+
+- No resume.
+- No arbitrary native-argument passthrough.
+- No automatic labels beyond process and capture facts.
+- No live invocation in =mise run verify=.
+
+*** Owned Files
+
+- provider adapter implementations
+- run orchestration and episode storage modules
+- CLI command and fake-provider fixtures
+
+*** Acceptance Criteria
+
+- Both providers receive byte-identical rendered Harp context for the same
+  normalized request.
+- Harp preserves native config and repository rules.
+- Harp never broadens sandbox, approvals, network, tools, or MCP capability.
+- The running manifest and context bundle are durable before provider launch.
+- Raw stdout JSONL, stderr, exit status, command, final message, and provider
+  identity are sealed after the run.
+- Crash, signal, and capture failure leave inspectable partial evidence.
+
+*** Implementation Notes
+
+The task begins after =--=. It is not a provider-argument channel.
+
+*** Verification Plan
+
+- Fake-provider parity tests.
+- Signal, nonzero exit, malformed JSONL, high-output, stderr, and partial-write
+  tests.
+- Raw-byte round-trip and deterministic archive tests.
+- =cargo test -p harp --workspace=
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Normalize Events And Account For Outcomes :code:tests:
+:PROPERTIES:
+:ID: HCCP-006
+:DESIGN_SECTION: Episode normalizer; Outcome labeler; Failure behavior
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Add typed normalized events, Git-state receipts, episode inspection, user
+labels, and verification attachments.
+
+*** Non-goals
+
+- No provider-independent reconstruction of hidden context.
+- No automatic success claim from final assistant text.
+- No diff-byte capture by default.
+
+*** Owned Files
+
+- event and outcome modules
+- =harp episodes= CLI commands
+- provider event fixtures and outcome schemas
+
+*** Acceptance Criteria
+
+- Unknown provider events remain opaque and linked to raw-line digests.
+- Ordering uses Harp's monotonic sequence.
+- Context-manifest completeness is explicit.
+- Git HEAD and status/change digests are captured without untracked contents.
+- Human labels and attached verifier reports are append-only derivatives.
+- Agent self-report cannot become verified success.
+
+*** Verification Plan
+
+- Known/unknown/malformed event fixtures for both providers.
+- Git worktree, detached HEAD, dirty state, and no-repository tests.
+- Outcome claim-ceiling tests.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Add Sanitized Learning Export :security:storage:tests:
+:PROPERTIES:
+:ID: HCCP-007
+:DESIGN_SECTION: Local storage; Candidate workshop
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Create an explicit sanitized episode export suitable for offline ACE/MCE
+processing.
+
+*** Non-goals
+
+- No rewriting of raw evidence.
+- No cloud upload.
+- No optimizer invocation.
+
+*** Owned Files
+
+- sanitizer and export modules
+- =harp episodes export=
+- adversarial fixtures
+
+*** Acceptance Criteria
+
+- Raw archives remain byte-identical.
+- Paths, repository identity, tenant strings, secrets, credentials, and
+  unapproved task content are removed or replaced with opaque identifiers.
+- Provenance and raw-line digests survive sanitization where safe.
+- Secret detection, uncertain redaction, or malformed provenance fails closed.
+- Export is content-addressed and linked from the private episode.
+
+*** Verification Plan
+
+- Credential, token, private-key, path, prompt-injection, malformed UTF-8, and
+  oversized-event fixtures.
+- Deterministic export-byte tests.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Implement ACE Suggestion Workshop :ace:code:tests:
+:PROPERTIES:
+:ID: HCCP-008
+:DESIGN_SECTION: Candidate workshop; Workflow evaluation contracts
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Batch sanitized episodes, produce typed ACE operations, detect conflicts, and
+evaluate candidates through bounded replay.
+
+*** Non-goals
+
+- No automatic release publication.
+- No raw episode access.
+- No promotion.
+
+*** Owned Files
+
+- candidate schemas and registry
+- ACE workshop modules
+- =harp suggest ace= and candidate inspection commands
+
+*** Acceptance Criteria
+
+- Operations are limited to =ADD=, =UPDATE=, =ADD_EXCEPTION=, =MERGE=, and
+  =DEPRECATE=.
+- Every operation has evidence, scope, falsifier, confidence, and risk class.
+- Conflicting and redundant items are explicit.
+- Reflector praise alone cannot pass evaluation.
+- Paired replay records matched budgets and item ablations.
+
+*** Verification Plan
+
+- Synthetic episodes with missing knowledge, wrong knowledge, routing failure,
+  reward hacking, and conflicting evidence.
+- Deterministic candidate package and replay receipt tests.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Implement MCE Workflow Candidate Workshop :mce:code:tests:
+:PROPERTIES:
+:ID: HCCP-009
+:DESIGN_SECTION: Candidate workshop; Candidate and release lifecycle
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Generate and validate complete workflow-package candidates and optional
+provider-skill exports.
+
+*** Non-goals
+
+- No executable query-time selector.
+- No hidden evaluator access.
+- No skill installation or promotion.
+
+*** Owned Files
+
+- MCE candidate schemas and validators
+- bounded optimizer workspace
+- =harp suggest mce=
+
+*** Acceptance Criteria
+
+- Candidate packages are complete, content-addressed, and immutable.
+- Routing precision/recall, budget, determinism, and no-side-effect gates run
+  before replay.
+- Provider-skill exports are derived candidates, not canonical Harp prose.
+- Candidate receives an immutable copy of the active release as its baseline
+  but cannot mutate the release registry, read hidden tests or raw episodes,
+  access provider auth, or write target-repository state.
+
+*** Verification Plan
+
+- Adversarial package fixtures for privilege requests, side effects, path
+  escape, nondeterminism, skill explosion, and evaluation leakage.
+- Fixed-skill and generic-context-engineer baselines.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Add App Server Adapters And Harp-Managed Resume :traecli:codex:code:risk:
+:PROPERTIES:
+:ID: HCCP-010
+:DESIGN_SECTION: Provider adapters; Run lifecycle; Explicitly deferred
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Implement richer provider adapters for thread lifecycle, compaction, subagent
+inheritance, and explicit Harp-managed resume.
+
+*** Non-goals
+
+- No automatic migration to a newer release.
+- No dependency of baseline observation runs on an App Server.
+
+*** Owned Files
+
+- App Server protocol adapters
+- versioned generated or captured schema fixtures
+- resume and migration receipts
+
+*** Acceptance Criteria
+
+- App Server and exec adapters produce the same Harp domain events.
+- Every child and resumed session carries the original release by default.
+- Explicit migration records old and new release identities and invalidated
+  assumptions.
+- Missing provider telemetry leaves an explicit completeness gap.
+
+*** Verification Plan
+
+- Protocol fixture tests for both providers and supported versions.
+- Forced compaction and subagent inheritance tests where the provider exposes
+  deterministic local fixtures.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+** BACKLOG Build Shadow, Canary, Promotion, And Rollback :migration:security:risk:
+:PROPERTIES:
+:ID: HCCP-011
+:DESIGN_SECTION: Candidate and release lifecycle
+:BRANCH:
+:WORKTREE:
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:COMPLETED:
+:END:
+
+*** Scope
+
+Implement governed release promotion only after replay and security evaluation
+are mature.
+
+*** Non-goals
+
+- Not part of V1.
+- No scalar override of a hard safety or evaluator-integrity gate.
+
+*** Owned Files
+
+- release registry lifecycle
+- shadow/canary assignment
+- signing and rollback receipts
+
+*** Acceptance Criteria
+
+- Safety, side-effect, and hidden-evaluation integrity are hard gates.
+- Assignments pin users and episodes to immutable releases.
+- Rollback is prepared before canary and requires no candidate regeneration.
+- Visible-validation and hidden-audit divergence is measured.
+
+*** Verification Plan
+
+- Deterministic assignment and rollback tests.
+- Poisoning, reward-hacking, model-version, tenant-leakage, and audit-overfit
+  evaluations.
+
+*** Verification Evidence
+
+*** Review Notes
+
+*** Follow-ups
+
+* Agent Dispatch Log
+
+No implementation agent has been dispatched. The design session remained in
+the primary checkout and changed only the canonical design document, derived
+Atlas artifacts, the workstream pointer, and this tracker.
+
+* Decisions
+
+** DONE D-001 Harp Is The Shared Control Plane
+
+Harp wraps and observes Trae CLI and Codex CLI. It does not fork either agent
+runtime or place cross-run learning on the request critical path.
+
+** DONE D-002 Support All Workflow Families Through Packages
+
+V1 defines =ci_repair=, =code_review=, =dependency_update=, and
+=general_coding=. The architecture permits later packages without new provider
+branches.
+
+** DONE D-003 Local-First
+
+No hosted service is required. Raw state remains private and repository-scoped
+under =HARP_HOME=.
+
+** DONE D-004 Wrapper-First, App-Server-Ready
+
+The first adapters use =exec --json=. App Server integration is a later adapter
+behind the same Harp contracts.
+
+** DONE D-005 Observation And Suggestions Only
+
+V1 cannot automatically install, promote, or migrate context releases.
+
+** DONE D-006 Canonical Prose Stays In Knowledge
+
+The stable design lives in
+=knowledge/meta_harness/meta_harness_deep_dive.md=. This tracker owns only
+execution state and must not become a duplicate technical authority.
+
+* Risks And Blockers
+
+** Context Attribution Is Initially Partial
+
+The wrapper can prove Harp's supplement and observed provider events, not the
+entire effective prompt, selected native skills, or all compaction state.
+Episodes must carry an explicit completeness level.
+
+** Provider Surface Drift
+
+Trae CLI and Codex CLI expose similar but non-identical commands and features.
+Capability probing and version fixtures are required; command parity cannot be
+assumed.
+
+** Raw Trace Sensitivity
+
+Provider streams can contain repository content, user requests, commands,
+credentials, and tenant identifiers. Private archive and sanitized export must
+remain separate.
+
+** Product-Boundary Migration
+
+The current product contract excludes agent-runtime execution. HCCP-001 must
+land before code expands Harp's CLI.
+
+** Repository Receipt Churn
+
+Tracked changes alter =docs/import-receipt.md='s payload digest. Refresh the
+receipt only after a complete verified implementation landing, not during the
+design-only commit.
+
+** Existing Untracked Work
+
+The primary checkout contains unrelated untracked Obsidian files, images,
+drafts, and Agentic eval/apply planning documents. Do not stage, delete, or
+rewrite them.
+
+* Deferred Work
+
+- Hosted release registry and tenant federation.
+- Generated query-time selector code.
+- Automatic provider-skill installation.
+- Mid-thread release upgrades.
+- Full effective-prompt reconstruction without provider support.
+- Cloud episode synchronization.
+- Automatic promotion before hidden audit, canary, and rollback exist.
+- Any claim of recursive successor improvement.
+
+* Completion Criteria
+
+The observation milestone is complete when:
+
+- both providers launch through Harp using one immutable baseline release;
+- all four workflow packages route deterministically;
+- provider security and repository contracts remain unchanged;
+- manifests, context bundles, raw events, normalized events, Git-state
+  receipts, and completion receipts are durable and schema-valid;
+- failed and interrupted episodes remain inspectable;
+- raw evidence round-trips byte-for-byte;
+- sanitized export fails closed;
+- no active release changes during an episode; and
+- =mise run verify= passes offline without provider binaries, credentials,
+  another checkout, or network access.
