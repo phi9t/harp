@@ -234,12 +234,19 @@ to the release or adapter layer.
 - =cargo clippy -p harp --all-targets -- -D warnings= passed.
 - All 24 package members are embedded, and all 20 declared member digests were
   independently recomputed during review.
+- Routing commit
+  =44149c1= (integrated from reviewed commit
+  =8819f8e921f2378e44d71718a012d4d2cfc11e83=).
+- =cargo test -p harp context_control::routing --lib= passed: 11 tests.
 
 *** Review Notes
 
 - Workflow-package spec review passed.
 - Code-quality review approved after validated package state was made private
   and exposed only through immutable accessors.
+- Routing spec and quality reviews passed after separating package loading
+  from a pure borrowed-data evaluator, explicitly sorting the trace, and
+  retaining only a narrowly scoped direct-API smoke guard.
 
 *** Follow-ups
 
