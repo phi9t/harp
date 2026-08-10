@@ -7,6 +7,8 @@ for Trae CLI and Codex CLI”](../../../knowledge/meta_harness/meta_harness_deep
 
 **Execution tracker:** [tracker.org](tracker.org)
 
+**Observation milestone plan:** [plan.md](plan.md)
+
 The stable technical design lives in the registered Meta-Harness knowledge
 packet because `knowledge/` is Harp's sole technical-prose authority. This
 workstream file is intentionally only a durable pointer; it must not duplicate

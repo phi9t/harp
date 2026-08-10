@@ -7,6 +7,8 @@
 The approved system design is canonical in
 [[../../../knowledge/meta_harness/meta_harness_deep_dive.md][the Meta-Harness deep dive]], section
 "Harp context control plane for Trae CLI and Codex CLI".
+The dependency-ordered implementation instructions for the observation
+milestone are in [[file:plan.md][plan.md]].
 
 Harp currently has:
 
@@ -670,6 +672,14 @@ V1 cannot automatically install, promote, or migrate context releases.
 The stable design lives in
 =knowledge/meta_harness/meta_harness_deep_dive.md=. This tracker owns only
 execution state and must not become a duplicate technical authority.
+
+** DONE D-007 Observation Milestone Plan Is Dependency Ordered
+
+The first implementation plan covers =HCCP-001= through =HCCP-005= in
+[[file:plan.md][plan.md]]. It defines 13 test-first child sessions, focused
+commit boundaries, exact file ownership, and the full offline release gate.
+The optimizer, App Server, and promotion layers remain mapped to
+=HCCP-006= through =HCCP-011=.
 
 * Risks And Blockers
 
