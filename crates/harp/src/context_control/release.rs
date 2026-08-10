@@ -5,10 +5,11 @@ use serde::{Deserialize, Serialize};
 
 use super::canonical::{json_bytes, json_bytes_with_newline, sha256_hex, sha256_id};
 use super::state::StateRoot;
-use super::workflow::{PlaybookItem, VerificationRecipe, WorkflowPackage};
+use super::workflow::{PlaybookItem, RoutingRules, VerificationRecipe, WorkflowPackage};
 use super::{
     ContextItemKind, ProviderId, WorkflowId, CONTEXT_ITEM_SCHEMA, CONTEXT_TEMPLATE_SCHEMA,
-    RELEASE_IDENTITY_SCHEMA, RELEASE_SCHEMA,
+    CONTEXT_TEMPLATE_SCHEMA_V2, RELEASE_IDENTITY_SCHEMA, RELEASE_IDENTITY_SCHEMA_V2,
+    RELEASE_SCHEMA, ROUTING_SCHEMA,
 };
 use crate::AppError;
 
@@ -25,7 +26,20 @@ const MAX_RELEASE_AUTHORIZATION_BYTES: usize = 4096;
 
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
-pub struct ReleaseIdentity {
+pub struct ReleaseIdentityV2 {
+    pub schema_version: String,
+    pub packages: BTreeMap<WorkflowId, String>,
+    pub selector_version: String,
+    pub renderer_version: String,
+    pub context_template_schema: String,
+    pub context_template_digest: String,
+    pub context_budgets: BTreeMap<WorkflowId, u32>,
+    pub compatible_providers: BTreeSet<ProviderId>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct ReleaseIdentityV1 {
     pub schema_version: String,
     pub packages: BTreeMap<WorkflowId, String>,
     pub selector_version: String,
@@ -33,6 +47,18 @@ pub struct ReleaseIdentity {
     pub context_template_schema: String,
     pub context_budgets: BTreeMap<WorkflowId, u32>,
     pub compatible_providers: BTreeSet<ProviderId>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ReleaseIdentityMetadata<'a> {
+    pub schema_version: &'a str,
+    pub packages: &'a BTreeMap<WorkflowId, String>,
+    pub selector_version: &'a str,
+    pub renderer_version: &'a str,
+    pub context_template_schema: &'a str,
+    pub context_template_digest: Option<&'a str>,
+    pub context_budgets: &'a BTreeMap<WorkflowId, u32>,
+    pub compatible_providers: &'a BTreeSet<ProviderId>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
@@ -45,14 +71,32 @@ pub struct ReleaseManifest {
 
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
-pub struct ContextTemplate {
+pub struct ContextTemplateV2 {
     pub schema_version: String,
-    pub workflows: BTreeMap<WorkflowId, WorkflowContextTemplate>,
+    pub workflows: BTreeMap<WorkflowId, WorkflowContextTemplateV2>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
-pub struct WorkflowContextTemplate {
+pub struct WorkflowContextTemplateV2 {
+    pub routing: RoutingRules,
+    pub context_budget_tokens: u32,
+    pub required_sections: Vec<String>,
+    pub verification_recipes: Vec<VerificationRecipe>,
+    pub verified_success: Vec<String>,
+    pub weak_signals: Vec<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct ContextTemplateV1 {
+    pub schema_version: String,
+    pub workflows: BTreeMap<WorkflowId, WorkflowContextTemplateV1>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct WorkflowContextTemplateV1 {
     pub context_budget_tokens: u32,
     pub required_sections: Vec<String>,
     pub verification_recipes: Vec<VerificationRecipe>,
@@ -73,9 +117,9 @@ pub struct ReleaseItem {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CompiledRelease {
     release_id: String,
-    identity: ReleaseIdentity,
+    identity: ReleaseIdentityV2,
     manifest: ReleaseManifest,
-    context_template: ContextTemplate,
+    context_template: ContextTemplateV2,
     items: Vec<ReleaseItem>,
     identity_bytes: Vec<u8>,
     manifest_bytes: Vec<u8>,
@@ -88,7 +132,7 @@ impl CompiledRelease {
         &self.release_id
     }
 
-    pub fn identity(&self) -> &ReleaseIdentity {
+    pub fn identity_v2(&self) -> &ReleaseIdentityV2 {
         &self.identity
     }
 
@@ -96,7 +140,7 @@ impl CompiledRelease {
         &self.manifest
     }
 
-    pub fn context_template(&self) -> &ContextTemplate {
+    pub fn context_template_v2(&self) -> &ContextTemplateV2 {
         &self.context_template
     }
 
@@ -127,6 +171,7 @@ impl CompiledRelease {
             || self.items_bytes != json_lines(&self.items)?
             || self.manifest_bytes != json_bytes_with_newline(&self.manifest)?
             || self.release_id != sha256_id(&self.identity_bytes)
+            || self.identity.context_template_digest != sha256_hex(&self.context_template_bytes)
         {
             return Err(release_invariant(
                 "compiled release fields do not match their canonical bytes",
@@ -164,13 +209,162 @@ pub struct ReleaseList {
     pub releases: Vec<String>,
 }
 
-#[derive(Clone, Debug, Serialize, Eq, PartialEq)]
+/// A release whose content and publication authorization have been validated.
+///
+/// Inspection values are opaque: callers can read immutable validated data through accessors,
+/// but cannot construct or mutate the trusted wrapper.
+///
+/// ```compile_fail
+/// use harp::context_control::release::ReleaseInspection;
+///
+/// let _forged = ReleaseInspection {};
+/// ```
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ReleaseInspection {
-    pub release_id: String,
-    pub identity: ReleaseIdentity,
-    pub manifest: ReleaseManifest,
-    pub context_template: ContextTemplate,
-    pub items: Vec<ReleaseItem>,
+    validated: ValidatedRelease,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+enum ValidatedRelease {
+    V1(ValidatedReleaseV1),
+    V2(ValidatedReleaseV2),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ValidatedReleaseV1 {
+    release_id: String,
+    identity: ReleaseIdentityV1,
+    manifest: ReleaseManifest,
+    context_template: ContextTemplateV1,
+    items: Vec<ReleaseItem>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct ValidatedReleaseV2 {
+    release_id: String,
+    identity: ReleaseIdentityV2,
+    manifest: ReleaseManifest,
+    context_template: ContextTemplateV2,
+    items: Vec<ReleaseItem>,
+}
+
+impl ReleaseInspection {
+    pub fn release_id(&self) -> &str {
+        match &self.validated {
+            ValidatedRelease::V1(release) => &release.release_id,
+            ValidatedRelease::V2(release) => &release.release_id,
+        }
+    }
+
+    pub fn identity_metadata(&self) -> ReleaseIdentityMetadata<'_> {
+        match &self.validated {
+            ValidatedRelease::V1(release) => ReleaseIdentityMetadata {
+                schema_version: &release.identity.schema_version,
+                packages: &release.identity.packages,
+                selector_version: &release.identity.selector_version,
+                renderer_version: &release.identity.renderer_version,
+                context_template_schema: &release.identity.context_template_schema,
+                context_template_digest: None,
+                context_budgets: &release.identity.context_budgets,
+                compatible_providers: &release.identity.compatible_providers,
+            },
+            ValidatedRelease::V2(release) => ReleaseIdentityMetadata {
+                schema_version: &release.identity.schema_version,
+                packages: &release.identity.packages,
+                selector_version: &release.identity.selector_version,
+                renderer_version: &release.identity.renderer_version,
+                context_template_schema: &release.identity.context_template_schema,
+                context_template_digest: Some(&release.identity.context_template_digest),
+                context_budgets: &release.identity.context_budgets,
+                compatible_providers: &release.identity.compatible_providers,
+            },
+        }
+    }
+
+    pub fn identity_v1(&self) -> Option<&ReleaseIdentityV1> {
+        match &self.validated {
+            ValidatedRelease::V1(release) => Some(&release.identity),
+            ValidatedRelease::V2(_) => None,
+        }
+    }
+
+    pub fn identity_v2(&self) -> Option<&ReleaseIdentityV2> {
+        match &self.validated {
+            ValidatedRelease::V1(_) => None,
+            ValidatedRelease::V2(release) => Some(&release.identity),
+        }
+    }
+
+    pub fn manifest(&self) -> &ReleaseManifest {
+        match &self.validated {
+            ValidatedRelease::V1(release) => &release.manifest,
+            ValidatedRelease::V2(release) => &release.manifest,
+        }
+    }
+
+    pub fn context_template_schema(&self) -> &str {
+        self.identity_metadata().context_template_schema
+    }
+
+    pub fn context_template_v2(&self) -> Option<&ContextTemplateV2> {
+        match &self.validated {
+            ValidatedRelease::V1(_) => None,
+            ValidatedRelease::V2(release) => Some(&release.context_template),
+        }
+    }
+
+    pub fn routing_template_v2(&self) -> Option<&ContextTemplateV2> {
+        self.context_template_v2()
+    }
+
+    pub fn context_template_v1(&self) -> Option<&ContextTemplateV1> {
+        match &self.validated {
+            ValidatedRelease::V1(release) => Some(&release.context_template),
+            ValidatedRelease::V2(_) => None,
+        }
+    }
+
+    pub fn items(&self) -> &[ReleaseItem] {
+        match &self.validated {
+            ValidatedRelease::V1(release) => &release.items,
+            ValidatedRelease::V2(release) => &release.items,
+        }
+    }
+}
+
+impl Serialize for ReleaseInspection {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        #[derive(Serialize)]
+        struct Envelope<'a, I, T> {
+            release_id: &'a str,
+            identity: &'a I,
+            manifest: &'a ReleaseManifest,
+            context_template: &'a T,
+            items: &'a [ReleaseItem],
+        }
+
+        match &self.validated {
+            ValidatedRelease::V1(release) => Envelope {
+                release_id: &release.release_id,
+                identity: &release.identity,
+                manifest: &release.manifest,
+                context_template: &release.context_template,
+                items: &release.items,
+            }
+            .serialize(serializer),
+            ValidatedRelease::V2(release) => Envelope {
+                release_id: &release.release_id,
+                identity: &release.identity,
+                manifest: &release.manifest,
+                context_template: &release.context_template,
+                items: &release.items,
+            }
+            .serialize(serializer),
+        }
+    }
 }
 
 pub fn compile_baseline_release() -> Result<CompiledRelease, AppError> {
@@ -200,7 +394,8 @@ pub fn compile_baseline_release() -> Result<CompiledRelease, AppError> {
         context_budgets.insert(*workflow, manifest.context_budget_tokens);
         workflows.insert(
             *workflow,
-            WorkflowContextTemplate {
+            WorkflowContextTemplateV2 {
+                routing: package.routing().clone(),
                 context_budget_tokens: manifest.context_budget_tokens,
                 required_sections: package.context_schema().required_sections.clone(),
                 verification_recipes: package.verification().recipes.clone(),
@@ -218,23 +413,25 @@ pub fn compile_baseline_release() -> Result<CompiledRelease, AppError> {
         );
     }
 
-    let identity = ReleaseIdentity {
-        schema_version: RELEASE_IDENTITY_SCHEMA.to_owned(),
+    let context_template = ContextTemplateV2 {
+        schema_version: CONTEXT_TEMPLATE_SCHEMA_V2.to_owned(),
+        workflows,
+    };
+    let context_template_bytes = json_bytes_with_newline(&context_template)?;
+
+    let identity = ReleaseIdentityV2 {
+        schema_version: RELEASE_IDENTITY_SCHEMA_V2.to_owned(),
         packages: package_ids,
         selector_version,
         renderer_version,
-        context_template_schema: CONTEXT_TEMPLATE_SCHEMA.to_owned(),
+        context_template_schema: CONTEXT_TEMPLATE_SCHEMA_V2.to_owned(),
+        context_template_digest: sha256_hex(&context_template_bytes),
         context_budgets,
         compatible_providers: BTreeSet::from([ProviderId::Trae, ProviderId::Codex]),
     };
     let identity_bytes = json_bytes(&identity)?;
     let release_id = sha256_id(&identity_bytes);
 
-    let context_template = ContextTemplate {
-        schema_version: CONTEXT_TEMPLATE_SCHEMA.to_owned(),
-        workflows,
-    };
-    let context_template_bytes = json_bytes_with_newline(&context_template)?;
     let items_bytes = json_lines(&items)?;
     let members = member_hashes(&identity_bytes, &context_template_bytes, &items_bytes);
     let manifest = ReleaseManifest {
@@ -284,7 +481,7 @@ pub fn list_releases() -> Result<ReleaseList, AppError> {
 /// both content and authorization is outside the authenticity guarantee.
 pub fn inspect_release(release_id: &str) -> Result<ReleaseInspection, AppError> {
     let state = StateRoot::open_from_environment()?;
-    inspect_release_at(&state, release_id)
+    inspect_release_in_state(&state, release_id)
 }
 
 /// Publishes release content and then its immutable authorization commit marker.
@@ -327,7 +524,10 @@ where
 /// `release.integrity` means the local content is incomplete, tampered relative to its marker, or
 /// lacks a marker. As with publication, V1 does not authenticate arbitrary same-UID offline
 /// replacement of both owner-only content and its authorization without an external trust root.
-fn inspect_release_at(state: &StateRoot, release_id: &str) -> Result<ReleaseInspection, AppError> {
+pub(crate) fn inspect_release_in_state(
+    state: &StateRoot,
+    release_id: &str,
+) -> Result<ReleaseInspection, AppError> {
     validate_release_id(release_id)?;
     let authorization = read_authorization(state, release_id)?;
     let release_path = Path::new("releases").join(release_id);
@@ -384,25 +584,6 @@ fn inspect_release_at(state: &StateRoot, release_id: &str) -> Result<ReleaseInsp
             return Err(release_digest(format!("{member} digest mismatch")));
         }
     }
-    if sha256_id(&identity_bytes) != release_id {
-        return Err(release_digest(
-            "identity digest does not match the release ID",
-        ));
-    }
-
-    let identity: ReleaseIdentity = parse_json(&identity_bytes, "identity")?;
-    validate_identity(&identity)?;
-    if json_bytes(&identity)? != identity_bytes {
-        return Err(release_schema("identity JSON is not canonical"));
-    }
-    let context_template: ContextTemplate =
-        parse_json(&context_template_bytes, "context template")?;
-    validate_context_template(&context_template, &identity)?;
-    if json_bytes_with_newline(&context_template)? != context_template_bytes {
-        return Err(release_schema("context template JSON is not canonical"));
-    }
-    let items = parse_items(&items_bytes, &identity)?;
-
     if authorization.members
         != authorization_hashes_from_bytes(
             &identity_bytes,
@@ -415,14 +596,73 @@ fn inspect_release_at(state: &StateRoot, release_id: &str) -> Result<ReleaseInsp
             "stored release bytes do not match immutable Harp publication provenance",
         ));
     }
+    if sha256_id(&identity_bytes) != release_id {
+        return Err(release_digest(
+            "identity digest does not match the release ID",
+        ));
+    }
 
-    Ok(ReleaseInspection {
-        release_id: release_id.to_owned(),
-        identity,
-        manifest,
-        context_template,
-        items,
-    })
+    #[derive(Deserialize)]
+    struct SchemaDiscriminator {
+        schema_version: String,
+    }
+    let discriminator: SchemaDiscriminator = parse_json(&identity_bytes, "identity")?;
+    let validated = match discriminator.schema_version.as_str() {
+        RELEASE_IDENTITY_SCHEMA => {
+            let identity: ReleaseIdentityV1 = parse_json(&identity_bytes, "identity")?;
+            validate_identity_v1(&identity)?;
+            if json_bytes(&identity)? != identity_bytes {
+                return Err(release_schema("identity JSON is not canonical"));
+            }
+            let context_template: ContextTemplateV1 =
+                parse_json(&context_template_bytes, "context template")?;
+            validate_context_template_v1(&context_template, &identity)?;
+            if json_bytes_with_newline(&context_template)? != context_template_bytes {
+                return Err(release_schema("context template JSON is not canonical"));
+            }
+            let items = parse_items_for_packages(&items_bytes, &identity.packages)?;
+            ValidatedRelease::V1(ValidatedReleaseV1 {
+                release_id: release_id.to_owned(),
+                identity,
+                manifest,
+                context_template,
+                items,
+            })
+        }
+        RELEASE_IDENTITY_SCHEMA_V2 => {
+            let identity: ReleaseIdentityV2 = parse_json(&identity_bytes, "identity")?;
+            validate_identity(&identity)?;
+            if json_bytes(&identity)? != identity_bytes {
+                return Err(release_schema("identity JSON is not canonical"));
+            }
+            let context_template: ContextTemplateV2 =
+                parse_json(&context_template_bytes, "context template")?;
+            validate_context_template(&context_template, &identity)?;
+            if json_bytes_with_newline(&context_template)? != context_template_bytes {
+                return Err(release_schema("context template JSON is not canonical"));
+            }
+            if identity.context_template_digest != sha256_hex(&context_template_bytes) {
+                return Err(release_integrity(
+                    "context template digest does not match release identity",
+                ));
+            }
+            let items = parse_items_for_packages(&items_bytes, &identity.packages)?;
+            ValidatedRelease::V2(ValidatedReleaseV2 {
+                release_id: release_id.to_owned(),
+                identity,
+                manifest,
+                context_template,
+                items,
+            })
+        }
+        schema => {
+            return Err(release_schema(format!(
+                "unsupported release identity schema: {schema}"
+            )));
+        }
+    };
+
+    Ok(ReleaseInspection { validated })
 }
 
 fn list_releases_at(state: &StateRoot) -> Result<Vec<String>, AppError> {
@@ -441,7 +681,7 @@ fn list_releases_at(state: &StateRoot) -> Result<Vec<String>, AppError> {
             Err(error) if error.code().starts_with("release.") => continue,
             Err(error) => return Err(error),
         }
-        match inspect_release_at(state, &id) {
+        match inspect_release_in_state(state, &id) {
             Ok(_) => releases.push(id),
             Err(error) if error.code().starts_with("release.") => {}
             Err(error) => return Err(error),
@@ -528,31 +768,66 @@ fn validate_manifest(manifest: &ReleaseManifest, release_id: &str) -> Result<(),
     Ok(())
 }
 
-fn validate_identity(identity: &ReleaseIdentity) -> Result<(), AppError> {
+fn validate_identity(identity: &ReleaseIdentityV2) -> Result<(), AppError> {
+    if identity.schema_version != RELEASE_IDENTITY_SCHEMA_V2 {
+        return Err(release_schema(format!(
+            "release identity schema must be {RELEASE_IDENTITY_SCHEMA_V2}"
+        )));
+    }
+    validate_identity_common(
+        &identity.packages,
+        &identity.selector_version,
+        &identity.renderer_version,
+        &identity.context_budgets,
+        &identity.compatible_providers,
+    )?;
+    if identity.context_template_schema != CONTEXT_TEMPLATE_SCHEMA_V2
+        || !valid_hex_digest(&identity.context_template_digest)
+    {
+        return Err(release_schema("release identity contains an invalid field"));
+    }
+    Ok(())
+}
+
+fn validate_identity_v1(identity: &ReleaseIdentityV1) -> Result<(), AppError> {
     if identity.schema_version != RELEASE_IDENTITY_SCHEMA {
         return Err(release_schema(format!(
             "release identity schema must be {RELEASE_IDENTITY_SCHEMA}"
         )));
     }
+    validate_identity_common(
+        &identity.packages,
+        &identity.selector_version,
+        &identity.renderer_version,
+        &identity.context_budgets,
+        &identity.compatible_providers,
+    )?;
+    if identity.context_template_schema != CONTEXT_TEMPLATE_SCHEMA {
+        return Err(release_schema("release identity contains an invalid field"));
+    }
+    Ok(())
+}
+
+fn validate_identity_common(
+    packages: &BTreeMap<WorkflowId, String>,
+    selector_version: &str,
+    renderer_version: &str,
+    context_budgets: &BTreeMap<WorkflowId, u32>,
+    compatible_providers: &BTreeSet<ProviderId>,
+) -> Result<(), AppError> {
     let expected = WorkflowId::ALL.into_iter().collect::<BTreeSet<_>>();
-    if identity.packages.keys().copied().collect::<BTreeSet<_>>() != expected
-        || identity
-            .context_budgets
-            .keys()
-            .copied()
-            .collect::<BTreeSet<_>>()
-            != expected
+    if packages.keys().copied().collect::<BTreeSet<_>>() != expected
+        || context_budgets.keys().copied().collect::<BTreeSet<_>>() != expected
     {
         return Err(release_schema(
             "release identity must bind every approved workflow exactly once",
         ));
     }
-    if identity.packages.values().any(|id| !valid_release_id(id))
-        || identity.selector_version.is_empty()
-        || identity.renderer_version.is_empty()
-        || identity.context_template_schema != CONTEXT_TEMPLATE_SCHEMA
-        || identity.context_budgets.values().any(|budget| *budget == 0)
-        || identity.compatible_providers.is_empty()
+    if packages.values().any(|id| !valid_release_id(id))
+        || selector_version.is_empty()
+        || renderer_version.is_empty()
+        || context_budgets.values().any(|budget| *budget == 0)
+        || compatible_providers.is_empty()
     {
         return Err(release_schema("release identity contains an invalid field"));
     }
@@ -560,8 +835,35 @@ fn validate_identity(identity: &ReleaseIdentity) -> Result<(), AppError> {
 }
 
 fn validate_context_template(
-    template: &ContextTemplate,
-    identity: &ReleaseIdentity,
+    template: &ContextTemplateV2,
+    identity: &ReleaseIdentityV2,
+) -> Result<(), AppError> {
+    if template.schema_version != CONTEXT_TEMPLATE_SCHEMA_V2
+        || template.workflows.keys().copied().collect::<BTreeSet<_>>()
+            != WorkflowId::ALL.into_iter().collect()
+    {
+        return Err(release_schema(
+            "context template has an invalid workflow set",
+        ));
+    }
+    for (workflow, context) in &template.workflows {
+        if identity.context_budgets.get(workflow) != Some(&context.context_budget_tokens) {
+            return Err(release_schema(format!(
+                "{workflow} context budget does not match release identity"
+            )));
+        }
+        if context.routing.schema_version != ROUTING_SCHEMA {
+            return Err(release_schema(format!(
+                "{workflow} routing schema must be {ROUTING_SCHEMA}"
+            )));
+        }
+    }
+    Ok(())
+}
+
+fn validate_context_template_v1(
+    template: &ContextTemplateV1,
+    identity: &ReleaseIdentityV1,
 ) -> Result<(), AppError> {
     if template.schema_version != CONTEXT_TEMPLATE_SCHEMA
         || template.workflows.keys().copied().collect::<BTreeSet<_>>()
@@ -581,7 +883,10 @@ fn validate_context_template(
     Ok(())
 }
 
-fn parse_items(bytes: &[u8], identity: &ReleaseIdentity) -> Result<Vec<ReleaseItem>, AppError> {
+fn parse_items_for_packages(
+    bytes: &[u8],
+    packages: &BTreeMap<WorkflowId, String>,
+) -> Result<Vec<ReleaseItem>, AppError> {
     let text = std::str::from_utf8(bytes)
         .map_err(|error| release_schema(format!("items.jsonl is not UTF-8: {error}")))?;
     let mut items = Vec::new();
@@ -595,7 +900,7 @@ fn parse_items(bytes: &[u8], identity: &ReleaseIdentity) -> Result<Vec<ReleaseIt
         let item: ReleaseItem = serde_json::from_str(line).map_err(|error| {
             release_schema(format!("invalid items.jsonl line {}: {error}", index + 1))
         })?;
-        if !identity.packages.contains_key(&item.workflow) {
+        if !packages.contains_key(&item.workflow) {
             return Err(release_schema(format!(
                 "item {} has an unbound workflow",
                 item.id
@@ -801,23 +1106,27 @@ mod tests {
         assert_eq!(first.release_id(), sha256_id(&first.identity_bytes));
         assert_eq!(
             first.release_id(),
-            "sha256-7b450e33e6d5d62b2cc88b3edce7f5692787c908300ba00d1edfd127d2b3cc3a"
+            "sha256-8115ca08c56ecdffc9939e8d0c563127633f18fbb638a24892f345c9206833f1"
         );
 
         let identity = String::from_utf8(first.identity_bytes.clone()).unwrap();
         assert!(!identity.contains("created_at"));
         assert!(!identity.contains("repository"));
         assert_eq!(
-            first.identity().compatible_providers,
+            first.identity_v2().compatible_providers,
             BTreeSet::from([ProviderId::Trae, ProviderId::Codex])
         );
         assert_eq!(
-            first.context_template().schema_version,
-            "harp-context-template/v1"
+            first.context_template_v2().schema_version,
+            "harp-context-template/v2"
         );
         assert_eq!(
-            first.identity().context_template_schema,
-            "harp-context-template/v1"
+            first.identity_v2().context_template_schema,
+            "harp-context-template/v2"
+        );
+        assert_eq!(
+            first.identity_v2().schema_version,
+            "harp-context-release-identity/v2"
         );
     }
 
@@ -828,7 +1137,7 @@ mod tests {
         let (legacy_id, legacy_members) = legacy_release(&corrected);
         assert_eq!(
             legacy_id,
-            "sha256-2e94ef16b28e9d041b125e39352ccab95c51e778816f2de600de5688254ed83a"
+            "sha256-5d68cebbda173fb2e7bb888cd7430b5072dd7f73ea8bb8764214108900b09771"
         );
         assert_ne!(legacy_id, corrected.release_id());
 
@@ -847,6 +1156,119 @@ mod tests {
     }
 
     #[test]
+    fn routing_pinned_template_has_a_distinct_release_id_from_previous_shape() {
+        let fixture = ReleaseFixture::new();
+        let pinned = compile_baseline_release().unwrap();
+        let (previous_id, previous_members) = previous_release_without_routing(&pinned);
+        assert_eq!(
+            previous_id,
+            "sha256-7b450e33e6d5d62b2cc88b3edce7f5692787c908300ba00d1edfd127d2b3cc3a"
+        );
+        assert_ne!(previous_id, pinned.release_id());
+
+        fixture
+            .state
+            .publish_immutable_tree(&Path::new("releases").join(&previous_id), &previous_members)
+            .unwrap();
+        publish_test_authorization(&fixture.state, &previous_id, &previous_members);
+        publish_release(&fixture.state, &pinned).unwrap();
+
+        assert!(fixture.release_path(&previous_id).is_dir());
+        assert!(fixture.release_path(pinned.release_id()).is_dir());
+        assert_eq!(
+            list_releases_at(&fixture.state).unwrap(),
+            vec![previous_id.clone(), pinned.release_id().to_owned()]
+        );
+        let legacy = inspect_release_in_state(&fixture.state, &previous_id).unwrap();
+        assert_eq!(
+            legacy.identity_metadata().schema_version,
+            "harp-context-release-identity/v1"
+        );
+        assert_eq!(legacy.context_template_schema(), "harp-context-template/v1");
+        assert!(legacy.routing_template_v2().is_none());
+        assert!(legacy.identity_v1().is_some());
+        assert!(legacy.identity_v2().is_none());
+        assert!(legacy.context_template_v1().is_some());
+        assert!(legacy.context_template_v2().is_none());
+        let serialized = String::from_utf8(json_bytes(&legacy).unwrap()).unwrap();
+        assert!(!serialized.contains("\"routing\""));
+        assert!(!serialized.contains("\"context_template_digest\""));
+    }
+
+    #[test]
+    fn release_inspection_is_opaque_and_has_immutable_accessors() {
+        let fixture = ReleaseFixture::new();
+        let compiled = compile_baseline_release().unwrap();
+        publish_release(&fixture.state, &compiled).unwrap();
+        let inspection = inspect_release_in_state(&fixture.state, compiled.release_id()).unwrap();
+
+        assert_eq!(inspection.release_id(), compiled.release_id());
+        assert_eq!(
+            inspection.identity_metadata().schema_version,
+            compiled.identity_v2().schema_version
+        );
+        assert!(inspection.identity_v1().is_none());
+        assert_eq!(inspection.identity_v2(), Some(compiled.identity_v2()));
+        assert_eq!(inspection.manifest(), compiled.manifest());
+        assert!(inspection.context_template_v1().is_none());
+        assert_eq!(
+            inspection.context_template_v2(),
+            Some(compiled.context_template_v2())
+        );
+        assert_eq!(
+            inspection.routing_template_v2(),
+            Some(compiled.context_template_v2())
+        );
+        assert_eq!(inspection.items(), compiled.items());
+
+        let source = include_str!("release.rs");
+        let inspection_source = source
+            .split("pub struct ReleaseInspection {")
+            .nth(1)
+            .and_then(|tail| tail.split("}\n").next())
+            .expect("ReleaseInspection declaration");
+        assert!(!inspection_source.lines().any(|line| line.contains("pub ")));
+    }
+
+    #[test]
+    fn public_release_types_and_accessors_are_explicitly_versioned() {
+        let source = include_str!("release.rs");
+        let production = source
+            .split("#[cfg(test)]")
+            .next()
+            .expect("release production source");
+
+        assert!(!production.contains("pub struct ReleaseIdentity {"));
+        assert!(!production.contains("pub struct ContextTemplate {"));
+        assert!(!production.contains("pub struct WorkflowContextTemplate {"));
+        assert!(!production.contains("pub fn identity(&self)"));
+        assert!(!production.contains("pub fn context_template(&self)"));
+        assert!(production.contains("pub struct ReleaseIdentityV2 {"));
+        assert!(production.contains("pub struct ContextTemplateV2 {"));
+        assert!(production.contains("pub struct WorkflowContextTemplateV2 {"));
+        assert!(production.contains("pub fn identity_v2(&self) -> &ReleaseIdentityV2"));
+        assert!(production.contains("pub fn context_template_v2(&self) -> &ContextTemplateV2"));
+        assert!(production.contains("pub fn identity_v1(&self) -> Option<&ReleaseIdentityV1>"));
+        assert!(production.contains("pub fn identity_v2(&self) -> Option<&ReleaseIdentityV2>"));
+        assert!(
+            production.contains("pub fn context_template_v2(&self) -> Option<&ContextTemplateV2>")
+        );
+    }
+
+    #[test]
+    fn unpublished_compiled_release_cannot_yield_an_authorized_inspection() {
+        let fixture = ReleaseFixture::new();
+        let compiled = compile_baseline_release().unwrap();
+
+        assert_eq!(
+            inspect_release_in_state(&fixture.state, compiled.release_id())
+                .unwrap_err()
+                .code(),
+            "release.integrity"
+        );
+    }
+
+    #[test]
     fn identity_uses_canonical_workflow_order_and_binds_package_manifests() {
         let release = compile_baseline_release().unwrap();
         let identity = String::from_utf8(release.identity_bytes.clone()).unwrap();
@@ -860,7 +1282,7 @@ mod tests {
         for workflow in WorkflowId::ALL {
             let package = WorkflowPackage::builtin(workflow).unwrap();
             let expected = sha256_id(&json_bytes(package.manifest()).unwrap());
-            assert_eq!(release.identity().packages[&workflow], expected);
+            assert_eq!(release.identity_v2().packages[&workflow], expected);
         }
     }
 
@@ -965,7 +1387,7 @@ mod tests {
         .unwrap();
 
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "release.digest"
@@ -979,13 +1401,14 @@ mod tests {
         let release = compile_baseline_release().unwrap();
         publish_release(&fixture.state, &release).unwrap();
 
-        let mut forged_template = release.context_template().clone();
+        let mut forged_template = release.context_template_v2().clone();
         forged_template
             .workflows
             .get_mut(&WorkflowId::CiRepair)
             .unwrap()
-            .required_sections
-            .push("forged_section".to_owned());
+            .routing
+            .positive_phrases
+            .push("forged routing phrase".to_owned());
         let forged_template_bytes = json_bytes_with_newline(&forged_template).unwrap();
         let mut forged_manifest = release.manifest().clone();
         forged_manifest.members.insert(
@@ -1008,7 +1431,7 @@ mod tests {
         .unwrap();
 
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "release.integrity"
@@ -1029,7 +1452,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "release.integrity"
@@ -1062,7 +1485,7 @@ mod tests {
 
         assert!(list_releases_at(&fixture.state).unwrap().is_empty());
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "release.integrity"
@@ -1078,7 +1501,7 @@ mod tests {
 
         assert!(list_releases_at(&fixture.state).unwrap().is_empty());
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "release.integrity"
@@ -1095,16 +1518,43 @@ mod tests {
         publish_release(&fixture.state, &evolved).unwrap();
 
         assert_eq!(
-            inspect_release_at(&fixture.state, original.release_id())
+            inspect_release_in_state(&fixture.state, original.release_id())
                 .unwrap()
-                .release_id,
+                .release_id(),
             original.release_id()
         );
         assert_eq!(
-            inspect_release_at(&fixture.state, evolved.release_id())
+            inspect_release_in_state(&fixture.state, evolved.release_id())
                 .unwrap()
-                .release_id,
+                .release_id(),
             evolved.release_id()
+        );
+    }
+
+    #[test]
+    fn routing_rules_round_trip_through_historical_inspection() {
+        let fixture = ReleaseFixture::new();
+        let original = compile_baseline_release().unwrap();
+        publish_release(&fixture.state, &original).unwrap();
+
+        let evolved = evolved_routing_release(&original);
+        publish_release(&fixture.state, &evolved).unwrap();
+
+        let historical = inspect_release_in_state(&fixture.state, original.release_id()).unwrap();
+        for workflow in WorkflowId::ALL {
+            assert_eq!(
+                &historical.routing_template_v2().unwrap().workflows[&workflow].routing,
+                WorkflowPackage::builtin(workflow).unwrap().routing()
+            );
+        }
+        assert_ne!(
+            historical.routing_template_v2().unwrap().workflows[&WorkflowId::CiRepair].routing,
+            inspect_release_in_state(&fixture.state, evolved.release_id())
+                .unwrap()
+                .routing_template_v2()
+                .unwrap()
+                .workflows[&WorkflowId::CiRepair]
+                .routing
         );
     }
 
@@ -1130,13 +1580,11 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn same_uid_offline_rewrite_of_content_and_authorization_is_outside_v1() {
-        use std::os::unix::fs::PermissionsExt;
-
         let fixture = ReleaseFixture::new();
         let release = compile_baseline_release().unwrap();
         publish_release(&fixture.state, &release).unwrap();
 
-        let mut rewritten_template = release.context_template().clone();
+        let mut rewritten_template = release.context_template_v2().clone();
         rewritten_template
             .workflows
             .get_mut(&WorkflowId::CiRepair)
@@ -1144,52 +1592,40 @@ mod tests {
             .required_sections
             .push("same_uid_offline_rewrite".to_owned());
         let template_bytes = json_bytes_with_newline(&rewritten_template).unwrap();
+        let mut rewritten_identity = release.identity_v2().clone();
+        rewritten_identity.context_template_digest = sha256_hex(&template_bytes);
+        let identity_bytes = json_bytes(&rewritten_identity).unwrap();
+        let rewritten_release_id = sha256_id(&identity_bytes);
         let mut rewritten_manifest = release.manifest().clone();
-        rewritten_manifest.members.insert(
-            "context_template.json".to_owned(),
-            sha256_hex(&template_bytes),
-        );
+        rewritten_manifest.release_id = rewritten_release_id.clone();
+        rewritten_manifest.members =
+            member_hashes(&identity_bytes, &template_bytes, &release.items_bytes);
         let manifest_bytes = json_bytes_with_newline(&rewritten_manifest).unwrap();
-        fs::write(
-            fixture
-                .release_path(release.release_id())
-                .join("context_template.json"),
-            &template_bytes,
-        )
-        .unwrap();
-        fs::write(
-            fixture
-                .release_path(release.release_id())
-                .join("manifest.json"),
-            &manifest_bytes,
-        )
-        .unwrap();
-
-        let mut members = release.members();
-        members.insert(PathBuf::from("context_template.json"), template_bytes);
-        members.insert(PathBuf::from("manifest.json"), manifest_bytes);
+        let members = BTreeMap::from([
+            (PathBuf::from("context_template.json"), template_bytes),
+            (PathBuf::from("identity.json"), identity_bytes),
+            (PathBuf::from("items.jsonl"), release.items_bytes.clone()),
+            (PathBuf::from("manifest.json"), manifest_bytes),
+        ]);
+        write_offline_private_tree(&fixture.release_path(&rewritten_release_id), &members);
         let authorization = ReleaseAuthorization {
             schema_version: RELEASE_AUTHORIZATION_SCHEMA.to_owned(),
-            release_id: release.release_id().to_owned(),
+            release_id: rewritten_release_id.clone(),
             members: authorization_hashes(&members),
         };
-        let authorization_path = fixture.authorization_path(release.release_id());
-        fs::remove_dir_all(&authorization_path).unwrap();
-        fs::create_dir(&authorization_path).unwrap();
-        fs::set_permissions(&authorization_path, fs::Permissions::from_mode(0o700)).unwrap();
-        let authorization_file = authorization_path.join("authorization.json");
-        fs::write(
-            &authorization_file,
-            json_bytes_with_newline(&authorization).unwrap(),
-        )
-        .unwrap();
-        fs::set_permissions(&authorization_file, fs::Permissions::from_mode(0o600)).unwrap();
+        write_offline_private_tree(
+            &fixture.authorization_path(&rewritten_release_id),
+            &BTreeMap::from([(
+                PathBuf::from("authorization.json"),
+                json_bytes_with_newline(&authorization).unwrap(),
+            )]),
+        );
 
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, &rewritten_release_id)
                 .unwrap()
-                .context_template,
-            rewritten_template
+                .routing_template_v2(),
+            Some(&rewritten_template)
         );
     }
 
@@ -1199,7 +1635,7 @@ mod tests {
         let invalid_schema = br#"{"schema_version":"unknown","workflow":"ci_repair","id":"step","kind":"workflow_step","body":"Step"}
 "#;
         assert_eq!(
-            parse_items(invalid_schema, release.identity())
+            parse_items_for_packages(invalid_schema, &release.identity_v2().packages)
                 .unwrap_err()
                 .code(),
             "release.schema"
@@ -1208,7 +1644,7 @@ mod tests {
         let empty_id = br#"{"schema_version":"harp-context-item/v1","workflow":"ci_repair","id":"","kind":"workflow_step","body":"Step"}
 "#;
         assert_eq!(
-            parse_items(empty_id, release.identity())
+            parse_items_for_packages(empty_id, &release.identity_v2().packages)
                 .unwrap_err()
                 .code(),
             "release.schema"
@@ -1233,7 +1669,7 @@ mod tests {
         symlink(&outside, fixture.root().join("releases")).unwrap();
 
         assert_eq!(
-            inspect_release_at(&fixture.state, release.release_id())
+            inspect_release_in_state(&fixture.state, release.release_id())
                 .unwrap_err()
                 .code(),
             "state.symlink"
@@ -1291,6 +1727,44 @@ mod tests {
         evolved
     }
 
+    fn evolved_routing_release(original: &CompiledRelease) -> CompiledRelease {
+        let mut evolved = original.clone();
+        evolved
+            .context_template
+            .workflows
+            .get_mut(&WorkflowId::CiRepair)
+            .unwrap()
+            .routing
+            .positive_phrases
+            .push("historical routing evolution".to_owned());
+        evolved.context_template_bytes =
+            json_bytes_with_newline(&evolved.context_template).unwrap();
+        evolved.identity.context_template_digest = sha256_hex(&evolved.context_template_bytes);
+        evolved.identity_bytes = json_bytes(&evolved.identity).unwrap();
+        evolved.release_id = sha256_id(&evolved.identity_bytes);
+        evolved.manifest.release_id = evolved.release_id.clone();
+        evolved.manifest.members = member_hashes(
+            &evolved.identity_bytes,
+            &evolved.context_template_bytes,
+            &evolved.items_bytes,
+        );
+        evolved.manifest_bytes = json_bytes_with_newline(&evolved.manifest).unwrap();
+        evolved
+    }
+
+    #[cfg(unix)]
+    fn write_offline_private_tree(root: &Path, members: &BTreeMap<PathBuf, Vec<u8>>) {
+        use std::os::unix::fs::PermissionsExt;
+
+        fs::create_dir(root).unwrap();
+        fs::set_permissions(root, fs::Permissions::from_mode(0o700)).unwrap();
+        for (relative, bytes) in members {
+            let path = root.join(relative);
+            fs::write(&path, bytes).unwrap();
+            fs::set_permissions(path, fs::Permissions::from_mode(0o600)).unwrap();
+        }
+    }
+
     fn legacy_release(corrected: &CompiledRelease) -> (String, BTreeMap<PathBuf, Vec<u8>>) {
         #[derive(Serialize)]
         struct LegacyReleaseIdentity {
@@ -1302,7 +1776,7 @@ mod tests {
             compatible_providers: BTreeSet<ProviderId>,
         }
 
-        let identity = corrected.identity();
+        let identity = corrected.identity_v2();
         let legacy_identity = LegacyReleaseIdentity {
             schema_version: identity.schema_version.clone(),
             packages: identity.packages.clone(),
@@ -1313,7 +1787,7 @@ mod tests {
         };
         let identity_bytes = json_bytes(&legacy_identity).unwrap();
         let release_id = sha256_id(&identity_bytes);
-        let mut legacy_template = corrected.context_template().clone();
+        let mut legacy_template = corrected.context_template_v2().clone();
         legacy_template.schema_version = "harp-context-schema/v1".to_owned();
         let context_template_bytes = json_bytes_with_newline(&legacy_template).unwrap();
         let items_bytes = corrected.items_bytes.clone();
@@ -1337,5 +1811,108 @@ mod tests {
                 ),
             ]),
         )
+    }
+
+    fn previous_release_without_routing(
+        pinned: &CompiledRelease,
+    ) -> (String, BTreeMap<PathBuf, Vec<u8>>) {
+        #[derive(Serialize)]
+        struct PreviousReleaseIdentity {
+            schema_version: String,
+            packages: BTreeMap<WorkflowId, String>,
+            selector_version: String,
+            renderer_version: String,
+            context_template_schema: String,
+            context_budgets: BTreeMap<WorkflowId, u32>,
+            compatible_providers: BTreeSet<ProviderId>,
+        }
+
+        #[derive(Serialize)]
+        struct PreviousContextTemplate {
+            schema_version: String,
+            workflows: BTreeMap<WorkflowId, PreviousWorkflowContextTemplate>,
+        }
+
+        #[derive(Serialize)]
+        struct PreviousWorkflowContextTemplate {
+            context_budget_tokens: u32,
+            required_sections: Vec<String>,
+            verification_recipes: Vec<VerificationRecipe>,
+            verified_success: Vec<String>,
+            weak_signals: Vec<String>,
+        }
+
+        let identity = pinned.identity_v2();
+        let previous_identity = PreviousReleaseIdentity {
+            schema_version: RELEASE_IDENTITY_SCHEMA.to_owned(),
+            packages: identity.packages.clone(),
+            selector_version: identity.selector_version.clone(),
+            renderer_version: identity.renderer_version.clone(),
+            context_template_schema: CONTEXT_TEMPLATE_SCHEMA.to_owned(),
+            context_budgets: identity.context_budgets.clone(),
+            compatible_providers: identity.compatible_providers.clone(),
+        };
+        let identity_bytes = json_bytes(&previous_identity).unwrap();
+        let release_id = sha256_id(&identity_bytes);
+        let template = pinned.context_template_v2();
+        let previous_template = PreviousContextTemplate {
+            schema_version: CONTEXT_TEMPLATE_SCHEMA.to_owned(),
+            workflows: template
+                .workflows
+                .iter()
+                .map(|(workflow, context)| {
+                    (
+                        *workflow,
+                        PreviousWorkflowContextTemplate {
+                            context_budget_tokens: context.context_budget_tokens,
+                            required_sections: context.required_sections.clone(),
+                            verification_recipes: context.verification_recipes.clone(),
+                            verified_success: context.verified_success.clone(),
+                            weak_signals: context.weak_signals.clone(),
+                        },
+                    )
+                })
+                .collect(),
+        };
+        let context_template_bytes = json_bytes_with_newline(&previous_template).unwrap();
+        let items_bytes = pinned.items_bytes.clone();
+        let manifest = ReleaseManifest {
+            schema_version: RELEASE_SCHEMA.to_owned(),
+            release_id: release_id.clone(),
+            members: member_hashes(&identity_bytes, &context_template_bytes, &items_bytes),
+        };
+        (
+            release_id,
+            BTreeMap::from([
+                (
+                    PathBuf::from("context_template.json"),
+                    context_template_bytes,
+                ),
+                (PathBuf::from("identity.json"), identity_bytes),
+                (PathBuf::from("items.jsonl"), items_bytes),
+                (
+                    PathBuf::from("manifest.json"),
+                    json_bytes_with_newline(&manifest).unwrap(),
+                ),
+            ]),
+        )
+    }
+
+    fn publish_test_authorization(
+        state: &StateRoot,
+        release_id: &str,
+        members: &BTreeMap<PathBuf, Vec<u8>>,
+    ) {
+        let authorization = ReleaseAuthorization {
+            schema_version: RELEASE_AUTHORIZATION_SCHEMA.to_owned(),
+            release_id: release_id.to_owned(),
+            members: authorization_hashes(members),
+        };
+        state
+            .publish_release_authorization(
+                release_id,
+                &json_bytes_with_newline(&authorization).unwrap(),
+            )
+            .unwrap();
     }
 }

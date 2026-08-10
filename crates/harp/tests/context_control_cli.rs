@@ -99,7 +99,7 @@ fn releases_compile_list_and_inspect_return_the_same_stable_id() {
     assert_eq!(inspected["data"]["release_id"], release_id);
     assert_eq!(
         inspected["data"]["identity"]["schema_version"],
-        "harp-context-release-identity/v1"
+        "harp-context-release-identity/v2"
     );
 }
 
