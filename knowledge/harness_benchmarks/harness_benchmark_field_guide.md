@@ -30,8 +30,8 @@ The MCE primary source is the immutable arXiv v2 capture:
 `evidence/weng/artifacts/pdf/mce.pdf` (PDF digest in
 `evidence/weng/receipts/mce.tsv`) and
 `evidence/weng/text/mce.txt` (text digest in the same receipt). The
-[AlphaXiv reader](https://alphaxiv.org/abs/2601.21557) is an alternate route,
-not a claim anchor.
+[canonical arXiv page](https://arxiv.org/abs/2601.21557) is the paper landing
+page; the captured evidence above remains the claim anchor.
 
 ## How to read a harness benchmark
 
