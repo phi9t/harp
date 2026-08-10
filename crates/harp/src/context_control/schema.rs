@@ -45,6 +45,15 @@ pub enum WorkflowId {
     GeneralCoding,
 }
 
+impl WorkflowId {
+    pub const ALL: [Self; 4] = [
+        Self::CiRepair,
+        Self::CodeReview,
+        Self::DependencyUpdate,
+        Self::GeneralCoding,
+    ];
+}
+
 impl fmt::Display for WorkflowId {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         formatter.write_str(match self {
@@ -136,6 +145,19 @@ mod tests {
         assert_eq!(
             "unknown".parse::<WorkflowId>().unwrap_err().code(),
             "context_control.workflow_id"
+        );
+    }
+
+    #[test]
+    fn all_workflow_ids_have_stable_order() {
+        assert_eq!(
+            WorkflowId::ALL,
+            [
+                WorkflowId::CiRepair,
+                WorkflowId::CodeReview,
+                WorkflowId::DependencyUpdate,
+                WorkflowId::GeneralCoding,
+            ]
         );
     }
 
