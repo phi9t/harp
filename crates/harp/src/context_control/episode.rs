@@ -8,7 +8,10 @@ use serde::{Deserialize, Deserializer, Serialize};
 use super::canonical::{json_bytes, sha256_hex};
 use super::context::ContextBundle;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-use super::provider::{EpisodeProviderRawPath, EpisodeRawDirectoryAuthority};
+use super::provider::{
+    BoundProviderInvocation, EpisodeProviderRawPath, EpisodeRawDirectoryAuthority,
+    MaterializedProviderInvocation,
+};
 use super::state::{HeldPrivateDirectory, PrivateFileExpectation, ReplacePolicy, StateRoot};
 use super::{
     ProviderId, RepositorySnapshot, WorkflowId, COMPLETION_SCHEMA, CONTEXT_BUNDLE_SCHEMA,
@@ -23,6 +26,16 @@ const MAX_MANIFEST_BYTES: usize = 1024 * 1024;
 const MAX_CONTEXT_BYTES: usize = 16 * 1024 * 1024;
 const MAX_COMPLETION_BYTES: usize = 1024 * 1024;
 static ID_COUNTER: AtomicU32 = AtomicU32::new(0);
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct RawEvidenceSummary {
+    pub(crate) capture_complete: bool,
+    pub(crate) stdout_sha256: String,
+    pub(crate) stderr_sha256: String,
+    pub(crate) final_message_sha256: Option<String>,
+    pub(crate) raw_archive_sha256: String,
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "snake_case")]
@@ -334,7 +347,7 @@ impl PreflightFailure {
 }
 
 #[derive(Debug)]
-pub struct EpisodeWriter<'a> {
+pub(crate) struct EpisodeWriter<'a> {
     state: &'a StateRoot,
     manifest: EpisodeManifest,
     manifest_bytes: Vec<u8>,
@@ -344,12 +357,29 @@ pub struct EpisodeWriter<'a> {
 }
 
 impl<'a> EpisodeWriter<'a> {
-    pub fn begin(
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    pub(crate) fn plan_provider_raw_path(
+        state: &StateRoot,
+        repository_id: &str,
+        episode_id: &str,
+        provider: ProviderId,
+    ) -> Result<EpisodeProviderRawPath, AppError> {
+        let relative_path = episode_directory(repository_id, episode_id)?
+            .join("raw")
+            .join(provider.to_string());
+        let path = state.plan_private_path(&relative_path)?;
+        EpisodeProviderRawPath::new(provider, relative_path, path)
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    pub(crate) fn begin(
         state: &'a StateRoot,
         manifest: EpisodeManifest,
         context: &ContextBundle,
+        materialized: &MaterializedProviderInvocation,
     ) -> Result<Self, AppError> {
         manifest.validate()?;
+        validate_materialized_invocation(state, &manifest, materialized)?;
         let context_bytes = validate_context(&manifest, context)?;
         if context_bytes.len() > MAX_CONTEXT_BYTES {
             return Err(AppError::invalid_input(
@@ -386,22 +416,18 @@ impl<'a> EpisodeWriter<'a> {
         })
     }
 
-    pub fn relative_directory(&self) -> &Path {
+    pub(crate) fn relative_directory(&self) -> &Path {
         &self.relative_directory
     }
 
-    pub fn manifest(&self) -> &EpisodeManifest {
-        &self.manifest
-    }
-
     #[cfg(any(target_os = "macos", target_os = "linux"))]
-    pub fn provider_raw_path(&self) -> Result<EpisodeProviderRawPath, AppError> {
+    pub(crate) fn provider_raw_path(&self) -> Result<EpisodeProviderRawPath, AppError> {
         let (raw_path, _) = self.provider_raw_parts()?;
         Ok(raw_path)
     }
 
     #[cfg(any(target_os = "macos", target_os = "linux"))]
-    pub fn raw_directory_authority(&self) -> Result<EpisodeRawDirectoryAuthority, AppError> {
+    pub(crate) fn raw_directory_authority(&self) -> Result<EpisodeRawDirectoryAuthority, AppError> {
         let (raw_path, directory) = self.provider_raw_parts()?;
         EpisodeRawDirectoryAuthority::new(raw_path, directory)
     }
@@ -428,42 +454,69 @@ impl<'a> EpisodeWriter<'a> {
         Ok((raw_path, directory))
     }
 
-    pub fn complete(&self, completion: &CompletionReceipt) -> Result<(), AppError> {
-        self.complete_transaction(completion, |relative, bytes, expectations| {
-            self.state
-                .write_private_create_only_after_validating(relative, bytes, expectations)
-        })
+    pub(crate) fn complete(
+        &self,
+        completion: &CompletionReceipt,
+        invocation: &BoundProviderInvocation,
+    ) -> Result<(), AppError> {
+        self.complete_transaction(
+            completion,
+            invocation,
+            |relative, bytes, expectations, verify| {
+                self.state.write_private_create_only_after_validating_with(
+                    relative,
+                    bytes,
+                    expectations,
+                    verify,
+                )
+            },
+        )
     }
 
     #[cfg(test)]
     fn complete_with_revalidation_hook<F>(
         &self,
         completion: &CompletionReceipt,
+        invocation: &BoundProviderInvocation,
         revalidation_hook: F,
     ) -> Result<(), AppError>
     where
         F: FnOnce(),
     {
-        self.complete_transaction(completion, |relative, bytes, expectations| {
-            self.state
-                .write_private_create_only_after_validating_with_hook(
+        self.complete_transaction(
+            completion,
+            invocation,
+            |relative, bytes, expectations, verify| {
+                self.state.write_private_create_only_after_validating_with(
                     relative,
                     bytes,
                     expectations,
-                    revalidation_hook,
+                    || {
+                        verify()?;
+                        revalidation_hook();
+                        Ok(())
+                    },
                 )
-        })
+            },
+        )
     }
 
-    fn complete_transaction<F>(
+    fn complete_transaction<T>(
         &self,
         completion: &CompletionReceipt,
-        transaction: F,
+        invocation: &BoundProviderInvocation,
+        transaction: T,
     ) -> Result<(), AppError>
     where
-        F: FnOnce(&Path, &[u8], &[PrivateFileExpectation<'_>]) -> Result<(), AppError>,
+        T: for<'b> FnOnce(
+            &Path,
+            &[u8],
+            &[PrivateFileExpectation<'_>],
+            Box<dyn FnOnce() -> Result<(), AppError> + 'b>,
+        ) -> Result<(), AppError>,
     {
         completion.validate_for(&self.manifest)?;
+        validate_bound_invocation(self.state, &self.manifest, invocation)?;
         let manifest_relative = self.relative_directory.join(MANIFEST_FILE);
         let context_relative = self.relative_directory.join(CONTEXT_FILE);
         let completion_relative = self.relative_directory.join(COMPLETION_FILE);
@@ -480,7 +533,17 @@ impl<'a> EpisodeWriter<'a> {
                 max_bytes: MAX_CONTEXT_BYTES,
             },
         ];
-        let result = transaction(&completion_relative, &completion_bytes, &expectations);
+        let expected = completion.clone();
+        let verify = Box::new(move || {
+            let evidence = invocation.verify_raw_evidence(expected.capture_complete)?;
+            validate_completion_evidence(&expected, &evidence)
+        });
+        let result = transaction(
+            &completion_relative,
+            &completion_bytes,
+            &expectations,
+            verify,
+        );
         match result {
             Err(error) if error.code() == "state.validation" => Err(AppError::invalid_input(
                 "episode.mismatch",
@@ -512,7 +575,7 @@ impl EpisodeInspection {
     }
 }
 
-pub fn open_episode<'a>(
+pub(crate) fn open_episode<'a>(
     state: &'a StateRoot,
     repository_id: &str,
     episode_id: &str,
@@ -644,6 +707,80 @@ fn episode_directory(repository_id: &str, episode_id: &str) -> Result<PathBuf, A
         .join(repository_id)
         .join("episodes")
         .join(episode_id))
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_materialized_invocation(
+    state: &StateRoot,
+    manifest: &EpisodeManifest,
+    materialized: &MaterializedProviderInvocation,
+) -> Result<(), AppError> {
+    let expected_path = EpisodeWriter::plan_provider_raw_path(
+        state,
+        &manifest.repository.repository_id,
+        &manifest.episode_id,
+        manifest.provider,
+    )?;
+    let matches = materialized.provider() == manifest.provider
+        && materialized.provider_version() == manifest.provider_version
+        && materialized.provider_capabilities_sha256() == manifest.provider_capabilities_sha256
+        && materialized.command_sha256() == manifest.invocation.command_sha256
+        && materialized.prompt_sha256() == manifest.invocation.prompt_sha256
+        && materialized.repository() == &manifest.repository
+        && materialized.raw_path() == &expected_path;
+    if !matches {
+        return Err(AppError::invalid_input(
+            "episode.mismatch",
+            "materialized provider invocation does not match the episode manifest",
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_bound_invocation(
+    state: &StateRoot,
+    manifest: &EpisodeManifest,
+    invocation: &BoundProviderInvocation,
+) -> Result<(), AppError> {
+    let expected_path = EpisodeWriter::plan_provider_raw_path(
+        state,
+        &manifest.repository.repository_id,
+        &manifest.episode_id,
+        manifest.provider,
+    )?;
+    if invocation.provider() != manifest.provider
+        || invocation.provider_version() != manifest.provider_version
+        || invocation.provider_capabilities_sha256() != manifest.provider_capabilities_sha256
+        || invocation.command_sha256() != manifest.invocation.command_sha256
+        || invocation.prompt_sha256() != manifest.invocation.prompt_sha256
+        || invocation.repository() != &manifest.repository
+        || invocation.raw_path() != &expected_path
+    {
+        return Err(AppError::invalid_input(
+            "episode.mismatch",
+            "bound provider invocation does not match the episode manifest",
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_completion_evidence(
+    completion: &CompletionReceipt,
+    evidence: &RawEvidenceSummary,
+) -> Result<(), AppError> {
+    if completion.capture_complete != evidence.capture_complete
+        || completion.stdout_sha256 != evidence.stdout_sha256
+        || completion.stderr_sha256 != evidence.stderr_sha256
+        || completion.final_message_sha256 != evidence.final_message_sha256
+        || completion.raw_archive_sha256 != evidence.raw_archive_sha256
+    {
+        return Err(invalid_completion(
+            "completion receipt does not match authenticated raw evidence",
+        ));
+    }
+    Ok(())
 }
 
 fn validate_context(
@@ -790,6 +927,7 @@ fn invalid_preflight(message: impl Into<String>) -> AppError {
 mod tests {
     use std::cell::RefCell;
     use std::fs;
+    use std::io::Write as _;
     use std::path::Path;
     use std::sync::{mpsc, Arc, Barrier};
     use std::thread;
@@ -803,8 +941,12 @@ mod tests {
     use super::*;
     use crate::context_control::canonical::{json_bytes, sha256_hex};
     use crate::context_control::context::ContextBundle;
+    use crate::context_control::provider::ProviderRawMember;
     #[cfg(any(target_os = "macos", target_os = "linux"))]
-    use crate::context_control::provider::{build_invocation, probe_snapshot, ProviderRunOptions};
+    use crate::context_control::provider::{
+        build_invocation, probe_snapshot, BoundProviderInvocation, MaterializedProviderInvocation,
+        ProviderRunOptions,
+    };
     use crate::context_control::routing::{RouteConsideration, RouteDecision};
     use crate::context_control::state::{with_lock_release_faults, StateRoot};
     use crate::context_control::{
@@ -926,9 +1068,11 @@ mod tests {
     fn begin_publishes_canonical_context_raw_directory_and_manifest_before_launch() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
 
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let episode =
+            EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized)
+                .unwrap();
         let relative = episode.relative_directory();
         let manifest_relative = relative.join("manifest.json");
         let context_relative = relative.join("context.json");
@@ -968,19 +1112,10 @@ mod tests {
     fn episode_writer_authority_binds_the_provider_plan_and_rejects_a_raw_swap() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest, &context).unwrap();
-        let executable = fixture.root.join("traecli");
-        write_probe_executable(&executable);
-        let capabilities = probe_snapshot(ProviderId::Trae, &executable).unwrap();
-        let plan = build_invocation(
-            &capabilities,
-            &fixture.root,
-            &context,
-            "complete the episode",
-            &ProviderRunOptions::default(),
-        )
-        .unwrap();
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
+        let episode =
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized).unwrap();
+        let plan = invocation_plan(&fixture, &context);
 
         let raw_path = episode.provider_raw_path().unwrap();
         assert_eq!(
@@ -1042,16 +1177,13 @@ mod tests {
     fn completion_is_separate_create_only_and_manifest_is_immutable() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
         let manifest_relative = episode.relative_directory().join("manifest.json");
         let manifest_before = fixture
             .state
             .read_private_file_bounded(&manifest_relative, 1024 * 1024)
             .unwrap();
-        let completion = completion_fixture(&manifest);
-
-        episode.complete(&completion).unwrap();
+        episode.complete(&completion, &bound).unwrap();
 
         let manifest_after = fixture
             .state
@@ -1069,7 +1201,7 @@ mod tests {
             json_bytes(&completion).unwrap()
         );
         assert_eq!(
-            episode.complete(&completion).unwrap_err().code(),
+            episode.complete(&completion, &bound).unwrap_err().code(),
             "state.exists"
         );
     }
@@ -1078,12 +1210,10 @@ mod tests {
     fn completion_commit_ignores_cleanup_errors_after_attempting_every_lock() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
-        let completion = completion_fixture(&manifest);
+        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
 
         let (result, attempted_releases): (Result<(), AppError>, usize) =
-            with_lock_release_faults(|| episode.complete(&completion));
+            with_lock_release_faults(|| episode.complete(&completion, &bound));
 
         result.unwrap();
         assert_eq!(attempted_releases, 4);
@@ -1103,8 +1233,7 @@ mod tests {
     fn completion_revalidates_persisted_context_before_publication() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
         let context_relative = episode.relative_directory().join(CONTEXT_FILE);
         let snapshot = fixture
             .state
@@ -1120,10 +1249,7 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            episode
-                .complete(&completion_fixture(&manifest))
-                .unwrap_err()
-                .code(),
+            episode.complete(&completion, &bound).unwrap_err().code(),
             "episode.mismatch"
         );
         assert!(!fixture
@@ -1137,8 +1263,7 @@ mod tests {
     fn completion_serializes_a_context_replacement_after_publication() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
         let context_relative = episode.relative_directory().join(CONTEXT_FILE);
         let context_snapshot = fixture
             .state
@@ -1151,7 +1276,7 @@ mod tests {
         let (finished_tx, finished_rx) = mpsc::channel();
 
         episode
-            .complete_with_revalidation_hook(&completion_fixture(&manifest), || {
+            .complete_with_revalidation_hook(&completion, &bound, || {
                 writer.replace(Some(thread::spawn(move || {
                     let state = StateRoot::open_or_create(&root).unwrap();
                     started_tx.send(()).unwrap();
@@ -1194,9 +1319,9 @@ mod tests {
     fn incomplete_episode_remains_inspectable_without_completion() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
         let episode_id = manifest.episode_id.clone();
-        EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized).unwrap();
 
         let inspected = inspect_episode(
             &fixture.state,
@@ -1216,30 +1341,50 @@ mod tests {
     fn concurrent_completion_publishers_preserve_one_receipt() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
+        let episode =
+            EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized)
+                .unwrap();
+        let competing_materialized = invocation_plan(&fixture, &context)
+            .materialize(&episode.provider_raw_path().unwrap())
+            .unwrap();
+        let first_bound = materialized
+            .bind(episode.raw_directory_authority().unwrap())
+            .unwrap();
+        let second_bound = competing_materialized
+            .bind(episode.raw_directory_authority().unwrap())
+            .unwrap();
+        populate_raw_evidence(&first_bound, true);
+        let evidence = first_bound.verify_raw_evidence(true).unwrap();
+        let mut completion = completion_fixture(&manifest);
+        completion.stdout_sha256 = evidence.stdout_sha256;
+        completion.stderr_sha256 = evidence.stderr_sha256;
+        completion.final_message_sha256 = evidence.final_message_sha256;
+        completion.raw_archive_sha256 = evidence.raw_archive_sha256;
         let root = fixture.root.clone();
         let barrier = Arc::new(Barrier::new(3));
 
-        let results = [completion_fixture(&manifest), {
-            let mut other = completion_fixture(&manifest);
+        let completions = [completion.clone(), {
+            let mut other = completion;
             other.provider_exit_code = Some(7);
             other
-        }]
-        .into_iter()
-        .map(|completion| {
-            let root = root.clone();
-            let barrier = Arc::clone(&barrier);
-            let repository_id = manifest.repository.repository_id.clone();
-            let episode_id = manifest.episode_id.clone();
-            thread::spawn(move || {
-                let state = StateRoot::open_or_create(&root).unwrap();
-                let episode = open_episode(&state, &repository_id, &episode_id).unwrap();
-                barrier.wait();
-                episode.complete(&completion)
+        }];
+        let results = completions
+            .into_iter()
+            .zip([first_bound, second_bound])
+            .map(|(completion, bound)| {
+                let root = root.clone();
+                let barrier = Arc::clone(&barrier);
+                let repository_id = manifest.repository.repository_id.clone();
+                let episode_id = manifest.episode_id.clone();
+                thread::spawn(move || {
+                    let state = StateRoot::open_or_create(&root).unwrap();
+                    let episode = open_episode(&state, &repository_id, &episode_id).unwrap();
+                    barrier.wait();
+                    episode.complete(&completion, &bound)
+                })
             })
-        })
-        .collect::<Vec<_>>();
+            .collect::<Vec<_>>();
 
         barrier.wait();
         let results = results
@@ -1272,29 +1417,59 @@ mod tests {
     }
 
     #[test]
-    fn conflicting_provider_begin_cannot_leave_a_mixed_raw_namespace() {
+    fn mismatched_materialized_invocations_fail_before_state_mutation() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let winner = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
-        let mut conflicting = manifest;
-        conflicting.provider = ProviderId::Codex;
-        conflicting.invocation.provider = ProviderId::Codex;
+        for mutation in [
+            "command",
+            "prompt",
+            "provider",
+            "version",
+            "capabilities",
+            "repository",
+        ] {
+            let (mut manifest, materialized) = prepared_episode(&fixture, &context);
+            match mutation {
+                "command" => manifest.invocation.command_sha256 = digest("1"),
+                "prompt" => manifest.invocation.prompt_sha256 = digest("2"),
+                "provider" => {
+                    manifest.provider = ProviderId::Codex;
+                    manifest.invocation.provider = ProviderId::Codex;
+                }
+                "version" => manifest.provider_version = "9.9.9".to_owned(),
+                "capabilities" => manifest.provider_capabilities_sha256 = digest("3"),
+                "repository" => manifest.repository = repository_fixture("4"),
+                _ => unreachable!(),
+            }
+            assert_eq!(
+                EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized)
+                    .unwrap_err()
+                    .code(),
+                "episode.mismatch",
+                "{mutation}"
+            );
+            assert!(!fixture.root.join("repositories").exists(), "{mutation}");
+        }
 
-        assert!(EpisodeWriter::begin(&fixture.state, conflicting, &context).is_err());
-
+        let (manifest, _) = prepared_episode(&fixture, &context);
+        let other_episode = "ep-0123456789abcdef-00001234-00000043";
+        let wrong_raw_path = EpisodeWriter::plan_provider_raw_path(
+            &fixture.state,
+            &manifest.repository.repository_id,
+            other_episode,
+            manifest.provider,
+        )
+        .unwrap();
+        let wrong_materialized = invocation_plan(&fixture, &context)
+            .materialize(&wrong_raw_path)
+            .unwrap();
         assert_eq!(
-            fixture
-                .state
-                .list_private_directory(&winner.relative_directory().join("raw"))
-                .unwrap(),
-            ["trae"]
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &wrong_materialized)
+                .unwrap_err()
+                .code(),
+            "episode.mismatch"
         );
-        assert!(!fixture
-            .root
-            .join(winner.relative_directory())
-            .join("raw/codex")
-            .exists());
+        assert!(!fixture.root.join("repositories").exists());
     }
 
     #[cfg(unix)]
@@ -1314,13 +1489,13 @@ mod tests {
         let staging = fixture.root.join(".harp-internal/staging");
         fs::set_permissions(&staging, fs::Permissions::from_mode(0o500)).unwrap();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
         let episode_path = fixture.root.join(
             episode_directory(&manifest.repository.repository_id, &manifest.episode_id).unwrap(),
         );
 
         assert_eq!(
-            EpisodeWriter::begin(&fixture.state, manifest.clone(), &context)
+            EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized)
                 .unwrap_err()
                 .code(),
             "state.permissions"
@@ -1329,7 +1504,8 @@ mod tests {
         assert!(!episode_path.exists());
 
         fs::set_permissions(&staging, fs::Permissions::from_mode(0o700)).unwrap();
-        EpisodeWriter::begin(&fixture.state, manifest, &context).unwrap();
+        let (_, retry_materialized) = prepared_episode(&fixture, &context);
+        EpisodeWriter::begin(&fixture.state, manifest, &context, &retry_materialized).unwrap();
         assert!(episode_path.join(MANIFEST_FILE).is_file());
     }
 
@@ -1339,10 +1515,10 @@ mod tests {
         let mut context = context_fixture();
         context.rendered_markdown = "x".repeat(MAX_CONTEXT_BYTES);
         context.rendered_context_sha256 = sha256_hex(context.rendered_markdown.as_bytes());
-        let manifest = manifest_fixture(&context);
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
 
         assert_eq!(
-            EpisodeWriter::begin(&fixture.state, manifest, &context)
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized)
                 .unwrap_err()
                 .code(),
             "episode.context_size"
@@ -1357,15 +1533,15 @@ mod tests {
 
         let fixture = EpisodeFixture::new();
         let outside = tempdir().unwrap();
-        symlink(outside.path(), fixture.root.join("repositories")).unwrap();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
+        let (manifest, materialized) = prepared_episode(&fixture, &context);
+        symlink(outside.path(), fixture.root.join("repositories")).unwrap();
 
         assert_eq!(
-            EpisodeWriter::begin(&fixture.state, manifest, &context)
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized)
                 .unwrap_err()
                 .code(),
-            "state.symlink"
+            "provider.invocation_path"
         );
         assert!(fs::read_dir(outside.path()).unwrap().next().is_none());
     }
@@ -1375,16 +1551,12 @@ mod tests {
     fn completion_rejects_episode_directory_with_loosened_permissions() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let manifest = manifest_fixture(&context);
-        let episode = EpisodeWriter::begin(&fixture.state, manifest.clone(), &context).unwrap();
+        let (_manifest, episode, bound, completion) = begin_bound_episode(&fixture, &context);
         let episode_path = fixture.root.join(episode.relative_directory());
         fs::set_permissions(&episode_path, fs::Permissions::from_mode(0o770)).unwrap();
 
         assert_eq!(
-            episode
-                .complete(&completion_fixture(&manifest))
-                .unwrap_err()
-                .code(),
+            episode.complete(&completion, &bound).unwrap_err().code(),
             "state.permissions"
         );
         assert!(!episode_path.join(COMPLETION_FILE).exists());
@@ -1394,20 +1566,20 @@ mod tests {
     fn begin_rejects_context_or_episode_identity_mismatch_before_publication() {
         let fixture = EpisodeFixture::new();
         let context = context_fixture();
-        let mut manifest = manifest_fixture(&context);
+        let (mut manifest, materialized) = prepared_episode(&fixture, &context);
         manifest.context_bundle_sha256 = digest("0");
         assert_eq!(
-            EpisodeWriter::begin(&fixture.state, manifest, &context)
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized)
                 .unwrap_err()
                 .code(),
             "episode.mismatch"
         );
         assert!(!fixture.root.join("repositories").exists());
 
-        let mut manifest = manifest_fixture(&context);
+        let (mut manifest, materialized) = prepared_episode(&fixture, &context);
         manifest.invocation.provider = ProviderId::Codex;
         assert_eq!(
-            EpisodeWriter::begin(&fixture.state, manifest, &context)
+            EpisodeWriter::begin(&fixture.state, manifest, &context, &materialized)
                 .unwrap_err()
                 .code(),
             "episode.manifest"
@@ -1573,6 +1745,55 @@ mod tests {
         serde_json::from_value(value).unwrap()
     }
 
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    fn prepared_episode(
+        fixture: &EpisodeFixture,
+        context: &ContextBundle,
+    ) -> (EpisodeManifest, MaterializedProviderInvocation) {
+        let plan = invocation_plan(fixture, context);
+        let mut manifest = manifest_fixture(context);
+        manifest.repository = plan.repository().clone();
+        manifest.provider = plan.provider();
+        manifest.provider_version = plan.provider_version().to_owned();
+        manifest.provider_capabilities_sha256 = plan.provider_capabilities_sha256().to_owned();
+        manifest.invocation.provider = plan.provider();
+        manifest.invocation.prompt_sha256 = plan.prompt_sha256().to_owned();
+        let raw_path = EpisodeWriter::plan_provider_raw_path(
+            &fixture.state,
+            &manifest.repository.repository_id,
+            &manifest.episode_id,
+            manifest.provider,
+        )
+        .unwrap();
+        let materialized = plan.materialize(&raw_path).unwrap();
+        manifest.invocation.command_sha256 = materialized.command_sha256().to_owned();
+        (manifest, materialized)
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    fn invocation_plan(
+        fixture: &EpisodeFixture,
+        context: &ContextBundle,
+    ) -> crate::context_control::provider::ProviderInvocation {
+        let executable = fixture.repository.join("traecli");
+        if !executable.exists() {
+            write_probe_executable(&executable);
+        }
+        let capabilities = probe_snapshot(ProviderId::Trae, &executable).unwrap();
+        build_invocation(
+            &capabilities,
+            &fixture.repository,
+            context,
+            "complete the episode",
+            &ProviderRunOptions::default(),
+        )
+        .unwrap()
+    }
+
+    fn repository_fixture(digit: &str) -> RepositorySnapshot {
+        serde_json::from_value(repository_value(digit)).unwrap()
+    }
+
     fn completion_fixture(manifest: &EpisodeManifest) -> CompletionReceipt {
         let mut value = completion_value();
         value["episode_id"] = json!(manifest.episode_id);
@@ -1580,9 +1801,110 @@ mod tests {
         serde_json::from_value(value).unwrap()
     }
 
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    fn begin_bound_episode<'a>(
+        fixture: &'a EpisodeFixture,
+        context: &ContextBundle,
+    ) -> (
+        EpisodeManifest,
+        EpisodeWriter<'a>,
+        BoundProviderInvocation,
+        CompletionReceipt,
+    ) {
+        let (manifest, materialized) = prepared_episode(fixture, context);
+        let episode =
+            EpisodeWriter::begin(&fixture.state, manifest.clone(), context, &materialized).unwrap();
+        let bound = materialized
+            .bind(episode.raw_directory_authority().unwrap())
+            .unwrap();
+        populate_raw_evidence(&bound, true);
+        let evidence = bound.verify_raw_evidence(true).unwrap();
+        let mut completion = completion_fixture(&manifest);
+        completion.stdout_sha256 = evidence.stdout_sha256;
+        completion.stderr_sha256 = evidence.stderr_sha256;
+        completion.final_message_sha256 = evidence.final_message_sha256;
+        completion.raw_archive_sha256 = evidence.raw_archive_sha256;
+        (manifest, episode, bound, completion)
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    fn populate_raw_evidence(bound: &BoundProviderInvocation, final_message: bool) {
+        bound.claim_launch().unwrap();
+        let members = [
+            (ProviderRawMember::StdoutJsonl, b"stdout\n".as_slice()),
+            (ProviderRawMember::StderrBin, b"stderr\n".as_slice()),
+        ];
+        for (member, bytes) in members {
+            let mut file = bound.create_raw_member(member).unwrap();
+            file.write_all(bytes).unwrap();
+            file.sync_all().unwrap();
+        }
+        if final_message {
+            let mut file = bound
+                .create_raw_member(ProviderRawMember::FinalMessage)
+                .unwrap();
+            file.write_all(b"final response\n").unwrap();
+            file.sync_all().unwrap();
+        }
+
+        let mut archive_bytes = Vec::new();
+        {
+            let encoder =
+                flate2::write::GzEncoder::new(&mut archive_bytes, flate2::Compression::default());
+            let mut archive = tar::Builder::new(encoder);
+            for (name, bytes) in [
+                ("final_message.bin", b"final response\n".as_slice()),
+                ("stderr.bin", b"stderr\n".as_slice()),
+                ("stdout.jsonl", b"stdout\n".as_slice()),
+            ] {
+                if name == "final_message.bin" && !final_message {
+                    continue;
+                }
+                let mut header = tar::Header::new_gnu();
+                header.set_size(bytes.len() as u64);
+                header.set_mode(0o644);
+                header.set_uid(0);
+                header.set_gid(0);
+                header.set_mtime(0);
+                header.set_cksum();
+                archive.append_data(&mut header, name, bytes).unwrap();
+            }
+            archive.into_inner().unwrap().finish().unwrap();
+        }
+        let mut archive = bound
+            .create_raw_member(ProviderRawMember::RawArchive)
+            .unwrap();
+        archive.write_all(&archive_bytes).unwrap();
+        archive.sync_all().unwrap();
+
+        let mut rows = vec![
+            ("stderr.bin", b"stderr\n".as_slice()),
+            ("stdout.jsonl", b"stdout\n".as_slice()),
+        ];
+        if final_message {
+            rows.push(("final_message.bin", b"final response\n".as_slice()));
+        }
+        rows.sort_by_key(|(name, _)| *name);
+        let rows = rows
+            .into_iter()
+            .map(|(name, bytes)| raw_member_row(name, bytes))
+            .collect::<String>();
+        let mut manifest = bound
+            .create_raw_member(ProviderRawMember::RawMembersManifest)
+            .unwrap();
+        manifest.write_all(rows.as_bytes()).unwrap();
+        manifest.sync_all().unwrap();
+        bound.sync_raw_directory().unwrap();
+    }
+
+    fn raw_member_row(name: &str, bytes: &[u8]) -> String {
+        format!("sha256:{}\t{}\t{name}\n", sha256_hex(bytes), bytes.len())
+    }
+
     struct EpisodeFixture {
         _temporary: tempfile::TempDir,
         root: std::path::PathBuf,
+        repository: std::path::PathBuf,
         state: StateRoot,
     }
 
@@ -1590,13 +1912,38 @@ mod tests {
         fn new() -> Self {
             let temporary = tempdir().unwrap();
             let root = fs::canonicalize(temporary.path()).unwrap().join("state");
+            let repository = fs::canonicalize(temporary.path())
+                .unwrap()
+                .join("repository");
+            fs::create_dir(&repository).unwrap();
+            git(&repository, &["init", "-q"]);
+            git(
+                &repository,
+                &["config", "user.email", "harp@example.invalid"],
+            );
+            git(&repository, &["config", "user.name", "Harp Test"]);
+            fs::write(repository.join("tracked.txt"), b"tracked\n").unwrap();
+            git(&repository, &["add", "tracked.txt"]);
+            git(&repository, &["commit", "-qm", "initial"]);
             let state = StateRoot::open_or_create(&root).unwrap();
             Self {
                 _temporary: temporary,
                 root,
+                repository,
                 state,
             }
         }
+    }
+
+    fn git(repository: &Path, arguments: &[&str]) {
+        assert!(std::process::Command::new("git")
+            .args(arguments)
+            .current_dir(repository)
+            .env("GIT_CONFIG_GLOBAL", "/dev/null")
+            .env("GIT_CONFIG_NOSYSTEM", "1")
+            .status()
+            .unwrap()
+            .success());
     }
 
     #[cfg(unix)]

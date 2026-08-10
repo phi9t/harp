@@ -293,6 +293,12 @@ mod secure {
             Ok(self.root.join(relative))
         }
 
+        pub(crate) fn plan_private_path(&self, relative: &Path) -> Result<PathBuf, AppError> {
+            public_relative_components(relative, "private path")?;
+            self.directory.verify_namespace()?;
+            Ok(self.root.join(relative))
+        }
+
         pub fn snapshot_private_file(&self, relative: &Path) -> Result<FileSnapshot, AppError> {
             let components = public_relative_components(relative, "private file")?;
             let (parent, name) = self.resolve_parent_components(&components, false)?;
@@ -481,17 +487,21 @@ mod secure {
             }
         }
 
-        pub(crate) fn write_private_create_only_after_validating(
+        pub(crate) fn write_private_create_only_after_validating_with<F>(
             &self,
             relative: &Path,
             bytes: &[u8],
             expectations: &[PrivateFileExpectation<'_>],
-        ) -> Result<(), AppError> {
+            validator: F,
+        ) -> Result<(), AppError>
+        where
+            F: FnOnce() -> Result<(), AppError>,
+        {
             self.write_private_create_only_after_validating_inner(
                 relative,
                 bytes,
                 expectations,
-                || {},
+                validator,
             )
         }
 
@@ -510,7 +520,10 @@ mod secure {
                 relative,
                 bytes,
                 expectations,
-                revalidation_hook,
+                || {
+                    revalidation_hook();
+                    Ok(())
+                },
             )
         }
 
@@ -522,7 +535,7 @@ mod secure {
             revalidation_hook: F,
         ) -> Result<(), AppError>
         where
-            F: FnOnce(),
+            F: FnOnce() -> Result<(), AppError>,
         {
             let target_components = public_relative_components(relative, "private file")?;
             let mut lock_targets = expectations
@@ -563,7 +576,7 @@ mod secure {
                         ));
                     }
                 }
-                revalidation_hook();
+                revalidation_hook()?;
                 self.write_private_atomic_locked(
                     &target_components,
                     bytes,
@@ -3316,6 +3329,10 @@ mod unsupported {
             Err(unsupported())
         }
 
+        pub(crate) fn plan_private_path(&self, _relative: &Path) -> Result<PathBuf, AppError> {
+            Err(unsupported())
+        }
+
         pub fn snapshot_private_file(&self, _relative: &Path) -> Result<FileSnapshot, AppError> {
             Err(unsupported())
         }
@@ -3376,12 +3393,16 @@ mod unsupported {
             Err(unsupported())
         }
 
-        pub(crate) fn write_private_create_only_after_validating(
+        pub(crate) fn write_private_create_only_after_validating_with<F>(
             &self,
             _relative: &Path,
             _bytes: &[u8],
             _expectations: &[PrivateFileExpectation<'_>],
-        ) -> Result<(), AppError> {
+            _validator: F,
+        ) -> Result<(), AppError>
+        where
+            F: FnOnce() -> Result<(), AppError>,
+        {
             Err(unsupported())
         }
 

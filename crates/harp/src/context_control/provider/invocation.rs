@@ -4,9 +4,9 @@ use std::fs;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 use std::fs::File;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-use std::io::Read as _;
+use std::io::{Read as _, Write as _};
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-use std::os::fd::{AsRawFd as _, FromRawFd as _, OwnedFd};
+use std::os::fd::{AsRawFd as _, FromRawFd as _, IntoRawFd as _, OwnedFd};
 #[cfg(unix)]
 use std::os::unix::ffi::OsStrExt as _;
 #[cfg(unix)]
@@ -20,10 +20,12 @@ use std::path::{Path, PathBuf};
 use serde::{Deserialize, Serialize};
 
 use super::ProviderCapabilities;
-use crate::context_control::canonical::sha256_hex;
+use crate::context_control::canonical::{json_bytes, sha256_hex};
 use crate::context_control::context::ContextBundle;
+use crate::context_control::episode::RawEvidenceSummary;
 use crate::context_control::{
-    ProviderId, CONTEXT_BUNDLE_SCHEMA, PROVIDER_CAPABILITIES_SCHEMA, PROVIDER_INVOCATION_SCHEMA,
+    ProviderId, RepositorySnapshot, CONTEXT_BUNDLE_SCHEMA, PROVIDER_CAPABILITIES_SCHEMA,
+    PROVIDER_INVOCATION_SCHEMA,
 };
 use crate::AppError;
 
@@ -33,6 +35,8 @@ const STDOUT_NAME: &str = "stdout.jsonl";
 const STDERR_NAME: &str = "stderr.bin";
 const RAW_ARCHIVE_NAME: &str = "raw_traecli_run.tar.gz";
 const RAW_MEMBERS_MANIFEST_NAME: &str = "raw_members.tsv";
+const LAUNCH_CLAIM_NAME: &str = "launch.json";
+const LAUNCH_CLAIM_SCHEMA: &str = "harp-provider-launch/v1";
 const COMMAND_ENCODING_MAGIC: &[u8] = b"harp-provider-command-v1\0";
 const COMMAND_PLAN_ENCODING_MAGIC: &[u8] = b"harp-provider-command-plan-v1\0";
 const PROMPT_ENCODING_MAGIC: &[u8] = b"harp-provider-prompt-v1\n";
@@ -104,12 +108,13 @@ pub enum ProviderArgumentPlan {
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 #[allow(dead_code)]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum ProviderRawMember {
+pub(crate) enum ProviderRawMember {
     StdoutJsonl,
     StderrBin,
     FinalMessage,
     RawArchive,
     RawMembersManifest,
+    LaunchClaim,
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -121,8 +126,47 @@ impl ProviderRawMember {
             Self::FinalMessage => FINAL_MESSAGE_NAME,
             Self::RawArchive => RAW_ARCHIVE_NAME,
             Self::RawMembersManifest => RAW_MEMBERS_MANIFEST_NAME,
+            Self::LaunchClaim => LAUNCH_CLAIM_NAME,
         }
     }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const PROVIDER_ARCHIVE_MEMBERS: [ProviderRawMember; 3] = [
+    ProviderRawMember::StdoutJsonl,
+    ProviderRawMember::StderrBin,
+    ProviderRawMember::FinalMessage,
+];
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+const PROVIDER_RAW_MEMBERS: [ProviderRawMember; 6] = [
+    ProviderRawMember::StdoutJsonl,
+    ProviderRawMember::StderrBin,
+    ProviderRawMember::FinalMessage,
+    ProviderRawMember::RawArchive,
+    ProviderRawMember::RawMembersManifest,
+    ProviderRawMember::LaunchClaim,
+];
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct RawMemberEvidence {
+    member: ProviderRawMember,
+    bytes: Vec<u8>,
+    sha256: String,
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+#[derive(Serialize)]
+struct LaunchClaim<'a> {
+    schema_version: &'static str,
+    repository_id: &'a str,
+    episode_id: &'a str,
+    provider: ProviderId,
+    provider_version: &'a str,
+    provider_capabilities_sha256: &'a str,
+    command_sha256: &'a str,
+    prompt_sha256: &'a str,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
@@ -281,6 +325,7 @@ pub struct ProviderInvocation {
     capabilities: ProviderCapabilitySnapshot,
     arguments: Vec<ProviderArgumentPlan>,
     working_directory: PathBuf,
+    repository: RepositorySnapshot,
     stdin_bytes: Vec<u8>,
     command_plan_bytes: Vec<u8>,
     command_plan_sha256: String,
@@ -296,6 +341,7 @@ pub fn build_invocation(
 ) -> Result<ProviderInvocation, AppError> {
     validate_invocation_path(capabilities.executable(), "provider executable")?;
     validate_repository_root(repository_root)?;
+    let repository = RepositorySnapshot::capture(repository_root)?;
     validate_capabilities(capabilities, options)?;
     validate_context(context)?;
     validate_task(task)?;
@@ -343,6 +389,7 @@ pub fn build_invocation(
         capabilities: capabilities.clone(),
         arguments,
         working_directory: repository_root.to_owned(),
+        repository,
         stdin_bytes,
         command_plan_bytes,
         command_plan_sha256,
@@ -359,6 +406,14 @@ impl ProviderInvocation {
         self.capabilities.provider
     }
 
+    pub(crate) fn provider_version(&self) -> &str {
+        self.capabilities.version()
+    }
+
+    pub(crate) fn provider_capabilities_sha256(&self) -> &str {
+        self.capabilities.capability_sha256()
+    }
+
     pub fn executable(&self) -> &Path {
         self.capabilities.executable()
     }
@@ -369,6 +424,10 @@ impl ProviderInvocation {
 
     pub fn working_directory(&self) -> &Path {
         &self.working_directory
+    }
+
+    pub fn repository(&self) -> &RepositorySnapshot {
+        &self.repository
     }
 
     pub fn stdin_bytes(&self) -> &[u8] {
@@ -404,6 +463,7 @@ impl ProviderInvocation {
         }
         self.capabilities.validate()?;
         validate_repository_root(&self.working_directory)?;
+        validate_repository_association(&self.working_directory, &self.repository)?;
         raw_path.validate()?;
         let final_message_path = raw_path.path.join(FINAL_MESSAGE_NAME);
         let arguments = self
@@ -423,6 +483,16 @@ impl ProviderInvocation {
             .collect::<Result<Vec<_>, _>>()?;
         let command_bytes = encode_provider_command(self.executable().as_os_str(), &arguments);
         let command_sha256 = sha256_prefixed(&command_bytes);
+        let launch_claim_bytes = json_bytes(&LaunchClaim {
+            schema_version: LAUNCH_CLAIM_SCHEMA,
+            repository_id: raw_path.repository_id()?,
+            episode_id: raw_path.episode_id()?,
+            provider: self.provider(),
+            provider_version: self.capabilities.version(),
+            provider_capabilities_sha256: self.capabilities.capability_sha256(),
+            command_sha256: &command_sha256,
+            prompt_sha256: self.prompt_sha256(),
+        })?;
         Ok(MaterializedProviderInvocation {
             plan: self.clone(),
             raw_path: raw_path.clone(),
@@ -430,6 +500,7 @@ impl ProviderInvocation {
             final_message_path,
             command_bytes,
             command_sha256,
+            launch_claim_bytes,
         })
     }
 }
@@ -474,6 +545,22 @@ impl EpisodeProviderRawPath {
         validate_provider_raw_path(self.provider, &self.relative_path, &self.path)?;
         validate_existing_directory_ancestors(&self.path)
     }
+
+    fn repository_id(&self) -> Result<&str, AppError> {
+        self.relative_path
+            .components()
+            .nth(1)
+            .and_then(|component| component.as_os_str().to_str())
+            .ok_or_else(|| invocation_path("provider raw path has no repository identity"))
+    }
+
+    fn episode_id(&self) -> Result<&str, AppError> {
+        self.relative_path
+            .components()
+            .nth(3)
+            .and_then(|component| component.as_os_str().to_str())
+            .ok_or_else(|| invocation_path("provider raw path has no episode identity"))
+    }
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -485,6 +572,7 @@ pub struct MaterializedProviderInvocation {
     final_message_path: PathBuf,
     command_bytes: Vec<u8>,
     command_sha256: String,
+    launch_claim_bytes: Vec<u8>,
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
@@ -511,6 +599,26 @@ impl MaterializedProviderInvocation {
 
     pub fn prompt_sha256(&self) -> &str {
         self.plan.prompt_sha256()
+    }
+
+    pub(crate) fn provider(&self) -> ProviderId {
+        self.plan.provider()
+    }
+
+    pub(crate) fn provider_version(&self) -> &str {
+        self.plan.capabilities.version()
+    }
+
+    pub(crate) fn provider_capabilities_sha256(&self) -> &str {
+        self.plan.capabilities.capability_sha256()
+    }
+
+    pub(crate) fn repository(&self) -> &RepositorySnapshot {
+        self.plan.repository()
+    }
+
+    pub(crate) fn raw_path(&self) -> &EpisodeProviderRawPath {
+        &self.raw_path
     }
 
     pub fn bind(
@@ -600,6 +708,22 @@ impl BoundProviderInvocation {
         self.invocation.prompt_sha256()
     }
 
+    pub(crate) fn provider_version(&self) -> &str {
+        self.invocation.provider_version()
+    }
+
+    pub(crate) fn provider_capabilities_sha256(&self) -> &str {
+        self.invocation.provider_capabilities_sha256()
+    }
+
+    pub(crate) fn repository(&self) -> &RepositorySnapshot {
+        self.invocation.repository()
+    }
+
+    pub(crate) fn raw_path(&self) -> &EpisodeProviderRawPath {
+        self.invocation.raw_path()
+    }
+
     pub fn final_message_path(&self) -> &Path {
         self.invocation.final_message_path()
     }
@@ -612,26 +736,163 @@ impl BoundProviderInvocation {
     pub fn verify_before_spawn(&self) -> Result<(), AppError> {
         self.invocation.plan.capabilities.validate()?;
         validate_repository_root(self.working_directory())?;
+        validate_repository_association(
+            self.working_directory(),
+            self.invocation.plan.repository(),
+        )?;
         self.authority.verify_before_spawn()
     }
 
     pub fn read_final_message(&self, max_bytes: usize) -> Result<Option<Vec<u8>>, AppError> {
         self.invocation.plan.capabilities.validate()?;
-        self.authority.read_final_message(max_bytes)
+        self.authority
+            .read_raw_member(ProviderRawMember::FinalMessage, max_bytes)
+    }
+
+    pub(crate) fn launch_claim_bytes(&self) -> &[u8] {
+        &self.invocation.launch_claim_bytes
+    }
+
+    pub(crate) fn claim_launch(&self) -> Result<(), AppError> {
+        self.verify_before_spawn()?;
+        let mut claim = self
+            .authority
+            .create_raw_member(ProviderRawMember::LaunchClaim)?;
+        claim
+            .write_all(self.launch_claim_bytes())
+            .map_err(|error| {
+                AppError::io(
+                    "provider.launch_claim",
+                    "could not write provider launch claim",
+                    error,
+                )
+            })?;
+        claim.sync_all().map_err(|error| {
+            AppError::io(
+                "provider.launch_claim",
+                "could not synchronize provider launch claim",
+                error,
+            )
+        })?;
+        self.authority.sync_directory()?;
+        match self
+            .authority
+            .read_raw_member(ProviderRawMember::LaunchClaim, 4096)?
+        {
+            Some(bytes) if bytes == self.launch_claim_bytes() => Ok(()),
+            _ => Err(invocation_path(
+                "provider launch claim changed while it was published",
+            )),
+        }
+    }
+
+    pub(crate) fn verify_raw_evidence(
+        &self,
+        capture_complete: bool,
+    ) -> Result<RawEvidenceSummary, AppError> {
+        self.invocation.plan.capabilities.validate()?;
+        validate_repository_association(
+            self.working_directory(),
+            self.invocation.plan.repository(),
+        )?;
+        self.authority.verify_namespace()?;
+        let entries = self.authority.list_raw_members()?;
+        let allowed = PROVIDER_RAW_MEMBERS
+            .iter()
+            .map(|member| member.name())
+            .collect::<std::collections::BTreeSet<_>>();
+        if entries
+            .iter()
+            .any(|entry| !allowed.contains(entry.as_str()))
+        {
+            return Err(raw_evidence(
+                "provider raw directory contains an unexpected member",
+            ));
+        }
+
+        let launch = self
+            .read_evidence_member(ProviderRawMember::LaunchClaim, 4096)?
+            .ok_or_else(|| raw_evidence("provider launch claim is missing"))?;
+        if launch.bytes != self.launch_claim_bytes() {
+            return Err(raw_evidence(
+                "provider launch claim does not match the bound invocation",
+            ));
+        }
+        let stdout = self
+            .read_evidence_member(ProviderRawMember::StdoutJsonl, 64 * 1024 * 1024)?
+            .ok_or_else(|| raw_evidence("provider stdout capture is missing"))?;
+        let stderr = self
+            .read_evidence_member(ProviderRawMember::StderrBin, 64 * 1024 * 1024)?
+            .ok_or_else(|| raw_evidence("provider stderr capture is missing"))?;
+        let final_message =
+            self.read_evidence_member(ProviderRawMember::FinalMessage, 16 * 1024 * 1024)?;
+        let archive = self
+            .read_evidence_member(ProviderRawMember::RawArchive, 128 * 1024 * 1024)?
+            .ok_or_else(|| raw_evidence("provider raw archive is missing"))?;
+        let members_manifest = self
+            .read_evidence_member(ProviderRawMember::RawMembersManifest, 4096)?
+            .ok_or_else(|| raw_evidence("provider raw-members manifest is missing"))?;
+
+        if !capture_complete {
+            return Err(raw_evidence(
+                "incomplete provider capture cannot publish a completion receipt",
+            ));
+        }
+        validate_raw_members_manifest(
+            &members_manifest.bytes,
+            &stdout,
+            &stderr,
+            final_message.as_ref(),
+        )?;
+        validate_raw_archive(&archive.bytes, &stdout, &stderr, final_message.as_ref())?;
+        if self.authority.list_raw_members()? != entries {
+            return Err(raw_evidence(
+                "provider raw directory changed during evidence verification",
+            ));
+        }
+        self.authority.verify_namespace()?;
+
+        Ok(RawEvidenceSummary {
+            capture_complete,
+            stdout_sha256: stdout.sha256,
+            stderr_sha256: stderr.sha256,
+            final_message_sha256: final_message.map(|member| member.sha256),
+            raw_archive_sha256: archive.sha256,
+        })
+    }
+
+    fn read_evidence_member(
+        &self,
+        member: ProviderRawMember,
+        max_bytes: usize,
+    ) -> Result<Option<RawMemberEvidence>, AppError> {
+        self.authority
+            .read_raw_member(member, max_bytes)
+            .map(|bytes| {
+                bytes.map(|bytes| RawMemberEvidence {
+                    member,
+                    sha256: sha256_prefixed(&bytes),
+                    bytes,
+                })
+            })
     }
 
     #[allow(dead_code)]
-    pub(super) fn create_raw_member(&self, member: ProviderRawMember) -> Result<File, AppError> {
+    pub(crate) fn create_raw_member(&self, member: ProviderRawMember) -> Result<File, AppError> {
         self.authority.create_raw_member(member)
     }
 
     #[allow(dead_code)]
-    pub(super) fn open_raw_member(
+    pub(crate) fn read_raw_member_bounded(
         &self,
         member: ProviderRawMember,
         max_bytes: usize,
-    ) -> Result<Option<File>, AppError> {
-        self.authority.open_raw_member(member, max_bytes)
+    ) -> Result<Option<Vec<u8>>, AppError> {
+        self.authority.read_raw_member(member, max_bytes)
+    }
+
+    pub(crate) fn sync_raw_directory(&self) -> Result<(), AppError> {
+        self.authority.sync_directory()
     }
 }
 
@@ -728,6 +989,51 @@ impl HeldProviderRawDirectory {
         Ok(())
     }
 
+    fn list_raw_members(&self) -> Result<Vec<String>, AppError> {
+        self.verify_namespace()?;
+        let current =
+            std::ffi::CString::new(".").expect("fixed provider directory component has no NUL");
+        let directory_fd = open_directory_at(self.fd.as_raw_fd(), &current)?;
+        let directory = unsafe { libc::fdopendir(directory_fd.into_raw_fd()) };
+        if directory.is_null() {
+            return Err(AppError::io(
+                "provider.raw_member",
+                "could not open provider raw directory stream",
+                std::io::Error::last_os_error(),
+            ));
+        }
+        let mut names = Vec::new();
+        loop {
+            set_errno_zero();
+            let entry = unsafe { libc::readdir(directory) };
+            if entry.is_null() {
+                let error = std::io::Error::last_os_error();
+                unsafe {
+                    libc::closedir(directory);
+                }
+                if error.raw_os_error().unwrap_or(0) == 0 {
+                    break;
+                }
+                return Err(AppError::io(
+                    "provider.raw_member",
+                    "could not list provider raw directory",
+                    error,
+                ));
+            }
+            let name = unsafe { std::ffi::CStr::from_ptr((*entry).d_name.as_ptr()) };
+            if name.to_bytes() == b"." || name.to_bytes() == b".." {
+                continue;
+            }
+            let name = name.to_str().map_err(|_| {
+                invocation_path("provider raw directory contains a non-UTF-8 member")
+            })?;
+            names.push(name.to_owned());
+        }
+        names.sort();
+        self.verify_namespace()?;
+        Ok(names)
+    }
+
     fn verify_before_spawn(&self) -> Result<(), AppError> {
         self.verify_namespace()?;
         ensure_leaf_absent(self.fd.as_raw_fd(), FINAL_MESSAGE_NAME)?;
@@ -772,20 +1078,27 @@ impl HeldProviderRawDirectory {
         Ok(file)
     }
 
-    fn open_raw_member(
+    fn read_raw_member(
         &self,
         member: ProviderRawMember,
         max_bytes: usize,
-    ) -> Result<Option<File>, AppError> {
+    ) -> Result<Option<Vec<u8>>, AppError> {
+        let read_limit = max_bytes.checked_add(1).ok_or_else(|| {
+            AppError::invalid_input(
+                raw_member_limit_code(member),
+                "provider raw-member byte limit is too large",
+            )
+        })?;
         self.verify_namespace()?;
         let name = raw_member_name(member);
-        let Some(file) = open_raw_member_at(self.fd.as_raw_fd(), &name, member)? else {
+        let Some(mut file) = open_raw_member_at(self.fd.as_raw_fd(), &name, member)? else {
             self.verify_namespace()?;
             return Ok(None);
         };
-        let metadata = validate_open_raw_member(self.fd.as_raw_fd(), &name, &file, member)?;
+        let before = validate_open_raw_member(self.fd.as_raw_fd(), &name, &file, member)?;
+        let before_version = raw_file_version(&before);
         let max_bytes_u64 = u64::try_from(max_bytes).unwrap_or(u64::MAX);
-        if metadata.len() > max_bytes_u64 {
+        if before.len() > max_bytes_u64 {
             return Err(AppError::invalid_input(
                 raw_member_limit_code(member),
                 format!(
@@ -794,58 +1107,49 @@ impl HeldProviderRawDirectory {
                 ),
             ));
         }
-        self.verify_namespace()?;
-        Ok(Some(file))
-    }
-
-    fn read_final_message(&self, max_bytes: usize) -> Result<Option<Vec<u8>>, AppError> {
-        let read_limit = max_bytes.checked_add(1).ok_or_else(|| {
-            AppError::invalid_input(
-                "provider.final_message_limit",
-                "provider final-message byte limit is too large",
-            )
-        })?;
-        self.verify_namespace()?;
-        let name = raw_member_name(ProviderRawMember::FinalMessage);
-        let Some(file) =
-            open_raw_member_at(self.fd.as_raw_fd(), &name, ProviderRawMember::FinalMessage)?
-        else {
-            self.verify_namespace()?;
-            return Ok(None);
-        };
-        let metadata = validate_open_raw_member(
-            self.fd.as_raw_fd(),
-            &name,
-            &file,
-            ProviderRawMember::FinalMessage,
-        )?;
-        let opened_identity = metadata_identity(&metadata);
-        let max_bytes_u64 = u64::try_from(max_bytes).unwrap_or(u64::MAX);
         let mut bytes = Vec::with_capacity(
-            usize::try_from(metadata.len().min(max_bytes_u64)).unwrap_or(max_bytes),
+            usize::try_from(before.len().min(max_bytes_u64)).unwrap_or(max_bytes),
         );
-        file.take(u64::try_from(read_limit).unwrap_or(u64::MAX))
+        std::io::Read::by_ref(&mut file)
+            .take(u64::try_from(read_limit).unwrap_or(u64::MAX))
             .read_to_end(&mut bytes)
             .map_err(|error| {
                 AppError::io(
-                    "provider.final_message",
-                    "could not read provider final message",
+                    raw_member_error_code(member),
+                    "could not read provider raw member",
                     error,
                 )
             })?;
         if bytes.len() > max_bytes {
             return Err(AppError::invalid_input(
-                "provider.final_message_limit",
-                format!("provider final message exceeds {max_bytes} bytes"),
+                raw_member_limit_code(member),
+                format!(
+                    "provider raw member {} exceeds {max_bytes} bytes",
+                    member.name()
+                ),
             ));
         }
-        if entry_identity(self.fd.as_raw_fd(), &name)? != opened_identity {
-            return Err(invocation_path(
-                "provider final-message pathname identity changed during read",
-            ));
+        let after = validate_open_raw_member(self.fd.as_raw_fd(), &name, &file, member)?;
+        if raw_file_version(&after) != before_version || bytes.len() as u64 != after.len() {
+            return Err(invocation_path(format!(
+                "provider raw member {} changed while it was read",
+                member.name()
+            )));
         }
         self.verify_namespace()?;
         Ok(Some(bytes))
+    }
+
+    fn sync_directory(&self) -> Result<(), AppError> {
+        self.verify_namespace()?;
+        if unsafe { libc::fsync(self.fd.as_raw_fd()) } != 0 {
+            return Err(AppError::io(
+                "provider.raw_member",
+                "could not synchronize provider raw directory",
+                std::io::Error::last_os_error(),
+            ));
+        }
+        self.verify_namespace()
     }
 }
 
@@ -901,9 +1205,13 @@ fn validate_open_raw_member(
             error,
         )
     })?;
-    let mode_valid =
-        member == ProviderRawMember::FinalMessage || metadata.permissions().mode() & 0o777 == 0o600;
-    if !metadata.is_file() || !mode_valid || metadata.uid() != unsafe { libc::geteuid() } {
+    let mode = metadata.permissions().mode() & 0o777;
+    let mode_valid = mode == 0o600 || (member == ProviderRawMember::FinalMessage && mode == 0o644);
+    if !metadata.is_file()
+        || !mode_valid
+        || metadata.uid() != unsafe { libc::geteuid() }
+        || metadata.nlink() != 1
+    {
         return Err(invocation_path(format!(
             "provider raw member {} must be a regular file with the expected owner and mode",
             member.name()
@@ -919,9 +1227,152 @@ fn validate_open_raw_member(
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
+fn raw_file_version(metadata: &fs::Metadata) -> (FileIdentity, u64, i64, i64, i64, i64) {
+    (
+        metadata_identity(metadata),
+        metadata.len(),
+        metadata.mtime(),
+        metadata.mtime_nsec(),
+        metadata.ctime(),
+        metadata.ctime_nsec(),
+    )
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_raw_members_manifest(
+    bytes: &[u8],
+    stdout: &RawMemberEvidence,
+    stderr: &RawMemberEvidence,
+    final_message: Option<&RawMemberEvidence>,
+) -> Result<(), AppError> {
+    let text = std::str::from_utf8(bytes)
+        .map_err(|_| raw_evidence("provider raw-members manifest is not UTF-8"))?;
+    let mut actual = Vec::new();
+    for line in text.strip_suffix('\n').unwrap_or(text).split('\n') {
+        if line.is_empty() {
+            return Err(raw_evidence(
+                "provider raw-members manifest contains an empty row",
+            ));
+        }
+        let mut fields = line.split('\t');
+        let digest = fields
+            .next()
+            .ok_or_else(|| raw_evidence("provider raw-members digest is missing"))?;
+        let size = fields
+            .next()
+            .and_then(|value| value.parse::<usize>().ok())
+            .ok_or_else(|| raw_evidence("provider raw-members size is invalid"))?;
+        let name = fields
+            .next()
+            .ok_or_else(|| raw_evidence("provider raw-members name is missing"))?;
+        if fields.next().is_some()
+            || !digest
+                .strip_prefix("sha256:")
+                .is_some_and(is_lowercase_sha256_hex)
+            || !PROVIDER_ARCHIVE_MEMBERS
+                .iter()
+                .any(|member| member.name() == name)
+        {
+            return Err(raw_evidence("provider raw-members manifest row is invalid"));
+        }
+        actual.push((name.to_owned(), size, digest.to_owned()));
+    }
+
+    let mut expected = vec![evidence_manifest_row(stdout), evidence_manifest_row(stderr)];
+    if let Some(final_message) = final_message {
+        expected.push(evidence_manifest_row(final_message));
+    }
+    expected.sort();
+    if actual != expected {
+        return Err(raw_evidence(
+            "provider raw-members manifest does not match captured members",
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn evidence_manifest_row(member: &RawMemberEvidence) -> (String, usize, String) {
+    (
+        member.member.name().to_owned(),
+        member.bytes.len(),
+        member.sha256.clone(),
+    )
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_raw_archive(
+    bytes: &[u8],
+    stdout: &RawMemberEvidence,
+    stderr: &RawMemberEvidence,
+    final_message: Option<&RawMemberEvidence>,
+) -> Result<(), AppError> {
+    let mut expected = std::collections::BTreeMap::from([
+        (stdout.member.name(), stdout.bytes.as_slice()),
+        (stderr.member.name(), stderr.bytes.as_slice()),
+    ]);
+    if let Some(final_message) = final_message {
+        expected.insert(final_message.member.name(), final_message.bytes.as_slice());
+    }
+
+    let decoder = flate2::read::GzDecoder::new(std::io::Cursor::new(bytes));
+    let mut archive = tar::Archive::new(decoder);
+    let entries = archive
+        .entries()
+        .map_err(|error| raw_evidence(format!("provider raw archive is invalid: {error}")))?;
+    let mut actual = std::collections::BTreeMap::new();
+    for entry in entries {
+        let mut entry = entry
+            .map_err(|error| raw_evidence(format!("provider raw archive is invalid: {error}")))?;
+        if !entry.header().entry_type().is_file() {
+            return Err(raw_evidence(
+                "provider raw archive contains a non-file member",
+            ));
+        }
+        let path = entry
+            .path()
+            .map_err(|error| raw_evidence(format!("provider archive path is invalid: {error}")))?;
+        let name = path
+            .to_str()
+            .filter(|name| !name.contains('/') && !name.is_empty())
+            .ok_or_else(|| raw_evidence("provider raw archive member path is invalid"))?
+            .to_owned();
+        let expected_bytes = expected
+            .get(name.as_str())
+            .ok_or_else(|| raw_evidence("provider raw archive contains an unexpected member"))?;
+        let read_limit = expected_bytes
+            .len()
+            .checked_add(1)
+            .ok_or_else(|| raw_evidence("provider raw archive member size is invalid"))?;
+        let mut member_bytes = Vec::with_capacity(expected_bytes.len());
+        std::io::Read::by_ref(&mut entry)
+            .take(u64::try_from(read_limit).unwrap_or(u64::MAX))
+            .read_to_end(&mut member_bytes)
+            .map_err(|error| {
+                raw_evidence(format!(
+                    "could not read provider raw archive member: {error}"
+                ))
+            })?;
+        if member_bytes.as_slice() != *expected_bytes || actual.insert(name, member_bytes).is_some()
+        {
+            return Err(raw_evidence(
+                "provider raw archive member does not match captured bytes",
+            ));
+        }
+    }
+    if actual.len() != expected.len() {
+        return Err(raw_evidence(
+            "provider raw archive is missing a captured member",
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 const fn raw_member_error_code(member: ProviderRawMember) -> &'static str {
     match member {
         ProviderRawMember::FinalMessage => "provider.final_message",
+        ProviderRawMember::LaunchClaim => "provider.launch_claim",
         _ => "provider.raw_member",
     }
 }
@@ -930,6 +1381,7 @@ const fn raw_member_error_code(member: ProviderRawMember) -> &'static str {
 const fn raw_member_limit_code(member: ProviderRawMember) -> &'static str {
     match member {
         ProviderRawMember::FinalMessage => "provider.final_message_limit",
+        ProviderRawMember::LaunchClaim => "provider.launch_claim_limit",
         _ => "provider.raw_member_limit",
     }
 }
@@ -1138,6 +1590,20 @@ fn duplicate_fd(fd: i32) -> Result<OwnedFd, AppError> {
         ))
     } else {
         Ok(unsafe { OwnedFd::from_raw_fd(duplicate) })
+    }
+}
+
+#[cfg(target_os = "macos")]
+fn set_errno_zero() {
+    unsafe {
+        *libc::__error() = 0;
+    }
+}
+
+#[cfg(target_os = "linux")]
+fn set_errno_zero() {
+    unsafe {
+        *libc::__errno_location() = 0;
     }
 }
 
@@ -1678,6 +2144,20 @@ fn validate_repository_root(path: &Path) -> Result<(), AppError> {
     Ok(())
 }
 
+fn validate_repository_association(
+    repository_root: &Path,
+    expected: &RepositorySnapshot,
+) -> Result<(), AppError> {
+    let actual = RepositorySnapshot::capture(repository_root)?;
+    if &actual != expected {
+        return Err(AppError::invalid_input(
+            "provider.repository_changed",
+            "repository snapshot does not match the invocation working directory",
+        ));
+    }
+    Ok(())
+}
+
 #[cfg(unix)]
 fn os_starts_with_hyphen(value: &OsStr) -> bool {
     value.as_bytes().first() == Some(&b'-')
@@ -1731,6 +2211,11 @@ fn invalid_capabilities(message: impl Into<String>) -> AppError {
 }
 
 #[cfg(any(target_os = "macos", target_os = "linux"))]
+fn raw_evidence(message: impl Into<String>) -> AppError {
+    AppError::invalid_input("provider.raw_evidence", message)
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
 const fn provider_name(provider: ProviderId) -> &'static str {
     match provider {
         ProviderId::Trae => "trae",
@@ -1742,7 +2227,7 @@ const fn provider_name(provider: ProviderId) -> &'static str {
 mod tests {
     use std::ffi::{OsStr, OsString};
     use std::fs::{self, File};
-    use std::io::{Read as _, Write as _};
+    use std::io::Write as _;
     use std::os::fd::OwnedFd;
     use std::os::unix::ffi::{OsStrExt as _, OsStringExt as _};
     use std::os::unix::fs::{symlink, PermissionsExt as _};
@@ -1784,6 +2269,7 @@ mod tests {
         let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
 
         assert_eq!(plan.schema_version(), PROVIDER_INVOCATION_SCHEMA);
+        assert_eq!(plan.repository(), &fixture.repository_snapshot);
         assert_eq!(plan.final_message_member(), Path::new("final_message.bin"));
         assert_eq!(
             plan.command_plan_sha256(),
@@ -1791,6 +2277,27 @@ mod tests {
         );
         assert_eq!(plan.prompt_sha256(), sha256_prefixed(plan.stdin_bytes()));
         assert!(!fixture.raw_path(ProviderId::Trae).exists());
+    }
+
+    #[test]
+    fn launch_claim_is_create_only_and_binds_the_materialized_invocation() {
+        let fixture = InvocationFixture::new();
+        let plan = fixture.plan(ProviderId::Trae, &ProviderRunOptions::default());
+        let first = fixture.bind(&plan, ProviderId::Trae);
+        let second = fixture.bind(&plan, ProviderId::Trae);
+
+        first.claim_launch().unwrap();
+
+        assert_eq!(
+            first
+                .read_raw_member_bounded(ProviderRawMember::LaunchClaim, 4096)
+                .unwrap(),
+            Some(first.launch_claim_bytes().to_vec())
+        );
+        assert_eq!(
+            second.claim_launch().unwrap_err().code(),
+            "provider.output_exists"
+        );
     }
 
     #[test]
@@ -1804,7 +2311,7 @@ mod tests {
         assert_eq!(
             raw_path.relative_path(),
             Path::new("repositories")
-                .join(REPOSITORY_ID)
+                .join(&fixture.repository_snapshot.repository_id)
                 .join("episodes")
                 .join(EPISODE_ID)
                 .join("raw")
@@ -2535,9 +3042,10 @@ mod tests {
             let mut file = bound.create_raw_member(member).unwrap();
             file.write_all(bytes).unwrap();
             drop(file);
-            let mut file = bound.open_raw_member(member, bytes.len()).unwrap().unwrap();
-            let mut actual = Vec::new();
-            file.read_to_end(&mut actual).unwrap();
+            let actual = bound
+                .read_raw_member_bounded(member, bytes.len())
+                .unwrap()
+                .unwrap();
             assert_eq!(actual, bytes);
             assert_eq!(
                 bound.create_raw_member(member).unwrap_err().code(),
@@ -2786,6 +3294,7 @@ mod tests {
         _temporary: TempDir,
         root: PathBuf,
         repository: PathBuf,
+        repository_snapshot: crate::context_control::RepositorySnapshot,
         trae_executable: PathBuf,
         codex_executable: PathBuf,
     }
@@ -2796,6 +3305,17 @@ mod tests {
             let root = fs::canonicalize(temporary.path()).unwrap();
             let repository = root.join("repository");
             fs::create_dir(&repository).unwrap();
+            git(&repository, &["init", "-q"]);
+            git(
+                &repository,
+                &["config", "user.email", "harp@example.invalid"],
+            );
+            git(&repository, &["config", "user.name", "Harp Test"]);
+            fs::write(repository.join("tracked.txt"), b"tracked\n").unwrap();
+            git(&repository, &["add", "tracked.txt"]);
+            git(&repository, &["commit", "-qm", "initial"]);
+            let repository_snapshot =
+                crate::context_control::RepositorySnapshot::capture(&repository).unwrap();
             let trae_executable = root.join("traecli");
             let codex_executable = root.join("codex");
             write_executable(&trae_executable);
@@ -2804,6 +3324,7 @@ mod tests {
                 _temporary: temporary,
                 root,
                 repository,
+                repository_snapshot,
                 trae_executable,
                 codex_executable,
             }
@@ -2856,7 +3377,7 @@ mod tests {
 
         fn raw_relative(&self, provider: ProviderId) -> PathBuf {
             PathBuf::from("repositories")
-                .join(REPOSITORY_ID)
+                .join(&self.repository_snapshot.repository_id)
                 .join("episodes")
                 .join(EPISODE_ID)
                 .join("raw")
@@ -2902,5 +3423,16 @@ mod tests {
         fn final_message_path(&self, provider: ProviderId) -> PathBuf {
             self.raw_path(provider).join("final_message.bin")
         }
+    }
+
+    fn git(repository: &Path, arguments: &[&str]) {
+        assert!(std::process::Command::new("git")
+            .args(arguments)
+            .current_dir(repository)
+            .env("GIT_CONFIG_GLOBAL", "/dev/null")
+            .env("GIT_CONFIG_NOSYSTEM", "1")
+            .status()
+            .unwrap()
+            .success());
     }
 }
