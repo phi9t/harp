@@ -1,3 +1,4 @@
+pub mod routing;
 pub mod schema;
 pub mod workflow;
 
