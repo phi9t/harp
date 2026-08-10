@@ -56,6 +56,25 @@ pub struct ContextBundle {
     pub rendered_markdown: String,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct ReleaseRoute {
+    release_id: String,
+    task_sha256: String,
+    choice: WorkflowChoice,
+    decision: RouteDecision,
+}
+
+impl ReleaseRoute {
+    pub(crate) fn selected(&self) -> WorkflowId {
+        self.decision.selected
+    }
+
+    #[cfg(test)]
+    pub(crate) fn decision(&self) -> &RouteDecision {
+        &self.decision
+    }
+}
+
 impl ContextBundle {
     pub fn canonical_bytes(&self) -> Result<Vec<u8>, AppError> {
         json_bytes(self)
@@ -146,6 +165,49 @@ impl Serialize for ContextBundle {
 }
 
 pub fn resolve(request: &ContextRequest) -> Result<ContextBundle, AppError> {
+    let route = route_release(&request.release, &request.task, request.workflow)?;
+    resolve_routed(request, route)
+}
+
+pub(crate) fn route_release(
+    release: &ReleaseInspection,
+    task: &str,
+    choice: WorkflowChoice,
+) -> Result<ReleaseRoute, AppError> {
+    if task.trim().is_empty() {
+        return Err(context_request("task must not be empty"));
+    }
+    let identity = release.identity_v2().ok_or_else(|| {
+        context_release_compatibility(
+            "release does not contain routing rules required by context selector v1",
+        )
+    })?;
+    ensure_supported_versions(
+        identity.selector_version.as_str(),
+        identity.renderer_version.as_str(),
+    )?;
+    let routing_template = release.routing_template_v2().ok_or_else(|| {
+        context_release_compatibility(
+            "release does not contain routing rules required by context selector v1",
+        )
+    })?;
+    let routing_rules = routing_template
+        .workflows
+        .iter()
+        .map(|(workflow, template)| (*workflow, &template.routing))
+        .collect::<Vec<_>>();
+    Ok(ReleaseRoute {
+        release_id: release.release_id().to_owned(),
+        task_sha256: sha256_hex(task.as_bytes()),
+        choice,
+        decision: route_with_rules(task, choice, &routing_rules),
+    })
+}
+
+pub(crate) fn resolve_routed(
+    request: &ContextRequest,
+    route: ReleaseRoute,
+) -> Result<ContextBundle, AppError> {
     validate_task(request)?;
     let identity = request.release.identity_v2().ok_or_else(|| {
         context_release_compatibility(
@@ -156,28 +218,25 @@ pub fn resolve(request: &ContextRequest) -> Result<ContextBundle, AppError> {
         identity.selector_version.as_str(),
         identity.renderer_version.as_str(),
     )?;
-
-    let routing_template = request.release.routing_template_v2().ok_or_else(|| {
-        context_release_compatibility(
-            "release does not contain routing rules required by context selector v1",
-        )
-    })?;
-    let routing_rules = routing_template
-        .workflows
-        .iter()
-        .map(|(workflow, template)| (*workflow, &template.routing))
-        .collect::<Vec<_>>();
-    let routing_trace = route_with_rules(&request.task, request.workflow, &routing_rules);
-    validate_budget(request, routing_trace.selected)?;
+    if route.release_id != request.release.release_id()
+        || route.task_sha256 != sha256_hex(request.task.as_bytes())
+        || route.choice != request.workflow
+    {
+        return Err(AppError::invalid_input(
+            "context.route",
+            "release-backed route does not belong to the context request",
+        ));
+    }
+    validate_budget(request, route.selected())?;
 
     let eligible = request
         .release
         .items()
         .iter()
-        .filter(|item| item.workflow == routing_trace.selected)
+        .filter(|item| item.workflow == route.selected())
         .map(context_item_v1)
         .collect::<Vec<_>>();
-    resolve_candidates_v1(request, routing_trace, eligible)
+    resolve_candidates_v1(request, route.decision, eligible)
 }
 
 fn resolve_candidates_v1(
@@ -694,6 +753,33 @@ mod tests {
         assert_eq!(repair.workflow, WorkflowId::CiRepair);
         assert_eq!(review.workflow, WorkflowId::CodeReview);
         assert_ne!(repair.routing_trace, review.routing_trace);
+    }
+
+    #[test]
+    fn release_backed_route_is_reused_by_routed_context_resolution() {
+        let request = auto_fixture("tests failing in CI");
+        let routed = route_release(&request.release, &request.task, request.workflow).unwrap();
+        let expected = routed.decision().clone();
+
+        let bundle = resolve_routed(&request, routed).unwrap();
+
+        assert_eq!(bundle.workflow, WorkflowId::CiRepair);
+        assert_eq!(bundle.routing_trace, expected);
+    }
+
+    #[test]
+    fn routed_context_rejects_a_route_not_derived_from_the_request_release() {
+        let request = auto_fixture("tests failing in CI");
+        let wrong = route_release(
+            &request.release,
+            "review this diff and find bugs",
+            WorkflowChoice::Auto,
+        )
+        .unwrap();
+
+        let error = resolve_routed(&request, wrong).unwrap_err();
+
+        assert_eq!(error.code(), "context.route");
     }
 
     #[test]

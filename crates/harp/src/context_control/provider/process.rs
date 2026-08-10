@@ -25,6 +25,7 @@ const MAX_STREAM_BYTES: usize = if MAX_STDOUT_BYTES < MAX_STDERR_BYTES {
     MAX_STDERR_BYTES
 };
 const WORKER_POLL_INTERVAL: Duration = Duration::from_millis(5);
+#[cfg(test)]
 const SIGNAL_POLL_INTERVAL: Duration = Duration::from_millis(10);
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -125,6 +126,7 @@ impl ForwardSignal {
 
 enum SignalSource {
     Global(Signals),
+    #[cfg(test)]
     Injected(mpsc::Receiver<ForwardSignal>),
 }
 
@@ -181,6 +183,7 @@ impl SignalForwarder {
                     })?;
                 (Some(handle), thread)
             }
+            #[cfg(test)]
             SignalSource::Injected(receiver) => {
                 let thread = thread::Builder::new()
                     .name("harp-provider-signals".to_owned())

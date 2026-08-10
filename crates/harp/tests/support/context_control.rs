@@ -10,26 +10,6 @@ pub const PROCESS_STDOUT: &[u8] = b"{\"event\":1,\"raw\":\"\x80\"}\n{\"event\":2
 pub const PROCESS_STDERR: &[u8] = b"provider diagnostic \xff\n";
 pub const PROCESS_FINAL_MESSAGE: &[u8] = b"final \xfe message\n";
 
-pub struct ProviderFixtures {
-    _root: TempDir,
-    bin: PathBuf,
-}
-
-impl ProviderFixtures {
-    pub fn supported() -> Self {
-        let root = TempDir::new().expect("provider fixture root");
-        let bin = root.path().join("bin");
-        fs::create_dir(&bin).expect("provider fixture bin");
-        write_provider(&bin, "traecli", "traecli 0.200.19");
-        write_provider(&bin, "codex", "codex-cli 0.144.5");
-        Self { _root: root, bin }
-    }
-
-    pub fn path(&self) -> &Path {
-        &self.bin
-    }
-}
-
 #[derive(Clone, Copy, Debug)]
 pub enum ProcessProviderBehavior {
     Complete { exit_code: u8 },
@@ -66,38 +46,6 @@ impl ProcessProviderFixture {
     pub fn launches(&self) -> &Path {
         &self.launches
     }
-}
-
-fn write_provider(bin: &Path, name: &str, version: &str) {
-    let path = bin.join(name);
-    fs::write(
-        &path,
-        format!(
-            r#"#!/bin/sh
-case "$*" in
-  "--version")
-    printf '%s\n' '{version}'
-    ;;
-  "exec --help")
-    printf '%s\n' --json --output-last-message --cd --model --profile --sandbox --config
-    ;;
-  "exec resume --help")
-    printf '%s\n' --json
-    ;;
-  "app-server generate-json-schema --help")
-    printf '%s\n' --out
-    ;;
-  *)
-    printf 'unexpected arguments: %s\n' "$*" >&2
-    exit 64
-    ;;
-esac
-"#
-        ),
-    )
-    .expect("write provider fixture");
-    fs::set_permissions(&path, fs::Permissions::from_mode(0o700))
-        .expect("make provider fixture executable");
 }
 
 fn write_process_provider(path: &Path, launches: &Path, behavior: ProcessProviderBehavior) {

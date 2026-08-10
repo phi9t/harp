@@ -6,6 +6,7 @@ pub mod provider;
 pub mod release;
 pub mod repository_state;
 pub mod routing;
+pub mod run;
 pub mod schema;
 pub mod state;
 pub mod workflow;

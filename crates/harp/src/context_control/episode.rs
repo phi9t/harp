@@ -10,7 +10,7 @@ use super::context::ContextBundle;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 use super::provider::{
     EpisodeProviderRawPath, EpisodeRawDirectoryAuthority, MaterializedProviderInvocation,
-    SealedProviderEvidence,
+    ProviderExecution, SealedProviderEvidence,
 };
 use super::state::{HeldPrivateDirectory, PrivateFileExpectation, ReplacePolicy, StateRoot};
 use super::{
@@ -153,6 +153,40 @@ impl<'de> Deserialize<'de> for EpisodeManifest {
 }
 
 impl EpisodeManifest {
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    pub(crate) fn from_validated_inputs(
+        episode_id: String,
+        context: &ContextBundle,
+        policy_sha256: Option<String>,
+        task: &str,
+        invocation: &MaterializedProviderInvocation,
+    ) -> Result<Self, AppError> {
+        let manifest = Self {
+            schema_version: EPISODE_SCHEMA.to_owned(),
+            episode_id,
+            repository: invocation.repository().clone(),
+            provider: invocation.provider(),
+            provider_version: invocation.provider_version().to_owned(),
+            provider_capabilities_sha256: invocation.provider_capabilities_sha256().to_owned(),
+            workflow: context.workflow,
+            release_id: context.release_id.clone(),
+            context_bundle_sha256: format!("sha256:{}", sha256_hex(&context.canonical_bytes()?)),
+            context_manifest_completeness: ContextManifestCompleteness::Partial,
+            configuration_mode: ConfigurationMode::NativeDefaults,
+            task_sha256: format!("sha256:{}", sha256_hex(task.as_bytes())),
+            policy_sha256,
+            invocation: ProviderInvocationManifest {
+                schema_version: PROVIDER_INVOCATION_SCHEMA.to_owned(),
+                provider: invocation.provider(),
+                command_sha256: invocation.command_sha256().to_owned(),
+                prompt_sha256: invocation.prompt_sha256().to_owned(),
+            },
+        };
+        manifest.validate()?;
+        validate_context(&manifest, context)?;
+        Ok(manifest)
+    }
+
     fn validate(&self) -> Result<(), AppError> {
         if self.schema_version != EPISODE_SCHEMA {
             return Err(invalid_manifest("invalid episode manifest schema"));
@@ -233,6 +267,30 @@ impl<'de> Deserialize<'de> for CompletionReceipt {
 }
 
 impl CompletionReceipt {
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    pub(crate) fn from_execution(
+        manifest: &EpisodeManifest,
+        execution: &ProviderExecution,
+        post_repository: RepositorySnapshot,
+    ) -> Result<Self, AppError> {
+        validate_sealed_evidence_for_manifest(manifest, &execution.evidence)?;
+        let receipt = Self {
+            schema_version: COMPLETION_SCHEMA.to_owned(),
+            episode_id: manifest.episode_id.clone(),
+            provider_exit_code: execution.result.exit_code,
+            terminated_by_signal: execution.result.terminated_by_signal,
+            capture_complete: execution.result.capture_complete,
+            stdout_sha256: execution.result.stdout_sha256.clone(),
+            stderr_sha256: execution.result.stderr_sha256.clone(),
+            final_message_sha256: execution.result.final_message_sha256.clone(),
+            raw_archive_sha256: execution.result.raw_archive_sha256.clone(),
+            post_repository,
+        };
+        receipt.validate_for(manifest)?;
+        validate_completion_evidence(&receipt, &execution.evidence)?;
+        Ok(receipt)
+    }
+
     fn validate(&self) -> Result<(), AppError> {
         if self.schema_version != COMPLETION_SCHEMA {
             return Err(invalid_completion("invalid completion receipt schema"));
@@ -406,11 +464,17 @@ impl<'a> EpisodeWriter<'a> {
         })
     }
 
+    #[cfg(test)]
     pub(crate) fn relative_directory(&self) -> &Path {
         &self.relative_directory
     }
 
+    pub(crate) fn manifest(&self) -> &EpisodeManifest {
+        &self.manifest
+    }
+
     #[cfg(any(target_os = "macos", target_os = "linux"))]
+    #[cfg(test)]
     pub(crate) fn provider_raw_path(&self) -> Result<EpisodeProviderRawPath, AppError> {
         let (raw_path, _) = self.provider_raw_parts()?;
         Ok(raw_path)
@@ -561,6 +625,7 @@ impl EpisodeInspection {
     }
 }
 
+#[cfg(test)]
 pub(crate) fn open_episode<'a>(
     state: &'a StateRoot,
     repository_id: &str,
@@ -746,6 +811,26 @@ fn validate_sealed_evidence(
         return Err(AppError::invalid_input(
             "episode.mismatch",
             "bound provider invocation does not match the episode manifest",
+        ));
+    }
+    Ok(())
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn validate_sealed_evidence_for_manifest(
+    manifest: &EpisodeManifest,
+    evidence: &SealedProviderEvidence,
+) -> Result<(), AppError> {
+    if evidence.provider() != manifest.provider
+        || evidence.provider_version() != manifest.provider_version
+        || evidence.provider_capabilities_sha256() != manifest.provider_capabilities_sha256
+        || evidence.command_sha256() != manifest.invocation.command_sha256
+        || evidence.prompt_sha256() != manifest.invocation.prompt_sha256
+        || evidence.repository() != &manifest.repository
+    {
+        return Err(AppError::invalid_input(
+            "episode.mismatch",
+            "provider execution does not match the episode manifest",
         ));
     }
     Ok(())
@@ -1089,6 +1174,55 @@ mod tests {
             assert_eq!(mode(&fixture.root.join(manifest_relative)), 0o600);
             assert_eq!(mode(&fixture.root.join(context_relative)), 0o600);
         }
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    #[test]
+    fn typed_factories_bind_manifest_and_completion_to_validated_inputs() {
+        let fixture = EpisodeFixture::new();
+        let context = context_fixture();
+        let plan = invocation_plan(&fixture, &context);
+        let episode_id = "ep-0123456789abcdef-00001234-00000042";
+        let raw_path = EpisodeWriter::plan_provider_raw_path(
+            &fixture.state,
+            &plan.repository().repository_id,
+            episode_id,
+            plan.provider(),
+        )
+        .unwrap();
+        let materialized = plan.materialize(&raw_path).unwrap();
+        let manifest = EpisodeManifest::from_validated_inputs(
+            episode_id.to_owned(),
+            &context,
+            Some(digest("f")),
+            "complete the episode",
+            &materialized,
+        )
+        .unwrap();
+
+        let writer =
+            EpisodeWriter::begin(&fixture.state, manifest.clone(), &context, &materialized)
+                .unwrap();
+        let bound = materialized
+            .bind(writer.raw_directory_authority().unwrap())
+            .unwrap();
+        let execution = execute(bound).unwrap();
+        let post_repository = RepositorySnapshot::capture(&fixture.repository).unwrap();
+        let completion =
+            CompletionReceipt::from_execution(&manifest, &execution, post_repository).unwrap();
+
+        assert_eq!(manifest.repository, *plan.repository());
+        assert_eq!(manifest.provider, plan.provider());
+        assert_eq!(
+            manifest.context_bundle_sha256,
+            format!("sha256:{}", sha256_hex(&context.canonical_bytes().unwrap()))
+        );
+        assert_eq!(completion.provider_exit_code, execution.result.exit_code);
+        assert_eq!(
+            completion.raw_archive_sha256,
+            execution.result.raw_archive_sha256
+        );
+        writer.complete(&completion, &execution.evidence).unwrap();
     }
 
     #[cfg(any(target_os = "macos", target_os = "linux"))]

@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::fs;
 use std::io::{self, Read};
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -97,6 +98,63 @@ impl RepositorySnapshot {
         }
         Ok(())
     }
+}
+
+pub fn resolve_worktree_root(start: &Path) -> Result<PathBuf, AppError> {
+    resolve_worktree_root_with_runner(start, &ProcessGitRunner::git())
+}
+
+fn resolve_worktree_root_with_runner(
+    start: &Path,
+    runner: &impl GitRunner,
+) -> Result<PathBuf, AppError> {
+    let output = run_hardened_git(
+        start,
+        runner,
+        MAX_GIT_OUTPUT_BYTES,
+        ["rev-parse", "--path-format=absolute", "--show-toplevel"],
+    )?;
+    let root = single_line(&output, "repository.root")?;
+    let root = std::str::from_utf8(root).map_err(|_| {
+        AppError::invalid_input("repository.root", "Git worktree root is not UTF-8")
+    })?;
+    validate_worktree_root(Path::new(root))
+}
+
+fn validate_worktree_root(root: &Path) -> Result<PathBuf, AppError> {
+    if !root.is_absolute() {
+        return Err(AppError::invalid_input(
+            "repository.root",
+            "Git worktree root must be absolute",
+        ));
+    }
+    let metadata = fs::symlink_metadata(root).map_err(|error| {
+        AppError::io(
+            "repository.root",
+            "could not inspect Git worktree root",
+            error,
+        )
+    })?;
+    if metadata.file_type().is_symlink() || !metadata.is_dir() {
+        return Err(AppError::invalid_input(
+            "repository.root",
+            "Git worktree root must be a non-symlink directory",
+        ));
+    }
+    let canonical = fs::canonicalize(root).map_err(|error| {
+        AppError::io(
+            "repository.root",
+            "could not canonicalize Git worktree root",
+            error,
+        )
+    })?;
+    if canonical != root {
+        return Err(AppError::invalid_input(
+            "repository.root",
+            "Git worktree root must use its canonical absolute spelling",
+        ));
+    }
+    Ok(canonical)
 }
 
 pub(crate) fn repository_id(repository_root: &Path) -> Result<String, AppError> {
@@ -607,6 +665,48 @@ mod tests {
 
     use super::*;
     use crate::context_control::REPOSITORY_SNAPSHOT_SCHEMA;
+
+    #[test]
+    fn worktree_root_resolution_returns_the_canonical_git_root_from_a_nested_path() {
+        let fixture = GitFixture::new();
+        let nested = fixture.root().join("nested/directory");
+        fs::create_dir_all(&nested).unwrap();
+
+        let resolved = resolve_worktree_root(&nested).unwrap();
+
+        assert_eq!(resolved, fs::canonicalize(fixture.root()).unwrap());
+        assert!(resolved.is_absolute());
+        assert!(!fs::symlink_metadata(&resolved)
+            .unwrap()
+            .file_type()
+            .is_symlink());
+    }
+
+    #[test]
+    fn worktree_root_resolution_uses_one_hardened_git_command() {
+        let fixture = GitFixture::new();
+        let canonical = fs::canonicalize(fixture.root()).unwrap();
+        let runner =
+            FakeRunner::with_results([output(format!("{}\n", canonical.display()).as_bytes())]);
+
+        let resolved = resolve_worktree_root_with_runner(fixture.root(), &runner).unwrap();
+
+        assert_eq!(resolved, canonical);
+        let invocations = runner.invocations.borrow();
+        assert_eq!(invocations.len(), 1);
+        assert_eq!(
+            invocations[0].arguments,
+            ["rev-parse", "--path-format=absolute", "--show-toplevel"].map(str::to_owned)
+        );
+        assert_eq!(
+            invocations[0].environment.get("GIT_CONFIG_NOSYSTEM"),
+            Some(&"1".to_owned())
+        );
+        assert_eq!(
+            invocations[0].environment.get("GIT_CONFIG_GLOBAL"),
+            Some(&"/dev/null".to_owned())
+        );
+    }
 
     #[test]
     fn linked_worktrees_share_repository_identity_and_dirty_content_changes_digests() {

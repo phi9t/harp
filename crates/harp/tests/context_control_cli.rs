@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use assert_cmd::Command;
 use serde_json::Value;
 
-use support::context_control::ProviderFixtures;
+use support::provider_context_control::ProviderFixtures;
 
 fn harp() -> Command {
     Command::cargo_bin("harp").expect("harp binary")
@@ -19,8 +19,9 @@ fn context_control_commands_are_exposed_without_running_a_provider() {
 }
 
 #[test]
-fn context_control_skeletons_return_typed_not_implemented_errors() {
-    assert_error_code(
+fn run_returns_a_typed_preflight_error_when_provider_is_missing() {
+    let empty_path = tempfile::tempdir().expect("empty provider search path");
+    assert_error_code_with_path(
         &[
             "--format",
             "json",
@@ -32,7 +33,8 @@ fn context_control_skeletons_return_typed_not_implemented_errors() {
             "the",
             "test",
         ],
-        "run.not_implemented",
+        empty_path.path(),
+        "provider.missing",
     );
 }
 
@@ -68,7 +70,8 @@ fn run_accepts_every_documented_context_control_option_value() {
         args.extend_from_slice(options);
         args.extend(["--", "test"]);
 
-        assert_error_code_for_case(&args, "run.not_implemented", name);
+        let empty_path = tempfile::tempdir().expect("empty provider search path");
+        assert_error_code_with_path_for_case(&args, empty_path.path(), "provider.missing", name);
     }
 }
 
@@ -262,20 +265,69 @@ fn doctor_digests(fixtures: &ProviderFixtures) -> BTreeMap<String, String> {
         .collect()
 }
 
-fn assert_error_code(args: &[&str], expected_code: &str) {
-    assert_error_code_for_case(args, expected_code, "CLI invocation");
+fn assert_error_code_with_path(args: &[&str], path: &std::path::Path, expected_code: &str) {
+    assert_error_code_with_path_for_case(args, path, expected_code, "CLI invocation");
 }
 
-fn assert_error_code_for_case(args: &[&str], expected_code: &str, case: &str) {
+fn assert_error_code_with_path_for_case(
+    args: &[&str],
+    path: &std::path::Path,
+    expected_code: &str,
+    case: &str,
+) {
+    install_git_only_path(path);
+    let state_parent = tempfile::tempdir().expect("isolated HARP_HOME parent");
+    let state_home = std::fs::canonicalize(state_parent.path())
+        .expect("canonical HARP_HOME parent")
+        .join("harp-state");
     let output = harp()
+        .env("HARP_HOME", &state_home)
+        .env("PATH", path)
         .args(args)
         .assert()
         .failure()
         .get_output()
         .stderr
         .clone();
-    let envelope: Value = serde_json::from_slice(&output)
-        .unwrap_or_else(|error| panic!("{case}: expected JSON error envelope: {error}"));
+    assert_stderr_error_code(&output, expected_code, case);
+}
+
+fn assert_stderr_error_code(output: &[u8], expected_code: &str, case: &str) {
+    let records = output
+        .split(|byte| *byte == b'\n')
+        .filter(|line| !line.is_empty())
+        .map(|line| {
+            serde_json::from_slice::<Value>(line)
+                .unwrap_or_else(|error| panic!("{case}: expected JSON stderr record: {error}"))
+        })
+        .collect::<Vec<_>>();
+    assert!(!records.is_empty(), "{case}: expected stderr records");
+    for lifecycle in &records[..records.len() - 1] {
+        assert_eq!(
+            lifecycle["type"], "lifecycle",
+            "{case}: non-final records must be lifecycle records"
+        );
+    }
+    let envelope = records.last().expect("nonempty stderr records");
     assert_eq!(envelope["status"], "error", "{case}");
     assert_eq!(envelope["data"]["code"], expected_code, "{case}");
+}
+
+fn install_git_only_path(path: &std::path::Path) {
+    let output = std::process::Command::new("/bin/sh")
+        .args(["-c", "command -v git"])
+        .output()
+        .expect("resolve Git executable");
+    assert!(
+        output.status.success(),
+        "Git must be available for CLI tests"
+    );
+    let executable = std::str::from_utf8(&output.stdout)
+        .expect("Git executable path is UTF-8")
+        .trim();
+    assert!(
+        std::path::Path::new(executable).is_absolute(),
+        "Git executable path must be absolute"
+    );
+    std::os::unix::fs::symlink(executable, path.join("git")).expect("install isolated Git symlink");
 }

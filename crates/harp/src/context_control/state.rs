@@ -443,6 +443,7 @@ mod secure {
             finish_committed_publication(result, &mut publication_lock)
         }
 
+        #[cfg(test)]
         pub(crate) fn hold_private_directory(
             &self,
             relative: &Path,
@@ -3386,6 +3387,7 @@ mod unsupported {
             Err(unsupported())
         }
 
+        #[cfg(test)]
         pub(crate) fn hold_private_directory(
             &self,
             _relative: &Path,

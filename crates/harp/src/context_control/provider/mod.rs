@@ -3,6 +3,7 @@ mod probe;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
 mod process;
 
+pub(crate) use invocation::build_invocation_from_snapshot;
 pub use invocation::{
     build_invocation, encode_provider_command, ApprovalPolicy, ProviderArgumentPlan,
     ProviderCapabilitySnapshot, ProviderInvocation, ProviderRunOptions, SandboxMode,

@@ -451,6 +451,27 @@ pub fn build_invocation(
     validate_invocation_path(capabilities.executable(), "provider executable")?;
     validate_repository_root(repository_root)?;
     let repository = RepositorySnapshot::capture(repository_root)?;
+    build_invocation_from_snapshot(
+        capabilities,
+        repository_root,
+        &repository,
+        context,
+        task,
+        options,
+    )
+}
+
+pub(crate) fn build_invocation_from_snapshot(
+    capabilities: &ProviderCapabilitySnapshot,
+    repository_root: &Path,
+    repository: &RepositorySnapshot,
+    context: &ContextBundle,
+    task: &str,
+    options: &ProviderRunOptions,
+) -> Result<ProviderInvocation, AppError> {
+    validate_invocation_path(capabilities.executable(), "provider executable")?;
+    validate_repository_root(repository_root)?;
+    validate_repository_association(repository_root, repository)?;
     validate_capabilities(capabilities, options)?;
     validate_context(context)?;
     validate_task(task)?;
@@ -498,7 +519,7 @@ pub fn build_invocation(
         capabilities: capabilities.clone(),
         arguments,
         working_directory: repository_root.to_owned(),
-        repository,
+        repository: repository.clone(),
         stdin_bytes,
         command_plan_bytes,
         command_plan_sha256,
@@ -515,10 +536,12 @@ impl ProviderInvocation {
         self.capabilities.provider
     }
 
+    #[cfg(test)]
     pub(crate) fn provider_version(&self) -> &str {
         self.capabilities.version()
     }
 
+    #[cfg(test)]
     pub(crate) fn provider_capabilities_sha256(&self) -> &str {
         self.capabilities.capability_sha256()
     }
@@ -1079,11 +1102,11 @@ impl SealedProviderEvidence {
     }
 
     pub(crate) fn provider_version(&self) -> &str {
-        self.invocation.provider_version()
+        self.invocation.plan.capabilities.version()
     }
 
     pub(crate) fn provider_capabilities_sha256(&self) -> &str {
-        self.invocation.provider_capabilities_sha256()
+        self.invocation.plan.capabilities.capability_sha256()
     }
 
     pub(crate) fn command_sha256(&self) -> &str {
@@ -2537,12 +2560,13 @@ mod tests {
     use tempfile::TempDir;
 
     use super::{
-        build_invocation, canonical_raw_archive, canonical_raw_members_manifest, div_ceil,
-        encode_provider_command, encode_provider_command_plan, executable_identity,
-        provider_executable_name, sha256_prefixed, tar_member_bound, ApprovalPolicy,
-        EpisodeProviderRawPath, EpisodeRawDirectoryAuthority, LegacyCapabilityDigest,
-        ProviderArgumentPlan, ProviderCapabilitySnapshot, ProviderInvocation, ProviderRawMember,
-        ProviderRunOptions, SandboxMode, COMMAND_ENCODING_MAGIC, COMMAND_PLAN_ENCODING_MAGIC,
+        build_invocation, build_invocation_from_snapshot, canonical_raw_archive,
+        canonical_raw_members_manifest, div_ceil, encode_provider_command,
+        encode_provider_command_plan, executable_identity, provider_executable_name,
+        sha256_prefixed, tar_member_bound, ApprovalPolicy, EpisodeProviderRawPath,
+        EpisodeRawDirectoryAuthority, LegacyCapabilityDigest, ProviderArgumentPlan,
+        ProviderCapabilitySnapshot, ProviderInvocation, ProviderRawMember, ProviderRunOptions,
+        SandboxMode, COMMAND_ENCODING_MAGIC, COMMAND_PLAN_ENCODING_MAGIC,
         DEFLATE_STORED_BLOCK_BYTES, DEFLATE_STORED_BLOCK_OVERHEAD, GZIP_WRAPPER_BYTES,
         MAX_FINAL_MESSAGE_BYTES, MAX_RAW_ARCHIVE_BYTES, MAX_RAW_TAR_BYTES, MAX_STDERR_BYTES,
         MAX_STDOUT_BYTES, PROMPT_ENCODING_MAGIC, TAR_END_BYTES,
@@ -2552,8 +2576,8 @@ mod tests {
     use crate::context_control::provider::ProviderCapabilities;
     use crate::context_control::routing::RouteDecision;
     use crate::context_control::{
-        ProviderId, WorkflowId, CONTEXT_BUNDLE_SCHEMA, PROVIDER_CAPABILITIES_SCHEMA,
-        PROVIDER_INVOCATION_SCHEMA,
+        ProviderId, RepositorySnapshot, WorkflowId, CONTEXT_BUNDLE_SCHEMA,
+        PROVIDER_CAPABILITIES_SCHEMA, PROVIDER_INVOCATION_SCHEMA,
     };
 
     const RELEASE_ID: &str =
@@ -2689,6 +2713,47 @@ mod tests {
             "the actual final-message path must participate in the executed command digest"
         );
         assert!(!fixture.raw_path(ProviderId::Trae).exists());
+    }
+
+    #[test]
+    fn invocation_reuses_the_authoritative_preflight_snapshot() {
+        let fixture = InvocationFixture::new();
+        let authoritative = RepositorySnapshot::capture(&fixture.repository).unwrap();
+
+        let plan = build_invocation_from_snapshot(
+            &fixture.snapshot(ProviderId::Trae),
+            &fixture.repository,
+            &authoritative,
+            &context_bundle(),
+            TASK,
+            &ProviderRunOptions::default(),
+        )
+        .unwrap();
+
+        assert_eq!(plan.repository(), &authoritative);
+    }
+
+    #[test]
+    fn invocation_rejects_repository_drift_instead_of_swapping_the_snapshot() {
+        let fixture = InvocationFixture::new();
+        let authoritative = RepositorySnapshot::capture(&fixture.repository).unwrap();
+        fs::write(
+            fixture.repository.join("tracked.txt"),
+            "changed after preflight\n",
+        )
+        .unwrap();
+
+        let error = build_invocation_from_snapshot(
+            &fixture.snapshot(ProviderId::Trae),
+            &fixture.repository,
+            &authoritative,
+            &context_bundle(),
+            TASK,
+            &ProviderRunOptions::default(),
+        )
+        .unwrap_err();
+
+        assert_eq!(error.code(), "provider.repository_changed");
     }
 
     #[test]

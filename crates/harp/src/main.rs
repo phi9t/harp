@@ -7,7 +7,10 @@ use std::process::ExitCode;
 use std::str::FromStr;
 
 use clap::{Parser, Subcommand, ValueEnum};
-use harp::context_control::provider::{locate, probe};
+use harp::context_control::provider::{
+    locate, probe, ApprovalPolicy, ProviderRunOptions, SandboxMode,
+};
+use harp::context_control::run::{run as run_context_control, RunReporter, RunRequest, RunResult};
 use harp::context_control::{ProviderId, WorkflowChoice, WorkflowId};
 use harp::{build_corpus, check_corpus, AppError, BuildMode};
 use harp_artifacts::ArtifactStore;
@@ -229,11 +232,31 @@ enum SandboxArg {
     DangerFullAccess,
 }
 
+impl From<SandboxArg> for SandboxMode {
+    fn from(sandbox: SandboxArg) -> Self {
+        match sandbox {
+            SandboxArg::ReadOnly => Self::ReadOnly,
+            SandboxArg::WorkspaceWrite => Self::WorkspaceWrite,
+            SandboxArg::DangerFullAccess => Self::DangerFullAccess,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, ValueEnum)]
 enum ApprovalArg {
     Untrusted,
     OnRequest,
     Never,
+}
+
+impl From<ApprovalArg> for ApprovalPolicy {
+    fn from(approval: ApprovalArg) -> Self {
+        match approval {
+            ApprovalArg::Untrusted => Self::Untrusted,
+            ApprovalArg::OnRequest => Self::OnRequest,
+            ApprovalArg::Never => Self::Never,
+        }
+    }
 }
 
 #[derive(Serialize)]
@@ -247,6 +270,21 @@ struct Envelope<T> {
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
+    if let Command::Run {
+        provider,
+        workflow,
+        model,
+        profile,
+        sandbox,
+        approval,
+        task,
+    } = &cli.command
+    {
+        return run_provider_command(
+            cli.format, *provider, *workflow, model, profile, *sandbox, *approval, task,
+        );
+    }
+
     match run(&cli) {
         Ok((command, message, data)) => {
             emit_success(cli.format, command, &message, data);
@@ -422,28 +460,80 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
                 ))
             }
         },
-        Command::Run {
-            provider,
-            workflow,
-            model,
-            profile,
-            sandbox,
-            approval,
-            task,
-        } => {
-            let _request = (
-                ProviderId::from(*provider),
-                WorkflowChoice::from(*workflow),
-                model,
-                profile,
-                sandbox,
-                approval,
-                task,
-            );
-            Err(AppError::external(
-                "run.not_implemented",
-                "context-control run is not implemented",
-            ))
+        Command::Run { .. } => {
+            unreachable!("streaming run commands are handled before generic dispatch")
+        }
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn run_provider_command(
+    format: OutputFormat,
+    provider: ProviderArg,
+    workflow: WorkflowArg,
+    model: &Option<String>,
+    profile: &Option<String>,
+    sandbox: Option<SandboxArg>,
+    approval: Option<ApprovalArg>,
+    task: &[String],
+) -> ExitCode {
+    let request = RunRequest {
+        provider: provider.into(),
+        workflow: workflow.into(),
+        task: task.join(" "),
+        options: ProviderRunOptions {
+            model: model.clone(),
+            profile: profile.clone(),
+            sandbox: sandbox.map(Into::into),
+            approval: approval.map(Into::into),
+        },
+    };
+    let mut reporter = StderrRunReporter { format };
+    match run_context_control(request, &mut reporter) {
+        Ok(result) => provider_exit_status(&result),
+        Err(error) => {
+            emit_error(format, &error);
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn provider_exit_status(result: &RunResult) -> ExitCode {
+    match (result.provider_exit_code, result.terminated_by_signal) {
+        (Some(0), None) => ExitCode::SUCCESS,
+        (Some(code @ 1..=255), None) => ExitCode::from(code as u8),
+        (None, Some(signal @ 1..=127)) => ExitCode::from((128 + signal) as u8),
+        _ => ExitCode::FAILURE,
+    }
+}
+
+struct StderrRunReporter {
+    format: OutputFormat,
+}
+
+impl RunReporter for StderrRunReporter {
+    fn lifecycle(&mut self, message: &str) {
+        self.emit("lifecycle", message);
+    }
+
+    fn warning(&mut self, message: &str) {
+        self.emit("warning", message);
+    }
+}
+
+impl StderrRunReporter {
+    fn emit(&self, kind: &'static str, message: &str) {
+        match self.format {
+            OutputFormat::Text => eprintln!("{message}"),
+            OutputFormat::Json => eprintln!(
+                "{}",
+                serde_json::to_string(&serde_json::json!({
+                    "schema_version": 1,
+                    "type": kind,
+                    "message": message,
+                }))
+                .expect("run reporter record serializes")
+            ),
         }
     }
 }
