@@ -6,6 +6,7 @@ use std::process::ExitCode;
 use std::str::FromStr;
 
 use clap::{Parser, Subcommand, ValueEnum};
+use harp::context_control::{ProviderId, WorkflowChoice, WorkflowId};
 use harp::{build_corpus, check_corpus, AppError, BuildMode};
 use harp_artifacts::ArtifactStore;
 use harp_cli_process::{CliProcessRuntime, ProcessRuntimeConfig};
@@ -65,6 +66,33 @@ enum Command {
     Rlm {
         #[command(subcommand)]
         command: RlmCommand,
+    },
+    /// Inspect local agent CLI provider capabilities.
+    Providers {
+        #[command(subcommand)]
+        command: ProvidersCommand,
+    },
+    /// Manage immutable context-control releases.
+    Releases {
+        #[command(subcommand)]
+        command: ReleasesCommand,
+    },
+    /// Run a task through the context-control surface.
+    Run {
+        #[arg(long, value_enum)]
+        provider: ProviderArg,
+        #[arg(long, value_enum, default_value_t = WorkflowArg::Auto)]
+        workflow: WorkflowArg,
+        #[arg(long)]
+        model: Option<String>,
+        #[arg(long)]
+        profile: Option<String>,
+        #[arg(long, value_enum)]
+        sandbox: Option<SandboxArg>,
+        #[arg(long, value_enum)]
+        approval: Option<ApprovalArg>,
+        #[arg(last = true, required = true, num_args = 1..)]
+        task: Vec<String>,
     },
 }
 
@@ -134,6 +162,76 @@ enum RuntimeSelection {
     Fake,
     Codex,
     Traecli,
+}
+
+#[derive(Subcommand)]
+enum ProvidersCommand {
+    Doctor {
+        #[arg(long, value_enum)]
+        provider: Option<ProviderArg>,
+    },
+}
+
+#[derive(Subcommand)]
+enum ReleasesCommand {
+    Compile,
+    List,
+    Inspect { release_id: String },
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum ProviderArg {
+    Trae,
+    Codex,
+}
+
+impl From<ProviderArg> for ProviderId {
+    fn from(provider: ProviderArg) -> Self {
+        match provider {
+            ProviderArg::Trae => Self::Trae,
+            ProviderArg::Codex => Self::Codex,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, ValueEnum)]
+enum WorkflowArg {
+    #[default]
+    Auto,
+    #[value(name = "ci_repair")]
+    CiRepair,
+    #[value(name = "code_review")]
+    CodeReview,
+    #[value(name = "dependency_update")]
+    DependencyUpdate,
+    #[value(name = "general_coding")]
+    GeneralCoding,
+}
+
+impl From<WorkflowArg> for WorkflowChoice {
+    fn from(workflow: WorkflowArg) -> Self {
+        match workflow {
+            WorkflowArg::Auto => Self::Auto,
+            WorkflowArg::CiRepair => Self::Workflow(WorkflowId::CiRepair),
+            WorkflowArg::CodeReview => Self::Workflow(WorkflowId::CodeReview),
+            WorkflowArg::DependencyUpdate => Self::Workflow(WorkflowId::DependencyUpdate),
+            WorkflowArg::GeneralCoding => Self::Workflow(WorkflowId::GeneralCoding),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum SandboxArg {
+    ReadOnly,
+    WorkspaceWrite,
+    DangerFullAccess,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum ApprovalArg {
+    Untrusted,
+    OnRequest,
+    Never,
 }
 
 #[derive(Serialize)]
@@ -260,6 +358,48 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
             }
         },
         Command::Rlm { command } => run_rlm(root, command),
+        Command::Providers { command } => match command {
+            ProvidersCommand::Doctor { provider } => {
+                let _provider = provider.map(ProviderId::from);
+                Err(AppError::external(
+                    "provider.not_implemented",
+                    "provider doctor is not implemented",
+                ))
+            }
+        },
+        Command::Releases { command } => {
+            let _release_id = match command {
+                ReleasesCommand::Compile | ReleasesCommand::List => None,
+                ReleasesCommand::Inspect { release_id } => Some(release_id),
+            };
+            Err(AppError::external(
+                "context_control.not_implemented",
+                "context-control release commands are not implemented",
+            ))
+        }
+        Command::Run {
+            provider,
+            workflow,
+            model,
+            profile,
+            sandbox,
+            approval,
+            task,
+        } => {
+            let _request = (
+                ProviderId::from(*provider),
+                WorkflowChoice::from(*workflow),
+                model,
+                profile,
+                sandbox,
+                approval,
+                task,
+            );
+            Err(AppError::external(
+                "run.not_implemented",
+                "context-control run is not implemented",
+            ))
+        }
     }
 }
 

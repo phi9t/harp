@@ -58,6 +58,26 @@ The opt-in proposer supplement is under `labs/meta_harness_trae/`. Its
 deterministic tests and recorded run are part of offline verification; invoking
 a new live proposer is intentionally outside `mise run verify`.
 
+### Context-Control Surface
+
+The context-control surface exposes the provider, release, and run contracts:
+
+```sh
+cargo run -p harp -- providers doctor [--provider trae|codex]
+cargo run -p harp -- releases compile
+cargo run -p harp -- releases list
+cargo run -p harp -- releases inspect <release_id>
+cargo run -p harp -- run --provider trae|codex \
+  [--workflow auto|ci_repair|code_review|dependency_update|general_coding] \
+  [--model MODEL] [--profile PROFILE] \
+  [--sandbox read-only|workspace-write|danger-full-access] \
+  [--approval untrusted|on-request|never] -- <task words...>
+```
+
+These commands currently define the public CLI contract only. Provider
+observation, release handling, and run execution are implemented in later
+context-control milestones.
+
 ## Atlas
 
 ```sh

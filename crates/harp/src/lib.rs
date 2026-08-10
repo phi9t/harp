@@ -1,3 +1,4 @@
+pub mod context_control;
 mod corpus;
 mod error;
 mod fs;

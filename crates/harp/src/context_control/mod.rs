@@ -1,0 +1,20 @@
+pub mod schema;
+
+pub use schema::{ContextItemKind, ProviderId, WorkflowChoice, WorkflowId};
+
+pub const WORKFLOW_SCHEMA: &str = "harp-workflow/v1";
+pub const ROUTING_SCHEMA: &str = "harp-routing/v1";
+pub const CONTEXT_SCHEMA: &str = "harp-context-schema/v1";
+pub const VERIFICATION_SCHEMA: &str = "harp-verification/v1";
+pub const OUTCOME_RULES_SCHEMA: &str = "harp-outcome-rules/v1";
+pub const CONTEXT_ITEM_SCHEMA: &str = "harp-context-item/v1";
+pub const RELEASE_IDENTITY_SCHEMA: &str = "harp-context-release-identity/v1";
+pub const RELEASE_SCHEMA: &str = "harp-context-release/v1";
+pub const CONTEXT_BUNDLE_SCHEMA: &str = "harp-context-bundle/v1";
+pub const PROVIDER_CAPABILITIES_SCHEMA: &str = "harp-provider-capabilities/v1";
+pub const REPOSITORY_POLICY_SCHEMA: &str = "harp-repository-policy/v1";
+pub const REPOSITORY_SNAPSHOT_SCHEMA: &str = "harp-repository-snapshot/v1";
+pub const EPISODE_SCHEMA: &str = "harp-episode/v1";
+pub const PROVIDER_INVOCATION_SCHEMA: &str = "harp-provider-invocation/v1";
+pub const COMPLETION_SCHEMA: &str = "harp-episode-completion/v1";
+pub const PREFLIGHT_FAILURE_SCHEMA: &str = "harp-preflight-failure/v1";
