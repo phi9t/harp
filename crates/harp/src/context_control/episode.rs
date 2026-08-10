@@ -8,7 +8,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 use super::canonical::{json_bytes, sha256_hex};
 use super::context::ContextBundle;
 #[cfg(any(target_os = "macos", target_os = "linux"))]
-use super::provider::EpisodeRawDirectoryAuthority;
+use super::provider::{EpisodeProviderRawPath, EpisodeRawDirectoryAuthority};
 use super::state::{HeldPrivateDirectory, PrivateFileExpectation, ReplacePolicy, StateRoot};
 use super::{
     ProviderId, RepositorySnapshot, WorkflowId, COMPLETION_SCHEMA, CONTEXT_BUNDLE_SCHEMA,
@@ -395,14 +395,37 @@ impl<'a> EpisodeWriter<'a> {
     }
 
     #[cfg(any(target_os = "macos", target_os = "linux"))]
+    pub fn provider_raw_path(&self) -> Result<EpisodeProviderRawPath, AppError> {
+        let (raw_path, _) = self.provider_raw_parts()?;
+        Ok(raw_path)
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
     pub fn raw_directory_authority(&self) -> Result<EpisodeRawDirectoryAuthority, AppError> {
-        let (relative_path, path, directory) = self.raw_directory.duplicate_parts()?;
-        Ok(EpisodeRawDirectoryAuthority::new(
-            self.manifest.provider,
-            relative_path,
-            path,
-            directory,
-        ))
+        let (raw_path, directory) = self.provider_raw_parts()?;
+        EpisodeRawDirectoryAuthority::new(raw_path, directory)
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    fn provider_raw_parts(
+        &self,
+    ) -> Result<(EpisodeProviderRawPath, std::os::fd::OwnedFd), AppError> {
+        let expected_relative = episode_directory(
+            &self.manifest.repository.repository_id,
+            &self.manifest.episode_id,
+        )?
+        .join("raw")
+        .join(self.manifest.provider.to_string());
+        let (held_relative, path, directory) = self.raw_directory.duplicate_parts()?;
+        if held_relative != expected_relative {
+            return Err(AppError::invalid_input(
+                "episode.mismatch",
+                "held provider raw directory does not match the episode manifest",
+            ));
+        }
+        let raw_path =
+            EpisodeProviderRawPath::new(self.manifest.provider, expected_relative, path)?;
+        Ok((raw_path, directory))
     }
 
     pub fn complete(&self, completion: &CompletionReceipt) -> Result<(), AppError> {
@@ -959,9 +982,29 @@ mod tests {
         )
         .unwrap();
 
-        let bound = plan
+        let raw_path = episode.provider_raw_path().unwrap();
+        assert_eq!(
+            raw_path.relative_path(),
+            episode
+                .relative_directory()
+                .join("raw")
+                .join(ProviderId::Trae.to_string())
+        );
+        let materialized = plan.materialize(&raw_path).unwrap();
+        assert_eq!(
+            materialized.command_plan_sha256(),
+            plan.command_plan_sha256()
+        );
+        assert_ne!(
+            materialized.command_sha256(),
+            materialized.command_plan_sha256()
+        );
+        let command_sha256 = materialized.command_sha256().to_owned();
+        let bound = materialized
             .bind(episode.raw_directory_authority().unwrap())
             .unwrap();
+        assert_eq!(bound.command_sha256(), command_sha256);
+        assert_eq!(bound.command_plan_sha256(), plan.command_plan_sha256());
         assert_eq!(
             bound.final_message_path(),
             fixture
@@ -970,6 +1013,9 @@ mod tests {
                 .join("raw/trae/final_message.bin")
         );
 
+        let materialized_before_swap = plan
+            .materialize(&episode.provider_raw_path().unwrap())
+            .unwrap();
         let authority_before_swap = episode.raw_directory_authority().unwrap();
         let raw = fixture
             .root
@@ -980,7 +1026,10 @@ mod tests {
         fs::set_permissions(&raw, fs::Permissions::from_mode(0o700)).unwrap();
 
         assert_eq!(
-            plan.bind(authority_before_swap).unwrap_err().code(),
+            materialized_before_swap
+                .bind(authority_before_swap)
+                .unwrap_err()
+                .code(),
             "provider.invocation_path"
         );
         assert_eq!(
