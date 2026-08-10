@@ -1,8 +1,12 @@
+pub mod policy;
+pub mod repository_state;
 pub mod routing;
 pub mod schema;
 pub mod state;
 pub mod workflow;
 
+pub use policy::RepositoryPolicy;
+pub use repository_state::RepositorySnapshot;
 pub use schema::{ContextItemKind, ProviderId, WorkflowChoice, WorkflowId};
 
 pub const WORKFLOW_SCHEMA: &str = "harp-workflow/v1";
