@@ -236,8 +236,7 @@ async fn executes_two_analysis_tasks_and_one_reducer() {
 
     assert_eq!(summary.completed_tasks, 3);
     assert_eq!(summary.indeterminate_attempts, 0);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 3);
     assert_eq!(backend.start_activity_calls(), 3);
     assert_eq!(backend.interrupt_calls(), 0);
     assert_eq!(
@@ -473,8 +472,7 @@ async fn live_completion_rejects_result_that_violates_pinned_output_schema() {
         .resume_run(&mut reopened, &artifacts, &mut resumed_runtime, &run_id)
         .await
         .expect("failed semantic result restart is inert");
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
 }
 
@@ -636,8 +634,7 @@ async fn active_wall_timeout_persists_interrupt_before_runtime_interrupt_and_res
         .await
         .expect("failed run resumes without semantic work");
     assert_eq!(summary.completed_tasks, 0);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
 }
 
@@ -693,7 +690,7 @@ async fn tampered_persisted_scratch_identity_fails_before_runtime_work() {
             .await,
         Err(harp_engine::EngineError::InjectedCrash { .. })
     ));
-    assert_eq!(backend.start_thread_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
     drop(state);
 
     let connection = rusqlite::Connection::open(&state_path).unwrap();
@@ -739,8 +736,8 @@ async fn tampered_persisted_scratch_identity_fails_before_runtime_work() {
         error,
         harp_engine::EngineError::State(harp_state::StateError::Conflict { .. })
     ));
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -801,7 +798,7 @@ async fn visible_artifact_root_substitution_fails_before_start_thread() {
         .expect_err("visible root substitution is rejected");
 
     assert!(matches!(error, harp_engine::EngineError::Artifact(_)));
-    assert_eq!(backend.start_thread_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
 }
 
 #[tokio::test]
@@ -863,7 +860,7 @@ async fn runtime_rejects_substitution_after_engine_verification_before_external_
         .expect_err("runtime path substitution is rejected inside adapter call");
 
     assert!(matches!(error, harp_engine::EngineError::Runtime(_)));
-    assert_eq!(backend.start_thread_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
 }
 
 #[tokio::test]
@@ -960,7 +957,10 @@ async fn invalid_output_with_symlink_terminalizes_storage_integrity_and_resume_i
         state.attempts(&run_id).unwrap()[0].state,
         harp_state::AttemptState::Failed
     );
-    let calls = (backend.start_thread_calls(), backend.start_turn_calls());
+    let calls = (
+        backend.start_logical_session_calls(),
+        backend.start_activity_calls(),
+    );
     drop(state);
 
     let mut reopened = StateStore::open(&state_path).unwrap();
@@ -980,7 +980,10 @@ async fn invalid_output_with_symlink_terminalizes_storage_integrity_and_resume_i
         .await
         .expect("terminal storage integrity restart is inert");
     assert_eq!(
-        (backend.start_thread_calls(), backend.start_turn_calls()),
+        (
+            backend.start_logical_session_calls(),
+            backend.start_activity_calls()
+        ),
         calls
     );
 }

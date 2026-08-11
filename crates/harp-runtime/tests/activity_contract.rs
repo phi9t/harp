@@ -6,7 +6,10 @@ use harp_contracts::{
     TurnCompletedEvent, TurnId, TurnSnapshot, TurnSpec, TurnStatus,
 };
 use harp_runtime::fake::{FakeCodexRuntime, FakeStep};
-use harp_runtime::{ActivityRuntime, ActivitySpec, InterruptPurpose, InterruptReceipt};
+use harp_runtime::{
+    collect_until_terminal, ActivityRuntime, ActivitySpec, CollectionLimits, InterruptPurpose,
+    InterruptReceipt,
+};
 
 fn thread_spec() -> ThreadSpec {
     ThreadSpec {
@@ -116,16 +119,20 @@ async fn activity_runtime_tracks_logical_ids_process_digest_and_interrupt_receip
         Some("codex-session-1".to_owned())
     );
 
-    let first = runtime
-        .next_event(&handle, Duration::from_millis(1))
-        .await
-        .unwrap();
-    assert!(matches!(first, RuntimeEvent::TokenUsage(_)));
-    let terminal = runtime
-        .next_event(&handle, Duration::from_millis(1))
-        .await
-        .unwrap();
-    assert!(matches!(terminal, RuntimeEvent::TurnCompleted(_)));
+    let events = collect_until_terminal(
+        &mut runtime,
+        &handle,
+        &CollectionLimits {
+            max_events: 4,
+            max_serialized_bytes: 1024 * 1024,
+            max_total_wait: Duration::from_secs(1),
+            per_event_wait: Duration::from_millis(100),
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(events[0], RuntimeEvent::TokenUsage(_)));
+    assert!(matches!(events[1], RuntimeEvent::TurnCompleted(_)));
 
     let receipt = runtime
         .interrupt(&handle, InterruptPurpose::Cancellation)

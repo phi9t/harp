@@ -1,29 +1,29 @@
 use harp_contracts::{
     DisconnectedEvent, RuntimeErrorKind, RuntimeEvent, RuntimeFailure, ServerRequestEvent,
-    ThreadHandle, ThreadSnapshot, ThreadSpec, TokenUsage, TokenUsageEvent, TurnCompletedEvent,
-    TurnHandle, TurnSnapshot, TurnSpec, TurnStartedEvent, TurnStatus,
+    ThreadStartedEvent, TokenUsage, TokenUsageEvent, TurnCompletedEvent, TurnHandle, TurnSnapshot,
+    TurnStartedEvent, TurnStatus,
 };
 use serde_json::json;
 
-use super::{FakeSnapshotResult, FakeStep};
+use super::FakeStep;
 use crate::conformance::RuntimeFixture;
+use crate::{ActivitySpec, InterruptPurpose, InterruptReceipt};
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FakeFixture {
     pub runtime: RuntimeFixture,
-    pub continuation_turn_spec: TurnSpec,
-    pub expected_thread: ThreadHandle,
+    pub continuation_turn_spec: harp_contracts::TurnSpec,
+    pub expected_thread: harp_contracts::ThreadHandle,
     pub expected_turn: TurnHandle,
     pub expected_continuation_turn: TurnHandle,
-    pub expected_snapshot: ThreadSnapshot,
 }
 
 impl FakeFixture {
-    pub fn thread_spec(&self) -> &ThreadSpec {
+    pub fn thread_spec(&self) -> &harp_contracts::ThreadSpec {
         &self.runtime.thread_spec
     }
 
-    pub fn turn_spec(&self) -> &TurnSpec {
+    pub fn turn_spec(&self) -> &harp_contracts::TurnSpec {
         &self.runtime.turn_spec
     }
 }
@@ -44,79 +44,51 @@ pub fn immediate_success(fixture: &FakeFixture) -> Vec<FakeStep> {
         8,
         TurnStatus::Completed,
     ));
-    steps.push(FakeStep::ReadThread {
-        expected: fixture.expected_thread.clone(),
-        result: FakeSnapshotResult::Scripted(Ok(fixture.expected_snapshot.clone())),
-    });
-    steps.push(FakeStep::ResumeThread {
-        expected: fixture.expected_thread.clone(),
-        result: FakeSnapshotResult::Scripted(Ok(fixture.expected_snapshot.clone())),
-    });
-    steps.push(FakeStep::Shutdown {
-        expected: fixture.expected_thread.clone(),
-        result: Ok(()),
-    });
     steps
 }
 
 pub fn interrupt_success(fixture: &FakeFixture) -> Vec<FakeStep> {
     let mut steps = start_steps(fixture);
-    steps.push(FakeStep::Interrupt {
-        expected: fixture.expected_turn.clone(),
-        result: Ok(()),
-    });
-    steps.push(FakeStep::ReadThread {
-        expected: fixture.expected_thread.clone(),
-        result: FakeSnapshotResult::Backend,
-    });
-    steps.push(FakeStep::Shutdown {
-        expected: fixture.expected_thread.clone(),
-        result: Ok(()),
+    steps.push(FakeStep::ActivityInterrupt {
+        expected_logical_session_id: fixture.expected_thread.thread_id.clone(),
+        expected_logical_turn_id: fixture.runtime.logical_turn_id.clone(),
+        expected_purpose: InterruptPurpose::Cancellation,
+        result: Ok(InterruptReceipt {
+            process_record_sha256: fixture.runtime.expected_process_record_sha256.clone(),
+            quiescent: true,
+        }),
     });
     steps
 }
 
 pub fn disconnect_after_thread(fixture: &FakeFixture) -> Vec<FakeStep> {
     vec![
-        FakeStep::StartThread {
+        FakeStep::StartLogicalSession {
             expected: fixture.runtime.thread_spec.clone(),
-            external: Some(fixture.expected_thread.clone()),
             result: Ok(fixture.expected_thread.clone()),
         },
-        FakeStep::StartTurn {
-            expected_thread: fixture.expected_thread.clone(),
-            expected: fixture.runtime.turn_spec.clone(),
-            external: None,
+        FakeStep::StartActivity {
+            expected: activity_spec(fixture, &fixture.expected_turn, false),
+            process_record_sha256: fixture.runtime.expected_process_record_sha256.clone(),
+            external_session_id: fixture.runtime.expected_external_session_id.clone(),
             result: Err(failure(
                 RuntimeErrorKind::Disconnected,
-                "disconnected after thread creation",
+                "disconnected after logical session creation",
                 true,
             )),
-        },
-        FakeStep::Shutdown {
-            expected: fixture.expected_thread.clone(),
-            result: Ok(()),
         },
     ]
 }
 
 pub fn disconnect_after_turn(fixture: &FakeFixture) -> Vec<FakeStep> {
     let mut steps = start_steps(fixture);
-    steps.push(FakeStep::Event {
-        expected_turn: fixture.expected_turn.clone(),
-        result: Ok(RuntimeEvent::Disconnected(DisconnectedEvent {
-            reason: "disconnected after turn creation".to_string(),
-        })),
-    });
-    steps
-}
-
-pub fn completed_visible_on_read(fixture: &FakeFixture) -> Vec<FakeStep> {
-    let mut steps = start_steps(fixture);
-    steps.push(FakeStep::ReadThread {
-        expected: fixture.expected_thread.clone(),
-        result: FakeSnapshotResult::Scripted(Ok(fixture.expected_snapshot.clone())),
-    });
+    steps.push(activity_event(
+        fixture,
+        &fixture.expected_turn,
+        RuntimeEvent::Disconnected(DisconnectedEvent {
+            reason: "disconnected after activity creation".to_owned(),
+        }),
+    ));
     steps
 }
 
@@ -128,15 +100,11 @@ pub fn interrupted_then_continuation(fixture: &FakeFixture) -> Vec<FakeStep> {
         8,
         TurnStatus::Interrupted,
     ));
-    steps.push(FakeStep::ResumeThread {
-        expected: fixture.expected_thread.clone(),
-        result: FakeSnapshotResult::Backend,
-    });
-    steps.push(FakeStep::StartTurn {
-        expected_thread: fixture.expected_thread.clone(),
-        expected: fixture.continuation_turn_spec.clone(),
-        external: Some(fixture.expected_continuation_turn.clone()),
-        result: Ok(fixture.expected_continuation_turn.clone()),
+    steps.push(FakeStep::StartActivity {
+        expected: activity_spec(fixture, &fixture.expected_continuation_turn, true),
+        process_record_sha256: fixture.runtime.expected_process_record_sha256.clone(),
+        external_session_id: fixture.runtime.expected_external_session_id.clone(),
+        result: Ok(()),
     });
     steps.extend(terminal_events(
         fixture,
@@ -160,21 +128,23 @@ pub fn token_budget_crossing(fixture: &FakeFixture, total_tokens: u64) -> Vec<Fa
 
 pub fn approval_request(fixture: &FakeFixture) -> Vec<FakeStep> {
     let mut steps = start_steps(fixture);
-    steps.push(FakeStep::Event {
-        expected_turn: fixture.expected_turn.clone(),
-        result: Ok(RuntimeEvent::ServerRequest(ServerRequestEvent {
+    steps.push(activity_event(
+        fixture,
+        &fixture.expected_turn,
+        RuntimeEvent::ServerRequest(ServerRequestEvent {
             thread_id: fixture.expected_thread.thread_id.clone(),
             turn_id: Some(fixture.expected_turn.turn_id.clone()),
             request: json!({"kind": "approval"}),
-        })),
-    });
+        }),
+    ));
     steps
 }
 
 pub fn output_schema_violation(fixture: &FakeFixture) -> Vec<FakeStep> {
     let mut steps = start_steps(fixture);
-    steps.push(FakeStep::Event {
-        expected_turn: fixture.expected_turn.clone(),
+    steps.push(FakeStep::ActivityEvent {
+        expected_logical_session_id: fixture.expected_thread.thread_id.clone(),
+        expected_logical_turn_id: fixture.expected_turn.turn_id.clone(),
         result: Err(failure(
             RuntimeErrorKind::OutputSchema,
             "runtime output did not match the requested schema",
@@ -184,18 +154,37 @@ pub fn output_schema_violation(fixture: &FakeFixture) -> Vec<FakeStep> {
     steps
 }
 
+pub fn activity_spec(fixture: &FakeFixture, turn: &TurnHandle, continuation: bool) -> ActivitySpec {
+    ActivitySpec {
+        logical_session_id: fixture.expected_thread.thread_id.clone(),
+        logical_turn_id: turn.turn_id.clone(),
+        thread_spec: fixture.runtime.thread_spec.clone(),
+        turn_spec: if continuation {
+            fixture.continuation_turn_spec.clone()
+        } else {
+            fixture.runtime.turn_spec.clone()
+        },
+        activity_dir: fixture.runtime.activity_dir.clone(),
+        invocation_sha256: fixture.runtime.invocation_sha256.clone(),
+        external_session_id: if continuation {
+            fixture.runtime.expected_external_session_id.clone()
+        } else {
+            None
+        },
+    }
+}
+
 fn start_steps(fixture: &FakeFixture) -> Vec<FakeStep> {
     vec![
-        FakeStep::StartThread {
+        FakeStep::StartLogicalSession {
             expected: fixture.runtime.thread_spec.clone(),
-            external: Some(fixture.expected_thread.clone()),
             result: Ok(fixture.expected_thread.clone()),
         },
-        FakeStep::StartTurn {
-            expected_thread: fixture.expected_thread.clone(),
-            expected: fixture.runtime.turn_spec.clone(),
-            external: Some(fixture.expected_turn.clone()),
-            result: Ok(fixture.expected_turn.clone()),
+        FakeStep::StartActivity {
+            expected: activity_spec(fixture, &fixture.expected_turn, false),
+            process_record_sha256: fixture.runtime.expected_process_record_sha256.clone(),
+            external_session_id: fixture.runtime.expected_external_session_id.clone(),
+            result: Ok(()),
         },
     ]
 }
@@ -207,16 +196,25 @@ fn terminal_events(
     status: TurnStatus,
 ) -> Vec<FakeStep> {
     vec![
-        FakeStep::Event {
-            expected_turn: turn.clone(),
-            result: Ok(RuntimeEvent::TurnStarted(TurnStartedEvent {
+        activity_event(
+            fixture,
+            turn,
+            RuntimeEvent::ThreadStarted(ThreadStartedEvent {
+                thread_id: turn.thread_id.clone(),
+            }),
+        ),
+        activity_event(
+            fixture,
+            turn,
+            RuntimeEvent::TurnStarted(TurnStartedEvent {
                 thread_id: turn.thread_id.clone(),
                 turn_id: turn.turn_id.clone(),
-            })),
-        },
-        FakeStep::Event {
-            expected_turn: turn.clone(),
-            result: Ok(RuntimeEvent::TokenUsage(TokenUsageEvent {
+            }),
+        ),
+        activity_event(
+            fixture,
+            turn,
+            RuntimeEvent::TokenUsage(TokenUsageEvent {
                 thread_id: turn.thread_id.clone(),
                 turn_id: turn.turn_id.clone(),
                 usage: TokenUsage {
@@ -226,11 +224,12 @@ fn terminal_events(
                     output_tokens: 0,
                     reasoning_output_tokens: 0,
                 },
-            })),
-        },
-        FakeStep::Event {
-            expected_turn: turn.clone(),
-            result: Ok(RuntimeEvent::TurnCompleted(TurnCompletedEvent {
+            }),
+        ),
+        activity_event(
+            fixture,
+            turn,
+            RuntimeEvent::TurnCompleted(TurnCompletedEvent {
                 thread_id: turn.thread_id.clone(),
                 turn: TurnSnapshot {
                     turn_id: turn.turn_id.clone(),
@@ -246,15 +245,23 @@ fn terminal_events(
                         None
                     },
                 },
-            })),
-        },
+            }),
+        ),
     ]
+}
+
+fn activity_event(fixture: &FakeFixture, turn: &TurnHandle, event: RuntimeEvent) -> FakeStep {
+    FakeStep::ActivityEvent {
+        expected_logical_session_id: fixture.expected_thread.thread_id.clone(),
+        expected_logical_turn_id: turn.turn_id.clone(),
+        result: Ok(event),
+    }
 }
 
 fn failure(kind: RuntimeErrorKind, message: &str, transient: bool) -> RuntimeFailure {
     RuntimeFailure {
         kind,
-        message: message.to_string(),
+        message: message.to_owned(),
         transient,
     }
 }

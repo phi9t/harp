@@ -1,8 +1,8 @@
 use std::str::FromStr;
 
 use harp_contracts::{
-    OperationId, ThreadHandle, ThreadId, ThreadSnapshot, ThreadSpec, TurnHandle, TurnId, TurnSpec,
-    TurnStatus,
+    ExternalSessionId, OperationId, ThreadHandle, ThreadId, ThreadSpec, TurnHandle, TurnId,
+    TurnSpec, TurnStatus,
 };
 use harp_runtime::conformance::RuntimeFixture;
 use harp_runtime::fake::scenarios::FakeFixture;
@@ -32,6 +32,13 @@ pub fn runtime_fixture() -> RuntimeFixture {
             model: Some("codex".to_string()),
             reasoning_effort: Some("high".to_string()),
         },
+        logical_turn_id: TurnId::from_str("generated-turn").unwrap(),
+        activity_dir: "/private/work/.harp-activity".to_owned(),
+        invocation_sha256: "a".repeat(64),
+        expected_process_record_sha256: "b".repeat(64),
+        expected_external_session_id: Some(
+            ExternalSessionId::from_str("generated-thread").unwrap(),
+        ),
         expected_status: TurnStatus::Completed,
         expected_final_message: Some(r#"{"answer":"ok"}"#.to_string()),
         minimum_total_tokens: 8,
@@ -51,12 +58,6 @@ pub fn fake_fixture() -> FakeFixture {
         thread_id: thread.thread_id.clone(),
         turn_id: TurnId::from_str("generated-continuation").unwrap(),
     };
-    let completed = harp_contracts::TurnSnapshot {
-        turn_id: turn.turn_id.clone(),
-        operation_marker: Some(runtime.turn_spec.operation_marker.clone()),
-        status: runtime.expected_status,
-        final_agent_message: runtime.expected_final_message.clone(),
-    };
     FakeFixture {
         runtime,
         continuation_turn_spec: TurnSpec {
@@ -69,10 +70,5 @@ pub fn fake_fixture() -> FakeFixture {
         expected_thread: thread.clone(),
         expected_turn: turn,
         expected_continuation_turn: continuation,
-        expected_snapshot: ThreadSnapshot {
-            thread_id: thread.thread_id,
-            status: harp_contracts::ThreadStatus::Idle,
-            turns: vec![completed],
-        },
     }
 }

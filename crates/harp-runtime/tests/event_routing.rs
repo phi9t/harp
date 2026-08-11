@@ -6,32 +6,45 @@ use std::time::Duration;
 use async_trait::async_trait;
 use harp_contracts::{
     ContractError, LaggedEvent, OperationId, RuntimeErrorKind, RuntimeEvent, ServerRequestEvent,
-    ThreadHandle, ThreadId, ThreadSnapshot, ThreadSpec, TurnCompletedEvent, TurnHandle, TurnId,
-    TurnSnapshot, TurnSpec, TurnStartedEvent, TurnStatus,
+    ThreadHandle, ThreadId, ThreadSpec, TurnCompletedEvent, TurnId, TurnSnapshot, TurnStartedEvent,
+    TurnStatus,
 };
 use harp_runtime::fake::{FakeCodexRuntime, FakeStep};
-use harp_runtime::{collect_until_terminal, CodexRuntime, CollectionLimits, RuntimeError};
+use harp_runtime::{
+    collect_until_terminal, ActivityHandle, ActivityRuntime, ActivitySpec, CollectionLimits,
+    InterruptPurpose, InterruptReceipt, RuntimeError,
+};
 use serde_json::json;
 
 const MARKER: &str = "018f22e2-7c3b-7def-8123-456789abcdef";
 
-fn turn(thread: &str, turn: &str) -> TurnHandle {
-    TurnHandle {
-        thread_id: ThreadId::from_str(thread).unwrap(),
-        turn_id: TurnId::from_str(turn).unwrap(),
+fn activity(thread: &str, turn: &str) -> ActivityHandle {
+    ActivityHandle {
+        logical_session_id: ThreadId::from_str(thread).unwrap(),
+        logical_turn_id: TurnId::from_str(turn).unwrap(),
+        process_record_sha256: "a".repeat(64),
+        external_session_id: None,
     }
 }
 
-fn completed(turn: &TurnHandle, message: &str) -> RuntimeEvent {
+fn completed(activity: &ActivityHandle, message: &str) -> RuntimeEvent {
     RuntimeEvent::TurnCompleted(TurnCompletedEvent {
-        thread_id: turn.thread_id.clone(),
+        thread_id: activity.logical_session_id.clone(),
         turn: TurnSnapshot {
-            turn_id: turn.turn_id.clone(),
+            turn_id: activity.logical_turn_id.clone(),
             operation_marker: Some(OperationId::from_str(MARKER).unwrap()),
             status: TurnStatus::Completed,
-            final_agent_message: Some(message.to_string()),
+            final_agent_message: Some(message.to_owned()),
         },
     })
+}
+
+fn activity_event(activity: &ActivityHandle, result: RuntimeEvent) -> FakeStep {
+    FakeStep::ActivityEvent {
+        expected_logical_session_id: activity.logical_session_id.clone(),
+        expected_logical_turn_id: activity.logical_turn_id.clone(),
+        result: Ok(result),
+    }
 }
 
 fn limits() -> CollectionLimits {
@@ -44,14 +57,32 @@ fn limits() -> CollectionLimits {
 }
 
 #[tokio::test]
-async fn wrong_turn_scope_is_protocol_and_does_not_consume_event() {
-    let requested = turn("thread-1", "turn-1");
-    let routed = turn("thread-1", "turn-2");
-    let mut runtime = FakeCodexRuntime::new(vec![FakeStep::Event {
-        expected_turn: routed.clone(),
-        result: Ok(completed(&routed, "done")),
-    }])
+async fn collector_accepts_thread_started_for_the_activity_session() {
+    let requested = activity("thread-1", "turn-1");
+    let thread_started = RuntimeEvent::ThreadStarted(harp_contracts::ThreadStartedEvent {
+        thread_id: requested.logical_session_id.clone(),
+    });
+    let terminal = completed(&requested, "done");
+    let mut runtime = FakeCodexRuntime::new(vec![
+        activity_event(&requested, thread_started.clone()),
+        activity_event(&requested, terminal.clone()),
+    ])
     .unwrap();
+
+    let events = collect_until_terminal(&mut runtime, &requested, &limits())
+        .await
+        .unwrap();
+
+    assert_eq!(events, vec![thread_started, terminal]);
+    runtime.assert_exhausted().unwrap();
+}
+
+#[tokio::test]
+async fn wrong_activity_scope_is_protocol_and_does_not_consume_event() {
+    let requested = activity("thread-1", "turn-1");
+    let routed = activity("thread-1", "turn-2");
+    let mut runtime =
+        FakeCodexRuntime::new(vec![activity_event(&routed, completed(&routed, "done"))]).unwrap();
 
     let error = runtime
         .next_event(&requested, Duration::from_millis(50))
@@ -68,17 +99,17 @@ async fn wrong_turn_scope_is_protocol_and_does_not_consume_event() {
 }
 
 #[tokio::test]
-async fn server_request_for_another_turn_is_not_routed_to_collector() {
-    let requested = turn("thread-1", "turn-1");
-    let routed = turn("thread-1", "turn-2");
-    let mut runtime = FakeCodexRuntime::new(vec![FakeStep::Event {
-        expected_turn: routed.clone(),
-        result: Ok(RuntimeEvent::ServerRequest(ServerRequestEvent {
-            thread_id: routed.thread_id.clone(),
-            turn_id: Some(routed.turn_id.clone()),
+async fn server_request_for_another_activity_is_not_routed_to_collector() {
+    let requested = activity("thread-1", "turn-1");
+    let routed = activity("thread-1", "turn-2");
+    let mut runtime = FakeCodexRuntime::new(vec![activity_event(
+        &routed,
+        RuntimeEvent::ServerRequest(ServerRequestEvent {
+            thread_id: routed.logical_session_id.clone(),
+            turn_id: Some(routed.logical_turn_id.clone()),
             request: json!({"kind": "approval"}),
-        })),
-    }])
+        }),
+    )])
     .unwrap();
 
     let error = collect_until_terminal(&mut runtime, &requested, &limits())
@@ -96,11 +127,11 @@ async fn server_request_for_another_turn_is_not_routed_to_collector() {
 
 #[tokio::test]
 async fn lagged_event_fails_closed_as_transient_transport() {
-    let requested = turn("thread-1", "turn-1");
-    let mut runtime = FakeCodexRuntime::new(vec![FakeStep::Event {
-        expected_turn: requested.clone(),
-        result: Ok(RuntimeEvent::Lagged(LaggedEvent { dropped_events: 3 })),
-    }])
+    let requested = activity("thread-1", "turn-1");
+    let mut runtime = FakeCodexRuntime::new(vec![activity_event(
+        &requested,
+        RuntimeEvent::Lagged(LaggedEvent { dropped_events: 3 }),
+    )])
     .unwrap();
 
     let error = collect_until_terminal(&mut runtime, &requested, &limits())
@@ -112,7 +143,7 @@ async fn lagged_event_fails_closed_as_transient_transport() {
 
 #[tokio::test]
 async fn collection_limits_reject_invalid_bounds_without_polling() {
-    let requested = turn("thread-1", "turn-1");
+    let requested = activity("thread-1", "turn-1");
     let invalid = [
         CollectionLimits {
             max_events: 0,
@@ -166,11 +197,11 @@ async fn collection_limits_reject_invalid_bounds_without_polling() {
 
 #[tokio::test]
 async fn collector_enforces_serialized_byte_limit() {
-    let requested = turn("thread-1", "turn-1");
-    let mut runtime = FakeCodexRuntime::new(vec![FakeStep::Event {
-        expected_turn: requested.clone(),
-        result: Ok(completed(&requested, &"x".repeat(128))),
-    }])
+    let requested = activity("thread-1", "turn-1");
+    let mut runtime = FakeCodexRuntime::new(vec![activity_event(
+        &requested,
+        completed(&requested, &"x".repeat(128)),
+    )])
     .unwrap();
     let limits = CollectionLimits {
         max_serialized_bytes: 1,
@@ -185,11 +216,11 @@ async fn collector_enforces_serialized_byte_limit() {
 
 #[tokio::test]
 async fn fake_rejects_invalid_per_event_wait_without_consuming_step() {
-    let requested = turn("thread-1", "turn-1");
-    let mut runtime = FakeCodexRuntime::new(vec![FakeStep::Event {
-        expected_turn: requested.clone(),
-        result: Ok(completed(&requested, "done")),
-    }])
+    let requested = activity("thread-1", "turn-1");
+    let mut runtime = FakeCodexRuntime::new(vec![activity_event(
+        &requested,
+        completed(&requested, "done"),
+    )])
     .unwrap();
 
     for wait in [Duration::ZERO, Duration::from_secs(601)] {
@@ -209,7 +240,7 @@ fn unused() -> RuntimeError {
 }
 
 #[async_trait]
-impl CodexRuntime for EventRuntime {
+impl ActivityRuntime for EventRuntime {
     fn provenance(&self) -> Result<harp_runtime::RuntimeProvenance, RuntimeError> {
         harp_runtime::RuntimeProvenance::new(
             "event-test",
@@ -224,52 +255,40 @@ impl CodexRuntime for EventRuntime {
         Err(unused())
     }
 
-    async fn start_thread(&mut self, _: ThreadSpec) -> Result<ThreadHandle, RuntimeError> {
+    async fn start_logical_session(&mut self, _: ThreadSpec) -> Result<ThreadHandle, RuntimeError> {
         Err(unused())
     }
 
-    async fn start_turn(
-        &mut self,
-        _: &ThreadHandle,
-        _: TurnSpec,
-    ) -> Result<TurnHandle, RuntimeError> {
-        Err(unused())
-    }
-
-    async fn read_thread(&mut self, _: &ThreadHandle) -> Result<ThreadSnapshot, RuntimeError> {
-        Err(unused())
-    }
-
-    async fn resume_thread(&mut self, _: &ThreadHandle) -> Result<ThreadSnapshot, RuntimeError> {
+    async fn start_activity(&mut self, _: ActivitySpec) -> Result<ActivityHandle, RuntimeError> {
         Err(unused())
     }
 
     async fn next_event(
         &mut self,
-        _: &TurnHandle,
+        _: &ActivityHandle,
         _: Duration,
     ) -> Result<RuntimeEvent, RuntimeError> {
         tokio::time::sleep(self.delay).await;
         self.event.take().ok_or_else(unused)
     }
 
-    async fn interrupt(&mut self, _: &TurnHandle) -> Result<(), RuntimeError> {
-        Err(unused())
-    }
-
-    async fn shutdown_thread(&mut self, _: ThreadHandle) -> Result<(), RuntimeError> {
+    async fn interrupt(
+        &mut self,
+        _: &ActivityHandle,
+        _: InterruptPurpose,
+    ) -> Result<InterruptReceipt, RuntimeError> {
         Err(unused())
     }
 }
 
 #[tokio::test]
 async fn collector_rejects_unrelated_event_from_adapter() {
-    let requested = turn("thread-1", "turn-1");
-    let unrelated = turn("thread-1", "turn-2");
+    let requested = activity("thread-1", "turn-1");
+    let unrelated = activity("thread-1", "turn-2");
     let mut runtime = EventRuntime {
         event: Some(RuntimeEvent::TurnStarted(TurnStartedEvent {
-            thread_id: unrelated.thread_id,
-            turn_id: unrelated.turn_id,
+            thread_id: unrelated.logical_session_id,
+            turn_id: unrelated.logical_turn_id,
         })),
         delay: Duration::ZERO,
     };
@@ -282,7 +301,7 @@ async fn collector_rejects_unrelated_event_from_adapter() {
 
 #[tokio::test]
 async fn collector_enforces_per_event_timeout() {
-    let requested = turn("thread-1", "turn-1");
+    let requested = activity("thread-1", "turn-1");
     let mut runtime = EventRuntime {
         event: Some(completed(&requested, "late")),
         delay: Duration::from_millis(50),
@@ -303,11 +322,11 @@ async fn collector_enforces_per_event_timeout() {
 
 #[tokio::test]
 async fn collector_enforces_total_timeout_across_events() {
-    let requested = turn("thread-1", "turn-1");
+    let requested = activity("thread-1", "turn-1");
     let mut runtime = EventRuntime {
         event: Some(RuntimeEvent::TurnStarted(TurnStartedEvent {
-            thread_id: requested.thread_id.clone(),
-            turn_id: requested.turn_id.clone(),
+            thread_id: requested.logical_session_id.clone(),
+            turn_id: requested.logical_turn_id.clone(),
         })),
         delay: Duration::from_millis(15),
     };

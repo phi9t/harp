@@ -162,19 +162,6 @@ impl RuntimeError {
         self.transient
     }
 
-    pub(crate) fn with_cleanup(primary: Self, cleanup: Self) -> Self {
-        let message = bounded_protocol_message(&format!(
-            "{}; shutdown failed: {}",
-            primary.message, cleanup
-        ));
-        Self {
-            kind: primary.kind,
-            message,
-            transient: primary.transient,
-            source: Some(Box::new(CleanupFailure { primary, cleanup })),
-        }
-    }
-
     pub(crate) fn protocol(message: impl AsRef<str>) -> Self {
         let message = bounded_protocol_message(message.as_ref());
         Self {
@@ -194,13 +181,6 @@ impl RuntimeError {
             source: Some(Box::new(error)),
         }
     }
-}
-
-#[derive(Debug, thiserror::Error)]
-#[error("primary runtime failure: {primary}; shutdown failure: {cleanup}")]
-struct CleanupFailure {
-    primary: RuntimeError,
-    cleanup: RuntimeError,
 }
 
 impl TryFrom<RuntimeFailure> for RuntimeError {
@@ -350,38 +330,6 @@ pub trait ActivityRuntime: Send {
     ) -> Result<InterruptReceipt, RuntimeError>;
 }
 
-#[async_trait]
-pub trait CodexRuntime: Send {
-    fn provenance(&self) -> Result<RuntimeProvenance, RuntimeError>;
-
-    fn control_handle(&self) -> Result<Arc<dyn RuntimeControl>, RuntimeError>;
-
-    async fn start_thread(&mut self, spec: ThreadSpec) -> Result<ThreadHandle, RuntimeError>;
-
-    async fn start_turn(
-        &mut self,
-        thread: &ThreadHandle,
-        spec: TurnSpec,
-    ) -> Result<TurnHandle, RuntimeError>;
-
-    async fn read_thread(&mut self, thread: &ThreadHandle) -> Result<ThreadSnapshot, RuntimeError>;
-
-    async fn resume_thread(
-        &mut self,
-        thread: &ThreadHandle,
-    ) -> Result<ThreadSnapshot, RuntimeError>;
-
-    async fn next_event(
-        &mut self,
-        turn: &TurnHandle,
-        max_wait: Duration,
-    ) -> Result<RuntimeEvent, RuntimeError>;
-
-    async fn interrupt(&mut self, turn: &TurnHandle) -> Result<(), RuntimeError>;
-
-    async fn shutdown_thread(&mut self, thread: ThreadHandle) -> Result<(), RuntimeError>;
-}
-
 fn validate_id_text(field: &'static str, value: &str) -> Result<(), RuntimeError> {
     if value.is_empty() || value.len() > 256 || value.chars().any(char::is_control) {
         return Err(RuntimeError::protocol(format!(
@@ -418,11 +366,11 @@ fn validate_activity_dir(value: &str) -> Result<(), RuntimeError> {
 }
 
 pub async fn collect_until_terminal(
-    runtime: &mut dyn CodexRuntime,
-    turn: &TurnHandle,
+    runtime: &mut dyn ActivityRuntime,
+    activity: &ActivityHandle,
     limits: &CollectionLimits,
 ) -> Result<Vec<RuntimeEvent>, RuntimeError> {
-    turn.validate().map_err(RuntimeError::from_contract)?;
+    activity.validate()?;
     limits.validate()?;
 
     let deadline = tokio::time::Instant::now() + limits.max_total_wait;
@@ -434,11 +382,11 @@ pub async fn collect_until_terminal(
             return Err(timeout_error());
         }
         let wait = limits.per_event_wait.min(remaining);
-        let event = tokio::time::timeout(wait, runtime.next_event(turn, wait))
+        let event = tokio::time::timeout(wait, runtime.next_event(activity, wait))
             .await
             .map_err(|_| timeout_error())??;
         event.validate().map_err(RuntimeError::from_contract)?;
-        validate_event_scope(turn, &event)?;
+        validate_event_scope(activity, &event)?;
         let event_bytes = serde_json::to_vec(&event)
             .map_err(|error| RuntimeError::protocol(format!("serialize runtime event: {error}")))?
             .len();
@@ -508,26 +456,32 @@ fn timeout_error() -> RuntimeError {
         .unwrap_or_else(RuntimeError::from_contract)
 }
 
-fn validate_event_scope(turn: &TurnHandle, event: &RuntimeEvent) -> Result<(), RuntimeError> {
+fn validate_event_scope(
+    activity: &ActivityHandle,
+    event: &RuntimeEvent,
+) -> Result<(), RuntimeError> {
     let matches_turn = match event {
         RuntimeEvent::TurnStarted(event) => {
-            event.thread_id == turn.thread_id && event.turn_id == turn.turn_id
+            event.thread_id == activity.logical_session_id
+                && event.turn_id == activity.logical_turn_id
         }
         RuntimeEvent::TokenUsage(event) => {
-            event.thread_id == turn.thread_id && event.turn_id == turn.turn_id
+            event.thread_id == activity.logical_session_id
+                && event.turn_id == activity.logical_turn_id
         }
         RuntimeEvent::TurnCompleted(event) => {
-            event.thread_id == turn.thread_id && event.turn.turn_id == turn.turn_id
+            event.thread_id == activity.logical_session_id
+                && event.turn.turn_id == activity.logical_turn_id
         }
         RuntimeEvent::ServerRequest(event) => {
-            event.thread_id == turn.thread_id
+            event.thread_id == activity.logical_session_id
                 && event
                     .turn_id
                     .as_ref()
-                    .is_none_or(|turn_id| turn_id == &turn.turn_id)
+                    .is_none_or(|turn_id| turn_id == &activity.logical_turn_id)
         }
+        RuntimeEvent::ThreadStarted(event) => event.thread_id == activity.logical_session_id,
         RuntimeEvent::Disconnected(_) | RuntimeEvent::Lagged(_) => true,
-        RuntimeEvent::ThreadStarted(_) => false,
     };
     if matches_turn {
         Ok(())

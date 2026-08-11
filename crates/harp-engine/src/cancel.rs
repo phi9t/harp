@@ -5,8 +5,8 @@ use std::time::Duration;
 
 use harp_contracts::{OperationId, RunId, ThreadHandle, TurnHandle};
 use harp_runtime::{
-    ActivityHandle, ActivityRuntime, CodexRuntime, InterruptPurpose as RuntimeInterruptPurpose,
-    InterruptReceipt, RuntimeControl,
+    ActivityHandle, ActivityRuntime, InterruptPurpose as RuntimeInterruptPurpose, InterruptReceipt,
+    RuntimeControl,
 };
 use harp_state::{
     ActivityPreparation, AttemptRecord, AttemptState, CliActivityKind, CliActivityState,
@@ -43,7 +43,7 @@ impl Engine {
     pub async fn cancel_run(
         &mut self,
         state: &mut StateStore,
-        runtime: &mut dyn CodexRuntime,
+        runtime: &mut dyn ActivityRuntime,
         run_id: &RunId,
     ) -> Result<RunSummary, EngineError> {
         let runtime_control = runtime.control_handle()?;
@@ -198,107 +198,6 @@ impl Engine {
                 new_expiry,
             )
             .map_err(EngineError::from)
-    }
-
-    #[allow(dead_code)]
-    async fn cancel_attempt(
-        &mut self,
-        state: &mut StateStore,
-        runtime: &mut dyn CodexRuntime,
-        original: &AttemptRecord,
-        lease: &mut LeaseToken,
-    ) -> Result<(), EngineError> {
-        let mut attempt = state.get_attempt(&original.attempt_id)?.ok_or_else(|| {
-            EngineError::ExecutionReceipt {
-                context: "cancellation attempt disappeared".to_owned(),
-            }
-        })?;
-        if attempt.state == AttemptState::DispatchingThread && attempt.thread_id.is_none() {
-            state.mark_indeterminate(lease, "cancelled_thread_start_ambiguous", self.tick()?)?;
-            return Ok(());
-        }
-        if attempt.state == AttemptState::DispatchingTurn {
-            let thread = ThreadHandle {
-                thread_id: attempt.thread_id.clone().ok_or_else(|| {
-                    EngineError::ExecutionReceipt {
-                        context: "dispatching turn cancellation has no thread_id".to_owned(),
-                    }
-                })?,
-            };
-            let marker = attempt.latest_operation_marker.as_deref().ok_or_else(|| {
-                EngineError::ExecutionReceipt {
-                    context: "dispatching turn cancellation has no marker".to_owned(),
-                }
-            })?;
-            let operation_id =
-                OperationId::from_str(marker.strip_prefix("harp-operation:").ok_or_else(|| {
-                    EngineError::ExecutionReceipt {
-                        context: "dispatching turn cancellation marker is malformed".to_owned(),
-                    }
-                })?)
-                .map_err(EngineError::Contract)?;
-            let snapshot = self
-                .drive_runtime_future(
-                    state,
-                    lease,
-                    self.runtime_control_deadline(),
-                    runtime.read_thread(&thread),
-                )
-                .await?;
-            if let Some(turn) = snapshot
-                .turn_by_operation_marker(&operation_id)
-                .map_err(EngineError::Contract)?
-            {
-                state.record_turn_started(lease, &operation_id, &turn.turn_id, self.tick()?)?;
-            } else {
-                state.mark_indeterminate(
-                    lease,
-                    "cancelled_turn_dispatch_ambiguous",
-                    self.tick()?,
-                )?;
-                return Ok(());
-            }
-            attempt = state.get_attempt(&original.attempt_id)?.ok_or_else(|| {
-                EngineError::ExecutionReceipt {
-                    context: "reconciled cancellation attempt disappeared".to_owned(),
-                }
-            })?;
-        }
-        if self
-            .recover_pending_interrupt(state, runtime, &attempt, lease)
-            .await?
-        {
-            return Ok(());
-        }
-
-        if let (Some(thread_id), Some(turn_id)) =
-            (attempt.thread_id.clone(), attempt.latest_turn_id.clone())
-        {
-            let intent = InterruptIntent::cancellation("run_cancellation")?;
-            let interrupt = state.prepare_interrupt_operation(lease, 0, &intent, self.tick()?)?;
-            if interrupt.state == OperationState::Prepared {
-                state.mark_operation_dispatching(lease, &interrupt.operation_id, self.tick()?)?;
-            }
-            let refreshed = state.get_attempt(&attempt.attempt_id)?.ok_or_else(|| {
-                EngineError::ExecutionReceipt {
-                    context: "cancellation attempt disappeared before interrupt recovery"
-                        .to_owned(),
-                }
-            })?;
-            if self
-                .recover_pending_interrupt(state, runtime, &refreshed, lease)
-                .await?
-            {
-                return Ok(());
-            }
-            return Err(EngineError::ExecutionReceipt {
-                context: format!(
-                    "cancellation interrupt targeting {thread_id}/{turn_id} did not terminalize"
-                ),
-            });
-        }
-        state.finalize_task_cancelled(lease, self.tick()?)?;
-        Ok(())
     }
 }
 

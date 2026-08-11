@@ -12,12 +12,11 @@ use async_trait::async_trait;
 use harp_contracts::{
     AttemptId, Checkpoint, RunId, RuntimeErrorKind, RuntimeEvent, TaskId, ThreadHandle, ThreadId,
     ThreadSnapshot, ThreadSpec, ThreadStatus, TokenUsage, TokenUsageEvent, TurnCompletedEvent,
-    TurnHandle, TurnId, TurnSnapshot, TurnSpec, TurnStartedEvent, TurnStatus,
+    TurnHandle, TurnSnapshot, TurnStartedEvent, TurnStatus,
 };
 use harp_runtime::{
-    ActivityHandle, ActivityRuntime, ActivitySpec, CodexRuntime,
-    InterruptPurpose as RuntimeInterruptPurpose, InterruptReceipt, RuntimeControl, RuntimeError,
-    RuntimeProvenance,
+    ActivityHandle, ActivityRuntime, ActivitySpec, InterruptPurpose as RuntimeInterruptPurpose,
+    InterruptReceipt, RuntimeControl, RuntimeError, RuntimeProvenance,
 };
 use serde::{Deserialize, Serialize};
 use sha2::Digest;
@@ -33,10 +32,7 @@ pub struct PersistentFakeBackend {
 
 #[derive(Default, Serialize, Deserialize)]
 struct FakeState {
-    next_thread: u64,
-    next_turn: u64,
-    start_thread_calls: usize,
-    start_turn_calls: usize,
+    start_logical_session_calls: usize,
     start_activity_calls: usize,
     interrupt_calls: usize,
     read_failures: VecDeque<bool>,
@@ -140,12 +136,8 @@ impl PersistentFakeBackend {
         }
     }
 
-    pub fn start_thread_calls(&self) -> usize {
-        self.lock().start_thread_calls
-    }
-
-    pub fn start_turn_calls(&self) -> usize {
-        self.lock().start_turn_calls
+    pub fn start_logical_session_calls(&self) -> usize {
+        self.lock().start_logical_session_calls
     }
 
     pub fn start_activity_calls(&self) -> usize {
@@ -249,291 +241,76 @@ pub struct PersistentFakeRuntime {
     backend: PersistentFakeBackend,
 }
 
-#[async_trait]
-impl CodexRuntime for PersistentFakeRuntime {
-    fn provenance(&self) -> Result<RuntimeProvenance, RuntimeError> {
-        RuntimeProvenance::new(
-            "persistent-fake",
-            env!("CARGO_PKG_VERSION"),
-            &self.backend.runtime_identity,
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        )
-        .map_err(RuntimeError::from_contract)
+async fn next_backend_event(
+    backend: &PersistentFakeBackend,
+    turn: &TurnHandle,
+) -> Result<RuntimeEvent, RuntimeError> {
+    if let Some(hook) = &backend.next_event_hook {
+        hook();
     }
-
-    fn control_handle(&self) -> Result<Arc<dyn RuntimeControl>, RuntimeError> {
-        Ok(Arc::new(PersistentFakeRuntimeControl {
-            backend: self.backend.clone(),
-        }))
+    let delay_millis = backend.lock().next_event_delay_millis;
+    if delay_millis > 0 {
+        tokio::time::sleep(Duration::from_millis(delay_millis)).await;
     }
-
-    async fn start_thread(&mut self, spec: ThreadSpec) -> Result<ThreadHandle, RuntimeError> {
-        if let Some(hook) = &self.backend.before_workspace_verify_hook {
-            hook();
-        }
-        if let Some(authority) = &spec.workspace_authority {
-            harp_artifacts::verify_runtime_workspace_authority(authority).map_err(|error| {
-                runtime_io("verify fake runtime workspace", io::Error::other(error))
-            })?;
-        }
-        let mut state = self.backend.lock();
-        state.next_thread += 1;
-        state.start_thread_calls += 1;
-        let handle = ThreadHandle {
-            thread_id: ThreadId::from_str(&format!("thread-{}", state.next_thread))
-                .map_err(RuntimeError::from_contract)?,
-        };
-        state.threads.insert(
-            handle.thread_id.to_string(),
-            FakeThread {
-                handle: handle.clone(),
-                cwd: spec.cwd.clone(),
-                turns: Vec::new(),
+    let mut state = backend.lock();
+    let turn_state = state
+        .threads
+        .get_mut(&turn.thread_id.to_string())
+        .and_then(|thread| {
+            thread
+                .turns
+                .iter_mut()
+                .find(|candidate| candidate.handle.turn_id == turn.turn_id)
+        })
+        .ok_or_else(|| {
+            RuntimeError::from_contract(harp_contracts::ContractError::new(
+                "turn",
+                "fake turn does not exist",
+            ))
+        })?;
+    let event = if !turn_state.started_emitted {
+        turn_state.started_emitted = true;
+        RuntimeEvent::TurnStarted(TurnStartedEvent {
+            thread_id: turn.thread_id.clone(),
+            turn_id: turn.turn_id.clone(),
+        })
+    } else if let Some(total_tokens) = turn_state.token_snapshots.pop_front() {
+        RuntimeEvent::TokenUsage(TokenUsageEvent {
+            thread_id: turn.thread_id.clone(),
+            turn_id: turn.turn_id.clone(),
+            usage: TokenUsage {
+                total_tokens,
+                input_tokens: total_tokens,
+                cached_input_tokens: 0,
+                output_tokens: 0,
+                reasoning_output_tokens: 0,
             },
-        );
-        if state.scratch_writes {
-            fs::write(Path::new(&spec.cwd).join("notes.md"), b"runtime notes")
-                .map_err(|error| runtime_io("write fake notes", error))?;
-            fs::write(
-                Path::new(&spec.cwd).join("result.json"),
-                b"runtime scratch result",
-            )
-            .map_err(|error| runtime_io("write fake scratch result", error))?;
-            fs::write(
-                Path::new(&spec.cwd).join("tmp.bin"),
-                b"runtime temporary bytes",
-            )
-            .map_err(|error| runtime_io("write fake unknown scratch file", error))?;
-            fs::write(
-                Path::new(&spec.cwd).join("evidence.jsonl"),
-                b"{\"claim\":\"runtime evidence\"}\n",
-            )
-            .map_err(|error| runtime_io("write fake evidence", error))?;
-            let (run_id, task_id, attempt_id) = attempt_identity_from_cwd(&spec.cwd)?;
-            let checkpoint = Checkpoint::new(run_id, task_id, attempt_id, "runtime-checkpoint", 1)
-                .map_err(RuntimeError::from_contract)?;
-            let checkpoint_bytes = serde_json::to_vec(&checkpoint)
-                .map_err(|error| runtime_io("encode fake checkpoint", io::Error::other(error)))?;
-            let checkpoint_digest = format!("{:x}", sha2::Sha256::digest(&checkpoint_bytes));
-            let checkpoint_dir = Path::new(&spec.cwd).join("checkpoints");
-            fs::create_dir(&checkpoint_dir)
-                .map_err(|error| runtime_io("create fake checkpoint directory", error))?;
-            fs::write(
-                checkpoint_dir.join(format!("{:016x}-{checkpoint_digest}.json", 1_u64 << 63 | 1)),
-                checkpoint_bytes,
-            )
-            .map_err(|error| runtime_io("write fake checkpoint", error))?;
-        }
-        self.backend
-            .persist(&state)
-            .map_err(|error| runtime_io("persist fake thread", error))?;
-        Ok(handle)
-    }
-
-    async fn start_turn(
-        &mut self,
-        thread: &ThreadHandle,
-        spec: TurnSpec,
-    ) -> Result<TurnHandle, RuntimeError> {
-        let delay_millis = self.backend.lock().start_turn_delay_millis;
-        if delay_millis > 0 {
-            tokio::time::sleep(Duration::from_millis(delay_millis)).await;
-        }
-        let task_id = task_id_from_instruction(&spec.instruction)?;
-        let projected: serde_json::Value = serde_json::from_str(&spec.instruction)
-            .map_err(|error| runtime_io("decode projected scratch", io::Error::other(error)))?;
-        let mut state = self.backend.lock();
-        if state.scratch_writes {
-            let thread_state = state
-                .threads
-                .get(&thread.thread_id.to_string())
-                .ok_or_else(|| {
-                    RuntimeError::from_contract(harp_contracts::ContractError::new(
-                        "thread",
-                        "fake thread does not exist",
-                    ))
-                })?;
-            let projected_scratch = projected["scratchPath"].as_str().ok_or_else(|| {
-                RuntimeError::from_contract(harp_contracts::ContractError::new(
-                    "scratchPath",
-                    "projected scratch path is missing",
-                ))
-            })?;
-            if thread_state.cwd != projected_scratch {
-                return Err(RuntimeError::from_contract(
-                    harp_contracts::ContractError::new(
-                        "scratchPath",
-                        "thread cwd differs from projected scratch path",
-                    ),
-                ));
-            }
-        }
-        let outcome = state
-            .outcomes
-            .get_mut(&task_id)
-            .and_then(VecDeque::pop_front)
-            .ok_or_else(|| {
-                RuntimeError::from_contract(harp_contracts::ContractError::new(
-                    "fakeOutcome",
-                    "missing scripted task outcome",
-                ))
-            })?;
-        state.next_turn += 1;
-        state.start_turn_calls += 1;
-        let handle = TurnHandle {
-            thread_id: thread.thread_id.clone(),
-            turn_id: TurnId::from_str(&format!("turn-{}", state.next_turn))
-                .map_err(RuntimeError::from_contract)?,
-        };
-        let thread_state = state
-            .threads
-            .get_mut(&thread.thread_id.to_string())
-            .ok_or_else(|| {
-                RuntimeError::from_contract(harp_contracts::ContractError::new(
-                    "thread",
-                    "fake thread does not exist",
-                ))
-            })?;
-        thread_state.turns.push(FakeTurn {
-            handle: handle.clone(),
-            marker: spec.operation_marker,
-            terminal_status: outcome.status,
-            status: TurnStatus::InProgress,
-            final_message: outcome.final_message,
-            token_snapshots: if outcome.token_snapshots.is_empty() {
-                VecDeque::from([outcome.total_tokens])
-            } else {
-                outcome.token_snapshots.into()
-            },
-            started_emitted: false,
-            completed_emitted: false,
-        });
-        self.backend
-            .persist(&state)
-            .map_err(|error| runtime_io("persist fake turn", error))?;
-        Ok(handle)
-    }
-
-    async fn read_thread(&mut self, thread: &ThreadHandle) -> Result<ThreadSnapshot, RuntimeError> {
-        let mut state = self.backend.lock();
-        if let Some(transient) = state.read_failures.pop_front() {
-            self.backend
-                .persist(&state)
-                .map_err(|error| runtime_io("persist fake read failure", error))?;
-            let error = RuntimeError::try_new(
-                RuntimeErrorKind::Transport,
-                "injected thread read failure",
-                transient,
-            )
-            .map_err(RuntimeError::from_contract)?;
-            return Err(error);
-        }
-        let mut snapshot = snapshot_state(&state, thread)?;
-        if state.duplicate_marker_on_read {
-            if let Some(first) = snapshot.turns.first().cloned() {
-                snapshot.turns.push(TurnSnapshot {
-                    turn_id: TurnId::from_str("turn-duplicate-marker")
-                        .map_err(RuntimeError::from_contract)?,
-                    ..first
-                });
-            }
-        }
-        self.backend
-            .persist(&state)
-            .map_err(|error| runtime_io("persist fake read", error))?;
-        Ok(snapshot)
-    }
-
-    async fn resume_thread(
-        &mut self,
-        thread: &ThreadHandle,
-    ) -> Result<ThreadSnapshot, RuntimeError> {
-        snapshot(&self.backend, thread)
-    }
-
-    async fn next_event(
-        &mut self,
-        turn: &TurnHandle,
-        _max_wait: Duration,
-    ) -> Result<RuntimeEvent, RuntimeError> {
-        if let Some(hook) = &self.backend.next_event_hook {
-            hook();
-        }
-        let delay_millis = self.backend.lock().next_event_delay_millis;
-        if delay_millis > 0 {
-            tokio::time::sleep(Duration::from_millis(delay_millis)).await;
-        }
-        let mut state = self.backend.lock();
-        let turn_state = state
-            .threads
-            .get_mut(&turn.thread_id.to_string())
-            .and_then(|thread| {
-                thread
-                    .turns
-                    .iter_mut()
-                    .find(|candidate| candidate.handle.turn_id == turn.turn_id)
-            })
-            .ok_or_else(|| {
-                RuntimeError::from_contract(harp_contracts::ContractError::new(
-                    "turn",
-                    "fake turn does not exist",
-                ))
-            })?;
-        let event = if !turn_state.started_emitted {
-            turn_state.started_emitted = true;
-            RuntimeEvent::TurnStarted(TurnStartedEvent {
-                thread_id: turn.thread_id.clone(),
-                turn_id: turn.turn_id.clone(),
-            })
-        } else if let Some(total_tokens) = turn_state.token_snapshots.pop_front() {
-            RuntimeEvent::TokenUsage(TokenUsageEvent {
-                thread_id: turn.thread_id.clone(),
-                turn_id: turn.turn_id.clone(),
-                usage: TokenUsage {
-                    total_tokens,
-                    input_tokens: total_tokens,
-                    cached_input_tokens: 0,
-                    output_tokens: 0,
-                    reasoning_output_tokens: 0,
-                },
-            })
-        } else if !turn_state.completed_emitted {
-            turn_state.completed_emitted = true;
-            turn_state.status = if turn_state.status == TurnStatus::Interrupted {
-                TurnStatus::Interrupted
-            } else {
-                turn_state.terminal_status
-            };
-            RuntimeEvent::TurnCompleted(TurnCompletedEvent {
-                thread_id: turn.thread_id.clone(),
-                turn: TurnSnapshot {
-                    turn_id: turn.turn_id.clone(),
-                    operation_marker: Some(turn_state.marker.clone()),
-                    status: turn_state.status,
-                    final_agent_message: turn_state.final_message.clone(),
-                },
-            })
+        })
+    } else if !turn_state.completed_emitted {
+        turn_state.completed_emitted = true;
+        turn_state.status = if turn_state.status == TurnStatus::Interrupted {
+            TurnStatus::Interrupted
         } else {
-            return Err(RuntimeError::from_contract(
-                harp_contracts::ContractError::new(
-                    "fakeTurn",
-                    "terminal event was already emitted",
-                ),
-            ));
+            turn_state.terminal_status
         };
-        self.backend
-            .persist(&state)
-            .map_err(|error| runtime_io("persist fake event", error))?;
-        Ok(event)
-    }
-
-    async fn interrupt(&mut self, turn: &TurnHandle) -> Result<(), RuntimeError> {
-        interrupt_backend(&self.backend, turn).await
-    }
-
-    async fn shutdown_thread(&mut self, _thread: ThreadHandle) -> Result<(), RuntimeError> {
-        Ok(())
-    }
+        RuntimeEvent::TurnCompleted(TurnCompletedEvent {
+            thread_id: turn.thread_id.clone(),
+            turn: TurnSnapshot {
+                turn_id: turn.turn_id.clone(),
+                operation_marker: Some(turn_state.marker.clone()),
+                status: turn_state.status,
+                final_agent_message: turn_state.final_message.clone(),
+            },
+        })
+    } else {
+        return Err(RuntimeError::from_contract(
+            harp_contracts::ContractError::new("fakeTurn", "terminal event was already emitted"),
+        ));
+    };
+    backend
+        .persist(&state)
+        .map_err(|error| runtime_io("persist fake event", error))?;
+    Ok(event)
 }
 
 #[async_trait]
@@ -567,6 +344,7 @@ impl ActivityRuntime for PersistentFakeRuntime {
             })?;
         }
         let mut state = self.backend.lock();
+        state.start_logical_session_calls += 1;
         let handle = ThreadHandle {
             thread_id: ThreadId::from_str(&format!("logical-{}", state.threads.len() + 1))
                 .map_err(RuntimeError::from_contract)?,
@@ -695,7 +473,8 @@ impl ActivityRuntime for PersistentFakeRuntime {
             thread_id: activity.logical_session_id.clone(),
             turn_id: activity.logical_turn_id.clone(),
         };
-        CodexRuntime::next_event(self, &turn, max_wait).await
+        let _ = max_wait;
+        next_backend_event(&self.backend, &turn).await
     }
 
     async fn interrupt(

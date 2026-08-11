@@ -22,7 +22,7 @@ use harp_engine::{
     decode_result_envelope, recovery_action, validate_graph, CrashPoint, Engine, EngineConfig,
     EngineError, GraphPolicy, ProjectionPolicy, RecoveryAction, RunExecutionSpec, WallClock,
 };
-use harp_runtime::{ActivitySpec, CodexRuntime};
+use harp_runtime::{ActivityRuntime, ActivitySpec};
 use harp_state::{AttemptRecord, AttemptState, RunState, StateStore};
 use sha2::Digest;
 use tempfile::TempDir;
@@ -786,8 +786,7 @@ async fn crash_restart_matrix_converges_to_reference_results() {
                     .count(),
                 1
             );
-            assert_eq!(backend.start_thread_calls(), 0);
-            assert_eq!(backend.start_turn_calls(), 0);
+            assert_eq!(backend.start_logical_session_calls(), 4);
             assert_eq!(backend.start_activity_calls(), 3);
         } else {
             assert_eq!(normalized.tasks, reference.tasks, "{crash_point:?}");
@@ -796,8 +795,7 @@ async fn crash_restart_matrix_converges_to_reference_results() {
                 normalized.operations, reference.operations,
                 "{crash_point:?}"
             );
-            assert_eq!(backend.start_thread_calls(), 0, "{crash_point:?}");
-            assert_eq!(backend.start_turn_calls(), 0, "{crash_point:?}");
+            assert_eq!(backend.start_logical_session_calls(), 3, "{crash_point:?}");
             assert_eq!(backend.start_activity_calls(), 3, "{crash_point:?}");
         }
     }
@@ -1008,8 +1006,7 @@ async fn terminal_incomplete_turn_continues_once_from_matching_checkpoint() {
             .0,
         13
     );
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 4);
     assert_eq!(backend.start_activity_calls(), 4);
 }
 
@@ -1136,7 +1133,6 @@ async fn prepared_continuation_intent_resumes_without_incrementing_twice() {
         1
     );
     assert_eq!(alpha.observed_tokens, 13);
-    assert_eq!(backend.start_turn_calls(), 0);
     assert_eq!(backend.start_activity_calls(), 4);
 }
 
@@ -1270,7 +1266,6 @@ async fn dispatching_continuation_without_external_turn_starts_pinned_intent_onc
         .await
         .expect("dispatching continuation starts exact pinned intent");
 
-    assert_eq!(backend.start_turn_calls(), 0);
     assert_eq!(backend.start_activity_calls(), activities_before + 3);
     let alpha_attempts = state
         .attempts(&run_id)
@@ -1389,7 +1384,6 @@ async fn lost_continuation_response_reconciles_marker_without_duplicate_turn() {
         .await
         .expect("marker reconciliation finds continuation external turn");
 
-    assert_eq!(backend.start_turn_calls(), 0);
     assert_eq!(backend.start_activity_calls(), activities_before + 2);
     let alpha = state
         .attempts(&run_id)
@@ -1495,7 +1489,6 @@ async fn second_continuation_is_rejected_without_starting_another_turn() {
         1
     );
     assert_eq!(alpha.observed_tokens, 13);
-    assert_eq!(backend.start_turn_calls(), 0);
     assert_eq!(
         backend.start_activity_calls(),
         activities_before_second_restart
@@ -1565,7 +1558,10 @@ async fn recovered_completed_turn_revalidates_pinned_output_schema() {
         state.get_run(&run_id).unwrap().unwrap().state,
         RunState::Failed
     );
-    let calls = (backend.start_thread_calls(), backend.start_turn_calls());
+    let calls = (
+        backend.start_logical_session_calls(),
+        backend.start_activity_calls(),
+    );
     drop(state);
 
     let mut reopened = StateStore::open(&state_path).unwrap();
@@ -1576,7 +1572,10 @@ async fn recovered_completed_turn_revalidates_pinned_output_schema() {
         .await
         .expect("semantic failure restart is inert");
     assert_eq!(
-        (backend.start_thread_calls(), backend.start_turn_calls()),
+        (
+            backend.start_logical_session_calls(),
+            backend.start_activity_calls()
+        ),
         calls
     );
 }
@@ -1667,8 +1666,7 @@ async fn published_result_resume_consumes_bridged_publish_once_and_is_inert() {
         RunState::Completed
     );
     let calls = (
-        backend.start_thread_calls(),
-        backend.start_turn_calls(),
+        backend.start_logical_session_calls(),
         backend.start_activity_calls(),
     );
     drop(state);
@@ -1682,8 +1680,7 @@ async fn published_result_resume_consumes_bridged_publish_once_and_is_inert() {
         .expect("failed published result restart is inert");
     assert_eq!(
         (
-            backend.start_thread_calls(),
-            backend.start_turn_calls(),
+            backend.start_logical_session_calls(),
             backend.start_activity_calls()
         ),
         calls
@@ -1738,8 +1735,7 @@ async fn cancellation_persists_before_interrupt_and_survives_restart() {
     assert_eq!(run.state, RunState::Active);
     assert!(run.cancellation_requested);
     assert_eq!(summary.completed_tasks, 0);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
     assert_eq!(backend.interrupt_calls(), 0);
     drop(state);
@@ -1777,8 +1773,7 @@ async fn cancellation_persists_before_interrupt_and_survives_restart() {
         .resume_run(&mut reopened, &artifacts, &mut resumed_runtime, &run_id)
         .await
         .expect("cancelled restart is inert");
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
     assert_eq!(backend.interrupt_calls(), 1);
 }
@@ -2052,8 +2047,7 @@ async fn restart_finishes_a_persisted_cancellation_request_without_semantic_work
         state.get_run(&run_id).unwrap().unwrap().state,
         RunState::Cancelled
     );
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
     assert_eq!(backend.interrupt_calls(), 1);
 }
@@ -2097,8 +2091,8 @@ async fn cancellation_preserves_unknown_thread_start_as_indeterminate() {
         state.get_run(&run_id).unwrap().unwrap().state,
         RunState::Cancelled
     );
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
+    assert_eq!(backend.start_activity_calls(), 0);
     assert_eq!(backend.interrupt_calls(), 0);
 }
 
@@ -2141,8 +2135,8 @@ async fn resume_does_not_steal_an_unexpired_lease() {
     assert_eq!(before.attempt_id, after.attempt_id);
     assert_eq!(before.lease_owner, after.lease_owner);
     assert_eq!(before.lease_expires_at, after.lease_expires_at);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -2183,7 +2177,7 @@ async fn future_event_clock_cannot_expire_healthy_shared_clock_lease() {
         .expect("future event clock observes healthy lease");
 
     assert_eq!(summary.completed_tasks, 0);
-    assert_eq!(backend.start_thread_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
     assert_eq!(
         competing.attempts(&run_id).unwrap()[0]
             .lease_owner
@@ -2229,7 +2223,7 @@ async fn advanced_shared_lease_clock_expires_and_reclaims_attempt() {
         .expect("expired lease is reclaimed from shared clock");
 
     assert_eq!(summary.completed_tasks, 3);
-    assert_eq!(backend.start_thread_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 3);
     assert_eq!(backend.start_activity_calls(), 3);
 }
 
@@ -2309,7 +2303,6 @@ async fn delayed_start_turn_renews_lease_without_duplicate_marker_effect() {
         .expect("delayed start turn renews until completion");
 
     assert_eq!(summary.completed_tasks, 3);
-    assert_eq!(backend.start_turn_calls(), 0);
     assert_eq!(backend.start_activity_calls(), 3);
     assert!(state
         .events_page(&summary.run_id, None, 1_000)
@@ -2541,7 +2534,7 @@ async fn start_turn_deadline_preserves_dispatching_marker_ambiguity() {
         )
         .unwrap();
     assert_eq!(state_text, "prepared");
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test(start_paused = true)]
@@ -2597,8 +2590,7 @@ async fn pending_runtime_future_renews_while_competing_engine_cannot_reclaim() {
         .expect("competing engine observes renewed lease");
 
     assert_eq!(summary.completed_tasks, 0);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert!(backend.start_logical_session_calls() <= 1);
     assert!(backend.start_activity_calls() <= 1);
 
     for _ in 0..40 {
@@ -2610,8 +2602,7 @@ async fn pending_runtime_future_renews_while_competing_engine_cannot_reclaim() {
     }
     let summary = execution.await.unwrap().unwrap();
     assert_eq!(summary.completed_tasks, 3);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 3);
     assert_eq!(backend.start_activity_calls(), 3);
 }
 
@@ -2675,8 +2666,7 @@ async fn completed_run_resume_performs_no_new_semantic_work() {
             .unwrap()
             .run_id
     };
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 3);
     assert_eq!(backend.start_activity_calls(), 3);
 
     let mut state = StateStore::open(&state_path).unwrap();
@@ -2688,8 +2678,7 @@ async fn completed_run_resume_performs_no_new_semantic_work() {
         .expect("completed run is inert");
 
     assert_eq!(summary.completed_tasks, 3);
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 3);
     assert_eq!(backend.start_activity_calls(), 3);
 }
 
@@ -2746,8 +2735,8 @@ async fn resume_rejects_tampered_execution_receipt_before_runtime_work() {
         error,
         harp_engine::EngineError::ExecutionReceipt { .. }
     ));
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -2782,8 +2771,8 @@ async fn resume_rejects_wrong_artifact_store_before_runtime_work() {
         error,
         harp_engine::EngineError::ExecutionReceipt { .. }
     ));
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -2818,8 +2807,8 @@ async fn resume_rejects_wrong_runtime_identity_before_runtime_work() {
         error,
         harp_engine::EngineError::ExecutionReceipt { .. }
     ));
-    assert_eq!(wrong_backend.start_thread_calls(), 0);
-    assert_eq!(wrong_backend.start_turn_calls(), 0);
+    assert_eq!(wrong_backend.start_logical_session_calls(), 0);
+    assert_eq!(wrong_backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -2892,8 +2881,8 @@ async fn resume_rejects_corrupted_approved_input_before_runtime_work() {
         .resume_run(&mut state, &artifacts, &mut runtime, &run_id)
         .await
         .expect_err("approved input corruption fails closed");
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 0);
+    assert_eq!(backend.start_activity_calls(), 0);
 }
 
 #[tokio::test]
@@ -2985,8 +2974,7 @@ async fn restart_charges_wall_downtime_and_interrupts_without_new_semantic_work(
         ));
         state.incomplete_runs().unwrap()[0].run_id.clone()
     };
-    assert_eq!(backend.start_thread_calls(), 0);
-    assert_eq!(backend.start_turn_calls(), 0);
+    assert_eq!(backend.start_logical_session_calls(), 1);
     assert_eq!(backend.start_activity_calls(), 1);
 
     clock.set(1_002);
@@ -3005,8 +2993,8 @@ async fn restart_charges_wall_downtime_and_interrupts_without_new_semantic_work(
         matches!(error, EngineError::BudgetExceeded { .. }),
         "{error:?}"
     );
-    assert_eq!(reopened_backend.start_thread_calls(), 0);
-    assert_eq!(reopened_backend.start_turn_calls(), 0);
+    assert_eq!(reopened_backend.start_logical_session_calls(), 1);
+    assert_eq!(reopened_backend.start_activity_calls(), 1);
     assert_eq!(reopened_backend.interrupt_calls(), 0);
     let attempt = state.attempts(&run_id).unwrap().remove(0);
     assert!(attempt.observed_wall_seconds >= 2);
@@ -3044,7 +3032,10 @@ async fn backward_wall_clock_terminalizes_attempt_without_model_work() {
     };
     lease_clock.set(1_061);
     wall_clock.set(1_999);
-    let calls = (backend.start_thread_calls(), backend.start_turn_calls());
+    let calls = (
+        backend.start_logical_session_calls(),
+        backend.start_activity_calls(),
+    );
 
     let mut state = StateStore::open_with_lease_clock(&state_path, lease_clock.clone()).unwrap();
     let mut runtime = backend.runtime();
@@ -3060,7 +3051,10 @@ async fn backward_wall_clock_terminalizes_attempt_without_model_work() {
         AttemptState::Failed
     );
     assert_eq!(
-        (backend.start_thread_calls(), backend.start_turn_calls()),
+        (
+            backend.start_logical_session_calls(),
+            backend.start_activity_calls()
+        ),
         calls
     );
 }

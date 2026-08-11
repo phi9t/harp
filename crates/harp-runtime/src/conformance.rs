@@ -1,11 +1,14 @@
 use std::time::Duration;
 
 use harp_contracts::{
-    RuntimeErrorKind, RuntimeEvent, ThreadHandle, ThreadSpec, TokenUsage, TurnHandle, TurnSpec,
+    ExternalSessionId, RuntimeErrorKind, RuntimeEvent, ThreadSpec, TokenUsage, TurnId, TurnSpec,
     TurnStatus,
 };
 
-use crate::{collect_until_terminal, CodexRuntime, CollectionLimits, RuntimeError};
+use crate::{
+    collect_until_terminal, ActivityHandle, ActivityRuntime, ActivitySpec, CollectionLimits,
+    InterruptPurpose, RuntimeError,
+};
 
 const CONFORMANCE_EVENT_LIMIT: usize = 1_024;
 
@@ -21,7 +24,12 @@ fn conformance_limits() -> CollectionLimits {
 #[derive(Clone, Debug, PartialEq)]
 pub struct RuntimeFixture {
     pub thread_spec: ThreadSpec,
+    pub logical_turn_id: TurnId,
     pub turn_spec: TurnSpec,
+    pub activity_dir: String,
+    pub invocation_sha256: String,
+    pub expected_process_record_sha256: String,
+    pub expected_external_session_id: Option<ExternalSessionId>,
     pub expected_status: TurnStatus,
     pub expected_final_message: Option<String>,
     pub minimum_total_tokens: u64,
@@ -45,70 +53,59 @@ impl RuntimeFixture {
 }
 
 pub async fn assert_runtime_conformance(
-    runtime: &mut dyn CodexRuntime,
+    runtime: &mut dyn ActivityRuntime,
     fixture: &RuntimeFixture,
 ) -> Result<(), RuntimeError> {
     fixture.validate()?;
-    let thread = runtime.start_thread(fixture.thread_spec.clone()).await?;
-    thread.validate().map_err(RuntimeError::from_contract)?;
-    let primary = run_conformance(runtime, fixture, &thread).await;
-    finish_with_shutdown(runtime, thread, primary).await
+    let activity = start_fixture_activity(runtime, fixture).await?;
+    let events = collect_until_terminal(runtime, &activity, &conformance_limits()).await?;
+    let completion = validate_event_order(&events, &activity, fixture.minimum_total_tokens)?;
+    validate_completion(fixture, completion)
 }
 
-async fn run_conformance(
-    runtime: &mut dyn CodexRuntime,
+async fn start_fixture_activity(
+    runtime: &mut dyn ActivityRuntime,
     fixture: &RuntimeFixture,
-    thread: &ThreadHandle,
-) -> Result<(), RuntimeError> {
-    let turn = runtime
-        .start_turn(thread, fixture.turn_spec.clone())
+) -> Result<ActivityHandle, RuntimeError> {
+    let session = runtime
+        .start_logical_session(fixture.thread_spec.clone())
         .await?;
-    turn.validate().map_err(RuntimeError::from_contract)?;
-    if turn.thread_id != thread.thread_id {
-        return Err(RuntimeError::protocol(
-            "start_turn returned a handle for a different thread",
-        ));
-    }
-
-    let events = collect_until_terminal(runtime, &turn, &conformance_limits()).await?;
-    let completion = validate_event_order(&events, &turn, fixture.minimum_total_tokens)?;
-    validate_completion(fixture, completion)?;
-
-    let snapshot = runtime.read_thread(thread).await?;
-    snapshot.validate().map_err(RuntimeError::from_contract)?;
-    if snapshot.thread_id != thread.thread_id {
-        return Err(RuntimeError::protocol(
-            "read_thread returned a snapshot for a different thread",
-        ));
-    }
-    let Some(snapshot_turn) = snapshot
-        .turns
-        .iter()
-        .find(|snapshot_turn| snapshot_turn.turn_id == turn.turn_id)
-    else {
-        return Err(RuntimeError::protocol(
-            "read_thread snapshot omitted the completed turn",
-        ));
+    session.validate().map_err(RuntimeError::from_contract)?;
+    let activity_spec = ActivitySpec {
+        logical_session_id: session.thread_id.clone(),
+        logical_turn_id: fixture.logical_turn_id.clone(),
+        thread_spec: fixture.thread_spec.clone(),
+        turn_spec: fixture.turn_spec.clone(),
+        activity_dir: fixture.activity_dir.clone(),
+        invocation_sha256: fixture.invocation_sha256.clone(),
+        external_session_id: None,
     };
-    if snapshot_turn != &completion.turn {
+    activity_spec.validate()?;
+    let activity = runtime.start_activity(activity_spec).await?;
+    activity.validate()?;
+    if activity.logical_session_id != session.thread_id
+        || activity.logical_turn_id != fixture.logical_turn_id
+    {
         return Err(RuntimeError::protocol(
-            "read_thread turn does not equal the terminal event snapshot",
+            "start_activity returned a handle for a different logical activity",
         ));
     }
-
-    let resumed = runtime.resume_thread(thread).await?;
-    resumed.validate().map_err(RuntimeError::from_contract)?;
-    if resumed.thread_id != thread.thread_id || resumed != snapshot {
+    if activity.process_record_sha256 != fixture.expected_process_record_sha256 {
         return Err(RuntimeError::protocol(
-            "resume_thread did not preserve the normalized thread history",
+            "start_activity returned an unexpected process record digest",
         ));
     }
-    Ok(())
+    if activity.external_session_id != fixture.expected_external_session_id {
+        return Err(RuntimeError::protocol(
+            "start_activity returned an unexpected external session identity",
+        ));
+    }
+    Ok(activity)
 }
 
 fn validate_event_order<'a>(
     events: &'a [RuntimeEvent],
-    turn: &TurnHandle,
+    activity: &ActivityHandle,
     minimum_total_tokens: u64,
 ) -> Result<&'a harp_contracts::TurnCompletedEvent, RuntimeError> {
     let mut started = false;
@@ -117,13 +114,14 @@ fn validate_event_order<'a>(
     for event in events {
         match event {
             RuntimeEvent::TurnStarted(started_event)
-                if started_event.thread_id == turn.thread_id
-                    && started_event.turn_id == turn.turn_id =>
+                if started_event.thread_id == activity.logical_session_id
+                    && started_event.turn_id == activity.logical_turn_id =>
             {
                 started = true;
             }
             RuntimeEvent::TokenUsage(usage)
-                if usage.thread_id == turn.thread_id && usage.turn_id == turn.turn_id =>
+                if usage.thread_id == activity.logical_session_id
+                    && usage.turn_id == activity.logical_turn_id =>
             {
                 if !started {
                     return Err(RuntimeError::protocol(
@@ -134,8 +132,8 @@ fn validate_event_order<'a>(
                 usage_seen = true;
             }
             RuntimeEvent::TurnCompleted(completed)
-                if completed.thread_id == turn.thread_id
-                    && completed.turn.turn_id == turn.turn_id =>
+                if completed.thread_id == activity.logical_session_id
+                    && completed.turn.turn_id == activity.logical_turn_id =>
             {
                 if !started {
                     return Err(RuntimeError::protocol(
@@ -198,55 +196,27 @@ fn validate_completion(
     Ok(())
 }
 
-async fn finish_with_shutdown(
-    runtime: &mut dyn CodexRuntime,
-    thread: ThreadHandle,
-    primary: Result<(), RuntimeError>,
-) -> Result<(), RuntimeError> {
-    let cleanup = runtime.shutdown_thread(thread).await;
-    match (primary, cleanup) {
-        (Ok(()), Ok(())) => Ok(()),
-        (Err(primary), Ok(())) => Err(primary),
-        (Ok(()), Err(cleanup)) => Err(cleanup),
-        (Err(primary), Err(cleanup)) => Err(RuntimeError::with_cleanup(primary, cleanup)),
-    }
-}
-
 pub async fn assert_interrupt_conformance(
-    runtime: &mut dyn CodexRuntime,
+    runtime: &mut dyn ActivityRuntime,
     fixture: &RuntimeFixture,
 ) -> Result<(), RuntimeError> {
     fixture.validate()?;
-    let thread = runtime.start_thread(fixture.thread_spec.clone()).await?;
-    let primary = async {
-        let turn = runtime
-            .start_turn(&thread, fixture.turn_spec.clone())
-            .await?;
-        if turn.thread_id != thread.thread_id {
-            return Err(RuntimeError::protocol(
-                "start_turn returned a handle for a different thread",
-            ));
-        }
-        runtime.interrupt(&turn).await?;
-        let snapshot = runtime.read_thread(&thread).await?;
-        let Some(interrupted) = snapshot
-            .turns
-            .iter()
-            .find(|candidate| candidate.turn_id == turn.turn_id)
-        else {
-            return Err(RuntimeError::protocol(
-                "read_thread snapshot omitted the interrupted turn",
-            ));
-        };
-        if interrupted.status != TurnStatus::Interrupted {
-            return Err(RuntimeError::protocol(
-                "interrupt did not produce an Interrupted turn snapshot",
-            ));
-        }
-        Ok(())
+    let activity = start_fixture_activity(runtime, fixture).await?;
+    let receipt = runtime
+        .interrupt(&activity, InterruptPurpose::Cancellation)
+        .await?;
+    receipt.validate()?;
+    if receipt.process_record_sha256 != activity.process_record_sha256 {
+        return Err(RuntimeError::protocol(
+            "interrupt receipt targeted a different process record",
+        ));
     }
-    .await;
-    finish_with_shutdown(runtime, thread, primary).await
+    if !receipt.quiescent {
+        return Err(RuntimeError::protocol(
+            "interrupt conformance requires a quiescent process",
+        ));
+    }
+    Ok(())
 }
 
 pub fn expect_error_kind<T>(
