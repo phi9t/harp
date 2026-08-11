@@ -10,6 +10,8 @@ self-improvement research. It combines:
   and source-specific license records;
 - narrow public-source snapshots for Pi, Hermes Agent, Codex, ARC-AGI-3,
   Autoresearch, and Meta-Harness;
+- a durable agentic execution harness for RLM task graphs, with SQLite state,
+  content-addressed artifacts, restart recovery, and CLI-process supervision;
 - a Rust validator/compiler and deterministic diagnosis contract;
 - a React 19 Atlas with a checked-in offline single-file export; and
 - a local SQLite FTS5 index.
@@ -41,6 +43,7 @@ cargo run -p harp -- search refresh
 cargo run -p harp -- search status
 cargo run -p harp -- search query "recursive improvement"
 cargo run -p harp -- sources verify
+cargo run -p harp -- rlm checkpoint
 ```
 
 Add `--format json` before a command for the schema-versioned JSON envelope.
@@ -57,6 +60,58 @@ under `evidence/implementations/` remain the offline evidence.
 The opt-in proposer supplement is under `labs/meta_harness_trae/`. Its
 deterministic tests and recorded run are part of offline verification; invoking
 a new live proposer is intentionally outside `mise run verify`.
+
+## Agentic Engineering Harness
+
+Harp has two implemented harness surfaces:
+
+- `harp rlm ...` runs durable task graphs through an activity-oriented runtime.
+  It is the execution path for restartable Codex CLI work.
+- `labs/meta_harness_trae/` is an opt-in Meta-Harness proposer supplement. It
+  validates proposal shape and candidate interfaces only; it does not claim a
+  benchmark score, paid-model evaluation, held-out result, or recursive
+  self-improvement result.
+
+RLM benchmark graphs are JSON files validated by the Rust contract layer. The
+checked-in schema receipts are:
+
+- `benchmarks/codex-architecture/schemas/task-graph.json`
+- `benchmarks/codex-architecture/schemas/result-envelope.json`
+
+Run a task graph with the installed Codex CLI:
+
+```sh
+cargo run -p harp -- rlm run \
+  --benchmark path/to/task-graph.json \
+  --runtime codex
+```
+
+Use `--runtime-executable /path/to/codex` when `codex` is not on `PATH`.
+Harness state defaults to `.harp/rlm` and contains:
+
+- `state.sqlite` for runs, tasks, attempts, activities, leases, and recovery;
+- `artifacts/` for content-addressed results, evidence, and checkpoints; and
+- `runtime-home/` for supervisor-owned CLI process records and spools.
+
+Operational commands:
+
+```sh
+cargo run -p harp -- rlm checkpoint
+cargo run -p harp -- rlm status <run-id>
+cargo run -p harp -- rlm resume <run-id>
+cargo run -p harp -- rlm resume --all-incomplete
+```
+
+The runtime choices are `codex`, `fake`, and `traecli`; `traecli` is reserved
+for a later adapter slice and currently fails before semantic work starts. The
+Codex adapter uses `codex exec --json` as the integration boundary, writes a
+per-activity output schema, parses bounded JSONL events, records process
+fingerprints, and interrupts process groups with SIGINT, SIGTERM, then SIGKILL
+when cancellation requires it.
+
+The engine pins graph policy, projection policy, artifact-store identity, and
+runtime provenance into each run. Resume rejects mismatched runtime or artifact
+authority before observing existing processes or starting new semantic work.
 
 ### Context-Control Surface
 
