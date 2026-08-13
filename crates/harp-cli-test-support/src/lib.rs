@@ -144,11 +144,7 @@ fn final_message_for_prompt(prompt: &str) -> Option<String> {
         .and_then(|value| serde_json::from_str::<BTreeMap<String, String>>(&value).ok())
     {
         for (task_id, message) in map {
-            if prompt.contains(&format!(r#""taskId":"{task_id}""#))
-                || prompt.contains(&format!(r#""task_id":"{task_id}""#))
-                || prompt.contains(&format!("execute {task_id}"))
-                || prompt.contains(&format!("produce {task_id}"))
-            {
+            if prompt_mentions_task(prompt, &task_id) {
                 return Some(message);
             }
         }
@@ -157,6 +153,24 @@ fn final_message_for_prompt(prompt: &str) -> Option<String> {
 }
 
 fn session_id_for_prompt(prompt: &str) -> String {
+    if let Some(task_id) = env::var("HARP_FAKE_CLI_FINAL_MESSAGES")
+        .ok()
+        .and_then(|value| serde_json::from_str::<BTreeMap<String, String>>(&value).ok())
+        .and_then(|map| {
+            map.into_keys()
+                .find(|task_id| prompt_mentions_task(prompt, task_id))
+        })
+    {
+        return format!("{DEFAULT_SESSION_ID}-{task_id}");
+    }
+    if let Some(task_id) = prompt
+        .lines()
+        .find_map(|line| line.strip_prefix("execute "))
+        .map(str::trim)
+        .filter(|task_id| !task_id.is_empty())
+    {
+        return format!("{DEFAULT_SESSION_ID}-{task_id}");
+    }
     for task_id in ["alpha", "beta", "reduce"] {
         if prompt.contains(&format!(r#""taskId":"{task_id}""#))
             || prompt.contains(&format!(r#""task_id":"{task_id}""#))
@@ -167,6 +181,15 @@ fn session_id_for_prompt(prompt: &str) -> String {
         }
     }
     DEFAULT_SESSION_ID.to_owned()
+}
+
+fn prompt_mentions_task(prompt: &str, task_id: &str) -> bool {
+    prompt.contains(&format!(r#""taskId":"{task_id}""#))
+        || prompt.contains(&format!(r#""taskId": "{task_id}""#))
+        || prompt.contains(&format!(r#""task_id":"{task_id}""#))
+        || prompt.contains(&format!(r#""task_id": "{task_id}""#))
+        || prompt.contains(&format!("execute {task_id}"))
+        || prompt.contains(&format!("produce {task_id}"))
 }
 
 fn emit(value: &serde_json::Value) -> io::Result<()> {

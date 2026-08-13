@@ -180,6 +180,33 @@ fn result_message(store: &ArtifactStore, task_id: &str, token_usage: u64) -> Str
     .unwrap()
 }
 
+fn result_envelope_schema_string() -> String {
+    serde_json::json!({
+        "type": "object",
+        "required": [
+            "schemaVersion",
+            "taskId",
+            "status",
+            "traceRef",
+            "summary",
+            "tokenUsage"
+        ],
+        "properties": {
+            "schemaVersion": {"const": 1},
+            "taskId": {"type": "string"},
+            "status": {"type": "string"},
+            "answerRef": {"type": ["object", "null"]},
+            "evidence": {"type": "array"},
+            "traceRef": {"type": "object"},
+            "summary": {"type": "string"},
+            "tokenUsage": {"type": "integer"},
+            "confidence": {"type": ["number", "null"]},
+            "failureClass": {"type": ["string", "null"]}
+        }
+    })
+    .to_string()
+}
+
 #[tokio::test]
 async fn executes_two_analysis_tasks_and_one_reducer() {
     let directory = private_directory("harp-engine-execution-");
@@ -312,6 +339,93 @@ async fn executes_two_analysis_tasks_and_one_reducer() {
                     .1,
             ) >= scratch_usage.total_bytes().unwrap()
         );
+    }
+}
+
+#[tokio::test]
+async fn process_runtime_wraps_plain_json_final_messages_as_result_envelopes() {
+    let directory = private_directory("harp-engine-process-wrap-");
+    let artifact_root = directory.path().join("artifacts");
+    fs::create_dir(&artifact_root).unwrap();
+    fs::set_permissions(&artifact_root, fs::Permissions::from_mode(0o700)).unwrap();
+    let artifacts = ArtifactStore::open(&artifact_root).unwrap();
+    let outcomes = ["alpha", "beta", "reduce"]
+        .into_iter()
+        .map(|task_id| {
+            (
+                task_id.to_owned(),
+                VecDeque::from([FakeOutcome {
+                    status: TurnStatus::Completed,
+                    final_message: Some(format!(r#"{{"ok":true,"task":"{task_id}"}}"#)),
+                    total_tokens: 8,
+                    token_snapshots: Vec::new(),
+                }]),
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+    let backend = PersistentFakeBackend::new(outcomes).with_adapter_kind("codex-cli-process");
+    let mut runtime = backend.runtime();
+    let mut graph = graph();
+    let envelope_schema = result_envelope_schema_string();
+    for node in &mut graph.nodes {
+        node.output_schema = envelope_schema.clone();
+    }
+    let (mut graph_policy, projection_policy) = policies(&graph);
+    graph_policy.allowed_output_schemas = [envelope_schema].into_iter().collect();
+    let validated = validate_graph(graph, &graph_policy, &projection_policy).expect("valid graph");
+    let execution_spec = RunExecutionSpec::new(
+        validated,
+        graph_policy,
+        projection_policy,
+        &artifacts,
+        &runtime.provenance().unwrap(),
+    )
+    .expect("execution spec");
+    let mut state = StateStore::open(&directory.path().join("state.sqlite")).unwrap();
+    let mut engine = Engine::new(EngineConfig {
+        worker_id: "process-wrap-worker".to_owned(),
+        lease_seconds: 60,
+        lease_renewal_threshold_seconds: 20,
+        runtime_operation_timeout_seconds: 30,
+        max_concurrency: 2,
+        logical_time: 10,
+        crash_point: None,
+    })
+    .unwrap();
+
+    let summary = engine
+        .execute_run(&mut state, &artifacts, &mut runtime, &execution_spec)
+        .await
+        .expect("process runtime output is wrapped");
+
+    assert_eq!(summary.completed_tasks, 3);
+    let accepted = state
+        .accepted_results(&summary.run_id)
+        .expect("accepted results");
+    assert_eq!(accepted.len(), 3);
+    for accepted in accepted {
+        let result_ref = state
+            .artifact(
+                accepted
+                    .attempt
+                    .result_sha256
+                    .as_deref()
+                    .expect("result digest"),
+            )
+            .unwrap()
+            .expect("registered result artifact");
+        let result: ResultEnvelope =
+            serde_json::from_slice(&artifacts.read_verified(&result_ref).unwrap()).unwrap();
+        assert_eq!(result.task_id, accepted.task.task_id);
+        assert_eq!(result.token_usage, 8);
+        let answer_bytes = artifacts
+            .read_verified(result.answer_ref.as_ref().expect("answer artifact"))
+            .unwrap();
+        let answer_json: serde_json::Value = serde_json::from_slice(&answer_bytes).unwrap();
+        assert_eq!(answer_json["ok"], true);
+        let trace_bytes = artifacts.read_verified(&result.trace_ref).unwrap();
+        let trace_json: serde_json::Value = serde_json::from_slice(&trace_bytes).unwrap();
+        assert_eq!(trace_json["wrappedProviderFinalMessage"], true);
     }
 }
 

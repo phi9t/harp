@@ -12,8 +12,8 @@ use harp_state::{
 use crate::cancel::{complete_cli_activity_interrupt, runtime_interrupt_purpose};
 use crate::scheduler::{
     activity_invocation_digest, pinned_output_schema, resolve_and_bind_scratch,
-    semantic_failure_class, semantic_output_error, thread_spec, turn_spec,
-    verify_and_register_result_artifacts, ActiveLeaseScope,
+    runtime_allows_harp_owned_result_wrapping, semantic_failure_class, semantic_output_error,
+    thread_spec, turn_spec, verify_and_register_result_artifacts, ActiveLeaseScope,
 };
 use crate::{Engine, EngineError, RunExecutionSpec, RunSummary};
 
@@ -375,6 +375,8 @@ impl Engine {
             )?;
         }
         state.mark_activity_running(lease, &activity.activity_id, self.tick()?)?;
+        let wrap_provider_final_message =
+            runtime_allows_harp_owned_result_wrapping(&runtime.provenance()?);
         let result = self
             .consume_activity(
                 state,
@@ -384,6 +386,7 @@ impl Engine {
                 lease,
                 &handle,
                 &activity_spec.turn_spec.output_schema,
+                wrap_provider_final_message,
             )
             .await?;
         self.publish_and_accept_cli(
@@ -416,6 +419,8 @@ impl Engine {
         let handle = recovered_activity_handle(activity)?;
         let output_schema = pinned_output_schema(state, &activity.attempt_id)?;
         self.fail_recovered_wall_if_exceeded(state, lease, &claim)?;
+        let wrap_provider_final_message =
+            runtime_allows_harp_owned_result_wrapping(&runtime.provenance()?);
         let result = match observe_terminal_activity(
             self,
             state,
@@ -445,6 +450,7 @@ impl Engine {
                     lease,
                     &handle,
                     &output_schema,
+                    wrap_provider_final_message,
                 )
                 .await?
             }

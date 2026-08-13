@@ -1,7 +1,13 @@
 use std::fs;
 use std::path::Path;
+#[cfg(feature = "test-cli-fixture")]
+use std::str::FromStr;
 
 use assert_cmd::Command;
+#[cfg(feature = "test-cli-fixture")]
+use harp_artifacts::ArtifactStore;
+#[cfg(feature = "test-cli-fixture")]
+use harp_contracts::{ArtifactRef, ResultEnvelope, ResultStatus, TaskId};
 use predicates::prelude::*;
 use serde_json::Value;
 use tempfile::TempDir;
@@ -15,6 +21,120 @@ fn repo_root() -> &'static Path {
         .parent()
         .and_then(Path::parent)
         .expect("workspace root")
+}
+
+#[cfg(feature = "test-cli-fixture")]
+fn fake_cli_bin() -> std::path::PathBuf {
+    assert_cmd::cargo::cargo_bin("harp_rlm_fake_cli")
+}
+
+#[cfg(feature = "test-cli-fixture")]
+fn workflow_path(repo: &TempDir) -> std::path::PathBuf {
+    let workflow = serde_json::json!({
+        "schemaVersion": 1,
+        "name": "research-workflow",
+        "root": {
+            "kind": "sequence",
+            "steps": [
+                {
+                    "kind": "agent",
+                    "callId": "discover",
+                    "prompt": "Run discover.",
+                    "outputSchema": "{\"type\":\"object\"}",
+                    "modelPolicy": "fake-model",
+                    "permissionProfile": "workspace-write",
+                    "workspaceMode": "scratch",
+                    "budget": {
+                        "maxTokens": 100,
+                        "timeoutSeconds": 3,
+                        "maxStorageBytes": 2048
+                    },
+                    "retryPolicy": {"maxTransientAttempts": 1}
+                },
+                {
+                    "kind": "parallel",
+                    "branches": [
+                        {
+                            "kind": "agent",
+                            "callId": "market",
+                            "prompt": "Run market.",
+                            "outputSchema": "{\"type\":\"object\"}",
+                            "modelPolicy": "fake-model",
+                            "permissionProfile": "workspace-write",
+                            "workspaceMode": "scratch",
+                            "budget": {
+                                "maxTokens": 100,
+                                "timeoutSeconds": 3,
+                                "maxStorageBytes": 2048
+                            },
+                            "retryPolicy": {"maxTransientAttempts": 1}
+                        },
+                        {
+                            "kind": "agent",
+                            "callId": "technical",
+                            "prompt": "Run technical.",
+                            "outputSchema": "{\"type\":\"object\"}",
+                            "modelPolicy": "fake-model",
+                            "permissionProfile": "workspace-write",
+                            "workspaceMode": "scratch",
+                            "budget": {
+                                "maxTokens": 100,
+                                "timeoutSeconds": 3,
+                                "maxStorageBytes": 2048
+                            },
+                            "retryPolicy": {"maxTransientAttempts": 1}
+                        }
+                    ]
+                }
+            ]
+        }
+    });
+    let path = repo.path().join("workflow.json");
+    fs::write(&path, serde_json::to_vec_pretty(&workflow).unwrap()).unwrap();
+    path
+}
+
+#[cfg(feature = "test-cli-fixture")]
+fn result_messages(repo: &TempDir) -> String {
+    let messages = [
+        "discover",
+        "market",
+        "technical",
+        "research-workflow-reduce",
+    ]
+    .into_iter()
+    .map(|task_id| (task_id.to_owned(), result_message(repo, task_id)))
+    .collect::<std::collections::BTreeMap<_, _>>();
+    serde_json::to_string(&messages).unwrap()
+}
+
+#[cfg(feature = "test-cli-fixture")]
+fn result_message(repo: &TempDir, task_id: &str) -> String {
+    let artifact_root = repo.path().join(".harp/workflow/artifacts");
+    fs::create_dir_all(&artifact_root).unwrap();
+    let artifacts = ArtifactStore::open(&artifact_root).unwrap();
+    let answer_ref = artifacts
+        .publish(format!("{task_id} answer").as_bytes(), "text/plain")
+        .unwrap();
+    let trace_ref = artifacts
+        .publish(
+            format!(r#"{{"event":"{task_id}"}}"#).as_bytes(),
+            "application/jsonl",
+        )
+        .unwrap();
+    serde_json::to_string(&ResultEnvelope {
+        schema_version: 1,
+        task_id: TaskId::from_str(task_id).unwrap(),
+        status: ResultStatus::Success,
+        answer_ref: Some(answer_ref),
+        evidence: Vec::<ArtifactRef>::new(),
+        trace_ref,
+        summary: format!("{task_id} completed"),
+        token_usage: 12,
+        confidence: Some(1.0),
+        failure_class: None,
+    })
+    .unwrap()
 }
 
 #[test]
@@ -298,4 +418,174 @@ fn rlm_resume_requires_exactly_one_selection_mode() {
         .stderr(predicate::str::contains(
             "provide exactly one run id or --all-incomplete",
         ));
+}
+
+#[cfg(feature = "test-cli-fixture")]
+#[test]
+fn workflow_run_executes_dynamic_workflow_through_the_durable_engine() {
+    let repo = TempDir::new().expect("temp repository");
+    let workflow = workflow_path(&repo);
+    let output = harp()
+        .current_dir(repo.path())
+        .env("HARP_FAKE_CLI_FINAL_MESSAGES", result_messages(&repo))
+        .env("HARP_FAKE_CLI_TOTAL_TOKENS", "12")
+        .args([
+            "--format",
+            "json",
+            "workflow",
+            "run",
+            "--file",
+            workflow.to_str().unwrap(),
+            "--runtime",
+            "codex",
+            "--runtime-executable",
+            fake_cli_bin().to_str().unwrap(),
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let envelope: Value = serde_json::from_slice(&output).expect("JSON envelope");
+    assert_eq!(envelope["command"], "workflow.run");
+    assert_eq!(envelope["status"], "ok");
+    let run_id = envelope["data"]["run_id"].as_str().expect("run id");
+    assert_eq!(envelope["data"]["completed_tasks"], 4);
+    assert!(
+        envelope["data"]["compiled_graph_sha256"]
+            .as_str()
+            .unwrap()
+            .len()
+            == 64
+    );
+
+    let status = harp()
+        .current_dir(repo.path())
+        .args(["--format", "json", "workflow", "status", run_id])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+    let status_envelope: Value = serde_json::from_slice(&status).expect("status JSON");
+    assert_eq!(status_envelope["command"], "workflow.status");
+    assert_eq!(status_envelope["data"]["state"], "completed");
+    assert_eq!(status_envelope["data"]["accepted_results"], 4);
+}
+
+#[cfg(feature = "test-cli-fixture")]
+#[test]
+fn workflow_run_uses_traecli_runtime_instead_of_rejecting_it() {
+    let repo = TempDir::new().expect("temp repository");
+    let workflow = workflow_path(&repo);
+    let output = harp()
+        .current_dir(repo.path())
+        .env("HARP_FAKE_CLI_FINAL_MESSAGES", result_messages(&repo))
+        .env("HARP_FAKE_CLI_TOTAL_TOKENS", "12")
+        .args([
+            "--format",
+            "json",
+            "workflow",
+            "run",
+            "--file",
+            workflow.to_str().unwrap(),
+            "--runtime",
+            "traecli",
+            "--runtime-executable",
+            fake_cli_bin().to_str().unwrap(),
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let envelope: Value = serde_json::from_slice(&output).expect("JSON envelope");
+    assert_eq!(envelope["command"], "workflow.run");
+    assert_eq!(envelope["status"], "ok");
+    assert_eq!(envelope["data"]["completed_tasks"], 4);
+}
+
+#[cfg(feature = "test-cli-fixture")]
+#[test]
+fn workflow_run_uses_authored_model_for_generated_reducer() {
+    let repo = TempDir::new().expect("temp repository");
+    let workflow = workflow_path(&repo);
+    let workflow_json = fs::read_to_string(&workflow).expect("workflow JSON");
+    fs::write(&workflow, workflow_json.replace("fake-model", "gpt-5.5"))
+        .expect("workflow with real model");
+    let messages = [
+        "discover",
+        "market",
+        "technical",
+        "research-workflow-reduce",
+    ]
+    .into_iter()
+    .map(|task_id| (task_id.to_owned(), result_message(&repo, task_id)))
+    .collect::<std::collections::BTreeMap<_, _>>();
+
+    harp()
+        .current_dir(repo.path())
+        .env(
+            "HARP_FAKE_CLI_FINAL_MESSAGES",
+            serde_json::to_string(&messages).unwrap(),
+        )
+        .env("HARP_FAKE_CLI_TOTAL_TOKENS", "12")
+        .args([
+            "--format",
+            "json",
+            "workflow",
+            "run",
+            "--file",
+            workflow.to_str().unwrap(),
+            "--runtime",
+            "traecli",
+            "--runtime-executable",
+            fake_cli_bin().to_str().unwrap(),
+        ])
+        .assert()
+        .success();
+
+    let records = repo
+        .path()
+        .join(".harp/workflow/runtime-home/harp-cli-process/records");
+    let reducer_records = fs::read_dir(records)
+        .expect("process records")
+        .filter_map(Result::ok)
+        .filter_map(|entry| {
+            if !entry.file_type().ok()?.is_file() {
+                return None;
+            }
+            let value: Value = serde_json::from_slice(&fs::read(entry.path()).ok()?).ok()?;
+            let activity_dir = value["activityDir"].as_str()?;
+            if activity_dir.contains("research-workflow-reduce") {
+                Some(value["argv"].clone())
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+
+    assert_eq!(reducer_records.len(), 1);
+    let argv = reducer_records[0].as_array().expect("argv array");
+    let model_index = argv
+        .iter()
+        .position(|arg| arg.as_str() == Some("--model"))
+        .expect("model flag");
+    assert_eq!(argv[model_index + 1], "gpt-5.5");
+
+    let state_path = repo.path().join(".harp/workflow/state.sqlite");
+    let max_tokens: i64 = rusqlite::Connection::open(state_path)
+        .unwrap()
+        .query_row(
+            "SELECT b.reserved_tokens
+             FROM budget_reservations b
+             JOIN attempts a ON a.attempt_id = b.attempt_id
+             WHERE a.task_id = 'research-workflow-reduce'",
+            [],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert!(max_tokens >= 160_000);
 }

@@ -7,8 +7,8 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use harp_artifacts::{ArtifactStore, ArtifactStoreIdentity};
 use harp_contracts::{
-    ArtifactRef, NodeKind, OperationId, ResultEnvelope, RunId, RuntimeEvent, TaskId, ThreadId,
-    ThreadSpec, TurnSpec, TurnStatus,
+    ArtifactRef, NodeKind, OperationId, ResultEnvelope, ResultStatus, RunId, RuntimeEvent, TaskId,
+    ThreadId, ThreadSpec, TurnSpec, TurnStatus,
 };
 use harp_runtime::{
     ActivityHandle, ActivityRuntime, ActivitySpec, InterruptPurpose as RuntimeInterruptPurpose,
@@ -29,6 +29,9 @@ use crate::{validate_graph, GraphPolicy, ProjectionPolicy, ProjectionRequest, Va
 const MAX_EXECUTION_RECEIPT_BYTES: usize = 240 * 1024;
 const RESULT_MEDIA_TYPE: &str = "application/vnd.harp.result+json";
 const EVALUATION_MEDIA_TYPE: &str = "application/vnd.harp.evaluation-receipt+json";
+const PROCESS_RUNTIME_ADAPTER_KIND: &str = "codex-cli-process";
+const PROVIDER_FINAL_MESSAGE_MEDIA_TYPE: &str = "application/json";
+const PROVIDER_TRACE_MEDIA_TYPE: &str = "application/jsonl";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -624,6 +627,8 @@ impl Engine {
         state.mark_activity_running(&lease, &activity.activity_id, self.tick()?)?;
         self.renew_lease_if_needed(state, &mut lease)?;
         self.inject(CrashPoint::AfterDispatchingTurn)?;
+        let wrap_provider_final_message =
+            runtime_allows_harp_owned_result_wrapping(&runtime.provenance()?);
         let result = self
             .consume_activity(
                 state,
@@ -633,6 +638,7 @@ impl Engine {
                 &mut lease,
                 &handle,
                 &turn_spec.output_schema,
+                wrap_provider_final_message,
             )
             .await?;
         self.publish_and_accept_cli(
@@ -657,6 +663,7 @@ impl Engine {
         lease: &mut harp_state::LeaseToken,
         activity: &ActivityHandle,
         output_schema: &serde_json::Value,
+        wrap_provider_final_message: bool,
     ) -> Result<ResultEnvelope, EngineError> {
         let node_kind = state
             .get_task(&claim.run_id, &claim.task_id)?
@@ -913,6 +920,31 @@ impl Engine {
                         Some(observed),
                     ) {
                         Ok(result) => result,
+                        Err(error)
+                            if wrap_provider_final_message && semantic_output_error(&error) =>
+                        {
+                            match wrap_process_final_message(
+                                artifacts,
+                                activity,
+                                claim,
+                                output_schema,
+                                &message,
+                                observed,
+                            ) {
+                                Ok(result) => result,
+                                Err(error) if semantic_output_error(&error) => {
+                                    return self.fail_semantic_result(
+                                        state,
+                                        artifacts,
+                                        claim,
+                                        lease,
+                                        semantic_failure_class(&error),
+                                        error,
+                                    );
+                                }
+                                Err(error) => return Err(error),
+                            }
+                        }
                         Err(error) if semantic_output_error(&error) => {
                             return self.fail_semantic_result(
                                 state,
@@ -1472,6 +1504,10 @@ pub(crate) fn semantic_output_error(error: &EngineError) -> bool {
     )
 }
 
+pub(crate) fn runtime_allows_harp_owned_result_wrapping(provenance: &RuntimeProvenance) -> bool {
+    provenance.adapter_kind == PROCESS_RUNTIME_ADAPTER_KIND
+}
+
 pub(crate) fn semantic_failure_class(error: &EngineError) -> &'static str {
     match error {
         EngineError::OutputJson { .. } => "output_json",
@@ -1655,13 +1691,22 @@ pub(crate) fn thread_spec(
         runtime_workspace_roots: vec![scratch_path],
         workspace_authority: Some(resolved_scratch.runtime_authority()?),
         approval_policy: node.permission_profile.clone(),
-        sandbox_mode: crate::workspace_mode_name(node.workspace_mode).to_owned(),
+        sandbox_mode: runtime_sandbox_mode(node.workspace_mode).to_owned(),
         model: node.model_policy.clone(),
         reasoning_effort: None,
         ephemeral: false,
     };
     thread.validate().map_err(EngineError::Contract)?;
     Ok(thread)
+}
+
+fn runtime_sandbox_mode(mode: harp_contracts::WorkspaceMode) -> &'static str {
+    match mode {
+        harp_contracts::WorkspaceMode::ReadOnly => "read-only",
+        harp_contracts::WorkspaceMode::Scratch
+        | harp_contracts::WorkspaceMode::GitWorktree
+        | harp_contracts::WorkspaceMode::CopyOnWrite => "workspace-write",
+    }
 }
 
 pub(crate) fn turn_spec(
@@ -1765,6 +1810,78 @@ pub(crate) fn verify_and_register_result_artifacts(
         state.register_artifact(artifact, now)?;
     }
     Ok(())
+}
+
+fn wrap_process_final_message(
+    artifacts: &ArtifactStore,
+    activity: &ActivityHandle,
+    claim: &harp_state::TaskClaim,
+    output_schema: &serde_json::Value,
+    message: &str,
+    observed_tokens: u64,
+) -> Result<ResultEnvelope, EngineError> {
+    let value: serde_json::Value =
+        serde_json::from_str(message).map_err(|source| EngineError::OutputJson {
+            task_id: claim.task_id.clone(),
+            source,
+        })?;
+    if !value.is_object() {
+        return Err(EngineError::OutputSchema {
+            task_id: claim.task_id.clone(),
+            context: "provider final message must be a JSON object before wrapping".to_owned(),
+        });
+    }
+
+    let answer_ref = artifacts.publish(message.as_bytes(), PROVIDER_FINAL_MESSAGE_MEDIA_TYPE)?;
+    let trace_bytes = serde_json::to_vec(&json!({
+        "schemaVersion": 1,
+        "wrappedProviderFinalMessage": true,
+        "taskId": claim.task_id.to_string(),
+        "runId": claim.run_id.to_string(),
+        "attemptId": claim.attempt_id.to_string(),
+        "logicalSessionId": activity.logical_session_id.to_string(),
+        "logicalTurnId": activity.logical_turn_id.to_string(),
+        "processRecordSha256": activity.process_record_sha256,
+        "answerSha256": answer_ref.sha256,
+        "tokenUsage": observed_tokens,
+    }))
+    .map_err(|source| EngineError::Serialization {
+        context: "wrapped provider trace",
+        source,
+    })?;
+    let trace_ref = artifacts.publish(&trace_bytes, PROVIDER_TRACE_MEDIA_TYPE)?;
+    let result = ResultEnvelope {
+        schema_version: 1,
+        task_id: claim.task_id.clone(),
+        status: ResultStatus::Success,
+        answer_ref: Some(answer_ref),
+        evidence: Vec::new(),
+        trace_ref,
+        summary: "provider final message wrapped by Harp".to_owned(),
+        token_usage: observed_tokens,
+        confidence: None,
+        failure_class: None,
+    };
+    result.validate().map_err(EngineError::Contract)?;
+    let instance = serde_json::to_value(&result).map_err(|source| EngineError::Serialization {
+        context: "wrapped result envelope",
+        source,
+    })?;
+    let validator = jsonschema::validator_for(output_schema).map_err(|error| {
+        EngineError::ExecutionReceipt {
+            context: format!(
+                "task {} pinned output schema could not compile: {error}",
+                claim.task_id
+            ),
+        }
+    })?;
+    if let Err(error) = validator.validate(&instance) {
+        return Err(EngineError::OutputSchema {
+            task_id: claim.task_id.clone(),
+            context: error.to_string(),
+        });
+    }
+    Ok(result)
 }
 
 fn result_storage_bytes(
@@ -1989,6 +2106,26 @@ mod accounting_tests {
     use harp_contracts::{ResultStatus, TaskId};
 
     use super::*;
+
+    #[test]
+    fn runtime_sandbox_mode_maps_workspace_modes_to_provider_sandboxes() {
+        assert_eq!(
+            runtime_sandbox_mode(harp_contracts::WorkspaceMode::ReadOnly),
+            "read-only"
+        );
+        assert_eq!(
+            runtime_sandbox_mode(harp_contracts::WorkspaceMode::Scratch),
+            "workspace-write"
+        );
+        assert_eq!(
+            runtime_sandbox_mode(harp_contracts::WorkspaceMode::GitWorktree),
+            "workspace-write"
+        );
+        assert_eq!(
+            runtime_sandbox_mode(harp_contracts::WorkspaceMode::CopyOnWrite),
+            "workspace-write"
+        );
+    }
 
     #[test]
     fn nested_digest_is_unique_within_attempt_and_charged_again_across_attempts() {

@@ -30,6 +30,8 @@ const MAX_ENV_VALUE_BYTES: usize = 16 * 1024;
 const MAX_JSONL_LINE_BYTES: usize = 1024 * 1024;
 const MAX_FINAL_MESSAGE_BYTES: usize = 1024 * 1024;
 const MAX_VERSION_BYTES: usize = 64 * 1024;
+const MAX_EXECUTABLE_HASH_BYTES: u64 = 512 * 1024 * 1024;
+const THREAD_STARTED_TIMEOUT: Duration = Duration::from_secs(60);
 const PROCESS_DIR: &str = "harp-cli-process";
 const RECORDS_DIR: &str = "records";
 const SPOOLS_DIR: &str = "spools";
@@ -338,7 +340,7 @@ impl ActivityRuntime for CliProcessRuntime {
                         false,
                     )
                 })?;
-            wait_for_thread_started(process, Duration::from_secs(10))?
+            wait_for_thread_started(process, THREAD_STARTED_TIMEOUT)?
         };
         let handle = ActivityHandle {
             logical_session_id: spec.logical_session_id,
@@ -488,7 +490,7 @@ impl RuntimeControl for CliProcessControl {
 fn prepare_runtime(config: ProcessRuntimeConfig) -> Result<RuntimeInner, RuntimeError> {
     validate_config(&config)?;
     let executable = canonical_regular_file(&config.executable, "executable")?;
-    let executable_sha256 = hash_file(&executable, 128 * 1024 * 1024)?;
+    let executable_sha256 = hash_file(&executable, MAX_EXECUTABLE_HASH_BYTES)?;
     let codex_home = secure_codex_home(&config.codex_home)?;
     ensure_private_dir(&codex_home.join(PROCESS_DIR))?;
     ensure_private_dir(&codex_home.join(PROCESS_DIR).join(RECORDS_DIR))?;
@@ -676,20 +678,20 @@ fn next_process_event_internal(
             }),
         ))),
         "item.completed" => {
-            if let Some(text) = value
-                .get("item")
-                .and_then(|item| item.get("text"))
-                .and_then(Value::as_str)
-            {
-                if text.len() > MAX_FINAL_MESSAGE_BYTES {
-                    return Err(runtime_error(
-                        RuntimeErrorKind::OutputSchema,
-                        "final agent message exceeds byte cap",
-                        false,
-                    ));
+            if let Some(item) = value.get("item") {
+                if item.get("type").and_then(Value::as_str) == Some("agent_message") {
+                    if let Some(text) = item.get("text").and_then(Value::as_str) {
+                        if text.len() > MAX_FINAL_MESSAGE_BYTES {
+                            return Err(runtime_error(
+                                RuntimeErrorKind::OutputSchema,
+                                "final agent message exceeds byte cap",
+                                false,
+                            ));
+                        }
+                        validate_final_message(text)?;
+                        process.final_message = Some(text.to_owned());
+                    }
                 }
-                validate_final_message(text)?;
-                process.final_message = Some(text.to_owned());
             }
             Ok(Some(ParsedProcessEvent::NoRuntimeEvent))
         }
@@ -1623,5 +1625,101 @@ impl ThreadIdExt for ThreadId {
         format!("harp-logical-{digest}")
             .parse()
             .map_err(RuntimeError::from_contract)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::io::{Seek, SeekFrom, Write};
+
+    use super::*;
+
+    #[test]
+    fn executable_hash_cap_accepts_large_traecli_sized_binaries() {
+        let root = tempfile::tempdir().expect("temp dir");
+        let executable = root.path().join("large-executable");
+        let mut file = fs::File::create(&executable).expect("create executable");
+        file.seek(SeekFrom::Start(240 * 1024 * 1024))
+            .expect("seek sparse executable");
+        file.write_all(b"x").expect("write executable byte");
+        drop(file);
+
+        let digest =
+            hash_file(&executable, MAX_EXECUTABLE_HASH_BYTES).expect("hash large executable");
+        assert_eq!(digest.len(), 64);
+    }
+
+    #[test]
+    fn executable_hash_cap_rejects_over_limit_binaries() {
+        let root = tempfile::tempdir().expect("temp dir");
+        let executable = root.path().join("too-large-executable");
+        let mut file = fs::File::create(&executable).expect("create executable");
+        file.seek(SeekFrom::Start(MAX_EXECUTABLE_HASH_BYTES))
+            .expect("seek sparse executable");
+        file.write_all(b"x").expect("write executable byte");
+        drop(file);
+
+        let error = hash_file(&executable, MAX_EXECUTABLE_HASH_BYTES).unwrap_err();
+        assert_eq!(error.kind(), RuntimeErrorKind::Startup);
+        assert!(error.message().contains("hashed file exceeds byte cap"));
+    }
+
+    #[test]
+    fn thread_started_timeout_allows_slow_live_cli_startup() {
+        assert!(
+            THREAD_STARTED_TIMEOUT >= Duration::from_secs(60),
+            "live CLI startup can exceed the old 10 second local adapter wait"
+        );
+    }
+
+    #[test]
+    fn reasoning_item_completed_does_not_replace_final_agent_message() {
+        let root = tempfile::tempdir().expect("temp dir");
+        let stdout_path = root.path().join("stdout.jsonl");
+        fs::write(
+            &stdout_path,
+            concat!(
+                "{\"type\":\"item.completed\",\"item\":{\"type\":\"reasoning\",\"text\":\"not json\"}}\n",
+                "{\"type\":\"item.completed\",\"item\":{\"type\":\"agent_message\",\"text\":\"{\\\"ok\\\":true}\"}}\n",
+            ),
+        )
+        .expect("stdout events");
+        let mut process = ActivityProcess {
+            record: ProcessRecord {
+                schema_version: 1,
+                pid: 1,
+                started_unix_millis: 1,
+                executable_path: "/bin/echo".to_owned(),
+                argv: Vec::new(),
+                codex_home_path: root.path().display().to_string(),
+                activity_dir: root.path().display().to_string(),
+                logical_session_id: "thread".parse().unwrap(),
+                logical_turn_id: "turn".parse().unwrap(),
+                invocation_sha256:
+                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa".to_owned(),
+                stdout_path: stdout_path.display().to_string(),
+                stderr_path: root.path().join("stderr.log").display().to_string(),
+                output_schema_path: root.path().join("schema.json").display().to_string(),
+                final_message_path: root.path().join("final.txt").display().to_string(),
+                environment_sha256:
+                    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb".to_owned(),
+            },
+            child: None,
+            offset: 0,
+            final_message: None,
+            queued: VecDeque::new(),
+            terminal_seen: false,
+        };
+
+        assert!(matches!(
+            next_process_event_internal(&mut process).unwrap(),
+            Some(ParsedProcessEvent::NoRuntimeEvent)
+        ));
+        assert_eq!(process.final_message, None);
+        assert!(matches!(
+            next_process_event_internal(&mut process).unwrap(),
+            Some(ParsedProcessEvent::NoRuntimeEvent)
+        ));
+        assert_eq!(process.final_message.as_deref(), Some("{\"ok\":true}"));
     }
 }

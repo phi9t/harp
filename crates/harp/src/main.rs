@@ -15,16 +15,18 @@ use harp::context_control::{ProviderId, WorkflowChoice, WorkflowId};
 use harp::{build_corpus, check_corpus, AppError, BuildMode};
 use harp_artifacts::ArtifactStore;
 use harp_cli_process::{CliProcessRuntime, ProcessRuntimeConfig};
-use harp_contracts::{RunId, TaskGraph};
+use harp_contracts::{DynamicWorkflow, RunId, TaskGraph, WorkspaceMode};
 use harp_engine::{
-    role_name, validate_graph, workspace_mode_name, Engine, EngineConfig, GraphPolicy,
-    ProjectionPolicy, RunExecutionSpec, RunSummary,
+    compile_dynamic_workflow, role_name, validate_graph, workspace_mode_name,
+    DynamicWorkflowCompileOptions, Engine, EngineConfig, GraphPolicy, ProjectionPolicy,
+    RunExecutionSpec, RunSummary,
 };
 use harp_runtime::fake::{FakeCodexRuntime, FakeStep};
 use harp_runtime::ActivityRuntime;
 use harp_state::StateStore;
 use serde::Serialize;
 use serde_json::Value;
+use sha2::Digest;
 
 #[derive(Parser)]
 #[command(name = "harp", version, about = "Standalone RSI technical atlas")]
@@ -71,6 +73,11 @@ enum Command {
     Rlm {
         #[command(subcommand)]
         command: RlmCommand,
+    },
+    /// Run and recover Dynamic Workflow IR through the durable engine.
+    Workflow {
+        #[command(subcommand)]
+        command: WorkflowCommand,
     },
     /// Inspect local agent CLI provider capabilities.
     Providers {
@@ -158,6 +165,36 @@ enum RlmCommand {
     },
     Checkpoint {
         #[arg(long, default_value = ".harp/rlm")]
+        state_dir: PathBuf,
+    },
+}
+
+#[derive(Subcommand)]
+enum WorkflowCommand {
+    Run {
+        #[arg(long)]
+        file: PathBuf,
+        #[arg(long, value_enum, default_value_t = RuntimeSelection::Codex)]
+        runtime: RuntimeSelection,
+        #[arg(long, default_value = ".harp/workflow")]
+        state_dir: PathBuf,
+        #[arg(long)]
+        runtime_executable: Option<PathBuf>,
+    },
+    Resume {
+        run_id: Option<String>,
+        #[arg(long)]
+        all_incomplete: bool,
+        #[arg(long, value_enum, default_value_t = RuntimeSelection::Codex)]
+        runtime: RuntimeSelection,
+        #[arg(long, default_value = ".harp/workflow")]
+        state_dir: PathBuf,
+        #[arg(long)]
+        runtime_executable: Option<PathBuf>,
+    },
+    Status {
+        run_id: String,
+        #[arg(long, default_value = ".harp/workflow")]
         state_dir: PathBuf,
     },
 }
@@ -398,6 +435,7 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
             }
         },
         Command::Rlm { command } => run_rlm(root, command),
+        Command::Workflow { command } => run_workflow(root, command),
         Command::Providers { command } => match command {
             ProvidersCommand::Doctor { provider } => {
                 let path_env = env::var_os("PATH").ok_or_else(|| {
@@ -700,6 +738,138 @@ fn run_rlm(root: &Path, command: &RlmCommand) -> Result<(&'static str, String, V
     })
 }
 
+fn run_workflow(
+    root: &Path,
+    command: &WorkflowCommand,
+) -> Result<(&'static str, String, Value), AppError> {
+    let runtime = tokio::runtime::Runtime::new().map_err(|error| {
+        AppError::external(
+            "workflow.runtime",
+            format!("could not start async runtime: {error}"),
+        )
+    })?;
+    runtime.block_on(async {
+        match command {
+            WorkflowCommand::Run {
+                file,
+                runtime,
+                state_dir,
+                runtime_executable,
+            } => {
+                let mut env = RlmEnvironment::open(root, state_dir)?;
+                let workflow = normalize_dynamic_workflow_for_engine(read_dynamic_workflow(file)?);
+                let options = default_dynamic_workflow_options(&workflow, &env)?;
+                let compiled = compile_dynamic_workflow(&workflow, &options).map_err(|error| {
+                    AppError::invalid_input(
+                        "workflow.compile",
+                        format!("dynamic workflow compilation failed: {error}"),
+                    )
+                })?;
+                let (graph_policy, projection_policy) = default_policies(&compiled.graph, &env)?;
+                let mut runtime =
+                    build_activity_runtime(*runtime, runtime_executable.as_deref(), &env).await?;
+                let provenance = runtime.provenance().map_err(app_runtime_error)?;
+                let validated =
+                    validate_graph(compiled.graph.clone(), &graph_policy, &projection_policy)
+                        .map_err(|error| {
+                            AppError::invalid_input(
+                                "workflow.graph",
+                                format!("compiled workflow graph validation failed: {error}"),
+                            )
+                        })?;
+                let spec = RunExecutionSpec::new(
+                    validated,
+                    graph_policy,
+                    projection_policy,
+                    &env.artifacts,
+                    &provenance,
+                )
+                .map_err(app_engine_error)?;
+                let mut engine = Engine::new(default_engine_config()).map_err(app_engine_error)?;
+                let summary = engine
+                    .execute_run(&mut env.state, &env.artifacts, runtime.as_mut(), &spec)
+                    .await
+                    .map_err(app_engine_error)?;
+                let mut value = run_summary_value(&summary);
+                value["workflow_name"] = serde_json::json!(workflow.name);
+                value["compiled_graph_sha256"] =
+                    serde_json::json!(compiled_graph_sha256(&compiled.graph)?);
+                Ok((
+                    "workflow.run",
+                    format!("workflow run {} completed", summary.run_id),
+                    value,
+                ))
+            }
+            WorkflowCommand::Resume {
+                run_id,
+                all_incomplete,
+                runtime,
+                state_dir,
+                runtime_executable,
+            } => {
+                if run_id.is_some() == *all_incomplete {
+                    return Err(AppError::invalid_input(
+                        "workflow.resume.selection",
+                        "provide exactly one run id or --all-incomplete",
+                    ));
+                }
+                let mut env = RlmEnvironment::open(root, state_dir)?;
+                let mut runtime =
+                    build_activity_runtime(*runtime, runtime_executable.as_deref(), &env).await?;
+                let mut engine = Engine::new(default_engine_config()).map_err(app_engine_error)?;
+                let summaries = if *all_incomplete {
+                    let run_ids = env
+                        .state
+                        .incomplete_runs()
+                        .map_err(app_state_error)?
+                        .into_iter()
+                        .map(|run| run.run_id)
+                        .collect::<Vec<_>>();
+                    let mut summaries = Vec::new();
+                    for run_id in run_ids {
+                        summaries.push(
+                            engine
+                                .resume_run(
+                                    &mut env.state,
+                                    &env.artifacts,
+                                    runtime.as_mut(),
+                                    &run_id,
+                                )
+                                .await
+                                .map_err(app_engine_error)?,
+                        );
+                    }
+                    summaries
+                } else {
+                    let run_id = parse_run_id(run_id.as_deref().expect("checked run id"))?;
+                    vec![engine
+                        .resume_run(&mut env.state, &env.artifacts, runtime.as_mut(), &run_id)
+                        .await
+                        .map_err(app_engine_error)?]
+                };
+                Ok((
+                    "workflow.resume",
+                    format!("resumed {} workflow run(s)", summaries.len()),
+                    serde_json::json!({
+                        "runs": summaries.iter().map(run_summary_value).collect::<Vec<_>>()
+                    }),
+                ))
+            }
+            WorkflowCommand::Status { run_id, state_dir } => {
+                let mut env = RlmEnvironment::open(root, state_dir)?;
+                let run_id = parse_run_id(run_id)?;
+                workflow_status_value(&mut env, &run_id).map(|value| {
+                    (
+                        "workflow.status",
+                        format!("workflow run {} is {}", run_id, value["state"]),
+                        value,
+                    )
+                })
+            }
+        }
+    })
+}
+
 fn emit_success(format: OutputFormat, command: &'static str, message: &str, data: Value) {
     match format {
         OutputFormat::Text => println!("{message}"),
@@ -809,6 +979,180 @@ fn read_task_graph(path: &Path) -> Result<TaskGraph, AppError> {
         )
     })?;
     Ok(graph)
+}
+
+fn read_dynamic_workflow(path: &Path) -> Result<DynamicWorkflow, AppError> {
+    let bytes = fs::read(path)
+        .map_err(|error| AppError::io("workflow.file", "read workflow file", error))?;
+    if bytes.len() > 1024 * 1024 {
+        return Err(AppError::invalid_input(
+            "workflow.file_size",
+            "workflow file exceeds 1 MiB",
+        ));
+    }
+    let workflow: DynamicWorkflow = serde_json::from_slice(&bytes).map_err(|error| {
+        AppError::invalid_input("workflow.json", format!("invalid workflow JSON: {error}"))
+    })?;
+    workflow.validate_shape().map_err(|error| {
+        AppError::invalid_input("workflow.contract", format!("invalid workflow: {error}"))
+    })?;
+    Ok(workflow)
+}
+
+fn default_dynamic_workflow_options(
+    workflow: &DynamicWorkflow,
+    env: &RlmEnvironment,
+) -> Result<DynamicWorkflowCompileOptions, AppError> {
+    let scratch_root = env
+        .root
+        .join("scratch")
+        .join(&workflow.name)
+        .to_str()
+        .ok_or_else(|| {
+            AppError::invalid_input("workflow.scratch_path", "scratch path is not UTF-8")
+        })?
+        .to_owned();
+    Ok(DynamicWorkflowCompileOptions {
+        reducer_model_policy: first_dynamic_workflow_model_policy(&workflow.root)
+            .unwrap_or("fake-model")
+            .to_owned(),
+        reducer_permission_profile: "workspace-write".to_owned(),
+        reducer_workspace_mode: WorkspaceMode::Scratch,
+        reducer_budget: harp_contracts::Budget::new(160_000, 240, 16 * 1024 * 1024),
+        reducer_output_schema: result_envelope_output_schema(),
+        reducer_retry_policy: harp_contracts::RetryPolicy {
+            max_transient_attempts: 1,
+        },
+        scratch_root,
+        base_instructions:
+            "Execute the assigned Harp Dynamic Workflow task and return only the required JSON."
+                .to_owned(),
+        checkpoint_instructions: "Write checkpoints only when useful for durable recovery."
+            .to_owned(),
+    })
+}
+
+fn first_dynamic_workflow_model_policy(step: &harp_contracts::DynamicWorkflowStep) -> Option<&str> {
+    match step {
+        harp_contracts::DynamicWorkflowStep::Agent(agent) => Some(agent.model_policy.as_str()),
+        harp_contracts::DynamicWorkflowStep::Sequence { steps }
+        | harp_contracts::DynamicWorkflowStep::Parallel { branches: steps } => {
+            steps.iter().find_map(first_dynamic_workflow_model_policy)
+        }
+        harp_contracts::DynamicWorkflowStep::Pipeline { stages, .. } => stages
+            .iter()
+            .map(|stage| stage.model_policy.as_str())
+            .next(),
+        harp_contracts::DynamicWorkflowStep::Phase { step, .. } => {
+            first_dynamic_workflow_model_policy(step)
+        }
+        harp_contracts::DynamicWorkflowStep::Log { .. } => None,
+    }
+}
+
+fn normalize_dynamic_workflow_for_engine(mut workflow: DynamicWorkflow) -> DynamicWorkflow {
+    rewrite_dynamic_step_output_schema(&mut workflow.root);
+    workflow
+}
+
+fn rewrite_dynamic_step_output_schema(step: &mut harp_contracts::DynamicWorkflowStep) {
+    match step {
+        harp_contracts::DynamicWorkflowStep::Agent(agent) => {
+            agent.output_schema = result_envelope_output_schema();
+        }
+        harp_contracts::DynamicWorkflowStep::Sequence { steps } => {
+            for step in steps {
+                rewrite_dynamic_step_output_schema(step);
+            }
+        }
+        harp_contracts::DynamicWorkflowStep::Parallel { branches } => {
+            for branch in branches {
+                rewrite_dynamic_step_output_schema(branch);
+            }
+        }
+        harp_contracts::DynamicWorkflowStep::Pipeline { stages, .. } => {
+            for stage in stages {
+                stage.output_schema = result_envelope_output_schema();
+            }
+        }
+        harp_contracts::DynamicWorkflowStep::Phase { step, .. } => {
+            rewrite_dynamic_step_output_schema(step);
+        }
+        harp_contracts::DynamicWorkflowStep::Log { .. } => {}
+    }
+}
+
+fn result_envelope_output_schema() -> String {
+    serde_json::json!({
+        "type": "object",
+        "required": [
+            "schemaVersion",
+            "taskId",
+            "status",
+            "traceRef",
+            "summary",
+            "tokenUsage"
+        ],
+        "properties": {
+            "schemaVersion": {"const": 1},
+            "taskId": {"type": "string"},
+            "status": {"type": "string"},
+            "answerRef": {"type": ["object", "null"]},
+            "evidence": {"type": "array"},
+            "traceRef": {"type": "object"},
+            "summary": {"type": "string"},
+            "tokenUsage": {"type": "integer"},
+            "confidence": {"type": ["number", "null"]},
+            "failureClass": {"type": ["string", "null"]}
+        }
+    })
+    .to_string()
+}
+
+fn compiled_graph_sha256(graph: &TaskGraph) -> Result<String, AppError> {
+    let bytes = serde_json::to_vec(graph).map_err(|error| {
+        AppError::external(
+            "workflow.graph_hash",
+            format!("could not serialize compiled graph: {error}"),
+        )
+    })?;
+    Ok(format!("{:x}", sha2::Sha256::digest(bytes)))
+}
+
+fn workflow_status_value(env: &mut RlmEnvironment, run_id: &RunId) -> Result<Value, AppError> {
+    let run = env
+        .state
+        .get_run(run_id)
+        .map_err(app_state_error)?
+        .ok_or_else(|| AppError::invalid_input("workflow.run_missing", "run does not exist"))?;
+    let tasks = env.state.tasks(run_id).map_err(app_state_error)?;
+    let attempts = env.state.attempts(run_id).map_err(app_state_error)?;
+    let accepted = env
+        .state
+        .accepted_results(run_id)
+        .map_err(app_state_error)?;
+    Ok(serde_json::json!({
+        "run_id": run_id.to_string(),
+        "state": run.state.as_str(),
+        "cancellation_requested": run.cancellation_requested,
+        "graph_sha256": run.graph_sha256,
+        "created_at": run.created_at,
+        "updated_at": run.updated_at,
+        "tasks": tasks.iter().map(|task| serde_json::json!({
+            "task_id": task.task_id.to_string(),
+            "kind": format!("{:?}", task.kind),
+            "state": task.state.as_str(),
+            "accepted_attempt_id": task.accepted_attempt_id.as_ref().map(ToString::to_string),
+        })).collect::<Vec<_>>(),
+        "attempts": attempts.iter().map(|attempt| serde_json::json!({
+            "attempt_id": attempt.attempt_id.to_string(),
+            "task_id": attempt.task_id.to_string(),
+            "ordinal": attempt.ordinal,
+            "state": attempt.state.as_str(),
+            "result_sha256": attempt.result_sha256,
+        })).collect::<Vec<_>>(),
+        "accepted_results": accepted.len(),
+    }))
 }
 
 fn default_policies(
@@ -947,11 +1291,72 @@ async fn build_activity_runtime(
                     .map_err(app_runtime_error)?,
             ))
         }
-        RuntimeSelection::Traecli => Err(AppError::invalid_input(
-            "rlm.runtime",
-            "traecli runtime is not implemented in this adapter slice",
-        )),
+        RuntimeSelection::Traecli => {
+            let executable = match executable {
+                Some(path) => path.to_path_buf(),
+                None => find_on_path("traecli").ok_or_else(|| {
+                    AppError::invalid_input(
+                        "rlm.traecli_missing",
+                        "traecli executable not found; pass --runtime-executable",
+                    )
+                })?,
+            };
+            let config = with_test_cli_env(
+                with_traecli_host_env(ProcessRuntimeConfig::builder(executable, &env.runtime_home))
+                    .exec_args(["exec", "--json"])
+                    .env("HOME", default_home()?)
+                    .env("TRAE_HOME", default_trae_home()?)
+                    .build()
+                    .map_err(app_runtime_error)?,
+            )?;
+            Ok(Box::new(
+                CliProcessRuntime::spawn(config)
+                    .await
+                    .map_err(app_runtime_error)?,
+            ))
+        }
     }
+}
+
+fn default_home() -> Result<PathBuf, AppError> {
+    std::env::var_os("HOME").map(PathBuf::from).ok_or_else(|| {
+        AppError::invalid_input("rlm.home", "HOME is required for traecli authentication")
+    })
+}
+
+fn with_traecli_host_env(
+    mut builder: harp_cli_process::ProcessRuntimeConfigBuilder,
+) -> harp_cli_process::ProcessRuntimeConfigBuilder {
+    const KEYS: [&str; 12] = [
+        "PATH",
+        "USER",
+        "LOGNAME",
+        "TMPDIR",
+        "LANG",
+        "LC_ALL",
+        "SSL_CERT_FILE",
+        "SSL_CERT_DIR",
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "NO_PROXY",
+        "no_proxy",
+    ];
+    for key in KEYS {
+        if let Some(value) = std::env::var_os(key) {
+            builder = builder.env(key, value);
+        }
+    }
+    builder
+}
+
+fn default_trae_home() -> Result<PathBuf, AppError> {
+    if let Some(path) = std::env::var_os("TRAE_HOME") {
+        return Ok(PathBuf::from(path));
+    }
+    let home = std::env::var_os("HOME").ok_or_else(|| {
+        AppError::invalid_input("rlm.trae_home", "HOME or TRAE_HOME is required for traecli")
+    })?;
+    Ok(PathBuf::from(home).join(".trae"))
 }
 
 #[cfg(feature = "test-cli-fixture")]
@@ -982,7 +1387,7 @@ fn default_engine_config() -> EngineConfig {
         worker_id: format!("harp-cli-{}", std::process::id()),
         lease_seconds,
         lease_renewal_threshold_seconds: (lease_seconds / 3).max(1).min(lease_seconds - 1),
-        runtime_operation_timeout_seconds: 30,
+        runtime_operation_timeout_seconds: 180,
         max_concurrency: 4,
         logical_time: 1,
         crash_point: None,

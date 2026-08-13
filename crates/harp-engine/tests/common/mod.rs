@@ -25,6 +25,7 @@ use sha2::Digest;
 pub struct PersistentFakeBackend {
     inner: Arc<Mutex<FakeState>>,
     runtime_identity: String,
+    adapter_kind: String,
     sidecar_path: Option<PathBuf>,
     next_event_hook: Option<Arc<dyn Fn() + Send + Sync>>,
     before_workspace_verify_hook: Option<Arc<dyn Fn() + Send + Sync>>,
@@ -88,10 +89,16 @@ impl PersistentFakeBackend {
                 ..FakeState::default()
             })),
             runtime_identity: runtime_identity.to_owned(),
+            adapter_kind: "persistent-fake".to_owned(),
             sidecar_path: None,
             next_event_hook: None,
             before_workspace_verify_hook: None,
         }
+    }
+
+    pub fn with_adapter_kind(mut self, adapter_kind: &str) -> Self {
+        self.adapter_kind = adapter_kind.to_owned();
+        self
     }
 
     pub fn open_file(
@@ -119,6 +126,7 @@ impl PersistentFakeBackend {
         let backend = Self {
             inner: Arc::new(Mutex::new(state)),
             runtime_identity: identity,
+            adapter_kind: "persistent-fake".to_owned(),
             sidecar_path: Some(path.to_path_buf()),
             next_event_hook: None,
             before_workspace_verify_hook: None,
@@ -317,7 +325,7 @@ async fn next_backend_event(
 impl ActivityRuntime for PersistentFakeRuntime {
     fn provenance(&self) -> Result<RuntimeProvenance, RuntimeError> {
         RuntimeProvenance::new(
-            "persistent-fake",
+            &self.backend.adapter_kind,
             env!("CARGO_PKG_VERSION"),
             &self.backend.runtime_identity,
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -502,7 +510,7 @@ struct PersistentFakeRuntimeControl {
 impl RuntimeControl for PersistentFakeRuntimeControl {
     fn provenance(&self) -> Result<RuntimeProvenance, RuntimeError> {
         RuntimeProvenance::new(
-            "persistent-fake",
+            &self.backend.adapter_kind,
             env!("CARGO_PKG_VERSION"),
             &self.backend.runtime_identity,
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
