@@ -33,6 +33,25 @@ Keep Rust errors typed, validate JSON at boundaries, reject symlinked generated
 targets, and preserve strict TypeScript boundary parsing and exhaustive variant
 handling.
 
+## Workspace management and landing
+
+- Do not push unless the project owner explicitly asks for a push.
+- Start new feature work in an isolated git worktree. Keep the primary checkout
+  operator-facing and clean.
+- Land locally with focused, independently verifiable commits grouped by
+  concern. Do not use `git add .`; stage explicit path groups.
+- If the primary checkout is dirty, classify every path before acting:
+  restore accidental derived-file deletions, ignore editor/build scratch, and
+  commit only coherent repo-owned artifacts.
+- Refresh `docs/import-receipt.md` only after the rest of the tracked payload is
+  settled. Copy the digest reported by `harp repository verify`, then rerun the
+  relevant verifier.
+- Run `mise run verify` before a local landing unless the owner explicitly asks
+  for a narrower gate. Use focused tests while iterating, but do not treat them
+  as a release gate.
+- Preserve unrelated local changes. If a dirty path is not part of the current
+  landing, leave it alone or add an ignore rule for clearly local scratch.
+
 ## Licensing
 
 Do not add a repository-wide license unless the project owner explicitly
