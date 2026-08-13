@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "name": "dw-resume-completed-calls",
+  "root": {
+    "kind": "parallel",
+    "branches": [
+      {
+        "kind": "agent",
+        "callId": "fast",
+        "prompt": "Finish quickly and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "kind": "agent",
+        "callId": "slow",
+        "prompt": "Wait behind the fake barrier and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      }
+    ]
+  }
+}

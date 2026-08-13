@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "name": "dw-pipeline-no-global-barrier",
+  "root": {
+    "kind": "pipeline",
+    "items": [
+      {
+        "itemId": "claim-a",
+        "input": {
+          "claim": "A"
+        }
+      },
+      {
+        "itemId": "claim-b",
+        "input": {
+          "claim": "B"
+        }
+      }
+    ],
+    "stages": [
+      {
+        "callId": "extract",
+        "prompt": "Extract evidence for this item and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "callId": "verify",
+        "prompt": "Verify evidence for this item and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      }
+    ]
+  }
+}

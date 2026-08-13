@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "name": "dw-schema-contract",
+  "root": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "kind": "agent",
+        "callId": "malformed",
+        "prompt": "Return malformed output in the fake runtime.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "kind": "agent",
+        "callId": "must-not-run-after-malformed",
+        "prompt": "This call should not be accepted after malformed output.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      }
+    ]
+  }
+}

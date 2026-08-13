@@ -1,0 +1,53 @@
+{
+  "schema_version": "harp-dynamic-workflow-benchmark-run/v1",
+  "runner": "temporary fake-runtime runner",
+  "result_boundary": "generated ResultEnvelope messages with ArtifactStore-compatible object layout",
+  "caveat": "This run validates ready-fixture execution with valid generated ResultEnvelope messages. The dw-schema-contract fixture did not exercise its intended malformed-output negative path in this receipt.",
+  "results": [
+    {
+      "fixture": "dw-parallel-barrier.json",
+      "ok": true,
+      "run_id": "019ff974-f883-7021-8da3-0baeb3a826e4",
+      "compiled_graph_sha256": "3ec00be665257f6267c9d46221cca1fecd709012b5c502be60a7554447b949bb",
+      "completed_tasks": 4,
+      "accepted_results": 4,
+      "task_count": 4
+    },
+    {
+      "fixture": "dw-pipeline-no-global-barrier.json",
+      "ok": true,
+      "run_id": "019ff974-fb35-7b11-a7ef-28b27701328d",
+      "compiled_graph_sha256": "c28629fb4ac286771c9529af23f16228c3d6d55defb6865b13381cacfb9a9583",
+      "completed_tasks": 5,
+      "accepted_results": 5,
+      "task_count": 5
+    },
+    {
+      "fixture": "dw-resume-completed-calls.json",
+      "ok": true,
+      "run_id": "019ff974-fe1d-71b2-a2fc-18c065929c88",
+      "compiled_graph_sha256": "7aa3c356d6b4277f3eebb81390d5bb7cbd53db42e659e0ccc1e7332dde0acd71",
+      "completed_tasks": 3,
+      "accepted_results": 3,
+      "task_count": 3
+    },
+    {
+      "fixture": "dw-schema-contract.json",
+      "ok": true,
+      "run_id": "019ff974-ffd8-7260-a506-b0c85c147f2b",
+      "compiled_graph_sha256": "a79cc6ca6c9423fe575aed9aa18a3ca337f220ed8f84ed9be99f5e620de5104b",
+      "completed_tasks": 3,
+      "accepted_results": 3,
+      "task_count": 3
+    },
+    {
+      "fixture": "dw-sequence-required-steps.json",
+      "ok": true,
+      "run_id": "019ff975-01f0-7360-80cb-740b1eeb884e",
+      "compiled_graph_sha256": "01d90407c09c31763b8a014cda4ddc40c9a1d0fdc1709d9d5b7facdc21bb4616",
+      "completed_tasks": 4,
+      "accepted_results": 4,
+      "task_count": 4
+    }
+  ]
+}

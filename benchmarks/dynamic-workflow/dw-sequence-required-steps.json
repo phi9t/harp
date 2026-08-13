@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "name": "dw-sequence-required-steps",
+  "root": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "kind": "agent",
+        "callId": "discover",
+        "prompt": "Discover the required work and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "kind": "agent",
+        "callId": "execute",
+        "prompt": "Execute the discovered work and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "kind": "agent",
+        "callId": "verify",
+        "prompt": "Verify the execution result and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      }
+    ]
+  }
+}

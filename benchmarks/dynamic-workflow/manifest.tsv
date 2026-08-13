@@ -1,0 +1,7 @@
+benchmark_id	need_case	status	fixture_path	expected_evidence
+dw-sequence-required-steps	required-step-control	fixture	benchmarks/dynamic-workflow/dw-sequence-required-steps.json	compiled dependency chain and accepted result count
+dw-parallel-barrier	barrier-fan-out	fixture	benchmarks/dynamic-workflow/dw-parallel-barrier.json	reducer depends on all analysis tasks
+dw-pipeline-no-global-barrier	item-pipeline	fixture	benchmarks/dynamic-workflow/dw-pipeline-no-global-barrier.json	per-item stage dependency chain without cross-item barrier
+dw-resume-completed-calls	durable-replay	fixture	benchmarks/dynamic-workflow/dw-resume-completed-calls.json	interrupted run resumes without duplicate accepted results
+dw-schema-contract	structured-result-contract	fixture	benchmarks/dynamic-workflow/dw-schema-contract.json	malformed output fails before reducer success
+dw-side-effect-idempotency	side-effect-boundary	deferred	benchmarks/dynamic-workflow/dw-side-effect-idempotency.json	idempotent side-effect convergence after retry

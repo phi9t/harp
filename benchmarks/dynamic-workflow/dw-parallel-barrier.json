@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "name": "dw-parallel-barrier",
+  "root": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "kind": "agent",
+        "callId": "discover",
+        "prompt": "Discover branch inputs and return a result envelope.",
+        "outputSchema": "{\"type\":\"object\"}",
+        "modelPolicy": "fake-model",
+        "permissionProfile": "workspace-write",
+        "workspaceMode": "scratch",
+        "budget": {
+          "maxTokens": 100,
+          "timeoutSeconds": 3,
+          "maxStorageBytes": 2048
+        },
+        "retryPolicy": {
+          "maxTransientAttempts": 1
+        }
+      },
+      {
+        "kind": "parallel",
+        "branches": [
+          {
+            "kind": "agent",
+            "callId": "security",
+            "prompt": "Run the security branch and return a result envelope.",
+            "outputSchema": "{\"type\":\"object\"}",
+            "modelPolicy": "fake-model",
+            "permissionProfile": "workspace-write",
+            "workspaceMode": "scratch",
+            "budget": {
+              "maxTokens": 100,
+              "timeoutSeconds": 3,
+              "maxStorageBytes": 2048
+            },
+            "retryPolicy": {
+              "maxTransientAttempts": 1
+            }
+          },
+          {
+            "kind": "agent",
+            "callId": "correctness",
+            "prompt": "Run the correctness branch and return a result envelope.",
+            "outputSchema": "{\"type\":\"object\"}",
+            "modelPolicy": "fake-model",
+            "permissionProfile": "workspace-write",
+            "workspaceMode": "scratch",
+            "budget": {
+              "maxTokens": 100,
+              "timeoutSeconds": 3,
+              "maxStorageBytes": 2048
+            },
+            "retryPolicy": {
+              "maxTransientAttempts": 1
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
