@@ -1,5 +1,6 @@
 mod artifact;
 mod checkpoint;
+mod dynamic_workflow;
 mod evaluation;
 mod graph;
 mod id;
@@ -8,6 +9,9 @@ mod runtime;
 
 pub use artifact::ArtifactRef;
 pub use checkpoint::Checkpoint;
+pub use dynamic_workflow::{
+    DynamicAgentCall, DynamicPipelineItem, DynamicWorkflow, DynamicWorkflowStep,
+};
 pub use evaluation::{
     AdapterKind, CheckResult, CheckStatus, DeterministicEvaluation, RunMetrics, SemanticEvaluation,
 };

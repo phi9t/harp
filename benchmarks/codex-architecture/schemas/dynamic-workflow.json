@@ -1,0 +1,322 @@
+{
+  "$defs": {
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "maxStorageBytes": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "maxTokens": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "timeoutSeconds": {
+          "format": "uint64",
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "maxTokens",
+        "timeoutSeconds",
+        "maxStorageBytes"
+      ],
+      "type": "object"
+    },
+    "DynamicAgentCall": {
+      "additionalProperties": false,
+      "properties": {
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "callId": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "modelPolicy": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "outputSchema": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "permissionProfile": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 16384,
+          "minLength": 1,
+          "type": "string"
+        },
+        "retryPolicy": {
+          "$ref": "#/$defs/RetryPolicy"
+        },
+        "workspaceMode": {
+          "$ref": "#/$defs/WorkspaceMode"
+        }
+      },
+      "required": [
+        "callId",
+        "prompt",
+        "outputSchema",
+        "modelPolicy",
+        "permissionProfile",
+        "workspaceMode",
+        "budget",
+        "retryPolicy"
+      ],
+      "type": "object"
+    },
+    "DynamicPipelineItem": {
+      "additionalProperties": false,
+      "properties": {
+        "input": true,
+        "itemId": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "itemId",
+        "input"
+      ],
+      "type": "object"
+    },
+    "DynamicWorkflowStep": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "budget": {
+              "$ref": "#/$defs/Budget"
+            },
+            "callId": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "kind": {
+              "const": "agent",
+              "type": "string"
+            },
+            "modelPolicy": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "outputSchema": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            "permissionProfile": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "prompt": {
+              "maxLength": 16384,
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryPolicy": {
+              "$ref": "#/$defs/RetryPolicy"
+            },
+            "workspaceMode": {
+              "$ref": "#/$defs/WorkspaceMode"
+            }
+          },
+          "required": [
+            "kind",
+            "callId",
+            "prompt",
+            "outputSchema",
+            "modelPolicy",
+            "permissionProfile",
+            "workspaceMode",
+            "budget",
+            "retryPolicy"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "sequence",
+              "type": "string"
+            },
+            "steps": {
+              "items": {
+                "$ref": "#/$defs/DynamicWorkflowStep"
+              },
+              "maxItems": 256,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "kind",
+            "steps"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "branches": {
+              "items": {
+                "$ref": "#/$defs/DynamicWorkflowStep"
+              },
+              "maxItems": 64,
+              "minItems": 1,
+              "type": "array"
+            },
+            "kind": {
+              "const": "parallel",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "branches"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "items": {
+              "items": {
+                "$ref": "#/$defs/DynamicPipelineItem"
+              },
+              "maxItems": 256,
+              "minItems": 1,
+              "type": "array"
+            },
+            "kind": {
+              "const": "pipeline",
+              "type": "string"
+            },
+            "stages": {
+              "items": {
+                "$ref": "#/$defs/DynamicAgentCall"
+              },
+              "maxItems": 16,
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "kind",
+            "items",
+            "stages"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "phase",
+              "type": "string"
+            },
+            "step": {
+              "$ref": "#/$defs/DynamicWorkflowStep"
+            },
+            "title": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "title",
+            "step"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "log",
+              "type": "string"
+            },
+            "message": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "message"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "RetryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "maxTransientAttempts": {
+          "format": "uint8",
+          "maximum": 3,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "maxTransientAttempts"
+      ],
+      "type": "object"
+    },
+    "WorkspaceMode": {
+      "enum": [
+        "readOnly",
+        "scratch",
+        "gitWorktree",
+        "copyOnWrite"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    },
+    "root": {
+      "$ref": "#/$defs/DynamicWorkflowStep"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "name",
+    "root"
+  ],
+  "title": "DynamicWorkflow",
+  "type": "object"
+}

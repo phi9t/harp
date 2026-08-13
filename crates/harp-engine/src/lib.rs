@@ -1,5 +1,6 @@
 mod cancel;
 mod diagnostic;
+mod dynamic_workflow;
 mod output;
 mod policy;
 mod projection;
@@ -9,6 +10,10 @@ mod validate;
 
 pub use cancel::EngineControl;
 pub use diagnostic::{ValidationDiagnostic, ValidationError};
+pub use dynamic_workflow::{
+    compile_dynamic_workflow, CompiledDynamicWorkflow, DynamicWorkflowCompileError,
+    DynamicWorkflowCompileOptions,
+};
 pub use output::decode_result_envelope;
 pub use policy::{ApprovedArtifact, GraphPolicy};
 pub use projection::{

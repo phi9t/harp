@@ -21,12 +21,13 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 use harp_contracts::{
     AdapterKind, ArtifactRef, AttemptId, Budget, CheckResult, CheckStatus, Checkpoint,
-    DeterministicEvaluation, DisconnectedEvent, ExternalSessionId, LaggedEvent, NodeKind,
-    OperationId, ResultEnvelope, ResultStatus, RetryPolicy, RunId, RunMetrics, RuntimeErrorKind,
-    RuntimeEvent, RuntimeFailure, SemanticEvaluation, ServerRequestEvent, TaskGraph, TaskId,
-    TaskNode, TaskRole, ThreadHandle, ThreadId, ThreadSnapshot, ThreadSpec, ThreadStartedEvent,
-    ThreadStatus, TokenUsage, TokenUsageEvent, TurnCompletedEvent, TurnHandle, TurnId,
-    TurnSnapshot, TurnSpec, TurnStartedEvent, TurnStatus, WorkspaceMode,
+    DeterministicEvaluation, DisconnectedEvent, DynamicAgentCall, DynamicPipelineItem,
+    DynamicWorkflow, DynamicWorkflowStep, ExternalSessionId, LaggedEvent, NodeKind, OperationId,
+    ResultEnvelope, ResultStatus, RetryPolicy, RunId, RunMetrics, RuntimeErrorKind, RuntimeEvent,
+    RuntimeFailure, SemanticEvaluation, ServerRequestEvent, TaskGraph, TaskId, TaskNode, TaskRole,
+    ThreadHandle, ThreadId, ThreadSnapshot, ThreadSpec, ThreadStartedEvent, ThreadStatus,
+    TokenUsage, TokenUsageEvent, TurnCompletedEvent, TurnHandle, TurnId, TurnSnapshot, TurnSpec,
+    TurnStartedEvent, TurnStatus, WorkspaceMode,
 };
 use schemars::{schema_for, JsonSchema};
 use serde::Serialize;
@@ -74,6 +75,57 @@ fn result_envelope(status: ResultStatus) -> ResultEnvelope {
         token_usage: 42,
         confidence: Some(0.8),
         failure_class: None,
+    }
+}
+
+fn dynamic_agent(call_id: &str) -> DynamicAgentCall {
+    DynamicAgentCall {
+        call_id: call_id.to_owned(),
+        prompt: format!("Research {call_id}."),
+        output_schema: r#"{"type":"object"}"#.to_owned(),
+        model_policy: "root-default".to_owned(),
+        permission_profile: "read-only".to_owned(),
+        workspace_mode: WorkspaceMode::ReadOnly,
+        budget: Budget::new(4_000, 120, 1_048_576),
+        retry_policy: RetryPolicy {
+            max_transient_attempts: 1,
+        },
+    }
+}
+
+fn dynamic_workflow() -> DynamicWorkflow {
+    DynamicWorkflow {
+        schema_version: 1,
+        name: "deep-research".to_owned(),
+        root: DynamicWorkflowStep::Sequence {
+            steps: vec![
+                DynamicWorkflowStep::Phase {
+                    title: "Research".to_owned(),
+                    step: Box::new(DynamicWorkflowStep::Parallel {
+                        branches: vec![
+                            DynamicWorkflowStep::Agent(dynamic_agent("market")),
+                            DynamicWorkflowStep::Agent(dynamic_agent("technical")),
+                        ],
+                    }),
+                },
+                DynamicWorkflowStep::Pipeline {
+                    items: vec![
+                        DynamicPipelineItem {
+                            item_id: "claim-a".to_owned(),
+                            input: json!({"claim": "A"}),
+                        },
+                        DynamicPipelineItem {
+                            item_id: "claim-b".to_owned(),
+                            input: json!({"claim": "B"}),
+                        },
+                    ],
+                    stages: vec![dynamic_agent("verify-claim")],
+                },
+                DynamicWorkflowStep::Log {
+                    message: "Ready to synthesize.".to_owned(),
+                },
+            ],
+        },
     }
 }
 
@@ -364,6 +416,107 @@ fn task_graph_aggregate_reference_bounds_accept_exact_limit() {
     let mut invalid_inputs = graph;
     invalid_inputs.nodes[63].inputs.push(artifact(DIGEST_B));
     assert!(invalid_inputs.validate_shape().is_err());
+}
+
+#[test]
+fn dynamic_workflow_round_trips_rejects_unknown_fields_and_validates_shape() {
+    let workflow = dynamic_workflow();
+    assert!(workflow.validate_shape().is_ok());
+    let value = serde_json::to_value(&workflow).unwrap();
+    assert_eq!(
+        serde_json::from_value::<DynamicWorkflow>(value.clone()).unwrap(),
+        workflow
+    );
+
+    let mut unknown = value;
+    unknown
+        .as_object_mut()
+        .unwrap()
+        .insert("unexpected".to_string(), json!(true));
+    assert_rejects_unknown_field::<DynamicWorkflow>(unknown);
+
+    let mut invalid = workflow.clone();
+    invalid.schema_version = 2;
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.name.clear();
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Sequence { steps: Vec::new() };
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Parallel {
+        branches: Vec::new(),
+    };
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Pipeline {
+        items: Vec::new(),
+        stages: vec![dynamic_agent("stage")],
+    };
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Pipeline {
+        items: vec![DynamicPipelineItem {
+            item_id: "claim-a".to_owned(),
+            input: json!({"claim": "A"}),
+        }],
+        stages: Vec::new(),
+    };
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Parallel {
+        branches: vec![
+            DynamicWorkflowStep::Agent(dynamic_agent("duplicate")),
+            DynamicWorkflowStep::Agent(dynamic_agent("duplicate")),
+        ],
+    };
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Agent(DynamicAgentCall {
+        prompt: "x".repeat(16_385),
+        ..dynamic_agent("too-long")
+    });
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Agent(DynamicAgentCall {
+        budget: Budget::new(0, 120, 1_048_576),
+        ..dynamic_agent("zero-budget")
+    });
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow.clone();
+    invalid.root = DynamicWorkflowStep::Agent(DynamicAgentCall {
+        retry_policy: RetryPolicy {
+            max_transient_attempts: 4,
+        },
+        ..dynamic_agent("too-many-retries")
+    });
+    assert!(invalid.validate_shape().is_err());
+
+    let mut invalid = workflow;
+    invalid.root = DynamicWorkflowStep::Pipeline {
+        items: vec![
+            DynamicPipelineItem {
+                item_id: "same".to_owned(),
+                input: json!({"claim": "A"}),
+            },
+            DynamicPipelineItem {
+                item_id: "same".to_owned(),
+                input: json!({"claim": "B"}),
+            },
+        ],
+        stages: vec![dynamic_agent("stage")],
+    };
+    assert!(invalid.validate_shape().is_err());
 }
 
 #[test]
@@ -1034,6 +1187,24 @@ fn generated_task_graph_schema_encodes_representable_bounds() {
 }
 
 #[test]
+fn generated_dynamic_workflow_schema_encodes_representable_bounds() {
+    let (schema, _) = schema_bytes::<DynamicWorkflow>();
+    assert_eq!(property(&schema, "schemaVersion")["const"], 1);
+    assert_eq!(property(&schema, "name")["minLength"], 1);
+    assert_eq!(property(&schema, "name")["maxLength"], 128);
+
+    let agent = definition(&schema, "DynamicAgentCall");
+    assert_eq!(property(agent, "callId")["minLength"], 1);
+    assert_eq!(property(agent, "callId")["maxLength"], 128);
+    assert_eq!(property(agent, "prompt")["minLength"], 1);
+    assert_eq!(property(agent, "prompt")["maxLength"], 16_384);
+    assert_eq!(property(agent, "outputSchema")["minLength"], 1);
+    assert_eq!(property(agent, "outputSchema")["maxLength"], 4_096);
+    assert_eq!(property(agent, "modelPolicy")["maxLength"], 256);
+    assert_eq!(property(agent, "permissionProfile")["maxLength"], 256);
+}
+
+#[test]
 fn generated_result_schema_encodes_representable_bounds() {
     let (schema, _) = schema_bytes::<ResultEnvelope>();
     assert_eq!(property(&schema, "schemaVersion")["const"], 1);
@@ -1049,6 +1220,7 @@ fn generated_result_schema_encodes_representable_bounds() {
 enum SchemaReceipt {
     TaskGraph,
     ResultEnvelope,
+    DynamicWorkflow,
 }
 
 impl SchemaReceipt {
@@ -1058,6 +1230,9 @@ impl SchemaReceipt {
             Self::ResultEnvelope => {
                 Path::new("benchmarks/codex-architecture/schemas/result-envelope.json")
             }
+            Self::DynamicWorkflow => {
+                Path::new("benchmarks/codex-architecture/schemas/dynamic-workflow.json")
+            }
         }
     }
 
@@ -1065,6 +1240,7 @@ impl SchemaReceipt {
         match self {
             Self::TaskGraph => "task-graph.json",
             Self::ResultEnvelope => "result-envelope.json",
+            Self::DynamicWorkflow => "dynamic-workflow.json",
         }
     }
 }
@@ -1517,6 +1693,11 @@ fn result_envelope_schema_receipt_is_exact() {
 }
 
 #[test]
+fn dynamic_workflow_schema_receipt_is_exact() {
+    assert_schema_receipt::<DynamicWorkflow>(SchemaReceipt::DynamicWorkflow);
+}
+
+#[test]
 fn schema_receipt_destinations_are_closed_and_exact() {
     assert_eq!(
         SchemaReceipt::TaskGraph.relative_path(),
@@ -1525,6 +1706,10 @@ fn schema_receipt_destinations_are_closed_and_exact() {
     assert_eq!(
         SchemaReceipt::ResultEnvelope.relative_path(),
         Path::new("benchmarks/codex-architecture/schemas/result-envelope.json")
+    );
+    assert_eq!(
+        SchemaReceipt::DynamicWorkflow.relative_path(),
+        Path::new("benchmarks/codex-architecture/schemas/dynamic-workflow.json")
     );
 }
 
