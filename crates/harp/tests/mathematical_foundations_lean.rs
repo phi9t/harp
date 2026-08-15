@@ -53,7 +53,7 @@ fn proof_holes_are_rejected_before_lake_runs() {
         .arg("scripts/check_mathematical_foundations_lean.sh")
         .arg("--project-for-test")
         .arg(temporary_project.path())
-        .env("PATH", path)
+        .env("PATH", &path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
         .failure()
@@ -94,7 +94,8 @@ fn ambient_project_override_is_ignored() {
             "HARP_MATHEMATICAL_FOUNDATIONS_PROJECT_ROOT",
             temporary_project.path(),
         )
-        .env("PATH", path)
+        .env("ELAN_HOME", temporary_project.path().join("elan"))
+        .env("PATH", &path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
         .success();
@@ -109,6 +110,7 @@ fn ambient_project_override_is_ignored() {
 fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
     let fake_bin = TempDir::new().expect("fake lake directory");
     let toolchain_capture = fake_bin.path().join("elan-toolchain");
+    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
     let fake_lake = fake_bin.path().join("lake");
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake lake");
@@ -128,6 +130,7 @@ fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
         .env("ELAN_TOOLCHAIN", "untrusted/ambient:toolchain")
+        .env("ELAN_HOME", &scoped_elan_home)
         .env("ELAN_TOOLCHAIN_CAPTURE", &toolchain_capture)
         .env("PATH", path)
         .assert()
@@ -136,6 +139,54 @@ fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
     assert_eq!(
         fs::read_to_string(toolchain_capture).expect("read captured toolchain"),
         "leanprover/lean4:v4.32.1\n"
+    );
+}
+
+#[test]
+fn normal_build_rejects_missing_or_home_scoped_elan_home_before_lake_runs() {
+    let fake_bin = TempDir::new().expect("fake lake directory");
+    let lake_marker = fake_bin.path().join("lake-was-called");
+    let fake_lake = fake_bin.path().join("lake");
+    let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
+        .expect("construct PATH with fake lake");
+
+    fs::write(&fake_lake, "#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n").expect("write fake lake");
+    let mut permissions = fs::metadata(&fake_lake)
+        .expect("read fake lake permissions")
+        .permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake_lake, permissions).expect("make fake lake executable");
+
+    let assertion = Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env_remove("ELAN_HOME")
+        .env("PATH", &path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran without a task-scoped ELAN_HOME: {assertion:?}"
+    );
+
+    let home_dir = fake_bin.path().join("home");
+    let assertion = Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("HOME", &home_dir)
+        .env("ELAN_HOME", home_dir.join(".elan"))
+        .env("PATH", &path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran with a home-scoped ELAN_HOME: {assertion:?}"
     );
 }
 
@@ -161,6 +212,7 @@ fn source_scan_errors_stop_before_lake_runs() {
     let assertion = Command::new("/bin/sh")
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("ELAN_HOME", fake_bin.path().join("scoped-elan-home"))
         .env("PATH", path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()

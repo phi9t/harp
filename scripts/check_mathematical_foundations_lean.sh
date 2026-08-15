@@ -34,6 +34,19 @@ if ! command -v lake >/dev/null 2>&1; then
 fi
 
 if [ "$normal_build" = true ]; then
+  if [ -z "${ELAN_HOME:-}" ]; then
+    printf '%s\n' "Mathematical Foundations Lean verification requires a task-scoped ELAN_HOME" >&2
+    exit 1
+  fi
+  home_dir=${HOME:-}
+  if [ -n "$home_dir" ]; then
+    case "$ELAN_HOME" in
+      "$home_dir"|"$home_dir"/*)
+        printf '%s\n' "Mathematical Foundations Lean verification requires a task-scoped ELAN_HOME" >&2
+        exit 1
+        ;;
+    esac
+  fi
   if ! IFS= read -r pinned_toolchain < "$canonical_project_dir/lean-toolchain" || [ -z "$pinned_toolchain" ]; then
     printf '%s\n' "Mathematical Foundations Lean toolchain pin is unavailable" >&2
     exit 1
