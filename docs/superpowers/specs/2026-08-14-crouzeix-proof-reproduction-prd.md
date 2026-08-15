@@ -6,8 +6,8 @@ Add a self-contained Harp experiment that:
 
 1. executes the recoverable historical Crouzeix root prompt under a pinned,
    recorded current runtime;
-2. executes an improved externally orchestrated proof search under matched
-   access and model controls;
+2. executes a DGM-selected archive search over dedicated expert agents under
+   matched access and model controls;
 3. preserves every call, route decision, candidate, critic finding, and
    promotion decision;
 4. separates blind generation from reference-aware verification; and
@@ -72,8 +72,11 @@ It provides:
 ```text
 prepare_run.py
 run_experiment.py
+run_frontier.py
 seal_run.py
 protocol.py
+frontier.py
+expert_runner.py
 prompts/
 schemas/
 tests/
@@ -93,6 +96,10 @@ run_spec.json
 inputs/
 calls/
 route_events.jsonl
+attempt_ledger.jsonl
+frontier_events.jsonl
+selection_events.jsonl
+archive_nodes/
 candidate/
 review/
 run_receipt.json
@@ -186,35 +193,75 @@ for `candidate.tex` in the call workspace. The harness accepts only:
 A final chat response is evidence of the call, not an automatic substitute for
 the requested file.
 
-### FR5: Observable orchestration arm
+### FR5: Dedicated expert-agent boundary
 
-The improved arm implements:
+The improved arm launches every expert and evaluator as a fresh external
+`traecli exec` session. It does not use nested child sessions inside another
+model call.
 
-1. three independent route calls;
-2. one controller call;
-3. zero or one redirect call when family collapse is recorded;
-4. one synthesis call;
-5. two independent critic calls;
-6. one repair call; and
-7. one deterministic promotion decision.
+Every expert context is a strict object containing:
 
-Each phase has a closed JSON schema. No worker sees peer output before all
-initial route records are sealed.
+- node, parent, generation, direction, and expert-role identity;
+- theorem digest and literal theorem text;
+- allowed parent artifacts and their digests;
+- selected obligation or direction;
+- forbidden sources and tools;
+- functioning-node and completion criteria;
+- result schema identity; and
+- `delegation_allowed=false`.
 
-### FR6: Route-state enforcement
+Initial experts receive no peer outputs. Descendants receive only their selected
+parent node plus one selected open direction. Expert workspaces are empty and
+create-only. The five fixed expert roles are `function_theory`,
+`operator_dilation`, `matrix_extremal`, `completion_positivity`, and
+`approximation_audit`.
 
-The protocol validates the closed route state machine from the approved
-design. It rejects:
+### FR6: Independent proof-progress evaluator
 
-- duplicate route IDs;
-- invalid transitions;
-- reopening without a new mechanism;
-- viability without concrete mathematical artifacts;
-- audit without a frozen candidate digest;
-- promotion with an unresolved critical finding; and
-- promotion with a theorem-strength unproved obligation.
+Every functioning expert node is evaluated by two fresh evaluator sessions.
+Each evaluator returns one status for each of the ten fixed route-neutral
+probes: `pass`, `fail`, or `insufficient_evidence`, plus findings and exact
+locators.
 
-### FR7: Budget and usage accounting
+The harness computes `alpha_i` as the number of probes both evaluators pass,
+divided by ten. It rejects duplicate probe IDs, missing probes, inconsistent
+candidate digests, treatment-aware output, or evaluator references to public
+proof mechanisms.
+
+### FR7: DGM archive and parent selector
+
+The frontier uses the paper-level DGM contract:
+
+```text
+eligible_i = alpha_i < 1
+s_i = 1 / (1 + exp(-10 * (alpha_i - 0.5)))
+h_i = 1 / (1 + functioning_children_i)
+w_i = s_i * h_i
+p_i = w_i / sum(w)
+```
+
+It samples two parents with replacement per generation using the fixed
+SHA-256-derived uniform stream and `selection_seed=20260814`. Every selection
+event records all terms and the selected interval. Perfect-scoring nodes are
+excluded even though the captured released code omits that paper filter.
+
+Every functioning child enters the `keep_all` archive regardless of score.
+Only functioning admitted children increment the parent's child count.
+Archive admission does not imply improvement or proof correctness.
+
+### FR8: Frontier and direction selection
+
+The deterministic frontier projection derives open directions from node
+obligations, evaluator findings, and parent-proposed directions. Priority is
+theorem-strength obligation, critical finding, major obligation, major
+finding, local obligation, then proposed direction; stable direction ID breaks
+ties.
+
+The selected direction carries its recommended expert role. Unknown roles map
+to `approximation_audit`. Every child records parent, selected direction,
+generation, and immutable input digests.
+
+### FR9: Budget and usage accounting
 
 The run receipt reports:
 
@@ -227,7 +274,13 @@ The run receipt reports:
 
 Provider absence of a metric is explicit `null`, not zero.
 
-### FR8: Deterministic sealing
+The expert-frontier arm also reports generation count, functioning-node count,
+archive size, selected-parent frequencies, evaluator disagreement count, and
+the score distribution. Its fixed budget is five roots, at most three child
+generations, two parent draws per generation, eleven functioning nodes, 33
+provider calls, one hour per call, and a 4 GiB host-space preflight.
+
+### FR10: Deterministic sealing
 
 The seal command:
 
@@ -239,7 +292,7 @@ The seal command:
 - refuses an existing evidence destination; and
 - produces a receipt binding the archive and selected candidate digest.
 
-### FR9: Reference-aware review
+### FR11: Reference-aware review
 
 Review happens only after candidate sealing. Review records:
 
@@ -253,13 +306,13 @@ Review happens only after candidate sealing. Review records:
 
 Mechanism similarity cannot change the completeness outcome.
 
-### FR10: Reader integration
+### FR12: Reader integration
 
 The resulting packet must answer:
 
 - what historical machinery is actually recoverable;
 - what was changed to execute it;
-- what the improved controller adds;
+- what the DGM-selected expert frontier adds;
 - which arms were attempted;
 - what candidates were produced;
 - which mathematical defects were found;
@@ -285,11 +338,13 @@ The Python implementation uses validated dictionaries at JSON boundaries, with
 closed string enums for:
 
 ```text
-arm: historical | orchestrated | guided
+arm: historical | orchestrated_baseline | expert_frontier | guided
 leakage: L0 | L1 | L2 | L3 | L4
-route_state: independent | blocked | viable | audited | promoted | rejected
+node_state: attempted | functioning | archived | selected | complete | blocked |
+            superseded
 call_role: historical_root | route_worker | controller | redirect |
-           synthesizer | logical_critic | operator_critic | repair
+           synthesizer | logical_critic | operator_critic | repair |
+           expert | proof_progress_evaluator
 call_status: completed | failed | timed_out | malformed
 finding_severity: critical | major | minor
 finding_disposition: fixed | rejected_with_reason | unresolved
@@ -318,8 +373,9 @@ python3 seal_run.py RUN_DIR ...
 
 ### Where does locality improve?
 
-CLI invocation, output validation, route transitions, accounting, and sealing
-live in one lab. Mathematical conclusions remain in the packet.
+CLI invocation, output validation, expert context, DGM selection, archive
+state, accounting, and sealing live in one lab. Mathematical conclusions
+remain in the packet.
 
 ### What authority does this avoid duplicating?
 
@@ -336,7 +392,8 @@ route states, and result prose that cannot be independently recomputed.
 - All functional requirements have deterministic fake-provider tests.
 - The tests demonstrate red-green behavior for production changes.
 - `mise run verify` remains provider-neutral.
-- One historical and one orchestrated live run are attempted.
+- One historical, one flat-baseline, and one DGM-selected expert-frontier live
+  run are attempted.
 - Every attempt is retained, including failures and non-promotion.
 - Published evidence passes strict offline verification.
 - The packet and generated Atlas/search outputs are current.

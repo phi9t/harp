@@ -10,8 +10,9 @@ The study has two distinct goals:
 
 1. test whether a pinned current model can produce a complete proof under a
    clean-room approximation of the historical task contract; and
-2. test whether an external controller makes the search more diverse,
-   falsifiable, and reviewable than one monolithic root prompt.
+2. test whether a DGM-style archive of dedicated expert agents makes the
+   search more diverse, falsifiable, and reviewable than one monolithic root
+   prompt.
 
 The study does not claim to replay Jin's private run. The public corpus lacks
 its exact runtime, worker prompts, transcripts, route registry, budgets,
@@ -33,7 +34,7 @@ and execution prompt digests must be retained.
 ### RQ2: Machinery improvement
 
 Under the same model, theorem statement, access policy, and declared aggregate
-budget, does an external controller improve:
+budget, does a DGM-selected dedicated-expert frontier improve:
 
 - independent proof-family coverage;
 - visibility of theorem-strength blockers;
@@ -120,74 +121,218 @@ This arm measures the root prompt as a monolithic executable contract. It
 cannot establish whether its internal request for multi-agent behavior was
 honored unless the event stream exposes such launches.
 
-### Arm O: Observable external orchestration
+### Arm O0: Superseded flat orchestration baseline
 
-`O` turns the historical prompt's hidden control policy into explicit phases.
+`O0` turns the historical prompt's hidden control policy into a fixed sequence
+of three independent route workers, one controller, an optional redirect,
+synthesis, criticism, and repair.
 
-#### Phase 1: Independent routes
+The attempted `orchestrated-001` run is preserved as a superseded baseline. It
+completed three independent route workers and one controller before the user
+changed the treatment to dedicated expert agents with an explicit frontier.
+Its redirect was terminated and the run was sealed `not_promoted`. No output
+from this arm is silently imported into the replacement arm.
 
-Launch three workers with identical theorem bytes and no peer output. Each must
-return one route record:
+### Arm E: DGM-selected dedicated-expert frontier
 
-- route ID;
+`E` is the approved improved treatment. A fixed outer harness maintains an
+archive of immutable expert nodes and launches each expert in a fresh
+`traecli exec` session. Experts do not inherit a conversation and cannot
+delegate further.
+
+#### Expert node contract
+
+Every expert receives one self-contained role packet:
+
+- theorem bytes and leakage tier;
+- expert role and bounded subtask;
+- node ID, parent ID, generation, and selected direction ID;
+- content-addressed parent artifacts explicitly allowed into context;
+- forbidden sources and tools;
+- success and functioning-node criteria;
+- strict output schema; and
+- an explicit prohibition on child delegation.
+
+Every expert returns one node record:
+
+- node and parent IDs;
+- expert role and selected direction;
 - self-classified proof family;
 - concrete mechanism;
 - proved intermediate statements;
-- unproved obligations;
+- unproved obligations with stable IDs, strength, and recommended expert role;
 - circularity risks;
+- proposed next directions;
 - candidate proof text or exact blocker; and
 - confidence basis.
 
-The harness must not tell workers the favored route or proof-specific
-mechanism vocabulary.
+The result, prompt, context manifest, event stream, final response, and receipt
+are persisted under `archive_nodes/<node_id>/`. Initial experts receive no peer
+output. Descendant experts receive only their selected parent's immutable node
+record and the one selected obligation or direction.
 
-#### Phase 2: Registry and redirect
+#### Initial expert roster
 
-A controller receives only the sealed route records. It:
+Generation zero launches five pristine root experts:
 
-- merges superficial duplicates into family labels;
-- marks routes `blocked` or `viable`;
-- identifies theorem-strength obligations;
-- selects at most two routes for continuation; and
-- emits one underexplored search brief if the three workers collapsed onto one
-  family.
+1. `function_theory`: analytic functional calculus, positive kernels, and
+   boundary transforms;
+2. `operator_dilation`: dilation, power families, recurrences, and operator
+   inequalities;
+3. `matrix_extremal`: finite-dimensional matrix, singular-vector, and extremal
+   arguments;
+4. `completion_positivity`: positive-real completion, interpolation, and
+   matrix-valued positivity; and
+5. `approximation_audit`: approximation, boundary regularity, limit order, and
+   hidden-hypothesis audit.
 
-A blocked route can reopen only with a materially new mechanism recorded in
-the event log.
+These role names describe expertise, not known proof mechanisms. Their prompts
+must not contain Jin- or Lorist-Schwenninger-specific answer vocabulary.
 
-#### Phase 3: Synthesis
+#### Independent proof-progress evaluation
 
-A synthesizer receives viable route records and controller decisions. It
-returns one standalone candidate and an obligation ledger. It may combine
-routes only after their independent records are sealed.
+Every schema-valid node is evaluated by two fresh dedicated evaluators with no
+access to its treatment label, lineage score, or public proofs. They receive
+the theorem, candidate node, and the same ten route-neutral probes:
 
-#### Phase 4: Adversarial review
+1. objects, domains, and target are well-typed;
+2. the implication chain is explicit;
+3. a concrete nontrivial mechanism is present;
+4. at least one intermediate lemma is actually proved;
+5. hypotheses are tracked through use;
+6. central identities or inequalities survive checking;
+7. no known internal counterexample is exposed;
+8. the route does not invoke the target or an equivalent statement
+   circularly;
+9. no theorem-strength unproved obligation remains; and
+10. a standalone endpoint survives adversarial review.
 
-Two critics independently inspect the frozen candidate:
+A probe passes only when both evaluators return `pass`. Disagreement,
+`insufficient_evidence`, or one failed evaluator does not pass. The node score
+is:
 
-- a logical critic checks unsupported implications, circularity, quantifiers,
-  limit order, and theorem-strength hidden lemmas;
-- an operator-theory critic checks domain hypotheses, adjoints,
-  commutativity, boundedness, positivity, and norm estimates.
+$$
+\alpha_i = \frac{\text{unanimously passed probes}}{10}.
+$$
 
-Critics return findings with stable IDs, severity, exact candidate locator,
-and a falsifying example or missing proof obligation when available.
+The scalar is a fixed search heuristic, not a calibrated probability of
+correctness. Evaluator findings and disagreements remain attached to the node.
 
-#### Phase 5: Repair and promotion
+#### Functioning-node admission
 
-One repair pass receives the candidate and both finding sets. It must map each
-finding to `fixed`, `rejected-with-reason`, or `unresolved`.
+A generated child is functioning when:
 
-Promotion requires:
+- the provider call and strict schema validation complete;
+- the context manifest proves compliance with the declared leakage boundary;
+- the result contains a concrete mechanism plus at least one proved statement,
+  or a precise falsifiable blocker plus a materially new direction;
+- all referenced parent and direction IDs exist; and
+- no artifact, path, or size boundary is violated.
 
-- a standalone candidate;
-- no unresolved critical finding;
-- no theorem-strength missing lemma;
-- a complete obligation ledger; and
-- a sealed candidate digest.
+The archive uses DGM's `keep_all` rule: every functioning child is admitted,
+even when its score is lower than its parent's. Admission means the node is a
+usable search state, not that it is correct, improved, or promoted.
 
-The harness records `not_promoted` when these conditions do not hold. It does
-not instruct a model to call an incomplete candidate complete.
+#### DGM parent selection
+
+At generation \(t\), the archive is \(A_t\). Each node records score
+\(\alpha_i\) and functioning-child count \(n_i\). Follow the DGM paper
+contract, including the perfect-score eligibility rule:
+
+$$
+E_t = \{a_i \in A_t : \alpha_i < 1\}.
+$$
+
+For every eligible node:
+
+$$
+s_i = \frac{1}{1+\exp(-10(\alpha_i-0.5))},
+\qquad
+h_i = \frac{1}{1+n_i},
+\qquad
+w_i = s_i h_i,
+\qquad
+p_i = \frac{w_i}{\sum_j w_j}.
+$$
+
+The harness draws \(k=2\) parents with replacement per generation. The study
+precommits `selection_seed=20260814`. To avoid runtime-library drift, each
+uniform draw is derived from:
+
+```text
+SHA-256("crouzeix-frontier/v1\0" || seed || generation || draw_index)
+```
+
+interpreted as a big-endian integer divided by \(2^{256}\), then located in
+the cumulative probability intervals sorted by node ID. Every selection event
+records the eligible archive, scores, functioning-child counts, sigmoid terms,
+underexploration terms, normalized probabilities, uniform draw, and selected
+node.
+
+This copies DGM's score-times-underexploration allocation. It does not relabel
+child count as semantic novelty and does not use the released-code path that
+omits the paper's perfect-score filter. The source contract is documented in
+[DGM algorithm derivation](../../../knowledge/darwin_godel_machine/03_algorithm_derivation.md#eligibility)
+and the pinned implementation at
+[`DGM_outer.py:91`](../../../evidence/implementations/dgm/snapshot/DGM_outer.py#L91).
+
+#### Child direction and expert role
+
+For each selected parent, the deterministic frontier projection ranks open
+directions by:
+
+1. theorem-strength obligation;
+2. evaluator critical finding;
+3. major obligation;
+4. evaluator major finding;
+5. local obligation; and
+6. parent-proposed materially new direction.
+
+Ties use stable direction ID. The direction carries its recommended expert
+role from the node or evaluator record; unknown roles fall back to
+`approximation_audit`. Selecting the same parent twice in one generation
+chooses its first and second open directions when available, otherwise it may
+retry the same direction with distinct child IDs. The child prompt requires a
+new mechanism or a rigorous closure of the selected obligation.
+
+Only admitted functioning children increment the parent's \(n_i\), matching
+DGM's functioning-child count rather than all attempted descendants.
+
+#### Frontier loop and budget
+
+The fixed outer harness runs:
+
+- five generation-zero experts;
+- two fresh evaluators per functioning node;
+- at most three child generations;
+- two sampled parent slots per generation;
+- at most eleven functioning expert nodes;
+- at most 33 expert/evaluator provider calls;
+- one hour per provider call;
+- a 4 GiB host free-space safety floor checked before every call; and
+- no automatic retry under the same call or node ID.
+
+The loop stops early when an archive node reaches \(\alpha_i=1\). Such a node
+is frozen for separate reference-aware mathematical review; the search score
+does not itself certify the proof. If no node reaches one, the run ends at the
+fixed budget with the strongest nodes and exact frontier gaps.
+
+#### Durable frontier state
+
+The main orchestrator persists:
+
+```text
+attempt_ledger.jsonl
+frontier_events.jsonl
+selection_events.jsonl
+archive_nodes/<node_id>/
+frontier_snapshot.json
+run_receipt.json
+```
+
+The three JSONL files are append-only. `frontier_snapshot.json` is a
+deterministic projection and never edited as an authority. Previous failed,
+blocked, superseded, and lower-scoring nodes remain in the archive.
 
 ### Arm G: Mechanism-guided diagnostic
 
@@ -202,30 +347,33 @@ Its output is evaluated as reconstruction, not discovery.
 
 ## State Model
 
-Routes use this closed state set:
+Expert nodes use this closed state set:
 
 ```text
-independent
+attempted
+functioning
+archived
+selected
+complete
 blocked
-viable
-audited
-promoted
-rejected
+superseded
 ```
 
 Allowed transitions are:
 
 ```text
-independent -> blocked
-independent -> viable
-blocked -> independent     only with a new mechanism receipt
-viable -> audited
-audited -> promoted        only with zero unresolved critical findings
-audited -> rejected
+attempted -> functioning
+attempted -> blocked
+functioning -> archived
+archived -> selected
+archived -> complete       only when alpha = 1
+selected -> archived       after child attempt
+archived -> superseded     only for treatment replacement, never deletion
 ```
 
-Every transition is append-only and records sequence, run ID, route ID,
-parent route IDs, prompt digest, output digest, reason, and timestamp.
+Every transition is append-only and records sequence, run ID, node ID, parent
+ID, generation, expert role, direction ID, prompt digest, output digest,
+evaluation digests, score, reason, and timestamp.
 
 ## Strict Artifacts
 
@@ -424,7 +572,8 @@ The work is complete when:
 2. the harness validates strict run specifications and outputs;
 3. fake-provider tests prove create-only calls, prompt isolation, event
    accounting, state transitions, and archive determinism;
-4. at least one `H` run and one `O` run are attempted and sealed;
+4. the `H` and `O0` attempts are preserved and one `E` run is attempted and
+   sealed;
 5. failures, timeouts, or non-promotion are retained as first-class results;
 6. blind outputs are reviewed only after sealing;
 7. a guided run is attempted only if it has a distinct leakage label;
