@@ -235,6 +235,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         )?;
     }
     verify_implementation_identity(repo_root, &snapshot_rows)?;
+    verify_implementation_snapshot_trees(repo_root, &snapshot_rows)?;
     verify_license_status(repo_root)?;
     verify_capture_receipts(repo_root)?;
 
@@ -1146,7 +1147,27 @@ fn benchmark_manifest_error(manifest: &Path, line: usize, detail: &str) -> AppEr
 fn load_snapshot_rows(repo_root: &Path) -> Result<Vec<SnapshotRow>, AppError> {
     let manifest = Path::new(IMPLEMENTATION_MANIFEST);
     let rows = read_tsv(repo_root, manifest)?;
+    if rows.first().map(Vec::as_slice)
+        != Some(
+            [
+                "source_id",
+                "remote",
+                "revision",
+                "snapshot_path",
+                "bytes",
+                "sha256",
+            ]
+            .map(str::to_owned)
+            .as_slice(),
+        )
+    {
+        return Err(AppError::invalid_input(
+            "sources.manifest",
+            format!("{} has an unexpected header", manifest.display()),
+        ));
+    }
     let mut snapshots = Vec::new();
+    let mut previous_key = None;
     for (line_number, columns) in rows.iter().enumerate().skip(1) {
         if columns.len() != 6 {
             return Err(malformed_manifest(
@@ -1163,11 +1184,24 @@ fn load_snapshot_rows(repo_root: &Path) -> Result<Vec<SnapshotRow>, AppError> {
                 "revision must be a 40-character Git object ID",
             ));
         }
+        let snapshot_path = safe_relative_path(&columns[3], "snapshot path")?;
+        let key = (columns[0].to_owned(), columns[3].to_owned());
+        if previous_key
+            .as_ref()
+            .is_some_and(|previous| previous >= &key)
+        {
+            return Err(malformed_manifest(
+                manifest,
+                line_number + 1,
+                "rows must be strictly ordered by source_id and snapshot_path",
+            ));
+        }
+        previous_key = Some(key);
         snapshots.push(SnapshotRow {
             source_id: columns[0].to_owned(),
             remote: columns[1].to_owned(),
             revision,
-            snapshot_path: safe_relative_path(&columns[3], "snapshot path")?,
+            snapshot_path,
             bytes: parse_u64(columns.get(4), manifest, line_number + 1, "bytes")?,
             sha256: parse_digest(columns.get(5), manifest, line_number + 1)?,
         });
@@ -1247,6 +1281,198 @@ fn verify_implementation_identity(repo_root: &Path, rows: &[SnapshotRow]) -> Res
     Ok(())
 }
 
+fn verify_implementation_snapshot_trees(
+    repo_root: &Path,
+    rows: &[SnapshotRow],
+) -> Result<(), AppError> {
+    let mut expected = BTreeMap::<String, BTreeSet<PathBuf>>::new();
+    for row in rows {
+        let (directory, relative) = implementation_snapshot_location(&row.snapshot_path)?;
+        if !expected
+            .entry(directory)
+            .or_default()
+            .insert(relative.clone())
+        {
+            return Err(AppError::invalid_input(
+                "sources.snapshot_manifest",
+                format!(
+                    "implementation manifest has duplicate snapshot path: {}",
+                    row.snapshot_path.display()
+                ),
+            ));
+        }
+    }
+
+    let implementations = repo_root.join("evidence/implementations");
+    for entry in fs::read_dir(&implementations).map_err(|error| {
+        AppError::io(
+            "sources.snapshot_manifest",
+            "read implementation evidence directories",
+            error,
+        )
+    })? {
+        let entry = entry.map_err(|error| {
+            AppError::io(
+                "sources.snapshot_manifest",
+                "read implementation evidence directory",
+                error,
+            )
+        })?;
+        if !entry
+            .file_type()
+            .map_err(|error| {
+                AppError::io(
+                    "sources.snapshot_manifest",
+                    "read implementation evidence directory type",
+                    error,
+                )
+            })?
+            .is_dir()
+        {
+            continue;
+        }
+        let snapshot_root = entry.path().join("snapshot");
+        let snapshot_metadata = match fs::symlink_metadata(&snapshot_root) {
+            Ok(metadata) => metadata,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
+            Err(error) => {
+                return Err(AppError::io(
+                    "sources.snapshot_manifest",
+                    "read implementation snapshot directory",
+                    error,
+                ));
+            }
+        };
+        if snapshot_metadata.file_type().is_symlink() || !snapshot_metadata.is_dir() {
+            return Err(AppError::invalid_input(
+                "sources.snapshot_manifest",
+                format!(
+                    "implementation snapshot root must be a real directory: {}",
+                    snapshot_root.display()
+                ),
+            ));
+        }
+        let directory = entry.file_name().to_string_lossy().into_owned();
+        if !expected.contains_key(&directory) {
+            return Err(AppError::invalid_input(
+                "sources.snapshot_manifest",
+                format!("implementation snapshot tree is absent from manifest: {directory}"),
+            ));
+        }
+    }
+
+    for (directory, expected_paths) in expected {
+        let snapshot_root = repo_root
+            .join("evidence/implementations")
+            .join(&directory)
+            .join("snapshot");
+        let metadata = fs::symlink_metadata(&snapshot_root).map_err(|error| {
+            AppError::io(
+                "sources.snapshot_manifest",
+                "read implementation snapshot directory",
+                error,
+            )
+        })?;
+        if metadata.file_type().is_symlink() || !metadata.is_dir() {
+            return Err(AppError::invalid_input(
+                "sources.snapshot_manifest",
+                format!(
+                    "implementation snapshot root must be a real directory: {}",
+                    snapshot_root.display()
+                ),
+            ));
+        }
+
+        let mut actual_paths = BTreeSet::new();
+        for entry in WalkDir::new(&snapshot_root).follow_links(false) {
+            let entry = entry.map_err(|error| {
+                AppError::external(
+                    "sources.snapshot_manifest",
+                    format!("could not walk implementation snapshot: {error}"),
+                )
+            })?;
+            if entry.file_type().is_symlink() {
+                return Err(AppError::invalid_input(
+                    "sources.snapshot_manifest",
+                    format!(
+                        "implementation snapshot cannot contain symlink: {}",
+                        entry.path().display()
+                    ),
+                ));
+            }
+            if entry.file_type().is_file() {
+                let relative = entry.path().strip_prefix(&snapshot_root).map_err(|_| {
+                    AppError::invalid_input(
+                        "sources.snapshot_manifest",
+                        "implementation snapshot file escaped its root",
+                    )
+                })?;
+                actual_paths.insert(relative.to_path_buf());
+            }
+        }
+        if actual_paths != expected_paths {
+            return Err(AppError::invalid_input(
+                "sources.snapshot_manifest",
+                format!("implementation snapshot tree differs from manifest for {directory}"),
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn implementation_snapshot_location(snapshot_path: &Path) -> Result<(String, PathBuf), AppError> {
+    let mut components = snapshot_path
+        .strip_prefix("evidence/implementations")
+        .map_err(|_| {
+            AppError::invalid_input(
+                "sources.snapshot_path",
+                format!(
+                    "snapshot path must be below evidence/implementations: {}",
+                    snapshot_path.display()
+                ),
+            )
+        })?
+        .components();
+    let directory = components
+        .next()
+        .and_then(|component| match component {
+            Component::Normal(value) => value.to_str(),
+            _ => None,
+        })
+        .ok_or_else(|| {
+            AppError::invalid_input(
+                "sources.snapshot_path",
+                format!("snapshot directory is invalid: {}", snapshot_path.display()),
+            )
+        })?;
+    if !matches!(
+        components.next(),
+        Some(Component::Normal(value)) if value == "snapshot"
+    ) {
+        return Err(AppError::invalid_input(
+            "sources.snapshot_path",
+            format!(
+                "snapshot path must be below evidence/implementations/<source>/snapshot: {}",
+                snapshot_path.display()
+            ),
+        ));
+    }
+    let relative = components.fold(PathBuf::new(), |mut path, component| {
+        path.push(component.as_os_str());
+        path
+    });
+    if relative.as_os_str().is_empty() {
+        return Err(AppError::invalid_input(
+            "sources.snapshot_path",
+            format!(
+                "snapshot path is missing a file: {}",
+                snapshot_path.display()
+            ),
+        ));
+    }
+    Ok((directory.to_owned(), relative))
+}
+
 fn verify_license_status(repo_root: &Path) -> Result<(), AppError> {
     let implementations = repo_root.join("evidence/implementations");
     for entry in fs::read_dir(&implementations)
@@ -1271,7 +1497,21 @@ fn verify_license_status(repo_root: &Path) -> Result<(), AppError> {
                     format!("captured license is missing: {}", license.display()),
                 ));
             }
-        } else if status != "not-present-at-pinned-revision\tMISSING" && status != "MIT" {
+        } else if status == "MIT" {
+            let license = entry.path().join("LICENSE");
+            let metadata = fs::symlink_metadata(&license).map_err(|error| {
+                AppError::io("sources.license", "read MIT implementation license", error)
+            })?;
+            if metadata.file_type().is_symlink() || !metadata.is_file() {
+                return Err(AppError::invalid_input(
+                    "sources.license",
+                    format!(
+                        "MIT implementation requires a top-level regular LICENSE: {}",
+                        license.display()
+                    ),
+                ));
+            }
+        } else if status != "not-present-at-pinned-revision\tMISSING" {
             return Err(AppError::invalid_input(
                 "sources.license",
                 format!("invalid license status: {}", status_path.display()),
@@ -1886,6 +2126,7 @@ mod tests {
         let implementation = repo.path().join("evidence/implementations/example");
         fs::create_dir_all(&implementation).unwrap();
         fs::write(implementation.join("LICENSE_STATUS"), "MIT\n").unwrap();
+        fs::write(implementation.join("LICENSE"), "MIT License\n").unwrap();
         for required in [
             "evidence/sicp/LICENSE.txt",
             "evidence/rlm/artifacts/git/LICENSE",
@@ -1897,6 +2138,80 @@ mod tests {
         }
 
         verify_license_status(repo.path()).unwrap();
+    }
+
+    #[test]
+    fn explicit_mit_license_status_requires_a_top_level_regular_license() {
+        let repo = tempdir().unwrap();
+        let implementation = repo.path().join("evidence/implementations/example");
+        fs::create_dir_all(&implementation).unwrap();
+        fs::write(implementation.join("LICENSE_STATUS"), "MIT\n").unwrap();
+        for required in [
+            "evidence/sicp/LICENSE.txt",
+            "evidence/rlm/artifacts/git/LICENSE",
+            "evidence/weng/license_assignments.tsv",
+        ] {
+            let path = repo.path().join(required);
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(path, "fixture\n").unwrap();
+        }
+
+        let error = verify_license_status(repo.path()).unwrap_err();
+        assert_eq!(error.code(), "sources.license");
+    }
+
+    #[test]
+    fn implementation_snapshot_tree_rejects_unmanifested_regular_files() {
+        let repo = tempdir().unwrap();
+        let snapshot = repo
+            .path()
+            .join("evidence/implementations/example/snapshot");
+        fs::create_dir_all(&snapshot).unwrap();
+        fs::write(snapshot.join("manifested.txt"), "manifested\n").unwrap();
+        fs::write(snapshot.join("UNMANIFESTED.txt"), "unexpected\n").unwrap();
+        let manifest = repo.path().join(IMPLEMENTATION_MANIFEST);
+        fs::create_dir_all(manifest.parent().unwrap()).unwrap();
+        fs::write(
+            &manifest,
+            format!(
+                concat!(
+                    "source_id\tremote\trevision\tsnapshot_path\tbytes\tsha256\n",
+                    "EXAMPLE\thttps://example.test/example.git\t",
+                    "0123456789abcdef0123456789abcdef01234567\t",
+                    "evidence/implementations/example/snapshot/manifested.txt\t",
+                    "10\t{}\n"
+                ),
+                sha256_file(&snapshot.join("manifested.txt")).unwrap(),
+            ),
+        )
+        .unwrap();
+
+        let rows = load_snapshot_rows(repo.path()).unwrap();
+        let error = verify_implementation_snapshot_trees(repo.path(), &rows).unwrap_err();
+        assert_eq!(error.code(), "sources.snapshot_manifest");
+    }
+
+    #[test]
+    fn implementation_manifest_requires_lexicographic_source_and_snapshot_order() {
+        let repo = tempdir().unwrap();
+        let manifest = repo.path().join(IMPLEMENTATION_MANIFEST);
+        fs::create_dir_all(manifest.parent().unwrap()).unwrap();
+        fs::write(
+            manifest,
+            concat!(
+                "source_id\tremote\trevision\tsnapshot_path\tbytes\tsha256\n",
+                "B\thttps://example.test/b.git\t0123456789abcdef0123456789abcdef01234567\t",
+                "evidence/implementations/b/snapshot/file.txt\t0\t",
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n",
+                "A\thttps://example.test/a.git\t0123456789abcdef0123456789abcdef01234567\t",
+                "evidence/implementations/a/snapshot/file.txt\t0\t",
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n"
+            ),
+        )
+        .unwrap();
+
+        let error = load_snapshot_rows(repo.path()).unwrap_err();
+        assert_eq!(error.code(), "sources.manifest");
     }
 
     #[test]
