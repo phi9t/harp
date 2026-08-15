@@ -19,22 +19,22 @@ canonical technical spine.
 
 ## Canonical reading path
 
-1. [What makes an improvement loop recursive](chapters/recursive-improvement-loop.md)
+1. [[knowledge/rsi/chapters/recursive-improvement-loop|What makes an improvement loop recursive]]
    defines task improvement, persistent adaptation, harness improvement, and
    accepted successor improvement.
-2. [RSI system state and notation](concepts/system-state-and-notation.md)
+2. [[knowledge/rsi/concepts/system-state-and-notation|RSI system state and notation]]
    separates editable candidate state from evaluator, budget, permissions,
    archive, and promotion authority.
-3. [Harness engineering](chapters/harness-engineering.md) and
-   [searching for better harnesses](chapters/harness-search.md) explain the
+3. [[knowledge/rsi/chapters/harness-engineering|Harness engineering]] and
+   [[knowledge/rsi/chapters/harness-search|searching for better harnesses]] explain the
    practical improvement surfaces.
-4. [Automated research as an RSI component](chapters/automated-research.md) and
-   [joint harness and model-weight adaptation](chapters/joint-harness-weight-adaptation.md)
+4. [[knowledge/rsi/chapters/automated-research|Automated research as an RSI component]] and
+   [[knowledge/rsi/chapters/joint-harness-weight-adaptation|joint harness and model-weight adaptation]]
    cover research and training loops.
-5. [Evaluation, promotion, and containment](chapters/evaluation-promotion-containment.md)
+5. [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]]
    states the evidence and authority boundary.
 
-Use [the RSI index](rsi_index.md) for the complete route. Source identities,
-claim limits, and open gaps remain in [the source registry](source_registry.md),
-[claim ledger](claim_evidence_ledger.md), and
-[missing-evidence ledger](missing_evidence.md).
+Use [[knowledge/rsi/rsi_index|the RSI index]] for the complete route. Source identities,
+claim limits, and open gaps remain in [[knowledge/rsi/source_registry|the source registry]],
+[[knowledge/rsi/claim_evidence_ledger|claim ledger]], and
+[[knowledge/rsi/missing_evidence|missing-evidence ledger]].

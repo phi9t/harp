@@ -54,7 +54,7 @@ research labor performed by a model.
 
 ## Jin's specific attribution {#jin-specific-attribution}
 
-**[EVIDENCE - CC-042](claim_evidence_ledger.md#cc-042-jin-attributes-sampling-and-cancellation-to-chatgpt).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-042: Jin attributes sampling and cancellation to ChatGPT|EVIDENCE - CC-042]].**
 Jin's formalization-matched v4 disclosure attributes two linked choices to
 OpenAI ChatGPT:
 
@@ -71,7 +71,7 @@ mathematics and citations.
 
 ## Lorist-Schwenninger's disclosure {#lorist-schwenninger-disclosure}
 
-**[EVIDENCE - CC-043](claim_evidence_ledger.md#cc-043-lorist-schwenninger-disclose-chatgpt-strategy-exploration).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-043: Lorist-Schwenninger disclose ChatGPT strategy exploration|EVIDENCE - CC-043]].**
 Lorist and Schwenninger state that ChatGPT 5.6 Pro was used to explore proof
 strategies for their note. They state that the authors wrote the note and take
 responsibility for it.
@@ -105,7 +105,7 @@ strategy-exploration conversations.
 
 ## Missing process evidence {#missing-process-evidence}
 
-**[MISSING - CC-044](claim_evidence_ledger.md#cc-044-underlying-agent-transcripts-are-absent).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-044: Underlying agent transcripts are absent|MISSING - CC-044]].**
 The inspected public corpus does not contain:
 
 - underlying ChatGPT transcripts;
@@ -136,4 +136,4 @@ This ledger would not decide mathematical correctness by itself. It would make
 the process auditable and let later reviewers distinguish search, synthesis,
 verification, and exposition.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

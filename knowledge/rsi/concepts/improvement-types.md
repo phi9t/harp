@@ -35,7 +35,7 @@ Successor improvement begins when external promotion authority accepts a child c
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [What makes an improvement loop recursive](../chapters/recursive-improvement-loop.md#the-technical-problem) defines the five-level boundary and matched-envelope recursion test.
+- [[knowledge/rsi/chapters/recursive-improvement-loop#The technical problem|What makes an improvement loop recursive]] defines the five-level boundary and matched-envelope recursion test.
 - STOP, §6 "Limitations," states that its fixed base model does not demonstrate full recursive self-improvement: [arXiv:2310.02304v3](https://arxiv.org/abs/2310.02304).
 - Darwin Gödel Machine, §§2–3, defines an empirically selected archive of agent variants while retaining a frozen foundation model: [arXiv:2505.22954v3](https://arxiv.org/abs/2505.22954).
 

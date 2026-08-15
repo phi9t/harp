@@ -19,8 +19,8 @@ accepted lineage edge alone does not imply `successor-improvement`.
 
 ## Explain
 
-[Harness search](../chapters/harness-search.md) separates solution-program
-populations from editable agent lineages. [System state and notation](../concepts/system-state-and-notation.md)
+[[knowledge/rsi/chapters/harness-search|Harness search]] separates solution-program
+populations from editable agent lineages. [[knowledge/rsi/concepts/system-state-and-notation|System state and notation]]
 places promotion authority and the protected archive outside candidate control.
 
 ## Missing fact
@@ -30,6 +30,6 @@ produces better later accepted children, not only better benchmark solutions.
 
 ## Transfer
 
-Fork [AlphaEvolve](../../../content/diagnostics/cases/alphaevolve.json) or
-[DGM](../../../content/diagnostics/cases/dgm.json), then toggle later-candidate production
+Fork [[content/diagnostics/cases/alphaevolve.json|AlphaEvolve]] or
+[[content/diagnostics/cases/dgm.json|DGM]], then toggle later-candidate production
 and next-cycle measurement separately.

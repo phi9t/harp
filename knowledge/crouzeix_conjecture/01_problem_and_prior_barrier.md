@@ -18,7 +18,7 @@ canonical: 01_problem_and_prior_barrier.md
 
 ## The constant-two statement
 
-**[SOURCE CLAIM - CC-001](claim_evidence_ledger.md#cc-001-crouzeix-constant-two-conjecture).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-001: Crouzeix constant-two conjecture|SOURCE CLAIM - CC-001]].**
 For every complex square matrix $A$ and polynomial $p$,
 
 $$
@@ -31,7 +31,7 @@ because the numerical range need not be closed.
 
 ## Why two cannot be improved
 
-**[EVIDENCE - CC-002](claim_evidence_ledger.md#cc-002-two-by-two-nilpotent-sharpness).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-002: Two-by-two nilpotent sharpness|EVIDENCE - CC-002]].**
 Take
 
 $$
@@ -46,7 +46,7 @@ least $2$.
 
 ## The preceding universal bound
 
-**[SOURCE CLAIM - CC-003](claim_evidence_ledger.md#cc-003-crouzeix-palencia-one-plus-square-root-two).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-003: Crouzeix-Palencia one-plus-square-root-two|SOURCE CLAIM - CC-003]].**
 Crouzeix and Palencia established the universal constant
 $1+\sqrt2$. The two new preprints both start from the same broad
 double-layer tradition but use different information that an isolated
@@ -54,7 +54,7 @@ one-step norm estimate discards.
 
 ## The symmetrized identity
 
-**[EVIDENCE - CC-004](claim_evidence_ledger.md#cc-004-symmetrized-double-layer-identity).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-004: Symmetrized double-layer identity|EVIDENCE - CC-004]].**
 For a suitable convex domain $\Omega\supset W(A)$, the positive double-layer
 map has the form
 
@@ -68,7 +68,7 @@ functional-calculus value to a structured companion.
 
 ## Where the one-step argument loses information
 
-**[INFERENCE - CC-005](claim_evidence_ledger.md#cc-005-one-step-treatment-loses-coupling).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-005: One-step treatment loses coupling|INFERENCE - CC-005]].**
 Positivity controls the sum, not $f(A)$ alone. If one replaces the companion
 by an unrelated operator satisfying only a norm bound, the algebraic relation
 between the two terms disappears. The two 2026 routes instead retain a
@@ -77,4 +77,4 @@ power-indexed family through the decisive finite-dimensional step.
 The next chapter isolates that common structure without claiming that the two
 proofs are instances of one theorem.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

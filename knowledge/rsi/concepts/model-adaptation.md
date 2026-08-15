@@ -39,7 +39,7 @@ A multimodal interface changes the state available to the policy through image, 
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Foundation model inside the loop](../chapters/foundation-model-inside-the-loop.md#how-weights-change) connects each adaptation mechanism to candidate state and evaluation.
+- [[knowledge/rsi/chapters/foundation-model-inside-the-loop#How weights change|Foundation model inside the loop]] connects each adaptation mechanism to candidate state and evaluation.
 - Continual Harness, §§3–4, provides a concrete DAgger-style joint harness and weight adaptation process: [arXiv:2605.09998v1](https://arxiv.org/abs/2605.09998).
 - SIA describes alternating harness and weight updates and reports the resulting confounds: [arXiv:2605.27276v2](https://arxiv.org/abs/2605.27276).
 

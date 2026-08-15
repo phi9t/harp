@@ -77,7 +77,7 @@ or feature coverage across environments.
 - Full implementation:
   `evidence/implementations/rlm/snapshot/`.
 - Longer paper/blog companion:
-  [RLM compositional-generalization deep dive](../recursive_language_models_compositional_generalization.md).
+  [[knowledge/rsi/recursive_language_models_compositional_generalization|RLM compositional-generalization deep dive]].
 
 </details>
 
@@ -120,10 +120,10 @@ model calls, runtime, memory, and provider limits.
 ## Grounding the minimal kernel
 
 **EVIDENCE — [RLM-MINIMAL],
-[`rlm/rlm_repl.py:47-121`](../../../evidence/implementations/rlm-minimal/snapshot/rlm/rlm_repl.py#L47),
-[`rlm/repl.py:71-194`](../../../evidence/implementations/rlm-minimal/snapshot/rlm/repl.py#L71),
+[[evidence/implementations/rlm-minimal/snapshot/rlm/rlm_repl.py|`rlm/rlm_repl.py:47-121`]] ([exact lines 47–47](../../../evidence/implementations/rlm-minimal/snapshot/rlm/rlm_repl.py#L47)),
+[[evidence/implementations/rlm-minimal/snapshot/rlm/repl.py|`rlm/repl.py:71-194`]] ([exact lines 71–71](../../../evidence/implementations/rlm-minimal/snapshot/rlm/repl.py#L71)),
 and
-[`rlm/utils/utils.py:8-39,183-213`](../../../evidence/implementations/rlm-minimal/snapshot/rlm/utils/utils.py#L8).**
+[[evidence/implementations/rlm-minimal/snapshot/rlm/utils/utils.py|`rlm/utils/utils.py:8-39,183-213`]] ([exact lines 8–8](../../../evidence/implementations/rlm-minimal/snapshot/rlm/utils/utils.py#L8)).**
 The minimal
 implementation exposes the shortest end-to-end path:
 
@@ -143,7 +143,7 @@ teaching version omits much of the experiment runtime's logging, cost
 tracking, prompting, and execution detail.
 
 **EVIDENCE — [RLM-MINIMAL],
-[`rlm/repl.py:89-160,232-300`](../../../evidence/implementations/rlm-minimal/snapshot/rlm/repl.py#L89).**
+[[evidence/implementations/rlm-minimal/snapshot/rlm/repl.py|`rlm/repl.py:89-160,232-300`]] ([exact lines 89–89](../../../evidence/implementations/rlm-minimal/snapshot/rlm/repl.py#L89)).**
 The REPL is not a
 sandbox. It executes generated Python in the host process, permits imports and
 file access, and temporarily mutates process-global streams and the working
@@ -179,7 +179,7 @@ architecture from the minimal teaching implementation.
 ### Controller and model-call topology
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/core/rlm.py:49-490`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L49).**
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:49-490`]] ([exact lines 49–49](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L49)).**
 A non-persistent completion creates a provider client, starts a host-side
 `LMHandler`, creates an environment, builds root history, runs the root loop,
 and cleans up. The environment executes code and reports a `REPLResult`; the
@@ -192,9 +192,9 @@ Python class coordinates them.
 ### Seven registered adapters, different controller contracts
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/environments/__init__.py`](../../../evidence/implementations/rlm/snapshot/rlm/environments/__init__.py)
+[[evidence/implementations/rlm/snapshot/rlm/environments/__init__.py|`rlm/environments/__init__.py`]]
 and
-[`rlm/core/rlm.py:258-291`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L258).**
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:258-291`]] ([exact lines 258–258](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L258)).**
 The pin registers seven execution adapters. The controller does not wire the
 same recursion, cross-call state, or compaction features to all seven.
 
@@ -209,7 +209,7 @@ same recursion, cross-call state, or compaction features to all seven.
 | E2B | no | no | no |
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/environments/local_repl.py:147-227`](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L147).**
+[[evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py|`rlm/environments/local_repl.py:147-227`]] ([exact lines 147–147](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L147)).**
 The default Local adapter executes generated Python in the controller's host
 process and exposes plain and recursive query functions in that process.
 Adapter registration and controller wiring do not prove equivalent execution,
@@ -219,7 +219,7 @@ or test depth across the other six adapters.
 ### Recursive calls and budgets
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/core/rlm.py:275-287,551-566,706-870`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L275).**
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:275-287,551-566,706-870`]] ([exact lines 275–275](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L275)).**
 True child RLMs are wired only for Local, IPython, and Docker when
 `max_depth > 1`. A child receives its own controller and environment. At the
 depth boundary, the implementation falls back to one plain model call.
@@ -236,7 +236,7 @@ from the parent handler alone. Child spend can therefore disappear from
 enforcement even without parallelism. `max_budget` is not a reliable tree-wide cap. These are local cooperative checks, not aggregate admission control.
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/core/rlm.py:361-425,492-585`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L361).**
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:361-425,492-585`]] ([exact lines 361–361](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L361)).**
 Timeout is
 checked before a root iteration. Consecutive-error, reported-cost, and token
 checks run after the root response and all extracted code blocks execute.
@@ -247,9 +247,9 @@ the controller observes it.
 ### State reuse, compaction, and recovery
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/core/rlm.py:226-299,872-907`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L226)
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:226-299,872-907`]] ([exact lines 226–226](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L226))
 and
-[`rlm/environments/local_repl.py:147-227,399-546`](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L147).**
+[[evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py|`rlm/environments/local_repl.py:147-227,399-546`]] ([exact lines 147–147](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L147)).**
 The controller's persistence allow-list contains Local, IPython, and Docker.
 The captured Local environment retains variables across code blocks and adds
 versioned `context_N` and `history_N` values when reused across completion
@@ -258,9 +258,9 @@ all three adapters implement identical retention semantics, and it is not a
 durable checkpoint or memory service.
 
 **EVIDENCE — [RLM-REPO],
-[`rlm/core/rlm.py:365-378,587-644`](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L365)
+[[evidence/implementations/rlm/snapshot/rlm/core/rlm.py|`rlm/core/rlm.py:365-378,587-644`]] ([exact lines 365–365](../../../evidence/implementations/rlm/snapshot/rlm/core/rlm.py#L365))
 and
-[`rlm/environments/local_repl.py:181-198,481-490`](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L181).**
+[[evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py|`rlm/environments/local_repl.py:181-198,481-490`]] ([exact lines 181–181](../../../evidence/implementations/rlm/snapshot/rlm/environments/local_repl.py#L181)).**
 The controller enables optional compaction only for Local and Docker. It
 watches estimated root-history tokens, asks the root model for a summary near a
 configured threshold, and shortens root message history. The captured Local
@@ -278,10 +278,10 @@ partial answer, serialized REPL state, effect receipt, or resume point.
 ### The depth-one training adapter
 
 **EVIDENCE — [RLM-REPO],
-[`training/src/rlm_train/env.py`](../../../evidence/implementations/rlm/snapshot/training/src/rlm_train/env.py),
-[`training/src/rlm_train/repl/subprocess.py`](../../../evidence/implementations/rlm/snapshot/training/src/rlm_train/repl/subprocess.py),
+[[evidence/implementations/rlm/snapshot/training/src/rlm_train/env.py|`training/src/rlm_train/env.py`]],
+[[evidence/implementations/rlm/snapshot/training/src/rlm_train/repl/subprocess.py|`training/src/rlm_train/repl/subprocess.py`]],
 and
-[`training/src/rlm_train/worker.py:142-180,235-255`](../../../evidence/implementations/rlm/snapshot/training/src/rlm_train/worker.py#L142).**
+[[evidence/implementations/rlm/snapshot/training/src/rlm_train/worker.py|`training/src/rlm_train/worker.py:142-180,235-255`]] ([exact lines 142–142](../../../evidence/implementations/rlm/snapshot/training/src/rlm_train/worker.py#L142)).**
 The repository also has
 a separate depth-one training adapter. `RLMTrainEnv` maps the loop into a
 `verifiers.MultiTurnEnv`, starts a subprocess REPL worker per rollout, and
@@ -293,7 +293,7 @@ trajectory-distillation recipe.
 
 ## RLM through the SICP eval/apply lens
 
-The [agentic eval/apply companion](../sicp/agentic_eval_apply.md) supplies a
+The [[knowledge/rsi/sicp/agentic_eval_apply|agentic eval/apply companion]] supplies a
 useful discipline for reading this loop:
 
 ```text
@@ -424,8 +424,8 @@ RLM, ADAS, and DGM act on different objects and time scales:
 | System | Mutable object | Time scale | What remains fixed |
 |---|---|---|---|
 | RLM | execution plan, REPL state, and call tree | one inference episode | model weights and controller implementation |
-| [ADAS](adas.md) | downstream agent program | searched candidates | foundation models, evaluator, and outer search |
-| [DGM](dgm.md) | coding-agent implementation | descendant generations | foundation models, outer archive policy, and benchmark envelope |
+| [[knowledge/rsi/systems/adas|ADAS]] | downstream agent program | searched candidates | foundation models, evaluator, and outer search |
+| [[knowledge/rsi/systems/dgm|DGM]] | coding-agent implementation | descendant generations | foundation models, outer archive policy, and benchmark envelope |
 
 An RLM-like runtime could help a future improvement system inspect large code,
 papers, traces, and prior mutations. That would make RLM an execution component
@@ -454,8 +454,8 @@ It does not support:
 
 ## Reading routes
 
-- [Agentic eval/apply](../sicp/agentic_eval_apply.md)
-- [Weng: harness versus core intelligence](../weng/03-harness-layer-vs-core-intelligence.md)
-- [RLM mechanism deep dive](../recursive_language_models_compositional_generalization.md)
-- [Joint harness and model-weight adaptation](../chapters/joint-harness-weight-adaptation.md)
+- [[knowledge/rsi/sicp/agentic_eval_apply|Agentic eval/apply]]
+- [[knowledge/rsi/weng/03-harness-layer-vs-core-intelligence|Weng: harness versus core intelligence]]
+- [[knowledge/rsi/recursive_language_models_compositional_generalization|RLM mechanism deep dive]]
+- [[knowledge/rsi/chapters/joint-harness-weight-adaptation|Joint harness and model-weight adaptation]]
 - [Original paper](https://arxiv.org/abs/2512.24601)

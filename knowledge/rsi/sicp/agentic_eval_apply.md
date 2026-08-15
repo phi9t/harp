@@ -7,8 +7,8 @@ an expression in an environment, while `apply` invokes a procedure value with
 already-evaluated argument values. A compound procedure carries its defining
 environment; applying it extends that environment with parameter bindings and
 evaluates its body there (`SICP-2E-UF`, §§4.1–4.1.4, printed pp. 492–520 / PDF
-pp. 520–548). The [Seminar 09 treatment](course/seminars/09-eval-apply-and-executable-semantics.md)
-and [evaluator deep dive](metacircular_evaluator_deep_dive.md) give the book's
+pp. 520–548). The [[knowledge/rsi/sicp/course/seminars/09-eval-apply-and-executable-semantics|Seminar 09 treatment]]
+and [[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|evaluator deep dive]] give the book's
 fuller semantic account.
 
 **INFERENCE — runtime thesis.** A bounded agent runtime is usefully designed as
@@ -23,14 +23,14 @@ An LLM is not literally `eval`: it is a probabilistic producer of model events,
 not SICP's expression-and-environment mapping. Tool execution is not literally
 Scheme `apply`: it is policy-mediated work against an external, changing world.
 Nor do Pi, Hermes, and Codex share a formal architecture. They are pinned,
-separate implementation observations, summarized in the [Pi](../pi_harness_deep_dive.md),
-[Hermes](../hermes_harness_deep_dive.md), and
-[Codex](../codex_harness_deep_dive.md) deep dives; the [capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+separate implementation observations, summarized in the [[knowledge/rsi/pi_harness_deep_dive|Pi]],
+[[knowledge/rsi/hermes_harness_deep_dive|Hermes]], and
+[[knowledge/rsi/codex_harness_deep_dive|Codex]] deep dives; the [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 keeps their evidence and the course synthesis distinct.
 
 **INFERENCE — ownership boundary.** This essay is a semantic bridge from
 Seminar 09's evaluator to questions raised by effectful agent work. The
-[agent-harness architecture dossier](course/capstone/agent_harness_architecture_dossier.md)
+[[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|agent-harness architecture dossier]]
 is the maintained place for the full proposed state vocabulary, control
 sequence, and research hypotheses. Nothing here defines an API, schema,
 database record, state machine, or replacement for that capstone; the
@@ -93,7 +93,7 @@ Once this sketch meets external effects, its elided questions need explicit
 runtime semantics: how current policy admits work, how intent and outcome
 evidence remain durable, how pending or ambiguous effects are reconciled, how
 terminal work is recognized, and how child work is scoped. The
-[capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+[[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 owns the maintained proposed architecture, records, control sequence, and
 research hypotheses for those consequences.
 
@@ -133,7 +133,7 @@ not prescribe a context object or persistence layout.
 
 For the maintained conceptual state vocabulary, exact control sequence, and
 research questions about these distinctions, use the
-[agent-harness architecture dossier](course/capstone/agent_harness_architecture_dossier.md).
+[[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|agent-harness architecture dossier]].
 This essay retains only the distinctions needed to read the evaluator analogy.
 
 **EVIDENCE — pinned implementation observations.** The Pi deep dive records a
@@ -227,7 +227,7 @@ repeatable, and an irreversible mutation may instead require an operation
 identity or compensation. A runtime cannot infer that choice from a tool name.
 If it cannot tell whether an admitted mutation happened, recovery begins from
 the retained intent and retained evidence rather than pretending a retry is an
-ordinary recursive call. The [capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+ordinary recursive call. The [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 owns the detailed proposed records, transitions, and invariants for making
 those distinctions operational.
 
@@ -260,7 +260,7 @@ which context is inherited or isolated, where ancestry and budget live, what
 cancellation means after effects have begun, and whether a child report is
 evidence or merely assertion. A report remains an observation for the parent to
 interpret, not an automatically trusted value. The
-[capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+[[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 maintains the proposed lineage, budget, cancellation, and child-status
 contracts.
 
@@ -383,7 +383,7 @@ other representation, not model-quality diagnoses:
 5. **Stopping as undoing:** cancellation of a child or subprocess is mistaken
    for rollback of effects already issued.
 
-The [capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+The [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 owns the concrete research architecture controls for these errors. The semantic
 lesson here is simply that each mistake crosses a boundary without the evidence
 the later boundary requires.
@@ -404,17 +404,17 @@ Use four analytic questions to test whether a design preserves the bridge:
 4. **Which evaluator is speaking?** Is execution-side `agentic_eval` kept
    separate from benchmark scoring, selection, and promotion?
 
-The [capstone dossier](course/capstone/agent_harness_architecture_dossier.md)
+The [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]]
 contains the maintained full research architecture, detailed question set, and
 hypotheses. If these four questions cannot be answered from retained evidence,
 the evaluator analogy is not yet operationally meaningful.
 
 ## Navigation
 
-[Seminar 09 — Eval/apply and executable semantics](course/seminars/09-eval-apply-and-executable-semantics.md)
+[[knowledge/rsi/sicp/course/seminars/09-eval-apply-and-executable-semantics|Seminar 09 — Eval/apply and executable semantics]]
 owns the SICP evaluator semantics: expression data, environments, procedure
 values, and application. This essay isolates the semantic bridge: what changes
 when the apply-like boundary touches partial observations and external effects.
 For the maintained full proposed state vocabulary, control sequence, bounded
 implementation comparison, and research hypotheses, continue to the
-[agent-harness architecture dossier](course/capstone/agent_harness_architecture_dossier.md).
+[[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|agent-harness architecture dossier]].

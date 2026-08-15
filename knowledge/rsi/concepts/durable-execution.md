@@ -27,7 +27,7 @@ A checkpoint records enough control and experiment state to resume from a known 
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Workflows that persist across interruptions](../chapters/durable-improvement-workflows.md#retry-and-duplicate-action-prevention) gives the retry and checkpoint state machine.
+- [[knowledge/rsi/chapters/durable-improvement-workflows#Retry and duplicate-action prevention|Workflows that persist across interruptions]] gives the retry and checkpoint state machine.
 - Karpathy Autoresearch's pinned `program.md` and `README.md` define its fixed experiment loop at commit `228791fb499afffb54b46200aca536f79142f117`.
 
 </details>

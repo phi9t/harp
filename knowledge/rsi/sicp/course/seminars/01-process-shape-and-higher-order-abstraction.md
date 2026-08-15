@@ -4,9 +4,9 @@
 
 Skim §1.1 for the vocabulary of expressions, combinations, and procedures. Read §§1.2–1.3 closely: they turn a procedure from a piece of notation into an account of a process and then show how to abstract over recurring process patterns.
 
-- Skim: [§1.1, printed pp. 6–39](../../../../../evidence/sicp/sicp.pdf#page=34).
-- Required: [§1.2, printed pp. 40–73](../../../../../evidence/sicp/sicp.pdf#page=68).
-- Required: [§1.3, printed pp. 74–106](../../../../../evidence/sicp/sicp.pdf#page=102).
+- Skim: [[evidence/sicp/sicp.pdf#page=34|§1.1, printed pp. 6–39]].
+- Required: [[evidence/sicp/sicp.pdf#page=68|§1.2, printed pp. 40–73]].
+- Required: [[evidence/sicp/sicp.pdf#page=102|§1.3, printed pp. 74–106]].
 - Optional: none assigned.
 
 ## System-design problem
@@ -24,11 +24,11 @@ Two implementations can agree on every returned value yet require different amou
 
 ## Argument map
 
-1. **CLAIM.** A program is a description of a computational process, not merely a formula for a final value. [Chapter 1 opens by distinguishing procedures from the processes they generate (printed p. 1; PDF p. 29)](../../../../../evidence/sicp/sicp.pdf#page=29). **EVIDENCE.** The chapter immediately asks what a procedure's evaluation process is, which makes the intermediate work an object of analysis.
-2. **CLAIM.** The substitution model exposes process shape by making expansions and contractions observable. [§1.1.5 works through substitution and evaluation (printed pp. 18–22; PDF pp. 46–50)](../../../../../evidence/sicp/sicp.pdf#page=46). **INFERENCE.** Counting the still-unperformed operations in an expansion gives a portable way to distinguish process shapes before discussing a runtime.
-3. **CLAIM.** A recursive procedure does not entail a recursive process: its form can generate either a recursive or iterative process. [§1.2.1 contrasts the two factorial processes (printed pp. 41–47; PDF pp. 69–75)](../../../../../evidence/sicp/sicp.pdf#page=69). **EVIDENCE.** The same mathematical factorial relation is presented with deferred multiplications in one formulation and a fixed tuple of evolving values in the other.
-4. **CLAIM.** Orders of growth describe scaling behavior, rather than elapsed time on one machine. [§1.2.3 analyzes growth of processes (printed pp. 54–57; PDF pp. 82–85)](../../../../../evidence/sicp/sicp.pdf#page=82). **INFERENCE.** A faster processor can change a constant factor, but it cannot turn linear growth into logarithmic growth.
-5. **CLAIM.** Higher-order procedures make recurring process patterns composable by parameterizing the varying pieces. [§1.3 develops higher-order abstractions (printed pp. 74–106; PDF pp. 102–134)](../../../../../evidence/sicp/sicp.pdf#page=102). **EVIDENCE.** Procedures become values that can supply a term, a transformation, or a combining rule while the traversal structure stays reusable.
+1. **CLAIM.** A program is a description of a computational process, not merely a formula for a final value. [[evidence/sicp/sicp.pdf#page=29|Chapter 1 opens by distinguishing procedures from the processes they generate (printed p. 1; PDF p. 29)]]. **EVIDENCE.** The chapter immediately asks what a procedure's evaluation process is, which makes the intermediate work an object of analysis.
+2. **CLAIM.** The substitution model exposes process shape by making expansions and contractions observable. [[evidence/sicp/sicp.pdf#page=46|§1.1.5 works through substitution and evaluation (printed pp. 18–22; PDF pp. 46–50)]]. **INFERENCE.** Counting the still-unperformed operations in an expansion gives a portable way to distinguish process shapes before discussing a runtime.
+3. **CLAIM.** A recursive procedure does not entail a recursive process: its form can generate either a recursive or iterative process. [[evidence/sicp/sicp.pdf#page=69|§1.2.1 contrasts the two factorial processes (printed pp. 41–47; PDF pp. 69–75)]]. **EVIDENCE.** The same mathematical factorial relation is presented with deferred multiplications in one formulation and a fixed tuple of evolving values in the other.
+4. **CLAIM.** Orders of growth describe scaling behavior, rather than elapsed time on one machine. [[evidence/sicp/sicp.pdf#page=82|§1.2.3 analyzes growth of processes (printed pp. 54–57; PDF pp. 82–85)]]. **INFERENCE.** A faster processor can change a constant factor, but it cannot turn linear growth into logarithmic growth.
+5. **CLAIM.** Higher-order procedures make recurring process patterns composable by parameterizing the varying pieces. [[evidence/sicp/sicp.pdf#page=102|§1.3 develops higher-order abstractions (printed pp. 74–106; PDF pp. 102–134)]]. **EVIDENCE.** Procedures become values that can supply a term, a transformation, or a combining rule while the traversal structure stays reusable.
 
 ## Mechanism trace
 
@@ -115,8 +115,8 @@ Specify a bounded retry operation as an explicit state machine. Name its state t
 
 **PROVISIONAL.** `When two procedures compute the same values, what evidence would convince you that they generate materially different processes?`
 
-Continue from the [dialogue state](../dialogue_state.md), which records this seminar as the current question.
+Continue from the [[knowledge/rsi/sicp/course/dialogue_state|dialogue state]], which records this seminar as the current question.
 
 ## Navigation
 
-Previous: [Scheme reading primer](../scheme_reading_primer.md) · [Course guide](../sicp_course_guide.md) · Next: [Seminar 02 — Data abstraction and immutable representation](02-data-abstraction-and-immutable-representation.md)
+Previous: [[knowledge/rsi/sicp/course/scheme_reading_primer|Scheme reading primer]] · [[knowledge/rsi/sicp/course/sicp_course_guide|Course guide]] · Next: [[knowledge/rsi/sicp/course/seminars/02-data-abstraction-and-immutable-representation|Seminar 02 — Data abstraction and immutable representation]]

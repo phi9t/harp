@@ -35,7 +35,7 @@ a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2
 ```
 
 The revision is recorded in
-[the DGM revision receipt](../../evidence/implementations/dgm/REVISION). The
+[[evidence/implementations/dgm/REVISION|the DGM revision receipt]]. The
 snapshot supports claims about released-code behavior at that revision. It
 does not prove that this exact tree, dependency environment, or API behavior
 produced every paper result.
@@ -63,7 +63,7 @@ repository edit. The benchmark harness owns task execution and scoring.
 
 ## 1. `DGM_outer.py`: generation controller
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/DGM_outer.py).
+[[evidence/implementations/dgm/snapshot/DGM_outer.py|Open the captured file]].
 
 ### Initialization
 
@@ -96,7 +96,7 @@ Nodes whose metadata cannot be loaded are skipped as ineligible.
 
 ### Parent selection
 
-**[EVIDENCE - DGM-005](claim_evidence_crosswalk.md#dgm-005-parent-selection-combines-score-and-underexploration).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-005: Parent selection combines score and underexploration|EVIDENCE - DGM-005]].**
 The default `score_child_prop` branch:
 
 1. maps accuracy through a sigmoid centered at 0.5;
@@ -105,7 +105,7 @@ The default `score_child_prop` branch:
 4. normalizes the weights; and
 5. calls `random.choices(..., k=selfimprove_size)`.
 
-See [algorithm derivation](03_algorithm_derivation.md) for the equations and a
+See [[knowledge/darwin_godel_machine/03_algorithm_derivation|algorithm derivation]] for the equations and a
 worked example.
 
 ### Improvement-entry selection
@@ -123,14 +123,14 @@ detecting repeated long-input errors.
 
 For Polyglot, selection normally samples from empty and unresolved tasks.
 
-**[EVIDENCE - DGM-063](claim_evidence_crosswalk.md#dgm-063-empty-swe-unresolved-lists-can-reach-random-choice).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-063: Empty SWE unresolved lists can reach random choice|EVIDENCE - DGM-063]].**
 The SWE guard compares `unresolved_ids`, a list, with integer zero. If the list
 is empty and no earlier special branch fires, `random.choice` can receive an
 empty list.
 
 ### Parallel self-improvement
 
-**[EVIDENCE - DGM-061](claim_evidence_crosswalk.md#dgm-061-released-defaults-can-schedule-two-attempts-per-generation).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-061: Released defaults can schedule two attempts per generation|EVIDENCE - DGM-061]].**
 The captured CLI defaults to 80 outer generations and two attempts per
 generation. A literal default run can therefore schedule up to 160 child
 attempts; this is not the same accounting unit as the paper's 80 iterations.
@@ -176,7 +176,7 @@ Second, the direct `best` implementation sorts scores ascending and takes the
 first entries. If invoked programmatically, it selects the lowest scores
 rather than the best scores described by its comment.
 
-**[EVIDENCE - DGM-062](claim_evidence_crosswalk.md#dgm-062-released-parent-selection-omits-the-papers-perfect-score-filter).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-062: Released parent selection omits the paper's perfect-score filter|EVIDENCE - DGM-062]].**
 The paper excludes perfect-score agents from parent eligibility. The captured
 candidate builder has no corresponding explicit score filter.
 
@@ -186,7 +186,7 @@ must be inspected separately.
 
 ## 2. `prompts/self_improvement_prompt.py`: failure-to-issue translation
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py).
+[[evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py|Open the captured file]].
 
 The file owns the diagnostic interface. It describes:
 
@@ -243,7 +243,7 @@ Therefore:
 
 ## 3. `self_improve_step.py`: reconstruct, mutate, evaluate
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/self_improve_step.py).
+[[evidence/implementations/dgm/snapshot/self_improve_step.py|Open the captured file]].
 
 This file is the main bridge between archive search and benchmark execution.
 
@@ -321,7 +321,7 @@ reconciliation rather than rely on the happy-path sequence.
 
 ## 4. `coding_agent.py`: seed SWE-bench agent
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/coding_agent.py).
+[[evidence/implementations/dgm/snapshot/coding_agent.py|Open the captured file]].
 
 `AgenticSystem` is the mutable unit's main entrypoint. It receives:
 
@@ -347,7 +347,7 @@ self-editing.
 
 ## 5. `coding_agent_polyglot.py`: multi-language variant
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/coding_agent_polyglot.py).
+[[evidence/implementations/dgm/snapshot/coding_agent_polyglot.py|Open the captured file]].
 
 The Polyglot variant adds language-aware test context and targets primarily
 single-file tasks across C++, Go, Java, JavaScript, Python, and Rust.
@@ -368,7 +368,7 @@ paths before applying candidate changes.
 
 ## 6. `llm_withtools.py`: model and tool adapter
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/llm_withtools.py).
+[[evidence/implementations/dgm/snapshot/llm_withtools.py|Open the captured file]].
 
 The file:
 
@@ -396,7 +396,7 @@ faithful causal diagnosis.
 
 ## 7. `tools/bash.py`: persistent shell
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/tools/bash.py).
+[[evidence/implementations/dgm/snapshot/tools/bash.py|Open the captured file]].
 
 The seed shell:
 
@@ -418,7 +418,7 @@ the surrounding container, user, mounts, network, credentials, and kernel.
 
 ## 8. `tools/edit.py`: whole-file editor
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/tools/edit.py).
+[[evidence/implementations/dgm/snapshot/tools/edit.py|Open the captured file]].
 
 The seed editor supports:
 
@@ -431,7 +431,7 @@ It explicitly lacks partial viewing and partial editing. The paper reports
 that evolved agents discover line-range viewing and string replacement. Those
 changes repair a clear seed limitation and reduce context and overwrite cost.
 
-**[SOURCE CLAIM - DGM-072](claim_evidence_crosswalk.md#dgm-072-evolved-agents-add-fine-grained-file-inspection-and-editing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-072: Evolved agents add fine-grained file inspection and editing|SOURCE CLAIM - DGM-072]].**
 The paper's Appendix F patches make both mechanisms concrete, while Appendix G
 reports different outcomes for two implementations aimed at fine-grained
 editing.
@@ -443,17 +443,17 @@ agent engineering, but they begin from an intentionally minimal baseline.
 
 The paper reports changes beyond the editor:
 
-- [context-limit summarization](claim_evidence_crosswalk.md#dgm-073-evolved-agents-summarize-history-at-the-context-limit);
-- [multiple candidate generation](claim_evidence_crosswalk.md#dgm-074-evolved-agents-generate-multiple-candidate-solutions);
-- [model-based candidate judging](claim_evidence_crosswalk.md#dgm-075-evolved-agents-use-model-based-candidate-judging); and
-- [previous-attempt reuse](claim_evidence_crosswalk.md#dgm-076-evolved-agents-reuse-previous-attempt-evidence).
+- [[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-073: Evolved agents summarize history at the context limit|context-limit summarization]];
+- [[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-074: Evolved agents generate multiple candidate solutions|multiple candidate generation]];
+- [[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-075: Evolved agents use model-based candidate judging|model-based candidate judging]]; and
+- [[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-076: Evolved agents reuse previous-attempt evidence|previous-attempt reuse]].
 
 These are author-reported mechanisms reconstructed from the paper's lineage
 patches. Harp has not replayed those evolved agents.
 
 ## 9. `utils/evo_utils.py`: lineage and viability
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py).
+[[evidence/implementations/dgm/snapshot/utils/evo_utils.py|Open the captured file]].
 
 ### Lineage
 
@@ -480,7 +480,7 @@ task-score improvement.
 
 ## 10. `swe_bench/harness.py`: repository-task execution
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/swe_bench/harness.py).
+[[evidence/implementations/dgm/snapshot/swe_bench/harness.py|Open the captured file]].
 
 For each task, the harness:
 
@@ -500,7 +500,7 @@ are operational dependencies and part of the trust boundary.
 
 ## 11. `swe_bench/report.py`: score materialization
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/swe_bench/report.py).
+[[evidence/implementations/dgm/snapshot/swe_bench/report.py|Open the captured file]].
 
 The report path prepares prediction files, removes edits to benchmark test
 files from candidate patches, invokes the SWE-bench evaluation machinery, and
@@ -512,7 +512,7 @@ other mutable surfaces.
 
 ## 12. `polyglot/harness.py`: multi-language execution
 
-[Open the captured file](../../evidence/implementations/dgm/snapshot/polyglot/harness.py).
+[[evidence/implementations/dgm/snapshot/polyglot/harness.py|Open the captured file]].
 
 For each task, the harness:
 
@@ -549,7 +549,7 @@ deeper evaluation has run.
 
 ### Disconnected full SWE evaluation
 
-**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-060: Released SWE path does not consume the full-evaluation threshold|EVIDENCE - DGM-060]].**
 The outer loop computes a full-evaluation threshold and passes it to
 `self_improve`; that function also loads the `big` SWE subset. The captured
 runner never consumes either value and dispatches only the initial and medium
@@ -632,7 +632,7 @@ The code also sharpens the claim boundary:
 > supply, and archive policy create the conditions in which candidate agent
 > code can improve.
 
-Continue with [evaluation analysis](06_evaluation_analysis.md), review the
-[system architecture](04_system_architecture.md).
+Continue with [[knowledge/darwin_godel_machine/06_evaluation_analysis|evaluation analysis]], review the
+[[knowledge/darwin_godel_machine/04_system_architecture|system architecture]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

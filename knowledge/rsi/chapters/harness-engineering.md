@@ -57,11 +57,11 @@ The loop is an implementation mechanism, not evidence of improvement. A recursiv
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Pi implementation deep dive](../pi_harness_deep_dive.md), pinned at commit `4488ad55c18f07ae89a489096c90de8667b3adfb`. It establishes a compact loop, hookable context and tools, branchable session state, and compaction.
-- [Hermes implementation deep dive](../hermes_harness_deep_dive.md), pinned at commit `e444d165807f489b5c1ab8e4a612c8d09c2e67a2`. It establishes persistent memory, skills, curation, bounded delegation, and iteration accounting.
-- [Codex implementation deep dive](../codex_harness_deep_dive.md), pinned at commit `1e85ca099e4265bf89f4016772d299816e231bb3`. It establishes rollout state, routed capabilities, compaction, multi-agent lineage, permissions, and sandbox selection.
-- [Codex state-continuity companion](../codex_state_continuity_and_compaction.md) separates the ARC-AGI-3 harness result from Codex's richer typed history, world-state, checkpoint, replay, and cross-thread memory architecture.
-- Weng, "Harness Engineering for Self-Improvement," sections "Agent harness" and "Harness design patterns," supplies the broad harness decomposition and improvement argument; the [reader companion](../rsi_harness_by_lil_log_deconstructed.md) preserves commentary separately: [Lil'Log 2026-07-04](https://lilianweng.github.io/posts/2026-07-04-harness/).
+- [[knowledge/rsi/pi_harness_deep_dive|Pi implementation deep dive]], pinned at commit `4488ad55c18f07ae89a489096c90de8667b3adfb`. It establishes a compact loop, hookable context and tools, branchable session state, and compaction.
+- [[knowledge/rsi/hermes_harness_deep_dive|Hermes implementation deep dive]], pinned at commit `e444d165807f489b5c1ab8e4a612c8d09c2e67a2`. It establishes persistent memory, skills, curation, bounded delegation, and iteration accounting.
+- [[knowledge/rsi/codex_harness_deep_dive|Codex implementation deep dive]], pinned at commit `1e85ca099e4265bf89f4016772d299816e231bb3`. It establishes rollout state, routed capabilities, compaction, multi-agent lineage, permissions, and sandbox selection.
+- [[knowledge/rsi/codex_state_continuity_and_compaction|Codex state-continuity companion]] separates the ARC-AGI-3 harness result from Codex's richer typed history, world-state, checkpoint, replay, and cross-thread memory architecture.
+- Weng, "Harness Engineering for Self-Improvement," sections "Agent harness" and "Harness design patterns," supplies the broad harness decomposition and improvement argument; the [[knowledge/rsi/rsi_harness_by_lil_log_deconstructed|reader companion]] preserves commentary separately: [Lil'Log 2026-07-04](https://lilianweng.github.io/posts/2026-07-04-harness/).
 
 </details>
 
@@ -155,8 +155,8 @@ Harness attribution weakens if frozen-weight ablations show no reliable behavior
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- Exact source paths and code revisions remain in the three implementation deep dives and [source registry](../source_registry.md).
-- The older [implementation comparison](../implementation_harnesses.md) remains as a concise overlay and links here for the canonical explanation.
+- Exact source paths and code revisions remain in the three implementation deep dives and [[knowledge/rsi/source_registry|source registry]].
+- The older [[knowledge/rsi/implementation_harnesses|implementation comparison]] remains as a concise overlay and links here for the canonical explanation.
 - No inspected harness ships the complete external multi-generation evaluator required for an RSI result.
 
 </details>

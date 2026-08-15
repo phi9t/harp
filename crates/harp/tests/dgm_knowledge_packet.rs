@@ -322,15 +322,25 @@ fn main_claims(text: &str) -> Result<Vec<MainClaim>, String> {
         let Some(line) = paragraph.lines().next() else {
             continue;
         };
-        let Some(marker) = line.trim().strip_prefix("**[") else {
+        let marker = if let Some(marker) = line.trim().strip_prefix("**[[") {
+            let (target, label) = marker
+                .strip_suffix("]].**")
+                .ok_or_else(|| format!("malformed native claim marker `{line}`"))?
+                .split_once('|')
+                .ok_or_else(|| format!("malformed native claim label `{line}`"))?;
+            (label, target)
+        } else if let Some(marker) = line.trim().strip_prefix("**[") {
+            let (label, rest) = marker
+                .split_once("](")
+                .ok_or_else(|| format!("malformed claim marker `{line}`"))?;
+            let target = rest
+                .strip_suffix(").**")
+                .ok_or_else(|| format!("malformed claim target `{line}`"))?;
+            (label, target)
+        } else {
             continue;
         };
-        let (label, rest) = marker
-            .split_once("](")
-            .ok_or_else(|| format!("malformed claim marker `{line}`"))?;
-        let target = rest
-            .strip_suffix(").**")
-            .ok_or_else(|| format!("malformed claim target `{line}`"))?;
+        let (label, target) = marker;
         let (class, id) = label
             .split_once(" - ")
             .ok_or_else(|| format!("malformed claim label `{label}`"))?;
@@ -437,8 +447,12 @@ fn validate_source_routes(path: &Path, entry: &LedgerEntry) -> Result<(), String
         .filter(|heading| heading.level == HeadingLevel::H2)
         .map(|heading| markdown_slug(&heading.text))
         .collect::<BTreeSet<_>>();
-    let links = markdown_links(entry.field("Source")?);
-    if links.is_empty() {
+    let source_field = entry.field("Source")?;
+    let links = markdown_links(source_field);
+    let wiki_links = harp::knowledge::resolve_wiki_links(&workspace_root(), path, source_field)
+        .map_err(|error| error.to_string())?;
+    let registry_relative = PathBuf::from("knowledge/darwin_godel_machine/source_registry.md");
+    if links.is_empty() && wiki_links.is_empty() {
         return Err(format!("{} source route must be clickable", entry.id));
     }
     for link in links {
@@ -448,6 +462,18 @@ fn validate_source_routes(path: &Path, entry: &LedgerEntry) -> Result<(), String
         if target != "source_registry.md" || !registry_headings.contains(anchor) {
             return Err(format!(
                 "{} source route does not land on a registry heading: {link}",
+                entry.id
+            ));
+        }
+    }
+    for link in wiki_links {
+        if link.target != registry_relative
+            || !link
+                .heading_id
+                .is_some_and(|id| registry_headings.contains(&id))
+        {
+            return Err(format!(
+                "{} source route does not land on a registry heading",
                 entry.id
             ));
         }
@@ -745,7 +771,8 @@ fn markdown_targets(text: &str) -> Result<Vec<String>, String> {
         | Options::ENABLE_STRIKETHROUGH
         | Options::ENABLE_TASKLISTS
         | Options::ENABLE_MATH;
-    let math_ranges = display_math_ranges(text);
+    let parser_input = text.replace("[[", "⟦").replace("]]", "⟧");
+    let math_ranges = display_math_ranges(&parser_input);
     let mut broken_references = Vec::new();
     let mut callback = |link: BrokenLink<'_>| {
         if !math_ranges
@@ -756,13 +783,14 @@ fn markdown_targets(text: &str) -> Result<Vec<String>, String> {
         }
         None
     };
-    let targets = Parser::new_with_broken_link_callback(text, options, Some(&mut callback))
-        .filter_map(|event| match event {
-            Event::Start(Tag::Link { dest_url, .. })
-            | Event::Start(Tag::Image { dest_url, .. }) => Some(dest_url.to_string()),
-            _ => None,
-        })
-        .collect::<Vec<_>>();
+    let targets =
+        Parser::new_with_broken_link_callback(&parser_input, options, Some(&mut callback))
+            .filter_map(|event| match event {
+                Event::Start(Tag::Link { dest_url, .. })
+                | Event::Start(Tag::Image { dest_url, .. }) => Some(dest_url.to_string()),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
     if broken_references.is_empty() {
         Ok(targets)
     } else {
@@ -948,13 +976,16 @@ fn dgm_knowledge_packet_has_complete_observable_contract() {
         if path.file_name().and_then(|name| name.to_str()) != Some("darwin_godel_machine_index.md")
         {
             assert!(
-                text.contains("darwin_godel_machine_index.md"),
+                text.contains(
+                    "[[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]]"
+                ),
                 "{} does not link back to the packet index",
                 path.display()
             );
             assert!(
-                text.trim_end()
-                    .ends_with("Back to the [DGM index](darwin_godel_machine_index.md)."),
+                text.trim_end().ends_with(
+                    "Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]]."
+                ),
                 "{} does not end with the approved index navigation line",
                 path.display()
             );
@@ -968,7 +999,11 @@ fn dgm_knowledge_packet_has_complete_observable_contract() {
         .expect("read DGM packet index");
     for name in EXPECTED_FILES {
         if name != "darwin_godel_machine_index.md" {
-            assert!(index.contains(name), "packet index does not link {name}");
+            let stem = name.strip_suffix(".md").expect("packet file is Markdown");
+            assert!(
+                index.contains(&format!("[[knowledge/darwin_godel_machine/{stem}|")),
+                "packet index does not link {name}"
+            );
         }
     }
 
@@ -1047,13 +1082,18 @@ fn dgm_knowledge_packet_has_complete_observable_contract() {
                 .expect("DGM claim route must include a ledger anchor");
             assert_eq!(
                 ledger_file,
-                "claim_evidence_crosswalk.md",
+                if ledger_file.starts_with("knowledge/") {
+                    "knowledge/darwin_godel_machine/claim_evidence_crosswalk"
+                } else {
+                    "claim_evidence_crosswalk.md"
+                },
                 "{} claim {} does not route through the canonical ledger",
                 path.display(),
                 claim.id
             );
+            let normalized_anchor = markdown_slug(anchor);
             let entry = entry_by_slug
-                .get(anchor)
+                .get(normalized_anchor.as_str())
                 .unwrap_or_else(|| panic!("{} targets missing ledger anchor {anchor}", claim.id));
             assert_eq!(claim.id, entry.id);
             assert_eq!(claim.class, entry.class().expect("validated class"));

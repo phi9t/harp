@@ -37,7 +37,7 @@ use its coding ability to edit the code that defines the coding agent itself.
 The system then tests the resulting child agent on coding benchmarks and keeps
 viable descendants in an archive.
 
-**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-065: DGM is evolutionary search over agent scaffolds|INFERENCE - DGM-065]].**
 The precise object of search is the agent scaffold: prompts, tools, workflow,
 context handling, retry logic, verification, and model-call plumbing around
 frozen foundation models.
@@ -53,7 +53,7 @@ The central loop is:
 7. allow retained children to become future parents.
 
 Paper basis: DGM §§1-3. Canonical synthesis:
-[DGM system article](../rsi/systems/dgm.md).
+[[knowledge/rsi/systems/dgm|DGM system article]].
 
 ## Gödel Machine versus Darwin Gödel Machine
 
@@ -66,7 +66,7 @@ provable under a realistic environment model.
 
 ### Darwin Gödel Machine
 
-**[EVIDENCE - DGM-001](claim_evidence_crosswalk.md#dgm-001-dgm-evolves-an-editable-coding-agent-repository).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-001: DGM evolves an editable coding-agent repository|EVIDENCE - DGM-001]].**
 DGM replaces proof with empirical evaluation:
 
 | Dimension | Gödel Machine | DGM |
@@ -97,7 +97,7 @@ inside the coding agent.
 
 This is harness improvement, not model-weight improvement.
 
-**[INFERENCE - DGM-066](claim_evidence_crosswalk.md#dgm-066-patch-lineage-is-the-genotype-and-agent-behavior-the-phenotype).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-066: Patch lineage is the genotype and agent behavior the phenotype|INFERENCE - DGM-066]].**
 In evolutionary terms, the ordered patch lineage is the genotype and the
 stochastic tool-using behavior under a model and task environment is the
 phenotype.
@@ -121,7 +121,7 @@ This boundary matters because "self-modifying" can sound broader than the
 actual implementation. DGM modifies agent code inside a fixed search and
 evaluation process.
 
-See [system architecture](04_system_architecture.md) for the full ownership
+See [[knowledge/darwin_godel_machine/04_system_architecture|system architecture]] for the full ownership
 map.
 
 ## Why coding benchmarks?
@@ -136,13 +136,13 @@ The paper's key argument is:
 The first step is direct. The second is measured on SWE-bench and Polyglot.
 The third is plausible but not directly tested by those benchmark scores.
 
-**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-067: Task fitness and descendant productivity are different objectives|INFERENCE - DGM-067]].**
 Task score measures current problem-solving fitness. It does not directly
 measure the expected valid gain produced by the agent's future children.
 
 A stronger experiment would compare parent and child on the quality of the
 next children they produce. That experiment is developed in
-[successor design](10_successor_design.md).
+[[knowledge/darwin_godel_machine/10_successor_design|successor design]].
 
 ## Why an archive?
 
@@ -159,7 +159,7 @@ The archive supports:
 
 The archive does not automatically provide behavioral diversity. The released
 selection rule uses score and child count, not an explicit behavior descriptor.
-See [open-endedness](07_open_endedness.md).
+See [[knowledge/darwin_godel_machine/07_open_endedness|open-endedness]].
 
 ## Five-minute system model
 
@@ -238,6 +238,6 @@ You should now be able to answer:
 4. What result would demonstrate successor improvement rather than task
    improvement?
 
-Continue with the [paper walkthrough](02_paper_walkthrough.md).
+Continue with the [[knowledge/darwin_godel_machine/02_paper_walkthrough|paper walkthrough]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

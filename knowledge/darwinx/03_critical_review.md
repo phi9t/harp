@@ -13,7 +13,7 @@ confidence: high
 
 ## Bottom line
 
-**[INFERENCE - DX-024](claim_evidence_ledger.md#dx-024-the-reported-studies-support-durable-harness-capability).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-024: The reported studies support durable harness capability|INFERENCE - DX-024]].**
 DarwinX is a strong harness-engineering paper and an incomplete population-
 search paper.
 
@@ -57,7 +57,7 @@ retry policy that the model does not reliably produce from a generic prompt.
 
 ### Verification is the recurring procedural gain
 
-**[INFERENCE - DX-025](claim_evidence_ledger.md#dx-025-verification-before-finalization-is-a-plausible-shared-mechanism).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-025: Verification-before-finalization is a plausible shared mechanism|INFERENCE - DX-025]].**
 Both the terminal and browser edit bundles follow the same procedure:
 
 ```text
@@ -91,7 +91,7 @@ The paper does not show:
 
 ### No matched single-lineage baseline
 
-**[MISSING - DX-026](claim_evidence_ledger.md#dx-026-the-paper-does-not-isolate-darwinxs-population-operators).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-026: The paper does not isolate DarwinX's population operators|MISSING - DX-026]].**
 The paper needs an equal-budget ladder:
 
 1. greedy single lineage;
@@ -147,7 +147,7 @@ remains unmeasured.
 
 ### The gate is not isolated
 
-**[INFERENCE - DX-029](claim_evidence_ledger.md#dx-029-wai-does-not-causally-isolate-the-preservation-gate).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-029: WAI does not causally isolate the preservation gate|INFERENCE - DX-029]].**
 WAI shows invalid behavior falling while task success rises. That is a valuable
 system result.
 
@@ -205,7 +205,7 @@ reported on the search suite.
 
 ### The full search bill is missing
 
-**[MISSING - DX-027](claim_evidence_ledger.md#dx-027-the-total-evolution-search-bill-is-not-reported).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-027: The total evolution search bill is not reported|MISSING - DX-027]].**
 The paper reports deployed-agent inference statistics and candidate sampling
 protocols. It does not reconcile:
 
@@ -223,7 +223,7 @@ This omission prevents an economic comparison with a simpler optimizer.
 
 ### The 17-point average is not a common effect
 
-**[INFERENCE - DX-028](claim_evidence_ledger.md#dx-028-the-papers-17-point-average-is-descriptive-not-a-common-effect-size).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-028: The paper's 17-point average is descriptive, not a common effect size|INFERENCE - DX-028]].**
 The paper averages changes from different task sets, metrics, sample counts,
 baseline strengths, and transfer regimes. The arithmetic may be correct, but
 the result has no common estimand.
@@ -270,11 +270,11 @@ demonstration-guided.
 
 ## Reproducibility
 
-**[MISSING - DX-009](claim_evidence_ledger.md#dx-009-a-public-darwinx-optimizer-release-was-not-located).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-009: A public DarwinX optimizer release was not located|MISSING - DX-009]].**
 The bounded public search found the paper and BrowserCode, not a DarwinX
 optimizer release.
 
-**[MISSING - DX-010](claim_evidence_ledger.md#dx-010-core-optimizer-details-needed-for-reproduction-are-absent).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-010: Core optimizer details needed for reproduction are absent|MISSING - DX-010]].**
 The paper does not provide enough detail for a serious matched implementation:
 
 - no numerical `β` or `δ`;
@@ -337,7 +337,7 @@ harness learns to:
 
 It does not show that the full population algorithm is necessary for those
 gains. That requires the experiment in
-[successor experiment](05_successor_experiment.md).
+[[knowledge/darwinx/05_successor_experiment|successor experiment]].
 
-Continue with the [comparative synthesis](04_comparative_synthesis.md) or
-return to the [DarwinX index](darwinx_index.md).
+Continue with the [[knowledge/darwinx/04_comparative_synthesis|comparative synthesis]] or
+return to the [[knowledge/darwinx/darwinx_index|DarwinX index]].

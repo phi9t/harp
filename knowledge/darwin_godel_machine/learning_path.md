@@ -32,12 +32,12 @@ the next improvement cycle.
 
 ## Level 1: explain the system
 
-**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-065: DGM is evolutionary search over agent scaffolds|INFERENCE - DGM-065]].**
 Read:
 
-1. [orientation](01_orientation.md);
-2. [glossary](glossary.md); and
-3. [paper walkthrough](02_paper_walkthrough.md).
+1. [[knowledge/darwin_godel_machine/01_orientation|orientation]];
+2. [[knowledge/darwin_godel_machine/glossary|glossary]]; and
+3. [[knowledge/darwin_godel_machine/02_paper_walkthrough|paper walkthrough]].
 
 ### Checkpoint 1 — five-sentence explanation
 
@@ -107,8 +107,8 @@ is to declare ownership for this experiment.
 
 Read:
 
-1. [algorithm derivation](03_algorithm_derivation.md); and
-2. [open-endedness](07_open_endedness.md).
+1. [[knowledge/darwin_godel_machine/03_algorithm_derivation|algorithm derivation]]; and
+2. [[knowledge/darwin_godel_machine/07_open_endedness|open-endedness]].
 
 ### Exercise 1 — selection probability
 
@@ -201,9 +201,9 @@ could be noise or an unrelated patch.
 
 Read:
 
-1. [system architecture](04_system_architecture.md);
-2. [repository walkthrough](05_repository_walkthrough.md); and
-3. [source registry](source_registry.md).
+1. [[knowledge/darwin_godel_machine/04_system_architecture|system architecture]];
+2. [[knowledge/darwin_godel_machine/05_repository_walkthrough|repository walkthrough]]; and
+3. [[knowledge/darwin_godel_machine/source_registry|source registry]].
 
 ### Exercise 4 — runtime trace
 
@@ -289,10 +289,10 @@ chosen.
 
 Read:
 
-1. [evaluation analysis](06_evaluation_analysis.md);
-2. [safety and failure](08_safety_and_failure.md);
-3. [critical review](09_critical_review.md); and
-4. [claim-evidence crosswalk](claim_evidence_crosswalk.md).
+1. [[knowledge/darwin_godel_machine/06_evaluation_analysis|evaluation analysis]];
+2. [[knowledge/darwin_godel_machine/08_safety_and_failure|safety and failure]];
+3. [[knowledge/darwin_godel_machine/09_critical_review|critical review]]; and
+4. [[knowledge/darwin_godel_machine/claim_evidence_crosswalk|claim-evidence crosswalk]].
 
 ### Exercise 7 — normalize the headline
 
@@ -380,12 +380,12 @@ parent-versus-child improvement-yield test is missing.
 
 ## Level 5: design the successor experiment
 
-**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-067: Task fitness and descendant productivity are different objectives|INFERENCE - DGM-067]].**
 Read:
 
-1. [successor design](10_successor_design.md); and
+1. [[knowledge/darwin_godel_machine/10_successor_design|successor design]]; and
 2. canonical
-   [evaluation, promotion, and containment](../rsi/chapters/evaluation-promotion-containment.md).
+   [[knowledge/rsi/chapters/evaluation-promotion-containment|evaluation, promotion, and containment]].
 
 ### Exercise 11 — parent versus child
 
@@ -474,7 +474,7 @@ Write a one-page review with:
 5. explicit non-goals.
 
 Use the consequence ordering in the
-[critical review](09_critical_review.md), not a file-by-file summary.
+[[knowledge/darwin_godel_machine/09_critical_review|critical review]], not a file-by-file summary.
 
 ## Capstone
 
@@ -511,7 +511,7 @@ Your design must state:
 
 ## Completion standard
 
-**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-050: Matched successor-improvement evidence is missing|MISSING - DGM-050]].**
 You understand DGM when you can hold these two statements together:
 
 1. DGM is a real self-referential harness-evolution mechanism whose
@@ -519,6 +519,6 @@ You understand DGM when you can hold these two statements together:
 2. Better benchmark-solving descendants are not yet direct evidence of a
    better successor-production process.
 
-Use [maintenance](maintenance.md) before changing the packet.
+Use [[knowledge/darwin_godel_machine/maintenance|maintenance]] before changing the packet.
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

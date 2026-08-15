@@ -22,7 +22,7 @@ contraction-power family cannot have norm larger than two.
 
 ## The perturbation interface {#the-perturbation-interface}
 
-**[SOURCE CLAIM - CC-030](claim_evidence_ledger.md#cc-030-lorist-schwenninger-perturbation-lemma).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-030: Lorist-Schwenninger perturbation lemma|SOURCE CLAIM - CC-030]].**
 Let $T$ act on a finite-dimensional Hilbert space $H$. Assume there are a
 Hilbert space $K$, a contraction $Q$ on $K$, and an isometry
 $V:H\to K$ such that
@@ -49,7 +49,7 @@ $$
 M=\sup_{n\ge1}\|E_n\|<\infty.
 $$
 
-**[INFERENCE - CC-032](claim_evidence_ledger.md#cc-032-equation-one-uniformly-bounds-en-tn).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-032: Equation one uniformly bounds E-n T-n|INFERENCE - CC-032]].**
 Equation 1 itself gives
 
 $$
@@ -103,7 +103,7 @@ $$
 \end{aligned}
 $$
 
-**[EVIDENCE - CC-031](claim_evidence_ledger.md#cc-031-lorist-schwenninger-recurrence).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-031: Lorist-Schwenninger recurrence|EVIDENCE - CC-031]].**
 Dividing by $\kappa$ and iterating yields
 
 $$
@@ -204,7 +204,7 @@ $$
 V^*Q^nV=\Phi(f^n).
 $$
 
-**[EVIDENCE - CC-033](claim_evidence_ledger.md#cc-033-double-layer-realizes-the-perturbation-family).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-033: Double-layer realizes the perturbation family|EVIDENCE - CC-033]].**
 With $T=f(A)$, the companion identity gives
 
 $$
@@ -227,7 +227,7 @@ All hypotheses of the perturbation lemma are now present.
 
 ## Application-level product bound {#application-level-product-bound}
 
-**[INFERENCE - CC-034](claim_evidence_ledger.md#cc-034-functional-calculus-independently-bounds-en-tn).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-034: Functional calculus independently bounds E-n T-n|INFERENCE - CC-034]].**
 The application has an additional route to the same terminal boundedness:
 
 $$
@@ -250,7 +250,7 @@ Equation 1 estimate.
 
 ## Rational consequence {#rational-consequence}
 
-**[SOURCE CLAIM - CC-035](claim_evidence_ledger.md#cc-035-lorist-schwenninger-rational-two-spectral-set-conclusion).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-035: Lorist-Schwenninger rational two-spectral-set conclusion|SOURCE CLAIM - CC-035]].**
 After the standard finite-dimensional and smooth-outer-domain reductions, the
 lemma gives
 
@@ -263,7 +263,7 @@ as the bounded-operator 2-spectral-set theorem.
 
 ## Abstract uniform-algebra variant {#abstract-uniform-algebra-variant}
 
-**[SOURCE CLAIM - CC-036](claim_evidence_ledger.md#cc-036-lorist-schwenninger-abstract-uniform-algebra-variant).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-036: Lorist-Schwenninger abstract uniform-algebra variant|SOURCE CLAIM - CC-036]].**
 The source also states an abstract version. Let $\mathcal A$ be a commutative
 uniform algebra, let $\alpha:\mathcal A\to\mathcal A$ be unital, bounded, and
 antilinear, and let
@@ -280,9 +280,9 @@ Stinespring dilation produce the $V,Q$ interface for the perturbation lemma.
 
 ## Completely bounded boundary {#completely-bounded-boundary}
 
-**[SOURCE CLAIM - CC-037](claim_evidence_ledger.md#cc-037-neither-proof-directly-yields-the-completely-bounded-case).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-037: Neither proof directly yields the completely bounded case|SOURCE CLAIM - CC-037]].**
 Lorist and Schwenninger explicitly state that neither their route nor Jin's
 directly yields the completely bounded case. In their lemma, the commutativity
 of $E_n$ with $T$ is not preserved by the required matrix amplification.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

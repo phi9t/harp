@@ -22,7 +22,7 @@ article prose.
 ## Published
 
 All sixteen registered systems now have compiled canonical readings. Start with
-[AFlow](aflow.md) for the workflow-search vertical slice, then use the Atlas
+[[knowledge/rsi/systems/aflow|AFlow]] for the workflow-search vertical slice, then use the Atlas
 table or Weng trail to open the system relevant to each argument section.
 
 Harness Disentangle and AlphaEvolve remain separate system articles without
@@ -34,6 +34,6 @@ broader procedure-internalization and open-ended-search concepts.
 These packets deepen a canonical concept without adding another identity to the
 fixed sixteen-system registry.
 
-- [DarwinX](../../darwinx/darwinx_index.md) extends the harness-search reading
+- [[knowledge/darwinx/darwinx_index|DarwinX]] extends the harness-search reading
   with population selection, bounded-regression promotion, specialist
   retention, attempted recombination, and a fixed-budget causal experiment.

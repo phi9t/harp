@@ -35,7 +35,7 @@ Process rewards score intermediate actions, states, or steps rather than only te
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Joint harness and model-weight adaptation](../chapters/joint-harness-weight-adaptation.md#alternating-adaptation) gives the alternating update algorithm.
+- [[knowledge/rsi/chapters/joint-harness-weight-adaptation#Alternating adaptation|Joint harness and model-weight adaptation]] gives the alternating update algorithm.
 - Ross, Gordon, and Bagnell, "A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning," Algorithm 3.1, introduces DAgger: [AISTATS 2011](https://proceedings.mlr.press/v15/ross11a.html).
 - Continual Harness, §§3.2–3.4, applies teacher relabeling and process-reward scoring to evolving harness trajectories: [arXiv:2605.09998v1](https://arxiv.org/abs/2605.09998).
 

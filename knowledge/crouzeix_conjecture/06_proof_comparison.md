@@ -34,7 +34,7 @@ different notation.
 
 ## Shared structure without equivalence {#shared-structure-without-equivalence}
 
-The [shared-power-family inference](02_shared_power_family.md) explains why the
+The [[knowledge/crouzeix_conjecture/02_shared_power_family|shared-power-family inference]] explains why the
 two papers can both extract more from the old symmetrized identity than a
 single norm estimate. It does not identify:
 
@@ -49,7 +49,7 @@ until a relation among all powers has been used.
 
 ## Independent and different {#independent-and-different}
 
-**[EVIDENCE - CC-041](claim_evidence_ledger.md#cc-041-lorist-schwenninger-call-jin-independent-and-different).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-041: Lorist-Schwenninger call Jin independent and different|EVIDENCE - CC-041]].**
 Lorist and Schwenninger state in arXiv v1 that Jin's proof appeared
 independently while their note was being prepared, and characterize it as a
 different function-theoretic, matrix-valued route. This is the authors'
@@ -95,4 +95,4 @@ level; Lorist-Schwenninger's commutative perturbation interface is not stable
 under arbitrary matrix amplification. A new compatibility mechanism would be
 needed.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

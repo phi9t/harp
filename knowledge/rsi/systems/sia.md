@@ -93,7 +93,7 @@ later accepted children under matched authority and resource conditions.
 
 ## Reading routes
 
-- [Weng: joint harness and weight optimization](../weng/08-joint-harness-weight-optimization.md)
-- [SIA versus Continual Harness lesson](../lessons/06-sia-vs-continual-harness.md)
-- [Joint harness and model-weight adaptation](../chapters/joint-harness-weight-adaptation.md)
+- [[knowledge/rsi/weng/08-joint-harness-weight-optimization|Weng: joint harness and weight optimization]]
+- [[knowledge/rsi/lessons/06-sia-vs-continual-harness|SIA versus Continual Harness lesson]]
+- [[knowledge/rsi/chapters/joint-harness-weight-adaptation|Joint harness and model-weight adaptation]]
 - [Original paper](https://arxiv.org/abs/2605.27276)

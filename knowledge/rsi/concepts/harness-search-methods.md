@@ -43,7 +43,7 @@ Open-ended search allows objectives, niches, or candidate structures to expand o
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Searching for better harnesses](../chapters/harness-search.md#population-and-archive-algorithm) gives the archive algorithm and matched-budget objective.
+- [[knowledge/rsi/chapters/harness-search#Population and archive algorithm|Searching for better harnesses]] gives the archive algorithm and matched-budget objective.
 - Pugh et al., "Quality Diversity: A New Frontier for Evolutionary Computation," taxonomy and §§2–3: [DOI:10.3389/frobt.2016.00040](https://doi.org/10.3389/frobt.2016.00040).
 - AlphaEvolve, §§2–3, and FunSearch, Methods, provide program-search examples with executable evaluators: [arXiv:2506.13131v1](https://arxiv.org/abs/2506.13131), [Nature 625](https://www.nature.com/articles/s41586-023-06924-6).
 

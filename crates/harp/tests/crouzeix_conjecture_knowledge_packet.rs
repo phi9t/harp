@@ -424,16 +424,60 @@ fn validate_wiki_links(source: &Path, text: &str) -> Result<(), String> {
             &fs::read_to_string(workspace_root().join(&link.target))
                 .map_err(|error| error.to_string())?,
         )?;
-        if link.requested_heading.as_deref() != link.heading_id.as_deref()
-            || !explicit.contains(link.requested_heading.as_deref().expect("checked heading"))
+        if !link
+            .heading_id
+            .as_deref()
+            .is_some_and(|heading| explicit.contains(heading))
         {
             return Err(format!(
-                "native wiki heading must use an explicit Crouzeix ID: {}",
+                "native wiki heading must resolve to an explicit Crouzeix ID: {}",
                 link.target.display()
             ));
         }
     }
     Ok(())
+}
+
+fn native_reader_claim_ids(source: &Path, text: &str) -> Result<BTreeSet<String>, String> {
+    let mut ids = BTreeSet::new();
+    for line in text.lines() {
+        let Some(marker) = line.trim().strip_prefix("**[[") else {
+            continue;
+        };
+        let (target, label) = marker
+            .strip_suffix("]].**")
+            .ok_or_else(|| format!("malformed native claim marker `{line}`"))?
+            .split_once('|')
+            .ok_or_else(|| format!("malformed native claim label `{line}`"))?;
+        let (_, id) = label
+            .split_once(" - ")
+            .ok_or_else(|| format!("malformed native claim label `{line}`"))?;
+        if !id.starts_with("CC-") {
+            continue;
+        }
+        let resolutions = harp::knowledge::resolve_wiki_links(
+            &workspace_root(),
+            source,
+            &format!("[[{target}|{label}]]"),
+        )
+        .map_err(|error| error.to_string())?;
+        let resolution = resolutions
+            .first()
+            .ok_or_else(|| format!("missing native claim resolution `{line}`"))?;
+        if resolution.target
+            != PathBuf::from("knowledge/crouzeix_conjecture/claim_evidence_ledger.md")
+            || !resolution
+                .heading_id
+                .as_deref()
+                .is_some_and(|heading| heading.starts_with(&id.to_ascii_lowercase()))
+        {
+            return Err(format!(
+                "native claim route does not resolve {id}: `{line}`"
+            ));
+        }
+        ids.insert(id.to_owned());
+    }
+    Ok(ids)
 }
 
 fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
@@ -583,7 +627,7 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         .collect::<BTreeSet<_>>();
     assert_eq!(actual, expected, "packet file roster drifted");
 
-    let mut referenced_claims = BTreeSet::new();
+    let mut referenced_claims = BTreeSet::<String>::new();
     for name in EXPECTED_FILES {
         let path = root.join(name);
         let text = fs::read_to_string(&path).expect("read packet file");
@@ -611,7 +655,7 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         if name != "crouzeix_conjecture_index.md" {
             assert!(
                 text.trim_end().ends_with(
-                    "Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md)."
+                    "Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]]."
                 ),
                 "{name} lacks the exact index backlink"
             );
@@ -619,9 +663,13 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         if name != "claim_evidence_ledger.md" {
             for id in REQUIRED_CLAIMS {
                 if text.contains(&format!(" - {id}](")) {
-                    referenced_claims.insert(id);
+                    referenced_claims.insert(id.to_owned());
                 }
             }
+            referenced_claims.extend(
+                native_reader_claim_ids(&path, &text)
+                    .unwrap_or_else(|error| panic!("{name}: {error}")),
+            );
         }
     }
 
@@ -646,9 +694,12 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     validate_claims(&ledger_path, &entries).expect("validate claim ledger");
     let actual_claims = entries
         .iter()
-        .map(|entry| entry.id.as_str())
+        .map(|entry| entry.id.clone())
         .collect::<BTreeSet<_>>();
-    let expected_claims = REQUIRED_CLAIMS.into_iter().collect::<BTreeSet<_>>();
+    let expected_claims = REQUIRED_CLAIMS
+        .into_iter()
+        .map(str::to_owned)
+        .collect::<BTreeSet<_>>();
     assert_eq!(actual_claims, expected_claims, "claim roster drifted");
     assert_eq!(
         referenced_claims, expected_claims,

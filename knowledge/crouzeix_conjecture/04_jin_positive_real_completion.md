@@ -32,7 +32,7 @@ $$
 
 The $\beta_i$ are distinct. The $\lambda_i$ need not be.
 
-**[EVIDENCE - CC-011](claim_evidence_ledger.md#cc-011-auxiliary-basis-permits-repeated-target-values).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-011: Auxiliary basis permits repeated target values|EVIDENCE - CC-011]].**
 Simple spectrum is used to identify
 
 $$
@@ -67,7 +67,7 @@ $$
 
 ## Herglotz-kernel positivity {#herglotz-kernel-positivity}
 
-**[EVIDENCE - CC-012](claim_evidence_ledger.md#cc-012-herglotz-kernel-is-positive).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-012: Herglotz kernel is positive|EVIDENCE - CC-012]].**
 For analytic $F$ with positive semidefinite real part,
 
 $$
@@ -120,7 +120,7 @@ positive-kernel sampling is indexed and does not require distinct points.
 
 ## Exact cancellation {#exact-cancellation}
 
-**[EVIDENCE - CC-013](claim_evidence_ledger.md#cc-013-origin-sample-cancels-the-correction).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-013: Origin sample cancels the correction|EVIDENCE - CC-013]].**
 The contribution of the diagonal correction to the sampled quadratic form is
 
 $$
@@ -170,7 +170,7 @@ u^*(4Y-YG^{-1}P-PG^{-1}Y)u.
 \end{aligned}
 $$
 
-**[EVIDENCE - CC-014](claim_evidence_ledger.md#cc-014-ordered-pre-gramian-inequality).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-014: Ordered pre-Gramian inequality|EVIDENCE - CC-014]].**
 Since $u$ is arbitrary,
 
 $$
@@ -222,7 +222,7 @@ $$
 
 ## Bound P-hat {#bound-p-hat}
 
-**[EVIDENCE - CC-015](claim_evidence_ledger.md#cc-015-gramian-anticommutator-bounds-p-hat).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-015: Gramian anticommutator bounds P-hat|EVIDENCE - CC-015]].**
 Let $\widehat Pe=\alpha e$. If $\alpha>2$, evaluating the last inequality on
 $e$ gives
 
@@ -242,7 +242,7 @@ $$
 
 ## First-term norm endpoint {#first-term-norm-endpoint}
 
-**[EVIDENCE - CC-016](claim_evidence_ledger.md#cc-016-first-nonconstant-gramian-term-gives-norm-two).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-016: First nonconstant Gramian term gives norm two|EVIDENCE - CC-016]].**
 The first nonconstant term in $\widehat P$ yields
 
 $$
@@ -266,4 +266,4 @@ does not construct $H$; the double-layer Cayley argument owns that
 obligation. It does not require distinct target values. It does not prove a
 matrix-amplified bound, and it does not license reordering the Gramian factors.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

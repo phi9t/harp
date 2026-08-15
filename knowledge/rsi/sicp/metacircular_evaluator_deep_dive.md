@@ -52,7 +52,7 @@ p. 494, PDF p. 522).
 ## Executable algorithm and systems realization
 
 **EVIDENCE — runnable companion.** The dependency-free Rust crate at
-[`labs/sicp-evaluator/`](../../../labs/sicp-evaluator) implements the
+[[labs/sicp-evaluator/README|`labs/sicp-evaluator/`]] implements the
 kernel as `Evaluator::eval` and `Evaluator::apply`; it includes an S-expression
 parser, mutable environment frames, lexical closures, primitives, special
 forms, instrumentation, and six behavior tests.

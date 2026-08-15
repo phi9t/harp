@@ -422,7 +422,11 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
     let index = fs::read_to_string(root.join("darwinx_index.md")).expect("read DarwinX index");
     for name in DARWINX_FILES {
         if name != "darwinx_index.md" {
-            assert!(index.contains(name), "DarwinX index does not link {name}");
+            let stem = name.strip_suffix(".md").expect("DarwinX file is Markdown");
+            assert!(
+                index.contains(&format!("[[knowledge/darwinx/{stem}|")),
+                "DarwinX index does not link {name}"
+            );
         }
     }
 

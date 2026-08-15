@@ -391,7 +391,9 @@ fn resolve_target(
             })?
             .join(candidate)
     };
-    let target = if candidate.extension().is_some() {
+    let target = if repository.regular_file_exists(&candidate, "Obsidian wikilink target")? {
+        candidate
+    } else if candidate.extension().is_some() {
         candidate
     } else {
         candidate.with_extension("md")
@@ -421,7 +423,9 @@ fn has_vault_root(path: &Path) -> bool {
             std::path::Component::Normal(value) => value.to_str(),
             _ => None,
         })
-        .is_some_and(|root| ["knowledge", "evidence", "content", "labs", "crates"].contains(&root))
+        .is_some_and(|root| {
+            ["knowledge", "evidence", "content", "labs", "crates", "docs"].contains(&root)
+        })
 }
 
 fn resolve_heading(
@@ -755,6 +759,48 @@ mod tests {
                 embed: true,
                 display: "Paper".into(),
             }
+        );
+    }
+
+    #[test]
+    fn resolves_extensionless_evidence_files_without_appending_markdown_suffix() {
+        let repo = fixture();
+        fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
+        fs::write(repo.path().join("evidence/example/REVISION"), "abc123\n").unwrap();
+        let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
+        let link = parse_wiki_links("[[evidence/example/REVISION|Revision]]")
+            .unwrap()
+            .pop()
+            .unwrap();
+
+        assert_eq!(
+            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+                .unwrap()
+                .target,
+            PathBuf::from("evidence/example/REVISION")
+        );
+    }
+
+    #[test]
+    fn resolves_documentation_links_from_the_repository_root() {
+        let repo = fixture();
+        fs::create_dir_all(repo.path().join("docs/writing-style")).unwrap();
+        fs::write(
+            repo.path().join("docs/writing-style/STYLE_GUIDE.md"),
+            "# Style guide\n",
+        )
+        .unwrap();
+        let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
+        let link = parse_wiki_links("[[docs/writing-style/STYLE_GUIDE|Style guide]]")
+            .unwrap()
+            .pop()
+            .unwrap();
+
+        assert_eq!(
+            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+                .unwrap()
+                .target,
+            PathBuf::from("docs/writing-style/STYLE_GUIDE.md")
         );
     }
 

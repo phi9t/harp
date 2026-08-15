@@ -16,10 +16,10 @@ Mode: `DOMAIN ORIENTATION`.
 
 This path remains for incoming wikilinks. The maintained symbols, ownership
 rules, generation boundary, and recursive-gain equations live in
-[RSI system state and notation](concepts/system-state-and-notation.md).
+[[knowledge/rsi/concepts/system-state-and-notation|RSI system state and notation]].
 
 Related canonical explanations:
 
-- [What makes an improvement loop recursive](chapters/recursive-improvement-loop.md)
-- [Evaluation and control mechanisms](concepts/evaluation-and-control.md)
-- [Evaluation, promotion, and containment](chapters/evaluation-promotion-containment.md)
+- [[knowledge/rsi/chapters/recursive-improvement-loop|What makes an improvement loop recursive]]
+- [[knowledge/rsi/concepts/evaluation-and-control|Evaluation and control mechanisms]]
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]]

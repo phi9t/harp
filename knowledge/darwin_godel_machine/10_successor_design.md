@@ -28,7 +28,7 @@ After this chapter, you should be able to:
 
 ## Objective
 
-**[INFERENCE - DGM-070](claim_evidence_crosswalk.md#dgm-070-a-stronger-successor-should-separate-fitness-productivity-and-diversity).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-070: A stronger successor should separate fitness, productivity, and diversity|INFERENCE - DGM-070]].**
 Test the claim DGM currently treats as a proxy:
 
 > Does a child agent that scores better on coding tasks become a better
@@ -678,7 +678,7 @@ required:
 That is the shortest path from an impressive harness-evolution result to a
 direct test of the recursive claim.
 
-Continue with the [learning path](learning_path.md), review the
-[critical assessment](09_critical_review.md).
+Continue with the [[knowledge/darwin_godel_machine/learning_path|learning path]], review the
+[[knowledge/darwin_godel_machine/09_critical_review|critical assessment]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

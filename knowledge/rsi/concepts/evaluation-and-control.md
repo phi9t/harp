@@ -43,7 +43,7 @@ Lineage records every proposed candidate, parent, evaluation, rejection, and acc
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md#evaluation-and-promotion-flow) defines the protected gate sequence.
+- [[knowledge/rsi/chapters/evaluation-promotion-containment#Evaluation and promotion flow|Evaluation, promotion, and containment]] defines the protected gate sequence.
 - Amodei et al., "Concrete Problems in AI Safety," §4, frames reward hacking and scalable oversight: [arXiv:1606.06565v2](https://arxiv.org/abs/1606.06565).
 - Weng, "Reward Hacking in Reinforcement Learning," sections "Reward misspecification" and "Reward tampering": [2024-11-28](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/).
 

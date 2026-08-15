@@ -39,7 +39,7 @@ A learned procedure is encoded in weights and invoked by ordinary inference. It 
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [From external procedures to learned behavior](../chapters/procedure-internalization.md#the-four-way-test) defines the controlled comparison.
+- [[knowledge/rsi/chapters/procedure-internalization#The four-way test|From external procedures to learned behavior]] defines the controlled comparison.
 - The RLM paper, §§2–4, describes recursive decomposition supplied by an inference harness: [arXiv:2512.24601v3](https://arxiv.org/abs/2512.24601).
 - \"Language model harnesses are compositional generalizers,\" sections \"Post-training setup\" and \"Results,\" reports the model-plus-harness comparison: [2026-07-20 capture](https://alexzhang13.github.io/blog/2026/rlm-harness-generalization/).
 

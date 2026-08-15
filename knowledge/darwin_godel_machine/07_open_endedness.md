@@ -102,7 +102,7 @@ Full DGM:
 4. discounts parents that already have many functioning children; and
 5. permits non-best nodes to receive further mutations.
 
-**[SOURCE CLAIM - DGM-034](claim_evidence_crosswalk.md#dgm-034-paper-reports-two-score-dips-in-the-best-lineage).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-034: Paper reports two score dips in the best lineage|SOURCE CLAIM - DGM-034]].**
 The paper's SWE-bench lineage contains two reported score dips on the ancestry
 of the final best agent. That observation supports the narrow stepping-stone
 claim:
@@ -115,7 +115,7 @@ same archive policy is optimal.
 
 ## Why `keep_all` matters
 
-**[EVIDENCE - DGM-009](claim_evidence_crosswalk.md#dgm-009-archive-admission-does-not-require-score-improvement).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-009: Archive admission does not require score improvement|EVIDENCE - DGM-009]].**
 The released controller defaults to adding every child that passes the
 functioning-agent predicate.
 
@@ -157,7 +157,7 @@ This is an exploration-exploitation policy:
 
 The policy does not know *why* two agents differ.
 
-**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-065: DGM is evolutionary search over agent scaffolds|INFERENCE - DGM-065]].**
 The exact mechanism is archive-based, non-greedy program search. It is
 open-ended only in the bounded sense that old executable lineages remain
 selectable and branching can continue under fixed tasks and control policy.
@@ -220,12 +220,12 @@ behavior-space archive. Calling its child-count term "novelty" should not hide
 that distinction.
 
 Canonical context:
-[harness search methods](../rsi/concepts/harness-search-methods.md).
+[[knowledge/rsi/concepts/harness-search-methods|harness search methods]].
 
 ## Relation to admitted program-search systems
 
-[AlphaEvolve](../rsi/systems/alphaevolve.md) and
-[FunSearch](../../content/sources/source_registry.tsv) provide Harp's admitted
+[[knowledge/rsi/systems/alphaevolve|AlphaEvolve]] and
+[[content/sources/source_registry.tsv|FunSearch]] provide Harp's admitted
 program-search comparison. They retain executable solution programs and use
 external evaluators to guide later proposals.
 
@@ -317,7 +317,7 @@ under a valid counterfactual reconstruction.
 
 ### Unequal evaluation precision
 
-**[INFERENCE - DGM-069](claim_evidence_crosswalk.md#dgm-069-staged-point-estimates-create-winners-curse-risk).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-069: Staged point estimates create winner's-curse risk|INFERENCE - DGM-069]].**
 Nodes evaluated on 10, 60, and 200 tasks can coexist. Parent selection can use
 scores with different uncertainty.
 
@@ -378,7 +378,7 @@ leaves this as future work.
 
 ### Cross-generation improvement metrics
 
-**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-067: Task fitness and descendant productivity are different objectives|INFERENCE - DGM-067]].**
 Select partly on the quality and diversity of children a node produces, not
 only its task score.
 
@@ -414,7 +414,7 @@ problem.
 
 ## Design-review judgment
 
-**[INFERENCE - DGM-070](claim_evidence_crosswalk.md#dgm-070-a-stronger-successor-should-separate-fitness-productivity-and-diversity).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-070: A stronger successor should separate fitness, productivity, and diversity|INFERENCE - DGM-070]].**
 DGM's archive is a meaningful advance over one-incumbent harness search. It
 preserves recoverable alternatives and creates a direct route through
 non-monotone lineages.
@@ -437,7 +437,7 @@ The precise description is:
 That is enough to study stepping stones. It is not yet evidence of indefinitely
 expanding behavioral diversity or autonomous improvement of the search process.
 
-Continue with [safety and failure](08_safety_and_failure.md), design a stronger
-experiment in [successor design](10_successor_design.md).
+Continue with [[knowledge/darwin_godel_machine/08_safety_and_failure|safety and failure]], design a stronger
+experiment in [[knowledge/darwin_godel_machine/10_successor_design|successor design]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

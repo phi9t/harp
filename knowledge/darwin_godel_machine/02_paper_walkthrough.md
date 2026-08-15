@@ -25,10 +25,10 @@ After this chapter, you should be able to:
 - separate headline claims from experimental scope; and
 - identify the paper's central assumption.
 
-Primary source: [captured DGM paper text](../../evidence/weng/text/dgm.txt),
+Primary source: [[evidence/weng/text/dgm.txt|captured DGM paper text]],
 arXiv `2505.22954v3`.
 
-**[EVIDENCE - DGM-071](claim_evidence_crosswalk.md#dgm-071-captured-paper-identifies-iclr-2026-publication).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-071: Captured paper identifies ICLR 2026 publication|EVIDENCE - DGM-071]].**
 The captured v3 text identifies the paper as published at ICLR 2026.
 
 ## Argument map
@@ -51,7 +51,7 @@ Steps 1 through 6 define the system. Step 7 is the key proxy assumption. Step 8
 tests downstream performance and components, not the proxy assumption
 directly.
 
-**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-050: Matched successor-improvement evidence is missing|MISSING - DGM-050]].**
 No section reports the matched parent-versus-child next-cycle comparison that
 would directly test step 7.
 
@@ -221,7 +221,7 @@ engineers also treat as first-class design choices.
 
 ### Fine-grained inspection and editing
 
-**[SOURCE CLAIM - DGM-072](claim_evidence_crosswalk.md#dgm-072-evolved-agents-add-fine-grained-file-inspection-and-editing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-072: Evolved agents add fine-grained file inspection and editing|SOURCE CLAIM - DGM-072]].**
 The paper reports line-range viewing and exact string replacement instead of
 whole-file-only inspection and overwrite. Appendix G compares two lineages
 targeting fine-grained editing: one scores 23.3% and another 40.5%. These are
@@ -230,7 +230,7 @@ show that the implementation of a tool matters beyond its feature label.
 
 ### Context-length management
 
-**[SOURCE CLAIM - DGM-073](claim_evidence_crosswalk.md#dgm-073-evolved-agents-summarize-history-at-the-context-limit).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-073: Evolved agents summarize history at the context limit|SOURCE CLAIM - DGM-073]].**
 One evolved patch detects context-length errors, summarizes older user and
 assistant messages, retains recent messages, and retries with the compressed
 history. This makes context policy part of the evolved program rather than
@@ -251,7 +251,7 @@ $$
 
 ### Multiple independent attempts
 
-**[SOURCE CLAIM - DGM-074](claim_evidence_crosswalk.md#dgm-074-evolved-agents-generate-multiple-candidate-solutions).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-074: Evolved agents generate multiple candidate solutions|SOURCE CLAIM - DGM-074]].**
 The paper reports an evolved workflow that resets to the base commit, generates
 several candidate patches, runs regression tests, and stores the valid patches
 and reports for later selection.
@@ -265,7 +265,7 @@ isolate from the mechanism's benefit.
 
 ### Model-based candidate judging
 
-**[SOURCE CLAIM - DGM-075](claim_evidence_crosswalk.md#dgm-075-evolved-agents-use-model-based-candidate-judging).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-075: Evolved agents use model-based candidate judging|SOURCE CLAIM - DGM-075]].**
 Another evolved workflow scores candidates with test reports and uses a further
 foundation-model call to compare solutions or break ties. This is a small
 proposer-and-judge architecture, not independent formal verification, and it
@@ -273,7 +273,7 @@ has not been reproduced here.
 
 ### Previous-attempt reuse
 
-**[SOURCE CLAIM - DGM-076](claim_evidence_crosswalk.md#dgm-076-evolved-agents-reuse-previous-attempt-evidence).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-076: Evolved agents reuse previous-attempt evidence|SOURCE CLAIM - DGM-076]].**
 The paper reports history-aware workflows that carry prior patches and test
 outcomes into later attempts, asking the next attempt to repair observed
 limitations or explore another approach. This is within-task episodic reuse,
@@ -300,7 +300,7 @@ $$
 DGM's contribution is to make this program a search object rather than leaving
 every dimension fixed by a human harness designer.
 
-**[SOURCE CLAIM - DGM-026](claim_evidence_crosswalk.md#dgm-026-paper-reports-a-higher-functioning-child-rate).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-026: Paper reports a higher functioning-child rate|SOURCE CLAIM - DGM-026]].**
 Appendix A.4 reports a 51.3% functioning-child rate for DGM versus 32.5% for
 each main baseline. These process measurements have not been independently
 reproduced here.
@@ -308,7 +308,7 @@ reproduced here.
 Figure 3 shows two temporary score dips in the final best lineage. That is the
 paper's strongest visual evidence for retaining non-monotone stepping stones.
 
-**[SOURCE CLAIM - DGM-034](claim_evidence_crosswalk.md#dgm-034-paper-reports-two-score-dips-in-the-best-lineage).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-034: Paper reports two score dips in the best lineage|SOURCE CLAIM - DGM-034]].**
 The paper interprets those dips as evidence for stepping-stone search. The
 lineage alone does not establish that either intermediate change causally
 enabled the final descendant.
@@ -396,7 +396,7 @@ fine-grained editing. Nodes targeting similar functionality score 23.3% and
 
 ### Appendix H
 
-**[SOURCE CLAIM - DGM-044](claim_evidence_crosswalk.md#dgm-044-paper-reports-objective-hacking-in-appendix-h).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-044: Paper reports objective hacking in Appendix H|SOURCE CLAIM - DGM-044]].**
 Shows the tool-hallucination optimization and objective-hacking case. A node
 gets a perfect detector score by removing the logging markers used by the
 detector.
@@ -419,6 +419,6 @@ When reading any DGM claim, ask:
    production?
 7. Could the candidate influence the measurement channel?
 
-Continue with [algorithm derivation](03_algorithm_derivation.md).
+Continue with [[knowledge/darwin_godel_machine/03_algorithm_derivation|algorithm derivation]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

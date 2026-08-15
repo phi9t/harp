@@ -74,7 +74,7 @@ Every file must:
 ## Credible-documentation route
 
 The packet follows
-[the credible technical documentation style](../../docs/writing-style/STYLE_GUIDE.md):
+[[docs/writing-style/STYLE_GUIDE|the credible technical documentation style]]:
 
 ```text
 reader-facing claim block
@@ -118,7 +118,7 @@ capture: evidence/weng/text/dgm.txt
 
 The canonical source registry owns the digest and publication-state record:
 
-[content/sources/source_registry.tsv](../../content/sources/source_registry.tsv).
+[[content/sources/source_registry.tsv|content/sources/source_registry.tsv]].
 
 ### Repository
 
@@ -131,10 +131,10 @@ revision: a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2
 
 Receipts:
 
-- [REVISION](../../evidence/implementations/dgm/REVISION)
-- [REMOTE](../../evidence/implementations/dgm/REMOTE)
-- [LICENSE_STATUS](../../evidence/implementations/dgm/LICENSE_STATUS)
-- [implementation manifest](../../evidence/implementations/manifest.tsv)
+- [[evidence/implementations/dgm/REVISION|REVISION]]
+- [[evidence/implementations/dgm/REMOTE|REMOTE]]
+- [[evidence/implementations/dgm/LICENSE_STATUS|LICENSE_STATUS]]
+- [[evidence/implementations/manifest.tsv|implementation manifest]]
 
 Do not edit captured snapshot files for prose, formatting, or branding.
 
@@ -459,7 +459,7 @@ Before declaring a packet update complete, answer:
 
 If any answer is uncertain, the update is not complete.
 
-Inspect the [source registry](source_registry.md) when evidence identities
+Inspect the [[knowledge/darwin_godel_machine/source_registry|source registry]] when evidence identities
 change.
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

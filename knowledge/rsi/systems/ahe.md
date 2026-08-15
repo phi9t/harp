@@ -56,7 +56,7 @@ production by accepted children.
 
 ## Reading routes
 
-- [Weng: self-improving harnesses](../weng/06-self-improving-harnesses.md)
-- [STOP versus Self-Harness and AHE lesson](../lessons/04-stop-vs-self-harness-ahe.md)
-- [Evaluation and promotion](../chapters/evaluation-promotion-containment.md)
+- [[knowledge/rsi/weng/06-self-improving-harnesses|Weng: self-improving harnesses]]
+- [[knowledge/rsi/lessons/04-stop-vs-self-harness-ahe|STOP versus Self-Harness and AHE lesson]]
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation and promotion]]
 - [Original paper](https://arxiv.org/abs/2604.25850)

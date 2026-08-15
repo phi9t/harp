@@ -18,7 +18,7 @@ canonical: 02_shared_power_family.md
 
 ## The comparison
 
-**[INFERENCE - CC-040](claim_evidence_ledger.md#cc-040-both-proofs-retain-a-complete-power-family).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-040: Both proofs retain a complete power family|INFERENCE - CC-040]].**
 Both proofs avoid collapsing the double-layer identity to one estimate for one
 function. They retain information for every power, either explicitly or
 through a generating function.
@@ -67,7 +67,7 @@ be reduced to an estimate involving only $E_1$. It does not imply that the
 positive-real completion theorem and the 2-dilation lemma are equivalent:
 their hypotheses, auxiliary spaces, and decisive inequalities differ.
 
-Proceed to the [Jin proof spine](03_jin_proof_spine.md) or directly to the
-[Lorist-Schwenninger proof](05_lorist_schwenninger_proof.md).
+Proceed to the [[knowledge/crouzeix_conjecture/03_jin_proof_spine|Jin proof spine]] or directly to the
+[[knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof|Lorist-Schwenninger proof]].
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

@@ -19,9 +19,9 @@ Search organization does not change the primary classification.
 
 ## Explain
 
-The full [AFlow reading](../systems/aflow.md) distinguishes workflow nodes from
+The full [[knowledge/rsi/systems/aflow|AFlow reading]] distinguishes workflow nodes from
 MCTS tree nodes and explains why final-workflow cost is not total search cost.
-[Harness search methods](../concepts/harness-search-methods.md) owns the wider
+[[knowledge/rsi/concepts/harness-search-methods|Harness search methods]] owns the wider
 search taxonomy.
 
 ## Missing fact
@@ -31,6 +31,6 @@ later selected workflows under a matched root-tree budget.
 
 ## Transfer
 
-Fork [ADAS](../../../content/diagnostics/cases/adas.json) or
-[AFlow](../../../content/diagnostics/cases/aflow.json), then change evaluator ownership or
+Fork [[content/diagnostics/cases/adas.json|ADAS]] or
+[[content/diagnostics/cases/aflow.json|AFlow]], then change evaluator ownership or
 root-tree accounting.

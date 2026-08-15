@@ -23,7 +23,7 @@ instruction-generation mechanism remains external and fixed. The fixed
 diagnostic layer creates an alignment assumption: a system that gets better at
 coding must also happen to get better at proposing the next agent change.
 
-**[EVIDENCE - DGM-077](claim_evidence_crosswalk.md#dgm-077-dgm-h-makes-task-and-meta-logic-one-editable-program).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-077: DGM-H makes task and meta logic one editable program|EVIDENCE - DGM-077]].**
 Hyperagents changes the mutable object. It places the task agent and the meta
 agent—the logic that generates later modifications—inside one editable program.
 The authors call edits to that meta logic *metacognitive self-modification*.
@@ -60,7 +60,7 @@ Its inner loop is self-improving in two distinct ways:
 | Task agent | Task-solving prompts, tools, memory, control flow, and other program logic | It can improve the current task behavior. |
 | Meta agent | The procedures that inspect the repository, use past evaluations, choose edits, and construct later hyperagents | It can alter how future improvements are generated. |
 
-**[EVIDENCE - DGM-078](claim_evidence_crosswalk.md#dgm-078-main-dgm-h-keeps-key-outer-loop-controls-fixed).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-078: Main DGM-H keeps key outer-loop controls fixed|EVIDENCE - DGM-078]].**
 The paper explicitly says the main-text experiments keep parent selection
 handcrafted and non-modifiable to isolate hyperagent self-modification. It
 reports only preliminary exploration of modifying parent selection in Appendix
@@ -69,7 +69,7 @@ control therefore remain protected boundaries in the reported main setting.
 
 ## What the paper reports
 
-**[SOURCE CLAIM - DGM-079](claim_evidence_crosswalk.md#dgm-079-dgm-h-reports-cross-domain-transfer-of-improvement-procedure).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-079: DGM-H reports cross-domain transfer of improvement procedure|SOURCE CLAIM - DGM-079]].**
 Across five-run experiments, the authors report that hyperagents evolved for
 paper review or robotics reward design generate stronger math-grading agents
 than an initial hyperagent under their transfer protocol. They attribute the
@@ -90,7 +90,7 @@ of the packet's successor-improvement criterion.
 The transfer protocol is stronger evidence than DGM's task-score proxy because
 it freezes a transferred hyperagent and measures generated agents in a new
 domain. But it is not yet the exact matched causal test requested by
-[DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing):
+[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-050: Matched successor-improvement evidence is missing|DGM-050]]:
 
 - a named accepted parent and child must receive the same proposal protocol;
 - the evaluator, selection rule, task distribution, permissions, model access,
@@ -105,10 +105,10 @@ while limiting full self-modifiability.
 
 ## Reading and implementation next step
 
-Read [the Hyperagents source record](source_registry.md#hyperagents-dgm-h-successor-paper)
-with [the successor experiment design](10_successor_design.md). A stronger
+Read [[knowledge/darwin_godel_machine/source_registry#HYPERAGENTS: DGM-H successor paper|the Hyperagents source record]]
+with [[knowledge/darwin_godel_machine/10_successor_design|the successor experiment design]]. A stronger
 audit would then pin the Hyperagents implementation and reconstruct its
 transfer and parent-selection protocols before making any stronger causal
 claim.
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

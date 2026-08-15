@@ -5,7 +5,7 @@
 **EVIDENCE — active mode.** This document is in **DOMAIN ORIENTATION** mode: it
 optimizes for coverage, vocabulary, source lineage, and explicit gaps. The
 bounded mechanism analysis begins only in
-[`metacircular_evaluator_deep_dive.md`](metacircular_evaluator_deep_dive.md).
+[[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|`metacircular_evaluator_deep_dive.md`]].
 
 **EVIDENCE — seed boundary.** `SICP-2E-UF` is the only fetched content source.
 It is an 883-page unofficial Texinfo rendering of the second edition, not an
@@ -90,7 +90,7 @@ every lower layer.
 Algol block structure, lexical scope, and λ-calculus in its first-edition
 preface (`SICP-2E-UF`, printed pp. xxiii–xxiv, PDF pp. 23–24). The exact
 lineage edges and access states are recorded in
-[`sources/evidence_graph.tsv`](../../../content/sicp/sources/evidence_graph.tsv).
+[[content/sicp/sources/evidence_graph.tsv|`sources/evidence_graph.tsv`]].
 
 **MISSING — blocked reconstruction.** `MCCARTHY-1960`, `CHURCH-1941`,
 `STEELE-SUSSMAN-1975`, `REES-ADAMS-1982`, `FEELEY-1986`,

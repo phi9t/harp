@@ -30,7 +30,7 @@ remain visible as a Pareto frontier rather than disappearing inside one score.
 candidate should also prove that compaction preserves decisive facts, rejected
 hypotheses, current permission context, and call/output structure across
 checkpoint and replay. The
-[Codex continuity companion](../codex_state_continuity_and_compaction.md)
+[[knowledge/rsi/codex_state_continuity_and_compaction|Codex continuity companion]]
 provides the mechanism map and matched ablations for this gate.
 
 ## Hidden assumption

@@ -62,62 +62,62 @@ by either source.
 - Harp's source scans passed. Both clean-room Lean build attempts are recorded
   as `blocked` by the 8 GiB disk preflight, not passed or failed.
 
-See the [source registry](source_registry.md), [claim ledger](claim_evidence_ledger.md),
-and [critical assessment](09_status_and_critical_assessment.md) for exact
+See the [[knowledge/crouzeix_conjecture/source_registry|source registry]], [[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim ledger]],
+and [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|critical assessment]] for exact
 claim ceilings.
 
 ## Guided route
 
-1. [Problem and prior barrier](01_problem_and_prior_barrier.md)
-2. [Shared power family](02_shared_power_family.md)
-3. [Jin proof spine](03_jin_proof_spine.md)
-4. [Jin positive-real completion](04_jin_positive_real_completion.md)
-5. [Lorist-Schwenninger proof](05_lorist_schwenninger_proof.md)
-6. [Proof comparison](06_proof_comparison.md)
-7. [Jin Lean verification](07_jin_lean_verification.md)
-8. [AI-assisted discovery](08_ai_assisted_discovery.md)
-9. [Status and critical assessment](09_status_and_critical_assessment.md)
+1. [[knowledge/crouzeix_conjecture/01_problem_and_prior_barrier|Problem and prior barrier]]
+2. [[knowledge/crouzeix_conjecture/02_shared_power_family|Shared power family]]
+3. [[knowledge/crouzeix_conjecture/03_jin_proof_spine|Jin proof spine]]
+4. [[knowledge/crouzeix_conjecture/04_jin_positive_real_completion|Jin positive-real completion]]
+5. [[knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof|Lorist-Schwenninger proof]]
+6. [[knowledge/crouzeix_conjecture/06_proof_comparison|Proof comparison]]
+7. [[knowledge/crouzeix_conjecture/07_jin_lean_verification|Jin Lean verification]]
+8. [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery|AI-assisted discovery]]
+9. [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|Status and critical assessment]]
 
 ## Expert route
 
-Read the [positive-real completion](04_jin_positive_real_completion.md), the
-[2-dilation proof](05_lorist_schwenninger_proof.md), and the
-[fixed comparison](06_proof_comparison.md) first. Then use the
-[Lean audit](07_jin_lean_verification.md) and
-[claim ledger](claim_evidence_ledger.md) to inspect theorem and evidence
+Read the [[knowledge/crouzeix_conjecture/04_jin_positive_real_completion|positive-real completion]], the
+[[knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof|2-dilation proof]], and the
+[[knowledge/crouzeix_conjecture/06_proof_comparison|fixed comparison]] first. Then use the
+[[knowledge/crouzeix_conjecture/07_jin_lean_verification|Lean audit]] and
+[[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim ledger]] to inspect theorem and evidence
 boundaries.
 
 ## Question routes
 
 - **How does Jin remove the adjoint correction?**
-  Read [exact cancellation](04_jin_positive_real_completion.md#exact-cancellation).
+  Read [[knowledge/crouzeix_conjecture/04_jin_positive_real_completion#Exact cancellation|exact cancellation]].
 - **How does the $2$-dilation recurrence work?**
-  Read [the recurrence](05_lorist_schwenninger_proof.md#the-perturbation-recurrence).
+  Read [[knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof#The perturbation recurrence|the recurrence]].
 - **What does Lean actually verify?**
-  Read [the theorem graph](07_jin_lean_verification.md#theorem-and-consequence-graphs).
+  Read [[knowledge/crouzeix_conjecture/07_jin_lean_verification#Theorem and consequence graphs|the theorem graph]].
 - **What did the AI systems contribute?**
-  Read the [action matrix](08_ai_assisted_discovery.md#documented-action-matrix).
+  Read the [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery#Documented action matrix|action matrix]].
 - **What evidence remains missing?**
-  Read the [confidence-raising evidence](09_status_and_critical_assessment.md#evidence-that-would-raise-confidence).
+  Read the [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment#Evidence that would raise confidence|confidence-raising evidence]].
 
 ## Reference documents
 
-- [Glossary](glossary.md)
-- [Source registry](source_registry.md)
-- [Claim-evidence ledger](claim_evidence_ledger.md)
+- [[knowledge/crouzeix_conjecture/glossary|Glossary]]
+- [[knowledge/crouzeix_conjecture/source_registry|Source registry]]
+- [[knowledge/crouzeix_conjecture/claim_evidence_ledger|Claim-evidence ledger]]
 
 The canonical packet consists of:
 
-- [crouzeix_conjecture_index.md](crouzeix_conjecture_index.md)
-- [01_problem_and_prior_barrier.md](01_problem_and_prior_barrier.md)
-- [02_shared_power_family.md](02_shared_power_family.md)
-- [03_jin_proof_spine.md](03_jin_proof_spine.md)
-- [04_jin_positive_real_completion.md](04_jin_positive_real_completion.md)
-- [05_lorist_schwenninger_proof.md](05_lorist_schwenninger_proof.md)
-- [06_proof_comparison.md](06_proof_comparison.md)
-- [07_jin_lean_verification.md](07_jin_lean_verification.md)
-- [08_ai_assisted_discovery.md](08_ai_assisted_discovery.md)
-- [09_status_and_critical_assessment.md](09_status_and_critical_assessment.md)
-- [glossary.md](glossary.md)
-- [source_registry.md](source_registry.md)
-- [claim_evidence_ledger.md](claim_evidence_ledger.md)
+- [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|crouzeix_conjecture_index.md]]
+- [[knowledge/crouzeix_conjecture/01_problem_and_prior_barrier|01_problem_and_prior_barrier.md]]
+- [[knowledge/crouzeix_conjecture/02_shared_power_family|02_shared_power_family.md]]
+- [[knowledge/crouzeix_conjecture/03_jin_proof_spine|03_jin_proof_spine.md]]
+- [[knowledge/crouzeix_conjecture/04_jin_positive_real_completion|04_jin_positive_real_completion.md]]
+- [[knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof|05_lorist_schwenninger_proof.md]]
+- [[knowledge/crouzeix_conjecture/06_proof_comparison|06_proof_comparison.md]]
+- [[knowledge/crouzeix_conjecture/07_jin_lean_verification|07_jin_lean_verification.md]]
+- [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery|08_ai_assisted_discovery.md]]
+- [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|09_status_and_critical_assessment.md]]
+- [[knowledge/crouzeix_conjecture/glossary|glossary.md]]
+- [[knowledge/crouzeix_conjecture/source_registry|source_registry.md]]
+- [[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim_evidence_ledger.md]]
