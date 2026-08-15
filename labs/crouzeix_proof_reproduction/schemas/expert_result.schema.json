@@ -14,7 +14,8 @@
     "generation",
     "expert_role",
     "selected_direction_id",
-    "mathematical_payload"
+    "mathematical_payload",
+    "expert_result_sha256"
   ],
   "properties": {
     "schema_version": {"const": "crouzeix-expert-result/v1"},
@@ -31,7 +32,8 @@
     "generation": {"type": "integer", "minimum": 0, "maximum": 1000},
     "expert_role": {"$ref": "#/$defs/expert_role"},
     "selected_direction_id": {"$ref": "#/$defs/portable_id"},
-    "mathematical_payload": {"$ref": "#/$defs/mathematical_payload"}
+    "mathematical_payload": {"$ref": "#/$defs/mathematical_payload"},
+    "expert_result_sha256": {"$ref": "#/$defs/sha256"}
   },
   "$defs": {
     "portable_id": {

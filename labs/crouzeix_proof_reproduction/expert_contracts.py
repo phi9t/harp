@@ -65,6 +65,18 @@ PROOF_PROGRESS_PROBE_IDS = (
     "p09_blockers_falsifiable",
     "p10_candidate_proof_present",
 )
+DEFAULT_EXPERT_LIMITS = {
+    "timeout_seconds": 3600,
+    "max_output_bytes": 1048576,
+}
+FUNCTIONING_CRITERIA = (
+    "candidate_proof requires a concrete mechanism and at least one proved statement; "
+    "blocker requires a precise falsifiable obstruction and a materially new direction"
+)
+COMPLETION_CRITERIA = (
+    "return one strict expert_result with one endpoint variant and stable local "
+    "IDs for statements, obligations, risks, and directions"
+)
 
 _PORTABLE_ID = __import__("re").compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 _SHA256 = __import__("re").compile(r"^[0-9a-f]{64}$")
@@ -119,28 +131,25 @@ def build_expert_context(
         "forbidden_sources": sources,
         "allowed_tools": ["Write"],
         "delegation_allowed": False,
+        "limits": dict(DEFAULT_EXPERT_LIMITS),
+        "functioning_criteria": FUNCTIONING_CRITERIA,
+        "completion_criteria": COMPLETION_CRITERIA,
         "result_schema": "expert_result",
     }
 
 
 def build_evaluator_context(
     *,
-    ticket_id: str,
-    evaluator_index: int,
     theorem_text: str,
     node: Mapping[str, Any],
 ) -> dict[str, object]:
     validated_node = validate_mathematical_node(node)
     return {
         "schema_version": SCHEMA_VERSION_EVALUATOR_CONTEXT,
-        "ticket_id": _portable_id(ticket_id, "ticket_id"),
-        "evaluator_index": _evaluator_index(evaluator_index),
         "theorem_text": _bounded_str(theorem_text, "theorem_text", 1, 200_000),
         "mathematical_payload": _copy_mapping(
             validated_node["mathematical_payload"], "mathematical_payload"
         ),
-        "allowed_tools": ["Write"],
-        "delegation_allowed": False,
         "probe_ids": list(PROOF_PROGRESS_PROBE_IDS),
     }
 
@@ -222,10 +231,23 @@ def decide_admission(
         raise ValidationError("root result cannot have parent identity")
     if result_value["generation"] > 0 and result_value["parent_node_id"] is None:
         raise ValidationError("child result requires parent identity")
-
     detail = None
     if diagnostic_detail is not None:
         detail = _bounded_str(diagnostic_detail, "diagnostic_detail", 1, 4096)
+
+    direction = provenance_value["selected_direction"]
+    if result_value["generation"] > 0 and (
+        result_value["parent_node_artifact_sha256"] != direction["source_node_artifact_sha256"]
+    ):
+        raise ValidationError(
+            "child parent artifact must match selected direction source node artifact"
+        )
+    if closed_outcome == "accepted" and not _is_functioning_payload(
+        result_value["mathematical_payload"]
+    ):
+        closed_outcome = "rejected_nonfunctioning"
+        if detail is None:
+            detail = "Strict expert result did not meet functioning criteria."
     decision: dict[str, object] = {
         "schema_version": SCHEMA_VERSION_ADMISSION_DECISION,
         "run_id": result_value["run_id"],
@@ -671,6 +693,19 @@ def _validate_mathematical_payload(value: Mapping[str, Any]) -> dict[str, object
     }
     _validate_statement_graph(statements)
     return payload
+
+
+def _is_functioning_payload(payload: Mapping[str, object]) -> bool:
+    endpoint = _mapping(payload["endpoint"], "endpoint")
+    if endpoint["kind"] == "candidate_proof":
+        return bool(payload["mechanism"].strip()) and bool(payload["proved_statements"])
+    if endpoint["kind"] == "blocker":
+        return (
+            bool(str(endpoint["text"]).strip())
+            and bool(payload["mechanism"].strip())
+            and bool(payload["proposed_directions"])
+        )
+    return False
 
 
 def _validate_statements(value: Any) -> list[dict[str, object]]:

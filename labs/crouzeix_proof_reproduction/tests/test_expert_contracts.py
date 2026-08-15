@@ -83,6 +83,17 @@ def payload(**overrides: object) -> dict[str, object]:
     return value
 
 
+def nonfunctioning_payload(**overrides: object) -> dict[str, object]:
+    value = payload(
+        mechanism="No concrete mechanism supplied.",
+        proved_statements=[],
+        proposed_directions=[],
+        endpoint={"kind": "candidate_proof", "text": "No concrete proof content."},
+    )
+    value.update(overrides)
+    return value
+
+
 def expert_result(**overrides: object) -> dict[str, object]:
     value: dict[str, object] = {
         "schema_version": "crouzeix-expert-result/v1",
@@ -172,6 +183,12 @@ class ExpertContextTests(unittest.TestCase):
         self.assertEqual(root["allowed_tools"], ["Write"])
         self.assertFalse(root["delegation_allowed"])
         self.assertNotIn("peer_artifacts", root)
+        self.assertEqual(
+            root["limits"],
+            {"timeout_seconds": 3600, "max_output_bytes": 1048576},
+        )
+        self.assertIn("functioning_criteria", root)
+        self.assertIn("completion_criteria", root)
 
         result = expert_contracts.validate_expert_result(expert_result())
         decision = expert_contracts.decide_admission(
@@ -216,8 +233,6 @@ class ExpertContextTests(unittest.TestCase):
         node = expert_contracts.build_mathematical_node(decision, result, provenance())
 
         context = expert_contracts.build_evaluator_context(
-            ticket_id="evaluate-node-g0-function-theory-e1",
-            evaluator_index=1,
             theorem_text="For every square matrix A, prove the required norm bound.",
             node=node,
         )
@@ -226,21 +241,19 @@ class ExpertContextTests(unittest.TestCase):
             set(context),
             {
                 "schema_version",
-                "ticket_id",
-                "evaluator_index",
                 "theorem_text",
                 "mathematical_payload",
-                "allowed_tools",
-                "delegation_allowed",
                 "probe_ids",
             },
         )
-        self.assertEqual(context["allowed_tools"], ["Write"])
-        self.assertFalse(context["delegation_allowed"])
         for forbidden in (
             "run_id",
             "node_id",
             "node_artifact_sha256",
+            "ticket_id",
+            "evaluator_index",
+            "allowed_tools",
+            "delegation_allowed",
             "parent_node_id",
             "generation",
             "expert_role",
@@ -298,6 +311,45 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
                     provenance(),
                     outcome="accepted",
                 )
+
+    def test_admission_derives_nonfunctioning_candidate_and_blocker_rejections(self) -> None:
+        empty_candidate = expert_contracts.validate_expert_result(
+            expert_result(mathematical_payload=nonfunctioning_payload())
+        )
+
+        rejected_candidate = expert_contracts.decide_admission(
+            attempt(),
+            empty_candidate,
+            provenance(),
+            outcome="accepted",
+        )
+
+        self.assertEqual(rejected_candidate["outcome"], "rejected_nonfunctioning")
+        self.assertEqual(rejected_candidate["reason_code"], "nonfunctioning_result")
+        with self.assertRaisesRegex(protocol.ValidationError, "accepted"):
+            expert_contracts.build_mathematical_node(
+                rejected_candidate,
+                empty_candidate,
+                provenance(),
+            )
+
+        empty_blocker = expert_contracts.validate_expert_result(
+            expert_result(
+                mathematical_payload=nonfunctioning_payload(
+                    mechanism="No precise blocker supplied.",
+                    endpoint={"kind": "blocker", "text": "Blocked."},
+                    proposed_directions=[],
+                )
+            )
+        )
+        rejected_blocker = expert_contracts.decide_admission(
+            attempt(),
+            empty_blocker,
+            provenance(),
+            outcome="accepted",
+        )
+
+        self.assertEqual(rejected_blocker["outcome"], "rejected_nonfunctioning")
 
     def test_mathematical_node_has_acyclic_admission_and_stable_digest_boundaries(self) -> None:
         result = expert_contracts.validate_expert_result(expert_result())
@@ -390,6 +442,23 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
         self.assertEqual(node["parent_node_id"], "node-parent")
         self.assertEqual(node["parent_node_artifact_sha256"], "f" * 64)
 
+        mismatch = provenance(
+            selected_direction=selected_direction(
+                direction_id="child-obligation",
+                kind="obligation",
+                strength="major",
+                recommended_role="approximation_audit",
+                source_node_artifact_sha256="e" * 64,
+            )
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "parent artifact"):
+            expert_contracts.decide_admission(
+                attempt(),
+                child_result,
+                mismatch,
+                outcome="accepted",
+            )
+
 
 class NodeEvaluationTests(unittest.TestCase):
     def test_evaluator_payload_and_harness_envelope_are_separate(self) -> None:
@@ -398,8 +467,6 @@ class NodeEvaluationTests(unittest.TestCase):
         node = expert_contracts.build_mathematical_node(decision, result, provenance())
         evaluation = evaluation_payload()
         context = expert_contracts.build_evaluator_context(
-            ticket_id="evaluate-node-g0-function-theory-e1",
-            evaluator_index=1,
             theorem_text="For every square matrix A, prove the required norm bound.",
             node=node,
         )
@@ -417,6 +484,8 @@ class NodeEvaluationTests(unittest.TestCase):
             evaluation_payload=evaluation,
         )
 
+        self.assertEqual(envelope["ticket_id"], "evaluate-node-g0-function-theory-e1")
+        self.assertEqual(envelope["evaluator_index"], 1)
         self.assertEqual(envelope["node_artifact_sha256"], node["node_artifact_sha256"])
         self.assertEqual(envelope["mathematical_payload_sha256"], node["mathematical_payload_sha256"])
         self.assertEqual(envelope["evaluation_payload"], evaluation)
@@ -498,6 +567,15 @@ class SchemaAndPromptTests(unittest.TestCase):
         self.assertTrue(expected.issubset({path.name for path in schema_dir.glob("*.schema.json")}))
         self.assertFalse((schema_dir / "expert_node.schema.json").exists())
         self.assertFalse((schema_dir / "proof_progress_evaluation.schema.json").exists())
+
+    def test_expert_result_schema_requires_canonical_result_digest(self) -> None:
+        schema = json.loads((LAB / "schemas" / "expert_result.schema.json").read_text())
+
+        self.assertIn("expert_result_sha256", schema["required"])
+        self.assertEqual(
+            schema["properties"]["expert_result_sha256"],
+            {"$ref": "#/$defs/sha256"},
+        )
 
     def test_prompts_use_contract_vocabulary_without_answer_bearing_mechanisms(self) -> None:
         prompt_dir = LAB / "prompts"
