@@ -4,13 +4,22 @@ use std::path::Path;
 use std::process::Command;
 
 use assert_cmd::prelude::*;
-use tempfile::TempDir;
+use tempfile::{Builder, TempDir};
 
 fn repo_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .and_then(Path::parent)
         .expect("workspace root")
+}
+
+fn scoped_elan_home() -> TempDir {
+    let root = Path::new("/private/tmp/harp-mathematical-foundations-elan");
+    fs::create_dir_all(root).expect("create wrapper-owned Elan root");
+    Builder::new()
+        .prefix("test-")
+        .tempdir_in(root)
+        .expect("create scoped Elan home")
 }
 
 #[test]
@@ -68,8 +77,7 @@ fn proof_holes_are_rejected_before_lake_runs() {
 #[test]
 fn ambient_project_override_is_ignored() {
     let temporary_project = TempDir::new().expect("temporary Lean project");
-    let scoped_elan_home = temporary_project.path().join("elan");
-    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
+    let scoped_elan_home = scoped_elan_home();
     fs::write(
         temporary_project.path().join("ProofHole.lean"),
         "theorem proof_hole_fixture : True := by sorry\n",
@@ -96,7 +104,7 @@ fn ambient_project_override_is_ignored() {
             "HARP_MATHEMATICAL_FOUNDATIONS_PROJECT_ROOT",
             temporary_project.path(),
         )
-        .env("ELAN_HOME", &scoped_elan_home)
+        .env("ELAN_HOME", scoped_elan_home.path())
         .env("PATH", &path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
@@ -112,8 +120,7 @@ fn ambient_project_override_is_ignored() {
 fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
     let fake_bin = TempDir::new().expect("fake lake directory");
     let toolchain_capture = fake_bin.path().join("elan-toolchain");
-    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
-    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
+    let scoped_elan_home = scoped_elan_home();
     let fake_lake = fake_bin.path().join("lake");
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake lake");
@@ -133,7 +140,7 @@ fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
         .env("ELAN_TOOLCHAIN", "untrusted/ambient:toolchain")
-        .env("ELAN_HOME", &scoped_elan_home)
+        .env("ELAN_HOME", scoped_elan_home.path())
         .env("ELAN_TOOLCHAIN_CAPTURE", &toolchain_capture)
         .env("PATH", path)
         .assert()
@@ -195,19 +202,6 @@ fn normal_build_rejects_missing_or_home_scoped_elan_home_before_lake_runs() {
         "lake ran with a home-scoped ELAN_HOME: {assertion:?}"
     );
 
-    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
-    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_mathematical_foundations_lean.sh")
-        .env_remove("HOME")
-        .env("ELAN_HOME", &scoped_elan_home)
-        .env("PATH", &path)
-        .env("LAKE_CALLED_FILE", &lake_marker)
-        .assert()
-        .failure()
-        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
-
     let home_child = home_dir.join("child");
     fs::create_dir(&home_child).expect("create home child directory");
     Command::new("/bin/sh")
@@ -246,8 +240,7 @@ fn source_scan_errors_stop_before_lake_runs() {
     let lake_marker = fake_bin.path().join("lake-was-called");
     let fake_lake = fake_bin.path().join("lake");
     let fake_grep = fake_bin.path().join("grep");
-    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
-    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
+    let scoped_elan_home = scoped_elan_home();
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake commands");
 
@@ -264,7 +257,7 @@ fn source_scan_errors_stop_before_lake_runs() {
     let assertion = Command::new("/bin/sh")
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
-        .env("ELAN_HOME", &scoped_elan_home)
+        .env("ELAN_HOME", scoped_elan_home.path())
         .env("PATH", path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()

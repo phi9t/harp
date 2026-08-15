@@ -26,9 +26,9 @@ scripts/check_mathematical_foundations_lean.sh
 ```
 
 Ordinary `mise run verify-mathematical-foundations-lean` use requires an
-explicit task-scoped `ELAN_HOME` that contains the verified pinned toolchain;
-the wrapper rejects an unset `ELAN_HOME` and any path under the user's home
-directory so it cannot install into or use a global Elan home.
+explicit, existing task-scoped `ELAN_HOME` below
+`/private/tmp/harp-mathematical-foundations-elan`. The wrapper canonicalizes
+the path and rejects every other location, so it cannot use a global Elan home.
 
 The wrapper always selects this script's project directory in normal use. Its
 sole test-only override is `--project-for-test <directory>`. Before invoking

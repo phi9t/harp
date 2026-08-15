@@ -34,16 +34,19 @@ if ! command -v lake >/dev/null 2>&1; then
 fi
 
 if [ "$normal_build" = true ]; then
-  if [ -z "${ELAN_HOME:-}" ] || [ -z "${HOME:-}" ]; then
+  if [ -z "${ELAN_HOME:-}" ]; then
     printf '%s\n' "Mathematical Foundations Lean verification requires a task-scoped ELAN_HOME" >&2
     exit 1
   fi
-  if ! elan_home_dir=$(CDPATH= cd -P -- "$ELAN_HOME" && pwd -P) || ! home_dir=$(CDPATH= cd -P -- "$HOME" && pwd -P); then
-    printf '%s\n' "Mathematical Foundations Lean verification requires canonical task-scoped ELAN_HOME and HOME directories" >&2
+  if ! elan_home_dir=$(CDPATH= cd -P -- "$ELAN_HOME" && pwd -P); then
+    printf '%s\n' "Mathematical Foundations Lean verification requires a canonical task-scoped ELAN_HOME directory" >&2
     exit 1
   fi
+  allowed_elan_root=/private/tmp/harp-mathematical-foundations-elan
   case "$elan_home_dir" in
-    "$home_dir"|"$home_dir"/*)
+    "$allowed_elan_root"|"$allowed_elan_root"/*)
+      ;;
+    *)
       printf '%s\n' "Mathematical Foundations Lean verification requires a task-scoped ELAN_HOME" >&2
       exit 1
       ;;
