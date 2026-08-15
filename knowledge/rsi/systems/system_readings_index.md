@@ -28,3 +28,12 @@ table or Weng trail to open the system relevant to each argument section.
 Harness Disentangle and AlphaEvolve remain separate system articles without
 new retained-concept owners. Their source records continue to belong to the
 broader procedure-internalization and open-ended-search concepts.
+
+## Attached research packets
+
+These packets deepen a canonical concept without adding another identity to the
+fixed sixteen-system registry.
+
+- [DarwinX](../../darwinx/darwinx_index.md) extends the harness-search reading
+  with population selection, bounded-regression promotion, specialist
+  retention, attempted recombination, and a fixed-budget causal experiment.
