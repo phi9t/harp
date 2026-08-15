@@ -1,24 +1,24 @@
 use pulldown_cmark::{html, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
 use super::contracts::{normalize_link_path, ValidatedCanonicalSource};
-use super::obsidian::{line_is_code_context, rewrite_wiki_links, WikiLink, WikiSubpath};
+use super::obsidian::{
+    canonical_heading_map, line_is_code_context, rewrite_wiki_links, WikiLink, WikiSubpath,
+};
 use super::*;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) enum RouteTarget {
     Reader {
         route_id: &'static str,
-        document_id: String,
-        heading_ids: BTreeSet<String>,
     },
     Chapter {
         concept_id: String,
         document_id: String,
-        heading_ids: BTreeSet<String>,
+        heading_ids: BTreeMap<String, String>,
     },
     Document {
         document_id: String,
-        heading_ids: BTreeSet<String>,
+        heading_ids: BTreeMap<String, String>,
     },
 }
 
@@ -216,24 +216,7 @@ pub(super) fn route_targets(
             .or_insert_with(|| document_target(source_document_id(source), source));
     }
     for (route_id, _, path) in READER_ROUTES {
-        let target = if let Some(source) = canonical_sources.get(path) {
-            let body = markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
-            let document_id = source_document_id(source);
-            RouteTarget::Reader {
-                route_id,
-                document_id: (!document_id.is_empty())
-                    .then_some(document_id)
-                    .unwrap_or_else(|| (*route_id).to_owned()),
-                heading_ids: addressable_heading_ids(body, &source.path),
-            }
-        } else {
-            RouteTarget::Reader {
-                route_id,
-                document_id: (*route_id).to_owned(),
-                heading_ids: BTreeSet::new(),
-            }
-        };
-        targets.insert(path.to_owned(), target);
+        targets.insert(path.to_owned(), RouteTarget::Reader { route_id });
     }
     targets
 }
@@ -246,9 +229,8 @@ fn document_target(document_id: String, source: &ValidatedCanonicalSource) -> Ro
     }
 }
 
-fn addressable_heading_ids(markdown: &str, source_path: &str) -> BTreeSet<String> {
-    heading_ids_for_source(markdown, source_path)
-        .expect("canonical sources were validated before route generation")
+fn addressable_heading_ids(markdown: &str, source_path: &str) -> BTreeMap<String, String> {
+    canonical_heading_map(markdown, source_path)
 }
 
 #[cfg(test)]
@@ -350,16 +332,18 @@ fn render_wiki_link(
     route_targets: &BTreeMap<String, RouteTarget>,
     embeds: &mut Vec<EmbedFallback>,
 ) -> String {
-    let Some(path) = &link.path else {
-        return link.alias.clone().unwrap_or_default();
-    };
-    let target = if has_vault_root(Path::new(path)) {
-        PathBuf::from(path)
+    let path = link.path.as_deref();
+    let target = if let Some(path) = path {
+        if has_vault_root(Path::new(path)) {
+            PathBuf::from(path)
+        } else {
+            Path::new(source_path)
+                .parent()
+                .expect("canonical source has a parent")
+                .join(path)
+        }
     } else {
-        Path::new(source_path)
-            .parent()
-            .expect("canonical source has a parent")
-            .join(path)
+        PathBuf::from(source_path)
     };
     let mut target = target;
     if target.extension().is_none() {
@@ -369,7 +353,12 @@ fn render_wiki_link(
     let display = link
         .alias
         .as_deref()
-        .unwrap_or_else(|| path.rsplit('/').next().unwrap_or(path));
+        .or_else(|| path.and_then(|path| path.rsplit('/').next()))
+        .or_else(|| match &link.subpath {
+            Some(WikiSubpath::Heading(heading)) => Some(heading.as_str()),
+            _ => None,
+        })
+        .unwrap_or(source_path);
     if link.embed && target.extension().and_then(|extension| extension.to_str()) == Some("pdf") {
         let suffix = match link.subpath {
             Some(WikiSubpath::PdfPage(page)) => format!("#page={page}"),
@@ -384,16 +373,7 @@ fn render_wiki_link(
     }
     let destination = if let Some(route) = route_targets.get(target_text.as_ref()) {
         match route {
-            RouteTarget::Reader {
-                route_id,
-                document_id,
-                heading_ids,
-            } => route_destination(
-                format!("#{route_id}"),
-                document_id,
-                heading_ids,
-                link.subpath.as_ref(),
-            ),
+            RouteTarget::Reader { route_id } => format!("#{route_id}"),
             RouteTarget::Chapter {
                 concept_id,
                 document_id,
@@ -429,16 +409,16 @@ fn render_wiki_link(
 fn route_destination(
     default_destination: String,
     document_id: &str,
-    heading_ids: &BTreeSet<String>,
+    heading_ids: &BTreeMap<String, String>,
     subpath: Option<&WikiSubpath>,
 ) -> String {
     let Some(WikiSubpath::Heading(heading)) = subpath else {
         return default_destination;
     };
-    let heading_id = slug(heading);
     heading_ids
-        .contains(&heading_id)
-        .then(|| format!("#documents/{document_id}?section={heading_id}"))
+        .get(heading)
+        .or_else(|| heading_ids.get(&slug(heading)))
+        .map(|heading_id| format!("#documents/{document_id}?section={heading_id}"))
         .unwrap_or(default_destination)
 }
 
@@ -580,7 +560,7 @@ pub(super) fn offline_link_destination(
                 RouteTarget::Chapter {
                     concept_id: entry.concept_id.clone(),
                     document_id: entry.concept_id.clone(),
-                    heading_ids: BTreeSet::new(),
+                    heading_ids: BTreeMap::new(),
                 },
             )
         })
@@ -625,16 +605,7 @@ pub(super) fn offline_link_destination_with_targets(
     let resolved = resolved.to_string_lossy();
     if let Some(target) = route_targets.get(resolved.as_ref()) {
         return match target {
-            RouteTarget::Reader {
-                route_id,
-                document_id,
-                heading_ids,
-            } => markdown_route_destination(
-                format!("#{route_id}"),
-                document_id,
-                heading_ids,
-                fragment,
-            ),
+            RouteTarget::Reader { route_id } => format!("#{route_id}"),
             RouteTarget::Chapter {
                 concept_id,
                 document_id,
@@ -663,11 +634,15 @@ pub(super) fn offline_link_destination_with_targets(
 fn markdown_route_destination(
     default_destination: String,
     document_id: &str,
-    heading_ids: &BTreeSet<String>,
+    heading_ids: &BTreeMap<String, String>,
     fragment: Option<&str>,
 ) -> String {
     fragment
-        .filter(|fragment| heading_ids.contains(*fragment))
-        .map(|fragment| format!("#documents/{document_id}?section={fragment}"))
+        .and_then(|fragment| {
+            heading_ids
+                .get(fragment)
+                .or_else(|| heading_ids.get(&slug(fragment)))
+        })
+        .map(|heading_id| format!("#documents/{document_id}?section={heading_id}"))
         .unwrap_or(default_destination)
 }

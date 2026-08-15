@@ -1380,7 +1380,10 @@ fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
         "knowledge/rsi/target.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "target".to_owned(),
-            heading_ids: BTreeSet::from(["result-boundary".to_owned()]),
+            heading_ids: BTreeMap::from([(
+                "Result boundary".to_owned(),
+                "result-boundary".to_owned(),
+            )]),
         },
     )]);
     let rendered = render::render_markdown_with_targets(
@@ -1411,14 +1414,37 @@ fn renders_obsidian_callouts_as_escaped_semantic_html() {
 #[test]
 fn leaves_obsidian_callout_syntax_literal_inside_code() {
     let rendered = render_markdown(
-        "```md\n> [!tip] Fence literal\n```\n\n`> [!tip] Inline literal`\n",
+        "```md\n> [!tip] Fence literal\n```\n\n> ~~~md\n> [!tip] Blockquote fence literal\n> ~~~\n\n`> [!tip] Inline literal`\n",
         "knowledge/rsi/chapters/test.md",
         &[],
     );
 
     assert!(!rendered.contains("obsidian-callout"));
     assert!(rendered.contains("&gt; [!tip] Fence literal"));
+    assert!(rendered.contains("[!tip] Blockquote fence literal"));
     assert!(rendered.contains("&gt; [!tip] Inline literal"));
+}
+
+#[test]
+fn renders_same_note_obsidian_heading_links_to_the_source_document_route() {
+    let targets = BTreeMap::from([(
+        "knowledge/crouzeix_conjecture/source.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "crouzeix-source".to_owned(),
+            heading_ids: BTreeMap::from([(
+                "Visible heading".to_owned(),
+                "explicit-heading".to_owned(),
+            )]),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[#Visible heading|Jump]]",
+        "knowledge/crouzeix_conjecture/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/crouzeix-source?section=explicit-heading\""));
+    assert!(rendered.contains(">Jump</a>"));
 }
 
 #[test]
@@ -1440,7 +1466,7 @@ fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
         "knowledge/rsi/target.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "target".to_owned(),
-            heading_ids: BTreeSet::new(),
+            heading_ids: BTreeMap::new(),
         },
     )]);
     let rendered = render::render_markdown_with_targets(
@@ -1474,8 +1500,6 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         targets.get("knowledge/rsi/source_registry.md"),
         Some(&render::RouteTarget::Reader {
             route_id: "sources",
-            document_id: "sources".to_owned(),
-            heading_ids: BTreeSet::new(),
         })
     );
 
@@ -1484,7 +1508,10 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         "knowledge/example/ledger.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "example-ledger".to_owned(),
-            heading_ids: BTreeSet::from(["cc-013-origin-sample-cancels-the-correction".to_owned()]),
+            heading_ids: BTreeMap::from([(
+                "cc-013-origin-sample-cancels-the-correction".to_owned(),
+                "cc-013-origin-sample-cancels-the-correction".to_owned(),
+            )]),
         },
     );
     assert_eq!(
@@ -1508,8 +1535,6 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         "knowledge/rsi/source_registry.md".to_owned(),
         render::RouteTarget::Reader {
             route_id: "sources",
-            document_id: "source-registry".to_owned(),
-            heading_ids: BTreeSet::from(["registry-format".to_owned()]),
         },
     )]);
     assert_eq!(
@@ -1518,7 +1543,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             Path::new("knowledge/rsi"),
             &reader_target,
         ),
-        "#documents/source-registry?section=registry-format"
+        "#sources"
     );
 
     let chapter_target = BTreeMap::from([(
@@ -1526,7 +1551,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         render::RouteTarget::Chapter {
             concept_id: "target".to_owned(),
             document_id: "target".to_owned(),
-            heading_ids: BTreeSet::from(["mechanism".to_owned()]),
+            heading_ids: BTreeMap::from([("mechanism".to_owned(), "mechanism".to_owned())]),
         },
     )]);
     assert_eq!(

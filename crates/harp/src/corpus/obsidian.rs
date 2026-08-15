@@ -1,3 +1,4 @@
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
 use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
@@ -32,6 +33,7 @@ pub(super) struct ResolvedWikiLink {
 pub(super) fn parse_wiki_links(markdown: &str) -> Result<Vec<WikiLink>, String> {
     let mut links = Vec::new();
     let mut fence = None;
+    let mut inline_code = None;
 
     for line in markdown.split_inclusive('\n') {
         if update_fence(line, &mut fence) {
@@ -43,7 +45,6 @@ pub(super) fn parse_wiki_links(markdown: &str) -> Result<Vec<WikiLink>, String> 
 
         let bytes = line.as_bytes();
         let mut index = 0;
-        let mut inline_code = None;
         while index < bytes.len() {
             if bytes[index] == b'`' {
                 let delimiter_length = delimiter_length(bytes, index, b'`');
@@ -90,6 +91,7 @@ pub(super) fn rewrite_wiki_links(
 ) -> Result<String, String> {
     let mut output = String::with_capacity(markdown.len());
     let mut fence = None;
+    let mut inline_code = None;
 
     for line in markdown.split_inclusive('\n') {
         if update_fence(line, &mut fence) {
@@ -103,7 +105,6 @@ pub(super) fn rewrite_wiki_links(
 
         let bytes = line.as_bytes();
         let mut index = 0;
-        let mut inline_code = None;
         while index < bytes.len() {
             if bytes[index] == b'`' {
                 let delimiter_length = delimiter_length(bytes, index, b'`');
@@ -188,7 +189,7 @@ pub(super) fn line_is_code_context(
 }
 
 fn update_fence(line: &str, fence: &mut Option<(u8, usize)>) -> bool {
-    let trimmed = line.trim_start();
+    let trimmed = fence_content(line);
     let Some(delimiter) = trimmed
         .as_bytes()
         .first()
@@ -216,6 +217,14 @@ fn update_fence(line: &str, fence: &mut Option<(u8, usize)>) -> bool {
             true
         }
     }
+}
+
+fn fence_content(line: &str) -> &str {
+    let trimmed = line.trim_start();
+    trimmed
+        .strip_prefix('>')
+        .map(str::trim_start)
+        .unwrap_or(trimmed)
 }
 
 fn delimiter_length(bytes: &[u8], start: usize, delimiter: u8) -> usize {
@@ -429,21 +438,16 @@ fn resolve_heading(
             format!("Obsidian heading target is not UTF-8: {error}"),
         )
     })?;
-    let slugged_heading = slug(heading);
-    let matches = heading_ids(markdown, target)
-        .into_iter()
-        .filter(|id| id == heading || id == &slugged_heading)
-        .collect::<Vec<_>>();
-    match matches.as_slice() {
-        [heading_id] => Ok(heading_id.clone()),
-        [] => Err(AppError::invalid_input(
+    match resolve_heading_id_from_markdown(markdown, &target.to_string_lossy(), heading) {
+        Ok(Some(heading_id)) => Ok(heading_id),
+        Ok(None) => Err(AppError::invalid_input(
             "knowledge.obsidian.heading",
             format!(
                 "Obsidian wikilink heading is missing in {}: {heading}",
                 target.display()
             ),
         )),
-        _ => Err(AppError::invalid_input(
+        Err(()) => Err(AppError::invalid_input(
             "knowledge.obsidian.heading",
             format!(
                 "Obsidian wikilink heading is ambiguous in {}: {heading}",
@@ -453,13 +457,50 @@ fn resolve_heading(
     }
 }
 
-fn heading_ids(markdown: &str, target: &Path) -> Vec<String> {
-    let source_path = target.to_string_lossy();
+pub(super) fn resolve_heading_id_from_markdown(
+    markdown: &str,
+    source_path: &str,
+    reference: &str,
+) -> Result<Option<String>, ()> {
+    let aliases = canonical_heading_aliases(markdown, source_path);
+    let wanted = BTreeSet::from([reference.to_owned(), slug(reference)]);
+    let mut matches = BTreeSet::new();
+    for alias in wanted {
+        let Some(ids) = aliases.get(&alias) else {
+            continue;
+        };
+        if ids.len() != 1 {
+            return Err(());
+        }
+        matches.insert(ids[0].as_str());
+    }
+    match matches.len() {
+        0 => Ok(None),
+        1 => Ok(matches.into_iter().next().map(str::to_owned)),
+        _ => Err(()),
+    }
+}
+
+pub(super) fn canonical_heading_map(markdown: &str, source_path: &str) -> BTreeMap<String, String> {
+    canonical_heading_aliases(markdown, source_path)
+        .into_iter()
+        .filter_map(|(alias, ids)| {
+            (ids.len() == 1).then(|| {
+                (
+                    alias,
+                    ids.into_iter().next().expect("single canonical heading ID"),
+                )
+            })
+        })
+        .collect()
+}
+
+fn canonical_heading_aliases(markdown: &str, source_path: &str) -> BTreeMap<String, Vec<String>> {
     let mut options = Options::empty();
     if source_path.starts_with("knowledge/crouzeix_conjecture/") {
         options |= Options::ENABLE_HEADING_ATTRIBUTES;
     }
-    let mut headings = Vec::new();
+    let mut aliases = BTreeMap::<String, Vec<String>>::new();
     let mut current = None::<(Option<String>, String)>;
     for event in Parser::new_ext(markdown, options) {
         match event {
@@ -475,13 +516,17 @@ fn heading_ids(markdown: &str, target: &Path) -> Vec<String> {
             }
             Event::End(TagEnd::Heading(_)) => {
                 if let Some((explicit_id, value)) = current.take() {
-                    headings.push(explicit_id.unwrap_or_else(|| slug(&value)));
+                    let canonical_id = explicit_id.unwrap_or_else(|| slug(&value));
+                    for alias in BTreeSet::from([canonical_id.clone(), value, slug(&canonical_id)])
+                    {
+                        aliases.entry(alias).or_default().push(canonical_id.clone());
+                    }
                 }
             }
             _ => {}
         }
     }
-    headings
+    aliases
 }
 
 fn slug(value: &str) -> String {
@@ -537,6 +582,44 @@ mod tests {
         assert_eq!(
             parse_wiki_links(
                 "``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n[[knowledge/rsi/rsi_index]]"
+            )
+            .unwrap(),
+            vec![WikiLink {
+                embed: false,
+                path: Some("knowledge/rsi/rsi_index".into()),
+                subpath: None,
+                alias: None,
+            }]
+        );
+    }
+
+    #[test]
+    fn preserves_multiline_inline_code_state_while_parsing_and_rewriting() {
+        let markdown =
+            "`literal\n[[knowledge/rsi/rsi_index]]\nliteral`\n[[knowledge/rsi/rsi_index|RSI]]";
+        assert_eq!(
+            parse_wiki_links(markdown).unwrap(),
+            vec![WikiLink {
+                embed: false,
+                path: Some("knowledge/rsi/rsi_index".into()),
+                subpath: None,
+                alias: Some("RSI".into()),
+            }]
+        );
+        assert_eq!(
+            rewrite_wiki_links(markdown, |link| {
+                format!("[{}](target)", link.alias.as_deref().unwrap_or("missing"))
+            })
+            .unwrap(),
+            "`literal\n[[knowledge/rsi/rsi_index]]\nliteral`\n[RSI](target)"
+        );
+    }
+
+    #[test]
+    fn ignores_links_inside_blockquote_fences() {
+        assert_eq!(
+            parse_wiki_links(
+                "> ```md\n> [[knowledge/rsi/rsi_index]]\n> ```\n[[knowledge/rsi/rsi_index]]"
             )
             .unwrap(),
             vec![WikiLink {
