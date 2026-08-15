@@ -1,0 +1,3 @@
+namespace MathematicalFoundations.Algebra
+
+end MathematicalFoundations.Algebra

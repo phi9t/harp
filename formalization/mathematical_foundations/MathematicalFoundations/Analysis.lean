@@ -1,0 +1,3 @@
+namespace MathematicalFoundations.Analysis
+
+end MathematicalFoundations.Analysis

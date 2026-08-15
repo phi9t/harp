@@ -1,0 +1,3 @@
+namespace MathematicalFoundations.Probability
+
+end MathematicalFoundations.Probability

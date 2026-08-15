@@ -1,0 +1,3 @@
+namespace MathematicalFoundations.Geometry
+
+end MathematicalFoundations.Geometry
