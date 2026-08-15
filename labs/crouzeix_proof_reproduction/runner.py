@@ -335,13 +335,22 @@ def run_experiment(run_dir: Path) -> dict[str, Any]:
         raise ValidationError("refusing to rerun an experiment with a run receipt")
     if any((root / "calls").iterdir()):
         raise ValidationError("refusing to resume a partially executed experiment")
-    if spec["arm"] == "historical":
-        calls, candidate_sha256, promotion = _run_historical(root, spec)
-    elif spec["arm"] == "orchestrated":
-        calls, candidate_sha256, promotion = _run_orchestrated(root, spec)
-    else:
-        raise ValidationError("guided arm execution is not implemented")
-    call_receipts = [item["receipt"] for item in calls]
+    failure = None
+    try:
+        if spec["arm"] == "historical":
+            calls, candidate_sha256, promotion = _run_historical(root, spec)
+        elif spec["arm"] == "orchestrated":
+            calls, candidate_sha256, promotion = _run_orchestrated(root, spec)
+        else:
+            raise ValidationError("guided arm execution is not implemented")
+        call_receipts = [item["receipt"] for item in calls]
+        execution_status = "completed"
+    except ValidationError as error:
+        failure = str(error)
+        call_receipts = _load_call_receipts(root / "calls")
+        candidate_sha256 = _existing_candidate_digest(root)
+        promotion = "not_promoted"
+        execution_status = "failed"
     statuses = Counter(str(receipt["status"]) for receipt in call_receipts)
     receipt = {
         "schema_version": "crouzeix-run-receipt/v1",
@@ -349,15 +358,39 @@ def run_experiment(run_dir: Path) -> dict[str, Any]:
         "arm": spec["arm"],
         "leakage": spec["leakage"],
         "model": spec["model"],
-        "call_count": len(calls),
+        "call_count": len(call_receipts),
         "call_status_counts": dict(sorted(statuses.items())),
         "usage": aggregate_usage(call_receipts),
         "candidate_sha256": candidate_sha256,
         "promotion": promotion,
+        "execution_status": execution_status,
+        "failure": failure,
         "completed_at_utc": _now(),
     }
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     return receipt
+
+
+def _load_call_receipts(calls_root: Path) -> list[dict[str, Any]]:
+    receipts = []
+    for call_dir in sorted(calls_root.iterdir()):
+        if call_dir.is_symlink() or not call_dir.is_dir():
+            raise ValidationError("calls directory contains an invalid entry")
+        receipt_path = call_dir / "receipt.json"
+        if receipt_path.is_file():
+            receipts.append(
+                read_strict_json_object(receipt_path, f"{call_dir.name} receipt")
+            )
+    return receipts
+
+
+def _existing_candidate_digest(root: Path) -> str | None:
+    digest_path = root / "candidate/candidate.sha256"
+    if not digest_path.exists():
+        return None
+    digest = digest_path.read_text().strip()
+    _sha256(digest, "candidate digest")
+    return digest
 
 
 def _run_historical(

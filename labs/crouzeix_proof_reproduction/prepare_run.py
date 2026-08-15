@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import stat
 import subprocess
 from datetime import datetime, timezone
@@ -120,7 +121,9 @@ def prepare_run(
             },
             "sandbox": "workspace-write",
             "approval_policy": "never",
-            "allowed_tools": ["Read", "Write"],
+            "allowed_tools": (
+                ["Write", "spawn_agent"] if arm == "historical" else ["Write"]
+            ),
             "network_access": False,
             "timeout_seconds": timeout_seconds,
             "max_calls": 1 if arm == "historical" else 9,
@@ -201,6 +204,13 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _installed_cli() -> Path:
+    path = shutil.which("traecli")
+    if path is None:
+        raise ValidationError("traecli is not installed on PATH")
+    return Path(path).resolve()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-dir", required=True, type=Path)
@@ -209,7 +219,7 @@ def main() -> None:
     parser.add_argument(
         "--cli",
         type=Path,
-        default=Path("/Users/bytedance/.local/bin/traecli"),
+        default=None,
     )
     parser.add_argument("--model", default="gpt-5.6-sol")
     parser.add_argument("--timeout-seconds", type=int, default=3600)
@@ -219,7 +229,7 @@ def main() -> None:
             run_dir=args.run_dir,
             arm=args.arm,
             historical_prompt_path=args.historical_prompt,
-            cli_path=args.cli,
+            cli_path=args.cli or _installed_cli(),
             model=args.model,
             timeout_seconds=args.timeout_seconds,
         )

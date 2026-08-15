@@ -378,6 +378,7 @@ class RunPreparationTests(unittest.TestCase):
             self.assertEqual(spec["arm"], "historical")
             self.assertEqual(spec["leakage"], "L1")
             self.assertEqual(spec["max_calls"], 1)
+            self.assertEqual(spec["allowed_tools"], ["Write", "spawn_agent"])
             self.assertEqual(spec["cli"]["version"], "traecli test-version")
             self.assertEqual(spec["cli"]["sha256"], digest(cli_path.read_bytes()))
             self.assertEqual(
@@ -447,6 +448,7 @@ class RunPreparationTests(unittest.TestCase):
             spec = protocol.read_run_spec(run_dir / "run_spec.json")
             self.assertEqual(spec["leakage"], "L1")
             self.assertEqual(spec["max_calls"], 9)
+            self.assertEqual(spec["allowed_tools"], ["Write"])
             prompt_names = sorted(
                 path.name for path in (run_dir / "prompts").iterdir()
             )
@@ -487,6 +489,20 @@ class RunPreparationTests(unittest.TestCase):
         ]:
             with self.assertRaisesRegex(protocol.ValidationError, "marker"):
                 prepare_run.extract_theorem(malformed)
+
+    def test_installed_cli_resolves_from_path_and_rejects_absence(self) -> None:
+        with mock.patch.object(
+            prepare_run.shutil,
+            "which",
+            return_value="/tmp/tools/traecli",
+        ):
+            self.assertEqual(
+                prepare_run._installed_cli(),
+                Path("/tmp/tools/traecli").resolve(),
+            )
+        with mock.patch.object(prepare_run.shutil, "which", return_value=None):
+            with self.assertRaisesRegex(protocol.ValidationError, "not installed"):
+                prepare_run._installed_cli()
 
 
 if __name__ == "__main__":

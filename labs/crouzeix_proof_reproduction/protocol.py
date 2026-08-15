@@ -79,7 +79,9 @@ OBLIGATION_FIELDS = frozenset({"statement", "strength"})
 ARMS = frozenset({"historical", "orchestrated", "guided"})
 LEAKAGE_TIERS = frozenset({"L0", "L1", "L2", "L3", "L4"})
 SANDBOXES = frozenset({"read-only", "workspace-write"})
-ALLOWED_TOOL_NAMES = frozenset({"Read", "Glob", "Grep", "Bash", "Write", "Edit"})
+ALLOWED_TOOL_NAMES = frozenset(
+    {"Read", "Glob", "Grep", "Bash", "Write", "Edit", "spawn_agent"}
+)
 ROUTE_STATES = frozenset(
     {"independent", "blocked", "viable", "audited", "promoted", "rejected"}
 )

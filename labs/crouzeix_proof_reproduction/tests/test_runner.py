@@ -486,6 +486,22 @@ class ExperimentTests(unittest.TestCase):
             self.assertIn("route-3", controller_prompt)
             self.assertFalse((run_dir / "calls/redirect").exists())
 
+    def test_orchestrated_phase_failure_seals_partial_run_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_cli.py"
+            write_fake_cli(cli, "malformed")
+            run_dir = write_run(root, "orchestrated", cli)
+
+            receipt = runner.run_experiment(run_dir)
+
+            self.assertEqual(receipt["execution_status"], "failed")
+            self.assertEqual(receipt["promotion"], "not_promoted")
+            self.assertEqual(receipt["call_count"], 1)
+            self.assertEqual(receipt["call_status_counts"], {"malformed": 1})
+            self.assertIn("route-worker-1", receipt["failure"])
+            self.assertTrue((run_dir / "run_receipt.json").is_file())
+
     def test_aggregate_usage_preserves_unknown_components(self) -> None:
         receipts = [
             {"status": "completed", "usage": {"input_tokens": 10, "output_tokens": 2}},
