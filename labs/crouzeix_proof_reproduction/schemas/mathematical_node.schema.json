@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crouzeix-mathematical-node.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "node_id",
+    "theorem_sha256",
+    "leakage_tier",
+    "parent_node_id",
+    "parent_node_artifact_sha256",
+    "generation",
+    "expert_role",
+    "selected_direction",
+    "selected_direction_sha256",
+    "source_attempt_id",
+    "source_ticket_id",
+    "source_expert_result_sha256",
+    "source_context_sha256",
+    "source_call_receipt_sha256",
+    "admission_decision_sha256",
+    "mathematical_payload",
+    "mathematical_payload_sha256",
+    "node_artifact_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-mathematical-node/v1"},
+    "run_id": {"$ref": "#/$defs/portable_id"},
+    "node_id": {"$ref": "#/$defs/portable_id"},
+    "theorem_sha256": {"$ref": "#/$defs/sha256"},
+    "leakage_tier": {"enum": ["L0", "L1", "L2", "L3", "L4"]},
+    "parent_node_id": {
+      "anyOf": [{"$ref": "#/$defs/portable_id"}, {"type": "null"}]
+    },
+    "parent_node_artifact_sha256": {
+      "anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+    },
+    "generation": {"type": "integer", "minimum": 0, "maximum": 1000},
+    "expert_role": {"$ref": "#/$defs/expert_role"},
+    "selected_direction": {"$ref": "#/$defs/selected_direction"},
+    "selected_direction_sha256": {"$ref": "#/$defs/sha256"},
+    "source_attempt_id": {"$ref": "#/$defs/portable_id"},
+    "source_ticket_id": {"$ref": "#/$defs/portable_id"},
+    "source_expert_result_sha256": {"$ref": "#/$defs/sha256"},
+    "source_context_sha256": {"$ref": "#/$defs/sha256"},
+    "source_call_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "admission_decision_sha256": {"$ref": "#/$defs/sha256"},
+    "mathematical_payload": {"$ref": "#/$defs/mathematical_payload"},
+    "mathematical_payload_sha256": {"$ref": "#/$defs/sha256"},
+    "node_artifact_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "expert_role": {
+      "enum": [
+        "function_theory",
+        "operator_dilation",
+        "matrix_extremal",
+        "completion_positivity",
+        "approximation_audit"
+      ]
+    },
+    "selected_direction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction_id",
+        "kind",
+        "statement",
+        "strength",
+        "recommended_role",
+        "source_node_artifact_sha256",
+        "source_reconciliation_sha256"
+      ],
+      "properties": {
+        "direction_id": {"$ref": "#/$defs/portable_id"},
+        "kind": {
+          "enum": ["root_task", "obligation", "evaluator_finding", "proposed_direction"]
+        },
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "strength": {
+          "enum": ["root", "theorem_strength", "critical", "major", "local", "minor", "proposed"]
+        },
+        "recommended_role": {"$ref": "#/$defs/expert_role"},
+        "source_node_artifact_sha256": {
+          "anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+        },
+        "source_reconciliation_sha256": {
+          "anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+        }
+      }
+    },
+    "mathematical_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proof_family",
+        "mechanism",
+        "proved_statements",
+        "unproved_obligations",
+        "circularity_risks",
+        "proposed_directions",
+        "endpoint",
+        "confidence_basis"
+      ],
+      "properties": {
+        "proof_family": {"type": "string", "minLength": 1, "maxLength": 512},
+        "mechanism": {"type": "string", "minLength": 1, "maxLength": 20000},
+        "proved_statements": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/proved_statement"}
+        },
+        "unproved_obligations": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/obligation"}
+        },
+        "circularity_risks": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/circularity_risk"}
+        },
+        "proposed_directions": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/proposed_direction"}
+        },
+        "endpoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "text"],
+          "properties": {
+            "kind": {"enum": ["candidate_proof", "blocker"]},
+            "text": {"type": "string", "minLength": 1, "maxLength": 250000}
+          }
+        },
+        "confidence_basis": {"type": "string", "minLength": 1, "maxLength": 8000}
+      }
+    },
+    "proved_statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement_id", "statement", "justification", "depends_on_statement_ids"],
+      "properties": {
+        "statement_id": {"$ref": "#/$defs/portable_id"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "justification": {"type": "string", "minLength": 1, "maxLength": 20000},
+        "depends_on_statement_ids": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/portable_id"}
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["obligation_id", "statement", "strength"],
+      "properties": {
+        "obligation_id": {"$ref": "#/$defs/portable_id"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "strength": {"enum": ["local", "major", "theorem_strength"]}
+      }
+    },
+    "circularity_risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_id", "statement", "locator"],
+      "properties": {
+        "risk_id": {"$ref": "#/$defs/portable_id"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "locator": {"type": "string", "minLength": 1, "maxLength": 1024}
+      }
+    },
+    "proposed_direction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction_id", "statement", "strength", "recommended_role"],
+      "properties": {
+        "direction_id": {"$ref": "#/$defs/portable_id"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "strength": {
+          "enum": ["local", "major", "theorem_strength", "critical", "minor", "proposed"]
+        },
+        "recommended_role": {"$ref": "#/$defs/expert_role"}
+      }
+    }
+  }
+}

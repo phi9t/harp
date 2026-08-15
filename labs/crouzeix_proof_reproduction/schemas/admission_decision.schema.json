@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crouzeix-admission-decision.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "attempt_id",
+    "ticket_id",
+    "proposed_node_id",
+    "expert_result_sha256",
+    "context_sha256",
+    "call_receipt_sha256",
+    "leakage_audit_sha256",
+    "outcome",
+    "reason_code",
+    "diagnostic_detail",
+    "admission_decision_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-admission-decision/v1"},
+    "run_id": {"$ref": "#/$defs/portable_id"},
+    "attempt_id": {"$ref": "#/$defs/portable_id"},
+    "ticket_id": {"$ref": "#/$defs/portable_id"},
+    "proposed_node_id": {"$ref": "#/$defs/portable_id"},
+    "expert_result_sha256": {"$ref": "#/$defs/sha256"},
+    "context_sha256": {"$ref": "#/$defs/sha256"},
+    "call_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "leakage_audit_sha256": {"$ref": "#/$defs/sha256"},
+    "outcome": {
+      "enum": [
+        "accepted",
+        "rejected_leakage",
+        "rejected_provenance",
+        "rejected_nonfunctioning"
+      ]
+    },
+    "reason_code": {
+      "enum": [
+        "admission_criteria_satisfied",
+        "leakage_boundary_failed",
+        "provenance_check_failed",
+        "nonfunctioning_result"
+      ]
+    },
+    "diagnostic_detail": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "admission_decision_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

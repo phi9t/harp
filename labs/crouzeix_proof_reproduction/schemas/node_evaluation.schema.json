@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crouzeix-node-evaluation.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "evaluator_index",
+    "ticket_id",
+    "node_artifact_sha256",
+    "mathematical_payload_sha256",
+    "context_sha256",
+    "source_kind",
+    "call_receipt_sha256",
+    "terminal_ticket_event_sha256",
+    "evaluation_payload",
+    "evaluation_payload_sha256",
+    "node_evaluation_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-node-evaluation/v1"},
+    "evaluation_id": {"$ref": "#/$defs/portable_id"},
+    "evaluator_index": {"type": "integer", "minimum": 1, "maximum": 2},
+    "ticket_id": {"$ref": "#/$defs/portable_id"},
+    "node_artifact_sha256": {"$ref": "#/$defs/sha256"},
+    "mathematical_payload_sha256": {"$ref": "#/$defs/sha256"},
+    "context_sha256": {"$ref": "#/$defs/sha256"},
+    "source_kind": {"enum": ["provider_output", "conservative_fallback"]},
+    "call_receipt_sha256": {
+      "anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+    },
+    "terminal_ticket_event_sha256": {"$ref": "#/$defs/sha256"},
+    "evaluation_payload": {"$ref": "#/$defs/evaluation_payload"},
+    "evaluation_payload_sha256": {"$ref": "#/$defs/sha256"},
+    "node_evaluation_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evaluation_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "probes", "findings"],
+      "properties": {
+        "schema_version": {"const": "crouzeix-node-evaluation-payload/v1"},
+        "probes": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {"$ref": "#/$defs/probe"}
+        },
+        "findings": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {"$ref": "#/$defs/finding"}
+        }
+      }
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["probe_id", "status", "rationale"],
+      "properties": {
+        "probe_id": {
+          "enum": [
+            "p01_theorem_statement_preserved",
+            "p02_no_theorem_strength_reduction",
+            "p03_core_mechanism_explicit",
+            "p04_local_claims_justified",
+            "p05_dependencies_closed",
+            "p06_circularity_addressed",
+            "p07_obligations_listed",
+            "p08_candidate_text_coherent",
+            "p09_blockers_falsifiable",
+            "p10_candidate_proof_present"
+          ]
+        },
+        "status": {"enum": ["pass", "fail", "insufficient_evidence"]},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 8000},
+        "candidate_proof_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "probe_id",
+        "severity",
+        "locator",
+        "statement",
+        "test"
+      ],
+      "properties": {
+        "finding_id": {"$ref": "#/$defs/portable_id"},
+        "probe_id": {
+          "enum": [
+            "p01_theorem_statement_preserved",
+            "p02_no_theorem_strength_reduction",
+            "p03_core_mechanism_explicit",
+            "p04_local_claims_justified",
+            "p05_dependencies_closed",
+            "p06_circularity_addressed",
+            "p07_obligations_listed",
+            "p08_candidate_text_coherent",
+            "p09_blockers_falsifiable",
+            "p10_candidate_proof_present"
+          ]
+        },
+        "severity": {"enum": ["critical", "major", "minor"]},
+        "locator": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "test": {"type": "string", "minLength": 1, "maxLength": 12000}
+      }
+    }
+  }
+}
