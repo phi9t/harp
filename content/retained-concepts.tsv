@@ -1,5 +1,5 @@
 concept_id	source_ids
-recursive-improvement-loop	SEED,YUDKOWSKY-2008,GODEL-MACHINE,SIMAS-PAPER,SIMAS-SITE,SIMAS-SITE-REPO,SIMAS-AWESOME-REPO
+recursive-improvement-loop	SEED,YUDKOWSKY-2008,GODEL-MACHINE,SIMAS-PAPER,SIMAS-SITE,SIMAS-SITE-REPO,SIMAS-AWESOME-REPO,GODEL-AGENT,MENDEL-GODEL-MACHINE
 foundation-model-inside-the-loop	
 harness-engineering	WENG-HARNESS
 durable-improvement-workflows	
@@ -7,7 +7,7 @@ procedure-internalization	HARNESS-DISENTANGLE
 harness-search	HYPERAGENTS
 automated-research	NOT-SCIENTISTS,GPT5-SCIENCE
 joint-harness-weight-adaptation	
-evaluation-promotion-containment	BENCH-SWE,BENCH-TB2,BENCH-POLYGLOT,BENCH-SKILLS,GDPVAL,DEEPSWE,FRONTIERCODE-1-1
+evaluation-promotion-containment	BENCH-SWE,BENCH-TB2,BENCH-POLYGLOT,BENCH-SKILLS,GDPVAL,DEEPSWE,FRONTIERCODE-1-1,SAHOO,MODEL-COLLAPSE,SCRIVENS-VERIFICATION
 system-state-and-notation	
 task-improvement	SELF-REFINE
 persistent-adaptation	
@@ -16,7 +16,7 @@ successor-improvement	GOOD-1965,ANTHROPIC-RSI
 pretraining	
 post-training	SPIN
 distillation	
-reinforcement-learning	ASP,ABSOLUTE-ZERO,SELF-REWARDING
+reinforcement-learning	ASP,ABSOLUTE-ZERO,SELF-REWARDING,LADDER,PRIME-TTRL,NSRSA
 multimodal-observation-interface	
 context-construction	
 retrieval	
