@@ -66,7 +66,8 @@ fn contains_nonportable_path_reference(source: &str) -> bool {
             .is_some_and(u8::is_ascii_alphanumeric);
 
         starts_token && starts_component
-    }) || source.contains('~')
+    }) || source.contains("~/")
+        || source.contains("~\\")
         || source.contains("file://")
         || source.as_bytes().windows(3).any(|window| {
             window[0].is_ascii_alphabetic()
@@ -86,6 +87,7 @@ fn detects_nonportable_path_references_without_rejecting_math_syntax() {
         "/usr/local/input",
         "\"/private/tmp/input\"",
         "~/input",
+        "~\\input",
         "file:///tmp/input",
         "C:\\input",
         "\\\\server\\share",
@@ -96,7 +98,12 @@ fn detects_nonportable_path_references_without_rejecting_math_syntax() {
         );
     }
 
-    for source in ["a / b", "Corollary/application", "/- Lean doc comment -/"] {
+    for source in [
+        "a / b",
+        "Corollary/application",
+        "/- Lean doc comment -/",
+        "x ~ y",
+    ] {
         assert!(
             !contains_nonportable_path_reference(source),
             "{source} is syntax, not a nonportable path reference"
