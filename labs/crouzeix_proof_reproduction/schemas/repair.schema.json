@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "parent_candidate_sha256",
+    "candidate_proof",
+    "dispositions",
+    "unproved_obligations"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-repair/v1"},
+    "parent_candidate_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_proof": {"type": "string", "minLength": 1, "maxLength": 250000},
+    "dispositions": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["finding_id", "disposition", "reason"],
+        "properties": {
+          "finding_id": {"type": "string", "pattern": "^F-[A-Z]+-[0-9]{3}$"},
+          "disposition": {
+            "enum": ["fixed", "rejected_with_reason", "unresolved"]
+          },
+          "reason": {"type": "string", "minLength": 1, "maxLength": 8000}
+        }
+      }
+    },
+    "unproved_obligations": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["statement", "strength"],
+        "properties": {
+          "statement": {"type": "string", "minLength": 1, "maxLength": 4000},
+          "strength": {"enum": ["local", "major", "theorem_strength"]}
+        }
+      }
+    }
+  }
+}

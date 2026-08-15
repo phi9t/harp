@@ -66,6 +66,7 @@ mise run no-dwarf
 "$HARP_TARGET_DIR/size/harp" search status
 "$HARP_TARGET_DIR/size/harp" search query "recursive improvement" --limit 5 >/dev/null
 python3 -m unittest discover -s labs/meta_harness_trae/tests -v
+python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
 """
 
 [tasks.verify-atlas]

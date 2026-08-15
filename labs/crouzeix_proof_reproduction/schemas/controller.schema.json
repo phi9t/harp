@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decisions",
+    "selected_route_ids",
+    "family_collapse",
+    "redirect_brief"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-controller/v1"},
+    "decisions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["route_id", "family", "state", "reason"],
+        "properties": {
+          "route_id": {"type": "string", "pattern": "^route-[1-3]$"},
+          "family": {"type": "string", "minLength": 1, "maxLength": 256},
+          "state": {"enum": ["blocked", "viable"]},
+          "reason": {"type": "string", "minLength": 1, "maxLength": 4000}
+        }
+      }
+    },
+    "selected_route_ids": {
+      "type": "array",
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^route-[1-3]$"}
+    },
+    "family_collapse": {"type": "boolean"},
+    "redirect_brief": {"type": ["string", "null"], "maxLength": 8000}
+  }
+}
