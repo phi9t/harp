@@ -1,6 +1,7 @@
 use pulldown_cmark::{html, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
 use super::contracts::{normalize_link_path, ValidatedCanonicalSource};
+use super::obsidian::{rewrite_wiki_links, WikiLink, WikiSubpath};
 use super::*;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -242,16 +243,21 @@ pub(super) fn render_markdown(
     render_markdown_with_targets(markdown, source_path, &BTreeMap::new())
 }
 
-fn render_markdown_with_targets(
+#[cfg_attr(test, allow(dead_code))]
+pub(super) fn render_markdown_with_targets(
     markdown: &str,
     source_path: &str,
     route_targets: &BTreeMap<String, RouteTarget>,
 ) -> String {
+    let markdown = rewrite_wiki_links(markdown, |link| {
+        render_wiki_link(link, source_path, route_targets)
+    })
+    .unwrap_or_else(|_| markdown.to_owned());
     let options = markdown_options(source_path);
     let source_parent = Path::new(source_path)
         .parent()
         .expect("canonical RSI source has a parent");
-    let events = Parser::new_ext(markdown, options).map(|event| match event {
+    let events = Parser::new_ext(&markdown, options).map(|event| match event {
         Event::Html(raw) | Event::InlineHtml(raw)
             if matches!(
                 raw.trim(),
@@ -292,6 +298,71 @@ fn render_markdown_with_targets(
     let mut output = String::new();
     html::push_html(&mut output, events);
     output
+}
+
+fn render_wiki_link(
+    link: &WikiLink,
+    source_path: &str,
+    route_targets: &BTreeMap<String, RouteTarget>,
+) -> String {
+    let Some(path) = &link.path else {
+        return link.alias.clone().unwrap_or_default();
+    };
+    let target = if has_vault_root(Path::new(path)) {
+        PathBuf::from(path)
+    } else {
+        Path::new(source_path)
+            .parent()
+            .expect("canonical source has a parent")
+            .join(path)
+    };
+    let mut target = target;
+    if target.extension().is_none() {
+        target.set_extension("md");
+    }
+    let target_text = target.to_string_lossy();
+    let destination = if let Some(route) = route_targets.get(target_text.as_ref()) {
+        match route {
+            RouteTarget::Reader(route_id) => format!("#{route_id}"),
+            RouteTarget::Chapter(concept_id) => format!("#chapters/{concept_id}"),
+            RouteTarget::Document {
+                document_id,
+                heading_ids,
+            } => match &link.subpath {
+                Some(WikiSubpath::Heading(heading)) => {
+                    let heading_id = slug(heading);
+                    if heading_ids.contains(&heading_id) {
+                        format!("#documents/{document_id}?section={heading_id}")
+                    } else {
+                        format!("#documents/{document_id}")
+                    }
+                }
+                _ => format!("#documents/{document_id}"),
+            },
+        }
+    } else {
+        let suffix = match link.subpath {
+            Some(WikiSubpath::PdfPage(page)) => format!("#page={page}"),
+            Some(WikiSubpath::Heading(ref heading)) => format!("#{}", slug(heading)),
+            None => String::new(),
+        };
+        format!("../../{target_text}{suffix}")
+    };
+    let display = link
+        .alias
+        .as_deref()
+        .unwrap_or_else(|| path.rsplit('/').next().unwrap_or(path));
+    format!("[{display}]({destination})")
+}
+
+fn has_vault_root(path: &Path) -> bool {
+    path.components()
+        .next()
+        .and_then(|component| match component {
+            std::path::Component::Normal(value) => value.to_str(),
+            _ => None,
+        })
+        .is_some_and(|root| ["knowledge", "evidence", "content", "labs", "crates"].contains(&root))
 }
 
 fn markdown_options(source_path: &str) -> Options {

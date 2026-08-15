@@ -9,6 +9,7 @@ use crate::fs::HeldDirectory;
 
 mod contracts;
 mod lessons;
+mod obsidian;
 mod render;
 mod rules;
 

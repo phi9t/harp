@@ -1375,6 +1375,45 @@ fn preserves_native_details_in_rendered_html() {
 }
 
 #[test]
+fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
+    let targets = BTreeMap::from([(
+        "knowledge/rsi/target.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "target".to_owned(),
+            heading_ids: BTreeSet::from(["result-boundary".to_owned()]),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[knowledge/rsi/target#Result boundary|Result]]\n\n`[[knowledge/rsi/target]]`\n",
+        "knowledge/rsi/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/target?section=result-boundary\""));
+    assert!(rendered.contains(">Result</a>"));
+    assert!(rendered.contains("[[knowledge/rsi/target]]"));
+}
+
+#[test]
+fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
+    let targets = BTreeMap::from([(
+        "knowledge/rsi/target.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "target".to_owned(),
+            heading_ids: BTreeSet::new(),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[target|Target]]",
+        "knowledge/rsi/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/target\""));
+    assert!(rendered.contains(">Target</a>"));
+}
+
+#[test]
 fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
     let rendered = render_markdown(
         "# Test\n\n| Field | Value |\n|---|---|\n| state | durable |\n",
@@ -1594,6 +1633,30 @@ fn validates_local_links_in_product_roots() {
         &repository,
     )
     .unwrap();
+}
+
+#[test]
+fn validates_obsidian_wikilinks_in_product_roots() {
+    let repo = fixture();
+    let target = repo.path().join("knowledge/rsi/target.md");
+    fs::create_dir_all(target.parent().unwrap()).unwrap();
+    fs::write(target, "# Target\n\n## Result boundary\n\nText.\n").unwrap();
+    let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
+
+    validate_local_links(
+        "knowledge/rsi/chapters/guide.md",
+        "[[knowledge/rsi/target#Result boundary|Result]]",
+        &repository,
+    )
+    .unwrap();
+
+    let error = validate_local_links(
+        "knowledge/rsi/chapters/guide.md",
+        "[[knowledge/rsi/missing|Missing]]",
+        &repository,
+    )
+    .unwrap_err();
+    assert_eq!(error.code(), "knowledge.obsidian.target");
 }
 
 #[test]

@@ -1,3 +1,4 @@
+use super::obsidian::{parse_wiki_links, resolve_wiki_link};
 use super::*;
 use pulldown_cmark::{Event, Options, Parser, Tag};
 use serde::Deserialize;
@@ -1372,6 +1373,14 @@ pub(super) fn validate_local_links(
     markdown: &str,
     repository: &HeldDirectory,
 ) -> Result<(), AppError> {
+    for link in parse_wiki_links(markdown).map_err(|error| {
+        invalid(
+            "knowledge.obsidian.syntax",
+            format!("{path} has invalid Obsidian wikilink: {error}"),
+        )
+    })? {
+        resolve_wiki_link(repository, path, &link)?;
+    }
     let parent = Path::new(path)
         .parent()
         .expect("canonical files have parents");
