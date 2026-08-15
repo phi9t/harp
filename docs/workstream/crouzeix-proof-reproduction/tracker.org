@@ -924,16 +924,17 @@ ticket/event records before any further frontier implementation.
 
 - Record red/green commands, commit, and review findings.
 
-** TODO Reconcile Existing Partial Frontier Diff :review:code:ticket:
+** DONE Reconcile Existing Partial Frontier Diff :review:code:ticket:
 :PROPERTIES:
 :ID: CPFR-022
 :DESIGN_SECTION: Current State; Module Boundaries
 :DEPENDS_ON: CPFR-026
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT: pending
 :END:
 
 *** Scope
@@ -994,7 +995,67 @@ any production edit resumes.
 
 *** Verification Evidence
 
-- Record the inventory digest, mapping, and no-edit proof.
+- Pre-inventory status after CPFR-026 commit:
+  =git status --short --branch= showed only preserved
+  =labs/crouzeix_proof_reproduction/= WIP: tracked changes in =README.md=,
+  =protocol.py=, and =runner.py=, plus nine untracked frontier files.
+- Pre-inventory diff stat for tracked WIP:
+  =README.md= +25, =protocol.py= +4/-2, =runner.py= +2.
+- Dirty-file SHA-256 inventory:
+  | Path | SHA-256 |
+  | =README.md= | =2ddc5bc40c03c4c0daa6481253df71ff0d4d61f93d69f715ecbdce601f9a909a= |
+  | =protocol.py= | =f1376eebcc8b39e6c8b059eb0f1142754650b6ff6ec4787f0553b3ee195f1534= |
+  | =runner.py= | =29f7371d8b8d7a6562e7c24c004e87679057d1148b970e26a262f40786537fb4= |
+  | =expert_runner.py= | =438d7e8231bf7b8e940c8bda049ccfd872735593e16a1bfa2f6fb0beb7dbc7e7= |
+  | =frontier.py= | =860ea502adf2582167f764f7e8a1a5f55deac57f0de2edfb738d16afde027173= |
+  | =prompts/expert.md= | =adebdb9b6a7276b6d12165f9ff2d470eba75858bdbbf75df9b20dc9969a9672e= |
+  | =prompts/proof_progress_evaluator.md= | =b3a191a6bdbafcb7412b4c2258f319c5a21d506b730c84cc5460f341653ec4c3= |
+  | =run_frontier.py= | =baeb75a034747c12dabf3f83799e54325d1c4a11fbf28a72146d2419a0baac2a= |
+  | =schemas/expert_node.schema.json= | =59e744394ff0822deedf1f33accb93d0a0208fc00d84b8acaf955f0cf34b878e= |
+  | =schemas/proof_progress_evaluation.schema.json= | =20fb407fdaea308e44f52e43d8594b1989245866907e468be8538e669de24e01= |
+  | =tests/test_expert_runner.py= | =31a9c067c5b2db6b518945032eb0f8952ea1431d01e0f23535d3656ae82bb7c4= |
+  | =tests/test_frontier.py= | =e1013397633052b4160011004c9933b8e59cd02ec476ba5933fac99063f408f9= |
+- Stable patch map. Tracked patch IDs contain the base blob ID, normalized
+  hunk header, and context SHA-256. Untracked files use Git's empty blob
+  =e69de29bb2d1d6434b8b29ae775ad8c2e48c5391= and require =git add -N= before
+  any future =git add -p=:
+  | Patch ID | Path | Owner | Disposition |
+  | =P-README-md-1-8eac11d792c8-7f0db6f4f3a5bbe5= | =README.md= | CPFR-015 | Replace wording that says "functioning node" and direct =expert_runner= preparation with ticketed preparation terminology. |
+  | =P-protocol-py-1-9463aa3802ec-a0ffd55d47917890= | =protocol.py= | CPFR-015 | Keep only if preparation still needs E-arm enum expansion after CPFR-010 validators. |
+  | =P-protocol-py-2-9463aa3802ec-1800a350c0290c28= | =protocol.py= | CPFR-015 | Keep only if the final E-arm run spec still needs the wider call budget. |
+  | =P-runner-py-1-2d2cbe68f7e4-46573e2875ce2319= | =runner.py= | CPFR-014 | Rework as ticket-bound frontier provider roles. |
+  | =P-expert-runner-py-new-e69de29bb2d1-dd32f5579629e5c7= | =expert_runner.py= | CPFR-011 | Explicit deletion/replacement of the monolithic WIP file while extracting contract pieces first; later CPFR-013, CPFR-014, CPFR-015, and CPFR-016 may reintroduce owned modules or hunks from scratch under their own tickets. Replace overloaded =expert_node=, =archive_nodes=, =node_sha256=, float =alpha=, =functioning=, and candidate/node lifecycle behavior. |
+  | =P-frontier-py-new-e69de29bb2d1-ebe74f6308d1cfcb= | =frontier.py= | CPFR-012 | Rebuild as pure archive-entry, reconciliation, direction, and exact DGM selector logic; replace float =alpha= and functioning-node authority. |
+  | =P-expert-md-new-e69de29bb2d1-eb02d192c647a735= | =prompts/expert.md= | CPFR-011 | Reuse only after answer-vocabulary and expert-result contract review. |
+  | =P-proof-progress-evaluator-md-new-e69de29bb2d1-f6c523046a31634d= | =prompts/proof_progress_evaluator.md= | CPFR-011 | Reuse only after lineage/treatment/score leakage review. |
+  | =P-run-frontier-py-new-e69de29bb2d1-9b8d222fe0ecfeda= | =run_frontier.py= | CPFR-016 | Thin CLI only; may be deleted/replaced if orchestration modules change. |
+  | =P-expert-node-schema-json-new-e69de29bb2d1-2ca8c95026081adf= | =schemas/expert_node.schema.json= | CPFR-011 | Explicit deletion/replacement with =expert_result=, =admission_decision=, and =mathematical_node= schemas. |
+  | =P-proof-progress-evaluation-schema-json-new-e69de29bb2d1-792af7bd2ababbde= | =schemas/proof_progress_evaluation.schema.json= | CPFR-011 | Explicit deletion/replacement with harness-owned =node_evaluation= schema. |
+  | =P-test-expert-runner-py-new-e69de29bb2d1-e5d0754c3c1563e5= | =tests/test_expert_runner.py= | CPFR-011 | Explicit deletion/replacement of the monolithic WIP test file while extracting contract tests first; later CPFR-013, CPFR-014, CPFR-015, and CPFR-016 must add their own focused tests under their own tickets. Rewrite assertions to the CPFR-026 model. |
+  | =P-test-frontier-py-new-e69de29bb2d1-3cbffd865cd2a622= | =tests/test_frontier.py= | CPFR-012 | Rewrite around archive-entry identities, integer pass counts, exact decimal selector, and immutable events. |
+- Shared-file owner order:
+  | Path | Ordered owners |
+  | =expert_runner.py= | CPFR-011 owns the current untracked whole-file patch as deletion/replacement; CPFR-013, CPFR-014, CPFR-015, and CPFR-016 may add later disjoint files or hunks only after CPFR-011 removes the monolith. |
+  | =tests/test_expert_runner.py= | CPFR-011 owns the current untracked whole-file patch as deletion/replacement; CPFR-013, CPFR-014, CPFR-015, and CPFR-016 may add later focused tests only after CPFR-011 removes the monolith. |
+  | =protocol.py= | CPFR-015 |
+  | =runner.py= | CPFR-014 |
+  | =README.md= | CPFR-015 |
+- The pre-plan "47 tests passed" observation remains uncommitted historical
+  evidence only. It is not current verification and does not approve any
+  preserved hunk under the corrected CPFR-026 model.
+- After-inventory SHA-256 verification reran over the same twelve paths and
+  matched every digest recorded above exactly. No product files were edited or
+  staged during this ticket.
+- Verification commands passed:
+  =git diff --check= and
+  =cargo test -p harp --test credible_docs_style -- --test-threads=1=.
+- Independent spec review found the initial shared whole-file owner mapping for
+  =expert_runner.py= and =tests/test_expert_runner.py= too broad; after the map
+  was corrected to assign each current patch ID to exactly one owner, re-review
+  approved.
+- Independent repository-standards review found the same mapping issue plus
+  missing explicit after-inventory equality evidence; both were corrected and
+  re-review approved.
 
 ** TODO Split Expert Contracts From Orchestration :code:tests:
 :PROPERTIES:
