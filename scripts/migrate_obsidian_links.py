@@ -297,7 +297,9 @@ def main(arguments: list[str] | None = None) -> int:
         )
     print(json.dumps(report, sort_keys=True))
 
-    if options.check and report["remaining_managed_markdown_link_count"]:
+    if options.check and (
+        report["converted_count"] or report["remaining_managed_markdown_link_count"]
+    ):
         return 1
     return 0
 

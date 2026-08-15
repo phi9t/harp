@@ -248,6 +248,20 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
         )
         report_path = self.repo_root / "target" / "obsidian-link-migration.json"
 
+        pending_check = self.run_cli("--check", "--report", str(report_path))
+
+        self.assertNotEqual(pending_check.returncode, 0)
+        self.assertEqual(
+            json.loads(report_path.read_text(encoding="utf-8")),
+            {
+                "converted_count": 2,
+                "input_count": 2,
+                "remaining_managed_markdown_link_count": 0,
+                "retained_line_locator_count": 1,
+                "skipped_captured_count": 1,
+            },
+        )
+
         write = self.run_cli("--write", "--report", str(report_path))
 
         self.assertEqual(write.returncode, 0, write.stderr)
