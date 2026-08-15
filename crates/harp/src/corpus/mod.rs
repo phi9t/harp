@@ -148,7 +148,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 15] = [
         "knowledge/mathematical_foundations/mathematical_foundations_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 59] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 60] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -378,6 +378,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 59] = [
     (
         "math-foundations-claim-evidence-ledger",
         "knowledge/mathematical_foundations/claim_evidence_ledger.md",
+    ),
+    (
+        "math-foundations-formalization-map",
+        "knowledge/mathematical_foundations/formalization_map.md",
     ),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =

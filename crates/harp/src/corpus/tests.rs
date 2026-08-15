@@ -1310,14 +1310,220 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
         "math-foundations-glossary",
         "math-foundations-source-registry",
         "math-foundations-claim-evidence-ledger",
+        "math-foundations-formalization-map",
     ]);
+    let auxiliary_document_ids = AUXILIARY_DOCUMENTS
+        .iter()
+        .filter(|(_, path)| path.starts_with("knowledge/mathematical_foundations/"))
+        .map(|(document_id, _)| *document_id)
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        auxiliary_document_ids.len(),
+        12,
+        "Mathematical Foundations must register exactly twelve auxiliary documents"
+    );
+    assert_eq!(&auxiliary_document_ids, &expected_document_ids);
     let actual_document_ids = document_ids.iter().copied().collect::<BTreeSet<_>>();
     assert_eq!(
         document_ids.len(),
-        11,
+        12,
         "duplicate or unexpected packet document ID"
     );
     assert_eq!(actual_document_ids, expected_document_ids);
+}
+
+#[test]
+fn compiles_the_mathematical_foundations_formalization_map() {
+    const MAP_ID: &str = "math-foundations-formalization-map";
+    const MAP_PATH: &str = "knowledge/mathematical_foundations/formalization_map.md";
+    const STATUSES: [&str; 3] = ["Direct theorem", "Corollary/application", "Prose-only"];
+
+    assert!(
+        AUXILIARY_DOCUMENTS
+            .iter()
+            .any(|(document_id, path)| *document_id == MAP_ID && *path == MAP_PATH),
+        "formalization map must be registered as an auxiliary document"
+    );
+    assert!(
+        !READER_ROUTES.iter().any(|(_, _, path)| *path == MAP_PATH),
+        "formalization map must not add a reader route"
+    );
+
+    const FORMALIZATION_SOURCES: [(&str, &str); 6] = [
+        (
+            "MathematicalFoundations.Linear",
+            "formalization/mathematical_foundations/MathematicalFoundations/Linear.lean",
+        ),
+        (
+            "MathematicalFoundations.Orthogonality",
+            "formalization/mathematical_foundations/MathematicalFoundations/Orthogonality.lean",
+        ),
+        (
+            "MathematicalFoundations.Probability",
+            "formalization/mathematical_foundations/MathematicalFoundations/Probability.lean",
+        ),
+        (
+            "MathematicalFoundations.BayesInformation",
+            "formalization/mathematical_foundations/MathematicalFoundations/BayesInformation.lean",
+        ),
+        (
+            "MathematicalFoundations.LinearModels",
+            "formalization/mathematical_foundations/MathematicalFoundations/LinearModels.lean",
+        ),
+        (
+            "MathematicalFoundations.Optimization",
+            "formalization/mathematical_foundations/MathematicalFoundations/Optimization.lean",
+        ),
+    ];
+    const FORMALIZATION_SOURCE_PATHS: [&str; 12] = [
+        "formalization/mathematical_foundations/MathematicalFoundations.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Algebra.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Analysis.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/BayesInformation.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Boundary.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Geometry.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Linear.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/LinearModels.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Optimization.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Orthogonality.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Probability.lean",
+        "formalization/mathematical_foundations/MathematicalFoundations/Statistics.lean",
+    ];
+
+    let map = fs::read_to_string(workspace_root().join(MAP_PATH))
+        .expect("formalization map must be canonical Markdown");
+    let formalization_sources = FORMALIZATION_SOURCES
+        .iter()
+        .map(|(namespace, path)| {
+            let source = fs::read_to_string(workspace_root().join(path))
+                .expect("formalization source must be readable");
+            (*namespace, *path, source)
+        })
+        .collect::<Vec<_>>();
+    let forbidden = ["/Users/", "file://"];
+    for value in forbidden {
+        assert!(
+            !map.contains(value),
+            "{MAP_PATH} must not contain machine-local reference {value:?}"
+        );
+    }
+    for path in FORMALIZATION_SOURCE_PATHS {
+        let source = fs::read_to_string(workspace_root().join(path))
+            .expect("formalization source must be readable");
+        for value in forbidden {
+            assert!(
+                !source.contains(value),
+                "{path} must not contain machine-local reference {value:?}"
+            );
+        }
+    }
+
+    let declared_theorems = formalization_sources
+        .iter()
+        .flat_map(|(namespace, _, source)| {
+            source.lines().filter_map(move |line| {
+                line.strip_prefix("theorem ")
+                    .and_then(|declaration| declaration.split_whitespace().next())
+                    .map(|declaration| format!("{namespace}.{declaration}"))
+            })
+        })
+        .collect::<BTreeSet<_>>();
+    assert!(
+        !declared_theorems.is_empty(),
+        "formalization map contract needs compiled public theorem declarations"
+    );
+
+    let rows = map
+        .lines()
+        .filter_map(|line| {
+            let cells = line
+                .trim()
+                .strip_prefix('|')?
+                .strip_suffix('|')?
+                .split('|')
+                .map(str::trim)
+                .collect::<Vec<_>>();
+            (cells.len() == 4 && cells[0].starts_with("MF-")).then_some(cells)
+        })
+        .collect::<Vec<_>>();
+
+    let expected_ids = (1..=6)
+        .flat_map(|module| (1..=8).map(move |problem| format!("MF-{module:02}-{problem:02}")))
+        .collect::<Vec<_>>();
+    assert_eq!(
+        rows.len(),
+        expected_ids.len(),
+        "map must have exactly 48 problem rows"
+    );
+
+    let actual_ids = rows
+        .iter()
+        .map(|cells| cells[0].to_owned())
+        .collect::<Vec<_>>();
+    assert_eq!(
+        actual_ids, expected_ids,
+        "map rows must list each original problem once in module/problem order"
+    );
+
+    for cells in rows {
+        let statuses = STATUSES
+            .iter()
+            .filter(|status| cells[1] == **status)
+            .count();
+        assert_eq!(
+            statuses, 1,
+            "{} must have exactly one supported status",
+            cells[0]
+        );
+        let lean_identifiers = cells[2]
+            .split('`')
+            .filter(|identifier| identifier.starts_with("MathematicalFoundations."))
+            .collect::<Vec<_>>();
+        let has_lean = cells[2].starts_with("Lean: `") && !lean_identifiers.is_empty();
+        match cells[1] {
+            "Direct theorem" | "Corollary/application" => {
+                assert!(has_lean, "{} requires a compiled Lean identifier", cells[0]);
+                for identifier in lean_identifiers {
+                    assert!(
+                        declared_theorems.contains(identifier),
+                        "{} names no compiled public Lean theorem: {identifier}",
+                        cells[0]
+                    );
+                }
+            }
+            "Prose-only" => {
+                assert!(
+                    !cells[2].contains("Lean:") && lean_identifiers.is_empty(),
+                    "{} must not claim a Lean identifier",
+                    cells[0]
+                );
+                assert!(
+                    cells[3].starts_with("Exact limitation: ") && cells[3] != "Exact limitation: ",
+                    "{} needs an exact prose-only limitation",
+                    cells[0]
+                );
+            }
+            _ => unreachable!("status count made this impossible"),
+        }
+    }
+
+    for declaration in declared_theorems {
+        assert!(
+            map.contains(&format!("`{declaration}`")),
+            "formalization map must inventory compiled public theorem {declaration}"
+        );
+    }
+
+    let corpus = compile(workspace_root()).expect("formalization map must compile in the corpus");
+    let map_document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == MAP_ID)
+        .expect("formalization map must compile as a document");
+    assert!(
+        map_document.html.contains("class=\"math math-inline\""),
+        "formalization map must preserve its mathematical notation through the renderer"
+    );
 }
 
 #[test]
