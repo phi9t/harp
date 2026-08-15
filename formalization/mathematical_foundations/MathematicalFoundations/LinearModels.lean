@@ -14,7 +14,7 @@ def ridgeObjective {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℝ)
     (y : Fin m → ℝ) (λ : ℝ) (β : Fin n → ℝ) : ℝ :=
   (A *ᵥ β - y) ⬝ᵥ (A *ᵥ β - y) + λ * (β ⬝ᵥ β)
 
-/-- A zero normal-equation residual is equivalent to equality of the two displayed terms.
+/-- A zero normal-equation residual implies equality of the two displayed terms.
 This is an algebraic identity, not a minimization claim. -/
 theorem normal_equation_residual_identity {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℝ)
     (y : Fin m → ℝ) (β : Fin n → ℝ)
