@@ -4,7 +4,7 @@ use serde::Deserialize;
 use std::path::Component;
 use url::Url;
 
-use super::render::{heading_ids, markdown_body};
+use super::render::{heading_ids, heading_ids_for_source, markdown_body};
 
 pub(super) const WENG_MAP_PATH: &str = "content/weng-reading-map.json";
 pub(super) const SYSTEM_READINGS_PATH: &str = "content/systems/system_readings.json";
@@ -178,6 +178,7 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
             validate_document(&path, &markdown, &coverage_entries, repository)?;
         }
         let body = markdown_body(&markdown, &path)?.to_owned();
+        heading_ids_for_source(&body, &path)?;
         canonical_sources.insert(
             path.clone(),
             ValidatedCanonicalSource {

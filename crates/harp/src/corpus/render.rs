@@ -1,12 +1,21 @@
-use pulldown_cmark::{html, Event, Options, Parser, Tag, TagEnd};
+use pulldown_cmark::{html, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
 use super::contracts::{normalize_link_path, ValidatedCanonicalSource};
 use super::*;
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(super) enum RouteTarget {
+    Reader(&'static str),
+    Chapter(String),
+    Document {
+        document_id: String,
+        heading_ids: BTreeSet<String>,
+    },
+}
+
 pub(super) fn compile_document(
     source: &ValidatedCanonicalSource,
-    coverage: &[CoverageEntry],
-    canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
+    route_targets: &BTreeMap<String, RouteTarget>,
 ) -> Result<CanonicalDocument, AppError> {
     let body = markdown_body(&source.markdown, &source.path)?;
     debug_assert_eq!(source.body_sha256, sha256(body.as_bytes()));
@@ -16,14 +25,8 @@ pub(super) fn compile_document(
             format!("{} must contain one H1 title", source.path),
         )
     })?;
-    let html = render_markdown_with_sources(body, &source.path, coverage, canonical_sources);
-    let concept_id = source
-        .entries
-        .iter()
-        .find(|entry| entry.section_id.is_none())
-        .or_else(|| source.entries.first())
-        .map(|entry| entry.concept_id.clone())
-        .unwrap_or_else(|| auxiliary_document_id(&source.path));
+    let html = render_markdown_with_targets(body, &source.path, route_targets);
+    let concept_id = source_document_id(source);
     Ok(CanonicalDocument {
         concept_id,
         title,
@@ -32,6 +35,16 @@ pub(super) fn compile_document(
         html_sha256: sha256(html.as_bytes()),
         html,
     })
+}
+
+fn source_document_id(source: &ValidatedCanonicalSource) -> String {
+    source
+        .entries
+        .iter()
+        .find(|entry| entry.section_id.is_none())
+        .or_else(|| source.entries.first())
+        .map(|entry| entry.concept_id.clone())
+        .unwrap_or_else(|| auxiliary_document_id(&source.path))
 }
 
 fn auxiliary_document_id(path: &str) -> String {
@@ -47,6 +60,12 @@ fn auxiliary_document_id(path: &str) -> String {
         .and_then(|stem| {
             if path.starts_with("knowledge/rsi/systems/") {
                 return Some(stem.to_owned());
+            }
+            if path.starts_with("knowledge/rsi/lessons/") {
+                return stem
+                    .split_once('-')
+                    .filter(|(prefix, _)| prefix.bytes().all(|byte| byte.is_ascii_digit()))
+                    .map(|(_, section)| format!("lesson-{section}"));
             }
             stem.split_once('-')
                 .filter(|(prefix, _)| prefix.bytes().all(|byte| byte.is_ascii_digit()))
@@ -77,6 +96,62 @@ fn first_heading(markdown: &str) -> Option<String> {
 }
 
 pub(super) fn heading_ids(markdown: &str) -> BTreeSet<String> {
+    legacy_heading_ids(markdown).into_iter().collect()
+}
+
+pub(super) fn heading_ids_for_source(
+    markdown: &str,
+    source_path: &str,
+) -> Result<BTreeSet<String>, AppError> {
+    if !is_crouzeix_packet(source_path) {
+        return Ok(legacy_heading_ids(markdown).into_iter().collect());
+    }
+
+    let mut unique = BTreeSet::new();
+    for heading_id in parsed_heading_ids(markdown, source_path) {
+        if !valid_id(&heading_id) || !unique.insert(heading_id.clone()) {
+            return Err(invalid(
+                "knowledge.rsi.heading_id",
+                format!("{source_path} has an invalid or duplicate heading ID: {heading_id}"),
+            ));
+        }
+    }
+    Ok(unique)
+}
+
+fn parsed_heading_ids(markdown: &str, source_path: &str) -> Vec<String> {
+    if !is_crouzeix_packet(source_path) {
+        return legacy_heading_ids(markdown);
+    }
+
+    let mut headings = Vec::new();
+    let mut current = None::<(Option<String>, String)>;
+    for event in Parser::new_ext(markdown, markdown_options(source_path)) {
+        match event {
+            Event::Start(Tag::Heading {
+                level: HeadingLevel::H2 | HeadingLevel::H3,
+                id,
+                ..
+            }) => {
+                current = Some((id.map(|value| value.into_string()), String::new()));
+            }
+            Event::Text(text) | Event::Code(text) | Event::InlineMath(text) => {
+                if let Some((_, heading)) = &mut current {
+                    heading.push_str(&text);
+                }
+            }
+            Event::End(TagEnd::Heading(_)) => {
+                if let Some((explicit_id, heading)) = current.take() {
+                    headings.push(explicit_id.unwrap_or_else(|| slug(&heading)));
+                }
+            }
+            _ => {}
+        }
+    }
+    headings
+}
+
+fn legacy_heading_ids(markdown: &str) -> Vec<String> {
     markdown
         .lines()
         .filter_map(|line| {
@@ -104,26 +179,63 @@ fn slug(value: &str) -> String {
     output
 }
 
+pub(super) fn route_targets(
+    coverage: &[CoverageEntry],
+    canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
+) -> BTreeMap<String, RouteTarget> {
+    let mut targets = BTreeMap::new();
+
+    for chapter in coverage
+        .iter()
+        .filter(|entry| entry.coverage_depth == CoverageDepth::Chapter)
+    {
+        targets.insert(
+            chapter.canonical_markdown_path.clone(),
+            RouteTarget::Chapter(chapter.concept_id.clone()),
+        );
+    }
+    for (document_id, path) in AUXILIARY_DOCUMENTS {
+        if let Some(source) = canonical_sources.get(path) {
+            targets.insert(
+                path.to_owned(),
+                document_target(document_id.to_owned(), source),
+            );
+        }
+    }
+    for (path, source) in canonical_sources {
+        targets
+            .entry(path.clone())
+            .or_insert_with(|| document_target(source_document_id(source), source));
+    }
+    for (route_id, _, path) in READER_ROUTES {
+        targets.insert(path.to_owned(), RouteTarget::Reader(route_id));
+    }
+    targets
+}
+
+fn document_target(document_id: String, source: &ValidatedCanonicalSource) -> RouteTarget {
+    let body = markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
+    RouteTarget::Document {
+        document_id,
+        heading_ids: parsed_heading_ids(body, &source.path).into_iter().collect(),
+    }
+}
+
 #[cfg(test)]
 pub(super) fn render_markdown(
     markdown: &str,
     source_path: &str,
-    coverage: &[CoverageEntry],
+    _coverage: &[CoverageEntry],
 ) -> String {
-    render_markdown_with_sources(markdown, source_path, coverage, &BTreeMap::new())
+    render_markdown_with_targets(markdown, source_path, &BTreeMap::new())
 }
 
-fn render_markdown_with_sources(
+fn render_markdown_with_targets(
     markdown: &str,
     source_path: &str,
-    coverage: &[CoverageEntry],
-    canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
+    route_targets: &BTreeMap<String, RouteTarget>,
 ) -> String {
-    let options = Options::ENABLE_TABLES
-        | Options::ENABLE_STRIKETHROUGH
-        | Options::ENABLE_TASKLISTS
-        | Options::ENABLE_FOOTNOTES
-        | Options::ENABLE_DEFINITION_LIST;
+    let options = markdown_options(source_path);
     let source_parent = Path::new(source_path)
         .parent()
         .expect("canonical RSI source has a parent");
@@ -141,6 +253,8 @@ fn render_markdown_with_sources(
             Event::Html(raw)
         }
         Event::Html(raw) | Event::InlineHtml(raw) => Event::Text(raw),
+        Event::InlineMath(tex) => Event::Html(math_span(&tex, false).into()),
+        Event::DisplayMath(tex) => Event::Html(math_span(&tex, true).into()),
         Event::Start(Tag::Link {
             link_type,
             dest_url,
@@ -148,11 +262,10 @@ fn render_markdown_with_sources(
             id,
         }) => Event::Start(Tag::Link {
             link_type,
-            dest_url: offline_link_destination_with_sources(
+            dest_url: offline_link_destination_with_targets(
                 &dest_url,
                 source_parent,
-                coverage,
-                canonical_sources,
+                route_targets,
             )
             .into(),
             title,
@@ -169,20 +282,81 @@ fn render_markdown_with_sources(
     output
 }
 
+fn markdown_options(source_path: &str) -> Options {
+    let mut options = Options::ENABLE_TABLES
+        | Options::ENABLE_STRIKETHROUGH
+        | Options::ENABLE_TASKLISTS
+        | Options::ENABLE_FOOTNOTES
+        | Options::ENABLE_DEFINITION_LIST;
+    if is_crouzeix_packet(source_path) {
+        options |= Options::ENABLE_HEADING_ATTRIBUTES | Options::ENABLE_MATH;
+    }
+    options
+}
+
+fn is_crouzeix_packet(source_path: &str) -> bool {
+    source_path.starts_with("knowledge/crouzeix_conjecture/")
+}
+
+fn math_span(tex: &str, display: bool) -> String {
+    let kind = if display { "display" } else { "inline" };
+    format!(
+        "<span class=\"math math-{kind}\" data-tex=\"{}\">{}</span>",
+        escape_html_attribute(tex),
+        escape_html_text(tex),
+    )
+}
+
+fn escape_html_attribute(value: &str) -> String {
+    value
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&#39;")
+}
+
+fn escape_html_text(value: &str) -> String {
+    value
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+}
+
 #[cfg(test)]
 pub(super) fn offline_link_destination(
     value: &str,
     source_parent: &Path,
     coverage: &[CoverageEntry],
 ) -> String {
-    offline_link_destination_with_sources(value, source_parent, coverage, &BTreeMap::new())
+    let targets = coverage
+        .iter()
+        .filter(|entry| entry.coverage_depth == CoverageDepth::Chapter)
+        .map(|entry| {
+            (
+                entry.canonical_markdown_path.clone(),
+                RouteTarget::Chapter(entry.concept_id.clone()),
+            )
+        })
+        .collect();
+    offline_link_destination_with_targets(value, source_parent, &targets)
 }
 
+#[cfg(test)]
 pub(super) fn offline_link_destination_with_sources(
     value: &str,
     source_parent: &Path,
     coverage: &[CoverageEntry],
     canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
+) -> String {
+    let targets = route_targets(coverage, canonical_sources);
+    offline_link_destination_with_targets(value, source_parent, &targets)
+}
+
+pub(super) fn offline_link_destination_with_targets(
+    value: &str,
+    source_parent: &Path,
+    route_targets: &BTreeMap<String, RouteTarget>,
 ) -> String {
     if value.starts_with('#')
         || value.starts_with("http://")
@@ -203,21 +377,20 @@ pub(super) fn offline_link_destination_with_sources(
         return value.to_owned();
     };
     let resolved = resolved.to_string_lossy();
-    if let Some(chapter) = coverage.iter().find(|entry| {
-        entry.coverage_depth == CoverageDepth::Chapter && entry.canonical_markdown_path == resolved
-    }) {
-        return format!("#chapters/{}", chapter.concept_id);
-    }
-    if let Some(source) = canonical_sources.get(resolved.as_ref()) {
-        if let Some(owner) = source
-            .entries
-            .iter()
-            .find(|entry| entry.section_id.is_none())
-            .or_else(|| source.entries.first())
-        {
-            return format!("#documents/{}", owner.concept_id);
-        }
-        return format!("#documents/{}", auxiliary_document_id(&source.path));
+    if let Some(target) = route_targets.get(resolved.as_ref()) {
+        return match target {
+            RouteTarget::Reader(route_id) => format!("#{route_id}"),
+            RouteTarget::Chapter(concept_id) => format!("#chapters/{concept_id}"),
+            RouteTarget::Document {
+                document_id,
+                heading_ids,
+            } => fragment
+                .filter(|fragment| heading_ids.contains(*fragment))
+                .map_or_else(
+                    || format!("#documents/{document_id}"),
+                    |fragment| format!("#documents/{document_id}?section={fragment}"),
+                ),
+        };
     }
     let suffix = fragment.map_or(String::new(), |fragment| format!("#{fragment}"));
     format!("../../{resolved}{suffix}")

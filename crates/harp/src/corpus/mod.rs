@@ -348,10 +348,11 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
     let lesson_manifest = validated_lessons.manifest;
     let mut all_sources = canonical_sources;
     all_sources.extend(validated_lessons.sources);
+    let route_targets = render::route_targets(&coverage, &all_sources);
     let mut documents = all_sources
         .values()
         .map(|source| {
-            render::compile_document(source, &coverage, &all_sources)
+            render::compile_document(source, &route_targets)
                 .map(|document| (source.path.clone(), document))
         })
         .collect::<Result<BTreeMap<_, _>, AppError>>()?;

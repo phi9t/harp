@@ -11,7 +11,11 @@ export type AtlasRoute =
   | { kind: "weng"; sectionId: WengSectionId }
   | { kind: "systems" }
   | { kind: "system"; systemId: SystemId; returnTo: WengSectionId | null }
-  | { kind: "document"; documentId: DocumentId }
+  | {
+      kind: "document";
+      documentId: DocumentId;
+      sectionId: string | null;
+    }
   | { kind: "chapter"; conceptId: ConceptId }
   | { kind: "legacy"; routeId: ReaderRouteId }
   | { kind: "lesson"; lessonId: string }
@@ -19,6 +23,7 @@ export type AtlasRoute =
   | { kind: "sources" };
 
 const firstWengSection = canonicalCorpus.weng_sections[0];
+const sectionIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function defaultRoute(): AtlasRoute {
   return { kind: "weng", sectionId: firstWengSection.section_id };
@@ -41,6 +46,11 @@ function returnSection(query: string): WengSectionId | null {
   return canonicalCorpus.weng_sections.find(
     (section) => section.section_id === sectionId,
   )?.section_id ?? null;
+}
+
+function documentSection(query: string): string | null {
+  const sectionId = new URLSearchParams(query).get("section");
+  return sectionId !== null && sectionIdPattern.test(sectionId) ? sectionId : null;
 }
 
 export function parseRoute(hash: string): AtlasRoute {
@@ -80,7 +90,11 @@ export function parseRoute(hash: string): AtlasRoute {
       (candidate) => candidate.concept_id === id,
     );
     return document
-      ? { kind: "document", documentId: document.concept_id }
+      ? {
+          kind: "document",
+          documentId: document.concept_id,
+          sectionId: documentSection(query),
+        }
       : defaultRoute();
   }
   if (family === "chapters" && id !== null) {
@@ -133,8 +147,12 @@ export function formatRoute(route: AtlasRoute): string {
         ? base
         : `${base}?return=weng/${encodeURIComponent(route.returnTo)}`;
     }
-    case "document":
-      return `#documents/${encodeURIComponent(route.documentId)}`;
+    case "document": {
+      const base = `#documents/${encodeURIComponent(route.documentId)}`;
+      return route.sectionId === null
+        ? base
+        : `${base}?section=${encodeURIComponent(route.sectionId)}`;
+    }
     case "chapter":
       return `#chapters/${encodeURIComponent(route.conceptId)}`;
     case "legacy":

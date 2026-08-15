@@ -33,7 +33,41 @@ describe("Atlas routes", () => {
     expect(formatRoute({
       kind: "document",
       documentId: contextDocumentId,
+      sectionId: null,
     })).toBe("#documents/context-engineering-deep-dive");
+  });
+
+  it("round trips canonical document sections", () => {
+    expect(
+      parseRoute(
+        "#documents/context-engineering-deep-dive?section=context-pipeline",
+      ),
+    ).toEqual({
+      kind: "document",
+      documentId: contextDocumentId,
+      sectionId: "context-pipeline",
+    });
+    expect(formatRoute({
+      kind: "document",
+      documentId: contextDocumentId,
+      sectionId: "context-pipeline",
+    })).toBe(
+      "#documents/context-engineering-deep-dive?section=context-pipeline",
+    );
+  });
+
+  it("keeps malformed document sections at the document root", () => {
+    for (const section of ["Context%20Pipeline", "context%252Dpipeline"]) {
+      expect(
+        parseRoute(
+          `#documents/context-engineering-deep-dive?section=${section}`,
+        ),
+      ).toEqual({
+        kind: "document",
+        documentId: contextDocumentId,
+        sectionId: null,
+      });
+    }
   });
 
   it("falls back when a route references an unknown identity", () => {

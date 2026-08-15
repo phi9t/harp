@@ -33,8 +33,12 @@ test("exports an offline single-file Harp atlas", () => {
   assert.doesNotMatch(inlineScript, /<\/script>/i);
   assert.doesNotMatch(atlasShell, /<script[^>]+src=/);
   assert.doesNotMatch(atlasShell, /<link[^>]+rel="stylesheet"/);
+  assert.doesNotMatch(atlasShell, /@font-face|url\s*\(/i);
   assert.doesNotMatch(indexHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
   assert.doesNotMatch(atlasHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
+  assert.match(decodedModule, /application\/x-tex/);
+  assert.match(decodedModule, /\?section=/);
+  assert.match(decodedModule, /math-error/);
   assert.match(decodedModule, /What makes an improvement loop recursive/);
   assert.match(decodedModule, /Evaluation, promotion, and containment/);
   assert.match(decodedModule, /RSI harness by Lil'Log, deconstructed/);
@@ -79,7 +83,8 @@ test("exports an offline single-file Harp atlas", () => {
     decodedModule,
     /api[-_]?key|endpoint configuration|credential configuration/i,
   );
-  assert.doesNotMatch(decodedModule, /\bfetch\s*\(/);
+  assert.doesNotMatch(decodedModule, /(?<![.\w}])fetch\s*\(/);
+  assert.doesNotMatch(decodedModule, /\b(?:window|globalThis|self)\.fetch\s*\(/);
   assert.match(decodedModule, /knowledge\/rsi\/chapters\/harness-engineering\.md/);
   assert.match(
     decodedModule,

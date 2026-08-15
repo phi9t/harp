@@ -1,5 +1,8 @@
+import { useEffect, useRef } from "react";
+
 import { canonicalChapters } from "../content/canonical";
 import type { CanonicalDocument } from "../content/types";
+import { renderCanonicalMath } from "./math";
 
 function secondLevelHeadings(html: string): string[] {
   const parsed = new DOMParser().parseFromString(html, "text/html");
@@ -11,19 +14,40 @@ function secondLevelHeadings(html: string): string[] {
 export function CanonicalDocumentView({
   document,
   sectionNavigationLabel,
+  sectionId = null,
 }: {
   document: CanonicalDocument;
   sectionNavigationLabel?: string;
+  sectionId?: string | null;
 }) {
+  const articleRef = useRef<HTMLElement>(null);
   const sections =
     sectionNavigationLabel === undefined
       ? []
       : secondLevelHeadings(document.html);
 
+  useEffect(() => {
+    const article = articleRef.current;
+    if (!article) {
+      return;
+    }
+    renderCanonicalMath(article);
+    if (!sectionId) {
+      return;
+    }
+    const heading = Array.from(
+      article.querySelectorAll<HTMLElement>("[id]"),
+    ).find((candidate) => candidate.id === sectionId);
+    if (!heading) {
+      return;
+    }
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    heading.scrollIntoView?.({ block: "start" });
+  }, [document.html_sha256, sectionId]);
+
   const scrollToSection = (section: string): void => {
-    const article = window.document.querySelector(
-      `[data-markdown-sha256="${document.markdown_sha256}"]`,
-    );
+    const article = articleRef.current;
     const heading = Array.from(article?.querySelectorAll("h2") ?? [])
       .find((candidate) => candidate.textContent?.trim() === section);
     if (!(heading instanceof HTMLElement)) {
@@ -55,6 +79,7 @@ export function CanonicalDocumentView({
         </nav>
       ) : null}
       <article
+        ref={articleRef}
         aria-label={document.title}
         className="canonical-chapter panel"
         data-html-sha256={document.html_sha256}

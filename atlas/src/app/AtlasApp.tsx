@@ -44,12 +44,19 @@ function technicalSectionNavigationLabel(
     : undefined;
 }
 
-function AuxiliaryDocumentReader({ documentId }: { documentId: DocumentId }) {
+function AuxiliaryDocumentReader({
+  documentId,
+  sectionId,
+}: {
+  documentId: DocumentId;
+  sectionId: string | null;
+}) {
   const document = documentById(documentId);
   return (
     <div className="route-reader">
       <CanonicalDocumentView
         document={document}
+        sectionId={sectionId}
         sectionNavigationLabel={technicalSectionNavigationLabel(document)}
       />
     </div>
@@ -227,7 +234,10 @@ export function AtlasApp() {
           />
         ) : null}
         {route.kind === "document" ? (
-          <AuxiliaryDocumentReader documentId={route.documentId} />
+          <AuxiliaryDocumentReader
+            documentId={route.documentId}
+            sectionId={route.sectionId}
+          />
         ) : null}
         {route.kind === "chapter" ? (
           <ChapterReader

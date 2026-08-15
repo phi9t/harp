@@ -4,6 +4,30 @@
   background: var(--paper);
 }
 
+.math-inline {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: -0.12em;
+}
+
+.math-display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-block: 0.5rem;
+}
+
+.math-error {
+  color: var(--orange-dark);
+  font-family: var(--font-utility);
+  white-space: pre-wrap;
+}
+
+.canonical-markdown :is(h2, h3):focus {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+
 .thesis-copy {
   padding: 32px;
   background: var(--cobalt);

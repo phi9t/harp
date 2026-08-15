@@ -870,7 +870,7 @@ fn rlm_system_reading_links_eval_apply_and_preserves_code_boundaries() {
         .unwrap();
 
     for required in [
-        "href=\"#documents/agentic-eval-apply\"",
+        "href=\"#agentic-eval-apply\"",
         "rlm-minimal",
         "seven registered adapters",
         "Local, IPython, and Docker",
@@ -1111,8 +1111,11 @@ fn agentic_engineering_packet_is_registered_and_preserves_authority_boundary() {
         .iter()
         .find(|document| document.concept_id == "agentic-engineering-index")
         .unwrap();
+    assert!(
+        index.html.contains("href=\"#agentic-engineering\""),
+        "agentic engineering index is missing the first-class reference route"
+    );
     for target in [
-        "agentic-engineering-reference",
         "agentic-engineering-tool-stack",
         "agentic-engineering-source-registry",
         "agentic-engineering-claim-ledger",
@@ -1326,6 +1329,73 @@ fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
         "<div class=\"canonical-table-scroll\" role=\"region\" aria-label=\"Scrollable data table\" tabindex=\"0\"><table>"
     ));
     assert!(rendered.contains("</table></div>"));
+}
+
+#[test]
+fn reader_route_targets_precede_document_routes_and_fragments_survive() {
+    let targets = render::route_targets(&[], &BTreeMap::new());
+    assert_eq!(
+        targets.get("knowledge/rsi/source_registry.md"),
+        Some(&render::RouteTarget::Reader("sources"))
+    );
+
+    let mut fragment_targets = BTreeMap::new();
+    fragment_targets.insert(
+        "knowledge/example/ledger.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "example-ledger".to_owned(),
+            heading_ids: BTreeSet::from(["cc-013-origin-sample-cancels-the-correction".to_owned()]),
+        },
+    );
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "ledger.md#cc-013-origin-sample-cancels-the-correction",
+            Path::new("knowledge/example"),
+            &fragment_targets,
+        ),
+        "#documents/example-ledger?section=cc-013-origin-sample-cancels-the-correction"
+    );
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "ledger.md#absent",
+            Path::new("knowledge/example"),
+            &fragment_targets,
+        ),
+        "#documents/example-ledger"
+    );
+}
+
+#[test]
+fn math_and_heading_attributes_are_scoped_to_the_crouzeix_packet() {
+    let packet = render_markdown(
+        "## Bound {#bound}\n\n$\\|T\\|\\le2$",
+        "knowledge/crouzeix_conjecture/example.md",
+        &[],
+    );
+    assert!(packet.contains("id=\"bound\""));
+    assert!(packet.contains("class=\"math math-inline\""));
+    assert!(packet.contains("data-tex=\""));
+
+    let legacy = render_markdown(
+        "Revenue moved from $0.0291 to $0.6371.",
+        "knowledge/rsi/systems/aflow.md",
+        &[],
+    );
+    assert!(!legacy.contains("math-inline"));
+}
+
+#[test]
+fn crouzeix_heading_ids_are_unique_and_math_payloads_are_escaped() {
+    let error = render::heading_ids_for_source(
+        "## First {#duplicate}\n\n## Second {#duplicate}\n",
+        "knowledge/crouzeix_conjecture/example.md",
+    )
+    .unwrap_err();
+    assert_eq!(error.code(), "knowledge.rsi.heading_id");
+
+    let rendered = render_markdown("$x<&>\"'$", "knowledge/crouzeix_conjecture/example.md", &[]);
+    assert!(rendered.contains("data-tex=\"x&lt;&amp;&gt;&quot;&#39;\""));
+    assert!(rendered.contains(">x&lt;&amp;&gt;\"'</span>"));
 }
 
 #[test]
