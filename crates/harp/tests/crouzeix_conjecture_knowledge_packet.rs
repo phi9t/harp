@@ -4,7 +4,7 @@ use std::path::{Component, Path, PathBuf};
 
 use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
-const EXPECTED_FILES: [&str; 13] = [
+const EXPECTED_FILES: [&str; 14] = [
     "01_problem_and_prior_barrier.md",
     "02_shared_power_family.md",
     "03_jin_proof_spine.md",
@@ -17,6 +17,7 @@ const EXPECTED_FILES: [&str; 13] = [
     "claim_evidence_ledger.md",
     "crouzeix_conjecture_index.md",
     "glossary.md",
+    "reproduction_research.md",
     "source_registry.md",
 ];
 

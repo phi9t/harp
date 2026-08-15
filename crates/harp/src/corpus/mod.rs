@@ -93,7 +93,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 34] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 35] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -217,6 +217,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 34] = [
     (
         "crouzeix-status-and-critical-assessment",
         "knowledge/crouzeix_conjecture/09_status_and_critical_assessment.md",
+    ),
+    (
+        "crouzeix-proof-reproduction-research",
+        "knowledge/crouzeix_conjecture/reproduction_research.md",
     ),
     (
         "crouzeix-glossary",

@@ -77,6 +77,7 @@ claim ceilings.
 7. [Jin Lean verification](07_jin_lean_verification.md)
 8. [AI-assisted discovery](08_ai_assisted_discovery.md)
 9. [Status and critical assessment](09_status_and_critical_assessment.md)
+10. [Proof-reproduction research](reproduction_research.md)
 
 ## Expert route
 
@@ -99,12 +100,15 @@ boundaries.
   Read the [action matrix](08_ai_assisted_discovery.md#documented-action-matrix).
 - **What evidence remains missing?**
   Read the [confidence-raising evidence](09_status_and_critical_assessment.md#evidence-that-would-raise-confidence).
+- **What part of the original proof-discovery process can be reproduced?**
+  Read the [proof-reproduction research](reproduction_research.md#reproduction-anchor).
 
 ## Reference documents
 
 - [Glossary](glossary.md)
 - [Source registry](source_registry.md)
 - [Claim-evidence ledger](claim_evidence_ledger.md)
+- [Proof-reproduction research](reproduction_research.md)
 
 The canonical packet consists of:
 
@@ -118,6 +122,7 @@ The canonical packet consists of:
 - [07_jin_lean_verification.md](07_jin_lean_verification.md)
 - [08_ai_assisted_discovery.md](08_ai_assisted_discovery.md)
 - [09_status_and_critical_assessment.md](09_status_and_critical_assessment.md)
+- [reproduction_research.md](reproduction_research.md)
 - [glossary.md](glossary.md)
 - [source_registry.md](source_registry.md)
 - [claim_evidence_ledger.md](claim_evidence_ledger.md)
