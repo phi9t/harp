@@ -549,29 +549,39 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
         .map_err(|error| format!("resolve evidence root: {error}"))?;
     let locator = entry.field("Locator")?;
     let markdown_locators = markdown_local_links(locator);
-    let native_raw_text_locator =
-        harp::knowledge::resolve_wiki_links(&workspace_root(), source, locator)
-            .map_err(|error| error.to_string())?
-            .into_iter()
-            .any(|link| {
-                link.target.starts_with(Path::new("evidence"))
-                    && link
-                        .target
-                        .extension()
-                        .and_then(|extension| extension.to_str())
-                        == Some("txt")
-            });
-    if native_raw_text_locator
-        && !markdown_locators.iter().any(|link| {
-            link.target
-                .split_once('#')
-                .is_some_and(|(_, anchor)| anchor.starts_with('L'))
+    let markdown_line_targets = markdown_locators
+        .iter()
+        .filter_map(|link| {
+            let (target, anchor) = link.target.split_once('#')?;
+            anchor
+                .starts_with('L')
+                .then(|| repository_relative_path(source, target))
         })
+        .collect::<Result<Vec<_>, _>>()?;
+    for native in harp::knowledge::resolve_wiki_links(&workspace_root(), source, locator)
+        .map_err(|error| error.to_string())?
     {
-        return Err(format!(
-            "{} locator requires a conventional Markdown line locator",
-            entry.id
-        ));
+        let native_target = workspace_root().join(&native.target);
+        if !native_target.starts_with(&evidence_root) {
+            return Err(format!(
+                "{} native locator must target a file under evidence/",
+                entry.id
+            ));
+        }
+        if native
+            .target
+            .extension()
+            .and_then(|extension| extension.to_str())
+            == Some("txt")
+            && !markdown_line_targets
+                .iter()
+                .any(|target| *target == native_target)
+        {
+            return Err(format!(
+                "{} native raw-text locator requires a matching conventional Markdown line locator",
+                entry.id
+            ));
+        }
     }
     for link in markdown_locators {
         let target = &link.target;
@@ -1269,6 +1279,33 @@ fn immutable_evidence_locators_require_a_markdown_line_anchor() {
     );
     validate_claim_entries(&dual_link)
         .expect("native navigation plus a Markdown line locator must validate");
+}
+
+#[test]
+fn native_evidence_locators_require_an_evidence_target_and_matching_line_target() {
+    let native_knowledge_target = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[knowledge/rsi/systems/dgm|DGM]] ([exact line 1](../../evidence/weng/text/dgm.txt#L1))",
+    );
+    assert!(validate_claim_entries(&native_knowledge_target)
+        .expect_err("native locator cannot target maintained knowledge")
+        .contains("native locator must target a file under evidence/"));
+
+    let mismatched_raw_text = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[evidence/weng/text/dgm.txt|MCE extracted text]] ([exact line 1](../../evidence/weng/references/dgm.txt#L1))",
+    );
+    assert!(validate_claim_entries(&mismatched_raw_text)
+        .expect_err("raw native locator must retain a line anchor for the same target")
+        .contains("matching conventional Markdown line locator"));
 }
 
 #[test]

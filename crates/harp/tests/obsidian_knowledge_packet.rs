@@ -39,6 +39,32 @@ fn packet_root() -> PathBuf {
     workspace_root().join("knowledge/darwinx")
 }
 
+fn canonical_system_ids() -> BTreeSet<String> {
+    serde_json::from_str::<serde_json::Value>(
+        &fs::read_to_string(workspace_root().join("content/systems/system_readings.json"))
+            .expect("read canonical RSI system registry"),
+    )
+    .expect("parse canonical RSI system registry")["systems"]
+        .as_array()
+        .expect("canonical RSI system list")
+        .iter()
+        .map(|system| {
+            system["system_id"]
+                .as_str()
+                .expect("canonical RSI system ID")
+                .to_owned()
+        })
+        .collect()
+}
+
+#[test]
+fn public_wiki_resolver_rejects_a_repository_root_source_path() {
+    let root = workspace_root();
+    let error = harp::knowledge::resolve_wiki_links(&root, &root, "[[note]]")
+        .expect_err("repository root cannot be a wiki-link source path");
+    assert_eq!(error.code(), "knowledge.obsidian.source_path");
+}
+
 fn markdown_options() -> Options {
     Options::ENABLE_TABLES
         | Options::ENABLE_FOOTNOTES
@@ -418,10 +444,10 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
         "every DarwinX claim needs a reader-facing route"
     );
 
-    let corpus = fs::read_to_string(workspace_root().join("crates/harp/src/corpus/mod.rs"))
-        .expect("read corpus registry");
+    let systems = canonical_system_ids();
     assert!(
-        !corpus.contains("\"darwinx\""),
+        !systems.contains("darwinx"),
         "DarwinX must remain an auxiliary packet, not a canonical RSI system"
     );
+    assert_eq!(systems.len(), 16, "canonical RSI system roster drifted");
 }

@@ -43,6 +43,16 @@ pub(crate) fn resolve_wiki_links(
             "Obsidian source path must be inside the repository",
         )
     })?;
+    if source_path.as_os_str().is_empty()
+        || source_path
+            .components()
+            .any(|component| !matches!(component, Component::Normal(_)))
+    {
+        return Err(AppError::invalid_input(
+            "knowledge.obsidian.source_path",
+            "Obsidian source path must be a nonempty normal repository-relative path",
+        ));
+    }
     let repository = HeldDirectory::open(repository_root, "Harp repository")?;
     obsidian::parse_wiki_links(markdown)
         .map_err(|error| AppError::invalid_input("knowledge.obsidian.parse", error))?

@@ -383,7 +383,12 @@ fn resolve_target(
     } else {
         Path::new(source_path)
             .parent()
-            .expect("canonical source has a parent")
+            .ok_or_else(|| {
+                AppError::invalid_input(
+                    "knowledge.obsidian.source_path",
+                    "Obsidian source path must include a parent directory",
+                )
+            })?
             .join(candidate)
     };
     let target = if candidate.extension().is_some() {
