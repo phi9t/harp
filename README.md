@@ -6,6 +6,10 @@ self-improvement research. It combines:
 - managed RSI Markdown under `knowledge/rsi/` and registered topic packets
   under `knowledge/darwin_godel_machine/`, `knowledge/meta_harness/`, and
   `knowledge/harness_benchmarks/`;
+- a first-class Mathematical Foundations packet under
+  `knowledge/mathematical_foundations/`, with original exposition and worked
+  problems informed by user-supplied Bishop and Lax inputs that remain local
+  only and are not redistributed;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
 - a verified coevolution research-agenda packet under

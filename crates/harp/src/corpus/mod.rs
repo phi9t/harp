@@ -75,7 +75,7 @@ pub(crate) fn resolve_wiki_links(
         .collect()
 }
 
-pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 15] = [
     (
         "thesis",
         "Thesis",
@@ -142,8 +142,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
         "Crouzeix",
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
+    (
+        "mathematical-foundations",
+        "Math foundations",
+        "knowledge/mathematical_foundations/mathematical_foundations_index.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 48] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 59] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -330,6 +335,50 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 48] = [
         "knowledge/darwinx/source_registry.md",
     ),
     ("darwinx-maintenance", "knowledge/darwinx/maintenance.md"),
+    (
+        "math-foundations-index",
+        "knowledge/mathematical_foundations/mathematical_foundations_index.md",
+    ),
+    (
+        "math-foundations-linear-spaces-and-maps",
+        "knowledge/mathematical_foundations/01_linear_spaces_and_maps.md",
+    ),
+    (
+        "math-foundations-orthogonality-spectra-and-decompositions",
+        "knowledge/mathematical_foundations/02_orthogonality_spectra_and_decompositions.md",
+    ),
+    (
+        "math-foundations-probability-and-gaussian-models",
+        "knowledge/mathematical_foundations/03_probability_and_gaussian_models.md",
+    ),
+    (
+        "math-foundations-bayesian-inference-and-information",
+        "knowledge/mathematical_foundations/04_bayesian_inference_and_information.md",
+    ),
+    (
+        "math-foundations-linear-models-and-regularization",
+        "knowledge/mathematical_foundations/05_linear_models_and_regularization.md",
+    ),
+    (
+        "math-foundations-optimization-and-iterative-methods",
+        "knowledge/mathematical_foundations/06_optimization_and_iterative_methods.md",
+    ),
+    (
+        "math-foundations-curriculum-map",
+        "knowledge/mathematical_foundations/curriculum_map.md",
+    ),
+    (
+        "math-foundations-glossary",
+        "knowledge/mathematical_foundations/glossary.md",
+    ),
+    (
+        "math-foundations-source-registry",
+        "knowledge/mathematical_foundations/source_registry.md",
+    ),
+    (
+        "math-foundations-claim-evidence-ledger",
+        "knowledge/mathematical_foundations/claim_evidence_ledger.md",
+    ),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =
     ("knowledge", "Knowledge", "knowledge/harp_knowledge_home.md");

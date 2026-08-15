@@ -115,7 +115,7 @@ pub(super) fn heading_ids_for_source(
     markdown: &str,
     source_path: &str,
 ) -> Result<BTreeSet<String>, AppError> {
-    if !is_crouzeix_packet(source_path) {
+    if !is_mathematics_packet(source_path) {
         return Ok(parsed_heading_ids(markdown, source_path)
             .into_iter()
             .collect());
@@ -441,14 +441,15 @@ fn markdown_options(source_path: &str) -> Options {
         | Options::ENABLE_TASKLISTS
         | Options::ENABLE_FOOTNOTES
         | Options::ENABLE_DEFINITION_LIST;
-    if is_crouzeix_packet(source_path) {
+    if is_mathematics_packet(source_path) {
         options |= Options::ENABLE_HEADING_ATTRIBUTES | Options::ENABLE_MATH;
     }
     options
 }
 
-fn is_crouzeix_packet(source_path: &str) -> bool {
+fn is_mathematics_packet(source_path: &str) -> bool {
     source_path.starts_with("knowledge/crouzeix_conjecture/")
+        || source_path.starts_with("knowledge/mathematical_foundations/")
 }
 
 fn math_span(tex: &str, display: bool) -> String {

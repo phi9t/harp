@@ -31,6 +31,8 @@ const wengSectionIds: readonly string[] = [
 
 const chapterPath = (id: string): string =>
   `knowledge/rsi/chapters/${id}.md`;
+const mathematicalFoundationsIndexPath =
+  "knowledge/mathematical_foundations/mathematical_foundations_index.md";
 
 const companionId = (id: string): string => `weng-${id}`;
 const documentMetadata = (id: string) => ({
@@ -151,6 +153,11 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
     {
+      route_id: "mathematical-foundations",
+      label: "Math foundations",
+      canonical_markdown_path: mathematicalFoundationsIndexPath,
+    },
+    {
       route_id: "knowledge",
       label: "Knowledge",
       canonical_markdown_path: chapterPath(chapterIds[0]),
@@ -176,6 +183,15 @@ const validV5Fixture: unknown = {
       html: `<h1>${id}</h1>`,
       metadata: documentMetadata(companionId(id)),
     })),
+    {
+      concept_id: "math-foundations-index",
+      title: "Math foundations",
+      canonical_markdown_path: mathematicalFoundationsIndexPath,
+      markdown_sha256: digest,
+      html_sha256: digest,
+      html: "<h1>Math foundations</h1>",
+      metadata: documentMetadata("math-foundations-index"),
+    },
   ],
   systems: systemIds.map((id, index) => {
     const source = index === 0 ? "AFLOW" : `SYSTEM-${String(index + 1).padStart(2, "0")}`;

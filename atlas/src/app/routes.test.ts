@@ -37,6 +37,17 @@ describe("Atlas routes", () => {
     })).toBe("#crouzeix-conjecture");
   });
 
+  it("parses and formats the mathematical foundations route", () => {
+    expect(parseRoute("#mathematical-foundations")).toEqual({
+      kind: "legacy",
+      routeId: "mathematical-foundations",
+    });
+    expect(formatRoute({
+      kind: "legacy",
+      routeId: "mathematical-foundations",
+    })).toBe("#mathematical-foundations");
+  });
+
   it("parses and formats the verified coevolution agenda route", () => {
     expect(parseRoute("#verified-coevolution")).toEqual({
       kind: "legacy",

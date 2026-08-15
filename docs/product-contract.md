@@ -10,7 +10,8 @@ Harp owns the standalone RSI technical atlas:
   `knowledge/self_improving_agents_survey/`, and
   `knowledge/verified_coevolution_agenda/`, and
   `knowledge/agentic_engineering/`, together with the auxiliary
-  `knowledge/darwinx/` packet and repository-root Obsidian navigation assets;
+  `knowledge/darwinx/` and `knowledge/mathematical_foundations/` packets and
+  repository-root Obsidian navigation assets;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
 - Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Verified
@@ -119,7 +120,7 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 104 compiled documents;
+- 115 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
@@ -161,6 +162,13 @@ retain their accompanying conventional Markdown `#L...` locators. Personal
 `tools/obsidian/profile/`, and the Base/Canvas/home assets remain canonical
 repository files rather than generated Atlas inputs.
 
+`knowledge/mathematical_foundations/` is an eleven-document learning packet
+for ML practitioners. It contributes one first-class Atlas route and ten
+auxiliary documents built from original exposition and problems informed by
+user-supplied Bishop and Lax inputs; those inputs remain local only and are not
+redistributed. It does not enter the RSI retained-concept taxonomy, coverage
+map, evidence graph, or source-verification counts.
+
 ## Weng teaching curriculum
 
 `knowledge/rsi/weng-sources/` is the canonical authority for the 42 five-field
@@ -178,7 +186,7 @@ requires 42 cards, ten lessons, four references, and nine section IDs.
 Retrieval begins at `unseen`, and page exposure does not establish mastery.
 
 Teaching files remain outside canonical Atlas compilation unless explicitly
-registered later. They do not change the 104-document, 75-concept, or other
+registered later. They do not change the 115-document, 75-concept, or other
 canonical corpus counts above.
 
 ## Search
@@ -194,6 +202,7 @@ The search index includes:
 - all `knowledge/agentic_engineering/**/*.md`;
 - all `knowledge/crouzeix_conjecture/**/*.md`;
 - all `knowledge/darwinx/**/*.md`;
+- all `knowledge/mathematical_foundations/**/*.md`;
 - `knowledge/harp_knowledge_home.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.

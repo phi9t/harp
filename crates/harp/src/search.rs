@@ -253,6 +253,11 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
         ("knowledge/crouzeix_conjecture", "canonical-markdown", "md"),
         ("knowledge/darwinx", "canonical-markdown", "md"),
         (
+            "knowledge/mathematical_foundations",
+            "canonical-markdown",
+            "md",
+        ),
+        (
             "knowledge/harp_knowledge_home.md",
             "canonical-markdown",
             "md",

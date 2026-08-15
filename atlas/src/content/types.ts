@@ -37,6 +37,7 @@ export type ReaderRouteId =
   | "verified-coevolution"
   | "agentic-engineering"
   | "crouzeix-conjecture"
+  | "mathematical-foundations"
   | "knowledge";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
@@ -54,6 +55,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "verified-coevolution",
   "agentic-engineering",
   "crouzeix-conjecture",
+  "mathematical-foundations",
   "knowledge",
 ];
 

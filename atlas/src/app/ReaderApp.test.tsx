@@ -115,6 +115,22 @@ describe("RSI technical reader", () => {
     expect(article.querySelector("math")).not.toBeNull();
   });
 
+  it("opens the mathematical foundations packet through its first-class route", async () => {
+    const user = userEvent.setup();
+    render(<ReaderApp />);
+
+    await user.click(screen.getByRole("button", { name: "Math foundations" }));
+
+    expect(window.location.hash).toBe("#mathematical-foundations");
+    expect(
+      screen.getByRole("heading", {
+        name: "Mathematical foundations for machine learning",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "Current route" }))
+      .toHaveTextContent("Math foundations");
+  });
+
   it("opens the verified coevolution agenda through its first-class route", async () => {
     const user = userEvent.setup();
     render(<ReaderApp />);

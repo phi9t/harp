@@ -151,4 +151,4 @@ This extension does not alter the fixed 521-row initial import account.
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`9356f327fc4e956265d8a380df074e1677b347ae26ae41d311857740924ca8ae`
+`f1dd6b19c78d3fce07cedc49f4b10041152085dcf608e4556be57f24b6e68f20`

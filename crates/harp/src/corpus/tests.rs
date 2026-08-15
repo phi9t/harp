@@ -1246,6 +1246,7 @@ confidence: high\n\
             "verified-coevolution",
             "agentic-engineering",
             "crouzeix-conjecture",
+            "mathematical-foundations",
             "knowledge",
         ]
     );
@@ -1275,6 +1276,48 @@ confidence: high\n\
             .iter()
             .any(|document| { document.canonical_markdown_path == route.canonical_markdown_path }));
     }
+}
+
+#[test]
+fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+
+    let corpus = compile(repo.path()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "mathematical-foundations"
+            && route.label == "Math foundations"
+            && route.canonical_markdown_path
+                == "knowledge/mathematical_foundations/mathematical_foundations_index.md"
+    }));
+
+    let document_ids = corpus
+        .documents
+        .iter()
+        .filter(|document| document.concept_id.starts_with("math-foundations-"))
+        .map(|document| document.concept_id.as_str())
+        .collect::<Vec<_>>();
+    let expected_document_ids = BTreeSet::from([
+        "math-foundations-index",
+        "math-foundations-linear-spaces-and-maps",
+        "math-foundations-orthogonality-spectra-and-decompositions",
+        "math-foundations-probability-and-gaussian-models",
+        "math-foundations-bayesian-inference-and-information",
+        "math-foundations-linear-models-and-regularization",
+        "math-foundations-optimization-and-iterative-methods",
+        "math-foundations-curriculum-map",
+        "math-foundations-glossary",
+        "math-foundations-source-registry",
+        "math-foundations-claim-evidence-ledger",
+    ]);
+    let actual_document_ids = document_ids.iter().copied().collect::<BTreeSet<_>>();
+    assert_eq!(
+        document_ids.len(),
+        11,
+        "duplicate or unexpected packet document ID"
+    );
+    assert_eq!(actual_document_ids, expected_document_ids);
 }
 
 #[test]
@@ -1650,7 +1693,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
 }
 
 #[test]
-fn math_and_heading_attributes_are_scoped_to_the_crouzeix_packet() {
+fn math_and_heading_attributes_are_scoped_to_mathematics_packets() {
     let packet = render_markdown(
         "## Bound {#bound}\n\n$\\|T\\|\\le2$",
         "knowledge/crouzeix_conjecture/example.md",
@@ -1659,6 +1702,14 @@ fn math_and_heading_attributes_are_scoped_to_the_crouzeix_packet() {
     assert!(packet.contains("id=\"bound\""));
     assert!(packet.contains("class=\"math math-inline\""));
     assert!(packet.contains("data-tex=\""));
+
+    let foundations = render_markdown(
+        "## Gradient {#gradient}\n\n$\\nabla f(x)$",
+        "knowledge/mathematical_foundations/example.md",
+        &[],
+    );
+    assert!(foundations.contains("id=\"gradient\""));
+    assert!(foundations.contains("class=\"math math-inline\""));
 
     let legacy = render_markdown(
         "Revenue moved from $0.0291 to $0.6371.",
@@ -1669,13 +1720,20 @@ fn math_and_heading_attributes_are_scoped_to_the_crouzeix_packet() {
 }
 
 #[test]
-fn crouzeix_heading_ids_are_unique_and_math_payloads_are_escaped() {
+fn mathematics_packet_heading_ids_are_unique_and_math_payloads_are_escaped() {
     let error = render::heading_ids_for_source(
         "## First {#duplicate}\n\n## Second {#duplicate}\n",
         "knowledge/crouzeix_conjecture/example.md",
     )
     .unwrap_err();
     assert_eq!(error.code(), "knowledge.rsi.heading_id");
+
+    let foundations_error = render::heading_ids_for_source(
+        "## First {#duplicate}\n\n## Second {#duplicate}\n",
+        "knowledge/mathematical_foundations/example.md",
+    )
+    .unwrap_err();
+    assert_eq!(foundations_error.code(), "knowledge.rsi.heading_id");
 
     let rendered = render_markdown("$x<&>\"'$", "knowledge/crouzeix_conjecture/example.md", &[]);
     assert!(rendered.contains("data-tex=\"x&lt;&amp;&gt;&quot;&#39;\""));
