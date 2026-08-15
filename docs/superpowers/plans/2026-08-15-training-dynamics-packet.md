@@ -4,7 +4,7 @@
 
 **Goal:** Add a first-class, source-bounded Training Dynamics packet and a pinned Lean 4/mathlib companion that machine-checks its deterministic quadratic and momentum theorem spine.
 
-**Architecture:** Keep reader-facing material under `knowledge/training_dynamics/` and Lean sources under the independent root project `formalization/training_dynamics/`. Harp’s Rust corpus compiler owns registration and the Atlas export remains derived; Lean is invoked only through the pinned Lake project. Exact controlled-model results link to compiled Lean declarations, while empirical diagnostics remain prose claims. The delivered packet is self-contained: it contains no external-checkout name, path, link, or runtime/build/test dependency.
+**Architecture:** Keep reader-facing material under `knowledge/training_dynamics/` and Lean sources under the independent root project `formalization/training_dynamics/`. Harp’s Rust corpus compiler owns registration and the Atlas export remains derived; Lean is invoked only through the pinned Lake project. Exact controlled-model results link to compiled Lean declarations, while empirical diagnostics remain prose claims. The delivered packet is self-contained: it contains no local external-checkout name, path, link, or runtime/build/test dependency. Its pinned public Lean/mathlib dependencies are declared in the Lake manifest.
 
 **Tech Stack:** Harp Rust, Markdown/pulldown-cmark, Atlas React/TypeScript/Vitest, Lean 4 `v4.32.1`, mathlib `v4.32.1`, Lake.
 

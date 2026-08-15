@@ -106,7 +106,9 @@ tests. Regenerate the corpus and offline export together.
 The packet stays separate from retained RSI concepts, coverage-map obligations,
 diagnostic contracts, and existing source-verification counts. Packet prose,
 registries, ledgers, formalization files, build scripts, and tests must contain
-no external-checkout name, path, link, or dependency.
+no local external-checkout name, path, link, or dependency. The pinned public
+Lean/mathlib toolchain is a deliberate exception and is documented in the
+formalization manifest.
 
 ## Verification
 
