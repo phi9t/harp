@@ -1,0 +1,115 @@
+# Mathematical Foundations Lean formalization design
+
+## Purpose
+
+Add a self-contained Lean companion for Harp's original Mathematical
+Foundations packet. It formalizes the theorem spine that supports the six
+reader modules and classifies every original worked problem by its formal
+relationship. It does not reproduce either supplied textbook's prose,
+exercises, solutions, scans, or local paths.
+
+## Scope and sequence
+
+Create an independent pinned project at `formalization/mathematical_foundations/`.
+It follows the already-landed Training Dynamics pattern: a version-pinned Lean
+toolchain, pinned public mathlib manifest, fail-closed build wrapper, strict
+proof-hole policy, scoped ignored Lake output, and a test-only fixture mode
+that cannot redirect ordinary verification.
+
+Formalization proceeds in this dependency order:
+
+1. **Linear spaces and maps.** Finite-dimensional coordinate maps, linear-map
+   composition, kernel/image relations, basis-coordinate reconstruction, and
+   matrix action identities.
+2. **Orthogonality and spectra.** Inner-product algebra, orthogonal projection
+   identities, positive-definiteness consequences, and symmetric spectral
+   statements whose assumptions are explicit in Lean.
+3. **Probability and Gaussian models.** Finite distributions, expectation and
+   covariance identities, affine transformations, and Gaussian algebra only
+   where the available mathlib API supports a clear exact statement.
+4. **Bayesian inference and information.** Finite conditional probability,
+   Bayes' rule under nonzero evidence, entropy/KL identities over finite
+   supports, and model-selection algebraic criteria.
+5. **Linear models and regularization.** Normal equations, ridge objectives,
+   positive-definite uniqueness conditions, and classification/probabilistic
+   identities that do not claim optimization convergence without its stated
+   assumptions.
+6. **Optimization and iterative methods.** Derivatives/Hessians in the
+   supported finite-dimensional setting, quadratic gradient descent,
+   stationary iterative recurrences, and convergence factors under explicit
+   spectral or contraction hypotheses.
+
+Modules 1 and 2 are the first complete release. Modules 3 through 6 follow in
+the listed order and reuse only exported definitions and theorem names from
+earlier modules.
+
+## Project architecture
+
+The project root imports six focused namespaces:
+
+- `MathematicalFoundations.Linear`
+- `MathematicalFoundations.Orthogonality`
+- `MathematicalFoundations.Probability`
+- `MathematicalFoundations.BayesInformation`
+- `MathematicalFoundations.LinearModels`
+- `MathematicalFoundations.Optimization`
+
+Each namespace has three layers: definitions, private helper lemmas, and a
+small public theorem surface. Public theorem names use the module prefix and
+describe the mathematical result rather than a book section. The project root
+must compile all six namespaces; an unfinished later module is not imported
+until its theorem set is complete and proof-hole free.
+
+The Lean README documents the exact bootstrap boundary: only a versioned,
+publicly verifiable Lean distribution and the pinned mathlib manifest are
+allowed. No global installation, cache, toolchain, or local external checkout
+is committed. The build wrapper defaults unconditionally to its own
+script-relative project and accepts a separate explicit test-only fixture mode
+for integration tests.
+
+## Course and problem mapping
+
+Add `knowledge/mathematical_foundations/formalization_map.md`. It lists each
+of the 48 original problem identifiers and exactly one status:
+
+- **Direct theorem:** the problem statement is represented by a named Lean
+  theorem and linked to its declaration.
+- **Corollary/application:** the worked solution is an instance or calculation
+  using named formal theorems; the map gives the theorem identifiers.
+- **Prose-only:** the problem depends on numerical evaluation, modeling
+  judgment, or an empirical interpretation; the map states that boundary and
+  makes no Lean-proof claim.
+
+The map also lists every public Lean theorem under the module it supports. A
+reader-facing module may link only to theorem identifiers that compile in the
+same release. No course sentence may call an explanatory derivation "proved"
+unless the map identifies the corresponding compiled theorem.
+
+## Verification
+
+- Rust tests verify the exact six-module formalization roster, pinned
+  toolchain/manifest, root imports, no proof-hole source text, no local paths
+  or `file://` references, and the total 48-problem map with one valid status
+  per problem.
+- The Lean wrapper rejects a scoped proof-hole fixture before invoking Lake,
+  ignores ambient project-root settings in ordinary mode, and builds the root
+  project with the pinned toolchain.
+- A link test verifies every theorem identifier in `formalization_map.md`
+  appears in a compiled declaration manifest generated by the Lean project;
+  prose-only rows must have no theorem identifier.
+- Corpus tests compile the new map as an auxiliary Mathematics document and
+  preserve Mathematics route search/rendering behavior.
+- The release gate runs the real Lean build, focused Rust/corpus tests, corpus
+  build/search refresh, Atlas export tests, and `mise run verify` with a
+  successful aggregate exit result on the integration commit.
+
+## Boundaries and non-goals
+
+- Formal theorems are controlled mathematical statements, not proofs about
+  arbitrary deep-learning systems or empirical performance.
+- The first release does not formalize measure-theoretic probability,
+  unrestricted neural-network training, or all advanced textbook chapters.
+- Mathematical Foundations remains original Harp prose; the companion never
+  imports or redistributes supplied books.
+- A red future-module contract cannot land ahead of its module. Each module's
+  tests and implementation are a green incremental slice.
