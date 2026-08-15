@@ -18,6 +18,52 @@ fn workspace_root() -> &'static Path {
         .expect("Harp workspace root")
 }
 
+fn formalization_lean_sources(root: &Path) -> Vec<std::path::PathBuf> {
+    let mut pending = vec![root.to_path_buf()];
+    let mut sources = Vec::new();
+
+    while let Some(directory) = pending.pop() {
+        for entry in
+            fs::read_dir(directory).expect("formalization source directory must be readable")
+        {
+            let entry = entry.expect("formalization source entry must be readable");
+            let file_type = entry
+                .file_type()
+                .expect("formalization source file type must be readable");
+            if file_type.is_dir() {
+                if entry.file_name() != ".lake" {
+                    pending.push(entry.path());
+                }
+            } else if file_type.is_file()
+                && entry
+                    .path()
+                    .extension()
+                    .is_some_and(|value| value == "lean")
+            {
+                sources.push(entry.path());
+            }
+        }
+    }
+
+    sources.sort();
+    sources
+}
+
+fn contains_nonportable_path_reference(source: &str) -> bool {
+    const UNIX_PATH_PREFIXES: [&str; 6] = ["/Users", "/private", "/tmp", "/home", "~", "file://"];
+
+    UNIX_PATH_PREFIXES
+        .iter()
+        .any(|prefix| source.contains(prefix))
+        || source.as_bytes().windows(3).any(|window| {
+            window[0].is_ascii_alphabetic()
+                && window[1] == b':'
+                && matches!(window[2], b'\\' | b'/')
+        })
+        || source.contains("\\\\")
+        || source.starts_with("//")
+}
+
 fn fixture() -> TempDir {
     let target = workspace_root().join("target");
     fs::create_dir_all(&target).unwrap();
@@ -1336,7 +1382,17 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
 fn compiles_the_mathematical_foundations_formalization_map() {
     const MAP_ID: &str = "math-foundations-formalization-map";
     const MAP_PATH: &str = "knowledge/mathematical_foundations/formalization_map.md";
+    const MANIFEST_PATH: &str =
+        "formalization/mathematical_foundations/MathematicalFoundations/PublicTheorems.lean";
     const STATUSES: [&str; 3] = ["Direct theorem", "Corollary/application", "Prose-only"];
+    const INVENTORY_NAMESPACES: [&str; 6] = [
+        "MathematicalFoundations.Linear",
+        "MathematicalFoundations.Orthogonality",
+        "MathematicalFoundations.Probability",
+        "MathematicalFoundations.BayesInformation",
+        "MathematicalFoundations.LinearModels",
+        "MathematicalFoundations.Optimization",
+    ];
 
     assert!(
         AUXILIARY_DOCUMENTS
@@ -1349,89 +1405,158 @@ fn compiles_the_mathematical_foundations_formalization_map() {
         "formalization map must not add a reader route"
     );
 
-    const FORMALIZATION_SOURCES: [(&str, &str); 6] = [
-        (
-            "MathematicalFoundations.Linear",
-            "formalization/mathematical_foundations/MathematicalFoundations/Linear.lean",
-        ),
-        (
-            "MathematicalFoundations.Orthogonality",
-            "formalization/mathematical_foundations/MathematicalFoundations/Orthogonality.lean",
-        ),
-        (
-            "MathematicalFoundations.Probability",
-            "formalization/mathematical_foundations/MathematicalFoundations/Probability.lean",
-        ),
-        (
-            "MathematicalFoundations.BayesInformation",
-            "formalization/mathematical_foundations/MathematicalFoundations/BayesInformation.lean",
-        ),
-        (
-            "MathematicalFoundations.LinearModels",
-            "formalization/mathematical_foundations/MathematicalFoundations/LinearModels.lean",
-        ),
-        (
-            "MathematicalFoundations.Optimization",
-            "formalization/mathematical_foundations/MathematicalFoundations/Optimization.lean",
-        ),
-    ];
-    const FORMALIZATION_SOURCE_PATHS: [&str; 12] = [
-        "formalization/mathematical_foundations/MathematicalFoundations.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Algebra.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Analysis.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/BayesInformation.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Boundary.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Geometry.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Linear.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/LinearModels.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Optimization.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Orthogonality.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Probability.lean",
-        "formalization/mathematical_foundations/MathematicalFoundations/Statistics.lean",
-    ];
-
     let map = fs::read_to_string(workspace_root().join(MAP_PATH))
         .expect("formalization map must be canonical Markdown");
-    let formalization_sources = FORMALIZATION_SOURCES
-        .iter()
-        .map(|(namespace, path)| {
-            let source = fs::read_to_string(workspace_root().join(path))
-                .expect("formalization source must be readable");
-            (*namespace, *path, source)
+    let manifest = fs::read_to_string(workspace_root().join(MANIFEST_PATH))
+        .expect("formalization map must have a Lean-owned public-theorem manifest");
+    let root_module = fs::read_to_string(
+        workspace_root()
+            .join("formalization/mathematical_foundations/MathematicalFoundations.lean"),
+    )
+    .expect("formalization root module must be readable");
+    assert!(
+        root_module.contains("import MathematicalFoundations.PublicTheorems"),
+        "formalization root module must compile the public-theorem manifest"
+    );
+    let manifest_entries = manifest
+        .split_once("def publicTheoremManifest : List String := [")
+        .and_then(|(_, values)| values.split_once("]\n"))
+        .expect("public theorem manifest must be a machine-readable Lean string list")
+        .0
+        .lines()
+        .filter_map(|line| {
+            let line = line.trim().trim_end_matches(',');
+            line.strip_prefix('"')
+                .and_then(|value| value.strip_suffix('"'))
         })
+        .map(str::to_owned)
         .collect::<Vec<_>>();
-    let forbidden = ["/Users/", "file://"];
-    for value in forbidden {
+    let declared_theorems = manifest_entries.iter().cloned().collect::<BTreeSet<_>>();
+    assert_eq!(
+        manifest_entries.len(),
+        23,
+        "Lean manifest must declare exactly twenty-three public theorems"
+    );
+    assert_eq!(
+        declared_theorems.len(),
+        23,
+        "Lean manifest must not duplicate a public theorem"
+    );
+    for identifier in &manifest_entries {
         assert!(
-            !map.contains(value),
-            "{MAP_PATH} must not contain machine-local reference {value:?}"
+            manifest.contains(&format!("#check {identifier}")),
+            "Lean manifest must typecheck listed theorem {identifier}"
         );
     }
-    for path in FORMALIZATION_SOURCE_PATHS {
-        let source = fs::read_to_string(workspace_root().join(path))
-            .expect("formalization source must be readable");
-        for value in forbidden {
-            assert!(
-                !source.contains(value),
-                "{path} must not contain machine-local reference {value:?}"
-            );
-        }
-    }
-
-    let declared_theorems = formalization_sources
-        .iter()
-        .flat_map(|(namespace, _, source)| {
-            source.lines().filter_map(move |line| {
-                line.strip_prefix("theorem ")
-                    .and_then(|declaration| declaration.split_whitespace().next())
-                    .map(|declaration| format!("{namespace}.{declaration}"))
-            })
-        })
-        .collect::<BTreeSet<_>>();
     assert!(
-        !declared_theorems.is_empty(),
-        "formalization map contract needs compiled public theorem declarations"
+        declared_theorems.iter().all(|identifier| {
+            INVENTORY_NAMESPACES
+                .iter()
+                .any(|namespace| identifier.starts_with(&format!("{namespace}.")))
+        }),
+        "Lean manifest contains a theorem outside the six supported namespaces"
     );
+
+    let inventory = map
+        .split_once("## Compiled declaration inventory\n")
+        .and_then(|(_, inventory)| inventory.split_once("\n## Module 1"))
+        .map(|(inventory, _)| inventory)
+        .expect("formalization map must have a declaration inventory before Module 1");
+    let inventory_rows = inventory
+        .lines()
+        .filter_map(|line| {
+            let cells = line
+                .trim()
+                .strip_prefix('|')?
+                .strip_suffix('|')?
+                .split('|')
+                .map(str::trim)
+                .collect::<Vec<_>>();
+            (cells.len() == 2 && cells[0].starts_with("[Module ")).then_some(cells)
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(
+        inventory_rows.len(),
+        INVENTORY_NAMESPACES.len(),
+        "formalization inventory must have one row per supported module"
+    );
+
+    let mut inventory_module_numbers = Vec::new();
+    let mut inventory_identifiers = Vec::new();
+    for cells in inventory_rows {
+        let module_number = cells[0]
+            .strip_prefix("[Module ")
+            .and_then(|label| label.split_once(':'))
+            .and_then(|(number, _)| number.parse::<usize>().ok())
+            .expect("formalization inventory module label must contain a number");
+        let expected_namespace = INVENTORY_NAMESPACES
+            .get(
+                module_number
+                    .checked_sub(1)
+                    .expect("module number must be positive"),
+            )
+            .expect("formalization inventory module number must be supported");
+        let identifiers = cells[1]
+            .split('`')
+            .filter(|identifier| identifier.starts_with("MathematicalFoundations."))
+            .collect::<Vec<_>>();
+        assert!(
+            !identifiers.is_empty(),
+            "formalization inventory module {module_number} must name a theorem"
+        );
+        assert!(
+            identifiers
+                .iter()
+                .all(|identifier| identifier.starts_with(&format!("{expected_namespace}."))),
+            "formalization inventory module {module_number} has a theorem from another namespace"
+        );
+        inventory_module_numbers.push(module_number);
+        inventory_identifiers.extend(identifiers.into_iter().map(str::to_owned));
+    }
+    assert_eq!(
+        inventory_module_numbers,
+        (1..=6).collect::<Vec<_>>(),
+        "formalization inventory modules must be ordered"
+    );
+    let inventory_set = inventory_identifiers
+        .iter()
+        .cloned()
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        inventory_identifiers.len(),
+        23,
+        "formalization inventory must name exactly twenty-three theorem identifiers"
+    );
+    assert_eq!(
+        inventory_set.len(),
+        23,
+        "formalization inventory must not duplicate a theorem identifier"
+    );
+    assert_eq!(
+        inventory_set, declared_theorems,
+        "formalization inventory must exactly match the compiled Lean manifest"
+    );
+
+    assert!(
+        !contains_nonportable_path_reference(&map),
+        "{MAP_PATH} must not contain a nonportable local-path reference"
+    );
+    let formalization_root = workspace_root().join("formalization/mathematical_foundations");
+    let lean_sources = formalization_lean_sources(&formalization_root);
+    assert!(
+        lean_sources
+            .iter()
+            .any(|path| path.ends_with("PublicTheorems.lean")),
+        "formalization source scan must discover the Lean-owned theorem manifest"
+    );
+    for path in lean_sources {
+        let source = fs::read_to_string(&path).expect("formalization source must be readable");
+        assert!(
+            !contains_nonportable_path_reference(&source),
+            "{} must not contain a nonportable local-path reference",
+            path.strip_prefix(workspace_root()).unwrap().display()
+        );
+    }
 
     let rows = map
         .lines()

@@ -7,5 +7,6 @@ import MathematicalFoundations.Probability
 import MathematicalFoundations.BayesInformation
 import MathematicalFoundations.LinearModels
 import MathematicalFoundations.Optimization
+import MathematicalFoundations.PublicTheorems
 import MathematicalFoundations.Statistics
 import MathematicalFoundations.Boundary

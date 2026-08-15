@@ -82,7 +82,7 @@ They are listed here so the map does not imply that unlisted Lean results exist.
 
 | Original problem | Status | Lean declaration | Scope or limitation |
 | --- | --- | --- | --- |
-| MF-04-01 | Corollary/application | Lean: `MathematicalFoundations.BayesInformation.eventProbability_and_comm`; `MathematicalFoundations.BayesInformation.conditional_mul_evidence`; `MathematicalFoundations.BayesInformation.bayes_rule` | Bayes' identity is compiled for finite probability mass functions with nonzero evidence; the displayed decimal calculation remains an application. |
+| MF-04-01 | Corollary/application | Lean: `MathematicalFoundations.BayesInformation.eventProbability_and_comm`; `MathematicalFoundations.BayesInformation.conditional_mul_evidence`; `MathematicalFoundations.BayesInformation.bayes_rule` | Bayes' identity is compiled for finite probability mass functions with nonzero prior and nonzero evidence; the displayed decimal calculation remains an application. |
 | MF-04-02 | Prose-only | — | Exact limitation: Beta-Bernoulli conjugacy is not formalized. |
 | MF-04-03 | Prose-only | — | Exact limitation: MAP and maximum-likelihood optimization are not formalized. |
 | MF-04-04 | Prose-only | — | Exact limitation: entropy in bits is not formalized. |
@@ -111,7 +111,7 @@ They are listed here so the map does not imply that unlisted Lean results exist.
 | MF-06-01 | Prose-only | — | Exact limitation: the displayed two-variable gradient calculation is not formalized. |
 | MF-06-02 | Corollary/application | Lean: `MathematicalFoundations.Optimization.scalar_gradient_descent_error_recurrence` | The scalar quadratic error recurrence supports the one-step calculation after substituting its parameters. |
 | MF-06-03 | Prose-only | — | Exact limitation: the concrete Hessian and positive-definiteness calculation are not formalized. |
-| MF-06-04 | Corollary/application | Lean: `MathematicalFoundations.Optimization.scalar_stationary_iteration_succ`; `MathematicalFoundations.Optimization.scalar_stationary_iteration_tendsto_fixed_point` | The companion proves scalar convergence under an explicit contraction; it does not prove the stated multidimensional divergence claim. |
+| MF-06-04 | Prose-only | — | Exact limitation: the scalar stationary-iteration results prove convergence under an explicit contraction, not divergence from an excessively large gradient-descent learning rate. |
 | MF-06-05 | Prose-only | — | Exact limitation: the vector quadratic gradient and linear-system equivalence are not formalized. |
 | MF-06-06 | Prose-only | — | Exact limitation: residual monitoring for a matrix iteration is not formalized. |
 | MF-06-07 | Prose-only | — | Exact limitation: conjugate-gradient correctness for positive-definite systems is not formalized. |

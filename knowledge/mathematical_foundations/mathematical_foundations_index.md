@@ -46,6 +46,8 @@ pass; use the glossary as a quick lookup rather than a substitute for solving.
 - [Source registry](source_registry.md): identity and copyright boundary.
 - [Claim and evidence ledger](claim_evidence_ledger.md): bounded, material
   claims with stable book locators.
+- [Formalization map](formalization_map.md): compiled Lean theorem coverage and
+  explicit prose-only boundaries for all 48 original problems.
 
 ## How to study
 
