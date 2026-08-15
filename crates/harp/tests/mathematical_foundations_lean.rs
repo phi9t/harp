@@ -1,5 +1,5 @@
 use std::fs;
-use std::os::unix::fs::PermissionsExt;
+use std::os::unix::fs::{symlink, PermissionsExt};
 use std::path::Path;
 use std::process::Command;
 
@@ -68,6 +68,8 @@ fn proof_holes_are_rejected_before_lake_runs() {
 #[test]
 fn ambient_project_override_is_ignored() {
     let temporary_project = TempDir::new().expect("temporary Lean project");
+    let scoped_elan_home = temporary_project.path().join("elan");
+    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
     fs::write(
         temporary_project.path().join("ProofHole.lean"),
         "theorem proof_hole_fixture : True := by sorry\n",
@@ -94,7 +96,7 @@ fn ambient_project_override_is_ignored() {
             "HARP_MATHEMATICAL_FOUNDATIONS_PROJECT_ROOT",
             temporary_project.path(),
         )
-        .env("ELAN_HOME", temporary_project.path().join("elan"))
+        .env("ELAN_HOME", &scoped_elan_home)
         .env("PATH", &path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
@@ -111,6 +113,7 @@ fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
     let fake_bin = TempDir::new().expect("fake lake directory");
     let toolchain_capture = fake_bin.path().join("elan-toolchain");
     let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
+    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
     let fake_lake = fake_bin.path().join("lake");
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake lake");
@@ -173,11 +176,14 @@ fn normal_build_rejects_missing_or_home_scoped_elan_home_before_lake_runs() {
     );
 
     let home_dir = fake_bin.path().join("home");
+    let home_elan = home_dir.join(".elan");
+    fs::create_dir(&home_dir).expect("create fake home");
+    fs::create_dir(&home_elan).expect("create home-scoped Elan directory");
     let assertion = Command::new("/bin/sh")
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
         .env("HOME", &home_dir)
-        .env("ELAN_HOME", home_dir.join(".elan"))
+        .env("ELAN_HOME", &home_elan)
         .env("PATH", &path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
@@ -188,6 +194,50 @@ fn normal_build_rejects_missing_or_home_scoped_elan_home_before_lake_runs() {
         !lake_marker.exists(),
         "lake ran with a home-scoped ELAN_HOME: {assertion:?}"
     );
+
+    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
+    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env_remove("HOME")
+        .env("ELAN_HOME", &scoped_elan_home)
+        .env("PATH", &path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
+
+    let home_child = home_dir.join("child");
+    fs::create_dir(&home_child).expect("create home child directory");
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("HOME", &home_dir)
+        .env("ELAN_HOME", home_child.join("../.elan"))
+        .env("PATH", &path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
+
+    let home_link = fake_bin.path().join("home-elan-link");
+    symlink(&home_elan, &home_link).expect("create home Elan symlink");
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("HOME", &home_dir)
+        .env("ELAN_HOME", &home_link)
+        .env("PATH", &path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("task-scoped ELAN_HOME"));
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran with an indirect home-scoped ELAN_HOME"
+    );
 }
 
 #[test]
@@ -196,6 +246,8 @@ fn source_scan_errors_stop_before_lake_runs() {
     let lake_marker = fake_bin.path().join("lake-was-called");
     let fake_lake = fake_bin.path().join("lake");
     let fake_grep = fake_bin.path().join("grep");
+    let scoped_elan_home = fake_bin.path().join("scoped-elan-home");
+    fs::create_dir(&scoped_elan_home).expect("create scoped Elan home");
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake commands");
 
@@ -212,7 +264,7 @@ fn source_scan_errors_stop_before_lake_runs() {
     let assertion = Command::new("/bin/sh")
         .current_dir(repo_root())
         .arg("scripts/check_mathematical_foundations_lean.sh")
-        .env("ELAN_HOME", fake_bin.path().join("scoped-elan-home"))
+        .env("ELAN_HOME", &scoped_elan_home)
         .env("PATH", path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()
