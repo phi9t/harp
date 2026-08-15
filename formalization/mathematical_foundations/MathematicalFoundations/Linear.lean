@@ -1,6 +1,11 @@
 import Mathlib.Algebra.Module.Submodule.Ker
 import Mathlib.Data.Real.Basic
 
+/-!
+Algebraic real-linear-map and kernel results, with finite-coordinate reconstruction for `Fin n → ℝ`.
+No basis or infinite-dimensional results are formalized here.
+-/
+
 namespace MathematicalFoundations.Linear
 
 theorem linear_map_zero {V W : Type*} [AddCommGroup V] [AddCommGroup W]
