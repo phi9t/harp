@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::ops::Range;
-use std::path::{Component, Path, PathBuf};
+use std::path::{Path, PathBuf};
 
 use pulldown_cmark::{BrokenLink, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
@@ -217,110 +217,6 @@ fn markdown_links(text: &str) -> Vec<String> {
             _ => None,
         })
         .collect()
-}
-
-fn wiki_links(text: &str) -> Result<Vec<String>, String> {
-    let mut links = Vec::new();
-    let mut fenced = false;
-    for line in text.lines() {
-        if line.trim_start().starts_with("```") {
-            fenced = !fenced;
-            continue;
-        }
-        if fenced {
-            continue;
-        }
-        let mut remainder = line;
-        while let Some(start) = remainder.find("[[") {
-            remainder = &remainder[start + 2..];
-            let (raw, rest) = remainder
-                .split_once("]]")
-                .ok_or_else(|| "unclosed native wiki link".to_owned())?;
-            let (target, alias) = raw
-                .split_once('|')
-                .map_or((raw, None), |(target, alias)| (target, Some(alias)));
-            if target.split('|').count() != 1 || alias.is_some_and(|value| value.trim().is_empty())
-            {
-                return Err("malformed native wiki link".to_owned());
-            }
-            let target = target.trim();
-            if target.is_empty() {
-                return Err("native wiki link has an empty target".to_owned());
-            }
-            links.push(target.to_owned());
-            remainder = rest;
-        }
-    }
-    if fenced {
-        return Err("unclosed Markdown code fence".to_owned());
-    }
-    Ok(links)
-}
-
-fn resolve_wiki_link(source: &Path, target: &str) -> Result<PathBuf, String> {
-    let (path, heading) = target
-        .split_once('#')
-        .map_or((target, None), |(path, heading)| (path, Some(heading)));
-    if path.is_empty() {
-        return Err("same-note wiki links are unsupported by this packet contract".to_owned());
-    }
-    let candidate = Path::new(path);
-    if candidate.is_absolute()
-        || !candidate
-            .components()
-            .all(|component| matches!(component, Component::Normal(_)))
-    {
-        return Err(format!("native wiki link escapes repository: {target}"));
-    }
-    let root = workspace_root();
-    let rooted = matches!(
-        candidate.components().next(),
-        Some(Component::Normal(component))
-            if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
-    );
-    let resolved = if rooted {
-        root.join(candidate)
-    } else {
-        source
-            .parent()
-            .ok_or_else(|| format!("{} has no parent", source.display()))?
-            .join(candidate)
-    };
-    let resolved = if resolved.extension().is_some() {
-        resolved
-    } else {
-        resolved.with_extension("md")
-    };
-    if !resolved.is_file() {
-        return Err(format!("unresolved native wiki link: {target}"));
-    }
-    let canonical_root = fs::canonicalize(&root).map_err(|error| error.to_string())?;
-    let canonical_target = fs::canonicalize(&resolved).map_err(|error| error.to_string())?;
-    if !canonical_target.starts_with(canonical_root) {
-        return Err(format!(
-            "native wiki link escapes through symlink: {target}"
-        ));
-    }
-    if let Some(heading) = heading {
-        if resolved
-            .extension()
-            .and_then(|extension| extension.to_str())
-            != Some("md")
-        {
-            return Err(format!(
-                "native wiki heading targets non-Markdown file: {target}"
-            ));
-        }
-        let headings =
-            markdown_headings(&fs::read_to_string(&resolved).map_err(|error| error.to_string())?)
-                .into_iter()
-                .map(|heading| markdown_slug(&heading.text))
-                .collect::<BTreeSet<_>>();
-        if !headings.contains(&markdown_slug(heading)) {
-            return Err(format!("native wiki heading is missing: {target}"));
-        }
-    }
-    Ok(resolved)
 }
 
 fn parse_ledger_fields(id: &str, body: &str) -> Result<BTreeMap<String, Vec<String>>, String> {
@@ -980,9 +876,8 @@ fn validate_local_links(path: &Path, text: &str) -> Result<(), String> {
             return Err(format!("unresolved local link {target}"));
         }
     }
-    for target in wiki_links(text)? {
-        resolve_wiki_link(path, &target)?;
-    }
+    harp::knowledge::resolve_wiki_links(&workspace_root(), path, text)
+        .map_err(|error| error.to_string())?;
     Ok(())
 }
 
@@ -1276,26 +1171,19 @@ fn link_validation_covers_supported_and_broken_forms() {
 #[test]
 fn native_wiki_links_validate_aliases_headings_and_escape_safely() {
     let document = workspace_root().join("knowledge/darwin_godel_machine/link-test.md");
-    for valid in [
+    let valid = [
         "[[darwin_godel_machine_index|DGM index]]",
         "[[source_registry#DGM: ICLR 2026 paper|paper source]]",
         "[[evidence/implementations/dgm/snapshot/DGM_outer.py|controller source]]",
-    ] {
-        let target = wiki_links(valid)
-            .expect("parse native wiki fixture")
-            .into_iter()
-            .next()
-            .expect("one native wiki fixture");
-        resolve_wiki_link(&document, &target).unwrap_or_else(|error| panic!("{valid}: {error}"));
-    }
+        "![[evidence/weng/artifacts/pdf/dgm.pdf|paper embed]]",
+        "```md\n[[../../outside]]\n```",
+    ]
+    .join("\n");
+    harp::knowledge::resolve_wiki_links(&workspace_root(), &document, &valid)
+        .expect("production wiki resolver accepts aliases, headings, embeds, and fenced text");
     for invalid in ["[[../../outside]]", "[[/etc/passwd]]"] {
-        let target = wiki_links(invalid)
-            .expect("parse native wiki fixture")
-            .into_iter()
-            .next()
-            .expect("one native wiki fixture");
         assert!(
-            resolve_wiki_link(&document, &target).is_err(),
+            harp::knowledge::resolve_wiki_links(&workspace_root(), &document, invalid).is_err(),
             "escaping native wiki link unexpectedly passed: {invalid}"
         );
     }

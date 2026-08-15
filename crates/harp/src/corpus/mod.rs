@@ -6,6 +6,7 @@ use sha2::{Digest as _, Sha256};
 
 use crate::error::AppError;
 use crate::fs::HeldDirectory;
+use crate::knowledge::WikiLinkResolution;
 
 mod contracts;
 mod lessons;
@@ -31,6 +32,39 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
+pub(crate) fn resolve_wiki_links(
+    repository_root: &Path,
+    source_path: &Path,
+    markdown: &str,
+) -> Result<Vec<WikiLinkResolution>, AppError> {
+    let source_path = source_path.strip_prefix(repository_root).map_err(|_| {
+        AppError::invalid_input(
+            "knowledge.obsidian.source_path",
+            "Obsidian source path must be inside the repository",
+        )
+    })?;
+    let repository = HeldDirectory::open(repository_root, "Harp repository")?;
+    obsidian::parse_wiki_links(markdown)
+        .map_err(|error| AppError::invalid_input("knowledge.obsidian.parse", error))?
+        .into_iter()
+        .map(|link| {
+            let resolved =
+                obsidian::resolve_wiki_link(&repository, &source_path.to_string_lossy(), &link)?;
+            Ok(WikiLinkResolution {
+                target: resolved.target,
+                heading_id: resolved.heading_id,
+                requested_heading: match link.subpath {
+                    Some(obsidian::WikiSubpath::Heading(heading)) => Some(heading),
+                    _ => None,
+                },
+                pdf_page: resolved.pdf_page,
+                embed: resolved.embed,
+                display: resolved.display,
+            })
+        })
+        .collect()
+}
+
 pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
     (
         "thesis",

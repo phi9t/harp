@@ -247,44 +247,6 @@ fn markdown_links(text: &str) -> Vec<String> {
         .collect()
 }
 
-fn wiki_links(text: &str) -> Result<Vec<String>, String> {
-    let mut links = Vec::new();
-    let mut fenced = false;
-    for line in text.lines() {
-        if line.trim_start().starts_with("```") {
-            fenced = !fenced;
-            continue;
-        }
-        if fenced {
-            continue;
-        }
-        let mut remainder = line;
-        while let Some(start) = remainder.find("[[") {
-            remainder = &remainder[start + 2..];
-            let (raw, rest) = remainder
-                .split_once("]]")
-                .ok_or_else(|| "unclosed native wiki link".to_owned())?;
-            let (target, alias) = raw
-                .split_once('|')
-                .map_or((raw, None), |(target, alias)| (target, Some(alias)));
-            if target.split('|').count() != 1 || alias.is_some_and(|value| value.trim().is_empty())
-            {
-                return Err("malformed native wiki link".to_owned());
-            }
-            let target = target.trim();
-            if target.is_empty() {
-                return Err("native wiki link has an empty target".to_owned());
-            }
-            links.push(target.to_owned());
-            remainder = rest;
-        }
-    }
-    if fenced {
-        return Err("unclosed Markdown code fence".to_owned());
-    }
-    Ok(links)
-}
-
 fn frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     let rest = text
         .strip_prefix("---\n")
@@ -447,60 +409,31 @@ fn resolve_local_link(source: &Path, target: &str) -> Result<PathBuf, String> {
     Ok(resolved)
 }
 
-fn resolve_wiki_link(source: &Path, target: &str) -> Result<PathBuf, String> {
-    let (path, anchor) = target
-        .split_once('#')
-        .map_or((target, None), |(path, anchor)| (path, Some(anchor)));
-    let candidate = Path::new(path);
-    if path.is_empty()
-        || candidate.is_absolute()
-        || !candidate
-            .components()
-            .all(|component| matches!(component, Component::Normal(_)))
+fn validate_wiki_links(source: &Path, text: &str) -> Result<(), String> {
+    for link in harp::knowledge::resolve_wiki_links(&workspace_root(), source, text)
+        .map_err(|error| error.to_string())?
     {
-        return Err(format!("native wiki link escapes repository: {target}"));
-    }
-    let root = workspace_root();
-    let rooted = matches!(
-        candidate.components().next(),
-        Some(Component::Normal(component))
-            if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
-    );
-    let resolved = if rooted {
-        root.join(candidate)
-    } else {
-        source
-            .parent()
-            .ok_or_else(|| format!("{} has no parent", source.display()))?
-            .join(candidate)
-    };
-    let resolved = if resolved.extension().is_some() {
-        resolved
-    } else {
-        resolved.with_extension("md")
-    };
-    if !resolved.is_file() {
-        return Err(format!("unresolved native wiki link: {target}"));
-    }
-    let canonical_root = fs::canonicalize(&root).map_err(|error| error.to_string())?;
-    let canonical_target = fs::canonicalize(&resolved).map_err(|error| error.to_string())?;
-    if !canonical_target.starts_with(canonical_root) {
-        return Err(format!(
-            "native wiki link escapes through symlink: {target}"
-        ));
-    }
-    if let Some(anchor) = anchor {
-        if resolved
-            .extension()
-            .and_then(|extension| extension.to_str())
-            != Some("md")
-            || !heading_ids(&fs::read_to_string(&resolved).map_err(|error| error.to_string())?)?
-                .contains(&slug(anchor))
+        if !link
+            .target
+            .starts_with(Path::new("knowledge/crouzeix_conjecture"))
+            || link.requested_heading.is_none()
         {
-            return Err(format!("native wiki heading is missing: {target}"));
+            continue;
+        }
+        let explicit = explicit_heading_ids(
+            &fs::read_to_string(workspace_root().join(&link.target))
+                .map_err(|error| error.to_string())?,
+        )?;
+        if link.requested_heading.as_deref() != link.heading_id.as_deref()
+            || !explicit.contains(link.requested_heading.as_deref().expect("checked heading"))
+        {
+            return Err(format!(
+                "native wiki heading must use an explicit Crouzeix ID: {}",
+                link.target.display()
+            ));
         }
     }
-    Ok(resolved)
+    Ok(())
 }
 
 fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
@@ -522,11 +455,27 @@ fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
             return Err(format!("{} has invalid confidence", entry.id));
         }
         for field in ["Source", "Locator"] {
-            if markdown_links(entry.field(field)?).is_empty() {
+            let markdown = markdown_links(entry.field(field)?);
+            let wiki =
+                harp::knowledge::resolve_wiki_links(&workspace_root(), path, entry.field(field)?)
+                    .map_err(|error| error.to_string())?;
+            if markdown.is_empty() && wiki.is_empty() {
                 return Err(format!("{} field {field} must contain a link", entry.id));
             }
+            validate_wiki_links(path, entry.field(field)?)?;
         }
-        for locator in markdown_links(entry.field("Locator")?) {
+        let locators = markdown_links(entry.field("Locator")?);
+        if !locators.iter().any(|locator| {
+            locator
+                .split_once('#')
+                .is_some_and(|(_, anchor)| anchor.starts_with('L'))
+        }) {
+            return Err(format!(
+                "{} locator requires a conventional Markdown line locator",
+                entry.id
+            ));
+        }
+        for locator in locators {
             if locator.starts_with("http://") || locator.starts_with("https://") {
                 return Err(format!("{} locator is not local evidence", entry.id));
             }
@@ -658,9 +607,7 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
             }
             resolve_local_link(&path, &link).unwrap_or_else(|error| panic!("{name}: {error}"));
         }
-        for link in wiki_links(&text).unwrap_or_else(|error| panic!("{name}: {error}")) {
-            resolve_wiki_link(&path, &link).unwrap_or_else(|error| panic!("{name}: {error}"));
-        }
+        validate_wiki_links(&path, &text).unwrap_or_else(|error| panic!("{name}: {error}"));
         if name != "crouzeix_conjecture_index.md" {
             assert!(
                 text.trim_end().ends_with(
@@ -736,27 +683,35 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
 #[test]
 fn native_wiki_links_validate_aliases_headings_and_escape_safely() {
     let document = packet_root().join("link-test.md");
-    for valid in [
+    let valid = [
         "[[crouzeix_conjecture_index|Crouzeix index]]",
         "[[source_registry#jin-v4-audited-formalization-matched-git-manuscript|Jin source]]",
         "[[evidence/crouzeix_conjecture/verification/jin-565b6a3-build.log|build log]]",
-    ] {
-        let target = wiki_links(valid)
-            .expect("parse native wiki fixture")
-            .into_iter()
-            .next()
-            .expect("one native wiki fixture");
-        resolve_wiki_link(&document, &target).unwrap_or_else(|error| panic!("{valid}: {error}"));
-    }
+        "```md\n[[../../outside]]\n```",
+    ]
+    .join("\n");
+    validate_wiki_links(&document, &valid)
+        .expect("production wiki resolver accepts aliases, headings, and fenced text");
     for invalid in ["[[../../outside]]", "[[/etc/passwd]]"] {
-        let target = wiki_links(invalid)
-            .expect("parse native wiki fixture")
-            .into_iter()
-            .next()
-            .expect("one native wiki fixture");
         assert!(
-            resolve_wiki_link(&document, &target).is_err(),
+            validate_wiki_links(&document, invalid).is_err(),
             "escaping native wiki link unexpectedly passed: {invalid}"
         );
     }
+}
+
+#[test]
+fn native_wiki_heading_links_require_explicit_crouzeix_ids() {
+    let document = packet_root().join("link-test.md");
+    let source = "claim_evidence_ledger";
+    let generated_slug = "crouzeix-constant-two-conjecture";
+    assert!(
+        validate_wiki_links(&document, &format!("[[{source}#{generated_slug}]]")).is_err(),
+        "a generated heading slug must not bypass Crouzeix's explicit-ID contract"
+    );
+    validate_wiki_links(
+        &document,
+        &format!("[[{source}#cc-001-crouzeix-constant-two-conjecture]]"),
+    )
+    .expect("the documented explicit Crouzeix heading ID must validate");
 }

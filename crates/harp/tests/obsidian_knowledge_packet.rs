@@ -103,44 +103,6 @@ fn markdown_links(text: &str) -> Vec<String> {
         .collect()
 }
 
-fn wiki_links(text: &str) -> Result<Vec<String>, String> {
-    let mut links = Vec::new();
-    let mut fenced = false;
-    for line in text.lines() {
-        if line.trim_start().starts_with("```") {
-            fenced = !fenced;
-            continue;
-        }
-        if fenced {
-            continue;
-        }
-        let mut remainder = line;
-        while let Some(start) = remainder.find("[[") {
-            remainder = &remainder[start + 2..];
-            let (raw, rest) = remainder
-                .split_once("]]")
-                .ok_or_else(|| "unclosed native wiki link".to_owned())?;
-            let (target, alias) = raw
-                .split_once('|')
-                .map_or((raw, None), |(target, alias)| (target, Some(alias)));
-            if target.split('|').count() != 1 || alias.is_some_and(|value| value.trim().is_empty())
-            {
-                return Err("malformed native wiki link".to_owned());
-            }
-            let target = target.trim();
-            if target.is_empty() {
-                return Err("native wiki link has an empty target".to_owned());
-            }
-            links.push(target.to_owned());
-            remainder = rest;
-        }
-    }
-    if fenced {
-        return Err("unclosed Markdown code fence".to_owned());
-    }
-    Ok(links)
-}
-
 fn frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     let rest = text
         .strip_prefix("---\n")
@@ -188,12 +150,32 @@ fn resolve_markdown_link(source: &Path, target: &str) -> Result<(), String> {
     let (path, anchor) = target
         .split_once('#')
         .map_or((target, None), |(path, anchor)| (path, Some(anchor)));
-    let resolved = source
+    let root = workspace_root();
+    let mut resolved = source
         .parent()
         .expect("packet document has parent")
-        .join(path);
+        .to_path_buf();
+    for component in Path::new(path).components() {
+        match component {
+            Component::CurDir => {}
+            Component::ParentDir => {
+                if !resolved.pop() || !resolved.starts_with(&root) {
+                    return Err(format!("Markdown link escapes repository: {target}"));
+                }
+            }
+            Component::Normal(part) => resolved.push(part),
+            Component::RootDir | Component::Prefix(_) => {
+                return Err(format!("absolute Markdown link: {target}"));
+            }
+        }
+    }
     if !resolved.is_file() {
         return Err(format!("unresolved Markdown link {target}"));
+    }
+    let canonical_root = fs::canonicalize(&root).map_err(|error| error.to_string())?;
+    let canonical_target = fs::canonicalize(&resolved).map_err(|error| error.to_string())?;
+    if !canonical_target.starts_with(canonical_root) {
+        return Err(format!("Markdown link escapes through symlink: {target}"));
     }
     if let Some(anchor) = anchor {
         if let Some(line) = anchor.strip_prefix('L') {
@@ -222,85 +204,149 @@ fn resolve_markdown_link(source: &Path, target: &str) -> Result<(), String> {
     Ok(())
 }
 
-fn resolve_wiki_link(source: &Path, target: &str) -> Result<(), String> {
-    let (path, heading) = target
-        .split_once('#')
-        .map_or((target, None), |(path, heading)| (path, Some(heading)));
-    let candidate = Path::new(path);
-    if path.is_empty()
-        || candidate.is_absolute()
-        || !candidate
-            .components()
-            .all(|component| matches!(component, Component::Normal(_)))
-    {
-        return Err(format!("native wiki link escapes repository: {target}"));
-    }
-    let root = workspace_root();
-    let rooted = matches!(
-        candidate.components().next(),
-        Some(Component::Normal(component))
-            if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
-    );
-    let resolved = if rooted {
-        root.join(candidate)
-    } else {
-        source
-            .parent()
-            .expect("packet document has parent")
-            .join(candidate)
-    };
-    let resolved = if resolved.extension().is_some() {
-        resolved
-    } else {
-        resolved.with_extension("md")
-    };
-    if !resolved.is_file() {
-        return Err(format!("unresolved native wiki link {target}"));
-    }
-    let canonical_root = fs::canonicalize(&root).map_err(|error| error.to_string())?;
-    let canonical_target = fs::canonicalize(&resolved).map_err(|error| error.to_string())?;
-    if !canonical_target.starts_with(canonical_root) {
-        return Err(format!(
-            "native wiki link escapes through symlink: {target}"
-        ));
-    }
-    if let Some(heading) = heading {
-        if resolved
-            .extension()
-            .and_then(|extension| extension.to_str())
-            != Some("md")
-            || !headings(&fs::read_to_string(&resolved).map_err(|error| error.to_string())?)
-                .contains(&slug(heading))
-        {
-            return Err(format!("missing native wiki heading {target}"));
-        }
-    }
-    Ok(())
+fn validate_wiki_links(source: &Path, text: &str) -> Result<(), String> {
+    harp::knowledge::resolve_wiki_links(&workspace_root(), source, text)
+        .map(|_| ())
+        .map_err(|error| error.to_string())
 }
 
-fn claim_ids(text: &str) -> BTreeSet<String> {
-    text.lines()
-        .filter_map(|line| line.strip_prefix("## DX-"))
-        .filter_map(|line| line.split_once(':').map(|(id, _)| format!("DX-{id}")))
-        .collect()
+fn ledger_claims(text: &str) -> Result<BTreeMap<String, (String, ClaimClass)>, String> {
+    let mut claims = BTreeMap::new();
+    for heading in text.match_indices("\n## DX-") {
+        let heading_start = heading.0 + 1;
+        let section = &text[heading_start..];
+        let heading_line = section
+            .lines()
+            .next()
+            .expect("matched DarwinX ledger heading");
+        let Some(heading) = heading_line.strip_prefix("## DX-") else {
+            continue;
+        };
+        let (suffix, title) = heading
+            .split_once(':')
+            .ok_or_else(|| format!("malformed DarwinX ledger heading {heading_line}"))?;
+        let id = format!("DX-{suffix}");
+        let section = section.split("\n## ").next().expect("ledger section");
+        let class = section
+            .lines()
+            .find_map(|line| line.trim().strip_prefix("- Class: `"))
+            .and_then(|class| class.strip_suffix('`'))
+            .ok_or_else(|| format!("{id} ledger entry has no class"))?;
+        claims.insert(
+            slug(&format!("{id}: {title}")),
+            (id, parse_claim_class(class)?),
+        );
+    }
+    Ok(claims)
 }
 
-fn reader_claim_ids(text: &str) -> BTreeSet<String> {
-    let mut ids = BTreeSet::new();
-    for marker in ["**[", "**[["] {
-        for fragment in text.split(marker).skip(1) {
-            let label = fragment
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum ClaimClass {
+    Evidence,
+    SourceClaim,
+    Inference,
+    Missing,
+}
+
+fn parse_claim_class(value: &str) -> Result<ClaimClass, String> {
+    match value {
+        "EVIDENCE" => Ok(ClaimClass::Evidence),
+        "SOURCE CLAIM" => Ok(ClaimClass::SourceClaim),
+        "INFERENCE" => Ok(ClaimClass::Inference),
+        "MISSING" => Ok(ClaimClass::Missing),
+        _ => Err(format!("invalid reader claim class {value}")),
+    }
+}
+
+#[derive(Debug)]
+struct ReaderClaim {
+    class: ClaimClass,
+    id: String,
+    target: String,
+    native_wiki: bool,
+}
+
+fn reader_claims(text: &str) -> Result<Vec<ReaderClaim>, String> {
+    let mut claims = Vec::new();
+    for line in text.lines().map(str::trim) {
+        let (label, target, native_wiki) = if let Some(marker) = line.strip_prefix("**[[") {
+            let (target, label) = marker
+                .strip_suffix("]].**")
+                .ok_or_else(|| format!("malformed native reader claim marker {line}"))?
+                .split_once('|')
+                .ok_or_else(|| format!("native reader claim lacks a label {line}"))?;
+            (label, target, true)
+        } else if let Some(marker) = line.strip_prefix("**[") {
+            let (label, target) = marker
+                .strip_suffix(").**")
+                .ok_or_else(|| format!("malformed Markdown reader claim marker {line}"))?
                 .split_once("](")
-                .map(|(label, _)| label)
-                .or_else(|| fragment.split_once('|').map(|(_, label)| label));
-            if let Some((_, id)) = label.and_then(|label| label.split_once(" - ")) {
-                if id.starts_with("DX-") {
-                    ids.insert(id.trim_end_matches("]].**").to_owned());
-                }
+                .ok_or_else(|| format!("Markdown reader claim lacks a target {line}"))?;
+            (label, target, false)
+        } else {
+            continue;
+        };
+        let (class, id) = label
+            .split_once(" - ")
+            .ok_or_else(|| format!("reader claim label is malformed {label}"))?;
+        claims.push(ReaderClaim {
+            class: parse_claim_class(class)?,
+            id: id.to_owned(),
+            target: target.to_owned(),
+            native_wiki,
+        });
+    }
+    Ok(claims)
+}
+
+fn validate_reader_claims(
+    source: &Path,
+    text: &str,
+    ledger: &BTreeMap<String, (String, ClaimClass)>,
+) -> Result<(), String> {
+    for claim in reader_claims(text)? {
+        let (target, heading) = claim
+            .target
+            .split_once('#')
+            .ok_or_else(|| format!("{} reader claim lacks a ledger heading", claim.id))?;
+        let (ledger_id, ledger_class) = ledger
+            .get(&slug(heading))
+            .ok_or_else(|| format!("{} reader claim targets a missing ledger entry", claim.id))?;
+        if claim.id != *ledger_id {
+            return Err(format!("{} reader claim targets {ledger_id}", claim.id));
+        }
+        if claim.class != *ledger_class {
+            return Err(format!(
+                "{} reader claim class differs from its ledger",
+                claim.id
+            ));
+        }
+        if claim.native_wiki {
+            let resolution = harp::knowledge::resolve_wiki_links(
+                &workspace_root(),
+                source,
+                &format!("[[{}]]", claim.target),
+            )
+            .map_err(|error| error.to_string())?
+            .into_iter()
+            .next()
+            .expect("one native reader claim");
+            if resolution.target != PathBuf::from("knowledge/darwinx/claim_evidence_ledger.md")
+                || resolution.requested_heading.as_deref() != Some(heading)
+            {
+                return Err(format!(
+                    "{} native reader claim misses its ledger heading",
+                    claim.id
+                ));
+            }
+        } else {
+            resolve_markdown_link(source, &claim.target)?;
+            if target != "claim_evidence_ledger.md" {
+                return Err(format!("{} reader claim bypasses the ledger", claim.id));
             }
         }
     }
-    ids
+    Ok(())
 }
 
 #[test]
@@ -322,7 +368,17 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
         .collect::<BTreeSet<_>>();
     assert_eq!(actual, expected, "DarwinX packet file roster drifted");
 
-    let mut reader_claims = BTreeSet::new();
+    let ledger_path = root.join("claim_evidence_ledger.md");
+    let ledger = fs::read_to_string(&ledger_path).expect("read DarwinX claim ledger");
+    let claims = ledger_claims(&ledger).expect("parse DarwinX ledger claims");
+    let reader_files = [
+        "darwinx_index.md",
+        "01_mechanism_and_selection.md",
+        "02_evaluation_audit.md",
+        "03_critical_review.md",
+        "04_comparative_synthesis.md",
+        "05_successor_experiment.md",
+    ];
     for name in DARWINX_FILES {
         let path = root.join(name);
         let text = fs::read_to_string(&path).expect("read DarwinX packet document");
@@ -330,11 +386,10 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
         for target in markdown_links(&text) {
             resolve_markdown_link(&path, &target).unwrap_or_else(|error| panic!("{name}: {error}"));
         }
-        for target in wiki_links(&text).unwrap_or_else(|error| panic!("{name}: {error}")) {
-            resolve_wiki_link(&path, &target).unwrap_or_else(|error| panic!("{name}: {error}"));
-        }
-        if name != "claim_evidence_ledger.md" {
-            reader_claims.extend(reader_claim_ids(&text));
+        validate_wiki_links(&path, &text).unwrap_or_else(|error| panic!("{name}: {error}"));
+        if reader_files.contains(&name) {
+            validate_reader_claims(&path, &text, &claims)
+                .unwrap_or_else(|error| panic!("{name}: {error}"));
         }
     }
 
@@ -345,28 +400,26 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
         }
     }
 
-    let ledger = fs::read_to_string(root.join("claim_evidence_ledger.md"))
-        .expect("read DarwinX claim ledger");
     assert_eq!(
-        reader_claims,
-        claim_ids(&ledger),
+        reader_files
+            .into_iter()
+            .flat_map(|name| {
+                reader_claims(
+                    &fs::read_to_string(root.join(name)).expect("read DarwinX reader document"),
+                )
+                .expect("parse DarwinX reader claims")
+            })
+            .map(|claim| claim.id)
+            .collect::<BTreeSet<_>>(),
+        claims
+            .values()
+            .map(|(id, _)| id.clone())
+            .collect::<BTreeSet<_>>(),
         "every DarwinX claim needs a reader-facing route"
     );
 
     let corpus = fs::read_to_string(workspace_root().join("crates/harp/src/corpus/mod.rs"))
         .expect("read corpus registry");
-    let search = fs::read_to_string(workspace_root().join("crates/harp/src/search.rs"))
-        .expect("read search roots");
-    for name in DARWINX_FILES {
-        assert!(
-            !corpus.contains(&format!("knowledge/darwinx/{name}")),
-            "Task 7 must register DarwinX document {name}"
-        );
-    }
-    assert!(
-        !search.contains("\"knowledge/darwinx\""),
-        "Task 7 must register DarwinX in search"
-    );
     assert!(
         !corpus.contains("\"darwinx\""),
         "DarwinX must remain an auxiliary packet, not a canonical RSI system"
