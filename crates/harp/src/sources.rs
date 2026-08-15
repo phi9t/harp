@@ -1271,7 +1271,7 @@ fn verify_license_status(repo_root: &Path) -> Result<(), AppError> {
                     format!("captured license is missing: {}", license.display()),
                 ));
             }
-        } else if status != "not-present-at-pinned-revision\tMISSING" {
+        } else if status != "not-present-at-pinned-revision\tMISSING" && status != "MIT" {
             return Err(AppError::invalid_input(
                 "sources.license",
                 format!("invalid license status: {}", status_path.display()),
@@ -1878,6 +1878,25 @@ mod tests {
         assert!(report.normalized_artifacts >= 8);
         assert!(report.raw_archive_members >= 7);
         assert!(report.raw_archive_bytes > 0);
+    }
+
+    #[test]
+    fn implementation_license_status_accepts_explicit_mit() {
+        let repo = tempdir().unwrap();
+        let implementation = repo.path().join("evidence/implementations/example");
+        fs::create_dir_all(&implementation).unwrap();
+        fs::write(implementation.join("LICENSE_STATUS"), "MIT\n").unwrap();
+        for required in [
+            "evidence/sicp/LICENSE.txt",
+            "evidence/rlm/artifacts/git/LICENSE",
+            "evidence/weng/license_assignments.tsv",
+        ] {
+            let path = repo.path().join(required);
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(path, "fixture\n").unwrap();
+        }
+
+        verify_license_status(repo.path()).unwrap();
     }
 
     #[test]
