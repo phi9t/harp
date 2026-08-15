@@ -13,6 +13,9 @@ Harp owns the standalone RSI technical atlas:
 - deterministic diagnosis contracts under `content/diagnostics/`;
 - Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Agentic
   Engineering, and public implementation evidence under `evidence/`;
+- remote-only, hash-pinned Crouzeix proof artifacts and four Harp-local
+  revision-bound verification receipts under
+  `evidence/crouzeix_conjecture/`;
 - the runnable SICP evaluator supplement under `labs/sicp-evaluator/`;
 - the opt-in Meta-Harness TRAE proposal supplement under
   `labs/meta_harness_trae/`;
@@ -171,6 +174,8 @@ receipt. Status and query reject missing or stale indexes.
 
 - captured artifact size and SHA-256 manifests;
 - source-specific license records;
+- Crouzeix source-receipt identity, rights state, exact evidence-root
+  ownership, acquisition-script binding, and local verification-log digests;
 - every narrow public-source snapshot and revision identity;
 - the offline-complete Meta-Harness project page and dated capture receipt;
 - the normalized Meta-Harness TRAE receipt and bounded raw archive;
@@ -183,6 +188,15 @@ roots, dirty checkouts, wrong remotes, Git alternates, replacement refs, config
 includes, and revision mismatch before comparing tracked snapshots.
 
 There is no repository-wide license. Captured works are not relicensed.
+
+The Crouzeix bundle keeps upstream manuscript, PDF, TeX, Lean, prompt, and
+repository bytes remote-only. Its current source scans found no prohibited
+tokens at either pinned Jin revision. Both clean-room Lean builds are recorded
+as `blocked`, not failed or passed: the local machine had 4.96 GiB available
+against the acquisition policy's 8 GiB minimum for pinned Mathlib cache
+materialization. These receipts do not establish mathematical correctness,
+manuscript-to-formalization correspondence beyond the named source records,
+peer review, or current remote availability.
 
 ## Release gate
 

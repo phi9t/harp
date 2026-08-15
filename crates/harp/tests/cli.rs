@@ -327,16 +327,24 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
 
 #[test]
 fn sources_verify_accepts_the_tracked_offline_evidence() {
-    harp()
+    let output = harp()
         .current_dir(repo_root())
         .args(["--format", "json", "sources", "verify"])
         .assert()
         .success()
-        .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
-        .stdout(predicate::str::contains("\"evidence_artifacts\":352"))
-        .stdout(predicate::str::contains("\"snapshot_files\":105"))
-        .stdout(predicate::str::contains("\"binary_objects\":56"))
-        .stdout(predicate::str::contains("\"implementation_sources\":11"));
+        .get_output()
+        .stdout
+        .clone();
+    let envelope: Value = serde_json::from_slice(&output).expect("JSON envelope");
+
+    assert_eq!(envelope["command"], "sources.verify");
+    assert_eq!(envelope["status"], "ok");
+    assert_eq!(envelope["data"]["evidence_artifacts"], 385);
+    assert_eq!(envelope["data"]["snapshot_files"], 105);
+    assert_eq!(envelope["data"]["binary_objects"], 56);
+    assert_eq!(envelope["data"]["implementation_sources"], 11);
+    assert_eq!(envelope["data"]["crouzeix_source_receipts"], 29);
+    assert_eq!(envelope["data"]["crouzeix_verification_receipts"], 4);
 }
 
 #[test]

@@ -12,6 +12,8 @@ use walkdir::WalkDir;
 
 use crate::error::AppError;
 
+mod crouzeix;
+
 const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
@@ -27,6 +29,8 @@ pub struct SourcesReport {
     pub binary_objects: usize,
     pub implementation_sources: usize,
     pub local_locators: usize,
+    pub crouzeix_source_receipts: usize,
+    pub crouzeix_verification_receipts: usize,
 }
 
 #[derive(Debug, Serialize)]
@@ -150,6 +154,7 @@ struct TraeCandidateValidation {
 
 pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     let mut expected_digests = BTreeMap::new();
+    let crouzeix = crouzeix::verify(repo_root)?;
     let weng = verify_artifact_inventory(
         repo_root,
         Path::new("evidence/weng/artifact_inventory.tsv"),
@@ -250,7 +255,9 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             + benchmarks
             + agentic_engineering
             + meta_harness.site_artifacts
-            + meta_harness.normalized_artifacts,
+            + meta_harness.normalized_artifacts
+            + crouzeix.source_receipts
+            + crouzeix.verification_receipts,
         snapshot_files: snapshot_rows.len(),
         binary_objects: binaries.len(),
         implementation_sources: snapshot_rows
@@ -259,6 +266,8 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             .collect::<BTreeSet<_>>()
             .len(),
         local_locators,
+        crouzeix_source_receipts: crouzeix.source_receipts,
+        crouzeix_verification_receipts: crouzeix.verification_receipts,
     })
 }
 

@@ -1,0 +1,6 @@
+operation	lean-build
+source_commit	9df07838327b988e3924453daa29c8cd726d34b0
+result	blocked
+reason	insufficient-disk-for-pinned-mathlib-cache
+available_kib	4958564
+required_kib	8388608

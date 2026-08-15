@@ -127,4 +127,4 @@ fixed 521-row initial import account.
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`d62e182b0cade1571b0f4c2869fd90ccfc9351c2d84c7709f42739f0e95e075f`
+`ed7a61ae906d167ba4d9ef37d0462ba51d15c5c130478c59a6d6050970687f31`
