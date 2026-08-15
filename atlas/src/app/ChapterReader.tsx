@@ -85,6 +85,26 @@ export function CanonicalDocumentView({
         data-html-sha256={document.html_sha256}
         data-markdown-sha256={document.markdown_sha256}
       >
+        <dl className="document-metadata" aria-label="Document metadata">
+          <div>
+            <dt>Status</dt>
+            <dd>{document.metadata.status}</dd>
+          </div>
+          <div>
+            <dt>Confidence</dt>
+            <dd>{document.metadata.confidence}</dd>
+          </div>
+          <div>
+            <dt>Kind</dt>
+            <dd>{document.metadata.kind}</dd>
+          </div>
+          {document.metadata.tags.length > 0 ? (
+            <div>
+              <dt>Tags</dt>
+              <dd>{document.metadata.tags.join(", ")}</dd>
+            </div>
+          ) : null}
+        </dl>
         <div
           className="canonical-markdown"
           dangerouslySetInnerHTML={{ __html: document.html }}

@@ -86,6 +86,30 @@ fn write_complete_fixture(repo: &Path) {
 
 fn write_diagnostic_fixture(repo: &Path) {
     let root = workspace_root();
+    assert_eq!(
+        corpus
+            .reader_routes
+            .iter()
+            .map(|route| route.route_id.as_str())
+            .collect::<Vec<_>>(),
+        [
+            "thesis",
+            "loop",
+            "methods",
+            "harnesses",
+            "weng",
+            "experiment",
+            "sources",
+            "agentic-eval-apply",
+            "benchmarks",
+            "evaluator-integrity",
+            "survey",
+            "verified-coevolution",
+            "agentic-engineering",
+            "crouzeix-conjecture",
+            "knowledge",
+        ]
+    );
     for path in [
         rules::WORKSHEET_FIELDS_PATH,
         rules::DIAGNOSTIC_RULES_PATH,
@@ -1189,31 +1213,62 @@ fn compiles_reader_routes_from_canonical_markdown() {
     let repo = fixture();
     write_complete_fixture(repo.path());
 
+    fs::write(
+        repo.path().join("knowledge/harp_knowledge_home.md"),
+        "---\n\
+id: harp-knowledge-home\n\
+title: Harp knowledge home\n\
+type: research-index\n\
+status: active\n\
+tags: [harp, knowledge]\n\
+confidence: high\n\
+---\n\
+# Harp knowledge home\n",
+    )
+    .unwrap();
+    fs::create_dir_all(repo.path().join("knowledge/darwinx")).unwrap();
+    for (name, id) in [
+        ("darwinx_index.md", "darwinx-index"),
+        ("01_mechanism_and_selection.md", "darwinx-mechanism"),
+        ("02_evaluation_audit.md", "darwinx-evaluation"),
+        ("03_critical_review.md", "darwinx-review"),
+        ("04_comparative_synthesis.md", "darwinx-synthesis"),
+        ("05_successor_experiment.md", "darwinx-successor"),
+        ("claim_evidence_ledger.md", "darwinx-claim-ledger"),
+        ("source_registry.md", "darwinx-source-registry"),
+        ("maintenance.md", "darwinx-maintenance"),
+    ] {
+        fs::write(
+            repo.path().join("knowledge/darwinx").join(name),
+            format!(
+                "---\nid: {id}\ntitle: {id}\ntype: technical-deep-dive\nstatus: active\ntags: [darwinx]\nconfidence: high\n---\n# {id}\n"
+            ),
+        )
+        .unwrap();
+    }
+
     let corpus = compile(repo.path()).unwrap();
 
-    assert_eq!(
-        corpus
-            .reader_routes
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "knowledge"
+            && route.canonical_markdown_path == "knowledge/harp_knowledge_home.md"
+    }));
+    for path in [
+        "knowledge/darwinx/darwinx_index.md",
+        "knowledge/darwinx/01_mechanism_and_selection.md",
+        "knowledge/darwinx/02_evaluation_audit.md",
+        "knowledge/darwinx/03_critical_review.md",
+        "knowledge/darwinx/04_comparative_synthesis.md",
+        "knowledge/darwinx/05_successor_experiment.md",
+        "knowledge/darwinx/claim_evidence_ledger.md",
+        "knowledge/darwinx/source_registry.md",
+        "knowledge/darwinx/maintenance.md",
+    ] {
+        assert!(corpus
+            .documents
             .iter()
-            .map(|route| route.route_id.as_str())
-            .collect::<Vec<_>>(),
-        [
-            "thesis",
-            "loop",
-            "methods",
-            "harnesses",
-            "weng",
-            "experiment",
-            "sources",
-            "agentic-eval-apply",
-            "benchmarks",
-            "evaluator-integrity",
-            "survey",
-            "verified-coevolution",
-            "agentic-engineering",
-            "crouzeix-conjecture"
-        ]
-    );
+            .any(|document| document.canonical_markdown_path == path));
+    }
     for route in &corpus.reader_routes {
         assert!(corpus
             .documents
@@ -1405,7 +1460,9 @@ fn renders_obsidian_callouts_as_escaped_semantic_html() {
         &[],
     );
 
-    assert!(rendered.contains("<aside class=\"obsidian-callout\" data-callout-type=\"warning\">"));
+    assert!(rendered.contains(
+        "<aside class=\"obsidian-callout\" data-callout-type=\"warning\" role=\"note\">"
+    ));
     assert!(rendered.contains("<p class=\"obsidian-callout-title\">&lt;Unsafe &amp; title&gt;</p>"));
     assert!(rendered.contains("<p>Body with <strong>emphasis</strong>.</p>"));
     assert!(rendered.contains("</aside>"));

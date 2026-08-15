@@ -36,7 +36,8 @@ export type ReaderRouteId =
   | "survey"
   | "verified-coevolution"
   | "agentic-engineering"
-  | "crouzeix-conjecture";
+  | "crouzeix-conjecture"
+  | "knowledge";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
   "thesis",
@@ -53,6 +54,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "verified-coevolution",
   "agentic-engineering",
   "crouzeix-conjecture",
+  "knowledge",
 ];
 
 export type RetainedConcept = {
@@ -81,6 +83,18 @@ export type CanonicalDocument = {
   markdown_sha256: string;
   html_sha256: string;
   html: string;
+  metadata: DocumentMetadata;
+};
+
+export type DocumentMetadata = {
+  id: string;
+  kind: string;
+  status: string;
+  tags: string[];
+  confidence: "low" | "medium" | "high";
+  mode: string | null;
+  source_ids: string[];
+  coverage_keys: string[];
 };
 
 export type SystemTreatment = "full" | "card";

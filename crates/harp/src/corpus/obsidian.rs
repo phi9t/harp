@@ -391,9 +391,9 @@ fn resolve_target(
             })?
             .join(candidate)
     };
-    let target = if repository.regular_file_exists(&candidate, "Obsidian wikilink target")? {
-        candidate
-    } else if candidate.extension().is_some() {
+    let target = if candidate.extension().is_some()
+        || repository.regular_file_exists(&candidate, "Obsidian wikilink target")?
+    {
         candidate
     } else {
         candidate.with_extension("md")

@@ -28,6 +28,8 @@ pub(super) fn compile_document(
 ) -> Result<CanonicalDocument, AppError> {
     let body = markdown_body(&source.markdown, &source.path)?;
     debug_assert_eq!(source.body_sha256, sha256(body.as_bytes()));
+    let metadata =
+        super::contracts::document_metadata(&source.markdown, &source.path, &source.entries)?;
     let title = first_heading(body).ok_or_else(|| {
         invalid(
             "knowledge.rsi.heading",
@@ -43,6 +45,7 @@ pub(super) fn compile_document(
         markdown_sha256: source.body_sha256.clone(),
         html_sha256: sha256(html.as_bytes()),
         html,
+        metadata,
     })
 }
 
@@ -295,7 +298,7 @@ pub(super) fn render_markdown_with_targets(
         output = output.replace(
             &format!("<p>HARP_OBSIDIAN_CALLOUT_OPEN_{index}</p>\n"),
             &format!(
-                "<aside class=\"obsidian-callout\" data-callout-type=\"{}\">\n",
+                "<aside class=\"obsidian-callout\" data-callout-type=\"{}\" role=\"note\">\n",
                 callout.callout_type
             ),
         );
@@ -354,7 +357,7 @@ fn render_wiki_link(
         .alias
         .as_deref()
         .or_else(|| path.and_then(|path| path.rsplit('/').next()))
-        .or_else(|| match &link.subpath {
+        .or(match &link.subpath {
             Some(WikiSubpath::Heading(heading)) => Some(heading.as_str()),
             _ => None,
         })

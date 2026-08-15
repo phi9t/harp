@@ -48,6 +48,15 @@ describe("Atlas routes", () => {
     })).toBe("#verified-coevolution");
   });
 
+  it("parses and formats the knowledge home route", () => {
+    expect(parseRoute("#knowledge")).toEqual({
+      kind: "legacy",
+      routeId: "knowledge",
+    });
+    expect(formatRoute({ kind: "legacy", routeId: "knowledge" }))
+      .toBe("#knowledge");
+  });
+
   it("formats system and auxiliary document routes", () => {
     expect(formatRoute({
       kind: "system",

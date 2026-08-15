@@ -4,6 +4,7 @@ import {
   type CanonicalCorpus,
   type ConceptId,
   type CoverageDepth,
+  type DocumentMetadata,
   type DocumentId,
   type PaperRoute,
   type PublicationState,
@@ -71,6 +72,57 @@ function stringArray(value: unknown, label: string): string[] {
     throw new Error(`${label} must be an array`);
   }
   return value.map((item, index) => stringValue(item, `${label}[${index}]`));
+}
+
+function documentMetadata(value: unknown, index: number): DocumentMetadata {
+  const metadata = exactObject(
+    value,
+    [
+      "id",
+      "kind",
+      "status",
+      "tags",
+      "confidence",
+      "mode",
+      "source_ids",
+      "coverage_keys",
+    ],
+    `Document ${index} metadata`,
+  );
+  const confidence = stringValue(
+    metadata.confidence,
+    `Document ${index} metadata confidence`,
+  );
+  if (confidence !== "low" && confidence !== "medium" && confidence !== "high") {
+    throw new Error(
+      `Document ${index} metadata confidence must be low, medium, or high`,
+    );
+  }
+  return {
+    id: documentId(metadata.id, `Document ${index} metadata ID`),
+    kind: stringValue(metadata.kind, `Document ${index} metadata kind`),
+    status: stringValue(metadata.status, `Document ${index} metadata status`),
+    tags: unique(
+      stringArray(metadata.tags, `Document ${index} metadata tags`),
+      `Document ${index} metadata tags`,
+    ),
+    confidence,
+    mode: nullableString(metadata.mode, `Document ${index} metadata mode`),
+    source_ids: unique(
+      stringArray(
+        metadata.source_ids,
+        `Document ${index} metadata source IDs`,
+      ),
+      `Document ${index} metadata source IDs`,
+    ),
+    coverage_keys: unique(
+      stringArray(
+        metadata.coverage_keys,
+        `Document ${index} metadata coverage keys`,
+      ),
+      `Document ${index} metadata coverage keys`,
+    ),
+  };
 }
 
 function assertRouteId(value: string): asserts value is ReaderRouteId {
@@ -344,18 +396,17 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
   });
 
   const documents = corpus.documents.map((value, index) => {
-    const document = exactObject(
-      value,
-      [
-        "concept_id",
-        "title",
-        "canonical_markdown_path",
-        "markdown_sha256",
-        "html_sha256",
-        "html",
-      ],
-      `Document ${index}`,
-    );
+    const baseFields = [
+      "concept_id",
+      "title",
+      "canonical_markdown_path",
+      "markdown_sha256",
+      "html_sha256",
+      "html",
+    ] as const;
+    const document = isRecord(value) && "metadata" in value
+      ? exactObject(value, [...baseFields, "metadata"], `Document ${index}`)
+      : exactObject(value, baseFields, `Document ${index}`);
     const markdownDigest = stringValue(
       document.markdown_sha256,
       `Document ${index} Markdown digest`,
@@ -367,8 +418,22 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
     if (!digestPattern.test(markdownDigest) || !digestPattern.test(htmlDigest)) {
       throw new Error(`Document ${index} has an invalid digest`);
     }
+    const conceptId = documentId(document.concept_id, `Document ${index} ID`);
+    const metadata: DocumentMetadata =
+      "metadata" in document
+        ? documentMetadata(document.metadata, index)
+        : {
+            id: conceptId,
+            kind: "technical-document",
+            status: "legacy",
+            tags: [],
+            confidence: "medium",
+            mode: null,
+            source_ids: [],
+            coverage_keys: [],
+          };
     return {
-      concept_id: documentId(document.concept_id, `Document ${index} ID`),
+      concept_id: conceptId,
       title: stringValue(document.title, `Document ${index} title`),
       canonical_markdown_path: stringValue(
         document.canonical_markdown_path,
@@ -377,6 +442,7 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
       markdown_sha256: markdownDigest,
       html_sha256: htmlDigest,
       html: opaqueText(document.html, `Document ${index} HTML`),
+      metadata,
     };
   });
 
@@ -597,14 +663,17 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
       throw new Error("Canonical RSI corpus references a missing chapter");
     }
   }
+  const requiredReaderRouteIds = readerRouteIds.filter(
+    (routeId) => routeId !== "knowledge",
+  );
   if (
-    readerRoutes.length !== readerRouteIds.length
+    readerRoutes.length < requiredReaderRouteIds.length
     || new Set(readerRoutes.map((route) => route.route_id)).size
-      !== readerRouteIds.length
+      !== readerRoutes.length
   ) {
-    throw new Error("Canonical RSI corpus must contain every reader route");
+    throw new Error("Canonical RSI corpus must contain unique reader routes");
   }
-  for (const routeId of readerRouteIds) {
+  for (const routeId of requiredReaderRouteIds) {
     const route = readerRoutes.find((candidate) => candidate.route_id === routeId);
     if (
       !route

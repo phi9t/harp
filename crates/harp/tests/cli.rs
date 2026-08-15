@@ -159,7 +159,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 93,
+            "canonical_documents": 103,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
@@ -229,6 +229,7 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     fs::create_dir_all(repo.path().join("knowledge/verified_coevolution_agenda"))
         .expect("verified coevolution packet");
     fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).expect("Crouzeix packet");
+    fs::create_dir_all(repo.path().join("knowledge/darwinx")).expect("DarwinX packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
@@ -265,6 +266,16 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         "# Crouzeix\n\nThe origin sample cancels the diagonal correction.\n",
     )
     .expect("Crouzeix file");
+    fs::write(
+        repo.path().join("knowledge/harp_knowledge_home.md"),
+        "# Harp knowledge home\n\nReader entrypoint.\n",
+    )
+    .expect("knowledge home");
+    fs::write(
+        repo.path().join("knowledge/darwinx/darwinx_index.md"),
+        "# DarwinX\n\nPopulation selection preserves diverse harness candidates.\n",
+    )
+    .expect("DarwinX index");
     fs::write(
         repo.path().join("evidence/weng/text/source.txt"),
         "Harness evidence for recursive improvement.",
@@ -348,6 +359,20 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .success()
         .stdout(predicate::str::contains(
             "\"path\":\"knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
+        .args([
+            "--format",
+            "json",
+            "search",
+            "query",
+            "\"population selection\"",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/darwinx/darwinx_index.md\"",
         ));
 
     fs::write(

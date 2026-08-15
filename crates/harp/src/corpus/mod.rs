@@ -143,7 +143,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 38] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 47] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -296,7 +296,39 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 38] = [
         "crouzeix-claim-evidence-ledger",
         "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
     ),
+    ("darwinx-index", "knowledge/darwinx/darwinx_index.md"),
+    (
+        "darwinx-mechanism-and-selection",
+        "knowledge/darwinx/01_mechanism_and_selection.md",
+    ),
+    (
+        "darwinx-evaluation-audit",
+        "knowledge/darwinx/02_evaluation_audit.md",
+    ),
+    (
+        "darwinx-critical-review",
+        "knowledge/darwinx/03_critical_review.md",
+    ),
+    (
+        "darwinx-comparative-synthesis",
+        "knowledge/darwinx/04_comparative_synthesis.md",
+    ),
+    (
+        "darwinx-successor-experiment",
+        "knowledge/darwinx/05_successor_experiment.md",
+    ),
+    (
+        "darwinx-claim-evidence-ledger",
+        "knowledge/darwinx/claim_evidence_ledger.md",
+    ),
+    (
+        "darwinx-source-registry",
+        "knowledge/darwinx/source_registry.md",
+    ),
+    ("darwinx-maintenance", "knowledge/darwinx/maintenance.md"),
 ];
+const KNOWLEDGE_HOME: (&str, &str, &str) =
+    ("knowledge", "Knowledge", "knowledge/harp_knowledge_home.md");
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
     (
         "recursive-improvement-loop",
@@ -365,6 +397,19 @@ pub(super) struct CanonicalDocument {
     pub(super) markdown_sha256: String,
     pub(super) html_sha256: String,
     pub(super) html: String,
+    pub(super) metadata: DocumentMetadata,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub(super) struct DocumentMetadata {
+    pub(super) id: String,
+    pub(super) kind: String,
+    pub(super) status: String,
+    pub(super) tags: Vec<String>,
+    pub(super) confidence: String,
+    pub(super) mode: Option<String>,
+    pub(super) source_ids: Vec<String>,
+    pub(super) coverage_keys: Vec<String>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -487,22 +532,33 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         document.concept_id = format!("lesson-{}", lesson.lesson_id);
     }
 
-    let reader_routes = READER_ROUTES
-        .iter()
+    let mut registered_routes = READER_ROUTES.to_vec();
+    if repository
+        .read_optional_regular_file_bounded(
+            Path::new(KNOWLEDGE_HOME.2),
+            "Harp knowledge home",
+            MAX_MARKDOWN_BYTES,
+        )?
+        .is_some()
+    {
+        registered_routes.push(KNOWLEDGE_HOME);
+    }
+    let reader_routes = registered_routes
+        .into_iter()
         .map(|(route_id, label, path)| {
-            let document = documents.get_mut(*path).ok_or_else(|| {
+            let document = documents.get_mut(path).ok_or_else(|| {
                 invalid(
                     "knowledge.rsi.canonical_missing",
                     format!("reader route source is missing: {path}"),
                 )
             })?;
             if document.concept_id.is_empty() {
-                document.concept_id = (*route_id).to_owned();
+                document.concept_id = route_id.to_owned();
             }
             Ok(ReaderRoute {
-                route_id: (*route_id).to_owned(),
-                label: (*label).to_owned(),
-                canonical_markdown_path: (*path).to_owned(),
+                route_id: route_id.to_owned(),
+                label: label.to_owned(),
+                canonical_markdown_path: path.to_owned(),
             })
         })
         .collect::<Result<Vec<_>, AppError>>()?;
