@@ -1395,6 +1395,33 @@ fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
 }
 
 #[test]
+fn renders_obsidian_callouts_as_escaped_semantic_html() {
+    let rendered = render_markdown(
+        "> [!warning] <Unsafe & title>\n> Body with **emphasis**.\n",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(rendered.contains("<aside class=\"obsidian-callout\" data-callout-type=\"warning\">"));
+    assert!(rendered.contains("<p class=\"obsidian-callout-title\">&lt;Unsafe &amp; title&gt;</p>"));
+    assert!(rendered.contains("<p>Body with <strong>emphasis</strong>.</p>"));
+    assert!(rendered.contains("</aside>"));
+}
+
+#[test]
+fn renders_pdf_embeds_as_accessible_fallback_links() {
+    let rendered = render_markdown(
+        "![[evidence/example/paper.pdf#page=2|Paper]]",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(rendered.contains(
+        "<a class=\"obsidian-embed-fallback\" data-obsidian-embed=\"true\" href=\"../../evidence/example/paper.pdf#page=2\">Paper</a>"
+    ));
+}
+
+#[test]
 fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
     let targets = BTreeMap::from([(
         "knowledge/rsi/target.md".to_owned(),
@@ -1477,7 +1504,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             Path::new("knowledge/rsi/systems"),
             &legacy_targets,
         ),
-        "#documents/legacy"
+        "#documents/legacy?section=generated-slug"
     );
 }
 

@@ -1,11 +1,14 @@
 use std::path::{Path, PathBuf};
 
+use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
+
 use crate::error::AppError;
 use crate::fs::HeldDirectory;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) enum WikiSubpath {
     Heading(String),
+    Block(String),
     PdfPage(u32),
 }
 
@@ -28,27 +31,31 @@ pub(super) struct ResolvedWikiLink {
 
 pub(super) fn parse_wiki_links(markdown: &str) -> Result<Vec<WikiLink>, String> {
     let mut links = Vec::new();
-    let mut in_fence = false;
+    let mut fence = None;
 
     for line in markdown.split_inclusive('\n') {
-        if line.trim_start().starts_with("```") {
-            in_fence = !in_fence;
+        if update_fence(line, &mut fence) {
             continue;
         }
-        if in_fence {
+        if fence.is_some() {
             continue;
         }
 
         let bytes = line.as_bytes();
         let mut index = 0;
-        let mut in_code = false;
+        let mut inline_code = None;
         while index < bytes.len() {
             if bytes[index] == b'`' {
-                in_code = !in_code;
-                index += 1;
+                let delimiter_length = delimiter_length(bytes, index, b'`');
+                inline_code = match inline_code {
+                    Some(length) if length == delimiter_length => None,
+                    Some(length) => Some(length),
+                    None => Some(delimiter_length),
+                };
+                index += delimiter_length;
                 continue;
             }
-            if in_code {
+            if inline_code.is_some() {
                 index += 1;
                 continue;
             }
@@ -71,7 +78,7 @@ pub(super) fn parse_wiki_links(markdown: &str) -> Result<Vec<WikiLink>, String> 
         }
     }
 
-    if in_fence {
+    if fence.is_some() {
         return Err("unclosed Markdown code fence".to_owned());
     }
     Ok(links)
@@ -82,30 +89,34 @@ pub(super) fn rewrite_wiki_links(
     mut replacement: impl FnMut(&WikiLink) -> String,
 ) -> Result<String, String> {
     let mut output = String::with_capacity(markdown.len());
-    let mut in_fence = false;
+    let mut fence = None;
 
     for line in markdown.split_inclusive('\n') {
-        if line.trim_start().starts_with("```") {
-            in_fence = !in_fence;
+        if update_fence(line, &mut fence) {
             output.push_str(line);
             continue;
         }
-        if in_fence {
+        if fence.is_some() {
             output.push_str(line);
             continue;
         }
 
         let bytes = line.as_bytes();
         let mut index = 0;
-        let mut in_code = false;
+        let mut inline_code = None;
         while index < bytes.len() {
             if bytes[index] == b'`' {
-                in_code = !in_code;
-                output.push('`');
-                index += 1;
+                let delimiter_length = delimiter_length(bytes, index, b'`');
+                inline_code = match inline_code {
+                    Some(length) if length == delimiter_length => None,
+                    Some(length) => Some(length),
+                    None => Some(delimiter_length),
+                };
+                output.push_str(&line[index..index + delimiter_length]);
+                index += delimiter_length;
                 continue;
             }
-            if in_code {
+            if inline_code.is_some() {
                 let character = line[index..]
                     .chars()
                     .next()
@@ -139,10 +150,46 @@ pub(super) fn rewrite_wiki_links(
         }
     }
 
-    if in_fence {
+    if fence.is_some() {
         return Err("unclosed Markdown code fence".to_owned());
     }
     Ok(output)
+}
+
+fn update_fence(line: &str, fence: &mut Option<(u8, usize)>) -> bool {
+    let trimmed = line.trim_start();
+    let Some(delimiter) = trimmed
+        .as_bytes()
+        .first()
+        .copied()
+        .filter(|delimiter| matches!(delimiter, b'`' | b'~'))
+    else {
+        return false;
+    };
+    let length = delimiter_length(trimmed.as_bytes(), 0, delimiter);
+    if length < 3 {
+        return false;
+    }
+    match fence {
+        Some((open_delimiter, open_length))
+            if *open_delimiter == delimiter && length == *open_length =>
+        {
+            *fence = None;
+            true
+        }
+        Some(_) => false,
+        None => {
+            *fence = Some((delimiter, length));
+            true
+        }
+    }
+}
+
+fn delimiter_length(bytes: &[u8], start: usize, delimiter: u8) -> usize {
+    bytes[start..]
+        .iter()
+        .take_while(|byte| **byte == delimiter)
+        .count()
 }
 
 fn parse_wiki_link(value: &str, embed: bool) -> Result<WikiLink, String> {
@@ -182,10 +229,22 @@ fn parse_wiki_link(value: &str, embed: bool) -> Result<WikiLink, String> {
             }
             Some(WikiSubpath::PdfPage(value))
         }
+        Some(block) if block.starts_with('^') => {
+            let block = block.strip_prefix('^').expect("checked block prefix");
+            if block.is_empty() {
+                return Err("Obsidian block ID cannot be empty".to_owned());
+            }
+            Some(WikiSubpath::Block(block.to_owned()))
+        }
         Some(heading) => Some(WikiSubpath::Heading(heading.to_owned())),
     };
-    if path.is_empty() && !matches!(subpath, Some(WikiSubpath::Heading(_))) {
-        return Err("Obsidian same-note wikilink must target a heading".to_owned());
+    if path.is_empty()
+        && !matches!(
+            subpath,
+            Some(WikiSubpath::Heading(_)) | Some(WikiSubpath::Block(_))
+        )
+    {
+        return Err("Obsidian same-note wikilink must target a heading or block".to_owned());
     }
 
     Ok(WikiLink {
@@ -228,6 +287,12 @@ pub(super) fn resolve_wiki_link(
 
     let (heading_id, pdf_page) = match &link.subpath {
         None => (None, None),
+        Some(WikiSubpath::Block(_)) => {
+            return Err(AppError::invalid_input(
+                "knowledge.obsidian.block",
+                "Obsidian block links are unsupported until an immutable block contract exists",
+            ));
+        }
         Some(WikiSubpath::Heading(heading)) => {
             if target.extension().and_then(|extension| extension.to_str()) != Some("md") {
                 return Err(AppError::invalid_input(
@@ -249,10 +314,10 @@ pub(super) fn resolve_wiki_link(
         }
     };
 
-    if link.embed && heading_id.is_some() {
+    if link.embed && target.extension().and_then(|extension| extension.to_str()) != Some("pdf") {
         return Err(AppError::invalid_input(
-            "knowledge.obsidian.embed_heading",
-            "Obsidian heading embeds are not supported by the offline reader",
+            "knowledge.obsidian.embed",
+            "Obsidian embeds must target a PDF for the offline reader",
         ));
     }
 
@@ -331,19 +396,14 @@ fn resolve_heading(
             format!("Obsidian heading target is not UTF-8: {error}"),
         )
     })?;
-    let wanted = slug(heading);
-    let matches = markdown
-        .lines()
-        .filter_map(|line| {
-            line.strip_prefix("## ")
-                .or_else(|| line.strip_prefix("### "))
-                .map(slug)
-        })
-        .filter(|id| id == &wanted)
-        .count();
-    match matches {
-        1 => Ok(wanted),
-        0 => Err(AppError::invalid_input(
+    let slugged_heading = slug(heading);
+    let matches = heading_ids(markdown, target)
+        .into_iter()
+        .filter(|id| id == heading || id == &slugged_heading)
+        .collect::<Vec<_>>();
+    match matches.as_slice() {
+        [heading_id] => Ok(heading_id.clone()),
+        [] => Err(AppError::invalid_input(
             "knowledge.obsidian.heading",
             format!(
                 "Obsidian wikilink heading is missing in {}: {heading}",
@@ -358,6 +418,37 @@ fn resolve_heading(
             ),
         )),
     }
+}
+
+fn heading_ids(markdown: &str, target: &Path) -> Vec<String> {
+    let source_path = target.to_string_lossy();
+    let mut options = Options::empty();
+    if source_path.starts_with("knowledge/crouzeix_conjecture/") {
+        options |= Options::ENABLE_HEADING_ATTRIBUTES;
+    }
+    let mut headings = Vec::new();
+    let mut current = None::<(Option<String>, String)>;
+    for event in Parser::new_ext(markdown, options) {
+        match event {
+            Event::Start(Tag::Heading {
+                level: HeadingLevel::H2 | HeadingLevel::H3,
+                id,
+                ..
+            }) => current = Some((id.map(|value| value.into_string()), String::new())),
+            Event::Text(text) | Event::Code(text) | Event::InlineMath(text) => {
+                if let Some((_, value)) = &mut current {
+                    value.push_str(&text);
+                }
+            }
+            Event::End(TagEnd::Heading(_)) => {
+                if let Some((explicit_id, value)) = current.take() {
+                    headings.push(explicit_id.unwrap_or_else(|| slug(&value)));
+                }
+            }
+            _ => {}
+        }
+    }
+    headings
 }
 
 fn slug(value: &str) -> String {
@@ -412,7 +503,7 @@ mod tests {
     fn ignores_links_inside_code() {
         assert_eq!(
             parse_wiki_links(
-                "`[[knowledge/rsi/rsi_index]]`\n```md\n[[knowledge/rsi/rsi_index]]\n```\n[[knowledge/rsi/rsi_index]]"
+                "``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n[[knowledge/rsi/rsi_index]]"
             )
             .unwrap(),
             vec![WikiLink {
@@ -421,6 +512,33 @@ mod tests {
                 subpath: None,
                 alias: None,
             }]
+        );
+    }
+
+    #[test]
+    fn parses_block_links_and_rejects_them_until_a_block_contract_exists() {
+        let repo = fixture();
+        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::write(
+            repo.path().join("knowledge/example/note.md"),
+            "# Note\n\nparagraph ^block-id\n",
+        )
+        .unwrap();
+        let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
+        let link = parse_wiki_links("[[knowledge/example/note#^block-id|Block]]")
+            .unwrap()
+            .pop()
+            .unwrap();
+
+        assert_eq!(
+            link.subpath,
+            Some(WikiSubpath::Block("block-id".to_owned()))
+        );
+        assert_eq!(
+            resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+                .unwrap_err()
+                .code(),
+            "knowledge.obsidian.block"
         );
     }
 
@@ -441,13 +559,13 @@ mod tests {
     #[test]
     fn rewrites_links_without_touching_code() {
         let rewritten = rewrite_wiki_links(
-            "[[knowledge/rsi/rsi_index|RSI]] `[[knowledge/rsi/rsi_index]]`\n```md\n[[knowledge/rsi/rsi_index]]\n```\n",
+            "[[knowledge/rsi/rsi_index|RSI]] ``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n",
             |link| format!("[{}](target)", link.alias.as_deref().unwrap_or("missing")),
         )
         .unwrap();
         assert_eq!(
             rewritten,
-            "[RSI](target) `[[knowledge/rsi/rsi_index]]`\n```md\n[[knowledge/rsi/rsi_index]]\n```\n"
+            "[RSI](target) ``[[knowledge/rsi/rsi_index]]``\n~~~md\n[[knowledge/rsi/rsi_index]]\n~~~\n````md\n[[knowledge/rsi/rsi_index]]\n````\n"
         );
     }
 
@@ -496,6 +614,34 @@ mod tests {
     }
 
     #[test]
+    fn rejects_non_pdf_embeds() {
+        let repo = fixture();
+        fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
+        fs::create_dir_all(repo.path().join("evidence/example")).unwrap();
+        fs::write(
+            repo.path().join("knowledge/example/note.md"),
+            "# Note\n\n## Result\n",
+        )
+        .unwrap();
+        fs::write(repo.path().join("evidence/example/blob.bin"), b"blob").unwrap();
+        let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
+
+        for source in [
+            "![[knowledge/example/note]]",
+            "![[knowledge/example/note#Result]]",
+            "![[evidence/example/blob.bin]]",
+        ] {
+            let link = parse_wiki_links(source).unwrap().pop().unwrap();
+            assert_eq!(
+                resolve_wiki_link(&directory, "knowledge/example/source.md", &link)
+                    .unwrap_err()
+                    .code(),
+                "knowledge.obsidian.embed"
+            );
+        }
+    }
+
+    #[test]
     fn rejects_missing_or_ambiguous_heading() {
         let repo = fixture();
         fs::create_dir_all(repo.path().join("knowledge/example")).unwrap();
@@ -512,6 +658,37 @@ mod tests {
         let error =
             resolve_wiki_link(&directory, "knowledge/example/source.md", &link).unwrap_err();
         assert_eq!(error.code(), "knowledge.obsidian.heading");
+    }
+
+    #[test]
+    fn resolves_crouzeix_explicit_heading_ids_and_regular_slugs() {
+        let repo = fixture();
+        fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).unwrap();
+        fs::write(
+            repo.path().join("knowledge/crouzeix_conjecture/note.md"),
+            "# Note\n\n## Explicit heading {#explicit-id}\n\n## Regular heading\n",
+        )
+        .unwrap();
+        let directory = HeldDirectory::open(repo.path(), "test repository").unwrap();
+
+        for (fragment, expected) in [
+            ("explicit-id", "explicit-id"),
+            ("Regular heading", "regular-heading"),
+        ] {
+            let link = parse_wiki_links(&format!(
+                "[[knowledge/crouzeix_conjecture/note#{fragment}]]"
+            ))
+            .unwrap()
+            .pop()
+            .unwrap();
+            assert_eq!(
+                resolve_wiki_link(&directory, "knowledge/crouzeix_conjecture/source.md", &link)
+                    .unwrap()
+                    .heading_id
+                    .as_deref(),
+                Some(expected)
+            );
+        }
     }
 
     fn fixture() -> TempDir {
