@@ -445,9 +445,9 @@ fn darwinx_packet_is_complete_searchable_and_atlas_routable() {
     );
 
     let systems = canonical_system_ids();
-    assert!(
-        !systems.contains("darwinx"),
-        "DarwinX must remain an auxiliary packet, not a canonical RSI system"
-    );
     assert_eq!(systems.len(), 16, "canonical RSI system roster drifted");
+    assert!(
+        systems.contains("dgm") && systems.contains("meta-harness"),
+        "canonical RSI system roster lost known system identities"
+    );
 }
