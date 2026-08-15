@@ -850,16 +850,17 @@ preserved frontier implementation is reconciled.
 - Refreshed =docs/import-receipt.md= to the exact payload digest reported by
   the clean candidate repository verifier.
 
-** TODO Add Tracker And Runtime-Ticket Validators :ticket:tests:code:
+** DONE Add Tracker And Runtime-Ticket Validators :ticket:tests:code:
 :PROPERTIES:
 :ID: CPFR-010
 :DESIGN_SECTION: Ticket Discipline; Runtime Ticket Contract
 :DEPENDS_ON: CPFR-022
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT: pending
 :END:
 
 *** Scope
@@ -884,8 +885,8 @@ ticket/event records before any further frontier implementation.
   dependency, branch, worktree, owner, agent run, model, scope, non-goals,
   owned files, acceptance criteria, implementation steps, verification plan,
   and verification evidence.
-- Unclaimed tickets must use the literal =unassigned= sentinel; blank assignment
-  properties are invalid.
+- Unclaimed tickets must use the literal =unassigned= sentinel for =OWNER=,
+  =AGENT_RUN=, and =MODEL=; blank assignment properties are invalid.
 - Dependency graph rejects unknown IDs, self-dependencies, cycles, and execution
   before dependencies are terminal under the operating contract.
 - Runtime ticket JSON rejects unknown fields, unsafe IDs/paths, missing context
@@ -922,7 +923,31 @@ ticket/event records before any further frontier implementation.
 
 *** Verification Evidence
 
-- Record red/green commands, commit, and review findings.
+- Red test: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+  initially failed with =ModuleNotFoundError: No module named 'tickets'=.
+- Added =tickets.py= and =test_tickets.py= with tracker parsing/validation,
+  dependency/executability checks, runtime-ticket validation, runtime event-log
+  transition replay, frontier-event validation, score-complete derivation,
+  create-only ticket publication, symlink-safe ticket/event storage, and
+  ticket-binding validation.
+- Direct green suite:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+  passed 11 tests.
+- Full lab suite:
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+  passed 58 tests. Earlier parallel/contended runs exposed non-reproducible
+  one-second fake-CLI timeout races in =test_runner.CallTests=; the grouped
+  test passed in isolation and the full suite passed when rerun serially.
+- Static checks passed:
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr010-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/tickets.py labs/crouzeix_proof_reproduction/tests/test_tickets.py=
+  and =git diff --check=.
+- Spec review found blockers for persisted event-log replay, ancestor symlink
+  rejection, design-aligned frontier event kinds, and full assignment-sentinel
+  enforcement. All were fixed and re-review approved.
+- Code-quality review found blockers for event-log replay, contract-layout
+  publication, ancestor symlink rejection, and later a missing =ticket.json=
+  requirement before event append. All were fixed with regression tests and
+  re-review approved.
 
 ** DONE Reconcile Existing Partial Frontier Diff :review:code:ticket:
 :PROPERTIES:
@@ -1846,7 +1871,7 @@ run the release gate on the repaired tip.
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
 :AGENT_RUN: unassigned
-:MODEL: gpt-5.6-sol
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -1904,7 +1929,7 @@ absence of stale frontier processes before preparing the live E arm.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: historical-001; orchestrated-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -1963,8 +1988,8 @@ without backdating any ticket.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2023,8 +2048,8 @@ prompt.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2092,8 +2117,8 @@ evaluation.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2160,8 +2185,8 @@ entry.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2239,7 +2264,7 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -2301,7 +2326,7 @@ exists.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -2416,7 +2441,7 @@ superseded, blocked, non-promoted, and candidate-bearing run trees.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: historical-001; orchestrated-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -2473,7 +2498,7 @@ ceilings.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: expert-frontier-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -2584,7 +2609,7 @@ Register all reproduction evidence in Harp's offline source verifier.
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
 :AGENT_RUN: unassigned
-:MODEL: fresh reviewers
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2813,7 +2838,7 @@ misusing Jin's existing blocked builds as generated-proof verification.
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
 :AGENT_RUN: unassigned
-:MODEL: gpt-5.6-sol
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2868,7 +2893,7 @@ against the frozen E candidate and its reconciled finding ledger.
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
 :AGENT_RUN: unassigned
-:MODEL: fresh reviewers
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -2979,8 +3004,8 @@ tickets.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -3033,8 +3058,8 @@ card and an explicitly non-blind leakage tier.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-001
-:MODEL: gpt-5.6-sol
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -3086,7 +3111,7 @@ blocker as reconstruction evidence.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3139,8 +3164,8 @@ root before correctness review.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-review-001
-:MODEL: fresh reviewers
+:AGENT_RUN: unassigned
+:MODEL: unassigned
 :END:
 
 *** Scope
@@ -3191,7 +3216,7 @@ reviews; otherwise record review as not applicable against the exact blocker.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-formal-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3242,7 +3267,7 @@ the guided reconstruction.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: guided-review-001; guided-formal-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3296,7 +3321,7 @@ from the sealed guided generation run.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: e-initial-001; e-repair-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3350,7 +3375,7 @@ classification as create-only review evidence.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: e-formal-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3744,7 +3769,7 @@ closeout commit.
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
-:AGENT_RUN: landing-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
@@ -3801,7 +3826,7 @@ persist the terminal operator receipt outside the tracked payload.
 :BRANCH: master
 :WORKTREE: primary-checkout
 :OWNER: unassigned
-:AGENT_RUN: landing-001
+:AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
 
