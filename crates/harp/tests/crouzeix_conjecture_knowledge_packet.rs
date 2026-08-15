@@ -247,6 +247,44 @@ fn markdown_links(text: &str) -> Vec<String> {
         .collect()
 }
 
+fn wiki_links(text: &str) -> Result<Vec<String>, String> {
+    let mut links = Vec::new();
+    let mut fenced = false;
+    for line in text.lines() {
+        if line.trim_start().starts_with("```") {
+            fenced = !fenced;
+            continue;
+        }
+        if fenced {
+            continue;
+        }
+        let mut remainder = line;
+        while let Some(start) = remainder.find("[[") {
+            remainder = &remainder[start + 2..];
+            let (raw, rest) = remainder
+                .split_once("]]")
+                .ok_or_else(|| "unclosed native wiki link".to_owned())?;
+            let (target, alias) = raw
+                .split_once('|')
+                .map_or((raw, None), |(target, alias)| (target, Some(alias)));
+            if target.split('|').count() != 1 || alias.is_some_and(|value| value.trim().is_empty())
+            {
+                return Err("malformed native wiki link".to_owned());
+            }
+            let target = target.trim();
+            if target.is_empty() {
+                return Err("native wiki link has an empty target".to_owned());
+            }
+            links.push(target.to_owned());
+            remainder = rest;
+        }
+    }
+    if fenced {
+        return Err("unclosed Markdown code fence".to_owned());
+    }
+    Ok(links)
+}
+
 fn frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     let rest = text
         .strip_prefix("---\n")
@@ -409,6 +447,62 @@ fn resolve_local_link(source: &Path, target: &str) -> Result<PathBuf, String> {
     Ok(resolved)
 }
 
+fn resolve_wiki_link(source: &Path, target: &str) -> Result<PathBuf, String> {
+    let (path, anchor) = target
+        .split_once('#')
+        .map_or((target, None), |(path, anchor)| (path, Some(anchor)));
+    let candidate = Path::new(path);
+    if path.is_empty()
+        || candidate.is_absolute()
+        || !candidate
+            .components()
+            .all(|component| matches!(component, Component::Normal(_)))
+    {
+        return Err(format!("native wiki link escapes repository: {target}"));
+    }
+    let root = workspace_root();
+    let rooted = matches!(
+        candidate.components().next(),
+        Some(Component::Normal(component))
+            if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
+    );
+    let resolved = if rooted {
+        root.join(candidate)
+    } else {
+        source
+            .parent()
+            .ok_or_else(|| format!("{} has no parent", source.display()))?
+            .join(candidate)
+    };
+    let resolved = if resolved.extension().is_some() {
+        resolved
+    } else {
+        resolved.with_extension("md")
+    };
+    if !resolved.is_file() {
+        return Err(format!("unresolved native wiki link: {target}"));
+    }
+    let canonical_root = fs::canonicalize(&root).map_err(|error| error.to_string())?;
+    let canonical_target = fs::canonicalize(&resolved).map_err(|error| error.to_string())?;
+    if !canonical_target.starts_with(canonical_root) {
+        return Err(format!(
+            "native wiki link escapes through symlink: {target}"
+        ));
+    }
+    if let Some(anchor) = anchor {
+        if resolved
+            .extension()
+            .and_then(|extension| extension.to_str())
+            != Some("md")
+            || !heading_ids(&fs::read_to_string(&resolved).map_err(|error| error.to_string())?)?
+                .contains(&slug(anchor))
+        {
+            return Err(format!("native wiki heading is missing: {target}"));
+        }
+    }
+    Ok(resolved)
+}
+
 fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
     let ids = entries
         .iter()
@@ -564,6 +658,9 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
             }
             resolve_local_link(&path, &link).unwrap_or_else(|error| panic!("{name}: {error}"));
         }
+        for link in wiki_links(&text).unwrap_or_else(|error| panic!("{name}: {error}")) {
+            resolve_wiki_link(&path, &link).unwrap_or_else(|error| panic!("{name}: {error}"));
+        }
         if name != "crouzeix_conjecture_index.md" {
             assert!(
                 text.trim_end().ends_with(
@@ -634,4 +731,32 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     assert!(status.contains("metadata only"));
 
     assert_packet_registration();
+}
+
+#[test]
+fn native_wiki_links_validate_aliases_headings_and_escape_safely() {
+    let document = packet_root().join("link-test.md");
+    for valid in [
+        "[[crouzeix_conjecture_index|Crouzeix index]]",
+        "[[source_registry#jin-v4-audited-formalization-matched-git-manuscript|Jin source]]",
+        "[[evidence/crouzeix_conjecture/verification/jin-565b6a3-build.log|build log]]",
+    ] {
+        let target = wiki_links(valid)
+            .expect("parse native wiki fixture")
+            .into_iter()
+            .next()
+            .expect("one native wiki fixture");
+        resolve_wiki_link(&document, &target).unwrap_or_else(|error| panic!("{valid}: {error}"));
+    }
+    for invalid in ["[[../../outside]]", "[[/etc/passwd]]"] {
+        let target = wiki_links(invalid)
+            .expect("parse native wiki fixture")
+            .into_iter()
+            .next()
+            .expect("one native wiki fixture");
+        assert!(
+            resolve_wiki_link(&document, &target).is_err(),
+            "escaping native wiki link unexpectedly passed: {invalid}"
+        );
+    }
 }

@@ -88,8 +88,14 @@ struct MainClaim {
     class: EvidenceClass,
     class_label: String,
     id: String,
-    target: String,
+    target: LocalLink,
     body: String,
+}
+
+#[derive(Clone, Debug)]
+struct LocalLink {
+    target: String,
+    native_wiki: bool,
 }
 
 #[derive(Debug)]
@@ -139,6 +145,61 @@ fn markdown_links(text: &str) -> Vec<String> {
             _ => None,
         })
         .collect()
+}
+
+fn wiki_links(text: &str) -> Result<Vec<String>, String> {
+    let mut links = Vec::new();
+    let mut fenced = false;
+    for line in text.lines() {
+        if line.trim_start().starts_with("```") {
+            fenced = !fenced;
+            continue;
+        }
+        if fenced {
+            continue;
+        }
+        let mut remainder = line;
+        while let Some(start) = remainder.find("[[") {
+            remainder = &remainder[start + 2..];
+            let (raw, rest) = remainder
+                .split_once("]]")
+                .ok_or_else(|| "unclosed native wiki link".to_owned())?;
+            let (target, alias) = raw
+                .split_once('|')
+                .map_or((raw, None), |(target, alias)| (target, Some(alias)));
+            if alias.is_some_and(|value| value.trim().is_empty()) {
+                return Err("native wiki link has an empty alias".to_owned());
+            }
+            if target.split('|').count() != 1 {
+                return Err("native wiki link has multiple aliases".to_owned());
+            }
+            let target = target.trim();
+            if target.is_empty() {
+                return Err("native wiki link has an empty target".to_owned());
+            }
+            links.push(target.to_owned());
+            remainder = rest;
+        }
+    }
+    if fenced {
+        return Err("unclosed Markdown code fence".to_owned());
+    }
+    Ok(links)
+}
+
+fn local_links(text: &str) -> Result<Vec<LocalLink>, String> {
+    let mut links = markdown_links(text)
+        .into_iter()
+        .map(|target| LocalLink {
+            target,
+            native_wiki: false,
+        })
+        .collect::<Vec<_>>();
+    links.extend(wiki_links(text)?.into_iter().map(|target| LocalLink {
+        target,
+        native_wiki: true,
+    }));
+    Ok(links)
 }
 
 fn headings(text: &str) -> BTreeSet<String> {
@@ -338,6 +399,93 @@ fn resolve_link(source: &Path, target: &str) -> Result<(), String> {
     Ok(())
 }
 
+fn resolve_wiki_link(source: &Path, target: &str) -> Result<(), String> {
+    let (path, anchor) = target
+        .split_once('#')
+        .map_or((target, None), |(path, anchor)| (path, Some(anchor)));
+    if path.is_empty() {
+        let anchor = anchor.ok_or_else(|| "native wiki link has no target".to_owned())?;
+        let source_text = fs::read_to_string(source).map_err(|error| error.to_string())?;
+        if !headings(&source_text).contains(&markdown_slug(anchor)) {
+            return Err(format!(
+                "{} links to missing local heading {anchor}",
+                source.display()
+            ));
+        }
+        return Ok(());
+    }
+    let candidate = Path::new(path);
+    if candidate.is_absolute()
+        || !candidate
+            .components()
+            .all(|component| matches!(component, Component::Normal(_)))
+    {
+        return Err(format!("native wiki link escapes the repository: {target}"));
+    }
+    let root = workspace_root();
+    let resolved = if matches!(
+        candidate.components().next(),
+        Some(Component::Normal(component))
+            if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
+    ) {
+        root.join(candidate)
+    } else {
+        source
+            .parent()
+            .ok_or_else(|| format!("{} has no parent directory", source.display()))?
+            .join(candidate)
+    };
+    let resolved = if resolved.extension().is_some() {
+        resolved
+    } else {
+        resolved.with_extension("md")
+    };
+    if !resolved.is_file() {
+        return Err(format!(
+            "{} has unresolved native wiki link {target}",
+            source.display()
+        ));
+    }
+    let canonical_root =
+        fs::canonicalize(&root).map_err(|error| format!("resolve repository root: {error}"))?;
+    let canonical_target = fs::canonicalize(&resolved)
+        .map_err(|error| format!("resolve {}: {error}", resolved.display()))?;
+    if !canonical_target.starts_with(canonical_root) {
+        return Err(format!(
+            "{} native wiki link escapes through a symlink: {target}",
+            source.display()
+        ));
+    }
+    if let Some(anchor) = anchor {
+        if resolved
+            .extension()
+            .and_then(|extension| extension.to_str())
+            != Some("md")
+        {
+            return Err(format!(
+                "native wiki heading targets non-Markdown file: {target}"
+            ));
+        }
+        let target_text = fs::read_to_string(&resolved).map_err(|error| error.to_string())?;
+        if !headings(&target_text).contains(&markdown_slug(anchor)) {
+            return Err(format!(
+                "{} links to missing native wiki heading {anchor} in {}",
+                source.display(),
+                resolved.display()
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn resolve_local_link(source: &Path, link: &LocalLink) -> Result<(), String> {
+    if link.native_wiki {
+        resolve_wiki_link(source, &link.target)
+    } else {
+        resolve_link(source, &link.target)
+    }
+}
+
 fn parse_fields(id: &str, body: &str) -> Result<BTreeMap<String, Vec<String>>, String> {
     validate_field_list_structure(id, body)?;
     let mut fields: BTreeMap<String, Vec<String>> = BTreeMap::new();
@@ -454,7 +602,7 @@ fn validate_claim_entries_at(source: &Path, text: &str) -> Result<Vec<ClaimEntry
             ));
         }
         for field in ["Source", "Locator"] {
-            if markdown_links(entry.field(field)?).is_empty() {
+            if local_links(entry.field(field)?)?.is_empty() {
                 return Err(format!("{} field {field} must contain a link", entry.id));
             }
         }
@@ -523,7 +671,8 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
     let evidence_root = workspace_root().join("evidence");
     let canonical_evidence = fs::canonicalize(&evidence_root)
         .map_err(|error| format!("resolve evidence root: {error}"))?;
-    for target in markdown_links(entry.field("Locator")?) {
+    for link in local_links(entry.field("Locator")?)? {
+        let target = &link.target;
         if target.starts_with("https://")
             || target.starts_with("http://")
             || target.starts_with("mailto:")
@@ -542,7 +691,22 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
                 entry.id
             ));
         }
-        let resolved = repository_relative_path(source, relative)?;
+        let resolved = if link.native_wiki {
+            let candidate = Path::new(relative);
+            if candidate.is_absolute()
+                || !candidate
+                    .components()
+                    .all(|component| matches!(component, Component::Normal(_)))
+            {
+                return Err(format!(
+                    "{} locator escapes the repository: {target}",
+                    entry.id
+                ));
+            }
+            workspace_root().join(candidate)
+        } else {
+            repository_relative_path(source, relative)?
+        };
         if !resolved.starts_with(&evidence_root) {
             return Err(format!(
                 "{} locator must target a file under evidence/: {target}",
@@ -557,7 +721,7 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
                 entry.id
             ));
         }
-        resolve_link(source, &target)?;
+        resolve_local_link(source, &link)?;
     }
     Ok(())
 }
@@ -658,16 +822,38 @@ fn parse_main_claims(text: &str) -> Result<Vec<MainClaim>, String> {
             index += 1;
             continue;
         };
-        let Some(marker) = line.strip_prefix("**[") else {
+        let marker = if let Some(marker) = line.strip_prefix("**[[") {
+            let (target, label) = marker
+                .strip_suffix("]].**")
+                .ok_or_else(|| format!("malformed native main claim marker `{line}`"))?
+                .split_once('|')
+                .ok_or_else(|| format!("malformed native main claim label `{line}`"))?;
+            (
+                label,
+                LocalLink {
+                    target: target.to_owned(),
+                    native_wiki: true,
+                },
+            )
+        } else if let Some(marker) = line.strip_prefix("**[") {
+            let (label, rest) = marker
+                .split_once("](")
+                .ok_or_else(|| format!("malformed main claim marker `{line}`"))?;
+            let target = rest
+                .strip_suffix(").**")
+                .ok_or_else(|| format!("malformed main claim target `{line}`"))?;
+            (
+                label,
+                LocalLink {
+                    target: target.to_owned(),
+                    native_wiki: false,
+                },
+            )
+        } else {
             index += 1;
             continue;
         };
-        let (label, rest) = marker
-            .split_once("](")
-            .ok_or_else(|| format!("malformed main claim marker `{line}`"))?;
-        let target = rest
-            .strip_suffix(").**")
-            .ok_or_else(|| format!("malformed main claim target `{line}`"))?;
+        let (label, target) = marker;
         let (class_label, id) = label
             .split_once(" - ")
             .ok_or_else(|| format!("malformed main claim label `{label}`"))?;
@@ -702,7 +888,7 @@ fn parse_main_claims(text: &str) -> Result<Vec<MainClaim>, String> {
             class,
             class_label: class_label.to_owned(),
             id: id.to_owned(),
-            target: target.to_owned(),
+            target,
             body: body.join(" "),
         });
         index += 1;
@@ -732,18 +918,45 @@ fn validate_main_document(source: &Path, text: &str) -> Result<Vec<MainClaim>, S
     }
 
     for claim in &claims {
-        resolve_link(source, &claim.target)?;
-        let (relative, anchor) = claim
-            .target
-            .split_once('#')
-            .ok_or_else(|| format!("main claim {} does not target a ledger heading", claim.id))?;
-        let ledger_path = repository_relative_path(source, relative)?;
+        resolve_local_link(source, &claim.target)?;
+        let (relative, anchor) =
+            claim.target.target.split_once('#').ok_or_else(|| {
+                format!("main claim {} does not target a ledger heading", claim.id)
+            })?;
+        let ledger_path = if claim.target.native_wiki {
+            let candidate = Path::new(relative);
+            let path = if matches!(
+                candidate.components().next(),
+                Some(Component::Normal(component))
+                    if matches!(component.to_str(), Some("knowledge" | "evidence" | "content" | "labs" | "crates"))
+            ) {
+                workspace_root().join(candidate)
+            } else {
+                source
+                    .parent()
+                    .expect("main document has parent")
+                    .join(candidate)
+            };
+            if path.extension().is_some() {
+                path
+            } else {
+                path.with_extension("md")
+            }
+        } else {
+            repository_relative_path(source, relative)?
+        };
         let ledger_text = fs::read_to_string(&ledger_path)
             .map_err(|error| format!("read {}: {error}", ledger_path.display()))?;
         let entries = validate_claim_entries_at(&ledger_path, &ledger_text)?;
         let entry = entries
             .iter()
-            .find(|entry| entry.slug == anchor)
+            .find(|entry| {
+                entry.slug == markdown_slug(anchor)
+                    && (!claim.target.native_wiki
+                        || entry.id.eq_ignore_ascii_case(
+                            anchor.split_once(':').map_or(anchor, |(id, _)| id),
+                        ))
+            })
             .ok_or_else(|| format!("main claim {} targets missing ledger entry", claim.id))?;
         if claim.id != entry.id {
             return Err(format!(
@@ -1034,6 +1247,28 @@ fn main_claims_must_match_ledger_class_and_id() {
     let root = style_root();
     let path = root.join("main-document-template.md");
     let valid = fs::read_to_string(&path).expect("read main template");
+
+    let native = "\
+**[[claim-ledger-template#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+The authors report 50.0%; this result has not been independently reproduced.
+";
+    validate_main_document(&path, native).expect("native wiki claim marker must validate");
+
+    let wrong_native_heading = "\
+**[[claim-ledger-template#EX-002: Wrong title|SOURCE CLAIM - EX-002]].**
+Body.
+";
+    assert!(validate_main_document(&path, wrong_native_heading)
+        .expect_err("native claim must resolve its exact ledger heading")
+        .contains("missing native wiki heading"));
+
+    let missing_native_ledger = "\
+**[[knowledge/example/missing_ledger#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+Body.
+";
+    assert!(validate_main_document(&path, missing_native_ledger)
+        .expect_err("native claim must resolve its ledger target")
+        .contains("unresolved"));
 
     let bad_class = valid.replacen("[EVIDENCE - EX-001]", "[SOURCE CLAIM - EX-001]", 1);
     assert!(validate_main_document(&path, &bad_class)
