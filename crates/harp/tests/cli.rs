@@ -377,11 +377,42 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
     assert_eq!(envelope["data"]["evidence_artifacts"], 430);
-    assert_eq!(envelope["data"]["snapshot_files"], 105);
+    assert_eq!(envelope["data"]["snapshot_files"], 119);
     assert_eq!(envelope["data"]["binary_objects"], 63);
-    assert_eq!(envelope["data"]["implementation_sources"], 11);
+    assert_eq!(envelope["data"]["implementation_sources"], 12);
     assert_eq!(envelope["data"]["crouzeix_source_receipts"], 29);
     assert_eq!(envelope["data"]["crouzeix_verification_receipts"], 4);
+}
+
+#[test]
+fn obsidian_skills_vendor_is_pinned_and_manifested() {
+    let root = repo_root().join("evidence/implementations/obsidian_skills");
+    assert_eq!(
+        fs::read_to_string(root.join("REMOTE")).expect("vendor remote"),
+        "https://github.com/kepano/obsidian-skills.git\n"
+    );
+    assert_eq!(
+        fs::read_to_string(root.join("REVISION")).expect("vendor revision"),
+        "a1dc48e68138490d522c04cbf5822214c6eb1202\n"
+    );
+    assert_eq!(
+        fs::read_to_string(root.join("LICENSE_STATUS")).expect("vendor license status"),
+        "MIT\n"
+    );
+
+    let manifest = fs::read_to_string(repo_root().join("evidence/implementations/manifest.tsv"))
+        .expect("implementation manifest");
+    let snapshot_rows = manifest
+        .lines()
+        .skip(1)
+        .filter(|row| row.starts_with("OBSIDIAN-SKILLS\t"))
+        .collect::<Vec<_>>();
+    assert_eq!(snapshot_rows.len(), 14);
+    assert!(snapshot_rows.iter().all(|row| {
+        row.contains("\thttps://github.com/kepano/obsidian-skills.git\t")
+            && row.contains("\ta1dc48e68138490d522c04cbf5822214c6eb1202\t")
+            && row.contains("\tevidence/implementations/obsidian_skills/snapshot/")
+    }));
 }
 
 #[test]

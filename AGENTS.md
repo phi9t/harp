@@ -16,6 +16,10 @@ documentation dependencies on another local checkout.
   manifests, and narrow public-source snapshots.
 - Captured files under `evidence/*/artifacts/` must not be rewritten for
   branding or formatting.
+- `evidence/implementations/obsidian_skills/` is a pinned upstream syntax-skill
+  snapshot, not a Harp prose authority. Update it only through the
+  implementation-manifest workflow with its complete upstream byte set,
+  revision, license record, and digests.
 - `docs/import-receipt.md` is the only file that may name the source repository
   used for the initial import.
 

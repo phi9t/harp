@@ -197,6 +197,8 @@ receipt. Status and query reject missing or stale indexes.
 - the offline-complete Meta-Harness project page and dated capture receipt;
 - the normalized Meta-Harness TRAE receipt and bounded raw archive;
 - the Agentic Engineering and Clanker Constitution dated captures;
+- the pinned MIT Obsidian-syntax skill snapshot and its implementation-manifest
+  digests;
 - every maintained local evidence locator; and
 - Git LFS attributes for binary evidence.
 
