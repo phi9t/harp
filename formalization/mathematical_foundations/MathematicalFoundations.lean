@@ -4,5 +4,6 @@ import MathematicalFoundations.Geometry
 import MathematicalFoundations.Linear
 import MathematicalFoundations.Orthogonality
 import MathematicalFoundations.Probability
+import MathematicalFoundations.BayesInformation
 import MathematicalFoundations.Statistics
 import MathematicalFoundations.Boundary
