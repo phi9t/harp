@@ -333,9 +333,9 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
-        .stdout(predicate::str::contains("\"evidence_artifacts\":352"))
+        .stdout(predicate::str::contains("\"evidence_artifacts\":363"))
         .stdout(predicate::str::contains("\"snapshot_files\":105"))
-        .stdout(predicate::str::contains("\"binary_objects\":56"))
+        .stdout(predicate::str::contains("\"binary_objects\":58"))
         .stdout(predicate::str::contains("\"implementation_sources\":11"));
 }
 

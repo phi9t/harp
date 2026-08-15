@@ -166,6 +166,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         2,
         &mut expected_digests,
     )?;
+    let darwinx = verify_artifact_inventory(
+        repo_root,
+        Path::new("evidence/darwinx/artifact_inventory.tsv"),
+        0,
+        1,
+        2,
+        &mut expected_digests,
+    )?;
     let self_improving_agents_survey = verify_artifact_inventory(
         repo_root,
         Path::new("evidence/self_improving_agents_survey/artifact_inventory.tsv"),
@@ -245,6 +253,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     Ok(SourcesReport {
         evidence_artifacts: weng
             + rlm
+            + darwinx
             + self_improving_agents_survey
             + sicp
             + benchmarks
