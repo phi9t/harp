@@ -1,0 +1,3558 @@
+#+TITLE: Crouzeix Proof Reproduction Workstream Tracker
+#+TODO: BACKLOG TODO IMPLEMENTING REVIEW BLOCKED | DONE CANCELED
+#+TAGS: docs code tests evidence live math review security atlas landing ticket
+
+* Operating Contract
+
+This file is the active execution ledger for the workstream. Read
+[[file:design.md][design.md]], the linked approved design, and the PRD before
+claiming a ticket.
+
+Every task must have both:
+
+- one repository ticket below; and
+- when it performs a live provider, mathematical evaluation/review, selector,
+  formal, or operator-intervention action, one run-local immutable ticket
+  created through the runtime ticket contract. Repository plan/code review
+  uses its CPFR ticket and review artifact rather than fabricating a model-run
+  ticket.
+
+Do not execute a ticket whose =DEPENDS_ON= list is not terminal. =DONE= and a
+conditionally justified =CANCELED= are terminal; every other state blocks.
+Do not combine tickets in one commit unless a ticket explicitly names the same
+commit group. Every commit message ends with:
+
+#+begin_example
+Co-authored-by: TRAE CLI <noreply@bytedance.com>
+#+end_example
+
+The orchestrator is the sole writer of repository-ticket state and verification
+evidence. Every ticket implicitly owns only its own subtree in this file.
+Product workers edit only the =Owned Files= listed in their ticket. At closeout,
+the orchestrator serially records evidence, refreshes =docs/import-receipt.md=
+when tracked bytes changed, stages the owned product files plus this tracker and
+receipt, verifies the staged surface, and creates the ticket's focused commit.
+It then runs the ticket's post-commit no-edit check against the exact new tip;
+that result is operator attestation and is not backfilled into the tested
+commit.
+
+Unclaimed work uses =unassigned= for =OWNER=, =AGENT_RUN=, and =MODEL=. Claiming
+a ticket replaces those values before implementation. Planned conditional work
+uses =BACKLOG=; a false precommitted trigger moves it to =CANCELED= with evidence.
+Review repairs that are not already a named ticket require a new =CPFR-R###=
+ticket before any tracked edit.
+
+When a file has pre-existing or later-ticket hunks, the owning ticket uses the
+CPFR-022 patch map and interactive patch staging. Before verification, the
+orchestrator compares =git diff --cached= to the assigned patch IDs and confirms
+all unowned hunks are unstaged and byte-identical. Whole-file staging is valid
+only when the ticket owns every current hunk in that file. Initially untracked
+files use empty-blob base
+=e69de29bb2d1d6434b8b29ae775ad8c2e48c5391= and require
+=git add -N <path>= before =git add -p <path>=.
+
+* Milestone Map
+
+| Milestone | Tickets | Exit condition |
+|-----------+---------+----------------|
+| M0 Historical contract, baselines, and plan | CPFR-001..CPFR-009, CPFR-024..CPFR-025 | design, baselines, and audited ticket ledger preserved |
+| M1 Provider-neutral experiment machinery | CPFR-010..CPFR-023 | partial diff reconciled; fake frontier, review, guided, formal, legacy exception, and ticket reconciliation pass |
+| M2 Live expert frontier | CPFR-030..CPFR-036 | immutable E-arm run completed or typed blocked |
+| M3 Evidence and mathematical review | CPFR-040..CPFR-049, CPFR-060..CPFR-068 | evidence verified, findings frozen, and guided-arm trigger resolved |
+| M4 Reader integration and landing | CPFR-050..CPFR-057 | release gate passes and local master fast-forwards |
+
+* Work Items
+
+** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
+:PROPERTIES:
+:ID: CPFR-001
+:DESIGN_SECTION: Research Questions; Evidence Boundary
+:DEPENDS_ON:
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: prior thread
+:MODEL: inherited default
+:COMMIT: bf9e9929e1db986cfd3a405270d10198645133c5
+:END:
+
+*** Scope
+
+Recover the public root prompt identity, Git history, AI disclosures, and
+missing process evidence from pinned primary sources.
+
+*** Non-goals
+
+- No claim that the private historical run is reproducible.
+- No implementation of improved prompts or provider calls.
+- No vendoring of unlicensed upstream prompt or manuscript bytes.
+
+*** Owned Files
+
+- =knowledge/crouzeix_conjecture/reproduction_research.md=
+- source-backed additions to the Crouzeix packet index
+- planning specs created with this research
+
+*** Acceptance Criteria
+
+- The prompt is fixed at 4,106 bytes and SHA-256
+  =0a0c3000b81efc4d9edc65ec3cd1d53df0d4e69b24bfee9fe0860301d853d6fc=.
+- Root prompt instructions are separated from unobserved execution.
+- Codex/ChatGPT attribution drift and missing transcripts are explicit.
+- Lean builds remain typed =blocked=, neither passed nor failed.
+
+*** Implementation Steps
+
+1. Inspect existing Harp evidence and receipts.
+2. Extract the prompt and history from pinned public Git objects.
+3. Reconcile Jin and Lorist-Schwenninger disclosures.
+4. Write the bounded research note with exact locators.
+5. Register the note in packet navigation and Atlas.
+
+*** Verification Plan
+
+- =cargo test -p harp --test crouzeix_conjecture_knowledge_packet -- --test-threads=1=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =bf9e9929e1db986cfd3a405270d10198645133c5=.
+- Full Harp release gate passed at the commit's staged surface.
+
+** DONE Approve Prospective Reproduction Design And Initial PRD :docs:
+:PROPERTIES:
+:ID: CPFR-002
+:DESIGN_SECTION: Experimental Arms; Evaluation Contract
+:DEPENDS_ON: CPFR-001
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: prior thread
+:MODEL: inherited default
+:COMMIT: bf9e9929e1db986cfd3a405270d10198645133c5
+:END:
+
+*** Scope
+
+Define historical, improved, guided, leakage, access, evaluation, evidence, and
+claim boundaries before experiment implementation.
+
+*** Non-goals
+
+- No live model run.
+- No assumption that mechanism similarity establishes correctness.
+
+*** Owned Files
+
+- =docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-design.md=
+- =docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-prd.md=
+- =docs/superpowers/plans/2026-08-14-crouzeix-proof-reproduction-issues.md=
+
+*** Acceptance Criteria
+
+- Generation and reference-aware verification inputs are separated.
+- Every arm has a distinct leakage and claim ceiling.
+- Correctness, rediscovery, and formal-verification outcomes are separate.
+- Failed and non-promoted runs are valid evidence outcomes.
+
+*** Implementation Steps
+
+1. Translate research gaps into fixed experiment questions.
+2. Define strict artifacts and run boundaries.
+3. Define correctness and secondary metrics.
+4. Record threats to validity and claim ceilings.
+5. Obtain explicit approval.
+
+*** Verification Plan
+
+- =git diff --check=
+- placeholder and contradiction scan
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =bf9e9929e1db986cfd3a405270d10198645133c5=.
+
+** DONE Implement Strict Prompt, Run-Spec, And Route Protocol :code:tests:
+:PROPERTIES:
+:ID: CPFR-003
+:DESIGN_SECTION: Strict Artifacts; State Model
+:DEPENDS_ON: CPFR-002
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: prior thread
+:MODEL: inherited default
+:COMMIT: 672a5cd7101241f74fe2ecdfbd2926b4c868233a
+:END:
+
+*** Scope
+
+Implement historical prompt verification, one-delta normalization, strict run
+specs, route transitions, schemas, blind prompts, and create-only preparation.
+
+*** Non-goals
+
+- No provider process execution.
+- No DGM archive selector.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/protocol.py=
+- =labs/crouzeix_proof_reproduction/prepare_run.py=
+- initial files under =prompts/= and =schemas/=
+- =labs/crouzeix_proof_reproduction/tests/test_protocol.py=
+- lab README and =mise.toml= test registration
+
+*** Acceptance Criteria
+
+- Prompt verification rejects byte or digest drift.
+- Run specs reject unknown fields, unsafe paths, invalid enums, and bounds.
+- Route reopening requires a new mechanism.
+- Promotion rejects unresolved critical findings and theorem-strength gaps.
+- Run directories are create-only and raw upstream prompt bytes are discarded.
+
+*** Implementation Steps
+
+1. Write red prompt identity and normalization tests.
+2. Implement strict boundary validators.
+3. Write red route-state tests.
+4. Implement state transitions.
+5. Write red preparation tests.
+6. Implement create-only preparation.
+7. Register tests in the release gate.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_protocol -v=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =672a5cd7101241f74fe2ecdfbd2926b4c868233a=.
+- Protocol/preparation suite and full release gate passed.
+
+** DONE Implement Create-Only Provider Runner And Flat Baseline :code:tests:
+:PROPERTIES:
+:ID: CPFR-004
+:DESIGN_SECTION: Provider Call Receipt; Arm H; Arm O0
+:DEPENDS_ON: CPFR-003
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: prior thread
+:MODEL: inherited default
+:COMMIT: 68e4b9fd6c763afbb4316bb445168e1ec6a11bf7
+:END:
+
+*** Scope
+
+Implement hardened TRAE CLI command construction, event capture, timeouts,
+typed failure receipts, historical execution, and the superseded flat
+orchestration baseline.
+
+*** Non-goals
+
+- No DGM parent selection.
+- No evidence publication.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/runner.py=
+- =labs/crouzeix_proof_reproduction/run_experiment.py=
+- =labs/crouzeix_proof_reproduction/tests/test_runner.py=
+- route schema and README execution notes
+
+*** Acceptance Criteria
+
+- Calls pin CLI/model/sandbox/tools/schema and ignore user prompt config.
+- Call directories are create-only.
+- Completed, failed, malformed, timed-out, and missing-usage results are typed.
+- Partial orchestrated failures seal aggregate receipts.
+- Automatic promotion is deterministic and model-independent.
+
+*** Implementation Steps
+
+1. Write fake provider and command-contract tests.
+2. Implement command construction and identity revalidation.
+3. Implement event and usage parsing.
+4. Implement typed call receipts and process-group timeout cleanup.
+5. Implement historical and flat orchestrated flows.
+6. Add strict role output validation.
+7. Add partial-run sealing.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =68e4b9fd6c763afbb4316bb445168e1ec6a11bf7=.
+- Runner suite and full release gate passed.
+
+** DONE Harden Live-Run Access, Portability, And Partial Accounting :security:code:tests:
+:PROPERTIES:
+:ID: CPFR-005
+:DESIGN_SECTION: Safety And Reproducibility; Budget
+:DEPENDS_ON: CPFR-004
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: prior thread
+:MODEL: inherited default
+:COMMIT: 48cc344adf41df9d9b569701862c55bf94fe3101
+:END:
+
+*** Scope
+
+Restore historical subagent fidelity, constrain flat workers, resolve TRAE CLI
+from PATH, and preserve calls across resource or phase failures.
+
+*** Non-goals
+
+- No unbounded delegation.
+- No deletion of failed run evidence.
+
+*** Owned Files
+
+- =protocol.py=
+- =prepare_run.py=
+- =runner.py=
+- focused protocol/runner tests
+
+*** Acceptance Criteria
+
+- Historical arm exposes only =Write= and =spawn_agent=.
+- Flat orchestrated workers expose only =Write=.
+- CLI identity is portable and pinned.
+- Partial failures reconstruct aggregate accounting from durable call receipts.
+
+*** Implementation Steps
+
+1. Add failing capability and PATH tests.
+2. Implement closed tool and CLI resolution changes.
+3. Add failing partial-run accounting test.
+4. Reconcile receipts from disk on declared phase failure.
+5. Run the full release gate.
+
+*** Verification Plan
+
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =48cc344adf41df9d9b569701862c55bf94fe3101=.
+
+** DONE Execute And Preserve Historical Baseline :live:evidence:
+:PROPERTIES:
+:ID: CPFR-006
+:DESIGN_SECTION: Arm H
+:DEPENDS_ON: CPFR-005
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: operator
+:AGENT_RUN: historical-001
+:MODEL: gpt-5.6-sol
+:RUN_TICKET: historical-001/operator_intervention.json
+:END:
+
+*** Scope
+
+Prepare and execute the exact historical prompt with one output-path
+normalization, then preserve the resource intervention and failed call.
+
+*** Non-goals
+
+- No claim that the model failed mathematically.
+- No fabricated token usage after missing terminal event.
+
+*** Owned Files
+
+- ignored =.runs/historical-001/=
+- later sealed historical evidence
+
+*** Acceptance Criteria
+
+- Source and execution prompt digests are recorded.
+- Exact command, events, stderr, and intervention are preserved.
+- SIGTERM =-15=, missing terminal usage, no candidate, and resource intervention
+  are reported separately.
+- Outcome is =not_promoted=, not =invalid proof=.
+
+*** Implementation Steps
+
+1. Extract and verify the public prompt.
+2. Prepare and inspect =run_spec.json=.
+3. Execute the one-call historical arm.
+4. Monitor process, trace growth, and disk.
+5. Terminate on the documented host-space safety condition.
+6. Write intervention and resource observations.
+
+*** Verification Plan
+
+- validate all run JSON
+- recompute prompt/event/stderr digests
+- confirm no candidate file
+
+*** Verification Evidence
+
+- =historical-001/run_receipt.json= records one failed call and no candidate.
+- =operator_intervention.json= records the resource termination.
+
+** DONE Execute And Preserve Superseded Flat Baseline :live:evidence:
+:PROPERTIES:
+:ID: CPFR-007
+:DESIGN_SECTION: Arm O0
+:DEPENDS_ON: CPFR-006
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: operator
+:AGENT_RUN: orchestrated-001
+:MODEL: gpt-5.6-sol
+:RUN_TICKET: orchestrated-001/operator_intervention.json
+:END:
+
+*** Scope
+
+Preserve the flat no-subagent treatment after the user replaced it with the
+dedicated-expert frontier.
+
+*** Non-goals
+
+- No continuation under a mutated spec.
+- No importing its outputs into the E arm.
+
+*** Owned Files
+
+- ignored =.runs/orchestrated-001/=
+- later sealed flat-baseline evidence
+
+*** Acceptance Criteria
+
+- Three worker results and controller result are preserved.
+- Redirect failure and user-directed intervention are preserved.
+- Aggregate usage and call statuses reconcile.
+- Treatment is marked superseded and =not_promoted=.
+
+*** Implementation Steps
+
+1. Execute the three independent workers.
+2. Execute and preserve controller selection.
+3. Stop the redirect after the treatment change.
+4. Write intervention and aggregate receipts.
+5. Preserve all outputs as O0-only evidence.
+
+*** Verification Plan
+
+- recompute all completed call digests
+- reconcile five call receipts with aggregate usage
+- verify no candidate promotion
+
+*** Verification Evidence
+
+- =orchestrated-001/run_receipt.json= records four completed and one failed
+  call.
+- =operator_intervention.json= records treatment supersession.
+
+** DONE Approve DGM-Selected Dedicated-Expert Architecture :docs:
+:PROPERTIES:
+:ID: CPFR-008
+:DESIGN_SECTION: Arm E; DGM Parent Selection
+:DEPENDS_ON: CPFR-007
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT: aec729d56a859722f1c66864e87af0902f338baf
+:END:
+
+*** Scope
+
+Replace the flat improved arm with pristine dedicated experts, independent
+evaluators, DGM parent selection, =keep_all= admission, and append-only archive
+state.
+
+*** Non-goals
+
+- No claim that child count is semantic novelty.
+- No use of the released-code omission of the paper eligibility filter.
+
+*** Owned Files
+
+- approved design
+- PRD
+- precursor issue document
+- payload receipt
+
+*** Acceptance Criteria
+
+- Paper-level =alpha < 1= eligibility is fixed.
+- Score and underexploration equations match DGM.
+- Selection uses two draws with replacement and seed =20260814=.
+- Experts and evaluators receive pristine, bounded contexts.
+- Five roles, ten probes, budgets, stopping, and artifact layout are fixed.
+
+*** Implementation Steps
+
+1. Inspect DGM packet and pinned implementation.
+2. Map proof nodes to archive nodes.
+3. Define route-neutral score and functioning admission.
+4. Define parent selector and deterministic draw stream.
+5. Define role roster, context, frontier, budget, and stop conditions.
+6. Obtain approval and commit the spec.
+
+*** Verification Plan
+
+- source-link check
+- selector equation scan
+- =mise run verify=
+
+*** Verification Evidence
+
+- Commit =aec729d56a859722f1c66864e87af0902f338baf=.
+
+** DONE Establish Ticketed Workstream Plan :docs:ticket:
+:PROPERTIES:
+:ID: CPFR-009
+:DESIGN_SECTION: Ticket Discipline; Runtime Ticket Contract
+:DEPENDS_ON: CPFR-008
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT_GROUP: planning-gate-001
+:END:
+
+*** Scope
+
+Create the active design and tracker, inventory partial work, and ensure every
+repository and runtime task has a ticket contract.
+
+*** Non-goals
+
+- No additional implementation while planning.
+- No deletion or reset of the partial frontier diff.
+
+*** Owned Files
+
+- =docs/workstream/crouzeix-proof-reproduction/design.md=
+- =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- final planning-only payload receipt
+
+*** Acceptance Criteria
+
+- Every completed and remaining task has a stable CPFR ticket.
+- Each ticket has dependencies, owned files, acceptance criteria, steps,
+  verification, and evidence.
+- Runtime tasks require immutable run-local tickets.
+- Dependency and file-overlap constraints are explicit.
+- Planning artifacts are ready for a separate audit ticket.
+- This ticket closes only through the named =planning-gate-001= commit.
+
+*** Implementation Steps
+
+1. Inventory branch, worktrees, commits, diffs, and run attempts.
+2. Map approved requirements to modules and milestones.
+3. Define repository and runtime ticket contracts.
+4. Write dependency-ordered tickets.
+5. Hand the complete artifacts to the independent audit ticket.
+
+*** Verification Plan
+
+- =test -s docs/workstream/crouzeix-proof-reproduction/design.md && test -s docs/workstream/crouzeix-proof-reproduction/tracker.org=; expected exit =0=
+- =rg -n '^:ID: CPFR-' docs/workstream/crouzeix-proof-reproduction/tracker.org=; expected one row per planned repository ticket
+
+*** Verification Evidence
+
+- Design, authority map, runtime-ticket contract, module boundaries, and the
+  dependency-ordered tracker were written without changing implementation
+  files.
+
+** DONE Audit Workstream Plan Against DGM And PRD :review:docs:ticket:
+:PROPERTIES:
+:ID: CPFR-024
+:DESIGN_SECTION: Ticket Discipline; DGM Parent Selection; Global Verification
+:DEPENDS_ON: CPFR-009
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread; Pauli; Lagrange
+:MODEL: inherited default
+:COMMIT_GROUP: planning-gate-001
+:END:
+
+*** Scope
+
+Independently audit the full tracker against the approved design/PRD, Harp's
+DGM packet, current dirty diff, repository rules, and the every-task-ticket
+requirement.
+
+*** Non-goals
+
+- No implementation edit.
+- No live provider call.
+- No approval based only on ticket count or prose volume.
+
+*** Owned Files
+
+- audit-driven corrections to =design.md=
+- audit-driven corrections to =tracker.org=
+
+*** Acceptance Criteria
+
+- Every ticket has one complete property/section schema and nonempty assignment
+  sentinels.
+- IDs are unique; dependencies exist; the graph is acyclic.
+- Partial implementation, legacy runs, review/repair, guided, formal, evidence,
+  integration, final gate, and landing all have explicit tickets.
+- DGM eligibility, decimal weights, same-snapshot replacement draws,
+  =keep_all=, child counts, and score-complete continuation match the selected
+  paper-level algorithm.
+- Tracked closeout precedes the exact-tip gate and landing.
+- No unresolved material plan-review finding remains.
+- This ticket closes only through the named =planning-gate-001= commit.
+
+*** Implementation Steps
+
+1. Run local schema, placeholder, dependency, and path audits.
+2. Dispatch separate DGM-fidelity and plan-buildability reviewers.
+3. Reconcile findings by severity and source authority.
+4. Correct selector, lifecycle, conditional, evidence, and landing defects.
+5. Rerun all mechanical audits.
+6. Hand the approved planning surface to CPFR-025.
+
+*** Verification Plan
+
+- Org cardinality audit; expected one required property/section set per ticket
+- =tsort= over all =DEPENDS_ON= edges; expected exit =0= and one row per ticket
+- =rg -n -i '\b(TBD|FIXME|XXX|implement later|fill in details)\b' docs/workstream/crouzeix-proof-reproduction=; expected no actionable placeholder matches
+- =git diff --check=; expected exit =0=
+
+*** Verification Evidence
+
+- Two independent reviewers found material lifecycle, selector, evidence,
+  partial-diff, legacy-run, and closeout defects; all are represented by
+  concrete corrections or tickets in the current planning surface.
+- Mechanical audit reports unique IDs, known dependencies, and an acyclic
+  graph. Final counts are recorded by CPFR-025 immediately before commit.
+
+** DONE Verify And Commit Planning Gate :docs:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-025
+:DESIGN_SECTION: Global Verification; Ticket Discipline
+:DEPENDS_ON: CPFR-024
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT_GROUP: planning-gate-001
+:END:
+
+*** Scope
+
+Verify the audited planning surface in isolation from the preserved partial
+implementation, refresh the payload receipt, and create one planning-only
+commit.
+
+*** Non-goals
+
+- No implementation file in the planning commit.
+- No deletion or reset of the partial frontier diff.
+- No live provider call.
+
+*** Owned Files
+
+- =docs/workstream/crouzeix-proof-reproduction/design.md=
+- =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =docs/import-receipt.md=
+
+*** Acceptance Criteria
+
+- Only the two workstream documents and payload receipt are staged.
+- The commit contains exactly CPFR-009, CPFR-024, and CPFR-025 under
+  =planning-gate-001=; no other ticket joins it.
+- The partial implementation is preserved byte-for-byte outside the isolated
+  staged surface.
+- Repository payload digest is current for the planning commit.
+- =mise run verify= passes on the isolated planning surface.
+- Commit message is =docs: plan ticketed Crouzeix proof reproduction= and ends
+  with the required trailer.
+
+*** Implementation Steps
+
+1. Record SHA-256 for every dirty implementation path.
+2. Stage only the two planning documents.
+3. Use =git stash push --keep-index -u= to isolate the staged planning surface.
+4. Set CPFR-025 to =REVIEW=, run repository verify, patch only the reported
+   payload digest, and stage the receipt.
+5. Run =mise run verify= and audit the staged path list.
+6. Stage CPFR-025's =DONE= transition with first-gate evidence, refresh the
+   receipt again, and rerun =mise run verify= on the final bytes.
+7. Create the focused commit without changing the verified bytes; the staged
+   =DONE= transition becomes effective only if commit creation succeeds.
+8. Restore the stash, verify every implementation-path digest is unchanged,
+   and run no-edit repository/status checks on the commit.
+
+*** Verification Plan
+
+- =git diff --cached --name-only=; expected exactly the two planning documents and =docs/import-receipt.md=
+- =mise run verify=; expected exit =0= and no provider call
+- =git diff --cached --check=; expected exit =0=
+- pre/post implementation SHA-256 inventories; expected byte equality
+- =git show --format=%B --no-patch HEAD= after commit; expected exact subject and one required trailer
+
+*** Verification Evidence
+
+- Planning audit: 59 unique tickets, 59-node acyclic dependency graph, no
+  unknown dependencies, no missing required sections, no blank assignment
+  properties, no actionable placeholders, no broken local links, and clean
+  =git diff --check=.
+- Independent DGM review and two plan-buildability review rounds are closed;
+  final reviewer disposition is =APPROVED=.
+- Parent commit is =aec729d56a859722f1c66864e87af0902f338baf= and parent
+  tree is =8bff1e97f223b1a6ff32ff11d5d66a2fe7183835=.
+- First isolated gate passed on staged tree
+  =c4511975d6dc22f2f6a6f9c51d4d2a2ea5f786e0= with payload digest
+  =fd80050debb46d9950cd0503465716291b32d4870605fa86464e98e200789842=.
+- The staged paths were exactly =docs/import-receipt.md=, =design.md=, and
+  =tracker.org=. No provider call ran.
+- Preserved implementation aggregate before isolation:
+  =1b98a7807f8172b2e59e1bf4635c5bde4f76ed614f7235f7a6479ee9136a13f8=;
+  stash object =3c7dd1cec2ed0d425da12ba53f49f45b9626a034=.
+- Final payload digest, final gate result, final staged-tree digest, and restored
+  implementation equality are recorded in the operator closeout after this
+  staged =DONE= transition. The resulting commit SHA is reported only after
+  commit in the no-edit operator closeout and user response.
+
+** TODO Add Tracker And Runtime-Ticket Validators :ticket:tests:code:
+:PROPERTIES:
+:ID: CPFR-010
+:DESIGN_SECTION: Ticket Discipline; Runtime Ticket Contract
+:DEPENDS_ON: CPFR-022 CPFR-025
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Add standard-library validators for repository tracker entries and run-local
+ticket/event records before any further frontier implementation.
+
+*** Non-goals
+
+- No provider execution.
+- No DGM selection logic.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/tickets.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_tickets.py=
+- =docs/workstream/crouzeix-proof-reproduction/design.md= interface conformance
+
+*** Acceptance Criteria
+
+- Tracker validator requires every CPFR item to have nonempty ID, design section,
+  dependency, branch, worktree, owner, agent run, model, scope, non-goals,
+  owned files, acceptance criteria, implementation steps, verification plan,
+  and verification evidence.
+- Unclaimed tickets must use the literal =unassigned= sentinel; blank assignment
+  properties are invalid.
+- Dependency graph rejects unknown IDs, self-dependencies, cycles, and execution
+  before dependencies are terminal under the operating contract.
+- Runtime ticket JSON rejects unknown fields, unsafe IDs/paths, missing context
+  digests, invalid owner/task enums, and invalid limits.
+- Runtime event parser enforces the closed state transitions in =design.md=.
+- Expert-node events use =score_complete= rather than =complete=; the latter is
+  valid only as an independent mathematical review outcome.
+- Ticket and event files are create-only, symlink-safe, bounded, and append-only.
+- Ticket binding validation rejects a call request without ticket ID and ticket
+  digest; CPFR-014 applies it to provider construction.
+
+*** Implementation Steps
+
+1. Write a failing test for one complete tracker entry and each missing section.
+2. Write failing dependency tests for unknown IDs, cycles, and blocked execution.
+3. Implement the Org parser against headings, properties, and required
+   subsections.
+4. Write failing runtime-ticket boundary and state-transition tests.
+5. Implement strict JSON validation and create-only publication.
+6. Write failing request-binding tests.
+7. Implement the pure request/receipt ticket-binding validator.
+8. Run the direct suite; release-gate discovery belongs to CPFR-017.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+
+*** Verification Evidence
+
+- Record red/green commands, commit, and review findings.
+
+** TODO Reconcile Existing Partial Frontier Diff :review:code:ticket:
+:PROPERTIES:
+:ID: CPFR-022
+:DESIGN_SECTION: Current State; Module Boundaries
+:DEPENDS_ON: CPFR-025
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Inventory the pre-plan uncommitted frontier implementation, preserve its
+provenance, and map every dirty path/hunk to one implementation ticket before
+any production edit resumes.
+
+*** Non-goals
+
+- No implementation change.
+- No acceptance based only on the previously observed 47-test pass.
+- No reset, deletion, or commit of the partial code.
+
+*** Owned Files
+
+- this ticket's tracker subtree
+- no product file; all dirty product paths are read-only during reconciliation
+
+*** Acceptance Criteria
+
+- The inventory covers =README.md=, =protocol.py=, =runner.py=,
+  =expert_runner.py=, =frontier.py=, both new prompts, both new schemas,
+  =run_frontier.py=, =test_expert_runner.py=, and =test_frontier.py=.
+- Every hunk maps to exactly one of CPFR-011 through CPFR-016, or to an explicit
+  deletion during that ticket.
+- Every mapped hunk has a stable patch ID containing base blob ID, normalized
+  hunk header, and context SHA-256.
+- Shared files have an ordered owner list; no ticket may whole-file stage one.
+- Untracked shared files use the Git empty blob as their base and record the
+  required intent-to-add plus interactive-staging sequence.
+- Existing tests and their prior 47-test observation are recorded as
+  uncommitted evidence, not current verification.
+- No implementation file changes during this ticket.
+- The dirty-file digest inventory is recorded before later decomposition.
+
+*** Implementation Steps
+
+1. Record =git status --short= and =git diff --stat=.
+2. Hash every dirty/untracked implementation file without editing it.
+3. Review each hunk against the target module boundaries.
+4. For untracked files, assign the empty-blob base and record
+   =git add -N= before =git add -p=.
+5. Compute stable patch IDs and map each to one later ticket or deletion.
+6. Record ordered owners for shared dirty files.
+7. Confirm no product byte changed during reconciliation.
+8. Close this ticket in a tracker/receipt-only commit.
+
+*** Verification Plan
+
+- before/after dirty-file SHA-256 inventory equality
+- complete patch-ID-to-ticket mapping and shared-file owner order
+- =git diff --check=
+
+*** Verification Evidence
+
+- Record the inventory digest, mapping, and no-edit proof.
+
+** TODO Split Expert Contracts From Orchestration :code:tests:
+:PROPERTIES:
+:ID: CPFR-011
+:DESIGN_SECTION: Module Boundaries; Expert Node Contract
+:DEPENDS_ON: CPFR-010
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Move expert/evaluator context construction and output validation out of the
+current oversized =expert_runner.py= into a deep contract module.
+
+*** Non-goals
+
+- No parent selection.
+- No filesystem persistence.
+- No live calls.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/expert_contracts.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_expert_contracts.py=
+- =schemas/expert_node.schema.json=
+- =schemas/proof_progress_evaluation.schema.json=
+- =prompts/expert.md=
+- =prompts/proof_progress_evaluator.md=
+- contract-only deletions from =expert_runner.py=
+
+*** Acceptance Criteria
+
+- Root contexts contain theorem, role, direction, limits, and no peer artifact.
+- Child contexts contain exactly one selected parent's mathematical content.
+- Evaluator context strips run, node, parent, generation, role, direction,
+  score, selection, and treatment identity.
+- Experts and evaluators have =delegation_allowed=false= and only =Write=.
+- Expert output enforces exactly one candidate proof or blocker.
+- Obligations, directions, findings, probe IDs, roles, and digests are closed.
+- Structural P10 override prevents a score of one without a candidate proof.
+- Prompts contain no answer-bearing mechanism vocabulary.
+
+*** Implementation Steps
+
+1. Move existing context tests into a new red contract suite.
+2. Add malformed field, duplicate ID, candidate/blocker, lineage leakage, and
+   answer-vocabulary tests.
+3. Implement pure context constructors.
+4. Implement strict expert and evaluator validators.
+5. Implement conservative evaluator fallback and reconciliation input.
+6. Replace =expert_runner.py= definitions with imports.
+7. Run old and new suites to prove behavior parity.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_contracts -v=
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+
+*** Verification Evidence
+
+- Record red/green commands, commit, and code-review result.
+
+** TODO Complete Pure DGM Frontier Core :code:tests:
+:PROPERTIES:
+:ID: CPFR-012
+:DESIGN_SECTION: DGM Parent Selection; Frontier Direction
+:DEPENDS_ON: CPFR-010
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Complete and review the pure archive, two-evaluator score, DGM selection,
+direction ranking, and budget-independent frontier logic.
+
+*** Non-goals
+
+- No filesystem writes.
+- No subprocesses or provider calls.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/frontier.py=
+- =labs/crouzeix_proof_reproduction/tests/test_frontier.py=
+
+*** Acceptance Criteria
+
+- Exactly ten probe IDs are required.
+- Evaluator findings are namespaced and retain source IDs.
+- =alpha= is unanimous-pass count divided by ten.
+- Archive =keep_all= retains lower-scoring functioning children.
+- Parent generation and candidate proof digest are validated.
+- Eligibility excludes =alpha= one.
+- Score, underexploration, weight, and normalized probability match DGM.
+- Two SHA-256 draws with replacement are byte-stable under the exact
+  NUL-delimited ASCII preimage in =design.md=.
+- Every draw records the preimage fields, digest, unsigned integer, canonical
+  80-digit-context decimal uniform, decimal terms/probabilities, interval
+  bounds, and selected node.
+- Both draws bind one pre-generation archive/snapshot digest, eligible set,
+  child-count vector, and probability vector.
+- No archive admission or child-count change occurs between the two draws.
+- Child count derives only from admitted functioning children.
+- Direction priority and role fallback match the approved design.
+- Selector arithmetic uses the exact =decimal.Context= in =design.md= and has
+  no platform =math.exp= dependency.
+- Empty eligible archives, decimal signals, and invalid terms fail closed.
+
+*** Implementation Steps
+
+1. Preserve the existing red/green selector tests.
+2. Add boundary tests for alpha, exponent range, duplicate IDs, and invalid
+   parent links.
+3. Add exact preimage, digest, unsigned-integer, decimal, snapshot, term,
+   probability, interval, and selected-node golden values for generations one
+   through three.
+4. Implement or repair node validation.
+5. Implement or repair score reconciliation and finding namespacing.
+6. Implement exact-context decimal DGM selection and SHA-256 draws.
+7. Implement direction ranking and duplicate-parent assignment.
+8. Remove provider/filesystem imports from the module.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier -v=
+- =python3 -m py_compile labs/crouzeix_proof_reproduction/frontier.py=
+
+*** Verification Evidence
+
+- Record all golden draws and recomputed weights.
+
+** TODO Add Append-Only Frontier Store :storage:security:code:tests:
+:PROPERTIES:
+:ID: CPFR-013
+:DESIGN_SECTION: Durable Frontier State; Strict Artifacts
+:DEPENDS_ON: CPFR-010 CPFR-011 CPFR-012
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Extract run-state publication, ledgers, archive-node materialization, snapshot
+projection, and candidate freezing into a secure persistence module.
+
+*** Non-goals
+
+- No model prompts.
+- No parent selection math.
+- No live run.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/frontier_store.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_frontier_store.py=
+- persistence-only deletions from =expert_runner.py=
+
+*** Acceptance Criteria
+
+- Attempt, frontier, and selection ledgers are append-only, bounded, strict
+  JSONL, and reject symlinks.
+- Sequence numbers are contiguous and duplicate task/node IDs fail.
+- Archive-node directories are create-only and contain context, result,
+  reconciliation, evaluations, receipts, and inventory.
+- Snapshot is deterministically regenerated from ledgers/nodes and rejected if
+  stale.
+- Candidate freeze verifies node and proof digest before any write.
+- Candidate publication is create-only and leaves no partial files on failure.
+- Attempt records survive resource blocks after an expert call.
+- Run receipt reconciles tickets, attempts, calls, selections, nodes, and
+  terminal states.
+
+*** Implementation Steps
+
+1. Write failing append, duplicate, symlink, sequence, and size tests.
+2. Implement bounded append-only JSONL publication.
+3. Write failing archive materialization and replacement tests.
+4. Implement create-only node publication with digest inventory.
+5. Write failing stale-snapshot and reconstruction tests.
+6. Implement deterministic projection.
+7. Write failing candidate tamper and partial-publication tests.
+8. Implement candidate freeze with expected digest.
+9. Replace direct writes in =expert_runner.py= with the store API.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_store -v=
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+
+*** Verification Evidence
+
+- Record race/path tests and commit.
+
+** TODO Harden Frontier Provider Adapter :security:code:tests:
+:PROPERTIES:
+:ID: CPFR-014
+:DESIGN_SECTION: Dedicated Expert Boundary; Provider Call Receipt
+:DEPENDS_ON: CPFR-010 CPFR-011
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Bind ticketed pristine expert/evaluator tasks to the existing create-only TRAE
+CLI call primitive and validate call output before orchestration sees it.
+
+*** Non-goals
+
+- No archive selection.
+- No live call.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/frontier_provider.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_frontier_provider.py=
+- =labs/crouzeix_proof_reproduction/runner.py=
+- =labs/crouzeix_proof_reproduction/tests/test_runner.py=
+
+*** Acceptance Criteria
+
+- Every call request and receipt bind ticket ID and ticket SHA-256.
+- Expert/evaluator workspaces are empty and use only =Write=.
+- CLI, model, sandbox, approval, schema, prompt, and parent digests are pinned.
+- No search, network, MCP, shell, read, or delegation tool is exposed.
+- Event sequence requires thread start and turn completion.
+- Output schema and independent Python validation both pass.
+- Timeouts terminate the process group.
+- Completed, malformed, failed, timed-out, and blocked-resource calls retain
+  complete typed receipts.
+- A receipt is appended to accounting immediately after each call, before any
+  later resource preflight.
+- The adapter imports the ticket-binding validator from CPFR-010 rather than
+  duplicating ticket JSON rules.
+
+*** Implementation Steps
+
+1. Extend the fake CLI to validate ticket-bound argv and contexts.
+2. Write failing ticket/request/receipt binding tests.
+3. Implement the frontier provider wrapper.
+4. Write failing tool/access and workspace-isolation tests.
+5. Enforce the exact allowed-tool set.
+6. Write failing timeout and mid-node resource-block accounting tests.
+7. Append receipts immediately and preserve terminal failures.
+8. Run the legacy runner suite for compatibility.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+
+*** Verification Evidence
+
+- Record command golden, timeout test, and review result.
+
+** TODO Implement Ticketed Frontier Preparation :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-015
+:DESIGN_SECTION: Run Specification; Initial Expert Roster; Runtime Ticket Contract
+:DEPENDS_ON: CPFR-010 CPFR-011 CPFR-013
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Create a dedicated preparation command for the E arm that freezes all inputs,
+configuration, root expert tickets, schemas, prompts, and ticket/event roots.
+
+*** Non-goals
+
+- No provider call.
+- No mutation of existing H or O0 runs.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/prepare_frontier.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_prepare_frontier.py=
+- =protocol.py=
+- =README.md=
+- preparation-only deletions from =expert_runner.py=
+
+*** Acceptance Criteria
+
+- Historical prompt identity is verified and raw bytes are discarded.
+- E arm uses model =gpt-5.6-sol=, seed =20260814=, five fixed roles, ten fixed
+  probes, three child generations, two draws, eleven functioning nodes, 33
+  calls, one hour per call, and 4 GiB preflight.
+- Run spec contains exact prompt/schema/config/CLI digests and excluded source
+  classes.
+- Five root expert runtime tickets exist before execution.
+- Root ticket IDs are deterministic from run, generation, and role.
+- Run, ticket, call, archive, candidate, and review directories are create-only.
+- Existing destinations, symlinks, wrong CLI identity, or invalid configuration
+  fail before publication.
+
+*** Implementation Steps
+
+1. Move preparation tests from =test_expert_runner.py= into a red dedicated
+   suite.
+2. Implement frontier config validation in the preparation module.
+3. Implement create-only tree and root ticket publication.
+4. Implement run-spec and inventory digests.
+5. Add CLI argument parsing and =--check= inspection.
+6. Remove preparation code from =expert_runner.py=.
+7. Update README operator commands.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=
+- run a temporary fake preparation and validate its ticket inventory
+
+*** Verification Evidence
+
+- Record prepared-tree inventory and digest checks.
+
+** TODO Implement Ticketed Frontier Orchestrator :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-016
+:DESIGN_SECTION: Frontier Loop And Budget; Child Direction And Expert Role
+:DEPENDS_ON: CPFR-011 CPFR-012 CPFR-013 CPFR-014 CPFR-015
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Refactor and complete the bounded outer loop that launches five root experts,
+two evaluators per functioning node, and DGM-selected child generations.
+
+*** Non-goals
+
+- No evidence publication.
+- No reference-aware mathematical review.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/expert_runner.py=
+- =labs/crouzeix_proof_reproduction/run_frontier.py=
+- =labs/crouzeix_proof_reproduction/tests/test_expert_runner.py=
+
+*** Acceptance Criteria
+
+- All five root experts run and terminalize before child selection; a
+  score-complete root does not truncate the root roster.
+- One malformed root does not abort other roots.
+- Every expert, evaluator, selection draw, candidate freeze, and intervention has a
+  runtime ticket before action.
+- Evaluators are fresh and blind to lineage/treatment/score.
+- Failed evaluator becomes explicit conservative evidence.
+- DGM selection runs only after root archive completion.
+- Duplicate parent draws receive different open directions when possible.
+- Functioning children enter =keep_all= and increment parent count.
+- Attempt/frontier/selection/ticket ledgers reconcile and sequences are
+  contiguous.
+- A perfect-score proof is frozen and marked =score_complete=, then excluded
+  from later selection without stopping other eligible lineages.
+- The frontier stops only at the fixed budget or an empty eligible set.
+- Resource, call, node, and generation budgets fail closed with complete
+  receipts.
+- Best-node reporting without completion does not freeze or promote a proof.
+- CLI subcommands =roots=, =evaluate-roots=, =generations=, =finalize=, and
+  =check= enforce terminal phase boundaries and reject skips or repeats.
+
+*** Implementation Steps
+
+1. Write a failing end-to-end fake run with all root, evaluator, selector, child,
+   ticket, and ledger assertions.
+2. Implement root-generation orchestration through contract/provider/store
+   modules.
+3. Implement evaluator ticket creation and reconciliation.
+4. Implement pre-draw selection-ticket creation, selection, and child-ticket
+   creation in that order.
+5. Implement bounded child generations, score-complete freezing, and stop
+   conditions without conflating score with correctness.
+6. Implement final candidate inventory and best-node fallback.
+7. Implement run receipt reconciliation.
+8. Add malformed, timeout, resource, and partial-run failure tests.
+9. Keep =run_frontier.py= a thin phase CLI with no orchestration logic.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+
+*** Verification Evidence
+
+- Record 33-call fake-run maximum and ledger reconciliation.
+
+** TODO Add Reproduction Test To Release Gate :tests:code:
+:PROPERTIES:
+:ID: CPFR-017
+:DESIGN_SECTION: Global Verification
+:DEPENDS_ON: CPFR-010 CPFR-011 CPFR-012 CPFR-013 CPFR-014 CPFR-015 CPFR-016
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Register the complete M1 provider-neutral reproduction lab with =mise run verify=
+and ensure later =test_*.py= modules under the lab are discovered without
+another gate edit.
+
+*** Non-goals
+
+- No live model call.
+- No network.
+
+*** Owned Files
+
+- =mise.toml=
+- new =labs/crouzeix_proof_reproduction/tests/test_verify_registration.py=
+- payload receipt
+
+*** Acceptance Criteria
+
+- All current ticket, contract, frontier, provider, store, preparation, and
+  runner unit tests are discovered.
+- Discovery is directory-based, so CPFR-040 sealing tests join the gate
+  automatically.
+- Tests use temporary fake executables only.
+- The gate fails if a real =traecli= process or network command is attempted.
+- Python bytecode remains ignored and is not staged.
+
+*** Implementation Steps
+
+1. Add a red gate-discovery test for every required suite.
+2. Add a fake-provider-only guard.
+3. Update =mise.toml= discovery.
+4. Run the lab suite from a clean ignored state.
+5. Refresh the payload receipt last.
+
+*** Verification Plan
+
+- =mise run verify-rust=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Record full command output and commit.
+
+** TODO Implement Review And Repair Machinery :math:review:code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-019
+:DESIGN_SECTION: Evaluator Independence; Repair And Promotion Boundary; Mechanism Similarity
+:DEPENDS_ON: CPFR-010 CPFR-011 CPFR-013 CPFR-014
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Implement provider-neutral strict contracts and a ticketed runner for
+anonymized correctness review, finding reconciliation, one optional repair,
+fresh re-review, and post-correctness mechanism classification.
+
+*** Non-goals
+
+- No live provider call.
+- No guided reconstruction.
+- No mathematical judgment in harness code.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/review_contracts.py=
+- new =labs/crouzeix_proof_reproduction/review_runner.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_review_contracts.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_review_runner.py=
+- new review, reconciliation, repair, and classification prompts/schemas
+
+*** Acceptance Criteria
+
+- Correctness contexts strip arm, model, cost, lineage, mechanism labels,
+  prior findings, and other reviewer output.
+- Findings require stable ID, severity, exact locator, statement, and
+  falsifying test/gap; outcomes use the closed correctness enum.
+- Reconciliation assigns exactly one disposition to every finding.
+- Repair binds parent candidate and finding-ledger digests and permits one call.
+- Changed repair bytes require two new reviewer tickets and contexts.
+- Mechanism classification accepts only a frozen correctness digest and cannot
+  modify correctness bytes.
+- Every action validates a pre-created runtime ticket and preserves typed
+  failures.
+
+*** Implementation Steps
+
+1. Write red context-isolation and schema tests.
+2. Implement correctness context/result contracts.
+3. Write red finding reconciliation and trigger tests.
+4. Implement reconciliation and deterministic repair decision.
+5. Write red one-call repair and fresh re-review tests.
+6. Implement the ticketed repair/re-review flow through the provider adapter.
+7. Write red correctness-freeze and mechanism-classification tests.
+8. Implement classification with pre/post correctness digest checks.
+9. Add fake-provider end-to-end failure and no-candidate paths.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_contracts -v=
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+
+*** Verification Evidence
+
+- Record red/green commands, context scans, and commit.
+
+** TODO Implement Guided Diagnostic Machinery :math:code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-020
+:DESIGN_SECTION: Conditional Guided Diagnostic; Arm G
+:DEPENDS_ON: CPFR-010 CPFR-013 CPFR-014 CPFR-015
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Implement the deterministic Arm G trigger, strict L3 preparation, one-call
+guided reconstruction, and typed candidate/blocker receipt.
+
+*** Non-goals
+
+- No live provider call.
+- No child frontier.
+- No guided correctness review; CPFR-019 owns review machinery.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/guided_runner.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_guided_runner.py=
+- new guided prompt and strict result schema
+- guided-arm additions to =protocol.py=
+
+*** Acceptance Criteria
+
+- Trigger inputs are H outcome, final E correctness outcome, and resource
+  preflight; no model judges admission.
+- L3 is defined and validated as an attributed mechanism card without
+  manuscript/formalization bytes.
+- Preparation binds the selected card, theorem, model, CLI, tools, prompt,
+  schema, exclusions, and one-call budget.
+- Execution requires one runtime ticket and one fresh provider call.
+- Candidate or blocker is create-only and content-addressed.
+- False trigger creates no guided call.
+
+*** Implementation Steps
+
+1. Write red trigger truth-table and cancellation tests.
+2. Implement the pure guided decision.
+3. Write red L3 run-spec, mechanism-card, path, and create-only tests.
+4. Implement guided preparation.
+5. Write red fake-provider candidate/blocker/failure tests.
+6. Implement the one-call guided runner through the provider adapter.
+7. Add usage, intervention, and ticket reconciliation.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_guided_runner -v=
+- run fake =prepare=, =run=, and =--check= paths
+
+*** Verification Evidence
+
+- Record truth table, fake run receipts, and commit.
+
+** TODO Implement Formal Attempt Receipt Contract :math:evidence:code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-021
+:DESIGN_SECTION: Formalization Status
+:DEPENDS_ON: CPFR-010 CPFR-013
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Implement strict create-only records for candidate-specific formalization
+decisions, resource preflights, source, command, logs, axioms, and typed status.
+
+*** Non-goals
+
+- No theorem-specific Lean translation.
+- No live build in tests.
+- No inference from Jin's existing blocked builds.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/formal_receipt.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_formal_receipt.py=
+- new formal-attempt schema
+
+*** Acceptance Criteria
+
+- Status is exactly =not_attempted=, =blocked=, =failed=, or =passed=.
+- Attempt records bind runtime ticket, candidate/no-candidate outcome,
+  toolchain, source, command, axioms, logs, resource receipt, and digests.
+- =passed= requires zero command exit, complete logs, and explicit axiom scan.
+- =blocked= and =failed= remain distinct.
+- Existing destinations, symlinks, unsafe paths, unknown fields, and digest
+  mismatch fail closed.
+
+*** Implementation Steps
+
+1. Write red status and strict-field tests.
+2. Write red path, symlink, replacement, and digest tests.
+3. Implement create-only attempt preparation and receipt validation.
+4. Write red passed/failed/blocked invariant tests.
+5. Implement typed terminal validation and =--check= CLI.
+6. Add fake command/log fixtures without invoking Lean.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+- fake attempt =validate --attempt-dir= checks
+
+*** Verification Evidence
+
+- Record invariant tests and commit.
+
+** TODO Review Provider-Neutral Frontier Milestone :review:code:tests:
+:PROPERTIES:
+:ID: CPFR-018
+:DESIGN_SECTION: M1 Provider-neutral DGM frontier
+:DEPENDS_ON: CPFR-017 CPFR-019 CPFR-020 CPFR-021
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Adversarially review the committed CPFR-010 through CPFR-017 and CPFR-019
+through CPFR-021 milestone, create repair tickets for blocking findings, and
+run the release gate on the repaired tip.
+
+*** Non-goals
+
+- No live run.
+- No evidence or packet changes.
+
+*** Owned Files
+
+- this ticket's tracker subtree
+- review artifacts named by the review tool, when any
+- payload receipt only if review artifacts are tracked
+
+*** Acceptance Criteria
+
+- Standards review covers path safety, create-only writes, subprocess cleanup,
+  strict JSON, accounting, deterministic selection, and context leakage.
+- Spec review covers every M1 design/PRD requirement, including review, guided,
+  and formal attempt machinery.
+- Every blocking finding has a =CPFR-R###= ticket, repair commit, and re-review.
+- The branch contains one focused verified commit for each tracked-edit ticket
+  CPFR-010 through CPFR-017 and CPFR-019 through CPFR-021.
+- No run artifact or pycache is tracked.
+
+*** Implementation Steps
+
+1. Freeze the M1 base, commit list, and diff.
+2. Run =code-review= against design and repository standards.
+3. Mint one =CPFR-R###= ticket per independent blocking repair.
+4. Execute and re-review repair tickets in dependency order.
+5. Re-run all focused tests and =mise run verify=.
+6. Record the reviewed commit range and finding dispositions here.
+
+*** Verification Plan
+
+- =git diff --check=
+- complete Python lab suite
+- =mise run verify=
+- per-commit trailer and owned-file audit
+
+*** Verification Evidence
+
+- Record findings, repair-ticket IDs, reviewed commits, and gate.
+
+** TODO Preflight Host Resources And Runtime Identity :live:security:ticket:
+:PROPERTIES:
+:ID: CPFR-030
+:DESIGN_SECTION: Frontier Loop And Budget; Safety
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+Establish sufficient disk, stable CLI identity, auth, model availability, and
+absence of stale frontier processes before preparing the live E arm.
+
+*** Non-goals
+
+- No provider call.
+- No deletion of session, telemetry, hook, or baseline evidence.
+
+*** Owned Files
+
+- ignored =labs/crouzeix_proof_reproduction/.runs/operator-preflight-001/=
+- one preflight runtime ticket and receipt in that root
+- tracker verification evidence
+
+*** Acceptance Criteria
+
+- At least 4 GiB free before preparation and before each later call.
+- TRAE CLI path, version, executable digest, auth, and =gpt-5.6-sol= availability
+  are recorded.
+- No process from an older E run is active.
+- H and O0 run trees and global CLI/session evidence are preserved.
+- Any cache cleanup is limited to documented regenerable caches.
+- The receipt is content-addressed and later bound by E preparation; the E run
+  need not exist yet.
+
+*** Implementation Steps
+
+1. Create =operator-preflight-001= and its operator runtime ticket.
+2. Check disk, processes, CLI identity, auth, and model list.
+3. Inventory baseline run and session artifacts.
+4. Reclaim only regenerable caches if below the floor.
+5. Recheck and write the preflight receipt.
+6. Terminalize the runtime ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/operator-preflight-001=; expected exit =0=
+- =shasum -a 256 "$(command -v traecli)"=; expected digest equals the receipt
+- =df -Pk .=; expected available KiB at least =4194304=
+- =pgrep -af 'run_frontier.py.*expert-frontier'=; expected exit =1=
+
+*** Verification Evidence
+
+- Record exact values and cleanup scope.
+
+** TODO Record Legacy H And O0 Ticket-Contract Exception :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-023
+:DESIGN_SECTION: Runtime Ticket Contract; Current State
+:DEPENDS_ON: CPFR-009 CPFR-010
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: historical-001; orchestrated-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Record that H and O0 predate the runtime-ticket contract, preserve their
+original intervention receipts, and create a current migration/audit receipt
+without backdating any ticket.
+
+*** Non-goals
+
+- No fabricated pre-action ticket or event.
+- No rerun of H or O0.
+- No mutation of original call/event bytes.
+
+*** Owned Files
+
+- current migration runtime ticket under
+  =labs/crouzeix_proof_reproduction/.runs/legacy-ticket-migration-001/=
+- typed migration receipts adjacent to the ignored H and O0 run roots
+- this ticket's tracker subtree
+
+*** Acceptance Criteria
+
+- Each baseline is classified =legacy_pre_ticket_contract=.
+- Original run, call, intervention, and timestamp digests are preserved.
+- The current migration ticket timestamp is later and never represented as
+  governing the original action.
+- Sealing can validate the explicit exception without weakening ticket rules
+  for E, G, reviews, formal attempts, or future runs.
+- Unknown or missing legacy artifacts fail closed.
+
+*** Implementation Steps
+
+1. Create and admit the current migration runtime ticket.
+2. Inventory H and O0 original artifacts and timestamps.
+3. Write one typed legacy-exception receipt per run.
+4. Recompute original digests and assert no source byte changed.
+5. Validate exception receipts and terminalize the migration ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/legacy-ticket-migration-001=; expected exit =0=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-legacy labs/crouzeix_proof_reproduction/.runs/historical-001 labs/crouzeix_proof_reproduction/.runs/orchestrated-001=; expected exit =0=
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py --check-run labs/crouzeix_proof_reproduction/.runs/historical-001= and the O0 equivalent; expected no byte/timestamp mutation
+
+*** Verification Evidence
+
+- Record migration ticket, exception digests, and immutability proof.
+
+** TODO Prepare Immutable Expert-Frontier Run :live:ticket:
+:PROPERTIES:
+:ID: CPFR-031
+:DESIGN_SECTION: Run Specification; Runtime Ticket Contract
+:DEPENDS_ON: CPFR-023 CPFR-030
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+Create and inspect a fresh immutable E-arm run tree from the pinned public
+prompt.
+
+*** Non-goals
+
+- No provider call.
+- No mutation of H or O0.
+
+*** Owned Files
+
+- ignored =.runs/expert-frontier-001/=
+- root expert runtime tickets and preparation receipt
+- tracker evidence
+
+*** Acceptance Criteria
+
+- Prompt source digest and one allowed output-path delta match the contract.
+- Config records seed, roles, probes, budgets, tools, excluded sources, and
+  resource floor.
+- Run spec binds the =operator-preflight-001= receipt digest.
+- Five root expert tickets are complete and create-only.
+- No answer-bearing source or prior attempt is present in root contexts.
+- Run tree has no symlinks or undeclared files.
+
+*** Implementation Steps
+
+1. Extract prompt from the pinned Git object to temporary storage.
+2. Allocate a private sibling staging directory and create its preparation
+   runtime ticket before any other run artifact.
+3. Populate and validate the staged run, including the host-preflight digest.
+4. Atomically publish it as =expert-frontier-001= only after validation.
+5. Remove the temporary prompt.
+6. Run =--check= and ticket/run validators.
+7. Manually inspect inventories/digests and terminalize the preparation ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected exit =0=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected five root tickets plus one accepted preparation ticket
+- =shasum -a 256 "$PROMPT_PATH"= before deletion; expected =0a0c3000b81efc4d9edc65ec3cd1d53df0d4e69b24bfee9fe0860301d853d6fc=
+- =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected zero forbidden findings
+
+*** Verification Evidence
+
+- Record run ID, config digest, ticket count, and inventory.
+
+** TODO Execute Five Pristine Root Experts :live:math:ticket:
+:PROPERTIES:
+:ID: CPFR-032
+:DESIGN_SECTION: Initial Expert Roster
+:DEPENDS_ON: CPFR-031
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+Execute all five pre-created root expert tickets and persist every result and
+failure before evaluation.
+
+*** Non-goals
+
+- No parent selection before all roots terminalize.
+- No peer output in any root context.
+
+*** Owned Files
+
+- five root expert ticket directories
+- five expert call directories
+- attempt/frontier ledger rows
+- five raw expert result records or typed failures
+
+*** Acceptance Criteria
+
+- All five tickets enter running and a terminal state.
+- Each call is a fresh =traecli exec= session with only =Write=.
+- Contexts contain no peer artifacts, scores, public proofs, or internet.
+- Every call receipt binds its ticket and exact context/schema/prompt digests.
+- One malformed/failed expert does not prevent later root tickets.
+- Resource block records the interrupted attempt before stopping.
+
+*** Implementation Steps
+
+1. Validate all five tickets and resource preflight.
+2. Execute role tickets in fixed roster order.
+3. After each call, validate and persist its receipt immediately.
+4. Validate expert output or classify nonfunctioning.
+5. Append attempt and frontier events.
+6. Recheck disk before the next ticket.
+7. Stop after all five terminalize or a typed resource block.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase roots=; expected five terminal root tickets, five attempts, and zero unaccounted calls
+- =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase roots=; expected zero cross-root findings
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected exit =0=
+
+*** Verification Evidence
+
+- Record each ticket ID, status, result digest, usage, and intervention.
+
+** TODO Evaluate Root Archive With Fresh Reviewers :live:math:ticket:
+:PROPERTIES:
+:ID: CPFR-033
+:DESIGN_SECTION: Independent Proof-Progress Evaluation
+:DEPENDS_ON: CPFR-032
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+For each functioning root, create and execute two fresh evaluator tickets,
+reconcile ten probes, and admit the node to =keep_all=.
+
+*** Non-goals
+
+- No reference-aware public-proof comparison.
+- No parent selection until all functioning roots are scored.
+
+*** Owned Files
+
+- dynamic evaluator ticket directories
+- evaluator calls and normalized records
+- node reconciliations and archive-node directories
+- snapshot and frontier events
+
+*** Acceptance Criteria
+
+- Exactly two evaluator tickets per functioning root.
+- Evaluator contexts contain mathematical node content but no lineage, role,
+  score, treatment, or other evaluator output.
+- Failed evaluator becomes explicit =insufficient_evidence=, not a dropped node.
+- Every score recomputes from unanimous probe passes.
+- P10 cannot pass without a candidate proof.
+- All functioning roots enter the archive regardless of score.
+- Finding IDs are evaluator-namespaced.
+
+*** Implementation Steps
+
+1. Create evaluator tickets from each functioning expert result.
+2. Execute evaluators in deterministic node/evaluator order.
+3. Validate every ten-probe result and finding.
+4. Substitute conservative typed evidence for failed evaluators.
+5. Reconcile score and findings.
+6. Materialize archive nodes and update snapshot.
+7. Reconcile tickets, calls, evaluations, and nodes.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase evaluate-roots=; expected two evaluations per functioning root and ten probes per evaluation
+- =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase evaluators=; expected zero lineage/treatment findings
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --projection=; expected snapshot digest to equal ledger projection
+
+*** Verification Evidence
+
+- Record node scores, disagreements, findings, and admission statuses.
+
+** TODO Execute DGM Parent Selection And Child Generations :live:math:ticket:
+:PROPERTIES:
+:ID: CPFR-034
+:DESIGN_SECTION: DGM Parent Selection; Child Direction; Frontier Loop
+:DEPENDS_ON: CPFR-033
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+Run up to three ticketed child generations using the exact DGM selector,
+dynamic selection tickets, child expert tickets, and evaluator tickets.
+
+*** Non-goals
+
+- No manual parent override.
+- No deletion of lower-scoring nodes.
+- No treatment change under the same run ID.
+
+*** Owned Files
+
+- selection tickets/events
+- child expert and evaluator tickets/calls
+- attempt/frontier/selection ledgers
+- archive nodes and snapshots
+- run receipt
+
+*** Acceptance Criteria
+
+- Eligibility excludes =alpha= one.
+- Every term and probability recomputes from archive score and child count.
+- SHA-256 draws reproduce from seed, generation, and draw index.
+- Sampling is with replacement.
+- Both draws bind the same pre-generation archive/snapshot digest, eligible set,
+  child-count vector, and probability vector.
+- No child call, admission, or child-count mutation occurs until both draw
+  events are terminal.
+- Direction priority and role map match the fixed contract.
+- Only selected parent/direction enter child context.
+- Functioning children are admitted even if lower scoring.
+- Only functioning children increment parent count.
+- Each generation and call stops at the fixed resource/call/node ceilings.
+- Every dynamic task has a runtime ticket before execution.
+- A =score_complete= node is frozen and parent-ineligible; remaining eligible
+  nodes continue until budget exhaustion or an empty eligible set.
+
+*** Implementation Steps
+
+1. Freeze the pre-generation archive snapshot and create two draw tickets.
+2. Compute both draws from that snapshot, append two exact events, and
+   terminalize both tickets before any child action.
+3. Create two child expert tickets from selected parent/directions.
+4. Execute, validate, and record child attempts.
+5. Create/execute evaluator tickets for functioning children.
+6. Admit children, update child counts, and regenerate snapshot.
+7. Freeze score-complete candidates and repeat through generation three,
+   budget exhaustion, or an empty eligible set.
+8. Reconcile final run receipt.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase generations=; expected every recorded term/draw to recompute and both draws per generation to share one snapshot digest
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected zero orphan task/call/attempt/evaluation records
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --projection=; expected snapshot parity
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --budgets=; expected calls <= 33, generations <= 3, functioning nodes <= 11
+
+*** Verification Evidence
+
+- Record each generation's terms, draws, children, scores, and stop reason.
+
+** TODO Freeze Candidate Or Strongest Frontier Outcome :live:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-035
+:DESIGN_SECTION: Promotion Boundary; Candidate Freeze
+:DEPENDS_ON: CPFR-034
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish the final create-only inventory of all score-complete candidates, or a
+strongest-node report when no qualifying candidate exists.
+
+*** Non-goals
+
+- No claim of mathematical correctness.
+- No candidate file for an incomplete best node.
+
+*** Owned Files
+
+- candidate-inventory runtime ticket
+- =candidate/= content-addressed candidate files/index or strongest-node report
+- final run receipt and snapshot
+
+*** Acceptance Criteria
+
+- Every candidate digest matches its source archive-node proof digest.
+- Digest mismatch writes nothing.
+- Candidate index binds every source node and candidate bytes.
+- Without a qualifying proof, promotion remains =not_promoted= and only the
+  strongest node ID/score/gaps are reported.
+- More than one score-complete node is retained; selection of a review target is
+  a later review action, not an archive deletion.
+- Run receipt reconciles every runtime ticket and terminal state.
+
+*** Implementation Steps
+
+1. Create candidate-inventory ticket after frontier stop.
+2. Check every score-complete qualification and archive-node digest.
+3. Publish all candidates atomically or a strongest-node report.
+4. Write final run receipt and reconciliation table.
+5. Terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase finalize=; expected candidate index parity or exactly one strongest-node report
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected accepted finalization ticket and full terminal-state reconciliation
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --candidates=; expected every candidate digest to bind one score-complete archive node
+
+*** Verification Evidence
+
+- Record all qualifying nodes/scores/digests or the strongest-node outcome.
+
+** TODO Validate Live Run Without Reference Leakage :live:review:ticket:
+:PROPERTIES:
+:ID: CPFR-036
+:DESIGN_SECTION: Evidence Boundary; Threats
+:DEPENDS_ON: CPFR-035
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Audit the complete E run before reference-aware review or evidence publication.
+
+*** Non-goals
+
+- No mathematical correctness judgment.
+- No mechanism similarity classification.
+
+*** Owned Files
+
+- run-audit runtime ticket
+- audit receipt in E run
+- tracker evidence
+
+*** Acceptance Criteria
+
+- All tickets, contexts, calls, results, evaluations, selections, nodes, ledgers,
+  snapshot, and run receipt validate.
+- Initial roots have no peer context.
+- Child contexts contain one declared parent/direction only.
+- No generation context includes public proof or Harp Crouzeix content.
+- Every selection and score recomputes.
+- Every provider call is accounted.
+- Resource/operator interventions are explicit.
+
+*** Implementation Steps
+
+1. Create the run-audit ticket.
+2. Validate every runtime ticket and event chain.
+3. Recompute all digests, scores, selections, child counts, and snapshot.
+4. Scan prompts/contexts for forbidden source leakage.
+5. Reconcile calls, usage, attempts, and terminal states.
+6. Write audit receipt and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py --check-run labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected exit =0=
+- =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --all=; expected zero unresolved structural/leakage findings
+
+*** Verification Evidence
+
+- Record audit receipt digest and finding disposition.
+
+** TODO Implement Deterministic Run Sealing :evidence:security:tests:
+:PROPERTIES:
+:ID: CPFR-040
+:DESIGN_SECTION: Deterministic Sealing
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Build and test deterministic, secret-scanned publication for failed,
+superseded, blocked, non-promoted, and candidate-bearing run trees.
+
+*** Non-goals
+
+- No live run.
+- No Rust source integration yet.
+
+*** Owned Files
+
+- new =labs/crouzeix_proof_reproduction/seal_run.py=
+- new =labs/crouzeix_proof_reproduction/tests/test_sealing.py=
+- archive helper reuse or extraction from Meta-Harness if appropriate
+
+*** Acceptance Criteria
+
+- Raw archive is deterministic in order, timestamp, mode, owner, and gzip
+  metadata.
+- Member inventory binds every file by path, bytes, and digest.
+- Traversal, symlink, special file, duplicate member, overflow, and digest
+  mismatch are rejected.
+- Secret scan aborts publication without rewriting bytes.
+- Historical upstream prompt bytes remain absent.
+- Publication is create-only.
+- Run-local ticket and run validation is mandatory before sealing.
+
+*** Implementation Steps
+
+1. Write red deterministic archive and extraction tests.
+2. Implement or reuse hardened archive helpers.
+3. Write red secret and unsafe-member tests.
+4. Implement fail-closed scan and extraction.
+5. Write red run-check and existing-destination tests.
+6. Implement normalized projection and raw archive publication.
+7. Cover all run outcome classes with fixtures.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_sealing -v=
+- deterministic archive byte comparison across two runs
+
+*** Verification Evidence
+
+- Record archive golden and security tests.
+
+** TODO Seal Historical And Flat Baseline Attempts :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-041
+:DESIGN_SECTION: Baseline Evidence
+:DEPENDS_ON: CPFR-023 CPFR-040 CPFR-006 CPFR-007
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: historical-001; orchestrated-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish immutable evidence for H and O0 with their interventions and claim
+ceilings.
+
+*** Non-goals
+
+- No reinterpretation as completed model studies.
+- No use of O0 outputs in E.
+
+*** Owned Files
+
+- baseline sealing runtime tickets
+- =evidence/crouzeix_conjecture_reproduction/runs/historical-001/=
+- =evidence/crouzeix_conjecture_reproduction/runs/orchestrated-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/baselines-001.json=
+
+*** Acceptance Criteria
+
+- Historical resource intervention and missing usage are explicit.
+- Flat treatment supersession and redirect failure are explicit.
+- Raw and normalized manifests verify.
+- No source prompt bytes or secrets are published.
+- Each publication binds its sealing ticket.
+- Each publication exposes =legacy_pre_ticket_contract= and the current
+  migration receipt without presenting it as historical governance.
+
+*** Implementation Steps
+
+1. Create one sealing ticket per baseline.
+2. Validate baseline run structures.
+3. Seal raw and normalized artifacts.
+4. Write provenance and manifest rows.
+5. Re-run secret and archive checks.
+6. Terminalize tickets.
+
+*** Verification Plan
+
+- =seal_run.py --check= for both evidence roots
+- manifest and digest recomputation
+
+*** Verification Evidence
+
+- Record archive and normalized manifest digests.
+
+** TODO Seal Expert-Frontier Attempt :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-042
+:DESIGN_SECTION: Expert-Frontier Evidence
+:DEPENDS_ON: CPFR-040 CPFR-036
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: expert-frontier-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish the validated E run, including tickets, ledgers, archive, candidate or
+strongest-node report, and resource receipts.
+
+*** Non-goals
+
+- No reference-aware review in the generation archive.
+
+*** Owned Files
+
+- E-run sealing ticket
+- =evidence/crouzeix_conjecture_reproduction/runs/expert-frontier-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/expert-frontier-generation-001.json=
+
+*** Acceptance Criteria
+
+- Every task ticket and event is preserved.
+- Raw call/context bytes and normalized nodes/reconciliations are distinct.
+- Selector and score records are independently recomputable.
+- Candidate or strongest-node outcome is explicit.
+- Secret scan and deterministic archive checks pass.
+
+*** Implementation Steps
+
+1. Create the sealing ticket.
+2. Validate the generation run one final time.
+3. Build raw archive and inventories.
+4. Build normalized reader/reviewer projection.
+5. Write E manifest and provenance.
+6. Verify and terminalize ticket.
+
+*** Verification Plan
+
+- =seal_run.py --check= for E
+- score/selection/ticket reconciliation script
+
+*** Verification Evidence
+
+- Record final evidence digests and counts.
+
+** TODO Add Offline Rust Evidence Verifier :evidence:code:tests:
+:PROPERTIES:
+:ID: CPFR-043
+:DESIGN_SECTION: Evidence Verification
+:DEPENDS_ON: CPFR-041 CPFR-042 CPFR-063 CPFR-066 CPFR-067 CPFR-068
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Register all reproduction evidence in Harp's offline source verifier.
+
+*** Non-goals
+
+- No network fetch in verification.
+- No mathematical truth claim.
+
+*** Owned Files
+
+- new =crates/harp/src/sources/crouzeix_reproduction.rs=
+- =crates/harp/src/sources.rs=
+- focused Rust tests
+- =docs/product-contract.md=
+- source-count fixtures
+
+*** Acceptance Criteria
+
+- Exact evidence roots, manifests, files, and counts are closed.
+- Unknown files, symlinks, bad paths, digest mismatch, ticket mismatch, stale
+  snapshot, and archive mismatch fail.
+- Failed and superseded outcomes are accepted when internally consistent.
+- A canceled guided arm is accepted only with the CPFR-060 trigger receipt and
+  terminal cancellation records for CPFR-061 through CPFR-067.
+- Historical prompt absence is enforced.
+- =harp sources verify= remains offline.
+
+*** Implementation Steps
+
+1. Add red fixture tests for each accepted run outcome.
+2. Add red unknown/symlink/digest/ticket/archive tests.
+3. Implement strict manifest and receipt parser.
+4. Register aggregate counts.
+5. Update product contract and CLI fixtures.
+
+*** Verification Plan
+
+- =cargo test -p harp sources::crouzeix_reproduction::tests --lib -- --test-threads=1=
+- =cargo test -p harp --test cli=
+
+*** Verification Evidence
+
+- Record artifact counts and Rust test output.
+
+** TODO Perform Blind Correctness Reviews :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-044
+:DESIGN_SECTION: Evaluator Independence; Primary Endpoint
+:DEPENDS_ON: CPFR-042
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: fresh reviewers
+:END:
+
+*** Scope
+
+For every frozen E candidate, run two fresh anonymized correctness reviews. If
+E produced none, formally classify candidate review as not applicable and
+review the strongest node's earliest decisive gap only.
+
+*** Non-goals
+
+- No treatment or mechanism disclosure to correctness reviewers.
+- No mechanism classification yet.
+
+*** Owned Files
+
+- correctness-review runtime tickets
+- ignored review contexts, calls, findings, and receipts under
+  =labs/crouzeix_proof_reproduction/.runs/reviews/e-initial-001/=
+
+*** Acceptance Criteria
+
+- Every candidate ID is anonymized and digest-bound.
+- Reviewers see no arm, model cost, lineage, or public proof.
+- Findings include severity, locator, statement, and falsifying test/gap.
+- Outcomes use =complete=, =incomplete=, =invalid=, or =indeterminate=.
+- Exactly two fresh reviewer tickets exist per frozen candidate.
+- Without a candidate, no fake completeness review is run.
+
+*** Implementation Steps
+
+1. Enumerate frozen candidates in candidate-digest order.
+2. Create two reviewer tickets per candidate after evidence freeze.
+3. Prepare anonymized review contexts.
+4. Execute logical and operator-theory reviews.
+5. Validate and persist findings per candidate digest.
+6. Classify every outcome or the no-candidate not-applicable state.
+7. Terminalize tickets.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-initial-001 --phase correctness=; expected two terminal reviews per candidate and zero schema/digest errors
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py scan-contexts --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-initial-001=; expected zero treatment/lineage/reference findings
+
+*** Verification Evidence
+
+- Record review outcomes and finding IDs.
+
+** TODO Reconcile Review Findings And Decide Repair :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-045
+:DESIGN_SECTION: Repair And Promotion Boundary
+:DEPENDS_ON: CPFR-044
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Reconcile independent findings and make a deterministic, ticketed decision
+about whether one repair attempt is warranted.
+
+*** Non-goals
+
+- No silent finding deletion.
+- No repair execution.
+- No promotion of an unre-reviewed candidate.
+
+*** Owned Files
+
+- reconciliation and optional repair runtime tickets
+- ignored finding disposition and decision records under
+  =labs/crouzeix_proof_reproduction/.runs/reviews/e-initial-001/=
+
+*** Acceptance Criteria
+
+- Every finding has one disposition.
+- Critical disagreement remains unresolved until adjudicated.
+- No repair is attempted when no candidate exists.
+- The decision is exactly =repair_required= or =no_repair= and names every
+  candidate digest plus every finding disposition.
+- Only =incomplete= candidates are repair-eligible. Selection uses the exact
+  severity vector and digest tie-break from =design.md=.
+- Complete, invalid, and indeterminate candidates are never repair targets.
+- =repair_required= activates CPFR-048 and CPFR-049; =no_repair= cancels both
+  with the decision receipt as evidence.
+
+*** Implementation Steps
+
+1. Create reconciliation ticket.
+2. Join findings by candidate digest and locator.
+3. Record fixed, rejected-with-reason, unresolved, or not-applicable.
+4. Compute each candidate's repair vector and apply the precommitted trigger.
+5. Persist the repair decision and terminalize the runtime ticket.
+6. Move CPFR-048 and CPFR-049 to =TODO= or =CANCELED= consistently.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-initial-001 --phase reconciliation=; expected one disposition per finding and one deterministic decision
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=; expected CPFR-048/049 both =TODO= or both =CANCELED=
+
+*** Verification Evidence
+
+- Record final finding ledger and outcome.
+
+** TODO Classify Mechanism Similarity After Correctness Freeze :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-046
+:DESIGN_SECTION: Mechanism Similarity
+:DEPENDS_ON: CPFR-045 CPFR-048 CPFR-049
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Compare every final frozen candidate, or the strongest node when no candidate
+exists, against Jin and Lorist-Schwenninger only after correctness review is
+complete.
+
+*** Non-goals
+
+- Similarity cannot alter correctness.
+- Guided source material cannot flow back into generation.
+
+*** Owned Files
+
+- mechanism-classification runtime ticket
+- ignored comparison context, result, and receipt under the final E review
+  attempt
+
+*** Acceptance Criteria
+
+- Correctness outcome is immutable before classification.
+- Classifier records Jin-like, Lorist-Schwenninger-like, other, or
+  indeterminate with exact mechanism locators for each candidate digest.
+- E generation remains L1; the later reference-aware classifier cannot alter
+  that generation receipt. Training contamination remains unknown.
+- Matching a public route is not called first discovery.
+
+*** Implementation Steps
+
+1. Create classification ticket.
+2. Build reference-aware context from sealed evidence.
+3. Compare mechanism components, not wording.
+4. Validate and persist classification.
+5. Confirm correctness records are byte-unchanged.
+6. Terminalize ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --phase classification=; expected one valid classification per final candidate/strongest node
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --correctness-immutable=; expected pre/post correctness digests equal
+
+*** Verification Evidence
+
+- Record classification and unchanged correctness digest.
+
+** TODO Attempt Formal Verification Under Typed Status :math:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-047
+:DESIGN_SECTION: Formalization Status
+:DEPENDS_ON: CPFR-045 CPFR-048 CPFR-049
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Decide and, when feasible, execute candidate-specific formal checks for every
+final reviewed candidate without
+misusing Jin's existing blocked builds as generated-proof verification.
+
+*** Non-goals
+
+- No claim that mechanism resemblance implies Lean coverage.
+- No forced build below resource preflight.
+
+*** Owned Files
+
+- formal-verification runtime ticket
+- ignored candidate-specific source/scan/build logs under
+  =labs/crouzeix_proof_reproduction/.runs/formal/e-formal-001/=
+
+*** Acceptance Criteria
+
+- Status is exactly =not_attempted=, =blocked=, =failed=, or =passed=.
+- Toolchain, source digest, command, axioms, logs, and resource preflight are
+  recorded for attempts.
+- Existing Jin builds remain separately =blocked=.
+- No generated candidate is labeled verified without its own check.
+- One runtime ticket and typed status exist per final candidate digest; a
+  no-candidate run gets one explicit =not_attempted= record.
+
+*** Implementation Steps
+
+1. Create formal-verification ticket.
+2. Enumerate final candidates in digest order.
+3. Assess each candidate route and available formal scaffold.
+4. Record not-attempted reason or prepare candidate-specific source.
+5. Run resource preflight and scan/build/axiom checks when feasible.
+6. Write one typed receipt per candidate and terminalize all tickets.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/formal_receipt.py validate --attempt-dir labs/crouzeix_proof_reproduction/.runs/formal/e-formal-001=; expected one typed receipt per final candidate or one no-candidate receipt
+
+*** Verification Evidence
+
+- Record status and boundary.
+
+** BACKLOG Execute One Candidate Repair :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-048
+:DESIGN_SECTION: Repair And Promotion Boundary
+:DEPENDS_ON: CPFR-045
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+When CPFR-045 records =repair_required=, execute exactly one ticketed repair
+against the frozen E candidate and its reconciled finding ledger.
+
+*** Non-goals
+
+- No repair when CPFR-045 records =no_repair=.
+- No in-place mutation of the sealed generation candidate.
+- No correctness claim before CPFR-049.
+
+*** Owned Files
+
+- repair runtime ticket, context, call, result, and receipt under
+  =labs/crouzeix_proof_reproduction/.runs/reviews/e-repair-001/=
+
+*** Acceptance Criteria
+
+- The repair target matches the frozen lexicographic severity-vector decision.
+- The repair context binds the parent candidate and finding-ledger digests.
+- One fresh provider session receives only the candidate and reconciled
+  findings needed for repair.
+- Any changed candidate has a new digest and explicit parent digest.
+- Failure, timeout, malformed output, or unchanged output is retained and
+  terminal.
+- If the trigger is false, this ticket is =CANCELED= without a provider call.
+
+*** Implementation Steps
+
+1. Validate the CPFR-045 trigger and create the repair runtime ticket.
+2. Build and digest the bounded repair context.
+3. Execute at most one fresh repair call.
+4. Validate and freeze the result as a new review-attempt artifact.
+5. Terminalize the runtime and repository tickets.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-repair-001 --phase repair=; expected parent linkage, at most one call, and typed terminal status
+
+*** Verification Evidence
+
+- Record trigger, status, parent digest, new digest, and usage.
+
+** BACKLOG Re-review Repaired Candidate :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-049
+:DESIGN_SECTION: Evaluator Independence; Repair And Promotion Boundary
+:DEPENDS_ON: CPFR-048
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: fresh reviewers
+:END:
+
+*** Scope
+
+When CPFR-048 produces changed candidate bytes, run two fresh anonymized
+correctness reviews and freeze the final E correctness outcome.
+
+*** Non-goals
+
+- No reuse of initial reviewer contexts or findings as reviewer input.
+- No mechanism classification.
+
+*** Owned Files
+
+- fresh reviewer runtime tickets, contexts, calls, findings, and receipts under
+  =labs/crouzeix_proof_reproduction/.runs/reviews/e-repair-001/=
+
+*** Acceptance Criteria
+
+- Reviewers bind the new candidate digest and see no arm, repair history,
+  mechanism label, prior findings, or each other's output.
+- Findings use the CPFR-044 schema and closed outcome enum.
+- The final E correctness record names the reviewed digest.
+- If CPFR-048 is canceled or produces no changed bytes, this ticket is
+  =CANCELED= with the repair receipt as evidence.
+
+*** Implementation Steps
+
+1. Validate the repaired candidate and create two reviewer tickets.
+2. Build two independently digested anonymized contexts.
+3. Execute and validate both fresh reviews.
+4. Reconcile every finding and freeze the final E correctness record.
+5. Terminalize all runtime tickets and this repository ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-repair-001 --phase correctness=; expected two fresh reviews bound to the repaired digest
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py scan-contexts --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/e-repair-001=; expected zero history/prior-finding leakage
+
+*** Verification Evidence
+
+- Record reviewer tickets, outcomes, findings, and final candidate digest.
+
+** TODO Decide Mechanism-Guided Diagnostic Trigger :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-060
+:DESIGN_SECTION: Conditional Guided Diagnostic; Arm G
+:DEPENDS_ON: CPFR-006 CPFR-045 CPFR-048 CPFR-049
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Apply the precommitted Arm G trigger after the historical and final E
+correctness outcomes freeze, then activate or cancel the conditional guided
+tickets.
+
+*** Non-goals
+
+- No provider call.
+- No reinterpretation of a guided result as independent rediscovery.
+
+*** Owned Files
+
+- guided-decision runtime ticket and receipt under
+  =labs/crouzeix_proof_reproduction/.runs/guided-decision-001/=
+- state transitions for CPFR-061 through CPFR-066
+
+*** Acceptance Criteria
+
+- The decision recomputes from sealed H/E outcomes and a fresh 4 GiB resource
+  preflight.
+- The trigger is true only when neither H nor E has an independently reviewed
+  complete proof and resource preflight passes.
+- A true trigger moves CPFR-061 through CPFR-066 from =BACKLOG= to =TODO=.
+- A false trigger moves those tickets to =CANCELED= with one reason and no
+  provider call.
+- Training contamination and the non-discovery claim ceiling remain explicit.
+
+*** Implementation Steps
+
+1. Create the guided-decision runtime ticket.
+2. Bind H and final E outcome digests.
+3. Run and record the resource preflight.
+4. Evaluate the exact boolean trigger.
+5. Persist the decision and update all conditional ticket states.
+6. Terminalize the runtime ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/guided_runner.py check-decision --decision-dir labs/crouzeix_proof_reproduction/.runs/guided-decision-001=; expected bound H/E digests, resource receipt, and deterministic boolean
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=; expected CPFR-061..066 all =TODO= or all =CANCELED=
+- =find labs/crouzeix_proof_reproduction/.runs/guided-001/calls -type f 2>/dev/null= before true trigger; expected no output
+
+*** Verification Evidence
+
+- Record trigger inputs, result, and resulting CPFR-061 through CPFR-066 states.
+
+** BACKLOG Prepare Immutable Guided Run :live:ticket:
+:PROPERTIES:
+:ID: CPFR-061
+:DESIGN_SECTION: Arm G; Strict Artifacts
+:DEPENDS_ON: CPFR-060
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+When activated, prepare a create-only guided run with one attributed mechanism
+card and an explicitly non-blind leakage tier.
+
+*** Non-goals
+
+- No provider call.
+- No mutation of H, O0, or E.
+
+*** Owned Files
+
+- ignored =labs/crouzeix_proof_reproduction/.runs/guided-001/=
+- preparation runtime ticket and receipt
+
+*** Acceptance Criteria
+
+- The run uses arm =guided= and leakage tier =L3=, defined as an attributed
+  proof-mechanism card without manuscript or formalization bytes.
+- One mechanism card is selected before preparation and content-addressed.
+- The card, theorem, prompt, schema, model, CLI, tools, timeout, and exclusions
+  are bound in the run spec.
+- The run and call destinations are create-only and symlink-free.
+- If CPFR-060 is false, this ticket remains provider-free and is =CANCELED=.
+
+*** Implementation Steps
+
+1. Validate the CPFR-060 decision and create the preparation ticket.
+2. Select and digest the predeclared Jin or Lorist-Schwenninger mechanism card.
+3. Prepare =guided-001= with =leakage=L3=.
+4. Inspect contexts, inventories, and excluded source classes.
+5. Terminalize the preparation ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/guided_runner.py check --run-dir labs/crouzeix_proof_reproduction/.runs/guided-001 --phase prepare=; expected L3 spec, one card digest, zero undeclared files
+- =python3 labs/crouzeix_proof_reproduction/guided_runner.py scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/guided-001=; expected only declared card/theorem material
+
+*** Verification Evidence
+
+- Record mechanism-card identity, run-spec digest, and ticket outcome.
+
+** BACKLOG Execute One Guided Reconstruction :live:math:ticket:
+:PROPERTIES:
+:ID: CPFR-062
+:DESIGN_SECTION: Arm G; Prompt Design
+:DEPENDS_ON: CPFR-061
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-001
+:MODEL: gpt-5.6-sol
+:END:
+
+*** Scope
+
+Execute one bounded guided reconstruction call and freeze a candidate or exact
+blocker as reconstruction evidence.
+
+*** Non-goals
+
+- No child frontier.
+- No claim of independent discovery.
+- No reference-aware correctness review before sealing.
+
+*** Owned Files
+
+- guided expert runtime ticket, call, candidate or blocker, and run receipt in
+  ignored =.runs/guided-001/=
+
+*** Acceptance Criteria
+
+- Exactly one fresh provider session uses only the declared mechanism card.
+- Request and receipt bind the runtime ticket and all input digests.
+- Candidate bytes or exact blocker are create-only and content-addressed.
+- Failure, timeout, malformed output, and missing candidate are typed.
+- Usage and intervention accounting reconcile.
+
+*** Implementation Steps
+
+1. Validate preparation and resource floor.
+2. Create and admit the guided-expert runtime ticket.
+3. Execute one provider call with the standalone-proof contract.
+4. Validate and freeze candidate bytes or blocker.
+5. Write the run receipt and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/guided_runner.py check --run-dir labs/crouzeix_proof_reproduction/.runs/guided-001 --phase run=; expected exactly one terminal call and one candidate/blocker receipt
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/guided-001=; expected zero orphan records
+
+*** Verification Evidence
+
+- Record status, candidate/blocker digest, usage, and intervention.
+
+** BACKLOG Seal Guided Generation Evidence :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-063
+:DESIGN_SECTION: Deterministic Sealing; Arm G
+:DEPENDS_ON: CPFR-040 CPFR-062
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish the guided generation attempt as a distinct create-only run evidence
+root before correctness review.
+
+*** Non-goals
+
+- No review output in the generation archive.
+- No overwrite of blind evidence.
+
+*** Owned Files
+
+- guided sealing runtime ticket
+- =evidence/crouzeix_conjecture_reproduction/runs/guided-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/guided-generation-001.json=
+
+*** Acceptance Criteria
+
+- The evidence root records =arm=guided= and =leakage=L3=.
+- Mechanism-card attribution and digest are explicit.
+- Candidate or blocker, raw call, normalized projection, and run receipt
+  reconcile.
+- Deterministic archive, secret scan, and create-only checks pass.
+- If CPFR-060 is false, cancellation evidence replaces publication.
+
+*** Implementation Steps
+
+1. Create the guided sealing ticket.
+2. Validate the guided run and leakage receipt.
+3. Build deterministic raw and normalized artifacts.
+4. Publish the create-only evidence root and aggregate manifest.
+5. Verify and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py check-evidence --evidence-dir evidence/crouzeix_conjecture_reproduction/runs/guided-001 --manifest evidence/crouzeix_conjecture_reproduction/manifests/guided-generation-001.json=; expected exit =0=
+
+*** Verification Evidence
+
+- Record evidence root, archive digest, and counts or cancellation reason.
+
+** BACKLOG Review Guided Reconstruction Correctness :math:review:ticket:
+:PROPERTIES:
+:ID: CPFR-064
+:DESIGN_SECTION: Evaluator Independence; Arm G
+:DEPENDS_ON: CPFR-063
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-review-001
+:MODEL: fresh reviewers
+:END:
+
+*** Scope
+
+If the guided run produced a candidate, run two fresh anonymized correctness
+reviews; otherwise record review as not applicable against the exact blocker.
+
+*** Non-goals
+
+- No concealment that the generation arm was guided in the final report.
+- No mechanism similarity classifier; the supplied card is already known.
+
+*** Owned Files
+
+- ignored review tickets, contexts, calls, findings, and receipts under
+  =labs/crouzeix_proof_reproduction/.runs/reviews/guided-review-001/=
+
+*** Acceptance Criteria
+
+- Candidate reviewers see candidate bytes but not the supplied mechanism card,
+  run cost, model, or each other's output.
+- Findings and outcomes use the same schema and closed enums as CPFR-044.
+- No candidate produces a typed =not_applicable= review disposition.
+- Correctness cannot alter the recorded L3/reconstruction classification.
+
+*** Implementation Steps
+
+1. Validate the sealed guided candidate or blocker.
+2. Create two fresh review tickets when candidate bytes exist.
+3. Execute and validate both reviews.
+4. Reconcile findings and freeze the guided correctness outcome.
+5. Terminalize all runtime tickets.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/guided-review-001 --phase correctness=; expected two reviews or typed not-applicable
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py scan-contexts --review-dir labs/crouzeix_proof_reproduction/.runs/reviews/guided-review-001=; expected zero mechanism-card leakage
+
+*** Verification Evidence
+
+- Record reviewer tickets, outcome, findings, or not-applicable reason.
+
+** BACKLOG Decide Guided Formalization Status :math:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-065
+:DESIGN_SECTION: Formalization Status; Arm G
+:DEPENDS_ON: CPFR-064
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-formal-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Record and, only when feasible, attempt candidate-specific formal checks for
+the guided reconstruction.
+
+*** Non-goals
+
+- No reuse of Jin's blocked build status as guided-candidate verification.
+- No forced build below resource limits.
+
+*** Owned Files
+
+- ignored runtime ticket, source, commands, logs, and receipt under
+  =labs/crouzeix_proof_reproduction/.runs/formal/guided-formal-001/=
+
+*** Acceptance Criteria
+
+- Status is =not_attempted=, =blocked=, =failed=, or =passed=.
+- Any attempt binds the guided candidate digest, toolchain, source, command,
+  axioms, logs, and resource preflight.
+- Existing Jin build observations remain separately =blocked=.
+- If no guided candidate exists, status is =not_attempted= with reason.
+
+*** Implementation Steps
+
+1. Create the guided formal-verification ticket.
+2. Assess route and available formal scaffold.
+3. Record not-attempted reason or prepare candidate-specific source.
+4. Run resource preflight and any feasible checks.
+5. Persist the typed receipt and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/formal_receipt.py validate --attempt-dir labs/crouzeix_proof_reproduction/.runs/formal/guided-formal-001=; expected exit =0=
+
+*** Verification Evidence
+
+- Record typed status and evidence boundary.
+
+** BACKLOG Seal Guided Review And Formal Evidence :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-066
+:DESIGN_SECTION: Deterministic Sealing; Arm G Review
+:DEPENDS_ON: CPFR-040 CPFR-064 CPFR-065
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: guided-review-001; guided-formal-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish create-only guided correctness and formal-status evidence separately
+from the sealed guided generation run.
+
+*** Non-goals
+
+- No mutation of =runs/guided-001=.
+- No independent-discovery claim.
+
+*** Owned Files
+
+- review/formal sealing runtime tickets
+- =evidence/crouzeix_conjecture_reproduction/reviews/guided-review-001/=
+- =evidence/crouzeix_conjecture_reproduction/formal/guided-formal-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/guided-review-formal-001.json=
+
+*** Acceptance Criteria
+
+- Review and formal roots bind the sealed guided candidate or blocker digest.
+- L3 and reconstruction labels are present in every aggregate receipt.
+- Create-only, deterministic archive, secret, and ticket checks pass.
+- If the guided branch is canceled, the CPFR-060 decision and terminal ticket
+  states are sufficient and no evidence root is fabricated.
+
+*** Implementation Steps
+
+1. Validate guided review/formal attempt records.
+2. Create sealing tickets for each existing phase.
+3. Publish deterministic phase evidence and aggregate manifest.
+4. Verify candidate linkage and generation-root immutability.
+5. Terminalize sealing tickets.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py check-evidence --evidence-dir evidence/crouzeix_conjecture_reproduction/reviews/guided-review-001 --manifest evidence/crouzeix_conjecture_reproduction/manifests/guided-review-formal-001.json=; expected review/formal linkage or audited cancellation
+- generation-root SHA-256 inventory before/after publication; expected equality
+
+*** Verification Evidence
+
+- Record phase roots/digests or audited cancellation.
+
+** TODO Seal Expert-Frontier Review Evidence :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-067
+:DESIGN_SECTION: Deterministic Sealing; Reference-Aware Review
+:DEPENDS_ON: CPFR-040 CPFR-046 CPFR-048 CPFR-049
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: e-initial-001; e-repair-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish E correctness, reconciliation, optional repair/re-review, and mechanism
+classification as create-only review evidence.
+
+*** Non-goals
+
+- No mutation of =runs/expert-frontier-001=.
+- No formal-status publication.
+
+*** Owned Files
+
+- review sealing runtime tickets
+- =evidence/crouzeix_conjecture_reproduction/reviews/e-review-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/e-review-001.json=
+
+*** Acceptance Criteria
+
+- The root binds the sealed E candidate or strongest-node digest.
+- Initial review, repair decision, optional repair/re-review, and mechanism
+  classification all reconcile or are terminally canceled.
+- Correctness bytes precede and remain unchanged by mechanism classification.
+- Create-only, deterministic archive, secret, and ticket checks pass.
+
+*** Implementation Steps
+
+1. Validate all E review attempts and conditional ticket outcomes.
+2. Create the review sealing ticket.
+3. Build raw and normalized review evidence.
+4. Publish the create-only review root and aggregate manifest.
+5. Verify generation-root immutability and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py check-evidence --evidence-dir evidence/crouzeix_conjecture_reproduction/reviews/e-review-001 --manifest evidence/crouzeix_conjecture_reproduction/manifests/e-review-001.json=; expected exit =0=
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --correctness-immutable=; expected equal digests
+
+*** Verification Evidence
+
+- Record review root, manifest digest, findings, and outcomes.
+
+** TODO Seal Expert-Frontier Formal Evidence :evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-068
+:DESIGN_SECTION: Deterministic Sealing; Formalization Status
+:DEPENDS_ON: CPFR-040 CPFR-047
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: e-formal-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Publish the E candidate's typed formalization status as a create-only evidence
+phase.
+
+*** Non-goals
+
+- No mutation of E generation or review evidence.
+- No inference from public proof formalizations.
+
+*** Owned Files
+
+- formal sealing runtime ticket
+- =evidence/crouzeix_conjecture_reproduction/formal/e-formal-001/=
+- =evidence/crouzeix_conjecture_reproduction/manifests/e-formal-001.json=
+
+*** Acceptance Criteria
+
+- The root binds the exact E candidate or no-candidate outcome.
+- Typed status, resources, commands, source, axioms, and logs reconcile.
+- Existing Jin observations remain independently =blocked=.
+- Create-only, deterministic archive, secret, and ticket checks pass.
+
+*** Implementation Steps
+
+1. Validate the E formal attempt/status record.
+2. Create the formal sealing ticket.
+3. Build and publish deterministic formal evidence.
+4. Link it through a new aggregate manifest without editing prior roots.
+5. Verify and terminalize the ticket.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/seal_run.py check-evidence --evidence-dir evidence/crouzeix_conjecture_reproduction/formal/e-formal-001 --manifest evidence/crouzeix_conjecture_reproduction/manifests/e-formal-001.json=; expected exit =0=
+- generation/review root SHA-256 inventories before/after publication; expected equality
+
+*** Verification Evidence
+
+- Record formal root, status, and manifest digest.
+
+** TODO Publish Reproduction Protocol And Results Packet :docs:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-050
+:DESIGN_SECTION: Canonical Knowledge; Reader Integration
+:DEPENDS_ON: CPFR-043 CPFR-060 CPFR-061 CPFR-062 CPFR-063 CPFR-064 CPFR-065 CPFR-066
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Add canonical protocol and result documents that explain the DGM selector,
+ticketed expert archive, all run outcomes, and evidence ceilings.
+
+*** Non-goals
+
+- No announcement of conjecture settlement.
+- No technical claims in builder or frontend code.
+
+*** Owned Files
+
+- new =knowledge/crouzeix_conjecture/reproduction_protocol.md=
+- new =knowledge/crouzeix_conjecture/reproduction_results.md=
+- Crouzeix packet index
+- source registry
+- claim-evidence ledger
+
+*** Acceptance Criteria
+
+- Protocol derives DGM score, child-count term, eligibility, replacement draw,
+  and ticket/frontier semantics.
+- Results distinguish H, O0, and E.
+- Every quantitative/result claim has accounting boundary and reproduction
+  status.
+- Resource, supersession, failure, nonpromotion, review, and formal statuses
+  are explicit.
+- Reader claims link to ledger and exact local evidence.
+- Training contamination and historical-runtime nonidentity remain explicit.
+
+*** Implementation Steps
+
+1. Add failing packet-roster and claim-route tests.
+2. Write protocol document from approved design and implementation evidence.
+3. Write result document from sealed receipts and reviews.
+4. Extend source registry and claim ledger.
+5. Update index navigation and backlinks.
+6. Run credible-doc and packet tests.
+
+*** Verification Plan
+
+- =cargo test -p harp --test credible_docs_style -- --test-threads=1=
+- =cargo test -p harp --test crouzeix_conjecture_knowledge_packet -- --test-threads=1=
+
+*** Verification Evidence
+
+- Record claim IDs, document count, and test output.
+
+** TODO Register Packet In Corpus, Search, And Atlas :atlas:docs:tests:
+:PROPERTIES:
+:ID: CPFR-051
+:DESIGN_SECTION: Reader Integration; Derived Artifacts
+:DEPENDS_ON: CPFR-050
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Register new packet files, update closed counts, and regenerate Atlas/search
+artifacts.
+
+*** Non-goals
+
+- No new frontend technical authority.
+- No new route unless existing Crouzeix route cannot own the documents.
+
+*** Owned Files
+
+- =crates/harp/src/corpus/mod.rs=
+- =crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs=
+- =crates/harp/tests/cli.rs=
+- =docs/product-contract.md=
+- generated corpus, Atlas HTML, and receipt
+
+*** Acceptance Criteria
+
+- Every new Markdown file has a stable auxiliary document ID.
+- Existing Crouzeix route owns navigation.
+- Exact canonical/search/evidence counts match generated state.
+- Atlas export includes protocol/results and valid links.
+- Generated corpus and offline HTML regenerate together.
+
+*** Implementation Steps
+
+1. Extend closed packet roster red.
+2. Register auxiliary documents and update counts.
+3. Build canonical corpus and search index.
+4. Run Atlas tests and export.
+5. Update product contract.
+6. Refresh generated receipts.
+
+*** Verification Plan
+
+- =cargo test -p harp corpus::tests --lib -- --test-threads=1=
+- =cargo test -p harp --test cli=
+- =cd atlas && corepack pnpm run test=
+- =cd atlas && corepack pnpm run test:export=
+
+*** Verification Evidence
+
+- Record final counts and generated digests.
+
+** TODO Refresh Payload Receipt And Run Full Release Gate :tests:landing:
+:PROPERTIES:
+:ID: CPFR-052
+:DESIGN_SECTION: Release Gate
+:DEPENDS_ON: CPFR-043 CPFR-051
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Refresh the self-referential payload digest last and run the complete
+provider-neutral release gate.
+
+*** Non-goals
+
+- No new feature changes during the gate.
+
+*** Owned Files
+
+- =docs/import-receipt.md=
+- verification evidence in this ticket
+
+*** Acceptance Criteria
+
+- Repository verifier reports the receipt current.
+- Atlas, Rust, shell, source, search, Python lab, LFS, and import gates pass.
+- No real provider or network is invoked.
+- Working tree contains only intended tracked changes.
+
+*** Implementation Steps
+
+1. Settle every other tracked payload file.
+2. Run repository verify and copy the expected digest.
+3. Patch only the receipt.
+4. Run =mise run verify=.
+5. Audit status and generated cleanliness.
+
+*** Verification Plan
+
+- =mise run verify=
+- =git diff --check=
+- =git status --short=
+
+*** Verification Evidence
+
+- Record digest and full gate output.
+
+** TODO Run Two-Axis Branch Review :review:tests:
+:PROPERTIES:
+:ID: CPFR-053
+:DESIGN_SECTION: Independent Review
+:DEPENDS_ON: CPFR-052
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Review the entire branch against repository standards and the approved
+experiment spec.
+
+*** Non-goals
+
+- No style-only churn.
+- No trusting agent summaries without artifact inspection.
+
+*** Owned Files
+
+- review findings and dispositions in this tracker
+- focused repair files if findings require changes
+- payload receipt after repairs
+
+*** Acceptance Criteria
+
+- Standards review covers security, path safety, strict schemas, accounting,
+  deterministic selection, tickets, evidence, and tests.
+- Spec review covers every approved requirement and ticket.
+- Findings lead the review and include file/line references.
+- Every blocking finding is repaired, retested, and re-reviewed.
+- Full release gate passes after repairs.
+
+*** Implementation Steps
+
+1. Fix review base at branch merge-base.
+2. Run =code-review= Standards axis.
+3. Run =code-review= Spec axis against design/PRD/tracker.
+4. Reconcile duplicate/conflicting findings.
+5. Repair with red-green tests.
+6. Refresh receipt and rerun release gate.
+7. Record review outcome.
+
+*** Verification Plan
+
+- focused tests for every repair
+- =mise run verify=
+- review finding disposition audit
+
+*** Verification Evidence
+
+- Record review status and residual risk.
+
+** TODO Reconcile Latest Master Into Integration Branch :landing:
+:PROPERTIES:
+:ID: CPFR-054
+:DESIGN_SECTION: Workspace Management And Landing
+:DEPENDS_ON: CPFR-053
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Merge current local =master= into the feature branch, union registries/counts,
+and preserve unrelated concurrent work.
+
+*** Non-goals
+
+- No rebase that rewrites verified evidence commits.
+- No push.
+
+*** Owned Files
+
+- conflict-resolved shared registries, counts, generated outputs, and receipt
+- merge commit if required
+
+*** Acceptance Criteria
+
+- Primary checkout is classified before action.
+- Latest master becomes an ancestor of the integration tip.
+- Registry/evidence merges are unions, not winner-takes-all.
+- Captured upstream bytes are not normalized.
+- Receipt is refreshed only after conflict resolution settles.
+
+*** Implementation Steps
+
+1. Inspect primary status, master tip, and worktrees.
+2. Merge latest master into the feature branch.
+3. Resolve code/registry/count conflicts conservatively.
+4. Regenerate Atlas/search.
+5. Refresh receipt.
+6. Run focused conflict checks.
+
+*** Verification Plan
+
+- ancestry check
+- generated parity
+- source/evidence counts
+- packet and CLI tests
+
+*** Verification Evidence
+
+- Record master/integration tips and conflict dispositions.
+
+** TODO Close Tracked Workstream Before Final Gate :docs:landing:
+:PROPERTIES:
+:ID: CPFR-057
+:DESIGN_SECTION: Workstream Completion
+:DEPENDS_ON: CPFR-054
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Settle every tracked ticket state, result summary, residual risk, payload
+receipt, and the predeclared final-gate/landing tickets in one final tracked
+closeout commit.
+
+*** Non-goals
+
+- No claim that the post-commit gate or fast-forward has already occurred.
+- No deletion of evidence, feature branch, or worktree.
+
+*** Owned Files
+
+- =tracker.org=
+- optional workstream =notes.md= only when deferred work needs a durable handoff
+- =docs/import-receipt.md=
+
+*** Acceptance Criteria
+
+- Every implementation/live/review/evidence ticket through CPFR-054 is terminal
+  with verification evidence.
+- CPFR-055 and CPFR-056 remain predeclared =TODO= operator tickets.
+- Final recap data names commits, run outcomes, review outcome, residual risks,
+  and no push.
+- Receipt matches the settled tracked payload.
+- Closeout commit has the required trailer.
+
+*** Implementation Steps
+
+1. Audit ticket state/evidence completeness and deferred work.
+2. Record final run, mathematical, review, and integration outcomes.
+3. Predeclare the exact CPFR-055 gate and CPFR-056 landing commands/artifacts.
+4. Refresh the payload receipt.
+5. Run documentation, tracker, and repository checks on the staged closeout.
+6. Commit the final tracked closeout.
+
+*** Verification Plan
+
+- tracker validator and nonterminal-state audit
+- =cargo run -p harp -- repository verify=
+- =git diff --check=
+- explicit staged-path audit
+
+*** Verification Evidence
+
+- Record parent commit, staged-tree digest, and the expected exact tip contract
+  CPFR-055 must test. The resulting closeout commit SHA is reported only in
+  CPFR-055's post-commit gate receipt and operator response.
+
+** TODO Run Definitive Post-Merge Release Gate :tests:landing:
+:PROPERTIES:
+:ID: CPFR-055
+:DESIGN_SECTION: Release Gate; Landing
+:DEPENDS_ON: CPFR-057
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: landing-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Run one fresh full gate on the exact final tracked integration commit and
+persist the terminal operator receipt outside the tracked payload.
+
+*** Non-goals
+
+- No relying on pre-closeout verification.
+- No tracked edit or amend after the gate.
+
+*** Owned Files
+
+- ignored =labs/crouzeix_proof_reproduction/.runs/landing-001/gate_*= artifacts
+- Git working state only
+
+*** Acceptance Criteria
+
+- A pre-created gate ticket binds the exact integration commit.
+- =mise run verify= exits zero on that commit.
+- No provider session is started and no process remains running.
+- Worktree is clean after the gate.
+- Every branch commit added by this work has the required co-author trailer.
+- Gate receipt records command, start/end, exit, commit, and output digest.
+
+*** Implementation Steps
+
+1. Create the =landing-001= root and gate ticket bound to =HEAD=.
+2. Run =mise run verify= without concurrent edits.
+3. Persist the command/output/exit/commit receipt and terminal event.
+4. Check clean status, process state, trailers, and master ancestry.
+5. If any check fails, do not land; create a repair ticket and return to the
+   relevant earlier phase.
+
+*** Verification Plan
+
+- =mise run verify=; expected exit =0=
+- =git status --porcelain=v1=; expected empty
+- commit trailer scan; expected exactly one required trailer per work commit
+- gate receipt validator; expected terminal =accepted=
+
+*** Verification Evidence
+
+- Terminal evidence is the ignored gate receipt digest reported at final
+  operator closeout, not a tracked self-attestation.
+
+** TODO Fast-Forward Local Master Without Push :landing:
+:PROPERTIES:
+:ID: CPFR-056
+:DESIGN_SECTION: Landing
+:DEPENDS_ON: CPFR-055
+:BRANCH: master
+:WORKTREE: primary-checkout
+:OWNER: unassigned
+:AGENT_RUN: landing-001
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Fast-forward the clean primary checkout to the exact verified integration tip.
+
+*** Non-goals
+
+- No push.
+- No destructive reset or checkout.
+- No cleanup of unrelated worktrees.
+
+*** Owned Files
+
+- Git refs only
+- ignored =labs/crouzeix_proof_reproduction/.runs/landing-001/landing_*= artifacts
+
+*** Acceptance Criteria
+
+- Primary checkout is clean immediately before merge.
+- Primary master is an ancestor of the verified tip.
+- =git merge --ff-only= succeeds.
+- Primary remains clean and equals the verified tip.
+- No remote operation occurs.
+- A pre-created landing ticket binds old master and verified feature tips.
+- Terminal receipt records exact old/new refs and =ff-only= result.
+
+*** Implementation Steps
+
+1. Create the landing ticket before changing refs.
+2. Recheck primary status and tips atomically.
+3. Confirm ancestry.
+4. Run =git merge --ff-only feat/crouzeix-proof-reproduction=.
+5. Confirm HEAD equality and clean status.
+6. Persist terminal landing receipt; do not push.
+
+*** Verification Plan
+
+- =git status --short --branch=
+- =git rev-parse HEAD feat/crouzeix-proof-reproduction=
+- =git diff --exit-code=
+
+*** Verification Evidence
+
+- Terminal evidence is the ignored landing receipt digest reported in the final
+  user response with old/new master and verified feature tip.
