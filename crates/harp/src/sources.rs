@@ -187,6 +187,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         3,
         &mut expected_digests,
     )?;
+    let verified_coevolution_agenda = verify_artifact_inventory(
+        repo_root,
+        Path::new("evidence/verified_coevolution_agenda/artifact_inventory.tsv"),
+        0,
+        2,
+        3,
+        &mut expected_digests,
+    )?;
     let sicp = verify_sicp_manifest(repo_root, &mut expected_digests)?;
     let benchmarks = verify_benchmark_manifest(repo_root)?;
     let agentic_engineering = verify_relative_artifact_manifest(
@@ -260,6 +268,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             + rlm
             + darwinx
             + self_improving_agents_survey
+            + verified_coevolution_agenda
             + sicp
             + benchmarks
             + agentic_engineering

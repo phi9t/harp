@@ -1209,6 +1209,7 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "benchmarks",
             "evaluator-integrity",
             "survey",
+            "verified-coevolution",
             "agentic-engineering",
             "crouzeix-conjecture"
         ]
@@ -1218,6 +1219,61 @@ fn compiles_reader_routes_from_canonical_markdown() {
             .documents
             .iter()
             .any(|document| { document.canonical_markdown_path == route.canonical_markdown_path }));
+    }
+}
+
+#[test]
+fn verified_coevolution_packet_is_registered_and_keeps_claims_conditional() {
+    let corpus = compile(workspace_root()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "verified-coevolution"
+            && route.label == "Verified coevolution"
+            && route.canonical_markdown_path
+                == "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"
+    }));
+
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "verified-coevolution")
+        .unwrap();
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"
+    );
+    for required in [
+        "recursive closure",
+        "model-harness coevolution",
+        "research hypothesis",
+        "LADDER-TTRL",
+        "PRIME-RL TTRL",
+        "VCA-",
+        "Recursive dynamics: epistemic drift, behavioral regression, and objective instability",
+        "NSRSA",
+        "SAHOO",
+        "Scrivens",
+        "conditional theory",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "verified coevolution agenda is missing {required}"
+        );
+    }
+
+    for document_id in [
+        "verified-coevolution-source-registry",
+        "verified-coevolution-claim-evidence-ledger",
+        "verified-coevolution-experiment-protocol",
+        "verified-coevolution-maintenance",
+    ] {
+        assert!(
+            corpus
+                .documents
+                .iter()
+                .any(|document| document.concept_id == document_id),
+            "supporting packet document {document_id} is not compiled"
+        );
     }
 }
 

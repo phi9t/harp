@@ -8,11 +8,13 @@ Harp owns the standalone RSI technical atlas:
   topic packets under `knowledge/darwin_godel_machine/`,
   `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
   `knowledge/self_improving_agents_survey/`, and
+  `knowledge/verified_coevolution_agenda/`, and
   `knowledge/agentic_engineering/`;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
-- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Agentic
-  Engineering, and public implementation evidence under `evidence/`;
+- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Verified
+  Coevolution Agenda, Agentic Engineering, and public implementation evidence
+  under `evidence/`;
 - remote-only, hash-pinned Crouzeix proof artifacts and four Harp-local
   revision-bound verification receipts under
   `evidence/crouzeix_conjecture/`;
@@ -116,15 +118,15 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 88 compiled documents;
+- 93 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
 - 29 diagnostic rules;
 - 12 diagnostic cases;
 - six lessons;
-- 76 source-registry rows; and
-- 98 evidence edges.
+- 84 source-registry rows; and
+- 101 evidence edges.
 
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
@@ -135,6 +137,13 @@ packet on AI-assisted theorem discovery, source-level formal verification, and
 evidence discipline. It contributes one first-class Atlas route and twelve
 auxiliary documents. It does not enter the RSI retained-concept taxonomy,
 system registry, Weng sections, diagnostic cases, lessons, or evidence graph.
+
+`knowledge/verified_coevolution_agenda/` is a five-document research-agenda
+packet on recursive closure, model-harness coevolution, and assurance for
+self-improving systems. It contributes one first-class Atlas route and four
+auxiliary documents. It adds eight source-registry rows and three evidence
+edges while reusing existing Harp evidence for STOP, Meta-Harness, AHE, DGM,
+ADAS, and the Springer Godel Machine record.
 
 ## Weng teaching curriculum
 
@@ -165,6 +174,7 @@ The search index includes:
 - all `knowledge/meta_harness/**/*.md`;
 - all `knowledge/harness_benchmarks/**/*.md`;
 - all `knowledge/self_improving_agents_survey/**/*.md`;
+- all `knowledge/verified_coevolution_agenda/**/*.md`;
 - all `knowledge/agentic_engineering/**/*.md`;
 - all `knowledge/crouzeix_conjecture/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and

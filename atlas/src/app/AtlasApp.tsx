@@ -137,6 +137,12 @@ export function AtlasApp() {
   if (!crouzeixRoute) {
     throw new Error("Validated Crouzeix route disappeared");
   }
+  const verifiedCoevolutionRoute = canonicalReaderRoutes.find(
+    (candidate) => candidate.route.route_id === "verified-coevolution",
+  );
+  if (!verifiedCoevolutionRoute) {
+    throw new Error("Validated verified coevolution route disappeared");
+  }
 
   return (
     <div className="atlas-shell">
@@ -227,6 +233,22 @@ export function AtlasApp() {
               })}
           >
             {crouzeixRoute.route.label}
+          </button>
+          <button
+            className={
+              route.kind === "legacy"
+                && route.routeId === verifiedCoevolutionRoute.route.route_id
+                ? "nav-button active"
+                : "nav-button"
+            }
+            type="button"
+            onClick={() =>
+              navigate({
+                kind: "legacy",
+                routeId: verifiedCoevolutionRoute.route.route_id,
+              })}
+          >
+            {verifiedCoevolutionRoute.route.label}
           </button>
         </nav>
         <div className="header-route" role="status" aria-label="Current route">

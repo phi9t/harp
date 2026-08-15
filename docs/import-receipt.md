@@ -34,10 +34,12 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 56 binary evidence objects. The
+- The maintained tree now contains 63 binary evidence objects: 49 PDFs, nine
+  PNGs, one WebP, three WOFF2 font files, and one compressed archive. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
   files, and one deterministic raw TRAE archive. The Self-Improving Agents
-  Survey extension adds one captured PNG and one arXiv PDF.
+  Survey extension adds one captured PNG and one arXiv PDF. The Verified
+  Coevolution Agenda extension adds five arXiv PDFs.
 - Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
   fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
@@ -122,9 +124,31 @@ It does not validate linked-paper mechanisms, benchmark results, venue status,
 or linked-repository implementation behavior. This extension does not alter the
 fixed 521-row initial import account.
 
+## Post-import Verified Coevolution Agenda extension
+
+The maintained product also adds a bounded verified-coevolution agenda packet:
+
+- the supplied research agenda preserved as immutable design input;
+- full revision-pinned arXiv records for LADDER `2503.00735v3`, PRIME-RL TTRL
+  `2504.16084v3`, NSRSA `2603.21558v1`, SAHOO `2603.06333v1`, and Scrivens
+  verification `2603.28650v1`, including Atom metadata, abstract pages,
+  semantic HTML, PDFs, and deterministic `pdftotext -raw` text;
+- a first-party Nature capture and deterministic text extraction for the
+  model-collapse article `s41586-024-07566-y`;
+- metadata-only arXiv records for Godel Agent `2410.04444v4`, Mendel Godel
+  Machine `2608.07645v1`, and the historical Godel Machine `cs/0309048v5`;
+- eight new source-registry rows and three evidence-graph edges; and
+- five canonical Markdown packet documents under
+  `knowledge/verified_coevolution_agenda/` with regenerated Atlas outputs.
+
+The packet publishes a falsifiable research agenda. It does not reproduce paper
+experiments, validate reported benchmark results, prove broad alignment
+properties, or treat the supplied agenda as source evidence for paper claims.
+This extension does not alter the fixed 521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`b54163b6edac040e4011ee89dc4ade1b57bf2bdc1d95fc11fb7354ecbedd7f11`
+`464a482706a9ffde284dbf150ff52fb4387deb2c43b1d4e617d1cbb3377e198e`

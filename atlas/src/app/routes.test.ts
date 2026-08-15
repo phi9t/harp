@@ -10,8 +10,11 @@ const aflowId = canonicalCorpus.systems.find(
 const contextDocumentId = canonicalCorpus.documents.find(
   (document) => document.concept_id === "context-engineering-deep-dive",
 )?.concept_id;
+const verifiedCoevolutionRoute = canonicalCorpus.reader_routes.find(
+  (route) => route.route_id === "verified-coevolution",
+);
 
-if (!aflowId || !contextDocumentId) {
+if (!aflowId || !contextDocumentId || !verifiedCoevolutionRoute) {
   throw new Error("Validated route fixtures disappeared");
 }
 
@@ -32,6 +35,17 @@ describe("Atlas routes", () => {
       kind: "legacy",
       routeId: "crouzeix-conjecture",
     })).toBe("#crouzeix-conjecture");
+  });
+
+  it("parses and formats the verified coevolution agenda route", () => {
+    expect(parseRoute("#verified-coevolution")).toEqual({
+      kind: "legacy",
+      routeId: "verified-coevolution",
+    });
+    expect(formatRoute({
+      kind: "legacy",
+      routeId: "verified-coevolution",
+    })).toBe("#verified-coevolution");
   });
 
   it("formats system and auxiliary document routes", () => {

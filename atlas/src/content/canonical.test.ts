@@ -126,6 +126,11 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
     {
+      route_id: "verified-coevolution",
+      label: "Verified coevolution",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
+    {
       route_id: "agentic-engineering",
       label: "Agentic engineering",
       canonical_markdown_path: chapterPath(chapterIds[0]),

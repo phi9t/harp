@@ -8,6 +8,10 @@ self-improvement research. It combines:
   `knowledge/harness_benchmarks/`;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
+- a verified coevolution research-agenda packet under
+  `knowledge/verified_coevolution_agenda/`, with LADDER, PRIME-RL TTRL, NSRSA,
+  SAHOO, model-collapse, Scrivens, and Godel-family evidence boundaries under
+  `evidence/verified_coevolution_agenda/`;
 - a source-backed agentic engineering reference packet under
   `knowledge/agentic_engineering/`, including a captured Kenn/Wes workflow
   article and Clanker Constitution evidence under `evidence/agentic_engineering/`;

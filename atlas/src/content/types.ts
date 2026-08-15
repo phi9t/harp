@@ -34,6 +34,7 @@ export type ReaderRouteId =
   | "benchmarks"
   | "evaluator-integrity"
   | "survey"
+  | "verified-coevolution"
   | "agentic-engineering"
   | "crouzeix-conjecture";
 
@@ -49,6 +50,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "benchmarks",
   "evaluator-integrity",
   "survey",
+  "verified-coevolution",
   "agentic-engineering",
   "crouzeix-conjecture",
 ];

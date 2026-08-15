@@ -244,6 +244,11 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
             "canonical-markdown",
             "md",
         ),
+        (
+            "knowledge/verified_coevolution_agenda",
+            "canonical-markdown",
+            "md",
+        ),
         ("knowledge/agentic_engineering", "canonical-markdown", "md"),
         ("knowledge/crouzeix_conjecture", "canonical-markdown", "md"),
         ("evidence/weng/text", "weng-source", "txt"),

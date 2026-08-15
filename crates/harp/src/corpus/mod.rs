@@ -30,7 +30,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
     (
         "thesis",
         "Thesis",
@@ -83,6 +83,11 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
         "knowledge/self_improving_agents_survey/synthesis.md",
     ),
     (
+        "verified-coevolution",
+        "Verified coevolution",
+        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md",
+    ),
+    (
         "agentic-engineering",
         "Agentic engineering",
         "knowledge/agentic_engineering/kenn_reference_architecture.md",
@@ -93,7 +98,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 34] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 38] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -157,6 +162,22 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 34] = [
     (
         "self-improving-agents-survey-gap-map",
         "knowledge/self_improving_agents_survey/gap_map.md",
+    ),
+    (
+        "verified-coevolution-source-registry",
+        "knowledge/verified_coevolution_agenda/source_registry.md",
+    ),
+    (
+        "verified-coevolution-claim-evidence-ledger",
+        "knowledge/verified_coevolution_agenda/claim_evidence_ledger.md",
+    ),
+    (
+        "verified-coevolution-experiment-protocol",
+        "knowledge/verified_coevolution_agenda/experiment_protocol.md",
+    ),
+    (
+        "verified-coevolution-maintenance",
+        "knowledge/verified_coevolution_agenda/maintenance.md",
     ),
     (
         "agentic-engineering-index",

@@ -158,15 +158,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 88,
+            "canonical_documents": 93,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 76,
-            "evidence_edges": 98
+            "source_registry_rows": 84,
+            "evidence_edges": 101
         })
     );
 }
@@ -225,6 +225,8 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
     fs::create_dir_all(repo.path().join("knowledge/self_improving_agents_survey"))
         .expect("survey packet");
+    fs::create_dir_all(repo.path().join("knowledge/verified_coevolution_agenda"))
+        .expect("verified coevolution packet");
     fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).expect("Crouzeix packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
@@ -250,6 +252,12 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         "# Survey\n\nModern self-improving agents pair model parameters with scaffold state.\n",
     )
     .expect("survey file");
+    fs::write(
+        repo.path()
+            .join("knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"),
+        "# Verified coevolution\n\nRecursive closure makes model-harness coevolution falsifiable.\n",
+    )
+    .expect("verified coevolution file");
     fs::write(
         repo.path()
             .join("knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md"),
@@ -320,6 +328,20 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ));
     harp()
         .current_dir(repo.path())
+        .args([
+            "--format",
+            "json",
+            "search",
+            "query",
+            "\"recursive closure\"",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
         .args(["--format", "json", "search", "query", "\"origin sample\""])
         .assert()
         .success()
@@ -354,9 +376,9 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 396);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 430);
     assert_eq!(envelope["data"]["snapshot_files"], 105);
-    assert_eq!(envelope["data"]["binary_objects"], 58);
+    assert_eq!(envelope["data"]["binary_objects"], 63);
     assert_eq!(envelope["data"]["implementation_sources"], 11);
     assert_eq!(envelope["data"]["crouzeix_source_receipts"], 29);
     assert_eq!(envelope["data"]["crouzeix_verification_receipts"], 4);
