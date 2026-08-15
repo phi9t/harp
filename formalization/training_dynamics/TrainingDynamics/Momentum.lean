@@ -4,7 +4,7 @@ namespace TrainingDynamics
 
 namespace Momentum
 
-/-- One scalar heavy-ball update about the optimum `xStar`.
+/-- One scalar heavy-ball update about the reference point `xStar`.
 
 This file proves algebraic recurrence identities only; it makes no general
 stability or convergence claim.
