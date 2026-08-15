@@ -1209,7 +1209,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "benchmarks",
             "evaluator-integrity",
             "survey",
-            "agentic-engineering"
+            "agentic-engineering",
+            "crouzeix-conjecture"
         ]
     );
     for route in &corpus.reader_routes {
@@ -1362,6 +1363,26 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             &fragment_targets,
         ),
         "#documents/example-ledger"
+    );
+
+    let mut legacy_sources = BTreeMap::new();
+    legacy_sources.insert(
+        "knowledge/rsi/systems/legacy.md".to_owned(),
+        contracts::ValidatedCanonicalSource {
+            path: "knowledge/rsi/systems/legacy.md".to_owned(),
+            markdown: "# Legacy\n\n## Generated slug\n".to_owned(),
+            body_sha256: sha256(b"# Legacy\n\n## Generated slug\n"),
+            entries: Vec::new(),
+        },
+    );
+    let legacy_targets = render::route_targets(&[], &legacy_sources);
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "legacy.md#generated-slug",
+            Path::new("knowledge/rsi/systems"),
+            &legacy_targets,
+        ),
+        "#documents/legacy"
     );
 }
 

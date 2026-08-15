@@ -217,8 +217,20 @@ fn document_target(document_id: String, source: &ValidatedCanonicalSource) -> Ro
     let body = markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
     RouteTarget::Document {
         document_id,
-        heading_ids: parsed_heading_ids(body, &source.path).into_iter().collect(),
+        heading_ids: addressable_heading_ids(body, &source.path),
     }
+}
+
+fn addressable_heading_ids(markdown: &str, source_path: &str) -> BTreeSet<String> {
+    if !is_crouzeix_packet(source_path) {
+        return BTreeSet::new();
+    }
+    Parser::new_ext(markdown, markdown_options(source_path))
+        .filter_map(|event| match event {
+            Event::Start(Tag::Heading { id: Some(id), .. }) => Some(id.into_string()),
+            _ => None,
+        })
+        .collect()
 }
 
 #[cfg(test)]

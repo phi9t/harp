@@ -51,6 +51,7 @@ test("exports an offline single-file Harp atlas", () => {
     "Diagnose",
     "Chapters",
     "Sources",
+    "Crouzeix",
   ]) {
     assert.match(decodedModule, new RegExp(`\\b${label}\\b`));
   }
@@ -65,6 +66,10 @@ test("exports an offline single-file Harp atlas", () => {
   assert.match(decodedModule, /ACE original paper/);
   assert.match(decodedModule, /MCE original paper/);
   assert.match(decodedModule, /Meta-Harness original paper/);
+  assert.match(decodedModule, /Crouzeix conjecture two-proof index/);
+  assert.match(decodedModule, /origin sample cancels the diagonal correction/i);
+  assert.match(decodedModule, /M\(2\+M\)/);
+  assert.match(decodedModule, /knowledge\/crouzeix_conjecture\/04_jin_positive_real_completion\.md/);
   assert.match(decodedModule, /class\.harness-improvement/);
   assert.match(decodedModule, /ceiling\.harness-improvement/);
   assert.match(decodedModule, /integrity\.evaluator-write/);

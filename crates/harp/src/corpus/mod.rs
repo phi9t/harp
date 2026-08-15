@@ -30,7 +30,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 12] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
     (
         "thesis",
         "Thesis",
@@ -87,8 +87,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 12] = [
         "Agentic engineering",
         "knowledge/agentic_engineering/kenn_reference_architecture.md",
     ),
+    (
+        "crouzeix-conjecture",
+        "Crouzeix",
+        "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 22] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 34] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -176,6 +181,54 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 22] = [
     (
         "agentic-engineering-missing-evidence",
         "knowledge/agentic_engineering/missing_evidence.md",
+    ),
+    (
+        "crouzeix-problem-and-prior-barrier",
+        "knowledge/crouzeix_conjecture/01_problem_and_prior_barrier.md",
+    ),
+    (
+        "crouzeix-shared-power-family",
+        "knowledge/crouzeix_conjecture/02_shared_power_family.md",
+    ),
+    (
+        "crouzeix-jin-proof-spine",
+        "knowledge/crouzeix_conjecture/03_jin_proof_spine.md",
+    ),
+    (
+        "crouzeix-jin-positive-real-completion",
+        "knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md",
+    ),
+    (
+        "crouzeix-lorist-schwenninger-proof",
+        "knowledge/crouzeix_conjecture/05_lorist_schwenninger_proof.md",
+    ),
+    (
+        "crouzeix-proof-comparison",
+        "knowledge/crouzeix_conjecture/06_proof_comparison.md",
+    ),
+    (
+        "crouzeix-jin-lean-verification",
+        "knowledge/crouzeix_conjecture/07_jin_lean_verification.md",
+    ),
+    (
+        "crouzeix-ai-assisted-discovery",
+        "knowledge/crouzeix_conjecture/08_ai_assisted_discovery.md",
+    ),
+    (
+        "crouzeix-status-and-critical-assessment",
+        "knowledge/crouzeix_conjecture/09_status_and_critical_assessment.md",
+    ),
+    (
+        "crouzeix-glossary",
+        "knowledge/crouzeix_conjecture/glossary.md",
+    ),
+    (
+        "crouzeix-source-registry",
+        "knowledge/crouzeix_conjecture/source_registry.md",
+    ),
+    (
+        "crouzeix-claim-evidence-ledger",
+        "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { canonicalCorpus } from "../content/canonical";
 import { renderCanonicalMath } from "./math";
 
 describe("canonical math", () => {
@@ -35,5 +36,35 @@ describe("canonical math", () => {
     expect(math).toHaveClass("math-error");
     expect(math).toHaveTextContent("\\notacommand{");
     expect(root.querySelector("math")).toBeNull();
+  });
+
+  it("renders every registered Crouzeix formula without fallback", () => {
+    let inlineCount = 0;
+    let displayCount = 0;
+
+    for (const document of canonicalCorpus.documents.filter((candidate) =>
+      candidate.canonical_markdown_path.startsWith(
+        "knowledge/crouzeix_conjecture/",
+      )
+    )) {
+      const root = window.document.createElement("div");
+      root.innerHTML = document.html;
+      inlineCount += root.querySelectorAll(".math-inline[data-tex]").length;
+      displayCount += root.querySelectorAll(".math-display[data-tex]").length;
+
+      renderCanonicalMath(root);
+
+      expect(
+        root.querySelectorAll(".math-error"),
+        document.canonical_markdown_path,
+      ).toHaveLength(0);
+      expect(
+        root.querySelectorAll(".math[data-tex]").length,
+        document.canonical_markdown_path,
+      ).toBe(root.querySelectorAll("math").length);
+    }
+
+    expect(inlineCount).toBeGreaterThan(0);
+    expect(displayCount).toBeGreaterThan(0);
   });
 });

@@ -116,7 +116,7 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 75 compiled documents;
+- 88 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
@@ -129,6 +129,12 @@ The required parity contract is:
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
 paper mechanisms or result claims.
+
+`knowledge/crouzeix_conjecture/` is a bounded thirteen-document research
+packet on AI-assisted theorem discovery, source-level formal verification, and
+evidence discipline. It contributes one first-class Atlas route and twelve
+auxiliary documents. It does not enter the RSI retained-concept taxonomy,
+system registry, Weng sections, diagnostic cases, lessons, or evidence graph.
 
 ## Weng teaching curriculum
 
@@ -147,7 +153,7 @@ requires 42 cards, ten lessons, four references, and nine section IDs.
 Retrieval begins at `unseen`, and page exposure does not establish mastery.
 
 Teaching files remain outside canonical Atlas compilation unless explicitly
-registered later. They do not change the 75-document, 75-concept, or other
+registered later. They do not change the 88-document, 75-concept, or other
 canonical corpus counts above.
 
 ## Search
@@ -160,6 +166,7 @@ The search index includes:
 - all `knowledge/harness_benchmarks/**/*.md`;
 - all `knowledge/self_improving_agents_survey/**/*.md`;
 - all `knowledge/agentic_engineering/**/*.md`;
+- all `knowledge/crouzeix_conjecture/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 

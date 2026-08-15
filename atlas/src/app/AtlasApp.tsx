@@ -102,7 +102,9 @@ function currentLabel(route: AtlasRoute): string {
     case "sources":
       return "Sources";
     case "legacy":
-      return route.routeId;
+      return canonicalReaderRoutes.find(
+        (candidate) => candidate.route.route_id === route.routeId,
+      )?.route.label ?? route.routeId;
     default: {
       const exhaustive: never = route;
       return exhaustive;
@@ -128,6 +130,12 @@ export function AtlasApp() {
   );
   if (!sourceRoute) {
     throw new Error("Validated source route disappeared");
+  }
+  const crouzeixRoute = canonicalReaderRoutes.find(
+    (candidate) => candidate.route.route_id === "crouzeix-conjecture",
+  );
+  if (!crouzeixRoute) {
+    throw new Error("Validated Crouzeix route disappeared");
   }
 
   return (
@@ -203,6 +211,22 @@ export function AtlasApp() {
             onClick={() => navigate({ kind: "sources" })}
           >
             Sources
+          </button>
+          <button
+            className={
+              route.kind === "legacy"
+                && route.routeId === crouzeixRoute.route.route_id
+                ? "nav-button active"
+                : "nav-button"
+            }
+            type="button"
+            onClick={() =>
+              navigate({
+                kind: "legacy",
+                routeId: crouzeixRoute.route.route_id,
+              })}
+          >
+            {crouzeixRoute.route.label}
           </button>
         </nav>
         <div className="header-route" role="status" aria-label="Current route">

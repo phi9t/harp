@@ -95,6 +95,26 @@ describe("RSI technical reader", () => {
     ).toBeInTheDocument();
   });
 
+  it("opens the Crouzeix packet through its first-class route", async () => {
+    const user = userEvent.setup();
+    render(<ReaderApp />);
+
+    await user.click(screen.getByRole("button", { name: "Crouzeix" }));
+
+    expect(window.location.hash).toBe("#crouzeix-conjecture");
+    expect(
+      screen.getByRole("heading", {
+        name: "Crouzeix conjecture two-proof index",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "Current route" }))
+      .toHaveTextContent("Crouzeix");
+    const article = screen.getByRole("article", {
+      name: "Crouzeix conjecture two-proof index",
+    });
+    expect(article.querySelector("math")).not.toBeNull();
+  });
+
   it("blocks lineage promotion when any protected gate closes", async () => {
     const user = userEvent.setup();
     window.location.hash = "#loop";

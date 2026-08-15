@@ -23,6 +23,17 @@ describe("Atlas routes", () => {
     });
   });
 
+  it("parses and formats the first-class Crouzeix route", () => {
+    expect(parseRoute("#crouzeix-conjecture")).toEqual({
+      kind: "legacy",
+      routeId: "crouzeix-conjecture",
+    });
+    expect(formatRoute({
+      kind: "legacy",
+      routeId: "crouzeix-conjecture",
+    })).toBe("#crouzeix-conjecture");
+  });
+
   it("formats system and auxiliary document routes", () => {
     expect(formatRoute({
       kind: "system",
