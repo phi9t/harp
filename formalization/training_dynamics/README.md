@@ -15,8 +15,9 @@ not execute an artifact without published verification data.
 Run `../../scripts/check_training_dynamics_lean.sh` from this directory, or
 `mise run verify-lean` from the repository root.
 
-The wrapper normally checks this fixed project directory. Its
-`HARP_TRAINING_DYNAMICS_PROJECT_ROOT` override exists only for isolated tests.
+The wrapper normally checks this fixed project directory. Its exact-shape
+`--project-for-test <directory>` mode exists only for isolated tests; it has no
+environment-based project override.
 
 Before invoking Lake, the wrapper applies a deliberately strict textual
 all-occurrences ban to the proof-placeholder spelling matched in every scoped

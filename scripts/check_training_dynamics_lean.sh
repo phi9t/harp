@@ -6,8 +6,25 @@ case "$script_path" in
   */*) script_dir=${script_path%/*} ;;
   *) script_dir=. ;;
 esac
-default_project_root=$(CDPATH= cd "$script_dir/../formalization/training_dynamics" && pwd -P)
-project_root=${HARP_TRAINING_DYNAMICS_PROJECT_ROOT:-$default_project_root}
+canonical_project_root=$(CDPATH= cd "$script_dir/../formalization/training_dynamics" && pwd -P)
+project_root=$canonical_project_root
+
+# This test-only mode is command-line-only so normal invocations cannot be
+# redirected through ambient environment state.
+case "$#" in
+  0) ;;
+  2)
+    if [ "$1" != '--project-for-test' ]; then
+      printf '%s\n' 'Usage: check_training_dynamics_lean.sh [--project-for-test <directory>]' >&2
+      exit 1
+    fi
+    project_root=$2
+    ;;
+  *)
+    printf '%s\n' 'Usage: check_training_dynamics_lean.sh [--project-for-test <directory>]' >&2
+    exit 1
+    ;;
+esac
 
 if ! project_root=$(CDPATH= cd "$project_root" && pwd -P); then
   printf '%s\n' 'Training Dynamics Lean project directory is unavailable' >&2
