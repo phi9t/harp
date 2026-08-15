@@ -67,3 +67,53 @@ Mode: `CLAIM LEDGER`.
 - Claim: Specs and plans are execution scaffolding; lasting lessons should be distilled into living architecture documents, shared instructions, tests, code, and ADRs.
 - Evidence that would weaken: repositories where retained raw plans are the primary successful long-term agent context.
 - Evidence that would falsify: a source showing Kenn's production code depends on retained Superpowers specs/plans as durable authority.
+
+## AE-C008: Kata is a local-first task ledger for agents and humans
+
+- Class: `SOURCE CLAIM`
+- Sources: `AE-004`, `AE-006`
+- Claim: Kata presents itself as a local-first task ledger or issue tracker for coding agents and humans, with an agent-friendly CLI, human-facing TUI/browser UI, SQLite state, short refs, JSON/agent output, idempotent creates, and a claim flow.
+- Reproduction status: public docs and GitHub metadata captured; Kata was not run locally.
+
+## AE-C009: Kata federation has explicit token, lease, and sync semantics
+
+- Class: `SOURCE CLAIM`
+- Source: `AE-005`
+- Claim: Kata federation docs describe hub/spoke roles, enrollment tokens, push/poll sync, leases, write gates, quarantine, schema compatibility, and leave/rejoin operations.
+- Reproduction status: public docs captured; federation behavior was not reproduced.
+
+## AE-C010: Forge is a local maintainer console with worktree sessions
+
+- Class: `SOURCE CLAIM`
+- Sources: `AE-007`, `AE-008`
+- Claim: Forge presents itself as a local maintainer console for repository activity, pull requests, issues, reviews, and working sessions, with provider data synced into SQLite and workspace creation for local shells/agents.
+- Reproduction status: public docs and GitHub metadata captured; Forge was not run locally.
+
+## AE-C011: Ghosthub targets multiplexer and worktree session management
+
+- Class: `SOURCE CLAIM`
+- Sources: `AE-009`, `AE-010`
+- Claim: Ghosthub presents itself as a multiplexer-native terminal for local and remote sessions, with tmux/Herdr/Zellij support and Git worktree management.
+- Reproduction status: public product page and GitHub metadata captured; Ghosthub was not run locally.
+
+## AE-C012: AgentsView is an observability surface for coding-agent sessions
+
+- Class: `SOURCE CLAIM`
+- Sources: `AE-011`, `AE-012`
+- Claim: AgentsView presents itself as a local-first app for browsing, searching, and analyzing AI coding sessions, including token/cost reporting, activity/concurrency analytics, and SQLite-backed session parsing.
+- Reproduction status: public docs and GitHub metadata captured; AgentsView was not run locally.
+
+## AE-C013: roborev is a continuous review ledger for agent-written code
+
+- Class: `SOURCE CLAIM`
+- Sources: `AE-013`, `AE-014`, `AE-015`
+- Claim: roborev presents itself as continuous code review for coding agents, with post-commit reviews, agent hooks, branch refinement, a persistent review ledger, and GitHub integration options.
+- Reproduction status: public docs and GitHub metadata captured; roborev was not run locally.
+
+## AE-C014: Public tool pages reinforce the plane decomposition
+
+- Class: `INFERENCE`
+- Sources: `AE-004` through `AE-016`
+- Claim: The public tool descriptions reinforce a plane decomposition: Kata for intent, Forge for human control, Ghosthub for session execution, AgentsView for observability, roborev for verification, and Superpowers for reasoning scaffolding.
+- Evidence that would weaken: source inspection showing the tools are mostly marketing labels over the same mutable state and authority model.
+- Evidence that would falsify: public implementation evidence showing the tools intentionally collapse intent, execution, verification, observability, and merge authority into one autonomous loop.

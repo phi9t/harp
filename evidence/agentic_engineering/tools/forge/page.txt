@@ -1,0 +1,46 @@
+Kenn Forge - kenn-forge Skip to content kenn-forge Kenn Forge Search kenn-io/forge kenn-forge kenn-io/forge
+Overview Overview On this page
+Start here
+Main views
+Advanced use
+Quick Start
+Workflows Workflows
+Overview
+I am an issue triager
+I am a code reviewer
+Configuration
+Commands
+Advanced / experimental Advanced / experimental
+Fleet
+Archive
+Troubleshooting
+On this page
+Start here
+Main views
+Advanced use
+Kenn Forge ¶
+Kenn Forge gives maintainers one local console for repository activity, pull requests, issues, reviews, and working sessions. It syncs provider data into SQLite and serves the UI from a single binary.
+Use Kenn Forge to answer four daily questions:
+What changed across the repositories I maintain?
+Which pull requests and issues need attention?
+What can I review, update, or merge now?
+Which branch or task should I open locally?
+Activity turns recent repository changes into one maintainer queue.
+Start here ¶
+New users should follow the Quick Start . It covers installation, provider setup, repository selection, the first sync, and workspace creation.
+Returning users can jump to a task:
+Triage an issue
+Review a pull request
+Run daily maintainer workflows
+Change repositories, tokens, or modes
+Fix startup, authentication, or sync problems
+Main views ¶
+Activity collects recent comments, reviews, commits, and state changes. Filter by time, repository, item type, event type, or text.
+Pulls and Issues combine lists, details, discussion, provider actions, and workspace creation. Unsupported provider actions remain visible but unavailable.
+Workspaces opens local shells and configured agents against repository worktrees. Repos browses configured source. Optional Kata and Docs modes connect external task daemons and local Markdown folders.
+Advanced use ¶
+Command reference
+Historical activity archives
+Federated fleets
+Kenn Forge runs on your machine. Your provider, Kata daemons, and local files remain the source of truth.
+Copyright © 2026 Kenn Software LLC . Elastic License 2.0. Made with Zensical

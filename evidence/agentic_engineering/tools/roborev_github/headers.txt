@@ -1,0 +1,19 @@
+HTTP/2 200 
+date: Sat, 15 Aug 2026 02:04:34 GMT
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+age: 258078
+cache-control: public, max-age=0, must-revalidate
+content-disposition: inline; filename="github"
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=JxfPaIZJq47%2Bybhdi%2FVU1ihTo1Fp8NnHmfN80pwcrutYZTz89eaHoHoGA%2F3l6XlxtqYElODlCTXq8O7LcXaqWAcyHnppQ8E4402o0yCoQX5vLQ7pJjpclMVs%2FHx3tgb%2BBg%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+last-modified: Wed, 12 Aug 2026 02:23:15 GMT
+server: cloudflare
+strict-transport-security: max-age=63072000
+x-vercel-cache: HIT
+x-vercel-id: pdx1::h6khg-1786759474054-90c1f723ea02
+cf-cache-status: DYNAMIC
+vary: accept-encoding
+cf-ray: a2b4a1189cf12fbe-PDX
+alt-svc: h3=":443"; ma=86400
+

@@ -1,0 +1,21 @@
+Ghosthub: all your multiplexers in one native terminal Ghosthub Overview Docs Ghosthub on GitHub: kenn-io/ghosthub latest release stars forks
+Ghosthub
+All your multiplexers. One native terminal.
+Ghosthub is multiplexer-native across your Mac and SSH hosts. Create or attach to tmux, Herdr, and Zellij sessions with optional tmux-backed worktrees, keepalives, and automatic reconnect.
+$ brew install kenn-io/tap/ghosthub Download DMG Learn More
+macOS 26+ · Apple Silicon · View on GitHub
+Features
+All multiplexers
+Bring tmux, Herdr, and Zellij sessions into one fleet across your Mac, SSH, and exe.dev. Each multiplexer keeps ownership of its own session world.
+Managed worktree sessions
+Create Git worktrees from new or existing branches, import GitHub pull requests, and manage their tmux sessions without leaving Ghosthub.
+Powered by libghostty
+The embedded libghostty terminal engine. Uses Ghostty's configuration format, with a dedicated Ghosthub config.
+Featherweight
+Native Swift with GPU-accelerated rendering. No Electron.
+Five-minute overview
+See how the pieces fit together
+Tour an all-multiplexer fleet, resilient SSH, optional worktrees, and native macOS command centers.
+Explore Ghosthub →
+Free and open source under AGPL-3.0 . © 2026 Kenn Software LLC.
+Overview Docs GitHub Discord ×

@@ -1,0 +1,33 @@
+HTTP/2 307 
+date: Sat, 15 Aug 2026 02:04:32 GMT
+content-type: text/plain
+location: https://www.roborev.io/
+cache-control: public, max-age=0, must-revalidate
+server: cloudflare
+strict-transport-security: max-age=63072000
+x-vercel-id: pdx1::d4h2h-1786759472718-bd3e7cc97916
+cf-cache-status: DYNAMIC
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=dR3JcgWR2b9zYw7Gde5iW0mTH6CVvnohLNdk4eLix3Ai1rRouOXc5jipGj%2FhiIsEC4eUxXHwZ%2Bimn2SaIcGO2%2Bn2NSp7j1UE37yZ37Baaatp3UeNJV9Kvrvuh1bJ"}]}
+cf-ray: a2b4a1104ffea60a-PDX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sat, 15 Aug 2026 02:04:33 GMT
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+age: 32981
+cache-control: public, max-age=0, must-revalidate
+content-disposition: inline
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=VAeex6YuX5iI9l8kUyZqpE%2BKE9v51%2BlOlZ7BMfr7bz3E2vUapQ92FleMNUeOp%2FaqHB74yYNtiGJ%2Fxt4L%2FNvzlbFKW0MPmJ69L%2Blf%2Bs6bE2yoqUxT4v%2B%2FsbkFLziHSiLitQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+last-modified: Fri, 14 Aug 2026 16:54:52 GMT
+server: cloudflare
+strict-transport-security: max-age=63072000
+x-vercel-cache: HIT
+x-vercel-id: pdx1::wknp4-1786759473417-c9e342b0eeea
+cf-cache-status: DYNAMIC
+vary: accept-encoding
+cf-ray: a2b4a1149f3dfb74-PDX
+alt-svc: h3=":443"; ma=86400
+

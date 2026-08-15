@@ -1,0 +1,3047 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Local-first issue tracking for humans and coding agents.">
+      
+      
+        <meta name="author" content="Kenn Software LLC">
+      
+      
+        <link rel="canonical" href="https://katatracker.com/operations/federation/">
+      
+      
+        <link rel="prev" href="../github-sync/">
+      
+      
+        <link rel="next" href="../agent-orchestration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.43">
+    
+    
+      
+        <title>Federation - kata カタ</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.fba56155.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#federation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="kata カタ" class="md-header__button md-logo" aria-label="kata カタ" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            kata カタ
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Federation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="cyan"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/kenn-io/kata" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kenn-io/kata
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kata カタ" class="md-nav__button md-logo" aria-label="kata カタ" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    kata カタ
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kenn-io/kata" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kenn-io/kata
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Start
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Start
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Overview
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../get-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Quickstart
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../get-started/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Install
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Changelog
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guide
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Guide
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Concepts
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/web-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Web UI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/workspaces-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Workspaces and projects
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/semantic-search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Semantic search
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/comparisons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Comparisons
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/migrating-from-beads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Migrating from Beads
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reference
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Reference
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  CLI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Model Context Protocol
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Metadata
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/agent-output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent output format
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/http-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  HTTP API schema
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Workflows
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Workflows
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent workflows
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../workflows/sharing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Sharing models
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Operations
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Operations
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote-daemon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Remote daemon
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github-sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  GitHub sync
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Federation
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Federation
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Roles
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Token boundaries
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-driven-enrollment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Config-driven enrollment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#move-an-existing-spoke-to-a-new-https-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Move an existing spoke to a new HTTPS endpoint
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tui-enrollment-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        TUI enrollment workflow
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-direct-token-auth-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Worked example: direct token-auth hub
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hub-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hub setup
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spoke-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Spoke setup
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spoke setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adopting-an-existing-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adopting an existing project
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leaving-a-federation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Leaving a federation
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Leaving a federation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rejoining-after-a-leave" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Rejoining after a leave
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adoption-confirmation-in-the-tui" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adoption confirmation in the TUI
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sync model
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leases-and-write-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Leases and write gates
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Operator commands
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-and-rolling-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Compatibility and rolling upgrades
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quarantine" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quarantine
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purge-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Purge and reset
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistency-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Consistency limitations
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cutover-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Cutover notes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent orchestration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hosted-mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Hosted mode
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgres/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  PostgreSQL
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backup-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Backup and restore
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Design
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Design
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Design notes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Architecture
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/data-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Data model and durability
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/federation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Federation technical notes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/hosted-mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Hosted mode technical notes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/semantic-search/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Semantic search technical notes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Development
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Development
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Contributing
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/packaging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Packaging kata
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/embedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Embedding kata in Go
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/postgres-migrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  PostgreSQL migrations
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/deploying-docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Deploying docs
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Roles
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Token boundaries
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-driven-enrollment" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Config-driven enrollment
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#move-an-existing-spoke-to-a-new-https-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Move an existing spoke to a new HTTPS endpoint
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tui-enrollment-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        TUI enrollment workflow
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-direct-token-auth-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Worked example: direct token-auth hub
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hub-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Hub setup
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spoke-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Spoke setup
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spoke setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adopting-an-existing-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adopting an existing project
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leaving-a-federation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Leaving a federation
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Leaving a federation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rejoining-after-a-leave" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Rejoining after a leave
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adoption-confirmation-in-the-tui" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Adoption confirmation in the TUI
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Sync model
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#leases-and-write-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Leases and write gates
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operator-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Operator commands
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-and-rolling-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Compatibility and rolling upgrades
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quarantine" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quarantine
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purge-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Purge and reset
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistency-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Consistency limitations
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cutover-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Cutover notes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+    <a href="https://github.com/kenn-io/kata/edit/main/docs/operations/federation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497zM15 5l4 4"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/kenn-io/kata/raw/main/docs/operations/federation.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 12.5 8 15l2 2.5M14 12.5l2 2.5-2 2.5"/></svg>
+    </a>
+  
+
+
+<h1 id="federation">Federation<a class="headerlink" href="#federation" title="Permanent link">&para;</a></h1>
+<p>Federation lets multiple kata daemons share selected projects while each user
+keeps a local daemon and local database. It is opt-in per project.</p>
+<p>The hub and each spoke may independently use SQLite or PostgreSQL. Federation
+does not negotiate storage backends and needs no backend-specific flags: all
+supported combinations exchange the same events, snapshots, cursors, and
+leases.</p>
+<p>Use federation when local-first availability and durable offline queues matter
+more than immediate single-copy reads. Use a shared daemon instead when users
+need centralized authorization, strict online-only arbitration, or globally
+fresh reads before acting.</p>
+<h2 id="roles">Roles<a class="headerlink" href="#roles" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hub</td>
+<td>Authoritative daemon for a federated project. Owns enrollment tokens, lease arbitration, purge/reset authority, and the canonical project event stream.</td>
+</tr>
+<tr>
+<td>Spoke</td>
+<td>Local daemon with a replica bound to a hub project.</td>
+</tr>
+<tr>
+<td>Binding</td>
+<td>Local row marking one project as a hub or spoke replica and storing pull/push cursors.</td>
+</tr>
+<tr>
+<td>Enrollment</td>
+<td>Hub-side credential for one spoke instance UID, optional project scope, and capabilities.</td>
+</tr>
+<tr>
+<td>Origin instance UID</td>
+<td>Durable daemon identity stamped on events so replicas distinguish local-origin and foreign-origin work.</td>
+</tr>
+<tr>
+<td>Pull cursor</td>
+<td>Highest hub event ID consumed by a spoke.</td>
+</tr>
+<tr>
+<td>Push cursor</td>
+<td>Highest spoke-local event ID accepted by the hub.</td>
+</tr>
+<tr>
+<td>Replay horizon</td>
+<td>Hub event ID from which a spoke can bootstrap. Earlier state is represented by baseline snapshots.</td>
+</tr>
+<tr>
+<td>Lease</td>
+<td>Hub-authoritative write lease for one existing issue. Internal storage and events still use the <code>claim</code> name.</td>
+</tr>
+<tr>
+<td>Quarantine</td>
+<td>Local operator stop marker for a poisoned push batch.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="token-boundaries">Token boundaries<a class="headerlink" href="#token-boundaries" title="Permanent link">&para;</a></h2>
+<p>Federation has two bearer-token systems.</p>
+<p>Daemon API tokens identify clients talking to normal daemon routes. They come
+from <code>KATA_AUTH_TOKEN</code> or <code>[auth].token</code>, and DB-backed identity tokens are
+managed with <code>kata tokens ...</code>.</p>
+<p>Federation enrollment tokens authorize spoke-to-hub transport routes. They are
+created with <code>kata federation enroll</code>, stored hashed on the hub, stored
+plaintext only in spoke federation credentials, and used for pull, push, join
+metadata fetches, and forwarded lease actions. Each enrollment is bound to one
+actor. A push-enabled spoke silently authors local-origin events and lease
+requests as that actor, and the hub rejects pushed events whose event actor does
+not match the enrollment actor.</p>
+<p>Enrollment tokens are not general daemon API tokens.</p>
+<p><code>kata federation enroll</code> is a normal daemon API call to the hub, not a
+spoke-to-hub transport call. The command sends that hub API call to
+<code>--hub-url</code> and authenticates it with <code>KATA_AUTH_TOKEN</code> or <code>[auth].token</code>. The
+CLI's default daemon should be the spoke being enrolled; that spoke can be the
+implicit local daemon or a remote daemon selected by <code>KATA_SERVER</code> or
+<code>.kata.local.toml</code>. <code>enroll</code> uses the default/spoke daemon only to detect
+whether the named project already exists on the spoke and should print
+<code>--adopt-existing</code>. The generated token printed in the <code>kata federation join
+...</code> command is a separate spoke transport credential.</p>
+<p>On hubs configured with <code>[auth].require_token_identity = true</code>, authenticate
+<code>kata federation enroll</code> with a DB-backed personal token for the actor doing
+the setup. The bootstrap token can mint personal tokens, but it cannot perform
+the attributed federation-enable step that <code>enroll</code> runs. In identity mode the
+daemon derives the enrollment actor from the token actor and ignores
+client-supplied actor strings such as <code>--actor</code>, <code>--as</code>, or <code>KATA_AUTHOR</code>.
+If you only have the bootstrap token, first mint a personal token as described
+in <a href="../remote-daemon/#identity-tokens">Identity tokens</a>.</p>
+<h2 id="config-driven-enrollment">Config-driven enrollment<a class="headerlink" href="#config-driven-enrollment" title="Permanent link">&para;</a></h2>
+<p>Operators who do not want to repeat the TUI or manual enroll/join ceremony can
+declare spoke-to-hub project mappings in the spoke's
+<code>&lt;KATA_HOME&gt;/config.toml</code>:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">[[daemon]]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;team-hub&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://hub.example&quot;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">token_env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;KATA_TEAM_HUB_TOKEN&quot;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">[[federation.project]]</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">hub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;team-hub&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">spoke_project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spoke-project&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">hub_project</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hub-project&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">actor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;user-a&quot;</span>
+</span></code></pre></div>
+<p>Set <code>KATA_TEAM_HUB_TOKEN</code> in the spoke daemon's environment to a normal hub
+administration credential. The reconciler uses only the selected catalog
+entry's credential for that hub origin; it never substitutes the spoke
+daemon's global bearer token. If the selected token is a DB-backed identity
+token, the hub uses its identity as the enrollment and binding actor and
+ignores the configured actor value.</p>
+<p>On daemon start, the mapping ensures or creates <code>hub-project</code>, enables it for
+federation, creates a project-scoped <code>pull,push,lease</code> enrollment, and binds
+<code>spoke-project</code> with push enabled. A missing local project is created
+automatically; an existing standalone project is adopted. After ensuring the
+hub project, the spoke generates and durably reserves an enrollment secret
+under that hub project's UID when no compatible credential exists, then asks
+the hub to enroll it. The secret lives only in the owner-only federation
+credential file and is safely reused after a restart or lost response. Every
+credential mutation uses failure-atomic file replacement.</p>
+<p>The reservation is tied to the resolved hub UID. If a named hub project is
+deleted and recreated, the replacement has a different UID and reconciliation
+reports a conflict instead of silently enrolling it. Before local adoption the
+category is <code>configuration_conflict</code>; after binding it is <code>binding_conflict</code>. Run
+<code>kata federation leave &lt;spoke-project&gt;</code> to clear the old managed reservation,
+verify the mapping, and restart the daemon to enroll the intended project.</p>
+<p>Reconciliation starts in the background after storage and the federation
+runner are ready. The daemon listener and normal project work do not wait for
+the hub. Runtime failures are fail-open and each mapping retries independently,
+starting after one second and backing off to at most five minutes. Inspect the
+sanitized aggregate under <code>federation_config</code> in <code>GET /api/v1/health</code>;
+<code>ok</code> remains true during hub outages, authentication failures, and conflicts.
+An unset selected <code>token_env</code> is reported as <code>hub_authentication</code> and follows
+the same retry path.</p>
+<p>The config is startup-only. Restart the spoke daemon after adding or changing
+a mapping. Once a mapping succeeds it stays quiet until the next restart.
+Removing the mapping and restarting does not revoke the enrollment or convert
+the replica back to standalone; configuration removal is not teardown. Leave
+explicitly when that is the intended operation:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>leave<span class="w"> </span>spoke-project
+</span></code></pre></div>
+<p>Leave also cleans up exact config-managed credential reservations from an
+interrupted startup reconciliation, before or after adoption. It fails closed
+and retains any conflicting or manual credential rather than deleting it. If a
+leave races with reconciliation while it is doing hub enrollment or rotation
+I/O, leave first records a durable leave marker and waits for the earlier
+request to finish. Reconciliation records and revokes any enrollment that
+completed, without recreating the credential that leave removes. The enrollment
+ID remains in the marker until local teardown, which makes a retry or restart
+safe. If the daemon crashed before recording the ID, it replays the reserved
+token to recover the exact enrollment and revoke it. A completed leave
+suppresses that mapping until the daemon restarts.</p>
+<p>See <a href="../../reference/configuration/#declarative-federation-mappings">Configuration</a>
+for validation rules and <a href="../../reference/http-api/#federation-enrollment-and-health-endpoints">HTTP API schema</a>
+for the health and credential-rotation contract.</p>
+<h2 id="move-an-existing-spoke-to-a-new-https-endpoint">Move an existing spoke to a new HTTPS endpoint<a class="headerlink" href="#move-an-existing-spoke-to-a-new-https-endpoint" title="Permanent link">&para;</a></h2>
+<p>Catalog edits are intentionally not applied to existing bindings. After
+changing the named <code>[[daemon]]</code> entry and restarting the spoke daemon so it has
+loaded the new catalog, migrate one spoke explicitly:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>rebind<span class="w"> </span>spoke-project<span class="w"> </span>--hub<span class="w"> </span>primary-hub
+</span></code></pre></div>
+<p>Or attempt every local spoke independently:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>rebind<span class="w"> </span>--all<span class="w"> </span>--hub<span class="w"> </span>primary-hub
+</span></code></pre></div>
+<p><code>--daemon</code> selects the spoke daemon that owns the binding and credential;
+<code>--hub</code> selects a catalog entry in that daemon's config. The request carries
+only the catalog name. The spoke daemon requires the entry to be remote HTTPS,
+then deliberately sends the existing enrollment token to that configured
+origin and fetches the same hub project's federation metadata. It updates
+local state only if both the numeric project ID and stable project UID match.
+The catalog administration token and <code>token_env</code> are not used.</p>
+<p>For a config-managed spoke, reconciliation reports <code>binding_conflict</code> and
+changes nothing between the catalog edit and successful rebind, including
+across a restart. Rebind is the designed resolution for this state. It does not
+reenroll, rotate the enrollment token, reset cursors, alter capabilities or
+actors, or require a database migration. If the two local stores were updated
+only partially, rerunning the same command resumes safely; a fully migrated
+retry returns <code>unchanged</code>. Plain HTTP targets are rejected even when the old
+binding allowed insecure transport.</p>
+<p>The daemon drains any project sync already using the old endpoint before it
+changes either local store and holds new sync work until both stores converge.
+This prevents an old-origin response from applying events or advancing a cursor
+after cutover; the next sync rereads the new binding and credential.</p>
+<h2 id="tui-enrollment-workflow">TUI enrollment workflow<a class="headerlink" href="#tui-enrollment-workflow" title="Permanent link">&para;</a></h2>
+<p>The TUI federation view is scoped to the active daemon. Press <code>F</code> from the
+queue or project selector to open federation for that daemon, then press <code>n</code> to
+enroll a spoke project into a hub from the daemon catalog. The hub browser uses
+catalog entries without switching the active daemon, so spoke and hub auth stay
+separate.</p>
+<p>The screenshots in this section are generated from disposable simulated
+daemons, hosts, actors, and projects. Generate local preview assets with:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>make<span class="w"> </span>docs-screenshots
+</span></code></pre></div>
+<p>Regenerate the SVGs and update the local single-commit <code>docs-assets</code> branch
+with:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>docs-assets-branch
+</span></code></pre></div>
+<p>The first screen identifies the active spoke daemon and the selected local
+project before enrollment starts:</p>
+<p><img alt="Federation list for a simulated active spoke daemon" src="/assets/screenshots/federation-tui/list.svg" /></p>
+<p>The enrollment flow starts by selecting a hub daemon from the catalog. The
+active spoke is shown but blocked as a hub target; the catalog hub keeps its own
+URL, auth, and <code>allow_insecure</code> setting:</p>
+<p><img alt="Selecting a simulated catalog hub daemon" src="/assets/screenshots/federation-tui/select-hub.svg" /></p>
+<p>After the hub daemon is selected, choose the hub project behavior. The default
+row creates or enables the hub project that matches the local spoke project; an
+existing hub project can be selected when the local project should adopt into a
+different hub project:</p>
+<p><img alt="Selecting a simulated hub project for enrollment" src="/assets/screenshots/federation-tui/select-hub-project.svg" /></p>
+<p>The preview is the mutation boundary. Confirm the operation type, local spoke
+project, hub daemon, hub auth state, requested actor, capabilities, push
+setting, and <code>allow_insecure</code> value before pressing Enter:</p>
+<p><img alt="Previewing a simulated federation enrollment" src="/assets/screenshots/federation-tui/preview.svg" /></p>
+<p>On success, the TUI shows the actor returned by the hub, adoption status,
+snapshot count, and hub project metadata, then refreshes the spoke federation
+list:</p>
+<p><img alt="Result of a simulated federation enrollment" src="/assets/screenshots/federation-tui/result.svg" /></p>
+<h2 id="worked-example-direct-token-auth-hub">Worked example: direct token-auth hub<a class="headerlink" href="#worked-example-direct-token-auth-hub" title="Permanent link">&para;</a></h2>
+<p>Use this runbook when a central hub is already available through ordinary
+remote-client token auth and you want an existing spoke project to join it.</p>
+<p>Fill in these values once:</p>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>Value in this example</th>
+<th>Where it comes from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;hub-api-url&gt;</code></td>
+<td><code>http://100.64.0.5:7787</code></td>
+<td>URL your CLI already uses for direct hub access.</td>
+</tr>
+<tr>
+<td><code>&lt;hub-project&gt;</code></td>
+<td><code>fedlab</code></td>
+<td>Project name on the hub.</td>
+</tr>
+<tr>
+<td><code>&lt;spoke-project&gt;</code></td>
+<td><code>local-tool</code></td>
+<td>Existing spoke project to federate.</td>
+</tr>
+<tr>
+<td><code>&lt;spoke-worktree&gt;</code></td>
+<td><code>~/src/local-tool</code></td>
+<td>Worktree for the spoke project when the spoke is a local workstation.</td>
+</tr>
+<tr>
+<td><code>&lt;actor&gt;</code></td>
+<td><code>wesm</code></td>
+<td>Actor bound to this spoke enrollment. In identity mode this comes from <code>&lt;personal-identity-token&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>&lt;personal-identity-token&gt;</code></td>
+<td>secret</td>
+<td>DB-backed hub token for your actor.</td>
+</tr>
+<tr>
+<td><code>&lt;spoke-instance-uid&gt;</code></td>
+<td><code>01H...</code></td>
+<td>Printed by <code>kata federation identity</code> on the spoke daemon.</td>
+</tr>
+<tr>
+<td><code>&lt;enrollment-token&gt;</code></td>
+<td>secret</td>
+<td>Printed by <code>kata federation enroll</code> on the hub.</td>
+</tr>
+</tbody>
+</table>
+<p>Do not infer these values from one another. In particular, the direct hub token
+and the enrollment token are different secrets, and the spoke instance UID must
+come from the spoke daemon, not the hub.</p>
+<p>Before starting, make sure normal <code>kata ...</code> commands target the spoke being
+enrolled, not the hub. For a remote spoke, set <code>KATA_SERVER</code> to the spoke URL.
+For an implicit local spoke, leave <code>KATA_SERVER</code> unset. <code>federation enroll</code>
+reaches the hub through <code>--hub-url</code>; <code>identity</code>, spoke project detection, and
+<code>join</code> use the default/spoke daemon.</p>
+<p>Step 1: get the spoke instance UID from the spoke daemon:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">cd</span><span class="w"> </span>&lt;spoke-worktree&gt;
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kata<span class="w"> </span>federation<span class="w"> </span>identity
+</span></code></pre></div>
+<p>Expected shape:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>instance: &lt;spoke-instance-uid&gt;
+</span></code></pre></div>
+<p>Step 2: create the hub enrollment from the same machine. Leave normal kata
+commands pointed at the spoke daemon; <code>--hub-url</code> is the explicit hub API
+target for this command, and <code>KATA_AUTH_TOKEN</code> is the hub daemon API token. If
+<code>&lt;hub-project&gt;</code> does not already exist on the hub, this command creates it
+before enabling federation and creating the enrollment:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KATA_AUTH_TOKEN</span><span class="o">=</span>&lt;personal-identity-token&gt;
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>enroll<span class="w"> </span>--project<span class="w"> </span>&lt;hub-project&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span>--spoke-instance<span class="w"> </span>&lt;spoke-instance-uid&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span>--hub-url<span class="w"> </span>&lt;hub-api-url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span>--actor<span class="w"> </span>&lt;actor&gt;
+</span></code></pre></div>
+<p>Expected shape:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>enrolled &lt;spoke-instance-uid&gt; for &lt;hub-project&gt;
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>join: kata federation join --project &lt;hub-project&gt; --hub-url &lt;hub-api-url&gt; --hub-project-id &lt;hub-project-id&gt; --token &lt;enrollment-token&gt; --capabilities pull,push,lease --actor &lt;actor&gt; --push --adopt-existing
+</span></code></pre></div>
+<p>When a spoke project named <code>&lt;hub-project&gt;</code> already exists, the printed command
+includes <code>--adopt-existing</code>. If no spoke project with that name exists, the
+printed command omits <code>--adopt-existing</code> and <code>join</code> creates a new spoke
+replica. If the spoke project name differs from the hub project name, replace
+the printed <code>--project &lt;hub-project&gt;</code> with <code>--project &lt;spoke-project&gt;</code>, and
+create the enrollment with <code>kata federation enroll --adopt-existing</code> so the
+token is marked for adoption snapshots.</p>
+<p>Before enrollment, clean current-state data that should not appear in baseline
+snapshots. Use <code>kata comment edit &lt;ref&gt; &lt;comment-uid&gt; --body ...</code> to replace
+comment text while preserving the comment's UID, author, and timestamp. Use
+<code>kata projects rewrite-author &lt;project&gt; --from &lt;old-author&gt; --to
+&lt;new-author&gt;</code> to rewrite exact current-row author identities across issue
+authors, issue owners, comment authors, and link authors. These are
+pre-federation hygiene tools; they do not redact historical event logs that
+have already been exported or shared.</p>
+<p>Step 3: run the printed join command against the spoke daemon:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>&lt;spoke-worktree&gt;
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;spoke-project&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>--hub-url<span class="w"> </span>&lt;hub-api-url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span>--hub-project-id<span class="w"> </span>&lt;hub-project-id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span>--token<span class="w"> </span>&lt;enrollment-token&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span>--capabilities<span class="w"> </span>pull,push,lease<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">  </span>--push<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span>--adopt-existing
+</span></code></pre></div>
+<p>Step 4: verify from both sides. First create or inspect work locally:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">cd</span><span class="w"> </span>&lt;spoke-worktree&gt;
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kata<span class="w"> </span>create<span class="w"> </span><span class="s2">&quot;verify federation sync&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>status
+</span></code></pre></div>
+<p>Then inspect the central hub using your normal direct hub administration
+access, and confirm the new issue appears in <code>&lt;hub-project&gt;</code>.</p>
+<p>For a new empty spoke replica, do the same runbook but skip <code>--adopt-existing</code>
+in Step 3. The printed <code>--project &lt;hub-project&gt;</code> can be used unchanged unless
+you intentionally want a different spoke project name.</p>
+<p>For a plaintext private-network hostname, <code>--hub-url</code> is both the hub API URL
+used for enrollment and the URL the spoke stores for later pull, push, and
+lease requests. Use this only on trusted private networks; use HTTPS for public
+networks.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KATA_AUTH_TOKEN</span><span class="o">=</span>&lt;personal-identity-token&gt;
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>enroll<span class="w"> </span>--project<span class="w"> </span>&lt;hub-project&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span>--spoke-instance<span class="w"> </span>&lt;spoke-instance-uid&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://hub.internal:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span>--allow-insecure
+</span></code></pre></div>
+<p>The printed join command should include <code>--allow-insecure</code>; keep it when
+joining locally:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">cd</span><span class="w"> </span>&lt;spoke-worktree&gt;
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;spoke-project&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://hub.internal:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>--hub-project-id<span class="w"> </span>&lt;hub-project-id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span>--token<span class="w"> </span>&lt;enrollment-token&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span>--capabilities<span class="w"> </span>pull,push,lease<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">  </span>--push<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">  </span>--adopt-existing<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">  </span>--allow-insecure
+</span></code></pre></div>
+<h2 id="hub-setup">Hub setup<a class="headerlink" href="#hub-setup" title="Permanent link">&para;</a></h2>
+<p>Create or register the project explicitly when you want a separate setup step:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kata<span class="w"> </span>init<span class="w"> </span>--project<span class="w"> </span>fedlab
+</span></code></pre></div>
+<p>Enable federation explicitly when you want a visible enable step:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kata<span class="w"> </span>federation<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--project<span class="w"> </span>fedlab
+</span></code></pre></div>
+<p>Enrollment creates the hub project if it does not already exist, and
+auto-enables the project if it is not already federated.</p>
+<p>Get each spoke's instance UID from that spoke daemon:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>identity
+</span></code></pre></div>
+<p>Create one enrollment per trusted spoke. <code>--hub-url</code> selects the hub daemon for
+this command, and <code>KATA_AUTH_TOKEN</code> or <code>[auth].token</code> authenticates the hub API
+request:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">KATA_AUTH_TOKEN</span><span class="o">=</span>&lt;personal-identity-token&gt;
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>kata<span class="w"> </span>federation<span class="w"> </span>enroll<span class="w"> </span>--project<span class="w"> </span>fedlab<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>--spoke-instance<span class="w"> </span>01H...<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://100.64.0.5:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span>--actor<span class="w"> </span>wesm
+</span></code></pre></div>
+<p>On an identity-mode hub, <code>wesm</code> must be the actor on the personal identity
+token. If <code>--actor</code> disagrees, the hub binds the enrollment to the token actor
+and the printed join command uses the hub-returned actor.</p>
+<p>The <code>--hub-url</code> value is the URL the spoke will store and use later for pull,
+push, and lease transport.</p>
+<p>Manual <code>--hub-url</code> values may include a reverse-proxy path prefix, such as
+<code>https://hub.example/kata</code>; the prefix is retained for later federation
+requests. They must be HTTP(S) base URLs without user info, a query, or a
+fragment.</p>
+<p>The CLI prints a pasteable <code>kata federation join ...</code> command containing the
+generated token. Treat that command as secret-bearing material.</p>
+<p>The CLI exposes capabilities as <code>pull,push,lease</code>. The daemon stores the lease
+capability internally as <code>claim</code>.</p>
+<h2 id="spoke-setup">Spoke setup<a class="headerlink" href="#spoke-setup" title="Permanent link">&para;</a></h2>
+<p>Run the join command printed by <code>enroll</code> against the spoke daemon:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>fedlab<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://100.64.0.5:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>--hub-project-id<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--token<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span>--actor<span class="w"> </span>wesm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span>--push
+</span></code></pre></div>
+<p><code>join</code> fetches hub project metadata using the enrollment token, so the hub must
+be reachable and the token must include <code>pull</code>. The command creates a spoke
+replica project bound to the hub project UID and replay horizon, stores the hub
+URL/project/token locally, and enables push only when <code>--push</code> is present.
+<code>--actor</code> is required and should be copied from the printed join command.</p>
+<p>When the hub is reached over plain HTTP through a private overlay hostname
+rather than a literal non-public IP address, opt in explicitly:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>fedlab<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://hub.internal:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span>--hub-project-id<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>--token<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span>--actor<span class="w"> </span>wesm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span>--push<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span>--allow-insecure
+</span></code></pre></div>
+<p><code>--allow-insecure</code> is stored with the local federation credential so later
+background pull, push, and lease requests can keep using that hub hostname.
+Origin pinning still applies, so enrollment tokens are not sent across
+cross-origin redirects. Use HTTPS instead when the hub is not on a trusted
+private network.</p>
+<p>Enrollment capabilities and local spoke behavior are separate:</p>
+<ul>
+<li><code>--capabilities pull,push,lease</code> on the hub says what the token may do;</li>
+<li><code>--push</code> on the spoke says this replica should actually push local-origin
+  events back to the hub.</li>
+</ul>
+<p>If a token has <code>push</code> but the spoke joins without <code>--push</code>, the spoke remains
+pull-only and the CLI prints a warning.</p>
+<h3 id="adopting-an-existing-project">Adopting an existing project<a class="headerlink" href="#adopting-an-existing-project" title="Permanent link">&para;</a></h3>
+<p>If a spoke already has a non-federated project that should join the hub, use an
+enrollment token created with adoption enabled and add <code>--adopt-existing</code> to the
+join command. Adoption requires <code>--push</code>:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>fedlab<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--hub-url<span class="w"> </span>http://100.64.0.5:7787<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span>--hub-project-id<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span>--token<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span>--actor<span class="w"> </span>wesm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span>--push<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span>--adopt-existing
+</span></code></pre></div>
+<p>The spoke and hub project names do not have to match. For that flow, run
+<code>kata federation enroll --adopt-existing</code>, then select the spoke project with
+<code>--project</code> in the printed join command and the hub project with the hub
+selector.</p>
+<p>Adoption preserves the current state of local issues, including closed and
+soft-deleted issues, comments, labels, metadata, priority, owner, and
+links. It does not preserve the old local event history. Instead
+it removes those pre-adoption local events, queues fresh snapshots for the hub
+with each issue's links embedded in the snapshot payloads, and reports how
+many snapshots were queued. The hub stores a cross-project link event even
+when its peer issue has not arrived yet and materializes the edge after both
+endpoint projects reach the same hub. Until then the edge is absent. Spoke
+projects that share links must use the same hub URL origin; different DNS names
+or IP aliases are intentionally separate federation groups. Adoption snapshot
+event actors are the bound federation actor. Snapshot payload authors and
+comment authors are preserved, so adopted issues keep their original displayed
+content authors.</p>
+<blockquote>
+<p><strong>Preserving the pre-adoption timeline:</strong> Adoption is a cutover, not an
+in-place history merge. If you need the old local event timeline for audit or
+rollback context, run <code>kata --project &lt;project&gt; export --output &lt;path&gt;.jsonl</code>
+before <code>kata federation join --adopt-existing</code>. kata does not currently keep a
+separate in-product archive of pre-adoption events.</p>
+</blockquote>
+<p>Adopted issues become ordinary federated spoke issues. You can keep editing
+them locally; acquire a hub lease only when you want exclusive coordination.</p>
+<h2 id="leaving-a-federation">Leaving a federation<a class="headerlink" href="#leaving-a-federation" title="Permanent link">&para;</a></h2>
+<p><code>kata federation leave</code> is the inverse of <code>join</code>: it revokes the spoke's hub
+enrollment, then tears down the local spoke state so the project becomes an
+ordinary standalone local project again.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>leave<span class="w"> </span>&lt;project&gt;
+</span></code></pre></div>
+<p>By default this <strong>detaches</strong>: the local <code>federation_bindings</code>,
+<code>federation_sync_status</code>, and quarantine rows are removed, the stored hub
+credential is deleted, and all of the project's issues and current state are
+kept. Leaving is revoke-first — the hub enrollment is revoked before any local
+teardown, so a hub failure leaves local state intact for a clean retry.</p>
+<p>For config-driven federation, leave also removes the exact managed credential
+reservation whether reconciliation stopped before or after adoption. If the
+credential changes while leave is cleaning it up, the API returns
+<code>federation_credential_conflict</code>; resolve the conflict in <code>credentials.toml</code>
+and retry <code>kata federation leave &lt;project&gt;</code>.</p>
+<p>After confirmation, the CLI asks the spoke daemon to prepare the leave before
+it contacts the hub. Preparation durably marks a config-managed reservation,
+blocks new reconciliation work for that mapping, and waits for earlier hub
+enrollment or rotation requests to finish. Any completed enrollment is recorded
+and revoked idempotently before local teardown. If the command or daemon stops
+midway, rerun the same leave command; the marker prevents automatic
+re-enrollment and carries the cleanup forward. A successful leave suppresses
+the still-configured mapping until the daemon restarts.</p>
+<p>Add <code>--delete</code> to also archive the now-standalone project (reversible with
+<code>kata projects restore</code>); <code>--delete --force</code> archives even when the project has
+open issues:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>leave<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--delete
+</span></code></pre></div>
+<p>If the project still has open issues and you do not pass <code>--force</code>, the leave
+is refused (<code>project_has_open_issues</code>) by a daemon preflight <strong>before the hub
+enrollment is revoked</strong>: the binding, the credential, and the hub enrollment
+all stay intact. The same preflight runs for plain detach leaves too, so any
+local refusal the daemon can predict surfaces before hub contact. Close the open issues (or re-run with
+<code>--force</code>) and run the leave again. The preflight is advisory — the
+authoritative check runs inside the archive transaction itself, which executes
+after the revoke — so an issue opened in that small window can still land the
+spoke "hub-revoked, locally intact"; re-running <code>leave --delete --local-only</code>
+(or <code>--force</code>) completes that teardown.</p>
+<p>Hub admin auth for the revoke is resolved, in order: <code>--hub-token</code>, the
+<code>--hub &lt;name&gt;</code> daemon-catalog entry, then the catalog entry whose URL matches
+the binding's hub URL. With no hub credential the revoke request is sent
+<strong>unauthenticated</strong> — the local daemon's global <code>KATA_AUTH_TOKEN</code> /
+<code>[auth].token</code> is never sent to the hub origin implicitly, so a token-protected
+hub requires <code>--hub-token</code>, a catalog entry, or <code>--local-only</code>. The hub URL
+itself always comes from the binding, and a catalog token is only ever sent to
+the origin its entry is configured for: a <code>--hub &lt;name&gt;</code> entry that is missing
+or whose URL does not match the binding's hub URL is rejected, so a catalog
+admin token cannot leak to a different hub. Use <code>--hub-token</code> when you
+deliberately need to present a token the catalog does not associate with that
+hub.</p>
+<p>For plain-HTTP overlay hubs joined with <code>--allow-insecure</code>, the transport
+opt-in is recorded on the binding itself (as well as in the credential), so
+the leave-time hub client can carry a bearer token to the plaintext hostname
+even after a partial leave lost <code>credentials.toml</code>. A same-origin catalog
+entry with <code>allow_insecure = true</code> also restores the opt-in, and
+<code>kata federation leave --allow-insecure</code> asserts it explicitly when no local
+record of it survives. Without one of those, a token-bearing request to a
+plaintext hostname is refused before any network I/O. Leave also warns when the hub holds a
+matching <strong>global</strong> enrollment (no project scope) for this spoke: it still
+authorizes the left project but is not auto-revoked, since it may serve the
+spoke's other projects.</p>
+<p>If no active enrollment matches this spoke's instance UID but project-scoped
+enrollment(s) still authorize the hub project, the leave <strong>aborts</strong> and names
+them instead of treating zero matches as success — the instance UID can change
+after a clone/import, or the enrollment may have been created for another
+instance (including another spoke of a shared hub project). Revoke the right
+one with <code>kata federation revoke &lt;id&gt;</code> on the hub, or rerun with
+<code>--local-only</code>.</p>
+<p>If the hub is unreachable, <code>--local-only</code> tears down the local spoke without
+contacting the hub. The enrollment token then <strong>remains valid</strong> until you run
+<code>kata federation revoke &lt;enrollment-id&gt;</code> on the hub yourself:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>leave<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--local-only
+</span></code></pre></div>
+<p>Leaving is idempotent: running it on a project that is already standalone
+reports success and finishes any cleanup a failed earlier leave left behind
+(such as a stale hub credential in <code>credentials.toml</code>), and <code>leave --delete</code>
+on a standalone project still archives it. An archive-leave retry on an
+already-archived project also resumes instead of erroring: it detaches a
+surviving binding, deletes a stale credential, and reports <code>archived=false</code>
+for that call. The leave command resolves archived projects for its argument
+and <code>--project</code> forms, so rerunning the same <code>kata federation leave
+&lt;project&gt;</code> completes the pending cleanup directly. A binding surviving on an
+archived project takes the normal bound path: the hub revoke runs (it is
+idempotent, so a retry whose enrollment was already revoked is a no-op, while
+a spoke archived via <code>kata projects remove</code> — which does not revoke — gets
+its enrollment revoked instead of silently stranded), then the local teardown
+finishes. <code>--local-only</code> remains the unreachable-hub escape.</p>
+<p>In the TUI federation view, press <code>x</code> on a spoke row to open a leave preview
+(the mutation boundary), toggle detach/archive and local-only, then confirm.</p>
+<p>Removing the spoke's already-pushed data from the hub project is a separate
+hub-admin action. A user-facing project purge is not yet available; use
+<code>--delete</code> (archive) for now.</p>
+<h3 id="rejoining-after-a-leave">Rejoining after a leave<a class="headerlink" href="#rejoining-after-a-leave" title="Permanent link">&para;</a></h3>
+<p>Leaving keeps the local project's identity: it still shares the hub project's
+UID. A later <code>join</code> for that hub project recognizes this and <strong>rejoins</strong> —
+rebinding the existing local project instead of creating a second replica:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;spoke-project&gt;<span class="w"> </span>--hub-url<span class="w"> </span>&lt;url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span>--hub-project-id<span class="w"> </span>&lt;id&gt;<span class="w"> </span>--token<span class="w"> </span>&lt;fresh-enrollment-token&gt;<span class="w"> </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span>--push
+</span></code></pre></div>
+<p>Pull restarts from the hub's replay horizon (already-applied events
+deduplicate by event UID), and a push-enabled rejoin re-offers local-origin
+events from the beginning — the hub deduplicates what it already has and
+absorbs any edits made while the project was standalone. Rejoin with the same
+actor the enrollment is bound to; events authored as a different actor are
+rejected by the hub and quarantined.</p>
+<p>A join that names a <em>different</em> project while a local project still holds the
+hub project's UID is refused with <code>federation_rejoin_name_mismatch</code>, which
+names the holder — rerun the join with <code>--project &lt;holder&gt;</code> to rejoin it. An
+archived holder must be restored (<code>kata projects restore</code>) first.</p>
+<p>In the TUI, selecting a hub project whose identity is already held by a local
+unbound project presents the operation as <strong>rejoin</strong> of that project rather
+than a new local replica.</p>
+<h3 id="adoption-confirmation-in-the-tui">Adoption confirmation in the TUI<a class="headerlink" href="#adoption-confirmation-in-the-tui" title="Permanent link">&para;</a></h3>
+<p>Because adoption rewrites the local project's event history, the TUI enroll
+preview no longer executes an adoption on a bare Enter. Enter opens a
+confirmation screen that states the operation — federate local project X
+INTO hub project Y — and requires typing the local project's name. Creating
+a new replica and rejoining stay single-step confirmations.</p>
+<h2 id="sync-model">Sync model<a class="headerlink" href="#sync-model" title="Permanent link">&para;</a></h2>
+<p>A spoke polls the hub for events after its pull cursor. It applies hub events
+in order, deduplicates by event UID and content hash, folds portable payloads
+into the local projection, and advances its pull cursor only after successful
+application.</p>
+<p>A push-enabled spoke scans for local-origin events above its push cursor and
+sends them to the hub as an all-or-nothing batch. The hub authenticates the
+enrollment token, verifies project scope and capability, checks that each event
+belongs to the bound spoke origin and actor, verifies schema version,
+deduplicates same-hash retries, rejects same-UID/different-hash conflicts,
+materializes the batch, and returns the advanced push cursor.</p>
+<p>Ingest work is bounded by the accepted batch: metadata, comment, label,
+status, and claim-only batches skip the federation group's link rebuild because
+they cannot change link state. Link mutations, snapshots, and issue lifecycle
+events that can change endpoint resolution still run the full reconciliation.</p>
+<p>Federation push and poll requests have a 60-second default budget, separate
+from the shorter interactive CLI default. <code>KATA_HTTP_TIMEOUT</code> overrides that
+budget when a large, healthy hub needs more time. A timed-out request leaves
+the cursor unchanged and retries through the normal sync loop.</p>
+<p>If a response is lost after the hub commits, retrying the same batch is safe.
+Permanent validation failures or hash conflicts record a quarantine on the
+spoke instead of retrying forever.</p>
+<h2 id="leases-and-write-gates">Leases and write gates<a class="headerlink" href="#leases-and-write-gates" title="Permanent link">&para;</a></h2>
+<p>Leases are hub-authoritative. A spoke forwards acquire, renew, release, and
+status requests to the hub with an enrollment token that has lease capability.
+The hub derives <code>holder_instance_uid</code> and the human-readable holder from the
+enrollment token. Client-supplied holder strings are ignored for
+enrollment-authenticated lease requests.</p>
+<p>Use leases when an agent or operator wants to say "I am actively working this
+issue; avoid overlapping non-comment edits until I release it." Holding a lease
+gives temporary exclusivity against other non-comment mutations while the lease
+is live. It also gives status and audit surfaces a clear current holder for
+coordination. It does not grant durable ownership, replace the issue <code>owner</code>
+field, serialize all collaboration, or act as a prerequisite for ordinary
+edits.</p>
+<p>For federated projects, ordinary issue edits are local-first and converge by
+LWW. Creating new issues also stays local-first. A lease is optional
+coordination: when another holder has a live lease on an affected existing
+issue, non-comment mutations are denied until the lease is released or expires.
+Comment creation and comment body edits bypass leases because they remain
+comment-level collaboration and maintenance actions rather than leased issue
+work.</p>
+<p>Spokes refresh cached lease state before checking exclusivity when online.
+When offline, cached hard leases can still be used as a continuity hint, but
+they are not proof that exclusivity still holds. Timed leases expire by hub
+time and stop blocking edits once expired.</p>
+<p>The hub checks pushed work against live lease state at ingest time. Work that
+conflicts with another holder's live lease is kept, but the hub records
+<code>claim.violated</code>. Work on unleased issues is normal and is not a violation.
+Link mutations check both materialized endpoints in the compatible federation
+group, expire timed leases in each endpoint's owning project, and record any
+violation in that owning project.</p>
+<h2 id="operator-commands">Operator commands<a class="headerlink" href="#operator-commands" title="Permanent link">&para;</a></h2>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>identity
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>kata<span class="w"> </span>federation<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--project<span class="w"> </span>&lt;project&gt;
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>kata<span class="w"> </span>federation<span class="w"> </span>enroll<span class="w"> </span>--project<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--spoke-instance<span class="w"> </span>&lt;uid&gt;<span class="w"> </span>--hub-url<span class="w"> </span>&lt;url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span><span class="o">[</span>--allow-insecure<span class="o">]</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--hub-url<span class="w"> </span>&lt;url&gt;<span class="w"> </span>--hub-project-id<span class="w"> </span>&lt;id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">  </span>--token<span class="w"> </span>&lt;token&gt;<span class="w"> </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span><span class="o">[</span>--push<span class="o">]</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>kata<span class="w"> </span>federation<span class="w"> </span>enroll<span class="w"> </span>--project<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--spoke-instance<span class="w"> </span>&lt;uid&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">  </span>--hub-url<span class="w"> </span>&lt;http-hostname-url&gt;<span class="w"> </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span>--allow-insecure
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--hub-url<span class="w"> </span>&lt;http-hostname-url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">  </span>--hub-project-id<span class="w"> </span>&lt;id&gt;<span class="w"> </span>--token<span class="w"> </span>&lt;token&gt;<span class="w"> </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span>--allow-insecure<span class="w"> </span><span class="o">[</span>--push<span class="o">]</span>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>kata<span class="w"> </span>federation<span class="w"> </span>join<span class="w"> </span>--project<span class="w"> </span>&lt;existing-project&gt;<span class="w"> </span>--hub-url<span class="w"> </span>&lt;url&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a><span class="w">  </span>--hub-project-id<span class="w"> </span>&lt;id&gt;<span class="w"> </span>--token<span class="w"> </span>&lt;token&gt;<span class="w"> </span>--actor<span class="w"> </span>&lt;actor&gt;<span class="w"> </span>--push<span class="w"> </span>--adopt-existing
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>kata<span class="w"> </span>federation<span class="w"> </span>enrollments<span class="w"> </span>list
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>kata<span class="w"> </span>federation<span class="w"> </span>revoke<span class="w"> </span>&lt;enrollment-id&gt;
+</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>kata<span class="w"> </span>federation<span class="w"> </span>leave<span class="w"> </span>&lt;project&gt;<span class="w"> </span><span class="o">[</span>--delete<span class="w"> </span><span class="o">[</span>--force<span class="o">]]</span><span class="w"> </span><span class="o">[</span>--local-only<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hub<span class="w"> </span>&lt;name&gt;<span class="o">]</span>
+</span><span id="__span-25-16"><a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>kata<span class="w"> </span>federation<span class="w"> </span>rebind<span class="w"> </span>&lt;project&gt;<span class="w"> </span>--hub<span class="w"> </span>&lt;name&gt;
+</span><span id="__span-25-17"><a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>kata<span class="w"> </span>federation<span class="w"> </span>rebind<span class="w"> </span>--all<span class="w"> </span>--hub<span class="w"> </span>&lt;name&gt;
+</span><span id="__span-25-18"><a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>kata<span class="w"> </span>federation<span class="w"> </span>status
+</span><span id="__span-25-19"><a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>kata<span class="w"> </span>federation<span class="w"> </span>status<span class="w"> </span>--json
+</span><span id="__span-25-20"><a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>kata<span class="w"> </span>federation<span class="w"> </span>lease<span class="w"> </span>acquire<span class="w"> </span>&lt;issue-ref&gt;<span class="w"> </span><span class="o">[</span>--ttl<span class="w"> </span>30m<span class="o">]</span>
+</span><span id="__span-25-21"><a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>kata<span class="w"> </span>federation<span class="w"> </span>lease<span class="w"> </span>release<span class="w"> </span>&lt;issue-ref&gt;
+</span></code></pre></div>
+<p><code>kata federation enroll --project &lt;project&gt;</code> creates <code>&lt;project&gt;</code> on the hub
+when it does not already exist, then enables federation and creates the
+enrollment.</p>
+<p><code>kata federation status</code> reports local bindings, enabled/push state, cursors,
+pending push depth, sync timestamps, enrollment counts, lease counts,
+quarantine counts, reset blockers, and recent lease violations. Use
+<code>kata federation quarantine list</code> to inspect every active quarantine and
+<code>kata federation quarantine show &lt;id&gt;</code> to see its complete retained event UID
+list and error. The TUI shows the same retained errors in a spoke row's detail
+view.</p>
+<h2 id="compatibility-and-rolling-upgrades">Compatibility and rolling upgrades<a class="headerlink" href="#compatibility-and-rolling-upgrades" title="Permanent link">&para;</a></h2>
+<p>Push requests declare the spoke's local storage schema version. A hub accepts
+older positive schema versions, but rejects a spoke schema newer than its own
+with <code>unsupported_federation_schema</code>. The spoke treats that error as transient
+version skew: it records the sync error, leaves the push cursor unchanged, does
+not create quarantine, and retries on later sync passes.</p>
+<p>Operationally, upgrade hubs before push-enabled spokes. If a spoke runs ahead
+of its hub, <code>kata federation status</code> will show pending push and the last
+schema-skew error until the hub catches up. After the hub is upgraded, the next
+sync retries the same pending events automatically.</p>
+<p>Malformed schema declarations are not rolling-upgrade skew. Missing schema
+versions fail request validation, and explicit non-positive schema versions
+return <code>invalid_federation_schema</code>.</p>
+<p>Legacy v0.9 directional unlink payloads are also outside the supported ingest
+contract. <code>blocks</code> and <code>parent</code> unlinks must include storage-oriented
+<code>link_from_uid</code> and <code>link_to_uid</code>; the hub rejects events that omit them and
+never guesses orientation from the current graph. Such a validation quarantine
+is not released by upgrading or retrying because kata does not rewrite the
+stored event. Handle it through the normal explicit quarantine disposition
+workflow.</p>
+<p>Older kata builds may already have quarantined a batch after a transient
+schema-skew rejection. After upgrading the hub, upgrade and restart each spoke
+on a build with this compatibility behavior. The next sync auto-releases that
+legacy schema-skew quarantine and re-sends the same events without advancing
+the push cursor.</p>
+<h2 id="quarantine">Quarantine<a class="headerlink" href="#quarantine" title="Permanent link">&para;</a></h2>
+<p>A spoke records active quarantine when it sees a permanently poisoned push
+batch. Quarantine blocks further push and can block reset.</p>
+<p>Inspect the retained event range and error before choosing any disposition:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>quarantine<span class="w"> </span>list
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>kata<span class="w"> </span>federation<span class="w"> </span>quarantine<span class="w"> </span>show<span class="w"> </span>&lt;id&gt;
+</span></code></pre></div>
+<p>Do not edit kata's SQLite database to clear a quarantine or advance a cursor.
+Those changes bypass the retry and audit transitions and can silently strand
+events. A compatible spoke automatically releases and resends a push
+quarantine whose retained error has the exact former cross-project peer
+validation shape. Current hubs accept a missing link peer as deferred state,
+so the original batch can advance and the edge materializes after both endpoint
+projects reach the same hub federation group.</p>
+<p>Unknown primary issues are different: errors such as <code>issue.updated references
+unknown issue</code> still indicate a poisoned mutation, remain quarantined, and stop
+before another network request. Fix the root cause and explicitly retry other
+recoverable push quarantines:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>quarantine<span class="w"> </span>retry<span class="w"> </span>&lt;id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span>--confirm<span class="w"> </span><span class="s2">&quot;RETRY FEDERATION BATCH &lt;id&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span>--reason<span class="w"> </span><span class="s2">&quot;hub upgraded&quot;</span>
+</span></code></pre></div>
+<p>Retry is push-only. It marks the quarantine resolved without advancing the push
+cursor, so the same local events are sent again on the next sync. Retrying a
+pull quarantine returns <code>federation_quarantine_retry_unsupported</code>. A stale push
+quarantine created by older builds for <code>unsupported_federation_schema</code> is
+released automatically on sync after the spoke runs a fixed build; manual retry
+is for other fixed push-quarantine root causes. Older peer-validation
+quarantines also auto-release after both hub and spoke run compatible builds;
+their retry transition preserves the cursor and resends the original events.</p>
+<p>Intentionally skip only when the operator accepts that local events will not be
+federated:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kata<span class="w"> </span>federation<span class="w"> </span>quarantine<span class="w"> </span>skip<span class="w"> </span>&lt;id&gt;<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span>--confirm<span class="w"> </span><span class="s2">&quot;SKIP FEDERATION BATCH &lt;id&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span>--reason<span class="w"> </span><span class="s2">&quot;operator accepted the skipped outbound batch&quot;</span>
+</span></code></pre></div>
+<p>Skipping advances the spoke push cursor past the quarantined event range. It
+does not delete local events and it does not make skipped work appear on the
+hub.</p>
+<h2 id="purge-and-reset">Purge and reset<a class="headerlink" href="#purge-and-reset" title="Permanent link">&para;</a></h2>
+<p>Hard purge is hub-admin-only for federated projects. A spoke rejects hard purge
+with <code>federated_admin_required</code>. A hub purge uses normal local/admin daemon
+auth, exact confirmation, and the same live-lease conflict gate as other issue
+mutations.</p>
+<p>When a hub purge removes replay history, it records a reset boundary and writes
+a fresh federation baseline for remaining project state. A spoke whose pull
+cursor is below that boundary receives <code>reset_required</code> and re-bootstraps from
+the current federation horizon.</p>
+<p>A push-enabled spoke refuses reset while it has unaccepted local-origin events
+or active quarantine.</p>
+<h2 id="consistency-limitations">Consistency limitations<a class="headerlink" href="#consistency-limitations" title="Permanent link">&para;</a></h2>
+<p>Federation has expected stale or deferred states:</p>
+<ul>
+<li>Spokes read local state and can be behind the hub.</li>
+<li>Local spoke writes happen before hub acceptance.</li>
+<li>Offline cached hard leases can later be superseded.</li>
+<li>Lease violation signals are best-effort at ingest time, not proof of causal
+  authorization at original edit time. Unleased edits are expected and are not
+  violations.</li>
+<li>Poisoned push batches require operator choice.</li>
+<li>Hub outages degrade lease acquisition, pull, push, and status freshness.</li>
+<li>Future-schema push skew pauses push until the hub is upgraded. Stale
+  schema-skew quarantines from older spoke builds auto-release after the spoke
+  is upgraded and restarted.</li>
+<li>Stale peer-validation quarantines from older builds auto-release when a
+  compatible spoke syncs against a compatible hub. Unknown-primary and other
+  validation failures remain blocked for operator diagnosis.</li>
+<li>Purge causes spoke re-bootstrap.</li>
+<li>Enrollment creation uses normal daemon auth; the generated enrollment token
+  only authorizes the spoke transport grant and is not a user daemon API token.</li>
+<li>Pushed event actors are bound to the enrollment actor. A buggy, old, or
+  malicious spoke that pushes a different actor is rejected by the hub and the
+  spoke records the failed batch in quarantine.</li>
+<li>Links may span projects. A missing peer does not quarantine push: the event
+  and cursor advance while the edge remains absent. The edge materializes when
+  both endpoint projects are enabled through the same hub federation group.
+  Pulling clients must enroll both projects and use the same normalized hub URL
+  origin to project it locally. Unfederated peers, different hub origins, and
+  peers that never arrive stay absent. Malformed events, unknown primary
+  issues, actor violations, and hash conflicts remain permanent validation
+  failures and can quarantine push.</li>
+</ul>
+<h2 id="cutover-notes">Cutover notes<a class="headerlink" href="#cutover-notes" title="Permanent link">&para;</a></h2>
+<p>The actor-bound federation schema is a v13 JSONL cutover. Existing unbound hub
+enrollments are not imported because they cannot be made actor-safe; create new
+enrollments with <code>kata federation enroll --actor &lt;actor&gt;</code>. Existing
+push-enabled spoke bindings without a stored actor are imported with push
+disabled, so those spokes must re-run <code>kata federation join --actor &lt;actor&gt; --push</code>
+before local-origin work can sync to the hub again.</p>
+<p>Use a shared daemon when those trade-offs are unacceptable.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://kenn.io">Kenn Software LLC</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.instant","navigation.instant.progress","navigation.tracking","navigation.sections","navigation.path","content.action.edit","content.action.view","content.code.copy"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      
+        <script src="../../javascripts/install-platform.js" type="module"></script>
+      
+    
+  </body>
+</html>

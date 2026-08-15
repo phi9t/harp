@@ -1113,6 +1113,7 @@ fn agentic_engineering_packet_is_registered_and_preserves_authority_boundary() {
         .unwrap();
     for target in [
         "agentic-engineering-reference",
+        "agentic-engineering-tool-stack",
         "agentic-engineering-source-registry",
         "agentic-engineering-claim-ledger",
         "agentic-engineering-missing-evidence",
@@ -1122,6 +1123,25 @@ fn agentic_engineering_packet_is_registered_and_preserves_authority_boundary() {
                 .html
                 .contains(&format!("href=\"#documents/{target}\"")),
             "agentic engineering index is missing the offline route for {target}"
+        );
+    }
+
+    let tool_stack = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "agentic-engineering-tool-stack")
+        .unwrap();
+    for required in [
+        "Kata: durable intent ledger",
+        "Forge: human control plane",
+        "Ghosthub: session multiplexing",
+        "AgentsView: observability plane",
+        "roborev: verification plane",
+        "Superpowers: reasoning and execution scaffolding",
+    ] {
+        assert!(
+            tool_stack.html.contains(required),
+            "agentic engineering tool stack investigation is missing {required}"
         );
     }
 }

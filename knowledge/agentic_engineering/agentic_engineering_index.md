@@ -19,6 +19,7 @@ architecture for production agentic engineering, not as a reproduced benchmark.
 ## Reader routes
 
 - [Kenn reference architecture](kenn_reference_architecture.md)
+- [Kenn tool stack investigation](tool_stack_investigation.md)
 - [Source registry](source_registry.md)
 - [Claim evidence ledger](claim_evidence_ledger.md)
 - [Missing evidence](missing_evidence.md)

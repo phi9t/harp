@@ -123,6 +123,14 @@ GitHub view with one-click isolated worktree/agent environments, Ghosthub as a
 terminal for multiplexer-heavy local and remote sessions, Kata as an agent-native
 intent tracker, and AgentsView plus roborev as accountability engines.
 
+**EVIDENCE — [AE-004] through [AE-016].** The public tool pages and GitHub
+metadata captured in [Kenn tool stack investigation](tool_stack_investigation.md)
+support the same plane split at the public-description level: Kata presents a
+local-first task ledger, Forge a maintainer console, Ghosthub a
+multiplexer-native terminal with worktree management, AgentsView a session and
+token observability system, roborev a continuous review ledger, and Superpowers
+an agentic skills methodology.
+
 **INFERENCE — [AE-001].** The mature agentic engineering substrate looks like a
 distributed system for cognitive workers:
 

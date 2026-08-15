@@ -1,0 +1,25 @@
+HTTP/2 307 
+cache-control: public, max-age=0, must-revalidate
+content-type: text/plain
+date: Sat, 15 Aug 2026 02:04:26 GMT
+location: https://www.katatracker.com/
+server: Vercel
+strict-transport-security: max-age=63072000
+x-vercel-id: pdx1::ffzsw-1786759466771-a01ba07e0413
+
+HTTP/2 200 
+accept-ranges: bytes
+access-control-allow-origin: *
+age: 38766
+cache-control: public, max-age=0, must-revalidate
+content-disposition: inline
+content-type: text/html; charset=utf-8
+date: Sat, 15 Aug 2026 02:04:27 GMT
+etag: "a4843dbb7dd230acc97936d2c0352e05"
+last-modified: Fri, 14 Aug 2026 15:18:20 GMT
+server: Vercel
+strict-transport-security: max-age=63072000
+x-vercel-cache: HIT
+x-vercel-id: pdx1::gbx4b-1786759467347-7ebaa28f0244
+content-length: 45670
+

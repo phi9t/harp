@@ -1,0 +1,86 @@
+roborev - roborev Skip to content roborev roborev Search kenn-io/roborev roborev kenn-io/roborev
+Quick Start
+Installation
+Automation Automation
+Post-Commit Reviews
+Agent Hook
+Review Event Hooks
+CLI Commands
+Terminal UI
+Configuration
+Supported Agents
+GitHub Integration
+GitLab Integration
+Guides Guides
+Reviewing Code
+Responding to Reviews
+Agent Skills
+Code Analysis & Refactoring
+Auto-Fix with Refine
+Repository Management
+Advanced Features Advanced Features
+Background Tasks
+Subagent Review Panels
+Custom Tasks & Agentic Mode
+Agent Client Protocol (ACP)
+PostgreSQL Sync
+Streaming & Daemon API
+Integrations Integrations
+Kata
+Claude Chic
+Troubleshooting
+Development
+Changelog
+On this page
+How roborev works
+Quick Start
+For LLMs
+Why roborev?
+Architecture
+Federated Multiplayer
+roborev ¶
+Continuous code review for coding agents. Review commits immediately, catch issues early, and fix them while context is fresh.
+Read Docs View on GitHub
+How roborev works ¶
+roborev reviews every commit in the background and feeds findings back to your coding agent so the write -> review -> fix loop runs hands-off.
+Post-commit reviews - every commit is reviewed automatically, with any agent.
+Agent hook - nudges your CLI agent to fix findings mid-session.
+Refine before you ship - /roborev-refine re-reviews and fixes your whole branch until every review passes, catching bugs before the PR.
+Set up automation ->
+Droid Kilo Kiro
+Quick Start ¶
+curl -fsSL https://roborev.io/install.sh | bash
+Then from within your git repositories:
+roborev init # Install post-commit hook # do some work, generate commits roborev tui # Browse reviews in the terminal UI
+For Windows, see the installation guide .
+For LLMs ¶
+This docs site publishes source Markdown next to each rendered page. Prefer the .md URL when reading or citing docs programmatically: /changelog.md for /changelog/ , /guides/reviewing-code.md for /guides/reviewing-code/ , and /index.md for this page.
+Why roborev? ¶
+AI coding agents write code fast, but they make mistakes. Most review feedback comes too late. The agent has moved on and context is lost. roborev changes this:
+Ask your agents to commit often , ideally every turn of work
+roborev reviews each commit in the background
+Bring review work back into the agent session with agent-hook ( --agent droid for Factory Droid) or check the TUI ( roborev tui ) as findings arrive
+Address findings by letting the hook prompt the fix skill, copying reviews into your agent, using /roborev-fix , or running roborev fix
+Every commit gets reviewed. Issues surface in seconds, not hours. Open reviews stay in the TUI queue until explicitly addressed and closed, so nothing falls through the cracks.
+Review Ledger
+Every commit is reviewed automatically via git hooks. Reviews accumulate in a persistent queue that acts as a ledger: nothing is closed until explicitly addressed.
+Agent-Ready Feedback
+Use agent-hook to prompt Codex, Claude Code, or Droid ( --agent droid ) to run the fix skill when review work piles up. You can also copy findings into your agent session, use /roborev-fix , or run roborev fix to apply fixes automatically.
+Code Analysis
+Built-in analysis types (duplication, complexity, refactoring, test fixtures, dead code) that agents can address directly.
+Multi-Agent
+Works with Codex, Claude Code, Gemini, Copilot, OpenCode, Cursor, Droid, Kilo, Kiro, Pi, and Grok Build. Auto-detects installed agents.
+Rich Markdown Display
+Reviews render with full Markdown formatting: syntax-highlighted code blocks, headings, lists, and inline styles, right in your terminal.
+Runs Locally
+No hosted service or additional infrastructure. Reviews are orchestrated on your machine using the coding agents you already have configured.
+Multi-Machine Sync
+Bi-directionally sync reviews across machines via PostgreSQL.
+Architecture ¶
+Daemon : HTTP server on port 7373 (auto-finds available port if busy)
+Workers : Pool of 4 (configurable) parallel review workers
+Storage : SQLite at ~/.roborev/reviews.db with WAL mode
+Config : Global at ~/.roborev/config.toml , per-repo at .roborev.toml
+Federated Multiplayer ¶
+Bi-directionally sync reviews across machines with a shared PostgreSQL database. Each daemon maintains its local SQLite for fast access while syncing changes to the central database.
+Copyright © 2026 Kenn Software LLC . MIT License. Made with Zensical

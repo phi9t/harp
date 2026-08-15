@@ -1,0 +1,3932 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automatically review GitHub PRs and post results as bot comments">
+      
+      
+        <meta name="author" content="Kenn Software LLC">
+      
+      
+        <link rel="canonical" href="https://roborev.io/integrations/github/">
+      
+      
+        <link rel="prev" href="../../agents/">
+      
+      
+        <link rel="next" href="../gitlab/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/static/favicon.svg">
+      <meta name="generator" content="zensical-0.0.46">
+    
+    
+      
+        <title>GitHub Integration - roborev</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.19d3147f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  
+  <meta property="og:image" content="https://roborev.io/assets/static/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://roborev.io/assets/static/og-image.png">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-it-works" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="/" title="roborev" class="md-header__button md-logo" aria-label="roborev" data-md-component="logo">
+      
+  <img src="../../assets/static/logo.svg" alt="roborev">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            roborev
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GitHub Integration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <a href="https://discord.gg/fDnmxB8Wkq" title="Join Discord" class="md-header__button md-icon roborev-discord-link" aria-label="Join Discord" target="_blank" rel="noopener noreferrer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1.1s-.6.4-.8.8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2C162.5 39 122.2 51.5 84.1 69c-.3.1-.6.4-.8.7C7.1 183.5-13.8 294.6-3.6 404.2c0 .3.1.5.2.8s.3.4.5.6c44.4 32.9 94 58 146.8 74.2.4.1.8.1 1.1 0s.7-.4.9-.7c11.3-15.4 21.4-31.8 30-48.8.1-.2.2-.5.2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6.2-.9.3-.5.6-.7c3.1-2.3 6.2-4.7 9.1-7.1.3-.2.6-.4.9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1.7-.2 1-.2s.7.2.9.4c2.9 2.4 6 4.9 9.1 7.2.2.2.4.4.6.7s.2.6.2.9-.1.6-.3.9-.4.5-.6.6c-14.7 8.6-30 15.9-45.9 21.8-.2.1-.5.2-.7.4s-.3.4-.4.7-.1.5-.1.8.1.5.2.8c8.8 17 18.8 33.3 30 48.8.2.3.6.6.9.7s.8.1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2.2-.2.4-.4.5-.6s.2-.5.2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2m195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2"/></svg>
+    </a>
+    <div class="md-header__source">
+      
+        <a href="https://github.com/kenn-io/roborev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kenn-io/roborev
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="/" title="roborev" class="md-nav__button md-logo" aria-label="roborev" data-md-component="logo">
+      
+  <img src="../../assets/static/logo.svg" alt="roborev">
+
+    </a>
+    roborev
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kenn-io/roborev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kenn-io/roborev
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Quick Start
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Installation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Automation
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Automation
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../automation/post-commit-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Post-Commit Reviews
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agent-hook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent Hook
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/hooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Review Event Hooks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  CLI Commands
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Terminal UI
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Supported Agents
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  GitHub Integration
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  GitHub Integration
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How It Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-expect" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What to Expect
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-authentication-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Choose Your Authentication Method
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Prerequisites
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-with-github-app-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Setup with GitHub App (Recommended)
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup with GitHub App (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-the-github-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Create the GitHub App
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-note-the-app-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Note the App ID
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-generate-a-private-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Generate a Private Key
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-install-the-app-on-your-repos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. Install the App on Your Repos
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-add-ci-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Add CI config
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Add CI config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multiple Installations
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-start-the-daemon-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6. Start the daemon and verify
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-with-personal-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Setup with Personal Auth
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup with Personal Auth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-ci-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Add CI config
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-start-the-daemon" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Start the daemon
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verifying It Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commit-status-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Commit Status Checks
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-the-daemon-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Keeping the Daemon Running
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wildcard-repository-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Wildcard Repository Patterns
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-ci-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Named CI Panels
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-review-types-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multi-Review Types and Agents
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Review Types and Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#granular-review-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Granular Review Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Synthesis
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comment-upsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Comment Upsert
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PR Throttling
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PR Throttling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quiet-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quiet Hours
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#safe-ci-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Safe CI Retries
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-repo-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Per-Repo Overrides
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-options-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CI Options Reference
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI Options Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Core Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiet-hours-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quiet Hours Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Troubleshooting
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Full Examples
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-app-single-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Single Review
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-named-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Named Panel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-multi-agent-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Multi-Agent Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-granular-review-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Granular Review Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-multiple-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Multiple Installations
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-repo-overrides_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Per-Repo Overrides
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-repos-with-exclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Wildcard Repos with Exclusions
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personal-auth-single-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Personal Auth -- Single Review
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discord-failure-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Discord Failure Notifications
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quota-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quota Handling
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-review-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CI Review (GitHub Actions)
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI Review (GitHub Actions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-each-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        When to Use Each Approach
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quickstart-with-init-gh-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quickstart with <code>init gh-action</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-repository-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Repository Secrets
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-generated-workflow-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How the Generated Workflow Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-via-roborevtoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Customizing via <code>.roborev.toml</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-workflow-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Manual Workflow Setup
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        See Also
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitlab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  GitLab Integration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Guides
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/reviewing-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reviewing Code
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/responding-to-reviews/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Responding to Reviews
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/agent-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent Skills
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/assisted-refactoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Code Analysis & Refactoring
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/auto-fixing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Auto-Fix with Refine
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/repository-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Repository Management
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Advanced Features
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Advanced Features
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/background-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Background Tasks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/subagent-review-panels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Subagent Review Panels
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/custom-tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Custom Tasks & Agentic Mode
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/acp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent Client Protocol (ACP)
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/postgres-sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  PostgreSQL Sync
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Streaming & Daemon API
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Integrations
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Integrations
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kata
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claudechic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Claude Chic
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Troubleshooting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Development
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Changelog
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How It Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-expect" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What to Expect
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-authentication-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Choose Your Authentication Method
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Prerequisites
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-with-github-app-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Setup with GitHub App (Recommended)
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup with GitHub App (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-the-github-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Create the GitHub App
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-note-the-app-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Note the App ID
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-generate-a-private-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Generate a Private Key
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-install-the-app-on-your-repos" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. Install the App on Your Repos
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-add-ci-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Add CI config
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Add CI config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multiple Installations
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-start-the-daemon-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6. Start the daemon and verify
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup-with-personal-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Setup with Personal Auth
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup with Personal Auth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-ci-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Add CI config
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-start-the-daemon" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Start the daemon
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Verifying It Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commit-status-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Commit Status Checks
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-the-daemon-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Keeping the Daemon Running
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wildcard-repository-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Wildcard Repository Patterns
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-ci-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Named CI Panels
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-review-types-and-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Multi-Review Types and Agents
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Review Types and Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#granular-review-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Granular Review Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Synthesis
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comment-upsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Comment Upsert
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PR Throttling
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PR Throttling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quiet-hours" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quiet Hours
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#safe-ci-retries" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Safe CI Retries
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-repo-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Per-Repo Overrides
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-options-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CI Options Reference
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI Options Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Core Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quiet-hours-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quiet Hours Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App Options
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Troubleshooting
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Full Examples
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-app-single-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Single Review
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-named-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Named Panel
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-multi-agent-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Multi-Agent Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-granular-review-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Granular Review Matrix
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-app-multiple-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        GitHub App -- Multiple Installations
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-repo-overrides_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Per-Repo Overrides
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildcard-repos-with-exclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Wildcard Repos with Exclusions
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personal-auth-single-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Personal Auth -- Single Review
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discord-failure-notifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Discord Failure Notifications
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quota-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quota Handling
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-review-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        CI Review (GitHub Actions)
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI Review (GitHub Actions)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-each-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        When to Use Each Approach
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quickstart-with-init-gh-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Quickstart with <code>init gh-action</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-repository-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Repository Secrets
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-the-generated-workflow-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        How the Generated Workflow Works
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-via-roborevtoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Customizing via <code>.roborev.toml</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-workflow-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Manual Workflow Setup
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        See Also
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+  <h1 id="__skip">GitHub Integration</h1>
+
+<p>roborev can poll GitHub for open pull requests, run code reviews on each one,
+and post the results as PR comments. In 0.57 and later, daemon CI reviews run
+through the <a href="/advanced/subagent-review-panels/">subagent review panel</a> system:
+each PR HEAD gets one panel run and one synthesis parent review.</p>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<p>The CI poller runs inside the roborev daemon. On each interval it:</p>
+<ol>
+<li>Lists open PRs for each configured repo via <code>gh pr list</code></li>
+<li>Skips PRs that have already been reviewed at their current HEAD SHA, subject
+    to throttling and deferred retry state</li>
+<li>Fetches the PR head commit (including fork-based PRs)</li>
+<li>Computes the frozen merge-base range (<code>base..head</code>) and includes human PR
+    discussion from trusted collaborators in the review prompt</li>
+<li>Loads <code>.roborev.toml</code> from the repo's default branch, then resolves either
+    <code>[ci] panel</code> or the compatible CI matrix (<code>agents</code>, <code>review_types</code>, or
+    <code>[ci.reviews]</code>)</li>
+<li>Enqueues panel member jobs plus one gated synthesis parent job</li>
+<li>Posts the synthesized result as a PR comment after the parent finishes, but
+    only after rechecking that the PR is still open, the HEAD SHA is unchanged,
+    and the repo identity still matches</li>
+</ol>
+<p>For multi-agent or multi-type configurations, member results are synthesized
+into a single combined PR comment. When only one member produces output, roborev
+can pass that output through without an extra synthesis agent call.</p>
+<h2 id="what-to-expect">What to Expect<a class="headerlink" href="#what-to-expect" title="Permanent link">&para;</a></h2>
+<p>Before enabling the CI poller, understand the following:</p>
+<ul>
+<li><strong>The poller reviews ALL open PRs on first start.</strong> It polls immediately on
+    startup, not after the first interval. If you have 20 open PRs, all 20 will
+    be enqueued for review right away. Subsequent polls only review PRs with new
+    commits (tracked by HEAD SHA in the local database).</li>
+<li><strong>All open PRs are reviewed.</strong> There is no filtering by draft status, labels,
+    or author. Draft PRs, bot PRs, and stale PRs all get reviewed.</li>
+<li><strong>CI settings are global by default, with per-repo overrides.</strong> The <code>panel</code>,
+    <code>agents</code>, <code>review_types</code>, and <code>model</code> in the global <code>[ci]</code> section apply to
+    every repo unless overridden. Individual repos can override panels, agents,
+    review types, and reasoning level via the <code>[ci]</code> section in their
+    <code>.roborev.toml</code> (see <a href="#per-repo-overrides">Per-Repo Overrides</a>).</li>
+<li><strong>Reviews run with <code>max_workers</code> concurrency</strong> (default: 4). Jobs are enqueued
+    immediately but executed up to 4 at a time. A panel consumes normal worker
+    capacity as its members run. A 2 type x 2 agent matrix creates 4 members
+    plus 1 synthesis parent.</li>
+<li><strong>PR comments include panel metadata.</strong> Comments include a footer with the
+    panel name, synthesis job, member reviewers, statuses, runtimes, and
+    optional costs. When only some panel jobs have reported cost, the footer
+    marks the total as partial.</li>
+<li><strong>The daemon does not survive reboots.</strong> Use <code>roborev daemon start</code> to run in
+    the background, but you'll need a launchd agent (macOS) or systemd service
+    (Linux) if you want it to start on boot.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">First-run with many open PRs</p>
+<p>If you're enabling the CI poller on a repo with many open PRs, consider
+temporarily setting <code>repos</code> to a test repo first, verifying it works, and then
+adding your real repos. This avoids an unexpected burst of review jobs and PR
+comments.</p>
+</div>
+<h2 id="choose-your-authentication-method">Choose Your Authentication Method<a class="headerlink" href="#choose-your-authentication-method" title="Permanent link">&para;</a></h2>
+<p>roborev needs GitHub credentials to list PRs and post comments. There are two
+options:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GitHub App (Recommended)</th>
+<th>Personal (<code>gh</code> CLI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Comments appear as</strong></td>
+<td><code>your-app-name[bot]</code></td>
+<td>Your personal GitHub account</td>
+</tr>
+<tr>
+<td><strong>Setup effort</strong></td>
+<td>Create an app, generate keys, install on repos</td>
+<td>Minimal: just <code>gh auth login</code></td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Teams, shared repos, production use</td>
+<td>Quick testing, personal projects</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Scoped to specific repos and permissions</td>
+<td>Whatever your account has access to</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Which should I pick?</p>
+<p><strong>GitHub App</strong> is the recommended approach: dedicated bot identity, scoped
+permissions, and clean separation from your personal account. Use <strong>personal
+auth</strong> if you just want to try roborev quickly without creating an app.</p>
+</div>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Before enabling the CI poller, you need:</p>
+<ol>
+<li>
+<p><strong><code>gh</code> CLI</strong> installed (roborev shells out to <code>gh</code> for PR listing and comment
+    posting):</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install: https://cli.github.com/</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>gh<span class="w"> </span>--version<span class="w">   </span><span class="c1"># verify it&#39;s installed</span>
+</code></pre></div>
+<p>If you're using <strong>GitHub App auth</strong>, <code>gh</code> does not need to be separately
+authenticated. The app token is injected automatically. If you're using
+<strong>personal auth</strong>, you also need to log in:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>gh<span class="w"> </span>auth<span class="w"> </span>login
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>gh<span class="w"> </span>auth<span class="w"> </span>status<span class="w">   </span><span class="c1"># verify it worked</span>
+</code></pre></div>
+<p>If your organization uses SSO with personal auth, make sure your token is
+authorized for SSO access. The daemon runs long-lived. If your <code>gh</code> token
+expires while the daemon is running, the poller will log errors and skip
+repos until you re-authenticate.</p>
+</li>
+<li>
+<p><strong>A local checkout</strong> of each repo you want to poll (optional for CI-only
+    setups):</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/myrepo
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>roborev<span class="w"> </span>init<span class="w">              </span><span class="c1"># starts daemon automatically</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>roborev<span class="w"> </span>init<span class="w"> </span>--no-daemon<span class="w">  </span><span class="c1"># if using systemd/launchd to manage the daemon</span>
+</code></pre></div>
+<p>The poller matches GitHub repos to local checkouts by git remote URL. If no
+local checkout is found, the poller automatically clones the repo to
+<code>~/.roborev/clones/{owner}/{repo}</code> and uses that clone for reviews. A
+missing git origin remote is treated as a confirmed mismatch (triggering
+auto-clone) rather than a transient error.</p>
+<p>If you do provide a local checkout, it must use <code>origin</code> as its remote name
+(the default). The poller runs <code>git fetch origin</code> and
+<code>git fetch origin pull/&lt;number&gt;/head</code> to retrieve PR commits, including
+those from contributor forks.</p>
+</li>
+<li>
+<p><strong>At least one AI agent</strong> installed. The poller auto-detects installed agents
+    in this order: <code>codex</code>, <code>claude-code</code>, <code>gemini</code>, <code>copilot</code>, <code>opencode</code>,
+    <code>cursor</code>, <code>kiro</code>, <code>kilo</code>, <code>droid</code>, <code>pi</code>, <code>grok</code>. You can check what's
+    available with:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>roborev<span class="w"> </span>check-agents<span class="w">             </span><span class="c1"># smoke-test all installed agents</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>roborev<span class="w"> </span>check-agents<span class="w"> </span>--agent<span class="w"> </span>codex<span class="w">  </span><span class="c1"># test a specific agent</span>
+</code></pre></div>
+<p>Or set a specific agent in the <code>[ci]</code> config (see below).</p>
+</li>
+</ol>
+<h2 id="setup-with-github-app-recommended">Setup with GitHub App (Recommended)<a class="headerlink" href="#setup-with-github-app-recommended" title="Permanent link">&para;</a></h2>
+<p>PR comments will appear as <strong><code>your-app-name[bot]</code></strong> with scoped permissions.</p>
+<h3 id="1-create-the-github-app">1. Create the GitHub App<a class="headerlink" href="#1-create-the-github-app" title="Permanent link">&para;</a></h3>
+<p>Go to <strong>GitHub Settings &gt; Developer settings &gt; GitHub Apps &gt; New GitHub App</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>App name</strong></td>
+<td>A globally unique name, e.g. <code>roborev-myorg</code> (this becomes the <code>[bot]</code> username)</td>
+</tr>
+<tr>
+<td><strong>Homepage URL</strong></td>
+<td>Your repo URL or any URL</td>
+</tr>
+<tr>
+<td><strong>Webhook</strong></td>
+<td>Uncheck "Active" (not needed -- roborev polls)</td>
+</tr>
+</tbody>
+</table>
+<p>Under <strong>Repository permissions</strong>, set:</p>
+<ul>
+<li><strong>Pull requests</strong>: Read &amp; write</li>
+<li><strong>Contents</strong>: Read-only</li>
+<li><strong>Commit statuses</strong>: Read &amp; write</li>
+</ul>
+<p>Leave everything else as "No access". Click <strong>Create GitHub App</strong>.</p>
+<div class="admonition important">
+<p class="admonition-title">If app permissions are currently empty</p>
+<p>If you already created the app with empty permissions:</p>
+<ol>
+<li>Open app settings and go to <strong>Permissions &amp; events</strong>.</li>
+<li>Set <strong>Pull requests</strong> to <strong>Read and write</strong>, <strong>Contents</strong> to <strong>Read-only</strong>,
+    and <strong>Commit statuses</strong> to <strong>Read and write</strong>.</li>
+<li>Save the app settings.</li>
+<li>For each existing installation, open installation settings and <strong>accept the
+    updated permissions</strong>.</li>
+</ol>
+<p>Until each installation accepts the new permissions, roborev may fail to list PR
+data, post PR comments, or publish commit status checks.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Set the app visibility to <strong>Any account</strong> if you want others to install it on
+their repos. This is under the app's <strong>Advanced</strong> settings after creation.</p>
+</div>
+<h3 id="2-note-the-app-id">2. Note the App ID<a class="headerlink" href="#2-note-the-app-id" title="Permanent link">&para;</a></h3>
+<p>After creation, the <strong>App ID</strong> is shown near the top of the app settings page.
+You'll need this for <code>github_app_id</code>.</p>
+<h3 id="3-generate-a-private-key">3. Generate a Private Key<a class="headerlink" href="#3-generate-a-private-key" title="Permanent link">&para;</a></h3>
+<p>On the app settings page, scroll to <strong>Private keys</strong> and click <strong>Generate a
+private key</strong>. Your browser downloads a <code>.pem</code> file. Store it securely:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/.roborev
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># The downloaded file will be named something like your-app-name.2026-02-08.private-key.pem</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>mv<span class="w"> </span>~/Downloads/your-app-name.*.private-key.pem<span class="w"> </span>~/.roborev/roborev.pem
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>~/.roborev/roborev.pem
+</code></pre></div>
+<h3 id="4-install-the-app-on-your-repos">4. Install the App on Your Repos<a class="headerlink" href="#4-install-the-app-on-your-repos" title="Permanent link">&para;</a></h3>
+<p>From the app settings page, click <strong>Install App</strong> in the left sidebar. Choose
+the account or organization that owns your repos, and select which repositories
+to grant access to.</p>
+<p>After installing, note the <strong>installation ID</strong> from the URL:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>https://github.com/settings/installations/12345678
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                           ^^^^^^^^
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>                                           this is your installation ID
+</code></pre></div>
+<p>If you have repos across multiple organizations or user accounts, install the
+app on each one. Each installation gets its own installation ID. You'll need
+these for the <a href="#multiple-installations">multi-installation config</a> below.</p>
+<h3 id="5-add-ci-config">5. Add CI config<a class="headerlink" href="#5-add-ci-config" title="Permanent link">&para;</a></h3>
+<p>Add to <code>~/.roborev/config.toml</code>:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/myrepo&quot;</span><span class="p">]</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># GitHub App authentication</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+</code></pre></div>
+<p>To use a named panel for CI, define <code>[review.subagents]</code> and <code>[review.panels]</code>,
+then replace <code>agents</code> and <code>review_types</code> with <code>panel = "ci"</code>. See
+<a href="#named-ci-panels">Named CI Panels</a>.</p>
+<p>The <code>github_app_private_key</code> field accepts:</p>
+<ul>
+<li>A file path: <code>~/.roborev/roborev.pem</code> (tilde is expanded)</li>
+<li>An environment variable: <code>${ROBOREV_APP_KEY}</code> (expands to a path or inline PEM
+    content)</li>
+<li>Inline PEM content (starting with <code>-----BEGIN</code>)</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Avoid inline PEM in config files</p>
+<p>Prefer a file path or <code>${ENV_VAR}</code> reference over inline PEM content. Inline
+keys are easy to commit to version control accidentally. Make sure your config
+file is excluded from VCS (the global config at <code>~/.roborev/config.toml</code> is
+outside your repo by default).</p>
+</div>
+<p>App auth requires <code>github_app_id</code>, <code>github_app_private_key</code>, and at least one
+installation ID (either <code>github_app_installation_id</code> or entries in
+<code>github_app_installations</code>). If none are configured, the poller falls back to
+your personal <code>gh</code> auth.</p>
+<h4 id="multiple-installations">Multiple Installations<a class="headerlink" href="#multiple-installations" title="Permanent link">&para;</a></h4>
+<p>If your repos span multiple GitHub organizations or user accounts, each one has
+its own app installation with a separate installation ID. Use the
+<code>[ci.github_app_installations]</code> table to map each owner to its installation ID:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wesm/my-project&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;roborev-dev/core&quot;</span><span class="p">]</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="k">[ci.github_app_installations]</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="n">wesm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">111111</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="n">roborev-dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">222222</span>
+</code></pre></div>
+<p>The poller extracts the owner from each repo (the part before <code>/</code>) and looks up
+the matching installation ID. Owner matching is case-insensitive, so <code>wesm</code>
+matches repos listed as <code>Wesm/repo</code> or <code>WESM/repo</code>.</p>
+<p>You can also mix the map with the singular <code>github_app_installation_id</code> as a
+fallback for owners not in the map:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">111111</span><span class="w">   </span><span class="c1"># fallback for unlisted owners</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">[ci.github_app_installations]</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">roborev-dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">222222</span><span class="w">                  </span><span class="c1"># this org uses a different installation</span>
+</code></pre></div>
+<p>Each installation gets its own cached access token, so there is no performance
+penalty for multiple installations.</p>
+<h3 id="6-start-the-daemon-and-verify">6. Start the daemon and verify<a class="headerlink" href="#6-start-the-daemon-and-verify" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>roborev<span class="w"> </span>daemon<span class="w"> </span>start<span class="w">        </span><span class="c1"># background mode</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>roborev<span class="w"> </span>daemon<span class="w"> </span>run<span class="w">          </span><span class="c1"># or foreground mode to watch logs</span>
+</code></pre></div>
+<p>Look for the log line:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>CI poller: GitHub App authentication enabled (app_id=123456)
+</code></pre></div>
+<p>PR comments will now appear as <strong><code>your-app-name[bot]</code></strong>.</p>
+<h2 id="setup-with-personal-auth">Setup with Personal Auth<a class="headerlink" href="#setup-with-personal-auth" title="Permanent link">&para;</a></h2>
+<p>If you don't want to create a GitHub App, you can use your personal <code>gh</code> CLI
+login instead. PR comments will appear as your GitHub account.</p>
+<h3 id="1-add-ci-config">1. Add CI config<a class="headerlink" href="#1-add-ci-config" title="Permanent link">&para;</a></h3>
+<p>Add to <code>~/.roborev/config.toml</code> (make sure you've already run <code>roborev init</code> in
+your local checkout per <a href="#prerequisites">Prerequisites</a>):</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/myrepo&quot;</span><span class="p">]</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span><span class="w">              </span><span class="c1"># which agents to use (or omit for auto-detect)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span><span class="w">     </span><span class="c1"># &quot;security&quot;, &quot;design&quot;, &quot;lookahead&quot;, or &quot;default&quot;</span>
+</code></pre></div>
+<blockquote>
+<p><code>"default"</code> runs the standard code review (bugs, security, testing gaps,
+regressions, code quality), the same as <code>roborev review</code> without <code>--type</code>. The
+aliases <code>"review"</code> and <code>"general"</code> are also accepted. Note that the CI config
+defaults to <code>["security"]</code> if <code>review_types</code> is not set.</p>
+</blockquote>
+<p>To use a named panel instead of the matrix, set <code>panel = "ci"</code> and define the
+panel under <code>[review.panels.ci]</code>. See <a href="#named-ci-panels">Named CI Panels</a>.</p>
+<p>No <code>github_app_*</code> fields needed. The daemon posts comments using whatever
+account <code>gh auth</code> is logged in as.</p>
+<h3 id="2-start-the-daemon">2. Start the daemon<a class="headerlink" href="#2-start-the-daemon" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>roborev<span class="w"> </span>daemon<span class="w"> </span>start<span class="w">        </span><span class="c1"># background mode</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>roborev<span class="w"> </span>daemon<span class="w"> </span>run<span class="w">          </span><span class="c1"># or foreground mode to watch logs</span>
+</code></pre></div>
+<h2 id="verifying-it-works">Verifying It Works<a class="headerlink" href="#verifying-it-works" title="Permanent link">&para;</a></h2>
+<p>On startup you should see:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>CI poller started (interval: 5m0s, repos: [myorg/myrepo])
+</code></pre></div>
+<p>The poller checks for open PRs immediately, then on each interval. When a review
+completes, you'll see:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>CI poller: posted review comment on myorg/myrepo#42 (job 123, verdict=P)
+</code></pre></div>
+<p>Use <code>roborev status</code> to check the daemon and queue state at any time.</p>
+<div class="admonition note">
+<p class="admonition-title">CI reasoning level</p>
+<p>The CI poller defaults to <code>reasoning = "thorough"</code> for all review jobs. You can
+override this per-repo with a <code>[ci]</code> section in the repo's <code>.roborev.toml</code> (see
+<a href="#per-repo-overrides">Per-Repo Overrides</a>).</p>
+</div>
+<h2 id="commit-status-checks">Commit Status Checks<a class="headerlink" href="#commit-status-checks" title="Permanent link">&para;</a></h2>
+<p>When GitHub App authentication is configured, the CI poller posts commit status
+checks on each PR's head commit. These appear as check entries on the PR and in
+the commit status list on GitHub.</p>
+<p>The status context is <code>roborev</code> and progresses through these states:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pending</code></td>
+<td>A panel is queued, running, throttled, or deferred for retry</td>
+</tr>
+<tr>
+<td><code>success</code></td>
+<td>The review process completed and a comment was posted, including comments that contain findings</td>
+</tr>
+<tr>
+<td><code>failure</code></td>
+<td>At least one member failed to run for a genuine reason while another member still produced usable review output</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>No reviewer produced usable output because of no available agent, repeated genuine failures, or all member jobs failing</td>
+</tr>
+</tbody>
+</table>
+<p>Status checks require the <strong>Commit statuses: Read and write</strong> permission on your
+GitHub App. The setup guide above already includes it. If your app predates that
+permission, add it:</p>
+<ol>
+<li>Open your GitHub App settings and go to <strong>Permissions &amp; events</strong></li>
+<li>Under <strong>Repository permissions</strong>, set <strong>Commit statuses</strong> to <strong>Read and
+    write</strong></li>
+<li>Save and accept the updated permissions on each installation</li>
+</ol>
+<p>If no GitHub App is configured, or the app lacks the commit statuses permission,
+status checks are silently skipped. PR comments are still posted regardless.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Status checks are posted per commit, not per member job. The status reflects
+whether the review infrastructure completed, not whether the reviewer found code
+issues. Findings are reported in the PR comment.</p>
+</div>
+<h2 id="keeping-the-daemon-running">Keeping the Daemon Running<a class="headerlink" href="#keeping-the-daemon-running" title="Permanent link">&para;</a></h2>
+<p><code>roborev daemon start</code> runs the daemon in the background, but it won't survive a
+reboot. See <a href="/configuration/#persistent-daemon">Persistent Daemon</a> for launchd
+(macOS) and systemd (Linux) setup.</p>
+<h2 id="wildcard-repository-patterns">Wildcard Repository Patterns<a class="headerlink" href="#wildcard-repository-patterns" title="Permanent link">&para;</a></h2>
+<p>Instead of listing every repository individually, you can use glob patterns in
+<code>ci.repos</code> to match multiple repos under an owner. The owner part (before the
+<code>/</code>) must be literal.</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="s2">&quot;myorg/*&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1"># All repos under myorg</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="s2">&quot;myorg/api-*&quot;</span><span class="p">,</span><span class="w">       </span><span class="c1"># Only repos starting with &quot;api-&quot;</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="s2">&quot;other/specific&quot;</span><span class="p">,</span><span class="w">    </span><span class="c1"># Exact repo still works</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">]</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># Exclude repos matching these patterns</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">exclude_repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/archived-*&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myorg/internal-*&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="c1"># Safety cap on total expanded repos (default: 100)</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="n">max_repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span>
+</code></pre></div>
+<p>Patterns use Go's <code>path.Match</code> syntax (<code>*</code> matches any sequence of characters,
+<code>?</code> matches a single character, <code>[...]</code> matches character classes). Matching is
+case-insensitive.</p>
+<p>Wildcard expansion calls the GitHub API (<code>gh repo list</code>) and caches results for
+one hour. Archived repos are automatically excluded from the API results.
+Explicit (non-wildcard) repos always take priority when <code>max_repos</code> is reached.</p>
+<p>Exclusion patterns in <code>exclude_repos</code> apply to both exact entries and
+wildcard-expanded entries.</p>
+<h2 id="named-ci-panels">Named CI Panels<a class="headerlink" href="#named-ci-panels" title="Permanent link">&para;</a></h2>
+<p>Named panels give the CI poller explicit reviewer roles instead of a pure agent
+x review type matrix. This is the most flexible CI setup in 0.57 and later.</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/myrepo&quot;</span><span class="p">]</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">panel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ci&quot;</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">[review.subagents.bug]</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="n">review_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="n">instructions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Focus on correctness, regressions, and tests.&quot;</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">[review.subagents.security]</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-code&quot;</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="n">review_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;security&quot;</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="n">instructions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Focus on authn/authz, injection, secrets, and unsafe file access.&quot;</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="k">[review.subagents.design]</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="n">review_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;design&quot;</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="n">allow_failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="k">[review.panels.ci]</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="n">members</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bug&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;design&quot;</span><span class="p">]</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="n">synthesis_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span>
+</code></pre></div>
+<p>When <code>panel</code> is set, the CI poller ignores <code>agents</code>, <code>review_types</code>, and
+<code>[ci.reviews]</code> for that repo. The named panel is resolved from global config
+plus the repo's <code>.roborev.toml</code> as loaded from the repo's default branch. Repo
+definitions override global definitions by name.</p>
+<p>Use <code>allow_failure = true</code> on a subagent when that reviewer is best-effort or
+depends on flaky infrastructure. Its successful output is still included, but a
+failure or cancellation will not block an otherwise usable CI panel comment.</p>
+<p>See <a href="/advanced/subagent-review-panels/">Subagent Review Panels</a> for the full
+panel configuration reference.</p>
+<h2 id="multi-review-types-and-agents">Multi-Review Types and Agents<a class="headerlink" href="#multi-review-types-and-agents" title="Permanent link">&para;</a></h2>
+<p>If <code>panel</code> is not set, you can still configure multiple review types and agents
+for each PR. The CI poller adapts the matrix into an implicit panel, with one
+member per review type and agent pair, then posts a single synthesized comment.</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/myrepo&quot;</span><span class="p">]</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Run both security and standard code reviews</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># Use multiple agents</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gemini&quot;</span><span class="p">]</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="c1"># This creates 4 panel members per PR (2 types x 2 agents)</span>
+</code></pre></div>
+<p>When the matrix is 1x1 (single review type, single agent), the synthesis parent
+can pass the member output through directly without an extra synthesis agent
+call.</p>
+<h3 id="granular-review-matrix">Granular Review Matrix<a class="headerlink" href="#granular-review-matrix" title="Permanent link">&para;</a></h3>
+<p>For finer control, use <code>[ci.reviews]</code> to assign specific review types to
+specific agents instead of the full cross-product:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">]</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">[ci.reviews]</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="n">codex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">gemini</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>This creates 3 panel members per PR (codex runs security, gemini runs security
+and default) rather than the 4 you'd get from a 2x2 cross-product. Map keys are
+sorted for deterministic job order.</p>
+<p>When <code>[ci.reviews]</code> is set, <code>agents</code> and <code>review_types</code> are ignored. To disable
+reviews for a specific repo, set an empty <code>[ci.reviews]</code> table in the repo's
+<code>.roborev.toml</code>:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># .roborev.toml: disable CI reviews for this repo</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">[ci.reviews]</span>
+</code></pre></div>
+<h3 id="synthesis">Synthesis<a class="headerlink" href="#synthesis" title="Permanent link">&para;</a></h3>
+<p>When multiple members complete with findings, their outputs are combined by a
+synthesis step into a single well-formatted PR comment. The synthesis agent:</p>
+<ul>
+<li>Deduplicates findings reported by multiple agents</li>
+<li>Organizes findings by severity</li>
+<li>Preserves file and line references</li>
+<li>Produces a one-line summary verdict</li>
+</ul>
+<p>For implicit matrix CI, customize synthesis with <code>[ci]</code> settings:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">synthesis_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-code&quot;</span><span class="w">                  </span><span class="c1"># Agent to use for synthesis</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="n">synthesis_backup_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gemini&quot;</span><span class="w">                </span><span class="c1"># Backup if primary fails</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">synthesis_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-opus-4-8&quot;</span><span class="w">   </span><span class="c1"># Model override for synthesis</span>
+</code></pre></div>
+<p>If the primary synthesis agent fails because of quota or availability, roborev
+tries <code>synthesis_backup_agent</code> before falling back to raw formatting. Named
+panels use their own <code>synthesis_agent</code>, <code>synthesis_model</code>,
+<code>synthesis_backup_agent</code>, and <code>synthesis_backup_model</code> fields under
+<code>[review.panels.&lt;name&gt;]</code>.</p>
+<h2 id="comment-upsert">Comment Upsert<a class="headerlink" href="#comment-upsert" title="Permanent link">&para;</a></h2>
+<p>By default, each review run creates a new PR comment. When <code>upsert_comments</code> is
+enabled, roborev finds and updates its existing comment instead of posting a
+duplicate. This keeps PR threads clean when reviews run repeatedly on the same
+PR.</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">upsert_comments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<p>roborev embeds an invisible HTML marker in its PR comments to identify them.
+When upserting, it searches for the marker, patches the matching comment via the
+GitHub API, and falls back to creating a new comment if the existing one can't
+be updated (e.g., token mismatch between the original poster and the current
+auth).</p>
+<p>Per-repo overrides in <code>.roborev.toml</code> can enable or disable upsert independently
+of the global setting:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># .roborev.toml</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">[ci]</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">upsert_comments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">   </span><span class="c1"># Disable upsert for this repo even if globally enabled</span>
+</code></pre></div>
+<h2 id="pr-throttling">PR Throttling<a class="headerlink" href="#pr-throttling" title="Permanent link">&para;</a></h2>
+<p>When contributors push frequently to the same PR, the poller can generate
+excessive reviews. The <code>throttle_interval</code> config sets a minimum time between
+reviews of the same PR:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">throttle_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1h&quot;</span><span class="w">              </span><span class="c1"># default; minimum time between reviews per PR</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">throttle_bypass_users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wesm&quot;</span><span class="p">]</span><span class="w">      </span><span class="c1"># these users bypass throttling</span>
+</code></pre></div>
+<p>When a PR is pushed within the throttle window, the poller defers the review and
+posts a pending GitHub status showing the next eligible review time. Set
+<code>throttle_interval = "0"</code> to disable throttling entirely.</p>
+<p>When the ordinary throttle defers a new push, roborev cancels any in-progress
+review for the older HEAD so stale results cannot post. The latest HEAD is
+reviewed after the interval elapses. Authors listed in <code>throttle_bypass_users</code>
+skip that delay, so their new push cancels the older run and starts its
+replacement immediately.</p>
+<p>Users listed in <code>throttle_bypass_users</code> get immediate reviews on every push
+regardless of the interval. Matching is case-insensitive.</p>
+<h3 id="quiet-hours">Quiet Hours<a class="headerlink" href="#quiet-hours" title="Permanent link">&para;</a></h3>
+<p>Quiet hours apply a stronger per-PR throttle during a recurring daily window —
+for example overnight, when frequent pushes from long-running agent sessions
+would burn tokens on reviews that are stale by morning:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">[ci.quiet_hours]</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;23:00&quot;</span><span class="w">            </span><span class="c1"># HH:MM, 24-hour clock; both start and end are required</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;05:00&quot;</span><span class="w">              </span><span class="c1"># start &gt; end wraps past midnight</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">timezone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;US/Central&quot;</span><span class="w">    </span><span class="c1"># IANA name; empty means machine local time</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">throttle_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1h&quot;</span><span class="w">   </span><span class="c1"># per-PR minimum between reviews in the window; default 1h</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">bypass_users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;trusted-contributor&quot;</span><span class="p">]</span><span class="w"> </span><span class="c1"># skips only the quiet-hours throttle</span>
+</code></pre></div>
+<p>While the window is active, the effective throttle for every PR is the larger of
+<code>throttle_interval</code> and <code>quiet_hours.throttle_interval</code>. The quiet-hours
+interval applies to every author except those listed in
+<code>quiet_hours.bypass_users</code>; matching is case-insensitive. The ordinary throttle
+remains independent, so a quiet-hours bypass user must also appear in
+<code>[ci].throttle_bypass_users</code> to bypass both intervals. A PR's first-ever review
+is never blocked, and throttled pushes get the usual pending "review deferred"
+status. When the window ends, the latest HEAD becomes eligible under the
+ordinary throttle again, so quiet-hours-only deferrals collapse overnight pushes
+into a single fresh review.</p>
+<p>A push deferred only by quiet hours (one the base throttle would have allowed)
+does not cancel an in-flight review — unlike ordinary throttling, where a new
+push supersedes the stale run. Frequent overnight pushes would otherwise kill
+every review before it completes; instead, the running review finishes and
+posts, so a busy PR gets one snapshot review per interval. Pushes deferred by
+the base throttle keep their existing supersede behavior, inside or outside the
+window.</p>
+<p>The window boundaries are start-inclusive and end-exclusive. Setting <code>start</code>
+equal to <code>end</code>, or setting <code>quiet_hours.throttle_interval = "0"</code>, makes quiet
+hours a no-op. Invalid values (bad clock time, unknown timezone, unparseable
+interval) log a warning and disable quiet hours rather than over-throttling.</p>
+<h2 id="safe-ci-retries">Safe CI Retries<a class="headerlink" href="#safe-ci-retries" title="Permanent link">&para;</a></h2>
+<p>The CI poller tracks retry state per repo, PR number, and HEAD SHA. If any panel
+member produces real review output, roborev posts the available review instead
+of discarding it. If no member produces output, the poller classifies the
+outcome:</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transient provider outage or synthesis quota failure</td>
+<td>Defers without a PR comment, keeps the status <code>pending</code>, and retries with exponential backoff. The first delay is 2 minutes, it doubles up to a 1 hour cap, and transient retries give up after 72 hours.</td>
+</tr>
+<tr>
+<td>Genuine member failure</td>
+<td>Retries up to 3 consecutive genuine attempts. After that, roborev posts an all failed note and sets an <code>error</code> status.</td>
+</tr>
+<tr>
+<td>Quota or timeout skips only</td>
+<td>Posts an all skipped summary and uses a nonblocking status.</td>
+</tr>
+</tbody>
+</table>
+<p>If panel members produced review output but the synthesis agent hits quota or a
+transient provider failure, roborev now retries the panel instead of posting the
+degraded raw-member fallback. Genuine synthesis failures still fall back to the
+available member output because retrying the same broken synthesis setup is
+unlikely to help.</p>
+<p>Deferred retries are rechecked before they run. roborev retries only if the PR
+is still open and still points at the same HEAD SHA. Closed PRs, stale heads,
+and repo identity mismatches are retired without posting comments. If a new push
+arrives while an older panel is active, the older active panel is canceled and
+superseded by the new HEAD. Retry runs preserve the PR's configured agents and
+review panel; daemon cooldown state can skip an agent during execution, but it
+does not rewrite the retry's configured review plan.</p>
+<h2 id="per-repo-overrides">Per-Repo Overrides<a class="headerlink" href="#per-repo-overrides" title="Permanent link">&para;</a></h2>
+<p>Individual repos can override the global CI settings by adding a <code>[ci]</code> section
+to their <code>.roborev.toml</code> file. This lets you run different panels, agents,
+review types, or reasoning levels for different repos.</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># .roborev.toml (in repo root)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span><span class="w">   </span><span class="c1"># agent for post-commit reviews (unrelated to CI)</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">[ci]</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="n">panel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ci&quot;</span><span class="w">                         </span><span class="c1"># run named [review.panels.ci] for this repo</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="c1"># Or omit panel and use the compatible matrix:</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="c1"># agents = [&quot;gemini&quot;]</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="c1"># review_types = [&quot;security&quot;, &quot;default&quot;]</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="n">reasoning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;standard&quot;</span><span class="w">               </span><span class="c1"># override reasoning level (thorough, standard, fast)</span>
+</code></pre></div>
+<p>Per-repo overrides take priority over the global <code>[ci]</code> config. Any field not
+set in the repo's <code>[ci]</code> section falls back to the global config. If <code>panel</code> is
+set, it takes priority over the matrix fields for that repo.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>panel</code></td>
+<td>string</td>
+<td>global <code>panel</code></td>
+<td>Named <code>[review.panels.&lt;name&gt;]</code> panel for CI reviews of this repo</td>
+</tr>
+<tr>
+<td><code>agents</code></td>
+<td>array</td>
+<td>global <code>agents</code></td>
+<td>Agents for CI reviews of this repo</td>
+</tr>
+<tr>
+<td><code>review_types</code></td>
+<td>array</td>
+<td>global <code>review_types</code></td>
+<td>Review types for CI reviews of this repo</td>
+</tr>
+<tr>
+<td><code>reviews</code></td>
+<td>table</td>
+<td>global <code>reviews</code></td>
+<td>Granular agent-to-review-type map (overrides <code>agents</code> and <code>review_types</code>; empty table disables reviews)</td>
+</tr>
+<tr>
+<td><code>reasoning</code></td>
+<td>string</td>
+<td><code>"thorough"</code></td>
+<td>Reasoning level: <code>thorough</code>, <code>standard</code>, or <code>fast</code></td>
+</tr>
+<tr>
+<td><code>min_severity</code></td>
+<td>string</td>
+<td><code>"low"</code></td>
+<td>Minimum severity to include: <code>low</code>, <code>medium</code>, <code>high</code>, or <code>critical</code></td>
+</tr>
+<tr>
+<td><code>upsert_comments</code></td>
+<td>bool</td>
+<td>global <code>upsert_comments</code></td>
+<td>Override global comment upsert setting for this repo</td>
+</tr>
+<tr>
+<td><code>include_costs</code></td>
+<td>bool</td>
+<td>global <code>include_costs</code></td>
+<td>Include token cost estimates in PR comment footers for this repo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ci-options-reference">CI Options Reference<a class="headerlink" href="#ci-options-reference" title="Permanent link">&para;</a></h2>
+<h3 id="core-options">Core Options<a class="headerlink" href="#core-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Enable the CI poller</td>
+</tr>
+<tr>
+<td><code>poll_interval</code></td>
+<td>string</td>
+<td><code>"5m"</code></td>
+<td>How often to check for PRs (minimum 30s, invalid values default to 5m)</td>
+</tr>
+<tr>
+<td><code>repos</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>GitHub repos to poll in <code>"owner/repo"</code> format. Supports glob patterns (e.g. <code>"myorg/*"</code>, <code>"myorg/api-*"</code>).</td>
+</tr>
+<tr>
+<td><code>exclude_repos</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>Glob patterns to exclude from the resolved repo list</td>
+</tr>
+<tr>
+<td><code>max_repos</code></td>
+<td>int</td>
+<td><code>100</code></td>
+<td>Safety cap on total expanded repos (explicit repos have priority over wildcard-expanded ones)</td>
+</tr>
+<tr>
+<td><code>panel</code></td>
+<td>string</td>
+<td></td>
+<td>Named <code>[review.panels.&lt;name&gt;]</code> panel for CI reviews. When set, overrides <code>agents</code>, <code>review_types</code>, and <code>reviews</code>.</td>
+</tr>
+<tr>
+<td><code>review_types</code></td>
+<td>array</td>
+<td><code>["security"]</code></td>
+<td>Review types to run for each PR: <code>security</code>, <code>design</code>, <code>lookahead</code>, or <code>default</code>. <code>"review"</code> and <code>"general"</code> are accepted as aliases for <code>"default"</code>.</td>
+</tr>
+<tr>
+<td><code>agents</code></td>
+<td>array</td>
+<td>auto-detect</td>
+<td>Agents to run for each PR (e.g., <code>["codex", "gemini"]</code>)</td>
+</tr>
+<tr>
+<td><code>reviews</code></td>
+<td>table</td>
+<td></td>
+<td>Granular agent-to-review-type map. Overrides <code>agents</code> and <code>review_types</code> when set. See <a href="#granular-review-matrix">Granular Review Matrix</a>.</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td></td>
+<td>Model override for CI reviews</td>
+</tr>
+<tr>
+<td><code>min_severity</code></td>
+<td>string</td>
+<td><code>"low"</code></td>
+<td>Minimum severity to include in output: <code>low</code>, <code>medium</code>, <code>high</code>, or <code>critical</code></td>
+</tr>
+<tr>
+<td><code>throttle_interval</code></td>
+<td>string</td>
+<td><code>"1h"</code></td>
+<td>Minimum time between reviews of the same PR. Set <code>"0"</code> to disable.</td>
+</tr>
+<tr>
+<td><code>throttle_bypass_users</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>GitHub usernames that bypass throttling (case-insensitive)</td>
+</tr>
+<tr>
+<td><code>synthesis_agent</code></td>
+<td>string</td>
+<td></td>
+<td>Agent for combining implicit matrix results</td>
+</tr>
+<tr>
+<td><code>synthesis_backup_agent</code></td>
+<td>string</td>
+<td></td>
+<td>Backup agent for implicit matrix synthesis when the primary fails</td>
+</tr>
+<tr>
+<td><code>synthesis_model</code></td>
+<td>string</td>
+<td></td>
+<td>Model override for implicit matrix synthesis</td>
+</tr>
+<tr>
+<td><code>upsert_comments</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Update existing PR comments instead of creating new ones</td>
+</tr>
+<tr>
+<td><code>include_costs</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+<td>Include token cost estimates in PR comment footers</td>
+</tr>
+<tr>
+<td><code>discord_webhook_url</code></td>
+<td>string</td>
+<td></td>
+<td>Discord webhook URL for best-effort CI job failure notifications</td>
+</tr>
+<tr>
+<td><code>batch_timeout</code></td>
+<td>string</td>
+<td><code>"15m"</code></td>
+<td>Maximum time to wait for panel members before posting available results. Set <code>"0"</code> to disable.</td>
+</tr>
+</tbody>
+</table>
+<p>When <code>agents</code> is empty, the poller auto-detects the first available agent from:
+codex, claude-code, gemini, copilot, opencode, cursor, kiro, kilo, droid, pi,
+grok.</p>
+<h3 id="quiet-hours-options">Quiet Hours Options<a class="headerlink" href="#quiet-hours-options" title="Permanent link">&para;</a></h3>
+<p>Set under <code>[ci.quiet_hours]</code> (global config only). See
+<a href="#quiet-hours">Quiet Hours</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td>string</td>
+<td></td>
+<td>Window start as <code>"HH:MM"</code> (24-hour clock). Both <code>start</code> and <code>end</code> must be set to enable quiet hours.</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td>string</td>
+<td></td>
+<td>Window end as <code>"HH:MM"</code>. When <code>start &gt; end</code> the window wraps past midnight.</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>string</td>
+<td>machine local</td>
+<td>IANA timezone name (e.g. <code>"US/Central"</code>) in which the window is evaluated</td>
+</tr>
+<tr>
+<td><code>throttle_interval</code></td>
+<td>string</td>
+<td><code>"1h"</code></td>
+<td>Per-PR minimum time between reviews while the window is active.</td>
+</tr>
+<tr>
+<td><code>bypass_users</code></td>
+<td>array</td>
+<td><code>[]</code></td>
+<td>GitHub usernames that bypass only the additional quiet-hours throttle (case-insensitive)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="github-app-options">GitHub App Options<a class="headerlink" href="#github-app-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>github_app_id</code></td>
+<td>integer</td>
+<td>App ID from the app settings page</td>
+</tr>
+<tr>
+<td><code>github_app_private_key</code></td>
+<td>string</td>
+<td>Path to PEM file, <code>${ENV_VAR}</code>, or inline PEM</td>
+</tr>
+<tr>
+<td><code>github_app_installation_id</code></td>
+<td>integer</td>
+<td>Installation ID (fallback for owners not in the installations map)</td>
+</tr>
+<tr>
+<td><code>github_app_installations</code></td>
+<td>table</td>
+<td>Map of owner name to installation ID for multi-org setups (see <a href="#multiple-installations">Multiple Installations</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>App auth requires <code>github_app_id</code>, <code>github_app_private_key</code>, and at least one
+installation ID (either <code>github_app_installation_id</code> or entries in
+<code>github_app_installations</code>). If none are configured, the poller falls back to
+default <code>gh</code> authentication. For repos whose owner has no matching installation
+ID, the poller also falls back to default <code>gh</code> auth for that repo.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p>The daemon logs to stdout (or to the log file if using a system service). Common
+issues:</p>
+<p><strong>"no local repo found matching..."</strong> You need to run <code>roborev init</code> in a local
+checkout of the repo. The poller matches GitHub <code>owner/repo</code> to local repos by
+git remote URL.</p>
+<p><strong>"gh pr list: ..."</strong> The <code>gh</code> CLI is not installed, not authenticated, or
+doesn't have access to the repo. Run <code>gh auth status</code> and
+<code>gh pr list --repo owner/repo</code> to debug. If your org uses SSO, re-authorize your
+token with <code>gh auth refresh</code>.</p>
+<p><strong>"merge-base ... : ..."</strong> The PR's base or head commit isn't available locally.
+This usually means <code>git fetch</code> failed. Check that the local repo has the remote
+configured correctly.</p>
+<p><strong>"GitHub App token failed, falling back to default gh auth"</strong> The GitHub App
+authentication failed. Check that your PEM file path is correct, the app is
+installed on the repo, and the installation ID matches. The daemon falls back to
+your <code>gh</code> CLI auth. If you're also logged in via <code>gh auth login</code>, PR operations
+will still work but comments will appear as your personal account. If you're not
+logged in, <code>gh</code> commands will fail.</p>
+<p><strong>"no installation ID for owner ..., using default gh auth"</strong> The poller found
+no installation ID for this repo's owner. If you're using
+<code>[ci.github_app_installations]</code>, add an entry for the owner. If you're using the
+singular <code>github_app_installation_id</code>, make sure it's set. Owner names are
+matched case-insensitively, so <code>wesm</code> and <code>Wesm</code> are equivalent.</p>
+<p><strong>No log output at all for CI</strong> Check that <code>[ci] enabled = true</code> is in
+<code>~/.roborev/config.toml</code>. CI config is hot-reloaded; starting or stopping the
+poller may still require normal daemon lifecycle if CI was never running.</p>
+<p><strong>Reviews enqueue but never complete</strong> Check <code>roborev status</code> to see if jobs are
+queued/running. The agent may be failing -- check the daemon logs for error
+messages from the agent.</p>
+<p><strong>Unexpected review burst on first start</strong> This is normal. The poller reviews
+all open PRs on first startup. After the initial run, only PRs with new commits
+(different HEAD SHA) trigger new reviews. The tracking is persistent across
+daemon restarts.</p>
+<h2 id="full-examples">Full Examples<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
+<h3 id="github-app-single-review">GitHub App -- Single Review<a class="headerlink" href="#github-app-single-review" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myorg/frontend&quot;</span><span class="p">]</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;claude-code&quot;</span><span class="p">]</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-opus-4-8&quot;</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+</code></pre></div>
+<h3 id="github-app-named-panel">GitHub App -- Named Panel<a class="headerlink" href="#github-app-named-panel" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">]</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="n">panel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ci&quot;</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="n">include_costs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="k">[review.subagents.bug]</span>
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span>
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="n">review_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="n">instructions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Focus on correctness, regressions, and test coverage.&quot;</span>
+<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a>
+<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="k">[review.subagents.security]</span>
+<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-code&quot;</span>
+<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a><span class="n">review_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;security&quot;</span>
+<a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a><span class="n">instructions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Focus on authn/authz, injection, secrets, and unsafe file access.&quot;</span>
+<a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a>
+<a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a><span class="k">[review.panels.ci]</span>
+<a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a><span class="n">members</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bug&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-27-24" name="__codelineno-27-24" href="#__codelineno-27-24"></a><span class="n">synthesis_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;codex&quot;</span>
+</code></pre></div>
+<h3 id="github-app-multi-agent-matrix">GitHub App -- Multi-Agent Matrix<a class="headerlink" href="#github-app-multi-agent-matrix" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">]</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="c1"># 2x2 matrix = 4 members plus 1 synthesis parent per PR</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gemini&quot;</span><span class="p">]</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="c1"># Synthesis settings</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="n">synthesis_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-code&quot;</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="n">synthesis_backup_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gemini&quot;</span>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="n">synthesis_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-opus-4-8&quot;</span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${ROBOREV_APP_KEY}&quot;</span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+</code></pre></div>
+<h3 id="github-app-granular-review-matrix">GitHub App -- Granular Review Matrix<a class="headerlink" href="#github-app-granular-review-matrix" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">]</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="n">throttle_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;30m&quot;</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="n">throttle_bypass_users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wesm&quot;</span><span class="p">]</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="n">synthesis_agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-code&quot;</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${ROBOREV_APP_KEY}&quot;</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="c1"># Assign specific review types per agent (3 jobs instead of 4)</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="k">[ci.reviews]</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="n">codex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="n">gemini</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="github-app-multiple-installations">GitHub App -- Multiple Installations<a class="headerlink" href="#github-app-multiple-installations" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;wesm/my-project&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;roborev-dev/core&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;roborev-dev/docs&quot;</span><span class="p">]</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="c1"># Each org/user has its own app installation</span>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="k">[ci.github_app_installations]</span>
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="n">wesm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">111111</span>
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="n">roborev-dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">222222</span>
+</code></pre></div>
+<h3 id="per-repo-overrides_1">Per-Repo Overrides<a class="headerlink" href="#per-repo-overrides_1" title="Permanent link">&para;</a></h3>
+<p>Global config (<code>~/.roborev/config.toml</code>) sets defaults for all repos:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myorg/frontend&quot;</span><span class="p">]</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+</code></pre></div>
+<p>The backend repo wants deeper reviews with multiple agents. Add a
+<code>.roborev.toml</code> in the backend repo root:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># myorg/backend/.roborev.toml</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="k">[ci]</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gemini&quot;</span><span class="p">]</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="n">reasoning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thorough&quot;</span>
+</code></pre></div>
+<p>The frontend repo is lower-risk and only needs a fast security scan:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># myorg/frontend/.roborev.toml</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="k">[ci]</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="n">reasoning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;fast&quot;</span>
+</code></pre></div>
+<p>Result: <code>backend</code> PRs get a 2x2 implicit panel (4 members plus 1 synthesis
+parent) with thorough reasoning, while <code>frontend</code> PRs get a single fast security
+review. Repos without a <code>.roborev.toml</code> <code>[ci]</code> section use the global defaults.</p>
+<h3 id="wildcard-repos-with-exclusions">Wildcard Repos with Exclusions<a class="headerlink" href="#wildcard-repos-with-exclusions" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/*&quot;</span><span class="p">]</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="n">exclude_repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/archived-*&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myorg/docs&quot;</span><span class="p">]</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="n">max_repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;codex&quot;</span><span class="p">]</span>
+<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a>
+<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="n">github_app_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123456</span>
+<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="n">github_app_private_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.roborev/roborev.pem&quot;</span>
+<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="n">github_app_installation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345678</span>
+</code></pre></div>
+<h3 id="personal-auth-single-review">Personal Auth -- Single Review<a class="headerlink" href="#personal-auth-single-review" title="Permanent link">&para;</a></h3>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="n">poll_interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5m&quot;</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myorg/backend&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;myorg/frontend&quot;</span><span class="p">]</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">]</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="n">agents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;claude-code&quot;</span><span class="p">]</span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;claude-opus-4-8&quot;</span>
+</code></pre></div>
+<h2 id="discord-failure-notifications">Discord Failure Notifications<a class="headerlink" href="#discord-failure-notifications" title="Permanent link">&para;</a></h2>
+<p>Set <code>discord_webhook_url</code> in the global <code>[ci]</code> config when you want an
+out-of-band alert for CI poller jobs that fail before roborev can post useful PR
+feedback:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">[ci]</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="n">discord_webhook_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://discord.com/api/webhooks/...&quot;</span>
+</code></pre></div>
+<p>The setting is hot-reloaded. Set it to an empty value or remove the key to
+disable notifications without restarting the daemon.</p>
+<p>Notifications are sent for terminal CI review job failures only. They are
+best-effort: a slow, unavailable, or rate-limited Discord webhook does not
+change job state, CI retry state, GitHub status updates, or PR comment posting.</p>
+<p>Each message includes the repository, CI base branch, job ID, panel/member
+context when available, agent, review type, ref, retry count, failure class, and
+trimmed error text. Raw error text is length-bounded but not path-sanitized, so
+send these notifications only to trusted private channels.</p>
+<p>Quota/cooldown failures are deduped globally per canonical agent for the
+configured <code>agent_quota_cooldown</code> window. This keeps one agent quota incident
+from flooding Discord when many PRs or panel members route to the same
+unavailable agent. For example, one <code>codex</code> quota failure can suppress
+additional <code>codex</code> quota messages from other repos until the cooldown window
+expires; the first message is the representative failure for that daemon-wide
+agent cooldown.</p>
+<p>The webhook URL is a secret-bearing credential. roborev masks it in config
+output, but anyone with the raw URL can post to the Discord channel. Rotate the
+webhook in Discord if the URL is accidentally shared.</p>
+<h2 id="quota-handling">Quota Handling<a class="headerlink" href="#quota-handling" title="Permanent link">&para;</a></h2>
+<p>When an agent hits a hard rate or quota limit, roborev puts that agent into a
+timed cooldown instead of failing the review immediately.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent_quota_cooldown</code></td>
+<td><code>30m0s</code></td>
+<td>Maximum daemon-wide cooldown after an agent quota or session-limit error, as a Go duration such as <code>10m</code>, <code>30m</code>, or <code>1h</code></td>
+</tr>
+</tbody>
+</table>
+<p>During cooldown:</p>
+<ul>
+<li>The agent is skipped for new jobs. CI comments show "skipped (quota)" for that
+    agent instead of "failed".</li>
+<li>If a backup agent is configured (see
+    <a href="/configuration/#backup-agents">Backup Agents</a>) and is not also in cooldown,
+    the job is retried with the backup agent automatically.</li>
+<li>Commit status is set to <code>success</code> when all panel members were skipped due to
+    quota. This prevents quota exhaustion from blocking PRs.</li>
+<li>The cooldown timer resets each time the agent hits a quota error, but it is
+    capped by <code>agent_quota_cooldown</code>. Provider reset hints can shorten the
+    cooldown, not lengthen it beyond your configured cap.</li>
+</ul>
+<p>No configuration is needed unless you want a different cap. Quota detection and
+cooldown are automatic. The daemon logs cooldown start and end events so you can
+monitor agent availability.</p>
+<h2 id="ci-review-github-actions">CI Review (GitHub Actions)<a class="headerlink" href="#ci-review-github-actions" title="Permanent link">&para;</a></h2>
+<p>The CI poller described above runs inside the roborev daemon as a background
+service. For teams that prefer a stateless, daemon-free approach,
+<code>roborev ci review</code> runs reviews directly inside a GitHub Actions workflow.</p>
+<h3 id="when-to-use-each-approach">When to Use Each Approach<a class="headerlink" href="#when-to-use-each-approach" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Daemon CI Poller</th>
+<th><code>ci review</code> in GitHub Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Runs on</strong></td>
+<td>Your machine or server (daemon)</td>
+<td>GitHub-hosted runners</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td>SQLite database tracks reviewed SHAs</td>
+<td>Stateless; runs on every trigger</td>
+</tr>
+<tr>
+<td><strong>Setup</strong></td>
+<td><code>~/.roborev/config.toml</code> with <code>[ci]</code></td>
+<td>GitHub Actions workflow file</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Continuous polling, centralized review</td>
+<td>Per-PR checks, no infrastructure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quickstart-with-init-gh-action">Quickstart with <code>init gh-action</code><a class="headerlink" href="#quickstart-with-init-gh-action" title="Permanent link">&para;</a></h3>
+<p>The fastest way to set up CI reviews is with the workflow generator:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nb">cd</span><span class="w"> </span>your-repo
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>roborev<span class="w"> </span>init<span class="w"> </span>gh-action<span class="w"> </span>--agent<span class="w"> </span>claude-code
+</code></pre></div>
+<p>This creates <code>.github/workflows/roborev.yml</code>. Commit and push it, then add your
+agent's API key as a repository secret.</p>
+<h3 id="required-repository-secrets">Required Repository Secrets<a class="headerlink" href="#required-repository-secrets" title="Permanent link">&para;</a></h3>
+<p>Each agent needs its API key as a repository secret:</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Secret Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td><code>ANTHROPIC_API_KEY</code></td>
+</tr>
+<tr>
+<td>Codex</td>
+<td><code>OPENAI_API_KEY</code></td>
+</tr>
+<tr>
+<td>Gemini</td>
+<td><code>GOOGLE_API_KEY</code></td>
+</tr>
+</tbody>
+</table>
+<p>Add secrets in your repository's <strong>Settings &gt; Secrets and variables &gt; Actions</strong>.</p>
+<h3 id="how-the-generated-workflow-works">How the Generated Workflow Works<a class="headerlink" href="#how-the-generated-workflow-works" title="Permanent link">&para;</a></h3>
+<p>The generated workflow triggers on <code>pull_request</code> events and:</p>
+<ol>
+<li>Checks out the PR branch with full history</li>
+<li>Downloads the pinned roborev binary and verifies its SHA256 checksum</li>
+<li>Runs <code>roborev ci review --comment</code> with the configured agents</li>
+<li>Posts review results as a PR comment</li>
+</ol>
+<p>In GitHub Actions, <code>ci review</code> reads <code>GITHUB_REPOSITORY</code>, <code>GITHUB_REF</code>, and
+<code>GITHUB_EVENT_PATH</code> automatically, so no flags are needed beyond <code>--comment</code>.</p>
+<h3 id="customizing-via-roborevtoml">Customizing via <code>.roborev.toml</code><a class="headerlink" href="#customizing-via-roborevtoml" title="Permanent link">&para;</a></h3>
+<p>The <code>ci review</code> command reads the repo's <code>.roborev.toml</code> for CI-specific
+settings:</p>
+<div class="language-toml highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># .roborev.toml</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="k">[ci]</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">review_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="n">reasoning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thorough&quot;</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="n">min_severity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;medium&quot;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>review_types</code></td>
+<td>array</td>
+<td><code>["security"]</code></td>
+<td>Review types to run</td>
+</tr>
+<tr>
+<td><code>reasoning</code></td>
+<td>string</td>
+<td><code>"thorough"</code></td>
+<td>Reasoning level</td>
+</tr>
+<tr>
+<td><code>min_severity</code></td>
+<td>string</td>
+<td><code>"low"</code></td>
+<td>Minimum severity to include in output</td>
+</tr>
+</tbody>
+</table>
+<h3 id="manual-workflow-setup">Manual Workflow Setup<a class="headerlink" href="#manual-workflow-setup" title="Permanent link">&para;</a></h3>
+<p>If you prefer full control over the workflow, create
+<code>.github/workflows/roborev.yml</code> manually:</p>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roborev</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">opened</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">synchronize</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="nt">permissions</span><span class="p">:</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="w">  </span><span class="nt">pull-requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>
+<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="w">  </span><span class="nt">review</span><span class="p">:</span>
+<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a>
+<a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install roborev</span>
+<a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a><span class="w">          </span><span class="no">curl -fsSL https://roborev.io/install.sh | bash</span>
+<a id="__codelineno-39-21" name="__codelineno-39-21" href="#__codelineno-39-21"></a><span class="w">          </span><span class="no">echo &quot;$HOME/.roborev/bin&quot; &gt;&gt; &quot;$GITHUB_PATH&quot;</span>
+<a id="__codelineno-39-22" name="__codelineno-39-22" href="#__codelineno-39-22"></a>
+<a id="__codelineno-39-23" name="__codelineno-39-23" href="#__codelineno-39-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run review</span>
+<a id="__codelineno-39-24" name="__codelineno-39-24" href="#__codelineno-39-24"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<a id="__codelineno-39-25" name="__codelineno-39-25" href="#__codelineno-39-25"></a><span class="w">          </span><span class="nt">ANTHROPIC_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.ANTHROPIC_API_KEY }}</span>
+<a id="__codelineno-39-26" name="__codelineno-39-26" href="#__codelineno-39-26"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roborev ci review --comment --agent claude-code</span>
+</code></pre></div>
+<p>Adjust the agent and secrets to match your setup. For multi-agent reviews, pass
+a comma-separated list (<code>--agent codex,gemini</code>) or use <code>--review-types</code> to run
+different review types.</p>
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="/integrations/gitlab/">GitLab Integration</a>: The equivalent GitLab CI pipeline
+    setup</li>
+<li><a href="/configuration/">Configuration</a>: Global and per-repo settings</li>
+<li><a href="/advanced/streaming/">Event Streaming</a>: Stream review events for custom
+    integrations</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 <a href="https://kenn.io">Kenn Software LLC</a>. MIT License.
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.instant","navigation.instant.progress","navigation.tracking","navigation.sections","navigation.path","content.code.copy"],"search":"../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ee611ef6.min.js"></script>
+      
+        <script src="../../javascripts/lightbox.js"></script>
+      
+    
+  </body>
+</html>

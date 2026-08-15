@@ -88,7 +88,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 12] = [
         "knowledge/agentic_engineering/kenn_reference_architecture.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 21] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 22] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -160,6 +160,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 21] = [
     (
         "agentic-engineering-reference",
         "knowledge/agentic_engineering/kenn_reference_architecture.md",
+    ),
+    (
+        "agentic-engineering-tool-stack",
+        "knowledge/agentic_engineering/tool_stack_investigation.md",
     ),
     (
         "agentic-engineering-source-registry",

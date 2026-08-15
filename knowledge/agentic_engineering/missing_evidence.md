@@ -32,16 +32,31 @@ Missing:
 
 ## Tool behavior
 
-The packet does not inspect the implementation behavior of Forge, Kata,
-Ghosthub, AgentsView, roborev, or Superpowers.
+The packet captures public pages and GitHub API metadata for Forge, Kata,
+Ghosthub, AgentsView, roborev, and Superpowers. It does not inspect or execute
+their implementations.
 
 Missing:
 
 - source snapshots for each tool;
-- command/interface contracts;
+- command/interface contracts beyond public docs;
 - trace examples;
 - failure modes; and
 - permission or authority models.
+
+## Tool deployment
+
+The packet does not prove how Kenn deploys the tools internally or how the
+tools interact under real workload.
+
+Missing:
+
+- configured Kata federation topology;
+- Forge workspace launch traces;
+- Ghosthub session fleet traces;
+- AgentsView session ingestion corpus;
+- roborev review findings and closure logs; and
+- integration data showing cross-tool causality.
 
 ## Constitution execution
 
