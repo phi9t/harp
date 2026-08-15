@@ -32,6 +32,9 @@ const wengSectionIds: readonly string[] = [
 const chapterPath = (id: string): string =>
   `knowledge/rsi/chapters/${id}.md`;
 
+const mathematicalFoundationsIndexPath =
+  "knowledge/mathematical_foundations/mathematical_foundations_index.md";
+
 const companionId = (id: string): string => `weng-${id}`;
 
 const systemIds: readonly string[] = [
@@ -140,6 +143,11 @@ const validV5Fixture: unknown = {
       label: "Crouzeix",
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
+    {
+      route_id: "mathematical-foundations",
+      label: "Math foundations",
+      canonical_markdown_path: mathematicalFoundationsIndexPath,
+    },
   ],
   documents: [
     ...chapterIds.map((id) => ({
@@ -159,6 +167,14 @@ const validV5Fixture: unknown = {
       html_sha256: digest,
       html: `<h1>${id}</h1>`,
     })),
+    {
+      concept_id: "math-foundations-index",
+      title: "Mathematical foundations for machine learning",
+      canonical_markdown_path: mathematicalFoundationsIndexPath,
+      markdown_sha256: digest,
+      html_sha256: digest,
+      html: "<h1>Mathematical foundations for machine learning</h1>",
+    },
   ],
   systems: systemIds.map((id, index) => {
     const source = index === 0 ? "AFLOW" : `SYSTEM-${String(index + 1).padStart(2, "0")}`;

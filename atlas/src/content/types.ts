@@ -36,7 +36,8 @@ export type ReaderRouteId =
   | "survey"
   | "verified-coevolution"
   | "agentic-engineering"
-  | "crouzeix-conjecture";
+  | "crouzeix-conjecture"
+  | "mathematical-foundations";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
   "thesis",
@@ -53,6 +54,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "verified-coevolution",
   "agentic-engineering",
   "crouzeix-conjecture",
+  "mathematical-foundations",
 ];
 
 export type RetainedConcept = {

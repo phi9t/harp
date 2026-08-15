@@ -67,4 +67,36 @@ describe("canonical math", () => {
     expect(inlineCount).toBeGreaterThan(0);
     expect(displayCount).toBeGreaterThan(0);
   });
+
+  it("renders every registered mathematical foundations formula without fallback", () => {
+    const documents = canonicalCorpus.documents.filter((candidate) =>
+      candidate.canonical_markdown_path.startsWith(
+        "knowledge/mathematical_foundations/",
+      )
+    );
+    let inlineCount = 0;
+    let displayCount = 0;
+
+    expect(documents).toHaveLength(11);
+    for (const document of documents) {
+      const root = window.document.createElement("div");
+      root.innerHTML = document.html;
+      inlineCount += root.querySelectorAll(".math-inline[data-tex]").length;
+      displayCount += root.querySelectorAll(".math-display[data-tex]").length;
+
+      renderCanonicalMath(root);
+
+      expect(
+        root.querySelectorAll(".math-error"),
+        document.canonical_markdown_path,
+      ).toHaveLength(0);
+      expect(
+        root.querySelectorAll(".math[data-tex]").length,
+        document.canonical_markdown_path,
+      ).toBe(root.querySelectorAll("math").length);
+    }
+
+    expect(inlineCount).toBeGreaterThan(0);
+    expect(displayCount).toBeGreaterThan(0);
+  });
 });

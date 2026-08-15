@@ -103,7 +103,7 @@ pub(super) fn heading_ids_for_source(
     markdown: &str,
     source_path: &str,
 ) -> Result<BTreeSet<String>, AppError> {
-    if !is_crouzeix_packet(source_path) {
+    if !is_mathematics_packet(source_path) {
         return Ok(legacy_heading_ids(markdown).into_iter().collect());
     }
 
@@ -120,7 +120,7 @@ pub(super) fn heading_ids_for_source(
 }
 
 fn parsed_heading_ids(markdown: &str, source_path: &str) -> Vec<String> {
-    if !is_crouzeix_packet(source_path) {
+    if !is_mathematics_packet(source_path) {
         return legacy_heading_ids(markdown);
     }
 
@@ -222,7 +222,7 @@ fn document_target(document_id: String, source: &ValidatedCanonicalSource) -> Ro
 }
 
 fn addressable_heading_ids(markdown: &str, source_path: &str) -> BTreeSet<String> {
-    if !is_crouzeix_packet(source_path) {
+    if !is_mathematics_packet(source_path) {
         return BTreeSet::new();
     }
     Parser::new_ext(markdown, markdown_options(source_path))
@@ -300,14 +300,15 @@ fn markdown_options(source_path: &str) -> Options {
         | Options::ENABLE_TASKLISTS
         | Options::ENABLE_FOOTNOTES
         | Options::ENABLE_DEFINITION_LIST;
-    if is_crouzeix_packet(source_path) {
+    if is_mathematics_packet(source_path) {
         options |= Options::ENABLE_HEADING_ATTRIBUTES | Options::ENABLE_MATH;
     }
     options
 }
 
-fn is_crouzeix_packet(source_path: &str) -> bool {
+fn is_mathematics_packet(source_path: &str) -> bool {
     source_path.starts_with("knowledge/crouzeix_conjecture/")
+        || source_path.starts_with("knowledge/mathematical_foundations/")
 }
 
 fn math_span(tex: &str, display: bool) -> String {

@@ -137,6 +137,12 @@ export function AtlasApp() {
   if (!crouzeixRoute) {
     throw new Error("Validated Crouzeix route disappeared");
   }
+  const mathematicalFoundationsRoute = canonicalReaderRoutes.find(
+    (candidate) => candidate.route.route_id === "mathematical-foundations",
+  );
+  if (!mathematicalFoundationsRoute) {
+    throw new Error("Validated mathematical foundations route disappeared");
+  }
   const verifiedCoevolutionRoute = canonicalReaderRoutes.find(
     (candidate) => candidate.route.route_id === "verified-coevolution",
   );
@@ -233,6 +239,22 @@ export function AtlasApp() {
               })}
           >
             {crouzeixRoute.route.label}
+          </button>
+          <button
+            className={
+              route.kind === "legacy"
+                && route.routeId === mathematicalFoundationsRoute.route.route_id
+                ? "nav-button active"
+                : "nav-button"
+            }
+            type="button"
+            onClick={() =>
+              navigate({
+                kind: "legacy",
+                routeId: mathematicalFoundationsRoute.route.route_id,
+              })}
+          >
+            {mathematicalFoundationsRoute.route.label}
           </button>
           <button
             className={
