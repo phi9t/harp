@@ -1,6 +1,6 @@
 # Crouzeix conjecture two-proof deep-dive design
 
-**Status:** Adversarial re-review complete, pending user approval
+**Status:** Approved for implementation planning
 **Date:** 2026-08-14
 **Audience:** MTS-level readers comfortable with linear algebra, complex
 analysis, operator theory, and proof assistants
