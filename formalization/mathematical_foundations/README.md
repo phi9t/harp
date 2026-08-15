@@ -14,9 +14,10 @@ Do not install Lean with a mutable installer pipe. Obtain versioned official
 release metadata, download the matching versioned release artifact, and verify
 its published checksum (and signature when available) before use. Install it
 only with a task-scoped temporary `ELAN_HOME`; do not alter a global Lean
-installation. With that scoped environment explicitly set, refresh the pinned
-manifest with `lake update`, obtain compiled dependencies with `lake exe cache
-get`, and run `lake build`.
+installation. Ordinary verification uses `lake build` with the committed
+manifest. Run `lake update` only as an intentional, reviewed lock refresh;
+after that review, obtain compiled dependencies with `lake exe cache get` and
+run `lake build`.
 
 Run the repository wrapper from the repository root:
 

@@ -104,3 +104,71 @@ fn ambient_project_override_is_ignored() {
         "lake did not run against the canonical project root"
     );
 }
+
+#[test]
+fn ambient_elan_toolchain_is_overridden_for_normal_builds() {
+    let fake_bin = TempDir::new().expect("fake lake directory");
+    let toolchain_capture = fake_bin.path().join("elan-toolchain");
+    let fake_lake = fake_bin.path().join("lake");
+    let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
+        .expect("construct PATH with fake lake");
+
+    fs::write(
+        &fake_lake,
+        "#!/bin/sh\nprintf '%s\\n' \"$ELAN_TOOLCHAIN\" > \"$ELAN_TOOLCHAIN_CAPTURE\"\n",
+    )
+    .expect("write fake lake");
+    let mut permissions = fs::metadata(&fake_lake)
+        .expect("read fake lake permissions")
+        .permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake_lake, permissions).expect("make fake lake executable");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("ELAN_TOOLCHAIN", "untrusted/ambient:toolchain")
+        .env("ELAN_TOOLCHAIN_CAPTURE", &toolchain_capture)
+        .env("PATH", path)
+        .assert()
+        .success();
+
+    assert_eq!(
+        fs::read_to_string(toolchain_capture).expect("read captured toolchain"),
+        "leanprover/lean4:v4.32.1\n"
+    );
+}
+
+#[test]
+fn source_scan_errors_stop_before_lake_runs() {
+    let fake_bin = TempDir::new().expect("fake command directory");
+    let lake_marker = fake_bin.path().join("lake-was-called");
+    let fake_lake = fake_bin.path().join("lake");
+    let fake_grep = fake_bin.path().join("grep");
+    let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
+        .expect("construct PATH with fake commands");
+
+    fs::write(&fake_lake, "#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n").expect("write fake lake");
+    fs::write(&fake_grep, "#!/bin/sh\nexit 2\n").expect("write failing fake grep");
+    for command in [&fake_lake, &fake_grep] {
+        let mut permissions = fs::metadata(command)
+            .expect("read fake command permissions")
+            .permissions();
+        permissions.set_mode(0o755);
+        fs::set_permissions(command, permissions).expect("make fake command executable");
+    }
+
+    let assertion = Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_mathematical_foundations_lean.sh")
+        .env("PATH", path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("source scan failed"));
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a source scan failure: {assertion:?}"
+    );
+}

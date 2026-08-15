@@ -11,10 +11,12 @@ canonical_project_dir=$(CDPATH= cd -- "$script_dir/../formalization/mathematical
 case "$#" in
   0)
     project_dir=$canonical_project_dir
+    normal_build=true
     ;;
   2)
     if [ "$1" = "--project-for-test" ] && [ -d "$2" ]; then
       project_dir=$(CDPATH= cd -- "$2" && pwd)
+      normal_build=false
     else
       printf '%s\n' "usage: $0 [--project-for-test <directory>]" >&2
       exit 2
@@ -31,10 +33,40 @@ if ! command -v lake >/dev/null 2>&1; then
   exit 1
 fi
 
-matches=$(find "$project_dir" -type d -name .lake -prune -o -type f -name '*.lean' -exec grep -n -H 'sorry' {} + || true)
-if [ -n "$matches" ]; then
+if [ "$normal_build" = true ]; then
+  if ! IFS= read -r pinned_toolchain < "$canonical_project_dir/lean-toolchain" || [ -z "$pinned_toolchain" ]; then
+    printf '%s\n' "Mathematical Foundations Lean toolchain pin is unavailable" >&2
+    exit 1
+  fi
+  export ELAN_TOOLCHAIN=$pinned_toolchain
+fi
+
+if ! scan_list=$(mktemp "${TMPDIR:-/tmp}/mathematical-foundations-lean.XXXXXX"); then
+  printf '%s\n' "Mathematical Foundations Lean source scan failed: could not create a temporary file" >&2
+  exit 1
+fi
+trap 'rm -f "$scan_list"' EXIT HUP INT TERM
+
+if ! find "$project_dir" -type d -name .lake -prune -o -type f -name '*.lean' -print > "$scan_list"; then
+  printf '%s\n' "Mathematical Foundations Lean source scan failed" >&2
+  exit 1
+fi
+
+proof_holes_found=false
+while IFS= read -r source_file || [ -n "$source_file" ]; do
+  if grep -n -H 'sorry' "$source_file"; then
+    proof_holes_found=true
+  else
+    grep_status=$?
+    if [ "$grep_status" -ne 1 ]; then
+      printf '%s\n' "Mathematical Foundations Lean source scan failed" >&2
+      exit 1
+    fi
+  fi
+done < "$scan_list"
+
+if [ "$proof_holes_found" = true ]; then
   printf '%s\n' "Mathematical Foundations Lean source contains forbidden proof-placeholder text \`sorry\`." >&2
-  printf '%s\n' "$matches" >&2
   exit 1
 fi
 
