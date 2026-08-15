@@ -32,6 +32,7 @@ def selected_direction(**overrides: object) -> dict[str, object]:
         "statement": "Develop an independent route to the theorem.",
         "strength": "root",
         "recommended_role": "function_theory",
+        "source_parent_node_id": None,
         "source_node_artifact_sha256": None,
         "source_reconciliation_sha256": None,
     }
@@ -205,6 +206,7 @@ class ExpertContextTests(unittest.TestCase):
             statement="Close the global extension obligation.",
             strength="major",
             recommended_role="approximation_audit",
+            source_parent_node_id=node["node_id"],
             source_node_artifact_sha256=node["node_artifact_sha256"],
             source_reconciliation_sha256=None,
         )
@@ -290,18 +292,14 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
     def test_only_strict_results_receive_admission_and_only_acceptance_creates_node(self) -> None:
         result = expert_contracts.validate_expert_result(expert_result())
 
-        rejected = expert_contracts.decide_admission(
-            attempt(),
-            result,
-            provenance(),
-            outcome="rejected_nonfunctioning",
-            diagnostic_detail="No materially new mechanism.",
-        )
-
-        self.assertEqual(rejected["outcome"], "rejected_nonfunctioning")
-        self.assertNotIn("node_artifact_sha256", rejected)
-        with self.assertRaisesRegex(protocol.ValidationError, "accepted"):
-            expert_contracts.build_mathematical_node(rejected, result, provenance())
+        with self.assertRaisesRegex(protocol.ValidationError, "functioning"):
+            expert_contracts.decide_admission(
+                attempt(),
+                result,
+                provenance(),
+                outcome="rejected_nonfunctioning",
+                diagnostic_detail="No materially new mechanism.",
+            )
 
         for terminal_status in ("failed", "malformed", "timed_out", "blocked_resource"):
             with self.assertRaisesRegex(protocol.ValidationError, "terminal"):
@@ -434,6 +432,7 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
                 kind="obligation",
                 strength="major",
                 recommended_role="approximation_audit",
+                source_parent_node_id="node-parent",
                 source_node_artifact_sha256="f" * 64,
             )
         )
@@ -448,6 +447,7 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
                 kind="obligation",
                 strength="major",
                 recommended_role="approximation_audit",
+                source_parent_node_id="node-parent",
                 source_node_artifact_sha256="e" * 64,
             )
         )
@@ -456,6 +456,24 @@ class ExpertResultAdmissionAndNodeTests(unittest.TestCase):
                 attempt(),
                 child_result,
                 mismatch,
+                outcome="accepted",
+            )
+
+        mismatched_parent_id = provenance(
+            selected_direction=selected_direction(
+                direction_id="child-obligation",
+                kind="obligation",
+                strength="major",
+                recommended_role="approximation_audit",
+                source_parent_node_id="other-parent",
+                source_node_artifact_sha256="f" * 64,
+            )
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "parent node"):
+            expert_contracts.decide_admission(
+                attempt(),
+                child_result,
+                mismatched_parent_id,
                 outcome="accepted",
             )
 

@@ -237,14 +237,21 @@ def decide_admission(
 
     direction = provenance_value["selected_direction"]
     if result_value["generation"] > 0 and (
+        result_value["parent_node_id"] != direction["source_parent_node_id"]
+    ):
+        raise ValidationError(
+            "child parent node must match selected direction source parent node"
+        )
+    if result_value["generation"] > 0 and (
         result_value["parent_node_artifact_sha256"] != direction["source_node_artifact_sha256"]
     ):
         raise ValidationError(
             "child parent artifact must match selected direction source node artifact"
         )
-    if closed_outcome == "accepted" and not _is_functioning_payload(
-        result_value["mathematical_payload"]
-    ):
+    functioning = _is_functioning_payload(result_value["mathematical_payload"])
+    if closed_outcome == "rejected_nonfunctioning" and functioning:
+        raise ValidationError("functioning result cannot be rejected_nonfunctioning")
+    if closed_outcome == "accepted" and not functioning:
         closed_outcome = "rejected_nonfunctioning"
         if detail is None:
             detail = "Strict expert result did not meet functioning criteria."
@@ -622,6 +629,7 @@ def _validate_selected_direction(value: Mapping[str, Any]) -> dict[str, object]:
             "statement",
             "strength",
             "recommended_role",
+            "source_parent_node_id",
             "source_node_artifact_sha256",
             "source_reconciliation_sha256",
         },
@@ -635,6 +643,9 @@ def _validate_selected_direction(value: Mapping[str, Any]) -> dict[str, object]:
         "recommended_role": _enum(
             item["recommended_role"], EXPERT_ROLES, "direction.recommended_role"
         ),
+        "source_parent_node_id": _optional_portable_id(
+            item["source_parent_node_id"], "source_parent_node_id"
+        ),
         "source_node_artifact_sha256": _optional_digest(
             item["source_node_artifact_sha256"], "source_node_artifact_sha256"
         ),
@@ -647,9 +658,13 @@ def _validate_selected_direction(value: Mapping[str, Any]) -> dict[str, object]:
             raise ValidationError("root direction strength must be root")
         if direction["source_node_artifact_sha256"] is not None:
             raise ValidationError("root direction cannot reference a node artifact")
+        if direction["source_parent_node_id"] is not None:
+            raise ValidationError("root direction cannot reference a parent node")
         if direction["source_reconciliation_sha256"] is not None:
             raise ValidationError("root direction cannot reference reconciliation")
     else:
+        if direction["source_parent_node_id"] is None:
+            raise ValidationError("child direction requires source parent node")
         if direction["source_node_artifact_sha256"] is None:
             raise ValidationError("child direction requires source node artifact")
         if (
