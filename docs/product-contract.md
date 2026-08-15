@@ -9,7 +9,8 @@ Harp owns the standalone RSI technical atlas:
   `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
   `knowledge/self_improving_agents_survey/`, and
   `knowledge/verified_coevolution_agenda/`, and
-  `knowledge/agentic_engineering/`;
+  `knowledge/agentic_engineering/`, together with the auxiliary
+  `knowledge/darwinx/` packet and repository-root Obsidian navigation assets;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
 - Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Verified
@@ -118,7 +119,7 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 93 compiled documents;
+- 103 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
@@ -145,6 +146,21 @@ auxiliary documents. It adds eight source-registry rows and three evidence
 edges while reusing existing Harp evidence for STOP, Meta-Harness, AHE, DGM,
 ADAS, and the Springer Godel Machine record.
 
+`knowledge/darwinx/` is a bounded nine-document research packet on
+population-based harness evolution and constrained capability retention. It is
+compiled as auxiliary technical documents, indexed for search, and surfaced in
+the Atlas knowledge view. It does not become a seventeenth canonical RSI system
+or alter the retained-concept, system, Weng, diagnostic, lesson, or evidence
+graph counts. `knowledge/harp_knowledge_home.md` is a registered knowledge
+entrypoint, not an additional canonical system or topic packet.
+
+The repository root is a portable Obsidian vault. Managed internal prose and
+evidence navigation use root-qualified wikilinks; exact raw-evidence locations
+retain their accompanying conventional Markdown `#L...` locators. Personal
+`.obsidian/` state is ignored. The reviewed portable profile lives under
+`tools/obsidian/profile/`, and the Base/Canvas/home assets remain canonical
+repository files rather than generated Atlas inputs.
+
 ## Weng teaching curriculum
 
 `knowledge/rsi/weng-sources/` is the canonical authority for the 42 five-field
@@ -162,7 +178,7 @@ requires 42 cards, ten lessons, four references, and nine section IDs.
 Retrieval begins at `unseen`, and page exposure does not establish mastery.
 
 Teaching files remain outside canonical Atlas compilation unless explicitly
-registered later. They do not change the 88-document, 75-concept, or other
+registered later. They do not change the 103-document, 75-concept, or other
 canonical corpus counts above.
 
 ## Search
@@ -177,6 +193,8 @@ The search index includes:
 - all `knowledge/verified_coevolution_agenda/**/*.md`;
 - all `knowledge/agentic_engineering/**/*.md`;
 - all `knowledge/crouzeix_conjecture/**/*.md`;
+- all `knowledge/darwinx/**/*.md`;
+- `knowledge/harp_knowledge_home.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 

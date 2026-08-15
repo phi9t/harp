@@ -27,6 +27,32 @@ Managed Markdown under `knowledge/` is the technical-prose authority.
 `content/` contains structured contracts and diagnostics. Generated JSON and
 HTML are derived artifacts.
 
+## Obsidian knowledge vault
+
+Open the repository root as an Obsidian vault, then start at
+[`knowledge/harp_knowledge_home.md`](knowledge/harp_knowledge_home.md). The
+same canonical Markdown remains readable in the offline Atlas; Obsidian adds
+native wikilinks, backlinks, Base views, and the small knowledge map without
+creating a second prose source.
+
+The repository does not track personal `.obsidian/` state. To install the
+reviewed portable profile into a chosen vault, run:
+
+```sh
+python3 tools/obsidian/apply_profile.py --vault "$(git rev-parse --show-toplevel)"
+```
+
+The installer is create-only unless `--replace` is explicit. Validate the
+committed navigation assets without an Obsidian desktop installation:
+
+```sh
+python3 scripts/validate_obsidian_assets.py
+```
+
+The pinned `obsidian-markdown`, `obsidian-bases`, `json-canvas`,
+`obsidian-cli`, and `defuddle` skills are installed locally for TRAE CLI use;
+restart TRAE CLI after this update to load them.
+
 ## Setup
 
 Prerequisites are Git LFS, Rust 1.92, Node.js 22 or newer, Corepack, pnpm, and

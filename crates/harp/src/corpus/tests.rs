@@ -86,30 +86,6 @@ fn write_complete_fixture(repo: &Path) {
 
 fn write_diagnostic_fixture(repo: &Path) {
     let root = workspace_root();
-    assert_eq!(
-        corpus
-            .reader_routes
-            .iter()
-            .map(|route| route.route_id.as_str())
-            .collect::<Vec<_>>(),
-        [
-            "thesis",
-            "loop",
-            "methods",
-            "harnesses",
-            "weng",
-            "experiment",
-            "sources",
-            "agentic-eval-apply",
-            "benchmarks",
-            "evaluator-integrity",
-            "survey",
-            "verified-coevolution",
-            "agentic-engineering",
-            "crouzeix-conjecture",
-            "knowledge",
-        ]
-    );
     for path in [
         rules::WORKSHEET_FIELDS_PATH,
         rules::DIAGNOSTIC_RULES_PATH,
@@ -1249,6 +1225,30 @@ confidence: high\n\
 
     let corpus = compile(repo.path()).unwrap();
 
+    assert_eq!(
+        corpus
+            .reader_routes
+            .iter()
+            .map(|route| route.route_id.as_str())
+            .collect::<Vec<_>>(),
+        [
+            "thesis",
+            "loop",
+            "methods",
+            "harnesses",
+            "weng",
+            "experiment",
+            "sources",
+            "agentic-eval-apply",
+            "benchmarks",
+            "evaluator-integrity",
+            "survey",
+            "verified-coevolution",
+            "agentic-engineering",
+            "crouzeix-conjecture",
+            "knowledge",
+        ]
+    );
     assert!(corpus.reader_routes.iter().any(|route| {
         route.route_id == "knowledge"
             && route.canonical_markdown_path == "knowledge/harp_knowledge_home.md"

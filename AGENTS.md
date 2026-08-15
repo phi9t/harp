@@ -20,6 +20,13 @@ documentation dependencies on another local checkout.
   snapshot, not a Harp prose authority. Update it only through the
   implementation-manifest workflow with its complete upstream byte set,
   revision, license record, and digests.
+- The repository root is the portable Obsidian vault. `knowledge/` remains the
+  prose authority; root-qualified wikilinks are the managed internal
+  navigation form. Preserve exact raw-evidence locations as the dual form:
+  a native artifact wikilink plus the conventional Markdown `#L...` locator.
+- Keep `.obsidian/` ignored. The reviewed portable profile is
+  `tools/obsidian/profile/`; update it only with the allowlisted,
+  symlink-safe installer and asset-validator coverage.
 - `docs/import-receipt.md` is the only file that may name the source repository
   used for the initial import.
 

@@ -67,6 +67,37 @@ link its canonical `https://arxiv.org/abs/...` abstract page. Do not rewrite
 AlphaXiv strings or any other references inside captured evidence; captured
 upstream bytes remain byte-faithful.
 
+### Obsidian-native knowledge presentation
+
+Open the repository root as the Obsidian vault and begin at
+[[knowledge/harp_knowledge_home|Harp knowledge home]]. `knowledge/` is still
+the sole technical-prose authority; Obsidian is a reader and navigation layer,
+not a second source of truth.
+
+- Author managed internal navigation with vault-root-qualified wikilinks.
+  Keep external URLs as Markdown links. Never rewrite
+  `evidence/*/artifacts/` captures for Obsidian syntax.
+- Exact raw-evidence locations remain dual-linked: a native artifact wikilink
+  for vault navigation and the conventional Markdown `#L...` locator for the
+  immutable line reference.
+- Keep personal `.obsidian/` state ignored. The portable reviewed profile lives
+  in `tools/obsidian/profile/`; apply it explicitly with:
+
+  ```sh
+  python3 tools/obsidian/apply_profile.py --vault "$(git rev-parse --show-toplevel)"
+  ```
+
+  The installer is create-only by default. Validate the committed profile,
+  Base, Canvas, and knowledge-home assets with
+  `python3 scripts/validate_obsidian_assets.py`.
+- A registered packet must define valid metadata, add its first-class route or
+  auxiliary-document registration as appropriate, extend search roots, add
+  packet tests, and regenerate the corpus and Atlas projection. Do not make
+  a packet canonical merely to make it discoverable.
+
+The locally installed `obsidian-markdown`, `obsidian-bases`, `json-canvas`,
+`obsidian-cli`, and `defuddle` TRAE CLI skills load after a TRAE CLI restart.
+
 ## Evidence changes
 
 Do not edit captured upstream bytes to normalize formatting, names, or paths.
