@@ -9,11 +9,12 @@ practitioners who can read the six-module foundation route and want a rigorous
 bridge from quadratic optimization to optimizer behavior in neural-network
 training.
 
-Tarocco's `knowledge/docs/training-dynamics/index.md` is a local orientation
-input only. Harp will not depend on that checkout at runtime, build time, test
-time, or documentation-link time. Its current hub references several missing
-supporting notes, so the Harp release will admit only self-contained,
-source-bounded ideas and newly written exposition.
+The release is self-contained: every prerequisite, definition, worked example,
+and formal theorem needed for its stated route lives in this repository. It
+will not require a local external checkout at runtime, build time, test time,
+or documentation-link time. Any useful ideas discovered during the input audit
+will be reconstructed as newly written, source-bounded exposition; incomplete
+or unsupported material is excluded rather than assumed.
 
 ## Reader boundary
 
@@ -23,6 +24,26 @@ Readers need linear algebra, gradients/Hessians, positive-definite quadratics,
 expectation/covariance, and the basic gradient-descent update. The packet will
 not claim that its controlled-model theorems prove corresponding behavior for
 general deep networks.
+
+## Self-contained coverage contract
+
+The packet will define the executed-update state before it draws a conclusion:
+parameters, optimizer state, data/order, batch and accumulation boundary,
+schedule, numerical policy, and target measurement. It will give a reader a
+small experiment contract—one changed variable, held variables, primary
+metric, stability guard, and quality guard—so a diagnostic is falsifiable
+rather than a post-hoc story.
+
+The core route fully develops four connected mechanisms: deterministic
+quadratic dynamics, scalar momentum dynamics, finite-support stochastic
+gradient identities, and a measurement/transfer protocol. It also introduces
+adaptive optimizer state, feature/parameterization change, coupled learners,
+nonstationary data, proxy transfer, and systems update equivalence as named
+boundary cases, each with its missing assumptions and measurement questions.
+Those boundary cases are a self-contained orientation, not an assertion that
+the core route has formalized or experimentally settled them. The index will
+map them to explicitly deferred advanced follow-ons, so the packet has no
+silent prerequisite or unmarked coverage gap.
 
 ## Packet shape
 
@@ -39,13 +60,12 @@ the following self-contained documents:
 4. `03_stochastic_gradients.md` — unbiased estimators, noise covariance,
    minibatch effects, and what expectation does not guarantee pathwise.
 5. `04_diagnostics_and_transfer.md` — learning curves, gradient norms,
-   curvature/noise probes, intervention design, and limits on transfer to
-   neural networks.
+   curvature/noise probes, intervention design, update-equivalence checks,
+   scaling-state accounting, and limits on transfer to neural networks.
 6. `glossary.md` — shared notation for parameters, gradients, optimizer state,
    spectra, noise, and diagnostic quantities.
-7. `source_registry.md` — bibliographic identity and local-only/copyright
-   boundary for the Tarocco orientation material and any future public primary
-   sources.
+7. `source_registry.md` — bibliographic identity and copyright boundary for
+   the public primary sources supporting the packet.
 8. `claim_evidence_ledger.md` — locator-backed claims that separate exact
    theorem, model assumption, source report, and Harp inference.
 
@@ -84,9 +104,9 @@ route parsing/formatting coverage, reader rendering tests, and math-rendering
 tests. Regenerate the corpus and offline export together.
 
 The packet stays separate from retained RSI concepts, coverage-map obligations,
-diagnostic contracts, and existing source-verification counts. It must not
-name a Tarocco filesystem path in reader-facing source registries or claim
-ledgers.
+diagnostic contracts, and existing source-verification counts. Packet prose,
+registries, ledgers, formalization files, build scripts, and tests must contain
+no external-checkout name, path, link, or dependency.
 
 ## Verification
 
@@ -104,7 +124,7 @@ ledgers.
 ## Non-goals
 
 - No claim that the packet explains all neural-network training dynamics.
-- No copying of Tarocco prose, captures, code, or proprietary/local artifacts.
+- No copying of input prose, captures, code, or proprietary/local artifacts.
 - No unpinned Lean installation, global toolchain dependency, or cross-checkout
   runtime/build/test dependency.
 - No formal proof of empirical optimizer comparisons or large-model outcomes.
