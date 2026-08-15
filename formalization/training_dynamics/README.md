@@ -14,3 +14,12 @@ not execute an artifact without published verification data.
 
 Run `../../scripts/check_training_dynamics_lean.sh` from this directory, or
 `mise run verify-lean` from the repository root.
+
+The wrapper normally checks this fixed project directory. Its
+`HARP_TRAINING_DYNAMICS_PROJECT_ROOT` override exists only for isolated tests.
+
+Before invoking Lake, the wrapper applies a deliberately strict textual
+all-occurrences ban to the proof-placeholder spelling matched in every scoped
+`.lean` file, excluding `.lake` output. This is not Lean-token-aware proof
+detection: comments and string literals are also rejected. Remove every
+matching occurrence before building.
