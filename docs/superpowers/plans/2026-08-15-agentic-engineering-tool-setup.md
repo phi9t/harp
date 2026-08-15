@@ -34,9 +34,23 @@ authority by default.
 4. Confirm no hooks were added and no persistent daemons were started.
 5. Report the exact commands, installed versions, and any deferred setup.
 
+## Setup result
+
+- Installed `kata` with Homebrew: `v0.14.3`.
+- Installed `agentsview` with Homebrew cask: `v0.40.1`.
+- Installed `roborev` from the reviewed GitHub release installer:
+  `v0.64.0` at `~/.local/bin/roborev`.
+- `kata version`, `agentsview --version`, and `roborev version` are the safe
+  no-daemon smoke checks.
+- `kata list` can start a local Kata daemon for the bound project. It was used
+  once to verify the `harp` project binding and then stopped.
+- `agentsview projects` can start the AgentsView server and initial session
+  sync. It was attempted once, then the startup process was stopped manually.
+- `roborev status` can start the roborev daemon. It was attempted once, then
+  the daemon was stopped.
+
 ## Deferred setup
 
-- Kata project binding via `.kata.toml`.
 - `kata init --with-agents`.
 - Kata federation, GitHub sync, remote daemon, hosted mode, and PostgreSQL.
 - roborev `init`, Git hooks, GitHub App, PR comments, CI polling, and daemon.

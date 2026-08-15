@@ -24,6 +24,18 @@ communicate for humans, and learn in shared project files. Put durable process
 lessons in `AGENTS.md`, `CONTEXT.md`, ADRs, maintained docs, tests, or code;
 do not rely on private agent memory as a project interface.
 
+### Local tools
+
+This repository is bound to the local Kata project `harp` through `.kata.toml`.
+Use Kata as the shared intent ledger for real Harp work; `.kata.local.toml` is
+ignored for per-machine daemon overrides. Do not run `kata init --with-agents`
+because Harp owns its agent guidance directly.
+
+roborev may be used for independent local verification, but hooks, daemons,
+GitHub App integration, PR comments, and CI polling require explicit approval.
+AgentsView may be used for local session and token observability; its records
+inform later distillation but are not themselves project guidance.
+
 ## Content changes
 
 1. Edit canonical Markdown or registries under `content/`.
