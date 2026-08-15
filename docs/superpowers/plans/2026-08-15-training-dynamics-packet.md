@@ -170,6 +170,8 @@ git commit -m "build: add pinned training dynamics Lean project"
 **Files:**
 - Create: `formalization/training_dynamics/TrainingDynamics/Quadratic.lean`
 - Modify: `formalization/training_dynamics/TrainingDynamics.lean`
+- Modify: `scripts/check_training_dynamics_lean.sh`
+- Modify: `crates/harp/tests/training_dynamics_lean.rs`
 
 - [ ] **Step 1: Write failing theorem examples**
 
@@ -187,12 +189,18 @@ theorem gd_energy_step (a η e : ℝ) :
   sorry
 ```
 
-- [ ] **Step 2: Confirm the proof hole fails CI policy**
+- [ ] **Step 2: Add and exercise a fail-closed proof-hole policy**
 
-Run: `cd formalization/training_dynamics && lake build`
+Extend the Lean wrapper to reject a Lean source file containing a `sorry`
+token before invoking `lake build`, using only a scoped source-file scan under
+`formalization/training_dynamics/`. Add an integration-test case that inserts a
+temporary Lean fixture with `sorry`, invokes the wrapper, and asserts a
+nonzero, actionable failure. Remove the fixture after the test.
 
-Expected: FAIL after adding a repository check that rejects `sorry` in
-`formalization/training_dynamics/**/*.lean`.
+Run: `scripts/check_training_dynamics_lean.sh`
+
+Expected: FAIL while the theorem bodies contain `sorry`, even though Lean can
+otherwise admit an axiom-backed declaration.
 
 - [ ] **Step 3: Prove the recurrence algebraically**
 
@@ -214,14 +222,14 @@ Add a theorem that converts `0 < η * a` and `η * a < 2` into
 
 - [ ] **Step 4: Build the theorem module**
 
-Run: `cd formalization/training_dynamics && lake build TrainingDynamics.Quadratic`
+Run: `scripts/check_training_dynamics_lean.sh`
 
 Expected: PASS with no declarations containing `sorry`.
 
 - [ ] **Step 5: Commit**
 
 ```sh
-git add formalization/training_dynamics/TrainingDynamics/Quadratic.lean
+git add formalization/training_dynamics/TrainingDynamics/Quadratic.lean scripts/check_training_dynamics_lean.sh crates/harp/tests/training_dynamics_lean.rs
 git commit -m "feat: formalize quadratic gradient descent dynamics"
 ```
 
@@ -247,7 +255,7 @@ theorem heavyBall_error (a η β x previous xStar : ℝ) :
 
 - [ ] **Step 2: Verify the theorem is not accepted with proof holes**
 
-Run: `cd formalization/training_dynamics && lake build TrainingDynamics.Momentum`
+Run: `scripts/check_training_dynamics_lean.sh`
 
 Expected: FAIL under the no-`sorry` check.
 
@@ -294,7 +302,7 @@ theorem symmetric_noise_is_unbiased (gradient δ : ℝ) :
 
 - [ ] **Step 2: Confirm the proof hole is rejected**
 
-Run: `cd formalization/training_dynamics && lake build TrainingDynamics.Stochastic`
+Run: `scripts/check_training_dynamics_lean.sh`
 
 Expected: FAIL under the no-`sorry` check.
 
