@@ -1,0 +1,558 @@
+## Verdict
+
+I would **green-light the report, but not the outline unchanged**. The proposed arc is strong:
+
+> external scaffolding optimization → recursive system modification → stability and drift → safety assurance → open research program
+
+The main weakness is that Section 2 currently mixes three different dimensions:
+
+1. **What changes:** model weights, harness code, memory, curriculum, evaluator, or optimizer.
+2. **How it changes:** gradient learning, program synthesis, evolutionary search, self-training, or formal proof.
+3. **What authorizes the change:** benchmark score, self-consistency, learned critic, symbolic verifier, or formal certificate.
+
+That mixing makes adjacent systems look like separate architectural families when they often differ along only one axis. AHE and Meta-Harness, for example, are also forms of meta-programming; LADDER is simultaneously curriculum generation and weight optimization; SAHOO is principally an empirical monitoring and acceptance layer rather than a self-improvement mechanism.
+
+The report will be substantially stronger if it presents a **theory of the RSI design space**, then locates each paper within it.
+
+# The central thesis I recommend
+
+The report should define RSI as **recursive closure over an improvement operator**, not merely as repeated self-training:
+
+[
+X_t =
+(\theta_t,; H_t,; M_t,; D_t,; V_t,; G_t)
+]
+
+where:
+
+* (\theta_t): model parameters
+* (H_t): execution harness, tools, control flow, and subagents
+* (M_t): persistent memory, context, and learned skills
+* (D_t): curriculum and accumulated experience
+* (V_t): evaluators, critics, and verifiers
+* (G_t): governance policy, permissions, invariants, and deployment controls
+
+An improvement cycle is:
+
+[
+\hat X_{t+1}
+============
+
+\mathcal I_t(X_t,\tau_t,\mathcal A_t),
+\qquad
+X_{t+1}
+=======
+
+\mathcal G_t(X_t,\hat X_{t+1})
+]
+
+Here (\mathcal I_t) proposes a modification using trajectories (\tau_t) and an archive (\mathcal A_t), while (\mathcal G_t) evaluates and either accepts, rejects, or partially merges the modification.
+
+The system becomes **recursively** self-improving when the accepted modification changes not just task performance, but some part of the future improvement process itself—such as (\mathcal I_t), (\mathcal G_t), the experience representation, the search procedure, or the set of editable components.
+
+This definition immediately resolves several ambiguities:
+
+* STOP improves an improver program while leaving the underlying language model fixed, and its authors explicitly distinguish it from full RSI. ([arXiv][1])
+* Meta-Harness searches over harness code using source, scores, and prior execution traces while keeping the model itself fixed. ([arXiv][2])
+* AHE also keeps the base model fixed but improves the observability and attribution structure surrounding harness edits. ([arXiv][3])
+* LADDER and both methods called TTRL update model parameters through reinforcement learning.
+* Darwin Gödel Machine, Gödel Agent, and Mendel Gödel Machine modify agent code or scaffolding in ways that alter subsequent self-modification behavior. ([arXiv][4])
+
+That is the conceptual spine the current outline is missing.
+
+# Four corrections before drafting
+
+## 1. Treat “model–harness coevolution” as the research hypothesis, not established history
+
+Your proposed inward/outward migration is compelling:
+
+* Frequently reused reasoning procedures may be **internalized** from traces, prompts, or skills into model parameters.
+* State, permissions, tools, episodic knowledge, auditing, and recovery mechanisms may be **externalized** into an increasingly capable harness.
+
+But the literature has not yet established this as a general law. Most existing systems optimize only one surface at a time:
+
+* Meta-Harness and AHE optimize the harness around a fixed model. ([arXiv][2])
+* LADDER and TTRL adapt weights while largely fixing the adaptation protocol. ([arXiv][5])
+* DGM and MGM modify agent implementations but do not jointly optimize a frontier model’s weights and harness as a coupled dynamical system. ([arXiv][4])
+
+Therefore, the report’s high-impact claim should be:
+
+> **The next RSI frontier is not more aggressive self-editing of one component. It is controlled coevolution across model weights, harness structure, experience, and verification—with explicit measurement of where capabilities migrate.**
+
+That claim is novel enough to organize a research agenda rather than merely summarize existing work.
+
+## 2. Separate the two different “TTRL” methods
+
+The current outline risks conflating two papers using the same acronym.
+
+**LADDER-TTRL** generates a tree of variants for a particular test problem, performs problem-specific GRPO updates, answers the problem, and then rolls back the parameters. This is the method involving difficulty-driven variant trees. ([arXiv][5])
+
+**PRIME-RL TTRL** instead performs RL on unlabeled test data using repeated samples and majority-vote pseudo-labels to construct rewards. It does not depend on recursive difficulty decomposition. ([arXiv][6])
+
+They should appear as two distinct cells:
+
+| Method        | Experience generation                | Reward source                    | Adaptation scope                    |
+| ------------- | ------------------------------------ | -------------------------------- | ----------------------------------- |
+| LADDER-TTRL   | Recursive problem variants           | Numerical or rule-based verifier | Per-problem weight adaptation       |
+| PRIME-RL TTRL | Repeated samples on unlabeled inputs | Majority-vote pseudo-label       | Test-distribution weight adaptation |
+
+This distinction is important because they fail differently. LADDER-TTRL depends on valid difficulty gradients and reliable problem verification. PRIME-RL TTRL depends on consensus being sufficiently informative and risks amplifying systematic majority errors.
+
+## 3. Do not equate reasoning correctness with alignment
+
+NSRSA is useful, but it belongs under **epistemic stability and training-data quality**, not broad alignment. Its reported experiment concerns Qwen3-4B-Thinking on GSM8K over five self-training iterations; it filters generated traces by answer correctness, parseable arithmetic, variable consistency, and domain constraints. ([arXiv][7])
+
+That does not establish preservation of:
+
+* user intent,
+* corrigibility,
+* honesty,
+* non-deception,
+* distributional safety,
+* tool-use policy,
+* or long-horizon goal stability.
+
+Likewise, SAHOO’s Goal Drift Index is a learned multi-signal monitor combined with constraint checks and regression-risk measurements. It is useful as an **empirical alarm and acceptance policy**, but it is not a proof that the goal remains invariant. ([arXiv][8])
+
+I would therefore rename the third section:
+
+> **Recursive Dynamics: Epistemic Drift, Behavioral Regression, and Objective Instability**
+
+Within it, distinguish:
+
+[
+\text{recursive failure}
+========================
+
+\begin{cases}
+\text{epistemic drift} & \text{incorrect beliefs or reasoning propagate}\
+\text{distribution collapse} & \text{diversity and tail coverage disappear}\
+\text{capability regression} & \text{previous skills are forgotten}\
+\text{objective drift} & \text{optimization target changes}\
+\text{evaluator drift} & \text{acceptance mechanism becomes unreliable}\
+\text{search collapse} & \text{lineages converge prematurely}
+\end{cases}
+]
+
+The broader model-collapse literature should anchor this section: indiscriminate recursive training on generated data can progressively lose support from the original data distribution. ([Nature][9])
+
+## 4. Present the classification–verification result as conditional formal theory
+
+Scrivens’ framework is worth including, but the current wording gives it too much epistemic certainty.
+
+The paper proves its classification ceiling under a specific sequential model involving:
+
+* continuous parameter mutations,
+* overlapping safe and unsafe distributions,
+* finite Rényi divergence or related regularity,
+* a particular notion of bounded cumulative risk,
+* and a gate whose decision is modeled as acceptance of parameter mutations.
+
+The paper itself identifies settings in which the result does not directly apply, including perfectly separable distributions, discrete parameter spaces, small pre-verified modification sets, and short finite deployments. ([arXiv][10])
+
+The Lipschitz construction certifies a **defined property over a defined operating domain**:
+
+[
+|\theta-\theta_0| < \frac{m}{L},
+]
+
+where (m) is a safety margin and (L) bounds behavioral variation under parameter changes. This certifies preservation of the encoded property inside that region; it does not, by itself, certify semantic alignment or all desirable behavior. ([arXiv][10])
+
+At the reported GPT-2 LoRA scale, zero false acceptance is explicitly conditional on the estimated Lipschitz constant being a valid upper bound; the paper reports unconditional analytical guarantees only at smaller parameter dimensions. ([arXiv][10])
+
+So Section 4 should not be titled as though a general solution has been reached. Better:
+
+> **Assurance for Recursive Modification: Statistical Gates, Formal Certificates, and Their Limits**
+
+Scrivens then becomes a provocative formal case study rather than the final mathematical foundation of the agenda.
+
+# Revised five-section structure
+
+## 1. What Counts as Recursive Self-Improvement?
+
+### Narrative purpose
+
+Move from an imprecise spectrum of “self-correction” methods to an operational definition of RSI based on **recursive closure**.
+
+### Core material
+
+Introduce:
+
+* the system state (X_t=(\theta,H,M,D,V,G));
+* the proposal–evaluation–acceptance cycle;
+* editable versus immutable components;
+* direct task improvement versus improvement of the improvement operator;
+* local, distributional, and open-ended improvement;
+* model–harness coevolution as the report’s central hypothesis.
+
+Use a hierarchy such as:
+
+| Level | System property                                                        |
+| ----- | ---------------------------------------------------------------------- |
+| 0     | More inference-time sampling without persistent change                 |
+| 1     | Output refinement or episodic memory update                            |
+| 2     | Persistent prompt, skill, or context optimization                      |
+| 3     | Harness or agent-code self-modification                                |
+| 4     | Weight-level self-training                                             |
+| 5     | Coupled model–harness coevolution                                      |
+| 6     | Recursive modification of proposer, evaluator, or governance mechanism |
+
+The original Gödel Machine belongs here as the theoretical ideal: self-rewrite is authorized by a proof that it improves a formalized utility objective. ([arXiv][11]) Modern systems generally replace proof search with empirical evaluation, search archives, or learned critics.
+
+### Central research proposition
+
+> RSI should be measured by the depth and breadth of recursive closure, not simply by the number of optimization rounds.
+
+---
+
+## 2. The Design Space of Self-Improving Systems
+
+Instead of categorizing papers only by names, use a three-axis taxonomy.
+
+### Axis A: Editable substrate
+
+* context, memory, and skills;
+* prompts and policies;
+* tools and middleware;
+* harness control flow;
+* agent source code;
+* curricula and generated experience;
+* model weights;
+* evaluator or verifier;
+* improvement algorithm itself.
+
+### Axis B: Update mechanism
+
+* generate-and-filter self-training;
+* SFT, DPO, or online RL;
+* black-box optimization;
+* program synthesis;
+* evolutionary and population search;
+* archive-based open-ended search;
+* cross-lineage recombination;
+* proof search or certified parameter updates.
+
+### Axis C: Acceptance evidence
+
+* training or benchmark score;
+* held-out transfer;
+* execution traces;
+* counterfactual attribution;
+* majority consensus;
+* symbolic correctness;
+* learned safety monitor;
+* executable test;
+* formal certificate.
+
+Then position the main works:
+
+* **STOP:** recursive improvement of an improver program, with a frozen LM. ([arXiv][1])
+* **Gödel Agent:** unconstrained agent-logic modification directed by a high-level objective. ([Hugging Face][12])
+* **ADAS:** meta-agent search over code-defined agentic systems. ([arXiv][13])
+* **DGM:** archive-based open-ended evolution of self-modifying coding agents. ([arXiv][4])
+* **MGM:** reaction-norm mutation and cross-lineage hybridization using comparative evidence; this is an August 7, 2026 preprint and should be presented as very recent evidence rather than settled consensus. ([arXiv][14])
+* **Meta-Harness:** filesystem-mediated search over harness code with access to complete prior source, scores, and traces. ([arXiv][2])
+* **AHE:** observability-driven harness evolution with component, experience, and decision observability. ([arXiv][3])
+* **LADDER:** self-generated difficulty curricula followed by verifier-guided GRPO. ([arXiv][5])
+* **LADDER-TTRL and PRIME-TTRL:** two distinct forms of test-time parameter adaptation. ([arXiv][5])
+* **NSRSA:** verifier-gated recursive self-training.
+* **SAHOO:** drift monitoring and multi-objective acceptance control.
+* **Scrivens:** formal analysis of sequential statistical gating versus property verification.
+
+This produces an actual map of the field.
+
+---
+
+## 3. Recursive Dynamics: Why Improvement Does Not Automatically Compound
+
+This section should become the analytical center of the report.
+
+### 3.1 Credit assignment across system components
+
+When performance changes after editing prompts, tools, memory, retry policies, and model weights simultaneously, which edit caused the result?
+
+AHE’s falsifiable edit predictions are directly relevant, but the agenda should go further:
+
+[
+\Delta U
+========
+
+\Delta U_\theta
++
+\Delta U_H
++
+\Delta U_M
++
+\sum_{i\neq j}\Delta U_{i,j}
++
+\epsilon
+]
+
+The interaction terms matter. A model update may improve performance only under the old harness; a harness update may become obsolete once a skill is internalized.
+
+### 3.2 Capability internalization and externalization
+
+Frame this as an experimentally testable migration process:
+
+[
+H_t
+\overset{\text{generate/search}}{\longrightarrow}
+\mathcal T_t
+\overset{\text{verify}}{\longrightarrow}
+\mathcal T_t^{+}
+\overset{\text{distill}}{\longrightarrow}
+\theta_{t+1}
+]
+
+After distillation, re-optimize the harness around (\theta_{t+1}):
+
+[
+H_{t+1}
+=======
+
+\operatorname{HarnessSearch}(\theta_{t+1},H_t).
+]
+
+This directly incorporates your earlier idea of using large test-time search or MCTS to produce successful trajectories and reusable skills, distilling those into the base model, and then allowing the harness to move upward to harder orchestration problems.
+
+The key empirical question is not only whether accuracy rises, but whether:
+
+* the distilled model needs fewer search nodes;
+* the harness becomes smaller or more abstract;
+* the learned skill transfers to unseen environments;
+* behavior remains recoverable and auditable;
+* the next harness-search round discovers qualitatively new strategies.
+
+### 3.3 Failure modes
+
+Cover:
+
+* model collapse;
+* verifier exploitation;
+* evaluator overfitting;
+* catastrophic forgetting;
+* benchmark contamination;
+* lineage monoculture;
+* objective proxy drift;
+* deceptive compliance;
+* compounding infrastructure bugs;
+* loss of rollback compatibility.
+
+NSRSA should appear as one narrow intervention against epistemic contamination in verifiable arithmetic reasoning, not as a complete alignment method. ([arXiv][7]) SAHOO should appear as a monitoring and regression-control approach, with the additional agenda question: **what happens when the improving system also learns to model or manipulate the monitor?**
+
+---
+
+## 4. Assurance for Recursive Modification
+
+Organize this as a layered assurance stack rather than a binary choice between classifiers and formal verification.
+
+### Layer 1: Empirical evaluation
+
+* immutable holdouts;
+* temporal holdouts;
+* cross-domain transfer;
+* adversarial task generation;
+* canary capabilities;
+* regression suites;
+* compute-normalized comparisons.
+
+### Layer 2: Causal and differential testing
+
+* edit-level predictions;
+* paired trajectory comparison;
+* component ablations;
+* counterfactual replay;
+* lineage comparison;
+* metamorphic tests.
+
+### Layer 3: Runtime containment
+
+* least-privilege tools;
+* immutable evaluator infrastructure;
+* network and filesystem isolation;
+* signed artifacts;
+* resource budgets;
+* transactional updates and rollback.
+
+### Layer 4: Property verification
+
+* type systems;
+* proof-carrying code;
+* model checking for harness control flow;
+* constrained APIs;
+* formally verified tool policies;
+* certified parameter regions for precisely specified properties.
+
+### Layer 5: Governance of the assurance system
+
+The evaluator, verifier, benchmark, and safety policy must themselves have update rules. This creates a central unresolved recursion:
+
+[
+\text{Who verifies the verifier update?}
+]
+
+The report should distinguish:
+
+* an **immutable root of trust**;
+* a verifier that may improve only through certified refinements;
+* a learned evaluator whose decisions are advisory;
+* and a proposer that is never permitted to directly rewrite its own acceptance criteria.
+
+Scrivens’ classification–verification dichotomy fits here, but explicitly within its formal assumptions and specified property domain. ([arXiv][10])
+
+---
+
+## 5. A Falsifiable RSI Research Program
+
+This section should replace a generic “future directions” list with concrete experiments.
+
+### Research Thrust A: Model–harness coevolution
+
+Compare four equal-compute conditions:
+
+1. fixed model, optimized harness;
+2. optimized model, fixed harness;
+3. alternating model and harness optimization;
+4. jointly proposed model–harness modifications.
+
+Primary hypothesis:
+
+[
+U_{\text{alternating}}
+
+>
+
+\max(U_{\text{harness-only}},U_{\text{weights-only}})
+]
+
+on held-out tasks after controlling for rollout, training, and evaluation compute.
+
+The stronger test is whether the advantage persists after transferring to new task families.
+
+### Research Thrust B: Search-to-skill internalization
+
+Run:
+
+[
+\text{large search}
+\rightarrow
+\text{verified trace extraction}
+\rightarrow
+\text{skill abstraction}
+\rightarrow
+\text{SFT/RL distillation}
+\rightarrow
+\text{reduced-search evaluation}.
+]
+
+Compare distilling:
+
+* raw successful traces;
+* cleaned traces without search metadata;
+* explicit reusable skills;
+* failure-and-recovery pairs;
+* contrastive successful versus failed branches.
+
+Measure whether the learned capability survives removal of the original harness hints.
+
+### Research Thrust C: Recursive-depth stability
+
+Run 20–50 improvement generations rather than reporting only the best endpoint.
+
+Evaluate:
+
+* held-out capability;
+* worst-case regression;
+* output and lineage diversity;
+* calibration;
+* evaluator disagreement;
+* safety-constraint violations;
+* distance from human or external data anchors.
+
+Define **stable recursive depth**:
+
+[
+D_{\text{stable}}
+=================
+
+\max d
+\quad\text{s.t.}\quad
+U_{t+1}>U_t
+\land
+R_{t+1}\leq R_{\max}
+\quad
+\forall t<d.
+]
+
+This is more informative than “the system improved after (k) iterations.”
+
+### Research Thrust D: Archive diversity and comparative evolution
+
+Test whether DGM-style archive maintenance and MGM-style cross-lineage evidence improve:
+
+* improvement velocity;
+* transfer;
+* robustness;
+* diversity;
+* and recovery from locally attractive but globally unproductive branches.
+
+A particularly important metric is **metaproductivity**: whether an intermediate agent is good at producing better descendants, rather than merely scoring well itself.
+
+### Research Thrust E: Gate comparison under adaptive pressure
+
+Compare:
+
+* learned classifier gate;
+* ensemble classifier;
+* behavioral regression suite;
+* symbolic or executable verifier;
+* certified parameter-region verifier;
+* hybrid gate.
+
+The proposer should be adaptive and receive partial feedback about rejections. Measure:
+
+[
+\text{accepted utility},
+\quad
+\text{false acceptance},
+\quad
+\text{false rejection},
+\quad
+\text{coverage},
+\quad
+\text{verification cost},
+\quad
+\text{cumulative risk}.
+]
+
+This converts the formal classification–verification discussion into an empirical research question rather than accepting one preprint’s model as definitive.
+
+# Recommended report title
+
+## **From Self-Editing Agents to Verified Coevolution: A Research Agenda for Recursive Self-Improving Model–Harness Systems**
+
+A slightly more assertive alternative:
+
+## **Beyond Self-Training: Recursive Closure, Model–Harness Coevolution, and the Assurance of Self-Improving AI**
+
+# The report’s one-sentence contribution
+
+> Existing work demonstrates isolated self-improvement of agent code, harnesses, curricula, and model weights; the missing research program is to understand whether these components can coevolve through recursively closed yet independently governed improvement loops that produce sustained, transferable capability gains without evaluator corruption, diversity collapse, or unbounded cumulative risk.
+
+That framing preserves the five-section narrative but upgrades it from a survey organized around recent paper names into a cohesive and falsifiable RSI agenda.
+
+[1]: https://arxiv.org/abs/2310.02304?utm_source=chatgpt.com "Self-Taught Optimizer (STOP): Recursively Self-Improving Code Generation"
+[2]: https://arxiv.org/abs/2603.28052?utm_source=chatgpt.com "Meta-Harness: End-to-End Optimization of Model Harnesses"
+[3]: https://arxiv.org/abs/2604.25850?utm_source=chatgpt.com "Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses"
+[4]: https://arxiv.org/abs/2505.22954?utm_source=chatgpt.com "Darwin Godel Machine: Open-Ended Evolution of Self-Improving Agents"
+[5]: https://arxiv.org/html/2503.00735v3 "LADDER: Self-Improving LLMs Through Recursive Problem Decomposition"
+[6]: https://arxiv.org/html/2504.16084 "TTRL: Test-Time Reinforcement Learning"
+[7]: https://arxiv.org/html/2603.21558v1 "Stabilizing Iterative Self-Training with Verified Reasoning via Symbolic Recursive Self-Alignment"
+[8]: https://arxiv.org/abs/2603.06333?utm_source=chatgpt.com "SAHOO: Safeguarded Alignment for High-Order Optimization Objectives in Recursive Self-Improvement"
+[9]: https://www.nature.com/articles/s41586-024-07566-y?utm_source=chatgpt.com "AI models collapse when trained on recursively generated ..."
+[10]: https://arxiv.org/html/2603.28650v1 "Information-Theoretic Limits of Safety Verificationfor Self-Improving Systems"
+[11]: https://arxiv.org/abs/cs/0309048?utm_source=chatgpt.com "Goedel Machines: Self-Referential Universal Problem Solvers Making Provably Optimal Self-Improvements"
+[12]: https://huggingface.co/papers/2410.04444 "Paper page - Gödel Agent: A Self-Referential Agent Framework for Recursive Self-Improvement"
+[13]: https://arxiv.org/abs/2408.08435?utm_source=chatgpt.com "Automated Design of Agentic Systems"
+[14]: https://arxiv.org/html/2608.07645v1 "Mendel Gödel Machine:Recursive Self-Improving Coding Agentsvia Comparative Evolution"
+ -> proceed to capture the research agenda and plan out how we could build it up

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/JayDuji7JJCNZn1gU5tupyu6XRU</id>
+  <title>arXiv Query: search_query=&amp;id_list=2410.04444v4&amp;start=0&amp;max_results=10</title>
+  <updated>2026-08-15T05:47:46Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2410.04444v4" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2410.04444v4</id>
+    <title>Gödel Agent: A Self-Referential Agent Framework for Recursive Self-Improvement</title>
+    <updated>2025-05-31T07:33:17Z</updated>
+    <link href="https://arxiv.org/abs/2410.04444v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.04444v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The rapid advancement of large language models (LLMs) has significantly enhanced the capabilities of AI-driven agents across various tasks. However, existing agentic systems, whether based on fixed pipeline algorithms or pre-defined meta-learning frameworks, cannot search the whole agent design space due to the restriction of human-designed components, and thus might miss the globally optimal agent design. In this paper, we introduce Gödel Agent, a self-evolving framework inspired by the Gödel machine, enabling agents to recursively improve themselves without relying on predefined routines or fixed optimization algorithms. Gödel Agent leverages LLMs to dynamically modify its own logic and behavior, guided solely by high-level objectives through prompting. Experimental results on mathematical reasoning and complex agent tasks demonstrate that implementation of Gödel Agent can achieve continuous self-improvement, surpassing manually crafted agents in performance, efficiency, and generalizability.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-10-06T10:49:40Z</published>
+    <arxiv:comment>ACL 2025 main. The code can be found at https://github.com/Arvid-pku/Godel_Agent</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Xunjian Yin</name>
+    </author>
+    <author>
+      <name>Xinyi Wang</name>
+    </author>
+    <author>
+      <name>Liangming Pan</name>
+    </author>
+    <author>
+      <name>Li Lin</name>
+    </author>
+    <author>
+      <name>Xiaojun Wan</name>
+    </author>
+    <author>
+      <name>William Yang Wang</name>
+    </author>
+  </entry>
+</feed>

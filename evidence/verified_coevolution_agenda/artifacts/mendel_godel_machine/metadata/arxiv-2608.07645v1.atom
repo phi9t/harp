@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/PgdQgbLMzdX8QFoVuy1zeZU49PI</id>
+  <title>arXiv Query: search_query=&amp;id_list=2608.07645v1&amp;start=0&amp;max_results=10</title>
+  <updated>2026-08-15T05:47:47Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2608.07645v1" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2608.07645v1</id>
+    <title>Mendel Gödel Machine: Recursive Self-Improving Coding Agents via Comparative Evolution</title>
+    <updated>2026-08-07T16:46:44Z</updated>
+    <link href="https://arxiv.org/abs/2608.07645v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.07645v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Self-improving coding agents that iteratively rewrite their own source code have demonstrated impressive performance on coding tasks. However, existing solutions generally derive self-modification from a single failure trajectory at a time, overlooking rich comparative signals available in the agent's expanding archive of past attempts. According to Mendelian principles of controlled inheritance, we introduce Mendel Gödel Machine (MGM). In addition to the general single-trajectory clonal mutation, MGM includes two new types of self-modification that better utilizes evidences accumulated: the reaction-norm mutation edits an agent based on its trajectories on multiple tasks simultaneously, and the cross-lineage hybridization edits an agent using the trajectory of a reference agent from another lineage on the same task. Under an additive fitness landscape model, we prove theoretically and demonstrate via controlled surrogate simulation that the new strategies facilitate a faster and better convergence over single-trajectory baselines. Experiments on SWE-bench and Polyglot confirm MGM's consistent improvement in performance, efficiency, and generalizability.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-07T16:46:44Z</published>
+    <arxiv:comment>Project Page at https://reallcz.github.io/MGM; Code at https://github.com/RealLcz/MGM</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Changzhi Liu</name>
+    </author>
+    <author>
+      <name>Yilun Liu</name>
+    </author>
+    <author>
+      <name>Sikuan Yan</name>
+    </author>
+    <author>
+      <name>Volker Tresp</name>
+    </author>
+    <author>
+      <name>Yunpu Ma</name>
+    </author>
+  </entry>
+</feed>
