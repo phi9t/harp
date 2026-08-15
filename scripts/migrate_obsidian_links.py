@@ -128,9 +128,15 @@ def resolve_markdown_target(
         raise MigrationError(f"{source}: link escapes repository: {destination}")
     if target_path.is_dir():
         readme = target_path / "README.md"
-        if not is_regular_non_symlink_file(readme):
+        provenance = target_path / "PROVENANCE.md"
+        if is_regular_non_symlink_file(readme):
+            target_path = readme
+        elif is_relative_to(target_path, root_path / "evidence") and is_regular_non_symlink_file(
+            provenance
+        ):
+            target_path = provenance
+        else:
             raise MigrationError(f"{source}: missing local link target: {destination}")
-        target_path = readme
     if not target_path.is_file():
         raise MigrationError(f"{source}: missing local link target: {destination}")
 

@@ -169,6 +169,36 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             migrated, "[[labs/sicp-evaluator/README|SICP evaluator crate]]\n"
         )
 
+    def test_migrates_evidence_directory_to_its_regular_provenance(self) -> None:
+        bundle = self.evidence / "sicp"
+        bundle.mkdir()
+        (bundle / "PROVENANCE.md").write_text("captured source\n", encoding="utf-8")
+        source = self.write_note(
+            "rsi/sicp/a.md", "[evidence/sicp/](../../../evidence/sicp)\n"
+        )
+
+        migrated = migration.migrate_text(
+            source,
+            source.read_text(encoding="utf-8"),
+            self.repo_root,
+        )
+
+        self.assertEqual(migrated, "[[evidence/sicp/PROVENANCE|evidence/sicp/]]\n")
+
+    def test_rejects_evidence_directory_without_safe_landing_file(self) -> None:
+        bundle = self.evidence / "without-landing-file"
+        bundle.mkdir()
+        source = self.write_note(
+            "a.md", "[evidence bundle](../evidence/without-landing-file)\n"
+        )
+
+        with self.assertRaisesRegex(migration.MigrationError, "missing local link target"):
+            migration.migrate_text(
+                source,
+                source.read_text(encoding="utf-8"),
+                self.repo_root,
+            )
+
     def test_rejects_directory_without_regular_readme(self) -> None:
         directory = self.repo_root / "labs" / "without-readme"
         directory.mkdir(parents=True)
