@@ -11,7 +11,8 @@ decompositions.
 
 namespace MathematicalFoundations.Orthogonality
 
-/-- The projection of `x` onto the line spanned by a nonzero finite real vector `u`. -/
+/-- A total finite real-vector line-projection expression.  Nonzero `u` is required only by the
+orthogonality and nondegeneracy results that use this expression. -/
 def lineProjection {n : ℕ} (u x : Fin n → ℝ) : Fin n → ℝ :=
   (⟪x, u⟫_ℝ / ⟪u, u⟫_ℝ) • u
 
