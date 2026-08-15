@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import stat
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -125,6 +126,11 @@ def resolve_markdown_target(
 
     if not is_relative_to(target_path, root_path):
         raise MigrationError(f"{source}: link escapes repository: {destination}")
+    if target_path.is_dir():
+        readme = target_path / "README.md"
+        if not is_regular_non_symlink_file(readme):
+            raise MigrationError(f"{source}: missing local link target: {destination}")
+        target_path = readme
     if not target_path.is_file():
         raise MigrationError(f"{source}: missing local link target: {destination}")
 
@@ -391,6 +397,13 @@ def is_relative_to(path: Path, parent: Path) -> bool:
     except ValueError:
         return False
     return True
+
+
+def is_regular_non_symlink_file(path: Path) -> bool:
+    try:
+        return stat.S_ISREG(path.lstat().st_mode)
+    except FileNotFoundError:
+        return False
 
 
 if __name__ == "__main__":

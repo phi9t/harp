@@ -150,6 +150,52 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
 
         self.assertEqual(migrated, "[[knowledge/b#Result boundary|Result]]\n")
 
+    def test_migrates_safe_directory_target_to_its_regular_readme(self) -> None:
+        crate = self.repo_root / "labs" / "sicp-evaluator"
+        crate.mkdir(parents=True)
+        (crate / "README.md").write_text("# SICP evaluator\n", encoding="utf-8")
+        source = self.write_note(
+            "rsi/sicp/course/seminars/a.md",
+            "[SICP evaluator crate](../../../../../labs/sicp-evaluator)\n",
+        )
+
+        migrated = migration.migrate_text(
+            source,
+            source.read_text(encoding="utf-8"),
+            self.repo_root,
+        )
+
+        self.assertEqual(
+            migrated, "[[labs/sicp-evaluator/README|SICP evaluator crate]]\n"
+        )
+
+    def test_rejects_directory_without_regular_readme(self) -> None:
+        directory = self.repo_root / "labs" / "without-readme"
+        directory.mkdir(parents=True)
+        source = self.write_note("a.md", "[Directory](../labs/without-readme)\n")
+
+        with self.assertRaisesRegex(migration.MigrationError, "missing local link target"):
+            migration.migrate_text(
+                source,
+                source.read_text(encoding="utf-8"),
+                self.repo_root,
+            )
+
+    def test_rejects_directory_with_symlinked_readme(self) -> None:
+        directory = self.repo_root / "labs" / "symlinked-readme"
+        directory.mkdir(parents=True)
+        target = self.repo_root / "README.md"
+        target.write_text("# Outside directory\n", encoding="utf-8")
+        (directory / "README.md").symlink_to(target)
+        source = self.write_note("a.md", "[Directory](../labs/symlinked-readme)\n")
+
+        with self.assertRaisesRegex(migration.MigrationError, "missing local link target"):
+            migration.migrate_text(
+                source,
+                source.read_text(encoding="utf-8"),
+                self.repo_root,
+            )
+
     def test_discovery_excludes_captured_and_local_investigation_markdown(self) -> None:
         source = self.write_note("a.md", "[Result](b.md)\n")
         local_investigation = self.write_note(
