@@ -50,11 +50,24 @@ fn formalization_lean_sources(root: &Path) -> Vec<std::path::PathBuf> {
 }
 
 fn contains_nonportable_path_reference(source: &str) -> bool {
-    const UNIX_PATH_PREFIXES: [&str; 6] = ["/Users", "/private", "/tmp", "/home", "~", "file://"];
+    source.as_bytes().iter().enumerate().any(|(index, byte)| {
+        if *byte != b'/' {
+            return false;
+        }
 
-    UNIX_PATH_PREFIXES
-        .iter()
-        .any(|prefix| source.contains(prefix))
+        let starts_token = index == 0
+            || matches!(
+                source.as_bytes()[index - 1],
+                b' ' | b'\n' | b'\r' | b'\t' | b'\'' | b'"' | b'(' | b'[' | b'{' | b'='
+            );
+        let starts_component = source
+            .as_bytes()
+            .get(index + 1)
+            .is_some_and(u8::is_ascii_alphanumeric);
+
+        starts_token && starts_component
+    }) || source.contains('~')
+        || source.contains("file://")
         || source.as_bytes().windows(3).any(|window| {
             window[0].is_ascii_alphabetic()
                 && window[1] == b':'
@@ -62,6 +75,33 @@ fn contains_nonportable_path_reference(source: &str) -> bool {
         })
         || source.contains("\\\\")
         || source.starts_with("//")
+}
+
+#[test]
+fn detects_nonportable_path_references_without_rejecting_math_syntax() {
+    for path in [
+        "/opt/harp/input",
+        "/var/tmp/input",
+        "/Volumes/data/input",
+        "/usr/local/input",
+        "\"/private/tmp/input\"",
+        "~/input",
+        "file:///tmp/input",
+        "C:\\input",
+        "\\\\server\\share",
+    ] {
+        assert!(
+            contains_nonportable_path_reference(path),
+            "{path} must be rejected as a nonportable path reference"
+        );
+    }
+
+    for source in ["a / b", "Corollary/application", "/- Lean doc comment -/"] {
+        assert!(
+            !contains_nonportable_path_reference(source),
+            "{source} is syntax, not a nonportable path reference"
+        );
+    }
 }
 
 fn fixture() -> TempDir {
@@ -1535,6 +1575,10 @@ fn compiles_the_mathematical_foundations_formalization_map() {
     assert_eq!(
         inventory_set, declared_theorems,
         "formalization inventory must exactly match the compiled Lean manifest"
+    );
+    assert_eq!(
+        inventory_identifiers, manifest_entries,
+        "formalization inventory must preserve the exact Lean manifest ordering"
     );
 
     assert!(
