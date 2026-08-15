@@ -109,6 +109,39 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             "## Local anchor\n",
         )
 
+    def test_migrates_links_inside_details_but_preserves_fenced_code(self) -> None:
+        source = self.write_note(
+            "a.md",
+            "<details>\n"
+            "<summary>Source notes</summary>\n"
+            "\n"
+            "[Result](b.md)\n"
+            "\n"
+            "```md\n"
+            "[Literal](b.md)\n"
+            "```\n"
+            "</details>\n",
+        )
+
+        migrated = migration.migrate_text(
+            source,
+            source.read_text(encoding="utf-8"),
+            self.repo_root,
+        )
+
+        self.assertEqual(
+            migrated,
+            "<details>\n"
+            "<summary>Source notes</summary>\n"
+            "\n"
+            "[[knowledge/b|Result]]\n"
+            "\n"
+            "```md\n"
+            "[Literal](b.md)\n"
+            "```\n"
+            "</details>\n",
+        )
+
     def test_rejects_missing_source_before_writing_any_file(self) -> None:
         source = self.write_note("a.md", "[Missing](missing.md)\n")
         original = source.read_text(encoding="utf-8")

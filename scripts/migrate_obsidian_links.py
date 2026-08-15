@@ -73,7 +73,6 @@ def scan_markdown_links(text: str) -> list[LinkSpan]:
     """Find Markdown links outside fenced code, inline code, and wiki links."""
     spans: list[LinkSpan] = []
     fence_marker: str | None = None
-    html_fold_depth = 0
     byte_offset = 0
 
     for line in text.splitlines(keepends=True):
@@ -87,9 +86,7 @@ def scan_markdown_links(text: str) -> list[LinkSpan]:
             byte_offset += len(line.encode("utf-8"))
             continue
 
-        if re.match(r"<details(?:\s|>)", stripped, flags=re.IGNORECASE):
-            html_fold_depth += 1
-        if fence_marker is None and html_fold_depth == 0:
+        if fence_marker is None:
             for match in LINK_PATTERN.finditer(line):
                 prefix = line[: match.start()]
                 if not inside_inline_code(prefix) and not inside_wiki_link(prefix):
@@ -102,8 +99,6 @@ def scan_markdown_links(text: str) -> list[LinkSpan]:
                             in_code=False,
                         )
                     )
-        if re.match(r"</details\s*>", stripped, flags=re.IGNORECASE):
-            html_fold_depth = max(0, html_fold_depth - 1)
         byte_offset += len(line.encode("utf-8"))
     return spans
 
