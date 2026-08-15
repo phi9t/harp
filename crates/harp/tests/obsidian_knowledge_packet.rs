@@ -357,7 +357,7 @@ fn validate_reader_claims(
             .into_iter()
             .next()
             .expect("one native reader claim");
-            if resolution.target != PathBuf::from("knowledge/darwinx/claim_evidence_ledger.md")
+            if resolution.target != Path::new("knowledge/darwinx/claim_evidence_ledger.md")
                 || resolution.requested_heading.as_deref() != Some(heading)
             {
                 return Err(format!(

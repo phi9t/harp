@@ -573,9 +573,7 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
             .extension()
             .and_then(|extension| extension.to_str())
             == Some("txt")
-            && !markdown_line_targets
-                .iter()
-                .any(|target| *target == native_target)
+            && !markdown_line_targets.contains(&native_target)
         {
             return Err(format!(
                 "{} native raw-text locator requires a matching conventional Markdown line locator",

@@ -464,8 +464,7 @@ fn native_reader_claim_ids(source: &Path, text: &str) -> Result<BTreeSet<String>
         let resolution = resolutions
             .first()
             .ok_or_else(|| format!("missing native claim resolution `{line}`"))?;
-        if resolution.target
-            != PathBuf::from("knowledge/crouzeix_conjecture/claim_evidence_ledger.md")
+        if resolution.target != Path::new("knowledge/crouzeix_conjecture/claim_evidence_ledger.md")
             || !resolution
                 .heading_id
                 .as_deref()
