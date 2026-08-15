@@ -6,15 +6,11 @@ make empirical claims about deep networks.
 `elan` is an external bootstrap prerequisite. Once it is installed, the pinned
 toolchain and Lake manifest define the reproducible Lean and mathlib inputs.
 
-After reviewing and explicitly approving the official installer, bootstrap
-elan with:
-
-```sh
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --no-modify-path
-```
-
-This command downloads and runs a remote installer and writes persistent
-tooling, so it must not be run without that approval.
+Bootstrap elan from the matching platform artifact on the official,
+versioned [elan v4.2.3 release](https://github.com/leanprover/elan/releases/tag/v4.2.3).
+Before extracting or executing it, verify the artifact against the published
+checksum or signature and obtain approval for the persistent tooling write; do
+not execute an artifact without published verification data.
 
 Run `../../scripts/check_training_dynamics_lean.sh` from this directory, or
 `mise run verify-lean` from the repository root.
