@@ -1,5 +1,6 @@
 use std::fs;
 
+use pulldown_cmark::{Event, Options, Parser, Tag};
 use tempfile::TempDir;
 
 use super::contracts::{
@@ -1318,6 +1319,174 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
         "duplicate or unexpected packet document ID"
     );
     assert_eq!(actual_document_ids, expected_document_ids);
+}
+
+#[test]
+fn compiles_the_training_dynamics_route_and_auxiliary_documents() {
+    let corpus = compile(workspace_root()).unwrap();
+
+    assert!(
+        corpus.reader_routes.iter().any(|route| {
+            route.route_id == "training-dynamics"
+                && route.label == "Training dynamics"
+                && route.canonical_markdown_path
+                    == "knowledge/training_dynamics/training_dynamics_index.md"
+        }),
+        "Training Dynamics must register the training-dynamics route at knowledge/training_dynamics/training_dynamics_index.md"
+    );
+
+    let expected_document_ids = BTreeSet::from([
+        "training-dynamics-index",
+        "training-dynamics-quadratic-gradient-descent",
+        "training-dynamics-momentum-and-acceleration",
+        "training-dynamics-stochastic-gradients",
+        "training-dynamics-diagnostics-and-transfer",
+        "training-dynamics-glossary",
+        "training-dynamics-source-registry",
+        "training-dynamics-claim-evidence-ledger",
+    ]);
+    let packet_documents = corpus
+        .documents
+        .iter()
+        .filter(|document| {
+            document
+                .canonical_markdown_path
+                .starts_with("knowledge/training_dynamics/")
+        })
+        .collect::<Vec<_>>();
+    let actual_document_ids = packet_documents
+        .iter()
+        .map(|document| document.concept_id.as_str())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        packet_documents.len(),
+        expected_document_ids.len(),
+        "Training Dynamics must compile exactly its eight registered packet documents"
+    );
+    assert_eq!(
+        actual_document_ids, expected_document_ids,
+        "Training Dynamics packet document IDs must match the published roster"
+    );
+
+    let root = workspace_root();
+    for (label, path) in [
+        (
+            "Training Dynamics packet",
+            root.join("knowledge/training_dynamics"),
+        ),
+        (
+            "Training Dynamics formalization",
+            root.join("formalization/training_dynamics"),
+        ),
+    ] {
+        assert_source_tree_has_no_local_references(&path, label);
+    }
+
+    for path in [
+        root.join("knowledge/training_dynamics/source_registry.md"),
+        root.join("knowledge/training_dynamics/claim_evidence_ledger.md"),
+    ] {
+        assert_packet_locator_links_are_self_contained(&path);
+    }
+}
+
+fn assert_source_tree_has_no_local_references(root: &Path, label: &str) {
+    assert!(
+        root.is_dir(),
+        "{label} source tree is missing: {}",
+        root.display()
+    );
+
+    let mut directories = vec![root.to_path_buf()];
+    let mut source_files = Vec::new();
+    while let Some(directory) = directories.pop() {
+        for entry in fs::read_dir(&directory).unwrap_or_else(|error| {
+            panic!(
+                "cannot read {label} source tree {}: {error}",
+                directory.display()
+            )
+        }) {
+            let entry = entry.unwrap_or_else(|error| {
+                panic!(
+                    "cannot inspect an entry in {label} source tree {}: {error}",
+                    directory.display()
+                )
+            });
+            let path = entry.path();
+            if path.is_dir() {
+                directories.push(path);
+            } else if path.is_file() {
+                source_files.push(path);
+            }
+        }
+    }
+
+    assert!(
+        !source_files.is_empty(),
+        "{label} source tree must contain readable source text: {}",
+        root.display()
+    );
+    for path in source_files {
+        let source = fs::read_to_string(&path).unwrap_or_else(|error| {
+            panic!(
+                "{label} source file must be UTF-8 text for the self-containment scan: {} ({error})",
+                path.display()
+            )
+        });
+        for forbidden in ["/Users/", "file://"] {
+            assert!(
+                !source.contains(forbidden),
+                "{label} source file {} contains forbidden local reference {forbidden:?}; use packet-local prose or a public source identity",
+                path.display()
+            );
+        }
+    }
+}
+
+fn assert_packet_locator_links_are_self_contained(path: &Path) {
+    let source = fs::read_to_string(path).unwrap_or_else(|error| {
+        panic!(
+            "Training Dynamics locator document is missing or unreadable: {} ({error})",
+            path.display()
+        )
+    });
+    let options = Options::ENABLE_TABLES | Options::ENABLE_FOOTNOTES;
+    for event in Parser::new_ext(&source, options) {
+        let Event::Start(Tag::Link { dest_url, .. }) = event else {
+            continue;
+        };
+        assert_packet_locator_destination(path, dest_url.as_ref());
+    }
+    for link in super::obsidian::parse_wiki_links(&source).unwrap_or_else(|error| {
+        panic!(
+            "Training Dynamics locator document has invalid Obsidian wikilink: {} ({error})",
+            path.display()
+        )
+    }) {
+        if let Some(destination) = link.path.as_deref() {
+            assert_packet_locator_destination(path, destination);
+        }
+    }
+}
+
+fn assert_packet_locator_destination(document: &Path, destination: &str) {
+    let destination = destination.split('#').next().unwrap_or("");
+    if destination.is_empty()
+        || destination.starts_with("https://")
+        || destination.starts_with("http://")
+        || destination.starts_with("doi:")
+        || destination.starts_with("arxiv:")
+    {
+        return;
+    }
+
+    let packet_local = destination.starts_with("knowledge/training_dynamics/")
+        || (!destination.contains('/') && destination.ends_with(".md"));
+    assert!(
+        packet_local,
+        "Training Dynamics locator in {} must target packet-local prose or a public source identity, not {destination:?}",
+        document.display()
+    );
 }
 
 #[test]
