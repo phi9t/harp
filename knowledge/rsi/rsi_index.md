@@ -103,6 +103,12 @@ the paper, dated project page, pinned repositories, and one local TRAE proposal
 iteration. Use it for implementation and evidence boundaries rather than
 treating the cleaned public code as a reproduction.
 
+[DarwinX population-selection deep dive](../darwinx/darwinx_index.md) audits
+bounded-regression promotion, archive and steering state, specialist
+recombination, benchmark accounting, and the missing equal-budget
+single-lineage comparison. Use it when the question is how a harness search
+retains measured gains rather than how it proposes an edit.
+
 The [SICP systems and evaluator course](sicp/sicp_index.md) is the nested
 foundations reader for executable semantics and system design. It preserves
 its twelve-seminar book order, exercise and dialogue contracts, evaluator
@@ -213,6 +219,9 @@ The supporting layer is separate from the reading spine:
 - [[source_registry]] and [[evidence_graph]] document the authoritative TSV registries under `sources/`.
 - The [harness benchmark field guide](../harness_benchmarks/harness_benchmark_field_guide.md)
   compares evaluator boundaries and preserves the complete MCE experiment protocol.
+- The [DarwinX packet](../darwinx/darwinx_index.md) separates reported
+  frozen-model harness gains from causal evidence for population search,
+  bounded-regression selection, and recombination.
 - The [evaluator-integrity benchmark suite](../evaluator_integrity/evaluator_integrity_benchmark_suite.md)
   compares GDPval, DeepSWE, FrontierCode 1.1, and SWE-bench Verified without
   collapsing their different access, contamination, and verifier boundaries

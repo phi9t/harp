@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/ZfozGyXg77wxElHFLN8A+cCaLzo</id>
+  <title>arXiv Query: search_query=&amp;id_list=2606.14249&amp;start=0&amp;max_results=10</title>
+  <updated>2026-08-15T03:10:16Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2606.14249" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2606.14249v3</id>
+    <title>HarnessX: A Composable, Adaptive, and Evolvable Agent Harness Foundry</title>
+    <updated>2026-07-23T03:12:37Z</updated>
+    <link href="https://arxiv.org/abs/2606.14249v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.14249v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>AI agent performance depends critically on the runtime harness, comprising the prompts, tools, memory, and control flow that mediate how a model observes, reasons, and acts. Yet today's harnesses remain largely hand-crafted and static: each new model or task still demands bespoke scaffolding, and the rich traces produced during execution are rarely distilled back into systematic improvement. We introduce HarnessX, a foundry for composable, adaptive, and evolvable agent harnesses. HarnessX assembles typed harness primitives via a substitution algebra, adapts them through AEGIS, a trace-driven multi-agent evolution engine grounded in an operational mirror between symbolic adaptation and reinforcement learning, and closes the harness-model loop by turning trajectories into both harness updates and model training signal. Across five benchmarks (ALFWorld, GAIA, WebShop, tau^3-Bench, and SWE-bench Verified), HarnessX yields an average gain of +14.5% (up to +44.0%), with gains largest where baselines are lowest. These results suggest that agent progress need not come from model scaling alone: composing and evolving runtime interfaces from execution feedback is an actionable and complementary lever. Project homepage: https://darwin-agent.github.io/HarnessX/.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-12T08:27:11Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Tingyang Chen</name>
+    </author>
+    <author>
+      <name>Shuo Lu</name>
+    </author>
+    <author>
+      <name>Kang Zhao</name>
+    </author>
+    <author>
+      <name>Weicheng Meng</name>
+    </author>
+    <author>
+      <name>Hanlin Teng</name>
+    </author>
+    <author>
+      <name>Tianhao Li</name>
+    </author>
+    <author>
+      <name>Chao Li</name>
+    </author>
+    <author>
+      <name>Xule Liu</name>
+    </author>
+    <author>
+      <name>Jian Liang</name>
+    </author>
+    <author>
+      <name>Zhizhong Zhang</name>
+    </author>
+    <author>
+      <name>Yuan Xie</name>
+    </author>
+    <author>
+      <name>Heng Qu</name>
+    </author>
+    <author>
+      <name>Kun Shao</name>
+    </author>
+    <author>
+      <name>Jian Luan</name>
+    </author>
+  </entry>
+</feed>

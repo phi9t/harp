@@ -20,7 +20,7 @@ candidate object, evaluator, visibility, repetitions, and resource envelope.
 
 | Tier | Authority in this packet | What it can support | What it cannot support |
 |---|---|---|---|
-| Paper-era author report | [MCE], Meta-Harness, DGM, Self-Harness, AHE, and Harness Disentangle papers captured below `evidence/weng/` | Described protocol, reported outcome, and stated limitation at the cited locator | An independent reproduction or a current implementation guarantee |
+| Paper-era author report | [MCE], Meta-Harness, DGM, Self-Harness, AHE, Harness Disentangle, and DarwinX papers captured below `evidence/` | Described protocol, reported outcome, and stated limitation at the cited locator | An independent reproduction or a current implementation guarantee |
 | Pinned implementation behavior | [META-HARNESS-REPO] and [DGM-REPO] snapshots | Present-day input, candidate, controller, and verifier interfaces | Historical run identity or reported score |
 | Immutable source receipt | `evidence/benchmarks/manifest.tsv` | URL, immutable identity, byte count, SHA-256, visibility, and license status | Permission to redistribute a remote-only task or evidence that it was run |
 | Harp-local evidence | Hash-verified MIT SWE-bench evaluator file and existing Meta-Harness interface experiment | Receipt correctness and the explicitly recorded local interface boundary | Benchmark quality, held-out score, paid-model result, or transfer claim |
@@ -45,6 +45,9 @@ independent attempts. The following matrix is a protocol map, not a ranking.
 | Meta-Harness TB2 | 30-task development subset or full 89 tasks | `Terminus2` subclass / harness code | Harbor runner, import gate, optional smoke task, task verifier | Search trials; optional five-trial final run | Development subset versus full dataset, not a secret-proof boundary | Candidate is imported by controller in released reference path | `extract-elf` is a cheap smoke contract, not a general score |
 | Darwin Gödel Machine (DGM) repository repair | SWE-bench Verified task / selected subsets | Agent repository and lineage patches | Dockerized patch application and SWE evaluator | Staged 10/60/200-task checks in reported/released paths | Search subsets and larger evaluation stages | Diagnostic path may inspect private test material in its setup | DGM demonstrates a more recursive mutable agent surface, but protected evaluator control remains external |
 | Darwin Gödel Machine (DGM) Polyglot | Language exercise, including C++ `all-your-base` | Same agent repository | Polyglot harness and container execution | Search/evaluation stages in paper and source | Separate Polyglot path; cross-benchmark transfer is author-reported | Candidate source and archive are visible to the improver | A language-exercise result is not interchangeable with repository repair |
+| DarwinX Terminal-Bench 2.1 | Same 89 verifier tasks | Proprietary Monet harness skill and code layers | Paper-described proposer, reasoned verifier, `avg@3` screens, `avg@5` confirmation | Official `avg@5`; task-budget timeouts fail | Same suite drives evolution and reporting | No public optimizer or Monet source located | Supports author-reported full-system harness gain, not operator attribution or reproduction |
+| DarwinX TerminalWorld | 94 train tasks and 41 disjoint held-out tasks | Same harness layers plus archive and merge selection | Adaptive training subsets; single-attempt held-out verifier | Held-out pass@1 | Report split is disjoint; same task family and environment | Raw archive and merge artifacts unavailable | Supports suggestive archive-diversity evidence; merged harness exceeds strongest specialist by one task |
+| DarwinX WebArena-Infinity | 300 synthetic intents and 1,260 real tasks | Browser skills, prompt policy, and harness code | LLM-judge screens; deterministic report verifiers; static plus LLM action audit | Audit-clean real-task pass@1 | Intents and reward source change; nine of ten report apps have synthetic counterparts | Real tasks and verifiers hidden from the reported evolution loop | Supports a large author-reported full-system gain and validity shift; every attempted merge is reverted |
 | Self-Harness | 64 task cases | Harness rules derived from observed weaknesses | Fixed base model and regression gate | Paper reports held-in/held-out split | 32 held-in / 32 held-out cases | Controlled by the reported protocol | Supports bounded harness editing, not a general successor-producer result |
 | Agentic Harness Engineering (AHE) | TB2 then SWE-bench Verified | Observable harness components | Three-role evidence loop and benchmark controller | Ten TB2 iterations; reported frozen transfer | Evolves on TB2, transfers without re-evolution to SWE-bench Verified | Evidence corpus is intentionally exposed to the evolver | Supports author-reported transfer under its fixed envelope; no local run |
 | Harness Disentangle | SWE-bench Verified, MCP-Atlas, SkillsBench | Skills; MCP also exposes prompt/memory surfaces | Benchmark-specific read-only tools/evaluators | Per-task means; SkillsBench reports five trials | Varies task solver and evolver separately | Skills are editable but evaluator files read-only | Separates update quality from benefit, activation, and adherence |
@@ -116,6 +119,24 @@ writing a useful update from a task agent loading and following it. SkillsBench
 is particularly valuable because it makes an apparently “good” skill
 measurable at two separate boundaries: load action formatting (activation) and
 following the loaded procedure (adherence).
+
+### DarwinX
+
+DarwinX keeps several harness lineages, applies a bounded-regression fitness
+gate, and requires higher-fidelity confirmation before a node may steer later
+search. Its paper reports four regimes: in-domain TB2.1 evolution, held-out
+TerminalWorld tasks, synthetic-to-real WAI transfer, and one-way TB2.1-to-SWE-V
+transfer.
+
+The benchmark evidence supports the full harness-selection system. It does not
+separate the archive, parent selector, reasoned verifier, regression gate,
+recombination operator, or adaptive inference effort. WAI's large result comes
+from one accepted lineage because every merge is reverted. TerminalWorld has
+the only positive merge result, one task beyond the strongest specialist.
+
+The complete [DarwinX packet](../darwinx/darwinx_index.md) records the paper's
+`avg@k`, inference-compute, action-policy, anti-cheating, and reproducibility
+boundaries.
 
 ## MCE experimental protocol
 
@@ -281,6 +302,7 @@ accepted children under the same protected envelope.
 
 - [Meta-Harness system reading](../rsi/systems/meta-harness.md)
 - [DGM system reading](../rsi/systems/dgm.md)
+- [DarwinX population-selection packet](../darwinx/darwinx_index.md)
 - [MCE system reading](../rsi/systems/mce.md)
 - [Harness Disentangle system reading](../rsi/systems/harness-disentangle.md)
 - [Evaluator integrity and promotion](../rsi/evaluator_integrity_and_promotion.md)

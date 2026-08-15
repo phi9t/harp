@@ -354,9 +354,9 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 385);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 396);
     assert_eq!(envelope["data"]["snapshot_files"], 105);
-    assert_eq!(envelope["data"]["binary_objects"], 56);
+    assert_eq!(envelope["data"]["binary_objects"], 58);
     assert_eq!(envelope["data"]["implementation_sources"], 11);
     assert_eq!(envelope["data"]["crouzeix_source_receipts"], 29);
     assert_eq!(envelope["data"]["crouzeix_verification_receipts"], 4);

@@ -15,6 +15,7 @@ attachments:
   - content/source_registry.md
   - content/claim_evidence_ledger.md
   - content/context_engineering_deep_dive.md
+  - knowledge/darwinx/darwinx_index.md
 claims: []
 human_review: null
 ---
@@ -62,6 +63,7 @@ Quality-diversity methods keep elites in behavior cells rather than collapsing t
 - ACE, §§2–4; MCE, §§2–3; and Meta-Harness, §§2–4, define context, skill, and end-to-end harness optimization variants: [ICLR 2026 poster 10008343](https://iclr.cc/virtual/2026/poster/10008343), [arXiv:2601.21557](https://arxiv.org/abs/2601.21557), [arXiv:2603.28052v1](https://arxiv.org/abs/2603.28052).
 - STOP, §2; ADAS, §§2–3; AFlow, §§2–3; Self-Harness, §§3–4; and AHE, §§2–4, define scaffolding, agent-system, workflow, regression-gated, and observability-driven search: [arXiv:2310.02304v3](https://arxiv.org/abs/2310.02304), [ICLR 2025 paper](https://proceedings.iclr.cc/paper_files/paper/2025/file/36b7acf6f6010652b3f2a433774a66fe-Paper-Conference.pdf), [OpenReview z5uVAKwmjf](https://openreview.net/forum?id=z5uVAKwmjf), [arXiv:2606.09498v1](https://arxiv.org/abs/2606.09498), [arXiv:2604.25850v4](https://arxiv.org/abs/2604.25850).
 - Darwin Gödel Machine, §§2–3, and Pugh et al., "Quality Diversity," §§2–3, define branching archives and diversity-preserving selection: [arXiv:2505.22954v3](https://arxiv.org/abs/2505.22954), [DOI:10.3389/frobt.2016.00040](https://doi.org/10.3389/frobt.2016.00040).
+- DarwinX, §§2–9 and Appendices A–E, defines bounded-regression promotion, steering confirmation, specialist retention, and attempted cross-lineage recombination over harness variants: [arXiv:2608.07545v1](https://arxiv.org/abs/2608.07545v1). The [DarwinX packet](../../darwinx/darwinx_index.md) audits the paper's system-level gains separately from its unisolated population operators.
 - FunSearch, Methods, and AlphaEvolve, §§2–3, define program mutation under executable evaluators: [Nature 625](https://www.nature.com/articles/s41586-023-06924-6), [arXiv:2506.13131v1](https://arxiv.org/abs/2506.13131).
 
 </details>
@@ -91,6 +93,16 @@ Self-Harness mines weaknesses, proposes harness changes, and applies regression 
 ### DGM
 
 DGM evolves coding-agent repositories and retains a branching archive rather than replacing one incumbent. This supports cumulative search and retrospective analysis. The foundation model and benchmark remain fixed external components.
+
+### DarwinX
+
+DarwinX keeps a tree of harness variants, screens children with net gain and
+bounded regression mass, requires higher-fidelity confirmation before a node
+may steer search, and attempts to merge specialists while preserving the union
+of their wins. Its reported matched-model and held-out gains support durable
+harness improvement. They do not isolate the archive, parent selector,
+regression gate, merge operator, or inference effort under one fixed search
+budget. See the [evidence-backed DarwinX packet](../../darwinx/darwinx_index.md).
 
 ## Failure modes and tradeoffs
 
