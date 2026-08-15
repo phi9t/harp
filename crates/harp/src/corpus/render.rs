@@ -1,13 +1,21 @@
 use pulldown_cmark::{html, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
 use super::contracts::{normalize_link_path, ValidatedCanonicalSource};
-use super::obsidian::{rewrite_wiki_links, WikiLink, WikiSubpath};
+use super::obsidian::{line_is_code_context, rewrite_wiki_links, WikiLink, WikiSubpath};
 use super::*;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) enum RouteTarget {
-    Reader(&'static str),
-    Chapter(String),
+    Reader {
+        route_id: &'static str,
+        document_id: String,
+        heading_ids: BTreeSet<String>,
+    },
+    Chapter {
+        concept_id: String,
+        document_id: String,
+        heading_ids: BTreeSet<String>,
+    },
     Document {
         document_id: String,
         heading_ids: BTreeSet<String>,
@@ -177,9 +185,21 @@ pub(super) fn route_targets(
         .iter()
         .filter(|entry| entry.coverage_depth == CoverageDepth::Chapter)
     {
+        let heading_ids = canonical_sources
+            .get(&chapter.canonical_markdown_path)
+            .map(|source| {
+                let body =
+                    markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
+                addressable_heading_ids(body, &source.path)
+            })
+            .unwrap_or_default();
         targets.insert(
             chapter.canonical_markdown_path.clone(),
-            RouteTarget::Chapter(chapter.concept_id.clone()),
+            RouteTarget::Chapter {
+                concept_id: chapter.concept_id.clone(),
+                document_id: chapter.concept_id.clone(),
+                heading_ids,
+            },
         );
     }
     for (document_id, path) in AUXILIARY_DOCUMENTS {
@@ -196,7 +216,24 @@ pub(super) fn route_targets(
             .or_insert_with(|| document_target(source_document_id(source), source));
     }
     for (route_id, _, path) in READER_ROUTES {
-        targets.insert(path.to_owned(), RouteTarget::Reader(route_id));
+        let target = if let Some(source) = canonical_sources.get(path) {
+            let body = markdown_body(&source.markdown, &source.path).unwrap_or(&source.markdown);
+            let document_id = source_document_id(source);
+            RouteTarget::Reader {
+                route_id,
+                document_id: (!document_id.is_empty())
+                    .then_some(document_id)
+                    .unwrap_or_else(|| (*route_id).to_owned()),
+                heading_ids: addressable_heading_ids(body, &source.path),
+            }
+        } else {
+            RouteTarget::Reader {
+                route_id,
+                document_id: (*route_id).to_owned(),
+                heading_ids: BTreeSet::new(),
+            }
+        };
+        targets.insert(path.to_owned(), target);
     }
     targets
 }
@@ -347,22 +384,35 @@ fn render_wiki_link(
     }
     let destination = if let Some(route) = route_targets.get(target_text.as_ref()) {
         match route {
-            RouteTarget::Reader(route_id) => format!("#{route_id}"),
-            RouteTarget::Chapter(concept_id) => format!("#chapters/{concept_id}"),
+            RouteTarget::Reader {
+                route_id,
+                document_id,
+                heading_ids,
+            } => route_destination(
+                format!("#{route_id}"),
+                document_id,
+                heading_ids,
+                link.subpath.as_ref(),
+            ),
+            RouteTarget::Chapter {
+                concept_id,
+                document_id,
+                heading_ids,
+            } => route_destination(
+                format!("#chapters/{concept_id}"),
+                document_id,
+                heading_ids,
+                link.subpath.as_ref(),
+            ),
             RouteTarget::Document {
                 document_id,
                 heading_ids,
-            } => match &link.subpath {
-                Some(WikiSubpath::Heading(heading)) => {
-                    let heading_id = slug(heading);
-                    if heading_ids.contains(&heading_id) {
-                        format!("#documents/{document_id}?section={heading_id}")
-                    } else {
-                        format!("#documents/{document_id}")
-                    }
-                }
-                _ => format!("#documents/{document_id}"),
-            },
+            } => route_destination(
+                format!("#documents/{document_id}"),
+                document_id,
+                heading_ids,
+                link.subpath.as_ref(),
+            ),
         }
     } else {
         let suffix = match link.subpath {
@@ -374,6 +424,22 @@ fn render_wiki_link(
         format!("../../{target_text}{suffix}")
     };
     format!("[{display}]({destination})")
+}
+
+fn route_destination(
+    default_destination: String,
+    document_id: &str,
+    heading_ids: &BTreeSet<String>,
+    subpath: Option<&WikiSubpath>,
+) -> String {
+    let Some(WikiSubpath::Heading(heading)) = subpath else {
+        return default_destination;
+    };
+    let heading_id = slug(heading);
+    heading_ids
+        .contains(&heading_id)
+        .then(|| format!("#documents/{document_id}?section={heading_id}"))
+        .unwrap_or(default_destination)
 }
 
 fn has_vault_root(path: &Path) -> bool {
@@ -424,8 +490,15 @@ struct EmbedFallback {
 fn preprocess_obsidian_callouts(markdown: &str) -> (String, Vec<ObsidianCallout>) {
     let mut output = String::with_capacity(markdown.len());
     let mut callouts = Vec::new();
+    let mut fence = None;
+    let mut inline_code = None;
     let mut lines = markdown.lines().peekable();
     while let Some(line) = lines.next() {
+        if line_is_code_context(line, &mut fence, &mut inline_code) {
+            output.push_str(line);
+            output.push('\n');
+            continue;
+        }
         let Some((callout_type, title)) = parse_callout_header(line) else {
             output.push_str(line);
             output.push('\n');
@@ -441,6 +514,7 @@ fn preprocess_obsidian_callouts(markdown: &str) -> (String, Vec<ObsidianCallout>
             output.push_str(&format!("HARP_OBSIDIAN_CALLOUT_TITLE_{index}\n\n"));
         }
         while let Some(body_line) = lines.next_if(|body_line| body_line.starts_with('>')) {
+            let _ = line_is_code_context(body_line, &mut fence, &mut inline_code);
             let body_line = body_line
                 .strip_prefix("> ")
                 .or_else(|| body_line.strip_prefix('>'))
@@ -503,7 +577,11 @@ pub(super) fn offline_link_destination(
         .map(|entry| {
             (
                 entry.canonical_markdown_path.clone(),
-                RouteTarget::Chapter(entry.concept_id.clone()),
+                RouteTarget::Chapter {
+                    concept_id: entry.concept_id.clone(),
+                    document_id: entry.concept_id.clone(),
+                    heading_ids: BTreeSet::new(),
+                },
             )
         })
         .collect();
@@ -547,19 +625,49 @@ pub(super) fn offline_link_destination_with_targets(
     let resolved = resolved.to_string_lossy();
     if let Some(target) = route_targets.get(resolved.as_ref()) {
         return match target {
-            RouteTarget::Reader(route_id) => format!("#{route_id}"),
-            RouteTarget::Chapter(concept_id) => format!("#chapters/{concept_id}"),
+            RouteTarget::Reader {
+                route_id,
+                document_id,
+                heading_ids,
+            } => markdown_route_destination(
+                format!("#{route_id}"),
+                document_id,
+                heading_ids,
+                fragment,
+            ),
+            RouteTarget::Chapter {
+                concept_id,
+                document_id,
+                heading_ids,
+            } => markdown_route_destination(
+                format!("#chapters/{concept_id}"),
+                document_id,
+                heading_ids,
+                fragment,
+            ),
             RouteTarget::Document {
                 document_id,
                 heading_ids,
-            } => fragment
-                .filter(|fragment| heading_ids.contains(*fragment))
-                .map_or_else(
-                    || format!("#documents/{document_id}"),
-                    |fragment| format!("#documents/{document_id}?section={fragment}"),
-                ),
+            } => markdown_route_destination(
+                format!("#documents/{document_id}"),
+                document_id,
+                heading_ids,
+                fragment,
+            ),
         };
     }
     let suffix = fragment.map_or(String::new(), |fragment| format!("#{fragment}"));
     format!("../../{resolved}{suffix}")
+}
+
+fn markdown_route_destination(
+    default_destination: String,
+    document_id: &str,
+    heading_ids: &BTreeSet<String>,
+    fragment: Option<&str>,
+) -> String {
+    fragment
+        .filter(|fragment| heading_ids.contains(*fragment))
+        .map(|fragment| format!("#documents/{document_id}?section={fragment}"))
+        .unwrap_or(default_destination)
 }

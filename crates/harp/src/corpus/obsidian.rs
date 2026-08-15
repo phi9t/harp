@@ -156,6 +156,37 @@ pub(super) fn rewrite_wiki_links(
     Ok(output)
 }
 
+pub(super) fn line_is_code_context(
+    line: &str,
+    fence: &mut Option<(u8, usize)>,
+    inline_code: &mut Option<usize>,
+) -> bool {
+    if inline_code.is_none() && update_fence(line, fence) {
+        return true;
+    }
+    if fence.is_some() {
+        return true;
+    }
+
+    let protected = inline_code.is_some();
+    let bytes = line.as_bytes();
+    let mut index = 0;
+    while index < bytes.len() {
+        if bytes[index] == b'`' {
+            let length = delimiter_length(bytes, index, b'`');
+            *inline_code = match *inline_code {
+                Some(open_length) if open_length == length => None,
+                Some(open_length) => Some(open_length),
+                None => Some(length),
+            };
+            index += length;
+        } else {
+            index += 1;
+        }
+    }
+    protected
+}
+
 fn update_fence(line: &str, fence: &mut Option<(u8, usize)>) -> bool {
     let trimmed = line.trim_start();
     let Some(delimiter) = trimmed
@@ -172,7 +203,9 @@ fn update_fence(line: &str, fence: &mut Option<(u8, usize)>) -> bool {
     }
     match fence {
         Some((open_delimiter, open_length))
-            if *open_delimiter == delimiter && length == *open_length =>
+            if *open_delimiter == delimiter
+                && length >= *open_length
+                && trimmed[length..].trim().is_empty() =>
         {
             *fence = None;
             true
@@ -513,6 +546,30 @@ mod tests {
                 alias: None,
             }]
         );
+    }
+
+    #[test]
+    fn accepts_longer_whitespace_only_fence_closers() {
+        assert_eq!(
+            parse_wiki_links(
+                "~~~md\n[[knowledge/rsi/rsi_index]]\n~~~~  \n[[knowledge/rsi/rsi_index]]"
+            )
+            .unwrap(),
+            vec![WikiLink {
+                embed: false,
+                path: Some("knowledge/rsi/rsi_index".into()),
+                subpath: None,
+                alias: None,
+            }]
+        );
+    }
+
+    #[test]
+    fn rejects_fence_closers_with_non_whitespace_suffixes() {
+        let error =
+            parse_wiki_links("```md\n[[knowledge/rsi/rsi_index]]\n``` still code").unwrap_err();
+
+        assert_eq!(error, "unclosed Markdown code fence");
     }
 
     #[test]

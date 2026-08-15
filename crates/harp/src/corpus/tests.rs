@@ -1409,6 +1409,19 @@ fn renders_obsidian_callouts_as_escaped_semantic_html() {
 }
 
 #[test]
+fn leaves_obsidian_callout_syntax_literal_inside_code() {
+    let rendered = render_markdown(
+        "```md\n> [!tip] Fence literal\n```\n\n`> [!tip] Inline literal`\n",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(!rendered.contains("obsidian-callout"));
+    assert!(rendered.contains("&gt; [!tip] Fence literal"));
+    assert!(rendered.contains("&gt; [!tip] Inline literal"));
+}
+
+#[test]
 fn renders_pdf_embeds_as_accessible_fallback_links() {
     let rendered = render_markdown(
         "![[evidence/example/paper.pdf#page=2|Paper]]",
@@ -1459,7 +1472,11 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
     let targets = render::route_targets(&[], &BTreeMap::new());
     assert_eq!(
         targets.get("knowledge/rsi/source_registry.md"),
-        Some(&render::RouteTarget::Reader("sources"))
+        Some(&render::RouteTarget::Reader {
+            route_id: "sources",
+            document_id: "sources".to_owned(),
+            heading_ids: BTreeSet::new(),
+        })
     );
 
     let mut fragment_targets = BTreeMap::new();
@@ -1485,6 +1502,48 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             &fragment_targets,
         ),
         "#documents/example-ledger"
+    );
+
+    let reader_target = BTreeMap::from([(
+        "knowledge/rsi/source_registry.md".to_owned(),
+        render::RouteTarget::Reader {
+            route_id: "sources",
+            document_id: "source-registry".to_owned(),
+            heading_ids: BTreeSet::from(["registry-format".to_owned()]),
+        },
+    )]);
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "source_registry.md#registry-format",
+            Path::new("knowledge/rsi"),
+            &reader_target,
+        ),
+        "#documents/source-registry?section=registry-format"
+    );
+
+    let chapter_target = BTreeMap::from([(
+        "knowledge/rsi/chapters/target.md".to_owned(),
+        render::RouteTarget::Chapter {
+            concept_id: "target".to_owned(),
+            document_id: "target".to_owned(),
+            heading_ids: BTreeSet::from(["mechanism".to_owned()]),
+        },
+    )]);
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "target.md#mechanism",
+            Path::new("knowledge/rsi/chapters"),
+            &chapter_target,
+        ),
+        "#documents/target?section=mechanism"
+    );
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "target.md",
+            Path::new("knowledge/rsi/chapters"),
+            &chapter_target,
+        ),
+        "#chapters/target"
     );
 
     let mut legacy_sources = BTreeMap::new();
