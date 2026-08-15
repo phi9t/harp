@@ -8,6 +8,9 @@ self-improvement research. It combines:
   `knowledge/harness_benchmarks/`;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
+- a source-backed agentic engineering reference packet under
+  `knowledge/agentic_engineering/`, including a captured Kenn/Wes workflow
+  article and Clanker Constitution evidence under `evidence/agentic_engineering/`;
 - narrow public-source snapshots for Pi, Hermes Agent, Codex, ARC-AGI-3,
   Autoresearch, and Meta-Harness;
 - a durable agentic execution harness for RLM task graphs, with SQLite state,

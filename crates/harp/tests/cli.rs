@@ -158,7 +158,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 69,
+            "canonical_documents": 74,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
@@ -333,6 +333,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .assert()
         .success()
         .stdout(predicate::str::contains("\"command\":\"sources.verify\""))
+        .stdout(predicate::str::contains("\"evidence_artifacts\":313"))
         .stdout(predicate::str::contains("\"snapshot_files\":105"))
         .stdout(predicate::str::contains("\"binary_objects\":56"))
         .stdout(predicate::str::contains("\"implementation_sources\":11"));

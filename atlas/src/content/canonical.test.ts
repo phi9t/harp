@@ -63,11 +63,11 @@ const validV5Fixture: unknown = {
     source_ids: [],
   })),
   coverage: chapterIds.map((id) => ({
-      concept_id: id,
-      coverage_depth: "chapter",
-      canonical_markdown_path: chapterPath(id),
-      section_id: null,
-      parent_concept_id: null,
+    concept_id: id,
+    coverage_depth: "chapter",
+    canonical_markdown_path: chapterPath(id),
+    section_id: null,
+    parent_concept_id: null,
   })),
   reader_routes: [
     {
@@ -123,6 +123,11 @@ const validV5Fixture: unknown = {
     {
       route_id: "survey",
       label: "Survey",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
+    {
+      route_id: "agentic-engineering",
+      label: "Agentic engineering",
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
   ],

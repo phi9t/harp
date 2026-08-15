@@ -1072,6 +1072,61 @@ fn evaluator_integrity_packet_is_registered_and_keeps_claims_conditional() {
 }
 
 #[test]
+fn agentic_engineering_packet_is_registered_and_preserves_authority_boundary() {
+    let corpus = compile(workspace_root()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "agentic-engineering"
+            && route.label == "Agentic engineering"
+            && route.canonical_markdown_path
+                == "knowledge/agentic_engineering/kenn_reference_architecture.md"
+    }));
+
+    let reference = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "agentic-engineering-reference")
+        .unwrap();
+    assert_eq!(
+        reference.canonical_markdown_path,
+        "knowledge/agentic_engineering/kenn_reference_architecture.md"
+    );
+    for required in [
+        "scaling agent execution",
+        "bounded agency",
+        "Constitution as harness policy",
+        "honor the request",
+        "verify reality",
+        "human-owned merge",
+        "does not reproduce Kenn",
+    ] {
+        assert!(
+            reference.html.contains(required),
+            "agentic engineering reference is missing {required}"
+        );
+    }
+
+    let index = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "agentic-engineering-index")
+        .unwrap();
+    for target in [
+        "agentic-engineering-reference",
+        "agentic-engineering-source-registry",
+        "agentic-engineering-claim-ledger",
+        "agentic-engineering-missing-evidence",
+    ] {
+        assert!(
+            index
+                .html
+                .contains(&format!("href=\"#documents/{target}\"")),
+            "agentic engineering index is missing the offline route for {target}"
+        );
+    }
+}
+
+#[test]
 fn verifies_the_nine_chapter_spine_and_native_source_folds() {
     let repo = fixture();
     write_complete_fixture(repo.path());
@@ -1130,7 +1185,8 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "agentic-eval-apply",
             "benchmarks",
             "evaluator-integrity",
-            "survey"
+            "survey",
+            "agentic-engineering"
         ]
     );
     for route in &corpus.reader_routes {

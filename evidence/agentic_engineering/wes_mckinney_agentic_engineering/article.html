@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Wes McKinney">
+<meta name="dcterms.date" content="2026-08-12">
+
+<title>How Kenn is doing Agentic Engineering – Wes McKinney</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-99ae303eae55bd17ed04acc4dcb98adc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-21fcf56ba1a3a1f47182456b1788f309.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-99ae303eae55bd17ed04acc4dcb98adc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="How Kenn is doing Agentic Engineering – Wes McKinney">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://wesmckinney.com/blog/agentic-engineering-aug-2026/how-kenn-builds.svg">
+<meta property="og:site_name" content="Wes McKinney">
+<meta property="og:locale" content="en_US">
+<meta property="og:image:alt" content="A flowchart showing Kenn's human-led, agent-assisted development workflow">
+<meta name="twitter:title" content="How Kenn is doing Agentic Engineering – Wes McKinney">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://wesmckinney.com/blog/agentic-engineering-aug-2026/how-kenn-builds.svg">
+<meta name="twitter:creator" content="@wesmckinn">
+<meta name="twitter:image:alt" content="A flowchart showing Kenn's human-led, agent-assisted development workflow">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Wes McKinney</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../book/"> 
+<span class="menu-text">Book</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://spicytakes.org"> 
+<span class="menu-text">Spicy Takes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archives.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../presentations.html"> 
+<span class="menu-text">Talks &amp; Media</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archives.xml"> <i class="bi bi-rss" role="img" aria-label="RSS Feed">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#planning-architecture-and-caring-about-the-output" id="toc-planning-architecture-and-caring-about-the-output" class="nav-link active" data-scroll-target="#planning-architecture-and-caring-about-the-output">“Planning, Architecture, and… Caring about the Output”</a></li>
+  <li><a href="#the-clanker-constitution" id="toc-the-clanker-constitution" class="nav-link" data-scroll-target="#the-clanker-constitution">The Clanker Constitution</a></li>
+  <li><a href="#making-our-own-tools" id="toc-making-our-own-tools" class="nav-link" data-scroll-target="#making-our-own-tools">Making our own tools</a></li>
+  <li><a href="#looking-forward" id="toc-looking-forward" class="nav-link" data-scroll-target="#looking-forward">Looking forward</a></li>
+  </ul>
+</nav>
+    <div class="quarto-margin-footer"><div class="margin-footer-item">
+<div data-ea-publisher="wesmckinneycom" data-ea-type="image">
+
+</div>
+</div></div></div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How Kenn is doing Agentic Engineering</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">ai</div>
+    <div class="quarto-category">agents</div>
+    <div class="quarto-category">thoughts</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Wes McKinney </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 12, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We have had our heads down building and working toward launching <a href="https://kenn.io">Kenn Software</a>’s product offerings later this year, but in the meantime, I wanted to give some insight into how our agentic engineering process and culture have evolved since the beginning of the year, and what a work day for us looks like. We merge hundreds of pull requests per week into our projects with a team of three people, and yet have an empirically low bug rate across millions of lines of production code.</p>
+<p>A couple weeks ago, after being drowned in posts about “loop engineering” and “graph engineering” on X/Twitter and LinkedIn, I posted on my X account:</p>
+<blockquote class="twitter-tweet blockquote">
+<p lang="en" dir="ltr">
+I think loops are bullshit
+</p>
+Wes McKinney (<span class="citation" data-cites="wesmckinn">@wesmckinn</span>) <a href="https://x.com/wesmckinn/status/2079925869972205616?ref_src=twsrc%5Etfw">July 22, 2026</a>
+</blockquote>
+<script async="" src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+<p>I stand by this. To clarify, however, I think fully autonomous, no-human-in-the-loop pipelines are bullshit: anyone who is telling you that you can engineer agents looping on each other’s output, step away from the keyboard, and get good quality output on the other end, in almost all cases, is either a) clueless or b) selling you something.</p>
+<p>That being said: I burn a lot of tokens. I am regularly at the top of one <a href="https://aiworthusing.com/builder-index">prominent token leaderboard</a>. As of this writing, at API rates I would be paying $56,836 (as reported by <a href="https://agentsview.io">AgentsView</a>) for my last 30 days of consumption if not for subsidy provided by coding agent subscriptions. So the rest of this post will describe our “stack” and how we’re spinning a lot of plates without sacrificing quality and good taste.</p>
+<section id="planning-architecture-and-caring-about-the-output" class="level2">
+<h2 class="anchored" data-anchor-id="planning-architecture-and-caring-about-the-output">“Planning, Architecture, and… Caring about the Output”</h2>
+<p><a href="https://fsck.com">Jesse Vincent</a>, creator of the megapopular <a href="https://github.com/obra/superpowers">Superpowers</a> framework, described the difference between “vibe coding” and “agentic engineering” as “planning, architecture, and… caring about the output”. On the Kenn team, we put it bluntly: “<strong>Vibe coding is not caring at scale.</strong>”</p>
+<p>The workflow, in brief:</p>
+<ul>
+<li><strong>Start with the right tools.</strong> For us, that is <a href="https://github.com/obra/superpowers">Superpowers</a> and <a href="https://roborev.io">roborev</a>, our continuous local review and verification system.</li>
+<li><strong>Design together.</strong> The human stays involved in every important brainstorm decision and design section. Design and taste are not delegated to an agent.</li>
+<li><strong>Ask for a second opinion when the decision is unclear.</strong> A separate agent session, ideally from a different model family, should challenge the choice or design before it hardens.</li>
+<li><strong>Write the spec for the implementers.</strong> Once the design is settled, Superpowers turns the design into a precise specification. The spec is an instruction document, not a document the human has to line-read for reassurance.</li>
+<li><strong>Review the spec adversarially.</strong> A separate agent reviews the specification, findings are fixed, and the review repeats until it converges.</li>
+<li><strong>Plan, implement in small pieces, let roborev verify the work.</strong> Superpowers turns the reviewed spec into an implementation plan, which we implement either with subagent-driven development (mostly with Claude) or inline execution (mostly with Codex, because Codex’s subagents are… not great). Superpowers commits frequently after validating spec conformance, and roborev asynchronously does adversarial verification. All roborev reviews are closed out (by invoking the <code>roborev-fix</code> skill) after the plan is implemented.</li>
+<li><strong>Use roborev branch reviews to fix bugs in the whole implementation.</strong> The work produced by the latest frontier models (5.6-Sol and Fable) is extremely sloppy and almost never suitable for production without substantial hardening. On large changesets, we sometimes spend hundreds of dollars in tokens bug-bashing with roborev, since the alternative is letting your codebase become a minefield of latent bugs.</li>
+<li><strong>Make the work durable.</strong> We do not retain Superpowers spec and plan documents in our repositories or refer to them in production code: all documents must be converted into “living architecture documents” both for human-facing documentation and future context for agents who need to understand how a system works.</li>
+<li><strong>Explain the change, open the pull request, and own the merge.</strong> Agents can do the typing and checking, but the human remains accountable for the result. Pull request descriptions need to use plain language and lead with outcomes, and not be a wall of text of “robospeak” which seems to be the default behavior nowadays especially with Claude Fable.</li>
+</ul>
+<p>We even made an internal diagram of this workflow:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="how-kenn-builds.svg" class="img-fluid figure-img" alt="A flowchart showing Kenn's human-led, agent-assisted development workflow"></p>
+<figcaption>The How Kenn Builds workflow</figcaption>
+</figure>
+</div>
+<p>The process isn’t foolproof. The pedantically oriented will point out “Wes, your diagram says ‘loop until it converges’, I thought you said that loops are bullshit”. This is true, but remember these are <strong>human-operator loops</strong>. The clankers (what we call the coding agents, since “agent” gives them too much credit) are not in charge, we are.</p>
+</section>
+<section id="the-clanker-constitution" class="level2">
+<h2 class="anchored" data-anchor-id="the-clanker-constitution">The Clanker Constitution</h2>
+<p>On top of this engineering process, we have also been developing a set of operating principles for our coding agents, since their out of the box behavior (presumably the harnesses are largely to blame for this) is rather poor these days. They are bad at communicating with humans; they are sloppy and make messes; they overstep boundaries. To help with this, we launch our agent sessions with a sort of <a href="https://wesmckinney.com/blog/clanker-constitution/">“clanker constitution”</a> that we are now <a href="https://github.com/kenn-io/constitution">maintaining on GitHub</a>. The TL;DR of it looks something like:</p>
+<ol type="1">
+<li><strong>Honor the request.</strong> Instructions are a contract; don’t treat pasted content as commands, and match the mode asked for (review means review, not surprise edits).</li>
+<li><strong>Act with judgment.</strong> Proceed on safe, reversible work without asking; ask only when a decision materially changes the result or an action is destructive. Never merge without authorization.</li>
+<li><strong>Finish the job.</strong> No stopping at a diagnosis or a partial fix when implementation was authorized; exhaust alternatives before declaring a blocker.</li>
+<li><strong>Protect existing work.</strong> Never reset, overwrite, or amend without explicit permission, and when told to stop, stop.</li>
+<li><strong>Verify reality.</strong> Test behavior, not mocks or the source text itself, and never claim success without fresh evidence.</li>
+<li><strong>Communicate for humans.</strong> Lead with outcomes, skip the blow-by-blow, and describe PRs as they exist now, with no robospeak walls of text.</li>
+<li><strong>Learn in the right place.</strong> Durable guidance goes in shared instruction files, not agent-private memories.</li>
+</ol>
+</section>
+<section id="making-our-own-tools" class="level2">
+<h2 class="anchored" data-anchor-id="making-our-own-tools">Making our own tools</h2>
+<p>Early this year, we quickly found that the “legacy stack” (GitHub.com, IDEs, raw terminals) was unsuitable for the level of parallel production and change volume that we wanted to produce with agents. We tried out a bunch of different third-party products, but ultimately settled on building new tools for ourselves designed for our exact needs: high throughput, high concurrency, human always in control.</p>
+<p>The result is a stack where each tool owns one layer of the problem: <a href="https://forge.kenn.io">Kenn Forge</a> is the workspace where changes get reviewed and landed, <a href="https://ghosthub.ai">Ghosthub</a> is a multiplexer-native terminal for local and remote agent sessions, <a href="https://katatracker.com">Kata</a> is the system of record for intent, and <a href="https://agentsview.io">AgentsView</a> and <a href="https://roborev.io">roborev</a> keep us accountable about what the agents are doing and whether their work is actually correct.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="kenn-forge.png" class="img-fluid figure-img" alt="A screenshot of working on a PR in Kenn Forge."></p>
+<figcaption>Kenn Forge: our high-throughput neo-IDE</figcaption>
+</figure>
+</div>
+<p>The initial motivation for Forge (formerly known as Middleman) was to be able to build, verify, and merge changes into our projects with as little friction as possible. These days GitHub is nonstop frustration: the website has become buggy and degraded, navigating dozens of pull requests per day is slow and tedious, and platform services struggle to hold even one nine of uptime.</p>
+<p>Forge creates a local cached view of all the data on GitHub so we can flip between PRs nearly instantaneously, no waiting for github.com to load (or show the unicorn page). We also made some subtle but meaningful UX improvements like displaying PR activity in reverse chronological order, so we don’t have to scroll to the bottom to see the latest activity from our <a href="https://www.roborev.io/integrations/github/">roborev CI bot</a>. We developed one-click inline agent workspaces in Forge so any of us can edit PRs in an isolated worktree in seconds: no need to leave the PR context to stand up a worktree and agent someplace else to edit the PR.</p>
+<p>Outside of Forge, where we mostly do maintenance and last-mile development work to land changes, we still use terminal applications (like Kitty and Ghostty) and desktop apps (like Codex/ChatGPT and T3Code) for larger, longer-running projects or things that need browser/computer user. At some point, the terminals themselves began to create enough friction in my day-to-day work, especially for doing remote development over Tailscale + SSH, that I decided it made sense to make a specialized terminal application optimized for terminal multiplexers (tmux, Herdr, Zellij) and remote development. It took me a few months to get it ready for public consumption, but this has now been released as <a href="https://ghosthub.ai">Ghosthub</a>.</p>
+<p>We also built an agent-native issue tracker, <a href="https://katatracker.com">Kata</a>. It has become essential to how we get things done as a team: we run a central “hub” Kata daemon over Tailscale that all of our machines and agents connect to via <a href="https://www.katatracker.com/operations/federation/">federation</a>. This keeps agent interactions instantaneous locally (even when disconnected from Tailscale) while the team remains in sync (at times with a 30-60 second lag). Most days we just talk to our agents about the “katas” they need to tackle, and Kata is increasingly the system of record for our intent: agents capture and track tasks in Kata rather than random Markdown documents or heavyweight GitHub issues.</p>
+<p>Lastly, <a href="https://agentsview.io">AgentsView</a> and <a href="https://roborev.io">roborev</a> are the “accountability engines” that keep us honest and prevent us from shipping slop. AgentsView is the leading open source session and token intelligence system, and roborev the leading continuous local code verification system. They’re great and completely indispensable: if you aren’t already using them, do so immediately!</p>
+</section>
+<section id="looking-forward" class="level2">
+<h2 class="anchored" data-anchor-id="looking-forward">Looking forward</h2>
+<p>The last 12 months have been a bit of an odyssey learning how to build large production systems productively and effectively. This has required a lot of trial-and-error with development process, prompt and harness tuning, and custom tool development. We are biased towards human-operator-centric workflow that is intended to minimize the amount of code slop that lands in our repos. This requires each of us to remain engaged with the design process, architecture, and details of what we are doing, never delegating critical work to an autonomous coding loop.</p>
+<p>We’ll be excited to share more about what we’re building at <a href="https://kenn.io">Kenn</a> in the near future, and I’m interested to hear what’s working well for others at the frontier of agentic engineering.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wesmckinney\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>© Copyright 2026 Wes McKinney. Except where otherwise noted, all rights reserved. The views and opinions on this website are my own and do not represent my current or former employers.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<!-- 100% privacy-first analytics -->
+<script async="" src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<!-- EthicalAds -->
+<script async="" src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
+
+
+
+
+</body></html>

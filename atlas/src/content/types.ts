@@ -33,7 +33,8 @@ export type ReaderRouteId =
   | "agentic-eval-apply"
   | "benchmarks"
   | "evaluator-integrity"
-  | "survey";
+  | "survey"
+  | "agentic-engineering";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
   "thesis",
@@ -47,6 +48,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "benchmarks",
   "evaluator-integrity",
   "survey",
+  "agentic-engineering",
 ];
 
 export type RetainedConcept = {

@@ -244,6 +244,7 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
             "canonical-markdown",
             "md",
         ),
+        ("knowledge/agentic_engineering", "canonical-markdown", "md"),
         ("evidence/weng/text", "weng-source", "txt"),
         ("evidence/rlm/text", "rlm-source", "txt"),
     ];

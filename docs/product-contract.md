@@ -7,11 +7,12 @@ Harp owns the standalone RSI technical atlas:
 - canonical RSI and SICP Markdown under `knowledge/rsi/`, plus the registered
   topic packets under `knowledge/darwin_godel_machine/`,
   `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
-  `knowledge/self_improving_agents_survey/`;
+  `knowledge/self_improving_agents_survey/`, and
+  `knowledge/agentic_engineering/`;
 - deterministic corpus validation and compilation in `crates/harp/`;
 - deterministic diagnosis contracts under `content/diagnostics/`;
-- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, and public
-  implementation evidence under `evidence/`;
+- Weng, RLM, SICP, Meta-Harness, Self-Improving Agents Survey, Agentic
+  Engineering, and public implementation evidence under `evidence/`;
 - the runnable SICP evaluator supplement under `labs/sicp-evaluator/`;
 - the opt-in Meta-Harness TRAE proposal supplement under
   `labs/meta_harness_trae/`;
@@ -112,7 +113,7 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 69 compiled documents;
+- 74 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
@@ -143,7 +144,7 @@ requires 42 cards, ten lessons, four references, and nine section IDs.
 Retrieval begins at `unseen`, and page exposure does not establish mastery.
 
 Teaching files remain outside canonical Atlas compilation unless explicitly
-registered later. They do not change the 56-document, 75-concept, or other
+registered later. They do not change the 74-document, 75-concept, or other
 canonical corpus counts above.
 
 ## Search
@@ -155,6 +156,7 @@ The search index includes:
 - all `knowledge/meta_harness/**/*.md`;
 - all `knowledge/harness_benchmarks/**/*.md`;
 - all `knowledge/self_improving_agents_survey/**/*.md`;
+- all `knowledge/agentic_engineering/**/*.md`;
 - all `evidence/weng/text/**/*.txt`; and
 - all `evidence/rlm/text/**/*.txt`.
 
@@ -172,6 +174,7 @@ receipt. Status and query reject missing or stale indexes.
 - every narrow public-source snapshot and revision identity;
 - the offline-complete Meta-Harness project page and dated capture receipt;
 - the normalized Meta-Harness TRAE receipt and bounded raw archive;
+- the Agentic Engineering and Clanker Constitution dated captures;
 - every maintained local evidence locator; and
 - Git LFS attributes for binary evidence.
 

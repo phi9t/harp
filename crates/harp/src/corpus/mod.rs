@@ -30,7 +30,7 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 11] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 12] = [
     (
         "thesis",
         "Thesis",
@@ -82,8 +82,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 11] = [
         "Survey",
         "knowledge/self_improving_agents_survey/synthesis.md",
     ),
+    (
+        "agentic-engineering",
+        "Agentic engineering",
+        "knowledge/agentic_engineering/kenn_reference_architecture.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 16] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 21] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -147,6 +152,26 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 16] = [
     (
         "self-improving-agents-survey-gap-map",
         "knowledge/self_improving_agents_survey/gap_map.md",
+    ),
+    (
+        "agentic-engineering-index",
+        "knowledge/agentic_engineering/agentic_engineering_index.md",
+    ),
+    (
+        "agentic-engineering-reference",
+        "knowledge/agentic_engineering/kenn_reference_architecture.md",
+    ),
+    (
+        "agentic-engineering-source-registry",
+        "knowledge/agentic_engineering/source_registry.md",
+    ),
+    (
+        "agentic-engineering-claim-ledger",
+        "knowledge/agentic_engineering/claim_evidence_ledger.md",
+    ),
+    (
+        "agentic-engineering-missing-evidence",
+        "knowledge/agentic_engineering/missing_evidence.md",
     ),
 ];
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [

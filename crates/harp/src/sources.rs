@@ -15,6 +15,7 @@ use crate::error::AppError;
 const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
+const AGENTIC_ENGINEERING_ROOT: &str = "evidence/agentic_engineering";
 const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
 const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
 const META_HARNESS_ARCHIVE_MAX_MEMBERS: usize = 256;
@@ -175,6 +176,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     )?;
     let sicp = verify_sicp_manifest(repo_root, &mut expected_digests)?;
     let benchmarks = verify_benchmark_manifest(repo_root)?;
+    let agentic_engineering = verify_relative_artifact_manifest(
+        repo_root,
+        Path::new(AGENTIC_ENGINEERING_ROOT),
+        Path::new("evidence/agentic_engineering/manifest.tsv"),
+        &mut expected_digests,
+    )?
+    .len()
+    .saturating_sub(1);
     let meta_harness = verify_meta_harness_bundle(repo_root)?;
     let _verified_raw_archive = (
         meta_harness.raw_archive_members,
@@ -239,6 +248,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             + self_improving_agents_survey
             + sicp
             + benchmarks
+            + agentic_engineering
             + meta_harness.site_artifacts
             + meta_harness.normalized_artifacts,
         snapshot_files: snapshot_rows.len(),

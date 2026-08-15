@@ -1,0 +1,27 @@
+HTTP/2 308 
+date: Fri, 14 Aug 2026 23:29:03 GMT
+content-length: 0
+referrer-policy: strict-origin-when-cross-origin
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=5Xj6tftfpSobbwyi6v0JAHbi9NK8G53YiKAPtS751dFlIGc0imR4WanckfkFzsTBHAYgxxzC7TxELFa1n1MXqvtOr7ve5Q8PnSKQ%2FgETGloew9Az5iET%2F2q608RrYcmaVxc%3D"}]}
+location: /blog/agentic-engineering-aug-2026/
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+access-control-allow-origin: *
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a2b3bd4eb849b876-PDX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Fri, 14 Aug 2026 23:29:03 GMT
+content-type: text/html; charset=utf-8
+x-content-type-options: nosniff
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2ApeWdQJJuAc7PwHa%2FudZkWkKDWoekC1pMWY%2BZeTl32HuKrXpIpbPSvDo9BPM5zknpeYzjsFYtldPynxQak7OQwld5qCoK%2BkqZ1hYFHYH5Ga4oztZagoazAi7grv7%2BCxrBg%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+access-control-allow-origin: *
+cache-control: public, max-age=0, must-revalidate
+referrer-policy: strict-origin-when-cross-origin
+server: cloudflare
+cf-cache-status: DYNAMIC
+cf-ray: a2b3bd4f18f8b876-PDX
+alt-svc: h3=":443"; ma=86400
+

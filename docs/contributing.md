@@ -10,6 +10,20 @@ The locked Cargo and pnpm registries may be used during bootstrap. Normal
 build, validation, reading, search, and offline source verification must not
 contact research sites.
 
+## Agentic engineering
+
+Harp follows the agentic engineering reference captured under
+`knowledge/agentic_engineering/`: scale agent execution, not agent authority.
+Humans retain intent, architecture, merge, release, and authority-widening
+decisions. Agents work on bounded tasks in isolated worktrees, with explicit
+verification and repair before landing.
+
+The local constitution for agent behavior is: honor the request, act with
+judgment, finish authorized work, protect existing work, verify reality,
+communicate for humans, and learn in shared project files. Put durable process
+lessons in `AGENTS.md`, `CONTEXT.md`, ADRs, maintained docs, tests, or code;
+do not rely on private agent memory as a project interface.
+
 ## Content changes
 
 1. Edit canonical Markdown or registries under `content/`.

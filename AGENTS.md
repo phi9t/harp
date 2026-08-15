@@ -52,6 +52,25 @@ handling.
 - Preserve unrelated local changes. If a dirty path is not part of the current
   landing, leave it alone or add an ignore rule for clearly local scratch.
 
+## Agentic engineering operating model
+
+- Scale agent execution, not agent authority. Humans own intent, architecture,
+  merge, release, and any authority-widening decision.
+- Keep intent, reasoning, execution, verification, observability, and human
+  control separate. Do not blur a prompt, transcript, issue, commit, or memory
+  into the system of record for intent.
+- Use agents for bounded implementation in isolated worktrees. Parallel agents
+  need non-overlapping work and independently verifiable issue surfaces.
+- Treat independent verification as a first-class budget. Tests, adversarial
+  review, and repair are part of the work, not optional cleanup after code
+  generation.
+- Follow the local constitution: honor the request, act with judgment, finish
+  authorized work, protect existing work, verify reality, communicate for
+  humans, and learn in shared project files.
+- Distill durable lessons into `AGENTS.md`, `CONTEXT.md`, ADRs, maintained
+  docs, tests, and code. Do not let private agent memory or raw execution notes
+  become the durable project interface.
+
 ## Licensing
 
 Do not add a repository-wide license unless the project owner explicitly
