@@ -45,3 +45,38 @@ material the evaluated agent can inspect during an attempt.
 **Auditor visibility** — The task, repository, evaluator, policy, and rollout
 material an independent reviewer can inspect after an attempt, including
 through a controlled disclosure route. It is distinct from agent visibility.
+
+## Proof Search
+
+**Expert attempt** — One ticketed execution of a mathematical expert task. An
+attempt may fail or produce unusable output without creating a mathematical
+node.
+_Avoid_: Node, expert node
+
+**Expert result** — A schema-valid expert response that has not yet passed the
+mathematical-node admission predicate. Raw malformed provider output is attempt
+evidence, not an expert result.
+_Avoid_: Node, archive node
+
+**Mathematical node** — An immutable admitted mathematical artifact with
+lineage, provenance, and a mathematical payload. Evaluation scores, child
+counts, selection history, and review outcomes are not part of the node.
+_Avoid_: Expert call, attempt, archive entry, candidate node
+
+**Admission decision** — The immutable determination that an expert result
+either creates one mathematical node or is rejected with a typed reason.
+_Avoid_: Evaluation, scoring
+
+**Node evaluation** — An independent probe-based assessment that references an
+immutable mathematical node. It does not modify the node.
+_Avoid_: Node state
+
+**Archive entry** — The immutable pairing of a mathematical node with its
+reconciled proof-progress evaluation. DGM selection operates on archive
+entries, while child counts and selection eligibility are derived projections.
+_Avoid_: Mathematical node, attempt
+
+**Candidate projection** — A content-addressed review input derived from an
+archive entry whose node contains a candidate proof and whose probes all pass.
+It is a qualification for independent review, not proof certification.
+_Avoid_: Complete proof, completed node

@@ -30,9 +30,10 @@ p_i = w_i / sum(w)
 ```
 
 Two parents are sampled with replacement per generation from a precommitted
-SHA-256-derived random stream. The archive retains every functioning node,
-including lower-scoring children. Only functioning admitted children increment
-the parent's child count. Both draws in a generation use one immutable
+SHA-256-derived random stream. The archive retains every admitted mathematical
+node, including lower-scoring children. DGM's functioning-child count is the
+number of admitted child mathematical nodes; failed, malformed, and rejected
+attempts do not increment it. Both draws in a generation use one immutable
 pre-generation archive snapshot; child execution and admission begin only
 after both selections are recorded.
 
@@ -45,7 +46,8 @@ The workstream has one authority per artifact class:
 
 | Artifact | Authority |
 |---|---|
-| Product intent and experiment design | approved design and PRD linked above |
+| Product intent, treatments, and claim ceilings | approved design and PRD linked above |
+| Corrected domain model, target architecture, and execution contracts | this `design.md` |
 | Executable work and status | `tracker.org` |
 | Provider-neutral experiment machinery | `labs/crouzeix_proof_reproduction/` |
 | Mutable attempts | ignored `labs/crouzeix_proof_reproduction/.runs/` |
@@ -64,7 +66,9 @@ This active workstream corrects one clause in the approved design: reaching
 other eligible nodes. The early-stop wording in the approved design is
 incompatible with the paper-level eligible-set algorithm the user selected.
 The correction is isolated to search control; budgets and claim ceilings do not
-change.
+change. It also disambiguates the approved design's overloaded use of "expert
+node": attempts, expert results, immutable mathematical nodes, archive entries,
+and candidate projections are separate records with separate identities.
 
 ## Ticket Discipline
 
@@ -262,34 +266,377 @@ reconcile the latest `master` before final verification and landing.
 
 ## Domain Model
 
-### Expert node
+| Record | Exists when | Identity | Mutable? | DGM input? |
+|---|---|---|---|---|
+| Expert attempt | a runtime ticket is admitted | `attempt_id` plus ticket/event chain | append-only execution history | no |
+| Expert result | provider output passes strict schema validation | `expert_result_sha256` | no | no |
+| Admission decision | a strict expert result exists | `admission_decision_sha256` | no | no |
+| Mathematical node | admission is accepted | `node_id` and `node_artifact_sha256` | no | by reference |
+| Node evaluation | evaluator output or conservative fallback is sealed | `node_evaluation_sha256` | no | through reconciliation |
+| Reconciliation | both node evaluations exist | `reconciliation_sha256` | no | score and findings |
+| Archive entry | node and reconciliation join successfully | `archive_entry_sha256` | no | yes |
+| Selection event | a pre-created draw ticket executes | event digest under one snapshot | no | records output |
+| Candidate projection | an archive entry is score-complete | `candidate_projection_sha256` | no | no |
 
-An immutable result from one pristine expert session. It binds:
+Only attempts have lifecycle transitions. Every other row is an immutable
+value or append-only fact. A later record may reference an earlier digest but
+cannot add fields to, replace, or change the meaning of the earlier record.
 
-- node, parent, generation, role, and direction identity;
-- exact context and parent-artifact digests;
-- mechanism and proved statements;
-- obligations, circularity risks, and proposed directions;
-- optional complete candidate proof;
-- two evaluator records and their reconciliation;
-- proof-progress score `alpha_i`; and
-- provider receipts and usage.
+### Expert attempt
 
-### Functioning node
+An expert attempt is one ticketed execution of a root or descendant
+mathematical task. The attempt owns execution facts: runtime ticket, context,
+provider call and receipt, raw output, usage, terminal status, and any resource
+or operator intervention.
 
-A schema-valid, leakage-compliant result with either:
+An attempt may fail, time out, be resource-blocked, return malformed output, or
+produce a strict expert result. None of those outcomes is itself a
+mathematical node. Attempt identity and state are governed by the runtime
+ticket contract.
 
-- a concrete mechanism and at least one proved statement; or
-- a precise falsifiable blocker and a materially new direction.
+### Expert result
 
-Functioning is an archive-admission predicate. It does not mean improved or
-correct.
+An expert result is a strict, schema-valid provider response whose identity and
+selected direction agree with its context. It contains proposed mathematical
+content but has not yet passed admission. Raw malformed output remains attempt
+evidence and is never called an expert result.
+
+The harness assigns `proposed_node_id` before the attempt so tickets, contexts,
+and descendants have deterministic coordinates. Before admission it is only a
+proposed identifier. An accepted admission promotes that exact value to the
+mathematical node's `node_id`; a rejected result never creates a node with that
+ID.
+
+The expert-result record contains:
+
+```text
+schema_version
+run_id
+attempt_id
+ticket_id
+proposed_node_id
+parent_node_id | null
+parent_node_artifact_sha256 | null
+generation
+expert_role
+selected_direction_id
+mathematical_payload
+expert_result_sha256
+```
+
+The result digest covers every preceding field. Provider call, context, and
+leakage-audit digests remain in the admission and node provenance records
+rather than in model-generated mathematical output.
+
+The result has one tagged endpoint variant:
+
+```text
+endpoint = {
+  kind: "candidate_proof",
+  text: nonempty string
+}
+```
+
+or:
+
+```text
+endpoint = {
+  kind: "blocker",
+  text: nonempty string
+}
+```
+
+Nullable sibling fields are forbidden. The structural variant does not decide
+whether the result is functioning.
+
+### Admission decision
+
+Admission is a pure, immutable decision over one expert result plus its
+leakage and provenance checks. It is `accepted` only when the result is:
+
+- bound to one valid terminal expert attempt;
+- schema-valid and compliant with the declared leakage boundary;
+- internally consistent with its context, parent, generation, role, and
+  selected direction; and
+- mathematically functioning, meaning it contains either a concrete mechanism
+  plus at least one proved statement, or a precise falsifiable blocker plus a
+  materially new direction.
+
+Every strict expert result receives exactly one admission decision. Its closed
+outcome is:
+
+```text
+accepted
+rejected_leakage
+rejected_provenance
+rejected_nonfunctioning
+```
+
+The decision binds the run, attempt, ticket, context, call receipt, expert
+result, leakage-audit, and prospective node IDs. It never contains
+`node_artifact_sha256`: the accepted decision is hashed first and its digest is
+then included in the mathematical node. This one-way edge prevents a digest
+cycle.
+
+The admission-decision record contains:
+
+```text
+schema_version
+run_id
+attempt_id
+ticket_id
+proposed_node_id
+expert_result_sha256
+context_sha256
+call_receipt_sha256
+leakage_audit_sha256
+outcome
+reason_code
+diagnostic_detail | null
+admission_decision_sha256
+```
+
+The decision digest covers every preceding field. `accepted` uses the closed
+reason code `admission_criteria_satisfied`; each rejected outcome has a
+corresponding closed reason code. Any bounded diagnostic detail is included in
+the record and its digest.
+
+An accepted decision creates exactly one mathematical node. A rejected
+decision records one outcome and creates none. An attempt that fails, times
+out, is resource-blocked, or returns malformed output produces no strict expert
+result and therefore no admission decision. Every such attempt remains durable
+attempt evidence but never enters the mathematical archive.
+
+### Mathematical node
+
+A mathematical node is the immutable admitted mathematical artifact used as a
+parent in proof search. Its canonical record contains:
+
+```text
+schema_version
+run_id
+node_id
+theorem_sha256
+leakage_tier
+parent_node_id | null
+parent_node_artifact_sha256 | null
+generation
+expert_role
+selected_direction
+selected_direction_sha256
+source_attempt_id
+source_ticket_id
+source_expert_result_sha256
+source_context_sha256
+source_call_receipt_sha256
+admission_decision_sha256
+mathematical_payload
+mathematical_payload_sha256
+node_artifact_sha256
+```
+
+`mathematical_payload` contains only:
+
+```text
+proof_family
+mechanism
+proved_statements[] = {
+  statement_id,
+  statement,
+  justification,
+  depends_on_statement_ids[]
+}
+unproved_obligations
+circularity_risks[] = {
+  risk_id,
+  statement,
+  locator
+}
+proposed_directions
+endpoint = {
+  kind: "candidate_proof" | "blocker",
+  text
+}
+confidence_basis
+```
+
+`selected_direction` is a lineage record outside the mathematical payload:
+
+```text
+direction_id
+kind = root_task | obligation | evaluator_finding | proposed_direction
+statement
+strength = root | theorem_strength | critical | major | local | minor | proposed
+recommended_role
+source_node_artifact_sha256 | null
+source_reconciliation_sha256 | null
+```
+
+For a root, both source digests are null and `kind = root_task`. For a child,
+the node source digest is required; the reconciliation source digest is also
+required when the direction came from an evaluator finding. The direction
+digest is SHA-256 over canonical JSON of this complete record.
+
+The payload digest is SHA-256 over canonical JSON of
+`mathematical_payload`. The artifact digest is SHA-256 over canonical JSON of
+the complete node record except the `node_artifact_sha256` field itself.
+Canonical JSON uses sorted keys, UTF-8, no insignificant whitespace, and
+rejects non-finite numbers. Timestamps, evaluator output, scores, child counts,
+selection events, review outcomes, and mutable filesystem paths are excluded
+from both identities.
+
+`node_id` is the stable run-local coordinate used in lineage and tickets;
+`node_artifact_sha256` is the immutable content-and-provenance identity.
+Distinct nodes may have equal payload digests, but duplicate artifact digests
+within one run are rejected. Parent linkage is part of artifact identity, so a
+mathematically identical payload reached from another parent remains a
+different node.
+
+### Node evaluation and reconciliation
+
+Each admitted mathematical node receives two independent node evaluations.
+They reference `node_artifact_sha256`, but their model-visible contexts contain
+only the theorem and mathematical payload; lineage, role, treatment, attempt
+metadata, scores, and other evaluator output are absent.
+
+The model returns only an evaluation payload containing ten probe decisions and
+findings. The harness wraps it in an immutable node-evaluation envelope that
+binds evaluator index, runtime ticket, context, call receipt,
+`node_artifact_sha256`, `mathematical_payload_sha256`, evaluation-payload
+digest, and node-evaluation artifact digest. The model is never asked to echo a
+hidden node identity.
+
+The node-evaluation envelope contains:
+
+```text
+schema_version
+evaluation_id
+evaluator_index
+ticket_id
+node_artifact_sha256
+mathematical_payload_sha256
+context_sha256
+source_kind = provider_output | conservative_fallback
+call_receipt_sha256 | null
+terminal_ticket_event_sha256
+evaluation_payload
+evaluation_payload_sha256
+node_evaluation_sha256
+```
+
+The artifact digest covers every preceding field. Evaluator indices are exactly
+one and two, and their ticket, context, call, payload, and artifact digests must
+all be distinct even when their judgments happen to be equal. Provider output
+requires an accepted completed call receipt and terminal ticket event.
+Conservative fallback requires a terminal failed, timed-out, or
+resource-blocked ticket event; it binds a failed call receipt when one exists
+and uses null only when no provider call began. Its ten probe statuses are
+`insufficient_evidence`. The fallback is harness evidence, never attributed to
+the evaluator model.
+
+Reconciliation is a separate immutable record that binds the node artifact and
+both node-evaluation artifact digests. It also binds its own digest and the
+ordered probe outcomes and namespaced findings:
+
+```text
+schema_version
+reconciliation_id
+node_artifact_sha256
+mathematical_payload_sha256
+node_evaluation_sha256s[2]
+probes[10]
+unanimous_pass_count
+disagreement_count
+evaluator_findings
+reconciliation_sha256
+```
+
+The two evaluation digests are ordered by evaluator index. The reconciliation
+digest covers every preceding field. Its authoritative score is the integer
+`unanimous_pass_count` in `[0, 10]`. The DGM value
+`alpha_i = unanimous_pass_count / 10` is derived exactly; a JSON float is never
+score authority. Evaluator findings belong to reconciliation, not to the
+mathematical node.
+
+### Archive entry
+
+An archive entry is the immutable pairing of one mathematical node with one
+evaluation reconciliation:
+
+```text
+node_id
+node_artifact_sha256
+mathematical_payload_sha256
+reconciliation_sha256
+unanimous_pass_count
+candidate_proof_sha256 | null
+archive_entry_sha256
+```
+
+The archive-entry digest covers every preceding field. The candidate digest is
+present only for a `candidate_proof` endpoint and is computed from the exact
+UTF-8 endpoint text; a blocker endpoint requires null.
+
+The archive uses `keep_all`: every admitted node receives an archive entry,
+including children that score below their parents. DGM selection operates on
+archive entries. Functioning-child count, eligibility, weights, probabilities,
+and selection history are projections from immutable archive entries and
+events; they are not fields of the mathematical node or archive entry.
+
+### Record graph and durable layout
+
+The authoritative relation is:
+
+```text
+ExpertAttempt -> ExpertResult -> AdmissionDecision -> MathematicalNode
+MathematicalNode -> NodeEvaluation[1]
+MathematicalNode -> NodeEvaluation[2]
+NodeEvaluation[1,2] -> Reconciliation
+(MathematicalNode, Reconciliation) -> ArchiveEntry
+ArchiveEntry -> SelectionEvent -> child ExpertAttempt
+ArchiveEntry(score_complete) -> CandidateProjection -> CorrectnessReview
+```
+
+Every arrow is an explicit identifier-and-digest reference. Containment on
+disk does not imply identity or authority. The target run layout is:
+
+```text
+attempts/<attempt_id>/
+  attempt.json
+  context.json
+  expert_result.json | terminal_failure.json
+  provider_call/
+  receipt.json
+admissions/<attempt_id>.json
+mathematical_nodes/<node_id>/
+  node.json
+  mathematical_payload.json
+  inventory.json
+node_evaluations/<node_id>/
+  evaluator-1/
+  evaluator-2/
+  reconciliation.json
+archive_entries/<node_id>.json
+candidate_projections/
+  index.json
+  <candidate_sha256>.tex
+frontier_events.jsonl
+selection_events.jsonl
+frontier_snapshot.json
+run_receipt.json
+```
+
+The attempt ledger references every attempt regardless of outcome. The
+mathematical-node, evaluation, and archive-entry paths exist only after their
+respective immutable records are accepted. `frontier_snapshot.json` is a
+deterministic read model over archive entries, parent links, and append-only
+events; it is never an identity source.
 
 ### Proof-progress score
 
 Two fresh evaluators independently answer ten route-neutral probes. A probe
-passes only when both answer `pass`. `alpha_i` is the unanimous-pass count
-divided by ten. The outer harness computes it; experts and evaluators never
+passes only when both answer `pass`. `alpha_i` is derived from the reconciled
+integer pass count. The outer harness computes it; experts and evaluators never
 receive or emit the scalar.
 
 ### Parent-selection random stream
@@ -339,7 +686,8 @@ One generation first freezes:
 ```text
 archive_snapshot_digest
 eligible_node_ids
-alpha vector
+eligible_archive_entry_sha256s
+unanimous-pass-count vector
 functioning-child-count vector
 weight/probability vector
 ```
@@ -363,29 +711,51 @@ Stable direction ID breaks ties.
 
 ### Promotion boundary
 
-`alpha_i = 1` makes a node eligible for separate mathematical review only when
-it also contains a content-addressed candidate proof. It is not proof
-certification. The node becomes `score_complete`, is excluded from later parent
-selection by the paper's `alpha_i < 1` rule, and remains in the archive. Search
-continues over all other eligible nodes until the fixed generation/call/node
-budget is exhausted or the eligible set is empty.
+An archive entry is `score_complete` when its reconciliation has
+`unanimous_pass_count = 10` and its mathematical node contains a
+content-addressed candidate proof. `score_complete` is a derived qualification,
+not a mathematical-node state and not proof certification. The entry becomes
+parent-ineligible under the paper's `alpha_i < 1` rule and remains in the
+archive. Search continues over all other eligible entries until the fixed
+generation/call/node budget is exhausted or the eligible set is empty.
 
-`complete` is reserved for a later independent correctness-review outcome. It
-is never an expert-node lifecycle state and is never inferred from `alpha_i`.
-
-The corrected expert-node lifecycle is:
+Attempts alone have lifecycle states. Mathematical nodes and archive entries
+are immutable values. Frontier records are append-only facts:
 
 ```text
-attempted -> functioning | blocked
-functioning -> archived
-archived -> selected | score_complete | superseded
-selected -> archived
+attempt_terminal
+admission_accepted | admission_rejected
+archive_entry_created
+selection_recorded
+candidate_projected
 ```
 
-`score_complete` requires `alpha_i = 1` and a content-addressed candidate
-proof. It does not imply `proof_outcome=complete`.
+Repeated selection creates repeated selection events; it never changes a node
+to a `selected` state. `superseded` describes a treatment or attempt
+disposition, not a mathematical node. `complete` is reserved for a later
+independent correctness-review outcome and is never inferred from the DGM
+score.
 
-Every score-complete candidate is content-addressed and independently reviewed.
+A candidate projection is a create-only review input containing the exact
+candidate bytes and their digest, source `node_artifact_sha256`, and source
+`reconciliation_sha256`:
+
+```text
+schema_version
+projection_id
+source_node_id
+source_node_artifact_sha256
+source_reconciliation_sha256
+candidate_sha256
+candidate_byte_count
+candidate_projection_sha256
+```
+
+The projection digest covers the metadata fields through
+`candidate_byte_count`; the candidate bytes live in a separate
+content-addressed file. Every score-complete
+candidate projection is independently reviewed, and review records bind both
+the projection and candidate digests.
 The harness does not choose one winner using `alpha`, because all such nodes
 have the same search score. If one repair is allowed, the target is selected
 model-independently from candidates whose frozen outcome is `incomplete`.
@@ -411,9 +781,9 @@ The target file structure is:
 |---|---|
 | `protocol.py` | shared strict JSON, IDs, paths, and run-spec boundaries |
 | `runner.py` | create-only provider call, event capture, timeout, usage receipt |
-| `frontier.py` | pure archive, score reconciliation, DGM selection, direction ranking |
-| `expert_contracts.py` | expert/evaluator contexts and output validation |
-| `frontier_store.py` | append-only ledgers, snapshots, node materialization, candidate freeze |
+| `frontier.py` | pure evaluation reconciliation, archive-entry construction, DGM selection, and direction ranking |
+| `expert_contracts.py` | expert/evaluator contexts, output validation, admission, and mathematical-node construction |
+| `frontier_store.py` | append-only attempts/events, mathematical nodes, evaluations, archive entries, snapshots, and candidate projections |
 | `expert_runner.py` | bounded orchestration over the modules above |
 | `prepare_frontier.py` | create-only expert-frontier run preparation |
 | `run_frontier.py` | thin operator CLI |
@@ -437,22 +807,32 @@ append_ticket_event(root: Path, ticket_id: str, event: Mapping[str, object]) -> 
 validate_runtime_tickets(root: Path) -> TicketSummary
 
 # frontier.py: pure, with no filesystem or provider imports
-reconcile_evaluations(node_sha256: str, first: Mapping, second: Mapping) -> dict
+reconcile_evaluations(node_artifact_sha256: str,
+                      first: Mapping, second: Mapping) -> dict
+make_archive_entry(node: Mapping, reconciliation: Mapping) -> dict
 selection_terms(archive: FrontierArchive) -> list[dict]
 select_parents(archive: FrontierArchive, *, generation: int, seed: int,
                count: int = 2) -> dict
-assign_directions(parent_ids: Sequence[str], nodes: Mapping) -> list[dict]
+assign_directions(parent_ids: Sequence[str], nodes: Mapping,
+                  reconciliations: Mapping) -> list[dict]
 
 # expert_contracts.py
 build_expert_context(...) -> dict
 build_evaluator_context(...) -> dict
 validate_expert_result(...) -> dict
 validate_evaluator_result(...) -> dict
+decide_admission(attempt: Mapping, result: Mapping,
+                 provenance: Mapping) -> dict
+build_mathematical_node(admission: Mapping, result: Mapping,
+                        provenance: Mapping) -> dict
 
 # frontier_store.py
 open_frontier_store(run_dir: Path) -> FrontierStore
 FrontierStore.append_attempt(...)
-FrontierStore.materialize_node(...)
+FrontierStore.record_admission(...)
+FrontierStore.materialize_mathematical_node(...)
+FrontierStore.materialize_node_evaluation(...)
+FrontierStore.materialize_archive_entry(...)
 FrontierStore.project_snapshot(...)
 FrontierStore.freeze_candidate(...)
 FrontierStore.reconcile_run(...)

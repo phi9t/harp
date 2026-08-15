@@ -55,7 +55,7 @@ files use empty-blob base
 
 | Milestone | Tickets | Exit condition |
 |-----------+---------+----------------|
-| M0 Historical contract, baselines, and plan | CPFR-001..CPFR-009, CPFR-024..CPFR-025 | design, baselines, and audited ticket ledger preserved |
+| M0 Historical contract, baselines, and plan | CPFR-001..CPFR-009, CPFR-024..CPFR-026 | design, baselines, audited ticket ledger, and mathematical-node model preserved |
 | M1 Provider-neutral experiment machinery | CPFR-010..CPFR-023 | partial diff reconciled; fake frontier, review, guided, formal, legacy exception, and ticket reconciliation pass |
 | M2 Live expert frontier | CPFR-030..CPFR-036 | immutable E-arm run completed or typed blocked |
 | M3 Evidence and mathematical review | CPFR-040..CPFR-049, CPFR-060..CPFR-068 | evidence verified, findings frozen, and guided-arm trigger resolved |
@@ -498,8 +498,8 @@ state.
 *** Implementation Steps
 
 1. Inspect DGM packet and pinned implementation.
-2. Map proof nodes to archive nodes.
-3. Define route-neutral score and functioning admission.
+2. Map DGM proof states to immutable mathematical nodes and archive entries.
+3. Define route-neutral scoring and the mathematical-node admission predicate.
 4. Define parent selector and deterministic draw stream.
 5. Define role roster, context, frontier, budget, and stop conditions.
 6. Obtain approval and commit the spec.
@@ -729,11 +729,132 @@ commit.
   staged =DONE= transition. The resulting commit SHA is reported only after
   commit in the no-edit operator closeout and user response.
 
+** DONE Clarify Mathematical Node Domain Model :docs:ticket:
+:PROPERTIES:
+:ID: CPFR-026
+:DESIGN_SECTION: Domain Model; Module Boundaries; Promotion Boundary
+:DEPENDS_ON: CPFR-025
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT: pending
+:END:
+
+*** Scope
+
+Separate expert execution, generated output, mathematical identity, evaluation,
+archive selection, and candidate review into explicit records before the
+preserved frontier implementation is reconciled.
+
+*** Non-goals
+
+- No product-code, prompt, schema, test, or run-artifact edit.
+- No acceptance of the preserved partial implementation.
+- No live provider call or mathematical search.
+
+*** Owned Files
+
+- =CONTEXT.md=
+- =docs/workstream/crouzeix-proof-reproduction/design.md=
+- this ticket's tracker subtree and model-driven corrections to later tickets
+
+*** Acceptance Criteria
+
+- =Expert attempt=, =expert result=, =admission decision=, =mathematical node=,
+  =node evaluation=, =archive entry=, and =candidate projection= have distinct
+  definitions and identities.
+- A failed, malformed, resource-blocked, or nonfunctioning attempt creates no
+  mathematical node.
+- A mathematical node is immutable and excludes evaluation, score, child
+  count, selection history, review outcome, timestamps, and mutable paths.
+- =mathematical_payload_sha256= and =node_artifact_sha256= have exact canonical
+  JSON boundaries.
+- Evaluation and archive records reference the node artifact digest; DGM score
+  authority is the integer unanimous-pass count rather than a JSON float.
+- Selection and =score_complete= are derived records, not node lifecycle states.
+- CPFR-011 through CPFR-016 and the live-run tickets name the exact schema and
+  ownership changes needed to implement the model.
+- Every pre-existing frontier implementation file is byte-identical before and
+  after this documentation-only ticket.
+
+*** Implementation Steps
+
+1. Audit existing prose, schema, frontier metadata, persistence layout, and
+   tests for overloaded uses of =node=.
+2. Add the approved proof-search terms to the root domain glossary.
+3. Replace the canonical workstream domain model with the explicit record graph
+   and digest boundaries.
+4. Update implementation and live-run tickets to migrate schemas, directories,
+   APIs, events, and tests without compatibility aliases.
+5. Scan for old node-state language and unresolved identity ambiguity.
+6. Prove the preserved frontier implementation inventory is byte-identical.
+7. Move this ticket to =REVIEW=; a later focused closeout refreshes the receipt
+   and commits only the owned documentation surface.
+
+*** Verification Plan
+
+- =git diff --check=
+- targeted =rg= scan for overloaded expert-node and node-state language
+- tracker ID/dependency/required-section/acyclicity audit
+- before/after SHA-256 inventory of all twelve preserved implementation files
+- =git diff --name-only=; expected only this ticket's three owned documentation
+  files in addition to the pre-existing preserved implementation paths
+
+*** Verification Evidence
+
+- The canonical model now separates expert attempts, strict expert results,
+  admission decisions, immutable mathematical nodes, node evaluations,
+  reconciliations, archive entries, selection events, and candidate
+  projections. Only attempts have lifecycle transitions.
+- The identity contract fixes tagged endpoint variants, stable mathematical
+  locators, one-way admission-to-node hashing, two canonical node digests,
+  harness-owned evaluation envelopes, integer score authority, archive-entry
+  identity, and candidate-projection identity.
+- The targeted ambiguity scan found no active contract using functioning,
+  expert, archive, candidate, or strongest "node" as an overloaded synonym.
+  Remaining matches occur only in glossary =Avoid= guidance, explicit rejection
+  rules, or CPFR-022's inventory of legacy WIP that must be replaced.
+- Tracker audit: 60 tickets, 60 unique IDs, all required properties and
+  sections present, zero unknown dependencies, and a 60-node acyclic graph.
+  The implementation gate is =CPFR-026 -> CPFR-022 -> CPFR-010=.
+- Local-link audit reported zero missing targets. Placeholder scan reported no
+  actionable placeholder; its only match was the literal scan command in
+  CPFR-025.
+- =git diff --check= passed after review repairs.
+- Targeted terminology scan for overloaded =expert-node=, =functioning node=,
+  =archive node=, =candidate node=, =node state=, =strongest-node=, and related
+  stale phrases found only glossary =Avoid= guidance and the explicit
+  =score_complete= rejection statement.
+- Independent spec review initially found CPFR-013 admission/node digest
+  direction, CPFR-016 terminal-attempt admission wording, and stale
+  strongest-node fallback terminology; all were repaired and the reviewer
+  approved the re-review with no blockers.
+- Independent repository-standards review initially found the same CPFR-016
+  blocker and no other blocking standards issue.
+- =cargo test -p harp --test credible_docs_style -- --test-threads=1=
+  passed 15 tests with zero failures before and after review repairs.
+- All twelve preserved frontier implementation files matched their pre-edit
+  SHA-256 values. The sorted path/digest inventory aggregate is
+  =08a9bef341d3602563d9ff521e3c2bd67d0f438435b4c7c62f8a3857107594b8=.
+- This ticket changed only =CONTEXT.md=, =design.md=, and =tracker.org=.
+  Pre-existing tracked and untracked lab WIP remains unstaged and
+  byte-identical. No provider call or mathematical search ran.
+- Clean candidate repository verification after payload receipt refresh passed:
+  =cargo run -q -p harp -- repository verify= reported
+  =repository verified: 521 import rows=.
+- Clean candidate full release gate passed: =mise run verify= completed
+  successfully in =/private/tmp/harp-cpfr026-verify=. Non-fatal mise cache and
+  tracked-config warnings were sandbox-local and did not stop the gate.
+- Refreshed =docs/import-receipt.md= to the exact payload digest reported by
+  the clean candidate repository verifier.
+
 ** TODO Add Tracker And Runtime-Ticket Validators :ticket:tests:code:
 :PROPERTIES:
 :ID: CPFR-010
 :DESIGN_SECTION: Ticket Discipline; Runtime Ticket Contract
-:DEPENDS_ON: CPFR-022 CPFR-025
+:DEPENDS_ON: CPFR-022
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
@@ -769,9 +890,15 @@ ticket/event records before any further frontier implementation.
   before dependencies are terminal under the operating contract.
 - Runtime ticket JSON rejects unknown fields, unsafe IDs/paths, missing context
   digests, invalid owner/task enums, and invalid limits.
-- Runtime event parser enforces the closed state transitions in =design.md=.
-- Expert-node events use =score_complete= rather than =complete=; the latter is
-  valid only as an independent mathematical review outcome.
+- Runtime event parser enforces the closed attempt-ticket transitions in
+  =design.md=.
+- Frontier events use separate closed record kinds for admission decisions,
+  archive-entry creation, selection, and candidate projection. They reject
+  mathematical-node lifecycle events such as =selected=, =complete=, or
+  =superseded=.
+- =score_complete= is derived from an archive entry's integer pass count and
+  candidate digest; =complete= is valid only as an independent mathematical
+  review outcome.
 - Ticket and event files are create-only, symlink-safe, bounded, and append-only.
 - Ticket binding validation rejects a call request without ticket ID and ticket
   digest; CPFR-014 applies it to provider construction.
@@ -801,7 +928,7 @@ ticket/event records before any further frontier implementation.
 :PROPERTIES:
 :ID: CPFR-022
 :DESIGN_SECTION: Current State; Module Boundaries
-:DEPENDS_ON: CPFR-025
+:DEPENDS_ON: CPFR-026
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: unassigned
@@ -833,6 +960,10 @@ any production edit resumes.
   =run_frontier.py=, =test_expert_runner.py=, and =test_frontier.py=.
 - Every hunk maps to exactly one of CPFR-011 through CPFR-016, or to an explicit
   deletion during that ticket.
+- Every hunk using the overloaded expert-node schema, mixed frontier-node
+  metadata, direct =archive_nodes/= persistence, float score authority, or node
+  lifecycle events is marked for replacement under the CPFR-026 model rather
+  than accepted as compatibility behavior.
 - Every mapped hunk has a stable patch ID containing base blob ID, normalized
   hunk header, and context SHA-256.
 - Shared files have an ordered owner list; no ticket may whole-file stage one.
@@ -868,7 +999,7 @@ any production edit resumes.
 ** TODO Split Expert Contracts From Orchestration :code:tests:
 :PROPERTIES:
 :ID: CPFR-011
-:DESIGN_SECTION: Module Boundaries; Expert Node Contract
+:DESIGN_SECTION: Module Boundaries; Mathematical Node; Node Evaluation And Reconciliation
 :DEPENDS_ON: CPFR-010
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
@@ -879,8 +1010,9 @@ any production edit resumes.
 
 *** Scope
 
-Move expert/evaluator context construction and output validation out of the
-current oversized =expert_runner.py= into a deep contract module.
+Move expert/evaluator context construction, expert-result validation, admission,
+and immutable mathematical-node construction out of the current oversized
+=expert_runner.py= into a deep contract module.
 
 *** Non-goals
 
@@ -892,8 +1024,12 @@ current oversized =expert_runner.py= into a deep contract module.
 
 - new =labs/crouzeix_proof_reproduction/expert_contracts.py=
 - new =labs/crouzeix_proof_reproduction/tests/test_expert_contracts.py=
-- =schemas/expert_node.schema.json=
-- =schemas/proof_progress_evaluation.schema.json=
+- delete =schemas/expert_node.schema.json=
+- new =schemas/expert_result.schema.json=
+- new =schemas/admission_decision.schema.json=
+- new =schemas/mathematical_node.schema.json=
+- delete =schemas/proof_progress_evaluation.schema.json=
+- new =schemas/node_evaluation.schema.json=
 - =prompts/expert.md=
 - =prompts/proof_progress_evaluator.md=
 - contract-only deletions from =expert_runner.py=
@@ -905,7 +1041,34 @@ current oversized =expert_runner.py= into a deep contract module.
 - Evaluator context strips run, node, parent, generation, role, direction,
   score, selection, and treatment identity.
 - Experts and evaluators have =delegation_allowed=false= and only =Write=.
-- Expert output enforces exactly one candidate proof or blocker.
+- Expert output is an =expert_result= with one tagged endpoint variant
+  (=candidate_proof= or =blocker=); nullable sibling endpoint fields are
+  rejected and the result is not called a mathematical node.
+- Admission is pure and returns one accepted or rejected decision with a closed
+  outcome. Every strict expert result gets exactly one decision, and only an
+  accepted decision constructs a mathematical node.
+- Failed, malformed, timed-out, and resource-blocked attempts create neither an
+  admission decision nor a mathematical-node record. A strict but
+  nonfunctioning result creates one rejected decision and no node.
+- Mathematical-node records contain the exact identity, lineage, provenance,
+  payload, and digest fields in =design.md= and exclude evaluations, scores,
+  child counts, selections, review outcomes, timestamps, and mutable paths.
+- Node identity binds run, theorem, leakage tier, full selected-direction
+  projection, source attempt/ticket/context/call/result, admission decision,
+  parent identity, payload, and both canonical digests.
+- Admission hashing is acyclic: an accepted decision binds the prospective node
+  ID but never its artifact digest; the node then binds the admission digest.
+- Proved statements, circularity risks, obligations, and proposed directions
+  have stable mathematical IDs; proved-statement dependencies are closed over
+  the node payload and acyclic.
+- Canonical JSON recomputes =mathematical_payload_sha256= and
+  =node_artifact_sha256= at the documented boundaries.
+- Parent node ID and artifact digest are both null for roots and both present
+  for children; a mismatch fails closed.
+- Evaluator contexts expose theorem plus mathematical payload only. Evaluator
+  model output contains only probes/findings; the harness-owned evaluation
+  envelope binds node, payload, ticket, context, call, and output digests while
+  hiding lineage and provenance from the evaluator.
 - Obligations, directions, findings, probe IDs, roles, and digests are closed.
 - Structural P10 override prevents a score of one without a candidate proof.
 - Prompts contain no answer-bearing mechanism vocabulary.
@@ -913,13 +1076,17 @@ current oversized =expert_runner.py= into a deep contract module.
 *** Implementation Steps
 
 1. Move existing context tests into a new red contract suite.
-2. Add malformed field, duplicate ID, candidate/blocker, lineage leakage, and
-   answer-vocabulary tests.
-3. Implement pure context constructors.
-4. Implement strict expert and evaluator validators.
-5. Implement conservative evaluator fallback and reconciliation input.
-6. Replace =expert_runner.py= definitions with imports.
-7. Run old and new suites to prove behavior parity.
+2. Add red tests proving attempts, expert results, admission decisions, and
+   mathematical nodes are distinct records.
+3. Add malformed field, duplicate ID, candidate/blocker, lineage leakage,
+   digest-boundary, parent-link, and answer-vocabulary tests.
+4. Implement pure context constructors and strict expert-result validation.
+5. Implement pure admission and mathematical-node construction.
+6. Implement strict node-evaluation validation and conservative fallback.
+7. Delete the overloaded schema names without compatibility aliases.
+8. Replace =expert_runner.py= definitions with imports.
+9. Run old and new suites, updating assertions to the approved model rather
+   than preserving overloaded node behavior.
 
 *** Verification Plan
 
@@ -944,8 +1111,8 @@ current oversized =expert_runner.py= into a deep contract module.
 
 *** Scope
 
-Complete and review the pure archive, two-evaluator score, DGM selection,
-direction ranking, and budget-independent frontier logic.
+Complete and review pure reconciliation, archive-entry construction, DGM
+selection, direction ranking, and budget-independent frontier logic.
 
 *** Non-goals
 
@@ -961,10 +1128,16 @@ direction ranking, and budget-independent frontier logic.
 
 - Exactly ten probe IDs are required.
 - Evaluator findings are namespaced and retain source IDs.
-- =alpha= is unanimous-pass count divided by ten.
-- Archive =keep_all= retains lower-scoring functioning children.
-- Parent generation and candidate proof digest are validated.
-- Eligibility excludes =alpha= one.
+- Reconciliation binds one =node_artifact_sha256= and two node-evaluation
+  artifact digests; its score authority is integer =unanimous_pass_count=.
+- Archive-entry construction binds node, payload, reconciliation, and optional
+  candidate digests plus its own artifact digest without copying mutable
+  frontier state.
+- Archive =keep_all= retains lower-scoring admitted child nodes.
+- Parent generation and both parent identity fields are validated when the
+  mathematical node is constructed; frontier logic does not invent lineage.
+- Eligibility derives =alpha = unanimous_pass_count / 10= exactly and excludes
+  a count of ten.
 - Score, underexploration, weight, and normalized probability match DGM.
 - Two SHA-256 draws with replacement are byte-stable under the exact
   NUL-delimited ASCII preimage in =design.md=.
@@ -974,8 +1147,12 @@ direction ranking, and budget-independent frontier logic.
 - Both draws bind one pre-generation archive/snapshot digest, eligible set,
   child-count vector, and probability vector.
 - No archive admission or child-count change occurs between the two draws.
-- Child count derives only from admitted functioning children.
-- Direction priority and role fallback match the approved design.
+- Child count derives only from child archive entries whose immutable nodes
+  reference the parent artifact.
+- Direction priority joins node obligations/proposals with reconciliation
+  findings without writing those findings into the node.
+- Selection creates immutable events and never changes a node or archive-entry
+  state.
 - Selector arithmetic uses the exact =decimal.Context= in =design.md= and has
   no platform =math.exp= dependency.
 - Empty eligible archives, decimal signals, and invalid terms fail closed.
@@ -983,16 +1160,17 @@ direction ranking, and budget-independent frontier logic.
 *** Implementation Steps
 
 1. Preserve the existing red/green selector tests.
-2. Add boundary tests for alpha, exponent range, duplicate IDs, and invalid
-   parent links.
+2. Add boundary tests for pass counts, exponent range, duplicate identities,
+   invalid digest joins, and parent projections.
 3. Add exact preimage, digest, unsigned-integer, decimal, snapshot, term,
    probability, interval, and selected-node golden values for generations one
    through three.
-4. Implement or repair node validation.
-5. Implement or repair score reconciliation and finding namespacing.
+4. Implement reconciliation and archive-entry validation.
+5. Implement finding namespacing and joined direction ranking.
 6. Implement exact-context decimal DGM selection and SHA-256 draws.
-7. Implement direction ranking and duplicate-parent assignment.
-8. Remove provider/filesystem imports from the module.
+7. Implement duplicate-parent direction assignment.
+8. Remove provider/filesystem imports and mixed attempt/node metadata from the
+   module.
 
 *** Verification Plan
 
@@ -1017,8 +1195,9 @@ direction ranking, and budget-independent frontier logic.
 
 *** Scope
 
-Extract run-state publication, ledgers, archive-node materialization, snapshot
-projection, and candidate freezing into a secure persistence module.
+Extract attempt publication, admission records, mathematical-node and
+evaluation materialization, archive entries, snapshot projection, and candidate
+projection into a secure persistence module.
 
 *** Non-goals
 
@@ -1037,12 +1216,21 @@ projection, and candidate freezing into a secure persistence module.
 - Attempt, frontier, and selection ledgers are append-only, bounded, strict
   JSONL, and reject symlinks.
 - Sequence numbers are contiguous and duplicate task/node IDs fail.
-- Archive-node directories are create-only and contain context, result,
-  reconciliation, evaluations, receipts, and inventory.
-- Snapshot is deterministically regenerated from ledgers/nodes and rejected if
-  stale.
-- Candidate freeze verifies node and proof digest before any write.
-- Candidate publication is create-only and leaves no partial files on failure.
+- Attempt directories preserve context, expert result or terminal failure,
+  provider call, and receipts regardless of admission.
+- Admission records are create-only and never reference a
+  =node_artifact_sha256=; each accepted admission is referenced by exactly one
+  later mathematical-node artifact, and rejected admissions are referenced by
+  none.
+- Mathematical-node directories contain only =node.json=,
+  =mathematical_payload.json=, and their inventory.
+- Node-evaluation directories and archive-entry files are separate create-only
+  records joined by artifact digests.
+- Snapshot is deterministically regenerated from archive entries, parent links,
+  and events and is rejected if stale.
+- Candidate projection verifies node artifact, reconciliation, and candidate
+  proof digests before any write.
+- Candidate projection is create-only and leaves no partial files on failure.
 - Attempt records survive resource blocks after an expert call.
 - Run receipt reconciles tickets, attempts, calls, selections, nodes, and
   terminal states.
@@ -1051,12 +1239,13 @@ projection, and candidate freezing into a secure persistence module.
 
 1. Write failing append, duplicate, symlink, sequence, and size tests.
 2. Implement bounded append-only JSONL publication.
-3. Write failing archive materialization and replacement tests.
-4. Implement create-only node publication with digest inventory.
-5. Write failing stale-snapshot and reconstruction tests.
-6. Implement deterministic projection.
+3. Write failing attempt/admission/node/evaluation/archive separation and
+   replacement tests.
+4. Implement each create-only record with its own digest inventory.
+5. Write failing cross-record digest, stale-snapshot, and reconstruction tests.
+6. Implement deterministic archive and snapshot projection.
 7. Write failing candidate tamper and partial-publication tests.
-8. Implement candidate freeze with expected digest.
+8. Implement candidate projection with node and reconciliation digests.
 9. Replace direct writes in =expert_runner.py= with the store API.
 
 *** Verification Plan
@@ -1167,13 +1356,14 @@ configuration, root expert tickets, schemas, prompts, and ticket/event roots.
 
 - Historical prompt identity is verified and raw bytes are discarded.
 - E arm uses model =gpt-5.6-sol=, seed =20260814=, five fixed roles, ten fixed
-  probes, three child generations, two draws, eleven functioning nodes, 33
-  calls, one hour per call, and 4 GiB preflight.
+  probes, three child generations, two draws, eleven admitted mathematical
+  nodes, 33 calls, one hour per call, and 4 GiB preflight.
 - Run spec contains exact prompt/schema/config/CLI digests and excluded source
   classes.
 - Five root expert runtime tickets exist before execution.
 - Root ticket IDs are deterministic from run, generation, and role.
-- Run, ticket, call, archive, candidate, and review directories are create-only.
+- Run, ticket, attempt, admission, mathematical-node, node-evaluation,
+  archive-entry, candidate-projection, and review directories are create-only.
 - Existing destinations, symlinks, wrong CLI identity, or invalid configuration
   fail before publication.
 
@@ -1212,7 +1402,8 @@ configuration, root expert tickets, schemas, prompts, and ticket/event roots.
 *** Scope
 
 Refactor and complete the bounded outer loop that launches five root experts,
-two evaluators per functioning node, and DGM-selected child generations.
+two evaluators per admitted mathematical node, and DGM-selected child
+generations.
 
 *** Non-goals
 
@@ -1234,13 +1425,22 @@ two evaluators per functioning node, and DGM-selected child generations.
   runtime ticket before action.
 - Evaluators are fresh and blind to lineage/treatment/score.
 - Failed evaluator becomes explicit conservative evidence.
+- Each strict expert result produces either one rejected admission or one
+  accepted admission and one immutable mathematical node. Failed, malformed,
+  timed-out, and resource-blocked attempts produce no admission. No expert
+  attempt or result can directly create an archive entry.
+- Each admitted node receives two node evaluations and one reconciliation
+  before its archive entry is constructed.
 - DGM selection runs only after root archive completion.
 - Duplicate parent draws receive different open directions when possible.
-- Functioning children enter =keep_all= and increment parent count.
+- Admitted children receive archive entries under =keep_all= even when their
+  score is lower; only those child archive entries increment the derived parent
+  count.
 - Attempt/frontier/selection/ticket ledgers reconcile and sequences are
   contiguous.
-- A perfect-score proof is frozen and marked =score_complete=, then excluded
-  from later selection without stopping other eligible lineages.
+- A perfect-score archive entry yields a candidate projection and is derived
+  =score_complete=, then excluded from later selection without stopping other
+  eligible lineages. The source mathematical node remains unchanged.
 - The frontier stops only at the fixed budget or an empty eligible set.
 - Resource, call, node, and generation budgets fail closed with complete
   receipts.
@@ -1252,14 +1452,16 @@ two evaluators per functioning node, and DGM-selected child generations.
 
 1. Write a failing end-to-end fake run with all root, evaluator, selector, child,
    ticket, and ledger assertions.
-2. Implement root-generation orchestration through contract/provider/store
-   modules.
-3. Implement evaluator ticket creation and reconciliation.
+2. Implement root attempts, expert-result validation, admission decisions, and
+   mathematical-node construction through contract/provider/store modules.
+3. Implement evaluator ticket creation, reconciliation, and archive-entry
+   construction.
 4. Implement pre-draw selection-ticket creation, selection, and child-ticket
    creation in that order.
-5. Implement bounded child generations, score-complete freezing, and stop
-   conditions without conflating score with correctness.
-6. Implement final candidate inventory and best-node fallback.
+5. Implement bounded child generations, candidate projections, and stop
+   conditions without conflating node identity, score, or correctness.
+6. Implement final candidate-projection inventory and strongest-archive-entry
+   fallback.
 7. Implement run receipt reconciliation.
 8. Add malformed, timeout, resource, and partial-run failure tests.
 9. Keep =run_frontier.py= a thin phase CLI with no orchestration logic.
@@ -1766,8 +1968,9 @@ prompt.
 
 *** Scope
 
-Execute all five pre-created root expert tickets and persist every result and
-failure before evaluation.
+Execute all five pre-created root expert tickets, persist every attempt outcome,
+and materialize mathematical nodes for accepted strict results before
+evaluation.
 
 *** Non-goals
 
@@ -1778,8 +1981,9 @@ failure before evaluation.
 
 - five root expert ticket directories
 - five expert call directories
-- attempt/frontier ledger rows
-- five raw expert result records or typed failures
+- attempt and admission records
+- five strict expert results or typed terminal failures
+- zero to five immutable mathematical-node directories
 
 *** Acceptance Criteria
 
@@ -1789,20 +1993,29 @@ failure before evaluation.
 - Every call receipt binds its ticket and exact context/schema/prompt digests.
 - One malformed/failed expert does not prevent later root tickets.
 - Resource block records the interrupted attempt before stopping.
+- A strict expert result receives exactly one admission decision; an accepted
+  decision creates exactly one mathematical node and a rejected decision
+  creates none.
+- Failed, malformed, timed-out, and resource-blocked attempts create no
+  admission or node.
+- Mathematical-node and payload digests recompute before the root phase
+  terminalizes.
 
 *** Implementation Steps
 
 1. Validate all five tickets and resource preflight.
 2. Execute role tickets in fixed roster order.
 3. After each call, validate and persist its receipt immediately.
-4. Validate expert output or classify nonfunctioning.
-5. Append attempt and frontier events.
-6. Recheck disk before the next ticket.
-7. Stop after all five terminalize or a typed resource block.
+4. Validate raw output into a strict expert result or typed terminal failure.
+5. Decide admission for strict results and materialize accepted mathematical
+   nodes.
+6. Append attempt and admission events.
+7. Recheck disk before the next ticket.
+8. Stop after all five terminalize or a typed resource block.
 
 *** Verification Plan
 
-- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase roots=; expected five terminal root tickets, five attempts, and zero unaccounted calls
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase roots=; expected five terminal root tickets, five attempts, one admission per strict result, one node per accepted admission, and zero unaccounted calls
 - =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase roots=; expected zero cross-root findings
 - =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected exit =0=
 
@@ -1824,51 +2037,59 @@ failure before evaluation.
 
 *** Scope
 
-For each functioning root, create and execute two fresh evaluator tickets,
-reconcile ten probes, and admit the node to =keep_all=.
+For each admitted root mathematical node, create and execute two fresh
+evaluator tickets, reconcile ten probes, and construct its =keep_all= archive
+entry.
 
 *** Non-goals
 
 - No reference-aware public-proof comparison.
-- No parent selection until all functioning roots are scored.
+- No parent selection until all admitted root mathematical nodes have archive
+  entries.
 
 *** Owned Files
 
 - dynamic evaluator ticket directories
 - evaluator calls and normalized records
-- node reconciliations and archive-node directories
+- node-evaluation reconciliations and archive-entry files
 - snapshot and frontier events
 
 *** Acceptance Criteria
 
-- Exactly two evaluator tickets per functioning root.
-- Evaluator contexts contain mathematical node content but no lineage, role,
-  score, treatment, or other evaluator output.
+- Exactly two evaluator tickets per admitted root mathematical node.
+- Evaluator contexts contain theorem plus mathematical payload but no node ID,
+  lineage, provenance, role, score, treatment, or other evaluator output.
+- Evaluations and reconciliation bind =node_artifact_sha256= outside the
+  model-visible context.
 - Failed evaluator becomes explicit =insufficient_evidence=, not a dropped node.
-- Every score recomputes from unanimous probe passes.
+- Every score recomputes from integer unanimous probe passes; float =alpha= is
+  non-authoritative display data only.
 - P10 cannot pass without a candidate proof.
-- All functioning roots enter the archive regardless of score.
+- Every admitted root receives one archive entry regardless of score.
 - Finding IDs are evaluator-namespaced.
+- Evaluator findings and reconciliation remain outside the immutable
+  mathematical node.
 
 *** Implementation Steps
 
-1. Create evaluator tickets from each functioning expert result.
+1. Create evaluator tickets from each admitted mathematical node.
 2. Execute evaluators in deterministic node/evaluator order.
 3. Validate every ten-probe result and finding.
 4. Substitute conservative typed evidence for failed evaluators.
 5. Reconcile score and findings.
-6. Materialize archive nodes and update snapshot.
-7. Reconcile tickets, calls, evaluations, and nodes.
+6. Materialize archive entries and update the derived snapshot.
+7. Reconcile tickets, calls, nodes, evaluations, and archive entries.
 
 *** Verification Plan
 
-- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase evaluate-roots=; expected two evaluations per functioning root and ten probes per evaluation
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase evaluate-roots=; expected two evaluations and one reconciliation/archive entry per admitted root, with ten probes per evaluation
 - =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --scan-contexts --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase evaluators=; expected zero lineage/treatment findings
 - =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --projection=; expected snapshot digest to equal ledger projection
 
 *** Verification Evidence
 
-- Record node scores, disagreements, findings, and admission statuses.
+- Record node digests, reconciliation digests, integer scores, disagreements,
+  findings, and archive-entry identities.
 
 ** TODO Execute DGM Parent Selection And Child Generations :live:math:ticket:
 :PROPERTIES:
@@ -1897,14 +2118,15 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
 
 - selection tickets/events
 - child expert and evaluator tickets/calls
-- attempt/frontier/selection ledgers
-- archive nodes and snapshots
+- attempt/admission/frontier/selection ledgers
+- mathematical nodes, node evaluations, archive entries, and snapshots
 - run receipt
 
 *** Acceptance Criteria
 
-- Eligibility excludes =alpha= one.
-- Every term and probability recomputes from archive score and child count.
+- Eligibility excludes archive entries with unanimous pass count ten.
+- Every term and probability recomputes from archive-entry pass count and the
+  derived admitted-child count.
 - SHA-256 draws reproduce from seed, generation, and draw index.
 - Sampling is with replacement.
 - Both draws bind the same pre-generation archive/snapshot digest, eligible set,
@@ -1913,12 +2135,14 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
   events are terminal.
 - Direction priority and role map match the fixed contract.
 - Only selected parent/direction enter child context.
-- Functioning children are admitted even if lower scoring.
-- Only functioning children increment parent count.
+- Every strict child result receives an admission decision. Accepted child
+  nodes are evaluated and receive archive entries even if lower scoring.
+- Only child archive entries increment the derived parent count.
 - Each generation and call stops at the fixed resource/call/node ceilings.
 - Every dynamic task has a runtime ticket before execution.
-- A =score_complete= node is frozen and parent-ineligible; remaining eligible
-  nodes continue until budget exhaustion or an empty eligible set.
+- A =score_complete= archive entry yields a candidate projection and is
+  parent-ineligible; its source node remains immutable and remaining eligible
+  entries continue until budget exhaustion or an empty eligible set.
 
 *** Implementation Steps
 
@@ -1926,10 +2150,12 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
 2. Compute both draws from that snapshot, append two exact events, and
    terminalize both tickets before any child action.
 3. Create two child expert tickets from selected parent/directions.
-4. Execute, validate, and record child attempts.
-5. Create/execute evaluator tickets for functioning children.
-6. Admit children, update child counts, and regenerate snapshot.
-7. Freeze score-complete candidates and repeat through generation three,
+4. Execute child attempts, validate strict results, decide admission, and
+   materialize accepted child mathematical nodes.
+5. Create/execute evaluator tickets for admitted children.
+6. Reconcile evaluations, construct child archive entries, and regenerate the
+   snapshot and derived child counts.
+7. Project score-complete candidates and repeat through generation three,
    budget exhaustion, or an empty eligible set.
 8. Reconcile final run receipt.
 
@@ -1938,7 +2164,7 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
 - =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase generations=; expected every recorded term/draw to recompute and both draws per generation to share one snapshot digest
 - =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected zero orphan task/call/attempt/evaluation records
 - =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --projection=; expected snapshot parity
-- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --budgets=; expected calls <= 33, generations <= 3, functioning nodes <= 11
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --budgets=; expected calls <= 33, generations <= 3, admitted mathematical nodes <= 11
 
 *** Verification Evidence
 
@@ -1958,48 +2184,53 @@ dynamic selection tickets, child expert tickets, and evaluator tickets.
 
 *** Scope
 
-Publish the final create-only inventory of all score-complete candidates, or a
-strongest-node report when no qualifying candidate exists.
+Publish the final create-only inventory of all score-complete candidate
+projections, or a strongest-archive-entry report when no qualifying candidate
+exists.
 
 *** Non-goals
 
 - No claim of mathematical correctness.
-- No candidate file for an incomplete best node.
+- No candidate projection for an incomplete strongest archive entry.
 
 *** Owned Files
 
 - candidate-inventory runtime ticket
-- =candidate/= content-addressed candidate files/index or strongest-node report
+- =candidate_projections/= content-addressed candidate files/index or
+  strongest-archive-entry report
 - final run receipt and snapshot
 
 *** Acceptance Criteria
 
-- Every candidate digest matches its source archive-node proof digest.
+- Every candidate digest matches the endpoint of its source mathematical node.
 - Digest mismatch writes nothing.
-- Candidate index binds every source node and candidate bytes.
+- Candidate index binds candidate bytes, source node artifact, and source
+  reconciliation.
 - Without a qualifying proof, promotion remains =not_promoted= and only the
-  strongest node ID/score/gaps are reported.
-- More than one score-complete node is retained; selection of a review target is
-  a later review action, not an archive deletion.
+  strongest archive-entry ID/pass count/gaps are reported.
+- More than one score-complete candidate projection is retained; selection of a
+  repair target is a later review action, not an archive deletion.
 - Run receipt reconciles every runtime ticket and terminal state.
 
 *** Implementation Steps
 
 1. Create candidate-inventory ticket after frontier stop.
-2. Check every score-complete qualification and archive-node digest.
-3. Publish all candidates atomically or a strongest-node report.
+2. Check every score-complete qualification and node/reconciliation digest.
+3. Publish all candidate projections atomically or a strongest-archive-entry
+   report.
 4. Write final run receipt and reconciliation table.
 5. Terminalize the ticket.
 
 *** Verification Plan
 
-- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase finalize=; expected candidate index parity or exactly one strongest-node report
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --phase finalize=; expected candidate-projection index parity or exactly one strongest-archive-entry report
 - =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime labs/crouzeix_proof_reproduction/.runs/expert-frontier-001=; expected accepted finalization ticket and full terminal-state reconciliation
-- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --candidates=; expected every candidate digest to bind one score-complete archive node
+- =python3 labs/crouzeix_proof_reproduction/run_frontier.py check --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 --candidates=; expected every candidate projection to bind one score-complete archive entry and immutable node
 
 *** Verification Evidence
 
-- Record all qualifying nodes/scores/digests or the strongest-node outcome.
+- Record all qualifying nodes/scores/digests or the strongest archive-entry
+  outcome.
 
 ** TODO Validate Live Run Without Reference Leakage :live:review:ticket:
 :PROPERTIES:
@@ -2187,8 +2418,8 @@ ceilings.
 
 *** Scope
 
-Publish the validated E run, including tickets, ledgers, archive, candidate or
-strongest-node report, and resource receipts.
+Publish the validated E run, including tickets, ledgers, archive, candidate
+projection or strongest archive-entry report, and resource receipts.
 
 *** Non-goals
 
@@ -2205,7 +2436,7 @@ strongest-node report, and resource receipts.
 - Every task ticket and event is preserved.
 - Raw call/context bytes and normalized nodes/reconciliations are distinct.
 - Selector and score records are independently recomputable.
-- Candidate or strongest-node outcome is explicit.
+- Candidate-projection or strongest archive-entry outcome is explicit.
 - Secret scan and deterministic archive checks pass.
 
 *** Implementation Steps
@@ -2299,7 +2530,7 @@ Register all reproduction evidence in Harp's offline source verifier.
 
 For every frozen E candidate, run two fresh anonymized correctness reviews. If
 E produced none, formally classify candidate review as not applicable and
-review the strongest node's earliest decisive gap only.
+review the strongest archive entry's earliest decisive gap only.
 
 *** Non-goals
 
@@ -2414,9 +2645,9 @@ about whether one repair attempt is warranted.
 
 *** Scope
 
-Compare every final frozen candidate, or the strongest node when no candidate
-exists, against Jin and Lorist-Schwenninger only after correctness review is
-complete.
+Compare every final frozen candidate projection, or the strongest archive entry
+when no candidate exists, against Jin and Lorist-Schwenninger only after
+correctness review is complete.
 
 *** Non-goals
 
@@ -2449,7 +2680,7 @@ complete.
 
 *** Verification Plan
 
-- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --phase classification=; expected one valid classification per final candidate/strongest node
+- =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --phase classification=; expected one valid classification per final candidate projection or strongest archive entry
 - =python3 labs/crouzeix_proof_reproduction/review_runner.py check --review-dir FINAL_E_REVIEW_DIR --correctness-immutable=; expected pre/post correctness digests equal
 
 *** Verification Evidence
@@ -3026,7 +3257,8 @@ classification as create-only review evidence.
 
 *** Acceptance Criteria
 
-- The root binds the sealed E candidate or strongest-node digest.
+- The root binds the sealed E candidate-projection or strongest archive-entry
+  digest.
 - Initial review, repair decision, optional repair/re-review, and mechanism
   classification all reconcile or are terminally canceled.
 - Correctness bytes precede and remain unchanged by mechanism classification.
