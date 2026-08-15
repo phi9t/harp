@@ -21,6 +21,26 @@ normalization, then discards the raw upstream bytes. The run tree retains only
 the theorem, normalized execution prompt, Harp-authored phase prompts and
 schemas, and identity receipts.
 
+## Execute
+
+Inspect `run_spec.json`, then run the prepared study:
+
+```sh
+python3 labs/crouzeix_proof_reproduction/run_experiment.py \
+  labs/crouzeix_proof_reproduction/.runs/historical-001
+```
+
+Historical runs make one root call. Orchestrated runs make three independent
+route calls, one controller call, an optional redirect, one synthesis call,
+two independent critic calls, and one repair call. The harness refuses partial
+resume or reuse of an existing call ID.
+
+The resulting `run_receipt.json` reports typed call outcomes and usage
+accounting. A candidate is not mathematically certified by that receipt. In
+the orchestrated arm, automatic promotion requires an unchanged candidate,
+zero critic findings, and no theorem-strength obligation; any changed repair
+requires later independent re-review.
+
 ## Boundaries
 
 - Blind generation has no network, proof manuscript, Lean source, Harp packet,
