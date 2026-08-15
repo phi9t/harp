@@ -93,6 +93,10 @@ atlas_dir="$config_root/atlas"
 )
 """
 
+[tasks.verify-lean]
+description = "Build the pinned Training Dynamics Lean formalization"
+run = "scripts/check_training_dynamics_lean.sh"
+
 [tasks.verify-repository]
 description = "Verify import map, LFS, forbidden references, and generated cleanliness"
 run = """
@@ -104,4 +108,4 @@ mise run build
 
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
-run = "mise run verify-atlas && mise run verify-rust && mise run verify-repository"
+run = "mise run verify-atlas && mise run verify-rust && mise run verify-lean && mise run verify-repository"
