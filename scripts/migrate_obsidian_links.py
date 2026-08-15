@@ -74,32 +74,44 @@ def scan_markdown_links(text: str) -> list[LinkSpan]:
     spans: list[LinkSpan] = []
     fence_marker: str | None = None
     byte_offset = 0
+    scan_start = 0
+    scan_chunk = ""
 
     for line in text.splitlines(keepends=True):
         stripped = line.lstrip()
         marker = fence_marker_for(stripped)
         if marker is not None:
             if fence_marker is None:
+                spans.extend(scan_link_chunk(scan_chunk, scan_start))
+                scan_chunk = ""
                 fence_marker = marker
             elif marker[0] == fence_marker[0] and len(marker) >= len(fence_marker):
                 fence_marker = None
+                scan_start = byte_offset + len(line.encode("utf-8"))
             byte_offset += len(line.encode("utf-8"))
             continue
 
         if fence_marker is None:
-            for match in LINK_PATTERN.finditer(line):
-                prefix = line[: match.start()]
-                if not inside_inline_code(prefix) and not inside_wiki_link(prefix):
-                    spans.append(
-                        LinkSpan(
-                            start=byte_offset + len(prefix.encode("utf-8")),
-                            end=byte_offset + len(line[: match.end()].encode("utf-8")),
-                            label=match.group(1),
-                            destination=match.group(2),
-                            in_code=False,
-                        )
-                    )
+            scan_chunk += line
         byte_offset += len(line.encode("utf-8"))
+    spans.extend(scan_link_chunk(scan_chunk, scan_start))
+    return spans
+
+
+def scan_link_chunk(text: str, byte_offset: int) -> list[LinkSpan]:
+    spans: list[LinkSpan] = []
+    for match in LINK_PATTERN.finditer(text):
+        prefix = text[: match.start()]
+        if not inside_inline_code(prefix) and not inside_wiki_link(prefix):
+            spans.append(
+                LinkSpan(
+                    start=byte_offset + len(prefix.encode("utf-8")),
+                    end=byte_offset + len(text[: match.end()].encode("utf-8")),
+                    label=" ".join(match.group(1).split()),
+                    destination=match.group(2),
+                    in_code=False,
+                )
+            )
     return spans
 
 

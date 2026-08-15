@@ -142,6 +142,32 @@ class ObsidianLinkMigrationTests(unittest.TestCase):
             "</details>\n",
         )
 
+    def test_migrates_multiline_label_with_normalized_alias(self) -> None:
+        source = self.write_note(
+            "a.md",
+            "[what makes an improvement loop\n"
+            "recursive](b.md)\n"
+            "```md\n"
+            "[literal\n"
+            "label](b.md)\n"
+            "```\n",
+        )
+
+        migrated = migration.migrate_text(
+            source,
+            source.read_text(encoding="utf-8"),
+            self.repo_root,
+        )
+
+        self.assertEqual(
+            migrated,
+            "[[knowledge/b|what makes an improvement loop recursive]]\n"
+            "```md\n"
+            "[literal\n"
+            "label](b.md)\n"
+            "```\n",
+        )
+
     def test_rejects_missing_source_before_writing_any_file(self) -> None:
         source = self.write_note("a.md", "[Missing](missing.md)\n")
         original = source.read_text(encoding="utf-8")
