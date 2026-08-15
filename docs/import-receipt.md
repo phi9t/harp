@@ -34,10 +34,11 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 56 binary evidence objects. The
+- The maintained tree now contains 58 binary evidence objects. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
   files, and one deterministic raw TRAE archive. The Self-Improving Agents
-  Survey extension adds one captured PNG and one arXiv PDF.
+  Survey extension adds one captured PNG and one arXiv PDF. The DarwinX
+  extension adds the revision-pinned DarwinX and HarnessX PDFs.
 - Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
   fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
@@ -127,4 +128,4 @@ fixed 521-row initial import account.
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`28c77976fc7c9022e38abea018e21237858c178440cc0c0dc84b85934f6bada8`
+`49c3c700b57e57cc4c97b3638fcb3e4701731c7c588898c11bb1309377fcf968`
