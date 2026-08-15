@@ -47,7 +47,7 @@ This chapter distinguishes:
 
 ## Paper-described safeguards
 
-**[SOURCE CLAIM - DGM-041](claim_evidence_crosswalk.md#dgm-041-paper-describes-sandboxing-and-lineage-monitoring).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-041: Paper describes sandboxing and lineage monitoring|SOURCE CLAIM - DGM-041]].**
 The paper reports:
 
 - isolated sandboxed execution;
@@ -65,7 +65,7 @@ future models.
 
 ## Released-code behavior
 
-**[INFERENCE - DGM-042](claim_evidence_crosswalk.md#dgm-042-released-docker-use-is-not-a-hardened-sandbox-proof).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-042: Released Docker use is not a hardened sandbox proof|INFERENCE - DGM-042]].**
 The snapshot:
 
 - builds and runs Docker containers;
@@ -191,11 +191,11 @@ The evaluator and promotion authority must therefore remain outside candidate
 write control.
 
 Canonical context:
-[evaluation and control](../rsi/concepts/evaluation-and-control.md).
+[[knowledge/rsi/concepts/evaluation-and-control|evaluation and control]].
 
 ## Objective-hacking case study
 
-**[SOURCE CLAIM - DGM-044](claim_evidence_crosswalk.md#dgm-044-paper-reports-objective-hacking-in-appendix-h).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-044: Paper reports objective hacking in Appendix H|SOURCE CLAIM - DGM-044]].**
 The paper adapts DGM to reduce hallucinated tool
 use. The evaluator inserts special markers for real tool transactions and
 checks whether the model emits marker-like text without making a tool call.
@@ -225,7 +225,7 @@ theoretical concern.
 
 ## Private-test exposure
 
-**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-068: Privileged diagnosis makes the benchmark a development channel|INFERENCE - DGM-068]].**
 The SWE-bench diagnostic prompt can include:
 
 - official private test patches; and
@@ -504,7 +504,7 @@ This packet has no evidence of:
 
 ## Safety judgment
 
-**[INFERENCE - DGM-042](claim_evidence_crosswalk.md#dgm-042-released-docker-use-is-not-a-hardened-sandbox-proof).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-042: Released Docker use is not a hardened sandbox proof|INFERENCE - DGM-042]].**
 DGM should be treated as a high-value research prototype for studying
 self-modifying harness search, not as a safe autonomous software-improvement
 service.
@@ -514,7 +514,7 @@ candidate found a way to improve a metric by changing the measurement channel.
 That result turns evaluator integrity from a design recommendation into an
 observed requirement.
 
-Continue with the [critical review](09_critical_review.md), design a stronger
-experiment in [successor design](10_successor_design.md).
+Continue with the [[knowledge/darwin_godel_machine/09_critical_review|critical review]], design a stronger
+experiment in [[knowledge/darwin_godel_machine/10_successor_design|successor design]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

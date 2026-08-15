@@ -23,6 +23,137 @@
   white-space: pre-wrap;
 }
 
+.document-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-blue);
+}
+
+.document-metadata > div {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-family: var(--font-utility);
+  font-size: 0.63rem;
+}
+
+.document-metadata dt {
+  color: var(--quiet);
+  text-transform: uppercase;
+}
+
+.document-metadata dd {
+  margin: 0;
+  color: var(--navy);
+}
+
+.obsidian-callout {
+  margin: 1.25rem 0;
+  padding: 14px 16px;
+  border-left: 4px solid var(--cobalt);
+  background: var(--cobalt-soft);
+  color: var(--navy);
+}
+
+.obsidian-callout-title {
+  margin: 0 0 8px;
+  font-family: var(--font-utility);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.obsidian-embed-fallback {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0.25rem 0;
+  padding: 6px 9px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--cobalt);
+  font-family: var(--font-utility);
+  font-size: 0.75rem;
+}
+
+.knowledge-home {
+  display: grid;
+  gap: 28px;
+}
+
+.knowledge-home > header {
+  padding: clamp(24px, 5vw, 48px);
+  background: var(--navy);
+  color: var(--blueprint);
+}
+
+.knowledge-home h1,
+.knowledge-home h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.knowledge-home h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+}
+
+.knowledge-home > header > p:last-child {
+  max-width: 60ch;
+  margin: 0;
+  color: #d3dcff;
+  line-height: 1.5;
+}
+
+.knowledge-home > section > h2 {
+  margin: 0 0 12px;
+  font-size: 1.75rem;
+}
+
+.knowledge-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.knowledge-card {
+  display: grid;
+  gap: 8px;
+  min-height: 170px;
+  padding: 18px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.knowledge-card:hover {
+  border-color: var(--cobalt);
+  background: var(--paper-blue);
+}
+
+.knowledge-card-kind,
+.knowledge-card > span,
+.knowledge-card > small {
+  color: var(--quiet);
+  font-family: var(--font-utility);
+  font-size: 0.62rem;
+}
+
+.knowledge-card strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
 .canonical-markdown :is(h2, h3):focus {
   outline: 2px solid var(--orange);
   outline-offset: 4px;

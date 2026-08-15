@@ -14,7 +14,7 @@ confidence: medium
 
 Mode: `DOMAIN ORIENTATION`.
 
-> Canonical harness mechanics live in [Harness engineering](chapters/harness-engineering.md).
+> Canonical harness mechanics live in [[knowledge/rsi/chapters/harness-engineering|Harness engineering]].
 > This page remains the Pi, Hermes, and Codex comparison; the three deep dives
 > retain exact pinned code paths.
 

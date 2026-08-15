@@ -27,10 +27,10 @@ After this chapter, you should be able to:
 - compare the two paper baselines with the full algorithm; and
 - identify which parts of the search policy remain fixed.
 
-Primary paper route: [DGM Appendix C](../../evidence/weng/text/dgm.txt).
+Primary paper route: [[evidence/weng/text/dgm.txt|DGM Appendix C]].
 Released-code route:
-[DGM_outer.py](../../evidence/implementations/dgm/snapshot/DGM_outer.py) and
-[evo_utils.py](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py).
+[[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]] and
+[[evidence/implementations/dgm/snapshot/utils/evo_utils.py|evo_utils.py]].
 
 ## State of the search
 
@@ -73,7 +73,7 @@ loaded. It does not contain a separate explicit `score < 1` filter in the
 captured `choose_selfimproves` path. The equation is therefore the paper
 contract; the snapshot is evidence for the particular released implementation.
 
-**[EVIDENCE - DGM-062](claim_evidence_crosswalk.md#dgm-062-released-parent-selection-omits-the-papers-perfect-score-filter).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-062: Released parent selection omits the paper's perfect-score filter|EVIDENCE - DGM-062]].**
 This is a paper-to-code mismatch, not evidence that the historical experiment
 used the released candidate set.
 
@@ -143,7 +143,7 @@ The paper uses \(k=2\) for SWE-bench and \(k=4\) for Polyglot. Sampling with
 replacement means one parent can receive more than one self-modification
 attempt in the same generation.
 
-**[EVIDENCE - DGM-005](claim_evidence_crosswalk.md#dgm-005-parent-selection-combines-score-and-underexploration).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-005: Parent selection combines score and underexploration|EVIDENCE - DGM-005]].**
 The released default implements the same sigmoid-score times inverse-child-count
 weight, but the quantity called novelty is lineage underexploration rather than
 behavioral distance.
@@ -235,7 +235,7 @@ This division separates:
 It also introduces a confound: the improvement mechanism includes a fixed,
 strong external diagnostic model and privileged evaluation evidence.
 
-**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-068: Privileged diagnosis makes the benchmark a development channel|INFERENCE - DGM-068]].**
 The benchmark subset therefore serves partly as an architecture-development
 channel, even though the ordinary task-solving agent remains blind to private
 tests.
@@ -251,7 +251,7 @@ The search does not score every child on every task.
 3. For selected high-scoring archive members, run 140 more tasks.
 4. Report a 200-task score for those fully evaluated candidates.
 
-**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-060: Released SWE path does not consume the full-evaluation threshold|EVIDENCE - DGM-060]].**
 These four steps describe the paper. The captured release wires only the first
 two evaluation stages; its full threshold and `big` subset are not consumed.
 
@@ -339,7 +339,7 @@ Multiple functioning lineages remain available.
 
 ## What the algorithm establishes
 
-**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-050: Matched successor-improvement evidence is missing|MISSING - DGM-050]].**
 The algorithm establishes a persistent, branching harness-search process in
 which descendant code can influence later self-modification. It does not by
 itself establish that the search becomes more efficient or effective over
@@ -355,7 +355,7 @@ $$
 
 under matched tasks, models, evaluator, authority, and root-tree budget.
 
-Continue with [system architecture](04_system_architecture.md), inspect
-[open-endedness](07_open_endedness.md).
+Continue with [[knowledge/darwin_godel_machine/04_system_architecture|system architecture]], inspect
+[[knowledge/darwin_godel_machine/07_open_endedness|open-endedness]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

@@ -424,4 +424,4 @@ section now contains either source-backed findings or an explicit `MISSING`
 entry. This note does not propose a replacement prompt or implement the
 experiment.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

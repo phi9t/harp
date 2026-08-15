@@ -8,6 +8,10 @@ self-improvement research. It combines:
   `knowledge/harness_benchmarks/`;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
+- a verified coevolution research-agenda packet under
+  `knowledge/verified_coevolution_agenda/`, with LADDER, PRIME-RL TTRL, NSRSA,
+  SAHOO, model-collapse, Scrivens, and Godel-family evidence boundaries under
+  `evidence/verified_coevolution_agenda/`;
 - a source-backed agentic engineering reference packet under
   `knowledge/agentic_engineering/`, including a captured Kenn/Wes workflow
   article and Clanker Constitution evidence under `evidence/agentic_engineering/`;
@@ -22,6 +26,32 @@ self-improvement research. It combines:
 Managed Markdown under `knowledge/` is the technical-prose authority.
 `content/` contains structured contracts and diagnostics. Generated JSON and
 HTML are derived artifacts.
+
+## Obsidian knowledge vault
+
+Open the repository root as an Obsidian vault, then start at
+[`knowledge/harp_knowledge_home.md`](knowledge/harp_knowledge_home.md). The
+same canonical Markdown remains readable in the offline Atlas; Obsidian adds
+native wikilinks, backlinks, Base views, and the small knowledge map without
+creating a second prose source.
+
+The repository does not track personal `.obsidian/` state. To install the
+reviewed portable profile into a chosen vault, run:
+
+```sh
+python3 tools/obsidian/apply_profile.py --vault "$(git rev-parse --show-toplevel)"
+```
+
+The installer is create-only unless `--replace` is explicit. Validate the
+committed navigation assets without an Obsidian desktop installation:
+
+```sh
+python3 scripts/validate_obsidian_assets.py
+```
+
+The pinned `obsidian-markdown`, `obsidian-bases`, `json-canvas`,
+`obsidian-cli`, and `defuddle` skills are installed locally for TRAE CLI use;
+restart TRAE CLI after this update to load them.
 
 ## Setup
 

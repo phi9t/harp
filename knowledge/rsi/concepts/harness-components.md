@@ -21,13 +21,13 @@ A harness is executable policy around a model. These components determine what t
 
 Context construction selects instructions, history, retrieved records, tool schemas, and current state, then orders them inside the model's context limit. It is a policy because inclusion, omission, and ordering change behavior. A comparison must hold the underlying model fixed and record the exact assembled context.
 
-The [context-engineering deep dive](../context_engineering_deep_dive.md)
+The [[knowledge/rsi/context_engineering_deep_dive|context-engineering deep dive]]
 separates learned context artifacts from the procedures that retrieve, update,
 and validate them, traces ACE, MCE, and Meta-Harness as progressively broader
 mutable surfaces, and separates availability, selection, rendering, activation,
 adherence, and outcome.
 
-The [Codex state-continuity companion](../codex_state_continuity_and_compaction.md)
+The [[knowledge/rsi/codex_state_continuity_and_compaction|Codex state-continuity companion]]
 covers the runtime side: typed active history, opaque reasoning continuation,
 world-state refresh, atomic compaction, replay, and cross-thread memory.
 
@@ -58,8 +58,8 @@ Verification observes the real artifact through tests, static checks, or runtime
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Harness engineering](../chapters/harness-engineering.md#agent-loop-control-flow) defines the control loop and component boundaries.
-- Pi, Hermes, and Codex implementation locators are maintained in the [implementation comparison](../implementation_harnesses.md) and pinned source records.
+- [[knowledge/rsi/chapters/harness-engineering#Agent-loop control flow|Harness engineering]] defines the control loop and component boundaries.
+- Pi, Hermes, and Codex implementation locators are maintained in the [[knowledge/rsi/implementation_harnesses|implementation comparison]] and pinned source records.
 - Lilian Weng, \"Harness Engineering for Self-Improvement,\" sections \"Context engineering\" and \"Agent harness\": [2026-07-04](https://lilianweng.github.io/posts/2026-07-04-harness/).
 
 </details>

@@ -146,11 +146,11 @@ packet from its stated premises.
 
 Harp's synthesis across source statements. Each inference carries conditions
 that would weaken or falsify it in the
-[claim ledger](claim_evidence_ledger.md).
+[[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim ledger]].
 
 ## Missing
 
 Evidence required to raise a claim ceiling but absent from the inspected
 corpus.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

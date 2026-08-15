@@ -22,6 +22,7 @@ import {
 } from "./routes";
 import { LineageLoom } from "./LineageLoom";
 import { LessonRunner } from "./LessonRunner";
+import { KnowledgeHome } from "./KnowledgeHome";
 import { SystemArticle } from "./SystemArticle";
 import { SystemLibrary } from "./SystemLibrary";
 import { WengReader } from "./WengReader";
@@ -102,6 +103,9 @@ function currentLabel(route: AtlasRoute): string {
     case "sources":
       return "Sources";
     case "legacy":
+      if (route.routeId === "knowledge") {
+        return "Knowledge";
+      }
       return canonicalReaderRoutes.find(
         (candidate) => candidate.route.route_id === route.routeId,
       )?.route.label ?? route.routeId;
@@ -137,6 +141,15 @@ export function AtlasApp() {
   if (!crouzeixRoute) {
     throw new Error("Validated Crouzeix route disappeared");
   }
+  const verifiedCoevolutionRoute = canonicalReaderRoutes.find(
+    (candidate) => candidate.route.route_id === "verified-coevolution",
+  );
+  if (!verifiedCoevolutionRoute) {
+    throw new Error("Validated verified coevolution route disappeared");
+  }
+  const knowledgeRoute = canonicalReaderRoutes.find(
+    (candidate) => candidate.route.route_id === "knowledge",
+  );
 
   return (
     <div className="atlas-shell">
@@ -228,6 +241,35 @@ export function AtlasApp() {
           >
             {crouzeixRoute.route.label}
           </button>
+          <button
+            className={
+              route.kind === "legacy"
+                && route.routeId === verifiedCoevolutionRoute.route.route_id
+                ? "nav-button active"
+                : "nav-button"
+            }
+            type="button"
+            onClick={() =>
+              navigate({
+                kind: "legacy",
+                routeId: verifiedCoevolutionRoute.route.route_id,
+              })}
+          >
+            {verifiedCoevolutionRoute.route.label}
+          </button>
+          {knowledgeRoute ? (
+            <button
+              className={
+                route.kind === "legacy" && route.routeId === "knowledge"
+                  ? "nav-button active"
+                  : "nav-button"
+              }
+              type="button"
+              onClick={() => navigate({ kind: "legacy", routeId: "knowledge" })}
+            >
+              {knowledgeRoute.route.label}
+            </button>
+          ) : null}
         </nav>
         <div className="header-route" role="status" aria-label="Current route">
           <strong>{currentLabel(route)}</strong>
@@ -280,14 +322,20 @@ export function AtlasApp() {
         ) : null}
         {route.kind === "legacy" ? (
           <div className="route-reader">
-            {route.routeId === "loop" ? <LineageLoom /> : null}
-            <CanonicalDocumentView
-              document={
-                canonicalReaderRoutes.find(
-                  (candidate) => candidate.route.route_id === route.routeId,
-                )?.document ?? sourceRoute.document
-              }
-            />
+            {route.routeId === "knowledge" ? (
+              <KnowledgeHome />
+            ) : (
+              <>
+                {route.routeId === "loop" ? <LineageLoom /> : null}
+                <CanonicalDocumentView
+                  document={
+                    canonicalReaderRoutes.find(
+                      (candidate) => candidate.route.route_id === route.routeId,
+                    )?.document ?? sourceRoute.document
+                  }
+                />
+              </>
+            )}
           </div>
         ) : null}
         {route.kind === "lesson" ? (

@@ -28,10 +28,10 @@ After this chapter, you should be able to:
 
 ## Claim boundary
 
-**[EVIDENCE - DGM-071](claim_evidence_crosswalk.md#dgm-071-captured-paper-identifies-iclr-2026-publication).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-071: Captured paper identifies ICLR 2026 publication|EVIDENCE - DGM-071]].**
 The pinned paper capture identifies the work as published at ICLR 2026.
 
-All measurements below are author-reported in [DGM](../../evidence/weng/text/dgm.txt).
+All measurements below are author-reported in [[evidence/weng/text/dgm.txt|DGM]].
 Harp has not rerun the 80-iteration searches, independently scored the final
 agents, replayed the external experiment logs, reproduced the cost estimates,
 or audited the historical model API environment.
@@ -61,7 +61,7 @@ The 60-task subset is based on SWE-bench-verified-mini. A candidate proceeds to
 200 tasks when its 60-task success exceeds 40% and it ranks among the top two
 archive performers at that point.
 
-**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-060: Released SWE path does not consume the full-evaluation threshold|EVIDENCE - DGM-060]].**
 That is the paper protocol. The pinned release passes a full-evaluation
 threshold and loads the `big` subset but never consumes either in the captured
 SWE harness dispatch, so the visible source implements only the initial and
@@ -346,14 +346,14 @@ variance. Polyglot's released harness rejects repeated evaluations.
 
 ### Feature-selection leakage
 
-**[INFERENCE - DGM-068](claim_evidence_crosswalk.md#dgm-068-privileged-diagnosis-makes-the-benchmark-a-development-channel).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-068: Privileged diagnosis makes the benchmark a development channel|INFERENCE - DGM-068]].**
 The diagnostic planner can inspect private SWE-bench tests and result logs.
 Even when the generated task solver never sees those tests, the search process
 can select general harness features using privileged information.
 
 ### Statistical uncertainty
 
-**[INFERENCE - DGM-069](claim_evidence_crosswalk.md#dgm-069-staged-point-estimates-create-winners-curse-risk).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-069: Staged point estimates create winner's-curse risk|INFERENCE - DGM-069]].**
 At a true success rate of 0.5, the binomial standard deviation of raw accuracy
 is about 15.8 percentage points for 10 tasks, 6.5 points for 60 tasks, and 3.5
 points for 200 tasks. Passing those unequal-precision point estimates through a
@@ -436,11 +436,11 @@ with uncertainty bounds and matched:
 - retries; and
 - root-tree budget.
 
-The [successor design](10_successor_design.md) develops this experiment.
+The [[knowledge/darwin_godel_machine/10_successor_design|successor design]] develops this experiment.
 
 ## Evaluation judgment
 
-**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-067: Task fitness and descendant productivity are different objectives|INFERENCE - DGM-067]].**
 The reported evidence is substantial for automated harness search and stronger
 than a single best-score anecdote because it includes ablations, transfer,
 lineage analysis, and limited repeated runs.
@@ -451,7 +451,7 @@ The central causal gap remains unchanged:
 > self-improvers, but parent and child are not directly compared as producers
 > of the next accepted generation.
 
-Continue with [open-endedness](07_open_endedness.md), inspect
-[safety and failure](08_safety_and_failure.md).
+Continue with [[knowledge/darwin_godel_machine/07_open_endedness|open-endedness]], inspect
+[[knowledge/darwin_godel_machine/08_safety_and_failure|safety and failure]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

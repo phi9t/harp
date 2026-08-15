@@ -20,7 +20,7 @@ the context-management skill itself.
 ## Explain
 
 Two systems can produce similar final prompts while changing different causal
-objects. The [context-engineering deep dive](../context_engineering_deep_dive.md)
+objects. The [[knowledge/rsi/context_engineering_deep_dive|context-engineering deep dive]]
 traces artifact adaptation, procedure adaptation, and harness-code search.
 
 ## Missing fact
@@ -30,6 +30,6 @@ better later context improvers under a matched protected envelope.
 
 ## Transfer
 
-Fork [ACE](../../../content/diagnostics/cases/ace.json) or
-[MCE](../../../content/diagnostics/cases/mce.json), then change `editable-components` and
+Fork [[content/diagnostics/cases/ace.json|ACE]] or
+[[content/diagnostics/cases/mce.json|MCE]], then change `editable-components` and
 observe the classification boundary.

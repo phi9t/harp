@@ -23,7 +23,7 @@ should not be averaged into one scientific effect.
 | WebArena-Infinity | 300 synthetic intents | 1,260 real tasks | 43.5% to 93.0% audit-clean on GPT-5.5 | Intent, reward-source, and partial application transfer |
 | SWE-bench Verified | No SWE-V evolution | 500 issues | TB2.1 harness reaches 421/500 | One-way cross-benchmark transfer |
 
-**[EVIDENCE - DX-018](claim_evidence_ledger.md#dx-018-wai-separates-synthetic-evolution-from-real-task-reporting).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-018: WAI separates synthetic evolution from real-task reporting|EVIDENCE - DX-018]].**
 The separation grows from none on TB2.1 to a new benchmark and verifier on
 SWE-V. The WAI row is stronger than ordinary held-out intent evaluation because
 the selection reward also changes. It is weaker than transfer to an unrelated
@@ -34,7 +34,7 @@ counterparts.
 
 ### Reported result
 
-**[SOURCE CLAIM - DX-011](claim_evidence_ledger.md#dx-011-the-paper-reports-a-matched-tb21-gain).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-011: The paper reports a matched TB2.1 gain|SOURCE CLAIM - DX-011]].**
 The paper reports:
 
 | Harness | Frozen model / effort | `avg@5` |
@@ -62,7 +62,7 @@ The paper reports the largest cluster changes in:
 
 Security moves from 85% to 84%.
 
-**[SOURCE CLAIM - DX-012](claim_evidence_ledger.md#dx-012-paired-tb21-measurements-include-task-regressions).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-012: Paired TB2.1 measurements include task regressions|SOURCE CLAIM - DX-012]].**
 Among 88 paired tasks, 36 improve, 43 are unchanged, and 9 regress. At a
 10-point threshold, 30 improve and 6 regress. The paper reports no
 capability-cluster regression beyond its noise band.
@@ -72,7 +72,7 @@ aggregation can hide individual regressions.
 
 ### Inference compute
 
-**[SOURCE CLAIM - DX-013](claim_evidence_ledger.md#dx-013-newly-solved-tb21-tasks-use-more-inference-compute).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-013: Newly solved TB2.1 tasks use more inference compute|SOURCE CLAIM - DX-013]].**
 The paper reports:
 
 | Task group | Metric | Base | Evolved |
@@ -107,7 +107,7 @@ bundle did not produce a visible systematic exploit in the reviewed samples.
 
 ### Held-out result
 
-**[SOURCE CLAIM - DX-015](claim_evidence_ledger.md#dx-015-the-paper-reports-held-out-terminalworld-gains).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-015: The paper reports held-out TerminalWorld gains|SOURCE CLAIM - DX-015]].**
 The paper reports:
 
 | Frozen model | Base | Evolved | Change |
@@ -128,7 +128,7 @@ base model.
 
 ### Specialists and merge
 
-**[SOURCE CLAIM - DX-016](claim_evidence_ledger.md#dx-016-a-merged-terminalworld-harness-beats-the-strongest-specialist-by-one-task).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-016: A merged TerminalWorld harness beats the strongest specialist by one task|SOURCE CLAIM - DX-016]].**
 Four specialists solve 24, 25, 26, and 27 tasks. The merged harness solves 28.
 This is the only positive recombination result in the paper.
 
@@ -142,7 +142,7 @@ The first asks whether evolution improves the matched base. The second asks
 whether the final harness beats the strongest external agent. They are not
 interchangeable.
 
-**[INFERENCE - DX-017](claim_evidence_ledger.md#dx-017-terminalworld-supports-archive-diversity-only-suggestively).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-017: TerminalWorld supports archive diversity only suggestively|INFERENCE - DX-017]].**
 The merge demonstrates complementary solved sets in one run. It does not
 establish that population search beats a resource-matched single lineage.
 
@@ -178,7 +178,7 @@ It is not transfer to a completely unrelated browser environment.
 
 ### Base rescue and strong-harness comparison
 
-**[SOURCE CLAIM - DX-019](claim_evidence_ledger.md#dx-019-the-paper-reports-a-large-matched-wai-gain-and-a-smaller-strong-baseline-gap).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-019: The paper reports a large matched WAI gain and a smaller strong-baseline gap|SOURCE CLAIM - DX-019]].**
 The paper reports:
 
 | Harness | Frozen model | Audit-clean pass@1 |
@@ -197,7 +197,7 @@ harness already provides.
 
 ### Recombination
 
-**[EVIDENCE - DX-020](claim_evidence_ledger.md#dx-020-wai-contributes-no-positive-recombination-result).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-020: WAI contributes no positive recombination result|EVIDENCE - DX-020]].**
 The WAI run keeps 26 iterations, reverts 36, and reverts every attempted merge.
 The selected result comes from a short primary lineage.
 
@@ -223,7 +223,7 @@ It rejects:
 - direct database manipulation; and
 - exploits, privilege escalation, or benchmark modification.
 
-**[SOURCE CLAIM - DX-021](claim_evidence_ledger.md#dx-021-the-wai-validity-audit-reports-capability-and-compliance-improving-together).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-021: The WAI validity audit reports capability and compliance improving together|SOURCE CLAIM - DX-021]].**
 The paper reports:
 
 | Metric | Base | Evolved |
@@ -250,7 +250,7 @@ measurement pipeline.
 
 ### Action-policy change
 
-**[EVIDENCE - DX-022](claim_evidence_ledger.md#dx-022-the-evolved-browser-harness-broadens-the-permitted-action-policy).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-022: The evolved browser harness broadens the permitted action policy|EVIDENCE - DX-022]].**
 The base prompt says to interact only through the UI and stop after a
 screenshot. The evolved prompt prefers UI controls but permits a bounded
 fallback to app-owned stores, reducers, loaded modules, public helpers, and
@@ -262,14 +262,14 @@ This is a legitimate policy under the paper's rubric. It is also an action-space
 change. The 93.0% row measures a hybrid UI plus application-semantics agent,
 not only improved visual navigation.
 
-**[INFERENCE - DX-029](claim_evidence_ledger.md#dx-029-wai-does-not-causally-isolate-the-preservation-gate).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-029: WAI does not causally isolate the preservation gate|INFERENCE - DX-029]].**
 The audit shows behavioral co-improvement. It does not show that the
 preservation gate caused the validity improvement. Runtime guards, contract
 skills, the prompt rewrite, and action-policy broadening all move together.
 
 ## SWE-bench Verified
 
-**[SOURCE CLAIM - DX-023](claim_evidence_ledger.md#dx-023-the-paper-reports-one-way-transfer-to-swe-bench-verified).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-023: The paper reports one-way transfer to SWE-bench Verified|SOURCE CLAIM - DX-023]].**
 The paper runs the TB2.1-evolved harness unchanged on frozen Opus 4.8 and
 reports 421/500, 84.2% pass@1, against an 80.8% LSP-enabled fix-skill
 reference.
@@ -299,17 +299,17 @@ The WAI lineage adds four browser contract skills and rewrites the interaction
 policy. Both bundles require an explicit acceptance condition and a check
 against real state before stopping.
 
-**[INFERENCE - DX-025](claim_evidence_ledger.md#dx-025-verification-before-finalization-is-a-plausible-shared-mechanism).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-025: Verification-before-finalization is a plausible shared mechanism|INFERENCE - DX-025]].**
 Verification-before-finalization is the most plausible shared procedural
 mechanism in the paper.
 
-**[EVIDENCE - DX-014](claim_evidence_ledger.md#dx-014-tb21-skill-attribution-is-exploratory).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-014: TB2.1 skill attribution is exploratory|EVIDENCE - DX-014]].**
 The paper correctly calls this exploratory attribution. The skills are
 co-selected. No per-skill causal ablation exists.
 
 ## Cross-benchmark arithmetic
 
-**[INFERENCE - DX-028](claim_evidence_ledger.md#dx-028-the-papers-17-point-average-is-descriptive-not-a-common-effect-size).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-028: The paper's 17-point average is descriptive, not a common effect size|INFERENCE - DX-028]].**
 The paper's "about 17 points on average" combines:
 
 - `avg@5` on an in-domain 89-task suite;
@@ -337,5 +337,5 @@ They do not establish:
 - favorable end-to-end search economics; or
 - reproduction of the proprietary system.
 
-Continue with the [critical review](03_critical_review.md) or return to the
-[DarwinX index](darwinx_index.md).
+Continue with the [[knowledge/darwinx/03_critical_review|critical review]] or return to the
+[[knowledge/darwinx/darwinx_index|DarwinX index]].

@@ -35,7 +35,7 @@ Research memory links questions, hypotheses, code and data revisions, raw output
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [Automated research as an RSI component](../chapters/automated-research.md#end-to-end-control-flow) defines the twelve-step research loop.
+- [[knowledge/rsi/chapters/automated-research#End-to-end control flow|Automated research as an RSI component]] defines the twelve-step research loop.
 - AI Scientist, Methods and "Limitations," describes its ideation-to-paper workflow and reported failure modes: [Nature 651, 914–919](https://www.nature.com/articles/s41586-026-10265-5).
 - PaperBench and RE-Bench define replication and time-budgeted research evaluations: [PMLR 267, Starace et al.](https://proceedings.mlr.press/v267/starace25a.html), [PMLR 267, Wijk et al.](https://proceedings.mlr.press/v267/wijk25a.html).
 

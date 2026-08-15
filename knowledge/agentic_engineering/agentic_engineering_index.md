@@ -18,11 +18,11 @@ architecture for production agentic engineering, not as a reproduced benchmark.
 
 ## Reader routes
 
-- [Kenn reference architecture](kenn_reference_architecture.md)
-- [Kenn tool stack investigation](tool_stack_investigation.md)
-- [Source registry](source_registry.md)
-- [Claim evidence ledger](claim_evidence_ledger.md)
-- [Missing evidence](missing_evidence.md)
+- [[knowledge/agentic_engineering/kenn_reference_architecture|Kenn reference architecture]]
+- [[knowledge/agentic_engineering/tool_stack_investigation|Kenn tool stack investigation]]
+- [[knowledge/agentic_engineering/source_registry|Source registry]]
+- [[knowledge/agentic_engineering/claim_evidence_ledger|Claim evidence ledger]]
+- [[knowledge/agentic_engineering/missing_evidence|Missing evidence]]
 
 ## Core framing
 

@@ -19,7 +19,7 @@ establishes an accepted successor that improves later successor production.
 
 ## Explain
 
-[Joint harness and model-weight adaptation](../chapters/joint-harness-weight-adaptation.md)
+[[knowledge/rsi/chapters/joint-harness-weight-adaptation|Joint harness and model-weight adaptation]]
 separates weight change, harness change, data-policy change, and model-harness
 distribution shift.
 
@@ -30,6 +30,6 @@ complete resource accounting, and positive next-cycle gain on fresh tasks.
 
 ## Transfer
 
-Fork [SIA](../../../content/diagnostics/cases/sia.json) or
-[Continual Harness](../../../content/diagnostics/cases/continual-harness.json), then vary the
+Fork [[content/diagnostics/cases/sia.json|SIA]] or
+[[content/diagnostics/cases/continual-harness.json|Continual Harness]], then vary the
 editable components and evidence status.

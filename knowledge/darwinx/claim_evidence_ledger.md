@@ -12,7 +12,7 @@ confidence: high
 # DarwinX claim and evidence ledger
 
 Each `DX-*` heading is the stable audit target for the
-[DarwinX packet](darwinx_index.md). `SOURCE CLAIM` means the paper reports the
+[[knowledge/darwinx/darwinx_index|DarwinX packet]]. `SOURCE CLAIM` means the paper reports the
 result. It does not mean Harp reproduced it.
 
 ## DX-001: DarwinX edits the harness while holding model weights fixed
@@ -21,8 +21,8 @@ result. It does not mean Harp reproduced it.
 - Statement: DarwinX defines the editable object as prompts, memory, tools,
   control flow, and agent-loop source code while holding the base model fixed.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2, lines 153-176](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L153)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2, lines 153-176]] ([exact lines 153–153](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L153))
 - Scope: Paper method.
 - Reproduction: Source inspected; optimizer not executed.
 - Confidence: `high`
@@ -34,8 +34,8 @@ result. It does not mean Harp reproduced it.
 - Statement: The paper defines a tree archive whose nodes include a harness
   snapshot, edit delta, per-task scores, trial evidence, and distilled lessons.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2, lines 162-169](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L162)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2, lines 162-169]] ([exact lines 162–162](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L162))
 - Scope: Paper method.
 - Reproduction: Source inspected; archive behavior not executed.
 - Confidence: `high`
@@ -49,8 +49,8 @@ result. It does not mean Harp reproduced it.
   `Δ_t`, net gain `g(c) = Σ_t Δ_t`, regression mass
   `R(c) = Σ_t (-Δ_t)_+`, and eligibility `g(c) > 0` with `R(c) <= δ`.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.1, lines 182-198](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L182)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.1, lines 182-198]] ([exact lines 182–182](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L182))
 - Scope: Paper definition under noisy `avg@k` estimates.
 - Reproduction: Equation inspected; no implementation or parameter schedule.
 - Confidence: `high`
@@ -64,8 +64,8 @@ result. It does not mean Harp reproduced it.
   child, but higher-fidelity confirmation and a preservation probe are required
   before the child may steer later search.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.1-2.2, lines 194-220](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L194)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.1-2.2, lines 194-220]] ([exact lines 194–194](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L194))
 - Scope: Paper method.
 - Reproduction: Source inspected; verifier prompts and runtime not available.
 - Confidence: `high`
@@ -79,8 +79,8 @@ result. It does not mean Harp reproduced it.
   samples either the highest-gain steering node or a node from the wider
   population using an exploit/broaden mixture controlled by `β`.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.2, lines 221-228](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L221)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.2, lines 221-228]] ([exact lines 221–221](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L221))
 - Scope: Paper method.
 - Reproduction: Source inspected; selector not executed.
 - Confidence: `high`
@@ -94,8 +94,8 @@ result. It does not mean Harp reproduced it.
   inheritance, and a merged child is retained only if its solved set covers the
   union of its source variants' wins.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.3, lines 229-257](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L229)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.3, lines 229-257]] ([exact lines 229–229](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L229))
 - Scope: Paper recombination rule.
 - Reproduction: Source inspected; merge operator not executed.
 - Confidence: `high`
@@ -110,8 +110,8 @@ result. It does not mean Harp reproduced it.
   the target agent's passing-versus-failing contrast into harness edits without
   updating model weights.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.4, lines 263-280](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L263)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.4, lines 263-280]] ([exact lines 263–263](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L263))
 - Scope: Paper method.
 - Reproduction: Source inspected; signal analyzers not executed.
 - Confidence: `high`
@@ -124,8 +124,8 @@ result. It does not mean Harp reproduced it.
 - Statement: The paper describes a classifier that aggregates trial-level
   failure themes into shared memory read by both proposer and verifier.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§2.6, lines 290-298](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L290)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§2.6, lines 290-298]] ([exact lines 290–290](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L290))
 - Scope: Paper method.
 - Reproduction: Source inspected; aggregation code and prompts unavailable.
 - Confidence: `high`
@@ -137,8 +137,8 @@ result. It does not mean Harp reproduced it.
 - Class: `MISSING`
 - Statement: The inspected corpus contains no official DarwinX optimizer
   repository, project page, or source snapshot.
-- Source: [DARWINX-RELEASE-SEARCH](source_registry.md#darwinx-release-search-dated-public-artifact-inspection)
-- Locator: [Dated provenance finding](../../evidence/darwinx/PROVENANCE.md#public-implementation-search)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-RELEASE-SEARCH: dated public-artifact inspection|DARWINX-RELEASE-SEARCH]]
+- Locator: [[evidence/darwinx/PROVENANCE#Public implementation search|Dated provenance finding]]
 - Scope: Revision-pinned paper links and bounded web searches on 2026-08-14.
 - Reproduction: Not applicable.
 - Confidence: `medium`
@@ -151,10 +151,10 @@ result. It does not mean Harp reproduced it.
 - Statement: The paper does not disclose numerical values or schedules for
   `β` and `δ`, complete proposer/analyzer/verifier configurations, mutation
   prompts, exact subset allocation, or merge conflict resolution.
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper) and
-  [DARWINX-RELEASE-SEARCH](source_registry.md#darwinx-release-search-dated-public-artifact-inspection)
-- Locator: [Fitness and selection symbols, lines 187-228](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L187)
-  and [provenance boundary](../../evidence/darwinx/PROVENANCE.md#evidence-boundary)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]] and
+  [[knowledge/darwinx/source_registry#DARWINX-RELEASE-SEARCH: dated public-artifact inspection|DARWINX-RELEASE-SEARCH]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Fitness and selection symbols, lines 187-228]] ([exact lines 187–187](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L187))
+  and [[evidence/darwinx/PROVENANCE#Evidence boundary|provenance boundary]]
 - Scope: Inspected v1 paper and bounded public release search.
 - Reproduction: Not applicable.
 - Confidence: `high`
@@ -167,8 +167,8 @@ result. It does not mean Harp reproduced it.
 - Statement: On frozen GPT-5.5, the authors report base Monet at 75.5% and
   evolved Monet at 83.2% `avg@5`, a gain of 7.7 percentage points.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§4 and Table 2, lines 343-385](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L343)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§4 and Table 2, lines 343-385]] ([exact lines 343–343](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L343))
 - Scope: 89 Terminal-Bench 2.1 tasks, official `k=5`, errored trials score zero.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -181,8 +181,8 @@ result. It does not mean Harp reproduced it.
   tasks among 88 paired measurements; no capability cluster regresses beyond
   the paper's stated noise band.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§4, lines 419-430](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L419)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§4, lines 419-430]] ([exact lines 419–419](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L419))
 - Scope: TB2.1 paired task estimates and paper-defined clusters.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -195,8 +195,8 @@ result. It does not mean Harp reproduced it.
   from 11 to 22 and median tokens from 89K to 380K; on 69 already solved tasks,
   turns rise from 12 to 13 and tokens from 125K to 172K.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§4.1 and Figure 5, lines 432-486](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L432)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§4.1 and Figure 5, lines 432-486]] ([exact lines 432–432](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L432))
 - Scope: Clean TB2.1 attempts in the paper's compute analysis.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -209,8 +209,8 @@ result. It does not mean Harp reproduced it.
 - Statement: The paper identifies seven added verification and artifact-contract
   skills but says they were co-selected and not independently randomized.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§7-8.3, lines 802-861](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L802)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§7-8.3, lines 802-861]] ([exact lines 802–802](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L802))
 - Scope: Paper's skill-bundle comparison and cross-benchmark interpretation.
 - Reproduction: Source inspected; no per-skill ablation reproduced.
 - Confidence: `high`
@@ -223,8 +223,8 @@ result. It does not mean Harp reproduced it.
   25/41 to 28/41 and GPT-5.5 moving from 20/41 to 23/41 after harness evolution
   on 94 disjoint training tasks.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§5, lines 512-552](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L512)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§5, lines 512-552]] ([exact lines 512–512](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L512))
 - Scope: Single-attempt held-out pass@1; harness frozen before held-out access.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -237,8 +237,8 @@ result. It does not mean Harp reproduced it.
 - Statement: The authors report specialists solving 24, 25, 26, and 27 held-out
   tasks and a merged harness solving 28.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§5.1 and Figure 6, lines 556-590](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L556)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§5.1 and Figure 6, lines 556-590]] ([exact lines 556–556](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L556))
 - Scope: One 41-task held-out split.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -250,12 +250,12 @@ result. It does not mean Harp reproduced it.
 - Statement: TerminalWorld is evidence that retained variants can contain
   complementary behavior, but it does not isolate the archive or merge operator
   as the cause of held-out gain.
-- Source: [DX-015](#dx-015-the-paper-reports-held-out-terminalworld-gains),
-  [DX-016](#dx-016-a-merged-terminalworld-harness-beats-the-strongest-specialist-by-one-task),
-  and [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§5 caveats, lines 591-598](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L591),
-  [§9, lines 881-885](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L881),
-  and [Appendix C, lines 1301-1324](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1301)
+- Source: [[#DX-015: The paper reports held-out TerminalWorld gains|DX-015]],
+  [[#DX-016: A merged TerminalWorld harness beats the strongest specialist by one task|DX-016]],
+  and [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§5 caveats, lines 591-598]] ([exact lines 591–591](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L591)),
+  [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§9, lines 881-885]] ([exact lines 881–881](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L881)),
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Appendix C, lines 1301-1324]] ([exact lines 1301–1301](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1301))
 - Scope: Reported TerminalWorld study.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -272,9 +272,9 @@ result. It does not mean Harp reproduced it.
 - Statement: DarwinX evolves on 300 synthetic intents scored by an LLM judge
   and reports deterministic pass@1 on 1,260 disjoint real tasks.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6-6.1, lines 599-665](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L599)
-  and [Appendix D.1, lines 1327-1390](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1327)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6-6.1, lines 599-665]] ([exact lines 599–599](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L599))
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Appendix D.1, lines 1327-1390]] ([exact lines 1327–1327](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1327))
 - Scope: WebArena-Infinity study.
 - Reproduction: Source inspected; benchmark not run.
 - Confidence: `high`
@@ -289,8 +289,8 @@ result. It does not mean Harp reproduced it.
   against base Monet and a 6.9-point margin over their same-model GPT-5.5
   Browser Use run at 86.1%.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6.2 and Table 4, lines 669-695](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L669)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6.2 and Table 4, lines 669-695]] ([exact lines 669–669](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L669))
 - Scope: Official 1,260-task WAI suite after the paper's validity audit.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -304,8 +304,8 @@ result. It does not mean Harp reproduced it.
   reverts every attempted merge, so gains accrue along one short accepted
   lineage.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6.1, lines 657-665](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L657)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6.1, lines 657-665]] ([exact lines 657–657](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L657))
 - Scope: The reported WAI run.
 - Reproduction: Source inspected; run artifacts unavailable.
 - Confidence: `high`
@@ -319,9 +319,9 @@ result. It does not mean Harp reproduced it.
   confirmed-invalid rate falling from 23.5% to 1.4%, and invalid trajectories
   falling from 293 to 17.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6.3, lines 699-790](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L699)
-  and [Appendix D.2-D.3, lines 1391-1529](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1391)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6.3, lines 699-790]] ([exact lines 699–699](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L699))
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Appendix D.2-D.3, lines 1391-1529]] ([exact lines 1391–1391](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1391))
 - Scope: The paper's static-analysis, independent-LLM, and human-review policy.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -337,9 +337,9 @@ result. It does not mean Harp reproduced it.
   application-defined semantic mutators, followed by UI, state, and persistence
   verification.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6.3, lines 780-789](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L780)
-  and [Tables 13-14, lines 1531-1609](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1531)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6.3, lines 780-789]] ([exact lines 780–780](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L780))
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Tables 13-14, lines 1531-1609]] ([exact lines 1531–1531](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1531))
 - Scope: WAI evolved skill and prompt artifacts reported by the paper.
 - Reproduction: Source inspected; trajectories not replayed.
 - Confidence: `high`
@@ -353,8 +353,8 @@ result. It does not mean Harp reproduced it.
   Opus 4.8 and resolving 421/500 SWE-bench Verified issues, 84.2% pass@1,
   versus an 80.8% LSP-enabled fix-skill reference.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§7, lines 792-824](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L792)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§7, lines 792-824]] ([exact lines 792–792](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L792))
 - Scope: Transfer target only; no SWE-V evolution or reverse transfer.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -366,10 +366,10 @@ result. It does not mean Harp reproduced it.
 - Statement: Matched frozen-model gains on TB2.1 and WAI, held-out
   TerminalWorld results, and one-way SWE-V transfer support the conclusion that
   harness changes can store reusable procedural capability.
-- Source: [DX-011](#dx-011-the-paper-reports-a-matched-tb21-gain),
-  [DX-015](#dx-015-the-paper-reports-held-out-terminalworld-gains),
-  [DX-019](#dx-019-the-paper-reports-a-large-matched-wai-gain-and-a-smaller-strong-baseline-gap),
-  and [DX-023](#dx-023-the-paper-reports-one-way-transfer-to-swe-bench-verified)
+- Source: [[#DX-011: The paper reports a matched TB2.1 gain|DX-011]],
+  [[#DX-015: The paper reports held-out TerminalWorld gains|DX-015]],
+  [[#DX-019: The paper reports a large matched WAI gain and a smaller strong-baseline gap|DX-019]],
+  and [[#DX-023: The paper reports one-way transfer to SWE-bench Verified|DX-023]]
 - Scope: Author-reported DarwinX experiments.
 - Reproduction: Results not independently reproduced.
 - Confidence: `medium`
@@ -386,8 +386,8 @@ result. It does not mean Harp reproduced it.
 - Statement: Contract derivation, artifact checking, grounded tool use, and
   persistence verification recur in the reported TB2.1 and WAI edit bundles
   and plausibly explain part of the cross-domain gain.
-- Source: [DX-014](#dx-014-tb21-skill-attribution-is-exploratory) and
-  [DX-022](#dx-022-the-evolved-browser-harness-broadens-the-permitted-action-policy)
+- Source: [[#DX-014: TB2.1 skill attribution is exploratory|DX-014]] and
+  [[#DX-022: The evolved browser harness broadens the permitted action policy|DX-022]]
 - Scope: Paper-reported edit bundles and outcome patterns.
 - Reproduction: No per-skill causal ablation.
 - Confidence: `medium`
@@ -402,8 +402,8 @@ result. It does not mean Harp reproduced it.
 - Statement: The inspected experiments do not independently randomize or
   ablate the archive, parent selector, recombination operator, regression gate,
   and inference effort under one matched budget.
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§9, lines 872-879](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L872)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§9, lines 872-879]] ([exact lines 872–872](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L872))
 - Scope: DarwinX v1 experiments.
 - Reproduction: Not applicable.
 - Confidence: `high`
@@ -418,9 +418,9 @@ result. It does not mean Harp reproduced it.
 - Statement: The paper does not report a complete count of evolution
   trajectories, proposer/verifier tokens, API cost, wall-clock time, or cost
   per accepted edit and percentage point.
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [Per-candidate cost discussion, lines 1642-1652](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1642)
-  and [provenance evidence boundary](../../evidence/darwinx/PROVENANCE.md#evidence-boundary)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Per-candidate cost discussion, lines 1642-1652]] ([exact lines 1642–1642](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1642))
+  and [[evidence/darwinx/PROVENANCE#Evidence boundary|provenance evidence boundary]]
 - Scope: DarwinX v1 paper.
 - Reproduction: Not applicable.
 - Confidence: `high`
@@ -435,9 +435,9 @@ result. It does not mean Harp reproduced it.
 - Statement: Averaging percentage-point changes across TB2.1, TerminalWorld,
   WAI, and SWE-V does not produce a statistically comparable effect because the
   tasks, metrics, baselines, sampling, and transfer regimes differ.
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [Abstract, lines 23-35](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L23)
-  and [Conclusion, lines 943-960](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L943)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Abstract, lines 23-35]] ([exact lines 23–23](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L23))
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Conclusion, lines 943-960]] ([exact lines 943–943](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L943))
 - Scope: The paper's phrase "about 17 points on average."
 - Reproduction: Arithmetic description inspected; no pooled estimator defined.
 - Confidence: `high`
@@ -453,9 +453,9 @@ result. It does not mean Harp reproduced it.
 - Statement: WAI shows capability and validity improving together under the
   complete system, but it does not establish that conservative selection caused
   the reduction in invalid behavior.
-- Source: [DX-021](#dx-021-the-wai-validity-audit-reports-capability-and-compliance-improving-together)
-  and [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [§6.3 attribution boundary, lines 780-789](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L780)
+- Source: [[#DX-021: The WAI validity audit reports capability and compliance improving together|DX-021]]
+  and [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|§6.3 attribution boundary, lines 780-789]] ([exact lines 780–780](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L780))
 - Scope: Reported WAI study.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -468,8 +468,8 @@ result. It does not mean Harp reproduced it.
 - Class: `INFERENCE`
 - Statement: DarwinX provides a noisy bounded-regression policy, not a proof
   that no previously correct behavior will be lost.
-- Source: [DX-003](#dx-003-the-fitness-gate-permits-bounded-measured-regression)
-  and [DX-012](#dx-012-paired-tb21-measurements-include-task-regressions)
+- Source: [[#DX-003: The fitness gate permits bounded measured regression|DX-003]]
+  and [[#DX-012: Paired TB2.1 measurements include task regressions|DX-012]]
 - Scope: Paper rule and reported TB2.1 measurements.
 - Reproduction: Not independently reproduced.
 - Confidence: `high`
@@ -487,14 +487,14 @@ result. It does not mean Harp reproduced it.
   self-modification to agent source, HarnessX supplies typed composition and
   model-harness co-training, and DarwinX focuses on population selection,
   preservation, and attempted recombination.
-- Source: [HARP-META-HARNESS](source_registry.md#harp-meta-harness-maintained-comparison),
-  [HARP-DGM](source_registry.md#harp-dgm-maintained-comparison),
-  [HARNESSX-PAPER](source_registry.md#harnessx-paper-primary-comparison-paper),
-  and [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [Meta-Harness deep dive](../meta_harness/meta_harness_deep_dive.md),
-  [DGM index](../darwin_godel_machine/darwin_godel_machine_index.md),
-  [HarnessX §§3-5, lines 197-722](../../evidence/darwinx/text/harnessx-2606.14249v1.txt#L197),
-  and [DarwinX Appendix A, lines 1147-1261](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1147)
+- Source: [[knowledge/darwinx/source_registry#HARP-META-HARNESS: maintained comparison|HARP-META-HARNESS]],
+  [[knowledge/darwinx/source_registry#HARP-DGM: maintained comparison|HARP-DGM]],
+  [[knowledge/darwinx/source_registry#HARNESSX-PAPER: primary comparison paper|HARNESSX-PAPER]],
+  and [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness deep dive]],
+  [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]],
+  [[evidence/darwinx/text/harnessx-2606.14249v1.txt|HarnessX §§3-5, lines 197-722]] ([exact lines 197–197](../../evidence/darwinx/text/harnessx-2606.14249v1.txt#L197)),
+  and [[evidence/darwinx/text/darwinx-2608.07545v1.txt|DarwinX Appendix A, lines 1147-1261]] ([exact lines 1147–1147](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1147))
 - Scope: Inspected papers and Harp's pinned comparison evidence.
 - Reproduction: Comparison is documentary, not an equal-budget experiment.
 - Confidence: `medium`
@@ -512,8 +512,8 @@ result. It does not mean Harp reproduced it.
   alternating frozen-harness and frozen-model phases, and rescoring the archive
   after a model update.
 - Mode: `paraphrase`
-- Source: [DARWINX-PAPER](source_registry.md#darwinx-paper-primary-paper)
-- Locator: [Appendix E, lines 1610-1624](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1610)
+- Source: [[knowledge/darwinx/source_registry#DARWINX-PAPER: primary paper|DARWINX-PAPER]]
+- Locator: [[evidence/darwinx/text/darwinx-2608.07545v1.txt|Appendix E, lines 1610-1624]] ([exact lines 1610–1610](../../evidence/darwinx/text/darwinx-2608.07545v1.txt#L1610))
 - Scope: Outlook section.
 - Reproduction: Not evaluated by the paper or Harp.
 - Confidence: `high`
@@ -526,9 +526,9 @@ result. It does not mean Harp reproduced it.
 - Statement: The missing causal question is best tested by comparing greedy,
   preserve-only, archive, archive-plus-recombination, and full-history variants
   under the same root-tree rollout-token budget and protected evaluation.
-- Source: [DX-026](#dx-026-the-paper-does-not-isolate-darwinxs-population-operators),
-  [DX-027](#dx-027-the-total-evolution-search-bill-is-not-reported), and
-  [HARP-RSI](source_registry.md#harp-rsi-evaluation-framework)
+- Source: [[#DX-026: The paper does not isolate DarwinX's population operators|DX-026]],
+  [[#DX-027: The total evolution search bill is not reported|DX-027]], and
+  [[knowledge/darwinx/source_registry#HARP-RSI: evaluation framework|HARP-RSI]]
 - Scope: Harp's proposed successor experiment.
 - Reproduction: Not yet run.
 - Confidence: `medium`
@@ -538,4 +538,4 @@ result. It does not mean Harp reproduced it.
 - Falsified by: The proposed arms cannot be budget-matched or do not isolate
   the intended operators.
 
-Back to the [DarwinX index](darwinx_index.md).
+Back to the [[knowledge/darwinx/darwinx_index|DarwinX index]].

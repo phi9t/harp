@@ -75,6 +75,6 @@ its own later research procedure.
 
 ## Reading routes
 
-- [Weng: workflow design and search](../weng/05-workflow-design-and-search.md)
-- [Automated research](../chapters/automated-research.md)
+- [[knowledge/rsi/weng/05-workflow-design-and-search|Weng: workflow design and search]]
+- [[knowledge/rsi/chapters/automated-research|Automated research]]
 - [Original article](https://www.nature.com/articles/s41586-026-10265-5)

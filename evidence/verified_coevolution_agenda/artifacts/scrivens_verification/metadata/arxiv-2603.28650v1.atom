@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/POjZ46Pd8MSS2JdOslbUxNGv8Pg</id>
+  <title>arXiv Query: search_query=&amp;id_list=2603.28650v1&amp;start=0&amp;max_results=10</title>
+  <updated>2026-08-15T05:47:40Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2603.28650v1" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2603.28650v1</id>
+    <title>Information-Theoretic Limits of Safety Verification for Self-Improving Systems</title>
+    <updated>2026-03-30T16:34:37Z</updated>
+    <link href="https://arxiv.org/abs/2603.28650v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.28650v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Can a safety gate permit unbounded beneficial self-modification while maintaining bounded cumulative risk? We formalize this question through dual conditions -- requiring sum delta_n &lt; infinity (bounded risk) and sum TPR_n = infinity (unbounded utility) -- and establish a theory of their (in)compatibility.
+  Classification impossibility (Theorem 1): For power-law risk schedules delta_n = O(n^{-p}) with p &gt; 1, any classifier-based gate under overlapping safe/unsafe distributions satisfies TPR_n &lt;= C_alpha * delta_n^beta via Holder's inequality, forcing sum TPR_n &lt; infinity. This impossibility is exponent-optimal (Theorem 3). A second independent proof via the NP counting method (Theorem 4) yields a 13% tighter bound without Holder's inequality.
+  Universal finite-horizon ceiling (Theorem 5): For any summable risk schedule, the exact maximum achievable classifier utility is U*(N, B) = N * TPR_NP(B/N), growing as exp(O(sqrt(log N))) -- subpolynomial. At N = 10^6 with budget B = 1.0, a classifier extracts at most U* ~ 87 versus a verifier's ~500,000.
+  Verification escape (Theorem 2): A Lipschitz ball verifier achieves delta = 0 with TPR &gt; 0, escaping the impossibility. Formal Lipschitz bounds for pre-LayerNorm transformers under LoRA enable LLM-scale verification. The separation is strict. We validate on GPT-2 (d_LoRA = 147,456): conditional delta = 0 with TPR = 0.352. Comprehensive empirical validation is in the companion paper [D2].</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-30T16:34:37Z</published>
+    <arxiv:comment>27 pages, 6 figures. Companion empirical paper: doi:10.5281/zenodo.19237566</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Arsenios Scrivens</name>
+    </author>
+    <arxiv:doi>10.5281/zenodo.19237451</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.5281/zenodo.19237451" title="doi"/>
+  </entry>
+</feed>

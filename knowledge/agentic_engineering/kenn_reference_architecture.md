@@ -124,7 +124,7 @@ terminal for multiplexer-heavy local and remote sessions, Kata as an agent-nativ
 intent tracker, and AgentsView plus roborev as accountability engines.
 
 **EVIDENCE — [AE-004] through [AE-016].** The public tool pages and GitHub
-metadata captured in [Kenn tool stack investigation](tool_stack_investigation.md)
+metadata captured in [[knowledge/agentic_engineering/tool_stack_investigation|Kenn tool stack investigation]]
 support the same plane split at the public-description level: Kata presents a
 local-first task ledger, Forge a maintainer console, Ghosthub a
 multiplexer-native terminal with worktree management, AgentsView a session and

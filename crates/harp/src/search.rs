@@ -244,8 +244,19 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
             "canonical-markdown",
             "md",
         ),
+        (
+            "knowledge/verified_coevolution_agenda",
+            "canonical-markdown",
+            "md",
+        ),
         ("knowledge/agentic_engineering", "canonical-markdown", "md"),
         ("knowledge/crouzeix_conjecture", "canonical-markdown", "md"),
+        ("knowledge/darwinx", "canonical-markdown", "md"),
+        (
+            "knowledge/harp_knowledge_home.md",
+            "canonical-markdown",
+            "md",
+        ),
         ("evidence/weng/text", "weng-source", "txt"),
         ("evidence/rlm/text", "rlm-source", "txt"),
     ];
@@ -256,6 +267,12 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
             continue;
         }
         reject_symlink(&absolute, root)?;
+        if absolute.is_file() {
+            if absolute.extension().and_then(|value| value.to_str()) == Some(extension) {
+                paths.push((absolute, kind));
+            }
+            continue;
+        }
         for entry in WalkDir::new(&absolute).follow_links(false) {
             let entry = entry.map_err(|error| {
                 AppError::external("search.walk", format!("could not walk {root}: {error}"))

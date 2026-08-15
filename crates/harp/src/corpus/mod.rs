@@ -6,9 +6,11 @@ use sha2::{Digest as _, Sha256};
 
 use crate::error::AppError;
 use crate::fs::HeldDirectory;
+use crate::knowledge::WikiLinkResolution;
 
 mod contracts;
 mod lessons;
+mod obsidian;
 mod render;
 mod rules;
 
@@ -30,7 +32,50 @@ const SOURCE_REGISTRY_PATH: &str = "content/sources/source_registry.tsv";
 const EVIDENCE_GRAPH_PATH: &str = "content/sources/evidence_graph.tsv";
 pub(super) const EVIDENCE_GRAPH_HEADER: &str =
     "label\tsource_id\trelationship\ttarget_id\tevidence_locator\tstatus\tboundary";
-pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
+pub(crate) fn resolve_wiki_links(
+    repository_root: &Path,
+    source_path: &Path,
+    markdown: &str,
+) -> Result<Vec<WikiLinkResolution>, AppError> {
+    let source_path = source_path.strip_prefix(repository_root).map_err(|_| {
+        AppError::invalid_input(
+            "knowledge.obsidian.source_path",
+            "Obsidian source path must be inside the repository",
+        )
+    })?;
+    if source_path.as_os_str().is_empty()
+        || source_path
+            .components()
+            .any(|component| !matches!(component, Component::Normal(_)))
+    {
+        return Err(AppError::invalid_input(
+            "knowledge.obsidian.source_path",
+            "Obsidian source path must be a nonempty normal repository-relative path",
+        ));
+    }
+    let repository = HeldDirectory::open(repository_root, "Harp repository")?;
+    obsidian::parse_wiki_links(markdown)
+        .map_err(|error| AppError::invalid_input("knowledge.obsidian.parse", error))?
+        .into_iter()
+        .map(|link| {
+            let resolved =
+                obsidian::resolve_wiki_link(&repository, &source_path.to_string_lossy(), &link)?;
+            Ok(WikiLinkResolution {
+                target: resolved.target,
+                heading_id: resolved.heading_id,
+                requested_heading: match link.subpath {
+                    Some(obsidian::WikiSubpath::Heading(heading)) => Some(heading),
+                    _ => None,
+                },
+                pdf_page: resolved.pdf_page,
+                embed: resolved.embed,
+                display: resolved.display,
+            })
+        })
+        .collect()
+}
+
+pub(super) const READER_ROUTES: [(&str, &str, &str); 14] = [
     (
         "thesis",
         "Thesis",
@@ -83,6 +128,11 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
         "knowledge/self_improving_agents_survey/synthesis.md",
     ),
     (
+        "verified-coevolution",
+        "Verified coevolution",
+        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md",
+    ),
+    (
         "agentic-engineering",
         "Agentic engineering",
         "knowledge/agentic_engineering/kenn_reference_architecture.md",
@@ -93,7 +143,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 13] = [
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 35] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 48] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -157,6 +207,22 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 35] = [
     (
         "self-improving-agents-survey-gap-map",
         "knowledge/self_improving_agents_survey/gap_map.md",
+    ),
+    (
+        "verified-coevolution-source-registry",
+        "knowledge/verified_coevolution_agenda/source_registry.md",
+    ),
+    (
+        "verified-coevolution-claim-evidence-ledger",
+        "knowledge/verified_coevolution_agenda/claim_evidence_ledger.md",
+    ),
+    (
+        "verified-coevolution-experiment-protocol",
+        "knowledge/verified_coevolution_agenda/experiment_protocol.md",
+    ),
+    (
+        "verified-coevolution-maintenance",
+        "knowledge/verified_coevolution_agenda/maintenance.md",
     ),
     (
         "agentic-engineering-index",
@@ -234,7 +300,39 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 35] = [
         "crouzeix-claim-evidence-ledger",
         "knowledge/crouzeix_conjecture/claim_evidence_ledger.md",
     ),
+    ("darwinx-index", "knowledge/darwinx/darwinx_index.md"),
+    (
+        "darwinx-mechanism-and-selection",
+        "knowledge/darwinx/01_mechanism_and_selection.md",
+    ),
+    (
+        "darwinx-evaluation-audit",
+        "knowledge/darwinx/02_evaluation_audit.md",
+    ),
+    (
+        "darwinx-critical-review",
+        "knowledge/darwinx/03_critical_review.md",
+    ),
+    (
+        "darwinx-comparative-synthesis",
+        "knowledge/darwinx/04_comparative_synthesis.md",
+    ),
+    (
+        "darwinx-successor-experiment",
+        "knowledge/darwinx/05_successor_experiment.md",
+    ),
+    (
+        "darwinx-claim-evidence-ledger",
+        "knowledge/darwinx/claim_evidence_ledger.md",
+    ),
+    (
+        "darwinx-source-registry",
+        "knowledge/darwinx/source_registry.md",
+    ),
+    ("darwinx-maintenance", "knowledge/darwinx/maintenance.md"),
 ];
+const KNOWLEDGE_HOME: (&str, &str, &str) =
+    ("knowledge", "Knowledge", "knowledge/harp_knowledge_home.md");
 pub(super) const REQUIRED_CHAPTERS: [(&str, &str); 9] = [
     (
         "recursive-improvement-loop",
@@ -303,6 +401,19 @@ pub(super) struct CanonicalDocument {
     pub(super) markdown_sha256: String,
     pub(super) html_sha256: String,
     pub(super) html: String,
+    pub(super) metadata: DocumentMetadata,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub(super) struct DocumentMetadata {
+    pub(super) id: String,
+    pub(super) kind: String,
+    pub(super) status: String,
+    pub(super) tags: Vec<String>,
+    pub(super) confidence: String,
+    pub(super) mode: Option<String>,
+    pub(super) source_ids: Vec<String>,
+    pub(super) coverage_keys: Vec<String>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -425,22 +536,33 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         document.concept_id = format!("lesson-{}", lesson.lesson_id);
     }
 
-    let reader_routes = READER_ROUTES
-        .iter()
+    let mut registered_routes = READER_ROUTES.to_vec();
+    if repository
+        .read_optional_regular_file_bounded(
+            Path::new(KNOWLEDGE_HOME.2),
+            "Harp knowledge home",
+            MAX_MARKDOWN_BYTES,
+        )?
+        .is_some()
+    {
+        registered_routes.push(KNOWLEDGE_HOME);
+    }
+    let reader_routes = registered_routes
+        .into_iter()
         .map(|(route_id, label, path)| {
-            let document = documents.get_mut(*path).ok_or_else(|| {
+            let document = documents.get_mut(path).ok_or_else(|| {
                 invalid(
                     "knowledge.rsi.canonical_missing",
                     format!("reader route source is missing: {path}"),
                 )
             })?;
             if document.concept_id.is_empty() {
-                document.concept_id = (*route_id).to_owned();
+                document.concept_id = route_id.to_owned();
             }
             Ok(ReaderRoute {
-                route_id: (*route_id).to_owned(),
-                label: (*label).to_owned(),
-                canonical_markdown_path: (*path).to_owned(),
+                route_id: route_id.to_owned(),
+                label: label.to_owned(),
+                canonical_markdown_path: path.to_owned(),
             })
         })
         .collect::<Result<Vec<_>, AppError>>()?;

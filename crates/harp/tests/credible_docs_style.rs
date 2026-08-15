@@ -88,8 +88,14 @@ struct MainClaim {
     class: EvidenceClass,
     class_label: String,
     id: String,
-    target: String,
+    target: LocalLink,
     body: String,
+}
+
+#[derive(Clone, Debug)]
+struct LocalLink {
+    target: String,
+    native_wiki: bool,
 }
 
 #[derive(Debug)]
@@ -137,6 +143,16 @@ fn markdown_links(text: &str) -> Vec<String> {
             Event::Start(Tag::Link { dest_url, .. })
             | Event::Start(Tag::Image { dest_url, .. }) => Some(dest_url.to_string()),
             _ => None,
+        })
+        .collect()
+}
+
+fn markdown_local_links(text: &str) -> Vec<LocalLink> {
+    markdown_links(text)
+        .into_iter()
+        .map(|target| LocalLink {
+            target,
+            native_wiki: false,
         })
         .collect()
 }
@@ -454,7 +470,15 @@ fn validate_claim_entries_at(source: &Path, text: &str) -> Result<Vec<ClaimEntry
             ));
         }
         for field in ["Source", "Locator"] {
-            if markdown_links(entry.field(field)?).is_empty() {
+            if markdown_local_links(entry.field(field)?).is_empty()
+                && harp::knowledge::resolve_wiki_links(
+                    &workspace_root(),
+                    source,
+                    entry.field(field)?,
+                )
+                .map_err(|error| error.to_string())?
+                .is_empty()
+            {
                 return Err(format!("{} field {field} must contain a link", entry.id));
             }
         }
@@ -523,7 +547,42 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
     let evidence_root = workspace_root().join("evidence");
     let canonical_evidence = fs::canonicalize(&evidence_root)
         .map_err(|error| format!("resolve evidence root: {error}"))?;
-    for target in markdown_links(entry.field("Locator")?) {
+    let locator = entry.field("Locator")?;
+    let markdown_locators = markdown_local_links(locator);
+    let markdown_line_targets = markdown_locators
+        .iter()
+        .filter_map(|link| {
+            let (target, anchor) = link.target.split_once('#')?;
+            anchor
+                .starts_with('L')
+                .then(|| repository_relative_path(source, target))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    for native in harp::knowledge::resolve_wiki_links(&workspace_root(), source, locator)
+        .map_err(|error| error.to_string())?
+    {
+        let native_target = workspace_root().join(&native.target);
+        if !native_target.starts_with(&evidence_root) {
+            return Err(format!(
+                "{} native locator must target a file under evidence/",
+                entry.id
+            ));
+        }
+        if native
+            .target
+            .extension()
+            .and_then(|extension| extension.to_str())
+            == Some("txt")
+            && !markdown_line_targets.contains(&native_target)
+        {
+            return Err(format!(
+                "{} native raw-text locator requires a matching conventional Markdown line locator",
+                entry.id
+            ));
+        }
+    }
+    for link in markdown_locators {
+        let target = &link.target;
         if target.starts_with("https://")
             || target.starts_with("http://")
             || target.starts_with("mailto:")
@@ -557,7 +616,7 @@ fn validate_evidence_locators(source: &Path, entry: &ClaimEntry) -> Result<(), S
                 entry.id
             ));
         }
-        resolve_link(source, &target)?;
+        resolve_link(source, target)?;
     }
     Ok(())
 }
@@ -658,16 +717,38 @@ fn parse_main_claims(text: &str) -> Result<Vec<MainClaim>, String> {
             index += 1;
             continue;
         };
-        let Some(marker) = line.strip_prefix("**[") else {
+        let marker = if let Some(marker) = line.strip_prefix("**[[") {
+            let (target, label) = marker
+                .strip_suffix("]].**")
+                .ok_or_else(|| format!("malformed native main claim marker `{line}`"))?
+                .split_once('|')
+                .ok_or_else(|| format!("malformed native main claim label `{line}`"))?;
+            (
+                label,
+                LocalLink {
+                    target: target.to_owned(),
+                    native_wiki: true,
+                },
+            )
+        } else if let Some(marker) = line.strip_prefix("**[") {
+            let (label, rest) = marker
+                .split_once("](")
+                .ok_or_else(|| format!("malformed main claim marker `{line}`"))?;
+            let target = rest
+                .strip_suffix(").**")
+                .ok_or_else(|| format!("malformed main claim target `{line}`"))?;
+            (
+                label,
+                LocalLink {
+                    target: target.to_owned(),
+                    native_wiki: false,
+                },
+            )
+        } else {
             index += 1;
             continue;
         };
-        let (label, rest) = marker
-            .split_once("](")
-            .ok_or_else(|| format!("malformed main claim marker `{line}`"))?;
-        let target = rest
-            .strip_suffix(").**")
-            .ok_or_else(|| format!("malformed main claim target `{line}`"))?;
+        let (label, target) = marker;
         let (class_label, id) = label
             .split_once(" - ")
             .ok_or_else(|| format!("malformed main claim label `{label}`"))?;
@@ -702,7 +783,7 @@ fn parse_main_claims(text: &str) -> Result<Vec<MainClaim>, String> {
             class,
             class_label: class_label.to_owned(),
             id: id.to_owned(),
-            target: target.to_owned(),
+            target,
             body: body.join(" "),
         });
         index += 1;
@@ -732,18 +813,43 @@ fn validate_main_document(source: &Path, text: &str) -> Result<Vec<MainClaim>, S
     }
 
     for claim in &claims {
-        resolve_link(source, &claim.target)?;
-        let (relative, anchor) = claim
-            .target
-            .split_once('#')
-            .ok_or_else(|| format!("main claim {} does not target a ledger heading", claim.id))?;
-        let ledger_path = repository_relative_path(source, relative)?;
+        let (relative, anchor) =
+            claim.target.target.split_once('#').ok_or_else(|| {
+                format!("main claim {} does not target a ledger heading", claim.id)
+            })?;
+        let ledger_path = if claim.target.native_wiki {
+            let resolution = harp::knowledge::resolve_wiki_links(
+                &workspace_root(),
+                source,
+                &format!("[[{}]]", claim.target.target),
+            )
+            .map_err(|error| error.to_string())?
+            .into_iter()
+            .next()
+            .expect("one native claim marker");
+            if resolution.requested_heading.as_deref() != Some(anchor) {
+                return Err(format!(
+                    "main claim {} does not preserve its native heading target",
+                    claim.id
+                ));
+            }
+            workspace_root().join(resolution.target)
+        } else {
+            resolve_link(source, &claim.target.target)?;
+            repository_relative_path(source, relative)?
+        };
         let ledger_text = fs::read_to_string(&ledger_path)
             .map_err(|error| format!("read {}: {error}", ledger_path.display()))?;
         let entries = validate_claim_entries_at(&ledger_path, &ledger_text)?;
         let entry = entries
             .iter()
-            .find(|entry| entry.slug == anchor)
+            .find(|entry| {
+                entry.slug == markdown_slug(anchor)
+                    && (!claim.target.native_wiki
+                        || entry.id.eq_ignore_ascii_case(
+                            anchor.split_once(':').map_or(anchor, |(id, _)| id),
+                        ))
+            })
             .ok_or_else(|| format!("main claim {} targets missing ledger entry", claim.id))?;
         if claim.id != entry.id {
             return Err(format!(
@@ -1035,6 +1141,34 @@ fn main_claims_must_match_ledger_class_and_id() {
     let path = root.join("main-document-template.md");
     let valid = fs::read_to_string(&path).expect("read main template");
 
+    let native = "\
+**[[claim-ledger-template#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+The authors report 50.0%; this result has not been independently reproduced.
+";
+    validate_main_document(&path, native).expect("native wiki claim marker must validate");
+
+    let wrong_native_heading = "\
+**[[claim-ledger-template#EX-002: Wrong title|SOURCE CLAIM - EX-002]].**
+Body.
+";
+    let error = validate_main_document(&path, wrong_native_heading)
+        .expect_err("native claim must resolve its exact ledger heading");
+    assert!(
+        error.contains("Obsidian wikilink heading is missing"),
+        "{error}"
+    );
+
+    let missing_native_ledger = "\
+**[[knowledge/example/missing_ledger#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+Body.
+";
+    let error = validate_main_document(&path, missing_native_ledger)
+        .expect_err("native claim must resolve its ledger target");
+    assert!(
+        error.contains("Obsidian wikilink target is missing"),
+        "{error}"
+    );
+
     let bad_class = valid.replacen("[EVIDENCE - EX-001]", "[SOURCE CLAIM - EX-001]", 1);
     assert!(validate_main_document(&path, &bad_class)
         .expect_err("class mismatch must fail")
@@ -1117,6 +1251,59 @@ fn locators_must_target_underlying_evidence() {
     assert!(validate_claim_entries(&prose_locator)
         .expect_err("canonical prose cannot substitute for evidence")
         .contains("must target a file under evidence/"));
+}
+
+#[test]
+fn immutable_evidence_locators_require_a_markdown_line_anchor() {
+    let wiki_only = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[evidence/weng/text/dgm.txt|MCE extracted text]]",
+    );
+    assert!(validate_claim_entries(&wiki_only)
+        .expect_err("wiki navigation alone must not satisfy an immutable locator")
+        .contains("conventional Markdown line locator"));
+
+    let dual_link = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[evidence/weng/text/dgm.txt|MCE extracted text]] ([exact line 1](../../evidence/weng/text/dgm.txt#L1))",
+    );
+    validate_claim_entries(&dual_link)
+        .expect("native navigation plus a Markdown line locator must validate");
+}
+
+#[test]
+fn native_evidence_locators_require_an_evidence_target_and_matching_line_target() {
+    let native_knowledge_target = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[knowledge/rsi/systems/dgm|DGM]] ([exact line 1](../../evidence/weng/text/dgm.txt#L1))",
+    );
+    assert!(validate_claim_entries(&native_knowledge_target)
+        .expect_err("native locator cannot target maintained knowledge")
+        .contains("native locator must target a file under evidence/"));
+
+    let mismatched_raw_text = valid_claim_entry(
+        "EVIDENCE",
+        "- Mode: `paraphrase`\n- Source stability: `pinned`\n",
+    )
+    .replace(
+        "[Paper](../../evidence/weng/text/dgm.txt)",
+        "[[evidence/weng/text/dgm.txt|MCE extracted text]] ([exact line 1](../../evidence/weng/references/dgm.txt#L1))",
+    );
+    assert!(validate_claim_entries(&mismatched_raw_text)
+        .expect_err("raw native locator must retain a line anchor for the same target")
+        .contains("matching conventional Markdown line locator"));
 }
 
 #[test]

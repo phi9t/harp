@@ -37,7 +37,7 @@ Use this companion in five passes:
    executable context policy.
 4. **Cross learning with runtime.** Use “Runtime operations versus learned
    objects” and the
-   [Codex state-continuity companion](codex_state_continuity_and_compaction.md)
+   [[knowledge/rsi/codex_state_continuity_and_compaction|Codex state-continuity companion]]
    to distinguish learning useful context from preserving and activating it.
 5. **Design a falsifier.** End with the experimental plan and claim ceiling.
    A task-score gain is not enough; the experiment must isolate the artifact,
@@ -52,14 +52,14 @@ The primary-paper route for each learning system is:
 | [Meta-Harness original paper](https://arxiv.org/abs/2603.28052) | §3 and Algorithm 1 → §§4.1–4.3 → Appendix A.1–A.2 | Code-space search, filesystem feedback, Pareto retention, trace ablation, and proposer behavior. |
 
 For source-code and project-page behavior, use the
-[evidence-tiered Meta-Harness deep dive](../meta_harness/meta_harness_deep_dive.md). It keeps
+[[knowledge/meta_harness/meta_harness_deep_dive|evidence-tiered Meta-Harness deep dive]]. It keeps
 arXiv claims, dated site results, pinned repository interfaces, and the local
 TRAE proposal run separate rather than extending this cross-system ladder.
 For evaluator boundaries and the full paper-derived MCE experiment protocol,
-use the [harness benchmark field guide](../harness_benchmarks/harness_benchmark_field_guide.md).
+use the [[knowledge/harness_benchmarks/harness_benchmark_field_guide|harness benchmark field guide]].
 For the separate GDPval, DeepSWE, FrontierCode 1.1, and SWE-bench Verified
 comparison, use the
-[evaluator-integrity benchmark suite](../evaluator_integrity/evaluator_integrity_benchmark_suite.md).
+[[knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite|evaluator-integrity benchmark suite]].
 
 The checked-in source texts are `evidence/weng/text/ace.txt`,
 `evidence/weng/text/mce.txt`, and
@@ -211,7 +211,7 @@ A rough decomposition is:
 
 This is a diagnostic factorization, not an independence claim. It prevents an
 end-to-end score from assigning every failure to artifact quality. The
-[Harness Disentangle reading](systems/harness-disentangle.md) provides the
+[[knowledge/rsi/systems/harness-disentangle|Harness Disentangle reading]] provides the
 closest inspected evaluation treatment of update quality, activation,
 adherence, and downstream benefit.
 
@@ -245,7 +245,7 @@ relevant. Retrieval does not preserve exact action order. Compaction does not
 create cross-thread knowledge. Replay of a transcript does not recreate an
 operating-system process or prove whether an external write completed.
 
-The [Codex state-continuity deep dive](codex_state_continuity_and_compaction.md)
+The [[knowledge/rsi/codex_state_continuity_and_compaction|Codex state-continuity deep dive]]
 shows these boundaries in one inspected production harness: typed
 `ResponseItem` history, opaque reasoning continuation, recomputed world state,
 atomic compaction checkpoints, rollout replay, and a separate memories
@@ -426,7 +426,7 @@ execute useful higher-order skills.
 ## Meta-Harness: search the complete executable context policy
 
 This section keeps the cross-system mechanism comparison. The dedicated
-[Meta-Harness implementation deep dive](../meta_harness/meta_harness_deep_dive.md) owns source
+[[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness implementation deep dive]] owns source
 locators, project-page trajectory analysis, implementation boundaries, and the
 local proposer experiment.
 

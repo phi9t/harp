@@ -93,7 +93,7 @@ protected envelope.
 
 ## Reading routes
 
-- [Weng: self-improving harnesses](../weng/06-self-improving-harnesses.md)
-- [STOP versus Self-Harness and AHE lesson](../lessons/04-stop-vs-self-harness-ahe.md)
-- [What makes an improvement loop recursive](../chapters/recursive-improvement-loop.md)
+- [[knowledge/rsi/weng/06-self-improving-harnesses|Weng: self-improving harnesses]]
+- [[knowledge/rsi/lessons/04-stop-vs-self-harness-ahe|STOP versus Self-Harness and AHE lesson]]
+- [[knowledge/rsi/chapters/recursive-improvement-loop|What makes an improvement loop recursive]]
 - [Original paper](https://arxiv.org/abs/2310.02304)

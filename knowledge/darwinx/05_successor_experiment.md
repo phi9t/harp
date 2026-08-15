@@ -11,7 +11,7 @@ confidence: medium
 
 # DarwinX successor experiment
 
-**[INFERENCE - DX-033](claim_evidence_ledger.md#dx-033-a-fixed-budget-factorial-study-is-the-next-causal-test).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-033: A fixed-budget factorial study is the next causal test|INFERENCE - DX-033]].**
 The next useful DarwinX experiment should isolate selection operators under one
 fixed root-tree budget. Another larger leaderboard run would show scale, not
 causality.
@@ -376,5 +376,5 @@ If population search wins, repeat the experiment after:
 These tests distinguish durable procedures from one model's quirks and one
 benchmark's evaluator.
 
-Return to the [critical review](03_critical_review.md) or the
-[DarwinX index](darwinx_index.md).
+Return to the [[knowledge/darwinx/03_critical_review|critical review]] or the
+[[knowledge/darwinx/darwinx_index|DarwinX index]].

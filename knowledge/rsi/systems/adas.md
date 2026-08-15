@@ -103,7 +103,7 @@ matched envelope. The Atlas therefore classifies ADAS as
 
 ## Reading routes
 
-- [Weng: workflow design and search](../weng/05-workflow-design-and-search.md)
-- [ADAS versus AFlow lesson](../lessons/03-adas-vs-aflow.md)
-- [Searching for better harnesses](../chapters/harness-search.md)
+- [[knowledge/rsi/weng/05-workflow-design-and-search|Weng: workflow design and search]]
+- [[knowledge/rsi/lessons/03-adas-vs-aflow|ADAS versus AFlow lesson]]
+- [[knowledge/rsi/chapters/harness-search|Searching for better harnesses]]
 - [Original paper](https://proceedings.iclr.cc/paper_files/paper/2025/file/36b7acf6f6010652b3f2a433774a66fe-Paper-Conference.pdf)

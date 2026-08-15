@@ -1,0 +1,207 @@
+{
+  "nodes": [
+    {
+      "id": "0112233445566778",
+      "type": "group",
+      "x": -80,
+      "y": -80,
+      "width": 800,
+      "height": 420,
+      "label": "RSI orientation and learning",
+      "color": "4"
+    },
+    {
+      "id": "1021324354657687",
+      "type": "file",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/harp_knowledge_home.md"
+    },
+    {
+      "id": "76543210fedcba98",
+      "type": "file",
+      "x": 380,
+      "y": 0,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/rsi/rsi_index.md"
+    },
+    {
+      "id": "32435465768798a9",
+      "type": "file",
+      "x": 380,
+      "y": 260,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/rsi/sicp/sicp_index.md"
+    },
+    {
+      "id": "435465768798a9ba",
+      "type": "group",
+      "x": 840,
+      "y": -80,
+      "width": 800,
+      "height": 420,
+      "label": "System research and benchmarks",
+      "color": "5"
+    },
+    {
+      "id": "5465768798a9bacb",
+      "type": "file",
+      "x": 920,
+      "y": 0,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/darwinx/darwinx_index.md"
+    },
+    {
+      "id": "65768798a9bacbdc",
+      "type": "file",
+      "x": 1300,
+      "y": 0,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/darwin_godel_machine/darwin_godel_machine_index.md"
+    },
+    {
+      "id": "768798a9bacbdced",
+      "type": "file",
+      "x": 920,
+      "y": 260,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/meta_harness/meta_harness_deep_dive.md"
+    },
+    {
+      "id": "8798a9bacbdcedfe",
+      "type": "file",
+      "x": 1300,
+      "y": 260,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/harness_benchmarks/harness_benchmark_field_guide.md"
+    },
+    {
+      "id": "98a9bacbdcedfe0f",
+      "type": "group",
+      "x": -80,
+      "y": 560,
+      "width": 1700,
+      "height": 380,
+      "label": "Evidence and verification boundaries",
+      "color": "2"
+    },
+    {
+      "id": "a9bacbdcedfe0f10",
+      "type": "file",
+      "x": 0,
+      "y": 640,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/rsi/claim_evidence_ledger.md"
+    },
+    {
+      "id": "bacbdcedfe0f1021",
+      "type": "file",
+      "x": 380,
+      "y": 640,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/rsi/source_registry.md"
+    },
+    {
+      "id": "cbdcedfe0f102132",
+      "type": "file",
+      "x": 760,
+      "y": 640,
+      "width": 320,
+      "height": 220,
+      "file": "knowledge/rsi/missing_evidence.md"
+    },
+    {
+      "id": "dcedfe0f10213243",
+      "type": "file",
+      "x": 1140,
+      "y": 640,
+      "width": 400,
+      "height": 220,
+      "file": "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edfe0f1021324354",
+      "fromNode": "1021324354657687",
+      "fromSide": "right",
+      "toNode": "76543210fedcba98",
+      "toSide": "left",
+      "label": "read next"
+    },
+    {
+      "id": "fe0f102132435465",
+      "fromNode": "76543210fedcba98",
+      "fromSide": "bottom",
+      "toNode": "32435465768798a9",
+      "toSide": "top",
+      "label": "read next"
+    },
+    {
+      "id": "0f10213243546576",
+      "fromNode": "76543210fedcba98",
+      "fromSide": "right",
+      "toNode": "5465768798a9bacb",
+      "toSide": "left",
+      "label": "read next"
+    },
+    {
+      "id": "1122334455667788",
+      "fromNode": "5465768798a9bacb",
+      "fromSide": "right",
+      "toNode": "65768798a9bacbdc",
+      "toSide": "left",
+      "label": "read next"
+    },
+    {
+      "id": "2233445566778899",
+      "fromNode": "65768798a9bacbdc",
+      "fromSide": "bottom",
+      "toNode": "8798a9bacbdcedfe",
+      "toSide": "top",
+      "label": "read next"
+    },
+    {
+      "id": "33445566778899aa",
+      "fromNode": "76543210fedcba98",
+      "fromSide": "bottom",
+      "toNode": "a9bacbdcedfe0f10",
+      "toSide": "top",
+      "label": "audit through"
+    },
+    {
+      "id": "445566778899aabb",
+      "fromNode": "a9bacbdcedfe0f10",
+      "fromSide": "right",
+      "toNode": "bacbdcedfe0f1021",
+      "toSide": "left",
+      "label": "audit through"
+    },
+    {
+      "id": "5566778899aabbcc",
+      "fromNode": "bacbdcedfe0f1021",
+      "fromSide": "right",
+      "toNode": "cbdcedfe0f102132",
+      "toSide": "left",
+      "label": "audit through"
+    },
+    {
+      "id": "66778899aabbccdd",
+      "fromNode": "dcedfe0f10213243",
+      "fromSide": "left",
+      "toNode": "a9bacbdcedfe0f10",
+      "toSide": "right",
+      "label": "audit through"
+    }
+  ]
+}

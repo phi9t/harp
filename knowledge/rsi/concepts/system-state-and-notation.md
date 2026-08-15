@@ -61,8 +61,8 @@ Recursive gain compares the later valid candidates that parent and child produce
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- [What makes an improvement loop recursive](../chapters/recursive-improvement-loop.md) defines the operational recursion test.
-- [Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md) defines protected gates and score vectors.
+- [[knowledge/rsi/chapters/recursive-improvement-loop|What makes an improvement loop recursive]] defines the operational recursion test.
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]] defines protected gates and score vectors.
 - STOP, §6 "Limitations," distinguishes fixed-model scaffolding optimization from full RSI: [arXiv:2310.02304v3](https://arxiv.org/abs/2310.02304).
 - Darwin Gödel Machine, §§2–3 and Figure 2, defines empirically selected coding-agent lineage and its archive: [arXiv:2505.22954v3](https://arxiv.org/abs/2505.22954).
 
@@ -95,7 +95,7 @@ The decomposition is not useful if an experiment cannot identify which component
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- The prior [system-state page](../system_state_and_notation.md) now points readers here and remains available for old links.
-- Exact source identities and access states remain in [the source registry](../source_registry.md).
+- The prior [[knowledge/rsi/system_state_and_notation|system-state page]] now points readers here and remains available for old links.
+- Exact source identities and access states remain in [[knowledge/rsi/source_registry|the source registry]].
 
 </details>

@@ -61,7 +61,7 @@ Quantization, expert placement, cache policy, batching, speculative decoding, an
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- Recursive Language Models, §§2–4 and Figure 2, defines a fixed recursive inference harness around a root model; the [RLM mechanism anchor](../recursive_language_models_compositional_generalization.md) retains the paper-to-code comparison: [arXiv:2512.24601v3](https://arxiv.org/abs/2512.24601).
+- Recursive Language Models, §§2–4 and Figure 2, defines a fixed recursive inference harness around a root model; the [[knowledge/rsi/recursive_language_models_compositional_generalization|RLM mechanism anchor]] retains the paper-to-code comparison: [arXiv:2512.24601v3](https://arxiv.org/abs/2512.24601).
 - SIA, §§2–4, and Continual Harness, §§3–4, describe bounded experiments that route experience into harness or weight updates: [arXiv:2605.27276v2](https://arxiv.org/abs/2605.27276), [arXiv:2605.09998v1](https://arxiv.org/abs/2605.09998).
 
 </details>
@@ -105,7 +105,7 @@ The model only learns from this loop when trajectories enter a training dataset 
 
 ## What would weaken the mechanism
 
-The model-harness account weakens if controlled ablations show that model behavior is invariant to the claimed architecture, training, or harness difference. For a proposed weight update, compare frozen-harness parent and child checkpoints. For a proposed harness update, compare frozen weights. For a joint update, use the four-way experiment described in [joint harness and model-weight adaptation](joint-harness-weight-adaptation.md).
+The model-harness account weakens if controlled ablations show that model behavior is invariant to the claimed architecture, training, or harness difference. For a proposed weight update, compare frozen-harness parent and child checkpoints. For a proposed harness update, compare frozen weights. For a joint update, use the four-way experiment described in [[knowledge/rsi/chapters/joint-harness-weight-adaptation|joint harness and model-weight adaptation]].
 
 ## Open technical questions
 
@@ -117,7 +117,7 @@ The model-harness account weakens if controlled ablations show that model behavi
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- RSI source identities and claim limits are in [the source registry](../source_registry.md).
+- RSI source identities and claim limits are in [[knowledge/rsi/source_registry|the source registry]].
 - This chapter deliberately stops at model/harness experimental controls; it
   does not claim a model-specific implementation study that Harp does not
   carry.

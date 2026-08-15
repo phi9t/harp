@@ -67,7 +67,7 @@ successor-production gain.
 
 ## Reading routes
 
-- [Weng: evolutionary search](../weng/07-evolutionary-search.md)
-- [AlphaEvolve versus DGM lesson](../lessons/05-alphaevolve-vs-dgm.md)
-- [Searching for better harnesses](../chapters/harness-search.md)
+- [[knowledge/rsi/weng/07-evolutionary-search|Weng: evolutionary search]]
+- [[knowledge/rsi/lessons/05-alphaevolve-vs-dgm|AlphaEvolve versus DGM lesson]]
+- [[knowledge/rsi/chapters/harness-search|Searching for better harnesses]]
 - [Original white paper](https://arxiv.org/abs/2506.13131)

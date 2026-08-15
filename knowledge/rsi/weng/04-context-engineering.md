@@ -9,7 +9,7 @@ optimizing the code that stores, retrieves, and presents information.
 
 [Read the original section](https://lilianweng.github.io/posts/2026-07-04-harness/#context-engineering).
 
-[Open the full context-engineering deep dive](../context_engineering_deep_dive.md)
+[[knowledge/rsi/context_engineering_deep_dive|Open the full context-engineering deep dive]]
 for the ACE artifact lifecycle, MCE bi-level skill evolution, Meta-Harness
 code-space search, runtime context stack, cost model, implementation contracts,
 and causal ablations.
@@ -21,7 +21,7 @@ The deep dive has two reading branches:
 - **running with context:** how retention, retrieval, rendering, activation,
   compaction, replay, and world-state refresh preserve or lose useful state.
 
-[Open the Codex state-continuity companion](../codex_state_continuity_and_compaction.md)
+[[knowledge/rsi/codex_state_continuity_and_compaction|Open the Codex state-continuity companion]]
 for a source-pinned implementation of the runtime branch. Codex is not a fourth
 system in Weng's comparison; it shows why learned context still needs typed
 history, coherent compaction, and durable replay.

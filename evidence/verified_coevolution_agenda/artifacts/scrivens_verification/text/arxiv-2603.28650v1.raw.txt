@@ -1,0 +1,1526 @@
+Information-Theoretic Limits of Safety Verification
+for Self-Improving Systems
+Arsenios Scrivens
+March 2026
+Abstract
+Can a safety gate permit unbounded beneficial self-modification while maintaining bounded
+cumulative risk? We formalize this question through dual conditions — requiring
+P
+δn < ∞
+(bounded risk) and
+P
+TPRn = ∞ (unbounded utility) — and establish a theory of their
+(in)compatibility.
+Classification impossibility (Theorem 1): For power-law risk schedules δn = O(n−p
+)
+with p > 1 — the practically relevant regime — any classifier-based gate under overlapping
+safe/unsafe distributions satisfies TPRn ≤ Cα ·δβ
+n via Hölder’s inequality, forcing
+P
+TPRn < ∞.
+This impossibility is exponent-optimal: no valid impossibility bound can use a larger exponent
+than β∗
+(Theorem 3; full Mills’ ratio asymptotics in Appendix A.3). A second independent proof
+via the NP counting method (Theorem 4) yields a 13% tighter bound without Hölder’s inequality.
+Scope caveat: for slowly-decaying summable sequences such as δn = 1/(nln2
+n) that are not
+power-law, the Hölder summability argument fails and the NP-optimal classifier may satisfy
+both dual conditions (§3.1). Theorem 5 covers all schedules.
+Universal finite-horizon ceiling (Theorem 5): For any summable risk schedule, the
+exact maximum achievable classifier utility is U∗
+(N,B) = N · TPRNP(B/N), growing as
+exp(O(
+√
+logN)) — subpolynomial. At N = 106
+with budget B = 1.0, a classifier extracts
+at most U∗
+≈ 87 versus a verifier’s ≈ 500,000. This result is universal: it applies even where
+Theorem 1 does not.
+Verification escape (Theorem 2): A Lipschitz ball verifier achieves δ = 0 with TPR > 0,
+escaping the impossibility. Formal Lipschitz bounds for pre-LayerNorm transformers under
+LoRA (Proposition 3) enable LLM-scale verification. The separation is strict: classifiers cannot
+achieve δ = 0 with TPR > 0 under distribution overlap (Proposition 4). We validate on GPT-2
+(dLoRA = 147,456): conditional δ = 0 with TPR = 0.352; unconditional δ = 0 at d ≤ 17,408.
+Comprehensive empirical validation is in the companion paper [23].
+1 Introduction
+The prospect of AI systems that improve their own capabilities raises a central safety question:
+can we build a gate that permits beneficial self-modifications while reliably blocking dangerous
+ones? We formalize this as a sequential decision problem and provide a comprehensive theoretical
+characterization of when safe self-improvement is possible and when it is provably impossible.
+At each step n, a system proposes a mutation θn to its own parameters. A safety gate gn
+decides whether to accept or reject θn, incurring false acceptance rate δn = P−(gn accepts) and
+true positive rate TPRn = P+(gn accepts). We require
+P
+δn < ∞ (bounded risk, ensuring positive
+probability of never accepting an unsafe mutation) and
+P
+TPRn = ∞ (unbounded utility, ensuring
+the system accepts infinitely many improvements). We call these the dual conditions for safe
+self-improvement.
+1
+arXiv:2603.28650v1 [cs.LG] 30 Mar 2026We prove four impossibility and tightness results and four constructive results, forming a
+complete picture. The impossibility is strongest for power-law risk schedules δn = O(n−p) with
+p > 1 (Theorem 1), which subsume all practically relevant risk budgets. For the most favorable
+slowly-decaying schedules, the asymptotic impossibility does not apply, but the tight finite-horizon
+ceiling (Theorem 5) ensures classifier utility remains subpolynomial — orders of magnitude below a
+verifier’s linear growth — at any practical deployment horizon.
+Why the dual conditions matter for deployed systems. The dual conditions formalize a
+failure pattern that self-improving systems face by construction. Red-team evaluations — which
+explicitly classify model outputs or parameter mutations as safe/unsafe — are the closest practical
+analog to the binary gates our theorems address. Failure to satisfy both conditions simultaneously
+means either that unsafe modifications accumulate (
+P
+δn diverges) or that the system stops
+improving (TPRn → 0). Other deployed mechanisms such as RLHF reward models can be viewed
+as a suggestive analogy, but our formal results apply specifically to binary gates on parameter
+mutations; for a fuller discussion see §8.1.
+1.1 Contributions
+The paper establishes two core results and then systematically corroborates them. (Theorems are
+numbered 1–5 and Propositions 1–4, with separate counters.)
+A note on the nature of the contribution. The per-step bound TPRn ≤ Cα · δβ
+n is a
+standard f-divergence inequality [27], and the sequential summability consequence follows in a few
+lines. The proof is short — deliberately so. The contribution of this paper is not the length or
+technical difficulty of any single proof, but rather: (i) the problem formalization — casting safe
+self-improvement as dual summability conditions, which has no precedent in the hypothesis testing
+or AI safety literatures; (ii) the structural consequence — that this elementary coupling creates
+an impossibility for the safety–utility pairing with no analog in single-test settings; (iii) the tight
+finite-horizon ceiling (Theorem 5), which provides the exact, universal utility bound for any classifier
+under any risk schedule; and (iv) the constructive escape via verification, proving the impossibility
+is specific to classification, not to safe self-improvement itself.
+Core results:
+1. Classification impossibility (Theorem 1): Any classifier-based gate under distribution overlap
+satisfies TPRn ≤ Cα · δβ
+n, forcing bounded utility whenever risk follows a power-law schedule
+δn = O(n−p) with p > 1. For slowly-decaying summable sequences (e.g., δn = 1/(nln2
+n)), the
+per-step bound still holds but the Hölder summability argument does not force
+P
+TPRn < ∞;
+in such edge cases, the NP-optimal classifier can in principle satisfy both dual conditions
+simultaneously. However, the finite-horizon ceiling (Theorem 5) remains fully operative in all
+cases, ensuring classifier utility grows at most subpolynomially — far below a verifier’s linear
+growth at any practical horizon.
+2. Verification escape (Theorem 2): Sound verification gates achieve δ = 0 with TPR > 0,
+escaping the impossibility. The Lipschitz ball verifier is the simplest example; the structural
+separation (Proposition 4) proves the gap is architectural, not a matter of degree. See Figure 1
+for an overview of the two gate architectures; Figure 6 visualizes the structural separation in the
+(δ,TPR) plane.
+3. Tight finite-horizon ceiling (Theorem 5): Perhaps the most practically consequential re-
+sult. For any summable risk schedule — including non-power-law sequences where the Hölder
+summability argument does not apply — the exact maximum achievable utility is U∗(N,B) =
+2N · TPRNP(B/N), growing as exp(O(
+√
+logN)). This is subpolynomial, 13× tighter than the
+MI bound, and ensures that no classifier under any risk schedule can match a verifier’s linear
+utility growth. Unlike Theorem 1, this result is universal over all summable risk schedules and
+immediately operational at any finite deployment horizon. See Figure 4.
+Tightness and corroboration (confirming the impossibility is robust, not an artifact of one
+proof technique):
+4. Exponent-optimality (Theorem 3): The Hölder exponent β∗ is minimax-optimal — no valid
+impossibility bound can use a strictly larger exponent. At deployment-relevant δ, the NP classifier
+operates within one order of magnitude of the ceiling (Appendix D.1). See Figure 3.
+5. NP counting impossibility (Theorem 4): An independent proof via the Neyman–Pearson
+lemma and Tonelli’s theorem, avoiding Hölder’s inequality entirely. The counting bound is 13%
+tighter than the Hölder bound at ∆s = 1.0,p = 2.0.
+Supporting results (extending the theory to information-theoretic, sample complexity, and
+LLM-scale settings):
+6. Information-theoretic bound (Proposition 1):
+PN
+n=1 TPRn ≤
+PN
+n=1 δn +
+√
+2NI0. Comple-
+ments the Hölder bound via mutual information.
+7. Sample complexity barrier (Proposition 2): Requires Ω(n2p) labeled examples by step n;
+under constant label generation, sample starvation occurs at finite nfail.
+8. Formal transformer Lipschitz bounds (Proposition 3): Closed-form Lipschitz constants for
+pre-LayerNorm transformers under LoRA, enabling LLM-scale verification.
+9. Structural separation (Proposition 4): Under absolute continuity, δ = 0 =⇒ TPR = 0 for
+classifiers, but verifiers achieve δ = 0 with TPR > 0.
+10. LLM-scale mechanism validation: Ball verifier on GPT-2 (124M parameters) with LoRA
+rank-4 (dLoRA = 147,456), achieving conditional δ = 0 (conditional on estimated Lipschitz
+constants) with TPR = 0.352 (§7.1); unconditional δ = 0 at d ≤ 17,408 via analytical bounds.
+Theorems 3–5 and Propositions 1–4 are corroborative, each confirming the impossibility from a
+different angle to establish robustness.
+1.2 Related Work
+Our mathematical tools — Hölder’s inequality, Rényi divergence, Lipschitz continuity, Neyman–
+Pearson testing — are well-established. The per-step bound TPR ≤ Cα · δβ is a standard f-
+divergence inequality [27], and NP optimality [16] establishes single-test ROC tradeoffs. Our
+contribution is the problem formalization (the dual conditions as a formal specification of safe
+self-improvement) and the structural result that sequential composition under dual summability
+conditions creates an impossibility with no analog in single-test settings. The per-step bound and
+the summability requirements are individually standard; the coupling — that bounded
+P
+δn forces
+bounded
+P
+TPRn for power-law risk schedules — is not, and is confirmed by two independent
+impossibility proofs (Theorems 1, 4) corroborated by three complementary bounds (Theorem 5,
+Propositions 1–2) approaching the same conclusion from different angles (§3, §6, Appendix C). We
+build on alignment theory [2, 6, 7], hypothesis testing [13], impossibility results [21, 30], information-
+theoretic bounds [19, 20], PAC-Bayes and VC theory [15, 28], adversarial robustness tradeoffs [11, 26],
+3and transformer Lipschitz analysis [8, 12, 29]. Our dual conditions formalize the alignment tax —
+the cost of making models safe versus capable [3, 17] — as a precise mathematical tradeoff: the
+Hölder coupling TPRn ≤ Cα · δβ
+n quantifies the exact rate at which safety constraints reduce utility
+under classification-based gates. Structurally, our result is closer to mechanism-design impossibilities
+— Gibbard [10] and Satterthwaite [22] show that no voting rule can simultaneously satisfy multiple
+natural axioms, just as no classifier can simultaneously satisfy our dual conditions — than to
+no-free-lunch theorems [30], which concern the absence of a universally optimal learner rather than
+a hard tradeoff in a fixed domain. Multi-objective optimization impossibilities [18] also exhibit this
+flavour: two desiderata in conflict cannot be jointly optimized in polynomial time, analogously to
+how our two summability conditions cannot be jointly satisfied by a classifier under distribution
+overlap.
+A detailed comparison with each line of work is in Appendix B.
+An analogy clarifies the contribution. Arrow’s impossibility theorem composes elementary
+social-choice axioms — transitivity, non-dictatorship, independence — each individually obvious, yet
+their composition yields a deep impossibility no voting system can escape. Similarly, our per-step
+bound is a standard f-divergence inequality and the dual conditions are individually natural, but
+the coupling — that summability of {δn} forces summability of {TPRn} — creates a structural
+impossibility with no analog in single-test hypothesis testing (see Appendix B.1 for a full discussion).
+Online learning and adaptive gates. A natural question is whether an online learner with
+sublinear regret (e.g., online convex optimization; Shalev-Shwartz 24) could adaptively satisfy the
+dual conditions. The answer is no under our framework: Theorem 1’s per-step bound TPRn ≤ Cα·δβ
+n
+constrains any binary decision rule at each step, regardless of whether it was chosen adaptively based
+on previous observations. Online learning can reduce misclassification regret, but cannot escape the
+Hölder coupling between δn and TPRn that drives the impossibility. The gate’s adaptivity affects
+which point on the per-step ROC curve it selects, not the curve itself.
+2 Problem Setup
+Notation. The following symbols recur throughout:
+Symbol Meaning
+δn False acceptance rate of gate at step n
+TPRn True positive rate of gate at step n
+Cα,β Hölder constants: Cα = exp(β · Dα), β = (α−1)/α
+Dα(P+∥P−) Rényi divergence of order α
+∆s Distribution separation ∥µ+ − µ−∥/σ
+B Total risk budget
+PN
+n=1 δn
+U∗(N,B) Exact finite-horizon utility ceiling (Theorem 5)
+L Lipschitz constant of the trajectory map
+m Safety margin (min distance to obstacle boundary)
+r Ball radius = m/L
+σ∗ Optimal mutation scale for positive TPR
+2.1 System Model
+A self-improving system maintains parameters θ ∈ Rd and iteratively proposes mutations θ1,θ2,...
+At each step n, a safety oracle S : Rd → {safe,unsafe} determines ground truth. The oracle is
+4assumed expensive (requiring exhaustive simulation or formal proof).
+A safety gate gn : Rd → {accept,reject} filters mutations before deployment. The gate is
+computationally cheaper than the oracle.
+2.2 Classification Gates
+A classification gate maps controller parameters to a low-dimensional feature representation φ :
+Rd → Rk and applies a binary classifier. The relevant distributions are:
+P+
+n = distribution of φ(θ) | S(θ) = safe (1)
+P−
+n = distribution of φ(θ) | S(θ) = unsafe (2)
+At step n, the gate accepts if the classifier predicts “safe” based on φ(θn).
+Stationarity assumption. The core theorems (§3–§6) assume stationary distributions P+,P−
+(dropping the n subscript). The non-stationary extension (Proposition C.2, Appendix C.2) requires
+supn D
+(n)
+α < ∞ and, for power-law schedules δn = c/np, the strictly stronger condition p > α
+(vs. p > 1 in the stationary case). This gap narrows as α → 1+ and vanishes for fast-decaying
+schedules (p ≫ α), which cover all practically relevant risk budgets. For deployment arguments
+where stationarity may not hold and p is moderate, the finite-horizon ceiling (Theorem 5) provides
+a stationarity-free alternative: it bounds total classifier utility over any N-step horizon given a risk
+budget B.
+Scope: continuous parameter spaces. Our results assume θ ∈ Rd with continuous mutation
+distributions, so that P+ ≪ P− (absolute continuity) holds via the transversality argument (§3.1).
+For discrete or quantized parameter spaces — such as quantized LoRA fine-tuning with integer-
+valued weights — absolute continuity does not hold in the same form, and the impossibility may
+not apply directly. We note that even in quantized settings, the effective parameter updates are
+typically computed in full precision before rounding, and the induced distributions on the quantized
+grid can still exhibit the overlap structure that drives our results; a formal treatment of the discrete
+case is left to future work.
+2.3 Verification Gates
+A verification gate attempts to construct a mathematical proof that θ is safe. If the proof succeeds,
+the gate accepts; otherwise it rejects. A key property:
+Definition (Soundness). A verification gate is sound if every accepted θ is actually safe: g(θ) =
+accept =⇒ S(θ) = safe.
+Soundness implies δn = 0 for all n — by construction, not by learning.
+2.4 The Dual Conditions
+Definition. A safety gate achieves safe self-improvement if:
+1.
+P∞
+n=1 δn < ∞ (bounded cumulative risk)
+2.
+P∞
+n=1 TPRn = ∞ (unbounded cumulative utility)
+Condition 1 ensures the system is almost surely safe over infinitely many steps (
+Q
+(1 − δn) > 0
+by convergence of the infinite product). Condition 2 prevents vacuous safety (a gate rejecting
+everything trivially satisfies Condition 1 but accomplishes nothing).
+5On the choice of
+P
+TPRn = ∞. This is the weakest possible non-vacuity condition: it
+requires only that the system eventually accepts infinitely many improvements, with no constraint
+on the rate or timing. Any finite threshold (N0 accepted modifications “suffice”) is arbitrary and
+deployment-dependent — a self-improving system has no natural stopping point, and any fixed
+N0 can be exceeded by extending the deployment horizon. The condition is also necessary in the
+following sense: if
+P
+TPRn < ∞, the expected number of accepted improvements is finite, meaning
+the system almost surely stops self-improving after finitely many steps — it becomes a fixed system
+with a safety gate that rejects everything beyond some horizon.
+Critically, readers who reject the asymptotic framing lose nothing from the theory. Theorem 5
+provides the exact finite-horizon utility ceiling U∗(N,B) = N · TPRNP(B/N) for any finite N and
+risk budget B, without requiring N → ∞. At N = 106 steps with B = 1.0, a classifier extracts at
+most U∗ ≈ 87 utility versus a verifier’s ≈ 500,000 — a 5,700× gap. The dual conditions framework
+is immediately operational at any finite horizon; the asymptotic condition simply states the limiting
+case.
+3 The Classification Impossibility
+3.1 Hölder–Rényi Bound (Theorem 1)
+Theorem 1 (Safety–Utility Impossibility). Let P+,P− be distributions on Rk with P+ ≪ P−
+(absolute continuity). Suppose Dα0(P+∥P−) < ∞ for some α0 > p/(p − 1). Then for any sequence
+of binary classifiers with false acceptance rates δn ≤ c/np for some c > 0,p > 1:
+∞ X
+n=1
+δn < ∞ =⇒
+∞ X
+n=1
+TPRn < ∞
+That is, bounded cumulative risk under any power-law schedule forces bounded cumulative utility.
+Proof. Step 1. Let An = {x : gn(x) = accept}. Then:
+TPRn =
+Z
+An
+dP+
+=
+Z
+An
+dP+
+dP−
+dP−
+Apply Hölder’s inequality with exponents α > 1 and α′ = α/(α − 1):
+TPRn ≤
+Z
+An
+dP+
+dP−
+!α
+dP−
+!1/α
+·
+Z
+An
+dP−
+(α−1)/α
+Step 2. Bound the first factor by extending the integration domain:
+Z
+An
+dP+
+dP−
+!α
+dP−
+!1/α
+≤
+Z
+Rk
+dP+
+dP−
+!α
+dP−
+!1/α
+= exp
+
+α − 1
+α
+Dα(P+
+∥P−
+)
+
+using the definition Dα(P+∥P−) = 1
+α−1 log
+R
+(dP+/dP−)α dP−.
+Step 3. Setting β = (α − 1)/α ∈ (0,1) and Cα = exp(β · Dα):
+TPRn ≤ Cα · δβ
+n
+Step 4. If δn = c/np with p > 1 (summable), then
+P
+TPRn ≤ Cαcβ P
+n−pβ, which converges
+iff pβ > 1. Choose α ∈ (p/(p − 1), α0) (valid since α0 > p/(p − 1) by hypothesis), ensuring pβ > 1
+and Dα < ∞.
+6Scope and limitations of Theorem 1. The impossibility is established for power-law risk
+schedules δn = O(n−p) with p > 1, which subsume all practically relevant risk budgets (geometric,
+polynomial, or faster decay). For slowly-decaying summable sequences (e.g., δn = 1/(nln2
+n)), the
+per-step bound TPRn ≤ Cα·δβ
+n still holds at each step, but
+P
+Cαδβ
+n can diverge because β < 1 — the
+Hölder exponent cannot compensate for the slow decay. In such edge cases, the NP-optimal classifier
+can in principle satisfy both dual conditions simultaneously, and the asymptotic impossibility does
+not apply. This is an inherent limitation of the Hölder-based proof technique, not an artifact of our
+analysis.
+However, the practical significance of this gap is limited: the finite-horizon ceiling (Theorem 5)
+remains fully operative for all summable schedules, including these edge cases. Even under the
+most favorable slowly-decaying schedule, total classifier utility grows at most as exp(O(
+√
+logN)) —
+subpolynomial — while a verifier’s utility grows linearly as Θ(N) (see §6 for exact bounds). The
+impossibility is therefore sharp for power-law schedules; the finite-horizon gap is universal.
+Two independent impossibility proofs (Theorems 1 and 4) and the exact finite-horizon ceiling
+(Theorem 5), supported by the information-theoretic rate bound (Proposition 1) and sample
+complexity barrier (Proposition 2), confirm that the classification ceiling is robust and fundamental,
+not an artifact of any single proof technique.
+Remark (On the per-step bound). The per-step bound TPRn ≤ Cα · δβ
+n is a standard f-divergence
+inequality [27]. The contribution is sequential composition: under summability of {δn}, this
+elementary bound forces
+P
+TPRn < ∞. Two independent proofs (Theorems 1 and 4) and three
+complementary bounds (Theorem 5, Propositions 1–2) confirm the coupling is robust and technique-
+independent.
+Remark (Necessity of Distribution Overlap). The assumption P+ ≪ P− is structurally unavoidable:
+(i) if safe and unsafe modifications were perfectly separable, the indicator 1supp(P+) would be a
+zero-error oracle and no gate would be needed; (ii) under full-support mutations and smooth
+safety boundaries, transversality ensures every feature-space neighborhood contains both safe
+and unsafe pre-images (see Appendix C for the full geometric argument); (iii) when the safety
+boundary is piecewise smooth and µ is Gaussian, Dα(P+∥P−) < ∞ in a neighborhood of 1.
+Empirical confirmation: across three systems in [23], measured ∆s ∈ [0.059,0.091] — well below the
+separability threshold.
+3.2 Exponent-Optimality (Theorem 3)
+Theorem 3 (Exponent-Optimality of Hölder Bound). For Gaussian distributions P+ = N(µ,Ik)
+and P− = N(0,Ik) with separation ∆s = ∥µ∥, the Neyman–Pearson optimal classifier achieves
+TPRNP(δ) = Φ(Φ−1(δ) + ∆s), and the Hölder exponent β∗ = (α∗ − 1)/α∗ (with α∗ = 1 + 2/∆2
+s) is
+minimax-optimal:
+(i) No bound TPR ≤ C′ · δγ with γ > β∗ is valid uniformly over P(D,α) = {(P+,P−) :
+Dα(P+∥P−) ≤ D}.
+(ii) The ratio TPRNP(δ)/(Cα∗ · δβ∗
+) → 0 as δ → 0 (the NP classifier decays faster than the bound;
+Appendix A.3), but at deployment-relevant δ ∈ [10−6,10−1], the ratio ranges from 0.1 to 0.9
+(Appendix D.1).
+Proof sketch. The NP likelihood-ratio test µT x ≷ tδ yields TPRNP(δ) = Φ(Φ−1(δ)+∆s). Asymptotic
+analysis via Mills’ ratio (Appendix A.3) shows the NP classifier’s log-exponent matches β∗ as an
+upper envelope: no valid impossibility bound can use a larger exponent. At finite δ values relevant
+7to deployment, TPRNP/Hölder ranges from ≈ 0.1 (at ∆s = 2.0) to ≈ 0.9 (at ∆s = 0.1); see
+Appendix D.1.
+Corollary 1 (Minimax Optimality). The exponent β∗ is minimax-optimal over
+P(D,α) = {(P+
+,P−
+) : Dα(P+
+∥P−
+) ≤ D};
+any valid impossibility bound satisfies f(δ) = Ω(δβ∗
+).
+The bound is also tight for non-Gaussian distributions: across 8 families (Laplace, Student-t,
+Gaussian mixture), the NP classifier achieves 28–70% of the Hölder ceiling (Appendix D.7).
+3.3 NP Counting Impossibility (Theorem 4)
+We provide a fundamentally different proof of the classification impossibility that avoids Hölder’s
+inequality and Rényi divergence entirely, using only the Neyman–Pearson lemma and Tonelli’s
+theorem.
+Theorem 4 (NP Counting Impossibility). Let P+ ≪ P− with Dα(P+∥P−) < ∞ for some α > 1.
+For any summable risk schedule δn = c/np with p > 1 and any sequence of classifiers:
+∞ X
+n=1
+TPRn ≤ c1/p
+· EP+
+h
+P−
+(L > L(X))−1/p
+i
+< ∞
+where L(x) = dP+/dP−(x) is the likelihood ratio.
+Proof sketch. (1) By NP optimality, TPRn ≤ TPRNP(δn). (2) Define the counting function N(ℓ) =
+|{n : cδn < ℓ}|; Tonelli’s theorem gives
+P
+n TPRNP(δn) = EP+[N(L(X))]. (3) Bound N(ℓ) ≤
+(c/P−(L > ℓ))1/p. (4) Finiteness via p-value density integrability. Full proof in Appendix A.8.
+The counting bound is strictly tighter than the Hölder bound: 1.76 vs 2.03 at ∆s = 1.0,p = 2.0
+(13% improvement). See Appendix D.7 for complete validation including non-Gaussian distributions.
+Two additional supporting results are in the appendix: the information-theoretic finite-horizon
+bound (Proposition 1, Appendix C.3), which constrains the rate of utility accumulation via mutual
+information (
+P
+TPRn ≤
+P
+δn +
+√
+2NI0); and the sample complexity barrier (Proposition 2,
+Appendix C.4), which shows that learning a gate satisfying the dual conditions requires exponentially
+growing training sets, independent of Theorem 1. The Gaussian specialization (Appendix C.1) and
+non-stationary extension with self-correcting structure (Appendix C.2) provide additional theoretical
+depth.
+4 The Verification Escape
+4.1 Statement (Theorem 2)
+Theorem 2 (Verification Escape). There exists a verification-based gate achieving:
+• δn = 0 for all n (zero false acceptance)
+•
+P
+TPRn = ∞ (unbounded utility)
+84.2 Construction: Lipschitz Ball Verifier
+Let θ0 be a controller verified safe on a defined operating domain D = {(si,ti)}M
+i=1 of M start–target
+scenarios. Let m > 0 be the safety margin: the minimum distance to any obstacle across all
+scenarios:
+m = min
+i∈[M]
+min
+t∈[0,T]
+d(trajθ0
+(t;si,ti),obstacles)
+Let L be a (conservative) Lipschitz constant for the closed-loop trajectory map with respect to
+controller parameters:
+sup
+(s,t)∈D
+∥trajθ(s,t) − trajθ0
+(s,t)∥∞ ≤ L · ∥θ − θ0∥
+Ball verifier: Accept θ iff ∥θ − θ0∥ < r, where r = m/L.
+Soundness. If ∥θ − θ0∥ < r, then the trajectory deviation is at most L · r = m. Since θ0 has margin
+m, the trajectory of θ stays at distance > 0 from all obstacles on all scenarios in D. No unsafe
+controller is accepted.
+Remark. The construction uses standard tools (Lipschitz continuity, the triangle inequality; cf.
+Berkenkamp et al. 5). The contribution is the quantified dichotomy within the dual conditions
+framework: the same safety task is provably impossible for any classifier (Theorem 1) yet achievable by
+a simple O(d) verifier. Classifiers face a ceiling of exp(O(
+√
+logN)) utility (Theorem 5) while verifiers
+achieve Θ(N); the structural separation (Proposition 4) establishes that this gap is architectural,
+not a matter of degree.
+Coverage: For mutations ∆θ ∼ N(0,σ2Id):
+TPR = P(∥∆θ∥ < r) = P(χ2
+d < r2
+/σ2
+)
+This is bounded away from zero when r ≥ σ
+√
+d, i.e., when m/(Lσ
+√
+d) ≥ 1. For smaller mutation
+scales σ, TPR → 1.
+Computational cost: The gate checks ∥θ − θ0∥ < r, an O(d) operation. No simulation, no
+oracle calls.
+4.3 Domain-Restricted Safety
+The verifier guarantees D-safety: safety on a defined operating domain D, standard in formal
+methods (DO-178C, ISO 26262). A natural objection is that this is weaker than what classifiers
+attempt — generalization to unseen scenarios. We argue the comparison is more symmetric than it
+appears.
+Classifiers are equally domain-restricted, but probabilistically. Classical generalization
+bounds [4, 28] guarantee classifier accuracy only on the training distribution P: for a classifier
+with VC-dimension h, the empirical risk converges to true risk at rate O(
+p
+hlog(n)/n) on samples
+from P. If the operating domain shifts — new obstacle configurations, new task distributions —
+the classifier requires retraining on the new distribution to maintain its guarantees. This is the
+statistical analogue of the verifier’s geometric domain restriction.
+The guarantee types differ structurally. The verifier’s domain restriction is deterministic:
+for all θ ∈ B(θ0,r) and all scenarios in D, safety holds with certainty (δ = 0). The classifier’s
+domain restriction is probabilistic: for most θ drawn from the training distribution, the classifier’s
+prediction is correct with probability 1 − ϵ. The verifier provides a certificate; the classifier provides
+9a statistical estimate. Both require re-validation if the domain changes, but the verifier’s guarantee
+within its domain is exact while the classifier’s is approximate.
+Both gates face the same test. In the dual conditions framework, both gates are evaluated
+on mutations from the same distribution P+,P−; neither has access to out-of-distribution mutations.
+The Theorem 1 impossibility applies to any binary gate operating on these distributions, regardless
+of how the gate was trained or whether it generalizes beyond them. The comparison in Theorem 5
+— classifier utility exp(O(
+√
+logN)) vs. verifier utility Θ(N) — holds within the shared operating
+domain.
+Formal transformer Lipschitz bounds under LoRA perturbation (Proposition 3) are stated in
+Appendix C.5 (full derivation in A.7), enabling compositional verification at LLM scale.
+5 The Separation Principle (Proposition 4)
+Proposition 4 (Structural Classification–Verification Separation). Under P+ ≪ P−:
+(i) For any classifier, δ = 0 =⇒ TPR = 0.
+(ii) There exists a verification gate with δ = 0 and TPR > 0.
+(iii) The separation is strict: as δ → 0, classifiers satisfy TPR → 0 (Theorem 1), while the verifier
+maintains constant TPRV > 0 at δV = 0 (Theorem 2).
+Proof. (i) If P−(A) = 0, absolute continuity gives P+(A) = 0. (ii) The ball B(θ0,r) has δ = 0
+(Theorem 2) and positive Gaussian mass. (iii) By Theorem 1, TPRclass(ϵ) ≤ Cαϵβ → 0, while
+TPRV > 0 is independent of ϵ.
+Comprehensive experimental validation across 18 classifier configurations ([23] §4.1–4.3), MuJoCo
+benchmarks ([23] §4.5), and LLM-scale ball chaining ([23] §5.7) is presented in the companion
+paper [23].
+6 Finite-Horizon Analysis
+For practical deployment over N steps with risk budget B =
+P
+δn, we establish the exact utility
+ceiling.
+6.1 Tight Finite-Horizon Ceiling (Theorem 5)
+The Hölder–Jensen ceiling Cα ·N1−β ·Bβ (Appendix C.6) is not tight: it applies Hölder’s inequality
+to each step individually and then uses Jensen to optimize allocation. By using the exact NP curve
+directly, we obtain the tight ceiling.
+Theorem 5 (Tight Finite-Horizon Ceiling). For N-step deployment with total risk budget B =
+PN
+n=1 δn, the exact maximum achievable utility is:
+U∗
+(N,B) = N · TPRNP(B/N)
+where TPRNP(δ) = Φ(Φ−1(δ) + ∆s) is the Neyman–Pearson optimal TPR. The optimal allocation
+is uniform δn = B/N (by concavity of the NP curve and Jensen’s inequality).
+10For Gaussian distributions with separation ∆s, the exact growth rate is:
+U∗
+(N,B) = Θ
+exp ∆s
+p
+2ln(N/B)
+
+p
+ln(N/B)
+!
+which is subpolynomial: U∗(N,B) = o(Nϵ) for every ϵ > 0.
+Proof. Step 1 (NP ceiling per step). By the Neyman–Pearson lemma, any classifier at level δn
+satisfies TPRn ≤ TPRNP(δn). For Gaussians, TPRNP(δ) = Φ(Φ−1(δ) + ∆s).
+Step 2 (Optimal allocation). The ROC curve δ 7→ TPRNP(δ) is concave (a standard property
+of NP classifiers under continuous likelihood ratios). By Jensen’s inequality, for any non-negative
+δ1,...,δN with
+P
+δn = B:
+N X
+n=1
+TPRNP(δn) ≤ N · TPRNP
+1
+N
+N X
+n=1
+δn
+!
+= N · TPRNP(B/N)
+This is achieved with equality iff δn = B/N for all n (uniform allocation).
+Step 3 (Asymptotic growth). Setting δ = B/N, as N → ∞ with B fixed, δ = B/N → 0,
+and by Mills’ ratio:
+TPRNP(B/N) = Φ(Φ−1
+(B/N) + ∆s) ∼
+e−z2/2
+z
+√
+2π
+where z =
+p
+2ln(N/B) − ∆s. Thus U∗(N,B) = N · TPRNP(B/N) grows as
+exp ∆s
+p
+2ln(N/B)
+
+p
+ln(N/B)
+which is ω(logk
+N) for all k but o(Nϵ) for all ϵ > 0.
+Comparison of bounds (Gaussian, ∆s = 1.0, B = 1.0):
+N Exact ceiling U∗ MI bound (
+√
+N) Hölder–Jensen Improvement
+102 9.24 21.0 12.6 2.3×, 1.4×
+103 18.3 98.6 27.2 5.4×, 1.5×
+104 32.7 436 58.6 13×, 1.8×
+105 54.8 1835 126 33×, 2.3×
+106 87.2 7463 272 86×, 3.1×
+The exact ceiling grows as exp(O(
+√
+logN)), vastly slower than
+√
+N (MI bound) or N1−β
+(Hölder–Jensen). At N = 106, the MI bound is 86× loose and the Hölder–Jensen ceiling is 3.1×
+loose.
+Remark. Theorem 5 is 13×–86× tighter than Proposition 1’s
+√
+N bound at N = 104–106. Proposi-
+tion 1 provides complementary distribution-free guarantees. The classifier and verifier regions are
+disconnected on the δ = 0 hyperplane (Appendix C.7).
+117 Validation Summary
+We validate each theoretical result through targeted computations and experiments. Full details for
+each validation are in Appendix D; validation script specifications are in Appendix F. Comprehensive
+experimental validation — including MuJoCo continuous control ([23] §4.5, §5.4–5.5), ball chaining
+([23] §5.4), and LLM-scale deployment ([23] §5.7) — is presented in the companion paper [23].
+Result Validation Key Metric Outcome
+Thm 1 (Hölder) NP clf vs. bound, 4 seps. TPRNP/Hölder ratio 0.1–0.9 (valid, tight)
+Thm 3 (Exp.-opt.) 8 non-Gaussian families Min NP/Hölder ratio 0.28–0.70 (within 1 OOM)
+Prop 1 (MI bound) Hölder vs. MI, per-step & cumul. Tighter bound Hölder for δ < 0.1; MI compl.
+Prop 2 (Sample) Retrain, dVC = 11
+P
+δ at starvation 41.17 (diverges)
+Prop 3 (Transf. L) 4 archs., Toy–Qwen-7B Steps in ball 2.3–11.6 (non-vacuous)
+Thm 2 (Ball ver.) LTC d=240, 200 tests False accepts 0 (δ = 0)
+Thm 1 (Trained) 4 clfs, 50K, 72 configs Hölder violations 0/72
+Thm 4 (Counting) 9 (∆s,p) configs Counting tighter by 13% at ∆s =1,p=2
+Thm 5 (Ceiling) N up to 106
+, 5 seps. MI bound looseness 4×–86×
+7.1 LLM-Scale Mechanism Validation: GPT-2 with LoRA
+We include a single LLM-scale validation as a bridge result connecting the 240-dimensional LTC
+demonstration (Appendix D.8) to industrial LLM systems; comprehensive LLM-scale experiments
+(Qwen2.5-7B, 7.6B parameters) are presented in [23] §5.7. We validate the Lipschitz ball verifier
+(Theorem 2 + Proposition 3) on GPT-2 (124M parameters) with LoRA fine-tuning. Proposition 3
+establishes that pre-LayerNorm transformers under LoRA perturbation have finite, closed-form
+Lipschitz constants; the specific numeric values below are estimated via finite differences with a
+5× safety factor (not derived analytically), as is standard for practical deployment (see [23] §6.3,
+limitation 2).
+Setup. GPT-2 is equipped with LoRA rank-4 adapters on the c_attn (fused QKV) projection
+in all 12 layers, yielding dLoRA = 147,456 trainable parameters (0.12% of 124M total). The model is
+fine-tuned for 30 steps on WikiText-2 with learning rate 5×10−4. Safety is defined as perplexity on
+a held-out validation set < 2× fine-tuned perplexity.
+Lipschitz estimation. We probe the perplexity function at 7 perturbation scales proportional
+to ∥θ0∥ (from 0.1% to 50% of the parameter norm), with 100 random directional probes. The
+estimated Lipschitz constant (with 5× safety factor) is L = 0.168.
+Ball radius. With margin = 16.31 (threshold 32.6, achieved perplexity 16.3) and L = 0.168:
+r = m/L = 2.53, capped at 0.5 · ∥θ0∥ for meaningful demonstration.
+12Metric Value
+LoRA dimension d 147,456
+LoRA rank 4
+Post-finetune perplexity 16.3
+Safety threshold 32.6
+Lipschitz constant L 0.168 (5× safety)
+Ball radius r 2.53
+r/∥θ0∥ 0.50
+Inside-ball safe 50/50
+False accept rate δ 0
+Min inside margin 16.26
+Outside-ball unsafe 8/100
+Effective TPR 0.352
+Result. The ball verifier achieves conditional δ = 0 (50/50 inside-ball perturbations are safe;
+conditional on the estimated Lipschitz constant being a valid upper bound) with effective TPR
+= 0.352 > 0 on a 147,456-dimensional LoRA parameter space — three orders of magnitude larger
+than the LTC demo. The minimum inside-ball margin (16.26) is within 0.3% of the full margin
+(16.31), confirming that the Lipschitz bound is tight within the verified ball. All 8 outside-ball
+violations occur at perturbation scales > 1.5r, confirming that the ball boundary is meaningful.
+This validates Theorem 2 and Proposition 3 at LLM scale.
+Scaling beyond GPT-2. The companion paper [23] extends this validation to Qwen2.5-7B-
+Instruct (7.6B parameters) with compositional per-layer verification (§5.7).
+8 Discussion
+8.1 Implications for Safe AI Deployment
+Theorem 1 implies that any AI safety approach based on classifying modifications — learned
+discriminators, anomaly detectors, neural safety critics — faces a fundamental ceiling that is a
+mathematical consequence of distribution overlap, not a limitation of architecture or training. To
+the extent that RLHF reward models act as binary accept/reject gates after thresholding, they
+inherit this ceiling (see §1 for the analogy and its limits; the formal results strictly apply to binary
+gates on parameter mutations, not continuous reward scores). Over sufficient iterations, either the
+false acceptance rate accumulates (safety degrades) or the gate becomes overly conservative (utility
+collapses).
+We address five common concerns.
+“
+P
+TPRn = ∞ is too weak.” Even this weak condition cannot be met with bounded risk;
+strengthening it (requiring TPRn ≥ c > 0) forces δn ≥ (c/Cα)1/β for all n, making
+P
+δn diverge
+immediately.
+“Finite-time systems don’t need
+P
+TPRn = ∞.” The finite-horizon tradeoff still applies:
+with risk budget B, total utility grows subpolynomially (Theorem 5), yielding an exact budget-
+allocation formula for finite deployments.
+“Classifiers still extract nonzero utility.” Correct — but the ceiling is subpolynomial
+(exp(O(
+√
+logN))) versus the verifier’s linear growth (Θ(N)). At N = 10,000 with B = 1.0, a classifier
+extracts U∗ ≈ 32.7 versus a ball verifier’s Uball = 5,000 — a 153× advantage (Appendix D.10).
+13“Impossibility” refers to satisfying the dual conditions simultaneously, not to extracting any utility
+at all.
+“What about an ensemble of diverse classifiers?” An ensemble accepting iff all members
+agree is itself a classifier with acceptance region A =
+T
+i Ai. Theorem 1 applies: TPRn ≤ Cα · δβ
+n
+constrains any binary decision rule. The impossibility is driven by β < 1, not classifier complexity.
+“Isn’t the verifier’s conditional δ = 0 just as uncertain as a classifier’s δ ≈ 0?” No
+— the failure modes are categorically different. A classifier’s δ > 0 is a mathematical necessity
+under distribution overlap (Theorem 1); no amount of better training, data, or architecture can
+achieve δ = 0 with TPR > 0 (Proposition 4). The verifier’s conditionality rests on the Lipschitz
+constant being correct — a falsifiable engineering claim that strengthens monotonically with better
+estimation. At d ≤ 17,408, we provide analytical bounds making δ = 0 unconditional; at LLM scale,
+Proposition 3 proves the required bound exists and the open problem is computing it tractably. The
+distinction is between an impossibility theorem and an open engineering problem (see [23] §6.3).
+The classification–verification separation mirrors behavioral testing versus formal guarantees.
+Current AI safety practices — red-teaming, evaluations, benchmarks — are primarily classification-
+based; as self-modification becomes prevalent, verification-based safety will be mathematically
+required.
+Remark (Overlap under mutation-specific distributions). Even if mutations come from a specific
+distribution µ, the induced conditional distributions P+ = µ|safe and P− = µ|unsafe satisfy P+ ≪
+P− by the transversality argument (§3.1), and the Hölder ceiling applies parametrically. The
+companion paper [23] measures ∆s ∈ [0.059,0.091] across three physical systems (§4.5), confirming
+low separation.
+Connections to computational complexity (is satisfying the dual conditions NP-hard?) and open
+problems (adaptive verification, multi-agent extensions) are discussed in Appendix E.
+8.2 When Our Results Do Not Apply
+The impossibility (Theorem 1) and the finite-horizon ceiling (Theorem 5) require specific structural
+conditions. Practitioners should evaluate whether their setting satisfies these conditions before
+applying our conclusions:
+1. Perfectly separable distributions. If safe and unsafe modifications are perfectly separable
+in feature space (Dα(P+∥P−) = ∞ or equivalently P+ ⊥ P−), the Hölder bound becomes
+vacuous and a perfect classifier can achieve δ = 0 with TPR = 1. This occurs when the safety
+boundary does not pass through the support of the mutation distribution. Our results apply
+only when P+ and P− have overlapping support (§3.1).
+2. Discrete or quantized parameter spaces. Our framework assumes continuous parameter
+perturbations from distributions with density. If the parameter space is finite or modifications
+come from a discrete set, the safe/unsafe partition may be exactly learnable and the distribution
+overlap condition may not hold.
+3. Large safety margins with small modification sets. If the system operates far from any
+safety boundary and modifications are bounded to a region where all points are safe, no gate
+is needed at all. Our results address the non-trivial regime where safety boundaries intersect
+the modification space.
+4. Fixed finite deployments where classifier utility suffices. Theorem 5 shows classifier
+utility grows as exp(O(
+√
+logN)), which is non-zero. For short deployment horizons — say
+14threshold
+>0
+(unavoidable)
+Theorem 1: < TPR <
+Feature space
+ClassificationGate
+P+ (safe)
+P (unsafe)
+0
+margin m
+Theorem 2: =0, TPR >0
+Parameter space
+VerificationGate
+Ball: r=m/L
+Safety boundary
+Figure 1: Overview of the two gate architectures: classification gates (left) threshold a feature-space
+representation, incurring δ > 0; verification gates (right) certify safety via a Lipschitz ball, achieving
+δ = 0. The classification impossibility (Theorem 1) and verification escape (Theorem 2) establish a
+structural dichotomy.
+N ≤ 100 with a generous risk budget B — a classifier may provide adequate utility even
+under the Hölder ceiling. The impossibility becomes practically binding only when N is large
+enough that the subpolynomial ceiling falls far below the linear growth a verifier achieves.
+5. Systems with non-overlapping mutation distributions by design. Some safety mecha-
+nisms engineer the modification space to avoid overlap — for example, restricting updates to
+a pre-verified subspace. If the restriction is enforced before the gate, the resulting conditional
+distributions may be separable, and a classifier within this restricted space may succeed. Our
+framework applies to the unrestricted case.
+9 Conclusion
+For power-law risk schedules δn = O(n−p) with p > 1 — the practically relevant regime — classifier-
+based safety gates cannot satisfy the dual conditions under any architecture, training regime, or data
+availability. This is established through two independent impossibility proofs (Theorems 1 and 4),
+proved exponent-optimal by the NP matching lower bound (Theorem 3; Mills’ ratio asymptotics in
+Appendix A.3), and corroborated by two complementary bounds: the information-theoretic rate
+bound (Proposition 1) and the sample complexity barrier (Proposition 2). For slowly-decaying
+non-power-law schedules where the asymptotic impossibility does not hold, Theorem 5’s universal
+finite-horizon ceiling ensures classifier utility grows at most as exp(O(
+√
+logN)) — orders of magnitude
+below a verifier’s linear Θ(N) growth at any practical horizon. A constructive escape via sound
+verification gates (Theorem 2) achieves δ = 0 with TPR > 0; the separation is strict (Proposition 4).
+We validate on GPT-2 with LoRA (d = 147,456): the ball verifier achieves conditional δ = 0
+(unconditional at d ≤ 17,408) with TPR = 0.352 (§7.1). Comprehensive experimental validation is
+in the companion paper [23].
+Safety gates for self-improving AI systems should be built on verification, not classification.
+Note on appendix structure. The appendices are extensive, comprising full proofs (A),
+extended related work (B), supporting theoretical results (C), numerical validations (D), open
+15102 103 104
+Dimension d
+101
+102
+103
+Lipschitz constant L
+Lipschitz Constants vs. Dimension
+Lemp (2.5× conservative)
+Ltraj (analytical)
+102 103 104
+Dimension d
+10 3
+*
+Optimal Mutation Scale *
+Fit: * d 0.54
+8 4
+2 4 0
+7 6 8
+2 6 8 8
+5 7 6 0
+9 9 8 4
+1 7 4 0 8
+Dimension d
+0
+20
+40
+60
+80
+100
+Ball Soundness (%)
+100% 100% 100% 100% 100% 100% 100%
+Verification Soundness: 100% at All Scales
+Figure 2: Scaling analysis of the Lipschitz ball verifier from d = 84 to d = 17,408. Ball soundness is
+100% at all dimensions. Required mutation scale σ∗ decreases as O(d−0.54).
+10 8 10 7 10 6 10 5 10 4 10 3 10 2 10 1
+(false acceptance rate)
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+TPR (true positive rate)
+Theorem 3: Hölder Bound is Tight
+NP curve (d0
+=0.5)
+Hölder bound (d0
+=0.5)
+NP curve (d0
+=1.0)
+Hölder bound (d0
+=1.0)
+NP curve (d0
+=2.0)
+Hölder bound (d0
+=2.0)
+Figure 3: Exponent-optimality validation (Theorem 3). The NP classifier achieves 10–90% of the
+Hölder ceiling at deployment-relevant δ, confirming near-tightness.
+problems (E), and script specifications (F). For a journal submission these would naturally split
+into a main supplement (proofs and key validations) and an online appendix (extended related
+work, additional validations, and script details). We retain them in full here so the arXiv preprint is
+self-contained.
+A Proof Details
+A.1 Hölder Inequality Verification
+The conjugate exponents α and α′ = α/(α − 1) satisfy 1/α + 1/α′ = 1. The Hölder inequality:
+Z
+fg ≤ ∥f∥α · ∥g∥α′
+16101 102 103 104
+Horizon N
+10 1
+100
+101
+102
+103
+104
+Total Utility U * (N, B)
+Theorem 9: Classifier Ceiling vs. Verifier (LTC d=240)
+Classifier ceiling (B=0.001)
+Classifier ceiling (B=0.01)
+Classifier ceiling (B=0.1)
+Classifier ceiling (B=1.0)
+Ball verifier (linear)
+U=N(ideal)
+Figure 4: Finite-horizon utility ceiling (Theorem 5). The exact ceiling U∗(N,B) grows as
+exp(O(
+√
+logN)) (subpolynomial), vastly below the MI bound (
+√
+N) and Hölder–Jensen (N1−β).
+The ball verifier’s utility grows linearly (Θ(N)).
+0 25 50 75 100 125 150 175 200
+Training Step
+2
+4
+6
+8
+10
+Loss
+Qwen2.5-7B LoRA Fine-tuning (d=1,261,568)
+Loss (smoothed)
+Ball
+Accepted
+Oracle
+Checked
+Oracle
+Rejected
+0
+20
+40
+60
+80
+100
+120
+140
+160
+Count
+158
+42
+0
+Oracle savings: 158/200 = 79%
+Verification: 79% ball-accepted, =0
+Figure 5: GPT-2 LoRA validation (dLoRA = 147,456). Inside-ball: 50/50 safe (δ = 0). Effective
+TPR = 0.352.
+is applied with f = dP+/dP− and g = 1An, both measured against P−. Then:
+TPRn =
+Z
+An
+dP+
+=
+Z
+An
+dP+
+dP−
+dP−
+=
+Z
+fg dP−
+By Hölder:
+TPRn ≤
+Z
+dP+
+dP−
+!α
+dP−
+!1/α
+·
+Z
+1α′
+An
+dP−
+1/α′
+The first factor is e(α−1)Dα(P+∥P−)/α = Cα (by definition of Rényi divergence). The second factor is
+δ
+1/α′
+n = δ
+(α−1)/α
+n = δβ
+n.
+1710 9 10 8 10 7 10 6 10 5 10 4 10 3 10 2 10 1 100
+(false acceptance rate)
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+TPR (true positive rate) Structural
+gap
+(Prop.7)
+Classification Verification Separation
+Classifier ceiling (Hölder)
+Classifier-accessible region
+Verifier: =0, TPR =0.80
+Verifier (GPT-2): =0, TPR =0.352
+Figure 6: Structural separation (Proposition 4) in the (δ,TPR) plane. Classifiers lie on the curve
+TPR ≤ Cαδβ approaching the origin; the verifier occupies the δ = 0 axis with TPR > 0.
+A.2 Rényi Divergence Convention
+We use Dα(P∥Q) = 1
+α−1 log
+R
+(dP/dQ)α dQ following van Erven and Harremoes [27]. This differs
+from some references by a factor of (α−1) in the exponent. The constant Cα = exp α−1
+α Dα(P+∥P−)
+
+is finite whenever the Rényi divergence is finite, which requires P+ ≪ P− (absolute continuity) and
+sufficiently light tails of the likelihood ratio.
+A.3 Theorem 3 Exponent-Optimality: Mills’ Ratio Asymptotics
+We provide the full asymptotic analysis establishing the exponent-optimality of the Hölder bound.
+Setup. For Gaussian P+ = N(µ,Ik), P− = N(0,Ik) with ∆s = ∥µ∥, the NP optimal test
+rejects when µT x < tδ, giving TPRNP(δ) = Φ(Φ−1(δ) + ∆s) where Φ is the standard normal CDF.
+The Hölder bound with optimal order α∗ = 1 + 2/∆2
+s and β∗ = 1 − 1/α∗ = 2/(2 + ∆2
+s) gives
+Cα∗ = exp(∆2
+s/2).
+Log-asymptotic analysis. As δ → 0, set zδ = Φ−1(1 − δ) (so zδ → +∞). Comparing the
+log-exponents directly:
+logTPRNP(δ) ∼ −
+(zδ − ∆s)2
+2
+, log(Cα∗δβ∗
+) ∼
+∆2
+s
+2
+−
+β∗z2
+δ
+2
+Dividing by logδ ∼ −z2
+δ/2:
+logTPRNP(δ)
+logδ
+→
+(zδ − ∆s)2
+z2
+δ
+= 1 −
+2∆s
+zδ
++
+∆2
+s
+z2
+δ
+→ 1
+while log(Cα∗δβ∗
+)
+logδ → β∗ < 1. Since the NP classifier’s log-exponent (1) exceeds the Hölder bound’s
+(β∗), the ratio TPRNP(δ)/(Cα∗δβ∗
+) → 0 as δ → 0 — the NP classifier decays faster than the bound.
+18Exponent-optimality. The key consequence:
+liminf
+δ→0
+logTPRNP(δ)
+logδ
+= 1 > β∗
+The NP classifier achieves TPR = Ω(δ1−ϵ) for all ϵ > 0, so any valid universal upper bound must
+have exponent ≤ 1. Meanwhile, the Hölder bound with β∗ < 1 is valid. Therefore β∗ is the smallest
+exponent achievable by any impossibility bound — it cannot be replaced by any γ > β∗ without
+violating the NP classifier’s performance.
+Practical tightness. At finite δ values relevant to deployment (δ ∈ [10−6,10−1]), the ratio
+TPRNP/(Cα∗δβ∗
+) ranges from 0.1 to 0.9 depending on ∆s (Appendix D.1), confirming that the
+bound is practically tight — the NP classifier operates within one order of magnitude of the Hölder
+ceiling across the deployment-relevant range.
+A.4 Lipschitz Ball Soundness Proof
+Suppose θ ∈ B(θ0,r) with r = m/L. For any scenario (si,ti) ∈ D:
+sup
+t
+d(trajθ(t),trajθ0
+(t)) ≤ L · ∥θ − θ0∥ < L · r = m
+Since θ0 has margin m (minimum distance to obstacles), the trajectory of θ maintains positive
+distance to all obstacles:
+d(trajθ(t),obstaclej) ≥ m − L∥θ − θ0∥ > 0 ∀t,j
+Therefore θ is D-safe.
+A.5 Information-Theoretic Bound Full Proof
+Setup. At each step n, the gate gn : Rk → {accept,reject} induces a binary channel from the safety
+label Sn ∈ {safe,unsafe} to the gate decision. The mutual information of this channel is:
+In = I(gn(θn);Sn) = H(gn) − H(gn|Sn)
+Pinsker bound. The total variation between the gate’s conditional distributions satisfies
+TV(Pg|+,Pg|−) = |TPRn − δn|/2. By Pinsker’s inequality:
+|TPRn − δn|
+2
+≤
+s
+In
+2
+Hence TPRn ≤ δn +
+√
+2In.
+Summation. Summing over n = 1,...,N:
+N X
+n=1
+TPRn ≤
+N X
+n=1
+δn +
+N X
+n=1
+p
+2In
+By Cauchy–Schwarz:
+PN
+n=1
+√
+In ≤
+q
+N
+PN
+n=1 In. Under the bounded mutual information assump-
+tion
+PN
+n=1 In ≤ I0:
+N X
+n=1
+TPRn ≤
+N X
+n=1
+δn +
+p
+2NI0
+19A.6 Sample Complexity Bound Full Proof
+Setup. The safety gate at step n is a binary classifier gn ∈ G (a hypothesis class with VC dimension
+dVC), trained on ntrain(n) labeled examples.
+Step 1: By the fundamental theorem of statistical learning [13, 28], with probability ≥ 1 − η:
+errtrue ≤ errtrain +
+p
+(dVC ln(2m/dVC) + ln(2/η))/m.
+Step 2: Setting the bound equal to ϵn/2 and solving: ntrain(n) = Ω(dVC/ϵ2
+n).
+Step 3: For ϵn = c/np: ntrain(n) = Ω(dVC · n2p/c2).
+Step 4: Available data grows as n0 + kn; required data as n2p. The crossing point: nfail =
+Θ((c2k/dVC)1/(2p−1)).
+A.7 Transformer Lipschitz Derivation
+We derive the per-layer Lipschitz constant for a pre-LayerNorm transformer under LoRA perturbation
+of attention projections. Each layer k computes:
+yk = xk + MHA(LN1(xk)), zk = yk + FFN(LN2(yk))
+LayerNorm bound. ∥JLN∥ ≤ ∥γ∥∞/
+√
+ϵ where ϵ is the regularization constant.
+Multi-head attention under LoRA. Under LoRA perturbation ∆θ = (∆Aq,p,∆Bq,p):
+∥∆Op∥ ≤
+∥W0
+v,p∥ · ∥W0
+k,p∥ · ∥LN(x)∥2
+√
+dk
+·
+√
+2 · max(∥Aq,p∥,∥Bq,p∥) · ∥∆θp∥
+For nproj LoRA-adapted projections per layer:
+LLoRA
+k ≤
+∥γk∥
+√
+ϵ
+·
+maxp ∥W0
+v,p∥
+√
+dk
+·
+q
+2nproj
+Compositional escape. Instead of using the exponentially large product Lfull =
+Q
+k(1 + Lk),
+we use the additive bound:
+∥∆output∥ ≤
+K X
+k=1
+LLoRA
+k · ∥∆θk∥ ·
+Y
+j>k
+Lfull,frozen
+j
+Since the frozen-layer products
+Q
+j>k Lfull,frozen
+j are constants that can be precomputed once from
+the pretrained weights, define L̃k = LLoRA
+k ·
+Q
+j>k Lfull,frozen
+j . The verification reduces to the per-layer
+ball check
+P
+k L̃k∥∆θk∥ ≤ m, a conservative but tractable O(d) computation.
+A.8 NP Counting Proof Full Details
+Tonelli interchange. The interchange
+P
+n P+(L(X) > cδn) = EP+[
+P
+n 1L(X)>cδn
+] is justified by
+Tonelli’s theorem applied to non-negative measurable functions with the counting measure on N
+and P+ on Rk.
+Counting function. N(ℓ) = |{n ∈ N : cδn < ℓ}| counts how many thresholds are exceeded. For
+δn = c/np, we get N(ℓ) ≤ (c/P−(L > ℓ))1/p.
+P-value density integrability. Writing U(x) = P−(L > L(x)), the bound becomes
+EP+[U(X)−1/p]. For p > 1, the integrand u−1/pfU(u) is integrable near u = 0 because the
+Gaussian tail makes fU(u) decay super-polynomially. More generally, the expectation is finite
+whenever the p-value density satisfies fU(u) = O(uη) near u = 0 for some η > 1/p − 1; this holds
+for all distribution pairs with Dα(P+∥P−) < ∞ for sufficiently large α, which is guaranteed by the
+hypothesis of Theorem 4.
+20A.9 Tight Finite-Horizon Ceiling Details
+Concavity of NP curve. The derivative TPR′
+NP(δ) = ϕ(Φ−1(δ) + ∆s)/ϕ(Φ−1(δ)). The second
+derivative is negative for all δ ∈ (0,1) by log-concavity of ϕ, establishing concavity (see also [13],
+Chapter 3).
+Asymptotic formula. Using Φ−1(δ) ∼ −
+p
+2ln(1/δ) for δ → 0 and Mills’ ratio:
+U∗
+(N,B) ∼
+B · exp(∆s
+p
+2ln(N/B) − ∆2
+s/2)
+p
+2π · 2ln(N/B)
+This grows as exp(∆s
+p
+2ln(N/B)), which is o(Nϵ) for every ϵ > 0 but ω(logk
+N) for every k.
+B Relation to Known Results and Extended Related Work
+B.1 Relation to Known Results
+The mathematical tools in this paper — Hölder’s inequality, Rényi divergence, Lipschitz continuity,
+Fano’s inequality, VC dimension — are well-established. The per-step bound TPR ≤ Cα · δβ is an
+instance of a standard f-divergence inequality [27], and the Neyman–Pearson lemma [16] establishes
+ROC tradeoffs for individual hypothesis tests.
+Our contribution is the problem formalization and the structural results that emerge: (1) the
+dual conditions as a formalization of safe self-improvement, (2) sequential composition creating
+an impossibility for the coupling of bounded risk and unbounded utility, (3) the tightness of this
+coupling, (4) its information-theoretic strengthening, (5) the sample complexity barrier, and (6) the
+structural separation between classification and verification.
+An analogy clarifies the distinction. Arrow’s impossibility theorem uses elementary social-choice
+axioms, each individually obvious, but their composition yields a deep impossibility no voting system
+can escape. Similarly, our per-step bound is standard, and the dual conditions are individually
+natural. But the coupling creates a structural impossibility with no analog in single-test hypothesis
+testing.
+B.2 Extended Related Work
+Self-improving AI safety. The alignment literature discusses recursive self-improvement [6, 25]
+and concrete safety challenges [2] but lacks formal impossibility results for the safety–utility coupling.
+Christiano et al. [7] propose iterated amplification; Leike et al. [14] formalize reward modeling.
+Hypothesis testing and statistical tradeoffs. The Neyman–Pearson lemma [13, 16] estab-
+lishes optimal ROC tradeoffs for individual tests. The novelty is sequential composition: summability
+constraints on {δn} force summability on {TPRn}.
+Impossibility results in learning theory. No-free-lunch theorems [30] show no classifier
+dominates across all distributions. Rice [21] shows undecidability of semantic properties. Our
+impossibility is for a specific task under distribution overlap.
+Information-theoretic bounds. Fano’s inequality and its refinements [20] provide fundamental
+limits. The strong data processing inequality [1, 19] bounds information processing gains.
+PAC-Bayes and sample complexity. McAllester [15] bound generalization via KL divergence.
+Vapnik and Chervonenkis [28] established VC dimension. We use VC sample complexity to show
+independent barriers.
+Adversarial robustness. Tsipras et al. [26] prove accuracy–robustness tradeoffs. Gilmer
+et al. [11] show adversarial examples are inevitable in high dimensions. Our impossibility concerns
+sequential composition, not per-input robustness.
+21Transformer Lipschitz bounds. Virmaux and Scaman [29] compute spectral norms. Kim
+et al. [12] analyze attention Lipschitz properties. Dasoulas et al. [8] study Lipschitz normalization.
+Fazlyab et al. [9] use SDP for tight bounds. We derive bounds for LoRA perturbations specifically.
+C Supporting Theoretical Results
+C.1 Gaussian Specialization
+For unit-variance Gaussians with separation ∆s = |µ+ − µ−|/σ: Dα(P+∥P−) = α∆2
+s/2. The
+optimal (Neyman–Pearson) classifier achieves TPR = Φ(Φ−1(δ) + ∆s).
+C.2 Non-Stationary Extension
+Proposition C.2 (Non-Stationary Impossibility). Let {(P+
+n ,P−
+n )}n≥1 be a sequence of distribution
+pairs and α ∈ (1,∞) with β = 1 − 1/α. Suppose D̄ := supn Dα(P+
+n ∥P−
+n ) < ∞. Then for any
+sequence of classifiers {gn} with per-step rates (δn,TPRn):
+TPRn ≤ C̄α · δβ
+n for all n
+where C̄α = exp((α − 1)D̄). Consequently, if
+P
+δn < ∞ then
+P
+TPRn ≤ C̄α
+P
+δβ
+n < ∞, and the
+dual conditions cannot be jointly satisfied.
+Proof. At each step n, the Hölder bound (Theorem 1 proof, Step 1) gives TPRn ≤ C
+(n)
+α · δβ
+n where
+C
+(n)
+α = exp((α − 1)Dα(P+
+n ∥P−
+n )). Since Dα(P+
+n ∥P−
+n ) ≤ D̄ for all n, we have C
+(n)
+α ≤ C̄α. Summing:
+P
+TPRn ≤ C̄α
+P
+δβ
+n. For power-law schedules δn ≤ c/np, we have δβ
+n ≤ cβn−pβ, which is summable
+iff pβ > 1 (i.e., p > α). For general summable {δn}, convergence of
+P
+δβ
+n follows from Hölder’s
+inequality on finite horizons:
+PN
+n=1 δβ
+n ≤ N1−β ·(
+PN
+n=1 δn)β ≤ N1−β ·Bβ where B =
+P
+δn < ∞.
+Remark (Coverage gap). For power-law schedules δn = c·n−p with p > 1, the series
+P
+δβ
+n = cβ P
+n−pβ
+converges iff pβ > 1, i.e., p > α. For 1 < p ≤ α, the stationary impossibility (Theorem 1) applies
+but Proposition C.2 does not — the non-stationary extension requires the strictly stronger condition
+p > α (flagged in §2.2). This gap narrows as α → 1+ and vanishes for all practically relevant fast-
+decaying schedules (p ≥ 2). For the intermediate regime, Theorem 5’s stationarity-free finite-horizon
+ceiling provides an alternative bound.
+C.3 Information-Theoretic Finite-Horizon Bound
+Proposition 1 (Information-Theoretic Finite-Horizon Bound). Let {gn} be a sequence of safety
+gates with per-step mutual information In and total budget I0 =
+P
+In. Then for any N:
+N X
+n=1
+TPRn ≤
+N X
+n=1
+δn +
+p
+2NI0
+This bound grows as
+√
+N, so it does not prove
+P
+TPRn < ∞ — that follows from Theorem 1.
+Proposition 1 complements Theorem 1 by constraining the rate of utility accumulation via mutual
+information. Full proof in Appendix A.5.
+22C.4 Sample Complexity Barrier
+Proposition 2 (Sample Complexity Barrier). Let G be a family of binary classifiers with VC
+dimension dVC. For the gate to achieve δn ≤ c/np with p > 1, the required training set is
+ntrain(n) = Ω(dVC · n2p). If the system generates at most k new labeled examples per step, sample
+starvation occurs at nfail = O(k1/(2p−1)).
+This result is independent of Theorem 1: even if a classifier circumvented the Hölder bound, it
+would face sample starvation. Full proof in Appendix A.6.
+C.5 Formal Transformer Lipschitz Bounds
+Proposition 3 (Transformer LoRA Lipschitz Bound). For a pre-LayerNorm transformer with K
+layers under LoRA perturbation with rank r on nproj attention projections per layer, the per-layer
+Lipschitz constant w.r.t. LoRA parameters is:
+LLoRA
+k ≤
+∥γk∥
+√
+ϵ
+·
+maxp ∥W0
+v,p∥
+√
+dk
+·
+q
+2 · nproj
+Compositional verification checks
+P
+k LLoRA
+k · ∥∆θk∥ ≤ m (additive, O(d)) rather than the exponen-
+tially large product Lfull =
+Q
+k(1 + Lk).
+Full derivation in Appendix A.7.
+C.6 Hölder–Jensen Approximation
+For practical deployment over N steps with risk budget B =
+P
+δn, applying the per-step Hölder
+bound and Jensen’s inequality yields:
+Umax(N,B) = Cα · N1−β
+· Bβ
+with optimal uniform allocation δn = B/N. This bound is looser than the exact NP-based ceiling
+U∗(N,B) = N · TPRNP(B/N) (Theorem 5), which is 1.4–3.1× tighter at N = 102–106.
+C.7 Multi-Dimensional Tradeoff Surface
+Classifiers occupy: TPR ≤ Cα · δβ, C = O(d2), n = Ω(dVC/δ2).
+Verifiers occupy: δ = 0, TPR > 0 (domain-restricted), C = O(d), n = 0.
+These regions are disconnected on the δ = 0 hyperplane.
+D Full Numerical Validation
+D.1 Tightness Validation
+∆s α∗ β∗ TPRNP/Hölder at δ = 10−6 logTPR/logδ at δ = 10−12
+0.1 201.0 0.995 0.561 0.974
+0.5 9.0 0.889 0.834 0.875
+1.0 3.0 0.667 0.321 0.758
+2.0 1.5 0.333 0.108 0.552
+For all separations, TPRNP ≤ Hölder bound (verifying Theorem 1) and the ratio ranges from
+0.1 to 0.9 at deployment-relevant δ.
+23D.2 Information-Theoretic Bound Comparison
+The Hölder bound is tighter per-step for small δ; the MI bound is complementary for cumulative
+analysis. Both bounds are valid across all distributions tested.
+D.3 Sample Complexity Simulation
+Simulated logistic regression (dVC = 11, ∆s = 0.5, k = 5): 200/200 steps sample-starved;
+P
+δ = 41.17
+(diverges). Confirms Proposition 2.
+D.4 Transformer Lipschitz Computation
+Architecture d K dk ∥Wv∥ LLoRA
+k rk Steps in ball
+Toy (2L) 64 2 32 2.32 259.7 5.8e-4 11.6
+Small (6L) 256 6 64 2.09 165.2 3.0e-4 6.1
+GPT-2 (12L) 768 12 64 1.80 142.5 1.8e-4 3.5
+Qwen-7B (28L) 3584 28 128 1.68 94.0 1.1e-4 2.3
+The bound is non-vacuous across all architectures — even at Qwen-7B scale, 2 LoRA gradient
+steps fit within the safe ball.
+D.5 Pareto Frontier Visualization
+The classifier and verifier regions are disconnected on the δ = 0 hyperplane. Classifiers require
+Ω(dVC/δ2) samples and cannot reach δ = 0 with TPR > 0. The ball verifier operates at δ = 0 with
+no training data.
+D.6 Trained Classifier Ceiling
+Across all 72 (classifier, δ) pairs tested (4 classifiers × 6 δ values × 3 separations), zero violations
+of the Hölder bound were observed. Trained classifiers achieve TPR ratios of 0.52–0.94 relative to
+the Hölder ceiling.
+D.7 Non-Gaussian Tightness Validation
+Across 8 non-Gaussian families (Laplace, Student-t, Gaussian mixture): min ratios 0.28–0.40,
+average ratios 0.54–0.70. The bound is uniformly valid and tight across heavy-tailed and multi-
+modal distributions.
+D.8 Lipschitz Ball Verifier Demonstration
+LTC controller (d = 240), L = 13.75, r = 0.0208. Inside-ball: 200/200 safe (δ = 0), TPR = 0.286.
+D.9 NP Counting Proof Validation
+All 9 configs satisfy direct sum ≤ counting bound (ratios 0.33–0.89). Counting 13% tighter than
+Hölder at ∆s = 1.0,p = 2.0.
+24D.10 Tight Finite-Horizon Validation
+The exact ceiling grows subpolynomially: from N = 104 to N = 106 (100× increase in N), U∗ grows
+only 2.66×. Uniform allocation optimal (Jensen). MI bound is loose by 4–86×.
+E Computational Complexity and Open Problems
+E.1 Connection to Computational Complexity
+The information-theoretic bound (Proposition 1) and sample complexity barrier (Proposition 2)
+connect to a broader question: is safe self-improvement computationally hard? A natural extension
+is whether satisfying the dual conditions is NP-hard.
+E.2 Open Problems
+1. Computational impossibility. Is satisfying the dual conditions NP-hard, beyond being
+statistically impossible?
+2. Adaptive verification. Can tighter verified regions (e.g., ellipsoidal) maintain O(d) checking?
+Ball chaining experiments in [23] provide an initial empirical answer.
+3. Multi-agent and continuous-time extensions of the dual conditions.
+F Validation Script Details
+• experiments/prove_tightness.py: Computes NP TPR via Φ(Φ−1(δ) + ∆s) for 100 δ values
+and 4 separations; confirms TPRNP ≤ Hölder (Theorems 1, 3).
+• experiments/prove_info_theoretic_bound.py: Computes MI of the NP channel for Gaussian
+and Laplacian distributions (Proposition 1).
+• experiments/prove_sample_complexity.py: Simulates 200 steps with logistic regression gate
+(Proposition 2).
+• experiments/pareto_tradeoff.py: Computes the 4D tradeoff surface (Appendix D.5).
+• experiments/validate_classifier_ceiling.py: Trains 4 classifiers on 50K samples (Ap-
+pendix D.6).
+• experiments/compute_lipschitz_bounds.py: Proposition 3 bounds for 4 architectures (Ap-
+pendix D.4).
+• experiments/prove_tightness_nongaussian.py: 8 non-Gaussian families (Appendix D.7).
+• experiments/validate_ball_verifier.py: Ball verifier on LTC d = 240 (Appendix D.8).
+• experiments/lora_ball_verifier_gpt2.py: GPT-2 LoRA validation (§7.1).
+• experiments/prove_counting_impossibility.py: Theorem 4 validation (Appendix D.9).
+• experiments/prove_tight_finite_horizon.py: Theorem 5 validation (Appendix D.10).
+25References
+[1] Rudolf Ahlswede and Péter Gács. Spreading of sets in product spaces and hypercontraction of
+the Markov operator. Annals of Probability, 4(6):925–939, 1976.
+[2] Dario Amodei, Chris Olah, Jacob Steinhardt, Paul Christiano, John Schulman, and Dan Mané.
+Concrete problems in AI safety. arXiv preprint arXiv:1606.06565, 2016.
+[3] Amanda Askell, Yuntao Bai, Anna Chen, et al. A general language assistant as a laboratory
+for alignment. arXiv preprint arXiv:2112.00861, 2021.
+[4] Peter L. Bartlett and Shahar Mendelson. Rademacher and Gaussian complexities: Risk bounds
+and structural results. Journal of Machine Learning Research, 3:463–482, 2002.
+[5] Felix Berkenkamp, Matteo Turchetta, Angela Schoellig, and Andreas Krause. Safe model-based
+reinforcement learning with stability guarantees. In Advances in Neural Information Processing
+Systems (NeurIPS), 2017.
+[6] Nick Bostrom. Superintelligence: Paths, Dangers, Strategies. Oxford University Press, 2014.
+[7] Paul Christiano, Ajeya Cotra, and Mark Xu. Iterated amplification. Alignment Forum, 2017.
+[8] George Dasoulas, Ludovic Dos Santos, Filippo Maria Bianchi, and Michalis Vazirgiannis.
+Lipschitz normalization for self-attention layers with application to graph neural networks. In
+Proceedings of the International Conference on Machine Learning (ICML), 2021.
+[9] Mahyar Fazlyab, Alexander Robey, Hamed Hassani, Manfred Morari, and George J. Pappas.
+Efficient and accurate estimation of Lipschitz constants for deep neural networks. In Advances
+in Neural Information Processing Systems (NeurIPS), 2019.
+[10] Allan Gibbard. Manipulation of voting schemes: A general result. Econometrica, 41(4):587–601,
+1973.
+[11] Justin Gilmer, Luke Metz, Fartash Faghri, Samuel S. Schoenholz, Maithra Raghu, Martin
+Wattenberg, and Ian Goodfellow. Adversarial spheres. In ICLR Workshop, 2018.
+[12] Hyunjik Kim, George Papamakarios, and Andriy Mnih. The Lipschitz constant of self-attention.
+In Proceedings of the International Conference on Machine Learning (ICML), 2021.
+[13] Erich L. Lehmann and Joseph P. Romano. Testing Statistical Hypotheses. Springer, 3rd edition,
+2005.
+[14] Jan Leike, David Krueger, Tom Everitt, et al. Scalable agent alignment via reward modeling:
+A research direction. arXiv preprint arXiv:1811.07871, 2018.
+[15] David McAllester. PAC-Bayesian model averaging. In Proceedings of the Conference on
+Learning Theory (COLT), 1999.
+[16] Jerzy Neyman and Egon S. Pearson. On the problem of the most efficient tests of statistical
+hypotheses. Philosophical Transactions of the Royal Society A, 231:289–337, 1933.
+[17] Long Ouyang, Jeff Wu, Xu Jiang, et al. Training language models to follow instructions with
+human feedback. In Advances in Neural Information Processing Systems (NeurIPS), 2022.
+26[18] Christos H. Papadimitriou and Mihalis Yannakakis. On the approximability of trade-offs and
+optimal access of web sources. In Proceedings of the IEEE Symposium on Foundations of
+Computer Science (FOCS), pages 86–92, 2000.
+[19] Yury Polyanskiy and Yihong Wu. Strong data processing inequalities for channels and Bayesian
+networks. In Convexity and Concentration, volume 161 of IMA Volumes in Mathematics and
+its Applications, pages 211–249. Springer, 2017.
+[20] Maxim Raginsky. Strong data processing inequalities and Φ-Sobolev inequalities for discrete
+channels. IEEE Transactions on Information Theory, 62(6):3355–3389, 2016.
+[21] Henry Gordon Rice. Classes of recursively enumerable sets and their decision problems.
+Transactions of the American Mathematical Society, 74(2):358–366, 1953.
+[22] Mark Allen Satterthwaite. Strategy-proofness and Arrow’s conditions. Journal of Economic
+Theory, 10(2):187–217, 1975.
+[23] Arsenios Scrivens. Empirical validation of the classification–verification dichotomy for AI safety
+gates. Zenodo, 2026. doi: 10.5281/zenodo.19237566. URL https://zenodo.org/records/
+19237566. Companion paper.
+[24] Shai Shalev-Shwartz. Online learning and online convex optimization. Foundations and Trends
+in Machine Learning, 4(2):107–194, 2012.
+[25] Nate Soares and Benja Fallenstein. Agent foundations for aligning machine intelligence with
+human interests. Technical report, Machine Intelligence Research Institute (MIRI), 2017.
+[26] Dimitris Tsipras, Shibani Santurkar, Logan Engstrom, Alexander Turner, and Aleksander
+Madry. Robustness may be at odds with accuracy. In International Conference on Learning
+Representations (ICLR), 2019.
+[27] Tim van Erven and Peter Harremoes. Rényi divergence and Kullback–Leibler divergence. IEEE
+Transactions on Information Theory, 60(7):3797–3820, 2014.
+[28] Vladimir N. Vapnik and Alexey Ya. Chervonenkis. On the uniform convergence of relative
+frequencies of events to their probabilities. Theory of Probability and its Applications, 16(2):
+264–280, 1971.
+[29] Aladin Virmaux and Kevin Scaman. Lipschitz regularity of deep neural networks. In Advances
+in Neural Information Processing Systems (NeurIPS), 2018.
+[30] David H. Wolpert. The lack of a priori distinctions between learning algorithms. Neural
+Computation, 8(7):1341–1390, 1996.
+27

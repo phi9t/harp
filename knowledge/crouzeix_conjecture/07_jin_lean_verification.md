@@ -30,7 +30,7 @@ The inspected repository head is
 `9df07838327b988e3924453daa29c8cd726d34b0`. Its later v4 TeX has SHA-256
 `27f77d75a02faa39a613e18a6b52f3548195b73ceee4996ced38f54319a00315`.
 
-**[EVIDENCE - CC-022](claim_evidence_ledger.md#cc-022-lean-manuscript-digest-is-stale-at-repository-head).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-022: Lean manuscript digest is stale at repository head|EVIDENCE - CC-022]].**
 The checked-in `Lean/MANUSCRIPT_AUDIT.md` remains byte-bound to the earlier
 audited manuscript. The different digest at repository head means the
 correspondence claim must remain revision-specific. It does not by itself show
@@ -38,7 +38,7 @@ that any theorem changed or became false.
 
 ## Proposition definition versus proving theorem {#proposition-definition-versus-proving-theorem}
 
-**[EVIDENCE - CC-021](claim_evidence_ledger.md#cc-021-lean-proposition-and-proof-theorem-are-distinct).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-021: Lean proposition and proof theorem are distinct|EVIDENCE - CC-021]].**
 The capitalization boundary is semantically important:
 
 ```text
@@ -94,7 +94,7 @@ sharpness witness.
 
 ## Exported polynomial theorem {#exported-polynomial-theorem}
 
-**[EVIDENCE - CC-020](claim_evidence_ledger.md#cc-020-lean-exports-the-polynomial-theorem).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-020: Lean exports the polynomial theorem|EVIDENCE - CC-020]].**
 At repository head, `FinalTheorems.lean` exports:
 
 ```text
@@ -131,7 +131,7 @@ row into an independently observed compilation result.
 
 ## Local build observations {#local-build-observations}
 
-**[EVIDENCE - CC-023](claim_evidence_ledger.md#cc-023-build-observation-at-audited-v4).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-023: Build observation at audited v4|EVIDENCE - CC-023]].**
 At `565b6a3`, acquisition verified the Git identity and prepared the pinned
 toolchain, but the build operation stopped at the typed preflight:
 
@@ -142,7 +142,7 @@ available: 4,958,564 KiB
 required: 8,388,608 KiB
 ```
 
-**[EVIDENCE - CC-024](claim_evidence_ledger.md#cc-024-build-observation-at-repository-head).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-024: Build observation at repository head|EVIDENCE - CC-024]].**
 The same preflight blocked the clean-room build at `9df0783`. Neither receipt
 is a compile failure. Neither is a passing build.
 
@@ -157,7 +157,7 @@ The build receipts bind:
 
 ## Prohibited-token scans {#prohibited-token-scans}
 
-**[EVIDENCE - CC-025](claim_evidence_ledger.md#cc-025-commit-scoped-prohibited-token-scans-passed).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-025: Commit-scoped prohibited-token scans passed|EVIDENCE - CC-025]].**
 Both revision-scoped source scans exited zero with empty normalized logs. Under
 the scanner implemented by `acquire.sh`, no prohibited tokens were found.
 
@@ -193,4 +193,4 @@ boundary.
 5. Review the exported statements and axiom output against the exact manuscript
    digest being claimed.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

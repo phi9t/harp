@@ -3,16 +3,16 @@
 **EVIDENCE — source identity.** The vendored seed is *Structure and
 Interpretation of Computer Programs*, second edition, Unofficial Texinfo Format
 `2.andresraba5.6`, registered as `SICP-2E-UF` in the
-[source registry](../../../content/sicp/sources/source_registry.tsv). The exact PDF, license,
+[[content/sicp/sources/source_registry.tsv|source registry]]. The exact PDF, license,
 manifest, and capture metadata live under
-[`evidence/sicp/`](../../../evidence/sicp).
+[[evidence/sicp/PROVENANCE|`evidence/sicp/`]].
 
 ## Start the course
 
-Open the [course guide](course/sicp_course_guide.md) for the complete sequential
+Open the [[knowledge/rsi/sicp/course/sicp_course_guide|course guide]] for the complete sequential
 route through all twelve seminars and the capstone. If Scheme syntax is not
-fresh, begin with the [Scheme reading primer](course/scheme_reading_primer.md)
-before Seminar 1. The [coverage ledger](../../../content/sicp/course/coverage.tsv) maps every main
+fresh, begin with the [[knowledge/rsi/sicp/course/scheme_reading_primer|Scheme reading primer]]
+before Seminar 1. The [[content/sicp/course/coverage.tsv|coverage ledger]] maps every main
 section from §1.1 through §5.5 exactly once.
 
 The course maps exactly 24 selected SICP exercises as practice prompts. It does
@@ -23,31 +23,28 @@ not provide their solutions or claim exhaustive exercise coverage.
 Choose a route for the systems question in front of you, then return to the
 sequential course for dependencies the shorter path omits.
 
-- **Learn the book's main progression.** Follow the [complete sequential
-  route](course/sicp_course_guide.md#sequential-route), beginning with the
-  [Scheme reading primer](course/scheme_reading_primer.md).
-- **Design functional or immutable components.** Follow the [functional and immutable systems](course/sicp_course_guide.md#functional-and-immutable-systems) route
+- **Learn the book's main progression.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#Sequential route|complete sequential route]], beginning with the
+  [[knowledge/rsi/sicp/course/scheme_reading_primer|Scheme reading primer]].
+- **Design functional or immutable components.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#Functional and immutable systems|functional and immutable systems]] route
   through process shape, representation barriers, and sequence interfaces.
-- **Reason about state, time, or interleavings.** Follow the [state and concurrency](course/sicp_course_guide.md#state-and-concurrency) route before
+- **Reason about state, time, or interleavings.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#State and concurrency|state and concurrency]] route before
   drawing conclusions about identity, mutation, serialization, or delayed
   computation.
-- **Change or implement language semantics.** Follow the [evaluation and language design](course/sicp_course_guide.md#evaluation-and-language-design) route,
-  then use the [eval/apply companion](eval-apply-reader-companion.md) or the
-  [metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md).
-- **Trace an evaluator down to a machine.** Follow the [runtime and compiler mechanisms](course/sicp_course_guide.md#runtime-and-compiler-mechanisms) route
-  before using the [runnable Rust evaluator lab](../../../labs/sicp-evaluator).
-- **Transfer the material into an agent harness.** Follow the [agent-harness design](course/sicp_course_guide.md#agent-harness-design) route, complete the
-  optional [agentic eval/apply MTS synthesis](agentic_eval_apply.md) as the
+- **Change or implement language semantics.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#Evaluation and language design|evaluation and language design]] route,
+  then use the [[knowledge/rsi/sicp/eval-apply-reader-companion|eval/apply companion]] or the
+  [[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]].
+- **Trace an evaluator down to a machine.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#Runtime and compiler mechanisms|runtime and compiler mechanisms]] route
+  before using the [[labs/sicp-evaluator/README|runnable Rust evaluator lab]].
+- **Transfer the material into an agent harness.** Follow the [[knowledge/rsi/sicp/course/sicp_course_guide#Agent-harness design|agent-harness design]] route, complete the
+  optional [[knowledge/rsi/sicp/agentic_eval_apply|agentic eval/apply MTS synthesis]] as the
   bridge from Seminar 9 to effectful runtime semantics, then complete the
-  [capstone dossier](course/capstone/agent_harness_architecture_dossier.md).
+  [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|capstone dossier]].
   The synthesis supplements rather than replaces either; treat the linked Pi,
   Hermes, and Codex profiles as separate implementation overlays rather than
   evidence about the SICP source.
-- **Check source authority and open gaps.** Start with the [domain orientation](domain_orientation.md),
-  then use the [source
-  registry](../../../content/sicp/sources/source_registry.tsv), [evidence
-  graph](../../../content/sicp/sources/evidence_graph.tsv), [missing-evidence ledger](missing_evidence.md),
-  and [capture provenance](../../../evidence/sicp/PROVENANCE.md). The course currently has one fetched
+- **Check source authority and open gaps.** Start with the [[knowledge/rsi/sicp/domain_orientation|domain orientation]],
+  then use the [[content/sicp/sources/source_registry.tsv|source registry]], [[content/sicp/sources/evidence_graph.tsv|evidence graph]], [[knowledge/rsi/sicp/missing_evidence|missing-evidence ledger]],
+  and [[evidence/sicp/PROVENANCE|capture provenance]]. The course currently has one fetched
   source; the linked harness material does not expand that source boundary.
 
 ## Categorized course map
@@ -58,78 +55,73 @@ prerequisite for a focused question.
 
 ### Preparation and course control
 
-- [Scheme reading primer](course/scheme_reading_primer.md) establishes the
+- [[knowledge/rsi/sicp/course/scheme_reading_primer|Scheme reading primer]] establishes the
   notation used in the seminars.
-- [Course guide](course/sicp_course_guide.md), [coverage ledger](../../../content/sicp/course/coverage.tsv),
-  and [exercise map](course/exercise_map.md) define the reading order, source
+- [[knowledge/rsi/sicp/course/sicp_course_guide|Course guide]], [[content/sicp/course/coverage.tsv|coverage ledger]],
+  and [[knowledge/rsi/sicp/course/exercise_map|exercise map]] define the reading order, source
   coverage, and selected practice prompts.
-- [Dialogue cursor](course/dialogue_state.md) records the single question that
+- [[knowledge/rsi/sicp/course/dialogue_state|Dialogue cursor]] records the single question that
   may advance only after an explicit reader response.
 
 ### Procedures, data, and composition
 
-1. [Process shape and higher-order abstraction](course/seminars/01-process-shape-and-higher-order-abstraction.md)
-2. [Data abstraction and immutable representation](course/seminars/02-data-abstraction-and-immutable-representation.md)
-3. [Trees, sequences, and functional interfaces](course/seminars/03-trees-sequences-and-functional-interfaces.md)
-4. [Symbols, sets, compression, and generic dispatch](course/seminars/04-symbols-sets-compression-and-generic-dispatch.md)
+1. [[knowledge/rsi/sicp/course/seminars/01-process-shape-and-higher-order-abstraction|Process shape and higher-order abstraction]]
+2. [[knowledge/rsi/sicp/course/seminars/02-data-abstraction-and-immutable-representation|Data abstraction and immutable representation]]
+3. [[knowledge/rsi/sicp/course/seminars/03-trees-sequences-and-functional-interfaces|Trees, sequences, and functional interfaces]]
+4. [[knowledge/rsi/sicp/course/seminars/04-symbols-sets-compression-and-generic-dispatch|Symbols, sets, compression, and generic dispatch]]
 
 ### State, concurrency, and delayed computation
 
-5. [State, identity, and environments](course/seminars/05-state-identity-and-environments.md)
-6. [Mutation, simulation, and constraints](course/seminars/06-mutation-simulation-and-constraints.md)
-7. [Concurrency, serialization, and interleavings](course/seminars/07-concurrency-serialization-and-interleavings.md)
-8. [Streams, delay, and infinite processes](course/seminars/08-streams-delay-and-infinite-processes.md)
+5. [[knowledge/rsi/sicp/course/seminars/05-state-identity-and-environments|State, identity, and environments]]
+6. [[knowledge/rsi/sicp/course/seminars/06-mutation-simulation-and-constraints|Mutation, simulation, and constraints]]
+7. [[knowledge/rsi/sicp/course/seminars/07-concurrency-serialization-and-interleavings|Concurrency, serialization, and interleavings]]
+8. [[knowledge/rsi/sicp/course/seminars/08-streams-delay-and-infinite-processes|Streams, delay, and infinite processes]]
 
 ### Languages, machines, and compilation
 
-9. [Eval/apply and executable semantics](course/seminars/09-eval-apply-and-executable-semantics.md)
-10. [Lazy evaluation and nondeterministic search](course/seminars/10-lazy-evaluation-and-nondeterministic-search.md)
-11. [Logic programming and declarative query](course/seminars/11-logic-programming-and-declarative-query.md)
-12. [Machines, storage, control, and compilation](course/seminars/12-machines-storage-control-and-compilation.md)
+9. [[knowledge/rsi/sicp/course/seminars/09-eval-apply-and-executable-semantics|Eval/apply and executable semantics]]
+10. [[knowledge/rsi/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search|Lazy evaluation and nondeterministic search]]
+11. [[knowledge/rsi/sicp/course/seminars/11-logic-programming-and-declarative-query|Logic programming and declarative query]]
+12. [[knowledge/rsi/sicp/course/seminars/12-machines-storage-control-and-compilation|Machines, storage, control, and compilation]]
 
 ### Transfer, implementation, and evidence
 
-- [Capstone — agent-harness architecture dossier](course/capstone/agent_harness_architecture_dossier.md)
+- [[knowledge/rsi/sicp/course/capstone/agent_harness_architecture_dossier|Capstone — agent-harness architecture dossier]]
   applies the course mechanisms to a coding-agent harness while keeping its
   authority, state, scheduling, and evidence boundaries explicit.
-- [Agentic eval/apply MTS synthesis](agentic_eval_apply.md) supplements
+- [[knowledge/rsi/sicp/agentic_eval_apply|Agentic eval/apply MTS synthesis]] supplements
   Seminar 9 with an effectful-runtime bridge to the capstone; it does not
   replace either or establish source authority.
-- [Eval/apply compatibility pointer](eval-apply-reader-companion.md) and
-  [metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md)
-  provide the maintained evaluator supplements; the [runnable Rust evaluator
-  lab](../../../labs/sicp-evaluator) is executable learning code, not source
+- [[knowledge/rsi/sicp/eval-apply-reader-companion|Eval/apply compatibility pointer]] and
+  [[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]]
+  provide the maintained evaluator supplements; the [[labs/sicp-evaluator/README|runnable Rust evaluator lab]] is executable learning code, not source
   evidence.
-- [Pi harness deep dive](../pi_harness_deep_dive.md), [Hermes harness deep
-  dive](../hermes_harness_deep_dive.md), and [Codex harness deep
-  dive](../codex_harness_deep_dive.md) are implementation overlays for
+- [[knowledge/rsi/pi_harness_deep_dive|Pi harness deep dive]], [[knowledge/rsi/hermes_harness_deep_dive|Hermes harness deep dive]], and [[knowledge/rsi/codex_harness_deep_dive|Codex harness deep dive]] are implementation overlays for
   comparison, with their own revisions and evidence contracts.
-- [domain orientation](domain_orientation.md), [source
-  registry](../../../content/sicp/sources/source_registry.tsv), [evidence
-  graph](../../../content/sicp/sources/evidence_graph.tsv), [missing-evidence ledger](missing_evidence.md),
-  and [capture provenance](../../../evidence/sicp/PROVENANCE.md) hold the packet's source, gap, and
+- [[knowledge/rsi/sicp/domain_orientation|domain orientation]], [[content/sicp/sources/source_registry.tsv|source registry]], [[content/sicp/sources/evidence_graph.tsv|evidence graph]], [[knowledge/rsi/sicp/missing_evidence|missing-evidence ledger]],
+  and [[evidence/sicp/PROVENANCE|capture provenance]] hold the packet's source, gap, and
   provenance records.
 
 ## Resume the dialogue
 
-The [dialogue cursor](course/dialogue_state.md#dialogue-state) identifies the
+The [[knowledge/rsi/sicp/course/dialogue_state#Dialogue state|dialogue cursor]] identifies the
 single `CURRENT` question. It currently resumes at
-[Seminar 1's dialogue](course/seminars/01-process-shape-and-higher-order-abstraction.md#dialogue).
+[[knowledge/rsi/sicp/course/seminars/01-process-shape-and-higher-order-abstraction#Dialogue|Seminar 1's dialogue]].
 Only an explicit reader response may advance the cursor; silence never records
 understanding.
 
 ## Quick links
 
-- [Agentic eval/apply MTS synthesis](agentic_eval_apply.md) — optional
+- [[knowledge/rsi/sicp/agentic_eval_apply|Agentic eval/apply MTS synthesis]] — optional
   Seminar 9-to-capstone supplement for effectful runtime semantics; not source
   authority
-- [Eval/apply compatibility pointer](eval-apply-reader-companion.md)
-- [Metacircular evaluator deep dive](metacircular_evaluator_deep_dive.md)
-- [Runnable Rust evaluator lab](../../../labs/sicp-evaluator)
-- [Pi harness deep dive](../pi_harness_deep_dive.md)
-- [Hermes harness deep dive](../hermes_harness_deep_dive.md)
-- [Codex harness deep dive](../codex_harness_deep_dive.md)
-- [Source registry](../../../content/sicp/sources/source_registry.tsv)
-- [Evidence graph](../../../content/sicp/sources/evidence_graph.tsv)
-- [Missing-evidence ledger](missing_evidence.md)
-- [Capture provenance](../../../evidence/sicp/PROVENANCE.md)
+- [[knowledge/rsi/sicp/eval-apply-reader-companion|Eval/apply compatibility pointer]]
+- [[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|Metacircular evaluator deep dive]]
+- [[labs/sicp-evaluator/README|Runnable Rust evaluator lab]]
+- [[knowledge/rsi/pi_harness_deep_dive|Pi harness deep dive]]
+- [[knowledge/rsi/hermes_harness_deep_dive|Hermes harness deep dive]]
+- [[knowledge/rsi/codex_harness_deep_dive|Codex harness deep dive]]
+- [[content/sicp/sources/source_registry.tsv|Source registry]]
+- [[content/sicp/sources/evidence_graph.tsv|Evidence graph]]
+- [[knowledge/rsi/sicp/missing_evidence|Missing-evidence ledger]]
+- [[evidence/sicp/PROVENANCE|Capture provenance]]

@@ -40,7 +40,7 @@ The strongest justified status is therefore:
 
 ## Jin Git manuscript versus Preprints.org metadata {#jin-git-manuscript-versus-preprints-metadata}
 
-**[MISSING - CC-045](claim_evidence_ledger.md#cc-045-preprints-manuscript-bytes-are-not-mapped-to-git).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-045: Preprints manuscript bytes are not mapped to Git|MISSING - CC-045]].**
 The Preprints.org route returned HTTP `403` during headless acquisition and is
 registered as metadata only. Harp does not possess the posted manuscript bytes,
 so it cannot identify the posting with:
@@ -84,7 +84,7 @@ an independently verified priority determination.
 
 ## Annals-formatted artifact versus submission status {#annals-formatted-artifact-versus-submission-status}
 
-**[MISSING - CC-046](claim_evidence_ledger.md#cc-046-annals-submission-status-is-not-established).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-046: Annals submission status is not established|MISSING - CC-046]].**
 Jin's repository contains an `AnnMath/` manuscript and README language calling
 it a submission manuscript. The local receipt establishes that the TeX artifact
 exists at repository head. It does not establish:
@@ -161,4 +161,4 @@ The most valuable next evidence is:
 Until then, the packet should be used as a rigorous mechanism reconstruction
 and evidence map, not as an announcement that external review is complete.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

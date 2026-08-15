@@ -18,13 +18,13 @@ model weights remain fixed in the reported experiments.
 
 ## Executive assessment
 
-**[INFERENCE - DX-024](claim_evidence_ledger.md#dx-024-the-reported-studies-support-durable-harness-capability).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-024: The reported studies support durable harness capability|INFERENCE - DX-024]].**
 The paper gives strong system-level evidence that harness changes can store
 procedural competence. A frozen model gains better task completion,
 verification, persistence checking, tool grounding, and acceptance-contract
 behavior.
 
-**[MISSING - DX-026](claim_evidence_ledger.md#dx-026-the-paper-does-not-isolate-darwinxs-population-operators).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-026: The paper does not isolate DarwinX's population operators|MISSING - DX-026]].**
 The paper does not isolate the archive, parent selector, regression gate,
 recombination operator, or inference effort under an equal search budget.
 
@@ -47,20 +47,20 @@ Harp did not:
 - audit raw trajectories or archive state; or
 - reconstruct the total evolution cost.
 
-**[MISSING - DX-009](claim_evidence_ledger.md#dx-009-a-public-darwinx-optimizer-release-was-not-located).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-009: A public DarwinX optimizer release was not located|MISSING - DX-009]].**
 The bounded 2026-08-14 public search found no official DarwinX optimizer
 repository or project page. The paper's GitHub link points to BrowserCode, the
 browser action runtime.
 
 The user's original review is preserved verbatim as
-[provisional input](../../evidence/darwinx/artifacts/supplied_review.md). It is
+[[evidence/darwinx/artifacts/supplied_review|provisional input]]. It is
 not evidence for paper claims. The
-[critical review](03_critical_review.md#correction-matrix-for-the-supplied-review)
+[[knowledge/darwinx/03_critical_review#Correction matrix for the supplied review|critical review]]
 records each maintained correction.
 
 ## System decomposition
 
-**[EVIDENCE - DX-001](claim_evidence_ledger.md#dx-001-darwinx-edits-the-harness-while-holding-model-weights-fixed).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-001: DarwinX edits the harness while holding model weights fixed|EVIDENCE - DX-001]].**
 
 ```text
 guided mutation
@@ -106,7 +106,7 @@ Three distinctions prevent overclaiming:
 | WebArena-Infinity | 43.5% to 93.0% audit-clean on frozen GPT-5.5 | Strong same-model browser harness is 86.1%; action policy broadens; every merge is reverted |
 | SWE-bench Verified | TB2.1 harness reaches 421/500 | One-way transfer; no unevolved Monet row |
 
-Open the [evaluation audit](02_evaluation_audit.md) for task counts, sampling,
+Open the [[knowledge/darwinx/02_evaluation_audit|evaluation audit]] for task counts, sampling,
 inference-compute, action-policy, validity, and statistical boundaries.
 
 ## What survived audit
@@ -136,26 +136,26 @@ The audit tightened five points:
 
 ### Expert route
 
-1. [Critical review](03_critical_review.md)
-2. [Evaluation audit](02_evaluation_audit.md)
-3. [Successor experiment](05_successor_experiment.md)
-4. [Claim ledger](claim_evidence_ledger.md)
+1. [[knowledge/darwinx/03_critical_review|Critical review]]
+2. [[knowledge/darwinx/02_evaluation_audit|Evaluation audit]]
+3. [[knowledge/darwinx/05_successor_experiment|Successor experiment]]
+4. [[knowledge/darwinx/claim_evidence_ledger|Claim ledger]]
 
 Expected reading time: 45 to 75 minutes.
 
 ### Mechanism route
 
-1. [Mechanism and selection](01_mechanism_and_selection.md)
-2. [Evaluation audit](02_evaluation_audit.md)
-3. [Critical review](03_critical_review.md)
+1. [[knowledge/darwinx/01_mechanism_and_selection|Mechanism and selection]]
+2. [[knowledge/darwinx/02_evaluation_audit|Evaluation audit]]
+3. [[knowledge/darwinx/03_critical_review|Critical review]]
 
 Expected reading time: 60 to 90 minutes.
 
 ### RSI route
 
-1. [Comparative synthesis](04_comparative_synthesis.md)
-2. [Successor experiment](05_successor_experiment.md)
-3. [Harp harness-search chapter](../rsi/chapters/harness-search.md)
+1. [[knowledge/darwinx/04_comparative_synthesis|Comparative synthesis]]
+2. [[knowledge/darwinx/05_successor_experiment|Successor experiment]]
+3. [[knowledge/rsi/chapters/harness-search|Harp harness-search chapter]]
 
 Expected reading time: 45 to 70 minutes.
 
@@ -163,45 +163,45 @@ Expected reading time: 45 to 70 minutes.
 
 | Question | Start here |
 |---|---|
-| What exactly changes? | [Mechanism and selection](01_mechanism_and_selection.md#system-state) |
-| What does preserve-and-extend guarantee? | [Preserve-and-extend fitness](01_mechanism_and_selection.md#preserve-and-extend-fitness) |
-| How does parent selection work? | [Parent selection](01_mechanism_and_selection.md#parent-selection) |
-| Does recombination matter? | [Where the causal argument breaks](03_critical_review.md#where-the-causal-argument-breaks) |
-| Is the gain only more compute? | [TB2.1 inference compute](02_evaluation_audit.md#inference-compute) |
-| Is WAI a fair browser comparison? | [WebArena-Infinity](02_evaluation_audit.md#webarena-infinity) |
-| What is reproducible? | [Reproducibility](03_critical_review.md#reproducibility) |
-| How does DarwinX compare with DGM or Meta-Harness? | [Comparative synthesis](04_comparative_synthesis.md) |
-| What experiment would settle the mechanism claim? | [Successor experiment](05_successor_experiment.md) |
+| What exactly changes? | [[knowledge/darwinx/01_mechanism_and_selection#System state|Mechanism and selection]] |
+| What does preserve-and-extend guarantee? | [[knowledge/darwinx/01_mechanism_and_selection#Preserve-and-extend fitness|Preserve-and-extend fitness]] |
+| How does parent selection work? | [[knowledge/darwinx/01_mechanism_and_selection#Parent selection|Parent selection]] |
+| Does recombination matter? | [[knowledge/darwinx/03_critical_review#Where the causal argument breaks|Where the causal argument breaks]] |
+| Is the gain only more compute? | [[knowledge/darwinx/02_evaluation_audit#Inference compute|TB2.1 inference compute]] |
+| Is WAI a fair browser comparison? | [[knowledge/darwinx/02_evaluation_audit#WebArena-Infinity|WebArena-Infinity]] |
+| What is reproducible? | [[knowledge/darwinx/03_critical_review#Reproducibility|Reproducibility]] |
+| How does DarwinX compare with DGM or Meta-Harness? | [[knowledge/darwinx/04_comparative_synthesis|Comparative synthesis]] |
+| What experiment would settle the mechanism claim? | [[knowledge/darwinx/05_successor_experiment|Successor experiment]] |
 
 ## Packet map
 
-- [Mechanism and selection](01_mechanism_and_selection.md) reconstructs archive
+- [[knowledge/darwinx/01_mechanism_and_selection|Mechanism and selection]] reconstructs archive
   state, gates, parent selection, signals, memory, and recombination.
-- [Evaluation audit](02_evaluation_audit.md) owns all benchmark accounting.
-- [Critical review](03_critical_review.md) ranks causal and reproducibility
+- [[knowledge/darwinx/02_evaluation_audit|Evaluation audit]] owns all benchmark accounting.
+- [[knowledge/darwinx/03_critical_review|Critical review]] ranks causal and reproducibility
   gaps and audits the supplied review.
-- [Comparative synthesis](04_comparative_synthesis.md) compares Meta-Harness,
+- [[knowledge/darwinx/04_comparative_synthesis|Comparative synthesis]] compares Meta-Harness,
   DGM, HarnessX, and DarwinX under one contract.
-- [Successor experiment](05_successor_experiment.md) specifies the equal-budget
+- [[knowledge/darwinx/05_successor_experiment|Successor experiment]] specifies the equal-budget
   factorial study.
-- [Claim ledger](claim_evidence_ledger.md) owns material claims.
-- [Source registry](source_registry.md) fixes source identity and claim ceiling.
-- [Maintenance](maintenance.md) defines update and verification rules.
+- [[knowledge/darwinx/claim_evidence_ledger|Claim ledger]] owns material claims.
+- [[knowledge/darwinx/source_registry|Source registry]] fixes source identity and claim ceiling.
+- [[knowledge/darwinx/maintenance|Maintenance]] defines update and verification rules.
 
 ## Source boundary
 
 Primary local evidence:
 
-- [DarwinX v1 PDF](../../evidence/darwinx/artifacts/darwinx-2608.07545v1.pdf)
-- [DarwinX v1 text](../../evidence/darwinx/text/darwinx-2608.07545v1.txt)
-- [HarnessX v1 PDF](../../evidence/darwinx/artifacts/harnessx-2606.14249v1.pdf)
-- [Evidence provenance](../../evidence/darwinx/PROVENANCE.md)
+- [[evidence/darwinx/artifacts/darwinx-2608.07545v1.pdf|DarwinX v1 PDF]]
+- [[evidence/darwinx/text/darwinx-2608.07545v1.txt|DarwinX v1 text]]
+- [[evidence/darwinx/artifacts/harnessx-2606.14249v1.pdf|HarnessX v1 PDF]]
+- [[evidence/darwinx/PROVENANCE|Evidence provenance]]
 
 Existing Harp comparisons:
 
-- [Meta-Harness deep dive](../meta_harness/meta_harness_deep_dive.md)
-- [DGM packet](../darwin_godel_machine/darwin_godel_machine_index.md)
-- [Harness benchmark field guide](../harness_benchmarks/harness_benchmark_field_guide.md)
+- [[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness deep dive]]
+- [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM packet]]
+- [[knowledge/harness_benchmarks/harness_benchmark_field_guide|Harness benchmark field guide]]
 
 ## Verdict
 

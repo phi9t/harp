@@ -13,6 +13,24 @@ if (!baseDocument) {
 }
 
 describe("canonical document view", () => {
+  it("exposes document metadata and accessible Obsidian fallbacks", () => {
+    const documentWithObsidianSyntax = {
+      ...baseDocument,
+      html: [
+        "<h1>Metadata</h1>",
+        '<aside class="obsidian-callout" role="note"><p>Evidence-aware reading</p></aside>',
+        '<a class="obsidian-embed-fallback" data-obsidian-embed="true" href="#documents/darwinx-index">DarwinX</a>',
+      ].join(""),
+    };
+
+    render(<CanonicalDocumentView document={documentWithObsidianSyntax} />);
+
+    expect(screen.getByText("Confidence")).toBeInTheDocument();
+    expect(screen.getByRole("note")).toHaveTextContent("Evidence-aware reading");
+    expect(screen.getByRole("link", { name: "DarwinX" }))
+      .toHaveAttribute("href", "#documents/darwinx-index");
+  });
+
   it("renders MathML and focuses the requested section inside its article", () => {
     const scrollIntoView = vi.fn();
     HTMLElement.prototype.scrollIntoView = scrollIntoView;

@@ -923,11 +923,11 @@ The observation subsystem is complete when:
 
 ## Reading routes
 
-- [Harness benchmark field guide](../harness_benchmarks/harness_benchmark_field_guide.md)
-- [Meta-Harness system reading](../rsi/systems/meta-harness.md)
-- [Context-engineering deep dive](../rsi/context_engineering_deep_dive.md)
-- [Evaluator integrity and promotion](../rsi/evaluator_integrity_and_promotion.md)
-- [Source registry guide](../rsi/source_registry.md)
+- [[knowledge/harness_benchmarks/harness_benchmark_field_guide|Harness benchmark field guide]]
+- [[knowledge/rsi/systems/meta-harness|Meta-Harness system reading]]
+- [[knowledge/rsi/context_engineering_deep_dive|Context-engineering deep dive]]
+- [[knowledge/rsi/evaluator_integrity_and_promotion|Evaluator integrity and promotion]]
+- [[knowledge/rsi/source_registry|Source registry guide]]
 - [Original paper](https://arxiv.org/abs/2603.28052)
 - [First-party project page](https://yoonholee.com/meta-harness/)
 - Pinned implementation capture:

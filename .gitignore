@@ -6,6 +6,7 @@
 /atlas/node_modules/
 /atlas/dist/client/
 /atlas/.vite/
+/.obsidian/
 /knowledge/investigations/local/
 /knowledge/.obsidian/
 /knowledge/Pasted image *.png
@@ -15,3 +16,4 @@
 **/*.dSYM/
 *.part
 .DS_Store
+.kata.local.toml

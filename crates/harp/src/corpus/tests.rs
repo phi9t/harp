@@ -1189,6 +1189,40 @@ fn compiles_reader_routes_from_canonical_markdown() {
     let repo = fixture();
     write_complete_fixture(repo.path());
 
+    fs::write(
+        repo.path().join("knowledge/harp_knowledge_home.md"),
+        "---\n\
+id: harp-knowledge-home\n\
+title: Harp knowledge home\n\
+type: research-index\n\
+status: active\n\
+tags: [harp, knowledge]\n\
+confidence: high\n\
+---\n\
+# Harp knowledge home\n",
+    )
+    .unwrap();
+    fs::create_dir_all(repo.path().join("knowledge/darwinx")).unwrap();
+    for (name, id) in [
+        ("darwinx_index.md", "darwinx-index"),
+        ("01_mechanism_and_selection.md", "darwinx-mechanism"),
+        ("02_evaluation_audit.md", "darwinx-evaluation"),
+        ("03_critical_review.md", "darwinx-review"),
+        ("04_comparative_synthesis.md", "darwinx-synthesis"),
+        ("05_successor_experiment.md", "darwinx-successor"),
+        ("claim_evidence_ledger.md", "darwinx-claim-ledger"),
+        ("source_registry.md", "darwinx-source-registry"),
+        ("maintenance.md", "darwinx-maintenance"),
+    ] {
+        fs::write(
+            repo.path().join("knowledge/darwinx").join(name),
+            format!(
+                "---\nid: {id}\ntitle: {id}\ntype: technical-deep-dive\nstatus: active\ntags: [darwinx]\nconfidence: high\n---\n# {id}\n"
+            ),
+        )
+        .unwrap();
+    }
+
     let corpus = compile(repo.path()).unwrap();
 
     assert_eq!(
@@ -1209,15 +1243,92 @@ fn compiles_reader_routes_from_canonical_markdown() {
             "benchmarks",
             "evaluator-integrity",
             "survey",
+            "verified-coevolution",
             "agentic-engineering",
-            "crouzeix-conjecture"
+            "crouzeix-conjecture",
+            "knowledge",
         ]
     );
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "knowledge"
+            && route.canonical_markdown_path == "knowledge/harp_knowledge_home.md"
+    }));
+    for path in [
+        "knowledge/darwinx/darwinx_index.md",
+        "knowledge/darwinx/01_mechanism_and_selection.md",
+        "knowledge/darwinx/02_evaluation_audit.md",
+        "knowledge/darwinx/03_critical_review.md",
+        "knowledge/darwinx/04_comparative_synthesis.md",
+        "knowledge/darwinx/05_successor_experiment.md",
+        "knowledge/darwinx/claim_evidence_ledger.md",
+        "knowledge/darwinx/source_registry.md",
+        "knowledge/darwinx/maintenance.md",
+    ] {
+        assert!(corpus
+            .documents
+            .iter()
+            .any(|document| document.canonical_markdown_path == path));
+    }
     for route in &corpus.reader_routes {
         assert!(corpus
             .documents
             .iter()
             .any(|document| { document.canonical_markdown_path == route.canonical_markdown_path }));
+    }
+}
+
+#[test]
+fn verified_coevolution_packet_is_registered_and_keeps_claims_conditional() {
+    let corpus = compile(workspace_root()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "verified-coevolution"
+            && route.label == "Verified coevolution"
+            && route.canonical_markdown_path
+                == "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"
+    }));
+
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "verified-coevolution")
+        .unwrap();
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"
+    );
+    for required in [
+        "recursive closure",
+        "model-harness coevolution",
+        "research hypothesis",
+        "LADDER-TTRL",
+        "PRIME-RL TTRL",
+        "VCA-",
+        "Recursive dynamics: epistemic drift, behavioral regression, and objective instability",
+        "NSRSA",
+        "SAHOO",
+        "Scrivens",
+        "conditional theory",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "verified coevolution agenda is missing {required}"
+        );
+    }
+
+    for document_id in [
+        "verified-coevolution-source-registry",
+        "verified-coevolution-claim-evidence-ledger",
+        "verified-coevolution-experiment-protocol",
+        "verified-coevolution-maintenance",
+    ] {
+        assert!(
+            corpus
+                .documents
+                .iter()
+                .any(|document| document.concept_id == document_id),
+            "supporting packet document {document_id} is not compiled"
+        );
     }
 }
 
@@ -1319,6 +1430,113 @@ fn preserves_native_details_in_rendered_html() {
 }
 
 #[test]
+fn renders_obsidian_wikilinks_as_offline_routes_without_rewriting_code() {
+    let targets = BTreeMap::from([(
+        "knowledge/rsi/target.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "target".to_owned(),
+            heading_ids: BTreeMap::from([(
+                "Result boundary".to_owned(),
+                "result-boundary".to_owned(),
+            )]),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[knowledge/rsi/target#Result boundary|Result]]\n\n`[[knowledge/rsi/target]]`\n",
+        "knowledge/rsi/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/target?section=result-boundary\""));
+    assert!(rendered.contains(">Result</a>"));
+    assert!(rendered.contains("[[knowledge/rsi/target]]"));
+}
+
+#[test]
+fn renders_obsidian_callouts_as_escaped_semantic_html() {
+    let rendered = render_markdown(
+        "> [!warning] <Unsafe & title>\n> Body with **emphasis**.\n",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(rendered.contains(
+        "<aside class=\"obsidian-callout\" data-callout-type=\"warning\" role=\"note\">"
+    ));
+    assert!(rendered.contains("<p class=\"obsidian-callout-title\">&lt;Unsafe &amp; title&gt;</p>"));
+    assert!(rendered.contains("<p>Body with <strong>emphasis</strong>.</p>"));
+    assert!(rendered.contains("</aside>"));
+}
+
+#[test]
+fn leaves_obsidian_callout_syntax_literal_inside_code() {
+    let rendered = render_markdown(
+        "```md\n> [!tip] Fence literal\n```\n\n> ~~~md\n> [!tip] Blockquote fence literal\n> ~~~\n\n`> [!tip] Inline literal`\n",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(!rendered.contains("obsidian-callout"));
+    assert!(rendered.contains("&gt; [!tip] Fence literal"));
+    assert!(rendered.contains("[!tip] Blockquote fence literal"));
+    assert!(rendered.contains("&gt; [!tip] Inline literal"));
+}
+
+#[test]
+fn renders_same_note_obsidian_heading_links_to_the_source_document_route() {
+    let targets = BTreeMap::from([(
+        "knowledge/crouzeix_conjecture/source.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "crouzeix-source".to_owned(),
+            heading_ids: BTreeMap::from([(
+                "Visible heading".to_owned(),
+                "explicit-heading".to_owned(),
+            )]),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[#Visible heading|Jump]]",
+        "knowledge/crouzeix_conjecture/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/crouzeix-source?section=explicit-heading\""));
+    assert!(rendered.contains(">Jump</a>"));
+}
+
+#[test]
+fn renders_pdf_embeds_as_accessible_fallback_links() {
+    let rendered = render_markdown(
+        "![[evidence/example/paper.pdf#page=2|Paper]]",
+        "knowledge/rsi/chapters/test.md",
+        &[],
+    );
+
+    assert!(rendered.contains(
+        "<a class=\"obsidian-embed-fallback\" data-obsidian-embed=\"true\" href=\"../../evidence/example/paper.pdf#page=2\">Paper</a>"
+    ));
+}
+
+#[test]
+fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
+    let targets = BTreeMap::from([(
+        "knowledge/rsi/target.md".to_owned(),
+        render::RouteTarget::Document {
+            document_id: "target".to_owned(),
+            heading_ids: BTreeMap::new(),
+        },
+    )]);
+    let rendered = render::render_markdown_with_targets(
+        "[[target|Target]]",
+        "knowledge/rsi/source.md",
+        &targets,
+    );
+
+    assert!(rendered.contains("href=\"#documents/target\""));
+    assert!(rendered.contains(">Target</a>"));
+}
+
+#[test]
 fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
     let rendered = render_markdown(
         "# Test\n\n| Field | Value |\n|---|---|\n| state | durable |\n",
@@ -1337,7 +1555,9 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
     let targets = render::route_targets(&[], &BTreeMap::new());
     assert_eq!(
         targets.get("knowledge/rsi/source_registry.md"),
-        Some(&render::RouteTarget::Reader("sources"))
+        Some(&render::RouteTarget::Reader {
+            route_id: "sources",
+        })
     );
 
     let mut fragment_targets = BTreeMap::new();
@@ -1345,7 +1565,10 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         "knowledge/example/ledger.md".to_owned(),
         render::RouteTarget::Document {
             document_id: "example-ledger".to_owned(),
-            heading_ids: BTreeSet::from(["cc-013-origin-sample-cancels-the-correction".to_owned()]),
+            heading_ids: BTreeMap::from([(
+                "cc-013-origin-sample-cancels-the-correction".to_owned(),
+                "cc-013-origin-sample-cancels-the-correction".to_owned(),
+            )]),
         },
     );
     assert_eq!(
@@ -1365,6 +1588,46 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         "#documents/example-ledger"
     );
 
+    let reader_target = BTreeMap::from([(
+        "knowledge/rsi/source_registry.md".to_owned(),
+        render::RouteTarget::Reader {
+            route_id: "sources",
+        },
+    )]);
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "source_registry.md#registry-format",
+            Path::new("knowledge/rsi"),
+            &reader_target,
+        ),
+        "#sources"
+    );
+
+    let chapter_target = BTreeMap::from([(
+        "knowledge/rsi/chapters/target.md".to_owned(),
+        render::RouteTarget::Chapter {
+            concept_id: "target".to_owned(),
+            document_id: "target".to_owned(),
+            heading_ids: BTreeMap::from([("mechanism".to_owned(), "mechanism".to_owned())]),
+        },
+    )]);
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "target.md#mechanism",
+            Path::new("knowledge/rsi/chapters"),
+            &chapter_target,
+        ),
+        "#documents/target?section=mechanism"
+    );
+    assert_eq!(
+        render::offline_link_destination_with_targets(
+            "target.md",
+            Path::new("knowledge/rsi/chapters"),
+            &chapter_target,
+        ),
+        "#chapters/target"
+    );
+
     let mut legacy_sources = BTreeMap::new();
     legacy_sources.insert(
         "knowledge/rsi/systems/legacy.md".to_owned(),
@@ -1382,7 +1645,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             Path::new("knowledge/rsi/systems"),
             &legacy_targets,
         ),
-        "#documents/legacy"
+        "#documents/legacy?section=generated-slug"
     );
 }
 
@@ -1538,6 +1801,30 @@ fn validates_local_links_in_product_roots() {
         &repository,
     )
     .unwrap();
+}
+
+#[test]
+fn validates_obsidian_wikilinks_in_product_roots() {
+    let repo = fixture();
+    let target = repo.path().join("knowledge/rsi/target.md");
+    fs::create_dir_all(target.parent().unwrap()).unwrap();
+    fs::write(target, "# Target\n\n## Result boundary\n\nText.\n").unwrap();
+    let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
+
+    validate_local_links(
+        "knowledge/rsi/chapters/guide.md",
+        "[[knowledge/rsi/target#Result boundary|Result]]",
+        &repository,
+    )
+    .unwrap();
+
+    let error = validate_local_links(
+        "knowledge/rsi/chapters/guide.md",
+        "[[knowledge/rsi/missing|Missing]]",
+        &repository,
+    )
+    .unwrap_err();
+    assert_eq!(error.code(), "knowledge.obsidian.target");
 }
 
 #[test]

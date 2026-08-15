@@ -66,10 +66,10 @@ For valid candidates, keep a score vector:
 <details>
 <summary>Original sources for this mechanism</summary>
 
-- Weng, future challenges and evaluator boundary, [reader companion](../rsi_harness_by_lil_log_deconstructed.md). It identifies weak evaluators, reward hacking, long-term cost, negative results, diversity, and human roles.
+- Weng, future challenges and evaluator boundary, [[knowledge/rsi/rsi_harness_by_lil_log_deconstructed|reader companion]]. It identifies weak evaluators, reward hacking, long-term cost, negative results, diversity, and human roles.
 - Weng, "Reward Hacking in Reinforcement Learning," sections "Reward misspecification" and "Reward tampering," and Amodei et al., "Concrete Problems in AI Safety," §4, establish proxy exploitation and evaluator-bias risks: [Lil'Log 2024-11-28](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/), [arXiv:1606.06565v2](https://arxiv.org/abs/1606.06565).
 - Self-Harness, §§3–4; Agentic Harness Engineering, §§2–4; and Darwin Gödel Machine, §§2–3, describe regression gates, observability-driven edits, sandboxing, and lineage with their stated limits: [arXiv:2606.09498v1](https://arxiv.org/abs/2606.09498), [arXiv:2604.25850v4](https://arxiv.org/abs/2604.25850), [arXiv:2505.22954v3](https://arxiv.org/abs/2505.22954).
-- [Pi](../pi_harness_deep_dive.md), [Hermes](../hermes_harness_deep_dive.md), and [Codex](../codex_harness_deep_dive.md) provide pinned implementation examples for sessions, budgets, capability routing, and sandboxing.
+- [[knowledge/rsi/pi_harness_deep_dive|Pi]], [[knowledge/rsi/hermes_harness_deep_dive|Hermes]], and [[knowledge/rsi/codex_harness_deep_dive|Codex]] provide pinned implementation examples for sessions, budgets, capability routing, and sandboxing.
 
 </details>
 
@@ -162,8 +162,8 @@ Containment claims weaken if adversarial tests cross the boundary, if repeated e
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- [The evaluator deep dive](../evaluator_integrity_and_promotion.md) retains the exact source locators and the original Pi-first experiment design.
-- Full source identities and claim ceilings are in [the source registry](../source_registry.md).
+- [[knowledge/rsi/evaluator_integrity_and_promotion|The evaluator deep dive]] retains the exact source locators and the original Pi-first experiment design.
+- Full source identities and claim ceilings are in [[knowledge/rsi/source_registry|the source registry]].
 - No current source proves containment against a candidate that can redesign its evaluator, weight-update pipeline, and deployment authority.
 
 </details>

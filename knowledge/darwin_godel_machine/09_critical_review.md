@@ -28,7 +28,7 @@ After this chapter, you should be able to:
 
 ## Executive judgment
 
-**[INFERENCE - DGM-049](claim_evidence_crosswalk.md#dgm-049-evidence-supports-bounded-harness-improvement).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-049: Evidence supports bounded harness improvement|INFERENCE - DGM-049]].**
 DGM is a credible demonstration of automated, persistent harness evolution:
 
 - the mutable object is an agent implementation;
@@ -84,7 +84,7 @@ authority remain outside the child.
 
 ## Central causal claim
 
-**[INFERENCE - DGM-067](claim_evidence_crosswalk.md#dgm-067-task-fitness-and-descendant-productivity-are-different-objectives).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-067: Task fitness and descendant productivity are different objectives|INFERENCE - DGM-067]].**
 The central disputed step is:
 
 ```text
@@ -141,7 +141,7 @@ tested by downstream task accuracy.
 
 ## Recursive-improvement claim ceiling
 
-**[MISSING - DGM-050](claim_evidence_crosswalk.md#dgm-050-matched-successor-improvement-evidence-is-missing).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-050: Matched successor-improvement evidence is missing|MISSING - DGM-050]].**
 DGM supports `harness-improvement`: useful agent-code changes persist and can
 participate in later changes. It does not establish `successor-improvement`
 because accepted parents and children are not compared on the valid quality of
@@ -203,7 +203,7 @@ score establishes. A child can solve more benchmark issues while becoming:
 - more dependent on the fixed diagnostic model.
 
 **Required action.** Run the next-cycle experiment in
-[successor design](10_successor_design.md).
+[[knowledge/darwin_godel_machine/10_successor_design|successor design]].
 
 ### Finding 2 — Critical: evaluator information enters the proposal loop
 
@@ -377,14 +377,14 @@ tasks while making later changes less safe and less attributable.
 
 ### Finding 12 — Low: exact result reporting has one visible inconsistency
 
-**[EVIDENCE - DGM-029A](claim_evidence_crosswalk.md#dgm-029a-figure-4-labels-the-claude-37-result-as-590).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-029A: Figure 4 labels the Claude 3.7 result as 59.0%|EVIDENCE - DGM-029A]].**
 **Evidence.** Figure 4 labels Claude 3.7 Sonnet's transferred SWE-bench result
 as 59.0%.
 
-**[EVIDENCE - DGM-029B](claim_evidence_crosswalk.md#dgm-029b-figure-4-prose-reports-the-claude-37-result-as-595).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-029B: Figure 4 prose reports the Claude 3.7 result as 59.5%|EVIDENCE - DGM-029B]].**
 The nearby prose reports 59.5%.
 
-**[MISSING - DGM-029C](claim_evidence_crosswalk.md#dgm-029c-the-authoritative-claude-37-value-is-unresolved).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-029C: The authoritative Claude 3.7 value is unresolved|MISSING - DGM-029C]].**
 The authoritative value remains unresolved.
 
 **Consequence.** Small for the overall conclusion, but exact tables should not
@@ -421,7 +421,7 @@ and verify archive digests before and after every run.
 
 ### Finding 15 — High: outer timeout does not bound hung attempts
 
-**[EVIDENCE - DGM-059](claim_evidence_crosswalk.md#dgm-059-outer-timeout-does-not-bound-unfinished-futures).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-059: Outer timeout does not bound unfinished futures|EVIDENCE - DGM-059]].**
 **Evidence.** `as_completed` waits for futures before the code calls
 `future.result(timeout=...)`.
 
@@ -433,7 +433,7 @@ termination, cleanup, and effect reconciliation.
 
 ### Finding 16 — High: the released full SWE evaluation path is disconnected
 
-**[EVIDENCE - DGM-060](claim_evidence_crosswalk.md#dgm-060-released-swe-path-does-not-consume-the-full-evaluation-threshold).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-060: Released SWE path does not consume the full-evaluation threshold|EVIDENCE - DGM-060]].**
 **Evidence.** The outer loop computes and passes `full_eval_threshold`, and the
 self-improvement function loads the `big` subset. The captured runner never
 uses either value to launch a third evaluation cycle.
@@ -448,7 +448,7 @@ the third stage with immutable task lists and a regression test that proves the
 
 ### Finding 17 — Medium: default generation and attempt accounting diverge
 
-**[EVIDENCE - DGM-061](claim_evidence_crosswalk.md#dgm-061-released-defaults-can-schedule-two-attempts-per-generation).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-061: Released defaults can schedule two attempts per generation|EVIDENCE - DGM-061]].**
 **Evidence.** The pinned CLI defaults to 80 generations and two attempts per
 generation, while the paper describes 80 iterations with parallel work.
 
@@ -461,12 +461,12 @@ reported result to the exact historical command and scheduler semantics.
 
 ### Finding 18 — Medium: released parent-entry edge cases do not match the paper
 
-**[EVIDENCE - DGM-062](claim_evidence_crosswalk.md#dgm-062-released-parent-selection-omits-the-papers-perfect-score-filter).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-062: Released parent selection omits the paper's perfect-score filter|EVIDENCE - DGM-062]].**
 **Evidence.** The paper excludes perfect scorers from parent eligibility; the
 captured candidate builder does not. The SWE entry selector also compares an
 unresolved-ID list with integer zero, leaving `random.choice([])` reachable
 when no special objective fires
-([DGM-063](claim_evidence_crosswalk.md#dgm-063-empty-swe-unresolved-lists-can-reach-random-choice)).
+([[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-063: Empty SWE unresolved lists can reach random choice|DGM-063]]).
 
 **Consequence.** The released candidate population differs at one specification
 boundary, and a fully resolved parent can fail during task selection instead of
@@ -478,7 +478,7 @@ each special-objective branch.
 
 ### Finding 19 — Medium: the public environment is not immutable enough for replay
 
-**[EVIDENCE - DGM-064](claim_evidence_crosswalk.md#dgm-064-released-environment-identity-is-incomplete).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-064: Released environment identity is incomplete|EVIDENCE - DGM-064]].**
 **Evidence.** The runner loads SWE-bench Verified by mutable dataset name and
 reinstalls the candidate's `requirements.txt`. The narrow snapshot contains no
 lockfile or Dockerfile that proves the complete published environment.
@@ -614,7 +614,7 @@ The released system is a research prototype, not a deployment architecture.
 
 ## Final assessment
 
-**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-065: DGM is evolutionary search over agent scaffolds|INFERENCE - DGM-065]].**
 DGM materially advances the engineering study of self-improving agents. It
 turns agent code into a persistent mutable object, makes lineages explicit,
 and demonstrates that automated search can discover useful harness changes.
@@ -627,7 +627,7 @@ The label “recursive self-improvement” remains a research hypothesis at the
 successor level. The path from better task solver to better future improver is
 implemented but not directly measured.
 
-Continue with [successor design](10_successor_design.md), inspect the
-[claim-evidence crosswalk](claim_evidence_crosswalk.md).
+Continue with [[knowledge/darwin_godel_machine/10_successor_design|successor design]], inspect the
+[[knowledge/darwin_godel_machine/claim_evidence_crosswalk|claim-evidence crosswalk]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

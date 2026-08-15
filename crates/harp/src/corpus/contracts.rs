@@ -1,3 +1,4 @@
+use super::obsidian::{parse_wiki_links, resolve_wiki_link};
 use super::*;
 use pulldown_cmark::{Event, Options, Parser, Tag};
 use serde::Deserialize;
@@ -141,6 +142,19 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
     for (_, path) in AUXILIARY_DOCUMENTS {
         entries_by_path.entry(path.to_owned()).or_default();
     }
+    let knowledge_home = Path::new("knowledge/harp_knowledge_home.md");
+    if repository
+        .read_optional_regular_file_bounded(
+            knowledge_home,
+            "Harp knowledge home",
+            MAX_MARKDOWN_BYTES,
+        )?
+        .is_some()
+    {
+        entries_by_path
+            .entry(knowledge_home.to_string_lossy().into_owned())
+            .or_default();
+    }
     if let Some(map) = &weng_map {
         for section in &map.sections {
             entries_by_path
@@ -179,6 +193,7 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
         }
         let body = markdown_body(&markdown, &path)?.to_owned();
         heading_ids_for_source(&body, &path)?;
+        document_metadata(&markdown, &path, &entries)?;
         canonical_sources.insert(
             path.clone(),
             ValidatedCanonicalSource {
@@ -198,6 +213,144 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
         weng_map,
         system_registry,
     })
+}
+
+pub(super) fn document_metadata(
+    markdown: &str,
+    path: &str,
+    entries: &[CoverageEntry],
+) -> Result<DocumentMetadata, AppError> {
+    let default_id = entries
+        .iter()
+        .find(|entry| entry.section_id.is_none())
+        .or_else(|| entries.first())
+        .map(|entry| entry.concept_id.clone())
+        .unwrap_or_else(|| {
+            AUXILIARY_DOCUMENTS
+                .iter()
+                .find(|(_, document_path)| *document_path == path)
+                .map(|(document_id, _)| (*document_id).to_owned())
+                .unwrap_or_else(|| {
+                    Path::new(path)
+                        .file_stem()
+                        .and_then(|stem| stem.to_str())
+                        .unwrap_or("document")
+                        .to_owned()
+                })
+        });
+    let mut metadata = DocumentMetadata {
+        id: default_id,
+        kind: "technical-document".to_owned(),
+        status: "legacy".to_owned(),
+        tags: Vec::new(),
+        confidence: "medium".to_owned(),
+        mode: None,
+        source_ids: Vec::new(),
+        coverage_keys: entries
+            .iter()
+            .map(|entry| entry.concept_id.clone())
+            .collect(),
+    };
+    let Some(frontmatter) = markdown.strip_prefix("---\n") else {
+        return Ok(metadata);
+    };
+    let (frontmatter, _) = frontmatter.split_once("\n---\n").ok_or_else(|| {
+        invalid(
+            "knowledge.rsi.frontmatter",
+            format!("{path} has unclosed YAML frontmatter"),
+        )
+    })?;
+    let mut fields = BTreeMap::new();
+    for line in frontmatter.lines() {
+        if line.is_empty() || line.starts_with([' ', '\t']) {
+            return Ok(metadata);
+        }
+        let (key, value) = line.split_once(':').ok_or_else(|| {
+            invalid(
+                "knowledge.rsi.frontmatter",
+                format!("{path} frontmatter entry has no colon"),
+            )
+        })?;
+        if key.is_empty() || key.trim() != key || value.is_empty() {
+            return Ok(metadata);
+        }
+        if fields.insert(key, value.trim()).is_some() {
+            return Ok(metadata);
+        }
+    }
+    for (key, value) in fields {
+        match key {
+            "id" => metadata.id = metadata_id(value, path, key)?,
+            "type" => metadata.kind = metadata_text(value, path, key)?,
+            "status" => metadata.status = metadata_text(value, path, key)?,
+            "tags" => metadata.tags = metadata_list(value, path, key)?,
+            "confidence" => {
+                if !matches!(value, "low" | "medium" | "high") {
+                    return Err(invalid(
+                        "knowledge.rsi.frontmatter",
+                        format!("{path} confidence must be low, medium, or high"),
+                    ));
+                }
+                metadata.confidence = value.to_owned();
+            }
+            "mode" => metadata.mode = Some(metadata_text(value, path, key)?),
+            "source_ids" => metadata.source_ids = metadata_list(value, path, key)?,
+            "coverage_keys" => metadata.coverage_keys = metadata_list(value, path, key)?,
+            _ => {}
+        }
+    }
+    metadata.tags.sort();
+    metadata.tags.dedup();
+    metadata.source_ids.sort();
+    metadata.source_ids.dedup();
+    metadata.coverage_keys.sort();
+    metadata.coverage_keys.dedup();
+    Ok(metadata)
+}
+
+fn metadata_id(value: &str, path: &str, key: &str) -> Result<String, AppError> {
+    let value = metadata_text(value, path, key)?;
+    if !valid_id(&value) {
+        return Err(invalid(
+            "knowledge.rsi.frontmatter",
+            format!("{path} {key} must be a canonical ID"),
+        ));
+    }
+    Ok(value)
+}
+
+fn metadata_text(value: &str, path: &str, key: &str) -> Result<String, AppError> {
+    if value.is_empty()
+        || value.trim() != value
+        || value.starts_with('[')
+        || value.starts_with('{')
+        || value.contains('\0')
+    {
+        return Err(invalid(
+            "knowledge.rsi.frontmatter",
+            format!("{path} {key} must be a one-line scalar"),
+        ));
+    }
+    Ok(value.to_owned())
+}
+
+fn metadata_list(value: &str, path: &str, key: &str) -> Result<Vec<String>, AppError> {
+    let Some(items) = value
+        .strip_prefix('[')
+        .and_then(|value| value.strip_suffix(']'))
+    else {
+        return Err(invalid(
+            "knowledge.rsi.frontmatter",
+            format!("{path} {key} must be a one-line list"),
+        ));
+    };
+    if items.is_empty() {
+        return Ok(Vec::new());
+    }
+    items
+        .split(',')
+        .map(|item| metadata_text(item.trim(), path, key))
+        .collect()
 }
 
 fn load_system_registry(
@@ -1372,6 +1525,14 @@ pub(super) fn validate_local_links(
     markdown: &str,
     repository: &HeldDirectory,
 ) -> Result<(), AppError> {
+    for link in parse_wiki_links(markdown).map_err(|error| {
+        invalid(
+            "knowledge.obsidian.syntax",
+            format!("{path} has invalid Obsidian wikilink: {error}"),
+        )
+    })? {
+        resolve_wiki_link(repository, path, &link)?;
+    }
     let parent = Path::new(path)
         .parent()
         .expect("canonical files have parents");

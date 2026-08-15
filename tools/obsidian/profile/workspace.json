@@ -1,0 +1,82 @@
+{
+  "main": {
+    "type": "split",
+    "id": "harp-main",
+    "direction": "horizontal",
+    "children": [
+      {
+        "type": "leaf",
+        "id": "harp-home",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "knowledge/harp_knowledge_home.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ]
+  },
+  "left": {
+    "type": "split",
+    "id": "harp-left",
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "leaf",
+        "id": "harp-file-explorer",
+        "state": {
+          "type": "file-explorer",
+          "state": {}
+        }
+      }
+    ]
+  },
+  "right": {
+    "type": "split",
+    "id": "harp-right",
+    "direction": "vertical",
+    "children": [
+      {
+        "type": "leaf",
+        "id": "harp-backlinks",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "knowledge/harp_knowledge_home.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "showCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "type": "leaf",
+        "id": "harp-outline",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "knowledge/harp_knowledge_home.md",
+            "followCursor": false
+          }
+        }
+      },
+      {
+        "type": "leaf",
+        "id": "harp-properties",
+        "state": {
+          "type": "properties",
+          "state": {}
+        }
+      }
+    ]
+  },
+  "active": "harp-home",
+  "lastOpenFiles": [
+    "knowledge/harp_knowledge_home.md"
+  ]
+}

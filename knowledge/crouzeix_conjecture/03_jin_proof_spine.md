@@ -108,12 +108,12 @@ $f(\beta_i)$ coincide.
 
 ## Apply positive-real completion {#apply-positive-real-completion}
 
-**[EVIDENCE - CC-010](claim_evidence_ledger.md#cc-010-jin-completion-hypotheses).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-010: Jin completion hypotheses|EVIDENCE - CC-010]].**
 The preceding construction satisfies the complete theorem interface: same
 basis, target values in the closed disk, analytic positive-real $H$,
 normalization at zero, and the adjoint-algebra defect.
 
-The [positive-real completion derivation](04_jin_positive_real_completion.md)
+The [[knowledge/crouzeix_conjecture/04_jin_positive_real_completion|positive-real completion derivation]]
 then proves
 
 $$
@@ -144,7 +144,7 @@ $$
 \|f(A)\|\le2m_\varepsilon.
 $$
 
-**[EVIDENCE - CC-017](claim_evidence_ledger.md#cc-017-fixed-domain-limit-precedes-outer-domain-limit).**
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-017: Fixed-domain limit precedes outer-domain limit|EVIDENCE - CC-017]].**
 This is the first limit. The domain $\Omega_\varepsilon$ is held fixed while
 $k\to\infty$. The argument does not ask for estimates uniform in a
 simultaneously moving matrix and boundary.
@@ -191,4 +191,4 @@ route. It does not merge equations from older revisions into the audited proof
 spine, and it treats the later repository-head v4 as a distinct source
 artifact.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

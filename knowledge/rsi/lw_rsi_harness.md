@@ -4,8 +4,8 @@
 > map of Lilian Weng's *Harness Engineering for Self-Improvement*, not a
 > canonical Harp reading and not an authority for paper-level claims. The
 > maintained source-grounded interpretation is
-> [RSI harness by Lil'Log, deconstructed](rsi_harness_by_lil_log_deconstructed.md).
-> The captured article is [WENG-HARNESS](../../evidence/weng/artifacts/html/weng-harness.html).
+> [[knowledge/rsi/rsi_harness_by_lil_log_deconstructed|RSI harness by Lil'Log, deconstructed]].
+> The captured article is [[evidence/weng/artifacts/html/weng-harness.html|WENG-HARNESS]].
 
 ## Thesis I am tracking
 
@@ -72,8 +72,8 @@ the research process that builds later models. Coupling alone is not recursion.
 run, which durable artifact and external acceptance step establish that the
 result is a *successor* rather than just another experiment?
 
-Read: [system being improved](weng/01-system-being-improved.md) and
-[foundation model inside the loop](chapters/foundation-model-inside-the-loop.md).
+Read: [[knowledge/rsi/weng/01-system-being-improved|system being improved]] and
+[[knowledge/rsi/chapters/foundation-model-inside-the-loop|foundation model inside the loop]].
 
 ## 2. Harness design patterns are prerequisites
 
@@ -95,8 +95,8 @@ workflow can repeat a bad heuristic more reliably than a good one.
 **Field-note test.** For each design pattern, ask: *what state does it make
 durable, who may modify it, and how would we observe whether it helped?*
 
-Read: [harness design patterns](weng/02-harness-design-patterns.md)
-and [durable improvement workflows](chapters/durable-improvement-workflows.md).
+Read: [[knowledge/rsi/weng/02-harness-design-patterns|harness design patterns]]
+and [[knowledge/rsi/chapters/durable-improvement-workflows|durable improvement workflows]].
 
 ## 3. Harness layer versus core intelligence
 
@@ -123,8 +123,8 @@ it.
 they provide auditability or authority, even if some of their behavior can be
 learned into the model?
 
-Read: [harness layer versus core intelligence](weng/03-harness-layer-vs-core-intelligence.md)
-and [procedure internalization](chapters/procedure-internalization.md).
+Read: [[knowledge/rsi/weng/03-harness-layer-vs-core-intelligence|harness layer versus core intelligence]]
+and [[knowledge/rsi/chapters/procedure-internalization|procedure internalization]].
 
 ## 4. Context engineering: artifact, skill, mechanism
 
@@ -149,8 +149,8 @@ and replay as separately observable boundaries.
 **Question.** What evidence distinguishes useful compression from hidden
 leakage, increased context budget, or memorized benchmark answers?
 
-Read: [context engineering](weng/04-context-engineering.md) and
-[context-engineering deep dive](context_engineering_deep_dive.md).
+Read: [[knowledge/rsi/weng/04-context-engineering|context engineering]] and
+[[knowledge/rsi/context_engineering_deep_dive|context-engineering deep dive]].
 
 ## 5. Workflows and search
 
@@ -176,8 +176,8 @@ held-out evaluation decide among those interpretations.
 **Question.** If a workflow beats a baseline, did it find a better procedure
 or merely buy more attempts, tools, context, or evaluator knowledge?
 
-Read: [workflow design and search](weng/05-workflow-design-and-search.md)
-and [harness search](chapters/harness-search.md).
+Read: [[knowledge/rsi/weng/05-workflow-design-and-search|workflow design and search]]
+and [[knowledge/rsi/chapters/harness-search|harness search]].
 
 ## 6. Self-improving harnesses
 
@@ -202,8 +202,8 @@ evidence for later diagnosis, not disposable log tail.
 **Question.** Is a system showing another search *round*, or did it create an
 accepted *generation* that becomes the parent of a later measured cycle?
 
-Read: [self-improving harnesses](weng/06-self-improving-harnesses.md)
-and [evaluation, promotion, and containment](chapters/evaluation-promotion-containment.md).
+Read: [[knowledge/rsi/weng/06-self-improving-harnesses|self-improving harnesses]]
+and [[knowledge/rsi/chapters/evaluation-promotion-containment|evaluation, promotion, and containment]].
 
 ## 7. Evolutionary search and the DGM case
 
@@ -259,9 +259,9 @@ parent receives an externally framed improvement task, edits its own
 repository, and returns a candidate patch. The outer loop—not the candidate—
 decides whether that patch is evaluated, retained, or used as a future parent.
 
-Read: [evolutionary search](weng/07-evolutionary-search.md),
-[DGM system reading](systems/dgm.md), and
-[AlphaEvolve versus DGM](lessons/05-alphaevolve-vs-dgm.md).
+Read: [[knowledge/rsi/weng/07-evolutionary-search|evolutionary search]],
+[[knowledge/rsi/systems/dgm|DGM system reading]], and
+[[knowledge/rsi/lessons/05-alphaevolve-vs-dgm|AlphaEvolve versus DGM]].
 
 ## 8. Joint harness and weight optimization
 
@@ -288,8 +288,8 @@ masquerade as a better joint improvement policy.
 **Question.** When the composite improves, how much came from the harness,
 weights, their interaction, or a changed data/compute budget?
 
-Read: [joint harness and weight optimization](weng/08-joint-harness-weight-optimization.md)
-and [joint harness-weight adaptation](chapters/joint-harness-weight-adaptation.md).
+Read: [[knowledge/rsi/weng/08-joint-harness-weight-optimization|joint harness and weight optimization]]
+and [[knowledge/rsi/chapters/joint-harness-weight-adaptation|joint harness-weight adaptation]].
 
 ## 9. Future challenges as acceptance criteria
 
@@ -317,8 +317,8 @@ one scalar score.
 which are ordinary engineering tradeoffs that should remain on a Pareto
 frontier?
 
-Read: [future challenges](weng/09-future-challenges.md) and
-[evaluation, promotion, and containment](chapters/evaluation-promotion-containment.md).
+Read: [[knowledge/rsi/weng/09-future-challenges|future challenges]] and
+[[knowledge/rsi/chapters/evaluation-promotion-containment|evaluation, promotion, and containment]].
 
 ## Claim ladder: avoid collapsing terms
 
@@ -331,7 +331,7 @@ Read: [future challenges](weng/09-future-challenges.md) and
 | Demonstrated recursive improvement | Positive successor-production gain repeats under protected generations, fresh tasks/evaluators, and full cost/integrity accounting. | A general claim beyond the measured envelope. |
 
 No current Harp source card qualifies at the final two levels. The full
-evidence contract is in the [RSI claim ladder](../../reference/rsi-claim-ladder.html).
+evidence contract is in the [[reference/rsi-claim-ladder.html|RSI claim ladder]].
 
 ## Open research questions
 
@@ -351,7 +351,7 @@ evidence contract is in the [RSI claim ladder](../../reference/rsi-claim-ladder.
 ## Source and reading route
 
 - [Weng's original post](https://lilianweng.github.io/posts/2026-07-04-harness/)
-- [Full Harp deconstruction](rsi_harness_by_lil_log_deconstructed.md)
-- [Nine-section Weng reader map](../../content/weng-reading-map.json)
-- [Harness comparison matrix](../../reference/harness-comparison-matrix.html)
-- [Weng source cards](../../reference/weng-source-cards.html)
+- [[knowledge/rsi/rsi_harness_by_lil_log_deconstructed|Full Harp deconstruction]]
+- [[content/weng-reading-map.json|Nine-section Weng reader map]]
+- [[reference/harness-comparison-matrix.html|Harness comparison matrix]]
+- [[reference/weng-source-cards.html|Weng source cards]]

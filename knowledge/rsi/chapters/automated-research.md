@@ -136,8 +136,8 @@ An automated-research claim weakens if the implementation does not test the prop
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- Exact source status and inspected locators are in [the source registry](../source_registry.md).
+- Exact source status and inspected locators are in [[knowledge/rsi/source_registry|the source registry]].
 - ScientistOne and Autodata are explicitly identity-only until their captures are inspected.
-- The [missing-evidence ledger](../missing_evidence.md) tracks absent end-to-end and multi-generation reproductions.
+- The [[knowledge/rsi/missing_evidence|missing-evidence ledger]] tracks absent end-to-end and multi-generation reproductions.
 
 </details>

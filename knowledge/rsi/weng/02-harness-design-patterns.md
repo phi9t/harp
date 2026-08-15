@@ -22,7 +22,7 @@ These mechanisms improve throughput and reliability only when ownership,
 resource accounting, idempotency, and recovery semantics are explicit.
 
 **EVIDENCE — implementation overlay.** The
-[Codex state-continuity companion](../codex_state_continuity_and_compaction.md)
+[[knowledge/rsi/codex_state_continuity_and_compaction|Codex state-continuity companion]]
 shows why durable files and event records are not enough by themselves: active
 typed history, current world state, compacted checkpoints, and external
 execution state have different recovery semantics.

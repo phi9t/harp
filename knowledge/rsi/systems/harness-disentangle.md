@@ -57,6 +57,6 @@ quality, activation, adherence, and downstream outcome separately.
 
 ## Reading routes
 
-- [From external procedures to learned behavior](../chapters/procedure-internalization.md)
-- [Evaluation and promotion](../chapters/evaluation-promotion-containment.md)
+- [[knowledge/rsi/chapters/procedure-internalization|From external procedures to learned behavior]]
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation and promotion]]
 - [Original paper](https://arxiv.org/abs/2605.30621)

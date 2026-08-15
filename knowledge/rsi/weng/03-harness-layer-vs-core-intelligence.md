@@ -22,7 +22,7 @@ RLM is useful here as a boundary example: recursive subcalls and externalized
 context can create strong length and strategy generalization without changing
 the underlying weights or demonstrating a self-improving successor loop.
 
-The [Codex continuity companion](../codex_state_continuity_and_compaction.md)
+The [[knowledge/rsi/codex_state_continuity_and_compaction|Codex continuity companion]]
 adds a second boundary example: changing only whether a harness retains opaque
 reasoning and semantically compacts old observations can materially change
 deployed performance with the same model weights.

@@ -127,6 +127,9 @@ export function parseRoute(hash: string): AtlasRoute {
   if (family === "sources") {
     return { kind: "sources" };
   }
+  if (family === "knowledge" && encodedId === "") {
+    return { kind: "legacy", routeId: "knowledge" };
+  }
   const legacy = canonicalCorpus.reader_routes.find(
     (candidate) => candidate.route_id === family,
   );

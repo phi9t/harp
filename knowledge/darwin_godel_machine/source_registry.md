@@ -20,27 +20,27 @@ canonical: ../../content/sources/source_registry.tsv
 
 | ID | Class | Location | What it can prove | What it cannot prove |
 |---|---|---|---|---|
-| DGM | Primary paper | [Captured text](../../evidence/weng/text/dgm.txt) and [arXiv](https://arxiv.org/abs/2505.22954) | Paper method, author-reported experiments, appendices, limitations | Independent reproduction or released-code correctness |
-| DGM-REPO | Pinned implementation | [Snapshot root](../../evidence/implementations/dgm/snapshot/README.md) | Source behavior at commit `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2` | Historical experiment identity, runtime safety, benchmark reproduction |
-| HARP-DGM | Canonical synthesis | [DGM system article](../rsi/systems/dgm.md) | Harp's maintained claim boundary and paper/code reconciliation | New primary evidence |
-| HYPERAGENTS | Primary paper | [Captured text](../../evidence/weng/text/hyperagents.txt) and [arXiv](https://arxiv.org/abs/2603.19461) | DGM-H method, author-reported task and transfer experiments, stated outer-loop boundary | Independent reproduction, implementation behavior, or a complete editable-envelope result |
-| HARP-RSI | Canonical framework | [Recursive loop](../rsi/chapters/recursive-improvement-loop.md), [state notation](../rsi/concepts/system-state-and-notation.md), [evaluation](../rsi/chapters/evaluation-promotion-containment.md) | Candidate/envelope vocabulary and RSI classification rules | DGM-specific empirical results |
-| GODEL-MACHINE | Historical source record | [Harp source registry](../../content/sources/source_registry.tsv) | Identity and theoretical lineage at the admitted claim ceiling | Full proof details beyond the captured record |
-| QD-2016 | Quality-diversity source | [Harp source registry](../../content/sources/source_registry.tsv) | Quality-diversity taxonomy admitted by Harp | That DGM implements a full QD algorithm |
-| FUNSEARCH | Program-search comparison | [Harp source registry](../../content/sources/source_registry.tsv) | Predecessor mechanism and executable-evaluator comparison | Self-referential coding-agent improvement |
-| ALPHAEVOLVE | Comparison system | [Canonical article](../rsi/systems/alphaevolve.md) | Program evolution against executable evaluators | DGM's agent-lineage mechanism |
-| ADAS | Comparison system | [Canonical article](../rsi/systems/adas.md) | Fixed meta-agent search over agent programs | DGM's evolving modifier claim |
-| STOP | Comparison system | [Canonical article](../rsi/systems/stop.md) | Recursive improver-program optimization | DGM's branching archive result |
+| DGM | Primary paper | [[evidence/weng/text/dgm.txt|Captured text]] and [arXiv](https://arxiv.org/abs/2505.22954) | Paper method, author-reported experiments, appendices, limitations | Independent reproduction or released-code correctness |
+| DGM-REPO | Pinned implementation | [[evidence/implementations/dgm/snapshot/README|Snapshot root]] | Source behavior at commit `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2` | Historical experiment identity, runtime safety, benchmark reproduction |
+| HARP-DGM | Canonical synthesis | [[knowledge/rsi/systems/dgm|DGM system article]] | Harp's maintained claim boundary and paper/code reconciliation | New primary evidence |
+| HYPERAGENTS | Primary paper | [[evidence/weng/text/hyperagents.txt|Captured text]] and [arXiv](https://arxiv.org/abs/2603.19461) | DGM-H method, author-reported task and transfer experiments, stated outer-loop boundary | Independent reproduction, implementation behavior, or a complete editable-envelope result |
+| HARP-RSI | Canonical framework | [[knowledge/rsi/chapters/recursive-improvement-loop|Recursive loop]], [[knowledge/rsi/concepts/system-state-and-notation|state notation]], [[knowledge/rsi/chapters/evaluation-promotion-containment|evaluation]] | Candidate/envelope vocabulary and RSI classification rules | DGM-specific empirical results |
+| GODEL-MACHINE | Historical source record | [[content/sources/source_registry.tsv|Harp source registry]] | Identity and theoretical lineage at the admitted claim ceiling | Full proof details beyond the captured record |
+| QD-2016 | Quality-diversity source | [[content/sources/source_registry.tsv|Harp source registry]] | Quality-diversity taxonomy admitted by Harp | That DGM implements a full QD algorithm |
+| FUNSEARCH | Program-search comparison | [[content/sources/source_registry.tsv|Harp source registry]] | Predecessor mechanism and executable-evaluator comparison | Self-referential coding-agent improvement |
+| ALPHAEVOLVE | Comparison system | [[knowledge/rsi/systems/alphaevolve|Canonical article]] | Program evolution against executable evaluators | DGM's agent-lineage mechanism |
+| ADAS | Comparison system | [[knowledge/rsi/systems/adas|Canonical article]] | Fixed meta-agent search over agent programs | DGM's evolving modifier claim |
+| STOP | Comparison system | [[knowledge/rsi/systems/stop|Canonical article]] | Recursive improver-program optimization | DGM's branching archive result |
 
 ## DGM: ICLR 2026 paper
 
 - Class: `primary paper`
 - Title: Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents
-- Artifact: [Captured paper text](../../evidence/weng/text/dgm.txt)
+- Artifact: [[evidence/weng/text/dgm.txt|Captured paper text]]
 - Public page: [ICLR 2026 poster](https://iclr.cc/virtual/2026/poster/10007327)
 - Stability: `pinned`
 - Immutable identity: `arXiv:2505.22954v3`
-- Digest record: [DGM acquisition receipt](../../evidence/weng/receipts/dgm.tsv)
+- Digest record: [[evidence/weng/receipts/dgm.tsv|DGM acquisition receipt]]
 - Publication status: The captured v3 text identifies the work as an ICLR 2026
   conference paper.
 - Semantic locators: abstract, numbered sections, figures, tables, algorithms,
@@ -54,12 +54,12 @@ canonical: ../../content/sources/source_registry.tsv
 
 - Class: `pinned implementation`
 - Title: Released DGM implementation snapshot
-- Artifact: [Snapshot entrypoint](../../evidence/implementations/dgm/snapshot/README.md)
+- Artifact: [[evidence/implementations/dgm/snapshot/README|Snapshot entrypoint]]
 - Stability: `pinned`
 - Immutable identity: `git:a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`
-- Revision record: [REVISION](../../evidence/implementations/dgm/REVISION)
-- Remote record: [REMOTE](../../evidence/implementations/dgm/REMOTE)
-- License record: [LICENSE_STATUS](../../evidence/implementations/dgm/LICENSE_STATUS)
+- Revision record: [[evidence/implementations/dgm/REVISION|REVISION]]
+- Remote record: [[evidence/implementations/dgm/REMOTE|REMOTE]]
+- License record: [[evidence/implementations/dgm/LICENSE_STATUS|LICENSE_STATUS]]
 - Semantic locators: captured file path plus physical line anchor.
 - Can prove: Source behavior of the captured files at the pinned revision.
 - Cannot prove: Historical experiment identity, runtime behavior not executed
@@ -70,11 +70,11 @@ canonical: ../../content/sources/source_registry.tsv
 
 - Class: `primary paper`
 - Title: Hyperagents
-- Artifact: [Captured paper text](../../evidence/weng/text/hyperagents.txt)
+- Artifact: [[evidence/weng/text/hyperagents.txt|Captured paper text]]
 - Public page: [arXiv abstract](https://arxiv.org/abs/2603.19461)
 - Stability: `pinned`
 - Immutable identity: `arXiv:2603.19461v1`
-- Digest record: [Hyperagents acquisition receipt](../../evidence/weng/receipts/hyperagents.tsv)
+- Digest record: [[evidence/weng/receipts/hyperagents.tsv|Hyperagents acquisition receipt]]
 - Publication status: The captured version is a preprint; a peer-reviewed venue
   has not been verified in this packet.
 - Semantic locators: abstract, §3–§6, Appendix E.5, and the conclusion.
@@ -89,7 +89,7 @@ canonical: ../../content/sources/source_registry.tsv
 
 - Class: `canonical Harp synthesis`
 - Title: DGM system article
-- Artifact: [Canonical DGM article](../rsi/systems/dgm.md)
+- Artifact: [[knowledge/rsi/systems/dgm|Canonical DGM article]]
 - Stability: `repository versioned`
 - Immutable identity: The Harp commit containing the cited statement.
 - Semantic locators: article heading.
@@ -100,7 +100,7 @@ canonical: ../../content/sources/source_registry.tsv
 
 - Class: `canonical Harp framework`
 - Title: Recursive-improvement and evaluation framework
-- Artifact: [Recursive improvement loop](../rsi/chapters/recursive-improvement-loop.md)
+- Artifact: [[knowledge/rsi/chapters/recursive-improvement-loop|Recursive improvement loop]]
 - Stability: `repository versioned`
 - Immutable identity: The Harp commit containing the cited framework.
 - Semantic locators: chapter or concept heading.
@@ -115,20 +115,20 @@ canonical: ../../content/sources/source_registry.tsv
 - arXiv ID: `2505.22954`
 - captured version: `v3`
 - capture digest and registry status:
-  [canonical source registry](../../content/sources/source_registry.tsv)
+  [[content/sources/source_registry.tsv|canonical source registry]]
 - paper text:
-  [evidence/weng/text/dgm.txt](../../evidence/weng/text/dgm.txt)
+  [[evidence/weng/text/dgm.txt|evidence/weng/text/dgm.txt]]
 
 ### Repository
 
 - remote: `https://github.com/jennyzzt/dgm.git`
 - revision: `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`
 - revision receipt:
-  [evidence/implementations/dgm/REVISION](../../evidence/implementations/dgm/REVISION)
+  [[evidence/implementations/dgm/REVISION|evidence/implementations/dgm/REVISION]]
 - file digest manifest:
-  [implementation manifest](../../evidence/implementations/manifest.tsv)
+  [[evidence/implementations/manifest.tsv|implementation manifest]]
 - upstream license:
-  [DGM LICENSE](../../evidence/implementations/dgm/LICENSE)
+  [[evidence/implementations/dgm/LICENSE|DGM LICENSE]]
 
 ## Primary paper locators
 
@@ -157,18 +157,18 @@ canonical: ../../content/sources/source_registry.tsv
 
 | Topic | Snapshot locator |
 |---|---|
-| Archive initialization and parent selection | [DGM_outer.py](../../evidence/implementations/dgm/snapshot/DGM_outer.py) |
-| Self-modification container and evaluation handoff | [self_improve_step.py](../../evidence/implementations/dgm/snapshot/self_improve_step.py) |
-| Seed SWE-bench coding agent | [coding_agent.py](../../evidence/implementations/dgm/snapshot/coding_agent.py) |
-| Seed Polyglot coding agent | [coding_agent_polyglot.py](../../evidence/implementations/dgm/snapshot/coding_agent_polyglot.py) |
-| Model and tool loop | [llm_withtools.py](../../evidence/implementations/dgm/snapshot/llm_withtools.py) |
-| Improvement diagnosis prompt | [self_improvement_prompt.py](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py) |
-| Viability and patch lineage | [evo_utils.py](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py) |
-| Seed editor | [edit.py](../../evidence/implementations/dgm/snapshot/tools/edit.py) |
-| Seed shell | [bash.py](../../evidence/implementations/dgm/snapshot/tools/bash.py) |
-| SWE-bench execution | [swe_bench/harness.py](../../evidence/implementations/dgm/snapshot/swe_bench/harness.py) |
-| Test-edit filtering and reports | [swe_bench/report.py](../../evidence/implementations/dgm/snapshot/swe_bench/report.py) |
-| Polyglot execution | [polyglot/harness.py](../../evidence/implementations/dgm/snapshot/polyglot/harness.py) |
+| Archive initialization and parent selection | [[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]] |
+| Self-modification container and evaluation handoff | [[evidence/implementations/dgm/snapshot/self_improve_step.py|self_improve_step.py]] |
+| Seed SWE-bench coding agent | [[evidence/implementations/dgm/snapshot/coding_agent.py|coding_agent.py]] |
+| Seed Polyglot coding agent | [[evidence/implementations/dgm/snapshot/coding_agent_polyglot.py|coding_agent_polyglot.py]] |
+| Model and tool loop | [[evidence/implementations/dgm/snapshot/llm_withtools.py|llm_withtools.py]] |
+| Improvement diagnosis prompt | [[evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py|self_improvement_prompt.py]] |
+| Viability and patch lineage | [[evidence/implementations/dgm/snapshot/utils/evo_utils.py|evo_utils.py]] |
+| Seed editor | [[evidence/implementations/dgm/snapshot/tools/edit.py|edit.py]] |
+| Seed shell | [[evidence/implementations/dgm/snapshot/tools/bash.py|bash.py]] |
+| SWE-bench execution | [[evidence/implementations/dgm/snapshot/swe_bench/harness.py|swe_bench/harness.py]] |
+| Test-edit filtering and reports | [[evidence/implementations/dgm/snapshot/swe_bench/report.py|swe_bench/report.py]] |
+| Polyglot execution | [[evidence/implementations/dgm/snapshot/polyglot/harness.py|polyglot/harness.py]] |
 
 ## Evidence rules for this packet
 
@@ -181,7 +181,7 @@ canonical: ../../content/sources/source_registry.tsv
    silently choosing one.
 6. The packet does not treat its own prose as evidence.
 7. Main prose links to the exact heading-based entry in
-   [the claim ledger](claim_evidence_crosswalk.md); the ledger then links to the
+   [[knowledge/darwin_godel_machine/claim_evidence_crosswalk|the claim ledger]]; the ledger then links to the
    underlying paper or source artifact.
 
 ## Reproduction status
@@ -195,4 +195,4 @@ Harp has not:
 - independently scored the final agents; or
 - audited Docker isolation under hostile generated code.
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

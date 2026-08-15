@@ -3,7 +3,8 @@
 ## Main document
 
 - Does each material claim have a stable claim ID?
-- Does each claim ID link to the exact ledger heading?
+- Does each claim marker use a root-qualified wiki link to the exact ledger
+  heading, with the evidence class and ID as its alias?
 - Does each claim block contain exactly one evidence class?
 - Are `EVIDENCE`, `SOURCE CLAIM`, `INFERENCE`, and `MISSING` used correctly?
 - Are source-backed premises separated from interpretation?
@@ -21,8 +22,10 @@
   `quote` or `paraphrase`?
 - Is source stability recorded separately as `pinned` or `dated observation`?
 - Does each dated observation include an observation date?
-- Is every source identity clickable?
+- Is every source identity a root-qualified wiki link?
 - Is every locator clickable and semantically precise?
+- Does every exact raw-evidence `#L...` locator use the dual form: native
+  artifact wiki link plus the original conventional Markdown line link?
 - Is scope explicit?
 - Is reproduction status explicit?
 - Does confidence include a concrete basis?
@@ -64,8 +67,10 @@
 
 ## Final verification
 
-- Open every main claim link.
-- Open every source link from the ledger.
+- Open every main claim wiki link.
+- Open every source/artifact wiki link from the ledger.
+- Verify every exact raw-evidence line locator retains its conventional
+  Markdown `#L...` suffix.
 - Verify local anchors resolve.
 - Check claim IDs for duplicates.
 - Check ledger entries for required fields.

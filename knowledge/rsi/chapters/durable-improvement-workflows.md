@@ -45,8 +45,8 @@ Autoresearch is a compact example: edit one training program, run a fixed-durati
 <summary>Original sources for this mechanism</summary>
 
 - Karpathy Autoresearch, pinned `README.md` and `program.md` at commit `228791fb499afffb54b46200aca536f79142f117`, defines the edit, train, measure, and keep-or-discard loop and its bounded files: [upstream tree](https://github.com/karpathy/autoresearch/tree/228791fb499afffb54b46200aca536f79142f117).
-- [Weng reader companion, durable execution section](../rsi_harness_by_lil_log_deconstructed.md). It compares the source loop with pinned Pi, Hermes, and Codex persistence and lineage mechanisms.
-- [Harness engineering](harness-engineering.md) defines persistence, tool authority, and recovery boundaries used here.
+- [[knowledge/rsi/rsi_harness_by_lil_log_deconstructed|Weng reader companion, durable execution section]]. It compares the source loop with pinned Pi, Hermes, and Codex persistence and lineage mechanisms.
+- [[knowledge/rsi/chapters/harness-engineering|Harness engineering]] defines persistence, tool authority, and recovery boundaries used here.
 
 </details>
 
@@ -116,7 +116,7 @@ Crash injection should interrupt every boundary between state persistence and si
 <summary>Reference records and operational metadata</summary>
 
 - The captured public implementations establish bounded persistence and lineage mechanisms, not one complete durable RSI runner.
-- The pinned Autoresearch source identity and claim ceiling are in [the source registry](../source_registry.md).
+- The pinned Autoresearch source identity and claim ceiling are in [[knowledge/rsi/source_registry|the source registry]].
 - A production run receipt must name the actual workflow engine, worker revision, schema, and external job identities.
 
 </details>

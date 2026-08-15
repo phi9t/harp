@@ -54,7 +54,7 @@ Strong internalization has positive `IG` on held-out tasks and reduced but not n
 <summary>Original sources for this mechanism</summary>
 
 - "Harness Updating Is Not Harness Benefit," §§3.1–3.3 and §4, separates the ability to update a harness from a model's ability to activate and follow the update: [arXiv:2605.30621](https://arxiv.org/abs/2605.30621).
-- Recursive Language Models, §§2–4, and "Language model harnesses are compositional generalizers," sections "Post-training setup" and "Results," provide a case where training inside a harness changes author-reported transfer behavior; the [mechanism anchor](../recursive_language_models_compositional_generalization.md) keeps paper, blog, and code evidence separate: [arXiv:2512.24601v3](https://arxiv.org/abs/2512.24601), [author technical blog](https://alexzhang13.github.io/blog/2026/rlm-harness-generalization/).
+- Recursive Language Models, §§2–4, and "Language model harnesses are compositional generalizers," sections "Post-training setup" and "Results," provide a case where training inside a harness changes author-reported transfer behavior; the [[knowledge/rsi/recursive_language_models_compositional_generalization|mechanism anchor]] keeps paper, blog, and code evidence separate: [arXiv:2512.24601v3](https://arxiv.org/abs/2512.24601), [author technical blog](https://alexzhang13.github.io/blog/2026/rlm-harness-generalization/).
 - ACE, §§2–4; MCE, §§2–3; and Meta-Harness, §§2–4, describe external context and skill evolution: [ICLR 2026 poster 10008343](https://iclr.cc/virtual/2026/poster/10008343), [arXiv:2601.21557](https://arxiv.org/abs/2601.21557), [arXiv:2603.28052v1](https://arxiv.org/abs/2603.28052).
 - Continual Harness, §§3.2–3.4, describes DAgger-style relabeling and process-reward training under evolving harness state: [arXiv:2605.09998v1](https://arxiv.org/abs/2605.09998).
 
@@ -107,7 +107,7 @@ The internalization claim weakens if `Score(C)` does not improve over `Score(A)`
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- Exact paper identities, access states, and claim ceilings are in [the source registry](../source_registry.md).
+- Exact paper identities, access states, and claim ceilings are in [[knowledge/rsi/source_registry|the source registry]].
 - Harp inspected narrow pinned full and minimal code snapshots but did not run the
   RLM training or benchmark recipe.
 - Internalization remains a mechanism claim unless a complete four-way receipt is available.

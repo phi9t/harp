@@ -67,7 +67,7 @@ Search rounds inside step 1 are not generations. Retries inside step 3 are not g
 - STOP, Abstract, §2, and §6 "Limitations," defines recursive scaffolding optimization with fixed model weights and explicitly limits the full-RSI claim: [arXiv:2310.02304v3](https://arxiv.org/abs/2310.02304).
 - Darwin Gödel Machine, §§1–3 and Figure 2, defines empirically selected coding-agent lineage and an archive of variants: [arXiv:2505.22954v3](https://arxiv.org/abs/2505.22954).
 - Schmidhuber, "Gödel Machines," publisher abstract and chapter summary, supplies the contrasting proof-certified self-rewrite formulation: [DOI:10.1007/978-3-540-68677-4_7](https://doi.org/10.1007/978-3-540-68677-4_7). The packet contains only the publisher summary, so it does not support details beyond that summary.
-- [System state and notation](../concepts/system-state-and-notation.md) defines the candidate and protected-envelope symbols used here.
+- [[knowledge/rsi/concepts/system-state-and-notation|System state and notation]] defines the candidate and protected-envelope symbols used here.
 
 </details>
 
@@ -113,8 +113,8 @@ The recursive interpretation weakens if a matched experiment finds `RGₜ ≤ 0`
 <details>
 <summary>Reference records and operational metadata</summary>
 
-- Full retrieval dates, digests, access states, and claim ceilings are in [the RSI source registry](../source_registry.md).
-- The bounded closure and stop rule are in [the closure audit](../bounded_transitive_closure.md).
-- Exact experiment receipts remain missing; [the missing-evidence ledger](../missing_evidence.md) tracks that gap.
+- Full retrieval dates, digests, access states, and claim ceilings are in [[knowledge/rsi/source_registry|the RSI source registry]].
+- The bounded closure and stop rule are in [[knowledge/rsi/bounded_transitive_closure|the closure audit]].
+- Exact experiment receipts remain missing; [[knowledge/rsi/missing_evidence|the missing-evidence ledger]] tracks that gap.
 
 </details>

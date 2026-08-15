@@ -20,7 +20,7 @@ next-cycle gain.
 
 ## Explain
 
-[Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md)
+[[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]]
 shows why proposer recursion, acceptance, and successor measurement are
 separate contracts.
 
@@ -32,7 +32,7 @@ root-tree budget.
 
 ## Transfer
 
-Fork [STOP](../../../content/diagnostics/cases/stop.json),
-[Self-Harness](../../../content/diagnostics/cases/self-harness.json), or
-[AHE](../../../content/diagnostics/cases/ahe.json) and inspect which flags change without
+Fork [[content/diagnostics/cases/stop.json|STOP]],
+[[content/diagnostics/cases/self-harness.json|Self-Harness]], or
+[[content/diagnostics/cases/ahe.json|AHE]] and inspect which flags change without
 raising the primary claim.

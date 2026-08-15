@@ -161,4 +161,4 @@ If `harp repository verify` reports a stale payload digest, update
 `docs/import-receipt.md` only after every other tracked file is settled. Rerun
 the full verification gate afterward.
 
-Back to the [DarwinX index](darwinx_index.md).
+Back to the [[knowledge/darwinx/darwinx_index|DarwinX index]].

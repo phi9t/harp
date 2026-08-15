@@ -20,7 +20,7 @@ Better current-task quality alone does not establish persistence.
 ## Explain
 
 The decisive boundary is whether an artifact survives the episode and changes a
-later trajectory. [Improvement types](../concepts/improvement-types.md)
+later trajectory. [[knowledge/rsi/concepts/improvement-types|Improvement types]]
 separates current output, persistent adaptation, harness change, and successor
 gain.
 
@@ -32,6 +32,6 @@ claim.
 
 ## Transfer
 
-Fork either [Self-Refine](../../../content/diagnostics/cases/self-refine.json) or
-[ACE](../../../content/diagnostics/cases/ace.json) into the diagnostic workbench and change
+Fork either [[content/diagnostics/cases/self-refine.json|Self-Refine]] or
+[[content/diagnostics/cases/ace.json|ACE]] into the diagnostic workbench and change
 the persistence scope.

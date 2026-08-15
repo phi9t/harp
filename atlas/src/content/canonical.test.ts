@@ -33,6 +33,16 @@ const chapterPath = (id: string): string =>
   `knowledge/rsi/chapters/${id}.md`;
 
 const companionId = (id: string): string => `weng-${id}`;
+const documentMetadata = (id: string) => ({
+  id,
+  kind: "technical-deep-dive",
+  status: "active",
+  tags: ["test"],
+  confidence: "high",
+  mode: null,
+  source_ids: [],
+  coverage_keys: [],
+});
 
 const systemIds: readonly string[] = [
   "aflow",
@@ -126,6 +136,11 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
     {
+      route_id: "verified-coevolution",
+      label: "Verified coevolution",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
+    {
       route_id: "agentic-engineering",
       label: "Agentic engineering",
       canonical_markdown_path: chapterPath(chapterIds[0]),
@@ -133,6 +148,11 @@ const validV5Fixture: unknown = {
     {
       route_id: "crouzeix-conjecture",
       label: "Crouzeix",
+      canonical_markdown_path: chapterPath(chapterIds[0]),
+    },
+    {
+      route_id: "knowledge",
+      label: "Knowledge",
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
   ],
@@ -144,6 +164,7 @@ const validV5Fixture: unknown = {
       markdown_sha256: digest,
       html_sha256: digest,
       html: `<h1>${id}</h1>`,
+      metadata: documentMetadata(id),
     })),
     ...wengSectionIds.map((id, index) => ({
       concept_id: companionId(id),
@@ -153,6 +174,7 @@ const validV5Fixture: unknown = {
       markdown_sha256: digest,
       html_sha256: digest,
       html: `<h1>${id}</h1>`,
+      metadata: documentMetadata(companionId(id)),
     })),
   ],
   systems: systemIds.map((id, index) => {
@@ -203,6 +225,28 @@ const validV5Fixture: unknown = {
 };
 
 describe("canonical corpus boundary", () => {
+  it("rejects invalid document metadata confidence", () => {
+    const source = structuredClone(validV5Fixture);
+    if (
+      typeof source !== "object"
+      || source === null
+      || !("documents" in source)
+      || !Array.isArray(source.documents)
+      || typeof source.documents[0] !== "object"
+      || source.documents[0] === null
+      || !("metadata" in source.documents[0])
+      || typeof source.documents[0].metadata !== "object"
+      || source.documents[0].metadata === null
+    ) {
+      throw new Error("Test fixture has invalid document metadata");
+    }
+    source.documents[0].metadata.confidence = "certain";
+
+    expect(() => parseCorpusForTest(source)).toThrow(
+      "Document 0 metadata confidence",
+    );
+  });
+
   it("rejects a Weng section with an unknown system", () => {
     const source = structuredClone(validV5Fixture);
     if (

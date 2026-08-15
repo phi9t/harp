@@ -7,7 +7,8 @@ record.
 
 - Class: `primary paper`
 - Title: Example research paper
-- Artifact: [Local paper capture](../../evidence/weng/text/dgm.txt)
+- Artifact: [[evidence/weng/text/dgm.txt|Local paper capture]]
+  ([open conventional path](../../evidence/weng/text/dgm.txt))
 - Stability: `pinned`
 - Immutable identity: `arXiv:2505.22954v3`
 - Semantic locators: section, appendix, table, figure, and algorithm.
@@ -18,7 +19,8 @@ record.
 
 - Class: `pinned implementation`
 - Title: Example released implementation
-- Artifact: [Local implementation snapshot](../../evidence/implementations/dgm/snapshot/README.md)
+- Artifact: [[evidence/implementations/dgm/snapshot/README.md|Local implementation snapshot]]
+  ([open conventional path](../../evidence/implementations/dgm/snapshot/README.md))
 - Stability: `pinned`
 - Immutable identity: `git:a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`
 - Semantic locators: file paths and line anchors.
@@ -30,7 +32,8 @@ record.
 
 - Class: `mutable first-party page`
 - Title: Example mutable results page
-- Artifact: [Local dated capture](../../evidence/weng/metadata/dgm-arxiv.html)
+- Artifact: [[evidence/weng/metadata/dgm-arxiv.html|Local dated capture]]
+  ([open conventional path](../../evidence/weng/metadata/dgm-arxiv.html))
 - Stability: `dated observation`
 - Observed: `2026-08-08`
 - Semantic locators: `Abstract page > Description`.

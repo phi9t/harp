@@ -8,8 +8,9 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
 - Statement: The released selector reads `overall_performance`.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Example implementation registry entry](source-registry-template.md#example-repo-released-dgm-implementation)
-- Locator: [`DGM_outer.py:63`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63)
+- Source: [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|Example implementation registry entry]]
+- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]]
+  ([exact line 63](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63))
 - Scope: Example pinned implementation scope.
 - Reproduction: Source inspected, not executed.
 - Confidence: `high`
@@ -22,9 +23,10 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
 - Statement: The authors report 50.0% on a 200-task benchmark subset.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Example paper registry entry](source-registry-template.md#example-paper-darwin-godel-machine-paper)
-- Locator: [DGM paper 200-task accounting, line 317](../../evidence/weng/text/dgm.txt#L317)
-  and [reported 50.0% result, line 346](../../evidence/weng/text/dgm.txt#L346)
+- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper registry entry]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 317](../../evidence/weng/text/dgm.txt#L317)) and
+  ([exact line 346](../../evidence/weng/text/dgm.txt#L346))
 - Scope: 200-task subset, named model and metric from the source.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -37,10 +39,12 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
 - Statement: The current corpus supports harness improvement only; it does not
   establish that accepted children become better producers of later
   improvements.
-- Source: [EX-001](#ex-001-released-selector-reads-the-shallow-score) and
-  [EX-002](#ex-002-authors-report-the-benchmark-result)
-- Locator: [`DGM_outer.py:63`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63)
-  and [DGM paper results, line 346](../../evidence/weng/text/dgm.txt#L346)
+- Source: [[#EX-001: Released selector reads the shallow score|EX-001]] and
+  [[#EX-002: Authors report the benchmark result|EX-002]]
+- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|DGM_outer.py]]
+  ([exact line 63](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L63)) and
+  [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 346](../../evidence/weng/text/dgm.txt#L346))
 - Scope: The inspected mechanism and reported experiment only.
 - Reproduction: Source results not independently reproduced here.
 - Confidence: `medium`
@@ -56,10 +60,12 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
 - Class: `MISSING`
 - Statement: The inspected corpus contains no matched parent-versus-child
   next-cycle experiment.
-- Source: [Example paper registry entry](source-registry-template.md#example-paper-darwin-godel-machine-paper)
-  and [example implementation registry entry](source-registry-template.md#example-repo-released-dgm-implementation)
-- Locator: [DGM paper method, lines 120-138](../../evidence/weng/text/dgm.txt#L120)
-  and [released implementation inventory](../../evidence/implementations/dgm/snapshot/README.md#L65)
+- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper registry entry]]
+  and [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|example implementation registry entry]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 120](../../evidence/weng/text/dgm.txt#L120)) and
+  [[evidence/implementations/dgm/snapshot/README.md|released implementation inventory]]
+  ([exact line 65](../../evidence/implementations/dgm/snapshot/README.md#L65))
 - Scope: Current inspected corpus.
 - Reproduction: Not applicable.
 - Confidence: `high`
@@ -75,8 +81,9 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
   validates each change using coding benchmarks."
 - Mode: `quote`
 - Source stability: `pinned`
-- Source: [Example implementation registry entry](source-registry-template.md#example-repo-released-dgm-implementation)
-- Locator: [`README.md:14`](../../evidence/implementations/dgm/snapshot/README.md#L14)
+- Source: [[source-registry-template#EXAMPLE-REPO: Released DGM implementation|Example implementation registry entry]]
+- Locator: [[evidence/implementations/dgm/snapshot/README.md|README.md]]
+  ([exact line 14](../../evidence/implementations/dgm/snapshot/README.md#L14))
 - Scope: Wording in the pinned repository README.
 - Reproduction: Source wording inspected; behavior not independently reproduced.
 - Confidence: `high`
@@ -93,8 +100,10 @@ Each `##` heading is a stable link target. Keep IDs stable after publication.
 - Source stability: `pinned`
 - Source: [Example paper registry entry](source-registry-template.md#example-paper-darwin-godel-machine-paper) and
   [example implementation registry entry](source-registry-template.md#example-repo-released-dgm-implementation)
-- Locator: [DGM paper abstract, lines 29-31](../../evidence/weng/text/dgm.txt#L29) and
-  [`README.md:14`](../../evidence/implementations/dgm/snapshot/README.md#L14)
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 29](../../evidence/weng/text/dgm.txt#L29)) and
+  [[evidence/implementations/dgm/snapshot/README.md|README.md]]
+  ([exact line 14](../../evidence/implementations/dgm/snapshot/README.md#L14))
 - Scope: The shared bounded mechanism description; either source independently
   supports the statement.
 - Reproduction: Source content inspected; system behavior not independently

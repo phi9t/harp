@@ -17,7 +17,7 @@ differences.
 
 ## One comparison contract
 
-**[INFERENCE - DX-031](claim_evidence_ledger.md#dx-031-meta-harness-dgm-harnessx-and-darwinx-solve-different-parts-of-harness-search).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-031: Meta-Harness, DGM, HarnessX, and DarwinX solve different parts of harness search|INFERENCE - DX-031]].**
 The table below uses the same questions for all four systems.
 
 | Question | Meta-Harness | DGM | HarnessX | DarwinX |
@@ -60,7 +60,7 @@ is a compressed interface. Meta-Harness deliberately avoids one fixed
 compression. Combining them requires a policy for what historical evidence the
 proposer may read.
 
-The [Meta-Harness deep dive](../meta_harness/meta_harness_deep_dive.md) shows
+The [[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness deep dive]] shows
 why source compatibility matters. In Harp's local proposal experiment, three
 schema-valid candidates all failed the upstream import contract. A DarwinX
 selector cannot rescue candidates that the real consumer cannot load.
@@ -87,7 +87,7 @@ parent and child as producers of the next accepted generation. DarwinX does not
 compare its population selector with a matched single-lineage optimizer.
 Current-task fitness is not the same as future improvement productivity.
 
-The [DGM packet](../darwin_godel_machine/darwin_godel_machine_index.md)
+The [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM packet]]
 contains the source-level boundary. DGM's released implementation leaves
 evaluation, parent selection, diagnosis, archive authority, and foundation
 models outside the editable child.
@@ -121,7 +121,7 @@ HarnessX also proposes model-harness co-evolution through cross-harness GRPO.
 It groups trajectories by task across harness versions and trains the model
 from the same replay buffer used for harness adaptation.
 
-**[SOURCE CLAIM - DX-032](claim_evidence_ledger.md#dx-032-harness-to-weight-distillation-is-proposed-but-not-evaluated).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-032: Harness-to-weight distillation is proposed but not evaluated|SOURCE CLAIM - DX-032]].**
 DarwinX proposes a more conservative sequence: alternate frozen-harness and
 frozen-model phases, then rescore the archive after weight changes.
 
@@ -234,5 +234,5 @@ If the experiment cannot afford repeated protected evaluation, DarwinX's
 population machinery is the wrong first step. Improve the evaluator and
 candidate contract before widening the archive.
 
-Continue with the [successor experiment](05_successor_experiment.md) or return
-to the [DarwinX index](darwinx_index.md).
+Continue with the [[knowledge/darwinx/05_successor_experiment|successor experiment]] or return
+to the [[knowledge/darwinx/darwinx_index|DarwinX index]].

@@ -25,7 +25,7 @@ that controls what experience to store, retrieve, transform, and present. A
 coding-agent proposer navigates a filesystem containing previous harness code,
 execution traces, and scores, then writes another candidate.
 
-[Open the evidence-tiered Meta-Harness deep dive](../../meta_harness/meta_harness_deep_dive.md)
+[[knowledge/meta_harness/meta_harness_deep_dive|Open the evidence-tiered Meta-Harness deep dive]]
 for the paper mechanism, dated project-page claims, pinned text-classification
 and TerminalBench-2 implementations, experimental Harbor controller, local TRAE
 proposal experiment, failure modes, and claim ceiling.
@@ -61,9 +61,9 @@ harnesses under matched conditions.
 
 ## Reading routes
 
-- [Benchmark field guide](../../harness_benchmarks/harness_benchmark_field_guide.md)
-- [Evaluator-integrity benchmark suite](../../evaluator_integrity/evaluator_integrity_benchmark_suite.md)
-- [Meta-Harness evidence-tiered deep dive](../../meta_harness/meta_harness_deep_dive.md)
-- [Context engineering deep dive](../context_engineering_deep_dive.md)
-- [Searching for better harnesses](../chapters/harness-search.md)
+- [[knowledge/harness_benchmarks/harness_benchmark_field_guide|Benchmark field guide]]
+- [[knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite|Evaluator-integrity benchmark suite]]
+- [[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness evidence-tiered deep dive]]
+- [[knowledge/rsi/context_engineering_deep_dive|Context engineering deep dive]]
+- [[knowledge/rsi/chapters/harness-search|Searching for better harnesses]]
 - [Original paper](https://arxiv.org/abs/2603.28052)

@@ -4,7 +4,7 @@
 
 Read §4.1 closely. It constructs an evaluator in the language being evaluated, then factors repeated syntactic work into an analysis stage. Keep four objects separate while reading: source characters, expression data, runtime values, and analyzed execution procedures.
 
-- Required: [§4.1, printed pp. 492–540 / PDF pp. 520–568](../../../../../evidence/sicp/sicp.pdf#page=520).
+- Required: [[evidence/sicp/sicp.pdf#page=520|§4.1, printed pp. 492–540 / PDF pp. 520–568]].
 - Optional: none assigned.
 - Skim: none assigned. The complete §4.1 range is required because the
   evaluator's syntax, environment, procedure, and analysis boundaries depend
@@ -29,7 +29,7 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 1 — Reading crosses from characters to data
 
-**CLAIM.** `read` maps source characters to expression data before the evaluator sees the program. In the driver loop, the next complete expression returned by `read` is passed with the global environment to `eval`. [§4.1.4 note 18, printed p. 520 / PDF p. 548](../../../../../evidence/sicp/sicp.pdf#page=548)
+**CLAIM.** `read` maps source characters to expression data before the evaluator sees the program. In the driver loop, the next complete expression returned by `read` is passed with the global environment to `eval`. [[evidence/sicp/sicp.pdf#page=548|§4.1.4 note 18, printed p. 520 / PDF p. 548]]
 
 **EVIDENCE.** The note explains that typing `(+ 23 x)` yields a list containing the symbol `+`, the number `23`, and the symbol `x`; abbreviated quotation is likewise expanded into list structure by the reader.
 
@@ -39,7 +39,7 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 2 — Syntax operations define expression representation
 
-**CLAIM.** Syntax predicates and selectors define the representation that `eval` consumes: they recognize self-evaluating expressions, variables, quotations, assignments, definitions, conditionals, lambdas, sequences, and applications, then expose each form's parts. [§4.1.2, printed pp. 501–507 / PDF pp. 529–535](../../../../../evidence/sicp/sicp.pdf#page=529)
+**CLAIM.** Syntax predicates and selectors define the representation that `eval` consumes: they recognize self-evaluating expressions, variables, quotations, assignments, definitions, conditionals, lambdas, sequences, and applications, then expose each form's parts. [[evidence/sicp/sicp.pdf#page=529|§4.1.2, printed pp. 501–507 / PDF pp. 529–535]]
 
 **EVIDENCE.** The evaluator calls operations such as `variable?`, `quoted?`, `assignment?`, `lambda?`, `application?`, `operator`, and `operands` rather than scattering list access throughout its control logic.
 
@@ -49,7 +49,7 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 3 — Eval maps expression and environment to value
 
-**CLAIM.** `eval` maps an expression together with an environment to a runtime value. It classifies the expression, performs the form-specific rule, and recursively evaluates the subexpressions that rule requires. [§§4.1–4.1.1, printed pp. 492–498 / PDF pp. 520–526](../../../../../evidence/sicp/sicp.pdf#page=520)
+**CLAIM.** `eval` maps an expression together with an environment to a runtime value. It classifies the expression, performs the form-specific rule, and recursively evaluates the subexpressions that rule requires. [[evidence/sicp/sicp.pdf#page=520|§§4.1–4.1.1, printed pp. 492–498 / PDF pp. 520–526]]
 
 **EVIDENCE.** A variable triggers environment lookup, a quotation returns its datum, a conditional evaluates its predicate and only the selected branch, a lambda creates a procedure value, and an ordinary application evaluates its operator and operands.
 
@@ -59,7 +59,7 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 4 — Apply consumes values, not syntax
 
-**CLAIM.** `apply` consumes a procedure value and already-evaluated argument values. For an ordinary combination, `eval` first evaluates the operator and operands and only then transfers those results to `apply`. [§4.1.1, printed pp. 497–498 / PDF pp. 525–526](../../../../../evidence/sicp/sicp.pdf#page=525)
+**CLAIM.** `apply` consumes a procedure value and already-evaluated argument values. For an ordinary combination, `eval` first evaluates the operator and operands and only then transfers those results to `apply`. [[evidence/sicp/sicp.pdf#page=525|§4.1.1, printed pp. 497–498 / PDF pp. 525–526]]
 
 **EVIDENCE.** The source's `apply` branches on primitive versus compound procedure values. Its input is not the original application datum: the procedure and argument expressions have crossed the evaluation boundary.
 
@@ -69,7 +69,7 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 5 — Closures save context; primitives cross the host boundary
 
-**CLAIM.** A compound procedure contains its parameters, body, and defining environment. Applying it extends that saved environment with parameter-to-argument bindings and evaluates the body there. Primitive procedures instead cross into operations supplied by the underlying host Lisp. [§4.1.3, printed pp. 512–517 / PDF pp. 540–545](../../../../../evidence/sicp/sicp.pdf#page=540) [§4.1.4, printed pp. 518–520 / PDF pp. 546–548](../../../../../evidence/sicp/sicp.pdf#page=548)
+**CLAIM.** A compound procedure contains its parameters, body, and defining environment. Applying it extends that saved environment with parameter-to-argument bindings and evaluates the body there. Primitive procedures instead cross into operations supplied by the underlying host Lisp. [[evidence/sicp/sicp.pdf#page=540|§4.1.3, printed pp. 512–517 / PDF pp. 540–545]] [[evidence/sicp/sicp.pdf#page=548|§4.1.4, printed pp. 518–520 / PDF pp. 546–548]]
 
 **EVIDENCE.** The compound-procedure representation stores an environment, while primitive objects are installed in the initial environment and dispatched through the host's primitive-application mechanism.
 
@@ -79,13 +79,13 @@ A notation becomes executable only after several boundaries assign it structure,
 
 ### Claim unit 6 — Analyze introduces the genuinely IR-like stage
 
-**CLAIM.** `analyze` consumes an expression datum and produces an execution procedure that later consumes an environment. This separates syntax analysis from environment-dependent execution and avoids repeating the same classification work on every visit. [§4.1.7, printed pp. 534–539 / PDF pp. 562–567](../../../../../evidence/sicp/sicp.pdf#page=562)
+**CLAIM.** `analyze` consumes an expression datum and produces an execution procedure that later consumes an environment. This separates syntax analysis from environment-dependent execution and avoids repeating the same classification work on every visit. [[evidence/sicp/sicp.pdf#page=562|§4.1.7, printed pp. 534–539 / PDF pp. 562–567]]
 
 **EVIDENCE.** Each analyzer recursively analyzes its subexpressions once and combines their execution procedures; the resulting procedure performs lookup, branching, sequencing, or application when given an environment.
 
 **INFERENCE.** `analyze : expression datum → execution procedure` is closer to an IR-producing phase than direct `eval`. The direct evaluator interprets the expression datum; it does not first turn every expression into a separate executable representation.
 
-**MISSING.** The source gives a qualitative cost argument and [Exercise 4.24 requests measurement, printed p. 541 / PDF p. 569](../../../../../evidence/sicp/sicp.pdf#page=569), but no measured speedup or portable performance envelope is established here.
+**MISSING.** The source gives a qualitative cost argument and [[evidence/sicp/sicp.pdf#page=569|Exercise 4.24 requests measurement, printed p. 541 / PDF p. 569]], but no measured speedup or portable performance envelope is established here.
 
 ## Mechanism trace
 
@@ -125,13 +125,13 @@ The result is `11`, not `101`. Using `Fcaller` instead of the closure's saved `G
 
 ## Rust lens
 
-The existing [metacircular evaluator deep dive](../../metacircular_evaluator_deep_dive.md) gives the fuller kernel, representation, cost, and falsification account. The runnable [`labs/sicp-evaluator/` crate](../../../../../labs/sicp-evaluator) is a semantic supplement: it models a Scheme subset's eval/apply cycle, lexical closures, selected special forms, primitive procedures, and observable linear environment lookup in Rust.
+The existing [[knowledge/rsi/sicp/metacircular_evaluator_deep_dive|metacircular evaluator deep dive]] gives the fuller kernel, representation, cost, and falsification account. The runnable [[labs/sicp-evaluator/README|`labs/sicp-evaluator/` crate]] is a semantic supplement: it models a Scheme subset's eval/apply cycle, lexical closures, selected special forms, primitive procedures, and observable linear environment lookup in Rust.
 
 Because Rust is not the language being interpreted, the crate is not metacircular. It also has no analyzed evaluator and no compilation stage, so it cannot demonstrate §4.1.7's execution-procedure split or the compiler path developed later in SICP. Its six tests are useful evidence for the modeled semantic invariants, not evidence that it implements full Scheme.
 
 ## Agent-harness bridge
 
-**EVIDENCE.** In the pinned OpenAI Codex source at commit `a850875a8eb603d18cb14cb2c5e80c930de9bd48`, response-item processing is located at [`codex-rs/core/src/session/turn.rs:149–520`](../../../../../evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/session/turn.rs#L149-L520), and tool-call normalization, lookup, and dispatch through `ToolRouter` are located at [`codex-rs/core/src/tools/router.rs:31–289`](../../../../../evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/tools/router.rs#L31-L289).
+**EVIDENCE.** In the pinned OpenAI Codex source at commit `a850875a8eb603d18cb14cb2c5e80c930de9bd48`, response-item processing is located at [[evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/session/turn.rs|`codex-rs/core/src/session/turn.rs:149–520`]] ([exact lines 149–520](../../../../../evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/session/turn.rs#L149-L520)), and tool-call normalization, lookup, and dispatch through `ToolRouter` are located at [[evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/tools/router.rs|`codex-rs/core/src/tools/router.rs:31–289`]] ([exact lines 31–289](../../../../../evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/tools/router.rs#L31-L289)).
 
 **INFERENCE (course-design transfer).** At that pinned commit, a useful boundary model is:
 
@@ -168,4 +168,4 @@ Choose one agent-harness tool request and specify four separate boundaries: pars
 
 ## Navigation
 
-Previous: [Seminar 08 — Streams, delay, and infinite processes](08-streams-delay-and-infinite-processes.md) · [Course guide](../sicp_course_guide.md) · Next: [Seminar 10 — Lazy evaluation and nondeterministic search](10-lazy-evaluation-and-nondeterministic-search.md)
+Previous: [[knowledge/rsi/sicp/course/seminars/08-streams-delay-and-infinite-processes|Seminar 08 — Streams, delay, and infinite processes]] · [[knowledge/rsi/sicp/course/sicp_course_guide|Course guide]] · Next: [[knowledge/rsi/sicp/course/seminars/10-lazy-evaluation-and-nondeterministic-search|Seminar 10 — Lazy evaluation and nondeterministic search]]

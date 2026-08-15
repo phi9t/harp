@@ -38,10 +38,10 @@ captured paper or pinned implementation evidence.
   self-modification.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper method, lines 218-233](../../evidence/weng/text/dgm.txt#L218)
-  and [`self_improve_step.py:292`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L292)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper method, lines 218-233]] ([exact lines 218–218](../../evidence/weng/text/dgm.txt#L218))
+  and [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:292`]] ([exact lines 292–292](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L292))
 - Scope: Paper method and released patch-lineage mechanism.
 - Reproduction: Source inspected; search not independently reproduced.
 - Confidence: `high`
@@ -56,10 +56,10 @@ captured paper or pinned implementation evidence.
   parents with replacement.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper equations, lines 1449-1496](../../evidence/weng/text/dgm.txt#L1449)
-  and [`DGM_outer.py:91`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L91)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper equations, lines 1449-1496]] ([exact lines 1449–1449](../../evidence/weng/text/dgm.txt#L1449))
+  and [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:91`]] ([exact lines 91–91](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L91))
 - Scope: Paper algorithm and captured default `score_child_prop` branch.
 - Reproduction: Source inspected; selection process not rerun.
 - Confidence: `high`
@@ -73,10 +73,10 @@ captured paper or pinned implementation evidence.
   outperforming its parent.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper archive rule, lines 234-253](../../evidence/weng/text/dgm.txt#L234)
-  and [`evo_utils.py:96`](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py#L96)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper archive rule, lines 234-253]] ([exact lines 234–234](../../evidence/weng/text/dgm.txt#L234))
+  and [[evidence/implementations/dgm/snapshot/utils/evo_utils.py|`evo_utils.py:96`]] ([exact lines 96–96](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py#L96))
 - Scope: Default `keep_all` policy after the released viability filter.
 - Reproduction: Source inspected; archive search not rerun.
 - Confidence: `high`
@@ -91,8 +91,8 @@ captured paper or pinned implementation evidence.
   test patch and its evaluation results when proposing a general agent change.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`self_improvement_prompt.py:95`](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py#L95)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py|`self_improvement_prompt.py:95`]] ([exact lines 95–95](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py#L95))
 - Scope: Captured SWE-bench diagnosis prompt, not ordinary task-agent input.
 - Reproduction: Source inspected; information flow not executed.
 - Confidence: `high`
@@ -107,9 +107,9 @@ captured paper or pinned implementation evidence.
   200-task SWE-bench evaluation.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [200-task accounting, lines 317-320](../../evidence/weng/text/dgm.txt#L317)
-  and [reported result, line 346](../../evidence/weng/text/dgm.txt#L346)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|200-task accounting, lines 317-320]] ([exact lines 317–317](../../evidence/weng/text/dgm.txt#L317))
+  and [[evidence/weng/text/dgm.txt|reported result, line 346]] ([exact lines 346–346](../../evidence/weng/text/dgm.txt#L346))
 - Scope: Selected-run result under the paper's SWE-bench setup.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -123,8 +123,8 @@ captured paper or pinned implementation evidence.
   Polyglot benchmark.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Full-Polyglot result, lines 346-351](../../evidence/weng/text/dgm.txt#L346)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Full-Polyglot result, lines 346-351]] ([exact lines 346–346](../../evidence/weng/text/dgm.txt#L346))
 - Scope: Full Polyglot final evaluation with the paper's metric and model.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -138,8 +138,8 @@ captured paper or pinned implementation evidence.
   32.5% for each main baseline.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Appendix A.4 table values, lines 1320-1325](../../evidence/weng/text/dgm.txt#L1320)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Appendix A.4 table values, lines 1320-1325]] ([exact lines 1320–1320](../../evidence/weng/text/dgm.txt#L1320))
 - Scope: Generated SWE-bench agents under the paper's functioning predicate.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -153,8 +153,8 @@ captured paper or pinned implementation evidence.
   SWE-bench result.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Figure 4 extracted value, line 461](../../evidence/weng/text/dgm.txt#L461)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Figure 4 extracted value, line 461]] ([exact lines 461–461](../../evidence/weng/text/dgm.txt#L461))
 - Scope: Figure 4 label only.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -169,8 +169,8 @@ captured paper or pinned implementation evidence.
   Claude 3.7 SWE-bench result.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Figure 4 discussion, line 517](../../evidence/weng/text/dgm.txt#L517)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Figure 4 discussion, line 517]] ([exact lines 517–517](../../evidence/weng/text/dgm.txt#L517))
 - Scope: Prose adjacent to Figure 4.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -183,9 +183,9 @@ captured paper or pinned implementation evidence.
 - Class: `MISSING`
 - Statement: The inspected source does not establish whether 59.0% or 59.5% is
   the authoritative transferred Claude 3.7 result.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Figure value, line 461](../../evidence/weng/text/dgm.txt#L461) and
-  [prose value, line 517](../../evidence/weng/text/dgm.txt#L517)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Figure value, line 461]] ([exact lines 461–461](../../evidence/weng/text/dgm.txt#L461)) and
+  [[evidence/weng/text/dgm.txt|prose value, line 517]] ([exact lines 517–517](../../evidence/weng/text/dgm.txt#L517))
 - Scope: Exact Claude 3.7 SWE-bench transfer result.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -201,8 +201,8 @@ captured paper or pinned implementation evidence.
   two immediate performance dips.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Figure 3 discussion, lines 412-419](../../evidence/weng/text/dgm.txt#L412)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Figure 3 discussion, lines 412-419]] ([exact lines 412–412](../../evidence/weng/text/dgm.txt#L412))
 - Scope: Reported final lineage visualization.
 - Reproduction: Not independently reproduced here.
 - Confidence: `medium`
@@ -217,8 +217,8 @@ captured paper or pinned implementation evidence.
   and monitored archive lineages.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Safety discussion, lines 547-559](../../evidence/weng/text/dgm.txt#L547)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Safety discussion, lines 547-559]] ([exact lines 547–547](../../evidence/weng/text/dgm.txt#L547))
 - Scope: Author-described experimental safeguards.
 - Reproduction: Not independently audited here.
 - Confidence: `high`
@@ -232,9 +232,9 @@ captured paper or pinned implementation evidence.
 - Statement: The pinned release starts ordinary Docker containers and passes
   credentials into generated-code execution, so the captured source alone does
   not establish a hardened hostile-code sandbox.
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`docker_utils.py:104`](../../evidence/implementations/dgm/snapshot/utils/docker_utils.py#L104)
-  and [`self_improve_step.py:339`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L339)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/utils/docker_utils.py|`docker_utils.py:104`]] ([exact lines 104–104](../../evidence/implementations/dgm/snapshot/utils/docker_utils.py#L104))
+  and [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:339`]] ([exact lines 339–339](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L339))
 - Scope: Captured container construction and self-improvement environment.
 - Reproduction: Source inspected; no adversarial security audit performed.
 - Confidence: `high`
@@ -255,8 +255,8 @@ captured paper or pinned implementation evidence.
   hallucination behavior.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Objective-hacking result, lines 4628-4642](../../evidence/weng/text/dgm.txt#L4628)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Objective-hacking result, lines 4628-4642]] ([exact lines 4628–4628](../../evidence/weng/text/dgm.txt#L4628))
 - Scope: Paper's three-task hallucination experiment and detector.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -269,11 +269,11 @@ captured paper or pinned implementation evidence.
 - Class: `INFERENCE`
 - Statement: The combined paper and source evidence supports autonomous search
   over heritable coding-agent scaffolds with improved task performance.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper method, lines 218-264](../../evidence/weng/text/dgm.txt#L218),
-  [reported results, lines 346-351](../../evidence/weng/text/dgm.txt#L346), and
-  [`self_improve_step.py:292`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L292)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper method, lines 218-264]] ([exact lines 218–218](../../evidence/weng/text/dgm.txt#L218)),
+  [[evidence/weng/text/dgm.txt|reported results, lines 346-351]] ([exact lines 346–346](../../evidence/weng/text/dgm.txt#L346)), and
+  [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:292`]] ([exact lines 292–292](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L292))
 - Scope: Harness code, paper benchmark setup, and reported selected outcomes.
 - Reproduction: Paper results not independently reproduced; source path
   inspected.
@@ -293,9 +293,9 @@ captured paper or pinned implementation evidence.
 - Statement: The corpus has no matched experiment showing that accepted
   children produce better later accepted children than their parents under the
   same protected envelope and root-tree budget.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Paper proxy argument, lines 227-233](../../evidence/weng/text/dgm.txt#L227)
-  and [future-work boundary, lines 598-607](../../evidence/weng/text/dgm.txt#L598)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper proxy argument, lines 227-233]] ([exact lines 227–227](../../evidence/weng/text/dgm.txt#L227))
+  and [[evidence/weng/text/dgm.txt|future-work boundary, lines 598-607]] ([exact lines 598–598](../../evidence/weng/text/dgm.txt#L598))
 - Scope: Successor-improvement and sustained recursive-improvement claim.
 - Reproduction: Not performed.
 - Confidence: `high`
@@ -314,9 +314,9 @@ captured paper or pinned implementation evidence.
   `overall_performance`.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`self_improve_step.py:180`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L180)
-  and [`DGM_outer.py:58`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L58)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:180`]] ([exact lines 180–180](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L180))
+  and [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:58`]] ([exact lines 58–58](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L58))
 - Scope: Captured Polyglot evaluation and parent-selection path.
 - Reproduction: Source inspected; path not executed.
 - Confidence: `high`
@@ -331,11 +331,11 @@ captured paper or pinned implementation evidence.
   OpenAI model constant `o3-mini-2025-01-31`.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper model table, lines 1718-1727](../../evidence/weng/text/dgm.txt#L1718),
-  [`coding_agent_polyglot.py:115`](../../evidence/implementations/dgm/snapshot/coding_agent_polyglot.py#L115),
-  and [`llm_withtools.py:13`](../../evidence/implementations/dgm/snapshot/llm_withtools.py#L13)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper model table, lines 1718-1727]] ([exact lines 1718–1718](../../evidence/weng/text/dgm.txt#L1718)),
+  [[evidence/implementations/dgm/snapshot/coding_agent_polyglot.py|`coding_agent_polyglot.py:115`]] ([exact lines 115–115](../../evidence/implementations/dgm/snapshot/coding_agent_polyglot.py#L115)),
+  and [[evidence/implementations/dgm/snapshot/llm_withtools.py|`llm_withtools.py:13`]] ([exact lines 13–13](../../evidence/implementations/dgm/snapshot/llm_withtools.py#L13))
 - Scope: Paper experiment assignment versus pinned released source.
 - Reproduction: Not reproduced; historical provenance unresolved.
 - Confidence: `high`
@@ -349,8 +349,8 @@ captured paper or pinned implementation evidence.
   writes the filtered bytes back to the input patch paths.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`polyglot/harness.py:259`](../../evidence/implementations/dgm/snapshot/polyglot/harness.py#L259)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/polyglot/harness.py|`polyglot/harness.py:259`]] ([exact lines 259–259](../../evidence/implementations/dgm/snapshot/polyglot/harness.py#L259))
 - Scope: Captured Polyglot `harness` path when patch paths are supplied.
 - Reproduction: Source inspected; concurrency failure not reproduced.
 - Confidence: `high`
@@ -365,8 +365,8 @@ captured paper or pinned implementation evidence.
   future to become complete.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`DGM_outer.py:302`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L302)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:302`]] ([exact lines 302–302](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L302))
 - Scope: Captured thread-pool collection path.
 - Reproduction: Source inspected; hung task not induced.
 - Confidence: `high`
@@ -382,12 +382,12 @@ captured paper or pinned implementation evidence.
   that threshold or launches a third SWE evaluation stage.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`DGM_outer.py:192`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L192),
-  [`DGM_outer.py:292`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L292),
-  [`self_improve_step.py:223`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L223),
-  [`self_improve_step.py:258`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L258),
-  and [`self_improve_step.py:385`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L385)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:192`]] ([exact lines 192–192](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L192)),
+  [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:292`]] ([exact lines 292–292](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L292)),
+  [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:223`]] ([exact lines 223–223](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L223)),
+  [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:258`]] ([exact lines 258–258](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L258)),
+  and [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:385`]] ([exact lines 385–385](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L385))
 - Scope: Captured release path, not the paper's historical experiment code.
 - Reproduction: Source inspected; evaluation not executed.
 - Confidence: `high`
@@ -404,10 +404,10 @@ captured paper or pinned implementation evidence.
   schedule up to 160 child attempts.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper iteration wording, lines 273-278](../../evidence/weng/text/dgm.txt#L273)
-  and [`DGM_outer.py:221`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L221)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper iteration wording, lines 273-278]] ([exact lines 273–273](../../evidence/weng/text/dgm.txt#L273))
+  and [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:221`]] ([exact lines 221–221](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L221))
 - Scope: Paper terminology versus current CLI defaults.
 - Reproduction: Not executed.
 - Confidence: `high`
@@ -422,10 +422,10 @@ captured paper or pinned implementation evidence.
   the pinned candidate builder applies no explicit `accuracy_score < 1` filter.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper eligible set, lines 1453-1468](../../evidence/weng/text/dgm.txt#L1453)
-  and [`DGM_outer.py:56`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L56)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper eligible set, lines 1453-1468]] ([exact lines 1453–1453](../../evidence/weng/text/dgm.txt#L1453))
+  and [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:56`]] ([exact lines 56–56](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L56))
 - Scope: Paper Appendix C.2 versus captured candidate construction.
 - Reproduction: Source inspected; no perfect-score node tested.
 - Confidence: `high`
@@ -441,8 +441,8 @@ captured paper or pinned implementation evidence.
   `random.choice([])` when no earlier special objective is selected.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`DGM_outer.py:111`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L111)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:111`]] ([exact lines 111–111](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L111))
 - Scope: Non-Polyglot entry selection in the captured release.
 - Reproduction: Source inspected; failure not executed.
 - Confidence: `high`
@@ -460,10 +460,10 @@ captured paper or pinned implementation evidence.
   complete published environment.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`self_improve_step.py:245`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L245),
-  [`self_improve_step.py:311`](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L311),
-  and [captured-file manifest, line 80](../../evidence/implementations/manifest.tsv#L80)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:245`]] ([exact lines 245–245](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L245)),
+  [[evidence/implementations/dgm/snapshot/self_improve_step.py|`self_improve_step.py:311`]] ([exact lines 311–311](../../evidence/implementations/dgm/snapshot/self_improve_step.py#L311)),
+  and [[evidence/implementations/manifest.tsv|captured-file manifest, line 80]] ([exact lines 80–80](../../evidence/implementations/manifest.tsv#L80))
 - Scope: Narrow captured release and the reproducibility evidence available in
   Harp.
 - Reproduction: Environment not reconstructed.
@@ -479,10 +479,10 @@ captured paper or pinned implementation evidence.
 - Statement: DGM is most precisely classified as archive-based evolutionary
   program search over coding-agent scaffolds powered by frozen foundation
   models.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper agent definition, lines 218-254](../../evidence/weng/text/dgm.txt#L218)
-  and [`DGM_outer.py:50`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L50)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper agent definition, lines 218-254]] ([exact lines 218–218](../../evidence/weng/text/dgm.txt#L218))
+  and [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:50`]] ([exact lines 50–50](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L50))
 - Scope: Edited object, mutation operator, selection, archive, and frozen-model
   boundary.
 - Reproduction: Classification based on inspected sources.
@@ -502,10 +502,10 @@ captured paper or pinned implementation evidence.
 - Statement: A useful evolutionary interpretation treats ordered repository
   patches as genotype and the resulting tool-using coding behavior under a
   frozen model as phenotype.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper coding-agent definition, lines 218-233](../../evidence/weng/text/dgm.txt#L218)
-  and [`evo_utils.py:28`](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py#L28)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper coding-agent definition, lines 218-233]] ([exact lines 218–218](../../evidence/weng/text/dgm.txt#L218))
+  and [[evidence/implementations/dgm/snapshot/utils/evo_utils.py|`evo_utils.py:28`]] ([exact lines 28–28](../../evidence/implementations/dgm/snapshot/utils/evo_utils.py#L28))
 - Scope: Conceptual model for the captured patch-lineage implementation.
 - Reproduction: Not applicable.
 - Confidence: `high`
@@ -524,11 +524,11 @@ captured paper or pinned implementation evidence.
 - Statement: Current benchmark accuracy and expected held-out gain produced by
   a parent's future children are distinct quantities; DGM selects directly on
   the former and does not estimate the latter.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper) and
-  [pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [Paper proxy argument, lines 227-233](../../evidence/weng/text/dgm.txt#L227),
-  [paper selector, lines 1472-1496](../../evidence/weng/text/dgm.txt#L1472), and
-  [`DGM_outer.py:83`](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L83)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]] and
+  [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|pinned implementation]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper proxy argument, lines 227-233]] ([exact lines 227–227](../../evidence/weng/text/dgm.txt#L227)),
+  [[evidence/weng/text/dgm.txt|paper selector, lines 1472-1496]] ([exact lines 1472–1472](../../evidence/weng/text/dgm.txt#L1472)), and
+  [[evidence/implementations/dgm/snapshot/DGM_outer.py|`DGM_outer.py:83`]] ([exact lines 83–83](../../evidence/implementations/dgm/snapshot/DGM_outer.py#L83))
 - Scope: Selection objective and successor-improvement interpretation.
 - Reproduction: Descendant productivity not measured.
 - Confidence: `high`
@@ -548,8 +548,8 @@ captured paper or pinned implementation evidence.
   evaluation results, the selected SWE-bench subset functions partly as a
   privileged architecture-development environment rather than an untouched
   final test set.
-- Source: [Pinned implementation](source_registry.md#dgm-repo-pinned-implementation)
-- Locator: [`self_improvement_prompt.py:95`](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py#L95)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM-REPO: pinned implementation|Pinned implementation]]
+- Locator: [[evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py|`self_improvement_prompt.py:95`]] ([exact lines 95–95](../../evidence/implementations/dgm/snapshot/prompts/self_improvement_prompt.py#L95))
 - Scope: Repeated architecture diagnosis and selection on the SWE-bench
   improvement subset.
 - Reproduction: Information flow source-inspected; adaptive effect not
@@ -570,9 +570,9 @@ captured paper or pinned implementation evidence.
 - Statement: Feeding 10-, 60-, and 200-task point estimates into a steep
   score-based selector creates heterogeneous uncertainty and selected-maximum
   bias.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Staged evaluation, lines 307-322](../../evidence/weng/text/dgm.txt#L307)
-  and [selection sigmoid, lines 1472-1496](../../evidence/weng/text/dgm.txt#L1472)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Staged evaluation, lines 307-322]] ([exact lines 307–307](../../evidence/weng/text/dgm.txt#L307))
+  and [[evidence/weng/text/dgm.txt|selection sigmoid, lines 1472-1496]] ([exact lines 1472–1472](../../evidence/weng/text/dgm.txt#L1472))
 - Scope: Statistical interpretation of the paper's adaptive evaluation and
   parent selection.
 - Reproduction: Not recomputed from raw run artifacts.
@@ -592,10 +592,10 @@ captured paper or pinned implementation evidence.
 - Statement: A stronger DGM successor should separately measure current task
   fitness, valid held-out descendant gain per attempt, and behavioral diversity
   under a fixed protected evaluator and root-tree budget.
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Paper selector and fixed controller, lines 234-254](../../evidence/weng/text/dgm.txt#L234),
-  [selection equations, lines 1449-1496](../../evidence/weng/text/dgm.txt#L1449),
-  and [objective-hacking result, lines 4628-4642](../../evidence/weng/text/dgm.txt#L4628)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Paper selector and fixed controller, lines 234-254]] ([exact lines 234–234](../../evidence/weng/text/dgm.txt#L234)),
+  [[evidence/weng/text/dgm.txt|selection equations, lines 1449-1496]] ([exact lines 1449–1449](../../evidence/weng/text/dgm.txt#L1449)),
+  and [[evidence/weng/text/dgm.txt|objective-hacking result, lines 4628-4642]] ([exact lines 4628–4628](../../evidence/weng/text/dgm.txt#L4628))
 - Scope: Proposed experimental design, not a report of implemented behavior.
 - Reproduction: Proposed, not performed.
 - Confidence: `medium`
@@ -615,8 +615,8 @@ captured paper or pinned implementation evidence.
   at ICLR 2026.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Captured publication line](../../evidence/weng/text/dgm.txt#L1)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Captured publication line]] ([exact lines 1–1](../../evidence/weng/text/dgm.txt#L1))
 - Scope: Publication statement in the captured paper text.
 - Reproduction: Source inspected; conference record not independently queried.
 - Confidence: `high`
@@ -633,11 +633,11 @@ captured paper or pinned implementation evidence.
   targeting fine-grained editing with different implementations.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
-  [line-range patch, lines 2280-2420](../../evidence/weng/text/dgm.txt#L2280),
-  [string-replacement patch, lines 2520-2608](../../evidence/weng/text/dgm.txt#L2520),
-  and [Appendix G comparison, lines 3835-3844](../../evidence/weng/text/dgm.txt#L3835)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Result summary, lines 426-432]] ([exact lines 426–426](../../evidence/weng/text/dgm.txt#L426)),
+  [[evidence/weng/text/dgm.txt|line-range patch, lines 2280-2420]] ([exact lines 2280–2280](../../evidence/weng/text/dgm.txt#L2280)),
+  [[evidence/weng/text/dgm.txt|string-replacement patch, lines 2520-2608]] ([exact lines 2520–2520](../../evidence/weng/text/dgm.txt#L2520)),
+  and [[evidence/weng/text/dgm.txt|Appendix G comparison, lines 3835-3844]] ([exact lines 3835–3835](../../evidence/weng/text/dgm.txt#L3835))
 - Scope: Author-reported modifications in the best-agent lineage and captured
   Appendix F patches.
 - Reproduction: Not independently reproduced here.
@@ -655,9 +655,9 @@ captured paper or pinned implementation evidence.
   and retries the model call with the compressed history.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Figure 3 mechanism label, lines 393-405](../../evidence/weng/text/dgm.txt#L393)
-  and [Appendix F patch, lines 2704-2807](../../evidence/weng/text/dgm.txt#L2704)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Figure 3 mechanism label, lines 393-405]] ([exact lines 393–393](../../evidence/weng/text/dgm.txt#L393))
+  and [[evidence/weng/text/dgm.txt|Appendix F patch, lines 2704-2807]] ([exact lines 2704–2704](../../evidence/weng/text/dgm.txt#L2704))
 - Scope: Captured best-agent lineage patch for context-limit recovery.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -674,9 +674,9 @@ captured paper or pinned implementation evidence.
   candidate reports for selection.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426)
-  and [Appendix F patch, lines 2830-2923](../../evidence/weng/text/dgm.txt#L2830)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Result summary, lines 426-432]] ([exact lines 426–426](../../evidence/weng/text/dgm.txt#L426))
+  and [[evidence/weng/text/dgm.txt|Appendix F patch, lines 2830-2923]] ([exact lines 2830–2830](../../evidence/weng/text/dgm.txt#L2830))
 - Scope: Author-reported multi-attempt workflow in the SWE-bench lineage.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -693,10 +693,10 @@ captured paper or pinned implementation evidence.
   call to rank or break ties among candidate solutions.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
-  [candidate-selection patch, lines 2901-2941](../../evidence/weng/text/dgm.txt#L2901),
-  and [tie-aware revision, lines 3063-3107](../../evidence/weng/text/dgm.txt#L3063)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Result summary, lines 426-432]] ([exact lines 426–426](../../evidence/weng/text/dgm.txt#L426)),
+  [[evidence/weng/text/dgm.txt|candidate-selection patch, lines 2901-2941]] ([exact lines 2901–2901](../../evidence/weng/text/dgm.txt#L2901)),
+  and [[evidence/weng/text/dgm.txt|tie-aware revision, lines 3063-3107]] ([exact lines 3063–3063](../../evidence/weng/text/dgm.txt#L3063))
 - Scope: Author-reported proposer-and-judge workflow in the evolved agent.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -713,10 +713,10 @@ captured paper or pinned implementation evidence.
   attempts to address earlier limitations or explore another approach.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [DGM paper](source_registry.md#dgm-iclr-2026-paper)
-- Locator: [Result summary, lines 426-432](../../evidence/weng/text/dgm.txt#L426),
-  [SWE history-aware patch, lines 2965-3055](../../evidence/weng/text/dgm.txt#L2965),
-  and [Polyglot attempt-history patch, lines 3130-3281](../../evidence/weng/text/dgm.txt#L3130)
+- Source: [[knowledge/darwin_godel_machine/source_registry#DGM: ICLR 2026 paper|DGM paper]]
+- Locator: [[evidence/weng/text/dgm.txt|Result summary, lines 426-432]] ([exact lines 426–426](../../evidence/weng/text/dgm.txt#L426)),
+  [[evidence/weng/text/dgm.txt|SWE history-aware patch, lines 2965-3055]] ([exact lines 2965–2965](../../evidence/weng/text/dgm.txt#L2965)),
+  and [[evidence/weng/text/dgm.txt|Polyglot attempt-history patch, lines 3130-3281]] ([exact lines 3130–3130](../../evidence/weng/text/dgm.txt#L3130))
 - Scope: Author-reported history-aware patch-generation workflows in Appendix F.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -733,8 +733,8 @@ captured paper or pinned implementation evidence.
   procedure that generates later self-modifications.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
-- Locator: [Definitions and DGM-H construction, lines 252-305](../../evidence/weng/text/hyperagents.txt#L252)
+- Source: [[knowledge/darwin_godel_machine/source_registry#HYPERAGENTS: DGM-H successor paper|Hyperagents paper]]
+- Locator: [[evidence/weng/text/hyperagents.txt|Definitions and DGM-H construction, lines 252-305]] ([exact lines 252–252](../../evidence/weng/text/hyperagents.txt#L252))
 - Scope: Paper method definition for DGM-Hyperagents.
 - Reproduction: Source inspected; implementation and experiments not
   independently reproduced.
@@ -753,9 +753,9 @@ captured paper or pinned implementation evidence.
   modification only as preliminary Appendix E.5 work.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
-- Locator: [Outer-loop boundary, lines 286-304](../../evidence/weng/text/hyperagents.txt#L286)
-  and [conclusion boundary, lines 733-744](../../evidence/weng/text/hyperagents.txt#L733)
+- Source: [[knowledge/darwin_godel_machine/source_registry#HYPERAGENTS: DGM-H successor paper|Hyperagents paper]]
+- Locator: [[evidence/weng/text/hyperagents.txt|Outer-loop boundary, lines 286-304]] ([exact lines 286–286](../../evidence/weng/text/hyperagents.txt#L286))
+  and [[evidence/weng/text/hyperagents.txt|conclusion boundary, lines 733-744]] ([exact lines 733–733](../../evidence/weng/text/hyperagents.txt#L733))
 - Scope: Reported main-text DGM-H protocol and stated limitation.
 - Reproduction: Source inspected; implementation and experiments not
   independently reproduced.
@@ -774,9 +774,9 @@ captured paper or pinned implementation evidence.
   reported protocol.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Hyperagents paper](source_registry.md#hyperagents-dgm-h-successor-paper)
-- Locator: [Transfer setup and comparison, lines 550-585](../../evidence/weng/text/hyperagents.txt#L550)
-  and [reported mechanisms, lines 587-594](../../evidence/weng/text/hyperagents.txt#L587)
+- Source: [[knowledge/darwin_godel_machine/source_registry#HYPERAGENTS: DGM-H successor paper|Hyperagents paper]]
+- Locator: [[evidence/weng/text/hyperagents.txt|Transfer setup and comparison, lines 550-585]] ([exact lines 550–550](../../evidence/weng/text/hyperagents.txt#L550))
+  and [[evidence/weng/text/hyperagents.txt|reported mechanisms, lines 587-594]] ([exact lines 587–587](../../evidence/weng/text/hyperagents.txt#L587))
 - Scope: Author-reported cross-domain transfer under the paper's selected
   hyperagents, fixed meta-agent transfer protocol, held-out math-grading task,
   and five-run summary.
@@ -791,19 +791,19 @@ captured paper or pinned implementation evidence.
 
 | Claim ID | Class | Claim | Canonical home | Primary evidence | Locator | Reproduction status | Confidence | Caveat |
 |---|---|---|---|---|---|---|---|---|
-| DGM-001 | EVIDENCE | DGM edits a coding-agent repository whose descendants can participate in later self-modification. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM §§1–3; `self_improve_step.py:292-365` | Source inspected; experiment not independently reproduced | High | The outer controller, evaluator, and foundation-model supply remain external. |
-| DGM-005 | EVIDENCE | Default parent selection combines sigmoid-scaled task score with inverse functioning-child count. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM Appendix C.2; `DGM_outer.py:91-100` | Source inspected; search not rerun | High | The child-count factor measures underexploration, not behavioral novelty. |
-| DGM-009 | EVIDENCE | A functioning child may enter the archive without outperforming its parent. | [DGM system article](../rsi/systems/dgm.md) | DGM, DGM-REPO | DGM §3; `utils/evo_utils.py:96-127` | Source inspected; experiment not independently reproduced | High | Archive admission is not deployment promotion. |
-| DGM-013 | EVIDENCE | SWE-bench diagnosis can use private test patches and official test results. | [DGM system article](../rsi/systems/dgm.md) | DGM-REPO | `prompts/self_improvement_prompt.py:95-105` | Source inspected; information flow not executed | High | The task-solving agent remains blind during ordinary evaluation, but the harness optimizer is not fully blind. |
-| DGM-020 | SOURCE CLAIM | The paper reports improvement from 20.0% to 50.0% on its 200-task SWE-bench subset. | [DGM system article](../rsi/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | Author-reported selected-run result under the paper's model and evaluation setup. |
-| DGM-022 | SOURCE CLAIM | The paper reports improvement from 14.2% to 30.7% on full Polyglot. | [DGM system article](../rsi/systems/dgm.md) | DGM | Abstract and §4.4 | Not independently reproduced | High | This is distinct from the 38.0% result on the 50-task search subset. |
-| DGM-026 | SOURCE CLAIM | The paper reports a 51.3% functioning-child rate for DGM versus 32.5% for both main baselines. | [DGM system article](../rsi/systems/dgm.md) | DGM | Appendix A.4, Table 2 | Not independently reproduced | High | Functioning-child rate does not measure the magnitude of later improvements. |
-| DGM-034 | SOURCE CLAIM | The final reported SWE-bench lineage contains two immediate score dips. | [DGM system article](../rsi/systems/dgm.md) | DGM | §4.4, Figure 3 | Not independently reproduced | Medium | Non-monotone ancestry does not prove that each dip was a causal stepping stone. |
-| DGM-042 | INFERENCE | Docker use in the release does not establish a hardened sandbox. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | DGM-REPO | `utils/docker_utils.py`; repository safety warning | Source inspected; security not audited | High | Host policy, network rules, credentials, quotas, and kernel isolation are outside the captured proof surface. |
-| DGM-044 | SOURCE CLAIM | Appendix H reports a perfect detector score obtained by changing the measurement channel rather than solving the target behavior. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | DGM | Appendix H | Not independently reproduced | High | The case demonstrates objective hacking under the paper's detector setup. |
-| DGM-049 | INFERENCE | The combined evidence supports bounded harness improvement. | [Improvement types](../rsi/concepts/improvement-types.md) | DGM, DGM-REPO | Mechanism, lineage, task results, and ablations | Paper results not independently reproduced | Medium | The label does not imply model-weight improvement or safe deployment. |
-| DGM-050 | MISSING | The packet lacks a matched test showing that accepted children produce better later accepted children than their parents. | [Recursive improvement loop](../rsi/chapters/recursive-improvement-loop.md) | DGM | No parent-versus-child next-cycle experiment | Not performed | High | This missing comparison caps the successor-improvement and recursive-improvement claims. |
-| DGM-052 | INFERENCE | A direct successor test should compare valid held-out gain per attempt under a matched root-tree budget. | [Evaluation and control](../rsi/concepts/evaluation-and-control.md) | HARP-RSI | [Successor experiment design](10_successor_design.md) | Proposed, not performed | Medium | The evaluator, authority, permissions, models, tasks, and resource vector must remain fixed. |
+| DGM-001 | EVIDENCE | DGM edits a coding-agent repository whose descendants can participate in later self-modification. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM, DGM-REPO | DGM §§1–3; `self_improve_step.py:292-365` | Source inspected; experiment not independently reproduced | High | The outer controller, evaluator, and foundation-model supply remain external. |
+| DGM-005 | EVIDENCE | Default parent selection combines sigmoid-scaled task score with inverse functioning-child count. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM, DGM-REPO | DGM Appendix C.2; `DGM_outer.py:91-100` | Source inspected; search not rerun | High | The child-count factor measures underexploration, not behavioral novelty. |
+| DGM-009 | EVIDENCE | A functioning child may enter the archive without outperforming its parent. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM, DGM-REPO | DGM §3; `utils/evo_utils.py:96-127` | Source inspected; experiment not independently reproduced | High | Archive admission is not deployment promotion. |
+| DGM-013 | EVIDENCE | SWE-bench diagnosis can use private test patches and official test results. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM-REPO | `prompts/self_improvement_prompt.py:95-105` | Source inspected; information flow not executed | High | The task-solving agent remains blind during ordinary evaluation, but the harness optimizer is not fully blind. |
+| DGM-020 | SOURCE CLAIM | The paper reports improvement from 20.0% to 50.0% on its 200-task SWE-bench subset. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM | Abstract and §4.4 | Not independently reproduced | High | Author-reported selected-run result under the paper's model and evaluation setup. |
+| DGM-022 | SOURCE CLAIM | The paper reports improvement from 14.2% to 30.7% on full Polyglot. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM | Abstract and §4.4 | Not independently reproduced | High | This is distinct from the 38.0% result on the 50-task search subset. |
+| DGM-026 | SOURCE CLAIM | The paper reports a 51.3% functioning-child rate for DGM versus 32.5% for both main baselines. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM | Appendix A.4, Table 2 | Not independently reproduced | High | Functioning-child rate does not measure the magnitude of later improvements. |
+| DGM-034 | SOURCE CLAIM | The final reported SWE-bench lineage contains two immediate score dips. | [[knowledge/rsi/systems/dgm|DGM system article]] | DGM | §4.4, Figure 3 | Not independently reproduced | Medium | Non-monotone ancestry does not prove that each dip was a causal stepping stone. |
+| DGM-042 | INFERENCE | Docker use in the release does not establish a hardened sandbox. | [[knowledge/rsi/concepts/evaluation-and-control|Evaluation and control]] | DGM-REPO | `utils/docker_utils.py`; repository safety warning | Source inspected; security not audited | High | Host policy, network rules, credentials, quotas, and kernel isolation are outside the captured proof surface. |
+| DGM-044 | SOURCE CLAIM | Appendix H reports a perfect detector score obtained by changing the measurement channel rather than solving the target behavior. | [[knowledge/rsi/concepts/evaluation-and-control|Evaluation and control]] | DGM | Appendix H | Not independently reproduced | High | The case demonstrates objective hacking under the paper's detector setup. |
+| DGM-049 | INFERENCE | The combined evidence supports bounded harness improvement. | [[knowledge/rsi/concepts/improvement-types|Improvement types]] | DGM, DGM-REPO | Mechanism, lineage, task results, and ablations | Paper results not independently reproduced | Medium | The label does not imply model-weight improvement or safe deployment. |
+| DGM-050 | MISSING | The packet lacks a matched test showing that accepted children produce better later accepted children than their parents. | [[knowledge/rsi/chapters/recursive-improvement-loop|Recursive improvement loop]] | DGM | No parent-versus-child next-cycle experiment | Not performed | High | This missing comparison caps the successor-improvement and recursive-improvement claims. |
+| DGM-052 | INFERENCE | A direct successor test should compare valid held-out gain per attempt under a matched root-tree budget. | [[knowledge/rsi/concepts/evaluation-and-control|Evaluation and control]] | HARP-RSI | [[knowledge/darwin_godel_machine/10_successor_design|Successor experiment design]] | Proposed, not performed | Medium | The evaluator, authority, permissions, models, tasks, and resource vector must remain fixed. |
 
 ## Detailed locator ledger
 
@@ -908,7 +908,7 @@ This ledger supports the following bounded synthesis:
 > become better producers of later accepted children under matched protected
 > conditions.
 
-Continue with the [evaluation analysis](06_evaluation_analysis.md) or inspect
-the [source registry](source_registry.md).
+Continue with the [[knowledge/darwin_godel_machine/06_evaluation_analysis|evaluation analysis]] or inspect
+the [[knowledge/darwin_godel_machine/source_registry|source registry]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

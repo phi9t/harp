@@ -198,7 +198,7 @@ snapshot is evidence for present-day source behavior at the pinned commit; it
 is not evidence that Harp reproduced the benchmark numbers.
 
 For the distinct question of what a repository-repair benchmark can establish,
-see the [evaluator-integrity benchmark suite](../../evaluator_integrity/evaluator_integrity_benchmark_suite.md).
+see the [[knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite|evaluator-integrity benchmark suite]].
 It treats SWE-bench Verified as a historical-public-task control and keeps
 benchmark identity, exposure history, and live access policy separate.
 
@@ -326,9 +326,9 @@ solvers.
 
 ## Reading routes
 
-- [Benchmark field guide](../../harness_benchmarks/harness_benchmark_field_guide.md)
-- [Weng: evolutionary search](../weng/07-evolutionary-search.md)
-- [AlphaEvolve versus DGM lesson](../lessons/05-alphaevolve-vs-dgm.md)
-- [Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md)
+- [[knowledge/harness_benchmarks/harness_benchmark_field_guide|Benchmark field guide]]
+- [[knowledge/rsi/weng/07-evolutionary-search|Weng: evolutionary search]]
+- [[knowledge/rsi/lessons/05-alphaevolve-vs-dgm|AlphaEvolve versus DGM lesson]]
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]]
 - [Original paper](https://arxiv.org/abs/2505.22954)
 - [Released implementation](https://github.com/jennyzzt/dgm)

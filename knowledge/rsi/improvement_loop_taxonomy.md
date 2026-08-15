@@ -20,15 +20,15 @@ removed after its mechanisms moved into canonical Markdown.
 
 | Question | Canonical explanation |
 |---|---|
-| What changed and persisted? | [Improvement types and recursion boundaries](concepts/improvement-types.md) |
-| How can prompts, skills, scripts, workflows, or weights store a procedure? | [Procedure representations](concepts/procedure-representations.md) |
-| How are contexts, workflows, code, populations, and archives searched? | [Harness search methods](concepts/harness-search-methods.md) |
-| How do research loops generate and test hypotheses? | [Research-loop components](concepts/research-loop-components.md) |
-| How do harness and weight updates interact? | [Joint adaptation methods](concepts/joint-adaptation-methods.md) |
-| Which gates control evaluation and promotion? | [Evaluation and control mechanisms](concepts/evaluation-and-control.md) |
+| What changed and persisted? | [[knowledge/rsi/concepts/improvement-types|Improvement types and recursion boundaries]] |
+| How can prompts, skills, scripts, workflows, or weights store a procedure? | [[knowledge/rsi/concepts/procedure-representations|Procedure representations]] |
+| How are contexts, workflows, code, populations, and archives searched? | [[knowledge/rsi/concepts/harness-search-methods|Harness search methods]] |
+| How do research loops generate and test hypotheses? | [[knowledge/rsi/concepts/research-loop-components|Research-loop components]] |
+| How do harness and weight updates interact? | [[knowledge/rsi/concepts/joint-adaptation-methods|Joint adaptation methods]] |
+| Which gates control evaluation and promotion? | [[knowledge/rsi/concepts/evaluation-and-control|Evaluation and control mechanisms]] |
 
 The worked-example families and their claim ceilings remain in
-[searching for better harnesses](chapters/harness-search.md),
-[automated research](chapters/automated-research.md), and
-[joint harness and model-weight adaptation](chapters/joint-harness-weight-adaptation.md).
-Exact source locators remain in [the claim ledger](claim_evidence_ledger.md).
+[[knowledge/rsi/chapters/harness-search|searching for better harnesses]],
+[[knowledge/rsi/chapters/automated-research|automated research]], and
+[[knowledge/rsi/chapters/joint-harness-weight-adaptation|joint harness and model-weight adaptation]].
+Exact source locators remain in [[knowledge/rsi/claim_evidence_ledger|the claim ledger]].

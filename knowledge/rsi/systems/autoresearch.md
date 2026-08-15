@@ -41,7 +41,7 @@ keep/reject decisions survive process loss.
 
 - [Pinned upstream repository](https://github.com/karpathy/autoresearch/tree/228791fb499afffb54b46200aca536f79142f117).
 - Checked-in source snapshot: `evidence/implementations/autoresearch/snapshot`.
-- Registered claim ceiling: [source registry](../source_registry.md).
+- Registered claim ceiling: [[knowledge/rsi/source_registry|source registry]].
 
 </details>
 
@@ -60,6 +60,6 @@ research procedure or builds a generally better successor.
 
 ## Reading routes
 
-- [Workflows that persist across interruptions](../chapters/durable-improvement-workflows.md)
-- [Automated research](../chapters/automated-research.md)
+- [[knowledge/rsi/chapters/durable-improvement-workflows|Workflows that persist across interruptions]]
+- [[knowledge/rsi/chapters/automated-research|Automated research]]
 - [Original repository](https://github.com/karpathy/autoresearch)

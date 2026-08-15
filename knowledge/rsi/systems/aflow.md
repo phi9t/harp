@@ -287,8 +287,8 @@ bounded harness search.
 
 ## Reading routes
 
-- [Weng: workflow design becomes a search problem](../weng/05-workflow-design-and-search.md)
-- [Searching for better harnesses](../chapters/harness-search.md)
-- [Evaluation, promotion, and containment](../chapters/evaluation-promotion-containment.md)
+- [[knowledge/rsi/weng/05-workflow-design-and-search|Weng: workflow design becomes a search problem]]
+- [[knowledge/rsi/chapters/harness-search|Searching for better harnesses]]
+- [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]]
 - [Original paper](https://openreview.net/forum?id=z5uVAKwmjf)
 - Checked-in paper text: `evidence/weng/text/aflow.txt`

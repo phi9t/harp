@@ -18,7 +18,7 @@ canonical: source_registry.md
 
 This registry fixes the identities and claim ceilings used throughout the
 packet. Upstream proof bytes remain remote-only. The local
-[source manifest](../../evidence/crouzeix_conjecture/source_manifest.tsv#L1)
+[[evidence/crouzeix_conjecture/source_manifest.tsv|source manifest]] ([exact lines 1–1](../../evidence/crouzeix_conjecture/source_manifest.tsv#L1))
 binds remote artifacts to immutable identities and digests; it does not make
 their mathematics correct.
 
@@ -27,7 +27,7 @@ their mathematics correct.
 - Class: pinned Git manuscript and formalization record.
 - Identity: commit `565b6a3e0659b6e0785f783b016c3f6d9f171fa5`, tree
   `40aafa503bd32762dbf6d1a67ddef3e2b067f0e1`.
-- Local receipt: [JIN-565-V4-TEX](../../evidence/crouzeix_conjecture/source_manifest.tsv#L11).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|JIN-565-V4-TEX]] ([exact lines 11–11](../../evidence/crouzeix_conjecture/source_manifest.tsv#L11)).
 - Semantic locator: commit-pinned
   [v4 TeX](https://github.com/jinshanmu/CrouzeixConjecture/blob/565b6a3e0659b6e0785f783b016c3f6d9f171fa5/preprint/the_numerical_range_is_a_2_spectral_set_v4.tex).
 - Can support: the proof interface, formulas, limit order, AI disclosure, and
@@ -40,7 +40,7 @@ their mathematics correct.
 - Class: pinned Git repository snapshot.
 - Identity: commit `9df07838327b988e3924453daa29c8cd726d34b0`, tree
   `ff9ff787a91707ddf747d2c670bf9e729e1c0cab`.
-- Local receipt: [JIN-HEAD-ARCHIVE](../../evidence/crouzeix_conjecture/source_manifest.tsv#L14).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|JIN-HEAD-ARCHIVE]] ([exact lines 14–14](../../evidence/crouzeix_conjecture/source_manifest.tsv#L14)).
 - Semantic locator: commit-pinned
   [repository tree](https://github.com/jinshanmu/CrouzeixConjecture/tree/9df07838327b988e3924453daa29c8cd726d34b0).
 - Can support: the later repository layout, README status language, prompt,
@@ -53,7 +53,7 @@ their mathematics correct.
 - Class: pinned Git manuscript.
 - Identity: repository-head commit
   `9df07838327b988e3924453daa29c8cd726d34b0`.
-- Local receipt: [JIN-HEAD-V4-TEX](../../evidence/crouzeix_conjecture/source_manifest.tsv#L22).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|JIN-HEAD-V4-TEX]] ([exact lines 22–22](../../evidence/crouzeix_conjecture/source_manifest.tsv#L22)).
 - Semantic locator: commit-pinned
   [later v4 TeX](https://github.com/jinshanmu/CrouzeixConjecture/blob/9df07838327b988e3924453daa29c8cd726d34b0/preprint/the_numerical_range_is_a_2_spectral_set_v4.tex).
 - Can support: the later manuscript's wording and its distinct digest.
@@ -65,7 +65,7 @@ their mathematics correct.
 - Class: pinned Git manuscript.
 - Identity: repository-head commit
   `9df07838327b988e3924453daa29c8cd726d34b0`.
-- Local receipt: [JIN-HEAD-ANNMATH-TEX](../../evidence/crouzeix_conjecture/source_manifest.tsv#L13).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|JIN-HEAD-ANNMATH-TEX]] ([exact lines 13–13](../../evidence/crouzeix_conjecture/source_manifest.tsv#L13)).
 - Semantic locator: commit-pinned
   [Annals-formatted TeX](https://github.com/jinshanmu/CrouzeixConjecture/blob/9df07838327b988e3924453daa29c8cd726d34b0/AnnMath/the_numerical_range_is_a_2_spectral_set.tex).
 - Can support: existence and byte identity of the formatted artifact.
@@ -76,7 +76,7 @@ their mathematics correct.
 
 - Class: dated metadata record.
 - Identity: URL observation on `2026-08-14`; acquisition returned HTTP `403`.
-- Local receipt: [JIN-PREPRINTS-V1-METADATA](../../evidence/crouzeix_conjecture/source_manifest.tsv#L24).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|JIN-PREPRINTS-V1-METADATA]] ([exact lines 24–24](../../evidence/crouzeix_conjecture/source_manifest.tsv#L24)).
 - Semantic locator:
   [Preprints.org record](https://www.preprints.org/manuscript/202607.1919/v1).
 - Can support: existence of the named metadata route at the observation date.
@@ -87,9 +87,9 @@ their mathematics correct.
 
 - Class: pinned arXiv source, PDF, and metadata.
 - Identity: `arxiv:2608.03841v1`.
-- Local receipts: [TeX](../../evidence/crouzeix_conjecture/source_manifest.tsv#L28),
-  [PDF](../../evidence/crouzeix_conjecture/source_manifest.tsv#L26), and
-  [source archive](../../evidence/crouzeix_conjecture/source_manifest.tsv#L27).
+- Local receipts: [[evidence/crouzeix_conjecture/source_manifest.tsv|TeX]] ([exact lines 28–28](../../evidence/crouzeix_conjecture/source_manifest.tsv#L28)),
+  [[evidence/crouzeix_conjecture/source_manifest.tsv|PDF]] ([exact lines 26–26](../../evidence/crouzeix_conjecture/source_manifest.tsv#L26)), and
+  [[evidence/crouzeix_conjecture/source_manifest.tsv|source archive]] ([exact lines 27–27](../../evidence/crouzeix_conjecture/source_manifest.tsv#L27)).
 - Semantic locator: versioned
   [arXiv abstract](https://arxiv.org/abs/2608.03841v1).
 - Can support: the perturbation lemma, recurrence, double-layer application,
@@ -101,7 +101,7 @@ their mathematics correct.
 
 - Class: publisher metadata record.
 - Identity: DOI `10.1016/j.jfa.2006.10.013`.
-- Local receipt: [CROUZEIX-2007](../../evidence/crouzeix_conjecture/source_manifest.tsv#L2).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|CROUZEIX-2007]] ([exact lines 2–2](../../evidence/crouzeix_conjecture/source_manifest.tsv#L2)).
 - Semantic locator: [publisher DOI](https://doi.org/10.1016/j.jfa.2006.10.013).
 - Can support: bibliographic identity for the earlier universal-bound route.
 - Cannot support: full-text theorem details not independently captured here.
@@ -110,7 +110,7 @@ their mathematics correct.
 
 - Class: publisher metadata record.
 - Identity: DOI `10.1137/17M1116672`.
-- Local receipt: [CROUZEIX-PALENCIA-2017](../../evidence/crouzeix_conjecture/source_manifest.tsv#L3).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|CROUZEIX-PALENCIA-2017]] ([exact lines 3–3](../../evidence/crouzeix_conjecture/source_manifest.tsv#L3)).
 - Semantic locator: [publisher DOI](https://doi.org/10.1137/17M1116672).
 - Can support: bibliographic identity for the $1+\sqrt2$ result.
 - Cannot support: an independent derivation or a claim that the constant is
@@ -120,7 +120,7 @@ their mathematics correct.
 
 - Class: publisher metadata record.
 - Identity: DOI `10.24033/bsmf.2340`.
-- Local receipt: [DELYON-DELYON-1999](../../evidence/crouzeix_conjecture/source_manifest.tsv#L4).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|DELYON-DELYON-1999]] ([exact lines 4–4](../../evidence/crouzeix_conjecture/source_manifest.tsv#L4)).
 - Semantic locator: [publisher DOI](https://doi.org/10.24033/bsmf.2340).
 - Can support: bibliographic identity for the double-layer framework.
 - Cannot support: every specialized identity used by the two new preprints
@@ -130,7 +130,7 @@ their mathematics correct.
 
 - Class: publisher metadata record.
 - Identity: DOI `10.1137/17M1143757`.
-- Local receipt: [RANSFORD-SCHWENNINGER-2018](../../evidence/crouzeix_conjecture/source_manifest.tsv#L29).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|RANSFORD-SCHWENNINGER-2018]] ([exact lines 29–29](../../evidence/crouzeix_conjecture/source_manifest.tsv#L29)).
 - Semantic locator: [publisher DOI](https://doi.org/10.1137/17M1143757).
 - Can support: bibliographic identity for prior analysis of the
   Crouzeix-Palencia route.
@@ -140,7 +140,7 @@ their mathematics correct.
 
 - Class: publisher metadata record.
 - Identity: DOI `10.1007/s00020-025-02800-2`.
-- Local receipt: [SCHWENNINGER-DEVRIES-2025](../../evidence/crouzeix_conjecture/source_manifest.tsv#L30).
+- Local receipt: [[evidence/crouzeix_conjecture/source_manifest.tsv|SCHWENNINGER-DEVRIES-2025]] ([exact lines 30–30](../../evidence/crouzeix_conjecture/source_manifest.tsv#L30)).
 - Semantic locator: [publisher DOI](https://doi.org/10.1007/s00020-025-02800-2).
 - Can support: bibliographic identity for the modern double-layer review.
 - Cannot support: uncaptured proof details or validation of either candidate
@@ -152,7 +152,7 @@ their mathematics correct.
 - Identity: normalization `crouzeix-log-normalization/v1`, Lean
   `leanprover/lean4:v4.28.0`, Mathlib
   `8f9d9cff6bd728b17a24e163c9402775d9e6a365`.
-- Local receipt: [verification manifest](../../evidence/crouzeix_conjecture/verification_manifest.tsv#L1).
+- Local receipt: [[evidence/crouzeix_conjecture/verification_manifest.tsv|verification manifest]] ([exact lines 1–1](../../evidence/crouzeix_conjecture/verification_manifest.tsv#L1)).
 - Can support: two zero-finding prohibited-token scans and two typed build
   blocks caused by the recorded disk preflight.
 - Cannot support: a successful Lean build, absence of all proof gaps,
@@ -165,4 +165,4 @@ phrases are theorem/declaration names and the disclosures needed to distinguish
 reported AI actions. No quotation is treated as proof evidence, and no quoted
 passage exceeds 50 words.
 
-Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md).
+Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]].

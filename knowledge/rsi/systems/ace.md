@@ -61,6 +61,6 @@ artifacts becomes a better producer of later learning procedures.
 
 ## Reading routes
 
-- [Context engineering deep dive](../context_engineering_deep_dive.md)
-- [ACE versus MCE lesson](../lessons/02-ace-vs-mce.md)
+- [[knowledge/rsi/context_engineering_deep_dive|Context engineering deep dive]]
+- [[knowledge/rsi/lessons/02-ace-vs-mce|ACE versus MCE lesson]]
 - [Original paper](https://iclr.cc/virtual/2026/poster/10008343)

@@ -98,7 +98,7 @@ execution; type checking after import cannot protect a long-lived evaluator
 from module-level effects. The experimental Harbor controller improves this by
 staging source into a short-lived child, but Harp did not run the dependent
 benchmark environment. See the evidence-tiered
-[Meta-Harness deep dive](../meta_harness/meta_harness_deep_dive.md).
+[[knowledge/meta_harness/meta_harness_deep_dive|Meta-Harness deep dive]].
 
 ### DGM, Self-Harness, AHE, and Harness Disentangle
 
@@ -134,7 +134,7 @@ recombination operator, or adaptive inference effort. WAI's large result comes
 from one accepted lineage because every merge is reverted. TerminalWorld has
 the only positive merge result, one task beyond the strongest specialist.
 
-The complete [DarwinX packet](../darwinx/darwinx_index.md) records the paper's
+The complete [[knowledge/darwinx/darwinx_index|DarwinX packet]] records the paper's
 `avg@k`, inference-compute, action-policy, anti-cheating, and reproducibility
 boundaries.
 
@@ -300,10 +300,10 @@ accepted children under the same protected envelope.
 
 ## Reading routes
 
-- [Meta-Harness system reading](../rsi/systems/meta-harness.md)
-- [DGM system reading](../rsi/systems/dgm.md)
-- [DarwinX population-selection packet](../darwinx/darwinx_index.md)
-- [MCE system reading](../rsi/systems/mce.md)
-- [Harness Disentangle system reading](../rsi/systems/harness-disentangle.md)
-- [Evaluator integrity and promotion](../rsi/evaluator_integrity_and_promotion.md)
-- [Benchmark receipt manifest](../../evidence/benchmarks/manifest.tsv)
+- [[knowledge/rsi/systems/meta-harness|Meta-Harness system reading]]
+- [[knowledge/rsi/systems/dgm|DGM system reading]]
+- [[knowledge/darwinx/darwinx_index|DarwinX population-selection packet]]
+- [[knowledge/rsi/systems/mce|MCE system reading]]
+- [[knowledge/rsi/systems/harness-disentangle|Harness Disentangle system reading]]
+- [[knowledge/rsi/evaluator_integrity_and_promotion|Evaluator integrity and promotion]]
+- [[evidence/benchmarks/manifest.tsv|Benchmark receipt manifest]]

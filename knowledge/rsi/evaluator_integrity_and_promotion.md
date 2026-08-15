@@ -14,7 +14,7 @@ confidence: medium
 
 Mode: `TECHNICAL DEEP DIVE`.
 
-> Canonical explanation: [Evaluation, promotion, and containment](chapters/evaluation-promotion-containment.md).
+> Canonical explanation: [[knowledge/rsi/chapters/evaluation-promotion-containment|Evaluation, promotion, and containment]].
 > This deep dive retains the full adversarial test matrix, source locators, and
 > Pi-first experiment protocol.
 
@@ -28,7 +28,7 @@ Mode: `TECHNICAL DEEP DIVE`.
 
 For a source- and receipt-grounded comparison of GDPval, DeepSWE,
 FrontierCode 1.1, and SWE-bench Verified, read the
-[evaluator-integrity benchmark suite](../evaluator_integrity/evaluator_integrity_benchmark_suite.md).
+[[knowledge/evaluator_integrity/evaluator_integrity_benchmark_suite|evaluator-integrity benchmark suite]].
 It separates contamination history from the live access boundary and does not
 convert different benchmark scores into a common capability ranking.
 

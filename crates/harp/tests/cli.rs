@@ -1,3 +1,4 @@
+use std::collections::BTreeSet;
 use std::fs;
 use std::path::Path;
 #[cfg(feature = "test-cli-fixture")]
@@ -158,15 +159,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 89,
+            "canonical_documents": 104,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 76,
-            "evidence_edges": 98
+            "source_registry_rows": 84,
+            "evidence_edges": 101
         })
     );
 }
@@ -225,7 +226,10 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     fs::create_dir_all(repo.path().join("knowledge/harness_benchmarks")).expect("benchmark packet");
     fs::create_dir_all(repo.path().join("knowledge/self_improving_agents_survey"))
         .expect("survey packet");
+    fs::create_dir_all(repo.path().join("knowledge/verified_coevolution_agenda"))
+        .expect("verified coevolution packet");
     fs::create_dir_all(repo.path().join("knowledge/crouzeix_conjecture")).expect("Crouzeix packet");
+    fs::create_dir_all(repo.path().join("knowledge/darwinx")).expect("DarwinX packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
@@ -252,10 +256,26 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     .expect("survey file");
     fs::write(
         repo.path()
+            .join("knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md"),
+        "# Verified coevolution\n\nRecursive closure makes model-harness coevolution falsifiable.\n",
+    )
+    .expect("verified coevolution file");
+    fs::write(
+        repo.path()
             .join("knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md"),
         "# Crouzeix\n\nThe origin sample cancels the diagonal correction.\n",
     )
     .expect("Crouzeix file");
+    fs::write(
+        repo.path().join("knowledge/harp_knowledge_home.md"),
+        "# Harp knowledge home\n\nReader entrypoint.\n",
+    )
+    .expect("knowledge home");
+    fs::write(
+        repo.path().join("knowledge/darwinx/darwinx_index.md"),
+        "# DarwinX\n\nPopulation selection preserves diverse harness candidates.\n",
+    )
+    .expect("DarwinX index");
     fs::write(
         repo.path().join("evidence/weng/text/source.txt"),
         "Harness evidence for recursive improvement.",
@@ -320,11 +340,39 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         ));
     harp()
         .current_dir(repo.path())
+        .args([
+            "--format",
+            "json",
+            "search",
+            "query",
+            "\"recursive closure\"",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
         .args(["--format", "json", "search", "query", "\"origin sample\""])
         .assert()
         .success()
         .stdout(predicate::str::contains(
             "\"path\":\"knowledge/crouzeix_conjecture/04_jin_positive_real_completion.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
+        .args([
+            "--format",
+            "json",
+            "search",
+            "query",
+            "\"population selection\"",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/darwinx/darwinx_index.md\"",
         ));
 
     fs::write(
@@ -354,12 +402,53 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 396);
-    assert_eq!(envelope["data"]["snapshot_files"], 105);
-    assert_eq!(envelope["data"]["binary_objects"], 58);
-    assert_eq!(envelope["data"]["implementation_sources"], 11);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 430);
+    let manifest = fs::read_to_string(repo_root().join("evidence/implementations/manifest.tsv"))
+        .expect("implementation manifest");
+    let snapshot_rows = manifest.lines().skip(1).collect::<Vec<_>>();
+    let implementation_sources = snapshot_rows
+        .iter()
+        .filter_map(|row| row.split('\t').next())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(envelope["data"]["snapshot_files"], snapshot_rows.len());
+    assert_eq!(envelope["data"]["binary_objects"], 63);
+    assert_eq!(
+        envelope["data"]["implementation_sources"],
+        implementation_sources.len()
+    );
     assert_eq!(envelope["data"]["crouzeix_source_receipts"], 29);
     assert_eq!(envelope["data"]["crouzeix_verification_receipts"], 4);
+}
+
+#[test]
+fn obsidian_skills_vendor_is_pinned_and_manifested() {
+    let root = repo_root().join("evidence/implementations/obsidian_skills");
+    assert_eq!(
+        fs::read_to_string(root.join("REMOTE")).expect("vendor remote"),
+        "https://github.com/kepano/obsidian-skills.git\n"
+    );
+    assert_eq!(
+        fs::read_to_string(root.join("REVISION")).expect("vendor revision"),
+        "a1dc48e68138490d522c04cbf5822214c6eb1202\n"
+    );
+    assert_eq!(
+        fs::read_to_string(root.join("LICENSE_STATUS")).expect("vendor license status"),
+        "MIT\n"
+    );
+
+    let manifest = fs::read_to_string(repo_root().join("evidence/implementations/manifest.tsv"))
+        .expect("implementation manifest");
+    let snapshot_rows = manifest
+        .lines()
+        .skip(1)
+        .filter(|row| row.starts_with("OBSIDIAN-SKILLS\t"))
+        .collect::<Vec<_>>();
+    assert!(!snapshot_rows.is_empty());
+    assert!(snapshot_rows.iter().all(|row| {
+        row.contains("\thttps://github.com/kepano/obsidian-skills.git\t")
+            && row.contains("\ta1dc48e68138490d522c04cbf5822214c6eb1202\t")
+            && row.contains("\tevidence/implementations/obsidian_skills/snapshot/")
+    }));
 }
 
 #[test]

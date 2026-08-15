@@ -16,6 +16,17 @@ documentation dependencies on another local checkout.
   manifests, and narrow public-source snapshots.
 - Captured files under `evidence/*/artifacts/` must not be rewritten for
   branding or formatting.
+- `evidence/implementations/obsidian_skills/` is a pinned upstream syntax-skill
+  snapshot, not a Harp prose authority. Update it only through the
+  implementation-manifest workflow with its complete upstream byte set,
+  revision, license record, and digests.
+- The repository root is the portable Obsidian vault. `knowledge/` remains the
+  prose authority; root-qualified wikilinks are the managed internal
+  navigation form. Preserve exact raw-evidence locations as the dual form:
+  a native artifact wikilink plus the conventional Markdown `#L...` locator.
+- Keep `.obsidian/` ignored. The reviewed portable profile is
+  `tools/obsidian/profile/`; update it only with the allowlisted,
+  symlink-safe installer and asset-validator coverage.
 - `docs/import-receipt.md` is the only file that may name the source repository
   used for the initial import.
 
@@ -70,6 +81,27 @@ handling.
 - Distill durable lessons into `AGENTS.md`, `CONTEXT.md`, ADRs, maintained
   docs, tests, and code. Do not let private agent memory or raw execution notes
   become the durable project interface.
+
+## Local agentic engineering tools
+
+- Kata is the local intent ledger for this repository. The committed
+  `.kata.toml` binds the workspace to the `harp` project; `.kata.local.toml`
+  is ignored for per-machine daemon overrides.
+- Use Kata for real Harp work only. Search before creating issues, prefer
+  updating existing issues, and close only when work is verified with evidence.
+  Do not run `kata init --with-agents`; Harp owns this guidance.
+- roborev is an independent verification tool, not merge authority. Do not run
+  `roborev init`, install hooks, start daemons, configure GitHub integration,
+  or post PR comments unless explicitly requested.
+- AgentsView is observability for local agent sessions and token/activity
+  analysis. Do not treat AgentsView records as durable project guidance until
+  a lesson is distilled into shared repo files.
+- For no-daemon smoke checks, use `kata version`, `roborev version`, and
+  `agentsview --version`. Commands such as `kata list`, `roborev status`, and
+  `agentsview projects` may start local services.
+- Forge, Ghosthub, Kata federation, remote daemons, GitHub sync, PostgreSQL
+  sync, and persistent background services require explicit approval before
+  setup.
 
 ## Licensing
 

@@ -24,14 +24,34 @@ communicate for humans, and learn in shared project files. Put durable process
 lessons in `AGENTS.md`, `CONTEXT.md`, ADRs, maintained docs, tests, or code;
 do not rely on private agent memory as a project interface.
 
+### Local tools
+
+This repository is bound to the local Kata project `harp` through `.kata.toml`.
+Use Kata as the shared intent ledger for real Harp work; `.kata.local.toml` is
+ignored for per-machine daemon overrides. Do not run `kata init --with-agents`
+because Harp owns its agent guidance directly.
+
+roborev may be used for independent local verification, but hooks, daemons,
+GitHub App integration, PR comments, and CI polling require explicit approval.
+AgentsView may be used for local session and token observability; its records
+inform later distillation but are not themselves project guidance.
+
 ## Content changes
 
-1. Edit canonical Markdown or registries under `content/`.
-2. Run `cargo run -p harp -- check`.
-3. Run `cargo run -p harp -- build`.
-4. Refresh search with `cargo run -p harp -- search refresh`.
-5. Rebuild the offline Atlas with `cd atlas && corepack pnpm run test:export`.
-6. Run `mise run verify`.
+1. Edit canonical technical prose under `knowledge/`; use `content/` only for
+   structured machine-readable contracts and diagnostics.
+2. Use vault-root-qualified wiki links for managed note, claim-ledger, and
+   artifact navigation. Preserve exact raw-evidence line locators as the
+   documented dual form: native artifact wiki link plus the original Markdown
+   `#L...` locator.
+3. Run `python3 scripts/migrate_obsidian_links.py --check` before committing a
+   prose change. Resolve every reported local-link error; do not use `--write`
+   without reviewing its diff.
+4. Run `cargo run -p harp -- check`.
+5. Run `cargo run -p harp -- build`.
+6. Refresh search with `cargo run -p harp -- search refresh`.
+7. Rebuild the offline Atlas with `cd atlas && corepack pnpm run test:export`.
+8. Run `mise run verify`.
 
 Do not duplicate technical explanations in TypeScript. New canonical Markdown
 must have one stable role, one source/claim ceiling, valid local links, and
@@ -46,6 +66,37 @@ When authored material encounters an AlphaXiv reference, resolve the paper and
 link its canonical `https://arxiv.org/abs/...` abstract page. Do not rewrite
 AlphaXiv strings or any other references inside captured evidence; captured
 upstream bytes remain byte-faithful.
+
+### Obsidian-native knowledge presentation
+
+Open the repository root as the Obsidian vault and begin at
+[[knowledge/harp_knowledge_home|Harp knowledge home]]. `knowledge/` is still
+the sole technical-prose authority; Obsidian is a reader and navigation layer,
+not a second source of truth.
+
+- Author managed internal navigation with vault-root-qualified wikilinks.
+  Keep external URLs as Markdown links. Never rewrite
+  `evidence/*/artifacts/` captures for Obsidian syntax.
+- Exact raw-evidence locations remain dual-linked: a native artifact wikilink
+  for vault navigation and the conventional Markdown `#L...` locator for the
+  immutable line reference.
+- Keep personal `.obsidian/` state ignored. The portable reviewed profile lives
+  in `tools/obsidian/profile/`; apply it explicitly with:
+
+  ```sh
+  python3 tools/obsidian/apply_profile.py --vault "$(git rev-parse --show-toplevel)"
+  ```
+
+  The installer is create-only by default. Validate the committed profile,
+  Base, Canvas, and knowledge-home assets with
+  `python3 scripts/validate_obsidian_assets.py`.
+- A registered packet must define valid metadata, add its first-class route or
+  auxiliary-document registration as appropriate, extend search roots, add
+  packet tests, and regenerate the corpus and Atlas projection. Do not make
+  a packet canonical merely to make it discoverable.
+
+The locally installed `obsidian-markdown`, `obsidian-bases`, `json-canvas`,
+`obsidian-cli`, and `defuddle` TRAE CLI skills load after a TRAE CLI restart.
 
 ## Evidence changes
 

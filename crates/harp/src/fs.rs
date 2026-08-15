@@ -95,6 +95,16 @@ impl HeldDirectory {
         }
     }
 
+    pub fn regular_file_exists(&self, relative: &Path, label: &str) -> Result<bool, AppError> {
+        let path = self.resolve_read_target(relative, label)?;
+        match fs::symlink_metadata(path) {
+            Ok(metadata) if metadata.is_file() => Ok(true),
+            Ok(_) => Ok(false),
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(error) => Err(AppError::io("fs.metadata", label, error)),
+        }
+    }
+
     pub fn regular_files_with_extension(
         &self,
         relative: &Path,

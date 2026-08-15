@@ -115,6 +115,27 @@ describe("RSI technical reader", () => {
     expect(article.querySelector("math")).not.toBeNull();
   });
 
+  it("opens the verified coevolution agenda through its first-class route", async () => {
+    const user = userEvent.setup();
+    render(<ReaderApp />);
+
+    await user.click(screen.getByRole("button", { name: "Verified coevolution" }));
+
+    expect(window.location.hash).toBe("#verified-coevolution");
+    expect(
+      screen.getByRole("heading", {
+        name: "Beyond self-training: recursive closure, model-harness coevolution, and assurance of self-improving AI.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "knowledge/verified_coevolution_agenda/verified_coevolution_agenda.md",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "Current route" }))
+      .toHaveTextContent("Verified coevolution");
+  });
+
   it("blocks lineage promotion when any protected gate closes", async () => {
     const user = userEvent.setup();
     window.location.hash = "#loop";

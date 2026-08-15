@@ -31,7 +31,7 @@ After this chapter, you should be able to:
 The architecture below reconciles the paper with the released implementation
 at commit `a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2`.
 
-**[INFERENCE - DGM-065](claim_evidence_crosswalk.md#dgm-065-dgm-is-evolutionary-search-over-agent-scaffolds).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-065: DGM is evolutionary search over agent scaffolds|INFERENCE - DGM-065]].**
 The system is a fixed evolutionary controller over mutable coding-agent
 programs. Foundation-model weights, archive policy, evaluator, and live
 orchestration remain outside the candidate.
@@ -105,7 +105,7 @@ The trust boundary is the central design fact. DGM is self-modifying only
 inside the candidate box. It is not a system in which every search, evaluation,
 and authority mechanism is candidate-owned.
 
-**[EVIDENCE - DGM-013](claim_evidence_crosswalk.md#dgm-013-diagnosis-receives-privileged-evaluator-evidence).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-013: Diagnosis receives privileged evaluator evidence|EVIDENCE - DGM-013]].**
 Evaluator independence is partial: the task-solving agent does not receive
 private tests during ordinary evaluation, but the fixed diagnosis stage can use
 private test patches and their results to shape the next scaffold change.
@@ -377,7 +377,7 @@ evaluation channel.
 
 ### Container use is not a sandbox proof
 
-**[INFERENCE - DGM-042](claim_evidence_crosswalk.md#dgm-042-released-docker-use-is-not-a-hardened-sandbox-proof).**
+**[[knowledge/darwin_godel_machine/claim_evidence_crosswalk#DGM-042: Released Docker use is not a hardened sandbox proof|INFERENCE - DGM-042]].**
 The source starts ordinary Docker containers and injects API credentials into
 the self-improvement process. The captured implementation does not by itself
 establish network isolation, a read-only host boundary, a non-root user,
@@ -404,7 +404,7 @@ maintainability, and declared-use review.
 8. A child cannot certify its own containment or evaluator integrity.
 
 Continue with the
-[repository walkthrough](05_repository_walkthrough.md), inspect
-[safety and failure](08_safety_and_failure.md).
+[[knowledge/darwin_godel_machine/05_repository_walkthrough|repository walkthrough]], inspect
+[[knowledge/darwin_godel_machine/08_safety_and_failure|safety and failure]].
 
-Back to the [DGM index](darwin_godel_machine_index.md).
+Back to the [[knowledge/darwin_godel_machine/darwin_godel_machine_index|DGM index]].

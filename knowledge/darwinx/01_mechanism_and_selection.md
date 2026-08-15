@@ -15,7 +15,7 @@ DarwinX is an outer loop for harness search. The model proposes and runs work,
 but its weights do not change. Prompts, memory, tools, control flow, skills,
 and agent-loop code do.
 
-**[EVIDENCE - DX-001](claim_evidence_ledger.md#dx-001-darwinx-edits-the-harness-while-holding-model-weights-fixed).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-001: DarwinX edits the harness while holding model weights fixed|EVIDENCE - DX-001]].**
 The paper splits the editable harness into a skill layer and a code layer. The
 skill layer contains prompts, memory, and distilled knowledge. The code layer
 contains tools, control flow, and the agent loop. This is broad harness
@@ -39,7 +39,7 @@ v = (
 )
 ```
 
-**[EVIDENCE - DX-002](claim_evidence_ledger.md#dx-002-the-archive-stores-executable-lineages-plus-evidence).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-002: The archive stores executable lineages plus evidence|EVIDENCE - DX-002]].**
 The paper explicitly gives the first six fields. Solved-task signatures appear
 in the inheritance rules. Steering status follows from the separate
 confirmation gate. That last distinction matters.
@@ -77,7 +77,7 @@ g(c) > 0
 R(c) <= δ
 ```
 
-**[EVIDENCE - DX-003](claim_evidence_ledger.md#dx-003-the-fitness-gate-permits-bounded-measured-regression).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-003: The fitness gate permits bounded measured regression|EVIDENCE - DX-003]].**
 `g` measures net estimated improvement. `R` measures the total estimated
 downside without letting gains cancel losses. A candidate needs positive net
 gain and regression mass below the tolerance.
@@ -95,7 +95,7 @@ The child is eligible when `δ >= 0.1`, even though one measured capability
 regressed. Finite `avg@k` adds another problem: a task can appear preserved
 because the sample missed a failure mode.
 
-**[INFERENCE - DX-030](claim_evidence_ledger.md#dx-030-darwinx-offers-no-formal-capability-monotonicity-guarantee).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-030: DarwinX offers no formal capability-monotonicity guarantee|INFERENCE - DX-030]].**
 DarwinX implements a noisy bounded-regression policy. It does not prove that a
 child preserves every behavior its parent had.
 
@@ -106,7 +106,7 @@ evidence, and shared population memory. It returns `promote` or `revert`. A
 promoted child still needs a higher-fidelity retest and a preservation probe
 before it can steer later search.
 
-**[EVIDENCE - DX-004](claim_evidence_ledger.md#dx-004-exploration-admission-and-steering-promotion-use-different-evidence).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-004: Exploration admission and steering promotion use different evidence|EVIDENCE - DX-004]].**
 This separates two decisions:
 
 | Decision | Bias | Purpose |
@@ -140,7 +140,7 @@ p* ~ (1 - β) point_mass(argmax_{v in S} G(v))
 
 `S` is the confirmed steering set. `P` is the wider population.
 
-**[EVIDENCE - DX-005](claim_evidence_ledger.md#dx-005-parent-selection-mixes-cumulative-gain-exploitation-with-broadening).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-005: Parent selection mixes cumulative-gain exploitation with broadening|EVIDENCE - DX-005]].**
 The paper argues that cumulative gain is more comparable than raw score because
 variants may be screened on different task subsets.
 
@@ -163,7 +163,7 @@ DarwinX uses three evidence modes:
 | Teacher-derived | Successful reference-solver trajectory | Distill a procedure when the target has no success |
 | Self-derived | Passing and failing target-agent samples | Find behavior that makes success reliable |
 
-**[EVIDENCE - DX-007](claim_evidence_ledger.md#dx-007-mutation-uses-failure-teacher-and-self-contrast-evidence).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-007: Mutation uses failure, teacher, and self-contrast evidence|EVIDENCE - DX-007]].**
 All three produce harness edits. None trains the target model.
 
 The phrase "no gold solutions" has a narrow meaning. The loop does not consume
@@ -182,7 +182,7 @@ Teacher trajectories augment walls.
 
 ## Shared memory
 
-**[EVIDENCE - DX-008](claim_evidence_ledger.md#dx-008-shared-memory-aggregates-cross-task-failure-themes).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-008: Shared memory aggregates cross-task failure themes|EVIDENCE - DX-008]].**
 After evaluation, a classifier labels failures such as setup timeout,
 wrong output, and tool error. An aggregator updates shared memory:
 
@@ -237,7 +237,7 @@ The merged child survives only if:
 S(child) contains union_i S(v_i)
 ```
 
-**[EVIDENCE - DX-006](claim_evidence_ledger.md#dx-006-recombination-uses-a-stricter-solved-set-rule-than-the-fitness-gate).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-006: Recombination uses a stricter solved-set rule than the fitness gate|EVIDENCE - DX-006]].**
 This union rule is stronger than the ordinary tolerance-based fitness gate.
 It prevents a high average score from buying away one source variant's unique
 win.
@@ -280,7 +280,7 @@ editable:
 The fixed model makes performance deltas attributable to the full harness
 change. It does not attribute them to any one DarwinX operator.
 
-**[MISSING - DX-010](claim_evidence_ledger.md#dx-010-core-optimizer-details-needed-for-reproduction-are-absent).**
+**[[knowledge/darwinx/claim_evidence_ledger#DX-010: Core optimizer details needed for reproduction are absent|MISSING - DX-010]].**
 The paper leaves `β`, `δ`, model settings, prompts, subset allocation, and merge
 conflict resolution unspecified. No public optimizer implementation was found
 in the bounded search.
@@ -307,5 +307,5 @@ The central unresolved issue is attribution. The complete system changes
 proposal context, memory, selection, inference effort, archive structure, and
 sometimes action policy. The experiments do not isolate those parts.
 
-Continue with the [evaluation audit](02_evaluation_audit.md) or return to the
-[DarwinX index](darwinx_index.md).
+Continue with the [[knowledge/darwinx/02_evaluation_audit|evaluation audit]] or return to the
+[[knowledge/darwinx/darwinx_index|DarwinX index]].

@@ -410,6 +410,76 @@ fn resolve_local_link(source: &Path, target: &str) -> Result<PathBuf, String> {
     Ok(resolved)
 }
 
+fn validate_wiki_links(source: &Path, text: &str) -> Result<(), String> {
+    for link in harp::knowledge::resolve_wiki_links(&workspace_root(), source, text)
+        .map_err(|error| error.to_string())?
+    {
+        if !link
+            .target
+            .starts_with(Path::new("knowledge/crouzeix_conjecture"))
+            || link.requested_heading.is_none()
+        {
+            continue;
+        }
+        let explicit = explicit_heading_ids(
+            &fs::read_to_string(workspace_root().join(&link.target))
+                .map_err(|error| error.to_string())?,
+        )?;
+        if !link
+            .heading_id
+            .as_deref()
+            .is_some_and(|heading| explicit.contains(heading))
+        {
+            return Err(format!(
+                "native wiki heading must resolve to an explicit Crouzeix ID: {}",
+                link.target.display()
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn native_reader_claim_ids(source: &Path, text: &str) -> Result<BTreeSet<String>, String> {
+    let mut ids = BTreeSet::new();
+    for line in text.lines() {
+        let Some(marker) = line.trim().strip_prefix("**[[") else {
+            continue;
+        };
+        let (target, label) = marker
+            .strip_suffix("]].**")
+            .ok_or_else(|| format!("malformed native claim marker `{line}`"))?
+            .split_once('|')
+            .ok_or_else(|| format!("malformed native claim label `{line}`"))?;
+        let (_, id) = label
+            .split_once(" - ")
+            .ok_or_else(|| format!("malformed native claim label `{line}`"))?;
+        if !id.starts_with("CC-") {
+            continue;
+        }
+        let resolutions = harp::knowledge::resolve_wiki_links(
+            &workspace_root(),
+            source,
+            &format!("[[{target}|{label}]]"),
+        )
+        .map_err(|error| error.to_string())?;
+        let resolution = resolutions
+            .first()
+            .ok_or_else(|| format!("missing native claim resolution `{line}`"))?;
+        if resolution.target != Path::new("knowledge/crouzeix_conjecture/claim_evidence_ledger.md")
+            || !resolution
+                .heading_id
+                .as_deref()
+                .is_some_and(|heading| heading.starts_with(&id.to_ascii_lowercase()))
+        {
+            return Err(format!(
+                "native claim route does not resolve {id}: `{line}`"
+            ));
+        }
+        ids.insert(id.to_owned());
+    }
+    Ok(ids)
+}
+
 fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
     let ids = entries
         .iter()
@@ -429,11 +499,27 @@ fn validate_claims(path: &Path, entries: &[Claim]) -> Result<(), String> {
             return Err(format!("{} has invalid confidence", entry.id));
         }
         for field in ["Source", "Locator"] {
-            if markdown_links(entry.field(field)?).is_empty() {
+            let markdown = markdown_links(entry.field(field)?);
+            let wiki =
+                harp::knowledge::resolve_wiki_links(&workspace_root(), path, entry.field(field)?)
+                    .map_err(|error| error.to_string())?;
+            if markdown.is_empty() && wiki.is_empty() {
                 return Err(format!("{} field {field} must contain a link", entry.id));
             }
+            validate_wiki_links(path, entry.field(field)?)?;
         }
-        for locator in markdown_links(entry.field("Locator")?) {
+        let locators = markdown_links(entry.field("Locator")?);
+        if !locators.iter().any(|locator| {
+            locator
+                .split_once('#')
+                .is_some_and(|(_, anchor)| anchor.starts_with('L'))
+        }) {
+            return Err(format!(
+                "{} locator requires a conventional Markdown line locator",
+                entry.id
+            ));
+        }
+        for locator in locators {
             if locator.starts_with("http://") || locator.starts_with("https://") {
                 return Err(format!("{} locator is not local evidence", entry.id));
             }
@@ -541,7 +627,7 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         .collect::<BTreeSet<_>>();
     assert_eq!(actual, expected, "packet file roster drifted");
 
-    let mut referenced_claims = BTreeSet::new();
+    let mut referenced_claims = BTreeSet::<String>::new();
     for name in EXPECTED_FILES {
         let path = root.join(name);
         let text = fs::read_to_string(&path).expect("read packet file");
@@ -565,10 +651,11 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
             }
             resolve_local_link(&path, &link).unwrap_or_else(|error| panic!("{name}: {error}"));
         }
+        validate_wiki_links(&path, &text).unwrap_or_else(|error| panic!("{name}: {error}"));
         if name != "crouzeix_conjecture_index.md" {
             assert!(
                 text.trim_end().ends_with(
-                    "Back to the [Crouzeix conjecture index](crouzeix_conjecture_index.md)."
+                    "Back to the [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Crouzeix conjecture index]]."
                 ),
                 "{name} lacks the exact index backlink"
             );
@@ -576,9 +663,13 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         if name != "claim_evidence_ledger.md" {
             for id in REQUIRED_CLAIMS {
                 if text.contains(&format!(" - {id}](")) {
-                    referenced_claims.insert(id);
+                    referenced_claims.insert(id.to_owned());
                 }
             }
+            referenced_claims.extend(
+                native_reader_claim_ids(&path, &text)
+                    .unwrap_or_else(|error| panic!("{name}: {error}")),
+            );
         }
     }
 
@@ -603,9 +694,12 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     validate_claims(&ledger_path, &entries).expect("validate claim ledger");
     let actual_claims = entries
         .iter()
-        .map(|entry| entry.id.as_str())
+        .map(|entry| entry.id.clone())
         .collect::<BTreeSet<_>>();
-    let expected_claims = REQUIRED_CLAIMS.into_iter().collect::<BTreeSet<_>>();
+    let expected_claims = REQUIRED_CLAIMS
+        .into_iter()
+        .map(str::to_owned)
+        .collect::<BTreeSet<_>>();
     assert_eq!(actual_claims, expected_claims, "claim roster drifted");
     assert_eq!(
         referenced_claims, expected_claims,
@@ -635,4 +729,40 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
     assert!(status.contains("metadata only"));
 
     assert_packet_registration();
+}
+
+#[test]
+fn native_wiki_links_validate_aliases_headings_and_escape_safely() {
+    let document = packet_root().join("link-test.md");
+    let valid = [
+        "[[crouzeix_conjecture_index|Crouzeix index]]",
+        "[[source_registry#jin-v4-audited-formalization-matched-git-manuscript|Jin source]]",
+        "[[evidence/crouzeix_conjecture/verification/jin-565b6a3-build.log|build log]]",
+        "```md\n[[../../outside]]\n```",
+    ]
+    .join("\n");
+    validate_wiki_links(&document, &valid)
+        .expect("production wiki resolver accepts aliases, headings, and fenced text");
+    for invalid in ["[[../../outside]]", "[[/etc/passwd]]"] {
+        assert!(
+            validate_wiki_links(&document, invalid).is_err(),
+            "escaping native wiki link unexpectedly passed: {invalid}"
+        );
+    }
+}
+
+#[test]
+fn native_wiki_heading_links_require_explicit_crouzeix_ids() {
+    let document = packet_root().join("link-test.md");
+    let source = "claim_evidence_ledger";
+    let generated_slug = "crouzeix-constant-two-conjecture";
+    assert!(
+        validate_wiki_links(&document, &format!("[[{source}#{generated_slug}]]")).is_err(),
+        "a generated heading slug must not bypass Crouzeix's explicit-ID contract"
+    );
+    validate_wiki_links(
+        &document,
+        &format!("[[{source}#cc-001-crouzeix-constant-two-conjecture]]"),
+    )
+    .expect("the documented explicit Crouzeix heading ID must validate");
 }
