@@ -1,0 +1,30 @@
+filters: 'file.inFolder("knowledge") && file.ext == "md"'
+properties:
+  file.link:
+    displayName: "Document"
+  title:
+    displayName: "Title"
+  type:
+    displayName: "Kind"
+  status:
+    displayName: "Status"
+  confidence:
+    displayName: "Confidence"
+  tags:
+    displayName: "Tags"
+views:
+  - type: cards
+    name: Reader routes
+    filters: 'type == "research-index" || type == "benchmark-guide" || type == "reference-architecture"'
+    order: [file.link, title, status, confidence, tags]
+  - type: table
+    name: Technical deep dives
+    filters: 'type == "technical-deep-dive" || type == "system-reading"'
+    order: [file.link, title, status, confidence, tags, source_ids]
+  - type: list
+    name: Evidence ledgers
+    filters: 'type == "source-registry" || type == "claim-evidence-ledger" || type == "missing-evidence-ledger"'
+    order: [file.link, title, status, confidence]
+  - type: table
+    name: Recently updated
+    order: [file.link, title, type, file.mtime]
