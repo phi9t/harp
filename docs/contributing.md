@@ -38,12 +38,20 @@ inform later distillation but are not themselves project guidance.
 
 ## Content changes
 
-1. Edit canonical Markdown or registries under `content/`.
-2. Run `cargo run -p harp -- check`.
-3. Run `cargo run -p harp -- build`.
-4. Refresh search with `cargo run -p harp -- search refresh`.
-5. Rebuild the offline Atlas with `cd atlas && corepack pnpm run test:export`.
-6. Run `mise run verify`.
+1. Edit canonical technical prose under `knowledge/`; use `content/` only for
+   structured machine-readable contracts and diagnostics.
+2. Use vault-root-qualified wiki links for managed note, claim-ledger, and
+   artifact navigation. Preserve exact raw-evidence line locators as the
+   documented dual form: native artifact wiki link plus the original Markdown
+   `#L...` locator.
+3. Run `python3 scripts/migrate_obsidian_links.py --check` before committing a
+   prose change. Resolve every reported local-link error; do not use `--write`
+   without reviewing its diff.
+4. Run `cargo run -p harp -- check`.
+5. Run `cargo run -p harp -- build`.
+6. Refresh search with `cargo run -p harp -- search refresh`.
+7. Rebuild the offline Atlas with `cd atlas && corepack pnpm run test:export`.
+8. Run `mise run verify`.
 
 Do not duplicate technical explanations in TypeScript. New canonical Markdown
 must have one stable role, one source/claim ceiling, valid local links, and

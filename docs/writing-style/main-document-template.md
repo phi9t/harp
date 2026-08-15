@@ -10,32 +10,40 @@ technical claim in this section unless it has a claim block.
 
 ## Mechanism
 
-**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).**
+**[[claim-ledger-template#EX-001: Released selector reads the shallow score|EVIDENCE - EX-001]].**
 State one bounded source-backed mechanism. Keep all sentences in this block
 under the same source route and accounting boundary.
 
-**[INFERENCE - EX-003](claim-ledger-template.md#ex-003-the-result-supports-harness-improvement).**
+**[[claim-ledger-template#EX-003: The result supports harness improvement|INFERENCE - EX-003]].**
 State the interpretation separately. Include the concrete uncertainty boundary
 when it affects the reader's conclusion.
 
 ## Reported results
 
-**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-authors-report-the-benchmark-result).**
+**[[claim-ledger-template#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
 State the author's reported result with benchmark, task count, metric, model,
 and reproduction status.
 
 ## Direct quotation
 
-**[EVIDENCE - EX-005](claim-ledger-template.md#ex-005-repository-describes-empirical-validation).**
+**[[claim-ledger-template#EX-005: Repository describes empirical validation|EVIDENCE - EX-005]].**
 The repository calls DGM a system that "empirically validates each change
 using coding benchmarks." The wording was inspected; the behavior was not
 independently reproduced here.
 
 ## Evidence gap
 
-**[MISSING - EX-004](claim-ledger-template.md#ex-004-next-cycle-evidence-is-missing).**
+**[[claim-ledger-template#EX-004: Next-cycle evidence is missing|MISSING - EX-004]].**
 Name the missing experiment, artifact, or source needed for the stronger
 conclusion.
+
+## Legacy compatibility
+
+New managed prose uses the native wiki markers above. This transitional
+Markdown marker remains only while the style validator accepts both forms:
+
+**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).**
+Use the native marker when authoring a new claim block.
 
 ## Conclusion
 

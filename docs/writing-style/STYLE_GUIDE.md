@@ -41,7 +41,7 @@ behavior that is supported by an inspected source.
 accurately reports what an inspection establishes within the stated scope.
 
 ```markdown
-**[EVIDENCE - EX-001](claim-ledger-template.md#ex-001-released-selector-reads-the-shallow-score).**
+**[[knowledge/packet/claim_evidence_ledger#EX-001: Released selector reads the shallow score|EVIDENCE - EX-001]].**
 The released selector reads `overall_performance`.
 ```
 
@@ -55,7 +55,7 @@ An author's reported result, interpretation, intended behavior, or design
 assertion.
 
 ```markdown
-**[SOURCE CLAIM - EX-002](claim-ledger-template.md#ex-002-authors-report-the-benchmark-result).**
+**[[knowledge/packet/claim_evidence_ledger#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
 The authors report 50.0% on their 200-task benchmark subset. This result has
 not been independently reproduced here.
 ```
@@ -73,7 +73,7 @@ claim entry.
 A conclusion derived by the documentation author from one or more sources.
 
 ```markdown
-**[INFERENCE - EX-003](claim-ledger-template.md#ex-003-the-result-supports-harness-improvement).**
+**[[knowledge/packet/claim_evidence_ledger#EX-003: The result supports harness improvement|INFERENCE - EX-003]].**
 The result supports harness improvement, but not successor improvement because
 the study does not compare parent and child as producers of later accepted
 children.
@@ -87,7 +87,7 @@ Evidence required for a stronger conclusion but absent from the inspected
 corpus.
 
 ```markdown
-**[MISSING - EX-004](claim-ledger-template.md#ex-004-next-cycle-evidence-is-missing).**
+**[[knowledge/packet/claim_evidence_ledger#EX-004: Next-cycle evidence is missing|MISSING - EX-004]].**
 The corpus contains no matched next-cycle experiment.
 ```
 
@@ -125,6 +125,8 @@ The main document should:
 - use claim blocks only for material assertions;
 - keep navigation and non-falsifiable transitions unlabeled;
 - link every material claim ID to the exact ledger heading;
+- use vault-root-qualified wiki links for claim-ledger, note, and artifact
+  navigation; and
 - state inline reproduction status for quantitative, benchmark, safety-critical,
   or easily misattributed claims;
 - state concrete uncertainty when it affects interpretation; and
@@ -190,6 +192,31 @@ Every step must be clickable.
 
 A direct source link may supplement the ledger link when it helps code or
 artifact navigation. It does not replace the ledger entry.
+
+## Obsidian-native routes
+
+Managed prose uses root-qualified wiki links. Keep the visible alias concise,
+but retain the full visible heading after `#` in a claim route:
+
+```markdown
+**[[knowledge/packet/claim_evidence_ledger#EX-002: Authors report the benchmark result|SOURCE CLAIM - EX-002]].**
+```
+
+Use the same form for note and artifact navigation:
+
+```markdown
+[[knowledge/packet/source_registry|source registry]]
+[[evidence/example/artifacts/paper.pdf|captured paper]]
+```
+
+Exact `#L...` locators into immutable raw evidence are the one retained
+internal Markdown-link form. Pair native artifact navigation with the original
+conventional locator; never add block IDs or otherwise rewrite captured bytes:
+
+```markdown
+[[evidence/example/text/source.txt|captured source]]
+([exact line 103](../../evidence/example/text/source.txt#L103))
+```
 
 ## Quotation and paraphrase
 

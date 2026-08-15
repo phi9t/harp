@@ -13,19 +13,19 @@ entries are shown together only to make the teaching route visible on one page.
 
 ## Main prose
 
-**[EVIDENCE - EX-101](#ex-101-figure-label-reports-590).**
+**[[#EX-101: Figure label reports 59.0|EVIDENCE - EX-101]].**
 The figure labels the transferred result as 59.0%. This result has not been
 independently reproduced here.
 
-**[EVIDENCE - EX-102](#ex-102-nearby-prose-reports-595).**
+**[[#EX-102: Nearby prose reports 59.5|EVIDENCE - EX-102]].**
 The nearby prose reports 59.5%. This result has not been independently
 reproduced here.
 
-**[MISSING - EX-103](#ex-103-the-exact-value-is-unresolved).**
+**[[#EX-103: The exact value is unresolved|MISSING - EX-103]].**
 The exact value remains unresolved without an authoritative result artifact or
 author correction.
 
-**[INFERENCE - EX-104](#ex-104-rounding-could-explain-the-discrepancy).**
+**[[#EX-104: Rounding could explain the discrepancy|INFERENCE - EX-104]].**
 Rounding could explain the discrepancy, but the inspected source does not
 establish that explanation.
 
@@ -37,8 +37,9 @@ establish that explanation.
 - Statement: Figure 4 labels the transferred result as 59.0%.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Example paper](source-registry-template.md#example-paper-darwin-godel-machine-paper)
-- Locator: [Figure 4 extraction, line 461](../../evidence/weng/text/dgm.txt#L461)
+- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 461](../../evidence/weng/text/dgm.txt#L461))
 - Scope: Figure 4 label.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -52,8 +53,9 @@ establish that explanation.
 - Statement: The prose near Figure 4 reports 59.5%.
 - Mode: `paraphrase`
 - Source stability: `pinned`
-- Source: [Example paper](source-registry-template.md#example-paper-darwin-godel-machine-paper)
-- Locator: [Figure 4 discussion, line 517](../../evidence/weng/text/dgm.txt#L517)
+- Source: [[source-registry-template#EXAMPLE-PAPER: Darwin Godel Machine paper|Example paper]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
 - Scope: Prose adjacent to Figure 4.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -66,10 +68,11 @@ establish that explanation.
 - Class: `MISSING`
 - Statement: Available source materials do not establish whether 59.0% or
   59.5% is the authoritative result.
-- Source: [EX-101](#ex-101-figure-label-reports-590) and
-  [EX-102](#ex-102-nearby-prose-reports-595)
-- Locator: [Figure 4 value, line 461](../../evidence/weng/text/dgm.txt#L461) and
-  [nearby prose value, line 517](../../evidence/weng/text/dgm.txt#L517)
+- Source: [[#EX-101: Figure label reports 59.0|EX-101]] and
+  [[#EX-102: Nearby prose reports 59.5|EX-102]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 461](../../evidence/weng/text/dgm.txt#L461)) and
+  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
 - Scope: Exact transferred result.
 - Reproduction: Not independently reproduced here.
 - Confidence: `high`
@@ -82,10 +85,11 @@ establish that explanation.
 
 - Class: `INFERENCE`
 - Statement: Rounding could explain the 59.0% versus 59.5% discrepancy.
-- Source: [EX-101](#ex-101-figure-label-reports-590) and
-  [EX-102](#ex-102-nearby-prose-reports-595)
-- Locator: [Figure 4 value, line 461](../../evidence/weng/text/dgm.txt#L461) and
-  [nearby prose value, line 517](../../evidence/weng/text/dgm.txt#L517)
+- Source: [[#EX-101: Figure label reports 59.0|EX-101]] and
+  [[#EX-102: Nearby prose reports 59.5|EX-102]]
+- Locator: [[evidence/weng/text/dgm.txt|DGM paper extracted text]]
+  ([exact line 461](../../evidence/weng/text/dgm.txt#L461)) and
+  ([exact line 517](../../evidence/weng/text/dgm.txt#L517))
 - Scope: The discrepancy between these two source statements only.
 - Reproduction: Not applicable.
 - Confidence: `low`
@@ -105,7 +109,7 @@ For a mutable page without an immutable revision:
 - Mode: `paraphrase`
 - Source stability: `dated observation`
 - Observed: `2026-08-08`
-- Source: [Local dated capture](../../evidence/weng/metadata/dgm-arxiv.html)
-- Locator: [Captured abstract description](../../evidence/weng/metadata/dgm-arxiv.html)
+- Source: [[evidence/weng/metadata/dgm-arxiv.html|Local dated capture]]
+- Locator: [[evidence/weng/metadata/dgm-arxiv.html|Captured abstract description]]
 - Caveat: Refresh before presenting this as current.
 ```
