@@ -2,6 +2,7 @@ import MathematicalFoundations.Algebra
 import MathematicalFoundations.Analysis
 import MathematicalFoundations.Geometry
 import MathematicalFoundations.Linear
+import MathematicalFoundations.Orthogonality
 import MathematicalFoundations.Probability
 import MathematicalFoundations.Statistics
 import MathematicalFoundations.Boundary
