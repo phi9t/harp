@@ -11,18 +11,22 @@ from protocol import ValidationError, read_run_spec, read_strict_json_object, sh
 
 
 REVIEW_ALLOWED_TOOLS = ["Write"]
+RECONCILIATION_PROMPT_SHA256 = "0" * 64
+RECONCILIATION_SCHEMA_SHA256 = "0" * 64
 REVIEW_PROVIDER_ROLES = frozenset(
     {"correctness_review", "repair", "mechanism_classification"}
 )
 TASK_BY_ROLE = {
     "correctness_review": "correctness_review",
-    "repair": "correctness_review",
+    "repair": "correctness_repair",
     "mechanism_classification": "mechanism_classification",
+    "finding_reconciliation": "finding_reconciliation",
 }
 OWNER_BY_ROLE = {
     "correctness_review": "reviewer",
     "repair": "reviewer",
     "mechanism_classification": "reviewer",
+    "finding_reconciliation": "orchestrator",
 }
 
 
@@ -76,7 +80,7 @@ def run_correctness_review(
             prompt_sha256=str(ticket["prompt_sha256"]),
             schema_sha256=str(ticket["schema_sha256"]),
             call_receipt_sha256=receipt_sha256,
-            terminal_ticket_event_sha256=receipt_sha256,
+            terminal_ticket_event_sha256=str(result["terminal_ticket_event_sha256"]),
             review_payload=result["validated_output"],
         )
     result["review"] = review
@@ -90,6 +94,7 @@ def run_repair(
     repair_id: str,
     parent_candidate_text: str,
     finding_ledger: Mapping[str, Any],
+    theorem_text: str = "Theorem.",
 ) -> dict[str, Any]:
     root = Path(review_dir).resolve()
     request = review_contracts.build_repair_request(
@@ -103,11 +108,6 @@ def run_repair(
         f"review-{repair_id}-r1",
         f"review-{repair_id}-r2",
     ]
-    _require_re_review_tickets(
-        root,
-        required_ticket_ids=required,
-        repaired_candidate_sha256=None,
-    )
     prompt = _read_prompt(root, "review_repair.md")
     schema = root / "schemas/repair_result.schema.json"
     ticket = _load_and_validate_ticket(
@@ -142,6 +142,8 @@ def run_repair(
                 root,
                 required_ticket_ids=required,
                 repaired_candidate_sha256=str(repair_result["repaired_candidate_sha256"]),
+                repaired_candidate_text=str(repair_result["repair_payload"]["candidate_text"]),
+                theorem_text=theorem_text,
             )
     result["repair_result"] = repair_result
     result["required_re_review_ticket_ids"] = required
@@ -193,6 +195,61 @@ def run_mechanism_classification(
     return result
 
 
+def build_reconciliation_context(
+    *,
+    reconciliation_id: str,
+    finding_ledgers: Sequence[Mapping[str, Any]],
+) -> dict[str, object]:
+    ledgers = [review_contracts.validate_finding_ledger(item) for item in finding_ledgers]
+    return {
+        "schema_version": "crouzeix-finding-reconciliation-context/v1",
+        "reconciliation_id": reconciliation_id,
+        "candidate_sha256s": [ledger["candidate_sha256"] for ledger in ledgers],
+        "finding_ledger_sha256s": [ledger["finding_ledger_sha256"] for ledger in ledgers],
+        "finding_ledgers": ledgers,
+    }
+
+
+def run_finding_reconciliation(
+    review_dir: Path,
+    *,
+    ticket_id: str,
+    reconciliation_id: str,
+    finding_ledgers: Sequence[Mapping[str, Any]],
+) -> dict[str, object]:
+    root = Path(review_dir).resolve()
+    context = build_reconciliation_context(
+        reconciliation_id=reconciliation_id,
+        finding_ledgers=finding_ledgers,
+    )
+    _require_ticket_file(root, ticket_id)
+    ticket = _load_and_validate_ticket(
+        root,
+        ticket_id=ticket_id,
+        role="finding_reconciliation",
+        context=context,
+        prompt=RECONCILIATION_PROMPT_SHA256,
+        schema_path=None,
+        parent_artifact_sha256=None,
+    )
+    _append_ticket_progress(root, ticket_id, "admitted", review_contracts.canonical_sha256(context))
+    _append_ticket_progress(root, ticket_id, "running", review_contracts.canonical_sha256(ticket))
+    try:
+        decision = _build_repair_decision(reconciliation_id, context["finding_ledgers"])
+        _write_repair_decision(root, decision)
+    except ValidationError as error:
+        _append_ticket_progress(
+            root,
+            ticket_id,
+            "failed",
+            review_contracts.canonical_sha256({"error": str(error)}),
+        )
+        raise
+    _append_ticket_progress(root, ticket_id, "completed", decision["repair_decision_sha256"])
+    _append_ticket_progress(root, ticket_id, "accepted", decision["repair_decision_sha256"])
+    return decision
+
+
 def _run_review_call(
     root: Path,
     *,
@@ -227,6 +284,19 @@ def _run_review_call(
         "ticket_parent_artifact_sha256": ticket["parent_artifact_sha256"],
     }
     validated_output = None
+    terminal_ticket_event_sha256 = None
+    _append_ticket_progress(
+        root,
+        str(ticket["ticket_id"]),
+        "admitted",
+        str(ticket["context_sha256"]),
+    )
+    _append_ticket_progress(
+        root,
+        str(ticket["ticket_id"]),
+        "running",
+        tickets.canonical_sha256(ticket),
+    )
 
     def finalize_receipt(
         receipt: dict[str, Any], final_value: dict[str, Any] | None
@@ -256,7 +326,29 @@ def _run_review_call(
         allowed_tools=list(REVIEW_ALLOWED_TOOLS),
         finalize_receipt=finalize_receipt,
     )
+    status = str(result["receipt"]["status"])
+    if status == "completed":
+        terminal_ticket_event_sha256 = _append_ticket_progress(
+            root,
+            str(ticket["ticket_id"]),
+            "completed",
+            review_contracts.canonical_sha256(result["receipt"]),
+        )
+        terminal_ticket_event_sha256 = _append_ticket_progress(
+            root,
+            str(ticket["ticket_id"]),
+            "accepted",
+            terminal_ticket_event_sha256,
+        )
+    else:
+        terminal_ticket_event_sha256 = _append_ticket_progress(
+            root,
+            str(ticket["ticket_id"]),
+            "failed",
+            review_contracts.canonical_sha256(result["receipt"]),
+        )
     result["validated_output"] = validated_output
+    result["terminal_ticket_event_sha256"] = terminal_ticket_event_sha256
     return result
 
 
@@ -267,8 +359,8 @@ def _load_and_validate_ticket(
     role: str,
     context: Mapping[str, Any],
     prompt: str,
-    schema_path: Path,
-    parent_artifact_sha256: str,
+    schema_path: Path | None,
+    parent_artifact_sha256: str | None,
 ) -> dict[str, object]:
     ticket_path = root / "tickets" / ticket_id / "ticket.json"
     if not ticket_path.is_file() or ticket_path.is_symlink():
@@ -286,9 +378,17 @@ def _load_and_validate_ticket(
         raise ValidationError("review ticket allowed_tools must be exactly Write")
     if ticket["context_sha256"] != review_contracts.canonical_sha256(context):
         raise ValidationError("ticket context_sha256 does not match review context")
-    if ticket["prompt_sha256"] != sha256_bytes(prompt.encode("utf-8")):
+    observed_prompt_sha256 = (
+        prompt if _is_sha256(prompt) else sha256_bytes(prompt.encode("utf-8"))
+    )
+    if ticket["prompt_sha256"] != observed_prompt_sha256:
         raise ValidationError("ticket prompt_sha256 does not match review prompt")
-    if ticket["schema_sha256"] != sha256_bytes(schema_path.read_bytes()):
+    observed_schema_sha256 = (
+        RECONCILIATION_SCHEMA_SHA256
+        if schema_path is None
+        else sha256_bytes(schema_path.read_bytes())
+    )
+    if ticket["schema_sha256"] != observed_schema_sha256:
         raise ValidationError("ticket schema_sha256 does not match review schema")
     if ticket["parent_artifact_sha256"] != parent_artifact_sha256:
         raise ValidationError("ticket parent_artifact_sha256 does not match review input")
@@ -306,9 +406,11 @@ def _require_re_review_tickets(
     *,
     required_ticket_ids: Sequence[str],
     repaired_candidate_sha256: str | None,
+    repaired_candidate_text: str | None = None,
+    theorem_text: str = "Theorem.",
 ) -> None:
     missing = []
-    for ticket_id in required_ticket_ids:
+    for index, ticket_id in enumerate(required_ticket_ids, 1):
         ticket_path = root / "tickets" / ticket_id / "ticket.json"
         if not ticket_path.is_file() or ticket_path.is_symlink():
             missing.append(ticket_id)
@@ -321,6 +423,15 @@ def _require_re_review_tickets(
         elif (
             repaired_candidate_sha256 is not None
             and ticket["parent_artifact_sha256"] != repaired_candidate_sha256
+        ):
+            missing.append(ticket_id)
+        elif repaired_candidate_text is not None and not _ticket_matches_repair_review_context(
+            root,
+            ticket,
+            ticket_id=ticket_id,
+            reviewer_index=index,
+            repaired_candidate_text=repaired_candidate_text,
+            theorem_text=theorem_text,
         ):
             missing.append(ticket_id)
     if missing:
@@ -403,3 +514,137 @@ def _read_prompt(root: Path, name: str) -> str:
 
 def _canonical_sha256(value: object) -> str:
     return review_contracts.canonical_sha256(value)
+
+
+def _append_ticket_progress(
+    root: Path,
+    ticket_id: str,
+    to_state: str,
+    artifact_sha256: str | None,
+) -> str:
+    event_path = root / "tickets" / ticket_id / "ticket_events.jsonl"
+    if event_path.exists():
+        lines = event_path.read_text(encoding="utf-8").splitlines()
+        sequence = len(lines) + 1
+        if lines:
+            from_state = str(json.loads(lines[-1])["to_state"])
+        else:
+            from_state = "created"
+    else:
+        sequence = 1
+        from_state = "created"
+    event = {
+        "schema_version": "crouzeix-runtime-ticket-event/v1",
+        "sequence": sequence,
+        "ticket_id": ticket_id,
+        "from_state": from_state,
+        "to_state": to_state,
+        "reason": f"review action {to_state}",
+        "occurred_at_utc": "2026-08-15T04:00:00Z",
+        "artifact_sha256": artifact_sha256,
+    }
+    tickets.append_ticket_event(root / "tickets", ticket_id, event)
+    return review_contracts.canonical_sha256(event)
+
+
+def _ticket_matches_repair_review_context(
+    root: Path,
+    ticket: Mapping[str, object],
+    *,
+    ticket_id: str,
+    reviewer_index: int,
+    repaired_candidate_text: str,
+    theorem_text: str,
+) -> bool:
+    context = review_contracts.build_correctness_context(
+        theorem_text=theorem_text,
+        candidate_text=repaired_candidate_text,
+        candidate_projection={
+            "schema_version": "crouzeix-candidate-projection/v1",
+            "projection_id": "candidate-alpha",
+            "source_node_id": "node-g2-d1",
+            "source_node_artifact_sha256": "a" * 64,
+            "source_reconciliation_sha256": "b" * 64,
+            "candidate_sha256": sha256_bytes(repaired_candidate_text.encode("utf-8")),
+            "candidate_byte_count": len(repaired_candidate_text.encode("utf-8")),
+            "candidate_projection_sha256": "c" * 64,
+        },
+        reviewer_index=reviewer_index,
+        ticket_id=ticket_id,
+    )
+    prompt = _read_prompt(root, "correctness_review.md")
+    schema_path = root / "schemas/correctness_review.schema.json"
+    return (
+        ticket["context_sha256"] == review_contracts.canonical_sha256(context)
+        and ticket["prompt_sha256"] == sha256_bytes(prompt.encode("utf-8"))
+        and ticket["schema_sha256"] == sha256_bytes(schema_path.read_bytes())
+        and ticket["parent_artifact_sha256"] == context["candidate_sha256"]
+    )
+
+
+def _build_repair_decision(
+    reconciliation_id: str,
+    finding_ledgers: Sequence[Mapping[str, object]],
+) -> dict[str, object]:
+    candidate_rows = []
+    for ledger in finding_ledgers:
+        validated = review_contracts.validate_finding_ledger(ledger)
+        dispositions = list(validated["finding_dispositions"])
+        unresolved = [
+            row for row in dispositions if row["disposition"] == "unresolved"
+        ]
+        severity_counts = {
+            "critical": sum(1 for row in unresolved if row["severity"] == "critical"),
+            "major": sum(1 for row in unresolved if row["severity"] == "major"),
+            "minor": sum(1 for row in unresolved if row["severity"] == "minor"),
+        }
+        candidate_rows.append(
+            {
+                "candidate_sha256": validated["candidate_sha256"],
+                "finding_ledger_sha256": validated["finding_ledger_sha256"],
+                "decision": "repair_required" if unresolved else "no_repair",
+                "unresolved_count": len(unresolved),
+                "unresolved_severity_counts": severity_counts,
+                "finding_dispositions": dispositions,
+            }
+        )
+    candidate_rows.sort(
+        key=lambda row: (
+            row["decision"] != "repair_required",
+            row["unresolved_severity_counts"]["critical"],
+            row["unresolved_severity_counts"]["major"],
+            row["unresolved_severity_counts"]["minor"],
+            row["candidate_sha256"],
+        )
+    )
+    selected = next(
+        (row for row in candidate_rows if row["decision"] == "repair_required"),
+        None,
+    )
+    decision: dict[str, object] = {
+        "schema_version": "crouzeix-repair-decision/v1",
+        "reconciliation_id": reconciliation_id,
+        "decision": "repair_required" if selected is not None else "no_repair",
+        "selected_candidate_sha256": None
+        if selected is None
+        else selected["candidate_sha256"],
+        "candidate_decisions": candidate_rows,
+    }
+    decision["repair_decision_sha256"] = review_contracts.canonical_sha256(decision)
+    return decision
+
+
+def _write_repair_decision(root: Path, decision: Mapping[str, object]) -> None:
+    decision_root = root / "reconciliation_decisions"
+    decision_root.mkdir(mode=0o700, exist_ok=True)
+    path = decision_root / f"{decision['reconciliation_id']}.json"
+    with path.open("x", encoding="utf-8") as handle:
+        json.dump(decision, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+
+
+def _is_sha256(value: str) -> bool:
+    return (
+        len(value) == 64
+        and all(char in "0123456789abcdef" for char in value)
+    )

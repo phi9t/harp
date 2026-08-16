@@ -71,6 +71,7 @@ TASK_KINDS = frozenset(
         "candidate_freeze",
         "operator_intervention",
         "correctness_review",
+        "correctness_repair",
         "finding_reconciliation",
         "mechanism_classification",
         "formal_attempt",
