@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "confidence_basis": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "endpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "candidate_proof",
+            "blocker"
+          ],
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "text"
+      ],
+      "type": "object"
+    },
+    "mechanism_card_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "run_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "crouzeix-guided-result/v1",
+      "type": "string"
+    },
+    "theorem_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "ticket_id": {
+      "const": "guided-reconstruction",
+      "type": "string"
+    },
+    "unproved_obligations": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "locator": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "statement": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "statement",
+          "locator"
+        ],
+        "type": "object"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "used_guidance": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 32,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "ticket_id",
+    "mechanism_card_sha256",
+    "theorem_sha256",
+    "endpoint",
+    "used_guidance",
+    "unproved_obligations",
+    "confidence_basis"
+  ],
+  "type": "object"
+}

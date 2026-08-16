@@ -43,6 +43,7 @@ RUN_SPEC_FIELDS = frozenset(
     }
 )
 FRONTIER_RUN_SPEC_FIELDS = RUN_SPEC_FIELDS | frozenset({"frontier", "digests"})
+GUIDED_RUN_SPEC_FIELDS = RUN_SPEC_FIELDS | frozenset({"guided", "digests"})
 CLI_FIELDS = frozenset({"path", "version", "sha256"})
 PROMPT_FIELDS = frozenset(
     {
@@ -54,6 +55,16 @@ PROMPT_FIELDS = frozenset(
     }
 )
 TOKEN_ACCOUNTING_FIELDS = frozenset({"boundary"})
+GUIDED_FIELDS = frozenset(
+    {
+        "mechanism_card_sha256",
+        "theorem_sha256",
+        "prompt_sha256",
+        "schema_sha256",
+        "resource_preflight_passed",
+        "max_calls",
+    }
+)
 FRONTIER_FIELDS = frozenset(
     {
         "selection_seed",
@@ -163,11 +174,12 @@ def normalize_historical_prompt(data: bytes) -> tuple[bytes, dict[str, object]]:
 def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
     if not isinstance(value, Mapping):
         raise ValidationError("run specification must be an object")
-    expected_fields = (
-        FRONTIER_RUN_SPEC_FIELDS
-        if value.get("arm") == "expert_frontier"
-        else RUN_SPEC_FIELDS
-    )
+    if value.get("arm") == "expert_frontier":
+        expected_fields = FRONTIER_RUN_SPEC_FIELDS
+    elif value.get("arm") == "guided" and "guided" in value:
+        expected_fields = GUIDED_RUN_SPEC_FIELDS
+    else:
+        expected_fields = RUN_SPEC_FIELDS
     _require_fields(value, expected_fields, "run specification")
     _require_equal(value["schema_version"], "crouzeix-run-spec/v1", "schema_version")
     _portable_id(value["run_id"], "run_id")
@@ -209,6 +221,13 @@ def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
         raise ValidationError("historical arm max_calls must be 1")
     if value["arm"] == "expert_frontier" and max_calls != 33:
         raise ValidationError("expert_frontier max_calls must be 33")
+    if "guided" in value:
+        if value["arm"] != "guided":
+            raise ValidationError("guided run specification requires arm guided")
+        if value["leakage"] != "L3":
+            raise ValidationError("guided run specification leakage must be L3")
+        if max_calls != 1:
+            raise ValidationError("guided arm max_calls must be 1")
 
     accounting = _mapping(value["token_accounting"], "token_accounting")
     _require_fields(accounting, TOKEN_ACCOUNTING_FIELDS, "token_accounting")
@@ -235,6 +254,14 @@ def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
         raise ValidationError("generation_excluded_classes must be unique")
     if value["arm"] == "expert_frontier":
         _validate_frontier_config(value["frontier"], "frontier")
+        digests = _mapping(value["digests"], "digests")
+        if len(digests) == 0 or len(digests) > 128:
+            raise ValidationError("digests must be a nonempty bounded object")
+        for key, digest in digests.items():
+            _bounded_string(key, "digests key", 1, 256)
+            _digest(digest, f"digests.{key}")
+    if "guided" in value:
+        _validate_guided_config(value["guided"], "guided")
         digests = _mapping(value["digests"], "digests")
         if len(digests) == 0 or len(digests) > 128:
             raise ValidationError("digests must be a nonempty bounded object")
@@ -492,6 +519,20 @@ def _validate_frontier_config(value: Any, label: str) -> dict[str, object]:
     _require_fields(preflight, PREFLIGHT_FIELDS, "per_call_preflight")
     if _bounded_integer(preflight["memory_mib"], "memory_mib", 4096, 4096) != 4096:
         raise ValidationError("memory_mib must be 4096")
+    return dict(item)
+
+
+def _validate_guided_config(value: Any, label: str) -> dict[str, object]:
+    item = _mapping(value, label)
+    _require_fields(item, GUIDED_FIELDS, label)
+    _digest(item["mechanism_card_sha256"], "guided.mechanism_card_sha256")
+    _digest(item["theorem_sha256"], "guided.theorem_sha256")
+    _digest(item["prompt_sha256"], "guided.prompt_sha256")
+    _digest(item["schema_sha256"], "guided.schema_sha256")
+    if item["resource_preflight_passed"] is not True:
+        raise ValidationError("guided resource_preflight_passed must be true")
+    if _bounded_integer(item["max_calls"], "guided.max_calls", 1, 1) != 1:
+        raise ValidationError("guided.max_calls must be 1")
     return dict(item)
 
 
