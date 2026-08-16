@@ -292,6 +292,53 @@ def second_finding_ledger(*, include_digest: bool = True) -> dict[str, object]:
     return ledger
 
 
+def repair_decision_ledger(
+    *,
+    candidate_sha256: str,
+    outcome: str = "incomplete",
+    critical: int = 0,
+    theorem_strength: int = 0,
+    major: int = 0,
+    minor: int = 0,
+    include_digest: bool = True,
+) -> dict[str, object]:
+    dispositions = []
+
+    def add_rows(count: int, severity: str, prefix: str, statement: str) -> None:
+        for index in range(count):
+            dispositions.append(
+                {
+                    "namespaced_finding_id": f"r1:{prefix}-{index}",
+                    "disposition": "unresolved",
+                    "severity": severity,
+                    "locator": f"candidate.tex#L{10 + len(dispositions)}",
+                    "statement": statement,
+                    "falsifying_test_or_gap": f"Resolve {statement.lower()}",
+                    "rationale": "Still open.",
+                }
+            )
+
+    add_rows(critical, "critical", "critical-gap", "Critical gap.")
+    add_rows(
+        theorem_strength,
+        "major",
+        "theorem-strength-obligation",
+        "Theorem-strength obligation.",
+    )
+    add_rows(major, "major", "major-gap", "Major gap.")
+    add_rows(minor, "minor", "minor-gap", "Minor gap.")
+    ledger: dict[str, object] = {
+        "schema_version": "crouzeix-correctness-reconciliation/v1",
+        "reconciliation_id": f"reconcile-{candidate_sha256[:8]}",
+        "candidate_sha256": candidate_sha256,
+        "outcome": outcome,
+        "finding_dispositions": dispositions,
+    }
+    if include_digest:
+        ledger["finding_ledger_sha256"] = sha256_json(ledger)
+    return ledger
+
+
 def publish_review_ticket(
     review_dir: Path,
     *,
@@ -390,6 +437,111 @@ class ReviewRunnerTests(unittest.TestCase):
                 ).read_text().splitlines()
             ]
             self.assertEqual([event["to_state"] for event in events], ["admitted", "running", "completed", "accepted"])
+
+    def test_repair_decision_excludes_non_incomplete_outcomes_even_with_unresolved_findings(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            cli = root / "fake_review_cli.py"
+            write_fake_cli(cli, "review_complete")
+            review_dir = write_review_dir(root, cli)
+            ledgers = [
+                repair_decision_ledger(
+                    candidate_sha256="2" * 64,
+                    outcome="complete",
+                    critical=1,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256="3" * 64,
+                    outcome="invalid",
+                    critical=1,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256="4" * 64,
+                    outcome="indeterminate",
+                    critical=1,
+                ),
+            ]
+            context = review_runner.build_reconciliation_context(
+                reconciliation_id="reconcile-non-incomplete",
+                finding_ledgers=ledgers,
+            )
+            publish_review_ticket(
+                review_dir,
+                ticket_id="reconcile-non-incomplete",
+                task_kind="finding_reconciliation",
+                context_sha256=sha256_json(context),
+                prompt_sha256=review_runner.RECONCILIATION_PROMPT_SHA256,
+                schema_sha256=review_runner.RECONCILIATION_SCHEMA_SHA256,
+                parent_artifact_sha256=None,
+            )
+
+            decision = review_runner.run_finding_reconciliation(
+                review_dir,
+                ticket_id="reconcile-non-incomplete",
+                reconciliation_id="reconcile-non-incomplete",
+                finding_ledgers=ledgers,
+            )
+
+            self.assertEqual(decision["decision"], "no_repair")
+            self.assertIsNone(decision["selected_candidate_sha256"])
+            self.assertEqual(
+                {row["decision"] for row in decision["candidate_decisions"]},
+                {"no_repair"},
+            )
+
+    def test_repair_decision_orders_theorem_strength_obligation_before_major_findings(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            cli = root / "fake_review_cli.py"
+            write_fake_cli(cli, "review_complete")
+            review_dir = write_review_dir(root, cli)
+            fewer_theorem_obligations = "b" * 64
+            fewer_major_findings = "a" * 64
+            ledgers = [
+                repair_decision_ledger(
+                    candidate_sha256=fewer_theorem_obligations,
+                    critical=1,
+                    theorem_strength=0,
+                    major=2,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=fewer_major_findings,
+                    critical=1,
+                    theorem_strength=1,
+                    major=0,
+                ),
+            ]
+            context = review_runner.build_reconciliation_context(
+                reconciliation_id="reconcile-theorem-strength-order",
+                finding_ledgers=ledgers,
+            )
+            publish_review_ticket(
+                review_dir,
+                ticket_id="reconcile-theorem-strength-order",
+                task_kind="finding_reconciliation",
+                context_sha256=sha256_json(context),
+                prompt_sha256=review_runner.RECONCILIATION_PROMPT_SHA256,
+                schema_sha256=review_runner.RECONCILIATION_SCHEMA_SHA256,
+                parent_artifact_sha256=None,
+            )
+
+            decision = review_runner.run_finding_reconciliation(
+                review_dir,
+                ticket_id="reconcile-theorem-strength-order",
+                reconciliation_id="reconcile-theorem-strength-order",
+                finding_ledgers=ledgers,
+            )
+
+            self.assertEqual(decision["decision"], "repair_required")
+            self.assertEqual(decision["selected_candidate_sha256"], fewer_theorem_obligations)
+            self.assertEqual(
+                [
+                    row["candidate_sha256"]
+                    for row in decision["candidate_decisions"]
+                    if row["decision"] == "repair_required"
+                ],
+                [fewer_theorem_obligations, fewer_major_findings],
+            )
 
     def test_correctness_review_requires_precreated_ticket_and_preserves_failure(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:

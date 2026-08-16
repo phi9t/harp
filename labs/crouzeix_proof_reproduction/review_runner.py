@@ -694,12 +694,22 @@ def _build_repair_decision(
     for ledger in finding_ledgers:
         validated = review_contracts.validate_finding_ledger(ledger)
         dispositions = list(validated["finding_dispositions"])
-        unresolved = [
-            row for row in dispositions if row["disposition"] == "unresolved"
-        ]
+        outcome = str(validated["outcome"])
+        unresolved = (
+            [row for row in dispositions if row["disposition"] == "unresolved"]
+            if outcome == "incomplete"
+            else []
+        )
+        theorem_strength_count = sum(
+            1 for row in unresolved if _is_theorem_strength_obligation(row)
+        )
         severity_counts = {
             "critical": sum(1 for row in unresolved if row["severity"] == "critical"),
-            "major": sum(1 for row in unresolved if row["severity"] == "major"),
+            "major": sum(
+                1
+                for row in unresolved
+                if row["severity"] == "major" and not _is_theorem_strength_obligation(row)
+            ),
             "minor": sum(1 for row in unresolved if row["severity"] == "minor"),
         }
         candidate_rows.append(
@@ -707,8 +717,10 @@ def _build_repair_decision(
                 "candidate_sha256": validated["candidate_sha256"],
                 "finding_ledger_sha256": validated["finding_ledger_sha256"],
                 "decision": "repair_required" if unresolved else "no_repair",
+                "correctness_outcome": outcome,
                 "unresolved_count": len(unresolved),
                 "unresolved_severity_counts": severity_counts,
+                "theorem_strength_obligation_count": theorem_strength_count,
                 "finding_dispositions": dispositions,
             }
         )
@@ -716,6 +728,7 @@ def _build_repair_decision(
         key=lambda row: (
             row["decision"] != "repair_required",
             row["unresolved_severity_counts"]["critical"],
+            row["theorem_strength_obligation_count"],
             row["unresolved_severity_counts"]["major"],
             row["unresolved_severity_counts"]["minor"],
             row["candidate_sha256"],
@@ -745,6 +758,16 @@ def _write_repair_decision(root: Path, decision: Mapping[str, object]) -> None:
     with path.open("x", encoding="utf-8") as handle:
         json.dump(decision, handle, indent=2, sort_keys=True)
         handle.write("\n")
+
+
+def _is_theorem_strength_obligation(row: Mapping[str, object]) -> bool:
+    finding_id = str(row["namespaced_finding_id"])
+    statement = str(row["statement"]).lower()
+    return (
+        "theorem-strength" in finding_id
+        or "theorem-strength" in statement
+        or "theorem strength" in statement
+    )
 
 
 def _is_sha256(value: str) -> bool:
