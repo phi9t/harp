@@ -289,6 +289,124 @@ def _run_roots(
     }
 
 
+def report_roots_readiness(run_dir: Path) -> dict[str, object]:
+    root = Path(run_dir).resolve()
+    spec = protocol.read_run_spec(root / "run_spec.json")
+    classifications = [
+        _with_root_recommended_action(
+            _classify_root_state(root, prepare_frontier.root_ticket_id(str(role)))
+        )
+        for role in spec["frontier"]["expert_roles"]
+    ]
+    non_terminal = [
+        str(item["ticket_id"])
+        for item in classifications
+        if not bool(item["terminal"])
+    ]
+    return {
+        "phase": "report-roots",
+        "result": "ready" if not non_terminal else "blocked",
+        "validator_status": {
+            "status": "pass" if not non_terminal else "blocked",
+            "non_terminal_root_ticket_ids": non_terminal,
+        },
+        "aggregate_receipt": _aggregate_receipt_status(root),
+        "root_classifications": classifications,
+        "pristine_roots": [
+            item["ticket_id"] for item in classifications if item["state"] == "pristine"
+        ],
+        "terminalized_roots": [
+            item["ticket_id"]
+            for item in classifications
+            if item["state"] == "partially_terminalized"
+        ],
+        "orphaned_roots": [
+            item["ticket_id"]
+            for item in classifications
+            if item["state"] == "orphaned_running_root"
+        ],
+        "ambiguous_roots": [
+            item["ticket_id"]
+            for item in classifications
+            if item["state"] == "ambiguous_in_flight"
+        ],
+        "run_receipt_sha256": None,
+    }
+
+
+def _with_root_recommended_action(
+    classification: Mapping[str, object],
+) -> dict[str, object]:
+    state = str(classification["state"])
+    actions = {
+        "pristine": "run roots",
+        "partially_terminalized": "no action",
+        "orphaned_running_root": "CPFR-R014 repair required",
+        "ambiguous_in_flight": "manual intervention required",
+    }
+    return {**dict(classification), "recommended_action": actions[state]}
+
+
+def _classify_root_state(run_dir: Path, ticket_id: str) -> dict[str, object]:
+    ticket = _read_ticket(run_dir, ticket_id)
+    if ticket["task_kind"] != "expert" or int(ticket["generation"]) != 0:
+        raise protocol.ValidationError(f"{ticket_id} is not a root expert ticket")
+    states = _ticket_states(run_dir, ticket_id)
+    current = states[-1] if states else str(ticket["state"])
+    terminal = current in tickets.TERMINAL_TICKET_STATES
+    evidence = _root_evidence_ownership(run_dir, ticket_id)
+    has_terminal_evidence = any(
+        evidence[key]
+        for key in (
+            "attempt",
+            "attempt_directory",
+            "admission",
+            "frontier_event",
+            "mathematical_node",
+        )
+    )
+    has_call_evidence = bool(evidence["call"])
+    base = {
+        "ticket_id": ticket_id,
+        "ticket_state": current,
+        "terminal": terminal,
+        "evidence_ownership": evidence,
+    }
+    if not states:
+        if has_terminal_evidence or has_call_evidence:
+            return {**base, "state": "ambiguous_in_flight"}
+        return {**base, "state": "pristine"}
+    if current in tickets.TERMINAL_TICKET_STATES:
+        if has_terminal_evidence:
+            return {**base, "state": "partially_terminalized"}
+        return {**base, "state": "ambiguous_in_flight"}
+    if current == "running" and not has_terminal_evidence and not has_call_evidence:
+        return {**base, "state": "orphaned_running_root"}
+    return {**base, "state": "ambiguous_in_flight"}
+
+
+def _root_evidence_ownership(run_dir: Path, ticket_id: str) -> dict[str, bool]:
+    return {
+        "call": (run_dir / "calls" / ticket_id).exists(),
+        "attempt": _attempt_exists(run_dir, ticket_id),
+        "attempt_directory": (run_dir / "attempts" / ticket_id).exists(),
+        "admission": (run_dir / "admissions" / f"{ticket_id}.json").exists(),
+        "frontier_event": any(
+            event["ticket_id"] == ticket_id for event in _frontier_events(run_dir)
+        ),
+        "mathematical_node": any(
+            node.get("source_ticket_id") == ticket_id for node in _nodes(run_dir)
+        ),
+    }
+
+
+def _aggregate_receipt_status(run_dir: Path) -> dict[str, object]:
+    path = run_dir / "run_receipt.json"
+    if not path.exists():
+        return {"present": False, "sha256": None}
+    return {"present": True, "sha256": _file_sha256(path)}
+
+
 def _evaluate_roots(
     run_dir: Path,
     spec: Mapping[str, Any],
@@ -455,6 +573,7 @@ def _run_expert_attempt(
     context: dict[str, object],
 ) -> None:
     ticket_id = str(ticket["ticket_id"])
+    _validate_expert_provider_scope_before_running(run_dir, ticket, context)
     states = _ticket_states(run_dir, ticket_id)
     current_state = states[-1] if states else "created"
     if current_state == "created":
@@ -584,6 +703,28 @@ def _run_expert_attempt(
             "strict expert result rejected by admission",
             str(decision["admission_decision_sha256"]),
         )
+
+
+def _validate_expert_provider_scope_before_running(
+    run_dir: Path,
+    ticket: Mapping[str, Any],
+    context: Mapping[str, Any],
+) -> None:
+    ticket_value = tickets.validate_runtime_ticket(ticket)
+    frontier_provider._validate_ticket_scope(ticket_value, "expert")
+    if ticket_value["context_sha256"] != _canonical_sha256(context):
+        raise protocol.ValidationError("ticket context_sha256 does not match provider context")
+    schema_sha256 = _file_sha256(run_dir / "schemas" / EXPERT_SCHEMA)
+    prompt_sha256 = _file_sha256(run_dir / "prompts" / EXPERT_PROMPT)
+    frontier_provider._validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
+    frontier_provider._validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
+    frontier_provider._validate_context(
+        context,
+        ticket=ticket_value,
+        role="expert",
+        schema_sha256=schema_sha256,
+        prompt_sha256=prompt_sha256,
+    )
 
 
 def _evaluate_and_archive_node(

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import os
 import sys
@@ -398,6 +399,80 @@ class FailOnceAfterFirstRootProvider(FakeProvider):
         return super().run_expert(run_dir=run_dir, ticket=ticket, context=context)
 
 
+class ProviderMustNotRun:
+    def run_expert(
+        self,
+        *,
+        run_dir: Path,
+        ticket: dict[str, object],
+        context: dict[str, object],
+    ) -> expert_runner.ProviderAttempt:
+        del run_dir, ticket, context
+        raise AssertionError("provider must not run before pre-provider validation")
+
+    def run_evaluator(
+        self,
+        *,
+        run_dir: Path,
+        ticket: dict[str, object],
+        context: dict[str, object],
+    ) -> expert_runner.ProviderAttempt:
+        del run_dir, ticket, context
+        raise AssertionError("evaluator provider must not run in root readiness tests")
+
+
+def runtime_states(run_dir: Path, ticket_id: str) -> list[str]:
+    event_path = run_dir / "tickets" / ticket_id / "ticket_events.jsonl"
+    if not event_path.exists():
+        return []
+    return [
+        json.loads(line)["to_state"]
+        for line in event_path.read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+
+
+def tracked_file_snapshot(run_dir: Path) -> dict[str, str]:
+    snapshot: dict[str, str] = {}
+    for path in sorted(item for item in run_dir.rglob("*") if item.is_file()):
+        snapshot[path.relative_to(run_dir).as_posix()] = digest_bytes(path.read_bytes())
+    return snapshot
+
+
+def transition_root_to_running(run_dir: Path, role: str = "function_theory") -> str:
+    ticket_id = prepare_frontier.root_ticket_id(role)
+    context = json.loads((run_dir / "contexts" / f"{ticket_id}.json").read_text(encoding="utf-8"))
+    tickets.append_ticket_event(
+        run_dir / "tickets",
+        ticket_id,
+        {
+            "schema_version": "crouzeix-runtime-ticket-event/v1",
+            "sequence": 1,
+            "ticket_id": ticket_id,
+            "from_state": "created",
+            "to_state": "admitted",
+            "reason": "test admission",
+            "occurred_at_utc": "2026-08-15T12:00:01Z",
+            "artifact_sha256": None,
+        },
+    )
+    tickets.append_ticket_event(
+        run_dir / "tickets",
+        ticket_id,
+        {
+            "schema_version": "crouzeix-runtime-ticket-event/v1",
+            "sequence": 2,
+            "ticket_id": ticket_id,
+            "from_state": "admitted",
+            "to_state": "running",
+            "reason": "test running without provider evidence",
+            "occurred_at_utc": "2026-08-15T12:00:02Z",
+            "artifact_sha256": digest_json(context),
+        },
+    )
+    return ticket_id
+
+
 class ExpertRunnerTests(unittest.TestCase):
     def test_evaluator_provider_receives_full_ticket_bound_context(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
@@ -736,6 +811,91 @@ class ExpertRunnerTests(unittest.TestCase):
                 len({item["attempt_id"] for item in attempts}),
                 5,
             )
+
+    def test_stale_prepared_root_ticket_scope_fails_before_running(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            ticket_id = prepare_frontier.root_ticket_id("function_theory")
+            ticket_path = run_dir / "tickets" / ticket_id / "ticket.json"
+            ticket = json.loads(ticket_path.read_text(encoding="utf-8"))
+            ticket["forbidden_sources"] = ["public proof manuscripts"]
+            write_json(ticket_path, ticket)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "forbidden_sources"):
+                expert_runner.run_phase(run_dir, "roots", provider=ProviderMustNotRun())
+
+            self.assertNotIn("running", runtime_states(run_dir, ticket_id))
+            self.assertFalse((run_dir / "attempts" / ticket_id).exists())
+            self.assertFalse((run_dir / "calls" / ticket_id).exists())
+
+    def test_stale_prepared_context_scope_fails_before_running(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            ticket_id = prepare_frontier.root_ticket_id("function_theory")
+            context_path = run_dir / "contexts" / f"{ticket_id}.json"
+            context = json.loads(context_path.read_text(encoding="utf-8"))
+            context["forbidden_sources"] = ["public proof manuscripts"]
+            write_json(context_path, context)
+            ticket_path = run_dir / "tickets" / ticket_id / "ticket.json"
+            ticket = json.loads(ticket_path.read_text(encoding="utf-8"))
+            ticket["context_sha256"] = digest_json(context)
+            write_json(ticket_path, ticket)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "forbidden_sources"):
+                expert_runner.run_phase(run_dir, "roots", provider=ProviderMustNotRun())
+
+            states = runtime_states(run_dir, ticket_id)
+            self.assertNotIn("running", states)
+            self.assertFalse((run_dir / "attempts" / ticket_id).exists())
+            self.assertFalse((run_dir / "calls" / ticket_id).exists())
+
+    def test_report_roots_readiness_classifies_roots_without_mutating_run(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            ticket_id = transition_root_to_running(run_dir, "function_theory")
+            before = tracked_file_snapshot(run_dir)
+
+            report = expert_runner.report_roots_readiness(run_dir)
+
+            after = tracked_file_snapshot(run_dir)
+            self.assertEqual(after, before)
+            self.assertEqual(report["phase"], "report-roots")
+            states_by_ticket = {
+                item["ticket_id"]: item["state"]
+                for item in report["root_classifications"]
+            }
+            actions_by_ticket = {
+                item["ticket_id"]: item["recommended_action"]
+                for item in report["root_classifications"]
+            }
+            self.assertEqual(states_by_ticket[ticket_id], "orphaned_running_root")
+            self.assertEqual(actions_by_ticket[ticket_id], "CPFR-R014 repair required")
+            self.assertEqual(report["orphaned_roots"], [ticket_id])
+            self.assertIsNone(report["run_receipt_sha256"])
+
+    def test_report_roots_cli_prints_json_without_mutating_or_running_provider(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            ticket_id = transition_root_to_running(run_dir, "function_theory")
+            before = tracked_file_snapshot(run_dir)
+            output = io.StringIO()
+            old_stdout = sys.stdout
+            try:
+                sys.stdout = output
+                import run_frontier
+
+                run_frontier.main(["report-roots", str(run_dir)])
+            finally:
+                sys.stdout = old_stdout
+            after = tracked_file_snapshot(run_dir)
+
+            self.assertEqual(after, before)
+            report = json.loads(output.getvalue())
+            self.assertEqual(report["phase"], "report-roots")
+            self.assertEqual(report["result"], "blocked")
+            self.assertIn(ticket_id, report["validator_status"]["non_terminal_root_ticket_ids"])
+            self.assertEqual(report["aggregate_receipt"]["present"], False)
+            self.assertFalse((run_dir / "run_receipt.json").exists())
 
     def test_budget_failure_closes_with_receipt(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
