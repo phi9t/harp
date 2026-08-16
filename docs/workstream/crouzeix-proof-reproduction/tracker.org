@@ -1997,16 +1997,17 @@ decisions, resource preflights, source, command, logs, axioms, and typed status.
   blocked-vs-failed status distinction. All were fixed with regression tests;
   final narrow spec/quality re-review approved.
 
-** TODO Review Provider-Neutral Frontier Milestone :review:code:tests:
+** DONE Review Provider-Neutral Frontier Milestone :review:code:tests:
 :PROPERTIES:
 :ID: CPFR-018
 :DESIGN_SECTION: M1 Provider-neutral DGM frontier
 :DEPENDS_ON: CPFR-017 CPFR-019 CPFR-020 CPFR-021
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: current thread; Bacon; Ramanujan
+:MODEL: inherited default
+:COMMIT: 19b65284dd47dafb478bf07d1ab87bc2f4d47680; 270ae1a6c436cd495aee2c3c16e83c2cd760d291; 28f7b3280b4c0a89fb24d3914c0fd765b45ccfa8; pending closeout
 :END:
 
 *** Scope
@@ -2055,7 +2056,36 @@ run the release gate on the repaired tip.
 
 *** Verification Evidence
 
-- Record findings, repair-ticket IDs, reviewed commits, and gate.
+- Reviewed range: =9ca3f3a22812346a4b26c5f976298758fac49563..253ef26e1abcdda309e7851163494a5464775bd9=
+  for initial M1 review, then repaired through
+  =270ae1a6c436cd495aee2c3c16e83c2cd760d291=.
+- Initial spec review found blockers recorded as =CPFR-R001= through
+  =CPFR-R003=: evaluator provider-boundary/context digest, evaluator payload
+  schema plus semantic probe IDs, and review/classification call-role evidence.
+- Initial standards/security review found blockers recorded as =CPFR-R004= and
+  =CPFR-R005=: expert-runner filesystem/ticket reconciliation and repair target
+  ordering.
+- Repair commits:
+  =370628d5642a3f604c1d89ae0f9572d523a1729b= and
+  =77cf48e94b3be6e9d112ba0e203faf17bf5f2d66= for =CPFR-R001/R002/R004=;
+  =15735f16b507384bb75763266bf4f2145b8918a7= for =CPFR-R003/R005=.
+- Repair re-review dispositions:
+  =CPFR-R003/R005= approved after focused =test_runner= and
+  =test_review_runner= runs; =CPFR-R001/R002/R004= approved after the evaluator
+  finding payload regression was fixed and focused =test_expert_runner=,
+  =test_frontier_provider=, =test_expert_contracts=, and =test_frontier= runs
+  passed.
+- Verification commands after repairs passed:
+  =git diff --check=,
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+  with 150 tests, =cargo run -q -p harp -- repository verify=, and
+  =mise run verify=. The full gate also ran Atlas tests/build, Rust fmt/clippy,
+  workspace tests, shell/no-DWARF checks, corpus/build/source/search gates,
+  meta-harness tests, and Crouzeix lab discovery. Non-fatal mise cache warnings
+  were sandbox-local.
+- Commit trailer audit for =9ca3f3a..HEAD= found the required
+  =Co-authored-by: TRAE CLI <noreply@bytedance.com>= trailer on every work
+  commit. Tracked pycache/run-artifact scan found no tracked matches.
 
 ** TODO Preflight Host Resources And Runtime Identity :live:security:ticket:
 :PROPERTIES:
@@ -4070,16 +4100,17 @@ Fast-forward the clean primary checkout to the exact verified integration tip.
 - Terminal evidence is the ignored landing receipt digest reported in the final
   user response with old/new master and verified feature tip.
 
-** TODO Repair M1 Evaluator Provider Boundary :code:tests:ticket:
+** DONE Repair M1 Evaluator Provider Boundary :code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-R001
 :DESIGN_SECTION: M1 Provider-neutral DGM frontier; Dedicated Expert Boundary
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-r-evaluator; Nietzsche
+:MODEL: inherited default
+:COMMIT: 370628d5642a3f604c1d89ae0f9572d523a1729b; 77cf48e94b3be6e9d112ba0e203faf17bf5f2d66
 :END:
 
 *** Scope
@@ -4123,18 +4154,29 @@ the full context digest in ticket and call receipts.
 
 *** Verification Evidence
 
-- Pending.
+- RED tests failed before repair for evaluator context digest mismatch and
+  hidden-field leakage in provider-visible prompts.
+- Repair commits:
+  =370628d5642a3f604c1d89ae0f9572d523a1729b= and
+  =77cf48e94b3be6e9d112ba0e203faf17bf5f2d66=.
+- GREEN verification:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+  passed 9 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+  passed 16 tests after the evaluator finding-shape repair.
+- Final narrow re-review approved the evaluator finding payload repair and no
+  remaining evaluator-boundary blocker was reported.
 
-** TODO Repair Evaluator Payload Schema And Probe Identity :code:tests:
+** DONE Repair Evaluator Payload Schema And Probe Identity :code:tests:
 :PROPERTIES:
 :ID: CPFR-R002
 :DESIGN_SECTION: M1 Provider-neutral DGM frontier; Node Evaluation And Reconciliation
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-r-evaluator; Nietzsche
+:MODEL: inherited default
+:COMMIT: 370628d5642a3f604c1d89ae0f9572d523a1729b; 77cf48e94b3be6e9d112ba0e203faf17bf5f2d66
 :END:
 
 *** Scope
@@ -4180,18 +4222,29 @@ node-evaluation envelopes, reconciliation, archive scoring, and tests.
 
 *** Verification Evidence
 
-- Pending.
+- Added provider-visible =node_evaluation_payload.schema.json= and kept
+  =node_evaluation.schema.json= as the harness envelope schema.
+- Semantic proof-progress probe IDs now match the contract IDs from
+  =expert_contracts.PROOF_PROGRESS_PROBE_IDS= and survive into frontier
+  reconciliation.
+- GREEN verification:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier -v=
+  passed 15 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_contracts -v=
+  passed 15 tests.
+- Final narrow re-review approved the schema-valid evaluator finding shape
+  after =expert_runner= stopped indexing =recommended_role= directly.
 
-** TODO Repair Review Call Role Evidence :code:tests:
+** DONE Repair Review Call Role Evidence :code:tests:
 :PROPERTIES:
 :ID: CPFR-R003
 :DESIGN_SECTION: Evaluator Independence; Repair And Promotion Boundary
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-r-review; Hubble
+:MODEL: inherited default
+:COMMIT: 15735f16b507384bb75763266bf4f2145b8918a7
 :END:
 
 *** Scope
@@ -4232,18 +4285,25 @@ classification so review/classification receipts are not persisted as
 
 *** Verification Evidence
 
-- Pending.
+- Added explicit =correctness_review= and =mechanism_classification= provider
+  call roles and routed review/classification calls through them.
+- GREEN verification:
+  =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+  passed 12 tests; =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+  passed.
+- Final repair review approved CPFR-R003/R005.
 
-** TODO Repair Expert Runner Filesystem And Ticket Reconciliation :security:code:tests:
+** DONE Repair Expert Runner Filesystem And Ticket Reconciliation :security:code:tests:
 :PROPERTIES:
 :ID: CPFR-R004
 :DESIGN_SECTION: M1 Provider-neutral DGM frontier; Durable Frontier State
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-r-evaluator; Nietzsche
+:MODEL: inherited default
+:COMMIT: 370628d5642a3f604c1d89ae0f9572d523a1729b; 77cf48e94b3be6e9d112ba0e203faf17bf5f2d66
 :END:
 
 *** Scope
@@ -4289,18 +4349,27 @@ candidate projections, phase state, receipts, and all runtime ticket classes.
 
 *** Verification Evidence
 
-- Pending.
+- Hardened candidate projection, phase-state, and run-receipt publication
+  against dangling symlink targets and symlinked parents.
+- Run reconciliation now includes evaluator and candidate-freeze evidence
+  negative tests.
+- GREEN verification:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+  passed 16 tests; combined evaluator/frontier repair suites passed 39 tests.
+- Final narrow re-review approved the remaining evaluator finding issue; no
+  filesystem/reconciliation blocker remained.
 
-** TODO Repair Review Target Ordering :math:review:code:tests:
+** DONE Repair Review Target Ordering :math:review:code:tests:
 :PROPERTIES:
 :ID: CPFR-R005
 :DESIGN_SECTION: Repair And Promotion Boundary
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-r-review; Hubble
+:MODEL: inherited default
+:COMMIT: 15735f16b507384bb75763266bf4f2145b8918a7
 :END:
 
 *** Scope
@@ -4339,4 +4408,10 @@ final tie-breaker.
 
 *** Verification Evidence
 
-- Pending.
+- Repair target ordering now uses descending critical count, descending
+  theorem-strength obligation count, descending major count, descending minor
+  count, then ascending candidate digest.
+- GREEN verification:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+  passed after adding regression coverage for descending severity order.
+- Final repair review approved CPFR-R003/R005.
