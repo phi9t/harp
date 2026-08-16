@@ -119,16 +119,18 @@ def run_repair(
         schema_path=schema,
         parent_artifact_sha256=str(request["parent_candidate_sha256"]),
     )
-    result = _run_review_call(
-        root,
-        ticket=ticket,
-        call_id=ticket_id,
-        provider_role="repair",
-        prompt=prompt,
-        context=request,
-        schema_path=schema,
-        validator=review_contracts.validate_repair_payload,
-    )
+    result = _load_existing_repair_call(root, ticket_id)
+    if result is None:
+        result = _run_review_call(
+            root,
+            ticket=ticket,
+            call_id=ticket_id,
+            provider_role="repair",
+            prompt=prompt,
+            context=request,
+            schema_path=schema,
+            validator=review_contracts.validate_repair_payload,
+        )
     repair_result = None
     if result["validated_output"] is not None:
         repair_result = review_contracts.build_repair_result(
@@ -138,12 +140,19 @@ def run_repair(
             repair_payload=result["validated_output"],
         )
         if repair_result["changed_candidate_bytes"]:
+            marker_digests = _materialize_post_repair_context_markers(
+                root,
+                repair_id=repair_id,
+                repaired_candidate_text=str(repair_result["repair_payload"]["candidate_text"]),
+                theorem_text=theorem_text,
+            )
             _require_re_review_tickets(
                 root,
                 required_ticket_ids=required,
                 repaired_candidate_sha256=str(repair_result["repaired_candidate_sha256"]),
                 repaired_candidate_text=str(repair_result["repair_payload"]["candidate_text"]),
                 theorem_text=theorem_text,
+                required_context_marker_sha256s=marker_digests,
             )
     result["repair_result"] = repair_result
     result["required_re_review_ticket_ids"] = required
@@ -352,6 +361,24 @@ def _run_review_call(
     return result
 
 
+def _load_existing_repair_call(root: Path, call_id: str) -> dict[str, Any] | None:
+    call_dir = root / "calls" / call_id
+    if not call_dir.exists():
+        return None
+    receipt = read_strict_json_object(call_dir / "receipt.json", "repair call receipt")
+    final = read_strict_json_object(call_dir / "final.json", "repair final response")
+    validated_output = None
+    if receipt["status"] == "completed":
+        validated_output = review_contracts.validate_repair_payload(final)
+    return {
+        "call_dir": call_dir,
+        "receipt": receipt,
+        "final": final,
+        "validated_output": validated_output,
+        "terminal_ticket_event_sha256": _last_ticket_event_sha256(root, call_id),
+    }
+
+
 def _load_and_validate_ticket(
     root: Path,
     *,
@@ -408,6 +435,7 @@ def _require_re_review_tickets(
     repaired_candidate_sha256: str | None,
     repaired_candidate_text: str | None = None,
     theorem_text: str = "Theorem.",
+    required_context_marker_sha256s: Mapping[str, str] | None = None,
 ) -> None:
     missing = []
     for index, ticket_id in enumerate(required_ticket_ids, 1):
@@ -432,12 +460,19 @@ def _require_re_review_tickets(
             reviewer_index=index,
             repaired_candidate_text=repaired_candidate_text,
             theorem_text=theorem_text,
+            required_context_marker_sha256=None
+            if required_context_marker_sha256s is None
+            else required_context_marker_sha256s[ticket_id],
         ):
             missing.append(ticket_id)
     if missing:
+        reason = (
+            "post-repair re-review tickets/context markers"
+            if required_context_marker_sha256s is not None
+            else "two fresh re-review tickets"
+        )
         raise ValidationError(
-            "changed repair bytes require two fresh re-review tickets: "
-            + ", ".join(missing)
+            f"changed repair bytes require {reason}: " + ", ".join(missing)
         )
 
 
@@ -547,6 +582,14 @@ def _append_ticket_progress(
     return review_contracts.canonical_sha256(event)
 
 
+def _last_ticket_event_sha256(root: Path, ticket_id: str) -> str:
+    path = root / "tickets" / ticket_id / "ticket_events.jsonl"
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines:
+        raise ValidationError("runtime ticket event log is empty")
+    return review_contracts.canonical_sha256(json.loads(lines[-1]))
+
+
 def _ticket_matches_repair_review_context(
     root: Path,
     ticket: Mapping[str, object],
@@ -555,6 +598,7 @@ def _ticket_matches_repair_review_context(
     reviewer_index: int,
     repaired_candidate_text: str,
     theorem_text: str,
+    required_context_marker_sha256: str | None,
 ) -> bool:
     context = review_contracts.build_correctness_context(
         theorem_text=theorem_text,
@@ -575,11 +619,71 @@ def _ticket_matches_repair_review_context(
     prompt = _read_prompt(root, "correctness_review.md")
     schema_path = root / "schemas/correctness_review.schema.json"
     return (
-        ticket["context_sha256"] == review_contracts.canonical_sha256(context)
+        ticket["context_sha256"]
+        == (
+            review_contracts.canonical_sha256(context)
+            if required_context_marker_sha256 is None
+            else required_context_marker_sha256
+        )
         and ticket["prompt_sha256"] == sha256_bytes(prompt.encode("utf-8"))
         and ticket["schema_sha256"] == sha256_bytes(schema_path.read_bytes())
         and ticket["parent_artifact_sha256"] == context["candidate_sha256"]
     )
+
+
+def _materialize_post_repair_context_markers(
+    root: Path,
+    *,
+    repair_id: str,
+    repaired_candidate_text: str,
+    theorem_text: str,
+) -> dict[str, str]:
+    marker_root = root / "post_repair_review_contexts" / repair_id
+    marker_root.mkdir(mode=0o700, parents=True, exist_ok=True)
+    marker_digests = {}
+    repaired_candidate_sha256 = sha256_bytes(repaired_candidate_text.encode("utf-8"))
+    repaired_candidate_byte_count = len(repaired_candidate_text.encode("utf-8"))
+    for reviewer_index in (1, 2):
+        ticket_id = f"review-{repair_id}-r{reviewer_index}"
+        context = review_contracts.build_correctness_context(
+            theorem_text=theorem_text,
+            candidate_text=repaired_candidate_text,
+            candidate_projection={
+                "schema_version": "crouzeix-candidate-projection/v1",
+                "projection_id": "candidate-alpha",
+                "source_node_id": "node-g2-d1",
+                "source_node_artifact_sha256": "a" * 64,
+                "source_reconciliation_sha256": "b" * 64,
+                "candidate_sha256": repaired_candidate_sha256,
+                "candidate_byte_count": repaired_candidate_byte_count,
+                "candidate_projection_sha256": "c" * 64,
+            },
+            reviewer_index=reviewer_index,
+            ticket_id=ticket_id,
+        )
+        marker = {
+            "schema_version": "crouzeix-post-repair-review-context/v1",
+            "repair_id": repair_id,
+            "ticket_id": ticket_id,
+            "reviewer_index": reviewer_index,
+            "repaired_candidate_sha256": context["candidate_sha256"],
+            "correctness_context": context,
+            "correctness_context_sha256": review_contracts.canonical_sha256(context),
+        }
+        marker["post_repair_context_sha256"] = review_contracts.canonical_sha256(marker)
+        path = marker_root / f"{ticket_id}.json"
+        if not path.exists():
+            with path.open("x", encoding="utf-8") as handle:
+                json.dump(marker, handle, indent=2, sort_keys=True)
+                handle.write("\n")
+        else:
+            existing = read_strict_json_object(path, "post-repair review context marker")
+            if existing != marker:
+                raise ValidationError(
+                    "post-repair review context marker does not match repair output"
+                )
+        marker_digests[ticket_id] = str(marker["post_repair_context_sha256"])
+    return marker_digests
 
 
 def _build_repair_decision(

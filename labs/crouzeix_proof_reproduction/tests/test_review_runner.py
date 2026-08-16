@@ -557,19 +557,30 @@ class ReviewRunnerTests(unittest.TestCase):
                 parent_artifact_sha256=sha256_text(CANDIDATE),
             )
 
+            with self.assertRaisesRegex(protocol.ValidationError, "re-review tickets"):
+                review_runner.run_repair(
+                    review_dir,
+                    ticket_id="repair-candidate-alpha",
+                    repair_id="repair-candidate-alpha",
+                    parent_candidate_text=CANDIDATE,
+                    finding_ledger=ledger,
+                )
+
             for reviewer in (1, 2):
-                context = review_contracts.build_correctness_context(
-                    theorem_text="Theorem.",
-                    candidate_text=REPAIRED,
-                    candidate_projection=candidate_projection(REPAIRED),
-                    reviewer_index=reviewer,
-                    ticket_id=f"review-repair-candidate-alpha-r{reviewer}",
+                ticket_id = f"review-repair-candidate-alpha-r{reviewer}"
+                marker = json.loads(
+                    (
+                        review_dir
+                        / "post_repair_review_contexts"
+                        / "repair-candidate-alpha"
+                        / f"{ticket_id}.json"
+                    ).read_text()
                 )
                 publish_review_ticket(
                     review_dir,
-                    ticket_id=f"review-repair-candidate-alpha-r{reviewer}",
+                    ticket_id=ticket_id,
                     task_kind="correctness_review",
-                    context_sha256=sha256_json(context),
+                    context_sha256=marker["post_repair_context_sha256"],
                     prompt_sha256=sha256_bytes((review_dir / "prompts/correctness_review.md").read_bytes()),
                     schema_sha256=sha256_bytes((review_dir / "schemas/correctness_review.schema.json").read_bytes()),
                     parent_artifact_sha256=sha256_text(REPAIRED),
@@ -597,6 +608,57 @@ class ReviewRunnerTests(unittest.TestCase):
                 )],
                 ["admitted", "running", "completed", "accepted"],
             )
+
+    def test_repair_rejects_clairvoyant_re_review_tickets_created_before_output(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            cli = root / "fake_review_cli.py"
+            write_fake_cli(cli, "repair")
+            review_dir = write_review_dir(root, cli)
+            ledger = finding_ledger()
+            prompt = (review_dir / "prompts/review_repair.md").read_text()
+            schema = review_dir / "schemas/repair_result.schema.json"
+            request = review_contracts.build_repair_request(
+                repair_id="repair-candidate-alpha",
+                parent_candidate_text=CANDIDATE,
+                finding_ledger=ledger,
+                ticket_id="repair-candidate-alpha",
+            )
+            publish_review_ticket(
+                review_dir,
+                ticket_id="repair-candidate-alpha",
+                task_kind="correctness_repair",
+                context_sha256=sha256_json(request),
+                prompt_sha256=sha256_bytes(prompt.encode("utf-8")),
+                schema_sha256=sha256_bytes(schema.read_bytes()),
+                parent_artifact_sha256=sha256_text(CANDIDATE),
+            )
+            for reviewer in (1, 2):
+                context = review_contracts.build_correctness_context(
+                    theorem_text="Theorem.",
+                    candidate_text=REPAIRED,
+                    candidate_projection=candidate_projection(REPAIRED),
+                    reviewer_index=reviewer,
+                    ticket_id=f"review-repair-candidate-alpha-r{reviewer}",
+                )
+                publish_review_ticket(
+                    review_dir,
+                    ticket_id=f"review-repair-candidate-alpha-r{reviewer}",
+                    task_kind="correctness_review",
+                    context_sha256=sha256_json(context),
+                    prompt_sha256=sha256_bytes((review_dir / "prompts/correctness_review.md").read_bytes()),
+                    schema_sha256=sha256_bytes((review_dir / "schemas/correctness_review.schema.json").read_bytes()),
+                    parent_artifact_sha256=sha256_text(REPAIRED),
+                )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "post-repair"):
+                review_runner.run_repair(
+                    review_dir,
+                    ticket_id="repair-candidate-alpha",
+                    repair_id="repair-candidate-alpha",
+                    parent_candidate_text=CANDIDATE,
+                    finding_ledger=ledger,
+                )
 
     def test_malformed_review_action_appends_failed_ticket_event(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
