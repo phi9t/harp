@@ -298,7 +298,7 @@ def _build_receipt(
     if request.get("ticket_id") not in {None, ticket["ticket_id"]}:
         raise protocol.ValidationError("request ticket_id does not match ticket")
     draft = dict(request)
-    draft["schema_version"] = "crouzeix-formal-attempt-receipt/v1"
+    draft.setdefault("schema_version", "crouzeix-formal-attempt-receipt/v1")
     draft["ticket_id"] = ticket["ticket_id"]
     draft["ticket_sha256"] = tickets.canonical_sha256(ticket)
     resource_value = validate_resource_receipt(resource_receipt)

@@ -12,6 +12,7 @@ REPO = LAB.parents[1]
 sys.path.insert(0, str(LAB))
 
 import formal_target
+import formal_receipt
 import jin_validation
 import protocol
 
@@ -102,6 +103,168 @@ class JinValidationTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(protocol.ValidationError, "allowlist"):
                 jin_validation.make_alignment_task(target, rows, bad_target)
+
+    def make_resolved_target(self, root: Path) -> tuple[formal_target.FormalTargetLock, formal_target.ResolvedTarget]:
+        source = root / "input" / "Target.lean"
+        source.parent.mkdir(parents=True)
+        source.write_bytes(b"target bytes\n")
+        target_root = root / "target"
+        (target_root / "artifacts").mkdir(parents=True)
+        (target_root / "ledger").mkdir()
+        (target_root / "artifacts" / "Target.lean").write_bytes(b"target bytes\n")
+        lock_value = {
+            **{
+                "schema_version": "crouzeix-formal-target-lock/v1",
+                "source": {
+                    "source_id": "JIN-V4-AUDITED",
+                    "commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+                    "tree": "40aafa503bd32762dbf6d1a67ddef3e2b067f0e1",
+                    "archive_sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+                },
+                "toolchain": {
+                    "lean": "leanprover/lean4:v4.28.0",
+                    "mathlib_revision": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+                },
+                "command": {"argv": ["lake", "build"], "cwd": "Lean", "env": {}},
+                "target": {
+                    "target_id": "crouzeix-main",
+                    "declaration_name": "CrouzeixConjecture.crouzeixConjecture",
+                    "statement_sha256": "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4",
+                    "source_locator": "Harp-authored",
+                    "dependency_ids": [],
+                },
+                "artifacts": [
+                    {
+                        "artifact_id": "target-lean",
+                        "path": "artifacts/Target.lean",
+                        "bytes": len(b"target bytes\n"),
+                        "sha256": protocol.sha256_bytes(b"target bytes\n"),
+                    }
+                ],
+                "ledger_path": "ledger",
+                "import_allowlist": ["CrouzeixConjecture.FinalTheorems"],
+            }
+        }
+        lock = formal_target.FormalTargetLock.from_mapping(lock_value)
+        resolved = formal_target.provision(lock, {"target-lean": source}, root / "runtime")
+        return lock, resolved
+
+    def test_run_jin_validation_writes_single_create_only_v2_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            lock, resolved = self.make_resolved_target(root)
+            task = jin_validation.make_alignment_task(
+                lock,
+                jin_validation.load_source_map(SOURCE_MAP, formal_target.load_lock()),
+                TARGET_LEAN,
+            )
+
+            attempt = jin_validation.run_jin_validation(
+                resolved,
+                task,
+                root / "attempt",
+                fake_result=jin_validation.FakeLeanResult(
+                    exit_code=0,
+                    stdout=b"compiled\n",
+                    stderr=b"",
+                    axioms=[],
+                ),
+            )
+
+            receipt = formal_receipt.validate_attempt_dir(attempt)
+            self.assertEqual(receipt["schema_version"], "crouzeix-formal-attempt-receipt/v2")
+            self.assertEqual(receipt["status"], "passed")
+            self.assertEqual(receipt["target_type_sha256"], task.target_type_sha256)
+            with self.assertRaisesRegex(protocol.ValidationError, "already exists"):
+                jin_validation.run_jin_validation(
+                    resolved,
+                    task,
+                    attempt,
+                    fake_result=jin_validation.FakeLeanResult(0, b"compiled\n", b"", []),
+                )
+
+    def test_run_jin_validation_classifies_failed_blocked_inventory_and_forbidden_axiom(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            lock, resolved = self.make_resolved_target(root)
+            task = jin_validation.make_alignment_task(
+                lock,
+                jin_validation.load_source_map(SOURCE_MAP, formal_target.load_lock()),
+                TARGET_LEAN,
+            )
+
+            failed_attempt = jin_validation.run_jin_validation(
+                resolved,
+                task,
+                root / "failed",
+                fake_result=jin_validation.FakeLeanResult(
+                    exit_code=1,
+                    stdout=b"",
+                    stderr=b"type mismatch\n",
+                    axioms=[],
+                ),
+            )
+            self.assertEqual(formal_receipt.validate_attempt_dir(failed_attempt)["status"], "failed")
+
+            blocked_attempt = jin_validation.run_jin_validation(
+                resolved,
+                task,
+                root / "blocked",
+                fake_result=jin_validation.FakeLeanResult(
+                    exit_code=None,
+                    stdout=b"",
+                    stderr=b"missing toolchain\n",
+                    axioms=[],
+                    blocked_reason="missing-pinned-toolchain",
+                ),
+            )
+            self.assertEqual(formal_receipt.validate_attempt_dir(blocked_attempt)["status"], "blocked")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "inventory"):
+                jin_validation.run_jin_validation(
+                    formal_target.ResolvedTarget(
+                        root=resolved.root,
+                        inventory_sha256="0" * 64,
+                        command=resolved.command,
+                        artifacts=resolved.artifacts,
+                    ),
+                    task,
+                    root / "stale",
+                    fake_result=jin_validation.FakeLeanResult(0, b"compiled\n", b"", []),
+                )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "disallowed axioms"):
+                jin_validation.run_jin_validation(
+                    resolved,
+                    task,
+                    root / "axiom",
+                    fake_result=jin_validation.FakeLeanResult(
+                        exit_code=0,
+                        stdout=b"compiled\n",
+                        stderr=b"",
+                        axioms=["Classical.choice"],
+                    ),
+                )
+
+    def test_production_jin_validation_is_blocked_by_preflight(self) -> None:
+        target = formal_target.load_lock()
+        rows = jin_validation.load_source_map(SOURCE_MAP, target)
+        task = jin_validation.make_alignment_task(target, rows, TARGET_LEAN)
+        preflight = formal_target.load_preflight_receipt(
+            LAB / "formal_targets/jin-565b6a3/preflight.json"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            attempt = jin_validation.record_blocked_preflight_attempt(
+                target,
+                task,
+                root / "blocked-production",
+                preflight,
+            )
+            receipt = formal_receipt.validate_attempt_dir(attempt)
+            self.assertEqual(receipt["schema_version"], "crouzeix-formal-attempt-receipt/v2")
+            self.assertEqual(receipt["status"], "blocked")
+            self.assertIn("insufficient-disk", receipt["reason"])
 
 
 if __name__ == "__main__":

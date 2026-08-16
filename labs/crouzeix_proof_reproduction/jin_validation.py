@@ -6,8 +6,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+import formal_receipt
 import formal_target
 import protocol
+import tickets
 
 
 MAX_JSON_BYTES = 1024 * 1024
@@ -42,6 +44,15 @@ class AlignmentTask:
     target_type_sha256: str
     imports: tuple[str, ...]
     source_map_row_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class FakeLeanResult:
+    exit_code: int | None
+    stdout: bytes
+    stderr: bytes
+    axioms: list[str]
+    blocked_reason: str | None = None
 
 
 def load_source_map(
@@ -96,6 +107,63 @@ def make_alignment_task(
     )
 
 
+def run_jin_validation(
+    target: formal_target.ResolvedTarget,
+    task: AlignmentTask,
+    attempt_root: Path,
+    *,
+    fake_result: FakeLeanResult,
+) -> Path:
+    resolved = formal_target.resolve(_lock_from_resolved(target, task), target.root)
+    if resolved.inventory_sha256 != target.inventory_sha256:
+        raise protocol.ValidationError("runtime inventory mismatch")
+    if fake_result.exit_code == 0 and fake_result.axioms:
+        raise protocol.ValidationError("passed formal attempt has disallowed axioms")
+    status = _status_from_fake_result(fake_result)
+    reason = _reason_from_fake_result(fake_result, status)
+    return _write_attempt(
+        attempt_root,
+        task=task,
+        source_bytes=_target_source(task),
+        stdout_bytes=fake_result.stdout,
+        stderr_bytes=fake_result.stderr,
+        axiom_log_bytes=_axiom_log(fake_result.axioms),
+        status=status,
+        reason=reason,
+        command_exit_code=fake_result.exit_code,
+        runtime_inventory_sha256=target.inventory_sha256,
+        resource_preflight_status="blocked" if status == "blocked" else "ok",
+    )
+
+
+def record_blocked_preflight_attempt(
+    target: formal_target.FormalTargetLock,
+    task: AlignmentTask,
+    attempt_root: Path,
+    preflight: Mapping[str, object],
+) -> Path:
+    status = preflight.get("status")
+    if status != "blocked":
+        raise protocol.ValidationError("preflight receipt is not blocked")
+    reason = str(preflight["reason"])
+    target_sha256 = formal_target.protocol.sha256_bytes(
+        formal_target._canonical_json_bytes(target.to_json())
+    )
+    return _write_attempt(
+        attempt_root,
+        task=task,
+        source_bytes=_target_source(task),
+        stdout_bytes=b"",
+        stderr_bytes=reason.encode("utf-8") + b"\n",
+        axiom_log_bytes=b"",
+        status="blocked",
+        reason=f"preflight blocked: {reason}",
+        command_exit_code=None,
+        runtime_inventory_sha256=target_sha256,
+        resource_preflight_status="blocked",
+    )
+
+
 def _row_list(value: Any, target: formal_target.FormalTargetLock) -> list[SourceMapRow]:
     if not isinstance(value, list) or not value:
         raise protocol.ValidationError("Jin source-map rows must be a nonempty list")
@@ -134,6 +202,180 @@ def _read_imports(path: Path) -> tuple[str, ...]:
     if len(set(imports)) != len(imports):
         raise protocol.ValidationError("Target.lean imports must be unique")
     return tuple(imports)
+
+
+def _lock_from_resolved(
+    target: formal_target.ResolvedTarget, task: AlignmentTask
+) -> formal_target.FormalTargetLock:
+    inventory = _read_json_object(target.root / "runtime-inventory.json", "runtime inventory")
+    lock_value = {
+        "schema_version": "crouzeix-formal-target-lock/v1",
+        "source": inventory["source"],
+        "toolchain": inventory["toolchain"],
+        "command": inventory["command"],
+        "target": {
+            "target_id": "crouzeix-main",
+            "declaration_name": task.expected_declaration,
+            "statement_sha256": task.target_type_sha256,
+            "source_locator": "Harp-authored",
+            "dependency_ids": [],
+        },
+        "artifacts": inventory["artifacts"],
+        "ledger_path": "ledger",
+        "import_allowlist": list(task.imports),
+    }
+    return formal_target.FormalTargetLock.from_mapping(lock_value)
+
+
+def _write_attempt(
+    attempt_root: Path,
+    *,
+    task: AlignmentTask,
+    source_bytes: bytes,
+    stdout_bytes: bytes,
+    stderr_bytes: bytes,
+    axiom_log_bytes: bytes,
+    status: str,
+    reason: str,
+    command_exit_code: int | None,
+    runtime_inventory_sha256: str,
+    resource_preflight_status: str,
+) -> Path:
+    resource = {
+        "schema_version": "crouzeix-formal-resource-receipt/v1",
+        "host_space_bytes": 8 * 1024 * 1024 * 1024,
+        "memory_limit_bytes": 4 * 1024 * 1024 * 1024,
+        "cpu_limit": 4,
+        "preflight_status": resource_preflight_status,
+        "checked_at_utc": "2026-08-15T12:00:00Z",
+    }
+    ticket = _formal_ticket()
+    request = {
+        "schema_version": "crouzeix-formal-attempt-receipt/v2",
+        "attempt_id": "jin-target-alignment-attempt",
+        "run_id": "jin-validation",
+        "ticket_id": ticket["ticket_id"],
+        "ticket_sha256": tickets.canonical_sha256(ticket),
+        "candidate": {
+            "outcome": "no_candidate",
+            "candidate_id": None,
+            "candidate_sha256": None,
+            "candidate_bytes": 0,
+        },
+        "toolchain": {
+            "name": "lean",
+            "version": "4.28.0",
+            "platform": "fixture",
+            "toolchain_sha256": "1" * 64,
+        },
+        "source": {
+            "path": "source/Target.lean",
+            "sha256": protocol.sha256_bytes(source_bytes),
+            "bytes": len(source_bytes),
+        },
+        "command": {
+            "argv": ["lake", "build"],
+            "cwd": ".",
+            "env_sha256": "2" * 64,
+            "exit_code": command_exit_code,
+        },
+        "logs": {
+            "stdout_path": "logs/stdout.txt",
+            "stdout_sha256": protocol.sha256_bytes(stdout_bytes),
+            "stderr_path": "logs/stderr.txt",
+            "stderr_sha256": protocol.sha256_bytes(stderr_bytes),
+            "complete": True,
+        },
+        "resource_receipt": {
+            "path": "resource_receipt.json",
+            "sha256": formal_receipt.canonical_sha256(resource),
+        },
+        "axioms": {
+            "scan_performed": status == "passed",
+            "scanner": "jin-validation-fixture",
+            "allowed_axioms": [],
+            "observed_axioms": [],
+            "scan_log_path": "logs/axioms.txt",
+            "scan_log_sha256": protocol.sha256_bytes(axiom_log_bytes),
+        },
+        "status": status,
+        "reason": reason,
+        "started_at_utc": "2026-08-15T12:00:01Z",
+        "completed_at_utc": "2026-08-15T12:00:02Z",
+        "formal_target": {
+            "path": "formal_target.lock.json",
+            "sha256": "4" * 64,
+        },
+        "runtime_inventory_sha256": runtime_inventory_sha256,
+        "target_type_sha256": task.target_type_sha256,
+    }
+    request["formal_attempt_sha256"] = formal_receipt.canonical_sha256_without_self(request)
+    return formal_receipt.prepare_attempt(
+        attempt_root,
+        ticket=ticket,
+        request=request,
+        source_bytes=source_bytes,
+        stdout_bytes=stdout_bytes,
+        stderr_bytes=stderr_bytes,
+        axiom_log_bytes=axiom_log_bytes,
+        resource_receipt=resource,
+    )
+
+
+def _formal_ticket() -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-runtime-ticket/v1",
+        "ticket_id": "jin-target-alignment",
+        "run_id": "jin-validation",
+        "task_kind": "formal_attempt",
+        "node_id": "jin-target-alignment",
+        "parent_node_id": None,
+        "generation": 0,
+        "direction_id": "jin-target-alignment",
+        "role": "formal_verifier",
+        "objective": "Validate the pinned Jin terminal theorem against FormalTarget.",
+        "expected_deliverable": "v2 formal attempt receipt.",
+        "dependency_ticket_ids": ["CPFR-074"],
+        "context_sha256": "a" * 64,
+        "schema_sha256": "b" * 64,
+        "prompt_sha256": "c" * 64,
+        "parent_artifact_sha256": None,
+        "allowed_tools": ["Read"],
+        "forbidden_sources": ["blind frontier private contexts"],
+        "timeout_seconds": 3600,
+        "max_output_bytes": 1048576,
+        "owner_type": "orchestrator",
+        "created_at_utc": "2026-08-15T12:00:00Z",
+        "state": "created",
+    }
+
+
+def _target_source(task: AlignmentTask) -> bytes:
+    return (
+        f"import {task.imports[0]}\n\n#check {task.expected_declaration}\n"
+    ).encode("utf-8")
+
+
+def _status_from_fake_result(result: FakeLeanResult) -> str:
+    if result.blocked_reason is not None or result.exit_code is None:
+        return "blocked"
+    if result.exit_code == 0:
+        return "passed"
+    return "failed"
+
+
+def _reason_from_fake_result(result: FakeLeanResult, status: str) -> str:
+    if status == "passed":
+        return "fake Lean command succeeded and axiom scan reported no axioms"
+    if status == "blocked":
+        return result.blocked_reason or "fake Lean command blocked"
+    return "fake Lean command failed"
+
+
+def _axiom_log(axioms: list[str]) -> bytes:
+    if not axioms:
+        return b""
+    return ("\n".join(axioms) + "\n").encode("utf-8")
 
 
 def _read_json_object(path: Path, label: str) -> dict[str, Any]:

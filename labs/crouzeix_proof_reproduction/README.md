@@ -71,6 +71,10 @@ requires later independent re-review.
 - Reference-aware review starts only after a candidate digest is sealed.
 - Live model calls are explicit operator actions and never run from
   `mise run verify`.
+- The Jin formal-validation lane is sealed by `formal_target.lock.json`. In the
+  current checked-in preflight, production Jin runtime materialization is
+  `blocked` by insufficient disk for the pinned Mathlib cache; fixture tests may
+  exercise the receipt path, but they are not a Lean proof.
 
 The approved experiment contract is
 `docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-design.md`.

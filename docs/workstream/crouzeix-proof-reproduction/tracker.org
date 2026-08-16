@@ -4914,16 +4914,16 @@ FormalTarget statement.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Validate Jin Build And Axioms :lean:ticket:
+** DONE Validate Jin Build And Axioms :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-075
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-074
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-075-sealed-jin-runner
+:MODEL: gpt-5
 :END:
 Run one create-only fresh-process build and fixed axiom audit. Emit passed, failed, or
 blocked with the first failing command; no changed source inventory is accepted.
@@ -4976,7 +4976,22 @@ axiom-audit command.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-074.
+- RED: =test_jin_validation= failed with missing =run_jin_validation= and
+  =record_blocked_preflight_attempt= APIs.
+- Implemented a sealed fixture runner that accepts only =ResolvedTarget=,
+  =AlignmentTask=, a create-only attempt root, and an explicit fake Lean result.
+  It emits v2 formal receipts through CPFR-073, rejects stale runtime inventory,
+  rejects forbidden axioms on a passing result, and preserves raw stdout/stderr
+  plus axiom logs.
+- Production Jin validation remains =blocked= by the CPFR-071 preflight reason
+  =insufficient-disk-for-pinned-mathlib-cache=. The production blocked attempt
+  records a v2 receipt and does not invoke Lean.
+- Added README boundary note that fixture receipts are not Lean proof evidence.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=:
+  6 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=:
+  11 tests, 0 failures.
+- =git diff --check=: exit 0.
 
 ** TODO Independently Rebuild Jin Validation :lean:review:ticket:
 :PROPERTIES:
