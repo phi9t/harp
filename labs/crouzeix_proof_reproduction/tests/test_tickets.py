@@ -75,6 +75,98 @@ def frontier_event(**overrides: object) -> dict[str, object]:
     return value
 
 
+def write_legacy_run(root: Path, *, run_id: str = "historical-001") -> dict[str, str]:
+    root.mkdir(parents=True)
+    call_dir = root / "calls" / "historical-root"
+    call_dir.mkdir(parents=True)
+    run_spec = {
+        "schema_version": "crouzeix-run-spec/v1",
+        "run_id": run_id,
+        "arm": "historical",
+        "created_at_utc": "2026-08-15T05:21:29Z",
+    }
+    run_receipt = {
+        "schema_version": "crouzeix-run-receipt/v1",
+        "run_id": run_id,
+        "arm": "historical",
+        "completed_at_utc": "2026-08-15T05:59:49Z",
+    }
+    intervention = {
+        "schema_version": "crouzeix-operator-intervention/v1",
+        "run_id": run_id,
+        "call_id": "historical-root",
+        "occurred_at_utc": "2026-08-15T05:59:49Z",
+        "action": "terminate_process_group",
+        "reason": "host_free_space_below_safety_floor",
+        "claim_boundary": "resource intervention only",
+    }
+    (root / "run_spec.json").write_text(json.dumps(run_spec, sort_keys=True), encoding="utf-8")
+    (root / "run_receipt.json").write_text(json.dumps(run_receipt, sort_keys=True), encoding="utf-8")
+    (root / "operator_intervention.json").write_text(
+        json.dumps(intervention, sort_keys=True),
+        encoding="utf-8",
+    )
+    (call_dir / "receipt.json").write_text(
+        json.dumps({"schema_version": "call/v1", "call_id": "historical-root"}, sort_keys=True),
+        encoding="utf-8",
+    )
+    call_manifest = tickets.legacy_call_manifest(root)
+    migration_root = root.parent / "legacy-ticket-migration-001"
+    ticket_root = migration_root / "tickets"
+    migration_ticket = runtime_ticket(
+        ticket_id="legacy-ticket-migration-001",
+        run_id="legacy-ticket-migration-001",
+        task_kind="operator_intervention",
+        node_id=None,
+        direction_id=None,
+        role="legacy_ticket_migration",
+        context_sha256="1" * 64,
+        schema_sha256="2" * 64,
+        prompt_sha256="3" * 64,
+        owner_type="operator",
+        created_at_utc="2026-08-16T06:00:00Z",
+    )
+    if not (ticket_root / "legacy-ticket-migration-001" / "ticket.json").exists():
+        tickets.publish_ticket(ticket_root, migration_ticket)
+    return {
+        "run_spec_sha256": protocol.sha256_bytes((root / "run_spec.json").read_bytes()),
+        "run_receipt_sha256": protocol.sha256_bytes((root / "run_receipt.json").read_bytes()),
+        "operator_intervention_sha256": protocol.sha256_bytes(
+            (root / "operator_intervention.json").read_bytes()
+        ),
+        "call_manifest_sha256": tickets.canonical_sha256(call_manifest),
+        "call_count": str(call_manifest["call_count"]),
+        "migration_ticket_sha256": tickets.canonical_sha256(migration_ticket),
+    }
+
+
+def write_legacy_exception(root: Path, digests: dict[str, str], **overrides: object) -> None:
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-legacy-ticket-exception/v1",
+        "classification": "legacy_pre_ticket_contract",
+        "run_id": "historical-001",
+        "arm": "historical",
+        "original_run_spec_sha256": digests["run_spec_sha256"],
+        "original_run_receipt_sha256": digests["run_receipt_sha256"],
+        "original_operator_intervention_sha256": digests[
+            "operator_intervention_sha256"
+        ],
+        "original_call_manifest_sha256": digests["call_manifest_sha256"],
+        "original_call_count": int(digests["call_count"]),
+        "original_completed_at_utc": "2026-08-15T05:59:49Z",
+        "original_intervention_at_utc": "2026-08-15T05:59:49Z",
+        "migration_ticket_id": "legacy-ticket-migration-001",
+        "migration_ticket_sha256": digests["migration_ticket_sha256"],
+        "migration_created_at_utc": "2026-08-16T06:00:00Z",
+        "claim_boundary": "audit-only exception; not a retroactive runtime ticket",
+    }
+    value.update(overrides)
+    (root / "legacy_ticket_exception.json").write_text(
+        json.dumps(value, sort_keys=True),
+        encoding="utf-8",
+    )
+
+
 class TrackerValidationTests(unittest.TestCase):
     def test_current_tracker_is_complete_and_dependency_graph_allows_cpfr010(self) -> None:
         tracker = tickets.parse_tracker(REPO / "docs/workstream/crouzeix-proof-reproduction/tracker.org")
@@ -349,6 +441,17 @@ class TicketsCliTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("not terminal", result.stderr)
 
+    def test_validate_runtime_cli_requires_event_log_for_generation_zero_expert_ticket(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve()
+            ticket_root = run_root / "tickets"
+            tickets.publish_ticket(ticket_root, runtime_ticket())
+
+            result = self.run_tickets("validate-runtime", str(run_root))
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("event log", result.stderr)
+
     def test_validate_runtime_cli_rejects_oversized_ticket_before_reading(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             run_root = Path(directory).resolve()
@@ -362,11 +465,108 @@ class TicketsCliTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("exceeds byte cap", result.stderr)
 
-    def test_validate_legacy_cli_is_explicitly_unsupported_until_cpfr023(self) -> None:
-        result = self.run_tickets("validate-legacy", "historical", "orchestrated")
+    def test_validate_legacy_cli_requires_digest_bound_exception_receipts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve() / "historical-001"
+            digests = write_legacy_run(run_root)
+
+            missing = self.run_tickets("validate-legacy", str(run_root))
+            write_legacy_exception(run_root, digests)
+            valid = self.run_tickets("validate-legacy", str(run_root))
+
+        self.assertEqual(missing.returncode, 2)
+        self.assertIn("legacy exception", missing.stderr)
+        self.assertEqual(valid.returncode, 0, valid.stderr)
+
+    def test_validate_legacy_cli_rejects_digest_drift_and_backdated_migrations(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve() / "historical-001"
+            digests = write_legacy_run(run_root)
+            write_legacy_exception(run_root, digests, original_run_receipt_sha256="2" * 64)
+
+            drift = self.run_tickets("validate-legacy", str(run_root))
+
+            write_legacy_exception(
+                run_root,
+                digests,
+                migration_created_at_utc="2026-08-15T05:00:00Z",
+            )
+            backdated = self.run_tickets("validate-legacy", str(run_root))
+
+        self.assertEqual(drift.returncode, 2)
+        self.assertIn("run_receipt", drift.stderr)
+        self.assertEqual(backdated.returncode, 2)
+        self.assertIn("migration", backdated.stderr)
+
+    def test_validate_legacy_cli_binds_call_manifest_and_migration_ticket(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve() / "historical-001"
+            digests = write_legacy_run(run_root)
+            write_legacy_exception(run_root, digests, original_call_count=2)
+
+            call_count = self.run_tickets("validate-legacy", str(run_root))
+
+            write_legacy_exception(run_root, digests, migration_ticket_sha256="4" * 64)
+            migration_digest = self.run_tickets("validate-legacy", str(run_root))
+
+            write_legacy_exception(
+                run_root,
+                digests,
+                claim_boundary="retroactive runtime ticket governing the original action",
+            )
+            retroactive = self.run_tickets("validate-legacy", str(run_root))
+
+        self.assertEqual(call_count.returncode, 2)
+        self.assertIn("call", call_count.stderr)
+        self.assertEqual(migration_digest.returncode, 2)
+        self.assertIn("migration_ticket_sha256", migration_digest.stderr)
+        self.assertEqual(retroactive.returncode, 2)
+        self.assertIn("retroactive", retroactive.stderr)
+
+    def test_validate_legacy_cli_rejects_symlinked_migration_ticket_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            run_root = root / "historical-001"
+            digests = write_legacy_run(run_root)
+            real_migration = root / "legacy-ticket-migration-real"
+            (root / "legacy-ticket-migration-001").rename(real_migration)
+            (root / "legacy-ticket-migration-001").symlink_to(real_migration)
+            write_legacy_exception(run_root, digests)
+
+            result = self.run_tickets("validate-legacy", str(run_root))
 
         self.assertEqual(result.returncode, 2)
-        self.assertIn("not implemented", result.stderr)
+        self.assertIn("symlink", result.stderr)
+
+    def test_validate_legacy_cli_rejects_loose_original_json_and_bad_timestamp(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            run_root = root / "historical-001"
+            digests = write_legacy_run(run_root)
+            write_legacy_exception(run_root, digests)
+
+            run_spec = json.loads((run_root / "run_spec.json").read_text(encoding="utf-8"))
+            run_spec["unknown"] = True
+            (run_root / "run_spec.json").write_text(
+                json.dumps(run_spec, sort_keys=True),
+                encoding="utf-8",
+            )
+            loose = self.run_tickets("validate-legacy", str(run_root))
+
+            timestamp_root = root / "historical-002"
+            digests = write_legacy_run(timestamp_root, run_id="historical-002")
+            write_legacy_exception(
+                timestamp_root,
+                digests,
+                run_id="historical-002",
+                migration_created_at_utc="not-a-dateZ",
+            )
+            timestamp = self.run_tickets("validate-legacy", str(timestamp_root))
+
+        self.assertEqual(loose.returncode, 2)
+        self.assertIn("run_spec", loose.stderr)
+        self.assertEqual(timestamp.returncode, 2)
+        self.assertIn("timestamp", timestamp.stderr)
 
 
 if __name__ == "__main__":

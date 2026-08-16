@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import os
 import stat
@@ -132,6 +133,79 @@ RUNTIME_EVENT_FIELDS = frozenset(
         "reason",
         "occurred_at_utc",
         "artifact_sha256",
+    }
+)
+LEGACY_EXCEPTION_FIELDS = frozenset(
+    {
+        "schema_version",
+        "classification",
+        "run_id",
+        "arm",
+        "original_run_spec_sha256",
+        "original_run_receipt_sha256",
+        "original_operator_intervention_sha256",
+        "original_call_manifest_sha256",
+        "original_call_count",
+        "original_completed_at_utc",
+        "original_intervention_at_utc",
+        "migration_ticket_id",
+        "migration_ticket_sha256",
+        "migration_created_at_utc",
+        "claim_boundary",
+    }
+)
+LEGACY_CLASSIFICATIONS = frozenset({"legacy_pre_ticket_contract"})
+LEGACY_RUN_SPEC_FIELDS = frozenset(
+    {
+        "schema_version",
+        "run_id",
+        "arm",
+        "leakage",
+        "model",
+        "cli",
+        "historical_prompt",
+        "sandbox",
+        "approval_policy",
+        "allowed_tools",
+        "network_access",
+        "timeout_seconds",
+        "max_calls",
+        "token_accounting",
+        "generation_visible_files",
+        "generation_excluded_classes",
+        "created_at_utc",
+    }
+)
+LEGACY_RUN_RECEIPT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "run_id",
+        "arm",
+        "leakage",
+        "model",
+        "execution_status",
+        "failure",
+        "promotion",
+        "candidate_sha256",
+        "call_count",
+        "call_status_counts",
+        "usage",
+        "completed_at_utc",
+    }
+)
+LEGACY_OPERATOR_INTERVENTION_FIELDS = frozenset(
+    {
+        "schema_version",
+        "run_id",
+        "call_id",
+        "occurred_at_utc",
+        "action",
+        "reason",
+        "observed_available_kib",
+        "completed_calls_before_intervention",
+        "configured_timeout_seconds",
+        "elapsed_seconds_approximate",
+        "claim_boundary",
     }
 )
 
@@ -541,6 +615,186 @@ def validate_runtime_root(run_root: Path) -> None:
             )
 
 
+def validate_legacy_run(root: Path) -> None:
+    _ensure_safe_directory(root, "legacy run root", create=False)
+    run_spec_path = root / "run_spec.json"
+    run_receipt_path = root / "run_receipt.json"
+    intervention_path = root / "operator_intervention.json"
+    exception_path = root / "legacy_ticket_exception.json"
+    try:
+        run_spec_bytes = _read_bounded_bytes_file(
+            run_spec_path, "legacy run_spec", max_bytes=1024 * 1024
+        )
+        run_receipt_bytes = _read_bounded_bytes_file(
+            run_receipt_path,
+            "legacy run_receipt",
+            max_bytes=1024 * 1024,
+        )
+        intervention_bytes = _read_bounded_bytes_file(
+            intervention_path,
+            "legacy operator_intervention",
+            max_bytes=1024 * 1024,
+        )
+        exception = json.loads(
+            _read_bounded_text_file(
+                exception_path,
+                "legacy exception",
+                max_bytes=1024 * 1024,
+            )
+        )
+        run_spec = json.loads(run_spec_bytes.decode("utf-8"))
+        run_receipt = json.loads(run_receipt_bytes.decode("utf-8"))
+        intervention = json.loads(intervention_bytes.decode("utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValidationError(f"cannot parse legacy JSON: {error}") from error
+    _validate_legacy_original_record(
+        run_spec,
+        LEGACY_RUN_SPEC_FIELDS,
+        "legacy run_spec",
+    )
+    _validate_legacy_original_record(
+        run_receipt,
+        LEGACY_RUN_RECEIPT_FIELDS,
+        "legacy run_receipt",
+    )
+    _validate_legacy_original_record(
+        intervention,
+        LEGACY_OPERATOR_INTERVENTION_FIELDS,
+        "legacy operator_intervention",
+    )
+    _require_fields(exception, LEGACY_EXCEPTION_FIELDS, "legacy exception")
+    _require_equal(
+        exception["schema_version"],
+        "crouzeix-legacy-ticket-exception/v1",
+        "schema_version",
+    )
+    _enum(exception["classification"], LEGACY_CLASSIFICATIONS, "classification")
+    run_id = _runtime_id(exception["run_id"], "run_id")
+    _bounded_string(exception["arm"], "arm", 1, 128)
+    if run_spec.get("run_id") != run_id:
+        raise ValidationError("legacy exception run_id does not match run_spec")
+    if run_receipt.get("run_id") != run_id:
+        raise ValidationError("legacy exception run_id does not match run_receipt")
+    if intervention.get("run_id") != run_id:
+        raise ValidationError(
+            "legacy exception run_id does not match operator_intervention"
+        )
+    if run_spec.get("arm") != exception["arm"] or run_receipt.get("arm") != exception["arm"]:
+        raise ValidationError("legacy exception arm does not match original run")
+    _require_digest_match(
+        exception["original_run_spec_sha256"],
+        run_spec_bytes,
+        "original_run_spec_sha256",
+    )
+    _require_digest_match(
+        exception["original_run_receipt_sha256"],
+        run_receipt_bytes,
+        "original_run_receipt_sha256",
+    )
+    _require_digest_match(
+        exception["original_operator_intervention_sha256"],
+        intervention_bytes,
+        "original_operator_intervention_sha256",
+    )
+    call_manifest = legacy_call_manifest(root)
+    _require_digest_match(
+        exception["original_call_manifest_sha256"],
+        _canonical_json_bytes(call_manifest),
+        "original_call_manifest_sha256",
+    )
+    original_call_count = _bounded_integer(
+        exception["original_call_count"],
+        "original_call_count",
+        1,
+        128,
+    )
+    if call_manifest["call_count"] != original_call_count:
+        raise ValidationError("legacy exception original_call_count mismatch")
+    call_ids = {call["call_id"] for call in call_manifest["calls"]}
+    if intervention["call_id"] not in call_ids:
+        raise ValidationError("legacy operator_intervention call_id is not preserved")
+    original_completed = _strict_timestamp(
+        exception["original_completed_at_utc"],
+        "original_completed_at_utc",
+    )
+    original_intervention = _strict_timestamp(
+        exception["original_intervention_at_utc"],
+        "original_intervention_at_utc",
+    )
+    migration_created = _strict_timestamp(
+        exception["migration_created_at_utc"],
+        "migration_created_at_utc",
+    )
+    if run_receipt.get("completed_at_utc") != original_completed:
+        raise ValidationError("legacy exception completion timestamp mismatch")
+    if intervention.get("occurred_at_utc") != original_intervention:
+        raise ValidationError("legacy exception intervention timestamp mismatch")
+    if _parse_utc_timestamp(migration_created) <= max(
+        _parse_utc_timestamp(original_completed),
+        _parse_utc_timestamp(original_intervention),
+    ):
+        raise ValidationError("legacy exception migration timestamp is backdated")
+    migration_ticket_id = _runtime_id(
+        exception["migration_ticket_id"],
+        "migration_ticket_id",
+    )
+    migration_ticket = _read_migration_ticket(root.parent, migration_ticket_id)
+    if migration_ticket["ticket_id"] != migration_ticket_id:
+        raise ValidationError("legacy exception migration ticket_id mismatch")
+    if migration_ticket["created_at_utc"] != migration_created:
+        raise ValidationError("legacy exception migration timestamp mismatch")
+    _require_digest_match(
+        exception["migration_ticket_sha256"],
+        _canonical_json_bytes(migration_ticket),
+        "migration_ticket_sha256",
+    )
+    claim_boundary = _bounded_string(exception["claim_boundary"], "claim_boundary", 1, 512)
+    if "not a retroactive runtime ticket" not in claim_boundary:
+        raise ValidationError("legacy exception claim_boundary must reject retroactive tickets")
+
+
+def validate_legacy_roots(roots: list[Path]) -> None:
+    if not roots:
+        raise ValidationError("validate-legacy requires at least one run root")
+    for root in roots:
+        validate_legacy_run(root)
+
+
+def legacy_call_manifest(root: Path) -> dict[str, object]:
+    calls_root = root / "calls"
+    _ensure_safe_directory(calls_root, "legacy calls root", create=False)
+    calls: list[dict[str, object]] = []
+    for call_dir in sorted(path for path in calls_root.iterdir() if path.is_dir()):
+        _reject_symlink(call_dir, "legacy call directory")
+        files = []
+        for path in sorted(call_dir.rglob("*")):
+            _reject_symlink(path, "legacy call artifact")
+            if path.is_dir():
+                continue
+            relative_path = path.relative_to(call_dir).as_posix()
+            data = _read_bounded_bytes_file(
+                path,
+                "legacy call artifact",
+                max_bytes=16 * 1024 * 1024,
+            )
+            files.append(
+                {
+                    "path": relative_path,
+                    "sha256": sha256_bytes(data),
+                }
+            )
+        if not files:
+            raise ValidationError("legacy call directory is empty")
+        calls.append({"call_id": call_dir.name, "files": files})
+    if not calls:
+        raise ValidationError("legacy calls root has no calls")
+    return {
+        "schema_version": "crouzeix-legacy-call-manifest/v1",
+        "call_count": len(calls),
+        "calls": calls,
+    }
+
+
 def _validate_dependencies(tracker: Tracker) -> None:
     for item in tracker.items.values():
         for dependency in _dependencies(item):
@@ -586,6 +840,41 @@ def _require_fields(value: Mapping[str, Any], allowed: frozenset[str], label: st
         if extra:
             detail.append(f"unknown {', '.join(extra)}")
         raise ValidationError(f"{label} fields are invalid: {'; '.join(detail)}")
+
+
+def _validate_legacy_original_record(
+    value: Any,
+    fields: frozenset[str],
+    label: str,
+) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise ValidationError(f"{label} must be an object")
+    keys = set(value)
+    if not keys.issubset(fields):
+        extra = ", ".join(sorted(keys - fields))
+        raise ValidationError(f"{label} fields are invalid: unknown {extra}")
+    if "schema_version" not in value or "run_id" not in value:
+        raise ValidationError(f"{label} fields are invalid: missing required fields")
+    if label.endswith("run_spec"):
+        _require_equal(value["schema_version"], "crouzeix-run-spec/v1", "schema_version")
+    elif label.endswith("run_receipt"):
+        _require_equal(value["schema_version"], "crouzeix-run-receipt/v1", "schema_version")
+    elif label.endswith("operator_intervention"):
+        _require_equal(
+            value["schema_version"],
+            "crouzeix-operator-intervention/v1",
+            "schema_version",
+        )
+    _runtime_id(value["run_id"], "run_id")
+    _bounded_string(value["arm"], "arm", 1, 128) if "arm" in value else None
+    _strict_timestamp(value["created_at_utc"], "created_at_utc") if "created_at_utc" in value else None
+    _strict_timestamp(value["completed_at_utc"], "completed_at_utc") if "completed_at_utc" in value else None
+    _strict_timestamp(value["occurred_at_utc"], "occurred_at_utc") if "occurred_at_utc" in value else None
+    _bounded_string(value["call_id"], "call_id", 1, 128) if "call_id" in value else None
+    _bounded_string(value["action"], "action", 1, 128) if "action" in value else None
+    _bounded_string(value["reason"], "reason", 1, 512) if "reason" in value else None
+    _bounded_string(value["claim_boundary"], "claim_boundary", 1, 512) if "claim_boundary" in value else None
+    return value
 
 
 def _require_equal(value: Any, expected: str, label: str) -> None:
@@ -708,6 +997,13 @@ def _validate_existing_event_log(path: Path, ticket_id: str) -> None:
 
 
 def _read_bounded_text_file(path: Path, label: str, *, max_bytes: int) -> str:
+    try:
+        return _read_bounded_bytes_file(path, label, max_bytes=max_bytes).decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValidationError(f"{label} must be UTF-8 text: {error}") from error
+
+
+def _read_bounded_bytes_file(path: Path, label: str, *, max_bytes: int) -> bytes:
     _reject_symlink(path, label)
     try:
         mode = path.lstat().st_mode
@@ -719,9 +1015,62 @@ def _read_bounded_text_file(path: Path, label: str, *, max_bytes: int) -> str:
     if size > max_bytes:
         raise ValidationError(f"{label} exceeds byte cap: {path}")
     try:
-        return path.read_text(encoding="utf-8")
+        return path.read_bytes()
     except OSError as error:
         raise ValidationError(f"cannot read {label}: {error}") from error
+
+
+def _require_digest_match(value: Any, data: bytes, label: str) -> None:
+    expected = _digest(value, label)
+    observed = sha256_bytes(data)
+    if observed != expected:
+        raise ValidationError(f"{label} does not match observed bytes")
+
+
+def _canonical_json_bytes(value: Mapping[str, Any]) -> bytes:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+
+
+def _read_migration_ticket(base_root: Path, ticket_id: str) -> dict[str, object]:
+    migration_root = base_root / ticket_id
+    tickets_root = migration_root / "tickets"
+    ticket_dir = tickets_root / ticket_id
+    _ensure_safe_directory(migration_root, "legacy migration root", create=False)
+    _ensure_safe_directory(tickets_root, "legacy migration ticket root", create=False)
+    _ensure_safe_directory(ticket_dir, "legacy migration ticket directory", create=False)
+    ticket_path = ticket_dir / "ticket.json"
+    try:
+        raw = json.loads(
+            _read_bounded_text_file(
+                ticket_path,
+                "legacy migration ticket",
+                max_bytes=1024 * 1024,
+            )
+        )
+    except json.JSONDecodeError as error:
+        raise ValidationError(f"cannot parse legacy migration ticket: {error}") from error
+    return validate_runtime_ticket(raw)
+
+
+def _strict_timestamp(value: Any, label: str) -> str:
+    text = _timestamp(value, label)
+    _parse_utc_timestamp(text)
+    return text
+
+
+def _parse_utc_timestamp(value: str) -> dt.datetime:
+    try:
+        parsed = dt.datetime.fromisoformat(value.removesuffix("Z") + "+00:00")
+    except ValueError as error:
+        raise ValidationError(f"{value} is not a valid UTC timestamp") from error
+    if parsed.tzinfo != dt.timezone.utc:
+        raise ValidationError(f"{value} is not a UTC timestamp")
+    return parsed
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -746,7 +1095,8 @@ def main(argv: list[str] | None = None) -> int:
             validate_runtime_root(args.run_root)
             return 0
         if args.command == "validate-legacy":
-            raise ValidationError("validate-legacy is not implemented before CPFR-023")
+            validate_legacy_roots(args.run_roots)
+            return 0
     except ValidationError as error:
         print(f"tickets: {error}", file=sys.stderr)
         return 2
