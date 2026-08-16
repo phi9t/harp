@@ -209,3 +209,29 @@ separate integration lane from CPFR proof-reproduction.
 
 1. After commit classification, decide whether final cleanup should remove stale
    CPFR worker branch refs or only remove worktrees while keeping branch refs.
+
+## RSI Lane Integration Status 001
+
+The first RSI integration pass landed these groups in
+`<harp-root>/.worktrees/crouzeix-rsi-integration`:
+
+- hermetic Lean TRAE benchmark harness from `codex/crouzeix-rsi-implementation`;
+- Lean proof-engineering evidence and source-verifier registration from
+  `codex/crouzeix-rsi-implementation`.
+
+The clean docs-only `codex/crouzeix-rsi-workflow-spec` branch is classified as
+`obsolete` for direct landing because its two docs predate CPFR-070 through
+CPFR-081 and are duplicated or superseded by current FormalTarget/formal receipt
+architecture.
+
+The Crouzeix capsule files from `codex/crouzeix-rsi-implementation` are
+classified as `blocked`, not landed. They contain useful create-only sealing
+code, but as written they define a parallel `crouzeix-capsule-manifest/v1`
+authority instead of consuming the landed `FormalTargetLock`, `ResolvedTarget`,
+and v2 `formal_receipt` interfaces. A future adapter may land only if it:
+
+- references or embeds the current `formal_target.lock.json` identity;
+- seals files as `FormalTargetLock.artifacts` rather than generic tarballs;
+- calls `formal_target.provision(...)` or produces the same runtime inventory;
+- binds any build/validation result through a v2 formal attempt receipt; and
+- does not weaken CPFR-070 through CPFR-081.
