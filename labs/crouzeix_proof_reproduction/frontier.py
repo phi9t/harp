@@ -7,6 +7,7 @@ from decimal import Context, Decimal, ROUND_HALF_EVEN, localcontext
 from typing import Any, Iterable, Mapping, Sequence
 
 import protocol
+import expert_contracts
 
 
 DECIMAL_CONTEXT = Context(
@@ -20,7 +21,7 @@ DECIMAL_CONTEXT = Context(
 
 SELECTOR_DOMAIN = b"crouzeix-frontier/v1\0"
 TWO_TO_256 = 1 << 256
-PROBE_IDS = tuple(f"probe-{index:02d}" for index in range(1, 11))
+PROBE_IDS = expert_contracts.PROOF_PROGRESS_PROBE_IDS
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 PORTABLE_ID = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
@@ -514,7 +515,9 @@ def _validate_evaluation(value: Mapping[str, Any]) -> dict[str, object]:
             raise protocol.ValidationError("node evaluation must contain exactly ten probe IDs")
         seen.add(probe_id)
         _enum(probe_map["status"], PROBE_STATUSES, "probe.status")
-    if tuple(sorted(seen)) != PROBE_IDS:
+    if tuple(probe["probe_id"] for probe in probes) != PROBE_IDS:
+        raise protocol.ValidationError("node evaluation probe order must match closed probe IDs")
+    if set(seen) != set(PROBE_IDS):
         raise protocol.ValidationError("node evaluation must contain exactly ten probe IDs")
 
     findings = payload["findings"]
@@ -640,7 +643,9 @@ def _validate_reconciliation(value: Mapping[str, Any]) -> dict[str, object]:
             expected_pass_count += 1
         if evaluator_1_status != evaluator_2_status:
             expected_disagreement_count += 1
-    if tuple(sorted(seen_probe_ids)) != PROBE_IDS:
+    if tuple(probe["probe_id"] for probe in probes) != PROBE_IDS:
+        raise protocol.ValidationError("reconciliation probe order must match closed probe IDs")
+    if set(seen_probe_ids) != set(PROBE_IDS):
         raise protocol.ValidationError("reconciliation must contain ten probe IDs")
     if reconciliation["unanimous_pass_count"] != expected_pass_count:
         raise protocol.ValidationError("unanimous_pass_count does not match probe rows")

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crouzeix-node-evaluation-payload.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "probes", "findings"],
+  "properties": {
+    "schema_version": {"const": "crouzeix-node-evaluation-payload/v1"},
+    "probes": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/probe"}
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/finding"}
+    }
+  },
+  "$defs": {
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "probe_id": {
+      "enum": [
+        "p01_theorem_statement_preserved",
+        "p02_no_theorem_strength_reduction",
+        "p03_core_mechanism_explicit",
+        "p04_local_claims_justified",
+        "p05_dependencies_closed",
+        "p06_circularity_addressed",
+        "p07_obligations_listed",
+        "p08_candidate_text_coherent",
+        "p09_blockers_falsifiable",
+        "p10_candidate_proof_present"
+      ]
+    },
+    "probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["probe_id", "status", "rationale"],
+      "properties": {
+        "probe_id": {"$ref": "#/$defs/probe_id"},
+        "status": {"enum": ["pass", "fail", "insufficient_evidence"]},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 8000},
+        "candidate_proof_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "probe_id",
+        "severity",
+        "locator",
+        "statement",
+        "test"
+      ],
+      "properties": {
+        "finding_id": {"$ref": "#/$defs/portable_id"},
+        "probe_id": {"$ref": "#/$defs/probe_id"},
+        "severity": {"enum": ["critical", "major", "minor"]},
+        "locator": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "test": {"type": "string", "minLength": 1, "maxLength": 12000}
+      }
+    }
+  }
+}

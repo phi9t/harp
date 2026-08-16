@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -91,6 +92,9 @@ def make_run(root: Path) -> Path:
     )
     (run_dir / "schemas/expert_result.schema.json").write_text("{}\n", encoding="utf-8")
     (run_dir / "schemas/node_evaluation.schema.json").write_text("{}\n", encoding="utf-8")
+    (run_dir / "schemas/node_evaluation_payload.schema.json").write_text(
+        "{}\n", encoding="utf-8"
+    )
 
     frontier_config = {
         "selection_seed": 20260814,
@@ -379,6 +383,53 @@ class FailOnceAfterFirstRootProvider(FakeProvider):
 
 
 class ExpertRunnerTests(unittest.TestCase):
+    def test_evaluator_provider_receives_full_ticket_bound_context(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            self.assertGreater(len(provider.evaluator_contexts), 0)
+            for context in provider.evaluator_contexts:
+                self.assertEqual(
+                    set(context),
+                    {
+                        "schema_version",
+                        "run_id",
+                        "evaluation_id",
+                        "evaluator_index",
+                        "ticket_id",
+                        "node_id",
+                        "node_artifact_sha256",
+                        "mathematical_payload_sha256",
+                        "theorem_text",
+                        "theorem_sha256",
+                        "mathematical_payload",
+                        "probe_ids",
+                        "forbidden_sources",
+                        "forbidden_tools",
+                        "allowed_tools",
+                        "delegation_allowed",
+                        "completion_criteria",
+                        "result_schema",
+                        "schema_sha256",
+                        "prompt_sha256",
+                        "parent_artifact_sha256",
+                        "allowed_parent_artifacts",
+                    },
+                )
+                ticket = json.loads(
+                    (
+                        run_dir
+                        / "tickets"
+                        / str(context["ticket_id"])
+                        / "ticket.json"
+                    ).read_text(encoding="utf-8")
+                )
+                self.assertEqual(ticket["context_sha256"], digest_json(context))
+
     def test_fake_end_to_end_run_reconciles_tickets_ledgers_archive_and_candidate(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
             run_dir = make_run(Path(directory))
@@ -399,7 +450,11 @@ class ExpertRunnerTests(unittest.TestCase):
             self.assertEqual(evaluated["archive_entry_count"], 4)
             self.assertEqual(evaluated["candidate_projection_count"], 1)
             self.assertEqual(len(provider.evaluator_contexts), 8)
-            for context in provider.evaluator_contexts:
+            for full_context in provider.evaluator_contexts:
+                call_dir = run_dir / "evaluator_calls" / str(full_context["ticket_id"])
+                context = json.loads(
+                    (call_dir / "provider_context.json").read_text(encoding="utf-8")
+                )
                 for hidden in (
                     "parent",
                     "parent_node_id",
@@ -649,6 +704,81 @@ class ExpertRunnerTests(unittest.TestCase):
             receipt = json.loads((run_dir / "run_receipt.json").read_text())
             self.assertEqual(receipt["schema_version"], "crouzeix-run-receipt/v1")
             self.assertLessEqual(receipt["provider_call_count"], 5)
+
+    def test_phase_state_rejects_dangling_symlink_target(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            run_dir = make_run(root)
+            escaped = root / "escaped-phase-state.json"
+            os.symlink(escaped, run_dir / "frontier_phase_state.json")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                expert_runner.run_phase(run_dir, "roots", provider=FakeProvider())
+
+            self.assertFalse(escaped.exists())
+
+    def test_run_receipt_rejects_dangling_symlink_target(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            run_dir = make_run(root)
+            escaped = root / "escaped-run-receipt.json"
+            os.symlink(escaped, run_dir / "run_receipt.json")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                expert_runner.run_phase(run_dir, "roots", provider=FakeProvider())
+
+            self.assertFalse(escaped.exists())
+
+    def test_candidate_projection_rejects_dangling_symlink_target(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            run_dir = make_run(root)
+            candidate_bytes = b"Candidate proof text for expert-g0-function-theory."
+            candidate_sha256 = digest_bytes(candidate_bytes)
+            escaped = root / "escaped-candidate.tex"
+            os.symlink(
+                escaped,
+                run_dir / "candidate_projections" / f"{candidate_sha256}.tex",
+            )
+            provider = FakeProvider()
+
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            self.assertFalse(escaped.exists())
+
+    def test_reconciliation_rejects_orphan_evaluator_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+            expert_runner.run_phase(run_dir, "generations", provider=provider)
+            expert_runner.run_phase(run_dir, "finalize", provider=provider)
+            ticket_dir = run_dir / "tickets" / "evaluate-node-g0-function-theory-e1"
+            for path in sorted(ticket_dir.rglob("*"), reverse=True):
+                path.unlink()
+            ticket_dir.rmdir()
+
+            with self.assertRaisesRegex(protocol.ValidationError, "orphan evaluator"):
+                expert_runner.run_phase(run_dir, "check", provider=provider)
+
+    def test_reconciliation_rejects_orphan_candidate_freeze_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+            expert_runner.run_phase(run_dir, "generations", provider=provider)
+            expert_runner.run_phase(run_dir, "finalize", provider=provider)
+            ticket_dir = run_dir / "tickets" / "candidate-freeze-node-g0-function-theory"
+            for path in sorted(ticket_dir.rglob("*"), reverse=True):
+                path.unlink()
+            ticket_dir.rmdir()
+
+            with self.assertRaisesRegex(protocol.ValidationError, "orphan candidate"):
+                expert_runner.run_phase(run_dir, "check", provider=provider)
 
 
 if __name__ == "__main__":

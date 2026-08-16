@@ -206,6 +206,10 @@ def write_frontier_run(root: Path, cli: Path, timeout_seconds: int = 30) -> Path
         (run_dir / relative).mkdir(parents=True)
     schema = LAB / "schemas/expert_result.schema.json"
     (run_dir / "schemas/expert_result.schema.json").write_bytes(schema.read_bytes())
+    evaluator_schema = LAB / "schemas/node_evaluation_payload.schema.json"
+    (run_dir / "schemas/node_evaluation_payload.schema.json").write_bytes(
+        evaluator_schema.read_bytes()
+    )
     spec = {
         "schema_version": "crouzeix-run-spec/v1",
         "run_id": run_dir.name,
@@ -560,6 +564,40 @@ class FrontierProviderTests(unittest.TestCase):
                 "crouzeix-node-evaluation-payload/v1",
             )
             self.assertEqual(result["receipt"]["ticket_id"], ticket["ticket_id"])
+            self.assertEqual(
+                result["receipt"]["ticket_context_sha256"], ticket["context_sha256"]
+            )
+            self.assertEqual(
+                result["receipt"]["ticket_context_sha256"], digest_json(context)
+            )
+            request = json.loads((result["call_dir"] / "request.json").read_text())
+            self.assertEqual(request["ticket_context_sha256"], digest_json(context))
+            self.assertEqual(request["ticket_schema_sha256"], ticket["schema_sha256"])
+            prompt_text = (result["call_dir"] / "prompt.md").read_text()
+            prefix = "FRONTIER_CONTEXT_JSON:"
+            context_line = next(
+                line for line in prompt_text.splitlines() if line.startswith(prefix)
+            )
+            provider_context = json.loads(context_line.removeprefix(prefix).strip())
+            self.assertEqual(
+                set(provider_context),
+                {"schema_version", "theorem_text", "mathematical_payload", "probe_ids"},
+            )
+            for hidden in (
+                "ticket_id",
+                "run_id",
+                "evaluation_id",
+                "evaluator_index",
+                "node_id",
+                "node_artifact_sha256",
+                "mathematical_payload_sha256",
+                "theorem_sha256",
+                "schema_sha256",
+                "prompt_sha256",
+                "parent_artifact_sha256",
+                "allowed_parent_artifacts",
+            ):
+                self.assertNotIn(hidden, provider_context)
 
     def test_child_expert_context_with_one_parent_artifact_passes_adapter(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

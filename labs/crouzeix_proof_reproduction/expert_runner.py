@@ -3,7 +3,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+import stat
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -49,7 +51,7 @@ FORBIDDEN_SOURCES = [
 EVALUATOR_PROMPT = "proof_progress_evaluator.md"
 EXPERT_PROMPT = "expert.md"
 EXPERT_SCHEMA = "expert_result.schema.json"
-EVALUATOR_SCHEMA = "node_evaluation.schema.json"
+EVALUATOR_SCHEMA = "node_evaluation_payload.schema.json"
 PORTABLE_ID = re.compile(r"[^a-z0-9-]+")
 
 
@@ -637,7 +639,7 @@ def _run_evaluator(
     provider_attempt = provider.run_evaluator(
         run_dir=run_dir,
         ticket=ticket,
-        context=provider_context,
+        context=context,
     )
     _record_evaluator_call(run_dir, context, provider_context, provider_attempt)
     status = _attempt_status(provider_attempt.terminal_status)
@@ -1034,7 +1036,7 @@ def _freeze_candidate_projection(
     if entry["candidate_proof_sha256"] != candidate_sha256:
         raise protocol.ValidationError("candidate proof digest does not match archive entry")
     root = run_dir / "candidate_projections"
-    root.mkdir(exist_ok=True)
+    _ensure_directory(root, "candidate projections directory", create=True)
     projection = {
         "schema_version": "crouzeix-candidate-projection/v1",
         "projection_id": projection_id,
@@ -1047,9 +1049,11 @@ def _freeze_candidate_projection(
     projection["candidate_projection_sha256"] = _canonical_sha256(projection)
     candidate_path = root / f"{candidate_sha256}.tex"
     projection_path = root / f"{projection_id}.json"
+    _reject_symlink(candidate_path, "candidate projection")
+    _reject_symlink(projection_path, "candidate projection")
     if candidate_path.exists() or projection_path.exists():
         raise protocol.ValidationError("candidate projection already exists")
-    candidate_path.write_bytes(candidate_bytes)
+    _write_bytes_create_only(candidate_path, candidate_bytes, "candidate proof")
     _write_json_create_only(projection_path, projection, "candidate projection")
     _write_candidate_index(run_dir)
     return projection
@@ -1156,11 +1160,16 @@ def _frontier_evaluation_payload(value: Mapping[str, Any]) -> dict[str, object]:
     if len(probes) != 10:
         raise protocol.ValidationError("evaluation payload must contain ten probes")
     normalized = []
-    for index, probe in enumerate(probes, start=1):
+    for probe in probes:
+        probe_id = str(probe["probe_id"])
+        if probe_id not in frontier.PROBE_IDS:
+            raise protocol.ValidationError("evaluation probe ID is invalid")
         status = str(probe["status"])
         if status not in {"pass", "fail", "insufficient_evidence"}:
             raise protocol.ValidationError("evaluation probe status is invalid")
-        normalized.append({"probe_id": f"probe-{index:02d}", "status": status})
+        normalized.append({"probe_id": probe_id, "status": status})
+    if tuple(probe["probe_id"] for probe in normalized) != frontier.PROBE_IDS:
+        raise protocol.ValidationError("evaluation probe order must match closed probe IDs")
     findings = []
     for finding in value.get("findings", []):
         findings.append(
@@ -1298,6 +1307,7 @@ def _ticket_event(
 
 def _reconcile_run(run_dir: Path) -> dict[str, object]:
     _validate_all_runtime_tickets_terminal(run_dir)
+    _validate_evidence_ticket_links(run_dir)
     attempts = _attempts(run_dir)
     selection_events = _selection_events(run_dir)
     evidence_ticket_count = len(
@@ -1393,6 +1403,37 @@ def _validate_all_runtime_tickets_terminal(
             raise protocol.ValidationError(
                 f"runtime ticket {ticket['ticket_id']} has terminal event without evidence"
             )
+
+
+def _validate_evidence_ticket_links(run_dir: Path) -> None:
+    ticket_ids = _runtime_ticket_ids(run_dir)
+    for call_dir in sorted((run_dir / "evaluator_calls").glob("*")):
+        if not call_dir.is_dir():
+            continue
+        ticket_id = call_dir.name
+        if ticket_id not in ticket_ids:
+            raise protocol.ValidationError(f"orphan evaluator evidence for {ticket_id}")
+        receipt = _read_json(call_dir / "receipt.json", "evaluator receipt")
+        if receipt.get("ticket_id") != ticket_id:
+            raise protocol.ValidationError("evaluator receipt ticket_id mismatch")
+        if not (
+            run_dir
+            / "tickets"
+            / ticket_id
+            / "ticket_events.jsonl"
+        ).exists():
+            raise protocol.ValidationError(f"orphan evaluator evidence for {ticket_id}")
+    for projection in _candidate_projections(run_dir):
+        ticket_id = f"candidate-freeze-{projection['source_node_id']}"
+        if ticket_id not in ticket_ids:
+            raise protocol.ValidationError(f"orphan candidate evidence for {ticket_id}")
+        if not (
+            run_dir
+            / "tickets"
+            / ticket_id
+            / "ticket_events.jsonl"
+        ).exists():
+            raise protocol.ValidationError(f"orphan candidate evidence for {ticket_id}")
 
 
 def _ticket_has_evidence(run_dir: Path, ticket_id: str, task_kind: str) -> bool:
@@ -1541,6 +1582,17 @@ def _ticket_count(run_dir: Path) -> int:
     if not ticket_root.exists():
         return 0
     return sum(1 for path in ticket_root.iterdir() if path.is_dir())
+
+
+def _runtime_ticket_ids(run_dir: Path) -> set[str]:
+    ticket_root = run_dir / "tickets"
+    if not ticket_root.exists():
+        return set()
+    ticket_ids = set()
+    for path in sorted(ticket_root.iterdir()):
+        if path.is_dir():
+            ticket_ids.add(path.name)
+    return ticket_ids
 
 
 def _candidate_projection_count(run_dir: Path) -> int:
@@ -1766,7 +1818,8 @@ def _read_text(path: Path, label: str) -> str:
 
 
 def _write_json_create_only(path: Path, value: Mapping[str, Any], label: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    _reject_symlink(path, label)
+    _ensure_directory(path.parent, f"{label} parent", create=True)
     try:
         with path.open("x", encoding="utf-8") as handle:
             json.dump(value, handle, indent=2, sort_keys=True)
@@ -1776,8 +1829,49 @@ def _write_json_create_only(path: Path, value: Mapping[str, Any], label: str) ->
 
 
 def _write_json_replace(path: Path, value: Mapping[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _reject_symlink(path, path.name)
+    _ensure_directory(path.parent, f"{path.name} parent", create=True)
+    tmp = path.with_name(f".{path.name}.tmp")
+    _reject_symlink(tmp, tmp.name)
+    tmp.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _write_bytes_create_only(path: Path, data: bytes, label: str) -> None:
+    _reject_symlink(path, label)
+    _ensure_directory(path.parent, f"{label} parent", create=True)
+    try:
+        with path.open("xb") as handle:
+            handle.write(data)
+    except FileExistsError as error:
+        raise protocol.ValidationError(f"{label} already exists: {path}") from error
+
+
+def _ensure_directory(path: Path, label: str, *, create: bool) -> None:
+    current = Path(path.anchor) if path.is_absolute() else Path(".")
+    parts = path.parts[1:] if path.is_absolute() else path.parts
+    for part in parts:
+        current = current / part
+        try:
+            metadata = current.lstat()
+        except FileNotFoundError:
+            if not create:
+                raise protocol.ValidationError(f"{label} does not exist: {current}")
+            current.mkdir(mode=0o700)
+            metadata = current.lstat()
+        if stat.S_ISLNK(metadata.st_mode):
+            raise protocol.ValidationError(f"{label} contains symlink: {current}")
+        if not stat.S_ISDIR(metadata.st_mode):
+            raise protocol.ValidationError(f"{label} must be a directory: {current}")
+
+
+def _reject_symlink(path: Path, label: str) -> None:
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError:
+        return
+    if stat.S_ISLNK(metadata.st_mode):
+        raise protocol.ValidationError(f"{label} cannot be a symlink")
 
 
 def _portable(value: str) -> str:

@@ -47,6 +47,7 @@ SCHEMAS = (
     "expert_result.schema.json",
     "admission_decision.schema.json",
     "mathematical_node.schema.json",
+    "node_evaluation_payload.schema.json",
     "node_evaluation.schema.json",
 )
 CREATE_ONLY_DIRECTORIES = (

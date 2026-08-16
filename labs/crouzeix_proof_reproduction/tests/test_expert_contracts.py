@@ -581,10 +581,40 @@ class SchemaAndPromptTests(unittest.TestCase):
             "admission_decision.schema.json",
             "mathematical_node.schema.json",
             "node_evaluation.schema.json",
+            "node_evaluation_payload.schema.json",
         }
         self.assertTrue(expected.issubset({path.name for path in schema_dir.glob("*.schema.json")}))
         self.assertFalse((schema_dir / "expert_node.schema.json").exists())
         self.assertFalse((schema_dir / "proof_progress_evaluation.schema.json").exists())
+
+    def test_evaluator_payload_schema_contains_no_harness_envelope_fields(self) -> None:
+        schema = json.loads((LAB / "schemas" / "node_evaluation_payload.schema.json").read_text())
+        serialized = json.dumps(schema, sort_keys=True)
+
+        self.assertEqual(
+            schema["properties"]["schema_version"]["const"],
+            "crouzeix-node-evaluation-payload/v1",
+        )
+        self.assertEqual(schema["required"], ["schema_version", "probes", "findings"])
+        for hidden in (
+            "evaluation_id",
+            "evaluator_index",
+            "ticket_id",
+            "node_artifact_sha256",
+            "mathematical_payload_sha256",
+            "context_sha256",
+            "call_receipt_sha256",
+            "terminal_ticket_event_sha256",
+            "node_evaluation_sha256",
+        ):
+            self.assertNotIn(hidden, serialized)
+
+        envelope = json.loads((LAB / "schemas" / "node_evaluation.schema.json").read_text())
+        self.assertIn("node_evaluation_sha256", envelope["required"])
+        self.assertEqual(
+            envelope["properties"]["evaluation_payload"]["$ref"],
+            "#/$defs/evaluation_payload",
+        )
 
     def test_expert_result_schema_requires_canonical_result_digest(self) -> None:
         schema = json.loads((LAB / "schemas" / "expert_result.schema.json").read_text())

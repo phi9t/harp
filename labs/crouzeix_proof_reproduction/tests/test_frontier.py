@@ -12,6 +12,7 @@ LAB = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LAB))
 
 import frontier
+import expert_contracts
 import protocol
 
 
@@ -22,7 +23,7 @@ DIGEST_D = "d" * 64
 DIGEST_E = "e" * 64
 DIGEST_F = "f" * 64
 
-PROBE_IDS = tuple(f"probe-{index:02d}" for index in range(1, 11))
+PROBE_IDS = expert_contracts.PROOF_PROGRESS_PROBE_IDS
 
 
 def digest_payload(value: object) -> str:
@@ -199,6 +200,10 @@ def entry_for(
 
 
 class ReconciliationTests(unittest.TestCase):
+    def test_frontier_probe_ids_are_the_semantic_contract_ids(self) -> None:
+        self.assertEqual(frontier.PROBE_IDS, expert_contracts.PROOF_PROGRESS_PROBE_IDS)
+        self.assertNotIn("probe-01", frontier.PROBE_IDS)
+
     def test_reconciliation_uses_two_evaluation_digests_and_integer_pass_count(self) -> None:
         mathematical_node = node(node_id="node-a", generation=0)
         findings = [
@@ -233,6 +238,14 @@ class ReconciliationTests(unittest.TestCase):
         self.assertEqual(reconciliation["unanimous_pass_count"], 7)
         self.assertEqual(reconciliation["disagreement_count"], 3)
         self.assertEqual(
+            [probe["probe_id"] for probe in reconciliation["probes"]],
+            list(PROBE_IDS),
+        )
+        self.assertEqual(
+            reconciliation["probes"][0]["probe_id"],
+            "p01_theorem_statement_preserved",
+        )
+        self.assertEqual(
             reconciliation["node_evaluation_sha256s"],
             [left["node_evaluation_sha256"], right["node_evaluation_sha256"]],
         )
@@ -258,6 +271,58 @@ class ReconciliationTests(unittest.TestCase):
             frontier.reconcile_node_evaluations(
                 "bad",
                 duplicate_probe,
+                evaluation(
+                    evaluator_index=2,
+                    statuses={probe_id: "pass" for probe_id in PROBE_IDS},
+                    node_artifact_sha256=str(mathematical_node["node_artifact_sha256"]),
+                    mathematical_payload_sha256=str(mathematical_node["mathematical_payload_sha256"]),
+                ),
+            )
+
+        missing_probe = evaluation(
+            evaluator_index=1,
+            statuses={probe_id: "pass" for probe_id in PROBE_IDS},
+            node_artifact_sha256=str(mathematical_node["node_artifact_sha256"]),
+            mathematical_payload_sha256=str(mathematical_node["mathematical_payload_sha256"]),
+        )
+        missing_probe["evaluation_payload"]["probes"].pop()
+        missing_probe["evaluation_payload_sha256"] = digest_payload(
+            missing_probe["evaluation_payload"]
+        )
+        missing_probe["node_evaluation_sha256"] = digest_payload(
+            {k: v for k, v in missing_probe.items() if k != "node_evaluation_sha256"}
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "ten probe IDs"):
+            frontier.reconcile_node_evaluations(
+                "missing",
+                missing_probe,
+                evaluation(
+                    evaluator_index=2,
+                    statuses={probe_id: "pass" for probe_id in PROBE_IDS},
+                    node_artifact_sha256=str(mathematical_node["node_artifact_sha256"]),
+                    mathematical_payload_sha256=str(mathematical_node["mathematical_payload_sha256"]),
+                ),
+            )
+
+        out_of_order = evaluation(
+            evaluator_index=1,
+            statuses={probe_id: "pass" for probe_id in PROBE_IDS},
+            node_artifact_sha256=str(mathematical_node["node_artifact_sha256"]),
+            mathematical_payload_sha256=str(mathematical_node["mathematical_payload_sha256"]),
+        )
+        out_of_order["evaluation_payload"]["probes"] = list(
+            reversed(out_of_order["evaluation_payload"]["probes"])
+        )
+        out_of_order["evaluation_payload_sha256"] = digest_payload(
+            out_of_order["evaluation_payload"]
+        )
+        out_of_order["node_evaluation_sha256"] = digest_payload(
+            {k: v for k, v in out_of_order.items() if k != "node_evaluation_sha256"}
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "probe order"):
+            frontier.reconcile_node_evaluations(
+                "out-of-order",
+                out_of_order,
                 evaluation(
                     evaluator_index=2,
                     statuses={probe_id: "pass" for probe_id in PROBE_IDS},
@@ -472,7 +537,7 @@ class SelectionTests(unittest.TestCase):
 
         golden = {
             1: {
-                "snapshot": "ec1d5363eca607b3cb27c76ea701f4739a3ddf16e2f1d50705b068a20bb6e411",
+                "snapshot": "1128ac359ca043e213cc13a7e5d14f17be520eb3d9432609db3835cf8b96a4fc",
                 "events": [
                     (
                         "63726f757a6569782d66726f6e746965722f763100323032363038313400310030",
@@ -495,7 +560,7 @@ class SelectionTests(unittest.TestCase):
                 ],
             },
             2: {
-                "snapshot": "99402260e5f518c37f1aca279c30e35c7275a56de2352238e94de52b168bfadb",
+                "snapshot": "94bb01c384d597a827d500b7d25a4059ec59c1beaa2e14fd7e035af2a0b3e7b5",
                 "events": [
                     (
                         "63726f757a6569782d66726f6e746965722f763100323032363038313400320030",
@@ -518,7 +583,7 @@ class SelectionTests(unittest.TestCase):
                 ],
             },
             3: {
-                "snapshot": "fdc416aa0412682af1aa5b88a64d2937c6a79e197382f756960325206bae99a8",
+                "snapshot": "3ef9d7ac282666790c3a202b41e06400ad8fa3c3cf6a864d51b013f9ca96717f",
                 "events": [
                     (
                         "63726f757a6569782d66726f6e746965722f763100323032363038313400330030",
