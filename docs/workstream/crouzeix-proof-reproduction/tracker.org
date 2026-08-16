@@ -5348,7 +5348,9 @@ publishes only fresh audited compilations into the ledger.
   =ModuleNotFoundError: No module named 'reconstruction'=.
 - Implemented sealed obligation validation, proof-slot-only candidate
   materialization, classifier normalization, attempt-budget enforcement, and
-  publish guards that allow ledger rows only for =compiled= events with an axiom
+  publish guards. Follow-up subagent review found that a synthetic =compiled=
+  event was too weak; publication now also requires a validated v2 formal
+  receipt with =status= =passed=, matching candidate digest, and matching axiom
   audit digest.
 - Added =prompts/lean_reconstruction.md= documenting the proof-slot-only
   boundary. No model was invoked and no Lean compile was run.
@@ -5429,10 +5431,14 @@ review.
 - Added frontier context scanning that rejects reference-aware artifacts such as
   Lean declaration names, source-map paths, v2 formal receipts, ledger rows, and
   Jin/LS formal-target directories in blind generation inputs.
+- Follow-up subagent review found the frozen-candidate formal-compiler gate was
+  missing. Added =admit_frozen_candidate_for_formal_compiler=, which requires a
+  frozen candidate projection and accepted independent review bound to the same
+  candidate digest.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier -v=:
   15 tests, 0 failures.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=:
-  5 tests, 0 failures.
+  6 tests, 0 failures.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
   16 tests, 0 failures.
 - =git diff --check=: exit 0.

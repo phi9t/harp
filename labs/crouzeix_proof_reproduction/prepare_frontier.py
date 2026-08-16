@@ -271,6 +271,52 @@ def scan_frontier_context(run_dir: Path) -> dict[str, object]:
     }
 
 
+def admit_frozen_candidate_for_formal_compiler(
+    candidate_projection: Mapping[str, Any],
+    independent_review: Mapping[str, Any],
+) -> dict[str, object]:
+    _require_exact_fields(
+        candidate_projection,
+        frozenset({"schema_version", "candidate_id", "candidate_sha256", "frozen"}),
+        "candidate projection",
+    )
+    if candidate_projection["schema_version"] != "crouzeix-candidate-projection/v1":
+        raise ValidationError("candidate projection schema_version is invalid")
+    candidate_id = tickets._runtime_id(candidate_projection["candidate_id"], "candidate_id")
+    candidate_sha256 = tickets._digest(
+        candidate_projection["candidate_sha256"], "candidate_sha256"
+    )
+    if candidate_projection["frozen"] is not True:
+        raise ValidationError("candidate must be frozen before formal compiler admission")
+    _require_exact_fields(
+        independent_review,
+        frozenset({"schema_version", "candidate_sha256", "review_sha256", "outcome"}),
+        "independent review",
+    )
+    if independent_review["schema_version"] != "crouzeix-independent-review/v1":
+        raise ValidationError("independent review schema_version is invalid")
+    if tickets._digest(independent_review["candidate_sha256"], "review candidate_sha256") != candidate_sha256:
+        raise ValidationError("independent review candidate digest mismatch")
+    review_sha256 = tickets._digest(independent_review["review_sha256"], "review_sha256")
+    if independent_review["outcome"] != "accepted":
+        raise ValidationError("independent review must be accepted")
+    return {
+        "schema_version": "crouzeix-sealed-formal-admission/v1",
+        "status": "admitted",
+        "candidate_id": candidate_id,
+        "candidate_sha256": candidate_sha256,
+        "review_sha256": review_sha256,
+    }
+
+
+def _require_exact_fields(
+    value: Mapping[str, Any], expected: frozenset[str], label: str
+) -> None:
+    actual = frozenset(value)
+    if actual != expected:
+        raise ValidationError(f"{label} fields are invalid")
+
+
 def root_ticket_id(role: str) -> str:
     role = _role(role)
     return f"expert-g0-{role.replace('_', '-')}"

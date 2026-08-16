@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from typing import Any, Mapping
 
 import formal_target
+import formal_receipt
 import protocol
 
 
@@ -103,6 +104,20 @@ class ReconstructionHistory:
         axiom_audit_sha256 = formal_target._digest(
             event.get("axiom_audit_sha256"), "axiom_audit_sha256"
         )
+        receipt_raw = event.get("formal_receipt")
+        if not isinstance(receipt_raw, Mapping):
+            raise protocol.ValidationError("compiled publication requires formal receipt")
+        receipt = formal_receipt.validate_receipt(receipt_raw)
+        if receipt["schema_version"] != "crouzeix-formal-attempt-receipt/v2":
+            raise protocol.ValidationError("compiled publication requires v2 formal receipt")
+        if receipt["status"] != "passed":
+            raise protocol.ValidationError("compiled publication requires passed formal receipt")
+        candidate = receipt["candidate"]
+        if not isinstance(candidate, Mapping) or candidate.get("candidate_sha256") != candidate_sha256:
+            raise protocol.ValidationError("compiled publication candidate digest mismatch")
+        axioms = receipt["axioms"]
+        if not isinstance(axioms, Mapping) or axioms.get("scan_log_sha256") != axiom_audit_sha256:
+            raise protocol.ValidationError("compiled publication axiom audit digest mismatch")
         return {
             "schema_version": "crouzeix-formal-ledger-row/v1",
             "row_id": self.obligation.obligation_id,

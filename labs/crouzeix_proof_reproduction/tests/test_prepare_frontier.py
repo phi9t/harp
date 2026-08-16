@@ -259,6 +259,39 @@ class FrontierPreparationTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "reference-aware"):
                 prepare_frontier.scan_frontier_context(run_dir)
 
+    def test_sealed_formal_admission_requires_frozen_candidate_and_independent_review(self) -> None:
+        projection = {
+            "schema_version": "crouzeix-candidate-projection/v1",
+            "candidate_id": "candidate-a",
+            "candidate_sha256": "a" * 64,
+            "frozen": True,
+        }
+        review = {
+            "schema_version": "crouzeix-independent-review/v1",
+            "candidate_sha256": "a" * 64,
+            "review_sha256": "b" * 64,
+            "outcome": "accepted",
+        }
+
+        admission = prepare_frontier.admit_frozen_candidate_for_formal_compiler(
+            projection,
+            review,
+        )
+
+        self.assertEqual(admission["status"], "admitted")
+        self.assertEqual(admission["candidate_sha256"], "a" * 64)
+
+        with self.assertRaisesRegex(protocol.ValidationError, "frozen"):
+            prepare_frontier.admit_frozen_candidate_for_formal_compiler(
+                projection | {"frozen": False},
+                review,
+            )
+        with self.assertRaisesRegex(protocol.ValidationError, "review"):
+            prepare_frontier.admit_frozen_candidate_for_formal_compiler(
+                projection,
+                review | {"candidate_sha256": "c" * 64},
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
