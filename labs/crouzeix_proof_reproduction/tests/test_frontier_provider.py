@@ -80,19 +80,20 @@ assert sorted(item.name for item in workspace.iterdir()) == []
 prefix = "FRONTIER_CONTEXT_JSON:"
 context_line = next(line for line in prompt.splitlines() if line.startswith(prefix))
 context = json.loads(context_line.removeprefix(prefix).strip())
-assert context["delegation_allowed"] is False
-assert context["allowed_tools"] == ["Write"]
-for forbidden in ["Read", "Bash", "Glob", "Grep", "Edit", "spawn_agent", "WebSearch", "MCP"]:
-    assert forbidden not in context["allowed_tools"]
 if MODE == "evaluator":
-    assert context["ticket_id"] == "evaluate-node-g0-function-theory-e1"
-    assert context["schema_version"] == "crouzeix-evaluator-context/v1"
+    assert set(context) == {{"schema_version", "theorem_text", "mathematical_payload", "probe_ids"}}
+    assert context["schema_version"] == "crouzeix-evaluator-provider-context/v1"
 else:
-    assert context["ticket_id"] == "expert-g0-function-theory"
+    assert context["delegation_allowed"] is False
+    assert context["allowed_tools"] == ["Write"]
+    for forbidden in ["Read", "Bash", "Glob", "Grep", "Edit", "spawn_agent", "WebSearch", "MCP"]:
+        assert forbidden not in context["allowed_tools"]
+    expected_ticket = "expert-g1-d0" if MODE == "child_expert" else "expert-g0-function-theory"
+    assert context["ticket_id"] == expected_ticket
     assert context["schema_version"] == "crouzeix-expert-context/v1"
-assert isinstance(context["schema_sha256"], str) and len(context["schema_sha256"]) == 64
-assert isinstance(context["prompt_sha256"], str) and len(context["prompt_sha256"]) == 64
-assert context["parent_artifact_sha256"] is None or len(context["parent_artifact_sha256"]) == 64
+    assert isinstance(context["schema_sha256"], str) and len(context["schema_sha256"]) == 64
+    assert isinstance(context["prompt_sha256"], str) and len(context["prompt_sha256"]) == 64
+    assert context["parent_artifact_sha256"] is None or len(context["parent_artifact_sha256"]) == 64
 
 if MODE == "timeout":
     time.sleep(30)
@@ -168,6 +169,14 @@ payload = {{
 }}
 if MODE == "wrong_ticket":
     payload["ticket_id"] = "expert-g0-other"
+if MODE == "child_expert":
+    payload["attempt_id"] = "attempt-g1-d0"
+    payload["ticket_id"] = "expert-g1-d0"
+    payload["proposed_node_id"] = "node-g1-d0"
+    payload["parent_node_id"] = "node-g0-function-theory"
+    payload["parent_node_artifact_sha256"] = "1" * 64
+    payload["generation"] = 1
+    payload["selected_direction_id"] = "dir-child-obligation"
 without_digest = dict(payload)
 payload["expert_result_sha256"] = __import__("hashlib").sha256(
     json.dumps(without_digest, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
@@ -300,6 +309,53 @@ def strict_expert_context(prompt: str, schema_path: Path, **overrides: object) -
     }
     value.update(overrides)
     return value
+
+
+def projected_parent_node() -> dict[str, object]:
+    return {
+        "node_id": "node-g0-function-theory",
+        "node_artifact_sha256": "1" * 64,
+        "mathematical_payload": {
+            "proof_family": "functional calculus",
+            "mechanism": "derive a bounded numerical range estimate",
+            "proved_statements": [
+                {
+                    "statement_id": "s1",
+                    "statement": "A bounded intermediate estimate follows.",
+                    "justification": "The construction is explicit.",
+                    "depends_on_statement_ids": [],
+                }
+            ],
+            "unproved_obligations": [],
+            "circularity_risks": [],
+            "proposed_directions": [],
+            "endpoint": {"kind": "blocker", "text": "The final constant remains open."},
+            "confidence_basis": "checked algebraic steps",
+        },
+    }
+
+
+def child_expert_context(prompt: str, schema_path: Path) -> dict[str, object]:
+    parent = projected_parent_node()
+    return strict_expert_context(
+        prompt,
+        schema_path,
+        attempt_id="attempt-g1-d0",
+        ticket_id="expert-g1-d0",
+        proposed_node_id="node-g1-d0",
+        parent=parent,
+        generation=1,
+        selected_direction=root_direction(
+            direction_id="dir-child-obligation",
+            kind="obligation",
+            statement="Close the parent blocker.",
+            strength="major",
+            source_parent_node_id="node-g0-function-theory",
+            source_node_artifact_sha256="1" * 64,
+        ),
+        parent_artifact_sha256="1" * 64,
+        allowed_parent_artifacts=["1" * 64],
+    )
 
 
 def strict_evaluator_context(prompt: str, schema_path: Path, **overrides: object) -> dict[str, object]:
@@ -504,6 +560,44 @@ class FrontierProviderTests(unittest.TestCase):
                 "crouzeix-node-evaluation-payload/v1",
             )
             self.assertEqual(result["receipt"]["ticket_id"], ticket["ticket_id"])
+
+    def test_child_expert_context_with_one_parent_artifact_passes_adapter(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli, "child_expert")
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Extend the selected parent direction."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = child_expert_context(prompt, schema)
+            ticket = frontier_ticket(
+                prompt,
+                schema,
+                context=context,
+                ticket_id="expert-g1-d0",
+                node_id="node-g1-d0",
+                parent_node_id="node-g0-function-theory",
+                generation=1,
+                direction_id="dir-child-obligation",
+                parent_artifact_sha256="1" * 64,
+            )
+
+            result = frontier_provider.run_frontier_call(
+                run_dir,
+                ticket=ticket,
+                call_id="expert-g1-d0",
+                role="expert",
+                prompt=prompt,
+                context=context,
+                schema_path=schema,
+                accounting_path=run_dir / "attempt_ledger.jsonl",
+            )
+
+            self.assertEqual(result["receipt"]["status"], "completed")
+            self.assertEqual(
+                result["validated_output"]["parent_node_artifact_sha256"], "1" * 64
+            )
+            self.assertEqual(result["validated_output"]["generation"], 1)
 
     def test_context_digest_drift_fails_before_call_directory_creation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

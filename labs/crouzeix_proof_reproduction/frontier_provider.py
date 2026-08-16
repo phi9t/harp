@@ -71,9 +71,10 @@ def run_frontier_call(
         schema_sha256=sha256_bytes(schema_bytes),
         prompt_sha256=sha256_bytes(prompt.encode("utf-8")),
     )
+    provider_context = _provider_visible_context(role, context_value)
     wrapped_prompt = (
         "FRONTIER_CONTEXT_JSON: "
-        + json.dumps(context_value, sort_keys=True, separators=(",", ":"))
+        + json.dumps(provider_context, sort_keys=True, separators=(",", ":"))
         + "\n\n"
         + prompt
     )
@@ -167,7 +168,7 @@ def _validate_context(
 ) -> dict[str, Any]:
     value = dict(context)
     if role == "expert":
-        _validate_expert_context(value)
+        _validate_expert_context(value, ticket)
     elif role == "proof_progress_evaluator":
         _validate_evaluator_context(value)
     else:
@@ -210,7 +211,9 @@ def _validate_common_context(
         raise ValidationError("frontier context parent_artifact_sha256 must match ticket")
 
 
-def _validate_expert_context(value: Mapping[str, Any]) -> None:
+def _validate_expert_context(
+    value: Mapping[str, Any], ticket: Mapping[str, Any]
+) -> None:
     expected = {
         "schema_version",
         "run_id",
@@ -246,18 +249,7 @@ def _validate_expert_context(value: Mapping[str, Any]) -> None:
         raise ValidationError("expert context theorem_text must be a string")
     if sha256_bytes(theorem.encode("utf-8")) != value["theorem_sha256"]:
         raise ValidationError("expert context theorem_sha256 does not match theorem_text")
-    expert_contracts.build_expert_context(
-        run_id=str(value["run_id"]),
-        attempt_id=str(value["attempt_id"]),
-        ticket_id=str(value["ticket_id"]),
-        proposed_node_id=str(value["proposed_node_id"]),
-        parent_node=None,
-        generation=int(value["generation"]),
-        expert_role=str(value["expert_role"]),
-        selected_direction=value["selected_direction"],
-        theorem_text=theorem,
-        forbidden_sources=list(value["forbidden_sources"]),
-    )
+    _validate_expert_lineage(value, ticket)
 
 
 def _validate_evaluator_context(value: Mapping[str, Any]) -> None:
@@ -302,6 +294,103 @@ def _validate_evaluator_context(value: Mapping[str, Any]) -> None:
         raise ValidationError("evaluator context probe_ids must match closed probe set")
     if value["node_artifact_sha256"] != value["parent_artifact_sha256"]:
         raise ValidationError("evaluator context node artifact must match parent artifact")
+
+
+def _validate_expert_lineage(value: Mapping[str, Any], ticket: Mapping[str, Any]) -> None:
+    generation = value["generation"]
+    if not isinstance(generation, int) or generation < 0:
+        raise ValidationError("expert context generation must be a nonnegative integer")
+    direction = _validate_selected_direction_record(value["selected_direction"])
+    if direction["recommended_role"] != value["expert_role"]:
+        raise ValidationError("expert context role must match selected direction")
+    parent = value["parent"]
+    if generation == 0:
+        expert_contracts.build_expert_context(
+            run_id=str(value["run_id"]),
+            attempt_id=str(value["attempt_id"]),
+            ticket_id=str(value["ticket_id"]),
+            proposed_node_id=str(value["proposed_node_id"]),
+            parent_node=None,
+            generation=0,
+            expert_role=str(value["expert_role"]),
+            selected_direction=direction,
+            theorem_text=str(value["theorem_text"]),
+            forbidden_sources=list(value["forbidden_sources"]),
+        )
+        if parent is not None:
+            raise ValidationError("root expert context cannot include a parent")
+        if value["parent_artifact_sha256"] is not None:
+            raise ValidationError("root expert context cannot bind parent artifact")
+        if value["allowed_parent_artifacts"] != []:
+            raise ValidationError("root expert context cannot allow parent artifacts")
+        return
+    if not isinstance(parent, dict):
+        raise ValidationError("child expert context requires exactly one parent")
+    _require_fields(
+        parent,
+        {"node_id", "node_artifact_sha256", "mathematical_payload"},
+        "expert parent projection",
+    )
+    if parent["node_id"] != ticket["parent_node_id"]:
+        raise ValidationError("child expert parent node_id must match ticket")
+    if parent["node_artifact_sha256"] != ticket["parent_artifact_sha256"]:
+        raise ValidationError("child expert parent artifact must match ticket")
+    if value["parent_artifact_sha256"] != parent["node_artifact_sha256"]:
+        raise ValidationError("child expert context parent artifact mismatch")
+    if value["allowed_parent_artifacts"] != [parent["node_artifact_sha256"]]:
+        raise ValidationError("child expert context must allow exactly one parent artifact")
+    if direction["source_parent_node_id"] != parent["node_id"]:
+        raise ValidationError("child direction parent node must match context parent")
+    if direction["source_node_artifact_sha256"] != parent["node_artifact_sha256"]:
+        raise ValidationError("child direction parent artifact must match context parent")
+
+
+def _validate_selected_direction_record(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise ValidationError("selected direction must be an object")
+    expected = {
+        "direction_id",
+        "kind",
+        "statement",
+        "strength",
+        "recommended_role",
+        "source_parent_node_id",
+        "source_node_artifact_sha256",
+        "source_reconciliation_sha256",
+    }
+    _require_fields(value, expected, "selected direction")
+    if value["recommended_role"] not in expert_contracts.EXPERT_ROLES:
+        raise ValidationError("selected direction recommended_role is invalid")
+    if value["kind"] == "root_task":
+        if value["strength"] != "root":
+            raise ValidationError("root direction strength must be root")
+        if value["source_parent_node_id"] is not None:
+            raise ValidationError("root direction cannot reference a parent node")
+        if value["source_node_artifact_sha256"] is not None:
+            raise ValidationError("root direction cannot reference a node artifact")
+        if value["source_reconciliation_sha256"] is not None:
+            raise ValidationError("root direction cannot reference reconciliation")
+    elif value["kind"] in {"obligation", "evaluator_finding", "proposed_direction"}:
+        if value["source_parent_node_id"] is None:
+            raise ValidationError("child direction requires source parent node")
+        if value["source_node_artifact_sha256"] is None:
+            raise ValidationError("child direction requires source node artifact")
+        if value["kind"] == "evaluator_finding" and value["source_reconciliation_sha256"] is None:
+            raise ValidationError("evaluator finding direction requires reconciliation")
+    else:
+        raise ValidationError("selected direction kind is invalid")
+    return dict(value)
+
+
+def _provider_visible_context(role: str, context: Mapping[str, Any]) -> dict[str, Any]:
+    if role == "proof_progress_evaluator":
+        return {
+            "schema_version": "crouzeix-evaluator-provider-context/v1",
+            "theorem_text": context["theorem_text"],
+            "mathematical_payload": context["mathematical_payload"],
+            "probe_ids": context["probe_ids"],
+        }
+    return dict(context)
 
 
 def _parent_digests(ticket: Mapping[str, Any]) -> dict[str, str]:
