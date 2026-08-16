@@ -242,7 +242,7 @@ def _validate_command_profiles(
         if profile_id in profiles:
             raise protocol.ValidationError(f"duplicate profile_id {profile_id}")
         argv = tuple(_string_list(mapping["argv"], "argv", maximum=32, minimum=1))
-        if "{lean}" not in argv and "{lake}" not in argv:
+        if argv[0] not in {"{lean}", "{lake}"}:
             raise protocol.ValidationError("argv must start from a locked tool token")
         env = _validate_profile_env(mapping["env"], allowed_env)
         profiles[profile_id] = CommandProfile(

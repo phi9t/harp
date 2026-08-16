@@ -196,6 +196,19 @@ Add strict Python validators for Lean runtime locks and proof-suite manifests.
   'lean_suite'=.
 - Green check: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
   passed 9 tests.
+- Spec-review blocker regression: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before the fix with
+  =AssertionError: ValidationError not raised= for
+  =["python3", "{lean}", "{module_path}"]=.
+- Spec-review blocker fix check: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 10 tests after requiring command profiles to start with ="{lean}"= or
+  ="{lake}"=.
+- Spec-review blocker tracker check:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Spec-review blocker whitespace check: =git diff --check= exited 0.
+- Spec-review blocker repository check: =cargo run -q -p harp -- repository verify=
+  exited 0 after refreshing =docs/import-receipt.md=.
 - =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
   exited 0.
 - =git diff --check= exited 0.

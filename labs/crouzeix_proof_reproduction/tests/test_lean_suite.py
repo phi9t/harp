@@ -144,6 +144,25 @@ class LeanSuiteValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "argv"):
                 lean_suite.validate_runtime_lock(missing_token, root)
 
+    def test_runtime_lock_rejects_command_profile_with_locked_tool_after_ambient_wrapper(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            bad_profile = valid_lock(root)
+            bad_profile["command_profiles"] = [
+                {
+                    "profile_id": "lean-check",
+                    "argv": ["python3", "{lean}", "{module_path}"],
+                    "timeout_seconds": 10,
+                    "env": {},
+                }
+            ]
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "argv must start from a locked tool token"
+            ):
+                lean_suite.validate_runtime_lock(bad_profile, root)
+
 
 class LeanSuiteManifestTests(unittest.TestCase):
     def test_manifest_rejects_unsupported_schema_and_nested_unknowns(self) -> None:
