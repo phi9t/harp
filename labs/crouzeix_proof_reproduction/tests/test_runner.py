@@ -369,6 +369,48 @@ class CallTests(unittest.TestCase):
                         self.assertIsNone(result["receipt"]["usage"])
                     self.assertTrue((result["call_dir"] / "receipt.json").is_file())
 
+    def test_run_call_binds_ticket_and_appends_receipt_before_post_call_hook(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_cli.py"
+            write_fake_cli(cli)
+            run_dir = write_run(root, "historical", cli)
+            spec = protocol.read_run_spec(run_dir / "run_spec.json")
+            accounting = run_dir / "attempt_ledger.jsonl"
+            marker = run_dir / "post-call-marker"
+            ticket_binding = {
+                "ticket_id": "expert-g0-function-theory",
+                "ticket_sha256": "a" * 64,
+            }
+
+            with self.assertRaisesRegex(RuntimeError, "post-call failed"):
+                runner.run_call(
+                    run_dir,
+                    spec,
+                    call_id="historical-root",
+                    role="historical_root",
+                    prompt="CALL_ROLE: historical_root\nprompt",
+                    schema_path=run_dir / "schemas/historical_final.schema.json",
+                    parent_digests={},
+                    ticket_binding=ticket_binding,
+                    allowed_tools=["Write"],
+                    accounting_path=accounting,
+                    after_receipt=lambda: (
+                        marker.write_text("after"),
+                        (_ for _ in ()).throw(RuntimeError("post-call failed")),
+                    ),
+                )
+
+            receipt = json.loads((run_dir / "calls/historical-root/receipt.json").read_text())
+            self.assertEqual(receipt["ticket_id"], ticket_binding["ticket_id"])
+            self.assertEqual(receipt["ticket_sha256"], ticket_binding["ticket_sha256"])
+            self.assertEqual(receipt["allowed_tools"], ["Write"])
+            ledger = [json.loads(line) for line in accounting.read_text().splitlines()]
+            self.assertEqual(len(ledger), 1)
+            self.assertEqual(ledger[0]["call_id"], "historical-root")
+            self.assertEqual(ledger[0]["ticket_id"], ticket_binding["ticket_id"])
+            self.assertTrue(marker.exists())
+
     def test_role_output_validation_rejects_unknown_or_inconsistent_fields(self) -> None:
         valid = {
             "schema_version": "crouzeix-historical-final/v1",

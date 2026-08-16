@@ -8,7 +8,7 @@ import subprocess
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from protocol import (
     MAX_JSON_BYTES,
@@ -41,6 +41,8 @@ CALL_ROLES = frozenset(
         "logical_critic",
         "operator_critic",
         "repair",
+        "expert",
+        "proof_progress_evaluator",
     }
 )
 HISTORICAL_FIELDS = frozenset(
@@ -92,6 +94,7 @@ def build_command(
     workspace: Path,
     schema: Path,
     final: Path,
+    allowed_tools: list[str] | None = None,
 ) -> list[str]:
     command = [
         str(spec["cli"]["path"]),
@@ -114,7 +117,7 @@ def build_command(
         str(final),
         "--json",
     ]
-    for tool in spec["allowed_tools"]:
+    for tool in allowed_tools if allowed_tools is not None else spec["allowed_tools"]:
         command.extend(["--allowed-tool", str(tool)])
     command.append("-")
     return command
@@ -129,6 +132,10 @@ def run_call(
     prompt: str,
     schema_path: Path,
     parent_digests: Mapping[str, str],
+    ticket_binding: Mapping[str, str] | None = None,
+    allowed_tools: list[str] | None = None,
+    accounting_path: Path | None = None,
+    after_receipt: Callable[[], None] | None = None,
 ) -> dict[str, Any]:
     if role not in CALL_ROLES:
         raise ValidationError(f"unknown call role {role}")
@@ -157,19 +164,46 @@ def run_call(
         workspace=workspace,
         schema=schema_copy,
         final=final,
+        allowed_tools=allowed_tools,
     )
+    tool_names = [
+        str(tool)
+        for tool in (
+            allowed_tools if allowed_tools is not None else spec["allowed_tools"]
+        )
+    ]
     request = {
         "schema_version": "crouzeix-call-request/v1",
         "call_id": call_id,
         "role": role,
+        "cli": dict(spec["cli"]),
+        "model": spec["model"],
+        "sandbox": spec["sandbox"],
+        "approval_policy": spec["approval_policy"],
         "command": command,
         "cwd": str(workspace),
+        "allowed_tools": tool_names,
         "prompt_bytes": prompt_path.stat().st_size,
         "prompt_sha256": sha256_bytes(prompt_path.read_bytes()),
         "schema_bytes": schema_copy.stat().st_size,
         "schema_sha256": sha256_bytes(schema_copy.read_bytes()),
         "parent_digests": dict(sorted(parent_digests.items())),
     }
+    if ticket_binding is not None:
+        request.update(
+            {
+                "ticket_id": str(ticket_binding["ticket_id"]),
+                "ticket_sha256": str(ticket_binding["ticket_sha256"]),
+            }
+        )
+        for field in (
+            "ticket_context_sha256",
+            "ticket_schema_sha256",
+            "ticket_prompt_sha256",
+            "ticket_parent_artifact_sha256",
+        ):
+            if field in ticket_binding:
+                request[field] = ticket_binding[field]
     request_path.write_text(json.dumps(request, indent=2, sort_keys=True) + "\n")
 
     started = _now()
@@ -228,6 +262,12 @@ def run_call(
         "call_id": call_id,
         "role": role,
         "status": status,
+        "cli": dict(spec["cli"]),
+        "model": spec["model"],
+        "sandbox": spec["sandbox"],
+        "approval_policy": spec["approval_policy"],
+        "allowed_tools": tool_names,
+        "blocked_reason": None,
         "started_at_utc": started,
         "completed_at_utc": completed,
         "returncode": returncode,
@@ -248,12 +288,39 @@ def run_call(
         "parse_error": parse_error,
         "parent_digests": dict(sorted(parent_digests.items())),
     }
+    if ticket_binding is not None:
+        receipt.update(
+            {
+                "ticket_id": str(ticket_binding["ticket_id"]),
+                "ticket_sha256": str(ticket_binding["ticket_sha256"]),
+            }
+        )
+        for field in (
+            "ticket_context_sha256",
+            "ticket_schema_sha256",
+            "ticket_prompt_sha256",
+            "ticket_parent_artifact_sha256",
+        ):
+            if field in ticket_binding:
+                receipt[field] = ticket_binding[field]
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    if accounting_path is not None:
+        _append_accounting_receipt(accounting_path, receipt)
+    if after_receipt is not None:
+        after_receipt()
     return {
         "call_dir": call_dir,
         "receipt": receipt,
         "final": final_value,
     }
+
+
+def _append_accounting_receipt(path: Path, receipt: Mapping[str, Any]) -> None:
+    if path.exists() and not path.is_file():
+        raise ValidationError("accounting path must be a regular file")
+    line = json.dumps(receipt, sort_keys=True, separators=(",", ":"))
+    with path.open("a", encoding="utf-8") as output:
+        output.write(line + "\n")
 
 
 def parse_events(path: Path) -> dict[str, Any]:
