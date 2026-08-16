@@ -153,10 +153,12 @@ with owner approval.
   - Inventory state: `132` behind, `2` ahead
   - Scope: design/spec docs for Crouzeix hermetic reproduction.
 
-Landing action: keep this as a separate integration lane from CPFR
-proof-reproduction. It overlaps conceptually with Lean/formal infrastructure
-but has broader source/evidence/runtime changes. It requires its own commit map,
-spec review, and verification.
+Landing action: land this lane as part of the multi-worktree consolidation.
+Keep it separate from CPFR proof-reproduction because it has broader
+source/evidence/runtime changes and can fail independently, but do not leave
+the RSI work behind merely because it is a separate lane. Individual commits may
+be deferred only when they are obsolete, duplicate CPFR-070 through CPFR-081,
+or fail review/verification; every deferral must have a recorded blocker.
 
 ### Quarantined Worktree
 
@@ -229,8 +231,9 @@ Non-goals:
 
 ### Lane 3: Crouzeix RSI / Hermetic Runtime Integration
 
-Purpose: decide whether the hermetic proof-task runtime belongs in the current
-Harp proof infrastructure.
+Purpose: land the Crouzeix RSI/hermetic proof-task work that remains valid
+against current `master`, while preserving CPFR-070 through CPFR-081 as the
+formal-validation boundary.
 
 Steps:
 
@@ -238,9 +241,12 @@ Steps:
 2. Inventory the two RSI branches commit by commit.
 3. Compare against landed CPFR-070 through CPFR-081 formal-validation
    interfaces.
-4. Land docs-only workflow spec first if still accurate.
-5. Land runtime/source-verifier work only if it is still relevant and does not
-   duplicate or weaken FormalTarget boundaries.
+4. Land docs-only workflow spec first, updating it only to remove assumptions
+   superseded by CPFR-070 through CPFR-081.
+5. Land runtime/source-verifier work in focused commits when it remains
+   relevant and does not duplicate or weaken FormalTarget boundaries.
+6. Record any rejected or deferred RSI commit with a reason, verification
+   evidence, and future ticket owner.
 
 Expected commit groups:
 
@@ -254,6 +260,8 @@ Non-goals:
 - No re-opening CPFR-070 through CPFR-081 contracts without a new ticket.
 - No fake Lean or provider artifacts.
 - No broad adoption of the quarantined workflow-design worktree.
+- No silent deferral of RSI work; every excluded commit or artifact must be
+  recorded as duplicate, obsolete, unsafe, or blocked.
 
 ## Subagent Use
 
@@ -298,8 +306,9 @@ The multi-worktree landing is complete when:
   deferred, or quarantined;
 - all unique relevant CPFR proof-reproduction work is either landed or has a
   documented blocker;
-- all unique relevant Crouzeix RSI/hermetic-runtime work is either landed or
-  explicitly deferred;
+- all unique relevant Crouzeix RSI/hermetic-runtime work is landed, with any
+  rejected commit explicitly classified as duplicate, obsolete, unsafe, or
+  blocked;
 - stale detached verification worktrees have no unique unpreserved evidence;
 - current `master` is clean;
 - `docs/import-receipt.md` matches the tracked payload;
@@ -312,7 +321,5 @@ The multi-worktree landing is complete when:
    `crouzeix-formal-validation` before retiring that worktree.
 2. Whether proof-agent amendment files `005` through `012` are durable evidence
    to land, or local execution notes to summarize and leave untracked.
-3. Whether the Crouzeix RSI implementation lane is part of the current CPFR
-   proof-reproduction consolidation or a separate future workstream.
-4. Whether final cleanup should remove stale CPFR worker branches after their
+3. Whether final cleanup should remove stale CPFR worker branches after their
    commits are classified, or only remove worktrees and keep branches.

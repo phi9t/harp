@@ -18,7 +18,9 @@
 - Optional create `docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-005.md` through `proof-agent-amendment-012.md`: only after review decides they are durable evidence, not raw notes.
 - Modify `docs/workstream/crouzeix-proof-reproduction/tracker.org`: record worktree disposition, CPFR-R014 repair gate, and any terminal/canceled state updates required by the accepted lane.
 - Modify `docs/import-receipt.md`: refresh the payload digest last for each landed lane.
-- Optional modify or create RSI/hermetic proof-task files only in a separate lane after Lane 2 is settled.
+- Modify or create RSI/hermetic proof-task files in a separate required lane
+  after Lane 2 is settled. Individual RSI commits may be excluded only with an
+  explicit duplicate, obsolete, unsafe, or blocked classification.
 
 ## Invariant Map
 
@@ -332,7 +334,7 @@ git commit -m "docs(crouzeix): record proof reproduction retrospective" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
-### Task 4: Reconcile Crouzeix RSI / Hermetic Runtime Lane
+### Task 4: Land Crouzeix RSI / Hermetic Runtime Lane
 
 **Files:**
 - Potentially create or modify:
@@ -364,9 +366,11 @@ Audit 2: inspect codex/crouzeix-rsi-implementation. Identify unique commits, tou
 Audit 3: inspect evidence/source verifier changes for rights, LFS, source-count, and repository-verify impacts.
 ```
 
-- [ ] **Step 3: Land docs-only RSI spec if still accurate**
+- [ ] **Step 3: Land the docs-only RSI spec**
 
-If accepted, cherry-pick or manually copy only the docs/spec files first.
+Cherry-pick or manually copy the docs/spec files first. If the docs contain
+assumptions superseded by CPFR-070 through CPFR-081, patch those assumptions in
+the integration worktree rather than silently dropping the docs.
 
 Verify:
 
@@ -383,9 +387,14 @@ git commit -m "docs(crouzeix): preserve hermetic RSI workflow design" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
-- [ ] **Step 4: Decide whether runtime implementation belongs now**
+- [ ] **Step 4: Split the runtime implementation into required review groups**
 
-If implementation overlaps or weakens CPFR-070..081, defer it and record the blocker in `worktree-inventory-001.md` or a new follow-up ticket. If accepted, split by concern:
+Build a commit map for `codex/crouzeix-rsi-implementation` and classify every
+ahead commit. Land all unique relevant work. Exclude a commit only when it is:
+duplicate of current `master`, obsolete after CPFR-070 through CPFR-081, unsafe,
+or blocked by a concrete verification failure.
+
+Split accepted work by concern:
 
 1. Lean task materialization tests and code.
 2. Runtime publication hardening.
@@ -393,6 +402,41 @@ If implementation overlaps or weakens CPFR-070..081, defer it and record the blo
 4. Receipt refresh.
 
 Run focused tests after each group and `mise run verify` before landing to `master`.
+
+- [ ] **Step 5: Record every excluded RSI commit**
+
+For every rejected or deferred RSI commit, add a row to
+`docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md`:
+
+```markdown
+| Commit | Source branch | Classification | Reason | Future owner |
+|-|-|-|-|-|
+```
+
+Allowed classifications are `duplicate`, `obsolete`, `unsafe`, and `blocked`.
+Do not use vague classifications such as `later` or `maybe`.
+
+- [ ] **Step 6: Verify and commit the RSI lane**
+
+Run:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
+cargo test -p harp --test cli
+cargo run -q -p harp -- repository verify
+git diff --check
+```
+
+If `repository verify` reports a stale digest, update only the digest line in
+`docs/import-receipt.md`, then rerun it.
+
+Commit accepted groups with focused messages, for example:
+
+```sh
+git add <explicit RSI paths>
+git commit -m "feat(crouzeix): land hermetic RSI proof task runtime" \
+  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+```
 
 ### Task 5: Final Review And Local Landing
 
@@ -460,7 +504,7 @@ Ask owner for explicit approval before any `git worktree remove`, branch delete,
 
 ## Plan Self-Review
 
-- Spec coverage: covers all worktree groups, lane separation, subagent use, verification gates, no-push policy, quarantine, and no-proof-claim boundary.
+- Spec coverage: covers all worktree groups, lane separation, required RSI landing, subagent use, verification gates, no-push policy, quarantine, and no-proof-claim boundary.
 - Placeholder scan: no placeholder markers; optional steps are guarded by explicit owner decisions or audit outcomes.
-- Scope check: CPFR proof-reproduction and Crouzeix RSI are intentionally separate lanes to avoid one oversized merge.
+- Scope check: CPFR proof-reproduction and Crouzeix RSI are intentionally separate required lanes to avoid one oversized merge while still landing RSI work.
 - Authority check: subagents inventory and review; main agent owns integration and owner approves destructive cleanup.
