@@ -18,8 +18,6 @@ const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
 const AGENTIC_ENGINEERING_ROOT: &str = "evidence/agentic_engineering";
-const LEAN4AGENT_RAW_PDF: &str =
-    "evidence/lean_proof_engineering/artifacts/lean4agent-2606.06523v2.pdf";
 const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
 const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
 const META_HARNESS_ARCHIVE_MAX_MEMBERS: usize = 256;
@@ -1644,12 +1642,7 @@ fn verify_lfs_attributes(repo_root: &Path, binaries: &[PathBuf]) -> Result<(), A
     })?;
     for binary in binaries {
         let relative = slash_path(binary.strip_prefix(repo_root).expect("binary is relative"));
-        let attributes = if relative == LEAN4AGENT_RAW_PDF {
-            ["filter: unset", "diff: unset", "merge: unset"]
-        } else {
-            ["filter: lfs", "diff: lfs", "merge: lfs"]
-        };
-        for attribute in attributes {
+        for attribute in ["filter: lfs", "diff: lfs", "merge: lfs"] {
             if !resolved.contains(&format!("{relative}: {attribute}")) {
                 return Err(AppError::invalid_input(
                     "sources.lfs_attributes",

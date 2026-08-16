@@ -34,13 +34,14 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 64 binary evidence objects: 50 PDFs, nine
+- The maintained tree now contains 65 binary evidence objects: 51 PDFs, nine
   PNGs, one WebP, three WOFF2 font files, and one compressed archive. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
   files, and one deterministic raw TRAE archive. The Self-Improving Agents
   Survey extension adds one captured PNG and one arXiv PDF. The Verified
   Coevolution Agenda extension adds five arXiv PDFs. The DeepSeek Harness study
-  extension adds one Cordis paper PDF.
+  extension adds one Cordis paper PDF. The Lean proof-engineering extension
+  adds one arXiv PDF.
 - Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
   fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
@@ -172,6 +173,24 @@ packaging, and Cordis basis. It does not reproduce DeepSWE scores, run a paid
 model provider, validate UI behavior, prove platform sandbox enforcement, or
 establish autonomous recursive self-improvement. This extension does not alter
 the fixed 521-row initial import account.
+
+## Post-import Lean proof-engineering extension
+
+The maintained product also adds bounded Lean proof-engineering evidence for
+the Crouzeix formal-validation workstream:
+
+- a revision-pinned Lean4Agent arXiv PDF, abstract page, and deterministic
+  `pdftotext -raw` text;
+- dated first-party Lean, Mistral, and Lean community documentation captures;
+- immutable Lean repository identity metadata plus upstream README and Apache
+  2.0 license bytes for the resolved Lean commit;
+- source lock, closure, capture receipt, manifest, and artifact inventory rows;
+  and
+- acquisition contract tests for the offline evidence bundle.
+
+The packet supports local Lean proof-engineering context and runtime-workflow
+inspection. It does not provision Lean, validate a Crouzeix proof, trust model
+outputs as formal results, or alter the fixed 521-row initial import account.
 
 ## Standalone payload digest
 
