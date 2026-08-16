@@ -111,7 +111,7 @@ def prepare_attempt(
     try:
         _write_json_create_only(destination / "attempt.json", ticket_value, "formal attempt ticket")
         _write_json_create_only(
-            destination / "resource_receipt.json",
+            destination / str(receipt["resource_receipt"]["path"]),
             validate_resource_receipt(resource_receipt),
             "formal resource receipt",
         )
@@ -147,14 +147,15 @@ def validate_attempt_dir(attempt_dir: Path) -> dict[str, object]:
     _ensure_directory(root, "formal attempt directory", create=False)
     ticket_path = root / "attempt.json"
     receipt_path = root / "receipt.json"
-    resource_path = root / "resource_receipt.json"
     ticket_value = tickets.validate_runtime_ticket(
         _read_json_object(ticket_path, "formal attempt ticket")
     )
     receipt = validate_receipt(_read_json_object(receipt_path, "formal receipt"))
+    resource_path = root / str(receipt["resource_receipt"]["path"])
     resource = validate_resource_receipt(
-        _read_json_object(resource_path, "formal resource receipt")
+        _read_json_object(resource_path, "resource_receipt.path")
     )
+    _validate_resource_terminal_invariants(receipt, resource)
     if ticket_value["task_kind"] != "formal_attempt":
         raise protocol.ValidationError("formal attempt ticket has wrong task_kind")
     if receipt["ticket_id"] != ticket_value["ticket_id"]:
@@ -447,8 +448,24 @@ def _validate_terminal_invariants(receipt: Mapping[str, object]) -> None:
             raise protocol.ValidationError("not_attempted formal attempt cannot bind a command exit")
 
 
+def _validate_resource_terminal_invariants(
+    receipt: Mapping[str, object],
+    resource_receipt: Mapping[str, object],
+) -> None:
+    status = str(receipt["status"])
+    preflight_status = str(resource_receipt["preflight_status"])
+    if status == "blocked" and preflight_status != "blocked":
+        raise protocol.ValidationError(
+            "blocked formal attempt requires blocked resource preflight"
+        )
+    if status == "passed" and preflight_status != "ok":
+        raise protocol.ValidationError(
+            "passed formal attempt requires ok resource preflight"
+        )
+
+
 def _read_json_object(path: Path, label: str) -> dict[str, Any]:
-    _reject_symlink(path, label)
+    _ensure_safe_file(path, label)
     try:
         metadata = path.lstat()
     except OSError as error:
@@ -485,7 +502,7 @@ def _write_bytes_create_only(path: Path, data: bytes, label: str) -> None:
 def _assert_file_digest(
     path: Path, expected_bytes: int | None, expected_sha256: str, label: str
 ) -> None:
-    _reject_symlink(path, label)
+    _ensure_safe_file(path, label)
     try:
         metadata = path.lstat()
     except OSError as error:
@@ -526,6 +543,11 @@ def _ensure_directory(path: Path, label: str, *, create: bool) -> None:
             raise protocol.ValidationError(f"{label} contains symlink: {current}")
         if not stat.S_ISDIR(metadata.st_mode):
             raise protocol.ValidationError(f"{label} must be a directory: {current}")
+
+
+def _ensure_safe_file(path: Path, label: str) -> None:
+    _ensure_directory(path.parent, f"{label} parent", create=False)
+    _reject_symlink(path, label)
 
 
 def _reject_symlink(path: Path, label: str) -> None:

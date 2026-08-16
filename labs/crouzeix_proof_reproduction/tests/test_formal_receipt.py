@@ -108,8 +108,8 @@ def request(**overrides: object) -> dict[str, object]:
     return value
 
 
-def resource_receipt() -> dict[str, object]:
-    return {
+def resource_receipt(**overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
         "schema_version": "crouzeix-formal-resource-receipt/v1",
         "host_space_bytes": 8 * 1024 * 1024 * 1024,
         "memory_limit_bytes": 4 * 1024 * 1024 * 1024,
@@ -117,6 +117,8 @@ def resource_receipt() -> dict[str, object]:
         "preflight_status": "ok",
         "checked_at_utc": "2026-08-15T12:00:00Z",
     }
+    value.update(overrides)
+    return value
 
 
 def receipt_value(**overrides: object) -> dict[str, object]:
@@ -236,6 +238,93 @@ class FormalReceiptTests(unittest.TestCase):
 
             (attempt_dir / "source/CrouzeixFake.lean").write_bytes(b"tampered\n")
             with self.assertRaisesRegex(protocol.ValidationError, "source.sha256"):
+                formal_receipt.validate_attempt_dir(attempt_dir)
+
+    def test_validate_attempt_dir_binds_resource_receipt_path_not_default_name(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            resource = resource_receipt()
+            payload = request()
+            payload["resource_receipt"] = {
+                "path": "resource_receipt.json",
+                "sha256": formal_receipt.canonical_sha256(resource),
+            }
+            attempt_dir = formal_receipt.prepare_attempt(
+                root / "formal-attempt-001",
+                ticket=formal_ticket(),
+                request=payload,
+                source_bytes=b"theorem CrouzeixFake : True := by trivial\n",
+                stdout_bytes=b"ok\n",
+                stderr_bytes=b"",
+                axiom_log_bytes=b"#print axioms output\n",
+                resource_receipt=resource,
+            )
+            receipt_path = attempt_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text())
+            receipt["resource_receipt"]["path"] = "other-resource.json"
+            receipt["formal_attempt_sha256"] = formal_receipt.canonical_sha256_without_self(receipt)
+            receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "resource_receipt.path"):
+                formal_receipt.validate_attempt_dir(attempt_dir)
+
+    def test_validate_attempt_dir_rejects_symlinked_artifact_ancestors(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            resource = resource_receipt()
+            payload = request()
+            payload["resource_receipt"] = {
+                "path": "resource_receipt.json",
+                "sha256": formal_receipt.canonical_sha256(resource),
+            }
+            attempt_dir = formal_receipt.prepare_attempt(
+                root / "formal-attempt-001",
+                ticket=formal_ticket(),
+                request=payload,
+                source_bytes=b"theorem CrouzeixFake : True := by trivial\n",
+                stdout_bytes=b"ok\n",
+                stderr_bytes=b"",
+                axiom_log_bytes=b"#print axioms output\n",
+                resource_receipt=resource,
+            )
+            source_target = root / "source-target"
+            source_target.mkdir()
+            (source_target / "CrouzeixFake.lean").write_bytes(
+                b"theorem CrouzeixFake : True := by trivial\n"
+            )
+            for path in sorted((attempt_dir / "source").rglob("*"), reverse=True):
+                path.unlink()
+            (attempt_dir / "source").rmdir()
+            (attempt_dir / "source").symlink_to(source_target)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                formal_receipt.validate_attempt_dir(attempt_dir)
+
+    def test_blocked_status_requires_resource_block_not_ordinary_command_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            resource = resource_receipt(preflight_status="ok")
+            payload = request(
+                status="blocked",
+                command=request()["command"] | {"exit_code": 1},
+                reason="ordinary fake Lean command failure",
+            )
+            payload["resource_receipt"] = {
+                "path": "resource_receipt.json",
+                "sha256": formal_receipt.canonical_sha256(resource),
+            }
+            attempt_dir = formal_receipt.prepare_attempt(
+                root / "formal-attempt-001",
+                ticket=formal_ticket(),
+                request=payload,
+                source_bytes=b"theorem CrouzeixFake : True := by trivial\n",
+                stdout_bytes=b"ok\n",
+                stderr_bytes=b"",
+                axiom_log_bytes=b"#print axioms output\n",
+                resource_receipt=resource,
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "blocked"):
                 formal_receipt.validate_attempt_dir(attempt_dir)
 
     def test_terminal_status_invariants_keep_passed_failed_and_blocked_distinct(self) -> None:
