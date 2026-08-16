@@ -2,10 +2,12 @@
 
 ## Claim Ceiling
 
-This capture records proof-agent control-plane guidance from amendments `005`
-through `012`. It is not a proof of Crouzeix's conjecture, not a provider
-result, and not a substitute for runtime tickets, run artifacts, tracker state,
-or formal receipts.
+This capture records proof-agent control-plane guidance from amendments `001`
+through `012`. Amendments `005` through `012` remain the active normalized
+handoff for CPFR-R014; amendments `001` through `004` contribute baseline
+facts and superseded early instructions. This is not a proof of Crouzeix's
+conjecture, not a provider result, and not a substitute for runtime tickets,
+run artifacts, tracker state, or formal receipts.
 
 ## Active Handoff Rule
 
@@ -40,6 +42,37 @@ The amendment chain consistently records the same live frontier state:
   terminal.
 
 These facts are control-plane facts. They do not decide mathematical truth.
+
+## Baseline Facts From Amendments 001 Through 004
+
+The early amendments add still-active context that is narrower than the
+CPFR-R014 handoff:
+
+| Amendment | Still-active fact | Evidence boundary |
+|-|-|-|
+| 001 | Ignored `.runs/` artifacts are primary evidence; do not rewrite run evidence to satisfy validators; provider transport success is not proof success; control/resource failure is not proof failure. | Run artifacts, runtime tickets, and tracker evidence outrank agent closeout prose. |
+| 001 | The flat baseline produced a historical negative signal: three flat routes converged on the positive-boundary-measure / conjugate-Cauchy family, indicating route-family collapse pressure. | Historical baseline context only; it is not proof progress or disproof. |
+| 002 | `expert-g0-function-theory` was recovered as terminal `failed` with `provider_invoked=false`, one failed attempt, no admissions, and no mathematical nodes. | Existing `expert-frontier-001` control-plane evidence. |
+| 003 | `expert-g0-operator-dilation` was a second nonterminal root with no per-ticket call, attempt, admission, mathematical node, frontier event, or attempt-ledger row. | Per-ticket evidence, not aggregate `run_receipt.json`, decides orphan classification. |
+| 003 | The remaining `matrix-extremal`, `completion-positivity`, and `approximation-audit` roots were pristine in the recorded state. | Existing `expert-frontier-001` root-ticket state. |
+| 004 | The exact blocker was local pre-provider ticket-scope validation, not a provider invocation. | `_run_expert_attempt()` recorded `admitted -> running` before provider-boundary validation. |
+
+## Superseded Early Instructions
+
+These early instructions are no longer active guidance:
+
+- Amendment 001's claim that `expert-g0-function-theory` was the current
+  orphaned `running` ticket is superseded by later recovery evidence.
+- Amendment 001's and Amendment 002's resume/recovery instructions are
+  superseded by the CPFR-R014 provider-free repair gate.
+- Amendment 002's guidance to resume the four pristine roots is superseded by
+  the stricter rule that CPFR-032 continuation is forbidden until CPFR-R014 is
+  terminal with evidence.
+- Amendment 003's diagnosis is superseded where Amendment 004 identifies the
+  concrete local `forbidden_sources` provider-boundary validation failure.
+- Any early wording that frames the next action as operational root recovery or
+  root continuation is superseded by the provider-free CPFR-R014 repair
+  contract below.
 
 ## Runtime Root Cause
 
@@ -79,6 +112,7 @@ The repair must include tests for at least these behaviors:
 The repair may touch only the minimal runtime/readiness surfaces required by
 the ticket, expected to be under:
 
+- `labs/crouzeix_proof_reproduction/expert_runner.py`
 - `labs/crouzeix_proof_reproduction/tickets.py`
 - `labs/crouzeix_proof_reproduction/run_frontier.py`
 - `labs/crouzeix_proof_reproduction/frontier_store.py`
@@ -87,6 +121,10 @@ the ticket, expected to be under:
 
 If another file is required, the implementation must justify why the existing
 runtime boundary cannot enforce the invariant.
+
+Raw amendments identify `_run_expert_attempt()` in `expert_runner.py` as the
+first repair seam because provider-boundary validation must happen before a
+root ticket transitions to `running`.
 
 ### Forbidden Commands And Actions
 
@@ -134,6 +172,11 @@ Trace inspection must be metadata-first:
 Fresh validators outrank stale closeout text. A prior trace claim that there
 were “No blockers” cannot authorize root continuation when current runtime
 validation still fails on `expert-g0-operator-dilation`.
+
+If runtime output, artifact inventory, bounded trace facts, source seam, and
+amendment reachability state are unchanged, stop reviewing. The next action is
+CPFR-R014 implementation or coherent guidance landing, not another
+diagnosis-only amendment.
 
 ## Amendment Reachability Protocol
 
