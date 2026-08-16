@@ -5283,16 +5283,16 @@ two normalized route needs or two passed consumers.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Run Sealed Lean Reconstruction :lean:ticket:
+** DONE Run Sealed Lean Reconstruction :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-080
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-075 CPFR-078
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-080-sealed-reconstruction
+:MODEL: gpt-5
 :END:
 For a named blocker, use fixed proof slots and bounded candidates; retain compiler
 results and publish only fresh audited compilations into the ledger.
@@ -5344,8 +5344,19 @@ publishes only fresh audited compilations into the ledger.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-075 and
-  CPFR-078.
+- RED: =test_reconstruction= initially failed with
+  =ModuleNotFoundError: No module named 'reconstruction'=.
+- Implemented sealed obligation validation, proof-slot-only candidate
+  materialization, classifier normalization, attempt-budget enforcement, and
+  publish guards that allow ledger rows only for =compiled= events with an axiom
+  audit digest.
+- Added =prompts/lean_reconstruction.md= documenting the proof-slot-only
+  boundary. No model was invoked and no Lean compile was run.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_reconstruction -v=:
+  3 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
+  16 tests, 0 failures.
+- =git diff --check=: exit 0.
 
 ** TODO Bind Blind Frontier To FormalTarget :lean:review:ticket:
 :PROPERTIES:
