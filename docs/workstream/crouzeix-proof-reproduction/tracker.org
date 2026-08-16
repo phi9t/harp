@@ -2339,7 +2339,18 @@ evaluation.
 
 *** Verification Evidence
 
-- Record each ticket ID, status, result digest, usage, and intervention.
+- Read-only gate report:
+  =docs/workstream/crouzeix-proof-reproduction/cpfr-032-gate-report-001.md=.
+- CPFR-032 remains =TODO= and blocked for execution. In the clean integration
+  worktree, both =expert-frontier-001= and =expert-frontier-002= run trees were
+  absent, so =tickets.py validate-runtime= reported
+  =runtime root does not exist= and =run_frontier.py report-roots= reported a
+  missing =run_spec.json=.
+- The dirty source worktree records a newer =expert-frontier-002= pre-provider
+  digest-boundary blocker, but that ignored run evidence was not copied or
+  validated in this integration worktree.
+- No provider call was executed, no ignored run tree was mutated, no root ticket
+  was consumed, and no CPFR-033 action was performed by this gate.
 
 ** TODO Evaluate Root Archive With Fresh Reviewers :live:math:ticket:
 :PROPERTIES:
