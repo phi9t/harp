@@ -1577,16 +1577,17 @@ configuration, root expert tickets, schemas, prompts, and ticket/event roots.
   digest recomputation, and weak CLI identity matching. All were fixed with
   regression tests; final narrow re-review approved.
 
-** TODO Implement Ticketed Frontier Orchestrator :code:tests:ticket:
+** DONE Implement Ticketed Frontier Orchestrator :code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-016
 :DESIGN_SECTION: Frontier Loop And Budget; Child Direction And Expert Role
 :DEPENDS_ON: CPFR-011 CPFR-012 CPFR-013 CPFR-014 CPFR-015
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-016; Gibbs
+:MODEL: inherited default
+:COMMIT: 38aea14537de0c9b3903228b1099cd964675e841; da516c0843ecd54509337a40b3d75c092544b067
 :END:
 
 *** Scope
@@ -1663,7 +1664,23 @@ generations.
 
 *** Verification Evidence
 
-- Record 33-call fake-run maximum and ledger reconciliation.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+  initially failed with =ModuleNotFoundError: No module named 'expert_runner'=,
+  then failed on review-regression tests before fixes.
+- Worker commits:
+  =38aea14537de0c9b3903228b1099cd964675e841= and
+  =da516c0843ecd54509337a40b3d75c092544b067=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+  passed 9 tests; full lab discovery passed 121 tests.
+- Static verification passed with
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr016-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/expert_runner.py labs/crouzeix_proof_reproduction/run_frontier.py labs/crouzeix_proof_reproduction/tests/test_expert_runner.py=
+  and =git diff --check=.
+- Reviews found blockers in selection draw barrier, evaluator context leakage,
+  multiple candidate projections, phase-boundary validation, terminal ticket
+  event digests, all-ticket run reconciliation, and partial roots recovery.
+  All were fixed with regression tests; final narrow spec and quality
+  re-reviews approved.
 
 ** TODO Add Reproduction Test To Release Gate :tests:code:
 :PROPERTIES:
@@ -1808,16 +1825,17 @@ fresh re-review, and post-correctness mechanism classification.
   repair eligibility, and repair target ordering. All were fixed with
   regression tests; final narrow re-review approved.
 
-** TODO Implement Guided Diagnostic Machinery :math:code:tests:ticket:
+** DONE Implement Guided Diagnostic Machinery :math:code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-020
 :DESIGN_SECTION: Conditional Guided Diagnostic; Arm G
 :DEPENDS_ON: CPFR-010 CPFR-013 CPFR-014 CPFR-015
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-020; Boole
+:MODEL: inherited default
+:COMMIT: cdbe669eb563c92bc487ad5cb8e8f1edb78957bc; e1da4d66ac37dc7c7a258d737ad5b8b7c1f4f97b
 :END:
 
 *** Scope
@@ -1867,7 +1885,23 @@ guided reconstruction, and typed candidate/blocker receipt.
 
 *** Verification Evidence
 
-- Record truth table, fake run receipts, and commit.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_guided_runner -v=
+  initially failed on missing =guided_runner= and later failed on review-
+  regression tests before fixes.
+- Worker commits:
+  =cdbe669eb563c92bc487ad5cb8e8f1edb78957bc= and
+  =e1da4d66ac37dc7c7a258d737ad5b8b7c1f4f97b=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_guided_runner -v=
+  passed 15 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_protocol labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+  passed 22 tests; full lab discovery passed 136 tests after Wave D merge.
+- Static verification passed with
+  =python3 -m py_compile labs/crouzeix_proof_reproduction/guided_runner.py labs/crouzeix_proof_reproduction/tests/test_guided_runner.py=
+  and =git diff --check=.
+- Reviews found blockers in provider-call receipt reconciliation, arbitrary
+  provider receipt acceptance, forbidden L3 source bytes in allowed fields,
+  ticket binding, and guided output receipt/content validation. All were fixed
+  with regression tests; final narrow spec and quality re-reviews approved.
 
 ** DONE Implement Formal Attempt Receipt Contract :math:evidence:code:tests:ticket:
 :PROPERTIES:
