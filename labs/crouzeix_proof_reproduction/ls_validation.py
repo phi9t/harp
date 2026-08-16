@@ -43,7 +43,7 @@ class LSGraphRow:
     status: str
 
 
-def load_source_graph(path: Path) -> tuple[LSGraphRow, ...]:
+def load_route_graph(path: Path) -> tuple[LSGraphRow, ...]:
     value = _read_json_object(path, "LS source graph")
     _require_fields(value, GRAPH_FIELDS, "LS source graph")
     _require_equal(value["schema_version"], "crouzeix-ls-source-graph/v1", "schema_version")

@@ -28,7 +28,7 @@ def write_json(path: Path, value: object) -> None:
 
 class LSValidationTests(unittest.TestCase):
     def test_ls_graph_has_terminal_node_and_no_jin_private_paths(self) -> None:
-        graph = ls_validation.load_source_graph(GRAPH)
+        graph = ls_validation.load_route_graph(GRAPH)
 
         self.assertEqual(graph[-1].node_id, "ls-terminal-crouzeix")
         self.assertEqual(graph[-1].role, "terminal")
@@ -58,20 +58,20 @@ class LSValidationTests(unittest.TestCase):
             duplicate = root / "duplicate.json"
             write_json(duplicate, base | {"nodes": base["nodes"] + base["nodes"]})
             with self.assertRaisesRegex(protocol.ValidationError, "duplicate"):
-                ls_validation.load_source_graph(duplicate)
+                ls_validation.load_route_graph(duplicate)
 
             unknown = root / "unknown.json"
             unknown_node = dict(base["nodes"][0], dependencies=["missing-node"])
             write_json(unknown, base | {"nodes": [unknown_node]})
             with self.assertRaisesRegex(protocol.ValidationError, "dependency"):
-                ls_validation.load_source_graph(unknown)
+                ls_validation.load_route_graph(unknown)
 
             cycle = root / "cycle.json"
             node_a = dict(base["nodes"][0], node_id="a", lean_name="LS.a", dependencies=["b"], role="intermediate")
             node_b = dict(base["nodes"][0], node_id="b", lean_name="LS.b", dependencies=["a"], role="terminal")
             write_json(cycle, base | {"nodes": [node_a, node_b]})
             with self.assertRaisesRegex(protocol.ValidationError, "cycle"):
-                ls_validation.load_source_graph(cycle)
+                ls_validation.load_route_graph(cycle)
 
             jin = root / "jin.json"
             jin_node = dict(
@@ -80,7 +80,7 @@ class LSValidationTests(unittest.TestCase):
             )
             write_json(jin, base | {"nodes": [jin_node]})
             with self.assertRaisesRegex(protocol.ValidationError, "Jin"):
-                ls_validation.load_source_graph(jin)
+                ls_validation.load_route_graph(jin)
 
     def test_library_inventory_maps_external_facts_to_mathlib_task_or_blocker(self) -> None:
         inventory = ls_validation.load_library_inventory(INVENTORY)
@@ -114,7 +114,7 @@ class LSValidationTests(unittest.TestCase):
     def test_materialize_ls_tasks_records_blocked_nodes_and_terminal_assembly(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
-            graph = ls_validation.load_source_graph(GRAPH)
+            graph = ls_validation.load_route_graph(GRAPH)
 
             summary = ls_validation.materialize_tasks(graph, root)
 
@@ -127,7 +127,7 @@ class LSValidationTests(unittest.TestCase):
             self.assertIn("ls-power-recurrence", terminal_result["blocked_by"])
 
     def test_materialize_ls_tasks_rejects_unpublished_predecessor_and_jin_imports(self) -> None:
-        graph = ls_validation.load_source_graph(GRAPH)
+        graph = ls_validation.load_route_graph(GRAPH)
         tampered = list(graph)
         tampered[1] = ls_validation.LSGraphRow(
             node_id=tampered[1].node_id,

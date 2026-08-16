@@ -5126,7 +5126,7 @@ Jin private work files.
 *** Verification Evidence
 - RED: =test_ls_validation= initially failed with
   =ModuleNotFoundError: No module named 'ls_validation'=.
-- Implemented =LSGraphRow=, =load_source_graph=, and
+- Implemented =LSGraphRow=, =load_route_graph=, and
   =load_library_inventory= with duplicate-ID, unknown-dependency, cycle, and
   Jin-private-path rejection.
 - Added LS arXiv v1 source graph and library inventory using
