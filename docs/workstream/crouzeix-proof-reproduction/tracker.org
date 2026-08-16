@@ -4069,3 +4069,274 @@ Fast-forward the clean primary checkout to the exact verified integration tip.
 
 - Terminal evidence is the ignored landing receipt digest reported in the final
   user response with old/new master and verified feature tip.
+
+** TODO Repair M1 Evaluator Provider Boundary :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-R001
+:DESIGN_SECTION: M1 Provider-neutral DGM frontier; Dedicated Expert Boundary
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Fix evaluator provider plumbing so the live adapter receives the full
+ticket-bound context, sends only theorem/payload/probes to the model, and binds
+the full context digest in ticket and call receipts.
+
+*** Non-goals
+
+- No live provider call.
+- No frontier algorithm change.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/frontier_provider.py=
+- =labs/crouzeix_proof_reproduction/expert_runner.py=
+- relevant provider/orchestrator tests
+
+*** Acceptance Criteria
+
+- Evaluator provider-visible prompt contains no ticket, run, node, digest,
+  parent, lineage, score, role, treatment, or evaluator identity fields.
+- Ticket =context_sha256= matches the full harness context, not the stripped
+  model-visible context.
+- =TraeCliFrontierProvider.run_evaluator= works with a fake CLI without context
+  digest mismatch.
+- Provider receipt preserves ticket binding and hidden context digest.
+
+*** Implementation Steps
+
+1. Add a failing fake-CLI evaluator test proving the current digest mismatch.
+2. Add a failing leakage test for evaluator provider-visible context.
+3. Split full harness context from provider-visible context in the adapter.
+4. Re-run provider and orchestrator tests.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+
+*** Verification Evidence
+
+- Pending.
+
+** TODO Repair Evaluator Payload Schema And Probe Identity :code:tests:
+:PROPERTIES:
+:ID: CPFR-R002
+:DESIGN_SECTION: M1 Provider-neutral DGM frontier; Node Evaluation And Reconciliation
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Introduce a dedicated provider-visible proof-progress evaluation payload schema
+and preserve semantic proof-progress probe IDs through evaluator payloads,
+node-evaluation envelopes, reconciliation, archive scoring, and tests.
+
+*** Non-goals
+
+- No DGM formula change.
+- No live provider call.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/frontier.py=
+- =labs/crouzeix_proof_reproduction/expert_contracts.py=
+- =labs/crouzeix_proof_reproduction/expert_runner.py=
+- relevant schemas/prompts/tests
+
+*** Acceptance Criteria
+
+- Provider =output_schema= for evaluators contains only model-visible payload
+  fields, not harness envelope fields.
+- Harness =node_evaluation.schema.json= remains envelope-only.
+- The ten semantic probe IDs survive unchanged into node-evaluation and
+  reconciliation records.
+- Ordinal =probe-01= rewriting is removed.
+- Duplicate, missing, or out-of-order probe IDs fail closed.
+
+*** Implementation Steps
+
+1. Add failing tests for evaluator schema hidden-field leakage.
+2. Add failing tests proving semantic probe IDs are preserved into archive
+   scoring.
+3. Add the payload schema and update preparation/provider bindings.
+4. Remove ordinal probe rewriting and update frontier reconciliation tests.
+
+*** Verification Plan
+
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+- schema JSON parse checks
+
+*** Verification Evidence
+
+- Pending.
+
+** TODO Repair Review Call Role Evidence :code:tests:
+:PROPERTIES:
+:ID: CPFR-R003
+:DESIGN_SECTION: Evaluator Independence; Repair And Promotion Boundary
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Add explicit provider call roles for correctness review and mechanism
+classification so review/classification receipts are not persisted as
+=proof_progress_evaluator= calls.
+
+*** Non-goals
+
+- No review policy change.
+- No live provider call.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/runner.py=
+- =labs/crouzeix_proof_reproduction/review_runner.py=
+- relevant tests
+
+*** Acceptance Criteria
+
+- =runner.CALL_ROLES= includes explicit correctness-review and
+  mechanism-classification roles.
+- Correctness review receipts persist as correctness-review calls.
+- Mechanism-classification receipts persist as mechanism-classification calls.
+- Existing proof-progress evaluator receipts remain distinct.
+
+*** Implementation Steps
+
+1. Add failing receipt-role tests for review and classification calls.
+2. Add the closed call roles and route review runner through them.
+3. Re-run runner and review-runner tests.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+
+*** Verification Evidence
+
+- Pending.
+
+** TODO Repair Expert Runner Filesystem And Ticket Reconciliation :security:code:tests:
+:PROPERTIES:
+:ID: CPFR-R004
+:DESIGN_SECTION: M1 Provider-neutral DGM frontier; Durable Frontier State
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Harden =expert_runner.py= filesystem publication and run reconciliation for
+candidate projections, phase state, receipts, and all runtime ticket classes.
+
+*** Non-goals
+
+- No frontier math change.
+- No live provider call.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/expert_runner.py=
+- =labs/crouzeix_proof_reproduction/tests/test_expert_runner.py=
+
+*** Acceptance Criteria
+
+- Candidate projection files, index, run receipts, and phase state reject
+  dangling symlinks and symlinked parents before writing.
+- Create-only evidence is never overwritten through =write_text= or
+  =write_bytes= on unchecked paths.
+- Run receipt reconciliation joins all runtime tickets to terminal events and
+  evidence, including evaluator and candidate-freeze tickets.
+- Negative tests cover orphan evaluator/candidate tickets and symlinked
+  publication targets.
+
+*** Implementation Steps
+
+1. Add failing symlink regression tests for candidate projection, run receipt,
+   and phase state.
+2. Add failing reconciliation tests for orphan evaluator and candidate-freeze
+   tickets.
+3. Replace unsafe writes with safe create/replace helpers where allowed by
+   the design.
+4. Re-run orchestrator tests.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_expert_runner -v=
+- =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+
+*** Verification Evidence
+
+- Pending.
+
+** TODO Repair Review Target Ordering :math:review:code:tests:
+:PROPERTIES:
+:ID: CPFR-R005
+:DESIGN_SECTION: Repair And Promotion Boundary
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+
+*** Scope
+
+Correct deterministic repair target ordering so higher-severity repair needs
+are selected before lower-severity ones, with candidate digest only as the
+final tie-breaker.
+
+*** Non-goals
+
+- No provider call change.
+- No correctness-review schema change unless needed for theorem-strength
+  obligation counts.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/review_runner.py=
+- =labs/crouzeix_proof_reproduction/tests/test_review_runner.py=
+
+*** Acceptance Criteria
+
+- Repair target ordering uses descending critical finding count, descending
+  theorem-strength obligation count, descending major finding count, descending
+  minor finding count, then ascending candidate SHA-256.
+- Tests cover at least one case that would fail with ascending severity counts.
+
+*** Implementation Steps
+
+1. Add a failing multi-candidate ordering test.
+2. Fix the repair decision sort key.
+3. Re-run review-runner tests.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+
+*** Verification Evidence
+
+- Pending.
