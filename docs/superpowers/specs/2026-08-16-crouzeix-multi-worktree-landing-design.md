@@ -39,7 +39,7 @@ claims, or release-gate waivers.
 
 Primary checkout:
 
-- Path: `/Users/bytedance/workspace/harp`
+- Path: `<harp-root>`
 - Branch: `master`
 - Commit: `1d70062ba047d98cc7ea5e4d5b968d5d7d4d8bcf`
 - State during inventory: clean except for the untracked continuation prompt
@@ -58,19 +58,19 @@ wrapper gates must stop and repair the regression first.
 These worktrees do not need code landing because their heads are contained in
 current `master` or equal to it:
 
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-formal-validation`
+- `<harp-root>/.worktrees/crouzeix-formal-validation`
   - Branch: `codex/crouzeix-formal-validation`
   - Status: same commit as `master`
   - Note: preserves untracked `.teaching/crouzeix-lean-validation/...` scratch.
     Owner decision: preserve this teaching packet and include it in the landing
     party as a reviewed artifact rather than deleting it with the worktree.
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-conjecture-deep-dive`
+- `<harp-root>/.worktrees/crouzeix-conjecture-deep-dive`
   - Branch: `integrate/crouzeix-conjecture`
   - Status: contained in `master`
-- `/Users/bytedance/workspace/harp/.worktrees/math-foundations-advanced-linear`
+- `<harp-root>/.worktrees/math-foundations-advanced-linear`
   - Branch: `codex/math-foundations-advanced-linear`
   - Status: contained in `master`
-- `/Users/bytedance/workspace/harp/.worktrees/math-foundations-formalization-design`
+- `<harp-root>/.worktrees/math-foundations-formalization-design`
   - Branch: `codex/math-foundations-formalization-design`
   - Status: contained in `master`
 
@@ -80,7 +80,7 @@ worktree.
 
 ### Main Proof-Reproduction Source
 
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction`
+- `<harp-root>/.worktrees/crouzeix-proof-reproduction`
   - Branch: `feat/crouzeix-proof-reproduction`
   - Inventory state: `101` commits behind current `master`, `56` commits ahead
   - Dirty tracked files: `docs/import-receipt.md`,
@@ -97,7 +97,7 @@ Do not merge it directly while it is dirty and behind.
 
 ### Retrospective Sidecar
 
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-retrospective-landing-spec`
+- `<harp-root>/.worktrees/crouzeix-retrospective-landing-spec`
   - Branch: `docs/crouzeix-retrospective-landing-spec`
   - Head: same as `feat/crouzeix-proof-reproduction`
   - Untracked file:
@@ -136,9 +136,9 @@ verifiable.
 These detached worktrees are dirty only in `docs/import-receipt.md` and the
 Crouzeix tracker:
 
-- `/private/tmp/harp-cpfr017-verify`
-- `/private/tmp/harp-cpfr018-closeout-verify`
-- `/private/tmp/harp-cpfr018-findings-verify`
+- `<tmp>/harp-cpfr017-verify`
+- `<tmp>/harp-cpfr018-closeout-verify`
+- `<tmp>/harp-cpfr018-findings-verify`
 
 Landing action: do not land directly. Extract unique tracker evidence or
 findings only after comparing against the primary proof branch. Then retire
@@ -146,12 +146,12 @@ with owner approval.
 
 ### Crouzeix RSI / Hermetic Proof-Task Lane
 
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-implementation`
+- `<harp-root>/.worktrees/crouzeix-rsi-implementation`
   - Branch: `codex/crouzeix-rsi-implementation`
   - Inventory state: `101` behind, `28` ahead
   - Scope: Lean proof-task materialization, hermetic runtime publication,
     evidence, labs, source verifier changes, and docs.
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-spec`
+- `<harp-root>/.worktrees/crouzeix-rsi-workflow-spec`
   - Branch: `codex/crouzeix-rsi-workflow-spec`
   - Inventory state: `132` behind, `2` ahead
   - Scope: design/spec docs for Crouzeix hermetic reproduction.
@@ -165,7 +165,7 @@ or fail review/verification; every deferral must have a recorded blocker.
 
 ### Quarantined Worktree
 
-- `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-design`
+- `<harp-root>/.worktrees/crouzeix-rsi-workflow-design`
   - Branch: `codex/crouzeix-rsi-workflow-design`
   - Status: head contained in `master`, but working tree shows broad deletions
     and hundreds of untracked files.

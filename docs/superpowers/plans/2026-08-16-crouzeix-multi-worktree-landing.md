@@ -43,9 +43,9 @@
 Run three subagents with non-overlapping scopes:
 
 ```text
-Subagent A: inspect /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction, the CPFR worker branches, and detached /private/tmp/harp-cpfr* worktrees. Read only. Report commit maps, dirty files, unique artifacts, and likely duplicate commits.
+Subagent A: inspect <harp-root>/.worktrees/crouzeix-proof-reproduction, the CPFR worker branches, and detached <tmp>/harp-cpfr* worktrees. Read only. Report commit maps, dirty files, unique artifacts, and likely duplicate commits.
 
-Subagent B: inspect /Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-implementation and /Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-spec. Read only. Compare their scope to landed CPFR-070..081 and report unique files, risks, and verification commands.
+Subagent B: inspect <harp-root>/.worktrees/crouzeix-rsi-implementation and <harp-root>/.worktrees/crouzeix-rsi-workflow-spec. Read only. Compare their scope to landed CPFR-070..081 and report unique files, risks, and verification commands.
 
 Subagent C: inspect already-contained and quarantined worktrees: crouzeix-formal-validation, crouzeix-conjecture-deep-dive, math-foundations-advanced-linear, math-foundations-formalization-design, crouzeix-rsi-workflow-design. Read only. Report untracked scratch and safe/unsafe retirement recommendations.
 ```
@@ -61,8 +61,8 @@ Create `docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md` w
 
 ## Baseline
 
-- Primary checkout: `/Users/bytedance/workspace/harp`
-- Baseline commit: `$(git -C /Users/bytedance/workspace/harp rev-parse HEAD)`
+- Primary checkout: `<harp-root>`
+- Baseline commit: `$(git -C <harp-root> rev-parse HEAD)`
 - Inventory date: `YYYY-MM-DD`
 - No proof claim: this document classifies worktree state only.
 
@@ -110,9 +110,9 @@ Expected: no mutation; `worktree-inventory-001.md` contains exact branch/head/di
 Run:
 
 ```sh
-git -C /Users/bytedance/workspace/harp branch --contains <head-sha>
-git -C /Users/bytedance/workspace/harp cherry -v master <branch>
-git -C /Users/bytedance/workspace/harp range-diff master...<branch> master...feat/crouzeix-proof-reproduction
+git -C <harp-root> branch --contains <head-sha>
+git -C <harp-root> cherry -v master <branch>
+git -C <harp-root> range-diff master...<branch> master...feat/crouzeix-proof-reproduction
 ```
 
 Use `range-diff` only for branches intended to compare against the main proof branch. Record whether each worker branch is represented by the main branch, unique, obsolete, or unknown.
@@ -195,7 +195,7 @@ For each approved worktree and scratch source:
 
 ```sh
 git -C <worktree> status --short --untracked-files=all
-git -C /Users/bytedance/workspace/harp merge-base --is-ancestor <head-sha> master
+git -C <harp-root> merge-base --is-ancestor <head-sha> master
 ps -axo pid,ppid,pgid,etime,command | rg '<worktree>|lake|cargo|pnpm|mise'
 ```
 
@@ -225,9 +225,9 @@ git commit -m "docs(crouzeix): plan proof worktree retirement" \
 Run two read-only subagents:
 
 ```text
-Teaching preservation subagent: inspect /Users/bytedance/workspace/harp/.worktrees/crouzeix-formal-validation/.teaching/crouzeix-lean-validation. Recommend a tracked destination, file list, and verification checks. Do not edit or delete.
+Teaching preservation subagent: inspect <harp-root>/.worktrees/crouzeix-formal-validation/.teaching/crouzeix-lean-validation. Recommend a tracked destination, file list, and verification checks. Do not edit or delete.
 
-Amendment capture subagent: inspect proof-agent-amendment-005.md through proof-agent-amendment-012.md and worktree-inventory.md in /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction. Recommend which content to land verbatim, which to summarize, and how to verify raw removal after capture. Do not edit or delete.
+Amendment capture subagent: inspect proof-agent-amendment-005.md through proof-agent-amendment-012.md and worktree-inventory.md in <harp-root>/.worktrees/crouzeix-proof-reproduction. Recommend which content to land verbatim, which to summarize, and how to verify raw removal after capture. Do not edit or delete.
 ```
 
 - [ ] **Step 2: Preserve the teaching packet**
@@ -282,14 +282,14 @@ the old worktree are still present.
 Only after Step 4 passes, remove:
 
 ```sh
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-005.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-006.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-007.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-008.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-009.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-010.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-011.md
-rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-012.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-005.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-006.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-007.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-008.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-009.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-010.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-011.md
+rm <harp-root>/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-012.md
 ```
 
 Then record removal status in `agent-trace-index.md`.
@@ -572,7 +572,7 @@ git commit -m "feat(crouzeix): land hermetic RSI proof task runtime" \
 Run two read-only subagents:
 
 ```text
-Recovery subagent A: inspect the staged deletes and untracked files in /Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-design. Identify unique files not already in master or codex/crouzeix-rsi-implementation. Do not edit.
+Recovery subagent A: inspect the staged deletes and untracked files in <harp-root>/.worktrees/crouzeix-rsi-workflow-design. Identify unique files not already in master or codex/crouzeix-rsi-implementation. Do not edit.
 
 Recovery subagent B: compare crouzeix-rsi-workflow-design against crouzeix-rsi-workflow-spec and crouzeix-rsi-implementation. Identify duplicate, obsolete, and potentially recoverable artifacts. Do not edit.
 ```

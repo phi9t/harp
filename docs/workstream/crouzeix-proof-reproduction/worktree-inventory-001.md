@@ -2,7 +2,7 @@
 
 ## Baseline
 
-- Primary checkout: `/Users/bytedance/workspace/harp`
+- Primary checkout: `<harp-root>`
 - Baseline commit: `1d70062ba047d98cc7ea5e4d5b968d5d7d4d8bcf`
 - Inventory date: `2026-08-16`
 - No proof claim: this document classifies worktree state only.
@@ -11,15 +11,15 @@
 
 | Worktree | Branch | Head | `master...HEAD` | Status | Disposition |
 |-|-|-|-|-|-|
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-formal-validation` | `codex/crouzeix-formal-validation` | `1d70062ba047` | `0 0` | tracked-clean; untracked `.teaching/` scratch | already landed; preserve scratch decision before removal |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-conjecture-deep-dive` | `integrate/crouzeix-conjecture` | `127c0e0474ee` | `136 0` | tracked-clean | contained in `master`; candidate for retirement |
-| `/Users/bytedance/workspace/harp/.worktrees/math-foundations-advanced-linear` | `codex/math-foundations-advanced-linear` | `378e004ab01f` | `58 0` | tracked-clean | contained in `master`; candidate for retirement |
-| `/Users/bytedance/workspace/harp/.worktrees/math-foundations-formalization-design` | `codex/math-foundations-formalization-design` | `378e004ab01f` | `58 0` | tracked-clean | contained in `master`; candidate for retirement |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction` | `feat/crouzeix-proof-reproduction` | `71d46df88576` | `101 56` | dirty tracked docs plus untracked proof-agent amendments | primary CPFR proof-reproduction integration source |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-retrospective-landing-spec` | `docs/crouzeix-retrospective-landing-spec` | `71d46df88576` | `101 56` | one untracked retrospective spec draft | sidecar evidence; do not land as independent code lineage |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-implementation` | `codex/crouzeix-rsi-implementation` | `0c0b729edfb6` | `101 28` | tracked-clean | required RSI/hermetic-runtime landing lane |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-spec` | `codex/crouzeix-rsi-workflow-spec` | `bc88c9221cf4` | `132 2` | tracked-clean | docs-only subset of RSI implementation lane; do not land independently |
-| `/Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-design` | `codex/crouzeix-rsi-workflow-design` | `530e0edeb1f2` | `132 0` | broad tracked deletions plus many untracked files | quarantined; separate recovery only |
+| `<harp-root>/.worktrees/crouzeix-formal-validation` | `codex/crouzeix-formal-validation` | `1d70062ba047` | `0 0` | tracked-clean; untracked `.teaching/` scratch | already landed; preserve scratch decision before removal |
+| `<harp-root>/.worktrees/crouzeix-conjecture-deep-dive` | `integrate/crouzeix-conjecture` | `127c0e0474ee` | `136 0` | tracked-clean | contained in `master`; candidate for retirement |
+| `<harp-root>/.worktrees/math-foundations-advanced-linear` | `codex/math-foundations-advanced-linear` | `378e004ab01f` | `58 0` | tracked-clean | contained in `master`; candidate for retirement |
+| `<harp-root>/.worktrees/math-foundations-formalization-design` | `codex/math-foundations-formalization-design` | `378e004ab01f` | `58 0` | tracked-clean | contained in `master`; candidate for retirement |
+| `<harp-root>/.worktrees/crouzeix-proof-reproduction` | `feat/crouzeix-proof-reproduction` | `71d46df88576` | `101 56` | dirty tracked docs plus untracked proof-agent amendments | primary CPFR proof-reproduction integration source |
+| `<harp-root>/.worktrees/crouzeix-retrospective-landing-spec` | `docs/crouzeix-retrospective-landing-spec` | `71d46df88576` | `101 56` | one untracked retrospective spec draft | sidecar evidence; do not land as independent code lineage |
+| `<harp-root>/.worktrees/crouzeix-rsi-implementation` | `codex/crouzeix-rsi-implementation` | `0c0b729edfb6` | `101 28` | tracked-clean | required RSI/hermetic-runtime landing lane |
+| `<harp-root>/.worktrees/crouzeix-rsi-workflow-spec` | `codex/crouzeix-rsi-workflow-spec` | `bc88c9221cf4` | `132 2` | tracked-clean | docs-only subset of RSI implementation lane; do not land independently |
+| `<harp-root>/.worktrees/crouzeix-rsi-workflow-design` | `codex/crouzeix-rsi-workflow-design` | `530e0edeb1f2` | `132 0` | broad tracked deletions plus many untracked files | quarantined; separate recovery only |
 
 ## Already Contained
 
@@ -28,7 +28,7 @@ These worktrees have heads contained in current `master` or equal to current
 
 ### `crouzeix-formal-validation`
 
-- Path: `/Users/bytedance/workspace/harp/.worktrees/crouzeix-formal-validation`
+- Path: `<harp-root>/.worktrees/crouzeix-formal-validation`
 - Branch: `codex/crouzeix-formal-validation`
 - Head: `1d70062ba047d98cc7ea5e4d5b968d5d7d4d8bcf`
 - Current role: CPFR-070 through CPFR-081 and Lean gate repair lane already
@@ -39,7 +39,7 @@ These worktrees have heads contained in current `master` or equal to current
 
 ### `crouzeix-conjecture-deep-dive`
 
-- Path: `/Users/bytedance/workspace/harp/.worktrees/crouzeix-conjecture-deep-dive`
+- Path: `<harp-root>/.worktrees/crouzeix-conjecture-deep-dive`
 - Branch: `integrate/crouzeix-conjecture`
 - Head: `127c0e0474ee3cc534ee7ad4f2ccf38b681e65c5`
 - Status: tracked-clean; head contained in `master`.
@@ -48,8 +48,8 @@ These worktrees have heads contained in current `master` or equal to current
 ### Mathematical-foundations worktrees
 
 - Paths:
-  - `/Users/bytedance/workspace/harp/.worktrees/math-foundations-advanced-linear`
-  - `/Users/bytedance/workspace/harp/.worktrees/math-foundations-formalization-design`
+  - `<harp-root>/.worktrees/math-foundations-advanced-linear`
+  - `<harp-root>/.worktrees/math-foundations-formalization-design`
 - Head: `378e004ab01fef837490bc0702717047862944f7`
 - Status: tracked-clean; head contained in `master`.
 - Disposition: candidates for retirement after final untracked scratch check.
@@ -57,7 +57,7 @@ These worktrees have heads contained in current `master` or equal to current
 ## Primary CPFR Proof-Reproduction Lane
 
 The primary source is
-`/Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction` on
+`<harp-root>/.worktrees/crouzeix-proof-reproduction` on
 `feat/crouzeix-proof-reproduction`.
 
 - Head: `71d46df885762eac23070783506bc08a567d47cf`
@@ -118,9 +118,9 @@ They are evidence sources, not direct landing targets.
 
 | Worktree | Head | `master...HEAD` | Dirty paths | Disposition |
 |-|-|-|-|-|
-| `/private/tmp/harp-cpfr017-verify` | `69145a609d09` | `101 38` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
-| `/private/tmp/harp-cpfr018-closeout-verify` | `270ae1a502ae` | `101 45` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
-| `/private/tmp/harp-cpfr018-findings-verify` | `253ef26e1abc` | `101 39` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
+| `<tmp>/harp-cpfr017-verify` | `69145a609d09` | `101 38` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
+| `<tmp>/harp-cpfr018-closeout-verify` | `270ae1a502ae` | `101 45` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
+| `<tmp>/harp-cpfr018-findings-verify` | `253ef26e1abc` | `101 39` | `docs/import-receipt.md`, `tracker.org` | commit represented in primary branch; compare dirty tracker edits only |
 
 ## Crouzeix RSI / Hermetic Runtime Lane
 
