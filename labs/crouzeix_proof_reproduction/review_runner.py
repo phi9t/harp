@@ -327,7 +327,7 @@ def _run_review_call(
         root,
         spec,
         call_id=call_id,
-        role="repair" if provider_role == "repair" else "proof_progress_evaluator",
+        role=provider_role,
         prompt=provider_prompt,
         schema_path=schema_path,
         parent_digests=_parent_digests(ticket),
@@ -727,10 +727,10 @@ def _build_repair_decision(
     candidate_rows.sort(
         key=lambda row: (
             row["decision"] != "repair_required",
-            row["unresolved_severity_counts"]["critical"],
-            row["theorem_strength_obligation_count"],
-            row["unresolved_severity_counts"]["major"],
-            row["unresolved_severity_counts"]["minor"],
+            -row["unresolved_severity_counts"]["critical"],
+            -row["theorem_strength_obligation_count"],
+            -row["unresolved_severity_counts"]["major"],
+            -row["unresolved_severity_counts"]["minor"],
             row["candidate_sha256"],
         )
     )

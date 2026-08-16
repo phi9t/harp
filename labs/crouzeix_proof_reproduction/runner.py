@@ -43,6 +43,8 @@ CALL_ROLES = frozenset(
         "repair",
         "expert",
         "proof_progress_evaluator",
+        "correctness_review",
+        "mechanism_classification",
     }
 )
 HISTORICAL_FIELDS = frozenset(

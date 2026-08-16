@@ -270,6 +270,11 @@ class CommandTests(unittest.TestCase):
 
 
 class CallTests(unittest.TestCase):
+    def test_call_roles_include_distinct_review_provider_roles(self) -> None:
+        self.assertIn("proof_progress_evaluator", runner.CALL_ROLES)
+        self.assertIn("correctness_review", runner.CALL_ROLES)
+        self.assertIn("mechanism_classification", runner.CALL_ROLES)
+
     def test_completed_call_records_exact_prompt_events_usage_and_empty_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

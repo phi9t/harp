@@ -418,10 +418,10 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(decision["decision"], "repair_required")
-            self.assertEqual(decision["selected_candidate_sha256"], sha256_text(CANDIDATE))
+            self.assertEqual(decision["selected_candidate_sha256"], "1" * 64)
             self.assertEqual(
                 [item["candidate_sha256"] for item in decision["candidate_decisions"]],
-                [sha256_text(CANDIDATE), "1" * 64],
+                ["1" * 64, sha256_text(CANDIDATE)],
             )
             self.assertEqual(
                 decision,
@@ -495,17 +495,17 @@ class ReviewRunnerTests(unittest.TestCase):
             cli = root / "fake_review_cli.py"
             write_fake_cli(cli, "review_complete")
             review_dir = write_review_dir(root, cli)
-            fewer_theorem_obligations = "b" * 64
-            fewer_major_findings = "a" * 64
+            more_major_findings = "b" * 64
+            theorem_strength_obligation = "a" * 64
             ledgers = [
                 repair_decision_ledger(
-                    candidate_sha256=fewer_theorem_obligations,
+                    candidate_sha256=more_major_findings,
                     critical=1,
                     theorem_strength=0,
                     major=2,
                 ),
                 repair_decision_ledger(
-                    candidate_sha256=fewer_major_findings,
+                    candidate_sha256=theorem_strength_obligation,
                     critical=1,
                     theorem_strength=1,
                     major=0,
@@ -533,14 +533,108 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(decision["decision"], "repair_required")
-            self.assertEqual(decision["selected_candidate_sha256"], fewer_theorem_obligations)
+            self.assertEqual(decision["selected_candidate_sha256"], theorem_strength_obligation)
             self.assertEqual(
                 [
                     row["candidate_sha256"]
                     for row in decision["candidate_decisions"]
                     if row["decision"] == "repair_required"
                 ],
-                [fewer_theorem_obligations, fewer_major_findings],
+                [theorem_strength_obligation, more_major_findings],
+            )
+
+    def test_repair_decision_orders_descending_repair_severity_before_sha_tie_breaker(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            cli = root / "fake_review_cli.py"
+            write_fake_cli(cli, "review_complete")
+            review_dir = write_review_dir(root, cli)
+            critical_wins = "f" * 64
+            theorem_strength_wins = "e" * 64
+            major_wins = "d" * 64
+            minor_wins = "c" * 64
+            lower_sha_tie_breaker = "a" * 64
+            higher_sha_tie_breaker = "b" * 64
+            ledgers = [
+                repair_decision_ledger(
+                    candidate_sha256=lower_sha_tie_breaker,
+                    critical=1,
+                    theorem_strength=1,
+                    major=1,
+                    minor=1,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=major_wins,
+                    critical=1,
+                    theorem_strength=1,
+                    major=2,
+                    minor=0,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=minor_wins,
+                    critical=1,
+                    theorem_strength=1,
+                    major=1,
+                    minor=2,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=critical_wins,
+                    critical=2,
+                    theorem_strength=0,
+                    major=0,
+                    minor=0,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=theorem_strength_wins,
+                    critical=1,
+                    theorem_strength=2,
+                    major=0,
+                    minor=0,
+                ),
+                repair_decision_ledger(
+                    candidate_sha256=higher_sha_tie_breaker,
+                    critical=1,
+                    theorem_strength=1,
+                    major=1,
+                    minor=1,
+                ),
+            ]
+            context = review_runner.build_reconciliation_context(
+                reconciliation_id="reconcile-descending-repair-severity",
+                finding_ledgers=ledgers,
+            )
+            publish_review_ticket(
+                review_dir,
+                ticket_id="reconcile-descending-repair-severity",
+                task_kind="finding_reconciliation",
+                context_sha256=sha256_json(context),
+                prompt_sha256=review_runner.RECONCILIATION_PROMPT_SHA256,
+                schema_sha256=review_runner.RECONCILIATION_SCHEMA_SHA256,
+                parent_artifact_sha256=None,
+            )
+
+            decision = review_runner.run_finding_reconciliation(
+                review_dir,
+                ticket_id="reconcile-descending-repair-severity",
+                reconciliation_id="reconcile-descending-repair-severity",
+                finding_ledgers=ledgers,
+            )
+
+            self.assertEqual(decision["selected_candidate_sha256"], critical_wins)
+            self.assertEqual(
+                [
+                    row["candidate_sha256"]
+                    for row in decision["candidate_decisions"]
+                    if row["decision"] == "repair_required"
+                ],
+                [
+                    critical_wins,
+                    theorem_strength_wins,
+                    major_wins,
+                    minor_wins,
+                    lower_sha_tie_breaker,
+                    higher_sha_tie_breaker,
+                ],
             )
 
     def test_correctness_review_requires_precreated_ticket_and_preserves_failure(self) -> None:
@@ -594,6 +688,8 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(result["receipt"]["status"], "failed")
+            self.assertEqual(result["receipt"]["role"], "correctness_review")
+            self.assertNotEqual(result["receipt"]["role"], "proof_progress_evaluator")
             self.assertIsNone(result["review"])
             self.assertEqual(result["receipt"]["ticket_id"], ticket["ticket_id"])
             self.assertTrue((review_dir / "calls/review-candidate-alpha-r1/receipt.json").is_file())
@@ -640,6 +736,8 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(result["receipt"]["status"], "completed")
+            self.assertEqual(result["receipt"]["role"], "correctness_review")
+            self.assertNotEqual(result["receipt"]["role"], "proof_progress_evaluator")
             self.assertIsNotNone(result["review"])
             self.assertEqual(
                 result["review"]["terminal_ticket_event_sha256"],
@@ -859,6 +957,8 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(result["receipt"]["status"], "malformed")
+            self.assertEqual(result["receipt"]["role"], "mechanism_classification")
+            self.assertNotEqual(result["receipt"]["role"], "proof_progress_evaluator")
             events = [
                 json.loads(line)
                 for line in (
@@ -914,6 +1014,8 @@ class ReviewRunnerTests(unittest.TestCase):
             )
 
             self.assertEqual(result["receipt"]["status"], "malformed")
+            self.assertEqual(result["receipt"]["role"], "mechanism_classification")
+            self.assertNotEqual(result["receipt"]["role"], "proof_progress_evaluator")
             self.assertIsNone(result["classification"])
 
 
