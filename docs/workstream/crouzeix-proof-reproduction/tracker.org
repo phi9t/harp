@@ -2087,7 +2087,7 @@ run the release gate on the repaired tip.
   =Co-authored-by: TRAE CLI <noreply@bytedance.com>= trailer on every work
   commit. Tracked pycache/run-artifact scan found no tracked matches.
 
-** BLOCKED Preflight Host Resources And Runtime Identity :live:security:ticket:
+** IMPLEMENTING Preflight Host Resources And Runtime Identity :live:security:ticket:
 :PROPERTIES:
 :ID: CPFR-030
 :DESIGN_SECTION: Frontier Loop And Budget; Safety
@@ -2149,6 +2149,9 @@ absence of stale frontier processes before preparing the live E arm.
   had no CLI dispatcher and could exit zero without validating the runtime
   root. Repair tracked as =CPFR-R006= before any provider call or E run
   preparation.
+- Unblocked after =CPFR-R006= landed runtime-ticket CLI validation in
+  =aea73c4ae0a29730b5ca21dc8b845806a21d8e67= with spec and standards/security
+  review approval.
 
 ** TODO Record Legacy H And O0 Ticket-Contract Exception :evidence:ticket:
 :PROPERTIES:
@@ -4430,7 +4433,7 @@ final tie-breaker.
 :OWNER: primary
 :AGENT_RUN: current thread 01a0075a-5314-77a0-97e2-e912c28a9226
 :MODEL: GPT-5.5
-:COMMIT: pending
+:COMMIT: aea73c4ae0a29730b5ca21dc8b845806a21d8e67
 :END:
 
 *** Scope
