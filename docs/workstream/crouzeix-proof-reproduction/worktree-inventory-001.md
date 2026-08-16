@@ -193,12 +193,19 @@ separate integration lane from CPFR proof-reproduction.
   emptied, with 1156 staged deletes, 356 untracked files, and zero tracked index
   entries. Verification from this tree is invalid.
 
-## Open Owner Decisions
+## Owner Decisions
 
-1. Preserve or discard `.teaching/` scratch from `crouzeix-formal-validation`.
-2. Treat proof-agent amendments `005` through `012` as durable evidence to
-   land, or summarize them in the retrospective and leave raw files untracked.
-3. After commit classification, remove stale CPFR worker branches or remove only
-   worktrees while keeping branch refs.
-4. Keep `crouzeix-rsi-workflow-design` quarantined in place or run a separate
-   recovery inventory.
+1. Preserve `.teaching/crouzeix-lean-validation/` from
+   `crouzeix-formal-validation` and include that teaching packet in the landing
+   party.
+2. Capture proof-agent amendments `005` through `012` into durable landing
+   artifacts, then remove the old raw untracked files from the
+   `crouzeix-proof-reproduction` worktree after capture verification.
+3. Recover `crouzeix-rsi-workflow-design` into the landing through a separate
+   recovery inventory and fresh integration worktree; do not merge directly from
+   its corrupt/staged-deletion state.
+
+## Remaining Owner Decision
+
+1. After commit classification, decide whether final cleanup should remove stale
+   CPFR worker branch refs or only remove worktrees while keeping branch refs.

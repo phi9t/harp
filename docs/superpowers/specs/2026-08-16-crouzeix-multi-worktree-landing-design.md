@@ -62,6 +62,8 @@ current `master` or equal to it:
   - Branch: `codex/crouzeix-formal-validation`
   - Status: same commit as `master`
   - Note: preserves untracked `.teaching/crouzeix-lean-validation/...` scratch.
+    Owner decision: preserve this teaching packet and include it in the landing
+    party as a reviewed artifact rather than deleting it with the worktree.
 - `/Users/bytedance/workspace/harp/.worktrees/crouzeix-conjecture-deep-dive`
   - Branch: `integrate/crouzeix-conjecture`
   - Status: contained in `master`
@@ -72,8 +74,9 @@ current `master` or equal to it:
   - Branch: `codex/math-foundations-formalization-design`
   - Status: contained in `master`
 
-Landing action: none. Cleanup action requires explicit owner approval after any
-untracked scratch is either preserved or intentionally discarded.
+Landing action: no code landing. Preserve the `.teaching/` scratch from
+`crouzeix-formal-validation` as part of the landing party before retiring the
+worktree.
 
 ### Main Proof-Reproduction Source
 
@@ -167,9 +170,11 @@ or fail review/verification; every deferral must have a recorded blocker.
   - Status: head contained in `master`, but working tree shows broad deletions
     and hundreds of untracked files.
 
-Landing action: quarantine. Do not land or clean it in the main consolidation.
-Only a separate recovery task should classify whether it contains intentional
-scratch that needs preservation.
+Landing action: recover this worktree as part of the landing party. It remains
+unsafe as a direct merge source, but its local-only state must be inventoried
+and any intentional design/proof work must be captured before cleanup. Do not
+run verification from this tree; recover by copying reviewed content into a
+fresh integration worktree.
 
 ## Landing Strategy
 
@@ -209,8 +214,9 @@ Steps:
    - obsolete
    - unsafe or unverifiable
 4. Apply only unique, relevant changes as focused commits by concern.
-5. Preserve proof-agent amendments as reachable docs only if they pass review
-   as durable evidence rather than raw trace dumps.
+5. Capture proof-agent amendments `005` through `012` into durable landing
+   artifacts, then remove the raw untracked amendment files from the old
+   worktree only after their captured content is verified.
 6. Refresh `docs/import-receipt.md` last.
 7. Run focused validators and the strongest practical release gate.
 
@@ -262,6 +268,8 @@ Non-goals:
 - No broad adoption of the quarantined workflow-design worktree.
 - No silent deferral of RSI work; every excluded commit or artifact must be
   recorded as duplicate, obsolete, unsafe, or blocked.
+- No direct merge from `crouzeix-rsi-workflow-design`; recovery happens through
+  reviewed content copied into a fresh integration worktree.
 
 ## Subagent Use
 
@@ -304,6 +312,12 @@ The multi-worktree landing is complete when:
 
 - every proof-related worktree is classified as landed, retired, integrated,
   deferred, or quarantined;
+- the `.teaching/crouzeix-lean-validation/` packet from
+  `crouzeix-formal-validation` is preserved or landed as owner-approved
+  teaching material;
+- proof-agent amendments `005` through `012` are captured into durable landing
+  artifacts and removed from the old proof-reproduction worktree after
+  verification;
 - all unique relevant CPFR proof-reproduction work is either landed or has a
   documented blocker;
 - all unique relevant Crouzeix RSI/hermetic-runtime work is landed, with any
@@ -317,9 +331,9 @@ The multi-worktree landing is complete when:
 
 ## Open Decisions For Review
 
-1. Whether to preserve the untracked `.teaching/` scratch from
-   `crouzeix-formal-validation` before retiring that worktree.
-2. Whether proof-agent amendment files `005` through `012` are durable evidence
-   to land, or local execution notes to summarize and leave untracked.
+1. Final placement for the preserved `.teaching/crouzeix-lean-validation/`
+   teaching packet.
+2. Exact capture format for proof-agent amendment files `005` through `012`
+   before raw-file removal.
 3. Whether final cleanup should remove stale CPFR worker branches after their
    commits are classified, or only remove worktrees and keep branches.

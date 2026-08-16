@@ -14,8 +14,10 @@
 
 - Create `docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md`: durable inventory of proof-related worktrees, commit maps, dirty state, and disposition.
 - Create `docs/workstream/crouzeix-proof-reproduction/retrospective-001.md`: retrospective over the proof-reproduction lineage and next repair gate.
-- Optional create `docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md`: only if proof-agent amendment files are accepted as durable evidence.
-- Optional create `docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-005.md` through `proof-agent-amendment-012.md`: only after review decides they are durable evidence, not raw notes.
+- Create `docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md`: index captured proof-agent amendment evidence.
+- Create or update durable capture artifacts for proof-agent amendments `005` through `012`, then remove the raw untracked files from the old proof-reproduction worktree after capture verification.
+- Create a preserved teaching artifact from `.teaching/crouzeix-lean-validation/` or copy the teaching packet into an owner-approved tracked location.
+- Create a recovery inventory for `crouzeix-rsi-workflow-design` and land reviewed recoverable content through a fresh integration worktree.
 - Modify `docs/workstream/crouzeix-proof-reproduction/tracker.org`: record worktree disposition, CPFR-R014 repair gate, and any terminal/canceled state updates required by the accepted lane.
 - Modify `docs/import-receipt.md`: refresh the payload digest last for each landed lane.
 - Modify or create RSI/hermetic proof-task files in a separate required lane
@@ -131,45 +133,65 @@ git commit -m "docs(crouzeix): inventory proof worktrees" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
-### Task 2: Decide Retirement And Quarantine Actions
+### Task 2: Record Owner Decisions And Preservation Plan
 
 **Files:**
 - Modify: `docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md`
-- Optional create: `docs/workstream/crouzeix-proof-reproduction/worktree-retirement-plan-001.md`
+- Create: `docs/workstream/crouzeix-proof-reproduction/worktree-retirement-plan-001.md`
 
-- [ ] **Step 1: Ask for owner decisions on scratch preservation**
+- [ ] **Step 1: Record owner decisions on scratch preservation**
 
-Ask for explicit decisions on:
+Record these owner decisions:
 
 ```text
-1. Preserve or discard `.teaching/` from `crouzeix-formal-validation`?
-2. Preserve or discard untracked files from contained math/Crouzeix worktrees, if any?
-3. Remove only worktrees, or remove branches too after containment is proven?
-4. Keep `crouzeix-rsi-workflow-design` quarantined in place, or create a separate recovery inventory?
+1. Preserve `.teaching/crouzeix-lean-validation/` from `crouzeix-formal-validation` and include it in the landing party.
+2. Capture proof-agent amendments `005` through `012`, then remove the raw untracked amendment files after verified capture.
+3. Recover `crouzeix-rsi-workflow-design` into the landing through a separate recovery inventory and fresh integration worktree.
+4. Leave stale CPFR worker branch-ref deletion as a later cleanup decision after commit classification.
 ```
 
-Expected: no cleanup until owner answers.
+Expected: no cleanup yet; decisions are recorded before action.
 
-- [ ] **Step 2: Record approved retirement plan**
+- [ ] **Step 2: Create the preservation and retirement plan**
 
-If any cleanup is approved, create or update:
+Create:
 
 ```markdown
 # Crouzeix Worktree Retirement Plan 001
+
+## Owner Decisions
 
 ## Approved Removals
 
 | Worktree | Branch | Head | Contained in master | Scratch disposition | Action |
 |-|-|-|-|-|-|
 
+## Required Preservation
+
+| Source | Content | Capture target | Removal after capture |
+|-|-|-|-|
+| `crouzeix-formal-validation/.teaching/crouzeix-lean-validation/` | teaching packet | owner-approved tracked location | no raw deletion until copied and verified |
+| `crouzeix-proof-reproduction/proof-agent-amendment-005..012.md` | amendment evidence | durable amendment/trace artifacts | yes, remove old raw files after verification |
+
+## Branch Ref Removal
+
+Branch ref removal is not approved yet. Record the classification results here
+and ask before deleting any branch refs.
+
 ## Quarantined
+
+## Recovery Required
+
+| Worktree | Reason | Recovery path |
+|-|-|-|
+| `crouzeix-rsi-workflow-design` | emptied index, staged deletes, untracked replacement tree | separate recovery inventory; copy reviewed content into fresh integration worktree |
 
 ## Not Removed
 ```
 
-- [ ] **Step 3: Run pre-cleanup safety checks**
+- [ ] **Step 3: Run pre-cleanup and pre-preservation safety checks**
 
-For each approved worktree:
+For each approved worktree and scratch source:
 
 ```sh
 git -C <worktree> status --short --untracked-files=all
@@ -186,6 +208,106 @@ Run:
 ```sh
 git add docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md docs/workstream/crouzeix-proof-reproduction/worktree-retirement-plan-001.md
 git commit -m "docs(crouzeix): plan proof worktree retirement" \
+  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+```
+
+### Task 2A: Preserve Teaching Packet And Capture Amendments
+
+**Files:**
+- Create or modify owner-approved teaching packet location.
+- Create: `docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md`
+- Create or modify durable proof-agent amendment capture files.
+- Modify: `docs/workstream/crouzeix-proof-reproduction/worktree-inventory-001.md`
+- Modify: `docs/import-receipt.md`
+
+- [ ] **Step 1: Spawn preservation review subagents**
+
+Run two read-only subagents:
+
+```text
+Teaching preservation subagent: inspect /Users/bytedance/workspace/harp/.worktrees/crouzeix-formal-validation/.teaching/crouzeix-lean-validation. Recommend a tracked destination, file list, and verification checks. Do not edit or delete.
+
+Amendment capture subagent: inspect proof-agent-amendment-005.md through proof-agent-amendment-012.md and worktree-inventory.md in /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction. Recommend which content to land verbatim, which to summarize, and how to verify raw removal after capture. Do not edit or delete.
+```
+
+- [ ] **Step 2: Preserve the teaching packet**
+
+Copy the approved teaching files into the tracked destination. Use explicit
+paths only. If the destination is still undecided, use:
+
+```text
+docs/workstream/crouzeix-proof-reproduction/teaching/crouzeix-lean-validation/
+```
+
+Do not copy generated caches or editor metadata.
+
+- [ ] **Step 3: Capture amendments 005 through 012**
+
+Create `docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md` with:
+
+```markdown
+# Crouzeix Proof Agent Trace Index
+
+## Claim Ceiling
+
+This index captures execution guidance and trace-derived evidence. It is not a
+proof and does not override run artifacts, tracker state, source code, or
+committed specs.
+
+## Captured Amendments
+
+| Amendment | Source path | Capture mode | Summary | Removal status |
+|-|-|-|-|-|
+```
+
+Then either copy each amendment verbatim into a reviewed tracked file or
+summarize it in the index/retrospective. The raw files may be removed from the
+old worktree only after the capture appears in `git diff --cached` and has been
+reviewed.
+
+- [ ] **Step 4: Verify capture before raw removal**
+
+Run:
+
+```sh
+git status --short --untracked-files=all
+git diff --check -- docs/workstream/crouzeix-proof-reproduction
+```
+
+Expected: tracked capture exists in the integration worktree; raw amendments in
+the old worktree are still present.
+
+- [ ] **Step 5: Remove old raw amendment files after verified capture**
+
+Only after Step 4 passes, remove:
+
+```sh
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-005.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-006.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-007.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-008.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-009.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-010.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-011.md
+rm /Users/bytedance/workspace/harp/.worktrees/crouzeix-proof-reproduction/docs/workstream/crouzeix-proof-reproduction/proof-agent-amendment-012.md
+```
+
+Then record removal status in `agent-trace-index.md`.
+
+- [ ] **Step 6: Refresh receipt and commit preservation**
+
+Run:
+
+```sh
+cargo run -q -p harp -- repository verify
+git diff --check
+```
+
+Refresh `docs/import-receipt.md` if needed, then commit explicit paths:
+
+```sh
+git add docs/workstream/crouzeix-proof-reproduction docs/import-receipt.md
+git commit -m "docs(crouzeix): preserve proof teaching and amendments" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
@@ -435,6 +557,72 @@ Commit accepted groups with focused messages, for example:
 ```sh
 git add <explicit RSI paths>
 git commit -m "feat(crouzeix): land hermetic RSI proof task runtime" \
+  -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
+```
+
+### Task 4A: Recover `crouzeix-rsi-workflow-design`
+
+**Files:**
+- Create: `docs/workstream/crouzeix-proof-reproduction/crouzeix-rsi-workflow-design-recovery-001.md`
+- Modify: RSI lane files only if recovered content is reviewed and accepted.
+- Modify: `docs/import-receipt.md` if recovered tracked content lands.
+
+- [ ] **Step 1: Spawn recovery inventory subagents**
+
+Run two read-only subagents:
+
+```text
+Recovery subagent A: inspect the staged deletes and untracked files in /Users/bytedance/workspace/harp/.worktrees/crouzeix-rsi-workflow-design. Identify unique files not already in master or codex/crouzeix-rsi-implementation. Do not edit.
+
+Recovery subagent B: compare crouzeix-rsi-workflow-design against crouzeix-rsi-workflow-spec and crouzeix-rsi-implementation. Identify duplicate, obsolete, and potentially recoverable artifacts. Do not edit.
+```
+
+- [ ] **Step 2: Write recovery inventory**
+
+Create:
+
+```markdown
+# Crouzeix RSI Workflow Design Recovery 001
+
+## Claim Ceiling
+
+This document classifies a corrupt/staged-deletion worktree. It is not a proof
+claim and not verification evidence for any Lean result.
+
+## Worktree State
+
+## Duplicate Content
+
+## Recoverable Content
+
+## Rejected Content
+
+| Path | Classification | Reason |
+|-|-|-|
+
+## Recovery Actions
+```
+
+- [ ] **Step 3: Copy only reviewed recoverable content**
+
+Copy reviewed files from `crouzeix-rsi-workflow-design` into the fresh RSI
+integration worktree. Do not merge, reset, or clean the corrupt worktree. Do not
+copy broad untracked trees wholesale.
+
+- [ ] **Step 4: Verify recovery**
+
+Run:
+
+```sh
+git diff --check
+cargo run -q -p harp -- repository verify
+```
+
+Refresh `docs/import-receipt.md` if needed. Commit recovered content separately:
+
+```sh
+git add docs/workstream/crouzeix-proof-reproduction/crouzeix-rsi-workflow-design-recovery-001.md <explicit recovered paths> docs/import-receipt.md
+git commit -m "docs(crouzeix): recover RSI workflow design artifacts" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
