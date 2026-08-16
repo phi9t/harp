@@ -75,6 +75,7 @@ def open_frontier_store(run_dir: Path) -> "FrontierStore":
 
 class FrontierStore:
     def __init__(self, run_dir: Path) -> None:
+        _ensure_directory(Path(run_dir), "frontier run directory", create=True)
         self.run_dir = Path(run_dir).resolve()
         _ensure_directory(self.run_dir, "frontier run directory", create=True)
 
@@ -82,6 +83,7 @@ class FrontierStore:
         return self._append_jsonl(
             self.run_dir / "attempt_ledger.jsonl",
             _validate_attempt_ledger_record(event),
+            validator=_validate_attempt_ledger_record,
             unique_field="attempt_id",
         )
 
@@ -89,6 +91,7 @@ class FrontierStore:
         return self._append_jsonl(
             self.run_dir / "frontier_events.jsonl",
             _validate_frontier_event(event),
+            validator=_validate_frontier_event,
         )
 
     def append_selection_event(self, event: Mapping[str, Any]) -> dict[str, object]:
@@ -99,6 +102,7 @@ class FrontierStore:
         return self._append_jsonl(
             self.run_dir / "selection_events.jsonl",
             value,
+            validator=_validate_selection_event,
             unique_key=lambda item: f"{item['generation']}:{item['draw_index']}",
         )
 
@@ -304,10 +308,17 @@ class FrontierStore:
         try:
             _write_bytes_create_only(tmp_candidate, candidate_bytes, "candidate bytes")
             _write_json_create_only(tmp_index, projection, "candidate projection index")
-            os.replace(tmp_candidate, candidate_path)
-            os.replace(tmp_index, index_path)
+            _publish_create_only(tmp_candidate, candidate_path, "candidate bytes")
+            try:
+                _publish_create_only(tmp_index, index_path, "candidate projection index")
+            except Exception:
+                try:
+                    candidate_path.unlink()
+                except FileNotFoundError:
+                    pass
+                raise
         except Exception:
-            for path in (tmp_candidate, tmp_index, candidate_path, index_path):
+            for path in (tmp_candidate, tmp_index):
                 try:
                     path.unlink()
                 except FileNotFoundError:
@@ -328,6 +339,7 @@ class FrontierStore:
             "selection ledger",
             _validate_selection_event,
         )
+        self._validate_run_consistency(attempts, ticket_count)
         terminal_states: dict[str, int] = {}
         for event in attempts:
             state = str(event["terminal_status"])
@@ -351,12 +363,13 @@ class FrontierStore:
         path: Path,
         value: dict[str, object],
         *,
+        validator: Callable[[Mapping[str, Any]], dict[str, object]],
         unique_field: str | None = None,
         unique_key: Callable[[Mapping[str, object]], str] | None = None,
     ) -> dict[str, object]:
         _reject_symlink(path, path.name)
         _validate_existing_jsonl(path, path.name)
-        previous = _read_jsonl(path, path.name, lambda item: item)
+        previous = _read_jsonl(path, path.name, validator)
         expected_sequence = len(previous) + 1
         if value["sequence"] != expected_sequence:
             raise protocol.ValidationError(
@@ -380,6 +393,46 @@ class FrontierStore:
         finally:
             os.close(fd)
         return value
+
+    def _validate_run_consistency(
+        self,
+        attempts: list[dict[str, object]],
+        ticket_count: int,
+    ) -> None:
+        attempt_by_id = {str(item["attempt_id"]): item for item in attempts}
+        if len(attempt_by_id) != len(attempts):
+            raise protocol.ValidationError("attempt ledger contains duplicate attempt IDs")
+        ticket_ids = {str(item["ticket_id"]) for item in attempts}
+        selection_ticket_ids = {
+            str(item["ticket_id"])
+            for item in _read_jsonl(
+                self.run_dir / "selection_events.jsonl",
+                "selection ledger",
+                _validate_selection_event,
+            )
+        }
+        if ticket_count != len(ticket_ids | selection_ticket_ids):
+            raise protocol.ValidationError("ticket_count is inconsistent with run evidence")
+
+        attempt_dirs = self._read_attempt_directories()
+        for attempt_id, ledger in attempt_by_id.items():
+            directory = attempt_dirs.get(attempt_id)
+            if directory is None:
+                raise protocol.ValidationError(
+                    f"attempt directory missing for ledger attempt {attempt_id}"
+                )
+            if directory["terminal_status"] != ledger["terminal_status"]:
+                raise protocol.ValidationError(
+                    f"terminal state mismatch for attempt {attempt_id}"
+                )
+        for attempt_id, directory in attempt_dirs.items():
+            has_provider_call = bool(directory["has_provider_call"])
+            if has_provider_call and attempt_id not in attempt_by_id:
+                raise protocol.ValidationError(
+                    f"provider call for {attempt_id} has no ledger attempt"
+                )
+
+        self._validate_admission_node_links()
 
     def _require_single_accepted_admission(self, node: Mapping[str, Any]) -> None:
         admissions = _read_admissions(self.run_dir / "admissions")
@@ -426,6 +479,46 @@ class FrontierStore:
         _reject_duplicate(nodes, "node_id", "mathematical nodes")
         _reject_duplicate(nodes, "node_artifact_sha256", "mathematical nodes")
         return nodes
+
+    def _read_attempt_directories(self) -> dict[str, dict[str, object]]:
+        root = self.run_dir / "attempts"
+        if not root.exists():
+            return {}
+        _ensure_directory(root, "attempts directory", create=False)
+        attempts: dict[str, dict[str, object]] = {}
+        for path in sorted(root.iterdir()):
+            if not path.is_dir():
+                continue
+            record = _validate_attempt_directory_record(
+                _read_json_object(path / "attempt.json", "attempt record")
+            )
+            attempt_id = str(record["attempt_id"])
+            if attempt_id in attempts:
+                raise protocol.ValidationError("duplicate attempt directory")
+            if path.name != attempt_id:
+                raise protocol.ValidationError("attempt directory name does not match record")
+            attempts[attempt_id] = {
+                "attempt_id": attempt_id,
+                "terminal_status": record["terminal_status"],
+                "has_provider_call": (path / "provider_call" / "call.json").is_file(),
+            }
+        return attempts
+
+    def _validate_admission_node_links(self) -> None:
+        admissions = _read_admissions(self.run_dir / "admissions")
+        nodes = self._read_nodes()
+        by_admission: dict[str, int] = {}
+        for node in nodes:
+            digest = str(node["admission_decision_sha256"])
+            by_admission[digest] = by_admission.get(digest, 0) + 1
+        for admission in admissions:
+            if admission["outcome"] != "accepted":
+                continue
+            count = by_admission.get(str(admission["admission_decision_sha256"]), 0)
+            if count != 1:
+                raise protocol.ValidationError(
+                    "accepted admission must be referenced by exactly one mathematical node"
+                )
 
     def _require_two_persisted_evaluations(self, reconciliation: Mapping[str, Any]) -> None:
         node_id = self._node_id_for_artifact(str(reconciliation["node_artifact_sha256"]))
@@ -482,6 +575,11 @@ class FrontierStore:
             "selection ledger",
             _validate_selection_event,
         )
+        frontier_events = _read_jsonl(
+            self.run_dir / "frontier_events.jsonl",
+            "frontier event ledger",
+            _validate_frontier_event,
+        )
         snapshot: dict[str, object] = {
             "schema_version": "crouzeix-frontier-store-snapshot/v1",
             "archive_entry_count": len(entries),
@@ -504,6 +602,7 @@ class FrontierStore:
                 for entry in sorted(entries, key=lambda item: str(item["node_id"]))
             },
             "functioning_child_counts_by_node_id": dict(sorted(child_counts.items())),
+            "frontier_events": frontier_events,
             "selection_events": selection_events,
         }
         snapshot["frontier_snapshot_sha256"] = _canonical_sha256(snapshot)
@@ -604,6 +703,24 @@ def _terminal_failure_status(value: Mapping[str, Any] | None) -> str:
     return str(_validate_terminal_failure(value)["terminal_status"])
 
 
+def _validate_attempt_directory_record(value: Mapping[str, Any]) -> dict[str, object]:
+    _require_fields(
+        value,
+        frozenset({"schema_version", "attempt_id", "terminal_status"}),
+        "attempt record",
+    )
+    _require_equal(
+        value["schema_version"], "crouzeix-attempt-directory/v1", "schema_version"
+    )
+    return {
+        "schema_version": value["schema_version"],
+        "attempt_id": _portable_id(value["attempt_id"], "attempt_id"),
+        "terminal_status": _enum(
+            value["terminal_status"], ATTEMPT_TERMINAL_STATES, "terminal_status"
+        ),
+    }
+
+
 def _read_admissions(root: Path) -> list[dict[str, object]]:
     if not root.exists():
         return []
@@ -636,6 +753,21 @@ def _write_json_replace(path: Path, value: Mapping[str, Any], label: str) -> Non
     _reject_symlink(tmp, label)
     tmp.write_bytes(_canonical_json_bytes(value) + b"\n")
     os.replace(tmp, path)
+
+
+def _publish_create_only(source: Path, destination: Path, label: str) -> None:
+    _reject_symlink(source, label)
+    _reject_symlink(destination, label)
+    try:
+        os.link(source, destination)
+    except FileExistsError as error:
+        raise protocol.ValidationError(f"{label} already exists: {destination}") from error
+    except OSError as error:
+        raise protocol.ValidationError(f"cannot publish {label}: {error}") from error
+    try:
+        source.unlink()
+    except FileNotFoundError:
+        pass
 
 
 def _write_bytes_create_only(path: Path, data: bytes, label: str) -> None:

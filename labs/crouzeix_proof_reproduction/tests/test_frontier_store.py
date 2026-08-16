@@ -6,6 +6,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -190,28 +191,84 @@ def node_evaluation(
     return evaluation
 
 
+def attempt_ledger_record(**overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-attempt-ledger/v1",
+        "sequence": 1,
+        "run_id": "expert-frontier-001",
+        "attempt_id": "attempt-g0-function-theory",
+        "ticket_id": "expert-g0-function-theory",
+        "proposed_node_id": "node-g0-function-theory",
+        "terminal_status": "completed",
+        "attempt_dir_sha256": DIGEST_A,
+        "occurred_at_utc": "2026-08-15T00:00:00Z",
+    }
+    value.update(overrides)
+    return value
+
+
+def frontier_event(**overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-frontier-event/v1",
+        "sequence": 1,
+        "run_id": "expert-frontier-001",
+        "event_kind": "attempt_terminal",
+        "ticket_id": "expert-g0-function-theory",
+        "artifact_sha256": DIGEST_A,
+        "occurred_at_utc": "2026-08-15T00:00:01Z",
+    }
+    value.update(overrides)
+    return value
+
+
+def selection_event(**overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-selection-event/v1",
+        "sequence": 1,
+        "run_id": "expert-frontier-001",
+        "event_kind": "selection_recorded",
+        "ticket_id": "select-g1-d0",
+        "artifact_sha256": DIGEST_B,
+        "occurred_at_utc": "2026-08-15T00:01:00Z",
+        "generation": 1,
+        "draw_index": 0,
+        "selected_node_id": "node-g0-function-theory",
+        "archive_snapshot_sha256": DIGEST_C,
+    }
+    value.update(overrides)
+    return value
+
+
 class FrontierStoreTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tempdir = tempfile.TemporaryDirectory()
-        self.run_dir = Path(self.tempdir.name) / "run"
+        self.run_dir = Path(self.tempdir.name).resolve() / "run"
         self.store = frontier_store.open_frontier_store(self.run_dir)
 
     def tearDown(self) -> None:
         self.tempdir.cleanup()
 
+    def test_open_rejects_symlinked_run_root_and_symlinked_ancestor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            real = root / "real"
+            real.mkdir()
+            run_link = root / "run-link"
+            os.symlink(real, run_link)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                frontier_store.open_frontier_store(run_link)
+
+            real_parent = root / "real-parent"
+            real_parent.mkdir()
+            parent_link = root / "parent-link"
+            os.symlink(real_parent, parent_link)
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                frontier_store.open_frontier_store(parent_link / "run")
+
     def test_jsonl_ledgers_are_strict_bounded_append_only_and_reject_symlinks(self) -> None:
         first = self.store.append_attempt(
-            {
-                "schema_version": "crouzeix-attempt-ledger/v1",
-                "sequence": 1,
-                "run_id": "expert-frontier-001",
-                "attempt_id": "attempt-g0-function-theory",
-                "ticket_id": "expert-g0-function-theory",
-                "proposed_node_id": "node-g0-function-theory",
-                "terminal_status": "completed",
-                "attempt_dir_sha256": DIGEST_A,
-                "occurred_at_utc": "2026-08-15T00:00:00Z",
-            }
+            attempt_ledger_record()
         )
         self.assertEqual(first["sequence"], 1)
 
@@ -231,21 +288,32 @@ class FrontierStoreTests(unittest.TestCase):
         selection_path = self.run_dir / "selection_events.jsonl"
         os.symlink(self.run_dir / "elsewhere.jsonl", selection_path)
         with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
-            self.store.append_selection_event(
-                {
-                    "schema_version": "crouzeix-selection-event/v1",
-                    "sequence": 1,
-                    "run_id": "expert-frontier-001",
-                    "event_kind": "selection_recorded",
-                    "ticket_id": "select-g1-d0",
-                    "artifact_sha256": DIGEST_B,
-                    "occurred_at_utc": "2026-08-15T00:01:00Z",
-                    "generation": 1,
-                    "draw_index": 0,
-                    "selected_node_id": "node-g0-function-theory",
-                    "archive_snapshot_sha256": DIGEST_C,
-                }
+            self.store.append_selection_event(selection_event())
+
+    def test_existing_jsonl_rows_are_replayed_through_strict_ledger_validators(self) -> None:
+        attempt_path = self.store.run_dir / "attempt_ledger.jsonl"
+        attempt_path.write_text(json.dumps({**attempt_ledger_record(), "unknown": True}) + "\n")
+        with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+            self.store.append_attempt(
+                attempt_ledger_record(sequence=2, attempt_id="attempt-g0-operator-dilation")
             )
+        self.assertEqual(len(attempt_path.read_text().splitlines()), 1)
+
+        with tempfile.TemporaryDirectory() as directory:
+            store = frontier_store.open_frontier_store(Path(directory).resolve() / "run")
+            event_path = store.run_dir / "frontier_events.jsonl"
+            event_path.write_text(json.dumps({**frontier_event(), "unknown": True}) + "\n")
+            with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+                store.append_frontier_event(frontier_event(sequence=2, artifact_sha256=DIGEST_B))
+            self.assertEqual(len(event_path.read_text().splitlines()), 1)
+
+        with tempfile.TemporaryDirectory() as directory:
+            store = frontier_store.open_frontier_store(Path(directory).resolve() / "run")
+            selection_path = store.run_dir / "selection_events.jsonl"
+            selection_path.write_text(json.dumps({**selection_event(), "unknown": True}) + "\n")
+            with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+                store.append_selection_event(selection_event(sequence=2, draw_index=1))
+            self.assertEqual(len(selection_path.read_text().splitlines()), 1)
 
     def test_attempt_directory_preserves_result_failure_call_and_receipts(self) -> None:
         attempt_dir = self.store.materialize_attempt(
@@ -338,6 +406,27 @@ class FrontierStoreTests(unittest.TestCase):
         with self.assertRaisesRegex(protocol.ValidationError, "already exists"):
             self.store.materialize_archive_entry(entry, reconciliation)
 
+    def test_accepted_admission_requires_exactly_one_later_node_during_receipt_reconciliation(self) -> None:
+        _, decision, node = accepted_records()
+        self.store.record_admission(decision)
+
+        with self.assertRaisesRegex(protocol.ValidationError, "accepted admission"):
+            self.store.reconcile_run(ticket_count=0)
+
+        self.store.materialize_mathematical_node(node)
+        duplicate = self.store.run_dir / "mathematical_nodes" / "node-g0-duplicate"
+        duplicate.mkdir()
+        source = self.store.run_dir / "mathematical_nodes" / str(node["node_id"])
+        duplicate_node = {**node, "node_id": "node-g0-duplicate"}
+        duplicate_node.pop("node_artifact_sha256")
+        duplicate_node["node_artifact_sha256"] = digest_json(duplicate_node)
+        (duplicate / "node.json").write_text(json.dumps(duplicate_node))
+        for name in ("mathematical_payload.json", "inventory.json"):
+            (duplicate / name).write_bytes((source / name).read_bytes())
+
+        with self.assertRaisesRegex(protocol.ValidationError, "accepted admission"):
+            self.store.reconcile_run(ticket_count=0)
+
     def test_snapshot_is_reconstructed_deterministically_and_stale_snapshot_is_rejected(self) -> None:
         _, decision, node = accepted_records()
         self.store.record_admission(decision)
@@ -387,6 +476,14 @@ class FrontierStoreTests(unittest.TestCase):
         with self.assertRaisesRegex(protocol.ValidationError, "stale"):
             self.store.project_snapshot()
 
+    def test_snapshot_digest_includes_frontier_events(self) -> None:
+        snapshot = self.store.project_snapshot()
+        self.assertEqual(snapshot["frontier_events"], [])
+
+        self.store.append_frontier_event(frontier_event())
+        with self.assertRaisesRegex(protocol.ValidationError, "stale"):
+            self.store.project_snapshot()
+
     def test_candidate_projection_verifies_digests_and_cleans_partial_writes(self) -> None:
         _, decision, node = accepted_records()
         self.store.record_admission(decision)
@@ -425,32 +522,64 @@ class FrontierStoreTests(unittest.TestCase):
             )
         self.assertFalse((self.run_dir / "candidate_projections" / "candidate-tampered.tmp").exists())
 
+    def test_candidate_projection_fails_if_final_path_appears_before_publish(self) -> None:
+        _, decision, node = accepted_records()
+        self.store.record_admission(decision)
+        self.store.materialize_mathematical_node(node)
+        first = node_evaluation(node, evaluator_index=1)
+        second = node_evaluation(node, evaluator_index=2)
+        self.store.materialize_node_evaluation(first)
+        self.store.materialize_node_evaluation(second)
+        reconciliation = frontier.reconcile_node_evaluations(
+            f"reconcile-{node['node_id']}",
+            first,
+            second,
+        )
+        entry = frontier.build_archive_entry(node, reconciliation)
+        self.store.materialize_archive_entry(entry, reconciliation)
+        candidate_bytes = str(node["mathematical_payload"]["endpoint"]["text"]).encode("utf-8")
+        candidate_sha256 = hashlib.sha256(candidate_bytes).hexdigest()
+        projection_root = self.store.run_dir / "candidate_projections"
+        final_candidate = projection_root / f"{candidate_sha256}.tex"
+        original_write = frontier_store._write_bytes_create_only
+
+        def write_with_intervening_final(path: Path, data: bytes, label: str) -> None:
+            if label == "candidate bytes":
+                projection_root.mkdir(exist_ok=True)
+                final_candidate.write_text("intervening file")
+            original_write(path, data, label)
+
+        with mock.patch.object(
+            frontier_store,
+            "_write_bytes_create_only",
+            side_effect=write_with_intervening_final,
+        ), self.assertRaisesRegex(protocol.ValidationError, "already exists"):
+            self.store.freeze_candidate(
+                projection_id="candidate-node-g0-function-theory",
+                node=node,
+                reconciliation=reconciliation,
+                candidate_bytes=candidate_bytes,
+            )
+        self.assertEqual(
+            final_candidate.read_text(),
+            "intervening file",
+        )
+        self.assertFalse((projection_root / "index.json").exists())
+
     def test_run_receipt_reconciles_tickets_attempts_calls_selections_nodes_and_terminals(self) -> None:
         self.store.append_attempt(
-            {
-                "schema_version": "crouzeix-attempt-ledger/v1",
-                "sequence": 1,
-                "run_id": "expert-frontier-001",
-                "attempt_id": "attempt-g0-function-theory",
-                "ticket_id": "expert-g0-function-theory",
-                "proposed_node_id": "node-g0-function-theory",
-                "terminal_status": "completed",
-                "attempt_dir_sha256": DIGEST_A,
-                "occurred_at_utc": "2026-08-15T00:00:00Z",
-            }
+            attempt_ledger_record()
         )
         self.store.append_attempt(
-            {
-                "schema_version": "crouzeix-attempt-ledger/v1",
-                "sequence": 2,
-                "run_id": "expert-frontier-001",
-                "attempt_id": "attempt-g0-resource-block",
-                "ticket_id": "expert-g0-resource-block",
-                "proposed_node_id": "node-g0-resource-block",
-                "terminal_status": "blocked_resource",
-                "attempt_dir_sha256": DIGEST_B,
-                "occurred_at_utc": "2026-08-15T00:02:00Z",
-            }
+            attempt_ledger_record(
+                sequence=2,
+                attempt_id="attempt-g0-resource-block",
+                ticket_id="expert-g0-resource-block",
+                proposed_node_id="node-g0-resource-block",
+                terminal_status="blocked_resource",
+                attempt_dir_sha256=DIGEST_B,
+                occurred_at_utc="2026-08-15T00:02:00Z",
+            )
         )
         self.store.materialize_attempt(
             attempt_id="attempt-g0-function-theory",
@@ -510,6 +639,64 @@ class FrontierStoreTests(unittest.TestCase):
             receipt["terminal_attempt_states"],
             {"blocked_resource": 1, "completed": 1},
         )
+
+    def test_run_receipt_rejects_inconsistent_attempt_call_ticket_and_terminal_state(self) -> None:
+        self.store.append_attempt(attempt_ledger_record())
+        with self.assertRaisesRegex(protocol.ValidationError, "attempt directory"):
+            self.store.reconcile_run(ticket_count=1)
+
+        self.store.materialize_attempt(
+            attempt_id="attempt-g0-function-theory",
+            context={"context": "bytes"},
+            provider_call={"argv": ["traecli"], "exit_code": 0},
+            receipt={"ticket_id": "expert-g0-function-theory"},
+            expert_result=expert_result(),
+            terminal_failure=None,
+        )
+        extra = self.store.run_dir / "attempts" / "attempt-g0-extra"
+        extra.mkdir()
+        (extra / "attempt.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "crouzeix-attempt-directory/v1",
+                    "attempt_id": "attempt-g0-extra",
+                    "terminal_status": "completed",
+                }
+            )
+        )
+        provider = extra / "provider_call"
+        provider.mkdir()
+        (provider / "call.json").write_text("{}")
+        with self.assertRaisesRegex(protocol.ValidationError, "ledger"):
+            self.store.reconcile_run(ticket_count=1)
+        (provider / "call.json").unlink()
+        provider.rmdir()
+        (extra / "attempt.json").unlink()
+        extra.rmdir()
+
+        attempt_record = self.store.run_dir / "attempts" / "attempt-g0-function-theory" / "attempt.json"
+        attempt_record.write_text(
+            json.dumps(
+                {
+                    "schema_version": "crouzeix-attempt-directory/v1",
+                    "attempt_id": "attempt-g0-function-theory",
+                    "terminal_status": "failed",
+                }
+            )
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "terminal"):
+            self.store.reconcile_run(ticket_count=1)
+        attempt_record.write_text(
+            json.dumps(
+                {
+                    "schema_version": "crouzeix-attempt-directory/v1",
+                    "attempt_id": "attempt-g0-function-theory",
+                    "terminal_status": "completed",
+                }
+            )
+        )
+        with self.assertRaisesRegex(protocol.ValidationError, "ticket_count"):
+            self.store.reconcile_run(ticket_count=2)
 
 
 if __name__ == "__main__":
