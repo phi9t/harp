@@ -1308,16 +1308,17 @@ selection, direction ranking, and budget-independent frontier logic.
   =frontier.py= and =tests/test_frontier.py= WIP remains preserved in the named
   stash and is superseded by the tracked CPFR-012 files.
 
-** TODO Add Append-Only Frontier Store :storage:security:code:tests:
+** DONE Add Append-Only Frontier Store :storage:security:code:tests:
 :PROPERTIES:
 :ID: CPFR-013
 :DESIGN_SECTION: Durable Frontier State; Strict Artifacts
 :DEPENDS_ON: CPFR-010 CPFR-011 CPFR-012
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-013; Galileo
+:MODEL: inherited default
+:COMMIT: 989d3373a349e6f8876e4036457ed64d5ff1ba9a; 6ae6663e4d3bb727ab68c66368c38b635bf609c5; 2d41cc02858e28d5a4f6ccd256e3f3db78d11b37
 :END:
 
 *** Scope
@@ -1382,18 +1383,36 @@ projection into a secure persistence module.
 
 *** Verification Evidence
 
-- Record race/path tests and commit.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_store -v=
+  initially failed with =ModuleNotFoundError: No module named 'frontier_store'=,
+  then failed on review-regression tests before the corresponding fixes.
+- Worker commits:
+  =989d3373a349e6f8876e4036457ed64d5ff1ba9a=,
+  =6ae6663e4d3bb727ab68c66368c38b635bf609c5=, and
+  =2d41cc02858e28d5a4f6ccd256e3f3db78d11b37=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_store -v=
+  passed 14 tests; worker full lab discovery passed 74 tests.
+- Static verification passed:
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr013-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/frontier_store.py labs/crouzeix_proof_reproduction/tests/test_frontier_store.py=
+  and focused =git diff --check=.
+- Spec and quality reviews initially found blockers in run reconciliation,
+  accepted-admission/node linkage, strict JSONL replay, symlinked run-root
+  handling, snapshot frontier-event inclusion, and create-only candidate
+  publication. All were fixed with regression tests; final narrow re-review
+  approved.
 
-** TODO Harden Frontier Provider Adapter :security:code:tests:
+** DONE Harden Frontier Provider Adapter :security:code:tests:
 :PROPERTIES:
 :ID: CPFR-014
 :DESIGN_SECTION: Dedicated Expert Boundary; Provider Call Receipt
 :DEPENDS_ON: CPFR-010 CPFR-011
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-014; Dirac
+:MODEL: inherited default
+:COMMIT: cf4d088be65a6c73a831cd2559b4508776f7d9de; 126bd725c4798576336cc252b58bf526ccf74036; 9aedcf8c46d8c162d48ed6d11437e4b33f7d5950
 :END:
 
 *** Scope
@@ -1447,7 +1466,31 @@ CLI call primitive and validate call output before orchestration sees it.
 
 *** Verification Evidence
 
-- Record command golden, timeout test, and review result.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+  initially failed with =ModuleNotFoundError: No module named 'frontier_provider'=;
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+  initially failed with missing =ticket_binding= support; later review
+  regression tests failed before fixes.
+- Worker commits:
+  =cf4d088be65a6c73a831cd2559b4508776f7d9de=,
+  =126bd725c4798576336cc252b58bf526ccf74036=, and
+  =9aedcf8c46d8c162d48ed6d11437e4b33f7d5950=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+  passed 9 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_runner -v=
+  passed 11 tests.
+- Static verification passed:
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr014-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/frontier_provider.py labs/crouzeix_proof_reproduction/tests/test_frontier_provider.py labs/crouzeix_proof_reproduction/runner.py labs/crouzeix_proof_reproduction/tests/test_runner.py=
+  and =git diff --check=.
+- Spec and quality reviews initially found blockers in context digest binding,
+  strict expert/evaluator contexts, output-ticket binding, final receipt
+  status, schema/Python validation consistency, network evidence, evaluator
+  context leakage, and descendant expert contexts. All were fixed with
+  regression tests; final narrow re-review approved.
+- Restored future-ticket WIP after Wave B merge only for =README.md=,
+  =protocol.py=, and =run_frontier.py=. The old =runner.py= WIP remains
+  preserved in stash =preserve-frontier-wip-before-wave-b-merge= and is
+  superseded by the tracked CPFR-014 runner changes.
 
 ** TODO Implement Ticketed Frontier Preparation :code:tests:ticket:
 :PROPERTIES:
