@@ -18,6 +18,8 @@ const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
 const AGENTIC_ENGINEERING_ROOT: &str = "evidence/agentic_engineering";
+const LEAN4AGENT_RAW_PDF: &str =
+    "evidence/lean_proof_engineering/artifacts/lean4agent-2606.06523v2.pdf";
 const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
 const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
 const META_HARNESS_ARCHIVE_MAX_MEMBERS: usize = 256;
@@ -195,6 +197,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         3,
         &mut expected_digests,
     )?;
+    let lean_proof_engineering = verify_artifact_inventory(
+        repo_root,
+        Path::new("evidence/lean_proof_engineering/artifact_inventory.tsv"),
+        0,
+        1,
+        2,
+        &mut expected_digests,
+    )?;
     let cordis_paper = verify_artifact_inventory(
         repo_root,
         Path::new("evidence/cordis_paper/artifact_inventory.tsv"),
@@ -278,6 +288,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             + darwinx
             + self_improving_agents_survey
             + verified_coevolution_agenda
+            + lean_proof_engineering
             + cordis_paper
             + sicp
             + benchmarks
@@ -1633,7 +1644,12 @@ fn verify_lfs_attributes(repo_root: &Path, binaries: &[PathBuf]) -> Result<(), A
     })?;
     for binary in binaries {
         let relative = slash_path(binary.strip_prefix(repo_root).expect("binary is relative"));
-        for attribute in ["filter: lfs", "diff: lfs", "merge: lfs"] {
+        let attributes = if relative == LEAN4AGENT_RAW_PDF {
+            ["filter: unset", "diff: unset", "merge: unset"]
+        } else {
+            ["filter: lfs", "diff: lfs", "merge: lfs"]
+        };
+        for attribute in attributes {
             if !resolved.contains(&format!("{relative}: {attribute}")) {
                 return Err(AppError::invalid_input(
                     "sources.lfs_attributes",

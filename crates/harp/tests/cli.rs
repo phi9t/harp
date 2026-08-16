@@ -424,7 +424,13 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 433);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 445);
+    let lean_inventory = fs::read_to_string(
+        repo_root().join("evidence/lean_proof_engineering/artifact_inventory.tsv"),
+    )
+    .expect("Lean proof-engineering artifact inventory");
+    assert!(lean_inventory.starts_with("path\tbytes\tsha256\n"));
+    assert!(lean_inventory.contains("lean4agent-2606.06523v2.pdf"));
     let manifest = fs::read_to_string(repo_root().join("evidence/implementations/manifest.tsv"))
         .expect("implementation manifest");
     let snapshot_rows = manifest.lines().skip(1).collect::<Vec<_>>();
@@ -433,7 +439,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .filter_map(|row| row.split('\t').next())
         .collect::<BTreeSet<_>>();
     assert_eq!(envelope["data"]["snapshot_files"], snapshot_rows.len());
-    assert_eq!(envelope["data"]["binary_objects"], 64);
+    assert_eq!(envelope["data"]["binary_objects"], 65);
     assert_eq!(
         envelope["data"]["implementation_sources"],
         implementation_sources.len()

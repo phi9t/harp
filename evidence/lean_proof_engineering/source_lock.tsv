@@ -1,0 +1,12 @@
+source_id	parent_source_id	depth	artifact_type	capture_url	immutable_identity	license_status	redistribution_status
+LEANSTRAL-ANNOUNCEMENT	-	0	dated-html	https://mistral.ai/news/leanstral-1-5/	observed:2026-08-15;displayed-date:2026-07-02	no page license identified; Mistral terms apply	restricted; preserved as dated first-party evidence
+LEAN4AGENT-ARXIV	-	0	abstract-html	https://arxiv.org/abs/2606.06523v2	arXiv:2606.06523v2	CC BY 4.0	permitted with attribution
+LEAN4AGENT-ARXIV	-	0	pdf	https://arxiv.org/pdf/2606.06523v2	arXiv:2606.06523v2	CC BY 4.0	permitted with attribution
+LEAN4-REPOSITORY	-	0	commit-metadata	https://api.github.com/repos/leanprover/lean4/commits/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620	git:57eb1ae3d0d440f29d1f35e9699c6df4d46c2620	GitHub API metadata; embedded Lean source is Apache-2.0	preserved for source identity
+LEAN4-README	LEAN4-REPOSITORY	1	readme	https://raw.githubusercontent.com/leanprover/lean4/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620/README.md	git:57eb1ae3d0d440f29d1f35e9699c6df4d46c2620:README.md	Apache-2.0	permitted with license preservation
+LEAN4-LICENSE	LEAN4-REPOSITORY	1	license	https://raw.githubusercontent.com/leanprover/lean4/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620/LICENSE	git:57eb1ae3d0d440f29d1f35e9699c6df4d46c2620:LICENSE	Apache-2.0	permitted with license preservation
+LEAN-LEARN	-	0	dated-html	https://lean-lang.org/learn/	observed:2026-08-15	no explicit page license identified	restricted; preserved as dated first-party evidence
+LEAN-FPIL	LEAN-LEARN	1	dated-html	https://lean-lang.org/functional_programming_in_lean/	observed:2026-08-15	copyright Microsoft Corporation and Lean FRO; no explicit page license identified	restricted; preserved as dated documentation evidence
+LEAN-TPIL	LEAN-LEARN	1	dated-html	https://lean-lang.org/theorem_proving_in_lean4/	observed:2026-08-15	no explicit page license identified	restricted; preserved as dated documentation evidence
+LEAN-MIL	LEAN-LEARN	1	dated-html	https://leanprover-community.github.io/mathematics_in_lean/	observed:2026-08-15	CC BY 4.0	permitted with attribution
+LEAN-REFERENCE	LEAN-LEARN	1	dated-html	https://lean-lang.org/doc/reference/latest/	observed:2026-08-15	no explicit page license identified	restricted; preserved as dated documentation evidence

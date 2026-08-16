@@ -1,0 +1,45 @@
+parent_source_id	depth	candidate_url	discovery_locator	category	disposition	capture_source_id	decision
+-	0	https://mistral.ai/news/leanstral-1-5/	sealed root route	root	accepted	LEANSTRAL-ANNOUNCEMENT	accepted: named root of the sealed source graph.
+-	0	https://arxiv.org/abs/2606.06523v2	sealed root route	root	accepted	LEAN4AGENT-ARXIV	accepted: named root of the sealed source graph.
+-	0	https://api.github.com/repos/leanprover/lean4/commits/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620	sealed root route	root	accepted	LEAN4-REPOSITORY	accepted: named root of the sealed source graph.
+-	0	https://lean-lang.org/learn/	sealed root route	root	accepted	LEAN-LEARN	accepted: named root of the sealed source graph.
+LEAN4AGENT-ARXIV	1	https://arxiv.org/html/2606.06523v2	abstract download link "HTML (experimental)"	alternate-rendering	deferred	-	PDF and abstract metadata are sufficient; no second paper rendering is needed.
+LEAN4AGENT-ARXIV	1	https://arxiv.org/src/2606.06523v2	abstract download link "TeX Source"	source-archive	deferred	-	Source archive is outside the proof-engineering reader scope.
+LEAN4AGENT-ARXIV	1	https://arxiv.org/abs/2606.06523v1	submission history "v1"	prior-revision	deferred	-	The requested evidence identity is v2; v1 must not dilute revision claims.
+LEAN4AGENT-ARXIV	1	https://doi.org/10.48550/arXiv.2606.06523	DOI row	identifier-route	not-needed	-	Unversioned DOI adds no bytes beyond the pinned arXiv v2 route.
+LEAN4AGENT-ARXIV	1	https://alphaxiv.org/abs/2606.06523v1	alphaXiv integration on the v2 abstract resolved externally as v1	revision-mismatch	deferred	-	alphaXiv v1 does not match requested arXiv v2 and was not fetched.
+LEAN4AGENT-ARXIV	1	https://ui.adsabs.harvard.edu/abs/arXiv:2606.06523	Related Materials "NASA ADS"	bibliographic-index	not-needed	-	Third-party index is not needed for primary-source claims.
+LEAN4AGENT-ARXIV	1	https://api.semanticscholar.org/arXiv:2606.06523	Related Materials "Semantic Scholar"	bibliographic-index	not-needed	-	Third-party index is not needed for primary-source claims.
+LEAN4-REPOSITORY	1	https://raw.githubusercontent.com/leanprover/lean4/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620/README.md	pinned repository root "README.md"	repository-file	accepted	LEAN4-README	Pin and capture the repository overview at the resolved 40-hex commit.
+LEAN4-REPOSITORY	1	https://raw.githubusercontent.com/leanprover/lean4/57eb1ae3d0d440f29d1f35e9699c6df4d46c2620/LICENSE	pinned repository root "LICENSE"	repository-file	accepted	LEAN4-LICENSE	Pin and capture the upstream Apache-2.0 license at the same commit.
+LEANSTRAL-ANNOUNCEMENT	1	https://leanprover.github.io/	opening paragraph link "Lean 4"	project-site	deferred	-	The pinned Lean repository and official Learn landing page provide narrower primary routes.
+LEANSTRAL-ANNOUNCEMENT	1	https://github.com/mistralai/LeanstralSafeVerify	training section link "our fork of SafeVerify"	implementation	deferred	-	Repository implementation is outside this source-sealing task.
+LEANSTRAL-ANNOUNCEMENT	1	https://github.com/mistralai/FLTEval	evaluation section link "fully open source"	benchmark	deferred	-	Benchmark implementation is outside this proof-engineering source bundle.
+LEANSTRAL-ANNOUNCEMENT	1	https://github.com/datrs/varinteger	case-study link "datrs/varinteger"	case-study-repository	not-needed	-	Example repository is not needed to preserve the announcement's dated claims.
+LEANSTRAL-ANNOUNCEMENT	1	https://huggingface.co/mistralai/Leanstral-1.5-119B-A6B	Get Started link "weights"	model-artifact	deferred	-	Model weights exceed the evidence scope and response cap.
+LEANSTRAL-ANNOUNCEMENT	1	https://docs.mistral.ai/models/model-cards/leanstral-1-5	Get Started link "free API endpoint"	model-card	deferred	-	Model serving documentation is outside the proof-engineering reading scope.
+LEANSTRAL-ANNOUNCEMENT	1	https://github.com/oOo0oOo/lean-lsp-mcp	Get Started link "Lean LSP MCP"	tooling	deferred	-	Optional third-party tooling is outside the bounded closure.
+LEAN-LEARN	1	https://lean-lang.org/functional_programming_in_lean/	Core Documentation card "Functional Programming in Lean"	core-documentation	accepted	LEAN-FPIL	Direct core learning route explicitly allowed by the closure policy.
+LEAN-LEARN	1	https://lean-lang.org/theorem_proving_in_lean4/	Core Documentation card "Theorem Proving in Lean 4"	core-documentation	accepted	LEAN-TPIL	Direct core learning route explicitly allowed by the closure policy.
+LEAN-LEARN	1	https://leanprover-community.github.io/mathematics_in_lean/	Core Documentation card "Mathematics in Lean"	core-documentation	accepted	LEAN-MIL	Direct core learning route explicitly allowed by the closure policy.
+LEAN-LEARN	1	https://lean-lang.org/doc/reference/latest/	Core Documentation card "Lean Language Reference"	core-documentation	accepted	LEAN-REFERENCE	Direct reference landing page explicitly allowed by the closure policy.
+LEAN-LEARN	1	https://leanprover-community.github.io/mathlib4_docs/	Further Reading link "Mathlib documentation"	api-documentation	not-needed	-	Only the four explicitly allowed core documentation routes are captured.
+LEAN-LEARN	1	https://github.com/lean-forward/logical_verification_2025	Further Reading link "Logical Verification 2025"	course	not-needed	-	Course repository is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://leanprover-community.github.io/logic_and_proof/	Further Reading link "Logic and Proof"	book	not-needed	-	Additional book is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://hrmacbeth.github.io/math2001/	Further Reading link "Mathematics in Lean course"	course	not-needed	-	Additional course is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://leodemoura.github.io/blog/	Further Reading link "Leonardo de Moura's blog"	blog	not-needed	-	Blog is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://adam.math.hhu.de/#/g/leanprover-community/NNG4	Interactive Games link "Natural Number Game"	interactive-tutorial	not-needed	-	Interactive game is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://adam.math.hhu.de/	Interactive Games link "Lean Game Server"	interactive-tool	not-needed	-	Game server is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://github.com/leanprover/vscode-lean4/blob/master/vscode-lean4/manual/manual.md	Tools link "VS Code extension manual"	tooling	not-needed	-	Editor documentation is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://lean-lang.org/documentation/semantic-tokens/	Tools link "semantic token colors"	tooling	not-needed	-	Editor presentation guidance is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://lean-lang.org/documentation/latex-syntax-highlighting/	Tools link "LaTeX syntax highlighting"	tooling	not-needed	-	Editor presentation guidance is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://loogle.lean-lang.org/	Resources link "Loogle"	search-tool	not-needed	-	Search service is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://verso.lean-lang.org/	Resources link "Verso"	tooling	not-needed	-	Documentation tool is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://www.leanexplore.com/	Resources link "LeanExplore"	search-tool	not-needed	-	Search service is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://leansearch.net/	Resources link "LeanSearch"	search-tool	not-needed	-	Search service is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://leandojo.org/	Resources link "LeanDojo"	tooling	not-needed	-	Third-party tooling is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://github.com/leanprover-community/repl	Resources link "REPL"	tooling	not-needed	-	Third-party tooling is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://github.com/leanprover/Pantograph	Resources link "Pantograph"	tooling	not-needed	-	Third-party tooling is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://github.com/leanprover-community/lean4web	Resources link "lean4web"	tooling	not-needed	-	Third-party tooling is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://lean-lang.org/papers/lean4.pdf	How to Cite Lean link "Lean 4 paper"	paper	not-needed	-	Citation paper is beyond the explicit four-route Learn closure.
+LEAN-LEARN	1	https://lean-lang.org/papers/system.pdf	How to Cite Lean link "Lean 3 paper"	prior-version-paper	not-needed	-	Lean 3 paper is beyond the Lean 4 proof-engineering scope.
