@@ -10,6 +10,10 @@ self-improvement research. It combines:
   `knowledge/mathematical_foundations/`, with original exposition and worked
   problems informed by user-supplied Bishop and Lax inputs that remain local
   only and are not redistributed;
+- a pinned Lean companion under `formalization/mathematical_foundations/` for
+  the packet's small finite-domain theorem boundary; its six namespaces and
+  the exact 48-problem status map are documented in
+  `knowledge/mathematical_foundations/formalization_map.md`;
 - captured Weng, RLM, SICP, and Meta-Harness evidence with byte-level manifests
   and source-specific license records;
 - a verified coevolution research-agenda packet under
