@@ -5358,16 +5358,16 @@ publishes only fresh audited compilations into the ledger.
   16 tests, 0 failures.
 - =git diff --check=: exit 0.
 
-** TODO Bind Blind Frontier To FormalTarget :lean:review:ticket:
+** DONE Bind Blind Frontier To FormalTarget :lean:review:ticket:
 :PROPERTIES:
 :ID: CPFR-081
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-070 CPFR-036
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-081-blind-formal-target-binding
+:MODEL: gpt-5
 :END:
 Bind only the FormalTarget digest to E-arm evidence. Source maps, Lean names, ledgers,
 and published proofs remain forbidden generation inputs; frozen candidates alone enter
@@ -5421,5 +5421,18 @@ review.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-070 and
-  CPFR-036.
+- RED: =test_prepare_frontier= failed because run specs did not bind
+  =formal_target/formal_target.lock.json= and =scan_frontier_context= did not
+  exist.
+- Added FormalTarget digest binding to the E-arm run-spec =digests= map without
+  adding FormalTarget paths to =generation_visible_files=.
+- Added frontier context scanning that rejects reference-aware artifacts such as
+  Lean declaration names, source-map paths, v2 formal receipts, ledger rows, and
+  Jin/LS formal-target directories in blind generation inputs.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier -v=:
+  15 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=:
+  5 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
+  16 tests, 0 failures.
+- =git diff --check=: exit 0.

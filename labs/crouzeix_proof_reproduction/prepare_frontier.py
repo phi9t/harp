@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 import expert_contracts
+import formal_target
 import tickets
 from protocol import (
     ValidationError,
@@ -76,6 +77,17 @@ THEOREM_TEXT = (
     "Prove Crouzeix's conjecture: for every square complex matrix A and every "
     "polynomial p, ||p(A)|| is at most 2 times the supremum of |p(z)| over the "
     "numerical range of A."
+)
+FORMAL_TARGET_DIGEST_KEY = "formal_target/formal_target.lock.json"
+REFERENCE_AWARE_FORBIDDEN_TEXT = (
+    "CrouzeixConjecture.crouzeixConjecture",
+    "source-map.json",
+    "formal_targets/jin-565b6a3",
+    "formal_targets/lorist-schwenninger",
+    "crouzeix-formal-attempt-receipt/v2",
+    "crouzeix-formal-ledger-row/v1",
+    "jin-terminal-crouzeix",
+    "ls-terminal-crouzeix",
 )
 
 
@@ -207,6 +219,7 @@ def check_frontier_preparation(run_dir: Path) -> dict[str, object]:
         _existing_directory(root / relative, f"{relative} directory")
     if (root / "inputs/historical_prompt.txt").exists():
         raise ValidationError("raw historical prompt bytes must not be retained")
+    scan_frontier_context(root)
     ticket_ids: list[str] = []
     for role in EXPERT_ROLES:
         ticket_id = root_ticket_id(role)
@@ -225,6 +238,36 @@ def check_frontier_preparation(run_dir: Path) -> dict[str, object]:
         "run_spec_sha256": _file_sha256(spec_path),
         "root_ticket_count": len(ticket_ids),
         "root_ticket_ids": ticket_ids,
+    }
+
+
+def scan_frontier_context(run_dir: Path) -> dict[str, object]:
+    root = _existing_directory(run_dir, "frontier run directory")
+    scanned = 0
+    for relative in (
+        "inputs",
+        "prompts",
+        "schemas",
+        "contexts",
+        "tickets",
+    ):
+        directory = root / relative
+        if not directory.exists():
+            continue
+        for path in sorted(directory.rglob("*")):
+            if not path.is_file() or path.is_symlink():
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace")
+            scanned += 1
+            for forbidden in REFERENCE_AWARE_FORBIDDEN_TEXT:
+                if forbidden in text:
+                    raise ValidationError(
+                        f"reference-aware FormalTarget artifact leaked into frontier context: {forbidden}"
+                    )
+    return {
+        "schema_version": "crouzeix-frontier-context-scan/v1",
+        "status": "clean",
+        "scanned_files": scanned,
     }
 
 
@@ -343,6 +386,7 @@ def _input_digests(root: Path, frontier: Mapping[str, object], executable: Path)
     digests = {
         "cli": sha256_bytes(executable.read_bytes()),
         "config/frontier": _canonical_sha256(frontier),
+        FORMAL_TARGET_DIGEST_KEY: _file_sha256(formal_target.PRODUCTION_LOCK_PATH),
         "input/execution_prompt.txt": _file_sha256(root / "inputs/execution_prompt.txt"),
         "input/theorem.txt": _file_sha256(root / "inputs/theorem.txt"),
         "input/prompt_normalization.json": _file_sha256(
@@ -379,6 +423,7 @@ def _validate_prepared_digests(root: Path, spec: Mapping[str, Any]) -> None:
         _expect_digest(digests, f"prompt/{name}", _file_sha256(root / "prompts" / name))
     for name in SCHEMAS:
         _expect_digest(digests, f"schema/{name}", _file_sha256(root / "schemas" / name))
+    _expect_digest(digests, FORMAL_TARGET_DIGEST_KEY, _file_sha256(formal_target.PRODUCTION_LOCK_PATH))
 
 
 def _expect_digest(digests: Mapping[str, Any], key: str, observed: str) -> None:

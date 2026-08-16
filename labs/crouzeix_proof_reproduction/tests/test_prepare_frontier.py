@@ -15,6 +15,7 @@ sys.path.insert(0, str(LAB))
 import protocol
 import tickets
 import prepare_frontier
+import formal_target
 
 
 def digest(data: bytes) -> str:
@@ -114,7 +115,16 @@ class FrontierPreparationTests(unittest.TestCase):
             self.assertIn("prompt/expert.md", spec["digests"])
             self.assertIn("schema/expert_result.schema.json", spec["digests"])
             self.assertIn("config/frontier", spec["digests"])
+            self.assertIn("formal_target/formal_target.lock.json", spec["digests"])
+            self.assertEqual(
+                spec["digests"]["formal_target/formal_target.lock.json"],
+                digest((LAB / "formal_target.lock.json").read_bytes()),
+            )
             self.assertEqual(spec["digests"]["cli"], spec["cli"]["sha256"])
+            self.assertNotIn(
+                "formal_target/formal_target.lock.json",
+                spec["generation_visible_files"],
+            )
 
             self.assertFalse((run_dir / "inputs/historical_prompt.txt").exists())
             self.assertNotIn(
@@ -233,6 +243,21 @@ class FrontierPreparationTests(unittest.TestCase):
                 self.prepare(root, run_dir=root / "bad-model", model="gpt-5")
             with self.assertRaisesRegex(protocol.ValidationError, "timeout"):
                 self.prepare(root, run_dir=root / "bad-timeout", timeout_seconds=3599)
+
+    def test_frontier_context_scan_rejects_reference_aware_formal_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            run_dir = self.prepare(root)
+
+            clean = prepare_frontier.scan_frontier_context(run_dir)
+            self.assertEqual(clean["status"], "clean")
+
+            context_path = run_dir / "contexts/expert-g0-function-theory.json"
+            context = json.loads(context_path.read_text())
+            context["forbidden_leak"] = "CrouzeixConjecture.crouzeixConjecture"
+            context_path.write_text(json.dumps(context, indent=2, sort_keys=True) + "\n")
+            with self.assertRaisesRegex(protocol.ValidationError, "reference-aware"):
+                prepare_frontier.scan_frontier_context(run_dir)
 
 
 if __name__ == "__main__":
