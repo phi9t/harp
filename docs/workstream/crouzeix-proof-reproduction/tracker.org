@@ -1682,16 +1682,17 @@ generations.
   All were fixed with regression tests; final narrow spec and quality
   re-reviews approved.
 
-** TODO Add Reproduction Test To Release Gate :tests:code:
+** DONE Add Reproduction Test To Release Gate :tests:code:
 :PROPERTIES:
 :ID: CPFR-017
 :DESIGN_SECTION: Global Verification
 :DEPENDS_ON: CPFR-010 CPFR-011 CPFR-012 CPFR-013 CPFR-014 CPFR-015 CPFR-016
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: inherited default
+:COMMIT: pending
 :END:
 
 *** Scope
@@ -1736,7 +1737,25 @@ another gate edit.
 
 *** Verification Evidence
 
-- Record full command output and commit.
+- RED/GREEN: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_verify_registration -v=
+  initially failed because the new guard matched its own forbidden live-provider
+  literal, then passed after the forbidden strings were constructed
+  dynamically.
+- The release gate already used directory discovery:
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=.
+  CPFR-017 added a regression test proving this remains directory-based rather
+  than a hardcoded module subset.
+- Full lab discovery passed:
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+  ran 139 tests with zero failures.
+- Static verification passed:
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr017-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/tests/test_verify_registration.py=
+  and =git diff --check=.
+- Release-gate verification passed:
+  =mise run verify-rust=. The command ran Rust format, clippy, workspace tests,
+  shell regressions, no-DWARF check, corpus/build/source/search gates,
+  meta-harness tests, and Crouzeix lab directory discovery. Non-fatal mise cache
+  warnings were sandbox-local.
 
 ** DONE Implement Review And Repair Machinery :math:review:code:tests:ticket:
 :PROPERTIES:
