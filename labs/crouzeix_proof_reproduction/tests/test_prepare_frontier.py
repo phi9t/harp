@@ -82,7 +82,7 @@ class FrontierPreparationTests(unittest.TestCase):
 
     def test_prepare_frontier_writes_run_spec_tree_and_root_tickets(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             result = self.prepare(root)
             run_dir = root / "expert-frontier-001"
 
@@ -169,9 +169,36 @@ class FrontierPreparationTests(unittest.TestCase):
             self.assertEqual(check["root_ticket_count"], 5)
             self.assertEqual(check["run_spec_sha256"], digest((run_dir / "run_spec.json").read_bytes()))
 
+    def test_check_recomputes_prompt_schema_config_and_cli_digests(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            for tamper in ("prompt", "schema", "config", "cli"):
+                root = Path(directory).resolve() / tamper
+                root.mkdir()
+                run_dir = root / "expert-frontier-001"
+                self.prepare(root)
+                if tamper == "prompt":
+                    (run_dir / "prompts/expert.md").write_text("tampered prompt\n")
+                    expected = "prompt/expert.md"
+                elif tamper == "schema":
+                    (run_dir / "schemas/expert_result.schema.json").write_text("{}\n")
+                    expected = "schema/expert_result.schema.json"
+                elif tamper == "config":
+                    spec = json.loads((run_dir / "run_spec.json").read_text())
+                    spec["frontier"]["selection_seed"] = 20260815
+                    (run_dir / "run_spec.json").write_text(json.dumps(spec, indent=2, sort_keys=True) + "\n")
+                    expected = "config/frontier"
+                else:
+                    Path(spec := json.loads((run_dir / "run_spec.json").read_text())["cli"]["path"]).write_text(
+                        "#!/bin/sh\nprintf '%s\\n' 'traecli changed-version'\n"
+                    )
+                    Path(spec).chmod(0o755)
+                    expected = "cli"
+                with self.assertRaisesRegex(protocol.ValidationError, expected):
+                    prepare_frontier.check_frontier_preparation(run_dir)
+
     def test_prepare_frontier_rejects_existing_symlink_wrong_cli_and_bad_config(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             run_dir = root / "existing"
             run_dir.mkdir()
             with self.assertRaisesRegex(protocol.ValidationError, "existing"):
@@ -184,10 +211,23 @@ class FrontierPreparationTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
                 self.prepare(root, historical_prompt_path=prompt_link)
 
+            real_parent = root / "real-parent"
+            real_parent.mkdir()
+            parent_link = root / "parent-link"
+            parent_link.symlink_to(real_parent)
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                self.prepare(root, run_dir=parent_link / "run")
+            self.assertFalse((real_parent / "run").exists())
+
             bad_cli = root / "not-trae"
             write_cli(bad_cli, version="othercli 1.0")
             with self.assertRaisesRegex(protocol.ValidationError, "TRAE CLI identity"):
                 self.prepare(root, run_dir=root / "bad-cli", cli_path=bad_cli)
+
+            weak_cli = root / "weak-trae"
+            write_cli(weak_cli, version="not traecli")
+            with self.assertRaisesRegex(protocol.ValidationError, "TRAE CLI identity"):
+                self.prepare(root, run_dir=root / "weak-cli", cli_path=weak_cli)
 
             with self.assertRaisesRegex(protocol.ValidationError, "model"):
                 self.prepare(root, run_dir=root / "bad-model", model="gpt-5")

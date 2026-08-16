@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import stat
 import subprocess
@@ -32,6 +33,7 @@ CHILD_GENERATIONS = 3
 DRAWS_PER_GENERATION = 2
 ADMITTED_MATHEMATICAL_NODE_BUDGET = 11
 TOTAL_CALL_BUDGET = 33
+TRAECLI_VERSION = re.compile(r"^traecli(?:\s|$)")
 EXPERT_ROLES = (
     "function_theory",
     "operator_dilation",
@@ -89,7 +91,7 @@ def prepare_frontier(
         raise ValidationError(f"model must be {FRONTIER_MODEL}")
     if timeout_seconds != TIMEOUT_SECONDS:
         raise ValidationError(f"timeout_seconds must be {TIMEOUT_SECONDS}")
-    destination = run_dir.expanduser().resolve(strict=False)
+    destination = _new_directory_path(run_dir, "frontier run directory")
     if destination.exists() or destination.is_symlink():
         raise ValidationError(f"refusing to replace existing run directory: {destination}")
     source_path = _regular_file(historical_prompt_path, "historical prompt")
@@ -102,8 +104,7 @@ def prepare_frontier(
     execution, normalization = normalize_historical_prompt(source)
     theorem = _extract_theorem_or_default(source)
     version = _cli_version(executable)
-    if "traecli" not in version.lower():
-        raise ValidationError("TRAE CLI identity is invalid")
+    _validate_cli_identity(version)
     created = created_at_utc or _now()
 
     destination.mkdir(parents=True, mode=0o700)
@@ -196,7 +197,9 @@ def prepare_frontier(
 def check_frontier_preparation(run_dir: Path) -> dict[str, object]:
     root = _existing_directory(run_dir, "frontier run directory")
     spec_path = root / "run_spec.json"
-    spec = validate_run_spec(_read_json_object(spec_path, "run specification"))
+    raw_spec = _read_json_object(spec_path, "run specification")
+    _validate_prepared_digests(root, raw_spec)
+    spec = validate_run_spec(raw_spec)
     if spec["arm"] != "expert_frontier":
         raise ValidationError("run specification is not an expert_frontier run")
     for relative in CREATE_ONLY_DIRECTORIES:
@@ -352,6 +355,37 @@ def _input_digests(root: Path, frontier: Mapping[str, object], executable: Path)
     return digests
 
 
+def _validate_prepared_digests(root: Path, spec: Mapping[str, Any]) -> None:
+    digests = spec.get("digests")
+    if not isinstance(digests, Mapping):
+        raise ValidationError("digests must be an object")
+    frontier = spec.get("frontier")
+    if not isinstance(frontier, Mapping):
+        raise ValidationError("frontier must be an object")
+    _expect_digest(digests, "config/frontier", _canonical_sha256(frontier))
+
+    cli = spec.get("cli")
+    if not isinstance(cli, Mapping):
+        raise ValidationError("cli must be an object")
+    cli_path = cli.get("path")
+    if not isinstance(cli_path, str):
+        raise ValidationError("cli.path must be a string")
+    executable = _regular_file(Path(cli_path), "TRAE CLI executable")
+    _expect_digest(digests, "cli", _file_sha256(executable))
+    _validate_cli_identity(_cli_version(executable))
+
+    for name in PROMPTS:
+        _expect_digest(digests, f"prompt/{name}", _file_sha256(root / "prompts" / name))
+    for name in SCHEMAS:
+        _expect_digest(digests, f"schema/{name}", _file_sha256(root / "schemas" / name))
+
+
+def _expect_digest(digests: Mapping[str, Any], key: str, observed: str) -> None:
+    expected = digests.get(key)
+    if expected != observed:
+        raise ValidationError(f"{key} digest mismatch")
+
+
 def _extract_theorem_or_default(prompt: bytes) -> bytes:
     if prompt.count(TASK_MARKER) != 1:
         return THEOREM_TEXT.encode("utf-8")
@@ -379,6 +413,29 @@ def _regular_file(path: Path, label: str) -> Path:
     if not stat.S_ISREG(metadata.st_mode):
         raise ValidationError(f"{label} must be a regular file")
     return candidate.resolve()
+
+
+def _new_directory_path(path: Path, label: str) -> Path:
+    candidate = path.expanduser().absolute()
+    if candidate.exists() or candidate.is_symlink():
+        raise ValidationError(f"refusing to replace existing {label}: {candidate}")
+    current = Path(candidate.anchor)
+    parts = candidate.parts[1:]
+    for index, part in enumerate(parts):
+        current = current / part
+        try:
+            metadata = current.lstat()
+        except FileNotFoundError:
+            if index != len(parts) - 1:
+                raise ValidationError(f"{label} parent does not exist: {current}")
+            return candidate
+        if stat.S_ISLNK(metadata.st_mode):
+            raise ValidationError(f"{label} contains symlink: {current}")
+        if index == len(parts) - 1:
+            raise ValidationError(f"refusing to replace existing {label}: {current}")
+        if not stat.S_ISDIR(metadata.st_mode):
+            raise ValidationError(f"{label} parent must be a directory: {current}")
+    return candidate
 
 
 def _existing_directory(path: Path, label: str) -> Path:
@@ -412,6 +469,11 @@ def _cli_version(executable: Path) -> str:
     if not output or len(output) > 256 or "\0" in output:
         raise ValidationError("TRAE CLI version output is invalid")
     return output
+
+
+def _validate_cli_identity(version: str) -> None:
+    if TRAECLI_VERSION.match(version.lower()) is None:
+        raise ValidationError("TRAE CLI identity is invalid")
 
 
 def _copy_create_only(source: Path, destination: Path) -> None:
