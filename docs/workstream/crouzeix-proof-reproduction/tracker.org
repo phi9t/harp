@@ -4509,3 +4509,783 @@ a no-op script.
   =repository verified: 521 import rows=.
 - Spec review approved with no blockers. Standards/security re-review approved
   after the typed tracker error and bounded =ticket.json= read fixes.
+
+* Formal Validation Velocity Tickets
+
+These tickets implement the approved reference-aware Lean-validation program.
+They are separate from blind-generation tickets: no source map, published proof,
+or ledger row may enter an E-arm generation context.
+
+** DONE Establish FormalTarget Contract :lean:security:ticket:
+:PROPERTIES:
+:ID: CPFR-070
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-018
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-070-formal-target
+:MODEL: gpt-5
+:END:
+Validate a closed production lock, target, artifacts, and append-only lemma ledger.
+Reject unknown/duplicate JSON fields, traversal, symlinks, bad digests, and blocked
+dependencies; production loading ignores ambient lock redirects.
+
+*** Scope
+Create the CPFR-070-only FormalTarget contract boundary in
+=labs/crouzeix_proof_reproduction/formal_target.py= with tests in
+=labs/crouzeix_proof_reproduction/tests/test_formal_target.py=. The contract
+defines immutable lock, target, artifact, and ledger-row records plus closed
+boundary helpers for production/test lock loading, target validation, and
+append-only ledger-row publication.
+
+*** Non-goals
+No Lean runtime provisioning, source acquisition, Jin source mapping, proof-source
+editing, blind-frontier changes, fake production artifact values, or Crouzeix
+proof claim.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/formal_target.py=
+- =labs/crouzeix_proof_reproduction/tests/test_formal_target.py=
+- CPFR-070 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- =load_lock()= reads only the committed production lock path and ignores
+  ambient redirect variables.
+- =load_lock_for_test(path)= is the only path-redirection seam.
+- JSON parsing rejects duplicate keys and unknown fields.
+- Artifact paths reject absolute paths, traversal, symlinks, symlinked ancestors,
+  files outside the declared root, byte drift, and SHA-256 drift.
+- Ledger rows have stable IDs, statement digests, source locator or
+  =Harp-authored=, dependency IDs, owner route, and exactly one allowed status.
+- Target dependencies pass only when every dependency row is
+  =mathlib_available= or =locally_proved=.
+- Ledger publication is create-only and content-addressed by row digest.
+
+*** Implementation Steps
+1. Wrote red =test_formal_target= coverage for production loader closure,
+   test-only loading, duplicate/unknown fields, unsafe paths, symlink handling,
+   byte/hash drift, ledger status validation, dependency status gating, and
+   create-only content-addressed ledger rows.
+2. Implemented strict frozen dataclasses for =Artifact=, =TargetSpec=,
+   =FormalTargetLock=, =LedgerRow=, and =FormalTarget=.
+3. Implemented strict JSON loading with duplicate-key rejection, safe
+   filesystem traversal, regular-file digest checks, read-only target ledger
+   exposure, and create-only ledger row writes.
+4. Committed the CPFR-070 code surface in =9c9757a=.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+- =git diff --check=
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Verification Evidence
+- Red test evidence: focused FormalTarget unittest initially failed with
+  =ModuleNotFoundError: No module named 'formal_target'= before implementation.
+- Commit: =9c9757a feat(crouzeix): add formal target contract=.
+- =test_formal_target=: 10 tests, 0 failures.
+- =test_formal_receipt=: 8 tests, 0 failures.
+- =git diff --check=: exit 0.
+
+** TODO Acquire Pinned Jin Inputs And Preflight :lean:security:ticket:
+:PROPERTIES:
+:ID: CPFR-071
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-070
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Create a receipt for verified Jin 565b6a3, Lean 4.28.0, Mathlib bytes, disk, and
+toolchain availability. Missing bytes or capacity is typed blocked; no host fallback.
+
+*** Scope
+Acquire or verify the pinned public inputs needed by the Jin validation lane and
+record a preflight receipt that distinguishes available bytes from typed
+resource or artifact blockers. The worker must use CPFR-070's FormalTarget
+contract as the input boundary and must not invent production artifact digests.
+
+*** Non-goals
+- No Lean execution beyond bounded identity/preflight checks.
+- No proof-source edits, source-map authoring, target-statement changes, or
+  runtime publication.
+- No blind-frontier context changes and no Crouzeix proof claim.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/formal_target.lock.json=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json=
+- =labs/crouzeix_proof_reproduction/tests/test_formal_target.py=
+- CPFR-071 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Production lock names Jin commit
+  =565b6a3e0659b6e0785f783b016c3f6d9f171fa5= and Lean =v4.28.0= only from
+  verified evidence.
+- Every artifact entry has path, bytes, SHA-256, source locator, and license or
+  missing-license status.
+- Missing artifact bytes, missing license evidence, insufficient disk, or
+  unavailable toolchain records a typed =blocked= preflight result.
+- No lock field is populated with a fake digest, placeholder byte count, host
+  path fallback, or mutable download URL as authority.
+- Existing FormalTarget tests continue to reject duplicate keys, unsafe paths,
+  symlinks, and byte/hash drift against the production lock.
+
+*** Implementation Steps
+1. Write red tests that load the production lock and reject missing artifact
+   digests, non-SHA-256 values, unknown artifact fields, and unsupported Lean
+   or platform identities.
+2. Read only approved evidence under =evidence/crouzeix_conjecture/= and
+   existing manifest files; if a required byte set is absent, write a typed
+   blocked preflight receipt rather than fabricating values.
+3. Create =formal_target.lock.json= with the verified Jin, Lean, Mathlib,
+   artifact, import-allowlist, command, and ledger identities supported by the
+   evidence.
+4. Add tests that verify the production lock can be parsed by =load_lock()= and
+   that the preflight receipt is closed over the declared artifact inventory.
+5. Run focused FormalTarget tests and =git diff --check=, then commit only the
+   CPFR-071-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_target.lock.json=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on a fresh
+  implementation session.
+
+** TODO Provision Hermetic Jin Runtime :lean:security:ticket:
+:PROPERTIES:
+:ID: CPFR-072
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-071
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Stage and byte-verify all artifacts before execution; publish only to a lock-derived
+path with inventory and no-replace semantics. Test source swap, symlink, stale stage,
+and publication race rejection.
+
+*** Scope
+Implement the FormalTarget runtime resolver and provisioner that turns
+CPFR-071's verified artifact inventory into a local, immutable runtime tree.
+Provisioning must copy only declared regular files, verify copied bytes before
+any command execution, and publish with no-replace semantics.
+
+*** Non-goals
+- No network fetch, live installer, =curl | sh=, or host PATH fallback.
+- No Jin proof build, source-map authoring, axiom scan, or receipt v2 binding.
+- No mutation of source evidence bytes or generated proof sources.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/formal_target.py=
+- =labs/crouzeix_proof_reproduction/tests/test_formal_target.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/runtime-inventory.json=
+- CPFR-072 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- =provision(lock, artifacts, base)= accepts only artifact paths declared by the
+  lock and rejects extra, missing, symlinked, stale, or byte-drifting inputs.
+- Provisioning stages into a sibling temporary tree, verifies copied bytes and
+  executable bits, writes deterministic =runtime-inventory.json=, then
+  atomically publishes to a lock-derived destination.
+- Existing destinations, symlinked base directories, symlinked destination
+  ancestors, publication races, and source swaps during copy fail closed.
+- =resolve(lock, base)= returns only an already-published runtime whose
+  inventory digest still matches the lock-derived expectation.
+- No command is run from ambient PATH; later tasks consume only resolved,
+  lock-derived argv and cwd.
+
+*** Implementation Steps
+1. Write red provision tests for wrong digest, wrong byte count, symlinked
+   source, symlinked base, existing destination, and race-created destination.
+2. Write red tests for source swap during copy and stale published inventory.
+3. Add immutable =ResolvedTarget= records and =provision= / =resolve= functions
+   to =formal_target.py=.
+4. Implement staged copy, post-copy digest verification, executable-mode
+   validation, deterministic inventory JSON, and no-replace publish.
+5. Run focused FormalTarget tests and =git diff --check=, then commit only the
+   CPFR-072-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/runtime-inventory.json=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-071.
+
+** TODO Bind Formal Attempts To FormalTarget :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-073
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-072
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Add an additive v2 formal receipt binding target, runtime inventory, elaborated type,
+logs, and axiom audit while preserving v1 receipts.
+
+*** Scope
+Extend formal attempt receipts with an additive v2 schema that binds every
+formal result to the exact FormalTarget, runtime inventory, elaborated target
+type digest, command, logs, resource receipt, and axiom audit. Existing v1
+receipt validation must remain byte-compatible.
+
+*** Non-goals
+- No change to CPFR-070 lock semantics or CPFR-072 provisioning behavior.
+- No Jin source map, proof build, or proof claim.
+- No migration that rewrites existing v1 receipts.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/formal_receipt.py=
+- =labs/crouzeix_proof_reproduction/tests/test_formal_receipt.py=
+- =labs/crouzeix_proof_reproduction/schemas/formal_attempt_receipt.schema.json=
+- CPFR-073 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- =validate_receipt= accepts exactly
+  =crouzeix-formal-attempt-receipt/v1= or
+  =crouzeix-formal-attempt-receipt/v2=.
+- v1 receipts reject all v2-only fields and retain existing terminal-status
+  behavior.
+- v2 receipts require =formal_target.path=, =formal_target.sha256=,
+  =runtime_inventory_sha256=, =target_type_sha256=, and a complete axiom audit.
+- =passed= v2 receipts require zero command exit, complete logs, matching target
+  and runtime digests, and no observed axioms outside the allowed list.
+- Target drift, runtime inventory drift, unknown fields, unsafe paths, and
+  forbidden axioms fail closed.
+
+*** Implementation Steps
+1. Write red v2 receipt tests for required target/runtime/type fields and for
+   v1 rejecting v2-only fields.
+2. Write red terminal invariant tests for passed-with-forbidden-axiom,
+   target-digest drift, runtime-digest drift, and unknown fields.
+3. Split validation dispatch by schema version while preserving the existing
+   v1 normalized payload shape.
+4. Add v2 field validators and terminal invariants.
+5. Update the JSON schema to describe both versions without loosening v1.
+6. Run focused formal receipt tests, schema validation, and =git diff --check=,
+   then commit only CPFR-073-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/formal_attempt_receipt.schema.json=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-072.
+
+** TODO Map Jin Source To Formal Target :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-074
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-073
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Create a pinned source-map and exact target alignment task; every terminal span needs
+a revision-bound locator and Lean declaration or explicit blocker.
+
+*** Scope
+Create the pinned Jin source map and target-alignment task interface for the
+reference-aware lane. The map translates source locators from Jin commit
+=565b6a3e0659b6e0785f783b016c3f6d9f171fa5= into intended Lean declarations or
+explicit blockers, and the alignment task binds the Jin terminal theorem to the
+FormalTarget statement.
+
+*** Non-goals
+- No proof slice implementation beyond target-alignment scaffolding.
+- No runtime provisioning, live Lean build, or axiom audit beyond fixture-level
+  validation.
+- No blind-frontier exposure to source maps, Lean names, or ledger rows.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/jin_validation.py=
+- =labs/crouzeix_proof_reproduction/tests/test_jin_validation.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/Target.lean=
+- CPFR-074 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Source-map rows have stable IDs, pinned Jin locators, informal statement
+  digests, intended Lean names, dependency IDs, and status.
+- Duplicate IDs, missing locators, locators outside the pinned Jin revision,
+  unknown fields, and unmapped terminal theorem fail.
+- =Target.lean= imports only modules allowed by the FormalTarget lock and
+  contains no copied informal proof text.
+- Target alignment either proves definitional equality to FormalTarget or emits
+  a named mismatch/blocker record; it never weakens hypotheses or constants.
+- The generated task consumes only CPFR-073 v2 receipt bindings and the
+  CPFR-072 resolved runtime contract.
+
+*** Implementation Steps
+1. Write red source-map tests for duplicate IDs, missing pinned locators,
+   wrong revision, missing terminal theorem, and import allowlist violations.
+2. Write red alignment-task tests for altered target type, extra hypotheses,
+   and unsafe task artifact paths.
+3. Implement =SourceMapRow=, =load_source_map=, and
+   =make_alignment_task= in =jin_validation.py=.
+4. Author =source-map.json= and =Target.lean= as declaration/interface
+   artifacts only, with no informal proof copying.
+5. Run focused Jin validation tests and =git diff --check=, then commit only
+   CPFR-074-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-073.
+
+** TODO Validate Jin Build And Axioms :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-075
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-074
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Run one create-only fresh-process build and fixed axiom audit. Emit passed, failed, or
+blocked with the first failing command; no changed source inventory is accepted.
+
+*** Scope
+Run the sealed Jin validation task from CPFR-074 against the resolved runtime
+from CPFR-072 and emit exactly one create-only v2 formal receipt. The result is
+only =passed=, =failed=, =blocked=, or =not_attempted= for that exact build and
+axiom-audit command.
+
+*** Non-goals
+- No source-map expansion, theorem weakening, new imports, or proof repair.
+- No model invocation or reconstruction loop.
+- No formal-proof claim unless the fresh build and axiom audit pass.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/jin_validation.py=
+- =labs/crouzeix_proof_reproduction/tests/test_jin_validation.py=
+- =labs/crouzeix_proof_reproduction/README.md=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/attempts/=
+- CPFR-075 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- =run_jin_validation(target, task, attempt_root)= rejects existing attempt
+  roots and writes one create-only task, command, logs, axiom audit, result, and
+  v2 receipt set.
+- The runner executes only lock-derived argv, cwd, and environment allowlist.
+- Missing runtime/toolchain, timeout, resource preflight failure, or unavailable
+  artifact is =blocked= with the first failing command.
+- Ill-typed Lean, changed source inventory, digest drift, or policy violation is
+  =failed=.
+- =passed= requires fresh command exit 0, expected declaration elaboration,
+  complete logs, and matching axiom audit policy.
+
+*** Implementation Steps
+1. Write red runner tests for success fixture, ill-typed fixture, missing
+   toolchain, resource block, timeout, changed inventory, and forbidden axiom.
+2. Implement fixed environment construction and command execution using only
+   =ResolvedTarget= data.
+3. Preserve raw stdout/stderr and normalized command/result JSON under the
+   attempt root with create-only writes.
+4. Invoke CPFR-073 receipt preparation with FormalTarget and runtime bindings.
+5. Document local operator usage in the lab README.
+6. Run focused Jin validation tests and =git diff --check=, then commit only
+   CPFR-075-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-074.
+
+** TODO Independently Rebuild Jin Validation :lean:review:ticket:
+:PROPERTIES:
+:ID: CPFR-076
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-075
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Rebuild from a clean checkout and compare inputs, theorem type, command, and axiom
+output before any formal-proof claim.
+
+*** Scope
+Independently verify the CPFR-075 Jin validation result from a clean checkout
+and record a review receipt comparing FormalTarget digest, runtime inventory,
+source inventory, elaborated target type, command, logs, and axiom audit.
+
+*** Non-goals
+- No new proof work, source-map edits, runtime changes, or receipt schema
+  changes.
+- No formal-proof claim if any rebuild input, output, or axiom audit differs.
+- No blind-frontier execution.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/tests/test_jin_validation.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/rebuild-review.json=
+- =docs/workstream/crouzeix-proof-reproduction/tracker.org= CPFR-076 subtree
+
+*** Acceptance Criteria
+- Review uses a clean checkout or no-local clone, not the implementation
+  worktree's mutable state.
+- Review recomputes the FormalTarget digest, runtime inventory digest, source
+  inventory digest, target type digest, command result, and axiom audit.
+- Any mismatch records =failed= or =blocked= review evidence and prevents a
+  formal-proof claim.
+- A passing review records the exact CPFR-075 receipt digest and the clean
+  rebuild receipt digest.
+- The review does not modify CPFR-075 artifacts.
+
+*** Implementation Steps
+1. Write a review checklist and regression test that rejects a tracker claim of
+   a formal proof without a clean rebuild digest.
+2. Materialize or document the clean-checkout verification command sequence.
+3. Run the CPFR-075 validation in the clean checkout and compare all bound
+   digests.
+4. Write =rebuild-review.json= as create-only evidence.
+5. Update CPFR-076 evidence with the CPFR-075 and rebuild-review digests.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-075.
+
+** TODO Map Lorist-Schwenninger Formal Route :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-077
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-070
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Build a pinned dependency/source graph and exact convention adapters; record all
+library gaps without importing Jin working files.
+
+*** Scope
+Create the independent Lorist-Schwenninger formal route map: a pinned
+source-indexed dependency graph, target/convention adapter tasks, and library
+inventory. This route consumes only the FormalTarget interface and may not read
+Jin private work files.
+
+*** Non-goals
+- No LS proof-slice implementation.
+- No reuse of unpublished Jin source maps, task outputs, or working files.
+- No theorem weakening or hidden notation rewrite.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/ls_validation.py=
+- =labs/crouzeix_proof_reproduction/tests/test_ls_validation.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json=
+- =labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json=
+- CPFR-077 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Source graph rows bind source locator, normalized statement digest, intended
+  Lean declaration or blocker, dependencies, and terminal theorem marker.
+- Cycles fail unless the source explicitly requires a mutual construction that
+  the task records as Lean-representable.
+- Target and convention adapters are explicit separately compiled task entries,
+  not hidden rewrites.
+- Library inventory maps each external fact to Mathlib, a local task, or a
+  typed blocker.
+- Tests prove that no LS task path or import references Jin private work files.
+
+*** Implementation Steps
+1. Write red tests for duplicate graph IDs, unknown dependencies, unapproved
+   cycles, missing terminal theorem, and Jin-private path leakage.
+2. Implement =LSGraphRow=, =load_ls_graph=, and library inventory validation in
+   =ls_validation.py=.
+3. Author the initial LS source graph and library inventory from pinned source
+   locators.
+4. Add target/convention adapter task records that consume CPFR-070
+   FormalTarget only.
+5. Run focused LS validation tests and =git diff --check=, then commit only
+   CPFR-077-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_ls_validation -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-070.
+
+** TODO Formalize Lorist-Schwenninger Slices :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-078
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-077
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Execute one isolated formal task per dependency node, then terminal assembly and clean
+rebuild; theorem-strength mismatches are terminal evidence.
+
+*** Scope
+Execute the LS graph from CPFR-077 as isolated formal tasks in dependency order,
+publishing only compiled/audited declarations into the shared ledger and
+recording terminal blockers or theorem-strength mismatches at the owning node.
+
+*** Non-goals
+- No Jin-private file imports or unpublished cross-route reuse.
+- No shared-kernel promotion; CPFR-079 owns that.
+- No weakening the terminal theorem to obtain a compiled result.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/ls_validation.py=
+- =labs/crouzeix_proof_reproduction/tests/test_ls_validation.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/tasks/=
+- =labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/assembly/=
+- CPFR-078 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Each LS task owns one graph node and imports only FormalTarget, Mathlib, and
+  passed predecessor interfaces.
+- Every task emits closed task, command, logs, axioms, result, and v2 receipt
+  artifacts.
+- Terminal assembly compares the elaborated theorem type with FormalTarget
+  byte-for-byte after normalization.
+- The first unavailable concept, failed intermediate theorem, or theorem-strength
+  mismatch records a typed blocker at the owning graph node.
+- No terminal pass is recorded without a clean rebuild and axiom audit.
+
+*** Implementation Steps
+1. Write red task-runner tests for dependency-order enforcement, unpublished
+   predecessor import rejection, Jin-private import rejection, and theorem-type
+   mismatch.
+2. Implement LS task materialization and sealed runner integration.
+3. Execute or fixture one node at a time, publishing only passed declarations to
+   the ledger.
+4. Implement terminal assembly comparison against FormalTarget.
+5. Run focused LS validation tests, formal receipt tests, and =git diff --check=,
+   then commit only CPFR-078-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_ls_validation -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-077.
+
+** TODO Admit And Prove Shared Kernel Lemmas :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-079
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-076 CPFR-078
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Admit only normalized bridges needed by both routes, prove them independently, migrate
+two consumers, and audit that no kernel lemma depends on a terminal Crouzeix theorem.
+
+*** Scope
+Create a shared-kernel admission and proof workflow for lemmas independently
+needed by both validated routes. Kernel lemmas are admitted only from evidence:
+two normalized route needs or two passed consumers.
+
+*** Non-goals
+- No speculative abstraction, one-off helper extraction, or route-private cleanup.
+- No dependency from a kernel lemma to either terminal Crouzeix theorem.
+- No migration unless both consumers rebuild.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/kernel_validation.py=
+- =labs/crouzeix_proof_reproduction/tests/test_kernel_validation.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/shared-kernel/admissions.json=
+- =labs/crouzeix_proof_reproduction/formal_targets/shared-kernel/tasks/=
+- CPFR-079 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Admission requires two route ledger rows with the same normalized statement or
+  two passed consumers using an equivalent bridge.
+- Kernel specifications record minimal hypotheses, prohibited circular
+  dependencies, allowed imports, and consumer IDs.
+- Kernel proof tasks compile in isolation and emit v2 receipts plus axiom
+  audits.
+- Consumer migration rebuilds each route one consumer at a time.
+- Audit proves no kernel declaration imports or depends on a terminal Crouzeix
+  theorem.
+
+*** Implementation Steps
+1. Write red admission tests for one-consumer bridges, non-equivalent
+   statements, circular dependencies, and terminal-theorem dependency leakage.
+2. Implement kernel admission validation and normalized statement comparison.
+3. Implement isolated kernel proof task materialization.
+4. Implement consumer migration checks and no-terminal-dependency audit.
+5. Run focused kernel validation tests and =git diff --check=, then commit only
+   CPFR-079-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_kernel_validation -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-076 and
+  CPFR-078.
+
+** TODO Run Sealed Lean Reconstruction :lean:ticket:
+:PROPERTIES:
+:ID: CPFR-080
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-075 CPFR-078
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+For a named blocker, use fixed proof slots and bounded candidates; retain compiler
+results and publish only fresh audited compilations into the ledger.
+
+*** Scope
+Implement the reference-aware sealed reconstruction loop for a named blocker
+from Route 1 or Route 2. The loop freezes the obligation, accepts bounded proof
+body candidates, compiles them in the sealed module, classifies failures, and
+publishes only fresh audited compilations into the ledger.
+
+*** Non-goals
+- No free-form theorem restatement, import changes, source-map edits, or
+  unbounded search.
+- No model output is trusted without a fresh compile and axiom audit.
+- No blind-frontier context exposure.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/reconstruction.py=
+- =labs/crouzeix_proof_reproduction/tests/test_reconstruction.py=
+- =labs/crouzeix_proof_reproduction/formal_targets/reconstruction/tasks/=
+- =labs/crouzeix_proof_reproduction/prompts/lean_reconstruction.md=
+- CPFR-080 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- A sealed obligation records statement, imports, local context, source locator,
+  fixed proof slots, attempt budget, and decomposition budget.
+- Candidate materialization can modify only declared proof-body slots.
+- Compilation results classify as =compiled=, =syntax=, =missing_fact=,
+  =type_mismatch=, =false_subgoal=, =timeout=, or =policy_violation=.
+- Compiled candidates publish ledger rows only after fresh command exit 0 and
+  matching axiom audit.
+- Failed candidates retain full history and may derive at most one strictly
+  smaller named obligation within budget.
+
+*** Implementation Steps
+1. Write red tests for slot-boundary violations, import changes, budget
+   exhaustion, classifier normalization, and compiled-candidate ledger publish.
+2. Implement sealed obligation loading and candidate materialization.
+3. Implement compile/audit invocation through the CPFR-075 sealed runner.
+4. Implement classifier normalization and failed-candidate history retention.
+5. Add the reconstruction prompt with explicit source-aware, proof-slot-only
+   boundaries.
+6. Run focused reconstruction tests and =git diff --check=, then commit only
+   CPFR-080-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_reconstruction -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-075 and
+  CPFR-078.
+
+** TODO Bind Blind Frontier To FormalTarget :lean:review:ticket:
+:PROPERTIES:
+:ID: CPFR-081
+:DESIGN_SECTION: Crouzeix Lean Validation Routes
+:BRANCH: codex/crouzeix-formal-validation
+:WORKTREE: .worktrees/crouzeix-formal-validation
+:DEPENDS_ON: CPFR-070 CPFR-036
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Bind only the FormalTarget digest to E-arm evidence. Source maps, Lean names, ledgers,
+and published proofs remain forbidden generation inputs; frozen candidates alone enter
+the sealed formal compiler after independent review.
+
+*** Scope
+Add the FormalTarget digest to the existing blind frontier evidence boundary
+without leaking reference-aware artifacts into generation context. Frozen blind
+candidates may later enter the sealed formal compiler only after independent
+review.
+
+*** Non-goals
+- No source maps, Lean declaration names, ledger rows, published reference
+  proofs, Jin/LS proof text, or reconstruction history in E-arm prompts.
+- No rerun of the blind frontier experiment.
+- No formal compiler execution for non-frozen candidates.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/frontier.py=
+- =labs/crouzeix_proof_reproduction/tests/test_frontier.py=
+- =labs/crouzeix_proof_reproduction/tests/test_prepare_frontier.py=
+- =labs/crouzeix_proof_reproduction/prepare_frontier.py=
+- CPFR-081 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- E-arm run specs and receipts bind only FormalTarget digest and schema version.
+- Prompt/context scans reject source maps, Lean names, ledger rows, route
+  receipts, and reference proof text.
+- Existing frozen-candidate review remains independent from reference-aware
+  validation.
+- Only frozen candidates with independent review may be passed to the sealed
+  compiler used by CPFR-080.
+- Tracker evidence distinguishes formal-proof correctness from blind-discovery
+  provenance.
+
+*** Implementation Steps
+1. Write red frontier context-scan tests that inject source-map text, Lean
+   declaration names, ledger row IDs, and reference receipt paths.
+2. Add FormalTarget digest binding to E-arm run specs and receipts without
+   adding reference-aware payloads.
+3. Update prepare/frontier validation to enforce the forbidden-context set.
+4. Add tests that frozen candidates, and only frozen candidates, can be queued
+   for sealed formal compilation.
+5. Run focused frontier tests and =git diff --check=, then commit only
+   CPFR-081-owned files.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_frontier -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
+- =git diff --check=
+
+*** Verification Evidence
+- Not yet run. This ticket is specification-ready and blocked on CPFR-070 and
+  CPFR-036.
