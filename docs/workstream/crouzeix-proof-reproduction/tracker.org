@@ -2087,16 +2087,16 @@ run the release gate on the repaired tip.
   =Co-authored-by: TRAE CLI <noreply@bytedance.com>= trailer on every work
   commit. Tracked pycache/run-artifact scan found no tracked matches.
 
-** TODO Preflight Host Resources And Runtime Identity :live:security:ticket:
+** BLOCKED Preflight Host Resources And Runtime Identity :live:security:ticket:
 :PROPERTIES:
 :ID: CPFR-030
 :DESIGN_SECTION: Frontier Loop And Budget; Safety
 :DEPENDS_ON: CPFR-018
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: current thread 01a0075a-5314-77a0-97e2-e912c28a9226
+:MODEL: GPT-5.5
 :END:
 
 *** Scope
@@ -2144,7 +2144,11 @@ absence of stale frontier processes before preparing the live E arm.
 
 *** Verification Evidence
 
-- Record exact values and cleanup scope.
+- Blocked during preflight verification because
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-runtime ...=
+  had no CLI dispatcher and could exit zero without validating the runtime
+  root. Repair tracked as =CPFR-R006= before any provider call or E run
+  preparation.
 
 ** TODO Record Legacy H And O0 Ticket-Contract Exception :evidence:ticket:
 :PROPERTIES:
@@ -4415,3 +4419,90 @@ final tie-breaker.
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
   passed after adding regression coverage for descending severity order.
 - Final repair review approved CPFR-R003/R005.
+
+** DONE Repair Runtime Ticket CLI Validation :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-R006
+:DESIGN_SECTION: Runtime Ticket Contract; Ticket Discipline
+:DEPENDS_ON: CPFR-018
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread 01a0075a-5314-77a0-97e2-e912c28a9226
+:MODEL: GPT-5.5
+:COMMIT: pending
+:END:
+
+*** Scope
+
+Add the command-line validation entrypoints already referenced by tracker
+verification plans so live/operator tickets cannot be treated as validated by
+a no-op script.
+
+*** Non-goals
+
+- No provider call.
+- No legacy H/O0 exception implementation; =CPFR-023= owns that contract.
+- No change to the runtime-ticket JSON schema.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/tickets.py=
+- =labs/crouzeix_proof_reproduction/tests/test_tickets.py=
+- this ticket's tracker subtree
+
+*** Acceptance Criteria
+
+- =validate-tracker <tracker.org>= parses and validates the real tracker.
+- =validate-runtime <run-root>= validates every published runtime ticket and
+  replays each event log to a terminal state.
+- Invalid runtime roots fail nonzero with a typed error.
+- =validate-legacy= is explicit and nonzero until =CPFR-023= implements the
+  legacy exception validator.
+
+*** Implementation Steps
+
+1. Write failing CLI tests for tracker validation, runtime validation, invalid
+   runtime history, and unsupported legacy validation.
+2. Add a minimal dispatcher with typed stderr errors.
+3. Reuse existing validation functions rather than duplicating schema logic.
+4. Run the focused ticket suite.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Verification Evidence
+
+- Red test: focused =test_tickets= run failed because =validate-runtime= and
+  =validate-legacy= both exited zero under the missing CLI dispatcher.
+- Green focused suite:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+  passed 15 tests.
+- Real tracker command:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited zero.
+- Negative legacy command:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-legacy historical orchestrated=
+  exited =2= with =validate-legacy is not implemented before CPFR-023=.
+- Full lab suite:
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+  passed 154 tests.
+- Standards/security review found two blockers: missing tracker paths produced
+  Python tracebacks instead of typed CLI errors, and =ticket.json= lacked a
+  pre-read size/type guard. Added regression tests for both.
+- Post-repair focused suite:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_tickets -v=
+  passed 17 tests.
+- Negative tracker command:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker /no/such/tracker.org=
+  exited =2= with =tickets: tracker does not exist: /no/such/tracker.org=.
+- Full lab suite after blocker repairs:
+  =python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=
+  passed 156 tests.
+- Repository payload verification after receipt refresh:
+  =cargo run -q -p harp -- repository verify= reported
+  =repository verified: 521 import rows=.
+- Spec review approved with no blockers. Standards/security re-review approved
+  after the typed tracker error and bounded =ticket.json= read fixes.

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import stat
+import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Mapping
@@ -193,7 +195,7 @@ class Tracker:
 
 
 def parse_tracker(path: Path) -> Tracker:
-    text = path.read_text()
+    text = _read_bounded_text_file(path, "tracker", max_bytes=2 * 1024 * 1024)
     items: dict[str, TrackerItem] = {}
     current: dict[str, Any] | None = None
     in_properties = False
@@ -499,6 +501,46 @@ def canonical_sha256(value: Mapping[str, Any]) -> str:
     return sha256_bytes(data.encode("utf-8"))
 
 
+def validate_runtime_root(run_root: Path) -> None:
+    _ensure_safe_directory(run_root, "runtime root", create=False)
+    ticket_root = run_root / "tickets"
+    _ensure_safe_directory(ticket_root, "runtime ticket root", create=False)
+    ticket_dirs = sorted(path for path in ticket_root.iterdir() if path.is_dir())
+    if not ticket_dirs:
+        raise ValidationError("runtime root has no published tickets")
+    for ticket_dir in ticket_dirs:
+        _reject_symlink(ticket_dir, "runtime ticket directory")
+        ticket_path = ticket_dir / "ticket.json"
+        ticket_text = _read_bounded_text_file(
+            ticket_path,
+            "runtime ticket",
+            max_bytes=1024 * 1024,
+        )
+        try:
+            ticket = validate_runtime_ticket(json.loads(ticket_text))
+        except json.JSONDecodeError as error:
+            raise ValidationError(f"cannot parse runtime ticket: {error}") from error
+        ticket_id = str(ticket["ticket_id"])
+        if ticket_dir.name != ticket_id:
+            raise ValidationError("runtime ticket directory name does not match ticket_id")
+        event_path = ticket_dir / "ticket_events.jsonl"
+        if not event_path.exists():
+            raise ValidationError(f"runtime ticket {ticket_id} has no event log")
+        _validate_existing_event_log(event_path, ticket_id)
+        replay = RuntimeTicketEventLog(ticket_id)
+        for line_number, line in enumerate(event_path.read_text(encoding="utf-8").splitlines(), 1):
+            try:
+                replay.apply(json.loads(line))
+            except json.JSONDecodeError as error:
+                raise ValidationError(
+                    f"cannot parse runtime ticket {ticket_id} event {line_number}: {error}"
+                ) from error
+        if replay.state not in TERMINAL_TICKET_STATES:
+            raise ValidationError(
+                f"runtime ticket {ticket_id} is not terminal: {replay.state}"
+            )
+
+
 def _validate_dependencies(tracker: Tracker) -> None:
     for item in tracker.items.values():
         for dependency in _dependencies(item):
@@ -663,3 +705,53 @@ def _validate_existing_event_log(path: Path, ticket_id: str) -> None:
         raise ValidationError("runtime ticket event log must be a regular file")
     if path.stat().st_size > 16 * 1024 * 1024:
         raise ValidationError("runtime ticket event log exceeds byte cap")
+
+
+def _read_bounded_text_file(path: Path, label: str, *, max_bytes: int) -> str:
+    _reject_symlink(path, label)
+    try:
+        mode = path.lstat().st_mode
+    except FileNotFoundError as error:
+        raise ValidationError(f"{label} does not exist: {path}") from error
+    if not stat.S_ISREG(mode):
+        raise ValidationError(f"{label} must be a regular file: {path}")
+    size = path.stat().st_size
+    if size > max_bytes:
+        raise ValidationError(f"{label} exceeds byte cap: {path}")
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError as error:
+        raise ValidationError(f"cannot read {label}: {error}") from error
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Validate Crouzeix ticket records.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    validate_tracker_parser = subparsers.add_parser("validate-tracker")
+    validate_tracker_parser.add_argument("tracker", type=Path)
+
+    validate_runtime_parser = subparsers.add_parser("validate-runtime")
+    validate_runtime_parser.add_argument("run_root", type=Path)
+
+    validate_legacy_parser = subparsers.add_parser("validate-legacy")
+    validate_legacy_parser.add_argument("run_roots", nargs="*", type=Path)
+
+    args = parser.parse_args(argv)
+    try:
+        if args.command == "validate-tracker":
+            validate_tracker(parse_tracker(args.tracker))
+            return 0
+        if args.command == "validate-runtime":
+            validate_runtime_root(args.run_root)
+            return 0
+        if args.command == "validate-legacy":
+            raise ValidationError("validate-legacy is not implemented before CPFR-023")
+    except ValidationError as error:
+        print(f"tickets: {error}", file=sys.stderr)
+        return 2
+    raise AssertionError(f"unhandled command {args.command}")
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -283,6 +284,89 @@ class StorageAndBindingTests(unittest.TestCase):
                 {"ticket_id": ticket["ticket_id"], "ticket_sha256": "0" * 64},
                 ticket,
             )
+
+
+class TicketsCliTests(unittest.TestCase):
+    def run_tickets(self, *args: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            [sys.executable, str(LAB / "tickets.py"), *args],
+            cwd=REPO,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+    def test_validate_tracker_cli_checks_the_real_tracker(self) -> None:
+        result = self.run_tickets(
+            "validate-tracker",
+            "docs/workstream/crouzeix-proof-reproduction/tracker.org",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_validate_tracker_cli_reports_missing_files_without_traceback(self) -> None:
+        result = self.run_tickets("validate-tracker", "/no/such/tracker.org")
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("tickets:", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_validate_runtime_cli_replays_each_published_ticket(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve()
+            ticket_root = run_root / "tickets"
+            tickets.publish_ticket(ticket_root, runtime_ticket())
+            tickets.append_ticket_event(ticket_root, "expert-g0-function-theory", runtime_event())
+            tickets.append_ticket_event(
+                ticket_root,
+                "expert-g0-function-theory",
+                runtime_event(sequence=2, from_state="admitted", to_state="running"),
+            )
+            tickets.append_ticket_event(
+                ticket_root,
+                "expert-g0-function-theory",
+                runtime_event(sequence=3, from_state="running", to_state="completed"),
+            )
+            tickets.append_ticket_event(
+                ticket_root,
+                "expert-g0-function-theory",
+                runtime_event(sequence=4, from_state="completed", to_state="accepted"),
+            )
+
+            result = self.run_tickets("validate-runtime", str(run_root))
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_validate_runtime_cli_fails_on_nonterminal_ticket(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve()
+            ticket_root = run_root / "tickets"
+            tickets.publish_ticket(ticket_root, runtime_ticket())
+            tickets.append_ticket_event(ticket_root, "expert-g0-function-theory", runtime_event())
+
+            result = self.run_tickets("validate-runtime", str(run_root))
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("not terminal", result.stderr)
+
+    def test_validate_runtime_cli_rejects_oversized_ticket_before_reading(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            run_root = Path(directory).resolve()
+            ticket_dir = run_root / "tickets" / "expert-g0-function-theory"
+            ticket_dir.mkdir(parents=True)
+            (ticket_dir / "ticket.json").write_bytes(b"{" + b" " * (1024 * 1024 + 1))
+            (ticket_dir / "ticket_events.jsonl").write_text("", encoding="utf-8")
+
+            result = self.run_tickets("validate-runtime", str(run_root))
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("exceeds byte cap", result.stderr)
+
+    def test_validate_legacy_cli_is_explicitly_unsupported_until_cpfr023(self) -> None:
+        result = self.run_tickets("validate-legacy", "historical", "orchestrated")
+
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("not implemented", result.stderr)
 
 
 if __name__ == "__main__":
