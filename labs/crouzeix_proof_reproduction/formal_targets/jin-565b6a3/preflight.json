@@ -1,0 +1,24 @@
+{
+  "available_kib": 4958564,
+  "build_log": {
+    "bytes": 184,
+    "license_status": "Harp-authored",
+    "path": "evidence/crouzeix_conjecture/verification/jin-565b6a3-build.log",
+    "sha256": "ca237cb89ba79767dae2e1a06ca3c0c5a0c6af3ddf13d4f1dae347d0e3cff1d7",
+    "source_locator": "Harp-authored"
+  },
+  "mathlib_revision": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "reason": "insufficient-disk-for-pinned-mathlib-cache",
+  "required_kib": 8388608,
+  "scan_log": {
+    "bytes": 0,
+    "license_status": "Harp-authored",
+    "path": "evidence/crouzeix_conjecture/verification/jin-565b6a3-scan.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_locator": "Harp-authored"
+  },
+  "schema_version": "crouzeix-formal-preflight/v1",
+  "source_commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+  "status": "blocked",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

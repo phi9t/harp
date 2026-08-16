@@ -1,0 +1,64 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "jin-565-archive",
+      "bytes": 2635836,
+      "path": "formal_targets/jin-565b6a3/remote/jin-565b6a3.tar.gz",
+      "sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542"
+    },
+    {
+      "artifact_id": "jin-565-final-theorems",
+      "bytes": 1650,
+      "path": "formal_targets/jin-565b6a3/remote/Lean/CrouzeixConjecture/FinalTheorems.lean",
+      "sha256": "1f5051077f4fb08eaee9cf34862b9c004b69ae68b32528c2d4e69e27b929af0a"
+    },
+    {
+      "artifact_id": "jin-565-lake-manifest",
+      "bytes": 3146,
+      "path": "formal_targets/jin-565b6a3/remote/Lean/lake-manifest.json",
+      "sha256": "7b7a0d647c574ea8ba78af5952ddc5c16cad1f33ca87731bcf5176e24ac23226"
+    },
+    {
+      "artifact_id": "jin-565-lean-toolchain",
+      "bytes": 25,
+      "path": "formal_targets/jin-565b6a3/remote/Lean/lean-toolchain",
+      "sha256": "db7bb24b756d745bbde83fe92718b51bd3625dae3701ba0f598d0eedcd3f3028"
+    },
+    {
+      "artifact_id": "jin-565-verify",
+      "bytes": 58,
+      "path": "formal_targets/jin-565b6a3/remote/Lean/verify.sh",
+      "sha256": "f2dd83b698c8b13eda3afd6e160cf52a72721b6b6ee9a9eb6a2e3aca03b57eef"
+    }
+  ],
+  "command": {
+    "argv": [
+      "lake",
+      "build"
+    ],
+    "cwd": "Lean",
+    "env": {}
+  },
+  "import_allowlist": [
+    "CrouzeixConjecture.FinalTheorems"
+  ],
+  "ledger_path": "formal_targets/jin-565b6a3/ledger",
+  "schema_version": "crouzeix-formal-target-lock/v1",
+  "source": {
+    "archive_sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+    "commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+    "source_id": "JIN-V4-AUDITED",
+    "tree": "40aafa503bd32762dbf6d1a67ddef3e2b067f0e1"
+  },
+  "target": {
+    "declaration_name": "CrouzeixConjecture.crouzeixConjecture",
+    "dependency_ids": [],
+    "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23",
+    "statement_sha256": "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4",
+    "target_id": "crouzeix-main"
+  },
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.28.0",
+    "mathlib_revision": "8f9d9cff6bd728b17a24e163c9402775d9e6a365"
+  }
+}

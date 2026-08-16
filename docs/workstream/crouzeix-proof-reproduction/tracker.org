@@ -4588,16 +4588,16 @@ proof claim.
 - =test_formal_receipt=: 8 tests, 0 failures.
 - =git diff --check=: exit 0.
 
-** TODO Acquire Pinned Jin Inputs And Preflight :lean:security:ticket:
+** DONE Acquire Pinned Jin Inputs And Preflight :lean:security:ticket:
 :PROPERTIES:
 :ID: CPFR-071
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-070
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-071-pinned-input-preflight
+:MODEL: gpt-5
 :END:
 Create a receipt for verified Jin 565b6a3, Lean 4.28.0, Mathlib bytes, disk, and
 toolchain availability. Missing bytes or capacity is typed blocked; no host fallback.
@@ -4656,8 +4656,26 @@ contract as the input boundary and must not invent production artifact digests.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on a fresh
-  implementation session.
+- RED: focused FormalTarget tests first failed because
+  =formal_target.lock.json= was missing and the CPFR-070 lock schema rejected
+  CPFR-071 source/toolchain/command/import-allowlist fields.
+- Verified temporary archive identity outside the repository:
+  =33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542=
+  for Jin commit =565b6a3e0659b6e0785f783b016c3f6d9f171fa5=, matching
+  =evidence/crouzeix_conjecture/source_manifest.tsv=.
+- Captured production lock, artifact manifest, and typed preflight receipt.
+  Runtime acquisition remains =blocked= with
+  =insufficient-disk-for-pinned-mathlib-cache=, based on
+  =evidence/crouzeix_conjecture/verification/jin-565b6a3-build.log=.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
+  12 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_target.lock.json=:
+  exit 0.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json=:
+  exit 0.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Provision Hermetic Jin Runtime :lean:security:ticket:
 :PROPERTIES:

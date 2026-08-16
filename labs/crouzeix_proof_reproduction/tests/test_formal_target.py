@@ -16,6 +16,9 @@ import formal_target
 import protocol
 
 
+REPO = LAB.parents[1]
+
+
 def digest(data: bytes) -> str:
     return protocol.sha256_bytes(data)
 
@@ -46,6 +49,17 @@ def lock_for(root: Path, *, artifact_path: str = "artifacts/Target.lean") -> dic
     artifact = root / artifact_path
     return {
         "schema_version": "crouzeix-formal-target-lock/v1",
+        "source": {
+            "source_id": "JIN-V4-AUDITED",
+            "commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+            "tree": "40aafa503bd32762dbf6d1a67ddef3e2b067f0e1",
+            "archive_sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+        },
+        "toolchain": {
+            "lean": "leanprover/lean4:v4.28.0",
+            "mathlib_revision": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+        },
+        "command": {"argv": ["lake", "build"], "cwd": "Lean", "env": {}},
         "target": {
             "target_id": "crouzeix-main",
             "declaration_name": "crouzeixConjecture",
@@ -62,6 +76,7 @@ def lock_for(root: Path, *, artifact_path: str = "artifacts/Target.lean") -> dic
             }
         ],
         "ledger_path": "ledger",
+        "import_allowlist": ["CrouzeixConjecture.FinalTheorems"],
     }
 
 
@@ -123,21 +138,14 @@ class FormalTargetTests(unittest.TestCase):
                 formal_target.load_lock_for_test(duplicate)
 
             unknown = root / "unknown.lock.json"
+            (root / "artifacts").mkdir()
+            (root / "ledger").mkdir()
+            (root / "artifacts" / "Target.lean").write_bytes(b"target\n")
+            unknown_value = lock_for(root)
+            unknown_value["target"] = dict(unknown_value["target"], extra=True)  # type: ignore[index]
             write_json(
                 unknown,
-                {
-                    "schema_version": "crouzeix-formal-target-lock/v1",
-                    "target": {
-                        "target_id": "crouzeix-main",
-                        "declaration_name": "crouzeixConjecture",
-                        "statement_sha256": "b" * 64,
-                        "source_locator": "Harp-authored",
-                        "dependency_ids": [],
-                        "extra": True,
-                    },
-                    "artifacts": [],
-                    "ledger_path": "ledger",
-                },
+                unknown_value,
             )
             with self.assertRaisesRegex(protocol.ValidationError, "unknown"):
                 formal_target.load_lock_for_test(unknown)
@@ -265,6 +273,86 @@ class FormalTargetTests(unittest.TestCase):
                     formal_target.LedgerRow.from_mapping(row(statement_sha256="d" * 64)),
                 )
             self.assertEqual(first.read_text(encoding="utf-8").count("lemma-foundation"), 1)
+
+
+class FormalTargetProductionLockTests(unittest.TestCase):
+    def test_production_lock_binds_pinned_jin_identities_and_blocked_preflight(self) -> None:
+        lock = formal_target.load_lock()
+
+        self.assertEqual(lock.source.commit, "565b6a3e0659b6e0785f783b016c3f6d9f171fa5")
+        self.assertEqual(lock.toolchain.lean, "leanprover/lean4:v4.28.0")
+        self.assertEqual(lock.toolchain.mathlib_revision, "8f9d9cff6bd728b17a24e163c9402775d9e6a365")
+        self.assertEqual(lock.command.argv, ("lake", "build"))
+        self.assertIn("CrouzeixConjecture.FinalTheorems", lock.import_allowlist)
+        self.assertEqual(lock.target.declaration_name, "CrouzeixConjecture.crouzeixConjecture")
+        self.assertEqual(lock.target.statement_sha256, "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4")
+
+        manifest = formal_target.load_artifact_manifest(
+            REPO / "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json"
+        )
+        self.assertEqual(manifest["source_commit"], lock.source.commit)
+        self.assertEqual(manifest["archive"]["sha256"], "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542")
+        self.assertEqual(manifest["artifacts"]["lean-toolchain"]["license_status"], "not-present-at-revision")
+
+        preflight = formal_target.load_preflight_receipt(
+            REPO / "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json"
+        )
+        self.assertEqual(preflight["status"], "blocked")
+        self.assertEqual(preflight["reason"], "insufficient-disk-for-pinned-mathlib-cache")
+        self.assertEqual(preflight["source_commit"], lock.source.commit)
+
+    def test_production_lock_rejects_bad_jin_identities_and_unknown_manifest_fields(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            (root / "lock.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "crouzeix-formal-target-lock/v1",
+                        "source": {
+                            "source_id": "JIN-V4-AUDITED",
+                            "commit": "bad",
+                            "tree": "40aafa503bd32762dbf6d1a67ddef3e2b067f0e1",
+                            "archive_sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+                        },
+                        "toolchain": {
+                            "lean": "leanprover/lean4:v4.12.0",
+                            "mathlib_revision": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+                        },
+                        "command": {"argv": ["lake", "build"], "cwd": "Lean", "env": {}},
+                        "target": {
+                            "target_id": "crouzeix-main",
+                            "declaration_name": "CrouzeixConjecture.crouzeixConjecture",
+                            "statement_sha256": "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4",
+                            "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23",
+                            "dependency_ids": [],
+                        },
+                        "artifacts": [],
+                        "ledger_path": "ledger",
+                        "import_allowlist": ["CrouzeixConjecture.FinalTheorems"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "commit"):
+                formal_target.load_lock_for_test(root / "lock.json")
+
+            manifest_path = root / "artifact-manifest.json"
+            write_json(
+                manifest_path,
+                {
+                    "schema_version": "crouzeix-formal-artifact-manifest/v1",
+                    "source_commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+                    "archive": {
+                        "source_url": "https://github.com/jinshanmu/CrouzeixConjecture/archive/565b6a3e0659b6e0785f783b016c3f6d9f171fa5.tar.gz",
+                        "bytes": 2635836,
+                        "sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+                    },
+                    "artifacts": {},
+                    "unexpected": True,
+                },
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "unknown"):
+                formal_target.load_artifact_manifest(manifest_path)
 
 
 if __name__ == "__main__":

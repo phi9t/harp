@@ -18,6 +18,13 @@ LEDGER_STATUSES = frozenset(
     {"mathlib_available", "locally_proved", "blocked", "conjectural"}
 )
 PASSING_DEPENDENCY_STATUSES = frozenset({"mathlib_available", "locally_proved"})
+PINNED_JIN_COMMIT = "565b6a3e0659b6e0785f783b016c3f6d9f171fa5"
+PINNED_JIN_TREE = "40aafa503bd32762dbf6d1a67ddef3e2b067f0e1"
+PINNED_JIN_ARCHIVE_SHA256 = (
+    "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542"
+)
+PINNED_LEAN = "leanprover/lean4:v4.28.0"
+PINNED_MATHLIB_REVISION = "8f9d9cff6bd728b17a24e163c9402775d9e6a365"
 
 
 @dataclass(frozen=True)
@@ -48,6 +55,91 @@ class Artifact:
             "bytes": self.bytes,
             "sha256": self.sha256,
         }
+
+
+@dataclass(frozen=True)
+class SourceIdentity:
+    source_id: str
+    commit: str
+    tree: str
+    archive_sha256: str
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "SourceIdentity":
+        _require_fields(
+            value,
+            frozenset({"source_id", "commit", "tree", "archive_sha256"}),
+            "source",
+        )
+        source_id = _runtime_id(value["source_id"], "source.source_id")
+        commit = _git_sha(value["commit"], "source.commit")
+        tree = _git_sha(value["tree"], "source.tree")
+        archive_sha256 = _digest(value["archive_sha256"], "source.archive_sha256")
+        if commit != PINNED_JIN_COMMIT:
+            raise protocol.ValidationError("source.commit must match pinned Jin commit")
+        if tree != PINNED_JIN_TREE:
+            raise protocol.ValidationError("source.tree must match pinned Jin tree")
+        if archive_sha256 != PINNED_JIN_ARCHIVE_SHA256:
+            raise protocol.ValidationError("source.archive_sha256 must match pinned Jin archive")
+        return cls(
+            source_id=source_id,
+            commit=commit,
+            tree=tree,
+            archive_sha256=archive_sha256,
+        )
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            "source_id": self.source_id,
+            "commit": self.commit,
+            "tree": self.tree,
+            "archive_sha256": self.archive_sha256,
+        }
+
+
+@dataclass(frozen=True)
+class ToolchainIdentity:
+    lean: str
+    mathlib_revision: str
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "ToolchainIdentity":
+        _require_fields(value, frozenset({"lean", "mathlib_revision"}), "toolchain")
+        lean = _bounded_string(value["lean"], "toolchain.lean", 1, 256)
+        mathlib_revision = _git_sha(value["mathlib_revision"], "toolchain.mathlib_revision")
+        if lean != PINNED_LEAN:
+            raise protocol.ValidationError("toolchain.lean must match pinned Lean")
+        if mathlib_revision != PINNED_MATHLIB_REVISION:
+            raise protocol.ValidationError(
+                "toolchain.mathlib_revision must match pinned Mathlib revision"
+            )
+        return cls(lean=lean, mathlib_revision=mathlib_revision)
+
+    def to_json(self) -> dict[str, object]:
+        return {"lean": self.lean, "mathlib_revision": self.mathlib_revision}
+
+
+@dataclass(frozen=True)
+class BuildCommand:
+    argv: tuple[str, ...]
+    cwd: str
+    env: Mapping[str, str]
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "BuildCommand":
+        _require_fields(value, frozenset({"argv", "cwd", "env"}), "command")
+        argv = _string_tuple(value["argv"], "command.argv", minimum=1, maximum=32)
+        if argv not in {("lake", "build"), ("lake", "env", "lean", "AxiomAudit.lean")}:
+            raise protocol.ValidationError("command.argv is not an approved pinned command")
+        env = _string_mapping(value["env"], "command.env", maximum=16)
+        return cls(
+            argv=argv,
+            cwd=_safe_relative_path(value["cwd"], "command.cwd"),
+            env=MappingProxyType(dict(env)),
+        )
+
+    def to_json(self) -> dict[str, object]:
+        return {"argv": list(self.argv), "cwd": self.cwd, "env": dict(self.env)}
 
 
 @dataclass(frozen=True)
@@ -103,15 +195,30 @@ class TargetSpec:
 @dataclass(frozen=True)
 class FormalTargetLock:
     schema_version: str
+    source: SourceIdentity
+    toolchain: ToolchainIdentity
+    command: BuildCommand
     target: TargetSpec
     artifacts: tuple[Artifact, ...]
     ledger_path: str
+    import_allowlist: tuple[str, ...]
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, Any]) -> "FormalTargetLock":
         _require_fields(
             value,
-            frozenset({"schema_version", "target", "artifacts", "ledger_path"}),
+            frozenset(
+                {
+                    "schema_version",
+                    "source",
+                    "toolchain",
+                    "command",
+                    "target",
+                    "artifacts",
+                    "ledger_path",
+                    "import_allowlist",
+                }
+            ),
             "formal target lock",
         )
         _require_equal(
@@ -126,19 +233,34 @@ class FormalTargetLock:
             raise protocol.ValidationError("artifact_id values must be unique")
         if len(set(artifact_paths)) != len(artifact_paths):
             raise protocol.ValidationError("artifact paths must be unique")
+        import_allowlist = _string_tuple(
+            value["import_allowlist"], "import_allowlist", minimum=1, maximum=256
+        )
+        if len(set(import_allowlist)) != len(import_allowlist):
+            raise protocol.ValidationError("import_allowlist must be unique")
         return cls(
             schema_version="crouzeix-formal-target-lock/v1",
+            source=SourceIdentity.from_mapping(_mapping(value["source"], "source")),
+            toolchain=ToolchainIdentity.from_mapping(
+                _mapping(value["toolchain"], "toolchain")
+            ),
+            command=BuildCommand.from_mapping(_mapping(value["command"], "command")),
             target=TargetSpec.from_mapping(_mapping(value["target"], "target")),
             artifacts=tuple(artifacts),
             ledger_path=_safe_relative_path(value["ledger_path"], "ledger_path"),
+            import_allowlist=tuple(import_allowlist),
         )
 
     def to_json(self) -> dict[str, object]:
         return {
             "schema_version": self.schema_version,
+            "source": self.source.to_json(),
+            "toolchain": self.toolchain.to_json(),
+            "command": self.command.to_json(),
             "target": self.target.to_json(),
             "artifacts": [artifact.to_json() for artifact in self.artifacts],
             "ledger_path": self.ledger_path,
+            "import_allowlist": list(self.import_allowlist),
         }
 
 
@@ -224,6 +346,91 @@ def load_lock() -> FormalTargetLock:
 
 def load_lock_for_test(path: Path) -> FormalTargetLock:
     return _load_lock_path(path)
+
+
+def load_artifact_manifest(path: Path) -> dict[str, object]:
+    value = _read_strict_json_object(path, "formal target artifact manifest")
+    _require_fields(
+        value,
+        frozenset({"schema_version", "source_commit", "archive", "artifacts"}),
+        "formal target artifact manifest",
+    )
+    _require_equal(
+        value["schema_version"],
+        "crouzeix-formal-artifact-manifest/v1",
+        "schema_version",
+    )
+    if _git_sha(value["source_commit"], "source_commit") != PINNED_JIN_COMMIT:
+        raise protocol.ValidationError("source_commit must match pinned Jin commit")
+    archive = _mapping(value["archive"], "archive")
+    _require_fields(archive, frozenset({"source_url", "bytes", "sha256"}), "archive")
+    archive_value = {
+        "source_url": _bounded_string(archive["source_url"], "archive.source_url", 1, 4096),
+        "bytes": _integer(archive["bytes"], "archive.bytes", 1, MAX_ARTIFACT_BYTES),
+        "sha256": _digest(archive["sha256"], "archive.sha256"),
+    }
+    if archive_value["sha256"] != PINNED_JIN_ARCHIVE_SHA256:
+        raise protocol.ValidationError("archive.sha256 must match pinned Jin archive")
+    artifacts = _manifest_artifacts(value["artifacts"])
+    return {
+        "schema_version": "crouzeix-formal-artifact-manifest/v1",
+        "source_commit": PINNED_JIN_COMMIT,
+        "archive": archive_value,
+        "artifacts": artifacts,
+    }
+
+
+def load_preflight_receipt(path: Path) -> dict[str, object]:
+    value = _read_strict_json_object(path, "formal target preflight")
+    _require_fields(
+        value,
+        frozenset(
+            {
+                "schema_version",
+                "source_commit",
+                "toolchain",
+                "mathlib_revision",
+                "status",
+                "reason",
+                "available_kib",
+                "required_kib",
+                "build_log",
+                "scan_log",
+            }
+        ),
+        "formal target preflight",
+    )
+    _require_equal(
+        value["schema_version"],
+        "crouzeix-formal-preflight/v1",
+        "schema_version",
+    )
+    if _git_sha(value["source_commit"], "source_commit") != PINNED_JIN_COMMIT:
+        raise protocol.ValidationError("source_commit must match pinned Jin commit")
+    if value["toolchain"] != PINNED_LEAN:
+        raise protocol.ValidationError("toolchain must match pinned Lean")
+    if _git_sha(value["mathlib_revision"], "mathlib_revision") != PINNED_MATHLIB_REVISION:
+        raise protocol.ValidationError("mathlib_revision must match pinned Mathlib")
+    status = _enum(value["status"], frozenset({"passed", "blocked"}), "status")
+    reason = _bounded_string(value["reason"], "reason", 1, 512)
+    if status == "passed" and reason != "preflight-passed":
+        raise protocol.ValidationError("passed preflight must use preflight-passed reason")
+    if status == "blocked" and reason == "preflight-passed":
+        raise protocol.ValidationError("blocked preflight must record a blocker reason")
+    build_log = _manifest_artifact(_mapping(value["build_log"], "build_log"), "build_log")
+    scan_log = _manifest_artifact(_mapping(value["scan_log"], "scan_log"), "scan_log")
+    return {
+        "schema_version": "crouzeix-formal-preflight/v1",
+        "source_commit": PINNED_JIN_COMMIT,
+        "toolchain": PINNED_LEAN,
+        "mathlib_revision": PINNED_MATHLIB_REVISION,
+        "status": status,
+        "reason": reason,
+        "available_kib": _integer(value["available_kib"], "available_kib", 0, 1 << 60),
+        "required_kib": _integer(value["required_kib"], "required_kib", 0, 1 << 60),
+        "build_log": build_log,
+        "scan_log": scan_log,
+    }
 
 
 def validate_target(root: Path, lock: FormalTargetLock) -> FormalTarget:
@@ -406,10 +613,57 @@ def _artifact_list(value: Any) -> list[Artifact]:
     ]
 
 
+def _manifest_artifacts(value: Any) -> dict[str, object]:
+    item = _mapping(value, "artifacts")
+    if len(item) > 256:
+        raise protocol.ValidationError("artifacts must be bounded")
+    return {
+        _runtime_id(key, "artifact id"): _manifest_artifact(
+            _mapping(artifact, "artifact"), f"artifacts.{key}"
+        )
+        for key, artifact in item.items()
+    }
+
+
+def _manifest_artifact(value: Mapping[str, Any], label: str) -> dict[str, object]:
+    _require_fields(
+        value,
+        frozenset({"path", "bytes", "sha256", "source_locator", "license_status"}),
+        label,
+    )
+    return {
+        "path": _safe_relative_path(value["path"], f"{label}.path"),
+        "bytes": _integer(value["bytes"], f"{label}.bytes", 0, MAX_ARTIFACT_BYTES),
+        "sha256": _digest(value["sha256"], f"{label}.sha256"),
+        "source_locator": _source_locator(value["source_locator"], f"{label}.source_locator"),
+        "license_status": _bounded_string(
+            value["license_status"], f"{label}.license_status", 1, 128
+        ),
+    }
+
+
 def _runtime_id_list(value: Any, label: str, *, maximum: int) -> list[str]:
     if not isinstance(value, list) or len(value) > maximum:
         raise protocol.ValidationError(f"{label} must be a bounded list")
     return [_runtime_id(item, label) for item in value]
+
+
+def _string_tuple(value: Any, label: str, *, minimum: int, maximum: int) -> tuple[str, ...]:
+    if not isinstance(value, list) or len(value) < minimum or len(value) > maximum:
+        raise protocol.ValidationError(f"{label} must be a list with {minimum}..{maximum} entries")
+    return tuple(_bounded_string(item, f"{label} item", 1, 4096) for item in value)
+
+
+def _string_mapping(value: Any, label: str, *, maximum: int) -> dict[str, str]:
+    item = _mapping(value, label)
+    if len(item) > maximum:
+        raise protocol.ValidationError(f"{label} must be bounded")
+    result: dict[str, str] = {}
+    for key, text in item.items():
+        result[_bounded_string(key, f"{label} key", 1, 128)] = _bounded_string(
+            text, f"{label}.{key}", 0, 4096
+        )
+    return result
 
 
 def _require_fields(value: Mapping[str, Any], allowed: frozenset[str], label: str) -> None:
@@ -474,6 +728,13 @@ def _runtime_id(value: Any, label: str) -> str:
 
 def _digest(value: Any, label: str) -> str:
     return tickets._digest(value, label)
+
+
+def _git_sha(value: Any, label: str) -> str:
+    text = _bounded_string(value, label, 40, 40)
+    if any(char not in "0123456789abcdef" for char in text):
+        raise protocol.ValidationError(f"{label} must be a lowercase Git SHA-1")
+    return text
 
 
 def _source_locator(value: Any, label: str) -> str:

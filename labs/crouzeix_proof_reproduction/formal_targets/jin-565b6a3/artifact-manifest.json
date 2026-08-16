@@ -1,0 +1,39 @@
+{
+  "archive": {
+    "bytes": 2635836,
+    "sha256": "33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542",
+    "source_url": "https://github.com/jinshanmu/CrouzeixConjecture/archive/565b6a3e0659b6e0785f783b016c3f6d9f171fa5.tar.gz"
+  },
+  "artifacts": {
+    "final-theorems": {
+      "bytes": 1650,
+      "license_status": "not-present-at-revision",
+      "path": "Lean/CrouzeixConjecture/FinalTheorems.lean",
+      "sha256": "1f5051077f4fb08eaee9cf34862b9c004b69ae68b32528c2d4e69e27b929af0a",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean"
+    },
+    "lake-manifest": {
+      "bytes": 3146,
+      "license_status": "not-present-at-revision",
+      "path": "Lean/lake-manifest.json",
+      "sha256": "7b7a0d647c574ea8ba78af5952ddc5c16cad1f33ca87731bcf5176e24ac23226",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/lake-manifest.json"
+    },
+    "lean-toolchain": {
+      "bytes": 25,
+      "license_status": "not-present-at-revision",
+      "path": "Lean/lean-toolchain",
+      "sha256": "db7bb24b756d745bbde83fe92718b51bd3625dae3701ba0f598d0eedcd3f3028",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/lean-toolchain"
+    },
+    "verify": {
+      "bytes": 58,
+      "license_status": "not-present-at-revision",
+      "path": "Lean/verify.sh",
+      "sha256": "f2dd83b698c8b13eda3afd6e160cf52a72721b6b6ee9a9eb6a2e3aca03b57eef",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/verify.sh"
+    }
+  },
+  "schema_version": "crouzeix-formal-artifact-manifest/v1",
+  "source_commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5"
+}
