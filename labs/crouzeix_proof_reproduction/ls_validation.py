@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import stat
 from dataclasses import dataclass
 from pathlib import Path
@@ -82,6 +83,63 @@ def load_library_inventory(path: Path) -> dict[str, object]:
         "schema_version": "crouzeix-ls-library-inventory/v1",
         "source_identity": LS_SOURCE_IDENTITY,
         "facts": normalized,
+    }
+
+
+def materialize_tasks(rows: tuple[LSGraphRow, ...], root: Path) -> dict[str, object]:
+    _ensure_output_root(root)
+    published: set[str] = set()
+    for row in rows:
+        if "JIN" in row.lean_name or "Jin" in row.lean_name:
+            raise protocol.ValidationError("LS task cannot import Jin private work")
+        for dependency in row.dependencies:
+            if dependency not in published:
+                raise protocol.ValidationError(
+                    f"LS task predecessor is not published: {dependency}"
+                )
+        task_dir = root / row.node_id
+        _ensure_new_directory(task_dir, "LS task directory")
+        _write_json_create_only(
+            task_dir / "task.json",
+            {
+                "schema_version": "crouzeix-ls-task/v1",
+                "node_id": row.node_id,
+                "source_locator": row.source_locator,
+                "statement_sha256": row.statement_sha256,
+                "lean_name": row.lean_name,
+                "dependencies": list(row.dependencies),
+                "status": row.status,
+            },
+        )
+        _write_json_create_only(
+            task_dir / "result.json",
+            {
+                "schema_version": "crouzeix-ls-result/v1",
+                "node_id": row.node_id,
+                "status": row.status,
+                "reason": "mapped LS node requires later formal proof slice",
+            },
+        )
+        published.add(row.node_id)
+    terminal = [row for row in rows if row.role == "terminal"][0]
+    assembly = root / "assembly"
+    _ensure_new_directory(assembly, "LS assembly directory")
+    blocked_by = list(terminal.dependencies)
+    _write_json_create_only(
+        assembly / "result.json",
+        {
+            "schema_version": "crouzeix-ls-assembly-result/v1",
+            "terminal_node_id": terminal.node_id,
+            "status": "blocked",
+            "blocked_by": blocked_by,
+            "reason": "terminal LS theorem awaits formal slices and clean rebuild",
+        },
+    )
+    return {
+        "schema_version": "crouzeix-ls-materialization/v1",
+        "status": "blocked",
+        "terminal_node_id": terminal.node_id,
+        "blocked_by": blocked_by,
     }
 
 
@@ -168,6 +226,56 @@ def _ensure_safe_file(path: Path, label: str) -> None:
         raise protocol.ValidationError(f"{label} cannot be a symlink")
     if not stat.S_ISREG(metadata.st_mode):
         raise protocol.ValidationError(f"{label} must be a regular file")
+
+
+def _ensure_output_root(path: Path) -> None:
+    if path.exists():
+        _ensure_directory(path, "LS task root")
+        if any(path.iterdir()):
+            raise protocol.ValidationError("LS task root must be empty")
+        return
+    _ensure_directory(path.parent, "LS task root parent")
+    path.mkdir(mode=0o700)
+
+
+def _ensure_new_directory(path: Path, label: str) -> None:
+    if path.exists():
+        raise protocol.ValidationError(f"{label} already exists")
+    _ensure_directory(path.parent, f"{label} parent")
+    path.mkdir(mode=0o700)
+
+
+def _ensure_directory(path: Path, label: str) -> None:
+    current = Path(path.anchor) if path.is_absolute() else Path(".")
+    parts = path.parts[1:] if path.is_absolute() else path.parts
+    for part in parts:
+        current = current / part
+        try:
+            metadata = current.lstat()
+        except OSError as error:
+            raise protocol.ValidationError(f"cannot inspect {label}: {error}") from error
+        if stat.S_ISLNK(metadata.st_mode):
+            raise protocol.ValidationError(f"{label} contains symlink: {current}")
+        if not stat.S_ISDIR(metadata.st_mode):
+            raise protocol.ValidationError(f"{label} must be a directory: {current}")
+
+
+def _write_json_create_only(path: Path, value: Mapping[str, object]) -> None:
+    payload = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8") + b"\n"
+    try:
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as error:
+        raise protocol.ValidationError(f"output already exists: {path}") from error
+    try:
+        os.write(fd, payload)
+    finally:
+        os.close(fd)
 
 
 def _require_fields(value: Mapping[str, Any], allowed: frozenset[str], label: str) -> None:

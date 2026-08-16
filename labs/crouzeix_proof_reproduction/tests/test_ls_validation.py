@@ -111,6 +111,51 @@ class LSValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "resolution"):
                 ls_validation.load_library_inventory(bad)
 
+    def test_materialize_ls_tasks_records_blocked_nodes_and_terminal_assembly(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            graph = ls_validation.load_source_graph(GRAPH)
+
+            summary = ls_validation.materialize_tasks(graph, root)
+
+            self.assertEqual(summary["status"], "blocked")
+            self.assertEqual(summary["terminal_node_id"], "ls-terminal-crouzeix")
+            self.assertTrue((root / "ls-perturbation-lemma" / "task.json").is_file())
+            self.assertTrue((root / "assembly" / "result.json").is_file())
+            terminal_result = json.loads((root / "assembly" / "result.json").read_text())
+            self.assertEqual(terminal_result["status"], "blocked")
+            self.assertIn("ls-power-recurrence", terminal_result["blocked_by"])
+
+    def test_materialize_ls_tasks_rejects_unpublished_predecessor_and_jin_imports(self) -> None:
+        graph = ls_validation.load_source_graph(GRAPH)
+        tampered = list(graph)
+        tampered[1] = ls_validation.LSGraphRow(
+            node_id=tampered[1].node_id,
+            source_locator=tampered[1].source_locator,
+            statement_sha256=tampered[1].statement_sha256,
+            lean_name=tampered[1].lean_name,
+            dependencies=("not-published",),
+            role=tampered[1].role,
+            status=tampered[1].status,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(protocol.ValidationError, "predecessor"):
+                ls_validation.materialize_tasks(tuple(tampered), Path(directory).resolve())
+
+        leaky = list(graph)
+        leaky[0] = ls_validation.LSGraphRow(
+            node_id=leaky[0].node_id,
+            source_locator=leaky[0].source_locator,
+            statement_sha256=leaky[0].statement_sha256,
+            lean_name="JIN.PrivateLeak",
+            dependencies=leaky[0].dependencies,
+            role=leaky[0].role,
+            status=leaky[0].status,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(protocol.ValidationError, "Jin"):
+                ls_validation.materialize_tasks(tuple(leaky), Path(directory).resolve())
+
 
 if __name__ == "__main__":
     unittest.main()

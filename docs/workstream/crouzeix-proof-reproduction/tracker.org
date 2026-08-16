@@ -5140,16 +5140,16 @@ Jin private work files.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Formalize Lorist-Schwenninger Slices :lean:ticket:
+** DONE Formalize Lorist-Schwenninger Slices :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-078
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-077
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-078-ls-slice-materialization
+:MODEL: gpt-5
 :END:
 Execute one isolated formal task per dependency node, then terminal assembly and clean
 rebuild; theorem-strength mismatches are terminal evidence.
@@ -5199,7 +5199,17 @@ recording terminal blockers or theorem-strength mismatches at the owning node.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-077.
+- RED: =test_ls_validation= failed with missing =materialize_tasks= API.
+- Implemented LS task materialization for graph nodes with dependency-order
+  enforcement, unpublished-predecessor rejection, and Jin-private-name rejection.
+  Each node emits create-only =task.json= and =result.json= fixtures.
+- Terminal assembly emits =blocked= status because CPFR-077 graph nodes remain
+  =blocked= and no Lean proof slices or clean rebuild exist.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_ls_validation -v=:
+  5 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=:
+  11 tests, 0 failures.
+- =git diff --check=: exit 0.
 
 ** TODO Admit And Prove Shared Kernel Lemmas :lean:ticket:
 :PROPERTIES:
