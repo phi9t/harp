@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import stat
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -340,6 +341,14 @@ class FormalTarget:
     ledger_rows: Mapping[str, LedgerRow]
 
 
+@dataclass(frozen=True)
+class ResolvedTarget:
+    root: Path
+    inventory_sha256: str
+    command: BuildCommand
+    artifacts: Mapping[str, Path]
+
+
 def load_lock() -> FormalTargetLock:
     return _load_lock_path(PRODUCTION_LOCK_PATH)
 
@@ -433,6 +442,91 @@ def load_preflight_receipt(path: Path) -> dict[str, object]:
     }
 
 
+def ensure_preflight_allows_provision(
+    preflight: Mapping[str, object], destination: Path
+) -> None:
+    status = _enum(preflight.get("status"), frozenset({"passed", "blocked"}), "status")
+    if status != "passed":
+        reason = _bounded_string(preflight.get("reason"), "reason", 1, 512)
+        raise protocol.ValidationError(f"preflight blocks provision: {reason}")
+    _reject_symlink(destination, "runtime destination")
+
+
+def provision(
+    lock: FormalTargetLock, artifacts: Mapping[str, Path], base: Path
+) -> ResolvedTarget:
+    expected_ids = {artifact.artifact_id for artifact in lock.artifacts}
+    observed_ids = set(artifacts)
+    missing = sorted(expected_ids - observed_ids)
+    extra = sorted(observed_ids - expected_ids)
+    if missing:
+        raise protocol.ValidationError(f"missing artifacts: {', '.join(missing)}")
+    if extra:
+        raise protocol.ValidationError(f"extra artifacts: {', '.join(extra)}")
+    _reject_symlink(base, "runtime destination")
+    if base.exists():
+        raise protocol.ValidationError(f"runtime destination already exists: {base}")
+    _ensure_safe_directory(base.parent, "runtime parent", create=True)
+    staging = base.parent / f".{base.name}.staging"
+    _reject_symlink(staging, "runtime staging")
+    if staging.exists():
+        raise protocol.ValidationError(f"runtime staging already exists: {staging}")
+    staging.mkdir(mode=0o700)
+    try:
+        copied: dict[str, Path] = {}
+        for artifact in lock.artifacts:
+            source = artifacts[artifact.artifact_id]
+            _assert_regular_file_digest(source, artifact.bytes, artifact.sha256)
+            destination = staging / artifact.path
+            _ensure_safe_directory(destination.parent, "runtime artifact parent", create=True)
+            try:
+                with source.open("rb") as reader, destination.open("xb") as writer:
+                    shutil.copyfileobj(reader, writer)
+            except FileExistsError as error:
+                raise protocol.ValidationError(
+                    f"runtime artifact already exists: {destination}"
+                ) from error
+            _assert_regular_file_digest(destination, artifact.bytes, artifact.sha256)
+            copied[artifact.artifact_id] = base / artifact.path
+        inventory = _runtime_inventory(lock)
+        inventory_path = staging / "runtime-inventory.json"
+        _write_json_create_only(inventory_path, inventory, "runtime inventory")
+        inventory_sha256 = protocol.sha256_bytes(inventory_path.read_bytes())
+        try:
+            staging.rename(base)
+        except FileExistsError as error:
+            raise protocol.ValidationError(
+                f"runtime destination already exists: {base}"
+            ) from error
+        return ResolvedTarget(
+            root=base,
+            inventory_sha256=inventory_sha256,
+            command=lock.command,
+            artifacts=MappingProxyType(copied),
+        )
+    except BaseException:
+        if staging.exists() and not base.exists():
+            _remove_tree(staging)
+        raise
+
+
+def resolve(lock: FormalTargetLock, base: Path) -> ResolvedTarget:
+    _ensure_safe_directory(base, "runtime root", create=False)
+    copied: dict[str, Path] = {}
+    for artifact in lock.artifacts:
+        path = base / artifact.path
+        _assert_regular_file_digest(path, artifact.bytes, artifact.sha256)
+        copied[artifact.artifact_id] = path
+    inventory_path = base / "runtime-inventory.json"
+    _assert_runtime_inventory(lock, inventory_path)
+    return ResolvedTarget(
+        root=base,
+        inventory_sha256=protocol.sha256_bytes(inventory_path.read_bytes()),
+        command=lock.command,
+        artifacts=MappingProxyType(copied),
+    )
+
+
 def validate_target(root: Path, lock: FormalTargetLock) -> FormalTarget:
     _ensure_safe_directory(root, "formal target root", create=False)
     root_absolute = root.absolute()
@@ -481,6 +575,33 @@ def append_ledger_row(ledger: Path, row: LedgerRow) -> Path:
             f"ledger row already exists: {destination}"
         ) from error
     return destination
+
+
+def _write_json_create_only(path: Path, value: Mapping[str, object], label: str) -> None:
+    _reject_symlink(path, label)
+    _ensure_safe_directory(path.parent, f"{label} parent", create=True)
+    payload = _canonical_json_bytes(value) + b"\n"
+    try:
+        with path.open("xb") as handle:
+            handle.write(payload)
+    except FileExistsError as error:
+        raise protocol.ValidationError(f"{label} already exists: {path}") from error
+
+
+def _runtime_inventory(lock: FormalTargetLock) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-formal-runtime-inventory/v1",
+        "source": lock.source.to_json(),
+        "toolchain": lock.toolchain.to_json(),
+        "command": lock.command.to_json(),
+        "artifacts": [artifact.to_json() for artifact in lock.artifacts],
+    }
+
+
+def _assert_runtime_inventory(lock: FormalTargetLock, path: Path) -> None:
+    value = _read_strict_json_object(path, "runtime inventory")
+    if value != _runtime_inventory(lock):
+        raise protocol.ValidationError("runtime inventory mismatch")
 
 
 def _load_lock_path(path: Path) -> FormalTargetLock:
@@ -602,6 +723,15 @@ def _reject_symlink(path: Path, label: str) -> None:
         return
     if stat.S_ISLNK(metadata.st_mode):
         raise protocol.ValidationError(f"{label} cannot be a symlink")
+
+
+def _remove_tree(root: Path) -> None:
+    for path in sorted(root.rglob("*"), reverse=True):
+        if path.is_symlink() or path.is_file():
+            path.unlink()
+        elif path.is_dir():
+            path.rmdir()
+    root.rmdir()
 
 
 def _artifact_list(value: Any) -> list[Artifact]:

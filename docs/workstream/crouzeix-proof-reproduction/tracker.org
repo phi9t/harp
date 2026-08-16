@@ -4677,16 +4677,16 @@ contract as the input boundary and must not invent production artifact digests.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Provision Hermetic Jin Runtime :lean:security:ticket:
+** DONE Provision Hermetic Jin Runtime :lean:security:ticket:
 :PROPERTIES:
 :ID: CPFR-072
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-071
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-072-runtime-provisioning
+:MODEL: gpt-5
 :END:
 Stage and byte-verify all artifacts before execution; publish only to a lock-derived
 path with inventory and no-replace semantics. Test source swap, symlink, stale stage,
@@ -4735,11 +4735,28 @@ any command execution, and publish with no-replace semantics.
 
 *** Verification Plan
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=
-- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/runtime-inventory.json=
+- CPFR-072 fixture tests materialize and validate temporary
+  =runtime-inventory.json= files.
+- Production provisioning must remain blocked while
+  =formal_targets/jin-565b6a3/preflight.json= has status =blocked=.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-071.
+- RED: focused FormalTarget tests failed with missing =provision=,
+  =resolve=, and =ensure_preflight_allows_provision= APIs.
+- Implemented =ResolvedTarget=, =provision=, =resolve=, and preflight gating.
+  Fixture provisioning stages regular artifact bytes, verifies copied bytes,
+  writes deterministic runtime inventory, publishes with no-replace semantics,
+  and rejects wrong digests, missing/extra artifacts, symlinks, existing
+  destinations, and stale inventories.
+- Production Jin provisioning remains blocked by CPFR-071 preflight status
+  =blocked= with reason =insufficient-disk-for-pinned-mathlib-cache=; no
+  production =runtime-inventory.json= was created.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
+  16 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Bind Formal Attempts To FormalTarget :lean:ticket:
 :PROPERTIES:

@@ -355,5 +355,99 @@ class FormalTargetProductionLockTests(unittest.TestCase):
                 formal_target.load_artifact_manifest(manifest_path)
 
 
+class FormalTargetProvisionTests(unittest.TestCase):
+    def make_provision_fixture(
+        self,
+        root: Path,
+    ) -> tuple[formal_target.FormalTargetLock, dict[str, Path], Path]:
+        source = root / "inputs" / "Target.lean"
+        source.parent.mkdir(parents=True)
+        source.write_bytes(b"target bytes\n")
+        lock = formal_target.FormalTargetLock.from_mapping(lock_for(root))
+        return lock, {"target-lean": source}, root / "runtime"
+
+    def test_provision_checks_staged_regular_bytes_before_publish_and_resolve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            base = root / "base"
+            base.mkdir()
+            (base / "artifacts").mkdir()
+            (base / "ledger").mkdir()
+            (base / "artifacts" / "Target.lean").write_bytes(b"target bytes\n")
+            lock, artifacts, runtime = self.make_provision_fixture(base)
+
+            resolved = formal_target.provision(lock, artifacts, runtime)
+
+            inventory = runtime / "runtime-inventory.json"
+            self.assertTrue(inventory.is_file())
+            self.assertEqual(resolved.root, runtime)
+            self.assertEqual(resolved.inventory_sha256, digest(inventory.read_bytes()))
+            self.assertEqual(formal_target.resolve(lock, runtime).inventory_sha256, resolved.inventory_sha256)
+            self.assertTrue((runtime / "artifacts" / "Target.lean").is_file())
+
+    def test_provision_rejects_wrong_digest_extra_missing_and_symlinked_inputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            base = root / "base"
+            base.mkdir()
+            (base / "artifacts").mkdir()
+            (base / "ledger").mkdir()
+            (base / "artifacts" / "Target.lean").write_bytes(b"target bytes\n")
+            lock, artifacts, runtime = self.make_provision_fixture(base)
+
+            bad = root / "bad.lean"
+            bad.write_bytes(b"target bytez\n")
+            with self.assertRaisesRegex(protocol.ValidationError, "sha256"):
+                formal_target.provision(lock, {"target-lean": bad}, runtime)
+            with self.assertRaisesRegex(protocol.ValidationError, "missing"):
+                formal_target.provision(lock, {}, runtime)
+            with self.assertRaisesRegex(protocol.ValidationError, "extra"):
+                formal_target.provision(lock, artifacts | {"extra": artifacts["target-lean"]}, runtime)
+
+            link = root / "link.lean"
+            link.symlink_to(artifacts["target-lean"])
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                formal_target.provision(lock, {"target-lean": link}, runtime)
+
+    def test_provision_rejects_existing_or_symlinked_destination_and_stale_resolve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            base = root / "base"
+            base.mkdir()
+            (base / "artifacts").mkdir()
+            (base / "ledger").mkdir()
+            (base / "artifacts" / "Target.lean").write_bytes(b"target bytes\n")
+            lock, artifacts, runtime = self.make_provision_fixture(base)
+
+            runtime.mkdir()
+            with self.assertRaisesRegex(protocol.ValidationError, "already exists"):
+                formal_target.provision(lock, artifacts, runtime)
+
+            runtime.rmdir()
+            target = root / "target"
+            target.mkdir()
+            runtime.symlink_to(target)
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                formal_target.provision(lock, artifacts, runtime)
+            runtime.unlink()
+
+            resolved = formal_target.provision(lock, artifacts, runtime)
+            (runtime / "runtime-inventory.json").write_text("{}", encoding="utf-8")
+            with self.assertRaisesRegex(protocol.ValidationError, "inventory"):
+                formal_target.resolve(lock, resolved.root)
+
+    def test_production_provision_is_blocked_by_preflight_receipt(self) -> None:
+        preflight = formal_target.load_preflight_receipt(
+            REPO / "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/preflight.json"
+        )
+        self.assertEqual(preflight["status"], "blocked")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            with self.assertRaisesRegex(protocol.ValidationError, "preflight"):
+                formal_target.ensure_preflight_allows_provision(preflight, root)
+            self.assertFalse((root / "runtime-inventory.json").exists())
+
+
 if __name__ == "__main__":
     unittest.main()
