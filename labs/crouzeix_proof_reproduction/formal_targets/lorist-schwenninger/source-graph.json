@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {
+      "dependencies": [],
+      "lean_name": "LS.PerturbationLemma",
+      "node_id": "ls-perturbation-lemma",
+      "role": "intermediate",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",
+      "statement_sha256": "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86",
+      "status": "blocked"
+    },
+    {
+      "dependencies": [
+        "ls-perturbation-lemma"
+      ],
+      "lean_name": "LS.PowerRecurrence",
+      "node_id": "ls-power-recurrence",
+      "role": "intermediate",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124",
+      "statement_sha256": "0b80e8d8bf6e2f5f9d3e3c0fb7e3d2e3f9c9ec7b5ecb392a6d211c7ef7ac0f3d",
+      "status": "blocked"
+    },
+    {
+      "dependencies": [
+        "ls-power-recurrence"
+      ],
+      "lean_name": "LS.CrouzeixTerminal",
+      "node_id": "ls-terminal-crouzeix",
+      "role": "terminal",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128",
+      "statement_sha256": "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67",
+      "status": "blocked"
+    }
+  ],
+  "schema_version": "crouzeix-ls-source-graph/v1",
+  "source_id": "LS-ARXIV-V1",
+  "source_identity": "arxiv:2608.03841v1"
+}

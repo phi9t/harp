@@ -5062,16 +5062,16 @@ source inventory, elaborated target type, command, logs, and axiom audit.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Map Lorist-Schwenninger Formal Route :lean:ticket:
+** DONE Map Lorist-Schwenninger Formal Route :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-077
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-070
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-077-ls-route-map
+:MODEL: gpt-5
 :END:
 Build a pinned dependency/source graph and exact convention adapters; record all
 library gaps without importing Jin working files.
@@ -5124,7 +5124,21 @@ Jin private work files.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-070.
+- RED: =test_ls_validation= initially failed with
+  =ModuleNotFoundError: No module named 'ls_validation'=.
+- Implemented =LSGraphRow=, =load_source_graph=, and
+  =load_library_inventory= with duplicate-ID, unknown-dependency, cycle, and
+  Jin-private-path rejection.
+- Added LS arXiv v1 source graph and library inventory using
+  =arxiv:2608.03841v1= locators only. Nodes remain =blocked= for proof-slice
+  execution; no LS proof source was written.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_ls_validation -v=:
+  3 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json=:
+  exit 0.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Formalize Lorist-Schwenninger Slices :lean:ticket:
 :PROPERTIES:
