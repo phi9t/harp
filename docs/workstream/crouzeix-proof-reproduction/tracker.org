@@ -4993,16 +4993,16 @@ axiom-audit command.
   11 tests, 0 failures.
 - =git diff --check=: exit 0.
 
-** TODO Independently Rebuild Jin Validation :lean:review:ticket:
+** DONE Independently Rebuild Jin Validation :lean:review:ticket:
 :PROPERTIES:
 :ID: CPFR-076
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-075
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-076-jin-rebuild-review
+:MODEL: gpt-5
 :END:
 Rebuild from a clean checkout and compare inputs, theorem type, command, and axiom
 output before any formal-proof claim.
@@ -5049,7 +5049,18 @@ source inventory, elaborated target type, command, logs, and axiom audit.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-075.
+- RED: =test_jin_validation= failed with missing =load_rebuild_review= and
+  =validate_rebuild_review= APIs.
+- Added =rebuild-review.json= recording =blocked= status and
+  =no-formal-proof-claim= because CPFR-075 production validation remains blocked
+  by =insufficient-disk-for-pinned-mathlib-cache=.
+- Review validation rejects =formal-proof-claim= without
+  =clean_rebuild_sha256= and passed status.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=:
+  7 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/rebuild-review.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Map Lorist-Schwenninger Formal Route :lean:ticket:
 :PROPERTIES:

@@ -25,6 +25,18 @@ SOURCE_MAP_ROW_FIELDS = frozenset(
     }
 )
 SOURCE_MAP_STATUSES = frozenset({"mapped", "blocked"})
+REBUILD_REVIEW_FIELDS = frozenset(
+    {
+        "schema_version",
+        "source_commit",
+        "jin_validation_commit",
+        "formal_target_sha256",
+        "clean_rebuild_sha256",
+        "status",
+        "claim",
+        "reason",
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -162,6 +174,48 @@ def record_blocked_preflight_attempt(
         runtime_inventory_sha256=target_sha256,
         resource_preflight_status="blocked",
     )
+
+
+def load_rebuild_review(path: Path) -> dict[str, object]:
+    return validate_rebuild_review(_read_json_object(path, "Jin rebuild review"))
+
+
+def validate_rebuild_review(value: Mapping[str, Any]) -> dict[str, object]:
+    _require_fields(value, REBUILD_REVIEW_FIELDS, "Jin rebuild review")
+    _require_equal(
+        value["schema_version"], "crouzeix-jin-rebuild-review/v1", "schema_version"
+    )
+    if value["source_commit"] != formal_target.PINNED_JIN_COMMIT:
+        raise protocol.ValidationError("source_commit must match pinned Jin commit")
+    status = _enum(value["status"], frozenset({"passed", "failed", "blocked"}), "status")
+    claim = _enum(
+        value["claim"],
+        frozenset({"formal-proof-claim", "no-formal-proof-claim"}),
+        "claim",
+    )
+    clean_rebuild = value["clean_rebuild_sha256"]
+    if clean_rebuild is not None:
+        clean_rebuild = formal_target._digest(clean_rebuild, "clean_rebuild_sha256")
+    if claim == "formal-proof-claim" and clean_rebuild is None:
+        raise protocol.ValidationError(
+            "formal-proof-claim requires clean_rebuild_sha256"
+        )
+    if claim == "formal-proof-claim" and status != "passed":
+        raise protocol.ValidationError("formal-proof-claim requires passed status")
+    return {
+        "schema_version": "crouzeix-jin-rebuild-review/v1",
+        "source_commit": formal_target.PINNED_JIN_COMMIT,
+        "jin_validation_commit": _bounded_string(
+            value["jin_validation_commit"], "jin_validation_commit", 7, 40
+        ),
+        "formal_target_sha256": formal_target._digest(
+            value["formal_target_sha256"], "formal_target_sha256"
+        ),
+        "clean_rebuild_sha256": clean_rebuild,
+        "status": status,
+        "claim": claim,
+        "reason": _bounded_string(value["reason"], "reason", 1, 4096),
+    }
 
 
 def _row_list(value: Any, target: formal_target.FormalTargetLock) -> list[SourceMapRow]:

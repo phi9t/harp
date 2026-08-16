@@ -266,6 +266,21 @@ class JinValidationTests(unittest.TestCase):
             self.assertEqual(receipt["status"], "blocked")
             self.assertIn("insufficient-disk", receipt["reason"])
 
+    def test_rebuild_review_requires_clean_digest_for_proof_claims(self) -> None:
+        review = jin_validation.load_rebuild_review(
+            LAB / "formal_targets/jin-565b6a3/rebuild-review.json"
+        )
+
+        self.assertEqual(review["status"], "blocked")
+        self.assertEqual(review["claim"], "no-formal-proof-claim")
+        self.assertEqual(review["jin_validation_commit"], "493d922")
+
+        bad = dict(review)
+        bad["claim"] = "formal-proof-claim"
+        bad["clean_rebuild_sha256"] = None
+        with self.assertRaisesRegex(protocol.ValidationError, "clean_rebuild_sha256"):
+            jin_validation.validate_rebuild_review(bad)
+
 
 if __name__ == "__main__":
     unittest.main()

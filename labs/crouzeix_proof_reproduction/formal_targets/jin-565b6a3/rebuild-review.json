@@ -1,0 +1,10 @@
+{
+  "claim": "no-formal-proof-claim",
+  "clean_rebuild_sha256": null,
+  "formal_target_sha256": "4e3de19d9c2d0a652e3ec9e2f2180d7028e63f09eb136318cdfdb5d81f089100",
+  "jin_validation_commit": "493d922",
+  "reason": "production validation remains blocked by insufficient-disk-for-pinned-mathlib-cache",
+  "schema_version": "crouzeix-jin-rebuild-review/v1",
+  "source_commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5",
+  "status": "blocked"
+}
