@@ -220,9 +220,11 @@ class FakeProvider:
         *,
         root_status_by_role: dict[str, str] | None = None,
         evaluator_failures: set[tuple[str, int]] | None = None,
+        score_complete_roles: set[str] | None = None,
     ) -> None:
         self.root_status_by_role = root_status_by_role or {}
         self.evaluator_failures = evaluator_failures or set()
+        self.score_complete_roles = score_complete_roles or {"function_theory"}
         self.expert_calls: list[dict[str, object]] = []
         self.evaluator_contexts: list[dict[str, object]] = []
 
@@ -248,7 +250,7 @@ class FakeProvider:
                 reason=f"fake {status}",
             )
         label = str(context["attempt_id"])
-        score_complete = role == "function_theory" and int(context["generation"]) == 0
+        score_complete = role in self.score_complete_roles and int(context["generation"]) == 0
         output = {
             "schema_version": "crouzeix-expert-result/v1",
             "run_id": context["run_id"],
@@ -285,19 +287,22 @@ class FakeProvider:
         ticket: dict[str, object],
         context: dict[str, object],
     ) -> expert_runner.ProviderAttempt:
-        del run_dir, ticket
+        del run_dir
         self.evaluator_contexts.append(context)
-        key = (str(context["node_id"]), int(context["evaluator_index"]))
+        ticket_id = str(ticket["ticket_id"])
+        evaluator_index = 1 if ticket_id.endswith("-e1") else 2
+        key = (str(ticket["node_id"]), evaluator_index)
         if key in self.evaluator_failures:
             return expert_runner.ProviderAttempt(
                 terminal_status="timed_out",
                 provider_call={"kind": "fake-evaluator"},
-                receipt={"status": "timed_out", "ticket_id": context["ticket_id"]},
+                receipt={"status": "timed_out", "ticket_id": ticket_id},
                 validated_output=None,
                 reason="fake evaluator timeout",
             )
-        node_id = str(context["node_id"])
-        pass_count = 10 if node_id == "node-g0-function-theory" else 6
+        node_id = str(ticket["node_id"])
+        role = str(node_id).removeprefix("node-g0-").replace("-", "_")
+        pass_count = 10 if role in self.score_complete_roles else 6
         payload = {
             "schema_version": "crouzeix-node-evaluation-payload/v1",
             "probes": [
@@ -310,9 +315,9 @@ class FakeProvider:
             ],
             "findings": [
                 {
-                    "finding_id": f"note-e{context['evaluator_index']}",
+                    "finding_id": f"note-e{evaluator_index}",
                     "severity": "minor" if pass_count == 10 else "major",
-                    "statement": f"Evaluator {context['evaluator_index']} note in {node_id}.",
+                    "statement": f"Evaluator {evaluator_index} note in {node_id}.",
                     "locator": "candidate.tex#L1",
                     "recommended_role": "approximation_audit",
                 }
@@ -321,10 +326,56 @@ class FakeProvider:
         return expert_runner.ProviderAttempt(
             terminal_status="completed",
             provider_call={"kind": "fake-evaluator"},
-            receipt={"status": "completed", "ticket_id": context["ticket_id"]},
+            receipt={"status": "completed", "ticket_id": ticket_id},
             validated_output=payload,
             reason=None,
         )
+
+
+class DrawBarrierProvider(FakeProvider):
+    def __init__(self, run_dir: Path) -> None:
+        super().__init__()
+        self.run_dir = run_dir
+
+    def run_expert(
+        self,
+        *,
+        run_dir: Path,
+        ticket: dict[str, object],
+        context: dict[str, object],
+    ) -> expert_runner.ProviderAttempt:
+        if int(context["generation"]) > 0:
+            generation = int(context["generation"])
+            draw_one = self.run_dir / "tickets" / f"select-g{generation}-d1" / "ticket_events.jsonl"
+            states = [
+                json.loads(line)["to_state"]
+                for line in draw_one.read_text(encoding="utf-8").splitlines()
+            ] if draw_one.exists() else []
+            if states[-2:] != ["completed", "accepted"]:
+                raise AssertionError("child expert ran before draw 1 terminalized")
+        return super().run_expert(run_dir=run_dir, ticket=ticket, context=context)
+
+
+class FailOnceAfterFirstRootProvider(FakeProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        self.failed = False
+
+    def run_expert(
+        self,
+        *,
+        run_dir: Path,
+        ticket: dict[str, object],
+        context: dict[str, object],
+    ) -> expert_runner.ProviderAttempt:
+        if (
+            int(context["generation"]) == 0
+            and context["expert_role"] == "operator_dilation"
+            and not self.failed
+        ):
+            self.failed = True
+            raise RuntimeError("simulated provider interruption")
+        return super().run_expert(run_dir=run_dir, ticket=ticket, context=context)
 
 
 class ExpertRunnerTests(unittest.TestCase):
@@ -349,10 +400,27 @@ class ExpertRunnerTests(unittest.TestCase):
             self.assertEqual(evaluated["candidate_projection_count"], 1)
             self.assertEqual(len(provider.evaluator_contexts), 8)
             for context in provider.evaluator_contexts:
-                for hidden in ("parent", "parent_node_id", "generation", "expert_role", "score"):
+                for hidden in (
+                    "parent",
+                    "parent_node_id",
+                    "generation",
+                    "expert_role",
+                    "score",
+                    "run_id",
+                    "ticket_id",
+                    "node_id",
+                    "node_artifact_sha256",
+                    "mathematical_payload_sha256",
+                    "schema_sha256",
+                    "prompt_sha256",
+                    "parent_artifact_sha256",
+                    "allowed_parent_artifacts",
+                ):
                     self.assertNotIn(hidden, context)
-                self.assertEqual(context["allowed_tools"], ["Write"])
-                self.assertFalse(context["delegation_allowed"])
+                self.assertEqual(
+                    set(context),
+                    {"schema_version", "theorem_text", "mathematical_payload", "probe_ids"},
+                )
 
             generations = expert_runner.run_phase(run_dir, "generations", provider=provider)
             self.assertEqual(generations["selection_count"], 6)
@@ -388,6 +456,78 @@ class ExpertRunnerTests(unittest.TestCase):
                 lines = event_path.read_text().splitlines()
                 self.assertGreaterEqual(len(lines), 1, ticket_id)
 
+    def test_node_evaluation_binds_actual_persisted_terminal_ticket_event_digest(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            evaluation_path = (
+                run_dir
+                / "node_evaluations"
+                / "node-g0-function-theory"
+                / "evaluator-1"
+                / "evaluation.json"
+            )
+            evaluation = json.loads(evaluation_path.read_text())
+            event_path = (
+                run_dir
+                / "tickets"
+                / evaluation["ticket_id"]
+                / "ticket_events.jsonl"
+            )
+            completed_events = [
+                json.loads(line)
+                for line in event_path.read_text().splitlines()
+                if json.loads(line)["to_state"] == "completed"
+            ]
+            self.assertEqual(len(completed_events), 1)
+            self.assertEqual(
+                evaluation["terminal_ticket_event_sha256"],
+                digest_json(completed_events[0]),
+            )
+
+    def test_generation_barrier_terminalizes_both_draws_before_child_execution(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = DrawBarrierProvider(run_dir)
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            result = expert_runner.run_phase(run_dir, "generations", provider=provider)
+
+            self.assertEqual(result["selection_count"], 6)
+
+    def test_two_score_complete_candidates_are_retained_without_stopping_search(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider(score_complete_roles={"function_theory", "operator_dilation"})
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+
+            evaluated = expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            self.assertEqual(evaluated["candidate_projection_count"], 2)
+            index = json.loads((run_dir / "candidate_projections" / "index.json").read_text())
+            self.assertEqual(
+                sorted(item["source_node_id"] for item in index["projections"]),
+                ["node-g0-function-theory", "node-g0-operator-dilation"],
+            )
+            expert_runner.run_phase(run_dir, "generations", provider=provider)
+            selections = [
+                json.loads(line)
+                for line in (run_dir / "selection_events.jsonl").read_text().splitlines()
+            ]
+            self.assertGreater(len(selections), 0)
+            self.assertNotIn(
+                "node-g0-function-theory",
+                {item["selected_node_id"] for item in selections},
+            )
+            self.assertNotIn(
+                "node-g0-operator-dilation",
+                {item["selected_node_id"] for item in selections},
+            )
+
     def test_phase_boundaries_reject_skips_and_repeats(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
             run_dir = make_run(Path(directory))
@@ -399,6 +539,98 @@ class ExpertRunnerTests(unittest.TestCase):
                 expert_runner.run_phase(run_dir, "roots", provider=provider)
             with self.assertRaisesRegex(protocol.ValidationError, "evaluate-roots"):
                 expert_runner.run_phase(run_dir, "generations", provider=provider)
+
+    def test_phase_boundaries_reject_marker_only_prior_phase_and_partial_later_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            write_json(
+                run_dir / "frontier_phase_state.json",
+                {
+                    "roots": {
+                        "completed_at_utc": "2026-08-15T12:00:00Z",
+                        "result_sha256": "a" * 64,
+                    }
+                },
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "roots evidence"):
+                expert_runner.run_phase(run_dir, "evaluate-roots", provider=FakeProvider())
+
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            write_json(
+                run_dir / "candidate_projections" / "finalization.json",
+                {
+                    "schema_version": "partial-later-phase/v1",
+                    "run_id": run_dir.name,
+                },
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "later phase"):
+                expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+    def test_reconciliation_rejects_runtime_ticket_without_terminal_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider()
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+            context = {
+                "schema_version": "crouzeix-operator-context/v1",
+                "run_id": run_dir.name,
+                "reason": "test dangling ticket",
+            }
+            ticket = expert_runner.runtime_ticket(
+                run_dir=run_dir,
+                ticket_id="operator-intervention-test",
+                task_kind="operator_intervention",
+                node_id=None,
+                parent_node_id=None,
+                generation=0,
+                direction_id=None,
+                role="operator",
+                owner_type="operator",
+                context=context,
+                prompt_name="expert.md",
+                schema_name="expert_result.schema.json",
+                parent_artifact_sha256=None,
+                dependency_ticket_ids=[],
+                objective="Record a manual intervention.",
+                expected_deliverable="Terminal intervention record.",
+            )
+            tickets.publish_ticket(run_dir / "tickets", ticket)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "terminal"):
+                expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+    def test_roots_phase_resumes_after_partial_failure_without_duplicate_evidence(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FailOnceAfterFirstRootProvider()
+            with self.assertRaisesRegex(RuntimeError, "simulated provider interruption"):
+                expert_runner.run_phase(run_dir, "roots", provider=provider)
+            first_attempts = [
+                json.loads(line)
+                for line in (run_dir / "attempt_ledger.jsonl").read_text().splitlines()
+            ]
+            self.assertEqual(
+                [item["attempt_id"] for item in first_attempts],
+                ["expert-g0-function-theory"],
+            )
+
+            result = expert_runner.run_phase(run_dir, "roots", provider=provider)
+
+            self.assertEqual(result["root_attempt_count"], 5)
+            attempts = [
+                json.loads(line)
+                for line in (run_dir / "attempt_ledger.jsonl").read_text().splitlines()
+            ]
+            self.assertEqual(len(attempts), 5)
+            self.assertEqual(
+                len({item["attempt_id"] for item in attempts}),
+                5,
+            )
 
     def test_budget_failure_closes_with_receipt(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:

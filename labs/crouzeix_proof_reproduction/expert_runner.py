@@ -272,6 +272,8 @@ def _run_roots(
             budget_exhausted = True
             break
         ticket_id = prepare_frontier.root_ticket_id(str(role))
+        if _attempt_exists(run_dir, ticket_id):
+            continue
         context = _read_json(run_dir / "contexts" / f"{ticket_id}.json", "root context")
         ticket = _read_ticket(run_dir, ticket_id)
         _run_expert_attempt(run_dir, provider, ticket, context)
@@ -349,7 +351,13 @@ def _run_generations(
         except protocol.ValidationError:
             break
         used_by_node: dict[str, set[str]] = {}
-        for raw_event in selection["selection_events"]:
+        selected_events = list(selection["selection_events"])
+        for raw_event in selected_events:
+            draw_index = int(raw_event["draw_index"])
+            selection_ticket_id = f"select-g{generation}-d{draw_index}"
+            _complete_selection_ticket(run_dir, selection_ticket_id, raw_event)
+            _append_selection_ledger(run_dir, raw_event, selection_ticket_id)
+        for raw_event in selected_events:
             if _provider_call_count(run_dir) >= limits.max_provider_calls:
                 budget_exhausted = True
                 break
@@ -358,8 +366,6 @@ def _run_generations(
                 break
             draw_index = int(raw_event["draw_index"])
             selection_ticket_id = f"select-g{generation}-d{draw_index}"
-            _complete_selection_ticket(run_dir, selection_ticket_id, raw_event)
-            _append_selection_ledger(run_dir, raw_event, selection_ticket_id)
             parent = _node_by_id(run_dir, str(raw_event["selected_node_id"]))
             reconciliation = _reconciliation_for_node(run_dir, str(parent["node_id"]))
             used = used_by_node.setdefault(str(parent["node_id"]), set())
@@ -447,15 +453,23 @@ def _run_expert_attempt(
     context: dict[str, object],
 ) -> None:
     ticket_id = str(ticket["ticket_id"])
-    _ticket_transition(run_dir, ticket_id, "created", "admitted", "expert admitted", None)
-    _ticket_transition(
-        run_dir,
-        ticket_id,
-        "admitted",
-        "running",
-        "expert provider call started",
-        _canonical_sha256(context),
-    )
+    states = _ticket_states(run_dir, ticket_id)
+    current_state = states[-1] if states else "created"
+    if current_state == "created":
+        _ticket_transition(run_dir, ticket_id, "created", "admitted", "expert admitted", None)
+        current_state = "admitted"
+    if current_state == "admitted":
+        _ticket_transition(
+            run_dir,
+            ticket_id,
+            "admitted",
+            "running",
+            "expert provider call started",
+            _canonical_sha256(context),
+        )
+        current_state = "running"
+    if current_state != "running":
+        raise protocol.ValidationError(f"expert ticket {ticket_id} is not resumable")
     provider_attempt = provider.run_expert(run_dir=run_dir, ticket=ticket, context=context)
     terminal_status = _attempt_status(provider_attempt.terminal_status)
     output = provider_attempt.validated_output
@@ -619,29 +633,20 @@ def _run_evaluator(
         "evaluator provider call started",
         _canonical_sha256(context),
     )
-    provider_attempt = provider.run_evaluator(run_dir=run_dir, ticket=ticket, context=context)
-    _record_evaluator_call(run_dir, context, provider_attempt)
+    provider_context = _provider_visible_evaluator_context(context)
+    provider_attempt = provider.run_evaluator(
+        run_dir=run_dir,
+        ticket=ticket,
+        context=provider_context,
+    )
+    _record_evaluator_call(run_dir, context, provider_context, provider_attempt)
     status = _attempt_status(provider_attempt.terminal_status)
     receipt = dict(provider_attempt.receipt)
     receipt_sha256 = _canonical_sha256(receipt)
-    terminal_event_sha256 = _ticket_event_sha256(
-        run_dir,
-        ticket_id,
-        "running",
-        "completed"
-        if status == "completed" and provider_attempt.validated_output is not None
-        else "timed_out"
-        if status == "timed_out"
-        else "blocked_resource"
-        if status == "blocked_resource"
-        else "failed",
-        f"evaluator terminal status {status}",
-        receipt_sha256,
-    )
     try:
         if status == "completed" and provider_attempt.validated_output is not None:
             payload = _frontier_evaluation_payload(provider_attempt.validated_output)
-            _ticket_transition(
+            terminal_event_sha256 = _ticket_transition(
                 run_dir,
                 ticket_id,
                 "running",
@@ -680,15 +685,7 @@ def _run_evaluator(
         if status == "blocked_resource"
         else "failed"
     )
-    terminal_event_sha256 = _ticket_event_sha256(
-        run_dir,
-        ticket_id,
-        "running",
-        terminal_state,
-        f"evaluator terminal status {status}",
-        receipt_sha256,
-    )
-    _ticket_transition(
+    terminal_event_sha256 = _ticket_transition(
         run_dir,
         ticket_id,
         "running",
@@ -712,6 +709,7 @@ def _run_evaluator(
 def _record_evaluator_call(
     run_dir: Path,
     context: Mapping[str, Any],
+    provider_context: Mapping[str, Any],
     provider_attempt: ProviderAttempt,
 ) -> None:
     root = run_dir / "evaluator_calls"
@@ -721,6 +719,11 @@ def _record_evaluator_call(
         raise protocol.ValidationError("evaluator call record already exists")
     call_dir.mkdir()
     _write_json_create_only(call_dir / "context.json", context, "evaluator context")
+    _write_json_create_only(
+        call_dir / "provider_context.json",
+        provider_context,
+        "evaluator provider context",
+    )
     _write_json_create_only(
         call_dir / "provider_call.json",
         dict(provider_attempt.provider_call),
@@ -799,6 +802,15 @@ def _build_evaluator_runtime_context(
         "prompt_sha256": _file_sha256(run_dir / "prompts" / EVALUATOR_PROMPT),
         "parent_artifact_sha256": node["node_artifact_sha256"],
         "allowed_parent_artifacts": [node["node_artifact_sha256"]],
+    }
+
+
+def _provider_visible_evaluator_context(context: Mapping[str, Any]) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-evaluator-provider-context/v1",
+        "theorem_text": context["theorem_text"],
+        "mathematical_payload": context["mathematical_payload"],
+        "probe_ids": context["probe_ids"],
     }
 
 
@@ -978,7 +990,8 @@ def _project_candidate(
         _canonical_sha256(context),
     )
     candidate_bytes = str(node["mathematical_payload"]["endpoint"]["text"]).encode("utf-8")
-    projection = frontier_store.open_frontier_store(run_dir).freeze_candidate(
+    projection = _freeze_candidate_projection(
+        run_dir,
         projection_id=f"candidate-{node['node_id']}",
         node=node,
         reconciliation=reconciliation,
@@ -1006,6 +1019,40 @@ def _project_candidate(
         ticket_id=ticket_id,
         artifact_sha256=str(projection["candidate_projection_sha256"]),
     )
+
+
+def _freeze_candidate_projection(
+    run_dir: Path,
+    *,
+    projection_id: str,
+    node: Mapping[str, Any],
+    reconciliation: Mapping[str, Any],
+    candidate_bytes: bytes,
+) -> dict[str, object]:
+    entry = _archive_entry_for_node(run_dir, str(node["node_id"]))
+    candidate_sha256 = hashlib.sha256(candidate_bytes).hexdigest()
+    if entry["candidate_proof_sha256"] != candidate_sha256:
+        raise protocol.ValidationError("candidate proof digest does not match archive entry")
+    root = run_dir / "candidate_projections"
+    root.mkdir(exist_ok=True)
+    projection = {
+        "schema_version": "crouzeix-candidate-projection/v1",
+        "projection_id": projection_id,
+        "source_node_id": node["node_id"],
+        "source_node_artifact_sha256": node["node_artifact_sha256"],
+        "source_reconciliation_sha256": reconciliation["reconciliation_sha256"],
+        "candidate_sha256": candidate_sha256,
+        "candidate_byte_count": len(candidate_bytes),
+    }
+    projection["candidate_projection_sha256"] = _canonical_sha256(projection)
+    candidate_path = root / f"{candidate_sha256}.tex"
+    projection_path = root / f"{projection_id}.json"
+    if candidate_path.exists() or projection_path.exists():
+        raise protocol.ValidationError("candidate projection already exists")
+    candidate_path.write_bytes(candidate_bytes)
+    _write_json_create_only(projection_path, projection, "candidate projection")
+    _write_candidate_index(run_dir)
+    return projection
 
 
 def _select_child_direction(
@@ -1228,19 +1275,6 @@ def _ticket_transition(
     return _canonical_sha256(event)
 
 
-def _ticket_event_sha256(
-    run_dir: Path,
-    ticket_id: str,
-    from_state: str,
-    to_state: str,
-    reason: str,
-    artifact_sha256: str | None,
-) -> str:
-    return _canonical_sha256(
-        _ticket_event(run_dir, ticket_id, from_state, to_state, reason, artifact_sha256)
-    )
-
-
 def _ticket_event(
     run_dir: Path,
     ticket_id: str,
@@ -1263,6 +1297,7 @@ def _ticket_event(
 
 
 def _reconcile_run(run_dir: Path) -> dict[str, object]:
+    _validate_all_runtime_tickets_terminal(run_dir)
     attempts = _attempts(run_dir)
     selection_events = _selection_events(run_dir)
     evidence_ticket_count = len(
@@ -1308,7 +1343,133 @@ def _limits_from_spec(spec: Mapping[str, Any]) -> RunnerLimits:
     )
 
 
+def _validate_all_runtime_tickets_terminal(
+    run_dir: Path,
+    *,
+    allow_unstarted_roots: bool = False,
+) -> None:
+    ticket_root = run_dir / "tickets"
+    if not ticket_root.exists():
+        return
+    for ticket_dir in sorted(ticket_root.iterdir()):
+        if not ticket_dir.is_dir():
+            continue
+        ticket = tickets.validate_runtime_ticket(
+            _read_json(ticket_dir / "ticket.json", "runtime ticket")
+        )
+        states = _ticket_states(run_dir, str(ticket["ticket_id"]))
+        if not states:
+            if (
+                allow_unstarted_roots
+                and ticket["task_kind"] == "expert"
+                and int(ticket["generation"]) == 0
+                and (
+                    not _attempt_exists(run_dir, str(ticket["ticket_id"]))
+                    or _ticket_has_no_terminal_evidence(run_dir, str(ticket["ticket_id"]))
+                )
+            ):
+                continue
+            if _ticket_has_evidence(run_dir, str(ticket["ticket_id"]), str(ticket["task_kind"])):
+                raise protocol.ValidationError(
+                    f"runtime ticket {ticket['ticket_id']} has evidence without terminal event"
+                )
+            raise protocol.ValidationError(
+                f"runtime ticket {ticket['ticket_id']} is missing terminal event"
+            )
+            continue
+        if states[-1] not in tickets.TERMINAL_TICKET_STATES:
+            if (
+                allow_unstarted_roots
+                and ticket["task_kind"] == "expert"
+                and int(ticket["generation"]) == 0
+                and not _attempt_exists(run_dir, str(ticket["ticket_id"]))
+                and states[-1] in {"admitted", "running"}
+            ):
+                continue
+            raise protocol.ValidationError(
+                f"runtime ticket {ticket['ticket_id']} is missing terminal event"
+            )
+        if _ticket_has_evidence(run_dir, str(ticket["ticket_id"]), str(ticket["task_kind"])) is False:
+            raise protocol.ValidationError(
+                f"runtime ticket {ticket['ticket_id']} has terminal event without evidence"
+            )
+
+
+def _ticket_has_evidence(run_dir: Path, ticket_id: str, task_kind: str) -> bool:
+    if task_kind == "expert":
+        return any(item["ticket_id"] == ticket_id for item in _attempts(run_dir))
+    if task_kind == "evaluator":
+        return (run_dir / "evaluator_calls" / ticket_id / "receipt.json").is_file()
+    if task_kind == "selection":
+        return any(item["ticket_id"] == ticket_id for item in _selection_events(run_dir))
+    if task_kind == "candidate_freeze":
+        return any(
+            str(item.get("projection_id")) == ticket_id.replace("candidate-freeze-", "candidate-")
+            for item in _candidate_projections(run_dir)
+        )
+    return any(
+        event["ticket_id"] == ticket_id
+        and event["event_kind"]
+        in {
+            "attempt_terminal",
+            "admission_accepted",
+            "admission_rejected",
+            "archive_entry_created",
+            "selection_recorded",
+            "candidate_projected",
+        }
+        for event in _frontier_events(run_dir)
+    )
+
+
+def _ticket_has_no_terminal_evidence(run_dir: Path, ticket_id: str) -> bool:
+    return not _attempt_exists(run_dir, ticket_id) and not _ticket_states(run_dir, ticket_id)
+
+
+def _ticket_states(run_dir: Path, ticket_id: str) -> list[str]:
+    event_path = run_dir / "tickets" / ticket_id / "ticket_events.jsonl"
+    return [str(event["to_state"]) for event in _read_jsonl(event_path)]
+
+
+def _ticket_is_terminal(run_dir: Path, ticket_id: str) -> bool:
+    states = _ticket_states(run_dir, ticket_id)
+    return bool(states) and states[-1] in tickets.TERMINAL_TICKET_STATES
+
+
+def _reject_partial_later_phase_artifacts(run_dir: Path, phase: str) -> None:
+    if phase in {"roots", "evaluate-roots"}:
+        if _selection_events(run_dir):
+            raise protocol.ValidationError("partial later phase selection evidence exists")
+        if (run_dir / "candidate_projections" / "finalization.json").exists():
+            raise protocol.ValidationError("partial later phase finalization artifact exists")
+    if phase == "generations" and (run_dir / "candidate_projections" / "finalization.json").exists():
+        raise protocol.ValidationError("partial later phase finalization artifact exists")
+
+
+def _validate_roots_evidence(run_dir: Path) -> None:
+    root_attempts = [
+        item for item in _attempts(run_dir) if str(item["attempt_id"]).startswith("expert-g0-")
+    ]
+    if len(root_attempts) != len(prepare_frontier.EXPERT_ROLES):
+        raise protocol.ValidationError("roots evidence is incomplete")
+    for role in prepare_frontier.EXPERT_ROLES:
+        ticket_id = prepare_frontier.root_ticket_id(role)
+        if not _ticket_is_terminal(run_dir, ticket_id):
+            raise protocol.ValidationError("roots evidence is missing terminal ticket events")
+
+
+def _validate_evaluate_roots_evidence(run_dir: Path) -> None:
+    root_nodes = [node for node in _nodes(run_dir) if int(node["generation"]) == 0]
+    archived_roots = {
+        str(entry["node_id"]) for entry in _archive_entries(run_dir)
+    }
+    missing = [node["node_id"] for node in root_nodes if node["node_id"] not in archived_roots]
+    if missing:
+        raise protocol.ValidationError("evaluate-roots evidence is incomplete")
+
+
 def _enforce_phase_boundary(run_dir: Path, phase: str) -> None:
+    _reject_partial_later_phase_artifacts(run_dir, phase)
     phases = _phase_state(run_dir)
     if phase in phases:
         raise protocol.ValidationError(f"frontier phase repeat rejected: {phase}")
@@ -1317,6 +1478,14 @@ def _enforce_phase_boundary(run_dir: Path, phase: str) -> None:
         raise protocol.ValidationError(
             f"frontier phase {phase} requires completed {predecessor}"
         )
+    if predecessor == "roots":
+        _validate_roots_evidence(run_dir)
+    if predecessor == "evaluate-roots":
+        _validate_evaluate_roots_evidence(run_dir)
+    _validate_all_runtime_tickets_terminal(
+        run_dir,
+        allow_unstarted_roots=phase == "roots",
+    )
 
 
 def _require_completed_phase(run_dir: Path, phase: str) -> None:
@@ -1375,8 +1544,40 @@ def _ticket_count(run_dir: Path) -> int:
 
 
 def _candidate_projection_count(run_dir: Path) -> int:
-    index = run_dir / "candidate_projections" / "index.json"
-    return 1 if index.exists() else 0
+    return len(_candidate_projections(run_dir))
+
+
+def _candidate_projections(run_dir: Path) -> list[dict[str, object]]:
+    root = run_dir / "candidate_projections"
+    if not root.exists():
+        return []
+    projections = []
+    for path in sorted(root.glob("candidate-*.json")):
+        value = _read_json(path, "candidate projection")
+        if value.get("schema_version") == "crouzeix-candidate-projection/v1":
+            projections.append(value)
+    return projections
+
+
+def _write_candidate_index(run_dir: Path) -> None:
+    projections = _candidate_projections(run_dir)
+    index = {
+        "schema_version": "crouzeix-candidate-projection-index/v1",
+        "projection_count": len(projections),
+        "projections": sorted(
+            projections,
+            key=lambda item: str(item["source_node_id"]),
+        ),
+    }
+    index["candidate_projection_index_sha256"] = _canonical_sha256(index)
+    _write_json_replace(run_dir / "candidate_projections" / "index.json", index)
+
+
+def _archive_entry_for_node(run_dir: Path, node_id: str) -> dict[str, object]:
+    for entry in _archive_entries(run_dir):
+        if entry["node_id"] == node_id:
+            return entry
+    raise protocol.ValidationError(f"archive entry missing for {node_id}")
 
 
 def _node_count(run_dir: Path) -> int:
@@ -1433,6 +1634,10 @@ def _reconciliations(run_dir: Path) -> list[dict[str, object]]:
 
 def _attempts(run_dir: Path) -> list[dict[str, object]]:
     return _read_jsonl(run_dir / "attempt_ledger.jsonl")
+
+
+def _attempt_exists(run_dir: Path, attempt_id: str) -> bool:
+    return any(item["attempt_id"] == attempt_id for item in _attempts(run_dir))
 
 
 def _selection_events(run_dir: Path) -> list[dict[str, object]]:
