@@ -61,10 +61,13 @@ def run_frontier_call(
         ticket_value, "prompt_sha256", sha256_bytes(prompt.encode("utf-8"))
     )
 
-    context_value = _build_context_envelope(
+    context_value = dict(context)
+    if ticket_value["context_sha256"] != _canonical_sha256(context_value):
+        raise ValidationError("ticket context_sha256 does not match provider context")
+    context_value = _validate_context(
         context,
         ticket=ticket_value,
-        binding=binding,
+        role=role,
         schema_sha256=sha256_bytes(schema_bytes),
         prompt_sha256=sha256_bytes(prompt.encode("utf-8")),
     )
@@ -74,6 +77,18 @@ def run_frontier_call(
         + "\n\n"
         + prompt
     )
+    validated_output: dict[str, object] | None = None
+
+    def finalize_receipt(
+        receipt: dict[str, Any], final_value: dict[str, Any] | None
+    ) -> None:
+        nonlocal validated_output
+        if _is_blocked_resource_value(receipt, final_value):
+            receipt["status"] = "blocked_resource"
+            receipt["blocked_reason"] = "resource block reported by provider"
+            return
+        validated_output = _validate_output(role, receipt, final_value, context_value)
+
     result = runner.run_call(
         run_dir,
         _frontier_spec(runner.read_run_spec(run_dir / "run_spec.json")),
@@ -84,14 +99,9 @@ def run_frontier_call(
         parent_digests=_parent_digests(ticket_value),
         ticket_binding=binding,
         allowed_tools=list(FRONTIER_ALLOWED_TOOLS),
+        finalize_receipt=finalize_receipt,
     )
-    if _is_blocked_resource(result):
-        _rewrite_status(
-            result,
-            "blocked_resource",
-            "resource block reported by provider",
-        )
-    result["validated_output"] = _validate_output(role, result)
+    result["validated_output"] = validated_output
     runner._append_accounting_receipt(accounting_path, result["receipt"])
     if result["receipt"]["status"] == "completed" and after_receipt is not None:
         after_receipt()
@@ -147,35 +157,151 @@ def _validate_pinned_digest(
         raise ValidationError(f"ticket {field} does not match call input")
 
 
-def _build_context_envelope(
+def _validate_context(
     context: Mapping[str, Any],
     *,
     ticket: Mapping[str, Any],
-    binding: Mapping[str, str],
+    role: str,
     schema_sha256: str,
     prompt_sha256: str,
 ) -> dict[str, Any]:
     value = dict(context)
+    if role == "expert":
+        _validate_expert_context(value)
+    elif role == "proof_progress_evaluator":
+        _validate_evaluator_context(value)
+    else:
+        raise ValidationError(f"unknown frontier provider role {role}")
+    _validate_common_context(value, ticket, schema_sha256, prompt_sha256)
+    return value
+
+
+def _validate_common_context(
+    value: Mapping[str, Any],
+    ticket: Mapping[str, Any],
+    schema_sha256: str,
+    prompt_sha256: str,
+) -> None:
     if value.get("delegation_allowed") is not False:
         raise ValidationError("frontier context must set delegation_allowed=false")
     if value.get("ticket_id") != ticket["ticket_id"]:
         raise ValidationError("frontier context ticket_id must match ticket")
-    supplied_tools = value.get("allowed_tools")
-    if supplied_tools is not None and supplied_tools != FRONTIER_ALLOWED_TOOLS:
+    if value.get("allowed_tools") != FRONTIER_ALLOWED_TOOLS:
         raise ValidationError("frontier context allowed_tools must be exactly Write")
-    for tool in supplied_tools or []:
+    for tool in value.get("allowed_tools", []):
         if str(tool) in FORBIDDEN_CONTEXT_TOOLS:
             raise ValidationError(f"forbidden frontier tool exposed: {tool}")
-    value.update(
-        {
-            "allowed_tools": list(FRONTIER_ALLOWED_TOOLS),
-            "ticket_sha256": binding["ticket_sha256"],
-            "schema_sha256": schema_sha256,
-            "prompt_sha256": prompt_sha256,
-            "parent_artifact_sha256": ticket["parent_artifact_sha256"],
-        }
+    for tool in value.get("forbidden_tools", []):
+        if str(tool) not in FORBIDDEN_CONTEXT_TOOLS:
+            raise ValidationError(f"unknown forbidden frontier tool: {tool}")
+    required_sources = {"search", "network", "mcp", "shell", "read", "delegation"}
+    observed_sources = {str(item).lower() for item in value.get("forbidden_sources", [])}
+    missing_sources = required_sources - observed_sources
+    if missing_sources:
+        raise ValidationError(
+            "frontier context forbidden_sources must include "
+            + ", ".join(sorted(missing_sources))
+        )
+    if value.get("schema_sha256") != schema_sha256:
+        raise ValidationError("frontier context schema_sha256 does not match schema")
+    if value.get("prompt_sha256") != prompt_sha256:
+        raise ValidationError("frontier context prompt_sha256 does not match prompt")
+    if value.get("parent_artifact_sha256") != ticket["parent_artifact_sha256"]:
+        raise ValidationError("frontier context parent_artifact_sha256 must match ticket")
+
+
+def _validate_expert_context(value: Mapping[str, Any]) -> None:
+    expected = {
+        "schema_version",
+        "run_id",
+        "attempt_id",
+        "ticket_id",
+        "proposed_node_id",
+        "parent",
+        "generation",
+        "expert_role",
+        "selected_direction",
+        "theorem_text",
+        "theorem_sha256",
+        "forbidden_sources",
+        "forbidden_tools",
+        "allowed_tools",
+        "delegation_allowed",
+        "limits",
+        "functioning_criteria",
+        "completion_criteria",
+        "result_schema",
+        "schema_sha256",
+        "prompt_sha256",
+        "parent_artifact_sha256",
+        "allowed_parent_artifacts",
+    }
+    _require_fields(value, expected, "expert context")
+    if value["schema_version"] != expert_contracts.SCHEMA_VERSION_EXPERT_CONTEXT:
+        raise ValidationError("expert context schema_version is invalid")
+    if value["result_schema"] != "expert_result":
+        raise ValidationError("expert context result_schema must be expert_result")
+    theorem = value["theorem_text"]
+    if not isinstance(theorem, str):
+        raise ValidationError("expert context theorem_text must be a string")
+    if sha256_bytes(theorem.encode("utf-8")) != value["theorem_sha256"]:
+        raise ValidationError("expert context theorem_sha256 does not match theorem_text")
+    expert_contracts.build_expert_context(
+        run_id=str(value["run_id"]),
+        attempt_id=str(value["attempt_id"]),
+        ticket_id=str(value["ticket_id"]),
+        proposed_node_id=str(value["proposed_node_id"]),
+        parent_node=None,
+        generation=int(value["generation"]),
+        expert_role=str(value["expert_role"]),
+        selected_direction=value["selected_direction"],
+        theorem_text=theorem,
+        forbidden_sources=list(value["forbidden_sources"]),
     )
-    return value
+
+
+def _validate_evaluator_context(value: Mapping[str, Any]) -> None:
+    expected = {
+        "schema_version",
+        "run_id",
+        "evaluation_id",
+        "evaluator_index",
+        "ticket_id",
+        "node_artifact_sha256",
+        "mathematical_payload_sha256",
+        "theorem_text",
+        "theorem_sha256",
+        "mathematical_payload",
+        "probe_ids",
+        "forbidden_sources",
+        "forbidden_tools",
+        "allowed_tools",
+        "delegation_allowed",
+        "completion_criteria",
+        "result_schema",
+        "schema_sha256",
+        "prompt_sha256",
+        "parent_artifact_sha256",
+        "allowed_parent_artifacts",
+    }
+    _require_fields(value, expected, "evaluator context")
+    if value["schema_version"] != expert_contracts.SCHEMA_VERSION_EVALUATOR_CONTEXT:
+        raise ValidationError("evaluator context schema_version is invalid")
+    if value["result_schema"] != "node_evaluation_payload":
+        raise ValidationError(
+            "evaluator context result_schema must be node_evaluation_payload"
+        )
+    theorem = value["theorem_text"]
+    if not isinstance(theorem, str):
+        raise ValidationError("evaluator context theorem_text must be a string")
+    if sha256_bytes(theorem.encode("utf-8")) != value["theorem_sha256"]:
+        raise ValidationError(
+            "evaluator context theorem_sha256 does not match theorem_text"
+        )
+    if tuple(value["probe_ids"]) != expert_contracts.PROOF_PROGRESS_PROBE_IDS:
+        raise ValidationError("evaluator context probe_ids must match closed probe set")
+    if value["node_artifact_sha256"] != value["parent_artifact_sha256"]:
+        raise ValidationError("evaluator context node artifact must match parent artifact")
 
 
 def _parent_digests(ticket: Mapping[str, Any]) -> dict[str, str]:
@@ -185,48 +311,94 @@ def _parent_digests(ticket: Mapping[str, Any]) -> dict[str, str]:
     return {"parent_artifact_sha256": str(parent)}
 
 
-def _is_blocked_resource(result: Mapping[str, Any]) -> bool:
-    final = result.get("final")
-    receipt = result.get("receipt")
+def _is_blocked_resource_value(
+    receipt: Mapping[str, Any], final: Mapping[str, Any] | None
+) -> bool:
     return (
         isinstance(final, dict)
         and final.get("schema_version") == "frontier-resource-block/v1"
-        and isinstance(receipt, dict)
         and receipt.get("status") == "failed"
     )
 
 
-def _rewrite_status(
-    result: Mapping[str, Any],
-    status: str,
-    blocked_reason: str,
-) -> None:
-    receipt = result["receipt"]
-    receipt["status"] = status
-    receipt["blocked_reason"] = blocked_reason
-    receipt_path = Path(result["call_dir"]) / "receipt.json"
-    receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-
-
-def _validate_output(role: str, result: Mapping[str, Any]) -> dict[str, object] | None:
-    receipt = result["receipt"]
+def _validate_output(
+    role: str,
+    receipt: dict[str, Any],
+    final: Mapping[str, Any] | None,
+    context: Mapping[str, Any],
+) -> dict[str, object] | None:
     receipt.setdefault("blocked_reason", None)
     if receipt["status"] != "completed":
         return None
-    final = result["final"]
     if final is None:
         return None
     try:
         if role == "expert":
-            return expert_contracts.validate_expert_result(final)
+            value = expert_contracts.validate_expert_result(final)
+            _validate_expert_output_binding(value, context)
+            return value
         if role == "proof_progress_evaluator":
-            return expert_contracts.validate_evaluator_result(final)
+            value = expert_contracts.validate_evaluator_result(final)
+            _validate_evaluator_output_binding(value, context)
+            return value
     except ValidationError as error:
-        result["receipt"]["parse_error"] = str(error)
-        _rewrite_status(
-            result,
-            "malformed",
-            str(error),
-        )
+        receipt["status"] = "malformed"
+        receipt["parse_error"] = str(error)
+        receipt["blocked_reason"] = str(error)
         return None
     raise ValidationError(f"unknown frontier provider role {role}")
+
+
+def _validate_expert_output_binding(
+    value: Mapping[str, object], context: Mapping[str, Any]
+) -> None:
+    for field in (
+        "run_id",
+        "attempt_id",
+        "ticket_id",
+        "proposed_node_id",
+        "generation",
+        "expert_role",
+    ):
+        if value[field] != context[field]:
+            raise ValidationError(f"expert output {field} does not match context")
+    direction = context["selected_direction"]
+    if value["selected_direction_id"] != direction["direction_id"]:
+        raise ValidationError("expert output selected_direction_id does not match context")
+    parent = context["parent"]
+    expected_parent_id = None if parent is None else parent["node_id"]
+    expected_parent_artifact = None if parent is None else parent["node_artifact_sha256"]
+    if value["parent_node_id"] != expected_parent_id:
+        raise ValidationError("expert output parent_node_id does not match context")
+    if value["parent_node_artifact_sha256"] != expected_parent_artifact:
+        raise ValidationError(
+            "expert output parent_node_artifact_sha256 does not match context"
+        )
+
+
+def _validate_evaluator_output_binding(
+    value: Mapping[str, object], context: Mapping[str, Any]
+) -> None:
+    if tuple(probe["probe_id"] for probe in value["probes"]) != tuple(
+        context["probe_ids"]
+    ):
+        raise ValidationError("evaluator output probe IDs do not match context")
+
+
+def _canonical_sha256(value: Mapping[str, Any]) -> str:
+    data = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    return sha256_bytes(data)
+
+
+def _require_fields(value: Mapping[str, Any], expected: set[str], label: str) -> None:
+    actual = set(value)
+    if actual != expected:
+        raise ValidationError(
+            f"{label} fields are invalid: expected {sorted(expected)}, got {sorted(actual)}"
+        )

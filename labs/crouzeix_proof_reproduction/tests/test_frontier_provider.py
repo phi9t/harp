@@ -25,6 +25,20 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def canonical_json_bytes(value: object) -> bytes:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def digest_json(value: object) -> str:
+    return digest(canonical_json_bytes(value))
+
+
 def write_fake_frontier_cli(path: Path, mode: str = "expert") -> None:
     script = f"""\
 #!/usr/bin/env python3
@@ -70,11 +84,15 @@ assert context["delegation_allowed"] is False
 assert context["allowed_tools"] == ["Write"]
 for forbidden in ["Read", "Bash", "Glob", "Grep", "Edit", "spawn_agent", "WebSearch", "MCP"]:
     assert forbidden not in context["allowed_tools"]
-assert context["ticket_id"] == "expert-g0-function-theory"
-assert isinstance(context["ticket_sha256"], str) and len(context["ticket_sha256"]) == 64
+if MODE == "evaluator":
+    assert context["ticket_id"] == "evaluate-node-g0-function-theory-e1"
+    assert context["schema_version"] == "crouzeix-evaluator-context/v1"
+else:
+    assert context["ticket_id"] == "expert-g0-function-theory"
+    assert context["schema_version"] == "crouzeix-expert-context/v1"
 assert isinstance(context["schema_sha256"], str) and len(context["schema_sha256"]) == 64
 assert isinstance(context["prompt_sha256"], str) and len(context["prompt_sha256"]) == 64
-assert context["parent_artifact_sha256"] is None
+assert context["parent_artifact_sha256"] is None or len(context["parent_artifact_sha256"]) == 64
 
 if MODE == "timeout":
     time.sleep(30)
@@ -92,6 +110,32 @@ if MODE == "blocked":
     print(json.dumps({{"type": "turn.completed"}}))
     final_path.write_text(json.dumps({{"schema_version": "frontier-resource-block/v1", "resource": "disk"}}))
     raise SystemExit(75)
+if MODE == "evaluator":
+    payload = {{
+        "schema_version": "crouzeix-node-evaluation-payload/v1",
+        "probes": [
+            {{"probe_id": probe_id, "status": "insufficient_evidence", "rationale": "bounded fake evaluation"}}
+            for probe_id in [
+                "p01_theorem_statement_preserved",
+                "p02_no_theorem_strength_reduction",
+                "p03_core_mechanism_explicit",
+                "p04_local_claims_justified",
+                "p05_dependencies_closed",
+                "p06_circularity_addressed",
+                "p07_obligations_listed",
+                "p08_candidate_text_coherent",
+                "p09_blockers_falsifiable",
+                "p10_candidate_proof_present",
+            ]
+        ],
+        "findings": [],
+    }}
+    final_path.write_text(json.dumps(payload))
+    print(json.dumps({{"type": "thread.started", "thread_id": "frontier-thread"}}))
+    print(json.dumps({{"type": "turn.started"}}))
+    print(json.dumps({{"type": "item.completed", "item": {{"type": "agent_message", "text": final_path.read_text()}}}}))
+    print(json.dumps({{"type": "turn.completed", "usage": {{"input_tokens": 11, "output_tokens": 7}}}}))
+    raise SystemExit(0)
 
 payload = {{
     "schema_version": "crouzeix-expert-result/v1",
@@ -122,6 +166,12 @@ payload = {{
         "confidence_basis": "checked algebraic steps"
     }}
 }}
+if MODE == "wrong_ticket":
+    payload["ticket_id"] = "expert-g0-other"
+without_digest = dict(payload)
+payload["expert_result_sha256"] = __import__("hashlib").sha256(
+    json.dumps(without_digest, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+).hexdigest()
 final_path.write_text(json.dumps(payload))
 print(json.dumps({{"type": "thread.started", "thread_id": "frontier-thread"}}))
 print(json.dumps({{"type": "turn.started"}}))
@@ -185,8 +235,146 @@ def write_frontier_run(root: Path, cli: Path, timeout_seconds: int = 30) -> Path
     return run_dir
 
 
-def frontier_ticket(prompt: str, schema_path: Path, **overrides: object) -> dict[str, object]:
+def root_direction(**overrides: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "direction_id": "root-function-theory",
+        "kind": "root_task",
+        "statement": "Develop an independent function-theory route.",
+        "strength": "root",
+        "recommended_role": "function_theory",
+        "source_parent_node_id": None,
+        "source_node_artifact_sha256": None,
+        "source_reconciliation_sha256": None,
+    }
+    value.update(overrides)
+    return value
+
+
+def strict_expert_context(prompt: str, schema_path: Path, **overrides: object) -> dict[str, object]:
+    theorem = "For every square matrix A, prove the required norm bound."
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-expert-context/v1",
+        "run_id": "expert-frontier-001",
+        "attempt_id": "attempt-g0-function-theory",
+        "ticket_id": "expert-g0-function-theory",
+        "proposed_node_id": "node-g0-function-theory",
+        "parent": None,
+        "generation": 0,
+        "expert_role": "function_theory",
+        "selected_direction": root_direction(),
+        "theorem_text": theorem,
+        "theorem_sha256": digest(theorem.encode("utf-8")),
+        "forbidden_sources": [
+            "search",
+            "network",
+            "mcp",
+            "shell",
+            "read",
+            "delegation",
+            "public proof manuscripts",
+        ],
+        "forbidden_tools": [
+            "Read",
+            "Glob",
+            "Grep",
+            "Bash",
+            "Edit",
+            "spawn_agent",
+            "WebSearch",
+            "MCP",
+            "Shell",
+        ],
+        "allowed_tools": ["Write"],
+        "delegation_allowed": False,
+        "limits": {
+            "timeout_seconds": 3600,
+            "max_output_bytes": 1048576,
+        },
+        "functioning_criteria": "candidate or falsifiable blocker with concrete progress",
+        "completion_criteria": "return one strict expert_result",
+        "result_schema": "expert_result",
+        "schema_sha256": digest(schema_path.read_bytes()),
+        "prompt_sha256": digest(prompt.encode("utf-8")),
+        "parent_artifact_sha256": None,
+        "allowed_parent_artifacts": [],
+    }
+    value.update(overrides)
+    return value
+
+
+def strict_evaluator_context(prompt: str, schema_path: Path, **overrides: object) -> dict[str, object]:
+    theorem = "For every square matrix A, prove the required norm bound."
+    value: dict[str, object] = {
+        "schema_version": "crouzeix-evaluator-context/v1",
+        "run_id": "expert-frontier-001",
+        "evaluation_id": "eval-node-g0-function-theory-e1",
+        "evaluator_index": 1,
+        "ticket_id": "evaluate-node-g0-function-theory-e1",
+        "node_artifact_sha256": "1" * 64,
+        "mathematical_payload_sha256": "2" * 64,
+        "theorem_text": theorem,
+        "theorem_sha256": digest(theorem.encode("utf-8")),
+        "mathematical_payload": {
+            "proof_family": "functional calculus",
+            "mechanism": "derive a bounded numerical range estimate",
+            "proved_statements": [
+                {
+                    "statement_id": "s1",
+                    "statement": "A bounded intermediate estimate follows.",
+                    "justification": "The construction is explicit.",
+                    "depends_on_statement_ids": [],
+                }
+            ],
+            "unproved_obligations": [],
+            "circularity_risks": [],
+            "proposed_directions": [],
+            "endpoint": {"kind": "blocker", "text": "The final constant remains open."},
+            "confidence_basis": "checked algebraic steps",
+        },
+        "probe_ids": list(expert_contracts.PROOF_PROGRESS_PROBE_IDS),
+        "forbidden_sources": [
+            "search",
+            "network",
+            "mcp",
+            "shell",
+            "read",
+            "delegation",
+            "public proof manuscripts",
+        ],
+        "forbidden_tools": [
+            "Read",
+            "Glob",
+            "Grep",
+            "Bash",
+            "Edit",
+            "spawn_agent",
+            "WebSearch",
+            "MCP",
+            "Shell",
+        ],
+        "allowed_tools": ["Write"],
+        "delegation_allowed": False,
+        "completion_criteria": "return one strict node evaluation payload",
+        "result_schema": "node_evaluation_payload",
+        "schema_sha256": digest(schema_path.read_bytes()),
+        "prompt_sha256": digest(prompt.encode("utf-8")),
+        "parent_artifact_sha256": "1" * 64,
+        "allowed_parent_artifacts": ["1" * 64],
+    }
+    value.update(overrides)
+    return value
+
+
+def frontier_ticket(
+    prompt: str,
+    schema_path: Path,
+    *,
+    context: dict[str, object] | None = None,
+    **overrides: object,
+) -> dict[str, object]:
+    context_value = context if context is not None else strict_expert_context(prompt, schema_path)
     value = runtime_ticket(
+        context_sha256=digest_json(context_value),
         prompt_sha256=digest(prompt.encode("utf-8")),
         schema_sha256=digest(schema_path.read_bytes()),
         forbidden_sources=[
@@ -213,7 +401,8 @@ class FrontierProviderTests(unittest.TestCase):
             run_dir = write_frontier_run(root, cli)
             prompt = "Attempt the function-theory route."
             schema = run_dir / "schemas/expert_result.schema.json"
-            ticket = frontier_ticket(prompt, schema)
+            context = strict_expert_context(prompt, schema)
+            ticket = frontier_ticket(prompt, schema, context=context)
             accounting = run_dir / "attempt_ledger.jsonl"
 
             result = frontier_provider.run_frontier_call(
@@ -222,10 +411,7 @@ class FrontierProviderTests(unittest.TestCase):
                 call_id="expert-g0-function-theory",
                 role="expert",
                 prompt=prompt,
-                context={
-                    "ticket_id": ticket["ticket_id"],
-                    "delegation_allowed": False,
-                },
+                context=context,
                 schema_path=schema,
                 accounting_path=accounting,
             )
@@ -265,6 +451,7 @@ class FrontierProviderTests(unittest.TestCase):
             self.assertEqual(request["model"], "gpt-5.6-sol")
             self.assertEqual(request["sandbox"], "workspace-write")
             self.assertEqual(request["approval_policy"], "never")
+            self.assertFalse(request["network_access"])
             self.assertEqual(
                 sorted(path.name for path in (result["call_dir"] / "workspace").iterdir()),
                 [],
@@ -276,6 +463,103 @@ class FrontierProviderTests(unittest.TestCase):
             self.assertEqual(len(ledger), 1)
             self.assertEqual(ledger[0]["status"], "completed")
             self.assertEqual(ledger[0]["ticket_id"], ticket["ticket_id"])
+
+    def test_evaluator_context_and_payload_are_bound_to_ticket_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli, "evaluator")
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Evaluate the sealed node."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = strict_evaluator_context(prompt, schema)
+            ticket = frontier_ticket(
+                prompt,
+                schema,
+                context=context,
+                ticket_id="evaluate-node-g0-function-theory-e1",
+                task_kind="evaluator",
+                node_id="node-g0-function-theory",
+                generation=0,
+                direction_id=None,
+                role="proof_progress_evaluator",
+                parent_artifact_sha256="1" * 64,
+                owner_type="evaluator",
+            )
+
+            result = frontier_provider.run_frontier_call(
+                run_dir,
+                ticket=ticket,
+                call_id="evaluate-node-g0-function-theory-e1",
+                role="proof_progress_evaluator",
+                prompt=prompt,
+                context=context,
+                schema_path=schema,
+                accounting_path=run_dir / "attempt_ledger.jsonl",
+            )
+
+            self.assertEqual(result["receipt"]["status"], "completed")
+            self.assertEqual(
+                result["validated_output"]["schema_version"],
+                "crouzeix-node-evaluation-payload/v1",
+            )
+            self.assertEqual(result["receipt"]["ticket_id"], ticket["ticket_id"])
+
+    def test_context_digest_drift_fails_before_call_directory_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli)
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Attempt the function-theory route."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = strict_expert_context(prompt, schema)
+            ticket = frontier_ticket(prompt, schema, context=context)
+            drifted = dict(context)
+            drifted["extra_context"] = "leakier material"
+
+            with self.assertRaisesRegex(protocol.ValidationError, "context_sha256"):
+                frontier_provider.run_frontier_call(
+                    run_dir,
+                    ticket=ticket,
+                    call_id="expert-g0-function-theory",
+                    role="expert",
+                    prompt=prompt,
+                    context=drifted,
+                    schema_path=schema,
+                    accounting_path=run_dir / "attempt_ledger.jsonl",
+                )
+
+            self.assertFalse((run_dir / "calls/expert-g0-function-theory").exists())
+
+    def test_two_field_context_is_rejected_before_call_directory_creation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli)
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Attempt the function-theory route."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = strict_expert_context(prompt, schema)
+            two_field_context = {
+                "ticket_id": "expert-g0-function-theory",
+                "delegation_allowed": False,
+            }
+            ticket = frontier_ticket(prompt, schema, context=two_field_context)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "expert context"):
+                frontier_provider.run_frontier_call(
+                    run_dir,
+                    ticket=ticket,
+                    call_id="expert-g0-function-theory",
+                    role="expert",
+                    prompt=prompt,
+                    context=two_field_context,
+                    schema_path=schema,
+                    accounting_path=run_dir / "attempt_ledger.jsonl",
+                )
+
+            self.assertFalse((run_dir / "calls/expert-g0-function-theory").exists())
 
     def test_invalid_ticket_binding_fails_before_call_directory_creation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -314,7 +598,8 @@ class FrontierProviderTests(unittest.TestCase):
                     run_dir = write_frontier_run(root, cli)
                     prompt = "Attempt the function-theory route."
                     schema = run_dir / "schemas/expert_result.schema.json"
-                    ticket = frontier_ticket(prompt, schema)
+                    context = strict_expert_context(prompt, schema)
+                    ticket = frontier_ticket(prompt, schema, context=context)
                     resource_probe = run_dir / "resource_probe.txt"
 
                     result = frontier_provider.run_frontier_call(
@@ -323,10 +608,7 @@ class FrontierProviderTests(unittest.TestCase):
                         call_id="expert-g0-function-theory",
                         role="expert",
                         prompt=prompt,
-                        context={
-                            "ticket_id": ticket["ticket_id"],
-                            "delegation_allowed": False,
-                        },
+                        context=context,
                         schema_path=run_dir / "schemas/expert_result.schema.json",
                         accounting_path=run_dir / "attempt_ledger.jsonl",
                         after_receipt=lambda: resource_probe.write_text("after"),
@@ -339,6 +621,38 @@ class FrontierProviderTests(unittest.TestCase):
                     ]
                     self.assertEqual(ledger[0]["status"], expected)
                     self.assertFalse(resource_probe.exists())
+
+    def test_valid_shaped_output_for_another_ticket_is_malformed_and_not_completed_on_disk(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli, "wrong_ticket")
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Attempt the function-theory route."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = strict_expert_context(prompt, schema)
+            ticket = frontier_ticket(prompt, schema, context=context)
+
+            result = frontier_provider.run_frontier_call(
+                run_dir,
+                ticket=ticket,
+                call_id="expert-g0-function-theory",
+                role="expert",
+                prompt=prompt,
+                context=context,
+                schema_path=schema,
+                accounting_path=run_dir / "attempt_ledger.jsonl",
+            )
+
+            self.assertEqual(result["receipt"]["status"], "malformed")
+            receipt = json.loads((result["call_dir"] / "receipt.json").read_text())
+            self.assertEqual(receipt["status"], "malformed")
+            self.assertNotEqual(receipt["status"], "completed")
+            ledger = [
+                json.loads(line)
+                for line in (run_dir / "attempt_ledger.jsonl").read_text().splitlines()
+            ]
+            self.assertEqual(ledger[0]["status"], "malformed")
 
     def test_frontier_access_policy_rejects_read_network_and_delegation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

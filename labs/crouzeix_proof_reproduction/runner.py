@@ -136,6 +136,7 @@ def run_call(
     allowed_tools: list[str] | None = None,
     accounting_path: Path | None = None,
     after_receipt: Callable[[], None] | None = None,
+    finalize_receipt: Callable[[dict[str, Any], dict[str, Any] | None], None] | None = None,
 ) -> dict[str, Any]:
     if role not in CALL_ROLES:
         raise ValidationError(f"unknown call role {role}")
@@ -180,6 +181,7 @@ def run_call(
         "model": spec["model"],
         "sandbox": spec["sandbox"],
         "approval_policy": spec["approval_policy"],
+        "network_access": spec["network_access"],
         "command": command,
         "cwd": str(workspace),
         "allowed_tools": tool_names,
@@ -266,6 +268,7 @@ def run_call(
         "model": spec["model"],
         "sandbox": spec["sandbox"],
         "approval_policy": spec["approval_policy"],
+        "network_access": spec["network_access"],
         "allowed_tools": tool_names,
         "blocked_reason": None,
         "started_at_utc": started,
@@ -303,6 +306,8 @@ def run_call(
         ):
             if field in ticket_binding:
                 receipt[field] = ticket_binding[field]
+    if finalize_receipt is not None:
+        finalize_receipt(receipt, final_value)
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     if accounting_path is not None:
         _append_accounting_receipt(accounting_path, receipt)
