@@ -148,7 +148,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 15] = [
         "knowledge/mathematical_foundations/mathematical_foundations_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 60] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 74] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -172,6 +172,62 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 60] = [
     (
         "codex-harness-deep-dive",
         "knowledge/rsi/codex_harness_deep_dive.md",
+    ),
+    (
+        "deepseek-harness-deep-dive",
+        "knowledge/rsi/deepseek_harness_deep_dive.md",
+    ),
+    (
+        "deepseek-harness-study-index",
+        "knowledge/deepseek_harness/deepseek_harness_index.md",
+    ),
+    (
+        "deepseek-harness-cordis-spatiotemporal-composition",
+        "knowledge/deepseek_harness/01_cordis_spatiotemporal_composition.md",
+    ),
+    (
+        "deepseek-harness-profiles-bundles-and-patch-layers",
+        "knowledge/deepseek_harness/02_profiles_bundles_and_patch_layers.md",
+    ),
+    (
+        "deepseek-harness-events-effects-and-reversible-lifecycle",
+        "knowledge/deepseek_harness/03_events_effects_and_reversible_lifecycle.md",
+    ),
+    (
+        "deepseek-harness-turn-session-and-model-visible-log",
+        "knowledge/deepseek_harness/04_turn_session_and_model_visible_log.md",
+    ),
+    (
+        "deepseek-harness-capability-seams",
+        "knowledge/deepseek_harness/05_capability_seams.md",
+    ),
+    (
+        "deepseek-harness-tool-registry-and-policy-pipeline",
+        "knowledge/deepseek_harness/06_tool_registry_and_policy_pipeline.md",
+    ),
+    (
+        "deepseek-harness-sandbox-permission-and-filesystem-boundaries",
+        "knowledge/deepseek_harness/07_sandbox_permission_and_filesystem_boundaries.md",
+    ),
+    (
+        "deepseek-harness-subagents-and-continuable-children",
+        "knowledge/deepseek_harness/08_subagents_and_continuable_children.md",
+    ),
+    (
+        "deepseek-harness-persistence-sdk-and-runtime-packaging",
+        "knowledge/deepseek_harness/09_persistence_sdk_and_runtime_packaging.md",
+    ),
+    (
+        "deepseek-harness-self-modification-and-dynamic-cordis",
+        "knowledge/deepseek_harness/10_self_modification_and_dynamic_cordis.md",
+    ),
+    (
+        "deepseek-harness-source-registry",
+        "knowledge/deepseek_harness/source_registry.md",
+    ),
+    (
+        "deepseek-harness-claim-evidence-ledger",
+        "knowledge/deepseek_harness/claim_evidence_ledger.md",
     ),
     (
         "agent-harness-architecture-dossier",

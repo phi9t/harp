@@ -6,25 +6,25 @@ mode: DOMAIN ORIENTATION
 status: active
 created: 2026-07-31
 updated: 2026-07-31
-tags: [recursive-self-improvement, harness-engineering, pi, hermes, codex]
+tags: [recursive-self-improvement, harness-engineering, pi, hermes, codex, deepseek-harness]
 confidence: medium
 ---
 
-# Implementation harnesses: three adaptation surfaces
+# Implementation harnesses: four adaptation surfaces
 
 Mode: `DOMAIN ORIENTATION`.
 
 > Canonical harness mechanics live in [[knowledge/rsi/chapters/harness-engineering|Harness engineering]].
-> This page remains the Pi, Hermes, and Codex comparison; the three deep dives
-> retain exact pinned code paths.
+> This page compares Pi, Hermes, Codex, and DeepSeek Harness; the four deep
+> dives retain exact pinned code paths.
 
-**INFERENCE — scope.** Pi, Hermes Agent, and OpenAI Codex are implementation overlays, not members of the bounded citation closure rooted at [WENG-HARNESS]. They make `Hₜ`, `Dₜ`, and `Aₜ` concrete without supplying evidence that any harness improves its own future improvement ability.
+**INFERENCE — scope.** Pi, Hermes Agent, OpenAI Codex, and DeepSeek Harness are implementation overlays, not members of the bounded citation closure rooted at [WENG-HARNESS]. They make `Hₜ`, `Dₜ`, and `Aₜ` concrete without supplying evidence that any harness improves its own future improvement ability.
 
-**INFERENCE — reader guidance.** Use this page for comparison; use [[pi_harness_deep_dive]], [[hermes_harness_deep_dive]], and [[codex_harness_deep_dive]] for code paths, mutation boundaries, state mapping, and experiment seams.
+**INFERENCE — reader guidance.** Use this page for comparison; use [[pi_harness_deep_dive]], [[hermes_harness_deep_dive]], [[codex_harness_deep_dive]], and [[deepseek_harness_deep_dive]] for code paths, mutation boundaries, state mapping, and experiment seams.
 
 ## The shared skeleton—and where it stops
 
-**INFERENCE — synthesis from [PI-MONO], [HERMES-AGENT], and [CODEX-REPO].** All three implement the left side of the following diagram. None of the inspected revisions implements the complete evaluator-owned loop on the right.
+**INFERENCE — synthesis from [PI-MONO], [HERMES-AGENT], [CODEX-REPO], and [DEEPSEEK-HARNESS].** All four implement the left side of the following diagram. None of the inspected revisions implements the complete evaluator-owned loop on the right.
 
 ```mermaid
 flowchart LR
@@ -49,8 +49,9 @@ flowchart LR
 | EVIDENCE | Pi | `4488ad55c18f07ae89a489096c90de8667b3adfb` | `evidence/implementations/pi/snapshot/` | Present-day source behavior; no harness-evolution efficacy claim. |
 | EVIDENCE | Hermes Agent | `e444d165807f489b5c1ab8e4a612c8d09c2e67a2` | `evidence/implementations/hermes/snapshot/` | Present-day source and maintainer-contract behavior; “self-improving” remains a project claim. |
 | EVIDENCE | OpenAI Codex | `1e85ca099e4265bf89f4016772d299816e231bb3` | `evidence/implementations/codex-rsi/snapshot/` | Present-day source behavior, including the state-continuity stack; no autonomous self-evolution claim. |
+| EVIDENCE | DeepSeek Harness | `47f943859bef60e4160492346772ded9b24f765a` | `evidence/implementations/deepseek_harness/snapshot/` | Present-day plugin, turn-loop, session, tool, sandbox, and subagent behavior; no autonomous self-evolution claim. |
 
-**EVIDENCE — local provenance.** Pi, Hermes, and Codex are tracked as narrow public-source snapshots in `evidence/implementations/manifest.tsv`; `harp sources verify` checks their bytes and `harp sources materialize` checks them against clean public checkouts.
+**EVIDENCE — local provenance.** Pi, Hermes, Codex, and DeepSeek Harness are tracked as narrow public-source snapshots in `evidence/implementations/manifest.tsv`; `harp sources verify` checks their bytes and `harp sources materialize` checks them against clean public checkouts.
 
 ## One-line architectural identities
 
@@ -59,6 +60,7 @@ flowchart LR
 | INFERENCE | [[pi_harness_deep_dive|Pi]] | Small composable loop over a branchable session tree. | Hooks, prompt construction, tool selection, context transforms, extensions. | Small core, explicit tool hooks, project-resource trust. |
 | INFERENCE | [[hermes_harness_deep_dive|Hermes]] | Persistent agent runtime with memory, skills, curation, and bounded delegation. | Memory writes and agent-created skill packages. | Iteration/concurrency/depth limits, guardrails, reversible curator archives. |
 | INFERENCE | [[codex_harness_deep_dive|Codex]] | Rollout-backed execution and multi-agent control plane with routed capabilities. | Instructions, skills/plugins, tool visibility, hooks, compaction, thread forks. | Permission profiles, platform sandboxing, lineage, shared rollout budgets. |
+| INFERENCE | [[deepseek_harness_deep_dive|DeepSeek Harness]] | Cordis plugin tree where most harness behavior is a replaceable service row. | Profiles, bundles, presets, tools, sandbox policy, subagents, runtime context. | Typed plugin seams, event-sourced sessions, policy-owned sandbox/file controls. |
 
 Use [[codex_state_continuity_and_compaction]] for the ARC-AGI-3 state-continuity
 result, encrypted reasoning, typed history, world-state diffs, compaction
@@ -66,17 +68,17 @@ checkpoints, replay, and cross-thread memories.
 
 ## Cross-harness comparison
 
-| Label | Axis | Pi | Hermes Agent | OpenAI Codex |
-|---|---|---|---|---|
-| EVIDENCE | Core loop | Nested sampling/tool loop with steering and follow-up queues; tool batches can be sequential or parallel. | Synchronous provider/tool loop with interrupts, repair/retry paths, and explicit iteration budgets. | Persisted turn state machine with sampling, mailbox input, tools, hooks, and compaction-driven continuation. |
-| EVIDENCE | Tool authority | Active tools are turn-scoped; pre/post hooks can block or transform calls. | Registry and toolsets scope discovery and dispatch; bridge calls are rechecked against session grants. | Model-visible specs are separate from registered runtimes; all calls normalize through `ToolRouter`. |
-| EVIDENCE | Context model | Active branch projection with explicit transforms, compaction entries, and retained tail. | Cache-stable prompt prefix, memory prefetch, session history, and several bounded compression paths. | Rollout-derived prompt history with automatic compaction checkpoints and queued input. |
-| EVIDENCE | Persistence | Parent-linked session entries preserve branches and configuration changes. | Session database, memory providers, skill store, curator state, reports, and child logs. | Rollouts, thread store, agent registry, spawn edges, statuses, and compaction records. |
-| EVIDENCE | Delegation | Optional example extension launches isolated child processes. | Core tool builds isolated leaf/orchestrator children in bounded batches. | Shared `AgentControl` spawns, forks, messages, lists, waits for, and interrupts thread-backed agents. |
-| EVIDENCE | Durable adaptation | Reusable extensions, resources, branches, and summaries. | Cross-session memory plus reversible maintenance of agent-created skills. | Reusable instructions, skills/plugins, thread history, and rollout lineage. |
-| EVIDENCE | Safety boundary | Trust decision for project-controlled resources and hook-level tool rejection. | Guardrails, configured resource limits, role restrictions, archives, pins, and operator pause. | Approval/permission policy, runtime capability registry, host sandbox, lineage, and shared budgets. |
-| MISSING | Held-out evaluator | No core evaluator/selector for harness variants. | No immutable evaluator gates memory/skill promotion on later task improvement. | No evaluator/selector promotes Codex harness variants. |
-| MISSING | Recursive measurement | No test of whether accepted Pi changes improve later Pi changes. | No matched test of whether curated artifacts improve later curation or harness work. | No matched test of whether an accepted configuration improves later Codex improvement work. |
+| Label | Axis | Pi | Hermes Agent | OpenAI Codex | DeepSeek Harness |
+|---|---|---|---|---|---|
+| EVIDENCE | Core loop | Nested sampling/tool loop with steering and follow-up queues; tool batches can be sequential or parallel. | Synchronous provider/tool loop with interrupts, repair/retry paths, and explicit iteration budgets. | Persisted turn state machine with sampling, mailbox input, tools, hooks, and compaction-driven continuation. | Event-sourced turn machine that claims inbox batches, assembles prompt context, streams output, schedules tools, and closes typed turns. |
+| EVIDENCE | Tool authority | Active tools are turn-scoped; pre/post hooks can block or transform calls. | Registry and toolsets scope discovery and dispatch; bridge calls are rechecked against session grants. | Model-visible specs are separate from registered runtimes; all calls normalize through `ToolRouter`. | Model-facing schemas are allowlisted from host-only execution metadata; policy waterfalls and monotonic guards own admission. |
+| EVIDENCE | Context model | Active branch projection with explicit transforms, compaction entries, and retained tail. | Cache-stable prompt prefix, memory prefetch, session history, and several bounded compression paths. | Rollout-derived prompt history with automatic compaction checkpoints and queued input. | Runtime context snapshots are plugin-sourced user messages retained only when they change. |
+| EVIDENCE | Persistence | Parent-linked session entries preserve branches and configuration changes. | Session database, memory providers, skill store, curator state, reports, and child logs. | Rollouts, thread store, agent registry, spawn edges, statuses, and compaction records. | Lossless JSON session events, request headers, seed boundaries, parent session, delegation depth, and preset metadata. |
+| EVIDENCE | Delegation | Optional example extension launches isolated child processes. | Core tool builds isolated leaf/orchestrator children in bounded batches. | Shared `AgentControl` spawns, forks, messages, lists, waits for, and interrupts thread-backed agents. | Named subagent providers with explicit capability flags, one-shot runs, and continuable child sessions. |
+| EVIDENCE | Durable adaptation | Reusable extensions, resources, branches, and summaries. | Cross-session memory plus reversible maintenance of agent-created skills. | Reusable instructions, skills/plugins, thread history, and rollout lineage. | Profile and bundle patches, presets, skills, workspace context, session logs, and tool/provider composition. |
+| EVIDENCE | Safety boundary | Trust decision for project-controlled resources and hook-level tool rejection. | Guardrails, configured resource limits, role restrictions, archives, pins, and operator pause. | Approval/permission policy, runtime capability registry, host sandbox, lineage, and shared budgets. | Shared sandbox policy feeds filesystem and shell providers; read-only is the default mode. |
+| MISSING | Held-out evaluator | No core evaluator/selector for harness variants. | No immutable evaluator gates memory/skill promotion on later task improvement. | No evaluator/selector promotes Codex harness variants. | No evaluator/selector promotes profile, preset, or plugin variants. |
+| MISSING | Recursive measurement | No test of whether accepted Pi changes improve later Pi changes. | No matched test of whether curated artifacts improve later curation or harness work. | No matched test of whether an accepted configuration improves later Codex improvement work. | No matched test of whether an accepted plugin composition improves later composition search. |
 
 ## State ownership across candidate and envelope
 
@@ -84,11 +86,11 @@ checkpoints, replay, and cross-thread memories.
 
 | Label | State | Pi | Hermes Agent | OpenAI Codex | Required external owner |
 |---|---|---|---|---|---|
-| EVIDENCE | `Wₜ` | Provider model and thinking level. | Provider/model and fallback routing. | Provider/model and reasoning effort. | Training provenance if weights become editable. |
-| EVIDENCE | `Hₜ` | Loop config, hooks, tools, prompt, extensions, compaction. | Loop, prompts, tools, plugins, skills, memory/delegation policy. | Turn loop, instructions, tools, skills/plugins, hooks, compaction, agent policy. | Candidate-package schema and mutation allowlist. |
-| EVIDENCE | `Dₜ` | Branch messages, resources, tool results, summaries. | Sessions, memory, skills, trajectories, tool results. | Rollout items, active history, compacted replacements, queued input. | Split policy, contamination checks, retention policy. |
-| MISSING | `E` | No complete held-out evaluator. | No complete held-out evaluator. | No complete held-out evaluator. | Tasks, scoring, judge diversity, integrity checks, budget normalization. |
-| EVIDENCE | `Aₜ` | Session tree and state-change entries. | Session/memory/skill archives and reports. | Rollouts, thread lineage, registry, statuses. | Candidate fitness, rejection reasons, digests, promotion receipts. |
+| EVIDENCE | `Wₜ` | Provider model and thinking level. | Provider/model and fallback routing. | Provider/model and reasoning effort. | Provider/model route and adapter defaults. | Training provenance if weights become editable. |
+| EVIDENCE | `Hₜ` | Loop config, hooks, tools, prompt, extensions, compaction. | Loop, prompts, tools, plugins, skills, memory/delegation policy. | Turn loop, instructions, tools, skills/plugins, hooks, compaction, agent policy. | Profile/bundle patches, presets, agent loop, tools, sandbox policy, subagents. | Candidate-package schema and mutation allowlist. |
+| EVIDENCE | `Dₜ` | Branch messages, resources, tool results, summaries. | Sessions, memory, skills, trajectories, tool results. | Rollout items, active history, compacted replacements, queued input. | Session events, runtime context snapshots, tool results, workspace context, child sessions. | Split policy, contamination checks, retention policy. |
+| MISSING | `E` | No complete held-out evaluator. | No complete held-out evaluator. | No complete held-out evaluator. | No complete held-out evaluator. | Tasks, scoring, judge diversity, integrity checks, budget normalization. |
+| EVIDENCE | `Aₜ` | Session tree and state-change entries. | Session/memory/skill archives and reports. | Rollouts, thread lineage, registry, statuses. | Session logs, parent/child metadata, subagent lifecycle, profile/preset state. | Candidate fitness, rejection reasons, digests, promotion receipts. |
 
 ## Design lessons that transfer
 
@@ -110,6 +112,6 @@ checkpoints, replay, and cross-thread memories.
 
 ## What the external RSI controller must add
 
-**INFERENCE — synthesis from [PI-MONO], [HERMES-AGENT], [CODEX-REPO], [SELF-HARNESS], and [AHE].** A credible controller must freeze evaluator `E`, declare editable paths, create isolated candidate revisions, assign matched root-tree budget `B`, run development and held-out tasks, seal complete lineage and failures in `Aₜ`, promote outside candidate authority, and then measure whether the promoted harness generates better later harness changes.
+**INFERENCE — synthesis from [PI-MONO], [HERMES-AGENT], [CODEX-REPO], [DEEPSEEK-HARNESS], [SELF-HARNESS], and [AHE].** A credible controller must freeze evaluator `E`, declare editable paths, create isolated candidate revisions, assign matched root-tree budget `B`, run development and held-out tasks, seal complete lineage and failures in `Aₜ`, promote outside candidate authority, and then measure whether the promoted harness generates better later harness changes.
 
 **MISSING.** No matched benchmark run compares the three inspected revisions, and no inspected source demonstrates the complete propose → evaluate → select → persist → improve-the-next-improvement cycle under a shared evaluator.

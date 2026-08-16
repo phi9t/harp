@@ -8,7 +8,8 @@ Harp owns the standalone RSI technical atlas:
   topic packets under `knowledge/darwin_godel_machine/`,
   `knowledge/meta_harness/`, `knowledge/harness_benchmarks/`, and
   `knowledge/self_improving_agents_survey/`, and
-  `knowledge/verified_coevolution_agenda/`, and
+  `knowledge/verified_coevolution_agenda/`,
+  `knowledge/deepseek_harness/`, and
   `knowledge/agentic_engineering/`, together with the auxiliary
   `knowledge/darwinx/` and `knowledge/mathematical_foundations/` packets and
   repository-root Obsidian navigation assets;
@@ -120,15 +121,15 @@ The required parity contract is:
 
 - 75 retained concepts;
 - 75 coverage entries;
-- 116 compiled documents;
+- 130 compiled documents;
 - 16 systems;
 - nine Weng sections;
 - 28 diagnostic fields;
 - 29 diagnostic rules;
 - 12 diagnostic cases;
 - six lessons;
-- 84 source-registry rows; and
-- 101 evidence edges.
+- 87 source-registry rows; and
+- 105 evidence edges.
 
 Markdown is the only technical-prose authority. Handwritten TypeScript owns
 navigation, state, diagnosis, import/export, and interaction behavior, not
@@ -174,6 +175,20 @@ corollary/application, or prose-only; prose-only rows make no Lean-proof
 claim. The packet does not enter the RSI retained-concept taxonomy, coverage
 map, evidence graph, or source-verification counts.
 
+`knowledge/rsi/deepseek_harness_deep_dive.md` is an auxiliary implementation
+overlay for the pinned public DeepSeek Harness snapshot. It increases compiled
+document, source-registry, and evidence-edge counts by one each, but it does
+not become a canonical RSI system or alter retained concepts, coverage entries,
+Weng sections, diagnostic cases, or lessons.
+
+`knowledge/deepseek_harness/` is a thirteen-document design-decision packet for
+the pinned public DeepSeek Harness snapshot, its cited Cordis paper, and a
+local keyless tool-runtime smoke receipt. It contributes thirteen auxiliary
+documents, two additional source-registry rows (`CORDIS-PAPER`, `DSH-SMOKE`),
+and three evidence edges. It remains an implementation-study packet, not a
+DeepSWE score receipt, model-provider run, security proof, or autonomous
+self-improvement result.
+
 ## Weng teaching curriculum
 
 `knowledge/rsi/weng-sources/` is the canonical authority for the 42 five-field
@@ -191,7 +206,7 @@ requires 42 cards, ten lessons, four references, and nine section IDs.
 Retrieval begins at `unseen`, and page exposure does not establish mastery.
 
 Teaching files remain outside canonical Atlas compilation unless explicitly
-registered later. They do not change the 116-document, 75-concept, or other
+registered later. They do not change the 130-document, 75-concept, or other
 canonical corpus counts above.
 
 ## Search
@@ -201,6 +216,7 @@ The search index includes:
 - all `knowledge/rsi/**/*.md`;
 - all `knowledge/darwin_godel_machine/**/*.md`;
 - all `knowledge/meta_harness/**/*.md`;
+- all `knowledge/deepseek_harness/**/*.md`;
 - all `knowledge/harness_benchmarks/**/*.md`;
 - all `knowledge/self_improving_agents_survey/**/*.md`;
 - all `knowledge/verified_coevolution_agenda/**/*.md`;
@@ -229,6 +245,8 @@ receipt. Status and query reject missing or stale indexes.
 - the offline-complete Meta-Harness project page and dated capture receipt;
 - the normalized Meta-Harness TRAE receipt and bounded raw archive;
 - the Agentic Engineering and Clanker Constitution dated captures;
+- the Cordis paper artifact inventory and DeepSeek Harness local study
+  receipt;
 - the pinned MIT Obsidian-syntax skill snapshot and its implementation-manifest
   digests;
 - every maintained local evidence locator; and

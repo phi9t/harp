@@ -238,6 +238,7 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
         ("knowledge/rsi", "canonical-markdown", "md"),
         ("knowledge/darwin_godel_machine", "canonical-markdown", "md"),
         ("knowledge/meta_harness", "canonical-markdown", "md"),
+        ("knowledge/deepseek_harness", "canonical-markdown", "md"),
         ("knowledge/harness_benchmarks", "canonical-markdown", "md"),
         (
             "knowledge/self_improving_agents_survey",

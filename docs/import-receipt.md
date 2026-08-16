@@ -34,12 +34,13 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 63 binary evidence objects: 49 PDFs, nine
+- The maintained tree now contains 64 binary evidence objects: 50 PDFs, nine
   PNGs, one WebP, three WOFF2 font files, and one compressed archive. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
   files, and one deterministic raw TRAE archive. The Self-Improving Agents
   Survey extension adds one captured PNG and one arXiv PDF. The Verified
-  Coevolution Agenda extension adds five arXiv PDFs.
+  Coevolution Agenda extension adds five arXiv PDFs. The DeepSeek Harness study
+  extension adds one Cordis paper PDF.
 - Root `.gitattributes` tracks evidence PDFs, PNGs, JPGs, JPEGs, WebPs, WOFF2
   fonts, and compressed TAR archives through Harp's own Git LFS filter.
 
@@ -146,9 +147,35 @@ experiments, validate reported benchmark results, prove broad alignment
 properties, or treat the supplied agenda as source evidence for paper claims.
 This extension does not alter the fixed 521-row initial import account.
 
+## Post-import DeepSeek Harness study extension
+
+The maintained product also adds a bounded DeepSeek Harness design-decision
+study:
+
+- a narrow implementation snapshot of
+  `https://github.com/deepseek-ai/deepseek-harness.git` at
+  `47f943859bef60e4160492346772ded9b24f765a`;
+- the cited Cordis paper captured from `https://github.com/cordiverse/paper.git`
+  at tag `v8` / commit `948a07b369c62adb3b12e102458be5c18dfb69b9`,
+  including PDF, upstream README, derived text, provenance, and artifact
+  inventory;
+- a local keyless DSH tool-runtime smoke receipt recording `pnpm@11.7.0`
+  install and `packages/core/tools/tests/tools.spec.ts` with 136 passing tests;
+- two new source-registry rows and three evidence-graph edges for the Cordis
+  paper and DSH smoke receipt; and
+- thirteen canonical Markdown packet documents under
+  `knowledge/deepseek_harness/` with regenerated Atlas outputs.
+
+The packet supports design-decision study of DSH's pinned plugin composition,
+events, sessions, tools, sandbox policy, subagent seam, persistence/API
+packaging, and Cordis basis. It does not reproduce DeepSWE scores, run a paid
+model provider, validate UI behavior, prove platform sandbox enforcement, or
+establish autonomous recursive self-improvement. This extension does not alter
+the fixed 521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`bcfd3288facb976af4d6464f0e005d781cb96363807763187b4581e4369d62e5`
+`def227b53f5cdd067c0066d9ca83a370a1764d9100ee559f9d2c5ce29cf40730`

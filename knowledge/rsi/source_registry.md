@@ -24,6 +24,13 @@ Mode: `DOMAIN ORIENTATION`.
 
 **INFERENCE — implementation overlay.** Rows with depth `NA` and cohort `implementation-snapshot` are local source checkouts or pinned repository metadata added to make harness mechanisms concrete. They are excluded from the Weng-rooted closure, and their claim ceiling is present-day behavior at the recorded commit rather than historical capability, benchmark quality, or RSI efficacy.
 
+**EVIDENCE — DeepSeek Harness overlay.** [DEEPSEEK-HARNESS] is a narrow
+implementation snapshot at commit `47f943859bef60e4160492346772ded9b24f765a`.
+It supports plugin-composition, event-sourced session, tool, sandbox-policy,
+filesystem/shell, subagent, and default-spine claims in
+[[deepseek_harness_deep_dive]]. It does not inherit the [DEEPSWE] benchmark
+receipt, leaderboard evidence, or task-corpus authority.
+
 **EVIDENCE. Meta-Harness tiers.** [META-HARNESS-SITE] is a dated first-party
 page capture, [META-HARNESS-REPO] and [META-HARNESS-TB2-ARTIFACT] are pinned
 implementation snapshots, and [META-HARNESS-TRAE-RUN] is a local

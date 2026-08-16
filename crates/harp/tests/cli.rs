@@ -159,15 +159,15 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 116,
+            "canonical_documents": 130,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 84,
-            "evidence_edges": 101
+            "source_registry_rows": 87,
+            "evidence_edges": 105
         })
     );
 }
@@ -424,7 +424,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 430);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 433);
     let manifest = fs::read_to_string(repo_root().join("evidence/implementations/manifest.tsv"))
         .expect("implementation manifest");
     let snapshot_rows = manifest.lines().skip(1).collect::<Vec<_>>();
@@ -433,7 +433,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .filter_map(|row| row.split('\t').next())
         .collect::<BTreeSet<_>>();
     assert_eq!(envelope["data"]["snapshot_files"], snapshot_rows.len());
-    assert_eq!(envelope["data"]["binary_objects"], 63);
+    assert_eq!(envelope["data"]["binary_objects"], 64);
     assert_eq!(
         envelope["data"]["implementation_sources"],
         implementation_sources.len()

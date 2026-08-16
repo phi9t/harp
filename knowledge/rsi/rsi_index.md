@@ -164,9 +164,10 @@ the maintained supporting material without making every page a prerequisite.
   mechanism anchor.
 - [[implementation_harnesses]] compares the overlay structures, while
   [[pi_harness_deep_dive]], [[hermes_harness_deep_dive]], and
-  [[codex_harness_deep_dive]] retain implementation-specific paths and
-  revisions. [[codex_state_continuity_and_compaction]] covers the Codex
-  state-continuity comparison.
+  [[codex_harness_deep_dive]], and [[deepseek_harness_deep_dive]] retain
+  implementation-specific paths and revisions.
+  [[codex_state_continuity_and_compaction]] covers the Codex state-continuity
+  comparison.
 
 ### Evidence, coverage, and provenance
 
@@ -187,8 +188,9 @@ The supporting layer is separate from the reading spine:
 - [[rsi_harness_by_lil_log_deconstructed]] remains the Weng reader companion,
   and [[recursive_language_models_compositional_generalization]] remains the RLM
   mechanism anchor.
-- [[pi_harness_deep_dive]], [[hermes_harness_deep_dive]], and
-  [[codex_harness_deep_dive]] retain exact implementation paths and revisions.
+- [[pi_harness_deep_dive]], [[hermes_harness_deep_dive]],
+  [[codex_harness_deep_dive]], and [[deepseek_harness_deep_dive]] retain exact
+  implementation paths and revisions.
 - [[claim_evidence_ledger]] contains exact claim locators and limits; [[missing_evidence]] prevents unavailable or unverified material from becoming a stronger claim.
 - [[source_registry]] and [[evidence_graph]] document the authoritative TSV registries under `sources/`.
 - The [[knowledge/harness_benchmarks/harness_benchmark_field_guide|harness benchmark field guide]]
