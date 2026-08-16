@@ -4758,16 +4758,16 @@ any command execution, and publish with no-replace semantics.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Bind Formal Attempts To FormalTarget :lean:ticket:
+** DONE Bind Formal Attempts To FormalTarget :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-073
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-072
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-073-v2-formal-receipts
+:MODEL: gpt-5
 :END:
 Add an additive v2 formal receipt binding target, runtime inventory, elaborated type,
 logs, and axiom audit while preserving v1 receipts.
@@ -4820,7 +4820,20 @@ receipt validation must remain byte-compatible.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-072.
+- RED: focused formal receipt tests failed because the v1-only validator
+  rejected v2 fields =formal_target=, =runtime_inventory_sha256=, and
+  =target_type_sha256=.
+- Implemented schema-version dispatch for
+  =crouzeix-formal-attempt-receipt/v1= and =/v2= while preserving the v1 field
+  set. v2 validates FormalTarget reference, runtime inventory digest, target
+  type digest, and terminal axiom invariants.
+- Updated =formal_attempt_receipt.schema.json= to describe exact v1 and v2
+  branches with no additional fields.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=:
+  11 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/formal_attempt_receipt.schema.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Map Jin Source To Formal Target :lean:ticket:
 :PROPERTIES:

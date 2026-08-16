@@ -32,6 +32,9 @@ FORMAL_RECEIPT_FIELDS = frozenset(
         "formal_attempt_sha256",
     }
 )
+FORMAL_RECEIPT_V2_FIELDS = FORMAL_RECEIPT_FIELDS | frozenset(
+    {"formal_target", "runtime_inventory_sha256", "target_type_sha256"}
+)
 CANDIDATE_FIELDS = frozenset(
     {"outcome", "candidate_id", "candidate_sha256", "candidate_bytes"}
 )
@@ -48,6 +51,7 @@ LOG_FIELDS = frozenset(
     }
 )
 RESOURCE_REF_FIELDS = frozenset({"path", "sha256"})
+FORMAL_TARGET_REF_FIELDS = frozenset({"path", "sha256"})
 RESOURCE_RECEIPT_FIELDS = frozenset(
     {
         "schema_version",
@@ -192,10 +196,16 @@ def validate_attempt_dir(attempt_dir: Path) -> dict[str, object]:
 
 
 def validate_receipt(value: Mapping[str, Any]) -> dict[str, object]:
-    _require_fields(value, FORMAL_RECEIPT_FIELDS, "formal receipt")
-    _require_equal(
-        value["schema_version"], "crouzeix-formal-attempt-receipt/v1", "schema_version"
-    )
+    if not isinstance(value, Mapping):
+        raise protocol.ValidationError("formal receipt must be an object")
+    schema_version = value.get("schema_version")
+    if schema_version == "crouzeix-formal-attempt-receipt/v1":
+        expected_fields = FORMAL_RECEIPT_FIELDS
+    elif schema_version == "crouzeix-formal-attempt-receipt/v2":
+        expected_fields = FORMAL_RECEIPT_V2_FIELDS
+    else:
+        raise protocol.ValidationError("schema_version is invalid")
+    _require_fields(value, expected_fields, "formal receipt")
     result: dict[str, object] = {
         "schema_version": value["schema_version"],
         "attempt_id": _runtime_id(value["attempt_id"], "attempt_id"),
@@ -217,6 +227,14 @@ def validate_receipt(value: Mapping[str, Any]) -> dict[str, object]:
             value["formal_attempt_sha256"], "formal_attempt_sha256"
         ),
     }
+    if schema_version == "crouzeix-formal-attempt-receipt/v2":
+        result["formal_target"] = _validate_formal_target_ref(value["formal_target"])
+        result["runtime_inventory_sha256"] = _digest(
+            value["runtime_inventory_sha256"], "runtime_inventory_sha256"
+        )
+        result["target_type_sha256"] = _digest(
+            value["target_type_sha256"], "target_type_sha256"
+        )
     if result["formal_attempt_sha256"] != canonical_sha256_without_self(result):
         raise protocol.ValidationError("formal_attempt_sha256 mismatch")
     _validate_terminal_invariants(result)
@@ -391,6 +409,15 @@ def _validate_resource_ref(value: Any) -> dict[str, object]:
     return {
         "path": _safe_relative_path(item["path"], "resource_receipt.path"),
         "sha256": _digest(item["sha256"], "resource_receipt.sha256"),
+    }
+
+
+def _validate_formal_target_ref(value: Any) -> dict[str, object]:
+    item = _mapping(value, "formal_target")
+    _require_fields(item, FORMAL_TARGET_REF_FIELDS, "formal_target")
+    return {
+        "path": _safe_relative_path(item["path"], "formal_target.path"),
+        "sha256": _digest(item["sha256"], "formal_target.sha256"),
     }
 
 

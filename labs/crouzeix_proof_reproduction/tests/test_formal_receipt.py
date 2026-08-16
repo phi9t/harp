@@ -135,6 +135,20 @@ def receipt_value(**overrides: object) -> dict[str, object]:
     return value
 
 
+def v2_receipt_value(**overrides: object) -> dict[str, object]:
+    value = receipt_value()
+    value["schema_version"] = "crouzeix-formal-attempt-receipt/v2"
+    value["formal_target"] = {
+        "path": "formal_target.lock.json",
+        "sha256": "4" * 64,
+    }
+    value["runtime_inventory_sha256"] = "5" * 64
+    value["target_type_sha256"] = "6" * 64
+    value.update(overrides)
+    value["formal_attempt_sha256"] = formal_receipt.canonical_sha256_without_self(value)
+    return value
+
+
 class FormalReceiptTests(unittest.TestCase):
     def test_prepare_attempt_is_create_only_and_validates_strict_receipt_fields(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -398,6 +412,39 @@ class FormalReceiptTests(unittest.TestCase):
 
             self.assertEqual(completed.returncode, 0, completed.stderr)
             self.assertEqual(json.loads(completed.stdout)["status"], "passed")
+
+    def test_v2_receipt_binds_formal_target_runtime_inventory_and_target_type(self) -> None:
+        receipt = formal_receipt.validate_receipt(v2_receipt_value())
+
+        self.assertEqual(receipt["schema_version"], "crouzeix-formal-attempt-receipt/v2")
+        self.assertEqual(receipt["formal_target"]["path"], "formal_target.lock.json")
+        self.assertEqual(receipt["runtime_inventory_sha256"], "5" * 64)
+        self.assertEqual(receipt["target_type_sha256"], "6" * 64)
+
+    def test_v1_rejects_v2_fields_and_v2_requires_target_binding(self) -> None:
+        with self.assertRaisesRegex(protocol.ValidationError, "unknown"):
+            formal_receipt.validate_receipt(
+                receipt_value(formal_target={"path": "formal_target.lock.json", "sha256": "4" * 64})
+            )
+
+        missing = v2_receipt_value()
+        missing.pop("runtime_inventory_sha256")
+        with self.assertRaisesRegex(protocol.ValidationError, "runtime_inventory_sha256"):
+            formal_receipt.validate_receipt(missing)
+
+    def test_v2_rejects_target_drift_and_forbidden_axioms(self) -> None:
+        with self.assertRaisesRegex(protocol.ValidationError, "formal_target.sha256"):
+            formal_receipt.validate_receipt(
+                v2_receipt_value(formal_target={"path": "formal_target.lock.json", "sha256": "bad"})
+            )
+
+        base_axioms = request()["axioms"]
+        with self.assertRaisesRegex(protocol.ValidationError, "disallowed axioms"):
+            formal_receipt.validate_receipt(
+                v2_receipt_value(
+                    axioms=base_axioms | {"allowed_axioms": [], "observed_axioms": ["Classical.choice"]}
+                )
+            )
 
 
 if __name__ == "__main__":
