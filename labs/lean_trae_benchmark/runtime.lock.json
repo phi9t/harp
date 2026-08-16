@@ -1,0 +1,34 @@
+{
+  "schema_version": "harp-lean-runtime-lock/v1",
+  "runtime_id": "lean-trae-darwin-arm64-v1",
+  "platform": {
+    "os": "darwin",
+    "arch": "arm64"
+  },
+  "trae": {
+    "version": "0.200.19",
+    "artifact": {
+      "source_url": "https://www.trae.ai/cli/0.200.19/darwin-arm64",
+      "digest": {
+        "algorithm": "sha256",
+        "hex": "2de3b4a458c219953a9eb044a4e07dcae18f150637d5d83874f38a4ae57bed57"
+      },
+      "bytes": 239733536
+    },
+    "published_path": "runtime/darwin-arm64/traecli",
+    "version_stdout": "traecli 0.200.19(internal edition)"
+  },
+  "lean": {
+    "version": "4.19.0",
+    "toolchain_id": "leanprover/lean4:v4.19.0",
+    "artifact_digest": {
+      "algorithm": "sha256",
+      "hex": "bb0f9155a6f1e2e2556a279ddd54b494d63b78f8d68cc2c42c4c9a0ac9cf9a92"
+    },
+    "elan_layout_digest": {
+      "algorithm": "sha256",
+      "hex": "eef06856cccf4148638af1dd984ab57403cace87d0be91d329bdf97cb5c53b6d"
+    }
+  },
+  "mathlib": null
+}

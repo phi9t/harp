@@ -1,0 +1,57 @@
+{
+  "schema_version": "harp-lean-task-manifest/v1",
+  "seal": {
+    "schema_version": "harp-lean-task-seal/v1",
+    "task_id": "core-and-left",
+    "profile": "core-proposition",
+    "runtime_id": "lean-trae-darwin-arm64-v1",
+    "generation_budget": 1,
+    "repair_budget": 2,
+    "candidate_encoding": "utf-8-proof-body",
+    "slots": [
+      {
+        "slot_id": "target",
+        "source_path": "Candidate.lean",
+        "declaration_name": "core_and_left",
+        "declaration_type": "forall a b : Prop, a and b implies a",
+        "prefix": {
+          "path": "sealed/Task.prefix.lean",
+          "bytes": 54,
+          "digest": {
+            "algorithm": "sha256",
+            "hex": "c24e9d739601039a3ab78026db8512156bf71603f64282edeaa9806e360e39c5"
+          }
+        },
+        "suffix": {
+          "path": "sealed/Task.suffix.lean",
+          "bytes": 1,
+          "digest": {
+            "algorithm": "sha256",
+            "hex": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+          }
+        },
+        "mode": "proof_body",
+        "forbidden_tokens": ["import", "sorry", "admit"]
+      }
+    ],
+    "slot_order": ["target"],
+    "project_inventory": [],
+    "command_policy": {
+      "commands": [
+        {"argv": ["lean", "Candidate.lean"], "cwd": "."}
+      ],
+      "writable_paths": ["Scratch.lean", "Candidate.lean"],
+      "network": false
+    },
+    "prompt": {
+      "path": "prompt.txt",
+      "bytes": 297,
+      "digest": {
+        "algorithm": "sha256",
+        "hex": "1e41565baafac4e350d50a0982b765066a2e521552a489040134c36e149ebca8"
+      }
+    }
+  },
+  "strategy": "single_slot",
+  "layout": {"kind": "slots"}
+}

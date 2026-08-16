@@ -1,0 +1,5 @@
+Return exactly one Lean tactic proof body beginning with `by`.
+
+The sealed declaration is `core_and_left`; prove its stated proposition using
+only the declaration context already present in the task-owned prefix. Do not
+return a fence, explanation, import, declaration, namespace, or full module.
