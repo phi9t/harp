@@ -42,6 +42,7 @@ RUN_SPEC_FIELDS = frozenset(
         "created_at_utc",
     }
 )
+FRONTIER_RUN_SPEC_FIELDS = RUN_SPEC_FIELDS | frozenset({"frontier", "digests"})
 CLI_FIELDS = frozenset({"path", "version", "sha256"})
 PROMPT_FIELDS = frozenset(
     {
@@ -53,6 +54,20 @@ PROMPT_FIELDS = frozenset(
     }
 )
 TOKEN_ACCOUNTING_FIELDS = frozenset({"boundary"})
+FRONTIER_FIELDS = frozenset(
+    {
+        "selection_seed",
+        "expert_roles",
+        "proof_progress_probe_ids",
+        "root_expert_count",
+        "child_generations",
+        "draws_per_generation",
+        "admitted_mathematical_node_budget",
+        "total_call_budget",
+        "per_call_preflight",
+    }
+)
+PREFLIGHT_FIELDS = frozenset({"memory_mib"})
 ROUTE_EVENT_FIELDS = frozenset(
     {
         "schema_version",
@@ -76,7 +91,7 @@ ROUTE_EVENT_FIELDS = frozenset(
 )
 OBLIGATION_FIELDS = frozenset({"statement", "strength"})
 
-ARMS = frozenset({"historical", "orchestrated", "guided"})
+ARMS = frozenset({"historical", "orchestrated", "guided", "expert_frontier"})
 LEAKAGE_TIERS = frozenset({"L0", "L1", "L2", "L3", "L4"})
 SANDBOXES = frozenset({"read-only", "workspace-write"})
 ALLOWED_TOOL_NAMES = frozenset(
@@ -146,7 +161,14 @@ def normalize_historical_prompt(data: bytes) -> tuple[bytes, dict[str, object]]:
 
 
 def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
-    _require_fields(value, RUN_SPEC_FIELDS, "run specification")
+    if not isinstance(value, Mapping):
+        raise ValidationError("run specification must be an object")
+    expected_fields = (
+        FRONTIER_RUN_SPEC_FIELDS
+        if value.get("arm") == "expert_frontier"
+        else RUN_SPEC_FIELDS
+    )
+    _require_fields(value, expected_fields, "run specification")
     _require_equal(value["schema_version"], "crouzeix-run-spec/v1", "schema_version")
     _portable_id(value["run_id"], "run_id")
     _enum(value["arm"], ARMS, "arm")
@@ -182,9 +204,11 @@ def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
     if value["network_access"] is not False:
         raise ValidationError("network_access must be false")
     _bounded_integer(value["timeout_seconds"], "timeout_seconds", 30, 14_400)
-    max_calls = _bounded_integer(value["max_calls"], "max_calls", 1, 12)
+    max_calls = _bounded_integer(value["max_calls"], "max_calls", 1, 128)
     if value["arm"] == "historical" and max_calls != 1:
         raise ValidationError("historical arm max_calls must be 1")
+    if value["arm"] == "expert_frontier" and max_calls != 33:
+        raise ValidationError("expert_frontier max_calls must be 33")
 
     accounting = _mapping(value["token_accounting"], "token_accounting")
     _require_fields(accounting, TOKEN_ACCOUNTING_FIELDS, "token_accounting")
@@ -209,6 +233,14 @@ def validate_run_spec(value: Mapping[str, Any]) -> dict[str, object]:
     )
     if len(set(excluded)) != len(excluded):
         raise ValidationError("generation_excluded_classes must be unique")
+    if value["arm"] == "expert_frontier":
+        _validate_frontier_config(value["frontier"], "frontier")
+        digests = _mapping(value["digests"], "digests")
+        if len(digests) == 0 or len(digests) > 128:
+            raise ValidationError("digests must be a nonempty bounded object")
+        for key, digest in digests.items():
+            _bounded_string(key, "digests key", 1, 256)
+            _digest(digest, f"digests.{key}")
     _timestamp(value["created_at_utc"], "created_at_utc")
     return dict(value)
 
@@ -413,6 +445,54 @@ def _portable_id(value: Any, label: str) -> str:
     if PORTABLE_ID.fullmatch(text) is None:
         raise ValidationError(f"{label} must be a portable lowercase ID")
     return text
+
+
+def _validate_frontier_config(value: Any, label: str) -> dict[str, object]:
+    item = _mapping(value, label)
+    _require_fields(item, FRONTIER_FIELDS, label)
+    if _bounded_integer(item["selection_seed"], "selection_seed", 1, 10_000_000_000) != 20260814:
+        raise ValidationError("selection_seed must be 20260814")
+    roles = _string_list(item["expert_roles"], "expert_roles", minimum=5, maximum=5)
+    expected_roles = [
+        "function_theory",
+        "operator_dilation",
+        "matrix_extremal",
+        "completion_positivity",
+        "approximation_audit",
+    ]
+    if roles != expected_roles:
+        raise ValidationError("expert_roles must match the fixed E-arm roster")
+    probes = _string_list(
+        item["proof_progress_probe_ids"],
+        "proof_progress_probe_ids",
+        minimum=10,
+        maximum=10,
+    )
+    if len(set(probes)) != 10:
+        raise ValidationError("proof_progress_probe_ids must be unique")
+    if _bounded_integer(item["root_expert_count"], "root_expert_count", 5, 5) != 5:
+        raise ValidationError("root_expert_count must be 5")
+    if _bounded_integer(item["child_generations"], "child_generations", 3, 3) != 3:
+        raise ValidationError("child_generations must be 3")
+    if _bounded_integer(item["draws_per_generation"], "draws_per_generation", 2, 2) != 2:
+        raise ValidationError("draws_per_generation must be 2")
+    if (
+        _bounded_integer(
+            item["admitted_mathematical_node_budget"],
+            "admitted_mathematical_node_budget",
+            11,
+            11,
+        )
+        != 11
+    ):
+        raise ValidationError("admitted_mathematical_node_budget must be 11")
+    if _bounded_integer(item["total_call_budget"], "total_call_budget", 33, 33) != 33:
+        raise ValidationError("total_call_budget must be 33")
+    preflight = _mapping(item["per_call_preflight"], "per_call_preflight")
+    _require_fields(preflight, PREFLIGHT_FIELDS, "per_call_preflight")
+    if _bounded_integer(preflight["memory_mib"], "memory_mib", 4096, 4096) != 4096:
+        raise ValidationError("memory_mib must be 4096")
+    return dict(item)
 
 
 def _digest(value: Any, label: str) -> str:

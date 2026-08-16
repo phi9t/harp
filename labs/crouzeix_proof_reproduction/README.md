@@ -21,6 +21,26 @@ normalization, then discards the raw upstream bytes. The run tree retains only
 the theorem, normalized execution prompt, Harp-authored phase prompts and
 schemas, and identity receipts.
 
+Prepare the ticketed expert-frontier arm separately:
+
+```sh
+python3 labs/crouzeix_proof_reproduction/prepare_frontier.py \
+  --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 \
+  --historical-prompt /tmp/crouzeix_conjecture_prompt.txt \
+  --cli "$(command -v traecli)" \
+  --model gpt-5.6-sol \
+  --timeout-seconds 3600
+
+python3 labs/crouzeix_proof_reproduction/prepare_frontier.py \
+  --run-dir labs/crouzeix_proof_reproduction/.runs/expert-frontier-001 \
+  --check
+```
+
+This creates the E-arm run specification, copies the blind expert/evaluator
+prompt and schema inputs, records prompt/schema/config/CLI digests, and
+pre-creates the five deterministic generation-zero expert tickets. It does not
+start provider calls.
+
 ## Execute
 
 Inspect `run_spec.json`, then run the prepared study:
@@ -32,8 +52,9 @@ python3 labs/crouzeix_proof_reproduction/run_experiment.py \
 
 Historical runs make one root call. Orchestrated runs make three independent
 route calls, one controller call, an optional redirect, one synthesis call,
-two independent critic calls, and one repair call. The harness refuses partial
-resume or reuse of an existing call ID.
+two independent critic calls, and one repair call. Ticketed frontier runs make
+root expert calls only after the prepared runtime tickets exist. The harness
+refuses partial resume or reuse of an existing call ID.
 
 The resulting `run_receipt.json` reports typed call outcomes and usage
 accounting. A candidate is not mathematically certified by that receipt. In
