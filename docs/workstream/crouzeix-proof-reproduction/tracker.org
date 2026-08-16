@@ -4835,16 +4835,16 @@ receipt validation must remain byte-compatible.
   exit 0.
 - =git diff --check=: exit 0.
 
-** TODO Map Jin Source To Formal Target :lean:ticket:
+** DONE Map Jin Source To Formal Target :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-074
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-073
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-074-jin-source-map
+:MODEL: gpt-5
 :END:
 Create a pinned source-map and exact target alignment task; every terminal span needs
 a revision-bound locator and Lean declaration or explicit blocker.
@@ -4899,7 +4899,20 @@ FormalTarget statement.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-073.
+- RED: =test_jin_validation= initially failed with
+  =ModuleNotFoundError: No module named 'jin_validation'=.
+- Implemented =SourceMapRow=, =AlignmentTask=, =load_source_map=, and
+  =make_alignment_task=. The source map binds the pinned Jin revision and the
+  terminal =CrouzeixConjecture.crouzeixConjecture= row to the CPFR-070
+  FormalTarget statement digest.
+- Added =formal_targets/jin-565b6a3/Target.lean= as an import/check alignment
+  stub only. It imports only =CrouzeixConjecture.FinalTheorems= and contains no
+  copied informal proof.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=:
+  3 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Validate Jin Build And Axioms :lean:ticket:
 :PROPERTIES:

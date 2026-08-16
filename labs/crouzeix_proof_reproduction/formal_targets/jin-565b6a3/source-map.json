@@ -1,0 +1,34 @@
+{
+  "rows": [
+    {
+      "dependency_ids": [],
+      "lean_name": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+      "row_id": "jin-max-polynomial-modulus",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean#L13-L18",
+      "statement_sha256": "49bb4a5ac09489c9c7642215474b2f099f69d1e6a3e431f7a9dfd2b95ed736d0",
+      "status": "mapped"
+    },
+    {
+      "dependency_ids": [
+        "jin-max-polynomial-modulus"
+      ],
+      "lean_name": "CrouzeixConjecture.PolynomialCrouzeixBound",
+      "row_id": "jin-polynomial-bound",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean#L21-L22",
+      "statement_sha256": "4bddb24fd47159593c2223a973569e56d99873f754fa638b75b1f55a93e7167b",
+      "status": "mapped"
+    },
+    {
+      "dependency_ids": [
+        "jin-polynomial-bound"
+      ],
+      "lean_name": "CrouzeixConjecture.crouzeixConjecture",
+      "row_id": "jin-terminal-crouzeix",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23",
+      "statement_sha256": "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4",
+      "status": "mapped"
+    }
+  ],
+  "schema_version": "crouzeix-jin-source-map/v1",
+  "source_commit": "565b6a3e0659b6e0785f783b016c3f6d9f171fa5"
+}
