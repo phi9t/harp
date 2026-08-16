@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "classification_id",
+    "candidate_sha256",
+    "frozen_correctness_sha256",
+    "similarities",
+    "candidate_rewrite",
+    "correctness_outcome"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "crouzeix-mechanism-classification-payload/v1"
+    },
+    "classification_id": {"$ref": "#/$defs/runtime_id"},
+    "candidate_sha256": {"$ref": "#/$defs/sha256"},
+    "frozen_correctness_sha256": {"$ref": "#/$defs/sha256"},
+    "similarities": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/similarity"}
+    },
+    "candidate_rewrite": {"type": "null"},
+    "correctness_outcome": {"type": "null"}
+  },
+  "$defs": {
+    "runtime_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "similarity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_id", "similarity", "locator", "rationale"],
+      "properties": {
+        "reference_id": {"$ref": "#/$defs/portable_id"},
+        "similarity": {
+          "enum": ["same", "related", "distinct", "insufficient_evidence"]
+        },
+        "locator": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    }
+  }
+}

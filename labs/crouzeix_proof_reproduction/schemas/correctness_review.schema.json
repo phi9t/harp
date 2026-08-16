@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "anonymous_candidate_id",
+    "candidate_sha256",
+    "reviewer_index",
+    "outcome",
+    "findings",
+    "theorem_strength_obligations"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-correctness-review-payload/v1"},
+    "anonymous_candidate_id": {"$ref": "#/$defs/portable_id"},
+    "candidate_sha256": {"$ref": "#/$defs/sha256"},
+    "reviewer_index": {"type": "integer", "minimum": 1, "maximum": 2},
+    "outcome": {
+      "enum": ["complete", "incomplete", "invalid", "indeterminate"]
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "theorem_strength_obligations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/obligation"}
+    }
+  },
+  "$defs": {
+    "portable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "maxLength": 128
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "severity",
+        "locator",
+        "statement",
+        "falsifying_test_or_gap"
+      ],
+      "properties": {
+        "finding_id": {"$ref": "#/$defs/portable_id"},
+        "severity": {"enum": ["critical", "major", "minor"]},
+        "locator": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000},
+        "falsifying_test_or_gap": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        }
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["obligation_id", "locator", "statement"],
+      "properties": {
+        "obligation_id": {"$ref": "#/$defs/portable_id"},
+        "locator": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000}
+      }
+    }
+  }
+}

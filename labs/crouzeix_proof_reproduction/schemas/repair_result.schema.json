@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "repair_id",
+    "parent_candidate_sha256",
+    "finding_ledger_sha256",
+    "candidate_text",
+    "dispositions",
+    "unproved_obligations"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-repair-payload/v1"},
+    "repair_id": {"$ref": "#/$defs/runtime_id"},
+    "parent_candidate_sha256": {"$ref": "#/$defs/sha256"},
+    "finding_ledger_sha256": {"$ref": "#/$defs/sha256"},
+    "candidate_text": {"type": "string", "minLength": 1, "maxLength": 2097152},
+    "dispositions": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/disposition"}
+    },
+    "unproved_obligations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {"$ref": "#/$defs/obligation"}
+    }
+  },
+  "$defs": {
+    "runtime_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["namespaced_finding_id", "disposition", "rationale"],
+      "properties": {
+        "namespaced_finding_id": {
+          "type": "string",
+          "pattern": "^r[12]:[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        },
+        "disposition": {
+          "enum": ["fixed", "rejected_with_reason", "unresolved"]
+        },
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    },
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["obligation_id", "locator", "statement"],
+      "properties": {
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        },
+        "locator": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 12000}
+      }
+    }
+  }
+}
