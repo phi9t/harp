@@ -421,6 +421,14 @@ class FrontierStore:
                 raise protocol.ValidationError(
                     f"attempt directory missing for ledger attempt {attempt_id}"
                 )
+            if not directory["has_provider_call"]:
+                raise protocol.ValidationError(
+                    f"provider call missing for ledger attempt {attempt_id}"
+                )
+            if not directory["has_provider_call_receipt"]:
+                raise protocol.ValidationError(
+                    f"provider call receipt missing for ledger attempt {attempt_id}"
+                )
             if directory["terminal_status"] != ledger["terminal_status"]:
                 raise protocol.ValidationError(
                     f"terminal state mismatch for attempt {attempt_id}"
@@ -501,15 +509,28 @@ class FrontierStore:
                 "attempt_id": attempt_id,
                 "terminal_status": record["terminal_status"],
                 "has_provider_call": (path / "provider_call" / "call.json").is_file(),
+                "has_provider_call_receipt": (
+                    path / "provider_call" / "receipt.json"
+                ).is_file()
+                or (path / "receipt.json").is_file(),
             }
         return attempts
 
     def _validate_admission_node_links(self) -> None:
         admissions = _read_admissions(self.run_dir / "admissions")
         nodes = self._read_nodes()
+        accepted_admission_digests = {
+            str(item["admission_decision_sha256"])
+            for item in admissions
+            if item["outcome"] == "accepted"
+        }
         by_admission: dict[str, int] = {}
         for node in nodes:
             digest = str(node["admission_decision_sha256"])
+            if digest not in accepted_admission_digests:
+                raise protocol.ValidationError(
+                    "mathematical node must reference exactly one accepted admission"
+                )
             by_admission[digest] = by_admission.get(digest, 0) + 1
         for admission in admissions:
             if admission["outcome"] != "accepted":

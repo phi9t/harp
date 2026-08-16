@@ -427,6 +427,15 @@ class FrontierStoreTests(unittest.TestCase):
         with self.assertRaisesRegex(protocol.ValidationError, "accepted admission"):
             self.store.reconcile_run(ticket_count=0)
 
+    def test_mathematical_node_requires_matching_accepted_admission_during_receipt_reconciliation(self) -> None:
+        _, decision, node = accepted_records()
+        admission_path = self.store.record_admission(decision)
+        self.store.materialize_mathematical_node(node)
+        admission_path.unlink()
+
+        with self.assertRaisesRegex(protocol.ValidationError, "accepted admission"):
+            self.store.reconcile_run(ticket_count=0)
+
     def test_snapshot_is_reconstructed_deterministically_and_stale_snapshot_is_rejected(self) -> None:
         _, decision, node = accepted_records()
         self.store.record_admission(decision)
@@ -697,6 +706,47 @@ class FrontierStoreTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(protocol.ValidationError, "ticket_count"):
             self.store.reconcile_run(ticket_count=2)
+
+    def test_run_receipt_requires_call_and_receipt_for_ledger_backed_attempt_directory(self) -> None:
+        self.store.append_attempt(attempt_ledger_record())
+        self.store.materialize_attempt(
+            attempt_id="attempt-g0-function-theory",
+            context={"context": "bytes"},
+            provider_call={"argv": ["traecli"], "exit_code": 0},
+            receipt={"ticket_id": "expert-g0-function-theory"},
+            expert_result=expert_result(),
+            terminal_failure=None,
+        )
+        call_path = (
+            self.store.run_dir
+            / "attempts"
+            / "attempt-g0-function-theory"
+            / "provider_call"
+            / "call.json"
+        )
+        receipt_path = (
+            self.store.run_dir
+            / "attempts"
+            / "attempt-g0-function-theory"
+            / "provider_call"
+            / "receipt.json"
+        )
+        top_receipt_path = (
+            self.store.run_dir
+            / "attempts"
+            / "attempt-g0-function-theory"
+            / "receipt.json"
+        )
+        top_receipt_path.replace(receipt_path)
+
+        call_path.unlink()
+        with self.assertRaisesRegex(protocol.ValidationError, "provider call"):
+            self.store.reconcile_run(ticket_count=1)
+
+        call_path.write_text("{}")
+        receipt_path.unlink()
+        with self.assertRaisesRegex(protocol.ValidationError, "provider call receipt"):
+            self.store.reconcile_run(ticket_count=1)
 
 
 if __name__ == "__main__":
