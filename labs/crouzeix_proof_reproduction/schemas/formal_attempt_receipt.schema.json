@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crouzeix-formal-attempt-receipt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "attempt_id",
+    "run_id",
+    "ticket_id",
+    "ticket_sha256",
+    "candidate",
+    "toolchain",
+    "source",
+    "command",
+    "logs",
+    "resource_receipt",
+    "axioms",
+    "status",
+    "reason",
+    "started_at_utc",
+    "completed_at_utc",
+    "formal_attempt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "crouzeix-formal-attempt-receipt/v1"},
+    "attempt_id": {"$ref": "#/$defs/runtime_id"},
+    "run_id": {"$ref": "#/$defs/runtime_id"},
+    "ticket_id": {"$ref": "#/$defs/runtime_id"},
+    "ticket_sha256": {"$ref": "#/$defs/sha256"},
+    "candidate": {"$ref": "#/$defs/candidate"},
+    "toolchain": {"$ref": "#/$defs/toolchain"},
+    "source": {"$ref": "#/$defs/source"},
+    "command": {"$ref": "#/$defs/command"},
+    "logs": {"$ref": "#/$defs/logs"},
+    "resource_receipt": {"$ref": "#/$defs/resource_receipt_ref"},
+    "axioms": {"$ref": "#/$defs/axioms"},
+    "status": {"enum": ["not_attempted", "blocked", "failed", "passed"]},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "started_at_utc": {"$ref": "#/$defs/utc_timestamp"},
+    "completed_at_utc": {"$ref": "#/$defs/utc_timestamp"},
+    "formal_attempt_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "runtime_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "not": {"pattern": "^/|(^|/)\\.\\.(/|$)|(^|/)\\.(/|$)"}
+    },
+    "utc_timestamp": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "T.*Z$"
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "candidate_id", "candidate_sha256", "candidate_bytes"],
+      "properties": {
+        "outcome": {"enum": ["candidate", "no_candidate"]},
+        "candidate_id": {
+          "anyOf": [{"$ref": "#/$defs/runtime_id"}, {"type": "null"}]
+        },
+        "candidate_sha256": {
+          "anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+        },
+        "candidate_bytes": {"type": "integer", "minimum": 0, "maximum": 4194304}
+      }
+    },
+    "toolchain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "platform", "toolchain_sha256"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "version": {"type": "string", "minLength": 1, "maxLength": 256},
+        "platform": {"type": "string", "minLength": 1, "maxLength": 256},
+        "toolchain_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relative_path"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 0, "maximum": 4194304}
+      }
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["argv", "cwd", "env_sha256", "exit_code"],
+      "properties": {
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {"type": "string", "minLength": 1, "maxLength": 4096}
+        },
+        "cwd": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "env_sha256": {"$ref": "#/$defs/sha256"},
+        "exit_code": {
+          "anyOf": [
+            {"type": "integer", "minimum": 0, "maximum": 255},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stdout_path",
+        "stdout_sha256",
+        "stderr_path",
+        "stderr_sha256",
+        "complete"
+      ],
+      "properties": {
+        "stdout_path": {"$ref": "#/$defs/relative_path"},
+        "stdout_sha256": {"$ref": "#/$defs/sha256"},
+        "stderr_path": {"$ref": "#/$defs/relative_path"},
+        "stderr_sha256": {"$ref": "#/$defs/sha256"},
+        "complete": {"type": "boolean"}
+      }
+    },
+    "resource_receipt_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relative_path"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "axioms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scan_performed",
+        "scanner",
+        "allowed_axioms",
+        "observed_axioms",
+        "scan_log_path",
+        "scan_log_sha256"
+      ],
+      "properties": {
+        "scan_performed": {"type": "boolean"},
+        "scanner": {"type": "string", "minLength": 1, "maxLength": 256},
+        "allowed_axioms": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {"type": "string", "minLength": 1, "maxLength": 4096}
+        },
+        "observed_axioms": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {"type": "string", "minLength": 1, "maxLength": 4096}
+        },
+        "scan_log_path": {"$ref": "#/$defs/relative_path"},
+        "scan_log_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}
