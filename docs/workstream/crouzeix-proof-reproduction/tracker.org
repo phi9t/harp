@@ -5211,16 +5211,16 @@ recording terminal blockers or theorem-strength mismatches at the owning node.
   11 tests, 0 failures.
 - =git diff --check=: exit 0.
 
-** TODO Admit And Prove Shared Kernel Lemmas :lean:ticket:
+** DONE Admit And Prove Shared Kernel Lemmas :lean:ticket:
 :PROPERTIES:
 :ID: CPFR-079
 :DESIGN_SECTION: Crouzeix Lean Validation Routes
 :BRANCH: codex/crouzeix-formal-validation
 :WORKTREE: .worktrees/crouzeix-formal-validation
 :DEPENDS_ON: CPFR-076 CPFR-078
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-079-shared-kernel-admission
+:MODEL: gpt-5
 :END:
 Admit only normalized bridges needed by both routes, prove them independently, migrate
 two consumers, and audit that no kernel lemma depends on a terminal Crouzeix theorem.
@@ -5268,8 +5268,20 @@ two normalized route needs or two passed consumers.
 - =git diff --check=
 
 *** Verification Evidence
-- Not yet run. This ticket is specification-ready and blocked on CPFR-076 and
-  CPFR-078.
+- RED: =test_kernel_validation= initially failed with
+  =ModuleNotFoundError: No module named 'kernel_validation'=.
+- Implemented shared-kernel admission validation and an empty admissions ledger.
+  The current status is =no-admitted-kernel-lemmas= because CPFR-076 and
+  CPFR-078 are both blocked and provide no two passed consumers.
+- Admission validation rejects one-consumer bridge admissions and any admission
+  that depends on a terminal Crouzeix theorem.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_kernel_validation -v=:
+  2 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
+  16 tests, 0 failures.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/shared-kernel/admissions.json=:
+  exit 0.
+- =git diff --check=: exit 0.
 
 ** TODO Run Sealed Lean Reconstruction :lean:ticket:
 :PROPERTIES:
