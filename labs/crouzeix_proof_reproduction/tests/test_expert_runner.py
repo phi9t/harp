@@ -225,10 +225,12 @@ class FakeProvider:
         root_status_by_role: dict[str, str] | None = None,
         evaluator_failures: set[tuple[str, int]] | None = None,
         score_complete_roles: set[str] | None = None,
+        schema_valid_evaluator_findings: bool = False,
     ) -> None:
         self.root_status_by_role = root_status_by_role or {}
         self.evaluator_failures = evaluator_failures or set()
         self.score_complete_roles = score_complete_roles or {"function_theory"}
+        self.schema_valid_evaluator_findings = schema_valid_evaluator_findings
         self.expert_calls: list[dict[str, object]] = []
         self.evaluator_contexts: list[dict[str, object]] = []
 
@@ -307,6 +309,28 @@ class FakeProvider:
         node_id = str(ticket["node_id"])
         role = str(node_id).removeprefix("node-g0-").replace("-", "_")
         pass_count = 10 if role in self.score_complete_roles else 6
+        findings = [
+            {
+                "finding_id": f"note-e{evaluator_index}",
+                "severity": "minor" if pass_count == 10 else "major",
+                "statement": f"Evaluator {evaluator_index} note in {node_id}.",
+                "locator": "candidate.tex#L1",
+                "recommended_role": "approximation_audit",
+            }
+        ]
+        if self.schema_valid_evaluator_findings:
+            findings = [
+                {
+                    "finding_id": f"note-e{evaluator_index}",
+                    "probe_id": prepare_frontier.PROOF_PROGRESS_PROBE_IDS[
+                        min(pass_count, len(prepare_frontier.PROOF_PROGRESS_PROBE_IDS)) - 1
+                    ],
+                    "severity": "minor" if pass_count == 10 else "major",
+                    "locator": "candidate.tex#L1",
+                    "statement": f"Evaluator {evaluator_index} note in {node_id}.",
+                    "test": f"Check probe evidence for evaluator {evaluator_index}.",
+                }
+            ]
         payload = {
             "schema_version": "crouzeix-node-evaluation-payload/v1",
             "probes": [
@@ -317,15 +341,7 @@ class FakeProvider:
                 }
                 for index, probe_id in enumerate(prepare_frontier.PROOF_PROGRESS_PROBE_IDS)
             ],
-            "findings": [
-                {
-                    "finding_id": f"note-e{evaluator_index}",
-                    "severity": "minor" if pass_count == 10 else "major",
-                    "statement": f"Evaluator {evaluator_index} note in {node_id}.",
-                    "locator": "candidate.tex#L1",
-                    "recommended_role": "approximation_audit",
-                }
-            ],
+            "findings": findings,
         }
         return expert_runner.ProviderAttempt(
             terminal_status="completed",
@@ -542,6 +558,40 @@ class ExpertRunnerTests(unittest.TestCase):
                 evaluation["terminal_ticket_event_sha256"],
                 digest_json(completed_events[0]),
             )
+
+    def test_schema_valid_evaluator_finding_is_terminalized_and_namespaced(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            provider = FakeProvider(schema_valid_evaluator_findings=True)
+            expert_runner.run_phase(run_dir, "roots", provider=provider)
+
+            expert_runner.run_phase(run_dir, "evaluate-roots", provider=provider)
+
+            event_path = (
+                run_dir
+                / "tickets"
+                / "evaluate-node-g0-operator-dilation-e1"
+                / "ticket_events.jsonl"
+            )
+            states = [
+                json.loads(line)["to_state"]
+                for line in event_path.read_text(encoding="utf-8").splitlines()
+            ]
+            self.assertEqual(states[-2:], ["completed", "accepted"])
+            reconciliation = json.loads(
+                (
+                    run_dir
+                    / "node_evaluations"
+                    / "node-g0-operator-dilation"
+                    / "reconciliation.json"
+                ).read_text(encoding="utf-8")
+            )
+            finding = reconciliation["evaluator_findings"][0]
+            self.assertEqual(finding["finding_id"], "e1:note-e1")
+            self.assertEqual(finding["source_finding_id"], "note-e1")
+            self.assertEqual(finding["source_evaluator_index"], 1)
+            self.assertEqual(finding["recommended_role"], "approximation_audit")
+            self.assertIn("Check probe evidence", finding["statement"])
 
     def test_generation_barrier_terminalizes_both_draws_before_child_execution(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:

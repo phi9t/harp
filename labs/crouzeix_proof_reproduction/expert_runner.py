@@ -1172,13 +1172,18 @@ def _frontier_evaluation_payload(value: Mapping[str, Any]) -> dict[str, object]:
         raise protocol.ValidationError("evaluation probe order must match closed probe IDs")
     findings = []
     for finding in value.get("findings", []):
+        statement = str(finding["statement"])
+        if "test" in finding:
+            statement = f"{statement}\nTest: {finding['test']}"
         findings.append(
             {
                 "finding_id": _portable(str(finding["finding_id"])),
                 "severity": str(finding["severity"]),
-                "statement": str(finding["statement"]),
+                "statement": statement,
                 "locator": str(finding["locator"]),
-                "recommended_role": str(finding["recommended_role"]),
+                "recommended_role": str(
+                    finding.get("recommended_role", "approximation_audit")
+                ),
             }
         )
     return {"probes": normalized, "findings": findings}
