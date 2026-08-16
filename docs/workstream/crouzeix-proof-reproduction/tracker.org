@@ -63,6 +63,145 @@ files use empty-blob base
 
 * Work Items
 
+** DONE Record Context-Parity Gate Checkpoint :docs:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-058
+:DESIGN_SECTION: Runtime Ticket Contract; Initial Expert Roster; Claim Ceiling
+:DEPENDS_ON: CPFR-R017
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: GPT-5
+:END:
+
+*** Scope
+
+Record the current local milestone state for the Crouzeix proof-reproduction
+workstream and reserve a non-conflicting context-parity repair ticket.
+
+*** Non-goals
+
+- No live provider call.
+- No =roots=, =recover-roots=, =evaluate-roots=, =generations=, =finalize=, or
+  CPFR-033 execution.
+- No creation, mutation, or hand-editing of ignored =.runs= evidence.
+- No runtime code repair.
+- No mathematical proof-progress claim.
+- No =docs/import-receipt.md= refresh.
+
+*** Owned Files
+
+- =docs/workstream/crouzeix-proof-reproduction/milestone-2026-08-16-context-parity-gate.md=
+- =docs/superpowers/specs/2026-08-16-crouzeix-context-parity-recovery-design.md=
+- =docs/superpowers/plans/2026-08-16-crouzeix-context-parity-recovery.md=
+- this checkpoint tracker subtree
+- new =CPFR-R018= tracker subtree
+
+*** Acceptance Criteria
+
+- The checkpoint states the landed control-plane state and proof claim ceiling.
+- The checkpoint records CPFR-032 as blocked on a pre-provider context digest
+  mismatch, not a provider or mathematical outcome.
+- =expert-frontier-001= and =expert-frontier-002= are preserved as ignored
+  superseded control-plane evidence.
+- The context-parity spec and plan use =CPFR-R018= for the repair ticket while
+  preserving existing =CPFR-R015=, =CPFR-R016=, and =CPFR-R017= meanings.
+- The spec, plan, checkpoint, and =CPFR-R018= state that the repair has no live
+  providers, no CPFR-033, and no ignored =.runs= mutation.
+- =CPFR-R018= does not own =docs/import-receipt.md= refresh; this checkpoint
+  landing refreshes the receipt only after tracked docs settle.
+
+*** Implementation Steps
+
+1. Confirm =CPFR-R015=, =CPFR-R016=, and =CPFR-R017= are already assigned.
+2. Retarget the context-parity spec and plan to =CPFR-R018=.
+3. Add the checkpoint document under the workstream docs.
+4. Add this checkpoint entry and the =CPFR-R018= repair ticket.
+5. Validate tracker syntax and whitespace.
+
+*** Verification Plan
+
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+
+*** Verification Evidence
+
+- Verification is recorded in the final response for this docs-only milestone
+  patch. This checkpoint did not run live providers or edit ignored =.runs=
+  evidence. The landing refreshes =docs/import-receipt.md= as the final
+  tracked payload step before commit.
+
+** DONE Add Lean Proof-Suite Lock And Manifest Validators :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-L001
+:DESIGN_SECTION: Local Hermetic Lean Proof-Suite Gate
+:DEPENDS_ON: CPFR-058
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: CPFR-L001 implementation subagent
+:AGENT_RUN: current worker thread
+:MODEL: GPT-5.5
+:END:
+
+*** Scope
+
+Add strict Python validators for Lean runtime locks and proof-suite manifests.
+
+*** Non-goals
+
+- No Lean execution.
+- No live provider call.
+- No CPFR-R018, CPFR-032, or CPFR-033 action.
+- No ignored =.runs= mutation.
+- No training data.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/lean_suite.py=
+- =labs/crouzeix_proof_reproduction/tests/test_lean_suite.py=
+- this tracker subtree
+
+*** Acceptance Criteria
+
+- Runtime lock validation rejects unknown fields, duplicate JSON keys,
+  unsupported schema versions, unsafe executable paths, invalid digests,
+  invalid environment allowlists, and invalid command profiles.
+- Suite manifest validation rejects unknown fields, duplicate module IDs,
+  absolute/traversal paths, undeclared tiers, undeclared command profiles,
+  invalid digests, duplicate paths, and malformed module names.
+- Canonical digest helpers are deterministic and use existing lab SHA-256
+  conventions.
+
+*** Implementation Steps
+
+1. Add red tests for lock validation.
+2. Add red tests for manifest validation.
+3. Implement minimal validators and canonical digest helpers.
+4. Run focused tests.
+5. Record verification evidence.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+
+*** Verification Evidence
+
+- =CPFR-058= was verified present and terminal (=DONE=), so the planned
+  dependency is valid.
+- Red check: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before implementation with =ModuleNotFoundError: No module named
+  'lean_suite'=.
+- Green check: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 9 tests.
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- =git diff --check= exited 0.
+- =mise run verify= exited 0 after refreshing the tracked payload digest in
+  =docs/import-receipt.md=.
+
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:
 :ID: CPFR-001
