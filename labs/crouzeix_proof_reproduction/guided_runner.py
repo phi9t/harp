@@ -61,6 +61,73 @@ GUIDED_RESULT_FIELDS = frozenset(
 )
 ENDPOINT_FIELDS = frozenset({"kind", "text"})
 OBLIGATION_FIELDS = frozenset({"statement", "locator"})
+CALL_RECEIPT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "call_id",
+        "role",
+        "status",
+        "cli",
+        "model",
+        "sandbox",
+        "approval_policy",
+        "network_access",
+        "allowed_tools",
+        "blocked_reason",
+        "started_at_utc",
+        "completed_at_utc",
+        "returncode",
+        "timed_out",
+        "prompt_bytes",
+        "prompt_sha256",
+        "schema_bytes",
+        "schema_sha256",
+        "events_bytes",
+        "events_sha256",
+        "stderr_bytes",
+        "stderr_sha256",
+        "final_bytes",
+        "final_sha256",
+        "session_id",
+        "usage",
+        "event_types",
+        "parse_error",
+        "parent_digests",
+        "ticket_id",
+        "ticket_sha256",
+        "ticket_context_sha256",
+        "ticket_schema_sha256",
+        "ticket_prompt_sha256",
+        "ticket_parent_artifact_sha256",
+    }
+)
+GUIDED_OUTPUT_RECEIPT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "run_id",
+        "ticket_id",
+        "ticket_sha256",
+        "call_receipt_sha256",
+        "terminal_status",
+        "endpoint",
+        "endpoint_sha256",
+        "candidate_sha256",
+        "blocker_sha256",
+        "guided_result_sha256",
+        "materialized_path",
+        "content_addressed_path",
+        "created_at_utc",
+        "guided_receipt_sha256",
+    }
+)
+FORBIDDEN_CARD_TEXT_MARKERS = (
+    "manuscript bytes",
+    "manuscript excerpt",
+    "formalization bytes",
+    "source proof text",
+    "lean file",
+    "proof bytes from",
+)
 
 
 @dataclass(frozen=True)
@@ -338,9 +405,29 @@ def run_guided_reconstruction(
     _append_ticket_progress(root, "admitted", str(ticket["context_sha256"]))
     _append_ticket_progress(root, "running", tickets.canonical_sha256(ticket))
     attempt = engine.run_guided(run_dir=root, ticket=ticket, context=context)
-    terminal_status = _terminal_status(attempt.terminal_status)
+    try:
+        call_receipt = _load_typed_call_receipt(root, ticket)
+        if _canonical_sha256(call_receipt) != _canonical_sha256(attempt.receipt):
+            raise ValidationError("provider call receipt does not match persisted call receipt")
+        if call_receipt["status"] != attempt.terminal_status:
+            raise ValidationError("provider call receipt status does not match attempt")
+    except ValidationError as error:
+        failure = {"provider_receipt": dict(attempt.receipt), "error": str(error)}
+        terminal_artifact = _canonical_sha256(failure)
+        _append_ticket_progress(root, "failed", terminal_artifact)
+        return _write_guided_run_receipt(
+            root,
+            spec=spec,
+            terminal_status="failed",
+            provider_status=attempt.terminal_status,
+            provider_call=attempt.provider_call,
+            provider_receipt=attempt.receipt,
+            provider_reason=str(error),
+            guided_receipt_sha256=None,
+        )
+    terminal_status = _terminal_status(str(call_receipt["status"]))
     guided_receipt: dict[str, object] | None = None
-    terminal_artifact = _canonical_sha256(attempt.receipt)
+    terminal_artifact = _canonical_sha256(call_receipt)
     if terminal_status == "completed" and attempt.validated_output is not None:
         try:
             output = validate_guided_result(
@@ -360,7 +447,7 @@ def run_guided_reconstruction(
                 root,
                 output=output,
                 ticket=ticket,
-                provider_receipt=attempt.receipt,
+                provider_receipt=call_receipt,
             )
             terminal_artifact = str(guided_receipt["guided_receipt_sha256"])
             _append_ticket_progress(root, "completed", terminal_artifact)
@@ -370,20 +457,43 @@ def run_guided_reconstruction(
         ticket_status = "failed" if terminal_status == "malformed" else terminal_status
         _append_ticket_progress(root, ticket_status, terminal_artifact)
         final_status = ticket_status
+    return _write_guided_run_receipt(
+        root,
+        spec=spec,
+        terminal_status=final_status,
+        provider_status=attempt.terminal_status,
+        provider_call=attempt.provider_call,
+        provider_receipt=call_receipt,
+        provider_reason=attempt.reason,
+        guided_receipt_sha256=None
+        if guided_receipt is None
+        else guided_receipt["guided_receipt_sha256"],
+    )
+
+
+def _write_guided_run_receipt(
+    root: Path,
+    *,
+    spec: Mapping[str, Any],
+    terminal_status: str,
+    provider_status: str,
+    provider_call: Mapping[str, Any],
+    provider_receipt: Mapping[str, Any],
+    provider_reason: str | None,
+    guided_receipt_sha256: object | None,
+) -> dict[str, object]:
     run_receipt = {
         "schema_version": "crouzeix-guided-run-receipt/v1",
         "run_id": spec["run_id"],
         "arm": "guided",
         "leakage": "L3",
         "call_count": 1,
-        "terminal_status": final_status,
-        "provider_status": attempt.terminal_status,
-        "provider_call": dict(attempt.provider_call),
-        "provider_receipt": dict(attempt.receipt),
-        "provider_reason": attempt.reason,
-        "guided_receipt_sha256": None
-        if guided_receipt is None
-        else guided_receipt["guided_receipt_sha256"],
+        "terminal_status": terminal_status,
+        "provider_status": provider_status,
+        "provider_call": dict(provider_call),
+        "provider_receipt": dict(provider_receipt),
+        "provider_reason": provider_reason,
+        "guided_receipt_sha256": guided_receipt_sha256,
         "completed_at_utc": _now(),
     }
     run_receipt["guided_run_receipt_sha256"] = _canonical_sha256(run_receipt)
@@ -416,14 +526,23 @@ def check_guided_run(run_dir: Path) -> dict[str, object]:
         raise ValidationError("guided run receipt digest mismatch")
     ticket = _read_ticket(root)
     _validate_terminal_ticket(root, ticket)
-    call_count = int(run_receipt["call_count"])
-    if call_count != 1:
+    call_receipts = _load_guided_call_receipts(root, ticket)
+    call_count = len(call_receipts)
+    if run_receipt["call_count"] != call_count or call_count != 1:
         raise ValidationError("guided run must account for exactly one call")
+    call_receipt = call_receipts[0]
+    if _canonical_sha256(run_receipt["provider_receipt"]) != _canonical_sha256(call_receipt):
+        raise ValidationError("guided run receipt provider call receipt mismatch")
+    terminal_status = str(run_receipt["terminal_status"])
+    if terminal_status in {"candidate", "blocker"}:
+        _validate_materialized_guided_output(root, ticket, call_receipt, terminal_status)
+    elif (root / "guided_candidate").exists() or (root / "guided_blocker").exists():
+        raise ValidationError("failed guided run cannot retain materialized output")
     return {
         "schema_version": "crouzeix-guided-check/v1",
         "run_id": spec["run_id"],
         "status": "ok",
-        "terminal_status": run_receipt["terminal_status"],
+        "terminal_status": terminal_status,
         "call_count": call_count,
     }
 
@@ -448,11 +567,20 @@ def validate_mechanism_card(value: Mapping[str, Any]) -> dict[str, object]:
             {
                 "source_id": _bounded_string(item["source_id"], "source_id", 1, 256),
                 "locator": _bounded_string(item["locator"], "locator", 1, 512),
-                "claim": _bounded_string(item["claim"], "claim", 1, 4096),
+                "claim": _reject_forbidden_card_text(
+                    _bounded_string(item["claim"], "claim", 1, 4096),
+                    "attribution.claim",
+                ),
             }
         )
-    summary = _bounded_string(value["mechanism_summary"], "mechanism_summary", 1, 16_000)
-    guidance = _string_list(value["allowed_guidance"], "allowed_guidance", 1, 32)
+    summary = _reject_forbidden_card_text(
+        _bounded_string(value["mechanism_summary"], "mechanism_summary", 1, 16_000),
+        "mechanism_summary",
+    )
+    guidance = [
+        _reject_forbidden_card_text(item, "allowed_guidance")
+        for item in _string_list(value["allowed_guidance"], "allowed_guidance", 1, 32)
+    ]
     excluded = _string_list(value["excluded_materials"], "excluded_materials", 3, 16)
     required_exclusions = {"manuscript bytes", "formalization bytes", "source proof text"}
     if not required_exclusions.issubset({item.lower() for item in excluded}):
@@ -626,6 +754,10 @@ def _materialize_guided_output(
         raise ValidationError("refusing existing guided output directory")
     output_dir.mkdir(mode=0o700)
     _write_create_only_text(output_path, endpoint_text)
+    content_addressed_path = output_dir / (
+        f"{endpoint_sha256}.tex" if endpoint["kind"] == "candidate_proof" else f"{endpoint_sha256}.txt"
+    )
+    _write_create_only_text(content_addressed_path, endpoint_text)
     receipt = {
         "schema_version": "crouzeix-guided-output-receipt/v1",
         "run_id": output["run_id"],
@@ -639,6 +771,7 @@ def _materialize_guided_output(
         "blocker_sha256": blocker_sha256,
         "guided_result_sha256": _canonical_sha256(output),
         "materialized_path": output_path.relative_to(root).as_posix(),
+        "content_addressed_path": content_addressed_path.relative_to(root).as_posix(),
         "created_at_utc": _now(),
     }
     receipt["guided_receipt_sha256"] = _canonical_sha256(receipt)
@@ -711,6 +844,149 @@ def _validate_context_against_ticket(context: Mapping[str, Any], ticket: Mapping
         raise ValidationError("guided context ticket_id must match ticket")
     if context.get("mechanism_card_sha256") != ticket["parent_artifact_sha256"]:
         raise ValidationError("guided context mechanism card digest must match ticket")
+
+
+def _load_typed_call_receipt(root: Path, ticket: Mapping[str, Any]) -> dict[str, object]:
+    receipt_path = root / "calls" / GUIDED_TICKET_ID / "receipt.json"
+    receipt = validate_guided_call_receipt(
+        read_strict_json_object(receipt_path, "guided call receipt"),
+        ticket=ticket,
+    )
+    return receipt
+
+
+def _load_guided_call_receipts(root: Path, ticket: Mapping[str, Any]) -> list[dict[str, object]]:
+    calls_root = root / "calls"
+    if not calls_root.is_dir() or calls_root.is_symlink():
+        raise ValidationError("guided calls directory is missing")
+    call_dirs = [path for path in calls_root.iterdir() if path.is_dir() and not path.is_symlink()]
+    if len(call_dirs) != 1 or call_dirs[0].name != GUIDED_TICKET_ID:
+        raise ValidationError("guided call receipt count must be exactly one")
+    return [_load_typed_call_receipt(root, ticket)]
+
+
+def validate_guided_call_receipt(
+    value: Mapping[str, Any],
+    *,
+    ticket: Mapping[str, Any],
+) -> dict[str, object]:
+    _require_fields(value, CALL_RECEIPT_FIELDS, "guided call receipt")
+    _require_equal(value["schema_version"], "crouzeix-call-receipt/v1", "call receipt schema_version")
+    _require_equal(value["call_id"], GUIDED_TICKET_ID, "call_id")
+    _require_equal(value["role"], "expert", "call role")
+    _enum(value["status"], frozenset({"completed", "failed", "timed_out", "malformed", "blocked_resource"}), "call status")
+    _validate_cli_identity(value["cli"])
+    _bounded_string(value["model"], "model", 1, 128)
+    _require_equal(value["sandbox"], "workspace-write", "sandbox")
+    _require_equal(value["approval_policy"], "never", "approval_policy")
+    if value["network_access"] is not False:
+        raise ValidationError("guided call receipt network_access must be false")
+    if value["allowed_tools"] != GUIDED_ALLOWED_TOOLS:
+        raise ValidationError("guided call receipt allowed_tools must be exactly Write")
+    if value["blocked_reason"] is not None:
+        _bounded_string(value["blocked_reason"], "blocked_reason", 1, 4096)
+    _bounded_string(value["started_at_utc"], "started_at_utc", 1, 64)
+    _bounded_string(value["completed_at_utc"], "completed_at_utc", 1, 64)
+    if value["returncode"] is not None:
+        _bounded_integer(value["returncode"], "returncode", -255, 255)
+    if not isinstance(value["timed_out"], bool):
+        raise ValidationError("guided call receipt timed_out must be boolean")
+    _bounded_integer(value["prompt_bytes"], "prompt_bytes", 1, 1024 * 1024)
+    _digest(value["prompt_sha256"], "prompt_sha256")
+    _bounded_integer(value["schema_bytes"], "schema_bytes", 1, 1024 * 1024)
+    _digest(value["schema_sha256"], "schema_sha256")
+    _bounded_integer(value["events_bytes"], "events_bytes", 0, 16 * 1024 * 1024)
+    if value["events_sha256"] is not None:
+        _digest(value["events_sha256"], "events_sha256")
+    _bounded_integer(value["stderr_bytes"], "stderr_bytes", 0, 4 * 1024 * 1024)
+    if value["stderr_sha256"] is not None:
+        _digest(value["stderr_sha256"], "stderr_sha256")
+    if value["final_bytes"] is not None:
+        _bounded_integer(value["final_bytes"], "final_bytes", 1, 2 * 1024 * 1024)
+    if value["final_sha256"] is not None:
+        _digest(value["final_sha256"], "final_sha256")
+    if value["session_id"] is not None:
+        _bounded_string(value["session_id"], "session_id", 1, 256)
+    if value["usage"] is not None and not isinstance(value["usage"], dict):
+        raise ValidationError("guided call receipt usage must be object or null")
+    if not isinstance(value["event_types"], list) or not all(isinstance(item, str) for item in value["event_types"]):
+        raise ValidationError("guided call receipt event_types must be strings")
+    if value["parse_error"] is not None:
+        _bounded_string(value["parse_error"], "parse_error", 1, 4096)
+    parent_digests = _mapping(value["parent_digests"], "parent_digests")
+    if set(parent_digests) != {"theorem", "mechanism_card"}:
+        raise ValidationError("guided call receipt parent_digests must bind theorem and mechanism_card")
+    _digest(parent_digests["theorem"], "parent_digests.theorem")
+    _digest(parent_digests["mechanism_card"], "parent_digests.mechanism_card")
+    if value["ticket_id"] != ticket["ticket_id"]:
+        raise ValidationError("guided call receipt ticket_id does not match ticket")
+    if value["ticket_sha256"] != tickets.canonical_sha256(ticket):
+        raise ValidationError("guided call receipt ticket_sha256 does not match ticket")
+    for receipt_field, ticket_field in (
+        ("ticket_context_sha256", "context_sha256"),
+        ("ticket_schema_sha256", "schema_sha256"),
+        ("ticket_prompt_sha256", "prompt_sha256"),
+        ("ticket_parent_artifact_sha256", "parent_artifact_sha256"),
+    ):
+        if value[receipt_field] != ticket[ticket_field]:
+            raise ValidationError(f"guided call receipt {receipt_field} does not match ticket")
+    return dict(value)
+
+
+def _validate_materialized_guided_output(
+    root: Path,
+    ticket: Mapping[str, Any],
+    call_receipt: Mapping[str, Any],
+    terminal_status: str,
+) -> dict[str, object]:
+    output_dir = root / ("guided_candidate" if terminal_status == "candidate" else "guided_blocker")
+    receipt = read_strict_json_object(output_dir / "receipt.json", "guided output receipt")
+    _require_fields(receipt, GUIDED_OUTPUT_RECEIPT_FIELDS, "guided output receipt")
+    if receipt["guided_receipt_sha256"] != _canonical_sha256(
+        {key: value for key, value in receipt.items() if key != "guided_receipt_sha256"}
+    ):
+        raise ValidationError("guided output receipt digest mismatch")
+    if receipt["schema_version"] != "crouzeix-guided-output-receipt/v1":
+        raise ValidationError("guided output receipt schema_version is invalid")
+    if receipt["ticket_id"] != ticket["ticket_id"] or receipt["ticket_sha256"] != tickets.canonical_sha256(ticket):
+        raise ValidationError("guided output receipt ticket binding mismatch")
+    if receipt["call_receipt_sha256"] != _canonical_sha256(call_receipt):
+        raise ValidationError("guided output receipt call receipt digest mismatch")
+    if receipt["terminal_status"] != terminal_status:
+        raise ValidationError("guided output receipt terminal status mismatch")
+    endpoint = _mapping(receipt["endpoint"], "guided output endpoint")
+    _require_fields(endpoint, ENDPOINT_FIELDS, "guided output endpoint")
+    expected_kind = "candidate_proof" if terminal_status == "candidate" else "blocker"
+    if endpoint["kind"] != expected_kind:
+        raise ValidationError("guided output endpoint kind mismatch")
+    endpoint_text = _bounded_string(endpoint["text"], "guided output endpoint.text", 1, 1_000_000)
+    endpoint_sha256 = sha256_bytes(endpoint_text.encode("utf-8"))
+    if receipt["endpoint_sha256"] != endpoint_sha256:
+        raise ValidationError("guided output endpoint digest mismatch")
+    _digest(receipt["guided_result_sha256"], "guided_result_sha256")
+    materialized_path = _safe_relative_runtime_path(str(receipt["materialized_path"]), "materialized_path")
+    content_path = _safe_relative_runtime_path(str(receipt["content_addressed_path"]), "content_addressed_path")
+    if terminal_status == "candidate":
+        if receipt["candidate_sha256"] != endpoint_sha256 or receipt["blocker_sha256"] is not None:
+            raise ValidationError("guided output candidate digest mismatch")
+        expected_materialized = "guided_candidate/candidate.tex"
+        expected_content = f"guided_candidate/{endpoint_sha256}.tex"
+        label = "candidate"
+    else:
+        if receipt["blocker_sha256"] != endpoint_sha256 or receipt["candidate_sha256"] is not None:
+            raise ValidationError("guided output blocker digest mismatch")
+        expected_materialized = "guided_blocker/blocker.txt"
+        expected_content = f"guided_blocker/{endpoint_sha256}.txt"
+        label = "blocker"
+    if materialized_path != expected_materialized or content_path != expected_content:
+        raise ValidationError(f"guided output {label} content-addressed path mismatch")
+    for relative_path in (materialized_path, content_path):
+        path = root / relative_path
+        if path.is_symlink() or not path.is_file():
+            raise ValidationError(f"guided output {label} file is missing")
+        if path.read_text(encoding="utf-8") != endpoint_text:
+            raise ValidationError(f"guided output {label} content mismatch")
+    return dict(receipt)
 
 
 def _validate_terminal_ticket(root: Path, ticket: Mapping[str, Any]) -> None:
@@ -813,6 +1089,26 @@ def _validate_cli_identity(value: Mapping[str, Any]) -> dict[str, object]:
         "version": _bounded_string(item["version"], "cli.version", 1, 256),
         "sha256": _digest(item["sha256"], "cli.sha256"),
     }
+
+
+def _reject_forbidden_card_text(value: str, label: str) -> str:
+    lowered = value.lower()
+    for marker in FORBIDDEN_CARD_TEXT_MARKERS:
+        if marker in lowered:
+            raise ValidationError(f"{label} contains forbidden source or formalization bytes")
+    return value
+
+
+def _safe_relative_runtime_path(value: str, label: str) -> str:
+    text = _bounded_string(value, label, 1, 4096)
+    path = Path(text)
+    if (
+        path.is_absolute()
+        or text in {".", ".."}
+        or any(part in {"", ".", ".."} for part in path.parts)
+    ):
+        raise ValidationError(f"{label} must be a normalized relative path")
+    return text
 
 
 def _require_fields(value: Mapping[str, Any], expected: frozenset[str], label: str) -> None:

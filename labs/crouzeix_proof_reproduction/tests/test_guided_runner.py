@@ -53,7 +53,7 @@ def mechanism_card(*, include_digest: bool = True) -> dict[str, object]:
             {
                 "source_id": "public-jin-proof-note",
                 "locator": "source.md#L10-L24",
-                "claim": "Uses an attributed mechanism summary, not manuscript bytes.",
+                "claim": "Uses an attributed mechanism summary without source excerpts.",
             }
         ],
         "mechanism_summary": "Reduce the numerical-range estimate to a positive-kernel construction.",
@@ -100,9 +100,18 @@ def guided_payload(*, endpoint_kind: str = "candidate_proof") -> dict[str, objec
 
 
 class FakeGuidedProvider:
-    def __init__(self, payload: dict[str, object] | None = None, status: str = "completed") -> None:
+    def __init__(
+        self,
+        payload: dict[str, object] | None = None,
+        status: str = "completed",
+        *,
+        typed_receipt: bool = True,
+        persist_receipt: bool = True,
+    ) -> None:
         self.payload = payload or guided_payload()
         self.status = status
+        self.typed_receipt = typed_receipt
+        self.persist_receipt = persist_receipt
         self.calls: list[dict[str, object]] = []
 
     def run_guided(
@@ -113,21 +122,76 @@ class FakeGuidedProvider:
         context: dict[str, object],
     ) -> guided_runner.ProviderAttempt:
         self.calls.append({"run_dir": run_dir, "ticket": ticket, "context": context})
+        receipt = (
+            typed_call_receipt(ticket, status=self.status)
+            if self.typed_receipt
+            else {"status": self.status, "ticket_id": ticket["ticket_id"]}
+        )
+        if self.persist_receipt:
+            write_json(run_dir / "calls/guided-reconstruction/receipt.json", receipt)
         if self.status != "completed":
             return guided_runner.ProviderAttempt(
                 terminal_status=self.status,
                 provider_call={"kind": "fake-guided"},
-                receipt={"status": self.status, "ticket_id": ticket["ticket_id"]},
+                receipt=receipt,
                 validated_output=None,
                 reason=f"fake {self.status}",
             )
         return guided_runner.ProviderAttempt(
             terminal_status="completed",
             provider_call={"kind": "fake-guided"},
-            receipt={"status": "completed", "ticket_id": ticket["ticket_id"]},
+            receipt=receipt,
             validated_output=self.payload,
             reason=None,
         )
+
+
+def typed_call_receipt(ticket: dict[str, object], *, status: str = "completed") -> dict[str, object]:
+    prompt = b"guided prompt"
+    schema = b"{}"
+    events = b'{"type":"thread.started","thread_id":"fake"}\n{"type":"turn.completed"}\n'
+    final = json.dumps(guided_payload(), sort_keys=True).encode("utf-8")
+    return {
+        "schema_version": "crouzeix-call-receipt/v1",
+        "call_id": "guided-reconstruction",
+        "role": "expert",
+        "status": status,
+        "cli": {"path": "/bin/echo", "version": "fake", "sha256": "1" * 64},
+        "model": "fake-model",
+        "sandbox": "workspace-write",
+        "approval_policy": "never",
+        "network_access": False,
+        "allowed_tools": ["Write"],
+        "blocked_reason": None,
+        "started_at_utc": "2026-08-15T12:00:00Z",
+        "completed_at_utc": "2026-08-15T12:00:01Z",
+        "returncode": 0 if status == "completed" else 1,
+        "timed_out": status == "timed_out",
+        "prompt_bytes": len(prompt),
+        "prompt_sha256": sha256_bytes(prompt),
+        "schema_bytes": len(schema),
+        "schema_sha256": sha256_bytes(schema),
+        "events_bytes": len(events),
+        "events_sha256": sha256_bytes(events),
+        "stderr_bytes": 0,
+        "stderr_sha256": sha256_bytes(b""),
+        "final_bytes": len(final) if status == "completed" else None,
+        "final_sha256": sha256_bytes(final) if status == "completed" else None,
+        "session_id": "fake",
+        "usage": None,
+        "event_types": ["thread.started", "turn.completed"],
+        "parse_error": None,
+        "parent_digests": {
+            "mechanism_card": mechanism_card()["mechanism_card_sha256"],
+            "theorem": sha256_text(THEOREM_TEXT),
+        },
+        "ticket_id": ticket["ticket_id"],
+        "ticket_sha256": tickets.canonical_sha256(ticket),
+        "ticket_context_sha256": ticket["context_sha256"],
+        "ticket_schema_sha256": ticket["schema_sha256"],
+        "ticket_prompt_sha256": ticket["prompt_sha256"],
+        "ticket_parent_artifact_sha256": ticket["parent_artifact_sha256"],
+    }
 
 
 class GuidedRunnerTests(unittest.TestCase):
@@ -249,6 +313,36 @@ class GuidedRunnerTests(unittest.TestCase):
                     resource_preflight_passed=True,
                 )
 
+    def test_prepare_rejects_forbidden_source_bytes_inside_allowed_card_fields(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            root = Path(directory)
+            theorem = root / "theorem.txt"
+            theorem.write_text(THEOREM_TEXT, encoding="utf-8")
+            card = mechanism_card(include_digest=False)
+            card["mechanism_summary"] = (
+                "Forbidden manuscript excerpt: Lemma 2.1 proves the exact Crouzeix "
+                "constant from source proof text."
+            )
+            card["allowed_guidance"] = [
+                "Use this formalization bytes excerpt from a Lean file.",
+            ]
+            card["attribution"][0]["claim"] = "This claim quotes manuscript bytes directly."
+            card["mechanism_card_sha256"] = sha256_json(card)
+            card_path = root / "bad-card.json"
+            write_json(card_path, card)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "forbidden"):
+                guided_runner.prepare_guided_run(
+                    root / "guided-001",
+                    theorem_path=theorem,
+                    mechanism_card_path=card_path,
+                    cli_identity={"path": "/bin/echo", "version": "fake", "sha256": "1" * 64},
+                    model="fake-model",
+                    h_correctness_outcome="incomplete",
+                    e_correctness_outcome="invalid",
+                    resource_preflight_passed=True,
+                )
+
     def test_run_guided_reconstruction_writes_typed_candidate_receipt(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
             run_dir = self._prepared_run(Path(directory))
@@ -267,11 +361,59 @@ class GuidedRunnerTests(unittest.TestCase):
             candidate_receipt = json.loads((run_dir / "guided_candidate/receipt.json").read_text())
             self.assertEqual(candidate_receipt["endpoint"]["kind"], "candidate_proof")
             self.assertEqual(
+                candidate_receipt["call_receipt_sha256"],
+                sha256_json(json.loads((run_dir / "calls/guided-reconstruction/receipt.json").read_text())),
+            )
+            self.assertEqual(
                 candidate_receipt["candidate_sha256"],
                 sha256_text(provider.payload["endpoint"]["text"]),
             )
             events = (run_dir / "tickets/guided-reconstruction/ticket_events.jsonl").read_text().splitlines()
             self.assertEqual([json.loads(line)["to_state"] for line in events], ["admitted", "running", "completed", "accepted"])
+
+    def test_run_guided_reconstruction_rejects_untyped_provider_receipt(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = self._prepared_run(Path(directory))
+
+            receipt = guided_runner.run_guided_reconstruction(
+                run_dir,
+                provider=FakeGuidedProvider(typed_receipt=False),
+            )
+
+            self.assertEqual(receipt["terminal_status"], "failed")
+            self.assertFalse((run_dir / "guided_candidate").exists())
+
+    def test_run_guided_reconstruction_rejects_receipt_with_wrong_ticket_binding(self) -> None:
+        class WrongTicketProvider(FakeGuidedProvider):
+            def run_guided(
+                self,
+                *,
+                run_dir: Path,
+                ticket: dict[str, object],
+                context: dict[str, object],
+            ) -> guided_runner.ProviderAttempt:
+                attempt = super().run_guided(run_dir=run_dir, ticket=ticket, context=context)
+                bad_receipt = dict(attempt.receipt)
+                bad_receipt["ticket_sha256"] = "2" * 64
+                write_json(run_dir / "calls/guided-reconstruction/receipt.json", bad_receipt)
+                return guided_runner.ProviderAttempt(
+                    terminal_status=attempt.terminal_status,
+                    provider_call=attempt.provider_call,
+                    receipt=bad_receipt,
+                    validated_output=attempt.validated_output,
+                    reason=attempt.reason,
+                )
+
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = self._prepared_run(Path(directory))
+
+            receipt = guided_runner.run_guided_reconstruction(
+                run_dir,
+                provider=WrongTicketProvider(),
+            )
+
+            self.assertEqual(receipt["terminal_status"], "failed")
+            self.assertFalse((run_dir / "guided_candidate").exists())
 
     def test_run_guided_reconstruction_writes_typed_blocker_receipt(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
@@ -328,6 +470,36 @@ class GuidedRunnerTests(unittest.TestCase):
             self.assertEqual(check["status"], "ok")
             self.assertEqual(check["call_count"], 1)
             self.assertEqual(check["terminal_status"], "candidate")
+
+    def test_check_rejects_missing_provider_call_receipt_even_if_run_receipt_counts_one(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = self._prepared_run(Path(directory))
+            guided_runner.run_guided_reconstruction(run_dir, provider=FakeGuidedProvider())
+            (run_dir / "calls/guided-reconstruction/receipt.json").unlink()
+
+            with self.assertRaisesRegex(protocol.ValidationError, "call receipt"):
+                guided_runner.check_guided_run(run_dir)
+
+    def test_check_rejects_corrupt_materialized_candidate(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = self._prepared_run(Path(directory))
+            guided_runner.run_guided_reconstruction(run_dir, provider=FakeGuidedProvider())
+            (run_dir / "guided_candidate/candidate.tex").write_text("corrupted", encoding="utf-8")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "candidate"):
+                guided_runner.check_guided_run(run_dir)
+
+    def test_check_rejects_corrupt_guided_output_receipt(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = self._prepared_run(Path(directory))
+            guided_runner.run_guided_reconstruction(run_dir, provider=FakeGuidedProvider())
+            receipt_path = run_dir / "guided_candidate/receipt.json"
+            receipt = json.loads(receipt_path.read_text())
+            receipt["candidate_sha256"] = "2" * 64
+            write_json(receipt_path, receipt)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "guided output"):
+                guided_runner.check_guided_run(run_dir)
 
     def _prepared_run(self, root: Path) -> Path:
         theorem, card = make_source_inputs(root)
