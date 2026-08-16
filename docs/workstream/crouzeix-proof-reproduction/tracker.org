@@ -1492,16 +1492,17 @@ CLI call primitive and validate call output before orchestration sees it.
   preserved in stash =preserve-frontier-wip-before-wave-b-merge= and is
   superseded by the tracked CPFR-014 runner changes.
 
-** TODO Implement Ticketed Frontier Preparation :code:tests:ticket:
+** DONE Implement Ticketed Frontier Preparation :code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-015
 :DESIGN_SECTION: Run Specification; Initial Expert Roster; Runtime Ticket Contract
 :DEPENDS_ON: CPFR-010 CPFR-011 CPFR-013
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-015; Hegel
+:MODEL: inherited default
+:COMMIT: c97f0a81c515d1eaaebef34ff70b499a8c0a8bf0; 41710dc1b9003c75736bac378d9229673fb00a95
 :END:
 
 *** Scope
@@ -1555,7 +1556,26 @@ configuration, root expert tickets, schemas, prompts, and ticket/event roots.
 
 *** Verification Evidence
 
-- Record prepared-tree inventory and digest checks.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=
+  initially failed with =ModuleNotFoundError: No module named 'prepare_frontier'=,
+  then failed on symlinked run-dir ancestor, digest drift, and weak CLI identity
+  regressions before fixes.
+- Worker commits:
+  =c97f0a81c515d1eaaebef34ff70b499a8c0a8bf0= and
+  =41710dc1b9003c75736bac378d9229673fb00a95=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier -v=
+  passed 4 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_protocol -v=
+  passed 13 tests; full lab discovery passed after Wave C merge.
+- Temporary fake preparation plus
+  =python3 labs/crouzeix_proof_reproduction/prepare_frontier.py --run-dir "$run" --check=
+  reported five root tickets.
+- Static verification passed with
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr015-fix-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/prepare_frontier.py labs/crouzeix_proof_reproduction/protocol.py labs/crouzeix_proof_reproduction/tests/test_prepare_frontier.py=
+  and =git diff --check=.
+- Reviews initially found blockers in symlinked run-dir ancestors, =--check=
+  digest recomputation, and weak CLI identity matching. All were fixed with
+  regression tests; final narrow re-review approved.
 
 ** TODO Implement Ticketed Frontier Orchestrator :code:tests:ticket:
 :PROPERTIES:
@@ -1701,16 +1721,17 @@ another gate edit.
 
 - Record full command output and commit.
 
-** TODO Implement Review And Repair Machinery :math:review:code:tests:ticket:
+** DONE Implement Review And Repair Machinery :math:review:code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-019
 :DESIGN_SECTION: Evaluator Independence; Repair And Promotion Boundary; Mechanism Similarity
 :DEPENDS_ON: CPFR-010 CPFR-011 CPFR-013 CPFR-014
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-019; Goodall
+:MODEL: inherited default
+:COMMIT: 2e8c5f5a2ed4dff8d2573ff70e768d9f9d8ddb0b; 12671bc5c75d22432eb81bff2ccc4dcd37abf3b3; 616f71177faddef3caaa336538754fc3c220d45a; 2f7cdd2c37c36383a372cf3f1acd6c4fd864e217
 :END:
 
 *** Scope
@@ -1766,7 +1787,26 @@ fresh re-review, and post-correctness mechanism classification.
 
 *** Verification Evidence
 
-- Record red/green commands, context scans, and commit.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_contracts -v=
+  and =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+  initially failed on missing modules, then review-regression tests failed before
+  fixes.
+- Worker commits:
+  =2e8c5f5a2ed4dff8d2573ff70e768d9f9d8ddb0b=,
+  =12671bc5c75d22432eb81bff2ccc4dcd37abf3b3=,
+  =616f71177faddef3caaa336538754fc3c220d45a=, and
+  =2f7cdd2c37c36383a372cf3f1acd6c4fd864e217=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_contracts -v=
+  passed 5 tests; =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_review_runner -v=
+  passed 9 tests; full lab discovery passed after Wave C merge.
+- Static verification passed with
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr019-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/review_contracts.py labs/crouzeix_proof_reproduction/review_runner.py labs/crouzeix_proof_reproduction/tickets.py labs/crouzeix_proof_reproduction/tests/test_review_contracts.py labs/crouzeix_proof_reproduction/tests/test_review_runner.py=
+  and =git diff --check=.
+- Reviews initially found blockers in unticketed reconciliation, repair ticket
+  kind, re-review ticket/context timing, runtime ticket lifecycle events,
+  repair eligibility, and repair target ordering. All were fixed with
+  regression tests; final narrow re-review approved.
 
 ** TODO Implement Guided Diagnostic Machinery :math:code:tests:ticket:
 :PROPERTIES:
@@ -1829,16 +1869,17 @@ guided reconstruction, and typed candidate/blocker receipt.
 
 - Record truth table, fake run receipts, and commit.
 
-** TODO Implement Formal Attempt Receipt Contract :math:evidence:code:tests:ticket:
+** DONE Implement Formal Attempt Receipt Contract :math:evidence:code:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-021
 :DESIGN_SECTION: Formalization Status
 :DEPENDS_ON: CPFR-010 CPFR-013
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: primary
+:AGENT_RUN: work/cpfr-021; Aquinas
+:MODEL: inherited default
+:COMMIT: 5d5077685223f4d55ad5175de10e564f5b77cc56; 7a8bf39522165264b45834652952dc87f0c1b0ea
 :END:
 
 *** Scope
@@ -1884,7 +1925,24 @@ decisions, resource preflights, source, command, logs, axioms, and typed status.
 
 *** Verification Evidence
 
-- Record invariant tests and commit.
+- RED: =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+  initially failed with missing =formal_receipt=, then failed on
+  resource-receipt path binding, symlinked artifact ancestors, and blocked-vs-
+  failed status regressions before fixes.
+- Worker commits:
+  =5d5077685223f4d55ad5175de10e564f5b77cc56= and
+  =7a8bf39522165264b45834652952dc87f0c1b0ea=.
+- GREEN verification in worker and merged orchestrator branch:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_receipt -v=
+  passed 8 tests; full lab discovery passed after Wave C merge.
+- Static verification passed with
+  =PYTHONPYCACHEPREFIX=/private/tmp/harp-cpfr021-pycache python3 -m py_compile labs/crouzeix_proof_reproduction/formal_receipt.py labs/crouzeix_proof_reproduction/tests/test_formal_receipt.py=
+  and =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/formal_attempt_receipt.schema.json=.
+- Initial CPFR-021 work was blocked by disk exhaustion before commit; after disk
+  space became available, verification and commit completed. Reviews found
+  blockers in resource receipt path binding, symlinked artifact ancestors, and
+  blocked-vs-failed status distinction. All were fixed with regression tests;
+  final narrow spec/quality re-review approved.
 
 ** TODO Review Provider-Neutral Frontier Milestone :review:code:tests:
 :PROPERTIES:
