@@ -852,6 +852,105 @@ class LeanSuiteRunnerTests(unittest.TestCase):
             self.assertIn("write policy", receipt["reason"])
             self.assertIn("local_process_no_os_sandbox", receipt["reason"])
 
+    def test_runner_blocks_embedded_absolute_write_argv_before_invocation(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            outside = root / "out.olean"
+            sentinel = root / "would-have-run-embedded-argv.txt"
+            lock_value = valid_lock(root)
+            lock_value["command_profiles"] = [
+                {
+                    "profile_id": "lean-check",
+                    "argv": ["{lean}", "{module_path}", f"--output={outside}"],
+                    "timeout_seconds": 10,
+                    "env": {},
+                }
+            ]
+            replace_fake_lean(
+                lock_value,
+                root,
+                "from pathlib import Path\n"
+                f"Path({str(sentinel)!r}).write_text('invoked\\n', encoding='utf-8')\n"
+                "print('embedded argv write attempted')\n",
+            )
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            receipt_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-embedded-write-argv",
+            )
+            receipt = lean_suite.validate_receipt_json(receipt_path)
+
+            self.assertFalse(sentinel.exists())
+            self.assertFalse(outside.exists())
+            self.assertEqual("blocked", receipt["outcome"])
+            self.assertEqual("blocked", receipt["module_outcomes"][0]["outcome"])
+            self.assertIsNone(receipt["command_receipts"][0]["exit_code"])
+            self.assertIn("write policy", receipt["reason"])
+            self.assertIn("argv[2]", receipt["reason"])
+            self.assertIn("local_process_no_os_sandbox", receipt["reason"])
+
+    def test_runner_allows_embedded_absolute_write_argv_under_receipt_root(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            receipt_root = root / "receipts"
+            allowed_output = receipt_root / "lean-suite-allowed-output" / "out.olean"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            lock_value = valid_lock(root)
+            lock_value["command_profiles"] = [
+                {
+                    "profile_id": "lean-check",
+                    "argv": ["{lean}", "{module_path}", f"-o={allowed_output}"],
+                    "timeout_seconds": 10,
+                    "env": {},
+                }
+            ]
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            receipt_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=receipt_root,
+                run_id="lean-suite-allowed-output",
+            )
+            receipt = lean_suite.validate_receipt_json(receipt_path)
+
+            self.assertEqual("passed", receipt["outcome"])
+            self.assertEqual("passed", receipt["module_outcomes"][0]["outcome"])
+
     def test_runner_detects_materialized_source_mutation_without_touching_original(
         self,
     ) -> None:

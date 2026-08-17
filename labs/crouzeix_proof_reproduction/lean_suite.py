@@ -800,12 +800,12 @@ def _command_write_policy_block_reason(
     allowed_write_roots: tuple[Path, ...],
 ) -> str | None:
     for index, arg in enumerate(argv[1:], start=1):
-        path = _absolute_path_value(arg)
-        if path is not None and not _is_under_allowed_root(path, allowed_write_roots):
-            return (
-                "local_process_no_os_sandbox: write policy blocked absolute "
-                f"argv[{index}] outside allowed roots"
-            )
+        for path in _argv_absolute_path_values(arg):
+            if not _is_under_allowed_root(path, allowed_write_roots):
+                return (
+                    "local_process_no_os_sandbox: write policy blocked absolute "
+                    f"argv[{index}] outside allowed roots"
+                )
     for key, value in sorted(env.items()):
         path = _absolute_path_value(value)
         if path is not None and not _is_under_allowed_root(path, allowed_write_roots):
@@ -814,6 +814,20 @@ def _command_write_policy_block_reason(
                 f"env.{key} absolute path outside allowed roots"
             )
     return None
+
+
+def _argv_absolute_path_values(value: str) -> tuple[Path, ...]:
+    candidates = [value]
+    if "=" in value:
+        name, argument = value.split("=", 1)
+        if name.startswith("-"):
+            candidates.append(argument)
+    paths: list[Path] = []
+    for candidate in candidates:
+        path = _absolute_path_value(candidate)
+        if path is not None:
+            paths.append(path)
+    return tuple(paths)
 
 
 def _absolute_path_value(value: str) -> Path | None:

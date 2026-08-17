@@ -468,6 +468,19 @@ write strict typed receipts.
   closing =_effective_allowed_write_roots= to exactly the execution root and
   receipt root. The existing outside env-path write blocker remains covered by
   =test_runner_blocks_profile_absolute_write_env_before_invocation=.
+- Spec-review CPFR-L003 embedded argv write-path red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed with
+  =test_runner_blocks_embedded_absolute_write_argv_before_invocation= because
+  the fake tool was invoked and wrote =would-have-run-embedded-argv.txt= when
+  the profile declared =--output=/.../out.olean=.
+- Spec-review CPFR-L003 embedded argv write-path green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 33 tests after extending the declared write-policy check to inspect
+  option-assignment argv forms such as =--output=/absolute/path= and
+  =-o=/absolute/path=. The regression keeps outside absolute paths blocked
+  before invocation and preserves allowed embedded absolute paths under the
+  receipt root.
 
 ** BLOCKED Add Sandboxed Real Lean Execution Gate :security:math:tests:ticket:
 :PROPERTIES:
