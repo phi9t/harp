@@ -387,14 +387,28 @@ write strict typed receipts.
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
   failed before the consistency fix with =AssertionError: ValidationError not
   raised= after recomputing a tampered receipt self-digest.
+- Spec-review red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed with two regressions: drifted locked tool bytes wrote the sentinel
+  =would-have-run.txt=, and an allowed env value carrying an absolute outside
+  write path wrote =outside-write.txt= before CPFR-L003 spec-review repair.
+- Spec-review implementation note:
+  =run_suite= now classifies runtime inventory before each command and blocks
+  any non-=matched= locked tool without invoking it. The local Python runner also
+  applies a fail-closed declared write-policy check over expanded =argv= and
+  profile =env= values, defaulting allowed writable roots to the execution root
+  and receipt root. Because this provider-free local process runner does not
+  install an OS sandbox on macOS, blocked receipts include the limitation marker
+  =local_process_no_os_sandbox= when rejecting declared absolute write channels.
 - Focused green check:
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
-  passed 24 tests after adding the controlled runner, typed receipt validation,
-  create-only receipt writes, blocked/failed/passed outcomes, and receipt
-  outcome consistency checks.
+  passed 30 tests after adding the controlled runner, typed receipt validation,
+  create-only receipt writes, blocked/failed/passed outcomes, receipt outcome
+  consistency checks, drifted-runtime pre-exec blocking, and local write-policy
+  declared-surface blocking.
 - Final focused check:
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
-  passed 24 tests.
+  passed 30 tests.
 - Schema check:
   =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
   exited 0.

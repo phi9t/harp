@@ -465,6 +465,21 @@ def _runtime_tool_inventory(tool: ToolIdentity, role: str) -> dict[str, object]:
     return entry
 
 
+def _runtime_inventory_block_reason(runtime_inventory: Mapping[str, object]) -> str | None:
+    tools = runtime_inventory.get("tools")
+    if not isinstance(tools, list):
+        return "runtime inventory is malformed before command execution"
+    for raw_tool in tools:
+        tool = _mapping(raw_tool, "runtime inventory tool")
+        role = _bounded_string(tool.get("role"), "runtime inventory tool role", 1, 64)
+        status = _bounded_string(
+            tool.get("status"), "runtime inventory tool status", 1, 64
+        )
+        if status != "matched":
+            return f"runtime inventory blocked {role} tool with status {status}"
+    return None
+
+
 def _compute_artifact_inventory(runtime_lock: RuntimeLock) -> dict[str, object]:
     return {
         "schema_version": "crouzeix-lean-artifact-inventory/v1",
@@ -511,6 +526,8 @@ def run_suite(
     suite_root: Path,
     receipt_root: Path,
     run_id: str,
+    *,
+    allowed_write_roots: tuple[Path, ...] | None = None,
 ) -> Path:
     safe_run_id = _safe_id(run_id, "run_id")
     root = suite_root.absolute()
@@ -542,6 +559,12 @@ def run_suite(
                 )
             runtime_inventory = _compute_runtime_inventory(runtime_lock)
             artifact_inventory = _compute_artifact_inventory(runtime_lock)
+            runtime_block_reason = _runtime_inventory_block_reason(runtime_inventory)
+            write_roots = _effective_allowed_write_roots(
+                execution_root=execution_root,
+                receipt_root=destination,
+                extra_roots=allowed_write_roots,
+            )
             command_receipts: list[dict[str, object]] = []
             module_outcomes: list[dict[str, object]] = []
             for module in manifest.modules:
@@ -552,6 +575,8 @@ def run_suite(
                     suite_root=execution_root,
                     receipt_root=destination,
                     module=module,
+                    runtime_block_reason=runtime_block_reason,
+                    allowed_write_roots=write_roots,
                 )
                 command_receipts.append(command)
                 module_outcomes.append(outcome)
@@ -679,6 +704,8 @@ def _run_module(
     suite_root: Path,
     receipt_root: Path,
     module: SuiteModule,
+    runtime_block_reason: str | None,
+    allowed_write_roots: tuple[Path, ...],
 ) -> tuple[dict[str, object], dict[str, object]]:
     module_dir = receipt_root / "modules" / module.module_id
     module_dir.mkdir(parents=True, mode=0o700)
@@ -694,7 +721,18 @@ def _run_module(
     stderr = b""
     outcome = "blocked"
     reason = "locked tool unavailable before command execution"
-    if not Path(argv[0]).is_file():
+    policy_block_reason = _command_write_policy_block_reason(
+        argv=argv,
+        env=env,
+        allowed_write_roots=allowed_write_roots,
+    )
+    if runtime_block_reason is not None:
+        reason = runtime_block_reason
+        stderr = reason.encode("utf-8")
+    elif policy_block_reason is not None:
+        reason = policy_block_reason
+        stderr = reason.encode("utf-8")
+    elif not Path(argv[0]).is_file():
         stderr = reason.encode("utf-8")
     else:
         try:
@@ -748,6 +786,62 @@ def _run_module(
         "reason": reason,
     }
     return command_receipt, module_outcome
+
+
+def _effective_allowed_write_roots(
+    *,
+    execution_root: Path,
+    receipt_root: Path,
+    extra_roots: tuple[Path, ...] | None,
+) -> tuple[Path, ...]:
+    roots = [execution_root.absolute(), receipt_root.absolute()]
+    for root in extra_roots or ():
+        absolute = root.absolute()
+        _reject_symlink_ancestors(absolute, "allowed write root")
+        roots.append(absolute)
+    return tuple(roots)
+
+
+def _command_write_policy_block_reason(
+    *,
+    argv: list[str],
+    env: Mapping[str, str],
+    allowed_write_roots: tuple[Path, ...],
+) -> str | None:
+    for index, arg in enumerate(argv[1:], start=1):
+        path = _absolute_path_value(arg)
+        if path is not None and not _is_under_allowed_root(path, allowed_write_roots):
+            return (
+                "local_process_no_os_sandbox: write policy blocked absolute "
+                f"argv[{index}] outside allowed roots"
+            )
+    for key, value in sorted(env.items()):
+        path = _absolute_path_value(value)
+        if path is not None and not _is_under_allowed_root(path, allowed_write_roots):
+            return (
+                "local_process_no_os_sandbox: write policy blocked "
+                f"env.{key} absolute path outside allowed roots"
+            )
+    return None
+
+
+def _absolute_path_value(value: str) -> Path | None:
+    if "\0" in value:
+        return None
+    path = Path(value)
+    if not path.is_absolute():
+        return None
+    return path.absolute()
+
+
+def _is_under_allowed_root(path: Path, allowed_write_roots: tuple[Path, ...]) -> bool:
+    for root in allowed_write_roots:
+        try:
+            path.relative_to(root)
+            return True
+        except ValueError:
+            continue
+    return False
 
 
 def _expand_arg(
