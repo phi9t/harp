@@ -237,6 +237,88 @@ Add strict Python validators for Lean runtime locks and proof-suite manifests.
   =..=, absolute, backslash, and canonical-mismatch path forms before returning
   the original text.
 
+** DONE Add Lean Proof-Suite Fixtures And Inventory Checks :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-L002
+:DESIGN_SECTION: Local Hermetic Lean Proof-Suite Gate
+:DEPENDS_ON: CPFR-L001
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: CPFR-L002 implementation subagent
+:AGENT_RUN: current worker thread
+:MODEL: GPT-5.5
+:END:
+
+*** Scope
+
+Add Harp-owned Lean fixture sources and deterministic source inventory checks.
+
+*** Non-goals
+
+- No real Lean dependency.
+- No sibling-worktree import.
+- No Crouzeix/Jin target.
+- No training data.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/lean_suite.py=
+- =labs/crouzeix_proof_reproduction/tests/test_lean_suite.py=
+- =labs/crouzeix_proof_reproduction/lean_suite_fixtures/=
+- this tracker subtree
+
+*** Acceptance Criteria
+
+- Fixture files are Harp-owned and tiny.
+- Inventory computation rejects missing, extra, symlinked, and digest-drifted
+  source files before execution.
+- Fake tools are regular executable files and never call real Lean or Lake.
+
+*** Implementation Steps
+
+1. Add fixture files.
+2. Add red inventory tests.
+3. Implement inventory checks.
+4. Run focused tests.
+5. Record verification evidence.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+- =cargo run -q -p harp -- repository verify=
+
+*** Verification Evidence
+
+- Red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before implementation with missing
+  =lean_suite_fixtures/smoke/TinySmoke.lean=,
+  =lean_suite_fixtures/tools/fake-lean.py=,
+  =lean_suite_fixtures/tools/fake-lake.py=, and
+  =AttributeError: module 'lean_suite' has no attribute
+  'compute_source_inventory'=.
+- Focused green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 22 tests after adding Harp-owned fixture files, declared
+  =source_files= inventory entries, deterministic inventory output, and closed
+  validation for missing, extra, symlinked, digest-drifted, and byte-drifted
+  source files.
+- Final focused check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 22 tests.
+- Tracker check:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Whitespace check: =git diff --check= exited 0.
+- Repository check: =cargo run -q -p harp -- repository verify= reported
+  stale digest =c5e8994a106e7cfd3878715a430dd224a0f8fcc91579f89903a26e6e72017a67=
+  before final tracker evidence was recorded, then reported final stale digest
+  =4e62f073c18e96799ad405451ce92073ad22268bd0c083313c4a2ed54bb01a51=
+  after tracker evidence changed the payload, then exited 0 after the final
+  =docs/import-receipt.md= refresh.
+
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:
 :ID: CPFR-001

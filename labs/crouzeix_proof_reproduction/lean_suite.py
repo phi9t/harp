@@ -28,6 +28,7 @@ COMMAND_PROFILE_FIELDS = frozenset({"profile_id", "argv", "timeout_seconds", "en
 MANIFEST_FIELDS = frozenset(
     {"schema_version", "suite_id", "runtime_id", "modules", "created_at_utc"}
 )
+MANIFEST_OPTIONAL_FIELDS = frozenset({"source_files"})
 MODULE_FIELDS = frozenset(
     {
         "module_id",
@@ -41,8 +42,11 @@ MODULE_FIELDS = frozenset(
         "source_bytes",
     }
 )
+SOURCE_FILE_FIELDS = frozenset({"path", "role", "sha256", "bytes"})
 TIERS = frozenset({"tiny_smoke", "local_lake", "reference_suite", "target_route"})
+SOURCE_ROLES = frozenset({"lean_module", "lake_config", "toolchain_lock", "adapter"})
 SAFE_ID = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+SOURCE_ROLE = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
 ENV_NAME = re.compile(r"^[A-Z_][A-Z0-9_]*$")
 LEAN_MODULE = re.compile(r"^[A-Z][A-Za-z0-9_]*(?:\.[A-Z][A-Za-z0-9_]*)*$")
 MAX_JSON_BYTES = 1024 * 1024
@@ -101,10 +105,19 @@ class SuiteModule:
 
 
 @dataclass(frozen=True)
+class SourceFile:
+    path: str
+    role: str
+    sha256: str
+    bytes: int
+
+
+@dataclass(frozen=True)
 class SuiteManifest:
     suite_id: str
     runtime_id: str
     modules: tuple[SuiteModule, ...]
+    source_files: tuple[SourceFile, ...] = ()
 
 
 def loads_json_object(data: bytes, label: str) -> dict[str, object]:
@@ -164,7 +177,12 @@ def validate_runtime_lock(value: Mapping[str, Any], root: Path) -> RuntimeLock:
 def validate_suite_manifest(
     value: Mapping[str, Any], command_profiles: set[str]
 ) -> SuiteManifest:
-    _require_fields(value, MANIFEST_FIELDS, "suite manifest")
+    _require_fields(
+        value,
+        MANIFEST_FIELDS,
+        "suite manifest",
+        optional=MANIFEST_OPTIONAL_FIELDS,
+    )
     _require_equal(
         value["schema_version"], "crouzeix-lean-suite-manifest/v1", "schema_version"
     )
@@ -189,12 +207,79 @@ def validate_suite_manifest(
         seen_ids.add(module.module_id)
         seen_paths.add(module.path)
         modules.append(module)
-    return SuiteManifest(suite_id=suite_id, runtime_id=runtime_id, modules=tuple(modules))
+    source_files = tuple(
+        _validate_source_files(value.get("source_files", []), seen_paths)
+    )
+    return SuiteManifest(
+        suite_id=suite_id,
+        runtime_id=runtime_id,
+        modules=tuple(modules),
+        source_files=source_files,
+    )
 
 
 def canonical_sha256(value: Mapping[str, Any]) -> str:
     data = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return protocol.sha256_bytes(data)
+
+
+def compute_source_inventory(suite_root: Path, manifest: SuiteManifest) -> dict[str, object]:
+    root = suite_root.absolute()
+    _reject_symlink_ancestors(root, "suite root")
+    if root.is_symlink():
+        raise protocol.ValidationError("suite root contains symlink component")
+    if not root.is_dir():
+        raise protocol.ValidationError("suite root must be a directory")
+
+    expected: dict[str, SourceFile] = {}
+    for module in manifest.modules:
+        expected[module.path] = SourceFile(
+            path=module.path,
+            role="lean_module",
+            sha256=module.source_sha256,
+            bytes=module.source_bytes,
+        )
+    for source_file in manifest.source_files:
+        if source_file.path in expected:
+            raise protocol.ValidationError(f"duplicate source path {source_file.path}")
+        expected[source_file.path] = source_file
+
+    observed: dict[str, dict[str, object]] = {}
+    for path in sorted(
+        root.rglob("*"), key=lambda candidate: candidate.relative_to(root).as_posix()
+    ):
+        relative = path.relative_to(root).as_posix()
+        if path.is_symlink():
+            raise protocol.ValidationError(f"source contains symlink: {relative}")
+        if path.is_dir():
+            continue
+        if not path.is_file():
+            raise protocol.ValidationError(f"source must be a regular file: {relative}")
+        if relative not in expected:
+            raise protocol.ValidationError(f"unknown source file: {relative}")
+        declared = expected[relative]
+        data = path.read_bytes()
+        if len(data) != declared.bytes:
+            raise protocol.ValidationError(f"source_bytes mismatch: {relative}")
+        sha256 = protocol.sha256_bytes(data)
+        if sha256 != declared.sha256:
+            raise protocol.ValidationError(f"source_sha256 mismatch: {relative}")
+        observed[relative] = {
+            "path": relative,
+            "role": declared.role,
+            "bytes": len(data),
+            "sha256": sha256,
+        }
+
+    missing = sorted(set(expected) - set(observed))
+    if missing:
+        raise protocol.ValidationError(f"missing source file: {missing[0]}")
+    return {
+        "schema_version": "crouzeix-lean-source-inventory/v1",
+        "suite_id": manifest.suite_id,
+        "file_count": len(observed),
+        "files": [observed[key] for key in sorted(observed)],
+    }
 
 
 def _validate_tool(value: Any, root: Path, label: str) -> ToolIdentity:
@@ -311,9 +396,41 @@ def _validate_module(value: Any, command_profiles: set[str]) -> SuiteModule:
     )
 
 
-def _require_fields(value: Mapping[str, Any], fields: frozenset[str], label: str) -> None:
+def _validate_source_files(value: Any, module_paths: set[str]) -> list[SourceFile]:
+    if not isinstance(value, list):
+        raise protocol.ValidationError("source_files must be a list")
+    if len(value) > 128:
+        raise protocol.ValidationError("source_files must have at most 128 entries")
+    source_files: list[SourceFile] = []
+    seen_paths = set(module_paths)
+    for raw in value:
+        mapping = _mapping(raw, "source file")
+        _require_fields(mapping, SOURCE_FILE_FIELDS, "source file")
+        path = _safe_relative_path(mapping["path"], "source file path")
+        if path in seen_paths:
+            raise protocol.ValidationError(f"duplicate source path {path}")
+        seen_paths.add(path)
+        role = _source_role(mapping["role"], "source role")
+        source_files.append(
+            SourceFile(
+                path=path,
+                role=role,
+                sha256=_digest(mapping["sha256"], "source file sha256"),
+                bytes=_integer(mapping["bytes"], "source file bytes", 0, 1 << 30),
+            )
+        )
+    return source_files
+
+
+def _require_fields(
+    value: Mapping[str, Any],
+    fields: frozenset[str],
+    label: str,
+    *,
+    optional: frozenset[str] = frozenset(),
+) -> None:
     actual = set(value)
-    if actual != fields:
+    if not fields <= actual or not actual <= fields | optional:
         raise protocol.ValidationError(
             f"{label} fields mismatch: expected {sorted(fields)}, got {sorted(actual)}"
         )
@@ -397,6 +514,13 @@ def _integer(value: Any, label: str, minimum: int, maximum: int) -> int:
 def _enum(value: Any, allowed: frozenset[str], label: str) -> str:
     text = _bounded_string(value, label, 1, 128)
     if text not in allowed:
+        raise protocol.ValidationError(f"{label} is invalid")
+    return text
+
+
+def _source_role(value: Any, label: str) -> str:
+    text = _bounded_string(value, label, 1, 128)
+    if SOURCE_ROLE.fullmatch(text) is None or text not in SOURCE_ROLES:
         raise protocol.ValidationError(f"{label} is invalid")
     return text
 

@@ -5,10 +5,12 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+import stat
 
 
 LAB = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LAB))
+FIXTURES = LAB / "lean_suite_fixtures"
 
 import lean_suite
 import protocol
@@ -81,6 +83,70 @@ def valid_manifest() -> dict[str, object]:
         ],
         "created_at_utc": "2026-08-16T12:00:00Z",
     }
+
+
+def declared_source(path: Path, relative_path: str, role: str) -> dict[str, object]:
+    data = path.read_bytes()
+    return {
+        "path": relative_path,
+        "role": role,
+        "sha256": digest(data),
+        "bytes": len(data),
+    }
+
+
+def fixture_manifest() -> dict[str, object]:
+    smoke = FIXTURES / "smoke" / "TinySmoke.lean"
+    lake_module = FIXTURES / "lake" / "LeanSuiteLake.lean"
+    manifest = valid_manifest()
+    manifest["suite_id"] = "local-fixture-suite"
+    manifest["modules"] = [
+        {
+            "module_id": "tiny-smoke",
+            "tier": "tiny_smoke",
+            "path": "smoke/TinySmoke.lean",
+            "module_name": "TinySmoke",
+            "command_profile": "lean-check",
+            "expected_declarations": ["tiny_smoke"],
+            "allowed_axioms": [],
+            "source_sha256": digest(smoke.read_bytes()),
+            "source_bytes": smoke.stat().st_size,
+        },
+        {
+            "module_id": "lean-suite-lake",
+            "tier": "local_lake",
+            "path": "lake/LeanSuiteLake.lean",
+            "module_name": "LeanSuiteLake",
+            "command_profile": "lake-build",
+            "expected_declarations": ["lean_suite_lake_smoke"],
+            "allowed_axioms": [],
+            "source_sha256": digest(lake_module.read_bytes()),
+            "source_bytes": lake_module.stat().st_size,
+        },
+    ]
+    manifest["source_files"] = [
+        declared_source(
+            FIXTURES / "lake" / "lakefile.toml",
+            "lake/lakefile.toml",
+            "lake_config",
+        ),
+        declared_source(
+            FIXTURES / "lake" / "lean-toolchain",
+            "lake/lean-toolchain",
+            "toolchain_lock",
+        ),
+        declared_source(
+            FIXTURES / "tools" / "fake-lean.py",
+            "tools/fake-lean.py",
+            "adapter",
+        ),
+        declared_source(
+            FIXTURES / "tools" / "fake-lake.py",
+            "tools/fake-lake.py",
+            "adapter",
+        ),
+    ]
+    return manifest
 
 
 class LeanSuiteValidationTests(unittest.TestCase):
@@ -346,6 +412,133 @@ class LeanSuiteManifestTests(unittest.TestCase):
 
         self.assertEqual(lean_suite.canonical_sha256(left), lean_suite.canonical_sha256(right))
         self.assertEqual(64, len(lean_suite.canonical_sha256(left)))
+
+
+class LeanSuiteInventoryTests(unittest.TestCase):
+    def test_source_inventory_accepts_declared_fixture_sources_deterministically(self) -> None:
+        manifest = fixture_manifest()
+        parsed = lean_suite.validate_suite_manifest(manifest, {"lean-check", "lake-build"})
+
+        inventory = lean_suite.compute_source_inventory(FIXTURES, parsed)
+        repeated = lean_suite.compute_source_inventory(FIXTURES, parsed)
+
+        self.assertEqual(inventory, repeated)
+        self.assertEqual("crouzeix-lean-source-inventory/v1", inventory["schema_version"])
+        self.assertEqual(6, inventory["file_count"])
+        self.assertEqual(
+            [
+                "lake/LeanSuiteLake.lean",
+                "lake/lakefile.toml",
+                "lake/lean-toolchain",
+                "smoke/TinySmoke.lean",
+                "tools/fake-lake.py",
+                "tools/fake-lean.py",
+            ],
+            [file["path"] for file in inventory["files"]],
+        )
+        self.assertEqual(64, len(lean_suite.canonical_sha256(inventory)))
+
+    def test_source_inventory_rejects_missing_extra_digest_and_byte_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            original = "theorem tiny_smoke : True := by\n  trivial\n"
+            source.write_text(original, encoding="utf-8")
+            manifest = valid_manifest()
+            manifest["modules"] = [dict(manifest["modules"][0])]
+            manifest["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest["modules"][0]["source_bytes"] = source.stat().st_size
+            parsed = lean_suite.validate_suite_manifest(manifest, {"lean-check"})
+
+            inventory = lean_suite.compute_source_inventory(suite, parsed)
+            self.assertEqual(1, inventory["file_count"])
+
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  exact True.intro\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "source_bytes"):
+                lean_suite.compute_source_inventory(suite, parsed)
+
+            source.write_text("axiom tiny_smoke : True\n                 \n", encoding="utf-8")
+            self.assertEqual(source.stat().st_size, len(original.encode("utf-8")))
+            with self.assertRaisesRegex(protocol.ValidationError, "source_sha256"):
+                lean_suite.compute_source_inventory(suite, parsed)
+
+            source.write_text(original, encoding="utf-8")
+            (suite / "Extra.lean").write_text(
+                "theorem extra : True := by\n  trivial\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "unknown source"):
+                lean_suite.compute_source_inventory(suite, parsed)
+
+            (suite / "Extra.lean").unlink()
+            source.unlink()
+            with self.assertRaisesRegex(protocol.ValidationError, "missing source"):
+                lean_suite.compute_source_inventory(suite, parsed)
+
+    def test_source_inventory_rejects_symlinked_source_and_suite_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            target = root / "target.lean"
+            target.write_text("theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8")
+            (suite / "TinySmoke.lean").symlink_to(target)
+            manifest = valid_manifest()
+            manifest["modules"] = [dict(manifest["modules"][0])]
+            manifest["modules"][0]["source_sha256"] = digest(target.read_bytes())
+            manifest["modules"][0]["source_bytes"] = target.stat().st_size
+            parsed = lean_suite.validate_suite_manifest(manifest, {"lean-check"})
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                lean_suite.compute_source_inventory(suite, parsed)
+
+            real_suite = root / "real-suite"
+            real_suite.mkdir()
+            (real_suite / "TinySmoke.lean").write_text(
+                target.read_text(encoding="utf-8"),
+                encoding="utf-8",
+            )
+            symlinked_suite = root / "symlinked-suite"
+            symlinked_suite.symlink_to(real_suite, target_is_directory=True)
+            with self.assertRaisesRegex(protocol.ValidationError, "suite root"):
+                lean_suite.compute_source_inventory(symlinked_suite, parsed)
+
+    def test_source_inventory_rejects_symlinked_suite_ancestor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            real_parent = root / "real-parent"
+            real_suite = real_parent / "suite"
+            real_suite.mkdir(parents=True)
+            source = real_suite / "TinySmoke.lean"
+            source.write_text("theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8")
+            manifest = valid_manifest()
+            manifest["modules"] = [dict(manifest["modules"][0])]
+            manifest["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest["modules"][0]["source_bytes"] = source.stat().st_size
+            parsed = lean_suite.validate_suite_manifest(manifest, {"lean-check"})
+            symlink_parent = root / "symlink-parent"
+            symlink_parent.symlink_to(real_parent, target_is_directory=True)
+
+            with self.assertRaisesRegex(protocol.ValidationError, "suite root"):
+                lean_suite.compute_source_inventory(symlink_parent / "suite", parsed)
+
+    def test_fixture_fake_tools_are_regular_executable_provider_free_files(self) -> None:
+        for relative in ("tools/fake-lean.py", "tools/fake-lake.py"):
+            with self.subTest(relative=relative):
+                path = FIXTURES / relative
+                mode = path.stat().st_mode
+                text = path.read_text(encoding="utf-8")
+                self.assertTrue(stat.S_ISREG(mode))
+                self.assertFalse(path.is_symlink())
+                self.assertTrue(mode & stat.S_IXUSR)
+                self.assertNotIn("subprocess", text)
+                self.assertNotIn("os.system", text)
+                self.assertNotIn("Popen", text)
+                self.assertNotIn("shutil.which", text)
 
 
 if __name__ == "__main__":
