@@ -112,6 +112,17 @@ class LeanSuiteValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "relative"):
                 lean_suite.validate_runtime_lock(bad, root)
 
+    def test_runtime_lock_rejects_noncanonical_tool_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            for path in ("./tools/fake-lean", "tools//fake-lean"):
+                with self.subTest(path=path):
+                    lock = valid_lock(root)
+                    lock["lean"] = dict(lock["lean"])
+                    lock["lean"]["path"] = path
+                    with self.assertRaisesRegex(protocol.ValidationError, "lean.path"):
+                        lean_suite.validate_runtime_lock(lock, root)
+
     def test_runtime_lock_rejects_digest_drift_and_duplicate_json_keys(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -279,6 +290,15 @@ class LeanSuiteManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(protocol.ValidationError, "module path"):
             lean_suite.validate_suite_manifest(unsafe, {"lean-check"})
 
+    def test_manifest_rejects_noncanonical_module_paths(self) -> None:
+        for path in ("./TinySmoke.lean", "Proofs//Main.lean"):
+            with self.subTest(path=path):
+                manifest = valid_manifest()
+                manifest["modules"] = [dict(manifest["modules"][0])]
+                manifest["modules"][0]["path"] = path
+                with self.assertRaisesRegex(protocol.ValidationError, "module path"):
+                    lean_suite.validate_suite_manifest(manifest, {"lean-check"})
+
     def test_manifest_rejects_unknown_profile_and_bad_tier(self) -> None:
         manifest = valid_manifest()
         with self.assertRaisesRegex(protocol.ValidationError, "command_profile"):
@@ -309,6 +329,16 @@ class LeanSuiteManifestTests(unittest.TestCase):
         bad_digest["modules"][0]["source_sha256"] = "A" * 64
         with self.assertRaisesRegex(protocol.ValidationError, "source_sha256"):
             lean_suite.validate_suite_manifest(bad_digest, {"lean-check"})
+
+    def test_manifest_rejects_canonical_equivalent_duplicate_module_paths(self) -> None:
+        duplicate_path = valid_manifest()
+        second = dict(duplicate_path["modules"][0])
+        second["module_id"] = "tiny-smoke-two"
+        second["path"] = "./TinySmoke.lean"
+        duplicate_path["modules"] = [duplicate_path["modules"][0], second]
+
+        with self.assertRaisesRegex(protocol.ValidationError, "module path"):
+            lean_suite.validate_suite_manifest(duplicate_path, {"lean-check"})
 
     def test_canonical_digest_is_deterministic(self) -> None:
         left = {"b": [2, 1], "a": {"x": "y"}}

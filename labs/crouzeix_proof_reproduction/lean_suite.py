@@ -352,11 +352,13 @@ def _safe_id(value: Any, label: str) -> str:
 
 def _safe_relative_path(value: Any, label: str) -> str:
     text = _bounded_string(value, label, 1, 512)
+    raw_parts = text.split("/")
     pure = PurePosixPath(text)
     if (
         pure.is_absolute()
         or "\\" in text
-        or any(part in {"", ".", ".."} for part in pure.parts)
+        or any(part in {"", ".", ".."} for part in raw_parts)
+        or pure.as_posix() != text
     ):
         raise protocol.ValidationError(f"{label} must be a safe relative path")
     return text
