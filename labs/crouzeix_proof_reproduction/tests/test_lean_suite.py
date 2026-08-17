@@ -48,6 +48,19 @@ def valid_lock(root: Path) -> dict[str, object]:
     }
 
 
+def add_valid_lake(lock: dict[str, object], root: Path) -> None:
+    fake_lake = root / "tools" / "fake-lake"
+    fake_lake.parent.mkdir(parents=True, exist_ok=True)
+    fake_lake.write_text("#!/bin/sh\nprintf 'Lake fake 4.0.0\\n'\n", encoding="utf-8")
+    fake_lake.chmod(0o755)
+    lock["lake"] = {
+        "path": "tools/fake-lake",
+        "version": "Lake fake 4.0.0",
+        "bytes": fake_lake.stat().st_size,
+        "sha256": digest(fake_lake.read_bytes()),
+    }
+
+
 def valid_manifest() -> dict[str, object]:
     return {
         "schema_version": "crouzeix-lean-suite-manifest/v1",
@@ -162,6 +175,82 @@ class LeanSuiteValidationTests(unittest.TestCase):
                 protocol.ValidationError, "argv must start from a locked tool token"
             ):
                 lean_suite.validate_runtime_lock(bad_profile, root)
+
+    def test_runtime_lock_rejects_loader_and_python_runtime_environment(self) -> None:
+        blocked = [
+            "DYLD_INSERT_LIBRARIES",
+            "DYLD_LIBRARY_PATH",
+            "LD_PRELOAD",
+            "LD_LIBRARY_PATH",
+            "PYTHONPATH",
+            "PYTHONHOME",
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            for name in blocked:
+                with self.subTest(name=name):
+                    lock = valid_lock(root)
+                    lock["allowed_env"] = [name]
+                    with self.assertRaisesRegex(protocol.ValidationError, "allowed_env"):
+                        lean_suite.validate_runtime_lock(lock, root)
+
+    def test_runtime_lock_allows_explicit_harmless_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            lock = valid_lock(root)
+            lock["allowed_env"] = ["LEAN_SUITE_CACHE"]
+            lock["command_profiles"] = [
+                {
+                    "profile_id": "lean-check",
+                    "argv": ["{lean}", "{module_path}"],
+                    "timeout_seconds": 10,
+                    "env": {"LEAN_SUITE_CACHE": "tmp/lean-suite-cache"},
+                }
+            ]
+
+            runtime = lean_suite.validate_runtime_lock(lock, root)
+
+            self.assertEqual(
+                {"LEAN_SUITE_CACHE": "tmp/lean-suite-cache"},
+                runtime.command_profiles["lean-check"].env,
+            )
+
+    def test_runtime_lock_rejects_lake_profile_without_locked_lake_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            lock = valid_lock(root)
+            lock["command_profiles"] = [
+                {
+                    "profile_id": "lake-build",
+                    "argv": ["{lake}", "build", "{module_name}"],
+                    "timeout_seconds": 10,
+                    "env": {},
+                }
+            ]
+            with self.assertRaisesRegex(protocol.ValidationError, "lake"):
+                lean_suite.validate_runtime_lock(lock, root)
+
+    def test_runtime_lock_allows_lake_profile_with_locked_lake_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            lock = valid_lock(root)
+            add_valid_lake(lock, root)
+            lock["command_profiles"] = [
+                {
+                    "profile_id": "lake-build",
+                    "argv": ["{lake}", "build", "{module_name}"],
+                    "timeout_seconds": 10,
+                    "env": {},
+                }
+            ]
+
+            runtime = lean_suite.validate_runtime_lock(lock, root)
+
+            self.assertIsNotNone(runtime.lake)
+            self.assertEqual(
+                ("{lake}", "build", "{module_name}"),
+                runtime.command_profiles["lake-build"].argv,
+            )
 
 
 class LeanSuiteManifestTests(unittest.TestCase):

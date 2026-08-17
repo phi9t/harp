@@ -58,6 +58,7 @@ DISALLOWED_ENV = frozenset(
         "XDG_CACHE_HOME",
     }
 )
+DISALLOWED_ENV_PREFIXES = ("DYLD_", "LD_", "PYTHON")
 
 
 @dataclass(frozen=True)
@@ -140,7 +141,11 @@ def validate_runtime_lock(value: Mapping[str, Any], root: Path) -> RuntimeLock:
     lake_value = value["lake"]
     lake = None if lake_value is None else _validate_tool(lake_value, root, "lake")
     allowed_env = _validate_allowed_env(value["allowed_env"])
-    profiles = _validate_command_profiles(value["command_profiles"], allowed_env)
+    profiles = _validate_command_profiles(
+        value["command_profiles"],
+        allowed_env,
+        lake_available=lake is not None,
+    )
     packages = value["packages"]
     if not isinstance(packages, list):
         raise protocol.ValidationError("packages must be a list")
@@ -224,13 +229,17 @@ def _validate_allowed_env(value: Any) -> frozenset[str]:
     if len(set(names)) != len(names):
         raise protocol.ValidationError("allowed_env must be unique")
     for name in names:
-        if ENV_NAME.fullmatch(name) is None or name in DISALLOWED_ENV:
+        if (
+            ENV_NAME.fullmatch(name) is None
+            or name in DISALLOWED_ENV
+            or name.startswith(DISALLOWED_ENV_PREFIXES)
+        ):
             raise protocol.ValidationError("allowed_env contains invalid name")
     return frozenset(names)
 
 
 def _validate_command_profiles(
-    value: Any, allowed_env: frozenset[str]
+    value: Any, allowed_env: frozenset[str], *, lake_available: bool
 ) -> dict[str, CommandProfile]:
     if not isinstance(value, list) or not value:
         raise protocol.ValidationError("command_profiles must be a non-empty list")
@@ -244,6 +253,8 @@ def _validate_command_profiles(
         argv = tuple(_string_list(mapping["argv"], "argv", maximum=32, minimum=1))
         if argv[0] not in {"{lean}", "{lake}"}:
             raise protocol.ValidationError("argv must start from a locked tool token")
+        if argv[0] == "{lake}" and not lake_available:
+            raise protocol.ValidationError("argv references lake without locked lake tool")
         env = _validate_profile_env(mapping["env"], allowed_env)
         profiles[profile_id] = CommandProfile(
             profile_id=profile_id,
