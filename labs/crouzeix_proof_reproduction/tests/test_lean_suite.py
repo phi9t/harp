@@ -23,7 +23,20 @@ def digest(data: bytes) -> str:
 def valid_lock(root: Path) -> dict[str, object]:
     fake_lean = root / "tools" / "fake-lean"
     fake_lean.parent.mkdir(parents=True, exist_ok=True)
-    fake_lean.write_text("#!/bin/sh\nprintf 'Lean fake 4.0.0\\n'\n", encoding="utf-8")
+    fake_lean.write_text(
+        f"#!{sys.executable}\n"
+        "from pathlib import Path\n"
+        "import sys\n"
+        "if '--version' in sys.argv:\n"
+        "    print('Lean fake 4.0.0')\n"
+        "    raise SystemExit(0)\n"
+        "text = Path(sys.argv[1]).read_text(encoding='utf-8')\n"
+        "if 'LEAN_SUITE_FAIL' in text:\n"
+        "    print('fake lean: type mismatch', file=sys.stderr)\n"
+        "    raise SystemExit(1)\n"
+        "print(f'fake lean checked {Path(sys.argv[1]).name}')\n",
+        encoding="utf-8",
+    )
     fake_lean.chmod(0o755)
     return {
         "schema_version": "crouzeix-lean-runtime-lock/v1",
@@ -53,7 +66,15 @@ def valid_lock(root: Path) -> dict[str, object]:
 def add_valid_lake(lock: dict[str, object], root: Path) -> None:
     fake_lake = root / "tools" / "fake-lake"
     fake_lake.parent.mkdir(parents=True, exist_ok=True)
-    fake_lake.write_text("#!/bin/sh\nprintf 'Lake fake 4.0.0\\n'\n", encoding="utf-8")
+    fake_lake.write_text(
+        f"#!{sys.executable}\n"
+        "import sys\n"
+        "if '--version' in sys.argv:\n"
+        "    print('Lake fake 4.0.0')\n"
+        "    raise SystemExit(0)\n"
+        "print('Lake fake 4.0.0')\n",
+        encoding="utf-8",
+    )
     fake_lake.chmod(0o755)
     lock["lake"] = {
         "path": "tools/fake-lake",
@@ -539,6 +560,140 @@ class LeanSuiteInventoryTests(unittest.TestCase):
                 self.assertNotIn("os.system", text)
                 self.assertNotIn("Popen", text)
                 self.assertNotIn("shutil.which", text)
+
+
+class LeanSuiteRunnerTests(unittest.TestCase):
+    def test_runner_records_passed_failed_and_blocked_outcomes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            lock_value = valid_lock(root)
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            receipt_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-pass",
+            )
+            receipt = lean_suite.validate_receipt_json(receipt_path)
+            self.assertEqual(receipt["outcome"], "passed")
+            self.assertEqual(receipt["module_outcomes"][0]["outcome"], "passed")
+            self.assertEqual({}, receipt["command_receipts"][0]["env"])
+            self.assertNotIn("PATH", receipt["command_receipts"][0]["env"])
+            self.assertEqual(
+                (suite / "TinySmoke.lean").as_posix(),
+                receipt["command_receipts"][0]["argv"][1],
+            )
+
+            source.write_text("LEAN_SUITE_FAIL\n", encoding="utf-8")
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+            failed_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-fail",
+            )
+            failed = lean_suite.validate_receipt_json(failed_path)
+            self.assertEqual(failed["outcome"], "failed")
+            self.assertEqual("failed", failed["module_outcomes"][0]["outcome"])
+            self.assertNotEqual(0, failed["command_receipts"][0]["exit_code"])
+
+            Path(lock.lean.absolute_path).unlink()
+            blocked_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-blocked",
+            )
+            blocked = lean_suite.validate_receipt_json(blocked_path)
+            self.assertEqual(blocked["outcome"], "blocked")
+            self.assertEqual("blocked", blocked["module_outcomes"][0]["outcome"])
+            self.assertIsNone(blocked["command_receipts"][0]["exit_code"])
+
+    def test_runner_rejects_existing_receipt_output_escape_and_receipt_tampering(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            lock = lean_suite.validate_runtime_lock(valid_lock(root), root)
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+            receipt_root = root / "receipts"
+            lean_suite.run_suite(lock, manifest, suite, receipt_root, "lean-suite-pass")
+            with self.assertRaisesRegex(protocol.ValidationError, "already exists"):
+                lean_suite.run_suite(
+                    lock, manifest, suite, receipt_root, "lean-suite-pass"
+                )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "receipt root"):
+                lean_suite.run_suite(
+                    lock,
+                    manifest,
+                    suite,
+                    root / "receipts" / ".." / "escaped",
+                    "lean-suite-escape",
+                )
+
+            receipt_path = receipt_root / "lean-suite-pass" / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["outcome"] = "blocked"
+            receipt_path.write_text(
+                json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "lean_suite_receipt_sha256"
+            ):
+                lean_suite.validate_receipt_json(receipt_path)
+
+            receipt["lean_suite_receipt_sha256"] = (
+                lean_suite.canonical_sha256_without_receipt_self(receipt)
+            )
+            receipt_path.write_text(
+                json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "outcome"):
+                lean_suite.validate_receipt_json(receipt_path)
+
+            receipt["unknown"] = True
+            receipt["lean_suite_receipt_sha256"] = (
+                lean_suite.canonical_sha256_without_receipt_self(receipt)
+            )
+            receipt_path.write_text(
+                json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+                lean_suite.validate_receipt_json(receipt_path)
 
 
 if __name__ == "__main__":

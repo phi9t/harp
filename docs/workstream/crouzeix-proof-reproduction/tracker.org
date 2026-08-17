@@ -319,6 +319,93 @@ Add Harp-owned Lean fixture sources and deterministic source inventory checks.
   after tracker evidence changed the payload, then exited 0 after the final
   =docs/import-receipt.md= refresh.
 
+** DONE Add Lean Proof-Suite Runner And Receipts :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-L003
+:DESIGN_SECTION: Local Hermetic Lean Proof-Suite Gate
+:DEPENDS_ON: CPFR-L002
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: CPFR-L003 implementation subagent
+:AGENT_RUN: current worker thread
+:MODEL: GPT-5.5
+:END:
+
+*** Scope
+
+Execute manifest-declared fixture modules through lock-derived commands and
+write strict typed receipts.
+
+*** Non-goals
+
+- No real Lean requirement in default tests.
+- No global PATH lookup.
+- No shell invocation.
+- No Crouzeix/Jin target status.
+- No live provider calls.
+- No CPFR-R018, CPFR-032, or CPFR-033 action.
+- No ignored =.runs= mutation.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/lean_suite.py=
+- =labs/crouzeix_proof_reproduction/tests/test_lean_suite.py=
+- =labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
+- this tracker subtree
+
+*** Acceptance Criteria
+
+- Runner uses explicit =argv=, =cwd=, and =env= and rejects output path escapes.
+- Receipts distinguish =passed=, =failed=, and =blocked=.
+- Receipts bind lock, manifest, source inventory, command, stdout/stderr, and
+  module outcomes with recomputable digests.
+- Existing receipt destinations are create-only.
+
+*** Implementation Steps
+
+1. Add red runner tests.
+2. Add red receipt validation tests.
+3. Implement runner and receipt validation.
+4. Add schema mirror.
+5. Run focused tests.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+- =cargo run -q -p harp -- repository verify=
+
+*** Verification Evidence
+
+- Red runner check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before implementation with =AttributeError: module 'lean_suite' has no
+  attribute 'run_suite'=.
+- Receipt consistency red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before the consistency fix with =AssertionError: ValidationError not
+  raised= after recomputing a tampered receipt self-digest.
+- Focused green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 24 tests after adding the controlled runner, typed receipt validation,
+  create-only receipt writes, blocked/failed/passed outcomes, and receipt
+  outcome consistency checks.
+- Final focused check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 24 tests.
+- Schema check:
+  =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
+  exited 0.
+- Tracker check:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Whitespace check: =git diff --check= exited 0.
+- Repository check: =cargo run -q -p harp -- repository verify= reported a
+  stale import receipt after final tracker evidence changed the tracked
+  payload, then exited 0 after refreshing =docs/import-receipt.md=.
+
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:
 :ID: CPFR-001
