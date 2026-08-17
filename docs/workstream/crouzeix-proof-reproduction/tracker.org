@@ -355,11 +355,21 @@ write strict typed receipts.
 
 *** Acceptance Criteria
 
-- Runner uses explicit =argv=, =cwd=, and =env= and rejects output path escapes.
+- Runner uses explicit =argv=, =cwd=, and =env=, materializes declared files
+  into a fresh execution root, and rejects output path escapes.
+- Runner blocks declared absolute write paths in =argv= and =env= outside the
+  execution root and receipt root, and records
+  =local_process_no_os_sandbox= where that local-process limitation is
+  relevant.
+- Runner verifies pre/post inventories for declared inputs and outputs.
 - Receipts distinguish =passed=, =failed=, and =blocked=.
 - Receipts bind lock, manifest, source inventory, command, stdout/stderr, and
   module outcomes with recomputable digests.
 - Existing receipt destinations are create-only.
+- Acceptance is declared-write-surface containment only. CPFR-L003 does not
+  prove operating-system filesystem containment against hardcoded writes, and
+  it does not make real Lean, target-route Lean, or
+  =mathematical_foundations= validation hermetic.
 
 *** Implementation Steps
 
@@ -400,6 +410,9 @@ write strict typed receipts.
   and receipt root. Because this provider-free local process runner does not
   install an OS sandbox on macOS, blocked receipts include the limitation marker
   =local_process_no_os_sandbox= when rejecting declared absolute write channels.
+  This is declared-write-surface containment, not OS filesystem containment:
+  hardcoded executable writes outside declared =argv=/=env= channels remain a
+  CPFR-L007 concern before real Lean or =mathematical_foundations= validation.
 - Focused green check:
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
   passed 30 tests after adding the controlled runner, typed receipt validation,
@@ -444,6 +457,71 @@ write strict typed receipts.
   =4822f1f8813adb72cd7612f0c8610e247ada51fed615cbca74d0332834f3ce19=
   before this evidence note, then exited 0 after refreshing
   =docs/import-receipt.md=.
+
+** BLOCKED Add Sandboxed Real Lean Execution Gate :security:math:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-L007
+:DESIGN_SECTION: Local Hermetic Lean Proof-Suite Gate
+:DEPENDS_ON: CPFR-L003
+:BRANCH: feat/crouzeix-proof-reproduction
+:WORKTREE: .worktrees/crouzeix-proof-reproduction
+:OWNER: primary
+:AGENT_RUN: future authorized thread
+:MODEL: future authorized model
+:END:
+
+*** Scope
+
+Add an OS-level sandboxed execution boundary for real Lean/Lake runs with
+explicit write mounts, network denial, and receipts that distinguish sandbox
+guarantees from CPFR-L003 declared-write-surface checks.
+
+*** Non-goals
+
+- No implementation in the CPFR-L003 narrowing patch.
+- No live provider calls.
+- No ignored =.runs= mutation.
+- No theorem-specific formalization.
+- No claim that current fake-tool receipts prove real Lean filesystem
+  containment.
+
+*** Owned Files
+
+- future implementation files selected by the CPFR-L007 plan
+- future tests selected by the CPFR-L007 plan
+- this tracker subtree
+
+*** Acceptance Criteria
+
+- Real Lean/Lake commands run only under an OS-level filesystem sandbox.
+- The sandbox denies network access and exposes only explicit read and write
+  surfaces.
+- Receipts record the sandbox mechanism, mounted roots, denied ambient write
+  surface, and =local_process_no_os_sandbox= absence or replacement.
+- A real Lean run, target-route run, or =mathematical_foundations= validation is
+  not called hermetic until this gate passes.
+
+*** Implementation Steps
+
+1. Write a CPFR-L007 implementation plan after owner authorization.
+2. Add red tests for hardcoded outside writes under the chosen sandbox.
+3. Implement sandboxed real Lean execution without changing CPFR-L003 receipts.
+4. Verify with fake mutating tools before any real Lean proof-suite run.
+5. Only then authorize real Lean or =mathematical_foundations= validation
+   receipts to claim hermetic execution.
+
+*** Verification Plan
+
+- Future focused sandbox tests.
+- Future tracker validation.
+- Future repository verification.
+- Future full Harp release gate before local landing.
+
+*** Verification Evidence
+
+- Blocked by missing CPFR-L007 implementation authorization and design.
+- Current CPFR-L003 evidence is intentionally limited to declared write-surface
+  containment in a local process runner.
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:

@@ -880,7 +880,7 @@ git commit -m "feat(crouzeix): add lean proof suite fixtures" \
   -m "Co-authored-by: TRAE CLI <noreply@bytedance.com>"
 ```
 
-## Task 3: Implement Controlled Runner And Typed Receipts
+## Task 3: Implement Declared-Write-Surface Runner And Typed Receipts
 
 **Files:**
 - Modify: `labs/crouzeix_proof_reproduction/lean_suite.py`
@@ -907,8 +907,9 @@ Add:
 
 *** Scope
 
-Execute manifest-declared fixture modules through lock-derived commands and
-write strict typed receipts.
+Execute manifest-declared fixture modules through lock-derived commands,
+materialize them into a fresh execution root, apply declared-write-surface
+checks, and write strict typed receipts.
 
 *** Non-goals
 
@@ -916,6 +917,8 @@ write strict typed receipts.
 - No global PATH lookup.
 - No shell invocation.
 - No Crouzeix/Jin target status.
+- No OS-level filesystem sandbox.
+- No hardcoded-write containment claim.
 
 *** Owned Files
 
@@ -926,11 +929,18 @@ write strict typed receipts.
 
 *** Acceptance Criteria
 
-- Runner uses explicit argv/cwd/env and rejects output path escapes.
+- Runner uses explicit argv/cwd/env, materializes declared files into a fresh
+  execution root, and rejects output path escapes.
+- Runner blocks declared absolute write paths in argv/env outside the execution
+  root and receipt root, and records =local_process_no_os_sandbox= where that
+  local-process limitation is relevant.
+- Runner verifies pre/post inventories for declared inputs and outputs.
 - Receipts distinguish =passed=, =failed=, and =blocked=.
 - Receipts bind lock, manifest, source inventory, command, stdout/stderr, and
   module outcomes with recomputable digests.
 - Existing receipt destinations are create-only.
+- Acceptance is declared-write-surface containment only; CPFR-L003 does not
+  prove operating-system filesystem containment against hardcoded writes.
 
 *** Implementation Steps
 
@@ -939,6 +949,12 @@ write strict typed receipts.
 3. Implement runner and receipt validation.
 4. Add schema mirror.
 5. Run focused tests.
+
+*** Future Gate
+
+CPFR-L007 must add sandboxed real Lean execution before a real Lean run,
+target-route run, or =mathematical_foundations= validation can be called
+hermetic. Do not implement CPFR-L007 in Task 3.
 
 *** Verification Plan
 
@@ -1943,7 +1959,7 @@ Expected: commit created. No push.
 
 ## Plan Self-Review
 
-- **Spec coverage:** Task 1 covers lock/manifest validation; Task 2 covers source inventory and Harp-owned fixtures; Task 3 covers hermetic runner and typed receipts; Task 4 covers CLI and documentation; Task 5 covers optional explicit local Lean readiness; Task 6 covers release-gate verification and milestone closure.
+- **Spec coverage:** Task 1 covers lock/manifest validation; Task 2 covers source inventory and Harp-owned fixtures; Task 3 covers the declared-write-surface runner and typed receipts; Task 4 covers CLI and documentation; Task 5 covers optional explicit local Lean readiness; Task 6 covers release-gate verification and milestone closure. CPFR-L007 is a future sandboxed real Lean execution gate, not part of this plan.
 - **Scope calibration:** No task runs providers, mutates ignored `.runs`, starts CPFR-R018/032/033, claims Crouzeix/Jin proof progress, installs global Lean, vendors sibling-worktree bytes, or creates training data.
 - **Type consistency:** The plan consistently uses `RuntimeLock`, `SuiteManifest`, `SuiteModule`, `CommandProfile`, `run_suite`, `compute_source_inventory`, `probe_tool`, and `validate_receipt_json`.
 - **Execution split:** Each implementation task has a disjoint enough concern for fresh subagents, but all touch `lean_suite.py`; integrate serially in task order.

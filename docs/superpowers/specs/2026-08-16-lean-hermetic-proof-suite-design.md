@@ -84,7 +84,7 @@ undeclared package roots, undeclared imports, and digest drift stop the run
 before Lean execution with `blocked` when an artifact is unavailable, or
 `failed` when local bytes exist but violate the manifest.
 
-### Hermetic Runner
+### Declared-Write-Surface Runner
 
 The runner creates a fresh temporary execution root for each suite run. It
 copies or materializes only manifest-declared regular files, verifies every
@@ -95,7 +95,7 @@ copied byte, and invokes Lean/Lake with:
 - explicit environment allowlist;
 - no shell interpolation;
 - no network provider calls;
-- no writes outside the run root and declared receipt root;
+- declared writable roots limited to the run root and receipt root;
 - no symlinked source, artifact, generated, or output targets;
 - deterministic stdout/stderr capture; and
 - deterministic timeout/resource classification.
@@ -105,6 +105,22 @@ symlinked files, hardlink surprises where detectable, non-regular inputs,
 case-colliding manifest paths, and any output path that escapes its declared
 root. It must compute source and artifact inventories before and after Lean
 execution; a changed input inventory fails the run.
+
+CPFR-L003 is a local declared-write-surface runner, not an operating-system
+filesystem sandbox. Before executing a command, the runner must expand and
+inspect declared `argv` and allowed environment values, reject declared absolute
+write channels that target paths outside the run root or receipt root, and
+record the limitation marker `local_process_no_os_sandbox` when that boundary
+is relevant. Its pre/post inventories prove that manifest-declared inputs and
+outputs stayed stable, but they do not claim containment against a malicious or
+buggy executable that performs hardcoded writes to ambient filesystem paths.
+
+CPFR-L007 is therefore a later required gate for sandboxed real Lean execution.
+Before a real Lean run, target-route run, or `mathematical_foundations`
+validation is described as hermetic, Harp must add an OS-level sandboxed
+execution boundary with explicit write mounts, network denial, and receipts
+that distinguish sandbox guarantees from CPFR-L003's local declared-surface
+checks.
 
 ### Typed Receipts
 
@@ -206,7 +222,11 @@ Verification should cover:
 - manifest parsing rejects unknown modules, duplicate IDs, undeclared imports,
   undeclared files, path traversal, absolute paths, symlinks, and digest drift;
 - runner tests prove controlled `cwd`, controlled environment, no shell use,
-  no network/provider invocation, and no writes outside declared roots;
+  no network/provider invocation, fresh execution-root materialization,
+  declared absolute write-channel rejection, pre/post inventory validation, and
+  the `local_process_no_os_sandbox` limitation marker;
+- a later CPFR-L007 gate proves OS-level filesystem containment before real
+  Lean or `mathematical_foundations` validation can be called hermetic;
 - outcome tests distinguish `blocked`, `failed`, and `passed`;
 - receipt tests reject missing inventories, changed command receipts, changed
   stdout/stderr digests, changed module outcomes, and schema-version mixing;
