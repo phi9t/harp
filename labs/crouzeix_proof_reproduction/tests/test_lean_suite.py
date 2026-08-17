@@ -671,6 +671,46 @@ class LeanSuiteRunnerTests(unittest.TestCase):
                 lean_suite._is_under_allowed_root(outside_root, write_roots)
             )
 
+    def test_runner_rejects_manifest_runtime_mismatch_before_execution(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            sentinel = root / "would-have-run-runtime-mismatch.txt"
+            lock_value = valid_lock(root)
+            replace_fake_lean(
+                lock_value,
+                root,
+                "from pathlib import Path\n"
+                f"Path({str(sentinel)!r}).write_text('invoked\\n', encoding='utf-8')\n"
+                "print('runtime mismatch tool invoked')\n",
+            )
+            manifest_value = valid_manifest()
+            manifest_value["runtime_id"] = "other-lean-runtime"
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "runtime_id"):
+                lean_suite.run_suite(
+                    runtime_lock=lock,
+                    manifest=manifest,
+                    suite_root=suite,
+                    receipt_root=root / "receipts",
+                    run_id="lean-suite-runtime-mismatch",
+                )
+
+            self.assertFalse(sentinel.exists())
+            self.assertFalse((root / "receipts" / "lean-suite-runtime-mismatch").exists())
+
     def test_runner_records_passed_failed_and_blocked_outcomes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -1125,6 +1165,58 @@ class LeanSuiteRunnerTests(unittest.TestCase):
                 json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
             )
             with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+                lean_suite.validate_receipt_json(receipt_path)
+
+    def test_receipt_validation_binds_command_receipts_to_module_outcomes(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            lock = lean_suite.validate_runtime_lock(valid_lock(root), root)
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+            receipt_path = lean_suite.run_suite(
+                lock, manifest, suite, root / "receipts", "lean-suite-pass"
+            )
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+
+            tampered = dict(receipt)
+            tampered["command_receipts"] = [dict(receipt["command_receipts"][0])]
+            tampered["command_receipts"][0]["module_id"] = "other-module"
+            tampered["lean_suite_receipt_sha256"] = (
+                lean_suite.canonical_sha256_without_receipt_self(tampered)
+            )
+            receipt_path.write_text(
+                json.dumps(tampered, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "module_id"):
+                lean_suite.validate_receipt_json(receipt_path)
+
+            tampered = dict(receipt)
+            tampered["command_receipts"] = [
+                dict(receipt["command_receipts"][0]),
+                dict(receipt["command_receipts"][0]),
+            ]
+            tampered["lean_suite_receipt_sha256"] = (
+                lean_suite.canonical_sha256_without_receipt_self(tampered)
+            )
+            receipt_path.write_text(
+                json.dumps(tampered, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "same length"):
                 lean_suite.validate_receipt_json(receipt_path)
 
 

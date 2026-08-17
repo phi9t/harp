@@ -528,6 +528,8 @@ def run_suite(
     run_id: str,
 ) -> Path:
     safe_run_id = _safe_id(run_id, "run_id")
+    if manifest.runtime_id != runtime_lock.runtime_id:
+        raise protocol.ValidationError("suite manifest runtime_id mismatch")
     root = suite_root.absolute()
     _reject_symlink_ancestors(root, "suite root")
     _reject_local_path_escape(receipt_root, "receipt root")
@@ -892,10 +894,15 @@ def _validate_receipt_lists(receipt: dict[str, object], receipt_root: Path) -> N
         raise protocol.ValidationError("command_receipts must be a non-empty list")
     if not isinstance(outcomes, list) or not outcomes:
         raise protocol.ValidationError("module_outcomes must be a non-empty list")
+    if len(commands) != len(outcomes):
+        raise protocol.ValidationError(
+            "command_receipts and module_outcomes must have same length"
+        )
+    command_module_ids: list[str] = []
     for command in commands:
         mapping = _mapping(command, "command receipt")
         _require_fields(mapping, COMMAND_RECEIPT_FIELDS, "command receipt")
-        _safe_id(mapping["module_id"], "module_id")
+        command_module_ids.append(_safe_id(mapping["module_id"], "module_id"))
         _string_list(mapping["argv"], "argv", minimum=1, maximum=64)
         _bounded_string(mapping["cwd"], "cwd", 1, 4096)
         env = _mapping(mapping["env"], "env")
@@ -912,12 +919,17 @@ def _validate_receipt_lists(receipt: dict[str, object], receipt_root: Path) -> N
         stderr_sha256 = _digest(mapping["stderr_sha256"], "stderr_sha256")
         _validate_output_digest(receipt_root, stdout_path, stdout_sha256, "stdout")
         _validate_output_digest(receipt_root, stderr_path, stderr_sha256, "stderr")
+    outcome_module_ids: list[str] = []
     for outcome in outcomes:
         mapping = _mapping(outcome, "module outcome")
         _require_fields(mapping, MODULE_OUTCOME_FIELDS, "module outcome")
-        _safe_id(mapping["module_id"], "module_id")
+        outcome_module_ids.append(_safe_id(mapping["module_id"], "module_id"))
         _enum(mapping["outcome"], OUTCOMES, "module outcome")
         _bounded_string(mapping["reason"], "reason", 1, 4096)
+    if command_module_ids != outcome_module_ids:
+        raise protocol.ValidationError(
+            "command_receipts module_id order must match module_outcomes"
+        )
 
 
 def _validate_output_digest(

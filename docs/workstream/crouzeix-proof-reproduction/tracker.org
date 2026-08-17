@@ -481,6 +481,33 @@ write strict typed receipts.
   =-o=/absolute/path=. The regression keeps outside absolute paths blocked
   before invocation and preserves allowed embedded absolute paths under the
   receipt root.
+- Code-quality CPFR-L003 red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before this fix with two targeted regressions:
+  =test_runner_rejects_manifest_runtime_mismatch_before_execution= did not
+  raise =ValidationError= for a suite manifest whose =runtime_id= differed from
+  the runtime lock, and
+  =test_receipt_validation_binds_command_receipts_to_module_outcomes= did not
+  raise =ValidationError= after a tampered command receipt =module_id= was
+  changed and the receipt self-digest was recomputed.
+- Code-quality CPFR-L003 green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 35 tests after =run_suite= rejected manifest/runtime lock
+  =runtime_id= mismatches before source materialization or command execution,
+  and receipt validation required =command_receipts= and =module_outcomes= to
+  have equal length plus exact ordered =module_id= correspondence.
+- Code-quality CPFR-L003 schema check:
+  =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
+  exited 0.
+- Code-quality CPFR-L003 tracker check:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Code-quality CPFR-L003 whitespace check: =git diff --check= exited 0.
+- Code-quality CPFR-L003 repository check:
+  =cargo run -q -p harp -- repository verify= reported stale digest
+  =d2091a31b282d926e5e2b75f29af6eb56ca2ab24a1a0e044f2bba1ce9a7e4a37=
+  before this evidence note; the final receipt refresh follows after tracked
+  evidence settles.
 
 ** BLOCKED Add Sandboxed Real Lean Execution Gate :security:math:tests:ticket:
 :PROPERTIES:
