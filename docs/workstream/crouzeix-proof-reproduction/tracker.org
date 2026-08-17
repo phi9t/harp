@@ -457,6 +457,17 @@ write strict typed receipts.
   =4822f1f8813adb72cd7612f0c8610e247ada51fed615cbca74d0332834f3ce19=
   before this evidence note, then exited 0 after refreshing
   =docs/import-receipt.md=.
+- Spec-review CPFR-L003 write-root narrowing red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite.LeanSuiteRunnerTests.test_runner_write_roots_are_closed_to_execution_and_receipt_roots -v=
+  failed before this fix because =run_suite= still exposed the public
+  =allowed_write_roots= parameter, allowing callers to widen the declared write
+  surface beyond the execution root and receipt root.
+- Spec-review CPFR-L003 write-root narrowing green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 31 tests after removing =allowed_write_roots= from =run_suite= and
+  closing =_effective_allowed_write_roots= to exactly the execution root and
+  receipt root. The existing outside env-path write blocker remains covered by
+  =test_runner_blocks_profile_absolute_write_env_before_invocation=.
 
 ** BLOCKED Add Sandboxed Real Lean Execution Gate :security:math:tests:ticket:
 :PROPERTIES:

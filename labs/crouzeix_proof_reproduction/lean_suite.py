@@ -526,8 +526,6 @@ def run_suite(
     suite_root: Path,
     receipt_root: Path,
     run_id: str,
-    *,
-    allowed_write_roots: tuple[Path, ...] | None = None,
 ) -> Path:
     safe_run_id = _safe_id(run_id, "run_id")
     root = suite_root.absolute()
@@ -563,7 +561,6 @@ def run_suite(
             write_roots = _effective_allowed_write_roots(
                 execution_root=execution_root,
                 receipt_root=destination,
-                extra_roots=allowed_write_roots,
             )
             command_receipts: list[dict[str, object]] = []
             module_outcomes: list[dict[str, object]] = []
@@ -792,14 +789,8 @@ def _effective_allowed_write_roots(
     *,
     execution_root: Path,
     receipt_root: Path,
-    extra_roots: tuple[Path, ...] | None,
 ) -> tuple[Path, ...]:
-    roots = [execution_root.absolute(), receipt_root.absolute()]
-    for root in extra_roots or ():
-        absolute = root.absolute()
-        _reject_symlink_ancestors(absolute, "allowed write root")
-        roots.append(absolute)
-    return tuple(roots)
+    return (execution_root.absolute(), receipt_root.absolute())
 
 
 def _command_write_policy_block_reason(

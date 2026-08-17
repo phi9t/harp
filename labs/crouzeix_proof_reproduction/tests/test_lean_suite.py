@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import json
 import sys
 import tempfile
@@ -643,6 +644,33 @@ class LeanSuiteDigestBindingTests(unittest.TestCase):
 
 
 class LeanSuiteRunnerTests(unittest.TestCase):
+    def test_runner_write_roots_are_closed_to_execution_and_receipt_roots(
+        self,
+    ) -> None:
+        parameters = inspect.signature(lean_suite.run_suite).parameters
+        self.assertNotIn("allowed_write_roots", parameters)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            execution_root = root / "execution"
+            receipt_root = root / "receipts" / "run"
+            outside_root = root / "outside"
+            execution_root.mkdir()
+            receipt_root.mkdir(parents=True)
+            outside_root.mkdir()
+
+            write_roots = lean_suite._effective_allowed_write_roots(
+                execution_root=execution_root,
+                receipt_root=receipt_root,
+            )
+
+            self.assertEqual(
+                (execution_root.absolute(), receipt_root.absolute()), write_roots
+            )
+            self.assertFalse(
+                lean_suite._is_under_allowed_root(outside_root, write_roots)
+            )
+
     def test_runner_records_passed_failed_and_blocked_outcomes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
