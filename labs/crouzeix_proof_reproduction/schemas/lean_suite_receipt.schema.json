@@ -11,6 +11,9 @@
     "runtime_lock_sha256",
     "suite_manifest_sha256",
     "source_inventory_sha256",
+    "runtime_inventory_sha256",
+    "artifact_inventory_sha256",
+    "execution_root_sha256",
     "command_receipts",
     "module_outcomes",
     "outcome",
@@ -37,6 +40,15 @@
       "$ref": "#/$defs/sha256"
     },
     "source_inventory_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "runtime_inventory_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "artifact_inventory_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "execution_root_sha256": {
       "$ref": "#/$defs/sha256"
     },
     "command_receipts": {

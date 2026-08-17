@@ -84,6 +84,15 @@ def add_valid_lake(lock: dict[str, object], root: Path) -> None:
     }
 
 
+def replace_fake_lean(lock: dict[str, object], root: Path, body: str) -> None:
+    fake_lean = root / "tools" / "fake-lean"
+    fake_lean.write_text(f"#!{sys.executable}\n{body}", encoding="utf-8")
+    fake_lean.chmod(0o755)
+    lock["lean"] = dict(lock["lean"])
+    lock["lean"]["bytes"] = fake_lean.stat().st_size
+    lock["lean"]["sha256"] = digest(fake_lean.read_bytes())
+
+
 def valid_manifest() -> dict[str, object]:
     return {
         "schema_version": "crouzeix-lean-suite-manifest/v1",
@@ -562,6 +571,77 @@ class LeanSuiteInventoryTests(unittest.TestCase):
                 self.assertNotIn("shutil.which", text)
 
 
+class LeanSuiteDigestBindingTests(unittest.TestCase):
+    def test_runtime_lock_digest_binds_allowed_env_and_created_at(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            baseline = lean_suite.validate_runtime_lock(valid_lock(root), root)
+
+            env_changed_value = valid_lock(root)
+            env_changed_value["allowed_env"] = ["LEAN_SUITE_CACHE"]
+            env_changed = lean_suite.validate_runtime_lock(env_changed_value, root)
+
+            timestamp_changed_value = valid_lock(root)
+            timestamp_changed_value["created_at_utc"] = "2026-08-16T12:00:01Z"
+            timestamp_changed = lean_suite.validate_runtime_lock(
+                timestamp_changed_value, root
+            )
+
+            baseline_digest = lean_suite.canonical_sha256(
+                lean_suite._runtime_lock_wire(baseline)
+            )
+            self.assertNotEqual(
+                baseline_digest,
+                lean_suite.canonical_sha256(
+                    lean_suite._runtime_lock_wire(env_changed)
+                ),
+            )
+            self.assertNotEqual(
+                baseline_digest,
+                lean_suite.canonical_sha256(
+                    lean_suite._runtime_lock_wire(timestamp_changed)
+                ),
+            )
+
+    def test_suite_manifest_digest_binds_created_at_and_source_files(self) -> None:
+        baseline = lean_suite.validate_suite_manifest(valid_manifest(), {"lean-check"})
+
+        timestamp_changed_value = valid_manifest()
+        timestamp_changed_value["created_at_utc"] = "2026-08-16T12:00:01Z"
+        timestamp_changed = lean_suite.validate_suite_manifest(
+            timestamp_changed_value, {"lean-check"}
+        )
+
+        source_files_changed_value = valid_manifest()
+        source_files_changed_value["source_files"] = [
+            {
+                "path": "lakefile.toml",
+                "role": "lake_config",
+                "sha256": "b" * 64,
+                "bytes": 0,
+            }
+        ]
+        source_files_changed = lean_suite.validate_suite_manifest(
+            source_files_changed_value, {"lean-check"}
+        )
+
+        baseline_digest = lean_suite.canonical_sha256(
+            lean_suite._suite_manifest_wire(baseline)
+        )
+        self.assertNotEqual(
+            baseline_digest,
+            lean_suite.canonical_sha256(
+                lean_suite._suite_manifest_wire(timestamp_changed)
+            ),
+        )
+        self.assertNotEqual(
+            baseline_digest,
+            lean_suite.canonical_sha256(
+                lean_suite._suite_manifest_wire(source_files_changed)
+            ),
+        )
+
+
 class LeanSuiteRunnerTests(unittest.TestCase):
     def test_runner_records_passed_failed_and_blocked_outcomes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -594,10 +674,25 @@ class LeanSuiteRunnerTests(unittest.TestCase):
             self.assertEqual(receipt["module_outcomes"][0]["outcome"], "passed")
             self.assertEqual({}, receipt["command_receipts"][0]["env"])
             self.assertNotIn("PATH", receipt["command_receipts"][0]["env"])
-            self.assertEqual(
+            self.assertNotEqual(
+                suite.as_posix(), receipt["command_receipts"][0]["cwd"]
+            )
+            self.assertNotEqual(
                 (suite / "TinySmoke.lean").as_posix(),
                 receipt["command_receipts"][0]["argv"][1],
             )
+            self.assertTrue(
+                receipt["command_receipts"][0]["argv"][1].startswith(
+                    receipt["command_receipts"][0]["cwd"] + "/"
+                )
+            )
+            for field in (
+                "runtime_inventory_sha256",
+                "artifact_inventory_sha256",
+                "execution_root_sha256",
+            ):
+                self.assertIn(field, receipt)
+                self.assertEqual(64, len(receipt[field]))
 
             source.write_text("LEAN_SUITE_FAIL\n", encoding="utf-8")
             manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
@@ -629,6 +724,89 @@ class LeanSuiteRunnerTests(unittest.TestCase):
             self.assertEqual(blocked["outcome"], "blocked")
             self.assertEqual("blocked", blocked["module_outcomes"][0]["outcome"])
             self.assertIsNone(blocked["command_receipts"][0]["exit_code"])
+
+    def test_runner_detects_materialized_source_mutation_without_touching_original(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            original = "theorem tiny_smoke : True := by\n  trivial\n"
+            source.write_text(original, encoding="utf-8")
+            lock_value = valid_lock(root)
+            replace_fake_lean(
+                lock_value,
+                root,
+                "from pathlib import Path\n"
+                "import sys\n"
+                "Path(sys.argv[1]).write_text('LEAN_SUITE_MUTATED\\n', encoding='utf-8')\n"
+                "print('mutated materialized source')\n",
+            )
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            receipt_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-mutates-source",
+            )
+            receipt = lean_suite.validate_receipt_json(receipt_path)
+
+            self.assertEqual(original, source.read_text(encoding="utf-8"))
+            self.assertEqual("failed", receipt["outcome"])
+            self.assertEqual("failed", receipt["module_outcomes"][0]["outcome"])
+            self.assertIn("execution root inventory", receipt["reason"])
+
+    def test_runner_rejects_undeclared_execution_root_file_after_command(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            suite = root / "suite"
+            suite.mkdir()
+            source = suite / "TinySmoke.lean"
+            source.write_text(
+                "theorem tiny_smoke : True := by\n  trivial\n", encoding="utf-8"
+            )
+            lock_value = valid_lock(root)
+            replace_fake_lean(
+                lock_value,
+                root,
+                "from pathlib import Path\n"
+                "Path.cwd().joinpath('Extra.lean').write_text("
+                "'theorem extra : True := by\\n  trivial\\n', encoding='utf-8')\n"
+                "print('wrote undeclared file')\n",
+            )
+            manifest_value = valid_manifest()
+            manifest_value["modules"] = [dict(manifest_value["modules"][0])]
+            manifest_value["modules"][0]["source_sha256"] = digest(source.read_bytes())
+            manifest_value["modules"][0]["source_bytes"] = source.stat().st_size
+            lock = lean_suite.validate_runtime_lock(lock_value, root)
+            manifest = lean_suite.validate_suite_manifest(
+                manifest_value, set(lock.command_profiles)
+            )
+
+            receipt_path = lean_suite.run_suite(
+                runtime_lock=lock,
+                manifest=manifest,
+                suite_root=suite,
+                receipt_root=root / "receipts",
+                run_id="lean-suite-extra-file",
+            )
+            receipt = lean_suite.validate_receipt_json(receipt_path)
+
+            self.assertFalse((suite / "Extra.lean").exists())
+            self.assertEqual("failed", receipt["outcome"])
+            self.assertEqual("failed", receipt["module_outcomes"][0]["outcome"])
+            self.assertIn("execution root inventory", receipt["reason"])
 
     def test_runner_rejects_existing_receipt_output_escape_and_receipt_tampering(
         self,
@@ -667,6 +845,34 @@ class LeanSuiteRunnerTests(unittest.TestCase):
 
             receipt_path = receipt_root / "lean-suite-pass" / "receipt.json"
             receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            for field in (
+                "runtime_inventory_sha256",
+                "artifact_inventory_sha256",
+                "execution_root_sha256",
+            ):
+                missing = dict(receipt)
+                missing.pop(field, None)
+                missing["lean_suite_receipt_sha256"] = (
+                    lean_suite.canonical_sha256_without_receipt_self(missing)
+                )
+                receipt_path.write_text(
+                    json.dumps(missing, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                with self.subTest(missing=field):
+                    with self.assertRaisesRegex(protocol.ValidationError, "fields"):
+                        lean_suite.validate_receipt_json(receipt_path)
+
+                tampered = dict(receipt)
+                tampered[field] = "0" * 64
+                receipt_path.write_text(
+                    json.dumps(tampered, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                with self.subTest(tampered=field):
+                    with self.assertRaises(protocol.ValidationError):
+                        lean_suite.validate_receipt_json(receipt_path)
+
             receipt["outcome"] = "blocked"
             receipt_path.write_text(
                 json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"

@@ -6,6 +6,7 @@ import re
 import shutil
 import stat
 import subprocess
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Mapping
@@ -55,6 +56,9 @@ RECEIPT_FIELDS = frozenset(
         "runtime_lock_sha256",
         "suite_manifest_sha256",
         "source_inventory_sha256",
+        "runtime_inventory_sha256",
+        "artifact_inventory_sha256",
+        "execution_root_sha256",
         "command_receipts",
         "module_outcomes",
         "outcome",
@@ -119,11 +123,15 @@ class CommandProfile:
 
 @dataclass(frozen=True)
 class RuntimeLock:
+    schema_version: str
     runtime_id: str
     platform: str
     lean: ToolIdentity
     lake: ToolIdentity | None
+    packages: tuple[object, ...]
     command_profiles: dict[str, CommandProfile]
+    allowed_env: tuple[str, ...]
+    created_at_utc: str
 
 
 @dataclass(frozen=True)
@@ -149,9 +157,11 @@ class SourceFile:
 
 @dataclass(frozen=True)
 class SuiteManifest:
+    schema_version: str
     suite_id: str
     runtime_id: str
     modules: tuple[SuiteModule, ...]
+    created_at_utc: str
     source_files: tuple[SourceFile, ...] = ()
 
 
@@ -183,6 +193,7 @@ def validate_runtime_lock(value: Mapping[str, Any], root: Path) -> RuntimeLock:
     _require_equal(
         value["schema_version"], "crouzeix-lean-runtime-lock/v1", "schema_version"
     )
+    schema_version = str(value["schema_version"])
     runtime_id = _safe_id(value["runtime_id"], "runtime_id")
     platform = _bounded_string(value["platform"], "platform", 1, 128)
     lean = _validate_tool(value["lean"], root, "lean")
@@ -199,13 +210,17 @@ def validate_runtime_lock(value: Mapping[str, Any], root: Path) -> RuntimeLock:
         raise protocol.ValidationError("packages must be a list")
     if packages:
         raise protocol.ValidationError("packages must be empty until package locks exist")
-    _timestamp(value["created_at_utc"], "created_at_utc")
+    created_at_utc = _timestamp(value["created_at_utc"], "created_at_utc")
     return RuntimeLock(
+        schema_version=schema_version,
         runtime_id=runtime_id,
         platform=platform,
         lean=lean,
         lake=lake,
+        packages=tuple(packages),
         command_profiles=profiles,
+        allowed_env=tuple(sorted(allowed_env)),
+        created_at_utc=created_at_utc,
     )
 
 
@@ -221,9 +236,10 @@ def validate_suite_manifest(
     _require_equal(
         value["schema_version"], "crouzeix-lean-suite-manifest/v1", "schema_version"
     )
+    schema_version = str(value["schema_version"])
     suite_id = _safe_id(value["suite_id"], "suite_id")
     runtime_id = _safe_id(value["runtime_id"], "runtime_id")
-    _timestamp(value["created_at_utc"], "created_at_utc")
+    created_at_utc = _timestamp(value["created_at_utc"], "created_at_utc")
     if not all(isinstance(profile, str) for profile in command_profiles):
         raise protocol.ValidationError("command_profiles must contain strings")
 
@@ -246,9 +262,11 @@ def validate_suite_manifest(
         _validate_source_files(value.get("source_files", []), seen_paths)
     )
     return SuiteManifest(
+        schema_version=schema_version,
         suite_id=suite_id,
         runtime_id=runtime_id,
         modules=tuple(modules),
+        created_at_utc=created_at_utc,
         source_files=source_files,
     )
 
@@ -317,6 +335,176 @@ def compute_source_inventory(suite_root: Path, manifest: SuiteManifest) -> dict[
     }
 
 
+def _materialize_source_inventory(
+    source_root: Path, execution_root: Path, source_inventory: Mapping[str, object]
+) -> None:
+    files = source_inventory["files"]
+    if not isinstance(files, list):
+        raise protocol.ValidationError("source inventory files must be a list")
+    for raw in files:
+        entry = _mapping(raw, "source inventory file")
+        relative = _safe_relative_path(entry["path"], "source inventory path")
+        source = source_root / relative
+        target = execution_root / relative
+        _reject_symlink_ancestors(source, "source")
+        _reject_symlink_ancestors(target, "execution root")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_symlink() or not source.is_file():
+            raise protocol.ValidationError(f"source must be a regular file: {relative}")
+        if target.exists():
+            raise protocol.ValidationError(f"duplicate materialized source: {relative}")
+        data = source.read_bytes()
+        if len(data) != _integer(entry["bytes"], "source inventory bytes", 0, 1 << 30):
+            raise protocol.ValidationError(f"source_bytes mismatch: {relative}")
+        if protocol.sha256_bytes(data) != _digest(
+            entry["sha256"], "source inventory sha256"
+        ):
+            raise protocol.ValidationError(f"source_sha256 mismatch: {relative}")
+        _write_bytes_create_only(target, data)
+
+
+def _compute_execution_root_inventory(
+    execution_root: Path, manifest: SuiteManifest
+) -> dict[str, object]:
+    declared: dict[str, str] = {
+        module.path: "lean_module" for module in manifest.modules
+    }
+    declared.update({source.path: source.role for source in manifest.source_files})
+    files: list[dict[str, object]] = []
+    root = execution_root.absolute()
+    for path in sorted(
+        root.rglob("*"), key=lambda candidate: candidate.relative_to(root).as_posix()
+    ):
+        relative = path.relative_to(root).as_posix()
+        if path.is_dir() and not path.is_symlink():
+            continue
+        if path.is_symlink():
+            files.append(
+                {
+                    "path": relative,
+                    "role": declared.get(relative, "undeclared"),
+                    "kind": "symlink",
+                }
+            )
+            continue
+        if not path.is_file():
+            files.append(
+                {
+                    "path": relative,
+                    "role": declared.get(relative, "undeclared"),
+                    "kind": "non_regular",
+                }
+            )
+            continue
+        data = path.read_bytes()
+        files.append(
+            {
+                "path": relative,
+                "role": declared.get(relative, "undeclared"),
+                "kind": "file",
+                "bytes": len(data),
+                "sha256": protocol.sha256_bytes(data),
+            }
+        )
+    return {
+        "schema_version": "crouzeix-lean-execution-root-inventory/v1",
+        "suite_id": manifest.suite_id,
+        "file_count": len(files),
+        "files": files,
+    }
+
+
+def _compute_runtime_inventory(runtime_lock: RuntimeLock) -> dict[str, object]:
+    tools = [_runtime_tool_inventory(runtime_lock.lean, "lean")]
+    if runtime_lock.lake is not None:
+        tools.append(_runtime_tool_inventory(runtime_lock.lake, "lake"))
+    return {
+        "schema_version": "crouzeix-lean-runtime-inventory/v1",
+        "runtime_id": runtime_lock.runtime_id,
+        "tool_count": len(tools),
+        "tools": sorted(tools, key=lambda tool: str(tool["role"])),
+    }
+
+
+def _runtime_tool_inventory(tool: ToolIdentity, role: str) -> dict[str, object]:
+    path = tool.absolute_path
+    entry: dict[str, object] = {
+        "role": role,
+        "path": tool.path,
+        "expected_bytes": tool.bytes,
+        "expected_sha256": tool.sha256,
+        "version": tool.version,
+    }
+    try:
+        _reject_symlink_ancestors(path, f"{role} tool")
+    except protocol.ValidationError:
+        entry["status"] = "symlinked"
+        return entry
+    if path.is_symlink():
+        entry["status"] = "symlinked"
+        return entry
+    if not path.exists():
+        entry["status"] = "missing"
+        return entry
+    if not path.is_file():
+        entry["status"] = "non_regular"
+        return entry
+    data = path.read_bytes()
+    sha256 = protocol.sha256_bytes(data)
+    if len(data) == tool.bytes and sha256 == tool.sha256:
+        status = "matched"
+    else:
+        status = "drifted"
+    entry.update(
+        {
+            "status": status,
+            "bytes": len(data),
+            "sha256": sha256,
+        }
+    )
+    return entry
+
+
+def _compute_artifact_inventory(runtime_lock: RuntimeLock) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-lean-artifact-inventory/v1",
+        "runtime_id": runtime_lock.runtime_id,
+        "artifact_count": 0,
+        "artifacts": [],
+    }
+
+
+def _post_execution_inventory_failure(
+    *,
+    execution_root: Path,
+    manifest: SuiteManifest,
+    source_inventory: Mapping[str, object],
+    runtime_lock: RuntimeLock,
+    runtime_inventory: Mapping[str, object],
+) -> str | None:
+    try:
+        after_execution = compute_source_inventory(execution_root, manifest)
+        if canonical_sha256(after_execution) != canonical_sha256(source_inventory):
+            return "execution root inventory changed after command execution"
+        after_runtime = _compute_runtime_inventory(runtime_lock)
+        if canonical_sha256(after_runtime) != canonical_sha256(runtime_inventory):
+            return "runtime inventory changed after command execution"
+    except protocol.ValidationError as exc:
+        return f"execution root inventory validation failed: {exc}"
+    return None
+
+
+def _apply_inventory_failure(
+    module_outcomes: list[dict[str, object]], reason: str
+) -> None:
+    if module_outcomes:
+        module_outcomes[0] = {
+            "module_id": module_outcomes[0]["module_id"],
+            "outcome": "failed",
+            "reason": reason,
+        }
+
+
 def run_suite(
     runtime_lock: RuntimeLock,
     manifest: SuiteManifest,
@@ -340,19 +528,45 @@ def run_suite(
     source_inventory = compute_source_inventory(root, manifest)
     destination.mkdir(mode=0o700)
     try:
-        command_receipts: list[dict[str, object]] = []
-        module_outcomes: list[dict[str, object]] = []
-        for module in manifest.modules:
-            profile = runtime_lock.command_profiles[module.command_profile]
-            command, outcome = _run_module(
-                runtime_lock=runtime_lock,
-                profile=profile,
-                suite_root=root,
-                receipt_root=destination,
-                module=module,
+        with tempfile.TemporaryDirectory(
+            prefix="execution-", dir=destination
+        ) as execution_directory:
+            execution_root = Path(execution_directory)
+            _materialize_source_inventory(root, execution_root, source_inventory)
+            pre_execution_inventory = compute_source_inventory(execution_root, manifest)
+            if canonical_sha256(pre_execution_inventory) != canonical_sha256(
+                source_inventory
+            ):
+                raise protocol.ValidationError(
+                    "execution root inventory does not match source inventory"
+                )
+            runtime_inventory = _compute_runtime_inventory(runtime_lock)
+            artifact_inventory = _compute_artifact_inventory(runtime_lock)
+            command_receipts: list[dict[str, object]] = []
+            module_outcomes: list[dict[str, object]] = []
+            for module in manifest.modules:
+                profile = runtime_lock.command_profiles[module.command_profile]
+                command, outcome = _run_module(
+                    runtime_lock=runtime_lock,
+                    profile=profile,
+                    suite_root=execution_root,
+                    receipt_root=destination,
+                    module=module,
+                )
+                command_receipts.append(command)
+                module_outcomes.append(outcome)
+            final_execution_inventory = _compute_execution_root_inventory(
+                execution_root, manifest
             )
-            command_receipts.append(command)
-            module_outcomes.append(outcome)
+            inventory_failure = _post_execution_inventory_failure(
+                execution_root=execution_root,
+                manifest=manifest,
+                source_inventory=source_inventory,
+                runtime_lock=runtime_lock,
+                runtime_inventory=runtime_inventory,
+            )
+            if inventory_failure is not None:
+                _apply_inventory_failure(module_outcomes, inventory_failure)
         final = _final_outcome(module_outcomes)
         receipt: dict[str, object] = {
             "schema_version": "crouzeix-lean-suite-receipt/v1",
@@ -362,6 +576,9 @@ def run_suite(
             "runtime_lock_sha256": canonical_sha256(_runtime_lock_wire(runtime_lock)),
             "suite_manifest_sha256": canonical_sha256(_suite_manifest_wire(manifest)),
             "source_inventory_sha256": canonical_sha256(source_inventory),
+            "runtime_inventory_sha256": canonical_sha256(runtime_inventory),
+            "artifact_inventory_sha256": canonical_sha256(artifact_inventory),
+            "execution_root_sha256": canonical_sha256(final_execution_inventory),
             "command_receipts": command_receipts,
             "module_outcomes": module_outcomes,
             "outcome": final["outcome"],
@@ -402,6 +619,15 @@ def validate_receipt_json(path: Path) -> dict[str, object]:
     )
     result["source_inventory_sha256"] = _digest(
         result["source_inventory_sha256"], "source_inventory_sha256"
+    )
+    result["runtime_inventory_sha256"] = _digest(
+        result["runtime_inventory_sha256"], "runtime_inventory_sha256"
+    )
+    result["artifact_inventory_sha256"] = _digest(
+        result["artifact_inventory_sha256"], "artifact_inventory_sha256"
+    )
+    result["execution_root_sha256"] = _digest(
+        result["execution_root_sha256"], "execution_root_sha256"
     )
     result["outcome"] = _enum(result["outcome"], OUTCOMES, "outcome")
     result["reason"] = _bounded_string(result["reason"], "reason", 1, 4096)
@@ -627,18 +853,23 @@ def _remove_new_tree(path: Path) -> None:
 
 def _runtime_lock_wire(lock: RuntimeLock) -> dict[str, object]:
     return {
+        "schema_version": lock.schema_version,
         "runtime_id": lock.runtime_id,
         "platform": lock.platform,
         "lean": _tool_wire(lock.lean),
         "lake": None if lock.lake is None else _tool_wire(lock.lake),
+        "packages": list(lock.packages),
         "command_profiles": {
             key: {
+                "profile_id": value.profile_id,
                 "argv": list(value.argv),
                 "timeout_seconds": value.timeout_seconds,
                 "env": dict(sorted(value.env.items())),
             }
             for key, value in sorted(lock.command_profiles.items())
         },
+        "allowed_env": list(lock.allowed_env),
+        "created_at_utc": lock.created_at_utc,
     }
 
 
@@ -653,6 +884,7 @@ def _tool_wire(tool: ToolIdentity) -> dict[str, object]:
 
 def _suite_manifest_wire(manifest: SuiteManifest) -> dict[str, object]:
     return {
+        "schema_version": manifest.schema_version,
         "suite_id": manifest.suite_id,
         "runtime_id": manifest.runtime_id,
         "modules": [
@@ -669,6 +901,7 @@ def _suite_manifest_wire(manifest: SuiteManifest) -> dict[str, object]:
             }
             for module in manifest.modules
         ],
+        "created_at_utc": manifest.created_at_utc,
         "source_files": [
             {
                 "path": source.path,

@@ -405,6 +405,31 @@ write strict typed receipts.
 - Repository check: =cargo run -q -p harp -- repository verify= reported a
   stale import receipt after final tracker evidence changed the tracked
   payload, then exited 0 after refreshing =docs/import-receipt.md=.
+- Spec-compliance red check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  failed before this fix because runtime and manifest wire digests ignored
+  =allowed_env=, =created_at_utc=, and =source_files=, command =cwd= was still
+  the original suite root, a fake mutating tool rewrote the original source,
+  a fake tool wrote =Extra.lean= under the original suite, and receipts lacked
+  =runtime_inventory_sha256=, =artifact_inventory_sha256=, and
+  =execution_root_sha256=.
+- Spec-compliance focused green check:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_lean_suite -v=
+  passed 28 tests after materializing manifest-declared files into a fresh
+  execution root, validating pre/post inventories, adding receipt inventory
+  digest bindings, and binding complete validated lock/manifest wire fields.
+- Spec-compliance schema check:
+  =python3 -m json.tool labs/crouzeix_proof_reproduction/schemas/lean_suite_receipt.schema.json=
+  exited 0 after adding the three required inventory digest fields.
+- Spec-compliance tracker check:
+  =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Spec-compliance whitespace check: =git diff --check= exited 0.
+- Spec-compliance repository check:
+  =cargo run -q -p harp -- repository verify= reported stale digest
+  =4822f1f8813adb72cd7612f0c8610e247ada51fed615cbca74d0332834f3ce19=
+  before this evidence note, then exited 0 after refreshing
+  =docs/import-receipt.md=.
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:
