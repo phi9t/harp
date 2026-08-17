@@ -67,7 +67,7 @@ files use empty-blob base
 :PROPERTIES:
 :ID: CPFR-058
 :DESIGN_SECTION: Runtime Ticket Contract; Initial Expert Roster; Claim Ceiling
-:DEPENDS_ON: CPFR-R017
+:DEPENDS_ON: CPFR-032
 :BRANCH: feat/crouzeix-proof-reproduction
 :WORKTREE: .worktrees/crouzeix-proof-reproduction
 :OWNER: primary
@@ -131,6 +131,11 @@ workstream and reserve a non-conflicting context-parity repair ticket.
   patch. This checkpoint did not run live providers or edit ignored =.runs=
   evidence. The landing refreshes =docs/import-receipt.md= as the final
   tracked payload step before commit.
+- Clean integration note: the source feature branch originally depended on
+  =CPFR-R017= from the proof-agent amendment chain. This integration branch
+  intentionally does not import that old amendment chain; =CPFR-032= is the
+  terminal gate present on current =master= that establishes the blocked
+  context for this checkpoint.
 
 ** DONE Add Lean Proof-Suite Lock And Manifest Validators :code:tests:ticket:
 :PROPERTIES:
