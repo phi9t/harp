@@ -514,6 +514,89 @@ write strict typed receipts.
   before this evidence note; the final receipt refresh follows after tracked
   evidence settles.
 
+** DONE Add NNG4 Introductory Proof Phase :lean:tests:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-L004
+:DESIGN_SECTION: Local Hermetic Lean Proof-Suite Gate
+:DEPENDS_ON: CPFR-L003
+:BRANCH: feat/nng4-early-phase-proof
+:WORKTREE: .worktrees/nng4-early-phase-proof
+:OWNER: primary
+:AGENT_RUN: current thread
+:MODEL: GPT-5
+:END:
+
+*** Scope
+
+Add a standalone Lean phase proving Harp-owned counterparts of the ordinary
+Natural Number Game 4 introductory statements active through upstream
+=Game.lean= at revision =727e4d219838eeb7f3945d2e9a0539f244d50540=.
+
+*** Non-goals
+
+- No Crouzeix theorem proof claim.
+- No live provider call.
+- No ignored =.runs= mutation.
+- No dependency on a local NNG4 checkout or =/tmp= inspection clone.
+- No claim that upstream =Power/L10FLT= / =xyzzy= is genuine proof evidence.
+- No old, duplicate, or WIP NNG4 worlds not imported by upstream =Game.lean=.
+
+*** Owned Files
+
+- =.gitignore=
+- =crates/harp/tests/nng4_intro_lean.rs=
+- =evidence/lean_proof_engineering/nng4_intro/REMOTE=
+- =evidence/lean_proof_engineering/nng4_intro/REVISION=
+- =evidence/lean_proof_engineering/nng4_intro/LICENSE=
+- =evidence/lean_proof_engineering/nng4_intro/LICENSE_STATUS=
+- =formalization/nng4_intro/README.md=
+- =formalization/nng4_intro/lakefile.toml=
+- =formalization/nng4_intro/lean-toolchain=
+- =formalization/nng4_intro/lake-manifest.json=
+- =formalization/nng4_intro/NNG4Intro.lean=
+- =formalization/nng4_intro/NNG4Intro/StableWorlds.lean=
+- =mise.toml=
+- =scripts/check_nng4_intro_lean.sh=
+- this tracker subtree
+- =docs/import-receipt.md=
+
+*** Acceptance Criteria
+
+- The NNG4 project is a standalone Lake project pinned to Lean/mathlib
+  =v4.32.1=.
+- The proof module builds without =sorry= or =admit=.
+- The README records the upstream remote/revision, active-world scope, 77
+  ordinary proved statements, and the excluded =xyzzy= endpoint.
+- The verifier wrapper requires task-scoped =ELAN_HOME= and rejects ambient
+  project overrides before normal builds.
+- =mise run verify= includes the NNG4 introductory Lean gate.
+- Upstream NNG4 license evidence and remote/revision sidecars are preserved.
+
+*** Implementation Steps
+
+1. Inspect upstream NNG4 =Game.lean= and active world aggregators.
+2. Add a Harp-owned Lean project for the ordinary active-world statements.
+3. Add a proof-hole scanner and task-scoped Lean verifier wrapper.
+4. Add Rust policy tests for the wrapper.
+5. Wire the verifier into =mise=.
+6. Preserve upstream identity and license sidecars.
+7. Run focused Lean, Rust, tracker, and repository checks.
+
+*** Verification Plan
+
+- =ELAN_HOME=/private/tmp/harp-mathematical-foundations-elan PATH=/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:$PATH scripts/check_nng4_intro_lean.sh=
+- =CARGO_TARGET_DIR=.build/harp-target cargo test --profile test-small -p harp --test nng4_intro_lean=
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Focused NNG4 Lean verifier passed before tracker closeout with 8657 Lake jobs
+  built, including =NNG4Intro.StableWorlds= and =NNG4Intro=.
+- Final release-gate evidence is recorded in the landing response after
+  =docs/import-receipt.md= is refreshed as the last tracked payload step.
+
 ** BLOCKED Add Sandboxed Real Lean Execution Gate :security:math:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-L007

@@ -184,17 +184,23 @@ the Crouzeix formal-validation workstream:
 - dated first-party Lean, Mistral, and Lean community documentation captures;
 - immutable Lean repository identity metadata plus upstream README and Apache
   2.0 license bytes for the resolved Lean commit;
+- a revision-pinned NNG4 introductory proof phase with upstream remote,
+  revision, Apache 2.0 license evidence, and a standalone Lean/mathlib
+  `v4.32.1` Lake project;
 - source lock, closure, capture receipt, manifest, and artifact inventory rows;
   and
 - acquisition contract tests for the offline evidence bundle.
 
 The packet supports local Lean proof-engineering context and runtime-workflow
-inspection. It does not provision Lean, validate a Crouzeix proof, trust model
-outputs as formal results, or alter the fixed 521-row initial import account.
+inspection plus Harp-owned proof of the 77 ordinary active NNG4 introductory
+statements imported through upstream `Game.lean`. It does not provision Lean,
+validate a Crouzeix proof, trust model outputs as formal results, treat the
+upstream `xyzzy` Fermat endpoint as proof evidence, cover old/WIP NNG4 side
+worlds, or alter the fixed 521-row initial import account.
 
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`f1c6781e9c21ca71a04cd9e34ac187e373ec43e6e539639f387bd665d7771ad7`
+`9141f425dbfdcc2e9a314a2b7079020e579bca6b202a1076fdda1e03a9ef6565`
