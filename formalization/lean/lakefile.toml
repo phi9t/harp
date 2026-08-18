@@ -1,0 +1,24 @@
+name = "harp_formalization"
+defaultTargets = [
+  "TrainingDynamics",
+  "MathematicalFoundations",
+  "NNG4Intro",
+  "AutodiffGeometry",
+]
+
+[[lean_lib]]
+name = "TrainingDynamics"
+
+[[lean_lib]]
+name = "MathematicalFoundations"
+
+[[lean_lib]]
+name = "NNG4Intro"
+
+[[lean_lib]]
+name = "AutodiffGeometry"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.32.1"

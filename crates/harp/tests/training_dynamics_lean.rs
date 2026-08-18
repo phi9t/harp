@@ -4,13 +4,22 @@ use std::path::Path;
 use std::process::Command;
 
 use assert_cmd::prelude::*;
-use tempfile::TempDir;
+use tempfile::{Builder, TempDir};
 
 fn repo_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .and_then(Path::parent)
         .expect("workspace root")
+}
+
+fn scoped_elan_home() -> TempDir {
+    let root = Path::new("/private/tmp/harp-mathematical-foundations-elan");
+    fs::create_dir_all(root).expect("create wrapper-owned Elan root");
+    Builder::new()
+        .prefix("test-")
+        .tempdir_in(root)
+        .expect("create scoped Elan home")
 }
 
 #[test]
@@ -70,6 +79,7 @@ fn proof_holes_are_rejected_before_lake_runs() {
 #[test]
 fn ambient_project_override_is_ignored() {
     let temporary_project = TempDir::new().expect("temporary Lean project");
+    let scoped_elan_home = scoped_elan_home();
     let source_dir = temporary_project.path().join("TrainingDynamics");
     fs::create_dir(&source_dir).expect("create scoped Lean source directory");
     fs::write(
@@ -98,6 +108,7 @@ fn ambient_project_override_is_ignored() {
             "HARP_TRAINING_DYNAMICS_PROJECT_ROOT",
             temporary_project.path(),
         )
+        .env("ELAN_HOME", scoped_elan_home.path())
         .env("PATH", path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()

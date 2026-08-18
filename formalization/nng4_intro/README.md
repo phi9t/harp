@@ -1,8 +1,8 @@
 # NNG4 introductory Lean formalization
 
-This independent Lean project proves Harp-owned counterparts of the ordinary
-Natural Number Game 4 statements that are active through upstream `Game.lean`.
-The inspected upstream source is:
+This Lean library proves Harp-owned counterparts of the ordinary Natural
+Number Game 4 statements that are active through upstream `Game.lean`. The
+inspected upstream source is:
 
 - remote: `https://github.com/leanprover-community/nng4.git`
 - revision: `727e4d219838eeb7f3945d2e9a0539f244d50540`
@@ -23,9 +23,10 @@ are not imported by `Game.lean`. They are not part of this introductory phase.
 
 ## Reproducibility and verification
 
-The required Lean toolchain is pinned in `lean-toolchain`, and the committed
-`lake-manifest.json` pins the public dependency graph. The project uses
-mathlib's public `v4.32.1` tag.
+The required Lean toolchain is pinned in `../lean/lean-toolchain`, and the
+committed `../lean/lake-manifest.json` pins the public dependency graph. The
+shared Lake project uses mathlib's public `v4.32.1` tag and keeps one `.lake`
+cache for Harp's Lean libraries.
 
 Do not install Lean with a mutable installer pipe. Use the task-scoped Lean
 state already used for Harp proof-infrastructure checks, with an explicit
@@ -38,8 +39,10 @@ Run the repository wrapper from the repository root:
 scripts/check_nng4_intro_lean.sh
 ```
 
-Ordinary `mise run verify-nng4-intro-lean` use requires an explicit, existing
+For focused iteration, run `mise run lean-nng4`. To warm and check the full
+shared root once, run `mise run lean-all`. The `mise` tasks provide the
 task-scoped `ELAN_HOME` below `/private/tmp/harp-mathematical-foundations-elan`.
 The wrapper canonicalizes the path and rejects every other location, so it
-cannot use a global Elan home. It scans every Lean source outside `.lake` and
-rejects `sorry` and `admit` before invoking Lake.
+cannot use a global Elan home. It scans `../lean/NNG4Intro.lean` and
+`../lean/NNG4Intro/` outside `.lake`, rejecting `sorry` and `admit` before
+invoking Lake.

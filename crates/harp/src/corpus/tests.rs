@@ -1471,8 +1471,7 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
 fn compiles_the_mathematical_foundations_formalization_map() {
     const MAP_ID: &str = "math-foundations-formalization-map";
     const MAP_PATH: &str = "knowledge/mathematical_foundations/formalization_map.md";
-    const MANIFEST_PATH: &str =
-        "formalization/mathematical_foundations/MathematicalFoundations/PublicTheorems.lean";
+    const MANIFEST_PATH: &str = "formalization/lean/MathematicalFoundations/PublicTheorems.lean";
     const STATUSES: [&str; 3] = ["Direct theorem", "Corollary/application", "Prose-only"];
     const INVENTORY_NAMESPACES: [&str; 6] = [
         "MathematicalFoundations.Linear",
@@ -1499,8 +1498,7 @@ fn compiles_the_mathematical_foundations_formalization_map() {
     let manifest = fs::read_to_string(workspace_root().join(MANIFEST_PATH))
         .expect("formalization map must have a Lean-owned public-theorem manifest");
     let root_module = fs::read_to_string(
-        workspace_root()
-            .join("formalization/mathematical_foundations/MathematicalFoundations.lean"),
+        workspace_root().join("formalization/lean/MathematicalFoundations.lean"),
     )
     .expect("formalization root module must be readable");
     assert!(
@@ -1634,7 +1632,7 @@ fn compiles_the_mathematical_foundations_formalization_map() {
         !contains_nonportable_path_reference(&map),
         "{MAP_PATH} must not contain a nonportable local-path reference"
     );
-    let formalization_root = workspace_root().join("formalization/mathematical_foundations");
+    let formalization_root = workspace_root().join("formalization/lean/MathematicalFoundations");
     let lean_sources = formalization_lean_sources(&formalization_root);
     assert!(
         lean_sources

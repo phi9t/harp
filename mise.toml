@@ -93,21 +93,67 @@ atlas_dir="$config_root/atlas"
 )
 """
 
+[tasks.lean-env]
+description = "Prepare task-scoped Lean environment variables for shared-root proof builds"
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "mkdir -p /private/tmp/harp-mathematical-foundations-elan"
+
+[tasks.lean-training]
+description = "Build the Training Dynamics Lean library from the shared Lake root"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "scripts/check_lean_library.sh TrainingDynamics"
+
+[tasks.lean-foundations]
+description = "Build the Mathematical Foundations Lean library from the shared Lake root"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "scripts/check_lean_library.sh MathematicalFoundations"
+
+[tasks.lean-nng4]
+description = "Build the NNG4 introductory Lean library from the shared Lake root"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "scripts/check_lean_library.sh NNG4Intro"
+
+[tasks.lean-autodiff]
+description = "Build the Autodiff Geometry Lean library from the shared Lake root"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "scripts/check_lean_library.sh AutodiffGeometry"
+
+[tasks.lean-all]
+description = "Build all Harp Lean libraries once from the shared Lake root"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = "scripts/check_lean_library.sh all"
+
+[tasks.lean-timing]
+description = "Print timing reports for the shared Lean root and focused proof targets"
+run = """
+set -euo pipefail
+mise run lean-all
+mise run lean-training
+mise run lean-foundations
+mise run lean-nng4
+mise run lean-autodiff
+"""
+
 [tasks.verify-lean]
 description = "Build the pinned Training Dynamics Lean formalization"
-run = "scripts/check_training_dynamics_lean.sh"
+run = "mise run lean-training"
 
 [tasks.verify-mathematical-foundations-lean]
 description = "Build the pinned Mathematical Foundations Lean formalization"
-run = "scripts/check_mathematical_foundations_lean.sh"
+run = "mise run lean-foundations"
 
 [tasks.verify-nng4-intro-lean]
 description = "Build the pinned NNG4 introductory Lean formalization"
-run = "scripts/check_nng4_intro_lean.sh"
+run = "mise run lean-nng4"
 
 [tasks.verify-autodiff-geometry-lean]
 description = "Build the pinned Autodiff Geometry Lean formalization"
-run = "scripts/check_autodiff_geometry_lean.sh"
+run = "mise run lean-autodiff"
 
 [tasks.verify-repository]
 description = "Verify import map, LFS, forbidden references, and generated cleanliness"
@@ -120,4 +166,4 @@ mise run build
 
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
-run = "mise run verify-atlas && mise run verify-rust && mise run verify-lean && mise run verify-mathematical-foundations-lean && mise run verify-nng4-intro-lean && mise run verify-autodiff-geometry-lean && mise run verify-repository"
+run = "mise run verify-atlas && mise run verify-rust && mise run lean-all && mise run verify-repository"
