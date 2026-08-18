@@ -450,6 +450,7 @@ fn markdown_options(source_path: &str) -> Options {
 fn is_mathematics_packet(source_path: &str) -> bool {
     source_path.starts_with("knowledge/crouzeix_conjecture/")
         || source_path.starts_with("knowledge/mathematical_foundations/")
+        || source_path.starts_with("knowledge/autodiff_geometry/")
 }
 
 fn math_span(tex: &str, display: bool) -> String {

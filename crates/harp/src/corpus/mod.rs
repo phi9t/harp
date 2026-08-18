@@ -75,7 +75,7 @@ pub(crate) fn resolve_wiki_links(
         .collect()
 }
 
-pub(super) const READER_ROUTES: [(&str, &str, &str); 15] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
     (
         "thesis",
         "Thesis",
@@ -147,8 +147,13 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 15] = [
         "Math foundations",
         "knowledge/mathematical_foundations/mathematical_foundations_index.md",
     ),
+    (
+        "autodiff-geometry",
+        "Autodiff geometry",
+        "knowledge/autodiff_geometry/autodiff_geometry_index.md",
+    ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 74] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 78] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -438,6 +443,22 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 74] = [
     (
         "math-foundations-formalization-map",
         "knowledge/mathematical_foundations/formalization_map.md",
+    ),
+    (
+        "autodiff-geometry-index",
+        "knowledge/autodiff_geometry/autodiff_geometry_index.md",
+    ),
+    (
+        "autodiff-geometry-source-registry",
+        "knowledge/autodiff_geometry/source_registry.md",
+    ),
+    (
+        "autodiff-geometry-claim-evidence-ledger",
+        "knowledge/autodiff_geometry/claim_evidence_ledger.md",
+    ),
+    (
+        "autodiff-geometry-formalization-roadmap",
+        "knowledge/autodiff_geometry/formalization_roadmap.md",
     ),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =

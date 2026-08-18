@@ -159,7 +159,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 130,
+            "canonical_documents": 134,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
@@ -232,6 +232,8 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
     fs::create_dir_all(repo.path().join("knowledge/darwinx")).expect("DarwinX packet");
     fs::create_dir_all(repo.path().join("knowledge/mathematical_foundations"))
         .expect("mathematical foundations packet");
+    fs::create_dir_all(repo.path().join("knowledge/autodiff_geometry"))
+        .expect("autodiff geometry packet");
     fs::create_dir_all(repo.path().join("knowledge/private")).expect("loose knowledge");
     fs::create_dir_all(repo.path().join("evidence/weng/text")).expect("evidence");
     fs::write(
@@ -284,6 +286,12 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         "# Probability\n\nA covariance matrix records paired variation.\n",
     )
     .expect("mathematical foundations file");
+    fs::write(
+        repo.path()
+            .join("knowledge/autodiff_geometry/formalization_roadmap.md"),
+        "# Autodiff geometry roadmap\n\nJVP VJP duality connects pushed tangent and pulled cotangent coordinates.\n",
+    )
+    .expect("autodiff geometry file");
     fs::write(
         repo.path().join("evidence/weng/text/source.txt"),
         "Harness evidence for recursive improvement.",
@@ -395,6 +403,14 @@ fn search_refresh_status_and_query_share_a_digest_receipt() {
         .success()
         .stdout(predicate::str::contains(
             "\"path\":\"knowledge/mathematical_foundations/03_probability_and_gaussian_models.md\"",
+        ));
+    harp()
+        .current_dir(repo.path())
+        .args(["--format", "json", "search", "query", "\"pushed tangent\""])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(
+            "\"path\":\"knowledge/autodiff_geometry/formalization_roadmap.md\"",
         ));
 
     fs::write(

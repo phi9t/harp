@@ -198,9 +198,31 @@ validate a Crouzeix proof, trust model outputs as formal results, treat the
 upstream `xyzzy` Fermat endpoint as proof evidence, cover old/WIP NNG4 side
 worlds, or alter the fixed 521-row initial import account.
 
+## Post-import Autodiff Geometry formalization extension
+
+The maintained product also adds a bounded Autodiff Geometry formalization
+packet:
+
+- source-backed registry and claim ledger entries for the JAX autodiff
+  cookbook, pinned JAX API source, Spivak repository pointer, SICM course page,
+  and blocked MIT Press pointers for SICM and FDG;
+- a standalone Lean/mathlib `v4.32.1` Lake project proving finite-coordinate
+  contracts for gradient component selection, JVPs, VJPs, Hessian-vector
+  products, and JVP/VJP dot-product duality;
+- no vendored textbook or JAX source bytes in this phase; and
+- four canonical Markdown packet documents under `knowledge/autodiff_geometry/`
+  with regenerated Atlas outputs.
+
+The packet supports notation-bound finite-coordinate proof contracts and a
+roadmap for later differentiability/API-correspondence phases. It does not
+verify JAX's Python implementation, reproduce cookbook numerics, claim
+manifold-level theorem coverage, or promote textbook claims beyond the
+currently captured evidence boundary. This extension does not alter the fixed
+521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`9141f425dbfdcc2e9a314a2b7079020e579bca6b202a1076fdda1e03a9ef6565`
+`2c83c0f3c7e8a4dcc1a26cf9d895ab16d5954a6bfd07a05ab1f59a861692a764`

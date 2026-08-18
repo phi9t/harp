@@ -1340,6 +1340,7 @@ confidence: high\n\
             "agentic-engineering",
             "crouzeix-conjecture",
             "mathematical-foundations",
+            "autodiff-geometry",
             "knowledge",
         ]
     );
@@ -1422,6 +1423,47 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
         12,
         "duplicate or unexpected packet document ID"
     );
+    assert_eq!(actual_document_ids, expected_document_ids);
+}
+
+#[test]
+fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+
+    let corpus = compile(repo.path()).unwrap();
+
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "autodiff-geometry"
+            && route.label == "Autodiff geometry"
+            && route.canonical_markdown_path
+                == "knowledge/autodiff_geometry/autodiff_geometry_index.md"
+    }));
+
+    let expected_document_ids = BTreeSet::from([
+        "autodiff-geometry-index",
+        "autodiff-geometry-source-registry",
+        "autodiff-geometry-claim-evidence-ledger",
+        "autodiff-geometry-formalization-roadmap",
+    ]);
+    let auxiliary_document_ids = AUXILIARY_DOCUMENTS
+        .iter()
+        .filter(|(_, path)| path.starts_with("knowledge/autodiff_geometry/"))
+        .map(|(document_id, _)| *document_id)
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        auxiliary_document_ids.len(),
+        4,
+        "Autodiff Geometry must register exactly four auxiliary documents"
+    );
+    assert_eq!(&auxiliary_document_ids, &expected_document_ids);
+
+    let actual_document_ids = corpus
+        .documents
+        .iter()
+        .filter(|document| document.concept_id.starts_with("autodiff-geometry-"))
+        .map(|document| document.concept_id.as_str())
+        .collect::<BTreeSet<_>>();
     assert_eq!(actual_document_ids, expected_document_ids);
 }
 

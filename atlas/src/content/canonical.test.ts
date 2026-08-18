@@ -33,6 +33,8 @@ const chapterPath = (id: string): string =>
   `knowledge/rsi/chapters/${id}.md`;
 const mathematicalFoundationsIndexPath =
   "knowledge/mathematical_foundations/mathematical_foundations_index.md";
+const autodiffGeometryIndexPath =
+  "knowledge/autodiff_geometry/autodiff_geometry_index.md";
 
 const companionId = (id: string): string => `weng-${id}`;
 const documentMetadata = (id: string) => ({
@@ -158,6 +160,11 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: mathematicalFoundationsIndexPath,
     },
     {
+      route_id: "autodiff-geometry",
+      label: "Autodiff geometry",
+      canonical_markdown_path: autodiffGeometryIndexPath,
+    },
+    {
       route_id: "knowledge",
       label: "Knowledge",
       canonical_markdown_path: chapterPath(chapterIds[0]),
@@ -191,6 +198,15 @@ const validV5Fixture: unknown = {
       html_sha256: digest,
       html: "<h1>Math foundations</h1>",
       metadata: documentMetadata("math-foundations-index"),
+    },
+    {
+      concept_id: "autodiff-geometry-index",
+      title: "Autodiff geometry",
+      canonical_markdown_path: autodiffGeometryIndexPath,
+      markdown_sha256: digest,
+      html_sha256: digest,
+      html: "<h1>Autodiff geometry</h1>",
+      metadata: documentMetadata("autodiff-geometry-index"),
     },
   ],
   systems: systemIds.map((id, index) => {

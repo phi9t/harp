@@ -258,6 +258,7 @@ fn load_documents(repo_root: &Path) -> Result<(Vec<SearchDocument>, String), App
             "canonical-markdown",
             "md",
         ),
+        ("knowledge/autodiff_geometry", "canonical-markdown", "md"),
         (
             "knowledge/harp_knowledge_home.md",
             "canonical-markdown",

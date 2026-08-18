@@ -38,6 +38,7 @@ export type ReaderRouteId =
   | "agentic-engineering"
   | "crouzeix-conjecture"
   | "mathematical-foundations"
+  | "autodiff-geometry"
   | "knowledge";
 
 export const readerRouteIds: readonly ReaderRouteId[] = [
@@ -56,6 +57,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "agentic-engineering",
   "crouzeix-conjecture",
   "mathematical-foundations",
+  "autodiff-geometry",
   "knowledge",
 ];
 

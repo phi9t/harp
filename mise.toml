@@ -105,6 +105,10 @@ run = "scripts/check_mathematical_foundations_lean.sh"
 description = "Build the pinned NNG4 introductory Lean formalization"
 run = "scripts/check_nng4_intro_lean.sh"
 
+[tasks.verify-autodiff-geometry-lean]
+description = "Build the pinned Autodiff Geometry Lean formalization"
+run = "scripts/check_autodiff_geometry_lean.sh"
+
 [tasks.verify-repository]
 description = "Verify import map, LFS, forbidden references, and generated cleanliness"
 run = """
@@ -116,4 +120,4 @@ mise run build
 
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
-run = "mise run verify-atlas && mise run verify-rust && mise run verify-lean && mise run verify-mathematical-foundations-lean && mise run verify-nng4-intro-lean && mise run verify-repository"
+run = "mise run verify-atlas && mise run verify-rust && mise run verify-lean && mise run verify-mathematical-foundations-lean && mise run verify-nng4-intro-lean && mise run verify-autodiff-geometry-lean && mise run verify-repository"
