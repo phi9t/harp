@@ -1,0 +1,91 @@
+cell_index	cell_type	heading	chars	keywords
+0	markdown	The Autodiff Cookbook	647	
+1	code	(no heading)	99	grad
+2	markdown	Gradients	12	
+3	markdown	Starting with `grad`	71	grad
+4	code	(no heading)	48	grad
+5	markdown	(no heading)	392	grad
+6	code	(no heading)	71	grad
+7	markdown	(no heading)	102	grad
+8	code	Outputs probability of a label being true.	774	
+9	markdown	(no heading)	117	grad,argnums
+10	code	Differentiate `loss` with respect to the first positional argument:	475	grad,argnums
+11	markdown	(no heading)	802	grad,argnums,Spivak,Functional Differential Geometry
+12	markdown	Differentiating with respect to nested lists, tuples, and dicts	67	
+13	markdown	(no heading)	144	
+14	code	(no heading)	231	grad
+15	markdown	(no heading)	192	grad
+16	markdown	Evaluate a function and its gradient using `value_and_grad`	63	grad
+17	markdown	(no heading)	130	grad
+18	code	(no heading)	151	grad
+19	markdown	Checking against numerical differences	141	
+20	code	Set a step size for finite differences calculations	657	grad
+21	markdown	(no heading)	141	
+22	code	(no heading)	109	grad
+23	markdown	Hessian-vector products with `grad`-of-`grad`	1783	grad
+24	code	(no heading)	71	grad
+25	markdown	(no heading)	293	
+26	markdown	Jacobians and Hessians using `jacfwd` and `jacrev`	54	jacfwd,jacrev
+27	markdown	(no heading)	81	jacfwd,jacrev
+28	code	Isolate the function from the weight matrix to the predictions	274	jacfwd,jacrev
+29	markdown	(no heading)	435	jacfwd,jacrev
+30	markdown	(no heading)	60	jacfwd,jacrev
+31	code	(no heading)	237	jacrev
+32	markdown	(no heading)	133	jacfwd,jacrev
+33	markdown	(no heading)	95	
+34	code	(no heading)	110	jacfwd,jacrev,hessian
+35	markdown	(no heading)	905	jacfwd,jacrev,hessian
+36	markdown	How it's made: two foundational autodiff functions	53	
+37	markdown	Jacobian-Vector products (JVPs, aka forward-mode autodiff)	2038	grad,jvp
+38	code	Isolate the function from the weight matrix to the predictions	273	jvp
+39	markdown	(no heading)	450	jvp
+40	markdown	(no heading)	2463	grad,jvp
+41	markdown	Vector-Jacobian products (VJPs, aka reverse-mode autodiff)	2162	vjp
+42	code	Isolate the function from the weight matrix to the predictions	285	vjp
+43	markdown	(no heading)	1373	grad,vjp
+44	markdown	Vector-valued gradients with VJPs	116	grad
+45	code	(no heading)	149	grad,vjp
+46	markdown	Hessian-vector products using both forward- and reverse-mode	64	
+47	markdown	(no heading)	137	
+48	code	(no heading)	71	grad
+49	markdown	(no heading)	684	grad
+50	code	forward-over-reverse	124	grad,jvp
+51	markdown	(no heading)	287	
+52	code	(no heading)	276	hessian
+53	markdown	(no heading)	74	
+54	code	reverse-over-forward	137	grad,jvp
+55	markdown	(no heading)	251	
+56	code	reverse-over-reverse, only works for single arguments	487	grad,hessian
+57	markdown	Composing VJPs, JVPs, and `vmap`	35	
+58	markdown	Jacobian-Matrix and Matrix-Jacobian products	407	jvp,vjp
+59	code	Isolate the function from the weight matrix to the predictions	1016	vjp
+60	code	(no heading)	710	jvp
+61	markdown	The implementation of `jacfwd` and `jacrev`	47	jacfwd,jacrev
+62	markdown	(no heading)	258	jacfwd,jacrev
+63	code	(no heading)	465	vjp,jacrev
+64	code	(no heading)	334	jvp,jacfwd
+65	markdown	(no heading)	439	grad
+66	markdown	(no heading)	224	grad
+67	code	(no heading)	203	vjp
+68	markdown	Complex numbers and differentiation	38	
+69	markdown	(no heading)	369	
+70	code	(no heading)	117	
+71	markdown	(no heading)	135	
+72	markdown	(no heading)	922	
+73	markdown	(no heading)	15	
+74	code	(no heading)	781	grad,jvp
+75	code	(no heading)	26	
+76	markdown	(no heading)	510	
+77	markdown	(no heading)	32	
+78	code	(no heading)	865	grad,vjp
+79	code	(no heading)	26	
+80	markdown	(no heading)	469	grad,vjp,jacfwd,jacrev
+81	code	(no heading)	88	grad
+82	markdown	(no heading)	995	grad,vjp
+83	code	(no heading)	71	grad
+84	markdown	(no heading)	334	
+85	code	(no heading)	111	grad
+86	markdown	(no heading)	838	grad
+87	markdown	(no heading)	137	
+88	code	(no heading)	224	grad
+89	markdown	More advanced autodiff	1013	

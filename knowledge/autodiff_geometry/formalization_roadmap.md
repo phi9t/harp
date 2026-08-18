@@ -17,9 +17,15 @@ This roadmap turns the JAX autodiff cookbook's notation contract into staged
 Lean work. A named theorem below is a compiled declaration. A roadmap row with
 no Lean declaration is a planning boundary, not a proof claim.
 
+For source status and restartable work tracking, use
+[[knowledge/autodiff_geometry/source_acquisition_and_parsing|source acquisition and parsing]]
+and
+[[knowledge/autodiff_geometry/layered_curriculum_tracker|the layered curriculum tracker]].
+
 ## Compiled declaration inventory
 
-The first Lean phase lives in `formalization/autodiff_geometry`.
+The first Lean phase lives in the shared Lake root at
+`formalization/lean/AutodiffGeometry`.
 
 | Module | Compiled public declarations |
 |---|---|
@@ -82,22 +88,24 @@ unless the project owner explicitly approves a dependency plan.
 
 ## Phase 4 -- notation lineage and manifold semantics
 
-Status: `evidence-gated`.
+Status: `partially parsed; evidence-gated for theorem promotion`.
 
 Goal: promote the Spivak/SICM/FDG notation lineage from JAX-cited source claim
 to direct Harp evidence.
 
 Required before promotion:
 
-- capture or cite source-owned pages/sections for the specific notation in
-  Spivak, SICM, and FDG;
+- cite source-owned pages/sections for the specific notation in SICM and FDG
+  using local parsed text artifacts;
+- acquire a rights-cleared locator before promoting direct Spivak theorem text;
 - clarify redistribution rights for any textbook bytes;
 - record exact locators and claim ceilings; and
 - decide whether the formal target is finite-dimensional calculus, smooth
   manifolds, or functional differential geometry.
 
-Boundary: until those captures exist, Harp cites JAX's bibliographic statement
-as the source of the lineage claim and does not reproduce book content.
+Boundary: SICM and FDG are now locally parsed for careful review. Spivak remains
+metadata/outline evidence only. None of these sources is a Lean theorem until a
+claim is recorded and a compiled declaration exists.
 
 ## Phase 5 -- pytrees and product structures
 

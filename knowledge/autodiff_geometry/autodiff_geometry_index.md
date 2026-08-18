@@ -22,6 +22,8 @@ component gradients, JVPs, VJPs, Hessian-vector products, and JVP/VJP duality.
 
 - [[knowledge/autodiff_geometry/source_registry|Source registry]]
 - [[knowledge/autodiff_geometry/claim_evidence_ledger|Claim evidence ledger]]
+- [[knowledge/autodiff_geometry/source_acquisition_and_parsing|Source acquisition and parsing]]
+- [[knowledge/autodiff_geometry/layered_curriculum_tracker|Layered curriculum tracker]]
 - [[knowledge/autodiff_geometry/formalization_roadmap|Formalization roadmap]]
 
 ## Core framing
@@ -43,6 +45,11 @@ This packet supports:
 
 - source-backed orientation to the JAX autodiff cookbook's notation and API
   surfaces;
+- a checked source-acquisition and parsing mechanism for the JAX cookbook,
+  JAX API source, SICM, FDG, Spivak repository structure, and Tao analysis
+  guidance;
+- a layered curriculum tracker that lets future agents resume work without
+  relying on private session memory;
 - a finite-coordinate Lean formalization of the algebraic operators named by
   the cookbook; and
 - a roadmap for later phases that can add differentiability and implementation

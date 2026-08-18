@@ -245,6 +245,8 @@ receipt. Status and query reject missing or stale indexes.
 - the offline-complete Meta-Harness project page and dated capture receipt;
 - the normalized Meta-Harness TRAE receipt and bounded raw archive;
 - the Agentic Engineering and Clanker Constitution dated captures;
+- the Autodiff Geometry source-acquisition bundle, parser status report, and
+  FDG binary evidence digest;
 - the Cordis paper artifact inventory and DeepSeek Harness local study
   receipt;
 - the pinned MIT Obsidian-syntax skill snapshot and its implementation-manifest
@@ -266,6 +268,13 @@ against the acquisition policy's 8 GiB minimum for pinned Mathlib cache
 materialization. These receipts do not establish mathematical correctness,
 manuscript-to-formalization correspondence beyond the named source records,
 peer review, or current remote availability.
+
+The Autodiff Geometry bundle keeps JAX cookbook/API bytes, SICM derived HTML
+text, FDG PDF/text, Spivak repository structure, and Tao analysis guidance
+under `evidence/autodiff_geometry/`. Its parser contract is restartable with
+`python3 evidence/autodiff_geometry/acquire.py --verify`. The bundle does not
+vendor the full Spivak book text and does not prove JAX implementation
+correctness.
 
 ## Release gate
 

@@ -153,7 +153,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
         "knowledge/autodiff_geometry/autodiff_geometry_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 78] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 80] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -459,6 +459,14 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 78] = [
     (
         "autodiff-geometry-formalization-roadmap",
         "knowledge/autodiff_geometry/formalization_roadmap.md",
+    ),
+    (
+        "autodiff-geometry-source-acquisition-and-parsing",
+        "knowledge/autodiff_geometry/source_acquisition_and_parsing.md",
+    ),
+    (
+        "autodiff-geometry-layered-curriculum-tracker",
+        "knowledge/autodiff_geometry/layered_curriculum_tracker.md",
     ),
 ];
 const KNOWLEDGE_HOME: (&str, &str, &str) =

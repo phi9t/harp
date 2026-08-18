@@ -1445,6 +1445,8 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
         "autodiff-geometry-source-registry",
         "autodiff-geometry-claim-evidence-ledger",
         "autodiff-geometry-formalization-roadmap",
+        "autodiff-geometry-source-acquisition-and-parsing",
+        "autodiff-geometry-layered-curriculum-tracker",
     ]);
     let auxiliary_document_ids = AUXILIARY_DOCUMENTS
         .iter()
@@ -1453,8 +1455,8 @@ fn compiles_the_autodiff_geometry_route_and_auxiliary_documents() {
         .collect::<BTreeSet<_>>();
     assert_eq!(
         auxiliary_document_ids.len(),
-        4,
-        "Autodiff Geometry must register exactly four auxiliary documents"
+        6,
+        "Autodiff Geometry must register exactly six auxiliary documents"
     );
     assert_eq!(&auxiliary_document_ids, &expected_document_ids);
 

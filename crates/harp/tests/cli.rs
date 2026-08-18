@@ -159,7 +159,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 75,
             "coverage_entries": 75,
-            "canonical_documents": 134,
+            "canonical_documents": 136,
             "systems": 16,
             "weng_sections": 9,
             "diagnostic_fields": 28,
@@ -440,7 +440,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 445);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 477);
     let lean_inventory = fs::read_to_string(
         repo_root().join("evidence/lean_proof_engineering/artifact_inventory.tsv"),
     )
@@ -455,7 +455,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .filter_map(|row| row.split('\t').next())
         .collect::<BTreeSet<_>>();
     assert_eq!(envelope["data"]["snapshot_files"], snapshot_rows.len());
-    assert_eq!(envelope["data"]["binary_objects"], 65);
+    assert_eq!(envelope["data"]["binary_objects"], 66);
     assert_eq!(
         envelope["data"]["implementation_sources"],
         implementation_sources.len()

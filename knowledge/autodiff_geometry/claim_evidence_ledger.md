@@ -88,11 +88,11 @@ Material claims use one of these classes:
 ## ADG-006: Harp compiles finite-coordinate autodiff operator contracts
 
 - Class: `EVIDENCE`
-- Statement: The Lean project `formalization/autodiff_geometry` compiles
+- Statement: The Lean library `formalization/lean/AutodiffGeometry` compiles
   theorem declarations for gradient component selection, JVP as matrix-vector
   multiplication, VJP as transposed matrix-vector multiplication,
   Hessian-vector multiplication, and finite-coordinate JVP/VJP duality.
-- Source: `formalization/autodiff_geometry/AutodiffGeometry/FiniteCoordinates.lean`
+- Source: `formalization/lean/AutodiffGeometry/FiniteCoordinates.lean`
 - Locator: Lean declarations `grad_arg_eq_component`, `jvp_eq_matVec`,
   `vjp_eq_transpose_matVec`, `hvp_eq_matVec`, and `dot_jvp_eq_dot_vjp`.
 - Scope: Finite coordinate vectors over a commutative semiring. No analytic
@@ -102,13 +102,16 @@ Material claims use one of these classes:
 ## ADG-007: Spivak, SICM, and FDG are notation lineage, not local proof evidence
 
 - Class: `INFERENCE`
-- Statement: In this packet, Spivak, SICM, and FDG serve as notation-lineage
-  anchors because JAX names them as such; they do not yet provide local theorem
-  evidence beyond bibliographic/source pointers.
+- Statement: In this packet, Spivak, SICM, and FDG serve first as
+  notation-lineage anchors because JAX names them as such. SICM and FDG now
+  also have local parsed text for later claim-specific review; Spivak remains
+  structure-only because the public repository warns personal use.
 - Sources:
   - [JAX-AUTODIFF-COOKBOOK](source_registry.md#source-classes-and-boundary)
   - [SPIVAK-CALCULUS-ON-MANIFOLDS-REPO](source_registry.md#source-classes-and-boundary)
   - [SICM-COURSE-PAGE](source_registry.md#source-classes-and-boundary)
+  - [SICM-OPEN-ACCESS-HTML](source_registry.md#source-classes-and-boundary)
+  - [FDG-OPEN-ACCESS-PDF](source_registry.md#source-classes-and-boundary)
 - Scope: Evidence-boundary rule for Harp. Later direct captures may promote
   specific textbook claims.
 - Confidence: `medium`
@@ -122,4 +125,21 @@ Material claims use one of these classes:
   JAX/Lean example parity.
 - Source: [Formalization roadmap](formalization_roadmap.md)
 - Scope: Explicit non-claim boundary for future work.
+- Confidence: `high`
+
+## ADG-009: Harp has a checked source parser for the long-horizon program
+
+- Class: `EVIDENCE`
+- Statement: Harp now has a checked source-acquisition and parser mechanism for
+  the autodiff geometry program. It captures the JAX cookbook and API source,
+  parses SICM HTML text and FDG PDF text, records Spivak repository structure
+  without importing its full book text, and captures Tao analysis repository
+  metadata for proof-engineering guidance.
+- Source: [Source acquisition and parsing](source_acquisition_and_parsing.md)
+- Locator:
+  - [[evidence/autodiff_geometry/acquire.py|acquisition script]]
+  - [[evidence/autodiff_geometry/source_parse_report.tsv|source parse report]]
+  - [[evidence/autodiff_geometry/artifact_inventory.tsv|artifact inventory]]
+- Scope: Source parsing and curriculum readiness. It is not a Lean proof and
+  does not validate JAX internals.
 - Confidence: `high`

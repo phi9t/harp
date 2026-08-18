@@ -211,6 +211,15 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         2,
         &mut expected_digests,
     )?;
+    let autodiff_geometry = verify_artifact_inventory(
+        repo_root,
+        Path::new("evidence/autodiff_geometry/artifact_inventory.tsv"),
+        0,
+        1,
+        2,
+        &mut expected_digests,
+    )?;
+    verify_autodiff_geometry_capture(repo_root)?;
     let sicp = verify_sicp_manifest(repo_root, &mut expected_digests)?;
     let benchmarks = verify_benchmark_manifest(repo_root)?;
     let agentic_engineering = verify_relative_artifact_manifest(
@@ -288,6 +297,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
             + verified_coevolution_agenda
             + lean_proof_engineering
             + cordis_paper
+            + autodiff_geometry
             + sicp
             + benchmarks
             + agentic_engineering
@@ -477,6 +487,78 @@ pub fn materialize(
         });
     }
     Ok(MaterializeReport { sources: reports })
+}
+
+fn verify_autodiff_geometry_capture(repo_root: &Path) -> Result<(), AppError> {
+    let root = repo_root.join("evidence/autodiff_geometry");
+    let receipt = read_key_value_tsv(&root.join("capture_receipt.tsv"))?;
+    for (key, expected) in [
+        ("repository", "Harp"),
+        ("source_id", "AUTODIFF-GEOMETRY"),
+        ("capture_state", "captured-and-parsed"),
+    ] {
+        if receipt.get(key).map(String::as_str) != Some(expected) {
+            return Err(AppError::invalid_input(
+                "sources.autodiff_geometry_receipt",
+                format!("Autodiff Geometry capture receipt has invalid {key}"),
+            ));
+        }
+    }
+    for (key, relative) in [
+        ("acquisition_script_sha256", "acquire.py"),
+        ("manifest_sha256", "manifest.tsv"),
+        ("artifact_inventory_sha256", "artifact_inventory.tsv"),
+        ("source_parse_report_sha256", "source_parse_report.tsv"),
+    ] {
+        let expected = receipt
+            .get(key)
+            .and_then(|value| value.strip_prefix("sha256:"))
+            .ok_or_else(|| {
+                AppError::invalid_input(
+                    "sources.autodiff_geometry_receipt",
+                    format!("Autodiff Geometry capture receipt is missing {key}"),
+                )
+            })?;
+        if sha256_file(&root.join(relative))? != expected {
+            return Err(AppError::invalid_input(
+                "sources.autodiff_geometry_receipt",
+                format!("Autodiff Geometry capture receipt digest is stale for {relative}"),
+            ));
+        }
+    }
+    let parse_rows = read_tsv(
+        repo_root,
+        Path::new("evidence/autodiff_geometry/source_parse_report.tsv"),
+    )?;
+    let required_statuses = [
+        ("JAX-AUTODIFF-COOKBOOK", "parsed"),
+        ("JAX-API-SOURCE", "parsed"),
+        ("SICM-OPEN-ACCESS-HTML", "parsed"),
+        ("FDG-OPEN-ACCESS-PDF", "parsed"),
+        ("TAO-ANALYSIS-REPO", "structure-parsed"),
+    ];
+    for (source_id, status) in required_statuses {
+        let found = parse_rows.iter().skip(1).any(|row| {
+            row.first().map(String::as_str) == Some(source_id)
+                && row.get(3).map(String::as_str) == Some(status)
+        });
+        if !found {
+            return Err(AppError::invalid_input(
+                "sources.autodiff_geometry_parse",
+                format!("Autodiff Geometry source {source_id} is not recorded as {status}"),
+            ));
+        }
+    }
+    if !receipt
+        .get("rights_boundary")
+        .is_some_and(|value| value.contains("Spivak full book text remains content-gated"))
+    {
+        return Err(AppError::invalid_input(
+            "sources.autodiff_geometry_receipt",
+            "Autodiff Geometry rights boundary is missing",
+        ));
+    }
+    Ok(())
 }
 
 fn verify_artifact_inventory(
