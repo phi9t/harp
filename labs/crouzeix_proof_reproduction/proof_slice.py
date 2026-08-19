@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import json
+import os
+import shutil
+import stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -253,6 +257,185 @@ def validate_descriptor(
     )
 
 
+def materialize_task(
+    task_dir: Path,
+    descriptor: ProofSliceDescriptor,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+) -> Path:
+    destination = task_dir.expanduser().absolute()
+    _reject_symlink_ancestors(destination, "proof-slice task directory")
+    if destination.exists() or destination.is_symlink():
+        raise protocol.ValidationError(
+            f"proof-slice task directory already exists: {destination}"
+        )
+
+    row_by_id = {row.row_id: row for row in rows}
+    row = row_by_id.get(descriptor.source_map_row_id)
+    if row is None:
+        raise protocol.ValidationError("source_map_row_id does not exist in source map")
+    _validate_materialization_row_binding(row, descriptor)
+
+    created_destination = False
+    try:
+        destination.mkdir(parents=True, mode=0o700)
+        created_destination = True
+        _write_json_create_only(destination / "task.json", _task_json(descriptor), "task")
+        _write_json_create_only(
+            destination / "source-slice.json", _source_slice_json(row), "source slice"
+        )
+        _write_text_create_only(
+            destination / descriptor.build_target,
+            _lean_slice_source(descriptor),
+            "Lean slice",
+        )
+        _write_json_create_only(
+            destination / "build/command.json", _command_json(descriptor), "command"
+        )
+        _write_text_create_only(destination / "build/stdout.log", "", "stdout log")
+        _write_text_create_only(destination / "build/stderr.log", "", "stderr log")
+        _write_json_create_only(
+            destination / "build/axioms.json",
+            _empty_axiom_audit(descriptor),
+            "axiom audit",
+        )
+        _write_json_create_only(
+            destination / "result.json",
+            _result_json("not_attempted", "task materialized but not run"),
+            "result",
+        )
+        _write_json_create_only(
+            destination / "receipt.json",
+            _receipt_json(
+                descriptor,
+                "not_attempted",
+                "task materialized but not run",
+            ),
+            "receipt",
+        )
+    except BaseException:
+        if created_destination:
+            shutil.rmtree(destination, ignore_errors=True)
+        raise
+    return destination
+
+
+def _validate_materialization_row_binding(
+    row: jin_validation.SourceMapRow,
+    descriptor: ProofSliceDescriptor,
+) -> None:
+    if row.source_locator != descriptor.pinned_source_locator:
+        raise protocol.ValidationError(
+            "source-map row source_locator no longer matches descriptor"
+        )
+    if row.statement_sha256 != descriptor.informal_statement_sha256:
+        raise protocol.ValidationError(
+            "source-map row statement_sha256 no longer matches descriptor"
+        )
+    if row.lean_name != descriptor.expected_lean_declaration:
+        raise protocol.ValidationError(
+            "source-map row Lean declaration no longer matches descriptor"
+        )
+
+    expected = set(row.dependency_ids)
+    observed = {receipt.row_id for receipt in descriptor.dependency_receipts}
+    missing = sorted(expected - observed)
+    extra = sorted(observed - expected)
+    if missing:
+        raise protocol.ValidationError(
+            f"source-map row dependency missing descriptor receipt: {missing[0]}"
+        )
+    if extra:
+        raise protocol.ValidationError(
+            f"source-map row dependency receipts contain extra row: {extra[0]}"
+        )
+
+
+def _task_json(descriptor: ProofSliceDescriptor) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-task/v1",
+        "descriptor": descriptor.to_json(),
+        "route_id": descriptor.route_id,
+        "source_map_row_id": descriptor.source_map_row_id,
+        "expected_lean_declaration": descriptor.expected_lean_declaration,
+        "build_target": descriptor.build_target,
+        "timeout_seconds": descriptor.timeout_seconds,
+        "max_output_bytes": descriptor.max_output_bytes,
+    }
+
+
+def _source_slice_json(row: jin_validation.SourceMapRow) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-source-slice/v1",
+        "row_id": row.row_id,
+        "source_locator": row.source_locator,
+        "statement_sha256": row.statement_sha256,
+        "lean_name": row.lean_name,
+        "dependency_ids": list(row.dependency_ids),
+    }
+
+
+def _lean_slice_source(descriptor: ProofSliceDescriptor) -> str:
+    lines = [f"import {name}" for name in descriptor.allowed_imports]
+    lines.extend(
+        [
+            "",
+            (
+                "/- Harp-owned proof-slice adapter. This file checks only the "
+                "selected nonterminal declaration. -/"
+            ),
+            f"#check {descriptor.expected_lean_declaration}",
+        ]
+    )
+    return "\n".join(lines).lstrip("\n") + "\n"
+
+
+def _command_json(descriptor: ProofSliceDescriptor) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-command/v1",
+        "argv": ["lake", "env", "lean", descriptor.build_target],
+        "cwd": ".",
+        "env": {},
+        "timeout_seconds": descriptor.timeout_seconds,
+        "max_output_bytes": descriptor.max_output_bytes,
+    }
+
+
+def _empty_axiom_audit(descriptor: ProofSliceDescriptor) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-axioms/v1",
+        "scan_performed": False,
+        "expected_declaration": descriptor.expected_lean_declaration,
+        "allowed_axioms": list(descriptor.allowed_axioms),
+        "observed_axioms": [],
+        "status": "not_attempted",
+        "reason": "task materialized but not run",
+    }
+
+
+def _result_json(status: str, reason: str) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-result/v1",
+        "status": status,
+        "reason": reason,
+    }
+
+
+def _receipt_json(
+    descriptor: ProofSliceDescriptor,
+    status: str,
+    reason: str,
+) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
+        "route_id": descriptor.route_id,
+        "source_map_row_id": descriptor.source_map_row_id,
+        "expected_lean_declaration": descriptor.expected_lean_declaration,
+        "status": status,
+        "reason": reason,
+        "task_sha256": _canonical_sha256(_task_json(descriptor)),
+    }
+
+
 def _is_terminal_row(
     row: jin_validation.SourceMapRow, target: formal_target.FormalTargetLock
 ) -> bool:
@@ -372,3 +555,41 @@ def _string_tuple(
     value: Any, label: str, *, minimum: int, maximum: int
 ) -> tuple[str, ...]:
     return formal_target._string_tuple(value, label, minimum=minimum, maximum=maximum)
+
+
+def _reject_symlink_ancestors(path: Path, label: str) -> None:
+    current = Path(path.anchor) if path.is_absolute() else Path(".")
+    parts = path.parts[1:] if path.is_absolute() else path.parts
+    for part in parts:
+        current = current / part
+        if current.exists() or current.is_symlink():
+            metadata = current.lstat()
+            if stat.S_ISLNK(metadata.st_mode):
+                raise protocol.ValidationError(f"{label} contains symlink: {current}")
+
+
+def _write_json_create_only(
+    path: Path, value: Mapping[str, object], label: str
+) -> None:
+    _write_text_create_only(path, _stable_json(value), label)
+
+
+def _write_text_create_only(path: Path, value: str, label: str) -> None:
+    _reject_symlink_ancestors(path, label)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    try:
+        fd = os.open(path, flags, 0o600)
+    except FileExistsError as error:
+        raise protocol.ValidationError(f"{label} already exists: {path}") from error
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        handle.write(value)
+
+
+def _stable_json(value: Mapping[str, object]) -> str:
+    return json.dumps(value, indent=2, sort_keys=True) + "\n"
+
+
+def _canonical_sha256(value: Mapping[str, object]) -> str:
+    data = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return protocol.sha256_bytes(data)
