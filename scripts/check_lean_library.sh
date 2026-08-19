@@ -11,7 +11,7 @@ relative_root=formalization/lean
 allowed_elan_root=/private/tmp/harp-mathematical-foundations-elan
 
 usage() {
-  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|all [--project-for-test <directory>]" >&2
+  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|all [--project-for-test <directory>]" >&2
 }
 
 report_failure() {
@@ -88,6 +88,11 @@ case "$target" in
     human_label="Autodiff Geometry"
     scan_label=AutodiffGeometry
     forbidden_words="sorry"
+    ;;
+  Crouzeix)
+    human_label="Crouzeix"
+    scan_label=Crouzeix
+    forbidden_words="sorry admit"
     ;;
   all)
     human_label="Harp formalization"
@@ -166,7 +171,7 @@ if [ "$normal_build" = false ]; then
 else
   case "$target" in
     all)
-      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry; do
+      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix; do
         if ! append_sources "$project_dir/$library.lean" || ! append_sources "$project_dir/$library"; then
           scan_finished=$(now_seconds)
           report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"

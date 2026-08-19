@@ -4,6 +4,7 @@ defaultTargets = [
   "MathematicalFoundations",
   "NNG4Intro",
   "AutodiffGeometry",
+  "Crouzeix",
 ]
 
 [[lean_lib]]
@@ -17,6 +18,9 @@ name = "NNG4Intro"
 
 [[lean_lib]]
 name = "AutodiffGeometry"
+
+[[lean_lib]]
+name = "Crouzeix"
 
 [[require]]
 name = "mathlib"

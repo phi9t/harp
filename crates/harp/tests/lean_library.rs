@@ -69,6 +69,33 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
 }
 
 #[test]
+fn shared_wrapper_builds_crouzeix_focused_target() {
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" > \"$LAKE_ARGS\"\n");
+    let scoped_elan_home = scoped_elan_home();
+    let lake_args = scoped_elan_home.path().join("lake-args");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("Crouzeix")
+        .env("ELAN_HOME", scoped_elan_home.path())
+        .env("LAKE_ARGS", &lake_args)
+        .env("PATH", path)
+        .assert()
+        .success()
+        .stdout(
+            predicate::str::contains("[lean] target=Crouzeix")
+                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] outcome=passed")),
+        );
+
+    assert_eq!(
+        fs::read_to_string(lake_args).expect("read lake arguments"),
+        "build Crouzeix\n"
+    );
+}
+
+#[test]
 fn shared_wrapper_builds_all_targets_from_shared_root_once() {
     let (_fake_bin, path) =
         fake_lake_bin("#!/bin/sh\npwd > \"$LAKE_PWD\"\nprintf '%s\n' \"$*\" > \"$LAKE_ARGS\"\n");
