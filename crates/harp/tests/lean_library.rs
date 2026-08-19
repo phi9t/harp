@@ -184,3 +184,38 @@ fn nng4_admit_is_rejected_before_lake_runs() {
 
     assert!(!lake_marker.exists(), "lake ran despite an admit fixture");
 }
+
+#[test]
+fn all_rejects_crouzeix_admit_before_lake_runs() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    let crouzeix_dir = temporary_project.path().join("Crouzeix");
+    fs::create_dir_all(&crouzeix_dir).expect("create Crouzeix fixture directory");
+    fs::write(
+        crouzeix_dir.join("Admit.lean"),
+        "theorem crouzeix_admit_fixture : True := by admit\n",
+    )
+    .expect("write Crouzeix admit fixture");
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
+    let lake_marker = temporary_project.path().join("lake-was-called");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("all")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("PATH", path)
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("proof-placeholder text"))
+        .stdout(
+            predicate::str::contains("[lean] outcome=failed")
+                .and(predicate::str::contains("[lean] failure_stage=scan")),
+        );
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a Crouzeix admit fixture"
+    );
+}

@@ -206,7 +206,7 @@ while IFS= read -r source_file || [ -n "$source_file" ]; do
   done
   if [ "$target" = all ]; then
     case "$source_file" in
-      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*)
+      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*|"$project_dir/Crouzeix.lean"|"$project_dir/Crouzeix/"*)
         if grep -n -H 'admit' "$source_file"; then
           proof_holes_found=true
         else
