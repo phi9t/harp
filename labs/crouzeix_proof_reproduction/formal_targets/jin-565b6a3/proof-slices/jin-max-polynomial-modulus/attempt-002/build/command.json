@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-002/module/Slice.lean"
+  ],
+  "cwd": "formalization/lean",
+  "env": {},
+  "max_output_bytes": 1048576,
+  "schema_version": "crouzeix-jin-proof-slice-command/v1",
+  "timeout_seconds": 3600
+}

@@ -38,7 +38,7 @@ class JinValidationTests(unittest.TestCase):
         self.assertEqual(rows[0].status, "blocked")
         self.assertEqual(
             rows[0].receipt_sha256,
-            "796d2ab1bfeab3bde7dcce231f0521b66fba320fdea462e37305fbd42870ec1d",
+            "02cc44c196571463addafbf343ff71118112c9f7e840eb3f6a0d2c18b09aeced",
         )
         self.assertEqual(rows[0].blocked_reason, "missing executable: lake")
         self.assertEqual(rows[-1].lean_name, "CrouzeixConjecture.crouzeixConjecture")

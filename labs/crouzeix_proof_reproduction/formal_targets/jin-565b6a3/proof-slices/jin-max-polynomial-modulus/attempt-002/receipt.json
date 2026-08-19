@@ -1,0 +1,18 @@
+{
+  "axioms_sha256": "3f3b30f04cd0ee8378716572659e527b2ebbcdd4fdfd248710e9f45c2b7e1019",
+  "command_exit_code": null,
+  "command_sha256": "c4f0f25e1dcbde32e82884b4465b7e2a4becb0e6c8a7bea087d84241b0bfa6a5",
+  "expected_lean_declaration": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+  "max_output_bytes": 1048576,
+  "reason": "missing executable: lake",
+  "result_sha256": "d5ef01cfbbe67c267e486c1f0a4a18b9a00448f11b5afa4f8fecdc8c9ccee0d7",
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
+  "source_map_row_id": "jin-max-polynomial-modulus",
+  "status": "blocked",
+  "stderr_sha256": "4cd6c2663ade50900bf2dc488b6ed9be3672f29ef7923c0dedbe9b8a8e054601",
+  "stderr_truncated": false,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_truncated": false,
+  "task_sha256": "96f9268af9ffe9480730670048ca4521213ca0955d6e640455ca093143bc7fcb"
+}

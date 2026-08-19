@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -66,7 +67,7 @@ def dependent_descriptor() -> dict[str, object]:
             "dependency_receipts": [
                 {
                     "row_id": "jin-max-polynomial-modulus",
-                    "receipt_sha256": "a" * 64,
+                    "receipt_sha256": "1" * 64,
                 }
             ],
             "output_declaration_name": "CrouzeixConjecture.PolynomialCrouzeixBound",
@@ -77,6 +78,33 @@ def dependent_descriptor() -> dict[str, object]:
 
 def rows() -> tuple[jin_validation.SourceMapRow, ...]:
     return jin_validation.load_source_map(SOURCE_MAP, formal_target.load_lock())
+
+
+def rows_with_passed_first_receipt(
+    receipt_sha256: str = "1" * 64,
+) -> tuple[jin_validation.SourceMapRow, ...]:
+    return tuple(
+        jin_validation.SourceMapRow(
+            row_id=row.row_id,
+            source_locator=row.source_locator,
+            statement_sha256=row.statement_sha256,
+            lean_name=row.lean_name,
+            dependency_ids=row.dependency_ids,
+            status="passed" if row.row_id == "jin-max-polynomial-modulus" else row.status,
+            receipt_sha256=(
+                receipt_sha256
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.receipt_sha256
+            ),
+            blocked_reason=(
+                None
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.blocked_reason
+            ),
+            failed_reason=row.failed_reason,
+        )
+        for row in rows()
+    )
 
 
 class FakeExecutor:
@@ -183,7 +211,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
     def test_descriptor_accepts_exact_dependency_receipt_bindings(self) -> None:
         desc = proof_slice.validate_descriptor(
-            dependent_descriptor(), formal_target.load_lock(), rows()
+            dependent_descriptor(),
+            formal_target.load_lock(),
+            rows_with_passed_first_receipt(),
         )
 
         self.assertEqual(
@@ -191,10 +221,29 @@ class ProofSliceDescriptorTests(unittest.TestCase):
             (
                 proof_slice.DependencyReceipt(
                     row_id="jin-max-polynomial-modulus",
-                    receipt_sha256="a" * 64,
+                    receipt_sha256="1" * 64,
                 ),
             ),
         )
+
+    def test_descriptor_rejects_dependency_receipt_for_blocked_row(self) -> None:
+        with self.assertRaisesRegex(protocol.ValidationError, "not passed"):
+            proof_slice.validate_descriptor(
+                dependent_descriptor(), formal_target.load_lock(), rows()
+            )
+
+    def test_descriptor_rejects_dependency_receipt_digest_mismatch(self) -> None:
+        value = dependent_descriptor()
+        value["dependency_receipts"] = [
+            {"row_id": "jin-max-polynomial-modulus", "receipt_sha256": "2" * 64}
+        ]
+
+        with self.assertRaisesRegex(protocol.ValidationError, "digest mismatch"):
+            proof_slice.validate_descriptor(
+                value,
+                formal_target.load_lock(),
+                rows_with_passed_first_receipt(),
+            )
 
     def test_descriptor_rejects_bad_dependency_receipt_bindings(self) -> None:
         cases = (
@@ -384,8 +433,19 @@ class ProofSliceDescriptorTests(unittest.TestCase):
             command = json.loads(
                 (task_dir / "build/command.json").read_text(encoding="utf-8")
             )
-            self.assertEqual(command["argv"], ["lake", "env", "lean", "module/Slice.lean"])
-            self.assertEqual(command["cwd"], ".")
+            self.assertEqual(
+                command["argv"],
+                [
+                    "lake",
+                    "env",
+                    "lean",
+                    os.path.relpath(
+                        task_dir / "module/Slice.lean",
+                        proof_slice.SHARED_LEAN_ROOT,
+                    ),
+                ],
+            )
+            self.assertEqual(command["cwd"], "formalization/lean")
 
             result_json = json.loads(
                 (task_dir / "result.json").read_text(encoding="utf-8")
@@ -431,7 +491,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
     def test_materialize_task_preserves_row_bound_dependency_receipts(self) -> None:
         target = formal_target.load_lock()
-        source_rows = jin_validation.load_source_map(SOURCE_MAP, target)
+        source_rows = rows_with_passed_first_receipt()
         desc = proof_slice.validate_descriptor(dependent_descriptor(), target, source_rows)
         with tempfile.TemporaryDirectory() as directory:
             task_dir = Path(directory).resolve() / "task"
@@ -444,14 +504,14 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 [
                     {
                         "row_id": "jin-max-polynomial-modulus",
-                        "receipt_sha256": "a" * 64,
+                        "receipt_sha256": "1" * 64,
                     }
                 ],
             )
 
     def test_materialize_task_rejects_stale_source_row_before_creation(self) -> None:
         target = formal_target.load_lock()
-        source_rows = jin_validation.load_source_map(SOURCE_MAP, target)
+        source_rows = rows_with_passed_first_receipt()
         desc = proof_slice.validate_descriptor(dependent_descriptor(), target, source_rows)
         stale_rows = tuple(
             jin_validation.SourceMapRow(
@@ -624,8 +684,19 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertEqual(result["status"], "passed")
             self.assertEqual(len(executor.calls), 1)
             argv, cwd, timeout_seconds, max_output_bytes = executor.calls[0]
-            self.assertEqual(argv, ["lake", "env", "lean", "module/Slice.lean"])
-            self.assertEqual(cwd, task_dir)
+            self.assertEqual(
+                argv,
+                [
+                    "lake",
+                    "env",
+                    "lean",
+                    os.path.relpath(
+                        task_dir / "module/Slice.lean",
+                        proof_slice.SHARED_LEAN_ROOT,
+                    ),
+                ],
+            )
+            self.assertEqual(cwd, proof_slice.SHARED_LEAN_ROOT)
             self.assertEqual(timeout_seconds, 3600)
             self.assertEqual(max_output_bytes, 1048576)
             self.assertEqual(
@@ -638,11 +709,18 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 (task_dir / "result.json").read_text(encoding="utf-8")
             )
             receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            command = json.loads(
+                (task_dir / "build/command.json").read_text(encoding="utf-8")
+            )
             axioms = json.loads(
                 (task_dir / "build/axioms.json").read_text(encoding="utf-8")
             )
             self.assertEqual(result_json["status"], "passed")
             self.assertEqual(receipt["status"], "passed")
+            self.assertEqual(
+                receipt["command_sha256"],
+                proof_slice._canonical_sha256(command),
+            )
             self.assertEqual(axioms["status"], "passed")
             self.assertTrue(axioms["scan_performed"])
             self.assertEqual(axioms["observed_axioms"], [])
@@ -678,6 +756,13 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertIn("missing pinned toolchain", str(result["reason"]))
             receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
             self.assertEqual(receipt["status"], "blocked")
+            command = json.loads(
+                (task_dir / "build/command.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                receipt["command_sha256"],
+                proof_slice._canonical_sha256(command),
+            )
 
     def test_run_task_blocker_precedes_output_cap_policy(self) -> None:
         value = descriptor()
@@ -990,26 +1075,32 @@ class ProofSliceRunTaskTests(unittest.TestCase):
 
     def test_subprocess_executor_uses_empty_environment(self) -> None:
         captured: dict[str, object] = {}
-        original_run = proof_slice.subprocess.run
+        original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
         def fake_which(executable: str) -> str | None:
             self.assertEqual(executable, "lake")
             return "/opt/toolchains/lake"
 
-        def fake_run(*args: object, **kwargs: object) -> object:
+        class FakePopen:
+            def __init__(self, *args: object, **kwargs: object) -> None:
+                captured["args"] = args
+                captured["kwargs"] = kwargs
+                self.stdout = io.BytesIO(b"ok\n")
+                self.stderr = io.BytesIO(b"")
+
+            def wait(self, timeout: int) -> int:
+                captured["timeout"] = timeout
+                return 0
+
+        def fake_popen(*args: object, **kwargs: object) -> object:
             captured["args"] = args
             captured["kwargs"] = kwargs
-            return proof_slice.subprocess.CompletedProcess(
-                args=args[0],
-                returncode=0,
-                stdout=b"ok\n",
-                stderr=b"",
-            )
+            return FakePopen(*args, **kwargs)
 
         try:
             proof_slice.shutil.which = fake_which
-            proof_slice.subprocess.run = fake_run
+            proof_slice.subprocess.Popen = fake_popen
             result = proof_slice._subprocess_executor(
                 ["lake", "env", "lean", "module/Slice.lean"],
                 Path("/tmp"),
@@ -1017,7 +1108,7 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 1024,
             )
         finally:
-            proof_slice.subprocess.run = original_run
+            proof_slice.subprocess.Popen = original_popen
             proof_slice.shutil.which = original_which
 
         self.assertEqual(result.exit_code, 0)
@@ -1025,26 +1116,32 @@ class ProofSliceRunTaskTests(unittest.TestCase):
 
     def test_subprocess_executor_resolves_executable_before_empty_environment(self) -> None:
         captured: dict[str, object] = {}
-        original_run = proof_slice.subprocess.run
+        original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
         def fake_which(executable: str) -> str | None:
             captured["which"] = executable
             return "/opt/toolchains/lake"
 
-        def fake_run(*args: object, **kwargs: object) -> object:
+        class FakePopen:
+            def __init__(self, *args: object, **kwargs: object) -> None:
+                captured["args"] = args
+                captured["kwargs"] = kwargs
+                self.stdout = io.BytesIO(b"ok\n")
+                self.stderr = io.BytesIO(b"")
+
+            def wait(self, timeout: int) -> int:
+                captured["timeout"] = timeout
+                return 0
+
+        def fake_popen(*args: object, **kwargs: object) -> object:
             captured["args"] = args
             captured["kwargs"] = kwargs
-            return proof_slice.subprocess.CompletedProcess(
-                args=args[0],
-                returncode=0,
-                stdout=b"ok\n",
-                stderr=b"",
-            )
+            return FakePopen(*args, **kwargs)
 
         try:
             proof_slice.shutil.which = fake_which
-            proof_slice.subprocess.run = fake_run
+            proof_slice.subprocess.Popen = fake_popen
             result = proof_slice._subprocess_executor(
                 ["lake", "env", "lean", "module/Slice.lean"],
                 Path("/tmp"),
@@ -1052,7 +1149,7 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 1024,
             )
         finally:
-            proof_slice.subprocess.run = original_run
+            proof_slice.subprocess.Popen = original_popen
             proof_slice.shutil.which = original_which
 
         self.assertEqual(result.exit_code, 0)
@@ -1085,25 +1182,101 @@ class ProofSliceRunTaskTests(unittest.TestCase):
         self.assertIn("missing executable", str(result.blocked_reason))
         self.assertIn("missing-tool", str(result.blocked_reason))
 
+    def test_subprocess_executor_timeout_kills_group_and_bounds_pipe_join(self) -> None:
+        captured: dict[str, object] = {}
+        pipes: list[object] = []
+        original_popen = proof_slice.subprocess.Popen
+        original_which = proof_slice.shutil.which
+        original_killpg = proof_slice.os.killpg
+        original_bounded_pipe = proof_slice._BoundedPipe
+
+        def fake_which(executable: str) -> str | None:
+            self.assertEqual(executable, "lake")
+            return "/opt/toolchains/lake"
+
+        class FakePopen:
+            pid = 4242
+
+            def __init__(self, *args: object, **kwargs: object) -> None:
+                captured["args"] = args
+                captured["kwargs"] = kwargs
+                self.stdout = object()
+                self.stderr = object()
+
+            def wait(self, timeout: int) -> int:
+                captured["timeout"] = timeout
+                raise proof_slice.subprocess.TimeoutExpired(
+                    cmd=["lake", "env", "lean"], timeout=timeout
+                )
+
+            def kill(self) -> None:
+                captured["fallback_kill"] = True
+
+        class FakeBoundedPipe:
+            data = b""
+            truncated = False
+
+            def __init__(self, max_bytes: int) -> None:
+                self.max_bytes = max_bytes
+                self.join_timeout: float | None = None
+                pipes.append(self)
+
+            def start(self, stream: object) -> None:
+                self.stream = stream
+
+            def join(self, timeout: float | None = None) -> None:
+                self.join_timeout = timeout
+
+        def fake_killpg(pid: int, sig: int) -> None:
+            captured["killpg"] = (pid, sig)
+
+        try:
+            proof_slice.shutil.which = fake_which
+            proof_slice.subprocess.Popen = FakePopen
+            proof_slice.os.killpg = fake_killpg
+            proof_slice._BoundedPipe = FakeBoundedPipe
+            result = proof_slice._subprocess_executor(
+                ["lake", "env", "lean", "module/Slice.lean"],
+                Path("/tmp"),
+                7,
+                1024,
+            )
+        finally:
+            proof_slice.subprocess.Popen = original_popen
+            proof_slice.shutil.which = original_which
+            proof_slice.os.killpg = original_killpg
+            proof_slice._BoundedPipe = original_bounded_pipe
+
+        self.assertIsNone(result.exit_code)
+        self.assertIn("timed out", str(result.blocked_reason))
+        self.assertEqual(captured["killpg"], (4242, proof_slice.signal.SIGKILL))
+        self.assertNotIn("fallback_kill", captured)
+        self.assertEqual(captured["kwargs"]["start_new_session"], True)
+        self.assertEqual(captured["timeout"], 7)
+        self.assertEqual(
+            [pipe.join_timeout for pipe in pipes],
+            [proof_slice.PIPE_DRAIN_GRACE_SECONDS] * 2,
+        )
+
     def test_subprocess_executor_truncates_returned_output(self) -> None:
-        original_run = proof_slice.subprocess.run
+        original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
         def fake_which(executable: str) -> str | None:
             self.assertEqual(executable, "lake")
             return "/opt/toolchains/lake"
 
-        def fake_run(*args: object, **kwargs: object) -> object:
-            return proof_slice.subprocess.CompletedProcess(
-                args=args[0],
-                returncode=1,
-                stdout=b"abcdef",
-                stderr=b"ghijkl",
-            )
+        class FakePopen:
+            def __init__(self, *args: object, **kwargs: object) -> None:
+                self.stdout = io.BytesIO(b"abcdef")
+                self.stderr = io.BytesIO(b"ghijkl")
+
+            def wait(self, timeout: int) -> int:
+                return 1
 
         try:
             proof_slice.shutil.which = fake_which
-            proof_slice.subprocess.run = fake_run
+            proof_slice.subprocess.Popen = FakePopen
             result = proof_slice._subprocess_executor(
                 ["lake", "env", "lean", "module/Slice.lean"],
                 Path("/tmp"),
@@ -1111,7 +1284,7 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 3,
             )
         finally:
-            proof_slice.subprocess.run = original_run
+            proof_slice.subprocess.Popen = original_popen
             proof_slice.shutil.which = original_which
 
         self.assertEqual(result.exit_code, 1)

@@ -3,10 +3,12 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
 import re
 import shutil
 import stat
 import subprocess
+import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping
@@ -27,12 +29,16 @@ MAX_ALLOWED_AXIOMS = 32
 MAX_REJECT_TOKENS = 8
 MAX_TIMEOUT_SECONDS = 86_400
 MAX_OUTPUT_BYTES = 16 * 1024 * 1024
+PIPE_DRAIN_GRACE_SECONDS = 1.0
 DEFAULT_SOURCE_MAP = (
     Path(__file__).resolve().parent
     / "formal_targets"
     / "jin-565b6a3"
     / "source-map.json"
 )
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SHARED_LEAN_CWD = "formalization/lean"
+SHARED_LEAN_ROOT = REPO_ROOT / SHARED_LEAN_CWD
 
 DESCRIPTOR_FIELDS = frozenset(
     {
@@ -307,7 +313,7 @@ def validate_descriptor(
     _validate_allowed_imports(allowed_imports, target)
 
     dependency_receipts = _dependency_receipts(
-        value["dependency_receipts"], row.dependency_ids
+        value["dependency_receipts"], row.dependency_ids, row_by_id
     )
 
     build_target = _safe_relative_path(value["build_target"], "build_target")
@@ -388,7 +394,7 @@ def materialize_task(
     row = row_by_id.get(descriptor.source_map_row_id)
     if row is None:
         raise protocol.ValidationError("source_map_row_id does not exist in source map")
-    _validate_materialization_row_binding(row, descriptor)
+    _validate_materialization_row_binding(row, descriptor, row_by_id)
 
     created_destination = False
     try:
@@ -404,7 +410,9 @@ def materialize_task(
             "Lean slice",
         )
         _write_json_create_only(
-            destination / "build/command.json", _command_json(descriptor), "command"
+            destination / "build/command.json",
+            _command_json(descriptor, destination),
+            "command",
         )
         _write_text_create_only(destination / "build/stdout.log", "", "stdout log")
         _write_text_create_only(destination / "build/stderr.log", "", "stderr log")
@@ -454,7 +462,7 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
         rows,
     )
     _validate_task_binding(task, descriptor)
-    _validate_command_json(root / "build/command.json", descriptor)
+    _validate_command_json(root / "build/command.json", descriptor, root)
 
     source_path = root / descriptor.build_target
     _ensure_existing_file(source_path, "Lean slice")
@@ -489,9 +497,10 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
         )
         return _publish_run_result(root, descriptor, result, "failed", reason, axiom_audit)
 
+    _ensure_existing_directory(SHARED_LEAN_ROOT, "shared Lean root")
     command_result = (executor or _subprocess_executor)(
-        ["lake", "env", "lean", descriptor.build_target],
-        root,
+        _command_argv(descriptor, root),
+        SHARED_LEAN_ROOT,
         descriptor.timeout_seconds,
         descriptor.max_output_bytes,
     )
@@ -580,6 +589,7 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
 def _validate_materialization_row_binding(
     row: jin_validation.SourceMapRow,
     descriptor: ProofSliceDescriptor,
+    row_by_id: Mapping[str, jin_validation.SourceMapRow],
 ) -> None:
     if row.source_locator != descriptor.pinned_source_locator:
         raise protocol.ValidationError(
@@ -606,6 +616,9 @@ def _validate_materialization_row_binding(
         raise protocol.ValidationError(
             f"source-map row dependency receipts contain extra row: {extra[0]}"
         )
+    _validate_dependency_receipt_bindings(
+        descriptor.dependency_receipts, row.dependency_ids, row_by_id
+    )
 
 
 def _task_json(descriptor: ProofSliceDescriptor) -> dict[str, object]:
@@ -647,15 +660,24 @@ def _lean_slice_source(descriptor: ProofSliceDescriptor) -> str:
     return "\n".join(lines).lstrip("\n") + "\n"
 
 
-def _command_json(descriptor: ProofSliceDescriptor) -> dict[str, object]:
+def _command_json(descriptor: ProofSliceDescriptor, task_dir: Path) -> dict[str, object]:
     return {
         "schema_version": "crouzeix-jin-proof-slice-command/v1",
-        "argv": ["lake", "env", "lean", descriptor.build_target],
-        "cwd": ".",
+        "argv": _command_argv(descriptor, task_dir),
+        "cwd": SHARED_LEAN_CWD,
         "env": {},
         "timeout_seconds": descriptor.timeout_seconds,
         "max_output_bytes": descriptor.max_output_bytes,
     }
+
+
+def _command_argv(descriptor: ProofSliceDescriptor, task_dir: Path) -> list[str]:
+    return [
+        "lake",
+        "env",
+        "lean",
+        os.path.relpath(task_dir / descriptor.build_target, SHARED_LEAN_ROOT),
+    ]
 
 
 def _empty_axiom_audit(descriptor: ProofSliceDescriptor) -> dict[str, object]:
@@ -683,6 +705,7 @@ def _receipt_json(
     status: str,
     reason: str,
     *,
+    command: Mapping[str, object] | None = None,
     command_result: CommandResult | None = None,
     axiom_audit: Mapping[str, object] | None = None,
     result: Mapping[str, object] | None = None,
@@ -696,6 +719,8 @@ def _receipt_json(
         "reason": reason,
         "task_sha256": _canonical_sha256(_task_json(descriptor)),
     }
+    if command is not None:
+        receipt["command_sha256"] = _canonical_sha256(command)
     if command_result is not None:
         receipt["command_exit_code"] = command_result.exit_code
         receipt["stdout_sha256"] = protocol.sha256_bytes(command_result.stdout)
@@ -766,7 +791,9 @@ def _validate_task_binding(
         raise protocol.ValidationError("task max_output_bytes does not match descriptor")
 
 
-def _validate_command_json(path: Path, descriptor: ProofSliceDescriptor) -> None:
+def _validate_command_json(
+    path: Path, descriptor: ProofSliceDescriptor, task_dir: Path
+) -> None:
     command = formal_target._read_strict_json_object(path, "proof-slice command")
     _require_fields(command, COMMAND_FIELDS, "proof-slice command")
     _require_equal(
@@ -774,11 +801,11 @@ def _validate_command_json(path: Path, descriptor: ProofSliceDescriptor) -> None
         "crouzeix-jin-proof-slice-command/v1",
         "command.schema_version",
     )
-    expected_argv = ["lake", "env", "lean", descriptor.build_target]
+    expected_argv = _command_argv(descriptor, task_dir)
     if command["argv"] != expected_argv:
         raise protocol.ValidationError("command argv does not match descriptor")
-    if command["cwd"] != ".":
-        raise protocol.ValidationError("command cwd must be .")
+    if command["cwd"] != SHARED_LEAN_CWD:
+        raise protocol.ValidationError("command cwd must be the shared Lean root")
     if command["env"] != {}:
         raise protocol.ValidationError("command env must be empty")
     if command["timeout_seconds"] != descriptor.timeout_seconds:
@@ -956,10 +983,12 @@ def _publish_run_result(
     axiom_audit: Mapping[str, object],
 ) -> dict[str, object]:
     result = _result_json(status, reason)
+    command = _command_json(descriptor, root)
     receipt = _receipt_json(
         descriptor,
         status,
         reason,
+        command=command,
         command_result=command_result,
         axiom_audit=axiom_audit,
         result=result,
@@ -994,16 +1023,29 @@ def _subprocess_executor(
             )
         resolved_executable = found
     resolved_argv = [resolved_executable, *argv[1:]]
+    stdout = _BoundedPipe(max_output_bytes)
+    stderr = _BoundedPipe(max_output_bytes)
     try:
-        completed = subprocess.run(
+        process = subprocess.Popen(
             resolved_argv,
             cwd=cwd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            timeout=timeout_seconds,
             env={},
-            check=False,
+            start_new_session=True,
         )
+        stdout.start(process.stdout)
+        stderr.start(process.stderr)
+        try:
+            exit_code = process.wait(timeout=timeout_seconds)
+        except subprocess.TimeoutExpired:
+            _terminate_process_tree(process)
+            exit_code = None
+            blocked_reason = f"command timed out after {timeout_seconds} seconds"
+        else:
+            blocked_reason = None
+        stdout.join(PIPE_DRAIN_GRACE_SECONDS)
+        stderr.join(PIPE_DRAIN_GRACE_SECONDS)
     except FileNotFoundError as error:
         stderr = str(error).encode("utf-8")
         return CommandResult(
@@ -1013,30 +1055,73 @@ def _subprocess_executor(
             str(error),
             stderr_truncated=len(stderr) > max_output_bytes,
         )
-    except subprocess.TimeoutExpired as error:
-        stdout = error.stdout if isinstance(error.stdout, bytes) else b""
-        stderr = error.stderr if isinstance(error.stderr, bytes) else b""
+    if blocked_reason is not None:
         return CommandResult(
             None,
-            stdout[:max_output_bytes],
-            stderr[:max_output_bytes],
-            f"command timed out after {timeout_seconds} seconds",
-            stdout_truncated=len(stdout) > max_output_bytes,
-            stderr_truncated=len(stderr) > max_output_bytes,
+            stdout.data,
+            stderr.data,
+            blocked_reason,
+            stdout_truncated=stdout.truncated,
+            stderr_truncated=stderr.truncated,
         )
-    stdout = completed.stdout
-    stderr = completed.stderr
     return CommandResult(
-        completed.returncode,
-        stdout[:max_output_bytes],
-        stderr[:max_output_bytes],
-        stdout_truncated=len(stdout) > max_output_bytes,
-        stderr_truncated=len(stderr) > max_output_bytes,
+        exit_code,
+        stdout.data,
+        stderr.data,
+        stdout_truncated=stdout.truncated,
+        stderr_truncated=stderr.truncated,
     )
 
 
+def _terminate_process_tree(process: subprocess.Popen[bytes]) -> None:
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except (AttributeError, ProcessLookupError):
+        return
+    except OSError:
+        process.kill()
+
+
+class _BoundedPipe:
+    def __init__(self, max_bytes: int) -> None:
+        self._max_bytes = max_bytes
+        self._chunks: list[bytes] = []
+        self._size = 0
+        self.truncated = False
+        self._thread: threading.Thread | None = None
+
+    @property
+    def data(self) -> bytes:
+        return b"".join(self._chunks)
+
+    def start(self, stream: Any) -> None:
+        if stream is None:
+            return
+        self._thread = threading.Thread(target=self._read, args=(stream,), daemon=True)
+        self._thread.start()
+
+    def join(self, timeout: float | None = None) -> None:
+        if self._thread is not None:
+            self._thread.join(timeout)
+
+    def _read(self, stream: Any) -> None:
+        with stream:
+            while True:
+                chunk = stream.read(8192)
+                if not chunk:
+                    return
+                remaining = self._max_bytes - self._size
+                if remaining > 0:
+                    self._chunks.append(chunk[:remaining])
+                    self._size += min(len(chunk), remaining)
+                if len(chunk) > remaining:
+                    self.truncated = True
+
+
 def _dependency_receipts(
-    value: Any, dependency_ids: tuple[str, ...]
+    value: Any,
+    dependency_ids: tuple[str, ...],
+    row_by_id: Mapping[str, jin_validation.SourceMapRow],
 ) -> tuple[DependencyReceipt, ...]:
     if not isinstance(value, list) or len(value) > MAX_DEPENDENCY_RECEIPTS:
         raise protocol.ValidationError("dependency_receipts must be a bounded list")
@@ -1066,7 +1151,35 @@ def _dependency_receipts(
         raise protocol.ValidationError(
             f"dependency_receipts contains extra dependency row: {extra[0]}"
         )
+    _validate_dependency_receipt_bindings(receipts, dependency_ids, row_by_id)
     return receipts
+
+
+def _validate_dependency_receipt_bindings(
+    receipts: tuple[DependencyReceipt, ...],
+    dependency_ids: tuple[str, ...],
+    row_by_id: Mapping[str, jin_validation.SourceMapRow],
+) -> None:
+    receipt_by_row = {receipt.row_id: receipt for receipt in receipts}
+    for dependency_id in dependency_ids:
+        row = row_by_id.get(dependency_id)
+        if row is None:
+            raise protocol.ValidationError(
+                f"dependency_receipts reference missing source-map row: {dependency_id}"
+            )
+        if row.status != "passed":
+            raise protocol.ValidationError(
+                f"dependency row is not passed: {dependency_id}"
+            )
+        if row.receipt_sha256 is None:
+            raise protocol.ValidationError(
+                f"passed dependency row is missing receipt_sha256: {dependency_id}"
+            )
+        receipt = receipt_by_row[dependency_id]
+        if receipt.receipt_sha256 != row.receipt_sha256:
+            raise protocol.ValidationError(
+                f"dependency receipt digest mismatch for row: {dependency_id}"
+            )
 
 
 def _unique_string_tuple(
