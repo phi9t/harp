@@ -446,6 +446,18 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 ],
             )
             self.assertEqual(command["cwd"], "formalization/lean")
+            env = command["env"]
+            self.assertEqual(
+                env.get("ELAN_HOME"),
+                "/private/tmp/harp-mathematical-foundations-elan",
+            )
+            self.assertEqual(env.get("ELAN_TOOLCHAIN"), "leanprover/lean4:v4.32.1")
+            self.assertTrue(
+                str(env.get("PATH", "")).startswith(
+                    "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin"
+                )
+            )
+            self.assertNotIn("HOME", env)
 
             result_json = json.loads(
                 (task_dir / "result.json").read_text(encoding="utf-8")
@@ -784,6 +796,30 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertIn("missing pinned toolchain", str(result["reason"]))
             receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
             self.assertEqual(receipt["status"], "blocked")
+
+    def test_run_task_rejects_stale_empty_command_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            command_path = task_dir / "build/command.json"
+            command = json.loads(command_path.read_text(encoding="utf-8"))
+            command["env"] = {}
+            command_path.write_text(
+                json.dumps(command, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "command env"):
+                proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(executor.calls, [])
 
     def test_run_task_requires_active_expected_declaration_check(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

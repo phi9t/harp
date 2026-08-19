@@ -673,7 +673,7 @@ def _command_json(descriptor: ProofSliceDescriptor, task_dir: Path) -> dict[str,
         "schema_version": "crouzeix-jin-proof-slice-command/v1",
         "argv": _command_argv(descriptor, task_dir),
         "cwd": SHARED_LEAN_CWD,
-        "env": {},
+        "env": _shared_lean_environment(),
         "timeout_seconds": descriptor.timeout_seconds,
         "max_output_bytes": descriptor.max_output_bytes,
     }
@@ -826,8 +826,8 @@ def _validate_command_json(
         raise protocol.ValidationError("command argv does not match descriptor")
     if command["cwd"] != SHARED_LEAN_CWD:
         raise protocol.ValidationError("command cwd must be the shared Lean root")
-    if command["env"] != {}:
-        raise protocol.ValidationError("command env must be empty")
+    if command["env"] != _shared_lean_environment():
+        raise protocol.ValidationError("command env must match shared Lean environment")
     if command["timeout_seconds"] != descriptor.timeout_seconds:
         raise protocol.ValidationError("command timeout_seconds does not match descriptor")
     if command["max_output_bytes"] != descriptor.max_output_bytes:
