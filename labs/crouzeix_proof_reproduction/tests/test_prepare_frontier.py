@@ -14,12 +14,25 @@ sys.path.insert(0, str(LAB))
 
 import protocol
 import tickets
+import expert_runner
 import prepare_frontier
 import formal_target
 
 
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def digest_json(value: object) -> str:
+    return digest(
+        json.dumps(
+            value,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+        ).encode("utf-8")
+    )
 
 
 def fixture_prompt() -> bytes:
@@ -179,6 +192,31 @@ class FrontierPreparationTests(unittest.TestCase):
             self.assertEqual(check["root_ticket_count"], 5)
             self.assertEqual(check["run_spec_sha256"], digest((run_dir / "run_spec.json").read_bytes()))
 
+    def test_prepared_root_context_digests_match_provider_canonical_json_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            run_dir = self.prepare(root)
+            spec = protocol.read_run_spec(run_dir / "run_spec.json")
+
+            for role in prepare_frontier.EXPERT_ROLES:
+                ticket_id = prepare_frontier.root_ticket_id(role)
+                context_path = run_dir / "contexts" / f"{ticket_id}.json"
+                context = json.loads(context_path.read_text(encoding="utf-8"))
+                canonical_sha256 = digest_json(context)
+                file_sha256 = digest(context_path.read_bytes())
+                ticket = tickets.validate_runtime_ticket(
+                    json.loads((run_dir / "tickets" / ticket_id / "ticket.json").read_text())
+                )
+
+                self.assertNotEqual(canonical_sha256, file_sha256)
+                self.assertEqual(spec["digests"][f"context/{ticket_id}.json"], canonical_sha256)
+                self.assertEqual(ticket["context_sha256"], canonical_sha256)
+                expert_runner._validate_expert_provider_scope_before_running(
+                    run_dir,
+                    ticket,
+                    context,
+                )
+
     def test_check_recomputes_prompt_schema_config_and_cli_digests(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             for tamper in ("prompt", "schema", "config", "cli"):
@@ -205,6 +243,30 @@ class FrontierPreparationTests(unittest.TestCase):
                     expected = "cli"
                 with self.assertRaisesRegex(protocol.ValidationError, expected):
                     prepare_frontier.check_frontier_preparation(run_dir)
+
+    def test_check_rejects_provider_bound_context_drift_even_when_digests_are_refreshed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            run_dir = self.prepare(root)
+            ticket_id = prepare_frontier.root_ticket_id("function_theory")
+            context_path = run_dir / "contexts" / f"{ticket_id}.json"
+            context = json.loads(context_path.read_text(encoding="utf-8"))
+            context["schema_sha256"] = "0" * 64
+            context_sha256 = digest_json(context)
+            context_path.write_text(json.dumps(context, indent=2, sort_keys=True) + "\n")
+
+            ticket_path = run_dir / "tickets" / ticket_id / "ticket.json"
+            ticket = json.loads(ticket_path.read_text(encoding="utf-8"))
+            ticket["context_sha256"] = context_sha256
+            ticket_path.write_text(json.dumps(ticket, indent=2, sort_keys=True) + "\n")
+
+            spec_path = run_dir / "run_spec.json"
+            spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            spec["digests"][f"context/{ticket_id}.json"] = context_sha256
+            spec_path.write_text(json.dumps(spec, indent=2, sort_keys=True) + "\n")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "schema_sha256"):
+                prepare_frontier.check_frontier_preparation(run_dir)
 
     def test_prepare_frontier_rejects_existing_symlink_wrong_cli_and_bad_config(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

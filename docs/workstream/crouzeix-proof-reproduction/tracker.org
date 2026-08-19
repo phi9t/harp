@@ -5120,6 +5120,114 @@ a no-op script.
 - Spec review approved with no blockers. Standards/security re-review approved
   after the typed tracker error and bounded =ticket.json= read fixes.
 
+** DONE Repair Prepared Context Digest Parity :code:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-R018
+:DESIGN_SECTION: Runtime Ticket Contract; Initial Expert Roster; Context-Parity Gate
+:DEPENDS_ON: CPFR-058
+:BRANCH: fix/crouzeix-context-parity
+:WORKTREE: .worktrees/crouzeix-context-parity-landing
+:OWNER: primary
+:AGENT_RUN: current Task 1 landing
+:MODEL: GPT-5
+:END:
+
+*** Scope
+
+Repair provider-free context digest parity for prepared root expert tickets so
+the next CPFR-032 continuation can prepare and check a fresh E run with one
+canonical provider-bound context boundary.
+
+*** Non-goals
+
+- No live provider call.
+- No proof-slice code.
+- No =roots=, =recover-roots=, =evaluate-roots=, =generations=, =finalize=, or
+  CPFR-033 execution.
+- No creation, mutation, recovery, or hand-editing of ignored =.runs=
+  evidence; tests use temporary fixtures.
+- No mathematical proof-progress claim.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/prepare_frontier.py=
+- =labs/crouzeix_proof_reproduction/expert_runner.py=
+- =labs/crouzeix_proof_reproduction/tests/test_prepare_frontier.py=
+- =labs/crouzeix_proof_reproduction/tests/test_expert_runner.py=
+- this ticket's tracker subtree
+- final =docs/import-receipt.md= payload digest refresh for this landing
+
+*** Acceptance Criteria
+
+- Prepared ticket =context_sha256=, stored context digest, and provider-bound
+  context digest match for every root in temporary fixtures.
+- =check_frontier_preparation= rejects stored/provider-bound context drift even
+  when ticket and run-spec context digests are refreshed.
+- =report_roots_readiness= reports context parity per root without mutating run
+  state.
+- Root execution still refuses context drift before any =created -> admitted= or
+  =admitted -> running= transition.
+- =expert-frontier-001= and =expert-frontier-002= remain preserved as ignored
+  superseded control-plane evidence.
+- No live provider call, proof-slice work, or CPFR-033 action occurs during this
+  repair.
+
+*** Implementation Steps
+
+1. Adapt the source repair semantically to current =master= rather than replaying
+   the stale patch.
+2. Write prepared-context parity regressions using temporary run fixtures.
+3. Add read-only =report-roots= context parity assertions and tamper regression.
+4. Share the canonical root-context digest path across preparation, stored
+   contexts, runtime tickets, and provider-bound validation.
+5. Record provider-free verification evidence in this ticket.
+
+*** Verification Plan
+
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier labs.crouzeix_proof_reproduction.tests.test_expert_runner labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+- =HARP_TARGET_DIR="$PWD/.build/harp-target" .build/harp-target/size/harp repository verify=
+- =mise run lean-all=
+- =mise run verify-repository=
+- =mise run verify=
+
+*** Verification Evidence
+
+- Provider-free repair completed in the clean landing worktree. No live provider
+  call, proof-slice implementation, =roots= / =recover-roots= / =evaluate-roots=
+  / =generations= / =finalize= execution, CPFR-033 action, or ignored =.runs=
+  mutation occurred during this repair.
+- =prepare_frontier._write_root_contexts= now writes root expert contexts in the
+  provider-bound shape consumed by =expert_runner= and =frontier_provider=,
+  including pinned prompt/schema digests, forbidden tools, and explicit null
+  parent artifact fields.
+- Prepared root context entries in =run_spec.json= now use canonical JSON object
+  SHA-256, matching runtime-ticket =context_sha256= and the provider-boundary
+  digest check.
+- =check_frontier_preparation= now validates each prepared root context against
+  the same provider-boundary contract before accepting a prepared run, so
+  digest-refreshed but provider-invalid contexts fail closed.
+- =report_roots_readiness= now reports per-root =context_parity= with stored
+  ticket digest, recomputed context digest, boolean digest parity, and
+  provider-boundary pass/fail detail without mutating the run.
+- Regression coverage added:
+  - =test_prepared_root_context_digests_match_provider_canonical_json_boundary=
+    proves prepared ticket/spec/context digests match the provider-bound
+    canonical JSON boundary.
+  - =test_check_rejects_provider_bound_context_drift_even_when_digests_are_refreshed=
+    proves =check_frontier_preparation= rejects provider-bound context drift even
+    after ticket/spec context digests are refreshed.
+  - =test_report_roots_exposes_context_parity_failure_without_mutating= proves
+    =report-roots= exposes parity failure read-only.
+- Focused verification:
+  =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_prepare_frontier labs.crouzeix_proof_reproduction.tests.test_expert_runner labs.crouzeix_proof_reproduction.tests.test_frontier_provider -v=
+  exited 0 with =Ran 38 tests in 21.871s; OK=.
+- Tracker validation:
+  =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+  exited 0.
+- Whitespace verification: =git diff --check= exited 0.
+
 * Formal Validation Velocity Tickets
 
 These tickets implement the approved reference-aware Lean-validation program.

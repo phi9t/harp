@@ -351,6 +351,9 @@ def _classify_root_state(run_dir: Path, ticket_id: str) -> dict[str, object]:
     ticket = _read_ticket(run_dir, ticket_id)
     if ticket["task_kind"] != "expert" or int(ticket["generation"]) != 0:
         raise protocol.ValidationError(f"{ticket_id} is not a root expert ticket")
+    context = _read_json(run_dir / "contexts" / f"{ticket_id}.json", "root context")
+    context_sha256 = _canonical_sha256(context)
+    provider_boundary = _root_provider_boundary_status(run_dir, ticket, context)
     states = _ticket_states(run_dir, ticket_id)
     current = states[-1] if states else str(ticket["state"])
     terminal = current in tickets.TERMINAL_TICKET_STATES
@@ -371,6 +374,16 @@ def _classify_root_state(run_dir: Path, ticket_id: str) -> dict[str, object]:
         "ticket_state": current,
         "terminal": terminal,
         "evidence_ownership": evidence,
+        "context_parity": {
+            "status": "pass"
+            if ticket["context_sha256"] == context_sha256
+            and provider_boundary["status"] == "pass"
+            else "fail",
+            "ticket_context_sha256": ticket["context_sha256"],
+            "context_sha256": context_sha256,
+            "ticket_matches_context": ticket["context_sha256"] == context_sha256,
+            "provider_boundary": provider_boundary,
+        },
     }
     if not states:
         if has_terminal_evidence or has_call_evidence:
@@ -383,6 +396,18 @@ def _classify_root_state(run_dir: Path, ticket_id: str) -> dict[str, object]:
     if current == "running" and not has_terminal_evidence and not has_call_evidence:
         return {**base, "state": "orphaned_running_root"}
     return {**base, "state": "ambiguous_in_flight"}
+
+
+def _root_provider_boundary_status(
+    run_dir: Path,
+    ticket: Mapping[str, Any],
+    context: Mapping[str, Any],
+) -> dict[str, object]:
+    try:
+        _validate_expert_provider_scope_before_running(run_dir, ticket, context)
+    except protocol.ValidationError as error:
+        return {"status": "fail", "reason": str(error)}
+    return {"status": "pass", "reason": None}
 
 
 def _root_evidence_ownership(run_dir: Path, ticket_id: str) -> dict[str, bool]:

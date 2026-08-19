@@ -870,6 +870,11 @@ class ExpertRunnerTests(unittest.TestCase):
             }
             self.assertEqual(states_by_ticket[ticket_id], "orphaned_running_root")
             self.assertEqual(actions_by_ticket[ticket_id], "CPFR-R014 repair required")
+            for classification in report["root_classifications"]:
+                parity = classification["context_parity"]
+                self.assertEqual(parity["status"], "pass")
+                self.assertTrue(parity["ticket_matches_context"])
+                self.assertEqual(parity["provider_boundary"]["status"], "pass")
             self.assertEqual(report["orphaned_roots"], [ticket_id])
             self.assertIsNone(report["run_receipt_sha256"])
 
@@ -896,6 +901,33 @@ class ExpertRunnerTests(unittest.TestCase):
             self.assertIn(ticket_id, report["validator_status"]["non_terminal_root_ticket_ids"])
             self.assertEqual(report["aggregate_receipt"]["present"], False)
             self.assertFalse((run_dir / "run_receipt.json").exists())
+
+    def test_report_roots_exposes_context_parity_failure_without_mutating(self) -> None:
+        with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:
+            run_dir = make_run(Path(directory))
+            ticket_id = prepare_frontier.root_ticket_id("function_theory")
+            context_path = run_dir / "contexts" / f"{ticket_id}.json"
+            context = json.loads(context_path.read_text(encoding="utf-8"))
+            context["schema_sha256"] = "0" * 64
+            write_json(context_path, context)
+            ticket_path = run_dir / "tickets" / ticket_id / "ticket.json"
+            ticket = json.loads(ticket_path.read_text(encoding="utf-8"))
+            ticket["context_sha256"] = digest_json(context)
+            write_json(ticket_path, ticket)
+            before = tracked_file_snapshot(run_dir)
+
+            report = expert_runner.report_roots_readiness(run_dir)
+
+            after = tracked_file_snapshot(run_dir)
+            self.assertEqual(after, before)
+            classification = next(
+                item for item in report["root_classifications"] if item["ticket_id"] == ticket_id
+            )
+            parity = classification["context_parity"]
+            self.assertEqual(parity["status"], "fail")
+            self.assertTrue(parity["ticket_matches_context"])
+            self.assertEqual(parity["provider_boundary"]["status"], "fail")
+            self.assertIn("schema_sha256", parity["provider_boundary"]["reason"])
 
     def test_budget_failure_closes_with_receipt(self) -> None:
         with tempfile.TemporaryDirectory(dir="/private/tmp") as directory:

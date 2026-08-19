@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 import expert_contracts
+import frontier_provider
 import formal_target
 import tickets
 from protocol import (
@@ -67,6 +68,12 @@ CREATE_ONLY_DIRECTORIES = (
     "contexts",
 )
 EXCLUDED_SOURCE_CLASSES = (
+    "search",
+    "network",
+    "mcp",
+    "shell",
+    "read",
+    "delegation",
     "public proof manuscripts",
     "Harp Crouzeix packet",
     "reference-aware correctness reviews",
@@ -229,6 +236,11 @@ def check_frontier_preparation(run_dir: Path) -> dict[str, object]:
             raise ValidationError(f"root ticket {ticket_id} does not match run spec")
         if ticket["context_sha256"] != spec["digests"][f"context/{ticket_id}.json"]:
             raise ValidationError(f"root ticket {ticket_id} context digest mismatch")
+        context = _read_json_object(
+            root / "contexts" / f"{ticket_id}.json",
+            "root expert context",
+        )
+        _validate_root_expert_provider_boundary(root, ticket, context)
         if (root / "tickets" / ticket_id / "ticket_events.jsonl").exists():
             raise ValidationError("root ticket event log must not exist before execution")
         ticket_ids.append(ticket_id)
@@ -365,9 +377,26 @@ def _write_root_contexts(
             theorem_text=theorem_text,
             forbidden_sources=list(EXCLUDED_SOURCE_CLASSES),
         )
+        context["forbidden_tools"] = [
+            "Read",
+            "Glob",
+            "Grep",
+            "Bash",
+            "Edit",
+            "spawn_agent",
+            "WebSearch",
+            "MCP",
+            "Shell",
+        ]
+        context["schema_sha256"] = _file_sha256(
+            root / "schemas" / "expert_result.schema.json"
+        )
+        context["prompt_sha256"] = _file_sha256(root / "prompts" / "expert.md")
+        context["parent_artifact_sha256"] = None
+        context["allowed_parent_artifacts"] = []
         path = context_root / f"{ticket_id}.json"
         _write_json_create_only(path, context, "root expert context")
-        digests[f"context/{ticket_id}.json"] = _file_sha256(path)
+        digests[f"context/{ticket_id}.json"] = _canonical_sha256(context)
     return digests
 
 
@@ -412,6 +441,28 @@ def _publish_root_tickets(
             "state": "created",
         }
         tickets.publish_ticket(ticket_root, ticket)
+
+
+def _validate_root_expert_provider_boundary(
+    root: Path,
+    ticket: Mapping[str, Any],
+    context: Mapping[str, Any],
+) -> None:
+    ticket_value = tickets.validate_runtime_ticket(ticket)
+    frontier_provider._validate_ticket_scope(ticket_value, "expert")
+    if ticket_value["context_sha256"] != _canonical_sha256(context):
+        raise ValidationError("ticket context_sha256 does not match provider context")
+    schema_sha256 = _file_sha256(root / "schemas" / "expert_result.schema.json")
+    prompt_sha256 = _file_sha256(root / "prompts" / "expert.md")
+    frontier_provider._validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
+    frontier_provider._validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
+    frontier_provider._validate_context(
+        context,
+        ticket=ticket_value,
+        role="expert",
+        schema_sha256=schema_sha256,
+        prompt_sha256=prompt_sha256,
+    )
 
 
 def _frontier_config() -> dict[str, object]:
@@ -470,6 +521,17 @@ def _validate_prepared_digests(root: Path, spec: Mapping[str, Any]) -> None:
     for name in SCHEMAS:
         _expect_digest(digests, f"schema/{name}", _file_sha256(root / "schemas" / name))
     _expect_digest(digests, FORMAL_TARGET_DIGEST_KEY, _file_sha256(formal_target.PRODUCTION_LOCK_PATH))
+    for role in EXPERT_ROLES:
+        ticket_id = root_ticket_id(role)
+        context = _read_json_object(
+            root / "contexts" / f"{ticket_id}.json",
+            "root expert context",
+        )
+        _expect_digest(
+            digests,
+            f"context/{ticket_id}.json",
+            _canonical_sha256(context),
+        )
 
 
 def _expect_digest(digests: Mapping[str, Any], key: str, observed: str) -> None:
@@ -629,7 +691,13 @@ def _file_sha256(path: Path) -> str:
 
 
 def _canonical_sha256(value: Mapping[str, Any]) -> str:
-    data = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    data = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    )
     return sha256_bytes(data.encode("utf-8"))
 
 
