@@ -12,19 +12,18 @@ from protocol import ValidationError, sha256_bytes
 
 FRONTIER_ALLOWED_TOOLS = ["Write"]
 FRONTIER_ROLES = frozenset({"expert", "proof_progress_evaluator"})
-FORBIDDEN_CONTEXT_TOOLS = frozenset(
-    {
-        "Read",
-        "Glob",
-        "Grep",
-        "Bash",
-        "Edit",
-        "spawn_agent",
-        "WebSearch",
-        "MCP",
-        "Shell",
-    }
-)
+FORBIDDEN_CONTEXT_TOOL_LIST = [
+    "Read",
+    "Glob",
+    "Grep",
+    "Bash",
+    "Edit",
+    "spawn_agent",
+    "WebSearch",
+    "MCP",
+    "Shell",
+]
+FORBIDDEN_CONTEXT_TOOLS = frozenset(FORBIDDEN_CONTEXT_TOOL_LIST)
 
 
 def run_frontier_call(
@@ -42,8 +41,30 @@ def run_frontier_call(
     if role not in FRONTIER_ROLES:
         raise ValidationError(f"unknown frontier provider role {role}")
     ticket_value = tickets.validate_runtime_ticket(ticket)
-    _validate_ticket_scope(ticket_value, role)
     schema_bytes = schema_path.read_bytes()
+    schema_sha256 = sha256_bytes(schema_bytes)
+    prompt_sha256 = sha256_bytes(prompt.encode("utf-8"))
+    if role == "expert":
+        context_value = validate_expert_provider_boundary(
+            ticket=ticket_value,
+            context=context,
+            schema_sha256=schema_sha256,
+            prompt_sha256=prompt_sha256,
+        )
+    else:
+        _validate_ticket_scope(ticket_value, role)
+        _validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
+        _validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
+        context_value = dict(context)
+        if ticket_value["context_sha256"] != _canonical_sha256(context_value):
+            raise ValidationError("ticket context_sha256 does not match provider context")
+        context_value = _validate_context(
+            context_value,
+            ticket=ticket_value,
+            role=role,
+            schema_sha256=schema_sha256,
+            prompt_sha256=prompt_sha256,
+        )
     base_binding = {
         "ticket_id": str(ticket_value["ticket_id"]),
         "ticket_sha256": tickets.canonical_sha256(ticket_value),
@@ -56,21 +77,6 @@ def run_frontier_call(
         "ticket_prompt_sha256": str(ticket_value["prompt_sha256"]),
         "ticket_parent_artifact_sha256": ticket_value["parent_artifact_sha256"],
     }
-    _validate_pinned_digest(ticket_value, "schema_sha256", sha256_bytes(schema_bytes))
-    _validate_pinned_digest(
-        ticket_value, "prompt_sha256", sha256_bytes(prompt.encode("utf-8"))
-    )
-
-    context_value = dict(context)
-    if ticket_value["context_sha256"] != _canonical_sha256(context_value):
-        raise ValidationError("ticket context_sha256 does not match provider context")
-    context_value = _validate_context(
-        context,
-        ticket=ticket_value,
-        role=role,
-        schema_sha256=sha256_bytes(schema_bytes),
-        prompt_sha256=sha256_bytes(prompt.encode("utf-8")),
-    )
     provider_context = _provider_visible_context(role, context_value)
     wrapped_prompt = (
         "FRONTIER_CONTEXT_JSON: "
@@ -107,6 +113,29 @@ def run_frontier_call(
     if result["receipt"]["status"] == "completed" and after_receipt is not None:
         after_receipt()
     return result
+
+
+def validate_expert_provider_boundary(
+    *,
+    ticket: Mapping[str, Any],
+    context: Mapping[str, Any],
+    schema_sha256: str,
+    prompt_sha256: str,
+) -> dict[str, Any]:
+    ticket_value = tickets.validate_runtime_ticket(ticket)
+    _validate_ticket_scope(ticket_value, "expert")
+    context_value = dict(context)
+    if ticket_value["context_sha256"] != _canonical_sha256(context_value):
+        raise ValidationError("ticket context_sha256 does not match provider context")
+    _validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
+    _validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
+    return _validate_context(
+        context_value,
+        ticket=ticket_value,
+        role="expert",
+        schema_sha256=schema_sha256,
+        prompt_sha256=prompt_sha256,
+    )
 
 
 def _frontier_spec(spec: Mapping[str, Any]) -> dict[str, Any]:

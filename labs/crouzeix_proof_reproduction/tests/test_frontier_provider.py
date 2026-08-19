@@ -453,6 +453,37 @@ def frontier_ticket(
 
 
 class FrontierProviderTests(unittest.TestCase):
+    def test_expert_provider_boundary_helper_binds_ticket_context_schema_and_prompt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cli = root / "fake_frontier_cli.py"
+            write_fake_frontier_cli(cli)
+            run_dir = write_frontier_run(root, cli)
+            prompt = "Attempt the function-theory route."
+            schema = run_dir / "schemas/expert_result.schema.json"
+            context = strict_expert_context(prompt, schema)
+            ticket = frontier_ticket(prompt, schema, context=context)
+
+            validated = frontier_provider.validate_expert_provider_boundary(
+                ticket=ticket,
+                context=context,
+                schema_sha256=digest(schema.read_bytes()),
+                prompt_sha256=digest(prompt.encode("utf-8")),
+            )
+
+            self.assertEqual(validated, context)
+            drifted = dict(context)
+            drifted["schema_sha256"] = "0" * 64
+            drifted_ticket = dict(ticket)
+            drifted_ticket["context_sha256"] = digest_json(drifted)
+            with self.assertRaisesRegex(protocol.ValidationError, "schema_sha256"):
+                frontier_provider.validate_expert_provider_boundary(
+                    ticket=drifted_ticket,
+                    context=drifted,
+                    schema_sha256=digest(schema.read_bytes()),
+                    prompt_sha256=digest(prompt.encode("utf-8")),
+                )
+
     def test_expert_call_binds_ticket_and_runs_in_write_only_empty_workspace(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -377,17 +377,7 @@ def _write_root_contexts(
             theorem_text=theorem_text,
             forbidden_sources=list(EXCLUDED_SOURCE_CLASSES),
         )
-        context["forbidden_tools"] = [
-            "Read",
-            "Glob",
-            "Grep",
-            "Bash",
-            "Edit",
-            "spawn_agent",
-            "WebSearch",
-            "MCP",
-            "Shell",
-        ]
+        context["forbidden_tools"] = list(frontier_provider.FORBIDDEN_CONTEXT_TOOL_LIST)
         context["schema_sha256"] = _file_sha256(
             root / "schemas" / "expert_result.schema.json"
         )
@@ -448,20 +438,11 @@ def _validate_root_expert_provider_boundary(
     ticket: Mapping[str, Any],
     context: Mapping[str, Any],
 ) -> None:
-    ticket_value = tickets.validate_runtime_ticket(ticket)
-    frontier_provider._validate_ticket_scope(ticket_value, "expert")
-    if ticket_value["context_sha256"] != _canonical_sha256(context):
-        raise ValidationError("ticket context_sha256 does not match provider context")
-    schema_sha256 = _file_sha256(root / "schemas" / "expert_result.schema.json")
-    prompt_sha256 = _file_sha256(root / "prompts" / "expert.md")
-    frontier_provider._validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
-    frontier_provider._validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
-    frontier_provider._validate_context(
-        context,
-        ticket=ticket_value,
-        role="expert",
-        schema_sha256=schema_sha256,
-        prompt_sha256=prompt_sha256,
+    frontier_provider.validate_expert_provider_boundary(
+        ticket=ticket,
+        context=context,
+        schema_sha256=_file_sha256(root / "schemas" / "expert_result.schema.json"),
+        prompt_sha256=_file_sha256(root / "prompts" / "expert.md"),
     )
 
 

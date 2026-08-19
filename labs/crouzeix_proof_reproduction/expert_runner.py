@@ -29,15 +29,7 @@ PHASE_PREDECESSOR = {
     "check": "finalize",
 }
 FORBIDDEN_TOOLS = [
-    "Read",
-    "Glob",
-    "Grep",
-    "Bash",
-    "Edit",
-    "spawn_agent",
-    "WebSearch",
-    "MCP",
-    "Shell",
+    *frontier_provider.FORBIDDEN_CONTEXT_TOOL_LIST,
 ]
 FORBIDDEN_SOURCES = [
     "search",
@@ -735,20 +727,11 @@ def _validate_expert_provider_scope_before_running(
     ticket: Mapping[str, Any],
     context: Mapping[str, Any],
 ) -> None:
-    ticket_value = tickets.validate_runtime_ticket(ticket)
-    frontier_provider._validate_ticket_scope(ticket_value, "expert")
-    if ticket_value["context_sha256"] != _canonical_sha256(context):
-        raise protocol.ValidationError("ticket context_sha256 does not match provider context")
-    schema_sha256 = _file_sha256(run_dir / "schemas" / EXPERT_SCHEMA)
-    prompt_sha256 = _file_sha256(run_dir / "prompts" / EXPERT_PROMPT)
-    frontier_provider._validate_pinned_digest(ticket_value, "schema_sha256", schema_sha256)
-    frontier_provider._validate_pinned_digest(ticket_value, "prompt_sha256", prompt_sha256)
-    frontier_provider._validate_context(
-        context,
-        ticket=ticket_value,
-        role="expert",
-        schema_sha256=schema_sha256,
-        prompt_sha256=prompt_sha256,
+    frontier_provider.validate_expert_provider_boundary(
+        ticket=ticket,
+        context=context,
+        schema_sha256=_file_sha256(run_dir / "schemas" / EXPERT_SCHEMA),
+        prompt_sha256=_file_sha256(run_dir / "prompts" / EXPERT_PROMPT),
     )
 
 
