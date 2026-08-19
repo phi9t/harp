@@ -1073,14 +1073,15 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
                 proof_slice.run_task(task_dir, executor=executor)
 
-    def test_subprocess_executor_uses_empty_environment(self) -> None:
+    def test_subprocess_executor_uses_shared_lean_environment(self) -> None:
         captured: dict[str, object] = {}
         original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
-        def fake_which(executable: str) -> str | None:
+        def fake_which(executable: str, path: str | None = None) -> str | None:
             self.assertEqual(executable, "lake")
-            return "/opt/toolchains/lake"
+            self.assertIsNotNone(path)
+            return "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin/lake"
 
         class FakePopen:
             def __init__(self, *args: object, **kwargs: object) -> None:
@@ -1103,7 +1104,7 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             proof_slice.subprocess.Popen = fake_popen
             result = proof_slice._subprocess_executor(
                 ["lake", "env", "lean", "module/Slice.lean"],
-                Path("/tmp"),
+                proof_slice.SHARED_LEAN_ROOT,
                 3600,
                 1024,
             )
@@ -1112,15 +1113,27 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             proof_slice.shutil.which = original_which
 
         self.assertEqual(result.exit_code, 0)
-        self.assertEqual(captured["kwargs"]["env"], {})
+        env = captured["kwargs"]["env"]
+        self.assertEqual(
+            env["ELAN_HOME"],
+            "/private/tmp/harp-mathematical-foundations-elan",
+        )
+        self.assertEqual(env["ELAN_TOOLCHAIN"], "leanprover/lean4:v4.32.1")
+        self.assertTrue(
+            env["PATH"].startswith(
+                "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:"
+            )
+        )
+        self.assertNotIn("HOME", env)
 
-    def test_subprocess_executor_resolves_executable_before_empty_environment(self) -> None:
+    def test_subprocess_executor_resolves_executable_before_passing_environment(self) -> None:
         captured: dict[str, object] = {}
         original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
-        def fake_which(executable: str) -> str | None:
+        def fake_which(executable: str, path: str | None = None) -> str | None:
             captured["which"] = executable
+            captured["which_path"] = path
             return "/opt/toolchains/lake"
 
         class FakePopen:
@@ -1154,17 +1167,22 @@ class ProofSliceRunTaskTests(unittest.TestCase):
 
         self.assertEqual(result.exit_code, 0)
         self.assertEqual(captured["which"], "lake")
+        self.assertIsNotNone(captured["which_path"])
         self.assertEqual(
             captured["args"][0],
             ["/opt/toolchains/lake", "env", "lean", "module/Slice.lean"],
         )
-        self.assertEqual(captured["kwargs"]["env"], {})
+        self.assertEqual(
+            captured["kwargs"]["env"],
+            proof_slice._shared_lean_environment(),
+        )
 
     def test_subprocess_executor_blocks_when_executable_cannot_be_resolved(self) -> None:
         original_which = proof_slice.shutil.which
 
-        def fake_which(executable: str) -> str | None:
+        def fake_which(executable: str, path: str | None = None) -> str | None:
             self.assertEqual(executable, "missing-tool")
+            self.assertIsNotNone(path)
             return None
 
         try:
@@ -1190,8 +1208,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
         original_killpg = proof_slice.os.killpg
         original_bounded_pipe = proof_slice._BoundedPipe
 
-        def fake_which(executable: str) -> str | None:
+        def fake_which(executable: str, path: str | None = None) -> str | None:
             self.assertEqual(executable, "lake")
+            self.assertIsNotNone(path)
             return "/opt/toolchains/lake"
 
         class FakePopen:
@@ -1262,8 +1281,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
         original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
 
-        def fake_which(executable: str) -> str | None:
+        def fake_which(executable: str, path: str | None = None) -> str | None:
             self.assertEqual(executable, "lake")
+            self.assertIsNotNone(path)
             return "/opt/toolchains/lake"
 
         class FakePopen:

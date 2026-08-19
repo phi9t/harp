@@ -39,6 +39,14 @@ DEFAULT_SOURCE_MAP = (
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SHARED_LEAN_CWD = "formalization/lean"
 SHARED_LEAN_ROOT = REPO_ROOT / SHARED_LEAN_CWD
+SHARED_ELAN_HOME = Path("/private/tmp/harp-mathematical-foundations-elan")
+SHARED_LEAN_TOOLCHAIN = "leanprover/lean4:v4.32.1"
+SHARED_TOOLCHAIN_BIN = (
+    SHARED_ELAN_HOME
+    / "toolchains"
+    / "leanprover--lean4---v4.32.1"
+    / "bin"
+)
 
 DESCRIPTOR_FIELDS = frozenset(
     {
@@ -680,6 +688,18 @@ def _command_argv(descriptor: ProofSliceDescriptor, task_dir: Path) -> list[str]
     ]
 
 
+def _shared_lean_environment() -> dict[str, str]:
+    path_entries = [SHARED_TOOLCHAIN_BIN.as_posix()]
+    ambient_path = os.environ.get("PATH")
+    if ambient_path:
+        path_entries.append(ambient_path)
+    return {
+        "ELAN_HOME": SHARED_ELAN_HOME.as_posix(),
+        "ELAN_TOOLCHAIN": SHARED_LEAN_TOOLCHAIN,
+        "PATH": os.pathsep.join(path_entries),
+    }
+
+
 def _empty_axiom_audit(descriptor: ProofSliceDescriptor) -> dict[str, object]:
     return {
         "schema_version": "crouzeix-jin-proof-slice-axioms/v1",
@@ -1007,10 +1027,11 @@ def _subprocess_executor(
     timeout_seconds: int,
     max_output_bytes: int,
 ) -> CommandResult:
+    environment = _shared_lean_environment()
     executable = argv[0]
     resolved_executable = executable
     if not Path(executable).is_absolute():
-        found = shutil.which(executable)
+        found = shutil.which(executable, path=environment["PATH"])
         if found is None:
             reason = f"missing executable: {executable}"
             stderr = reason.encode("utf-8")
@@ -1031,7 +1052,7 @@ def _subprocess_executor(
             cwd=cwd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            env={},
+            env=environment,
             start_new_session=True,
         )
         stdout.start(process.stdout)
