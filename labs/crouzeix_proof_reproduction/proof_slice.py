@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import stat
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 import formal_target
 import jin_validation
@@ -46,6 +48,35 @@ DEPENDENCY_RECEIPT_FIELDS = frozenset({"row_id", "receipt_sha256"})
 PROOF_HOLE_POLICY_FIELDS = frozenset({"reject_tokens"})
 AXIOM_POLICY_FIELDS = frozenset({"allowed_axioms"})
 ATTEMPT_BUDGET_FIELDS = frozenset({"timeout_seconds", "max_output_bytes"})
+TASK_FIELDS = frozenset(
+    {
+        "schema_version",
+        "descriptor",
+        "route_id",
+        "source_map_row_id",
+        "expected_lean_declaration",
+        "build_target",
+        "timeout_seconds",
+        "max_output_bytes",
+    }
+)
+COMMAND_FIELDS = frozenset(
+    {"schema_version", "argv", "cwd", "env", "timeout_seconds", "max_output_bytes"}
+)
+
+
+@dataclass(frozen=True)
+class CommandResult:
+    exit_code: int | None
+    stdout: bytes
+    stderr: bytes
+    blocked_reason: str | None = None
+    stdout_truncated: bool = False
+    stderr_truncated: bool = False
+    axiom_audit_output: bytes | None = None
+
+
+Executor = Callable[[list[str], Path, int, int], CommandResult]
 
 
 @dataclass(frozen=True)
@@ -319,6 +350,149 @@ def materialize_task(
     return destination
 
 
+def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, object]:
+    root = task_dir.expanduser().absolute()
+    _ensure_existing_directory(root, "proof-slice task directory")
+    _ensure_rewritable_outputs(root)
+
+    target = formal_target.load_lock()
+    source_map = (
+        Path(__file__).resolve().parent
+        / "formal_targets"
+        / "jin-565b6a3"
+        / "source-map.json"
+    )
+    rows = jin_validation.load_source_map(source_map, target)
+    task = _task_object(root / "task.json")
+    descriptor = validate_descriptor(
+        _mapping(task["descriptor"], "task.descriptor"),
+        target,
+        rows,
+    )
+    _validate_task_binding(task, descriptor)
+    _validate_command_json(root / "build/command.json", descriptor)
+
+    source_path = root / descriptor.build_target
+    _ensure_existing_file(source_path, "Lean slice")
+    source = source_path.read_text(encoding="utf-8")
+    if not _has_active_expected_declaration_check(
+        source, descriptor.expected_lean_declaration
+    ):
+        reason = (
+            "Lean slice missing active expected declaration check: "
+            f"#check {descriptor.expected_lean_declaration}"
+        )
+        result = CommandResult(None, b"", b"")
+        axiom_audit = _axiom_audit(
+            descriptor,
+            (),
+            status="not_applicable",
+            reason="axiom scan not applicable because slice validation failed",
+            scan_performed=False,
+        )
+        return _publish_run_result(root, descriptor, result, "failed", reason, axiom_audit)
+
+    proof_hole = _first_proof_hole_token(source, descriptor.reject_tokens)
+    if proof_hole is not None:
+        reason = f"proof-hole token rejected before execution: {proof_hole}"
+        result = CommandResult(None, b"", b"")
+        axiom_audit = _axiom_audit(
+            descriptor,
+            (),
+            status="not_applicable",
+            reason="axiom scan not applicable because proof-hole policy failed",
+            scan_performed=False,
+        )
+        return _publish_run_result(root, descriptor, result, "failed", reason, axiom_audit)
+
+    command_result = (executor or _subprocess_executor)(
+        ["lake", "env", "lean", descriptor.build_target],
+        root,
+        descriptor.timeout_seconds,
+        descriptor.max_output_bytes,
+    )
+    if not isinstance(command_result, CommandResult):
+        raise protocol.ValidationError("executor must return CommandResult")
+    command_result = _normalize_command_result(
+        command_result, descriptor.max_output_bytes
+    )
+
+    if command_result.blocked_reason is not None or command_result.exit_code is None:
+        reason = command_result.blocked_reason or "command blocked before exit"
+        axiom_audit = _axiom_audit(
+            descriptor,
+            (),
+            status="not_applicable",
+            reason="axiom scan not applicable because command was blocked",
+            scan_performed=False,
+        )
+        return _publish_run_result(
+            root, descriptor, command_result, "blocked", reason, axiom_audit
+        )
+
+    if command_result.exit_code != 0:
+        reason = f"Lean command failed with exit code {command_result.exit_code}"
+        axiom_audit = _axiom_audit(
+            descriptor,
+            (),
+            status="not_applicable",
+            reason="axiom scan not applicable because command failed",
+            scan_performed=False,
+        )
+        return _publish_run_result(
+            root, descriptor, command_result, "failed", reason, axiom_audit
+        )
+
+    axiom_scan = _parse_axiom_audit(command_result.axiom_audit_output)
+    if axiom_scan["status"] == "failed":
+        observed_axioms = tuple(axiom_scan["observed_axioms"])
+        axiom_audit = _axiom_audit(
+            descriptor,
+            observed_axioms,
+            status="failed",
+            reason=str(axiom_scan["reason"]),
+            scan_performed=bool(axiom_scan["scan_performed"]),
+        )
+        output_cap_reason = _output_cap_reason(
+            command_result, descriptor.max_output_bytes
+        )
+        reason = str(axiom_scan["reason"])
+        if output_cap_reason is not None:
+            reason = f"{reason}; {output_cap_reason}"
+        return _publish_run_result(
+            root, descriptor, command_result, "failed", reason, axiom_audit
+        )
+
+    observed_axioms = tuple(axiom_scan["observed_axioms"])
+    forbidden = sorted(set(observed_axioms) - set(descriptor.allowed_axioms))
+    output_cap_reason = _output_cap_reason(command_result, descriptor.max_output_bytes)
+    axiom_status = "failed" if forbidden else "passed"
+    axiom_reason = (
+        f"forbidden axiom observed: {forbidden[0]}"
+        if forbidden
+        else "Lean command succeeded and axiom audit passed"
+    )
+    axiom_audit = _axiom_audit(
+        descriptor,
+        observed_axioms,
+        status=axiom_status,
+        reason=axiom_reason,
+        scan_performed=True,
+    )
+    if forbidden or output_cap_reason is not None:
+        reason = axiom_reason if output_cap_reason is None else output_cap_reason
+        if forbidden and output_cap_reason is not None:
+            reason = f"{axiom_reason}; {output_cap_reason}"
+        return _publish_run_result(
+            root, descriptor, command_result, "failed", reason, axiom_audit
+        )
+
+    reason = axiom_reason
+    return _publish_run_result(
+        root, descriptor, command_result, "passed", reason, axiom_audit
+    )
+
+
 def _validate_materialization_row_binding(
     row: jin_validation.SourceMapRow,
     descriptor: ProofSliceDescriptor,
@@ -424,8 +598,12 @@ def _receipt_json(
     descriptor: ProofSliceDescriptor,
     status: str,
     reason: str,
+    *,
+    command_result: CommandResult | None = None,
+    axiom_audit: Mapping[str, object] | None = None,
+    result: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
-    return {
+    receipt = {
         "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
         "route_id": descriptor.route_id,
         "source_map_row_id": descriptor.source_map_row_id,
@@ -434,6 +612,18 @@ def _receipt_json(
         "reason": reason,
         "task_sha256": _canonical_sha256(_task_json(descriptor)),
     }
+    if command_result is not None:
+        receipt["command_exit_code"] = command_result.exit_code
+        receipt["stdout_sha256"] = protocol.sha256_bytes(command_result.stdout)
+        receipt["stderr_sha256"] = protocol.sha256_bytes(command_result.stderr)
+        receipt["stdout_truncated"] = command_result.stdout_truncated
+        receipt["stderr_truncated"] = command_result.stderr_truncated
+        receipt["max_output_bytes"] = descriptor.max_output_bytes
+    if axiom_audit is not None:
+        receipt["axioms_sha256"] = _canonical_sha256(axiom_audit)
+    if result is not None:
+        receipt["result_sha256"] = _canonical_sha256(result)
+    return receipt
 
 
 def _is_terminal_row(
@@ -456,6 +646,309 @@ def _validate_allowed_imports(
             raise protocol.ValidationError(
                 f"allowed_imports contains import outside FormalTarget allowlist: {module}"
             )
+
+
+def _task_object(path: Path) -> dict[str, Any]:
+    task = formal_target._read_strict_json_object(path, "proof-slice task")
+    _require_fields(task, TASK_FIELDS, "proof-slice task")
+    _require_equal(
+        task["schema_version"],
+        "crouzeix-jin-proof-slice-task/v1",
+        "task.schema_version",
+    )
+    return task
+
+
+def _validate_task_binding(
+    task: Mapping[str, Any], descriptor: ProofSliceDescriptor
+) -> None:
+    if task["descriptor"] != descriptor.to_json():
+        raise protocol.ValidationError("task descriptor is not canonical")
+    if task["route_id"] != descriptor.route_id:
+        raise protocol.ValidationError("task route_id does not match descriptor")
+    if task["source_map_row_id"] != descriptor.source_map_row_id:
+        raise protocol.ValidationError(
+            "task source_map_row_id does not match descriptor"
+        )
+    if task["expected_lean_declaration"] != descriptor.expected_lean_declaration:
+        raise protocol.ValidationError(
+            "task expected_lean_declaration does not match descriptor"
+        )
+    if task["build_target"] != descriptor.build_target:
+        raise protocol.ValidationError("task build_target does not match descriptor")
+    if task["timeout_seconds"] != descriptor.timeout_seconds:
+        raise protocol.ValidationError("task timeout_seconds does not match descriptor")
+    if task["max_output_bytes"] != descriptor.max_output_bytes:
+        raise protocol.ValidationError("task max_output_bytes does not match descriptor")
+
+
+def _validate_command_json(path: Path, descriptor: ProofSliceDescriptor) -> None:
+    command = formal_target._read_strict_json_object(path, "proof-slice command")
+    _require_fields(command, COMMAND_FIELDS, "proof-slice command")
+    _require_equal(
+        command["schema_version"],
+        "crouzeix-jin-proof-slice-command/v1",
+        "command.schema_version",
+    )
+    expected_argv = ["lake", "env", "lean", descriptor.build_target]
+    if command["argv"] != expected_argv:
+        raise protocol.ValidationError("command argv does not match descriptor")
+    if command["cwd"] != ".":
+        raise protocol.ValidationError("command cwd must be .")
+    if command["env"] != {}:
+        raise protocol.ValidationError("command env must be empty")
+    if command["timeout_seconds"] != descriptor.timeout_seconds:
+        raise protocol.ValidationError("command timeout_seconds does not match descriptor")
+    if command["max_output_bytes"] != descriptor.max_output_bytes:
+        raise protocol.ValidationError("command max_output_bytes does not match descriptor")
+
+
+def _first_proof_hole_token(source: str, reject_tokens: tuple[str, ...]) -> str | None:
+    for token in reject_tokens:
+        if token in source:
+            return token
+    return None
+
+
+def _has_active_expected_declaration_check(source: str, declaration: str) -> bool:
+    expected = f"#check {declaration}"
+    block_comment_depth = 0
+    for line in source.splitlines():
+        code, block_comment_depth = _lean_code_prefix(line, block_comment_depth)
+        if code.strip() == expected:
+            return True
+    return False
+
+
+def _lean_code_prefix(line: str, block_comment_depth: int) -> tuple[str, int]:
+    index = 0
+    output = []
+    while index < len(line):
+        if block_comment_depth:
+            nested = line.find("/-", index)
+            end = line.find("-/", index)
+            if end == -1 and nested == -1:
+                return "".join(output), block_comment_depth
+            if nested != -1 and (end == -1 or nested < end):
+                block_comment_depth += 1
+                index = nested + 2
+                continue
+            if end == -1:
+                return "".join(output), block_comment_depth
+            index = end + 2
+            block_comment_depth -= 1
+            continue
+        line_comment = line.find("--", index)
+        block_comment = line.find("/-", index)
+        if line_comment != -1 and (
+            block_comment == -1 or line_comment < block_comment
+        ):
+            output.append(line[index:line_comment])
+            return "".join(output), False
+        if block_comment != -1:
+            output.append(line[index:block_comment])
+            index = block_comment + 2
+            block_comment_depth = 1
+            continue
+        output.append(line[index:])
+        return "".join(output), 0
+    return "".join(output), block_comment_depth
+
+
+def _parse_axiom_audit(output: bytes | None) -> dict[str, object]:
+    if output is None:
+        return _failed_axiom_scan("axiom audit output missing")
+    text = output.decode("utf-8", errors="replace")
+    observed: tuple[str, ...] | None = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("axioms:"):
+            if stripped:
+                return _failed_axiom_scan("axiom audit output malformed")
+            continue
+        if stripped == "axioms: none":
+            parsed: tuple[str, ...] = ()
+        else:
+            payload = stripped.removeprefix("axioms:").strip()
+            if not payload:
+                return _failed_axiom_scan("axiom audit output malformed")
+            pieces = tuple(part.strip() for part in payload.split(","))
+            if any(not _is_lean_name(part) for part in pieces):
+                return _failed_axiom_scan("axiom audit output malformed")
+            if len(set(pieces)) != len(pieces):
+                return _failed_axiom_scan("axiom audit output malformed")
+            parsed = pieces
+        if observed is not None:
+            return _failed_axiom_scan("axiom audit output malformed")
+        observed = parsed
+    if observed is None:
+        return _failed_axiom_scan("axiom audit output missing")
+    return {
+        "scan_performed": True,
+        "observed_axioms": observed,
+        "status": "passed",
+        "reason": "axiom audit output parsed",
+    }
+
+
+def _failed_axiom_scan(reason: str) -> dict[str, object]:
+    return {
+        "scan_performed": False,
+        "observed_axioms": (),
+        "status": "failed",
+        "reason": reason,
+    }
+
+
+def _is_lean_name(value: str) -> bool:
+    pattern = r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*"
+    return re.fullmatch(pattern, value) is not None
+
+
+def _output_cap_reason(
+    command_result: CommandResult, max_output_bytes: int
+) -> str | None:
+    if command_result.stdout_truncated or len(command_result.stdout) > max_output_bytes:
+        return "output cap policy violation: stdout exceeds max_output_bytes"
+    if command_result.stderr_truncated or len(command_result.stderr) > max_output_bytes:
+        return "output cap policy violation: stderr exceeds max_output_bytes"
+    return None
+
+
+def _normalize_command_result(
+    command_result: CommandResult, max_output_bytes: int
+) -> CommandResult:
+    stdout_truncated = (
+        command_result.stdout_truncated
+        or len(command_result.stdout) > max_output_bytes
+    )
+    stderr_truncated = (
+        command_result.stderr_truncated
+        or len(command_result.stderr) > max_output_bytes
+    )
+    if (
+        len(command_result.stdout) <= max_output_bytes
+        and len(command_result.stderr) <= max_output_bytes
+        and stdout_truncated == command_result.stdout_truncated
+        and stderr_truncated == command_result.stderr_truncated
+    ):
+        return command_result
+    return CommandResult(
+        command_result.exit_code,
+        command_result.stdout[:max_output_bytes],
+        command_result.stderr[:max_output_bytes],
+        command_result.blocked_reason,
+        stdout_truncated=stdout_truncated,
+        stderr_truncated=stderr_truncated,
+        axiom_audit_output=command_result.axiom_audit_output,
+    )
+
+
+def _axiom_audit(
+    descriptor: ProofSliceDescriptor,
+    observed_axioms: tuple[str, ...],
+    *,
+    status: str,
+    reason: str,
+    scan_performed: bool,
+) -> dict[str, object]:
+    return {
+        "schema_version": "crouzeix-jin-proof-slice-axioms/v1",
+        "scan_performed": scan_performed,
+        "expected_declaration": descriptor.expected_lean_declaration,
+        "allowed_axioms": list(descriptor.allowed_axioms),
+        "observed_axioms": list(observed_axioms),
+        "status": status,
+        "reason": reason,
+    }
+
+
+def _publish_run_result(
+    root: Path,
+    descriptor: ProofSliceDescriptor,
+    command_result: CommandResult,
+    status: str,
+    reason: str,
+    axiom_audit: Mapping[str, object],
+) -> dict[str, object]:
+    result = _result_json(status, reason)
+    receipt = _receipt_json(
+        descriptor,
+        status,
+        reason,
+        command_result=command_result,
+        axiom_audit=axiom_audit,
+        result=result,
+    )
+    _write_bytes_existing(root / "build/stdout.log", command_result.stdout, "stdout log")
+    _write_bytes_existing(root / "build/stderr.log", command_result.stderr, "stderr log")
+    _write_json_existing(root / "build/axioms.json", axiom_audit, "axiom audit")
+    _write_json_existing(root / "result.json", result, "result")
+    _write_json_existing(root / "receipt.json", receipt, "receipt")
+    return result
+
+
+def _subprocess_executor(
+    argv: list[str],
+    cwd: Path,
+    timeout_seconds: int,
+    max_output_bytes: int,
+) -> CommandResult:
+    executable = argv[0]
+    resolved_executable = executable
+    if not Path(executable).is_absolute():
+        found = shutil.which(executable)
+        if found is None:
+            reason = f"missing executable: {executable}"
+            stderr = reason.encode("utf-8")
+            return CommandResult(
+                None,
+                b"",
+                stderr[:max_output_bytes],
+                reason,
+                stderr_truncated=len(stderr) > max_output_bytes,
+            )
+        resolved_executable = found
+    resolved_argv = [resolved_executable, *argv[1:]]
+    try:
+        completed = subprocess.run(
+            resolved_argv,
+            cwd=cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout_seconds,
+            env={},
+            check=False,
+        )
+    except FileNotFoundError as error:
+        stderr = str(error).encode("utf-8")
+        return CommandResult(
+            None,
+            b"",
+            stderr[:max_output_bytes],
+            str(error),
+            stderr_truncated=len(stderr) > max_output_bytes,
+        )
+    except subprocess.TimeoutExpired as error:
+        stdout = error.stdout if isinstance(error.stdout, bytes) else b""
+        stderr = error.stderr if isinstance(error.stderr, bytes) else b""
+        return CommandResult(
+            None,
+            stdout[:max_output_bytes],
+            stderr[:max_output_bytes],
+            f"command timed out after {timeout_seconds} seconds",
+            stdout_truncated=len(stdout) > max_output_bytes,
+            stderr_truncated=len(stderr) > max_output_bytes,
+        )
+    stdout = completed.stdout
+    stderr = completed.stderr
+    return CommandResult(
+        completed.returncode,
+        stdout[:max_output_bytes],
+        stderr[:max_output_bytes],
+        stdout_truncated=len(stdout) > max_output_bytes,
+        stderr_truncated=len(stderr) > max_output_bytes,
+    )
 
 
 def _dependency_receipts(
@@ -584,6 +1077,53 @@ def _write_text_create_only(path: Path, value: str, label: str) -> None:
         raise protocol.ValidationError(f"{label} already exists: {path}") from error
     with os.fdopen(fd, "w", encoding="utf-8") as handle:
         handle.write(value)
+
+
+def _write_json_existing(
+    path: Path, value: Mapping[str, object], label: str
+) -> None:
+    _write_bytes_existing(path, _stable_json(value).encode("utf-8"), label)
+
+
+def _write_bytes_existing(path: Path, value: bytes, label: str) -> None:
+    _ensure_existing_file(path, label)
+    with path.open("wb") as handle:
+        handle.write(value)
+
+
+def _ensure_rewritable_outputs(root: Path) -> None:
+    for relative, label in (
+        ("build/stdout.log", "stdout log"),
+        ("build/stderr.log", "stderr log"),
+        ("build/axioms.json", "axiom audit"),
+        ("result.json", "result"),
+        ("receipt.json", "receipt"),
+    ):
+        _ensure_existing_file(root / relative, label)
+
+
+def _ensure_existing_file(path: Path, label: str) -> None:
+    _reject_symlink_ancestors(path, label)
+    try:
+        metadata = path.lstat()
+    except OSError as error:
+        raise protocol.ValidationError(f"cannot inspect {label}: {error}") from error
+    if stat.S_ISLNK(metadata.st_mode):
+        raise protocol.ValidationError(f"{label} cannot be a symlink")
+    if not stat.S_ISREG(metadata.st_mode):
+        raise protocol.ValidationError(f"{label} must be a regular file")
+
+
+def _ensure_existing_directory(path: Path, label: str) -> None:
+    _reject_symlink_ancestors(path, label)
+    try:
+        metadata = path.lstat()
+    except OSError as error:
+        raise protocol.ValidationError(f"cannot inspect {label}: {error}") from error
+    if stat.S_ISLNK(metadata.st_mode):
+        raise protocol.ValidationError(f"{label} cannot be a symlink")
+    if not stat.S_ISDIR(metadata.st_mode):
+        raise protocol.ValidationError(f"{label} must be a directory")
 
 
 def _stable_json(value: Mapping[str, object]) -> str:

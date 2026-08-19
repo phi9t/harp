@@ -76,6 +76,29 @@ def rows() -> tuple[jin_validation.SourceMapRow, ...]:
     return jin_validation.load_source_map(SOURCE_MAP, formal_target.load_lock())
 
 
+class FakeExecutor:
+    def __init__(self, result: object) -> None:
+        self.result = result
+        self.calls: list[tuple[list[str], Path, int, int]] = []
+
+    def __call__(
+        self,
+        argv: list[str],
+        cwd: Path,
+        timeout_seconds: int,
+        max_output_bytes: int,
+    ) -> object:
+        self.calls.append((argv, cwd, timeout_seconds, max_output_bytes))
+        return self.result
+
+
+def materialized_task(directory: Path, value: dict[str, object] | None = None) -> Path:
+    target = formal_target.load_lock()
+    source_rows = jin_validation.load_source_map(SOURCE_MAP, target)
+    desc = proof_slice.validate_descriptor(value or descriptor(), target, source_rows)
+    return proof_slice.materialize_task(directory / "task", desc, source_rows)
+
+
 class ProofSliceDescriptorTests(unittest.TestCase):
     def test_selects_first_nonterminal_jin_row(self) -> None:
         target = formal_target.load_lock()
@@ -483,6 +506,522 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 proof_slice._write_json_create_only = original
 
             self.assertFalse(task_dir.exists())
+
+
+class ProofSliceRunTaskTests(unittest.TestCase):
+    def test_run_task_passes_with_clean_exit_and_axiom_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"ok\n",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual(len(executor.calls), 1)
+            argv, cwd, timeout_seconds, max_output_bytes = executor.calls[0]
+            self.assertEqual(argv, ["lake", "env", "lean", "module/Slice.lean"])
+            self.assertEqual(cwd, task_dir)
+            self.assertEqual(timeout_seconds, 3600)
+            self.assertEqual(max_output_bytes, 1048576)
+            self.assertEqual(
+                (task_dir / "build/stdout.log").read_bytes(),
+                b"ok\n",
+            )
+            self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"")
+
+            result_json = json.loads(
+                (task_dir / "result.json").read_text(encoding="utf-8")
+            )
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(result_json["status"], "passed")
+            self.assertEqual(receipt["status"], "passed")
+            self.assertEqual(axioms["status"], "passed")
+            self.assertTrue(axioms["scan_performed"])
+            self.assertEqual(axioms["observed_axioms"], [])
+
+    def test_run_task_classifies_ordinary_lean_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(1, b"", b"type mismatch\n")
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("exit code 1", str(result["reason"]))
+            self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"type mismatch\n")
+
+    def test_run_task_classifies_blocker(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    None,
+                    b"",
+                    b"",
+                    blocked_reason="missing pinned toolchain",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "blocked")
+            self.assertIn("missing pinned toolchain", str(result["reason"]))
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["status"], "blocked")
+
+    def test_run_task_blocker_precedes_output_cap_policy(self) -> None:
+        value = descriptor()
+        value["attempt_budget"] = {"timeout_seconds": 3600, "max_output_bytes": 1}
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve(), value)
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    None,
+                    b"oversized",
+                    b"",
+                    blocked_reason="missing pinned toolchain",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "blocked")
+            self.assertIn("missing pinned toolchain", str(result["reason"]))
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertEqual(receipt["status"], "blocked")
+
+    def test_run_task_requires_active_expected_declaration_check(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            (task_dir / "module/Slice.lean").write_text(
+                "def unrelated : Nat := 1\n",
+                encoding="utf-8",
+            )
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("expected declaration check", str(result["reason"]))
+            self.assertEqual(executor.calls, [])
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertIsNone(receipt["command_exit_code"])
+
+    def test_run_task_rejects_expected_check_inside_comment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            (task_dir / "module/Slice.lean").write_text(
+                "/- #check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange -/\n",
+                encoding="utf-8",
+            )
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("expected declaration check", str(result["reason"]))
+            self.assertEqual(executor.calls, [])
+
+    def test_run_task_fails_clean_compile_with_forbidden_axiom(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: Classical.choice\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("forbidden axiom", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(axioms["status"], "failed")
+            self.assertEqual(axioms["observed_axioms"], ["Classical.choice"])
+
+    def test_run_task_allows_configured_axiom(self) -> None:
+        value = descriptor()
+        value["axiom_policy"] = {"allowed_axioms": ["Classical.choice"]}
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve(), value)
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: Classical.choice\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "passed")
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(axioms["status"], "passed")
+            self.assertEqual(axioms["observed_axioms"], ["Classical.choice"])
+
+    def test_run_task_exit_zero_output_cap_still_performs_axiom_audit(self) -> None:
+        value = descriptor()
+        value["attempt_budget"] = {"timeout_seconds": 3600, "max_output_bytes": 1}
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve(), value)
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"over-cap",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("output cap", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "passed")
+
+    def test_run_task_exit_zero_truncated_output_fails_after_axiom_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"axioms: none",
+                    b"",
+                    stdout_truncated=True,
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("output cap", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "passed")
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertTrue(receipt["stdout_truncated"])
+            self.assertFalse(receipt["stderr_truncated"])
+            self.assertEqual(receipt["max_output_bytes"], 1048576)
+
+    def test_run_task_bounds_oversized_executor_output_before_persisting(self) -> None:
+        value = descriptor()
+        value["attempt_budget"] = {"timeout_seconds": 3600, "max_output_bytes": 4}
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve(), value)
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"abcde",
+                    b"vwxyz",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("output cap", str(result["reason"]))
+            self.assertEqual((task_dir / "build/stdout.log").read_bytes(), b"abcd")
+            self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"vwxy")
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertTrue(receipt["stdout_truncated"])
+            self.assertTrue(receipt["stderr_truncated"])
+            self.assertEqual(receipt["max_output_bytes"], 4)
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "passed")
+
+    def test_run_task_exit_zero_without_axiom_audit_line_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(proof_slice.CommandResult(0, b"ok\n", b""))
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("axiom audit output missing", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "failed")
+
+    def test_run_task_exit_zero_with_malformed_audit_channel_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"ok\n",
+                    b"",
+                    axiom_audit_output=b"candidate text\naxioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("axiom audit output malformed", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "failed")
+
+    def test_run_task_ignores_candidate_controlled_stdout_axiom_line(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(0, b"ok\naxioms: none\n", b"")
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("axiom audit output missing", str(result["reason"]))
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertFalse(axioms["scan_performed"])
+            self.assertEqual(axioms["status"], "failed")
+
+    def test_run_task_fails_proof_hole_token_without_executor_call(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            (task_dir / "module/Slice.lean").write_text(
+                (
+                    "#check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange\n"
+                    "theorem bad : True := by\n"
+                    "  sorry\n"
+                ),
+                encoding="utf-8",
+            )
+            executor = FakeExecutor(proof_slice.CommandResult(0, b"ok\n", b""))
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("proof-hole token", str(result["reason"]))
+            self.assertEqual(executor.calls, [])
+            self.assertEqual((task_dir / "build/stdout.log").read_bytes(), b"")
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertIsNone(receipt["command_exit_code"])
+
+    def test_run_task_rejects_expected_check_inside_nested_block_comment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            (task_dir / "module/Slice.lean").write_text(
+                (
+                    "/- outer comment\n"
+                    "  /- nested comment -/\n"
+                    "  #check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange\n"
+                    "-/\n"
+                ),
+                encoding="utf-8",
+            )
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=b"axioms: none\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertIn("expected declaration check", str(result["reason"]))
+            self.assertEqual(executor.calls, [])
+
+    def test_run_task_rejects_symlinked_result_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            task_dir = materialized_task(root)
+            outside = root / "outside-result.json"
+            outside.write_text("{}", encoding="utf-8")
+            (task_dir / "result.json").unlink()
+            (task_dir / "result.json").symlink_to(outside)
+            executor = FakeExecutor(proof_slice.CommandResult(0, b"ok\n", b""))
+
+            with self.assertRaisesRegex(protocol.ValidationError, "symlink"):
+                proof_slice.run_task(task_dir, executor=executor)
+
+    def test_subprocess_executor_uses_empty_environment(self) -> None:
+        captured: dict[str, object] = {}
+        original_run = proof_slice.subprocess.run
+        original_which = proof_slice.shutil.which
+
+        def fake_which(executable: str) -> str | None:
+            self.assertEqual(executable, "lake")
+            return "/opt/toolchains/lake"
+
+        def fake_run(*args: object, **kwargs: object) -> object:
+            captured["args"] = args
+            captured["kwargs"] = kwargs
+            return proof_slice.subprocess.CompletedProcess(
+                args=args[0],
+                returncode=0,
+                stdout=b"ok\n",
+                stderr=b"",
+            )
+
+        try:
+            proof_slice.shutil.which = fake_which
+            proof_slice.subprocess.run = fake_run
+            result = proof_slice._subprocess_executor(
+                ["lake", "env", "lean", "module/Slice.lean"],
+                Path("/tmp"),
+                3600,
+                1024,
+            )
+        finally:
+            proof_slice.subprocess.run = original_run
+            proof_slice.shutil.which = original_which
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(captured["kwargs"]["env"], {})
+
+    def test_subprocess_executor_resolves_executable_before_empty_environment(self) -> None:
+        captured: dict[str, object] = {}
+        original_run = proof_slice.subprocess.run
+        original_which = proof_slice.shutil.which
+
+        def fake_which(executable: str) -> str | None:
+            captured["which"] = executable
+            return "/opt/toolchains/lake"
+
+        def fake_run(*args: object, **kwargs: object) -> object:
+            captured["args"] = args
+            captured["kwargs"] = kwargs
+            return proof_slice.subprocess.CompletedProcess(
+                args=args[0],
+                returncode=0,
+                stdout=b"ok\n",
+                stderr=b"",
+            )
+
+        try:
+            proof_slice.shutil.which = fake_which
+            proof_slice.subprocess.run = fake_run
+            result = proof_slice._subprocess_executor(
+                ["lake", "env", "lean", "module/Slice.lean"],
+                Path("/tmp"),
+                3600,
+                1024,
+            )
+        finally:
+            proof_slice.subprocess.run = original_run
+            proof_slice.shutil.which = original_which
+
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(captured["which"], "lake")
+        self.assertEqual(
+            captured["args"][0],
+            ["/opt/toolchains/lake", "env", "lean", "module/Slice.lean"],
+        )
+        self.assertEqual(captured["kwargs"]["env"], {})
+
+    def test_subprocess_executor_blocks_when_executable_cannot_be_resolved(self) -> None:
+        original_which = proof_slice.shutil.which
+
+        def fake_which(executable: str) -> str | None:
+            self.assertEqual(executable, "missing-tool")
+            return None
+
+        try:
+            proof_slice.shutil.which = fake_which
+            result = proof_slice._subprocess_executor(
+                ["missing-tool", "arg"],
+                Path("/tmp"),
+                3600,
+                1024,
+            )
+        finally:
+            proof_slice.shutil.which = original_which
+
+        self.assertIsNone(result.exit_code)
+        self.assertIn("missing executable", str(result.blocked_reason))
+        self.assertIn("missing-tool", str(result.blocked_reason))
+
+    def test_subprocess_executor_truncates_returned_output(self) -> None:
+        original_run = proof_slice.subprocess.run
+        original_which = proof_slice.shutil.which
+
+        def fake_which(executable: str) -> str | None:
+            self.assertEqual(executable, "lake")
+            return "/opt/toolchains/lake"
+
+        def fake_run(*args: object, **kwargs: object) -> object:
+            return proof_slice.subprocess.CompletedProcess(
+                args=args[0],
+                returncode=1,
+                stdout=b"abcdef",
+                stderr=b"ghijkl",
+            )
+
+        try:
+            proof_slice.shutil.which = fake_which
+            proof_slice.subprocess.run = fake_run
+            result = proof_slice._subprocess_executor(
+                ["lake", "env", "lean", "module/Slice.lean"],
+                Path("/tmp"),
+                3600,
+                3,
+            )
+        finally:
+            proof_slice.subprocess.run = original_run
+            proof_slice.shutil.which = original_which
+
+        self.assertEqual(result.exit_code, 1)
+        self.assertEqual(result.stdout, b"abc")
+        self.assertEqual(result.stderr, b"ghi")
+        self.assertTrue(result.stdout_truncated)
+        self.assertTrue(result.stderr_truncated)
+        self.assertIsNone(result.axiom_audit_output)
 
 
 if __name__ == "__main__":
