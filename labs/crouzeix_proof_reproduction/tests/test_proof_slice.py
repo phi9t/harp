@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import contextlib
+import io
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -506,6 +509,101 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 proof_slice._write_json_create_only = original
 
             self.assertFalse(task_dir.exists())
+
+
+class ProofSliceCliTests(unittest.TestCase):
+    def test_main_json_select_returns_first_slice_identity(self) -> None:
+        result = proof_slice.main_json(["select", "--source-map", str(SOURCE_MAP)])
+
+        self.assertEqual(result["row_id"], "jin-max-polynomial-modulus")
+        self.assertEqual(
+            result["lean_name"],
+            "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+        )
+        self.assertEqual(
+            result["source_locator"],
+            (
+                "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:"
+                "Lean/CrouzeixConjecture/Statements.lean#L13-L18"
+            ),
+        )
+
+    def test_main_json_materialize_creates_default_task(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = Path(directory).resolve() / "attempt-001"
+
+            result = proof_slice.main_json(
+                ["materialize", "--task-dir", str(task_dir)]
+            )
+
+            self.assertEqual(result["task_dir"], str(task_dir))
+            self.assertEqual(result["row_id"], "jin-max-polynomial-modulus")
+            self.assertTrue((task_dir / "task.json").exists())
+            task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+            self.assertEqual(task["descriptor"]["allowed_imports"], [])
+            self.assertEqual(task["descriptor"]["dependency_receipts"], [])
+
+    def test_main_json_run_returns_run_task_result_shape(self) -> None:
+        expected = {
+            "schema_version": "crouzeix-jin-proof-slice-result/v1",
+            "status": "failed",
+            "reason": "axiom audit output missing",
+        }
+        calls: list[Path] = []
+        original_run_task = proof_slice.run_task
+
+        def fake_run_task(task_dir: Path) -> dict[str, object]:
+            calls.append(task_dir)
+            return dict(expected)
+
+        try:
+            proof_slice.run_task = fake_run_task
+            with tempfile.TemporaryDirectory() as directory:
+                task_dir = Path(directory).resolve() / "attempt-001"
+                result = proof_slice.main_json(["run", "--task-dir", str(task_dir)])
+        finally:
+            proof_slice.run_task = original_run_task
+
+        self.assertEqual(result, expected)
+        self.assertEqual(calls, [task_dir])
+
+    def test_main_prints_sorted_json(self) -> None:
+        original_main_json = proof_slice.main_json
+        original_argv = sys.argv
+
+        def fake_main_json(argv: list[str]) -> dict[str, object]:
+            self.assertEqual(argv, ["select"])
+            return {"z": 1, "a": 2}
+
+        try:
+            proof_slice.main_json = fake_main_json
+            sys.argv = ["proof_slice.py", "select"]
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout):
+                proof_slice.main()
+        finally:
+            proof_slice.main_json = original_main_json
+            sys.argv = original_argv
+
+        self.assertEqual(stdout.getvalue(), '{"a": 2, "z": 1}\n')
+
+    def test_script_entrypoint_prints_json(self) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(LAB / "proof_slice.py"),
+                "select",
+                "--source-map",
+                str(SOURCE_MAP),
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["row_id"], "jin-max-polynomial-modulus")
 
 
 class ProofSliceRunTaskTests(unittest.TestCase):

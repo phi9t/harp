@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -26,6 +27,12 @@ MAX_ALLOWED_AXIOMS = 32
 MAX_REJECT_TOKENS = 8
 MAX_TIMEOUT_SECONDS = 86_400
 MAX_OUTPUT_BYTES = 16 * 1024 * 1024
+DEFAULT_SOURCE_MAP = (
+    Path(__file__).resolve().parent
+    / "formal_targets"
+    / "jin-565b6a3"
+    / "source-map.json"
+)
 
 DESCRIPTOR_FIELDS = frozenset(
     {
@@ -163,6 +170,83 @@ def select_first_jin_slice(
         if not row.dependency_ids:
             return row
     raise protocol.ValidationError("no nonterminal Jin row is selectable")
+
+
+def default_descriptor_for_row(
+    row: jin_validation.SourceMapRow,
+) -> ProofSliceDescriptor:
+    value = {
+        "schema_version": SCHEMA_VERSION,
+        "route_id": ROUTE_ID,
+        "source_map_row_id": row.row_id,
+        "pinned_source_locator": row.source_locator,
+        "informal_statement_sha256": row.statement_sha256,
+        "expected_lean_declaration": row.lean_name,
+        "allowed_imports": [],
+        "dependency_receipts": [],
+        "output_declaration_name": row.lean_name,
+        "build_target": BUILD_TARGET,
+        "proof_hole_policy": {"reject_tokens": ["sorry", "admit"]},
+        "axiom_policy": {"allowed_axioms": []},
+        "attempt_budget": {
+            "timeout_seconds": 3600,
+            "max_output_bytes": 1048576,
+        },
+    }
+    return validate_descriptor(value, formal_target.load_lock(), (row,))
+
+
+def main_json(argv: list[str]) -> dict[str, object]:
+    parser = argparse.ArgumentParser(description="Manage Jin proof-slice tasks")
+    subcommands = parser.add_subparsers(dest="command", required=True)
+
+    select_parser = subcommands.add_parser("select")
+    select_parser.add_argument("--source-map", type=Path, required=True)
+
+    materialize_parser = subcommands.add_parser("materialize")
+    materialize_parser.add_argument("--task-dir", type=Path, required=True)
+    materialize_parser.add_argument("--source-map", type=Path, default=DEFAULT_SOURCE_MAP)
+
+    run_parser = subcommands.add_parser("run")
+    run_parser.add_argument("--task-dir", type=Path, required=True)
+
+    args = parser.parse_args(argv)
+    target = formal_target.load_lock()
+
+    if args.command == "select":
+        rows = jin_validation.load_source_map(args.source_map, target)
+        row = select_first_jin_slice(rows, target)
+        return {
+            "row_id": row.row_id,
+            "lean_name": row.lean_name,
+            "source_locator": row.source_locator,
+        }
+
+    if args.command == "materialize":
+        rows = jin_validation.load_source_map(args.source_map, target)
+        row = select_first_jin_slice(rows, target)
+        descriptor = validate_descriptor(
+            default_descriptor_for_row(row).to_json(),
+            target,
+            rows,
+        )
+        task_dir = materialize_task(args.task_dir, descriptor, rows)
+        return {
+            "task_dir": str(task_dir),
+            "row_id": row.row_id,
+            "descriptor": descriptor.to_json(),
+        }
+
+    if args.command == "run":
+        return run_task(args.task_dir)
+
+    raise AssertionError(f"unhandled command: {args.command}")
+
+
+def main() -> None:
+    import sys
+
+    print(json.dumps(main_json(sys.argv[1:]), sort_keys=True))
 
 
 def validate_descriptor(
@@ -1133,3 +1217,7 @@ def _stable_json(value: Mapping[str, object]) -> str:
 def _canonical_sha256(value: Mapping[str, object]) -> str:
     data = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return protocol.sha256_bytes(data)
+
+
+if __name__ == "__main__":
+    main()

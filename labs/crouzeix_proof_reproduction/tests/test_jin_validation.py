@@ -34,10 +34,296 @@ class JinValidationTests(unittest.TestCase):
         target = formal_target.load_lock()
         rows = jin_validation.load_source_map(SOURCE_MAP, target)
 
+        self.assertEqual(rows[0].row_id, "jin-max-polynomial-modulus")
+        self.assertEqual(rows[0].status, "blocked")
+        self.assertEqual(
+            rows[0].receipt_sha256,
+            "796d2ab1bfeab3bde7dcce231f0521b66fba320fdea462e37305fbd42870ec1d",
+        )
+        self.assertEqual(rows[0].blocked_reason, "missing executable: lake")
         self.assertEqual(rows[-1].lean_name, "CrouzeixConjecture.crouzeixConjecture")
         self.assertEqual(rows[-1].status, "mapped")
         self.assertIn("565b6a3e0659b6e0785f783b016c3f6d9f171fa5", rows[-1].source_locator)
         self.assertEqual(rows[-1].statement_sha256, target.target.statement_sha256)
+
+    def test_source_map_accepts_optional_outcome_fields(self) -> None:
+        target = formal_target.load_lock()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory).resolve() / "source-map.json"
+            write_json(
+                path,
+                {
+                    "schema_version": "crouzeix-jin-source-map/v1",
+                    "source_commit": target.source.commit,
+                    "rows": [
+                        {
+                            "row_id": "jin-first-slice",
+                            "source_locator": (
+                                f"git:{target.source.commit}:"
+                                "Lean/CrouzeixConjecture/Statements.lean#L13-L18"
+                            ),
+                            "statement_sha256": "b" * 64,
+                            "lean_name": "CrouzeixConjecture.firstSlice",
+                            "dependency_ids": [],
+                            "status": "failed",
+                            "receipt_sha256": "a" * 64,
+                            "failed_reason": "axiom audit output missing",
+                        },
+                        {
+                            "row_id": "jin-terminal",
+                            "source_locator": (
+                                f"git:{target.source.commit}:"
+                                "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+                            ),
+                            "statement_sha256": target.target.statement_sha256,
+                            "lean_name": target.target.declaration_name,
+                            "dependency_ids": [],
+                            "status": "blocked",
+                            "receipt_sha256": "c" * 64,
+                            "blocked_reason": "missing executable: lake",
+                        }
+                    ],
+                },
+            )
+
+            rows = jin_validation.load_source_map(path, target)
+
+            self.assertEqual(rows[0].status, "failed")
+            self.assertEqual(rows[0].receipt_sha256, "a" * 64)
+            self.assertEqual(rows[0].failed_reason, "axiom audit output missing")
+            self.assertIsNone(rows[0].blocked_reason)
+            self.assertEqual(rows[1].status, "blocked")
+            self.assertEqual(rows[1].receipt_sha256, "c" * 64)
+            self.assertEqual(rows[1].blocked_reason, "missing executable: lake")
+            self.assertIsNone(rows[1].failed_reason)
+
+    def test_source_map_rejects_unknown_optional_outcome_fields(self) -> None:
+        target = formal_target.load_lock()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory).resolve() / "source-map.json"
+            write_json(
+                path,
+                {
+                    "schema_version": "crouzeix-jin-source-map/v1",
+                    "source_commit": target.source.commit,
+                    "rows": [
+                        {
+                            "row_id": "jin-terminal",
+                            "source_locator": (
+                                f"git:{target.source.commit}:"
+                                "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+                            ),
+                            "statement_sha256": target.target.statement_sha256,
+                            "lean_name": target.target.declaration_name,
+                            "dependency_ids": [],
+                            "status": "passed",
+                            "receipt_sha256": "a" * 64,
+                            "unexpected_reason": "not allowed",
+                        }
+                    ],
+                },
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "unknown"):
+                jin_validation.load_source_map(path, target)
+
+    def test_source_map_rejects_invalid_outcome_status(self) -> None:
+        target = formal_target.load_lock()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory).resolve() / "source-map.json"
+            write_json(
+                path,
+                {
+                    "schema_version": "crouzeix-jin-source-map/v1",
+                    "source_commit": target.source.commit,
+                    "rows": [
+                        {
+                            "row_id": "jin-terminal",
+                            "source_locator": (
+                                f"git:{target.source.commit}:"
+                                "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+                            ),
+                            "statement_sha256": target.target.statement_sha256,
+                            "lean_name": target.target.declaration_name,
+                            "dependency_ids": [],
+                            "status": "unknown",
+                        }
+                    ],
+                },
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "status"):
+                jin_validation.load_source_map(path, target)
+
+    def test_source_map_rejects_status_outcome_field_mismatches(self) -> None:
+        target = formal_target.load_lock()
+        cases = (
+            (
+                {"status": "mapped", "receipt_sha256": "a" * 64},
+                "mapped.*receipt_sha256",
+            ),
+            (
+                {"status": "mapped", "receipt_sha256": None},
+                "mapped.*receipt_sha256",
+            ),
+            (
+                {"status": "mapped", "blocked_reason": "blocked"},
+                "mapped.*blocked_reason",
+            ),
+            (
+                {"status": "mapped", "blocked_reason": None},
+                "mapped.*blocked_reason",
+            ),
+            (
+                {"status": "mapped", "failed_reason": "failed"},
+                "mapped.*failed_reason",
+            ),
+            (
+                {"status": "mapped", "failed_reason": None},
+                "mapped.*failed_reason",
+            ),
+            ({"status": "blocked"}, "blocked.*receipt_sha256"),
+            (
+                {"status": "blocked", "receipt_sha256": "a" * 64},
+                "blocked.*blocked_reason",
+            ),
+            (
+                {
+                    "status": "blocked",
+                    "receipt_sha256": None,
+                    "blocked_reason": "blocked",
+                },
+                "blocked.*receipt_sha256",
+            ),
+            (
+                {
+                    "status": "blocked",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": None,
+                },
+                "blocked.*blocked_reason",
+            ),
+            (
+                {
+                    "status": "blocked",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": "blocked",
+                    "failed_reason": "failed",
+                },
+                "blocked.*failed_reason",
+            ),
+            (
+                {
+                    "status": "blocked",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": "blocked",
+                    "failed_reason": None,
+                },
+                "blocked.*failed_reason",
+            ),
+            ({"status": "failed"}, "failed.*receipt_sha256"),
+            (
+                {"status": "failed", "receipt_sha256": "a" * 64},
+                "failed.*failed_reason",
+            ),
+            (
+                {
+                    "status": "failed",
+                    "receipt_sha256": None,
+                    "failed_reason": "failed",
+                },
+                "failed.*receipt_sha256",
+            ),
+            (
+                {
+                    "status": "failed",
+                    "receipt_sha256": "a" * 64,
+                    "failed_reason": None,
+                },
+                "failed.*failed_reason",
+            ),
+            (
+                {
+                    "status": "failed",
+                    "receipt_sha256": "a" * 64,
+                    "failed_reason": "failed",
+                    "blocked_reason": "blocked",
+                },
+                "failed.*blocked_reason",
+            ),
+            (
+                {
+                    "status": "failed",
+                    "receipt_sha256": "a" * 64,
+                    "failed_reason": "failed",
+                    "blocked_reason": None,
+                },
+                "failed.*blocked_reason",
+            ),
+            ({"status": "passed"}, "passed.*receipt_sha256"),
+            (
+                {"status": "passed", "receipt_sha256": None},
+                "passed.*receipt_sha256",
+            ),
+            (
+                {
+                    "status": "passed",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": "blocked",
+                },
+                "passed.*blocked_reason",
+            ),
+            (
+                {
+                    "status": "passed",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": None,
+                },
+                "passed.*blocked_reason",
+            ),
+            (
+                {
+                    "status": "passed",
+                    "receipt_sha256": "a" * 64,
+                    "failed_reason": "failed",
+                },
+                "passed.*failed_reason",
+            ),
+            (
+                {
+                    "status": "passed",
+                    "receipt_sha256": "a" * 64,
+                    "failed_reason": None,
+                },
+                "passed.*failed_reason",
+            ),
+        )
+        for overrides, pattern in cases:
+            with self.subTest(overrides=overrides):
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory).resolve() / "source-map.json"
+                    row = {
+                        "row_id": "jin-terminal",
+                        "source_locator": (
+                            f"git:{target.source.commit}:"
+                            "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+                        ),
+                        "statement_sha256": target.target.statement_sha256,
+                        "lean_name": target.target.declaration_name,
+                        "dependency_ids": [],
+                    }
+                    row.update(overrides)
+                    write_json(
+                        path,
+                        {
+                            "schema_version": "crouzeix-jin-source-map/v1",
+                            "source_commit": target.source.commit,
+                            "rows": [row],
+                        },
+                    )
+
+                    with self.assertRaisesRegex(protocol.ValidationError, pattern):
+                        jin_validation.load_source_map(path, target)
 
     def test_source_map_rejects_duplicates_wrong_revision_and_missing_terminal(self) -> None:
         target = formal_target.load_lock()

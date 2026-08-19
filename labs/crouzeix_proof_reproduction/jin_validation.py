@@ -24,7 +24,10 @@ SOURCE_MAP_ROW_FIELDS = frozenset(
         "status",
     }
 )
-SOURCE_MAP_STATUSES = frozenset({"mapped", "blocked"})
+SOURCE_MAP_ROW_OPTIONAL_FIELDS = frozenset(
+    {"receipt_sha256", "blocked_reason", "failed_reason"}
+)
+SOURCE_MAP_STATUSES = frozenset({"mapped", "blocked", "passed", "failed"})
 REBUILD_REVIEW_FIELDS = frozenset(
     {
         "schema_version",
@@ -47,6 +50,9 @@ class SourceMapRow:
     lean_name: str
     dependency_ids: tuple[str, ...]
     status: str
+    receipt_sha256: str | None = None
+    blocked_reason: str | None = None
+    failed_reason: str | None = None
 
 
 @dataclass(frozen=True)
@@ -229,18 +235,38 @@ def _row_list(value: Any, target: formal_target.FormalTargetLock) -> list[Source
 def _source_map_row(
     value: Mapping[str, Any], target: formal_target.FormalTargetLock
 ) -> SourceMapRow:
-    _require_fields(value, SOURCE_MAP_ROW_FIELDS, "Jin source-map row")
+    _require_source_map_row_fields(value)
     source_locator = _bounded_string(value["source_locator"], "source_locator", 1, 4096)
     if f"git:{target.source.commit}:" not in source_locator:
         raise protocol.ValidationError("source_locator must reference pinned Jin revision")
     dependencies = _string_list(value["dependency_ids"], "dependency_ids", maximum=256)
+    status = _enum(value["status"], SOURCE_MAP_STATUSES, "status")
+    receipt_sha256 = _optional_digest(value.get("receipt_sha256"), "receipt_sha256")
+    blocked_reason = _optional_bounded_string(
+        value.get("blocked_reason"), "blocked_reason", 1, 4096
+    )
+    failed_reason = _optional_bounded_string(
+        value.get("failed_reason"), "failed_reason", 1, 4096
+    )
+    _validate_source_map_outcome_fields(
+        status,
+        receipt_sha256,
+        blocked_reason,
+        failed_reason,
+        has_receipt_sha256="receipt_sha256" in value,
+        has_blocked_reason="blocked_reason" in value,
+        has_failed_reason="failed_reason" in value,
+    )
     return SourceMapRow(
         row_id=formal_target._runtime_id(value["row_id"], "row_id"),
         source_locator=source_locator,
         statement_sha256=formal_target._digest(value["statement_sha256"], "statement_sha256"),
         lean_name=_bounded_string(value["lean_name"], "lean_name", 1, 256),
         dependency_ids=tuple(dependencies),
-        status=_enum(value["status"], SOURCE_MAP_STATUSES, "status"),
+        status=status,
+        receipt_sha256=receipt_sha256,
+        blocked_reason=blocked_reason,
+        failed_reason=failed_reason,
     )
 
 
@@ -476,6 +502,72 @@ def _ensure_directory(path: Path, label: str) -> None:
             raise protocol.ValidationError(f"{label} must be a directory: {current}")
 
 
+def _require_source_map_row_fields(value: Mapping[str, Any]) -> None:
+    fields = set(value)
+    required = set(SOURCE_MAP_ROW_FIELDS)
+    allowed = required | set(SOURCE_MAP_ROW_OPTIONAL_FIELDS)
+    missing = sorted(required - fields)
+    extra = sorted(fields - allowed)
+    if missing or extra:
+        detail = []
+        if missing:
+            detail.append(f"missing {', '.join(missing)}")
+        if extra:
+            detail.append(f"unknown {', '.join(extra)}")
+        raise protocol.ValidationError(
+            f"Jin source-map row fields are invalid: {'; '.join(detail)}"
+        )
+
+
+def _validate_source_map_outcome_fields(
+    status: str,
+    receipt_sha256: str | None,
+    blocked_reason: str | None,
+    failed_reason: str | None,
+    *,
+    has_receipt_sha256: bool,
+    has_blocked_reason: bool,
+    has_failed_reason: bool,
+) -> None:
+    if status == "mapped":
+        if has_receipt_sha256:
+            raise protocol.ValidationError("mapped source-map row rejects receipt_sha256")
+        if has_blocked_reason:
+            raise protocol.ValidationError("mapped source-map row rejects blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("mapped source-map row rejects failed_reason")
+        return
+
+    if status == "blocked":
+        if not has_receipt_sha256 or receipt_sha256 is None:
+            raise protocol.ValidationError("blocked source-map row requires receipt_sha256")
+        if not has_blocked_reason or blocked_reason is None:
+            raise protocol.ValidationError("blocked source-map row requires blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("blocked source-map row rejects failed_reason")
+        return
+
+    if status == "failed":
+        if not has_receipt_sha256 or receipt_sha256 is None:
+            raise protocol.ValidationError("failed source-map row requires receipt_sha256")
+        if not has_failed_reason or failed_reason is None:
+            raise protocol.ValidationError("failed source-map row requires failed_reason")
+        if has_blocked_reason:
+            raise protocol.ValidationError("failed source-map row rejects blocked_reason")
+        return
+
+    if status == "passed":
+        if not has_receipt_sha256 or receipt_sha256 is None:
+            raise protocol.ValidationError("passed source-map row requires receipt_sha256")
+        if has_blocked_reason:
+            raise protocol.ValidationError("passed source-map row rejects blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("passed source-map row rejects failed_reason")
+        return
+
+    raise AssertionError(f"unhandled source-map status: {status}")
+
+
 def _require_fields(value: Mapping[str, Any], allowed: frozenset[str], label: str) -> None:
     fields = set(value)
     if fields != set(allowed):
@@ -517,6 +609,20 @@ def _bounded_string(value: Any, label: str, minimum: int, maximum: int) -> str:
             f"{label} must be a non-NUL string of length {minimum}..{maximum}"
         )
     return value
+
+
+def _optional_bounded_string(
+    value: Any, label: str, minimum: int, maximum: int
+) -> str | None:
+    if value is None:
+        return None
+    return _bounded_string(value, label, minimum, maximum)
+
+
+def _optional_digest(value: Any, label: str) -> str | None:
+    if value is None:
+        return None
+    return formal_target._digest(value, label)
 
 
 def _string_list(value: Any, label: str, *, maximum: int) -> list[str]:

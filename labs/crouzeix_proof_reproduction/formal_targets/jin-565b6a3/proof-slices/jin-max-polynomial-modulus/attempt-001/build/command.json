@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "module/Slice.lean"
+  ],
+  "cwd": ".",
+  "env": {},
+  "max_output_bytes": 1048576,
+  "schema_version": "crouzeix-jin-proof-slice-command/v1",
+  "timeout_seconds": 3600
+}
