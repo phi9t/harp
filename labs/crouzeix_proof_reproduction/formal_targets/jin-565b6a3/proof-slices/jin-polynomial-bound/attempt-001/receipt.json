@@ -1,0 +1,18 @@
+{
+  "axioms_sha256": "0c4e72bddd62bd86515a485fb1d537addb618df1dad9f96dd166c7ea8d767519",
+  "command_exit_code": 0,
+  "command_sha256": "cd0f25b9252d05029d6ad6086696ba43e396e8ed2bccd17dcbaf691f33fd0259",
+  "expected_lean_declaration": "CrouzeixConjecture.PolynomialCrouzeixBound",
+  "max_output_bytes": 1048576,
+  "reason": "Lean command succeeded and axiom audit passed",
+  "result_sha256": "2a74340372665ab71b85c614e9029741ead0f572f35ec48c7d6c71f7dc340ae0",
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
+  "source_map_row_id": "jin-polynomial-bound",
+  "status": "passed",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_truncated": false,
+  "stdout_sha256": "aa2e97af43ace06decae1d1a51d15ad577dd336bd6774918078977bc22974b49",
+  "stdout_truncated": false,
+  "task_sha256": "8aaf435faa0a34e8ff308ebf7d4cd596d17972bcd4f33239ee3e51ef87e3d193"
+}

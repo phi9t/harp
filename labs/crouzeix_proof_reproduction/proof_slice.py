@@ -24,9 +24,11 @@ TERMINAL_ROW_ID = "jin-terminal-crouzeix"
 TERMINAL_REFERENCE_IMPORTS = frozenset({"CrouzeixConjecture.FinalTheorems"})
 HARP_NATIVE_ROW_IMPORTS = {
     "jin-max-polynomial-modulus": ("Crouzeix.Jin.MaxPolynomialModulus",),
+    "jin-polynomial-bound": ("Crouzeix.Jin.MaxPolynomialModulus",),
 }
 HARP_NATIVE_ROW_ALLOWED_AXIOMS = {
     "jin-max-polynomial-modulus": ("Classical.choice", "Quot.sound", "propext"),
+    "jin-polynomial-bound": ("Classical.choice", "Quot.sound", "propext"),
 }
 BUILD_TARGET = "module/Slice.lean"
 MAX_ALLOWED_IMPORTS = 32
@@ -196,17 +198,24 @@ def select_first_jin_slice(
     rows: tuple[jin_validation.SourceMapRow, ...],
     target: formal_target.FormalTargetLock,
 ) -> jin_validation.SourceMapRow:
+    row_by_id = {row.row_id: row for row in rows}
     for row in rows:
         if _is_terminal_row(row, target):
             continue
-        if not row.dependency_ids:
+        if row.status == "passed":
+            continue
+        if _dependencies_passed(row, row_by_id):
             return row
     raise protocol.ValidationError("no nonterminal Jin row is selectable")
 
 
 def default_descriptor_for_row(
     row: jin_validation.SourceMapRow,
+    rows: tuple[jin_validation.SourceMapRow, ...] | None = None,
+    target: formal_target.FormalTargetLock | None = None,
 ) -> ProofSliceDescriptor:
+    lock = target or formal_target.load_lock()
+    source_rows = rows or (row,)
     value = {
         "schema_version": SCHEMA_VERSION,
         "route_id": ROUTE_ID,
@@ -215,7 +224,7 @@ def default_descriptor_for_row(
         "informal_statement_sha256": row.statement_sha256,
         "expected_lean_declaration": row.lean_name,
         "allowed_imports": list(HARP_NATIVE_ROW_IMPORTS.get(row.row_id, ())),
-        "dependency_receipts": [],
+        "dependency_receipts": _default_dependency_receipts(row, source_rows),
         "output_declaration_name": row.lean_name,
         "build_target": BUILD_TARGET,
         "proof_hole_policy": {"reject_tokens": ["sorry", "admit"]},
@@ -227,7 +236,7 @@ def default_descriptor_for_row(
             "max_output_bytes": 1048576,
         },
     }
-    return validate_descriptor(value, formal_target.load_lock(), (row,))
+    return validate_descriptor(value, lock, source_rows)
 
 
 def main_json(argv: list[str]) -> dict[str, object]:
@@ -260,7 +269,7 @@ def main_json(argv: list[str]) -> dict[str, object]:
         rows = jin_validation.load_source_map(args.source_map, target)
         row = select_first_jin_slice(rows, target)
         descriptor = validate_descriptor(
-            default_descriptor_for_row(row).to_json(),
+            default_descriptor_for_row(row, rows, target).to_json(),
             target,
             rows,
         )
@@ -652,6 +661,43 @@ def _validate_materialization_row_binding(
     _validate_dependency_receipt_bindings(
         descriptor.dependency_receipts, row.dependency_ids, row_by_id
     )
+
+
+def _dependencies_passed(
+    row: jin_validation.SourceMapRow,
+    row_by_id: Mapping[str, jin_validation.SourceMapRow],
+) -> bool:
+    return all(
+        (dependency := row_by_id.get(dependency_id)) is not None
+        and dependency.status == "passed"
+        and dependency.receipt_sha256 is not None
+        for dependency_id in row.dependency_ids
+    )
+
+
+def _default_dependency_receipts(
+    row: jin_validation.SourceMapRow,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+) -> list[dict[str, str]]:
+    row_by_id = {source_row.row_id: source_row for source_row in rows}
+    receipts: list[dict[str, str]] = []
+    for dependency_id in row.dependency_ids:
+        dependency = row_by_id.get(dependency_id)
+        if dependency is None:
+            raise protocol.ValidationError(
+                f"source-map row dependency is missing: {dependency_id}"
+            )
+        if dependency.status != "passed" or dependency.receipt_sha256 is None:
+            raise protocol.ValidationError(
+                f"source-map row dependency is not passed: {dependency_id}"
+            )
+        receipts.append(
+            {
+                "row_id": dependency.row_id,
+                "receipt_sha256": dependency.receipt_sha256,
+            }
+        )
+    return receipts
 
 
 def _task_json(descriptor: ProofSliceDescriptor) -> dict[str, object]:

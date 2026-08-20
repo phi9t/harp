@@ -683,6 +683,36 @@ guarantees from CPFR-L003 declared-write-surface checks.
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
 - Focused Lean validation:
   =mise run lean-crouzeix=.
+- Passed Harp-owned Jin source-map slice:
+  =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-polynomial-bound/attempt-001/receipt.json=.
+- =attempt-001= compiles the shared-root declaration
+  =CrouzeixConjecture.PolynomialCrouzeixBound= and records a passed axiom audit
+  with observed axioms =propext=, =Classical.choice=, and =Quot.sound= under
+  the row's explicit allowed-axiom policy.
+- Receipt digest:
+  =35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913=.
+- Source-map row =jin-polynomial-bound= records =status= =passed= with the
+  receipt digest above; both nonterminal Jin source-map rows are now
+  Harp-native, shared-root, receipt-backed proof-slice declarations. The
+  terminal row =jin-terminal-crouzeix= remains =mapped= and is not claimed by
+  this slice.
+- Verification commands for the polynomial-bound slice:
+  =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_slice.py materialize --task-dir labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-polynomial-bound/attempt-001=:
+  exit 0.
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_slice.py run --task-dir labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-polynomial-bound/attempt-001=:
+  exit 0, emitted =status= =passed= and reason =Lean command succeeded and
+  axiom audit passed=.
+- =python3 -m json.tool labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json=:
+  exit 0.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_slice -v=:
+  53 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=:
+  11 tests, 0 failures.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=:
+  299 tests, 0 failures.
+- =mise run lean-crouzeix=:
+  passed from the shared Lean root using the existing cache; repeat focused gate
+  completed in 19 seconds.
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:

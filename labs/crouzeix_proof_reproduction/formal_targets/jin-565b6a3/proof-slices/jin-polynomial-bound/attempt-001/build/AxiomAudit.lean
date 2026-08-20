@@ -1,0 +1,2 @@
+import Crouzeix.Jin.MaxPolynomialModulus
+#print axioms CrouzeixConjecture.PolynomialCrouzeixBound

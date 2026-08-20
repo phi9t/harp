@@ -1,0 +1,45 @@
+{
+  "build_target": "module/Slice.lean",
+  "descriptor": {
+    "allowed_imports": [
+      "Crouzeix.Jin.MaxPolynomialModulus"
+    ],
+    "attempt_budget": {
+      "max_output_bytes": 1048576,
+      "timeout_seconds": 3600
+    },
+    "axiom_policy": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ]
+    },
+    "build_target": "module/Slice.lean",
+    "dependency_receipts": [
+      {
+        "receipt_sha256": "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba",
+        "row_id": "jin-max-polynomial-modulus"
+      }
+    ],
+    "expected_lean_declaration": "CrouzeixConjecture.PolynomialCrouzeixBound",
+    "informal_statement_sha256": "4bddb24fd47159593c2223a973569e56d99873f754fa638b75b1f55a93e7167b",
+    "output_declaration_name": "CrouzeixConjecture.PolynomialCrouzeixBound",
+    "pinned_source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean#L21-L22",
+    "proof_hole_policy": {
+      "reject_tokens": [
+        "sorry",
+        "admit"
+      ]
+    },
+    "route_id": "jin",
+    "schema_version": "crouzeix-jin-proof-slice-descriptor/v1",
+    "source_map_row_id": "jin-polynomial-bound"
+  },
+  "expected_lean_declaration": "CrouzeixConjecture.PolynomialCrouzeixBound",
+  "max_output_bytes": 1048576,
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-task/v1",
+  "source_map_row_id": "jin-polynomial-bound",
+  "timeout_seconds": 3600
+}

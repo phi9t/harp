@@ -113,6 +113,59 @@ def rows_with_passed_first_receipt(
     )
 
 
+def rows_with_pending_polynomial_bound() -> tuple[jin_validation.SourceMapRow, ...]:
+    return tuple(
+        jin_validation.SourceMapRow(
+            row_id=row.row_id,
+            source_locator=row.source_locator,
+            statement_sha256=row.statement_sha256,
+            lean_name=row.lean_name,
+            dependency_ids=row.dependency_ids,
+            status="mapped" if row.row_id == "jin-polynomial-bound" else row.status,
+            receipt_sha256=(
+                None if row.row_id == "jin-polynomial-bound" else row.receipt_sha256
+            ),
+            blocked_reason=row.blocked_reason,
+            failed_reason=row.failed_reason,
+        )
+        for row in rows()
+    )
+
+
+def write_source_map(path: Path, source_rows: tuple[jin_validation.SourceMapRow, ...]) -> None:
+    value = {
+        "schema_version": "crouzeix-jin-source-map/v1",
+        "source_commit": formal_target.load_lock().source.commit,
+        "rows": [
+            {
+                "row_id": row.row_id,
+                "source_locator": row.source_locator,
+                "statement_sha256": row.statement_sha256,
+                "lean_name": row.lean_name,
+                "dependency_ids": list(row.dependency_ids),
+                "status": row.status,
+                **(
+                    {"receipt_sha256": row.receipt_sha256}
+                    if row.receipt_sha256 is not None
+                    else {}
+                ),
+                **(
+                    {"blocked_reason": row.blocked_reason}
+                    if row.blocked_reason is not None
+                    else {}
+                ),
+                **(
+                    {"failed_reason": row.failed_reason}
+                    if row.failed_reason is not None
+                    else {}
+                ),
+            }
+            for row in source_rows
+        ],
+    }
+    path.write_text(json.dumps(value, sort_keys=True) + "\n", encoding="utf-8")
+
+
 class FakeExecutor:
     def __init__(self, result: object) -> None:
         self.result = result
@@ -137,13 +190,45 @@ def materialized_task(directory: Path, value: dict[str, object] | None = None) -
 
 
 class ProofSliceDescriptorTests(unittest.TestCase):
-    def test_selects_first_nonterminal_jin_row(self) -> None:
+    def test_live_source_map_has_no_remaining_nonterminal_jin_slice(self) -> None:
         target = formal_target.load_lock()
 
-        row = proof_slice.select_first_jin_slice(rows(), target)
+        with self.assertRaisesRegex(protocol.ValidationError, "no nonterminal"):
+            proof_slice.select_first_jin_slice(rows(), target)
 
-        self.assertEqual(row.row_id, "jin-max-polynomial-modulus")
+    def test_selects_first_pending_nonterminal_jin_row(self) -> None:
+        target = formal_target.load_lock()
+
+        row = proof_slice.select_first_jin_slice(
+            rows_with_pending_polynomial_bound(), target
+        )
+
+        self.assertEqual(row.row_id, "jin-polynomial-bound")
         self.assertNotEqual(row.lean_name, target.target.declaration_name)
+
+    def test_default_descriptor_uses_passed_dependency_receipt(self) -> None:
+        target = formal_target.load_lock()
+        source_rows = rows_with_pending_polynomial_bound()
+        row = proof_slice.select_first_jin_slice(source_rows, target)
+
+        desc = proof_slice.default_descriptor_for_row(row, source_rows, target)
+
+        self.assertEqual(desc.source_map_row_id, "jin-polynomial-bound")
+        self.assertEqual(
+            desc.allowed_imports,
+            ("Crouzeix.Jin.MaxPolynomialModulus",),
+        )
+        self.assertEqual(
+            desc.dependency_receipts,
+            (
+                proof_slice.DependencyReceipt(
+                    row_id="jin-max-polynomial-modulus",
+                    receipt_sha256=(
+                        "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba"
+                    ),
+                ),
+            ),
+        )
 
     def test_descriptor_accepts_first_nonterminal_jin_row(self) -> None:
         desc = proof_slice.validate_descriptor(
@@ -610,39 +695,65 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
 
 class ProofSliceCliTests(unittest.TestCase):
-    def test_main_json_select_returns_first_slice_identity(self) -> None:
-        result = proof_slice.main_json(["select", "--source-map", str(SOURCE_MAP)])
+    def test_main_json_select_reports_no_remaining_nonterminal_slice(self) -> None:
+        with self.assertRaisesRegex(protocol.ValidationError, "no nonterminal"):
+            proof_slice.main_json(["select", "--source-map", str(SOURCE_MAP)])
 
-        self.assertEqual(result["row_id"], "jin-max-polynomial-modulus")
+    def test_main_json_select_returns_pending_slice_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source_map = Path(directory).resolve() / "source-map.json"
+            write_source_map(source_map, rows_with_pending_polynomial_bound())
+
+            result = proof_slice.main_json(["select", "--source-map", str(source_map)])
+
+        self.assertEqual(result["row_id"], "jin-polynomial-bound")
         self.assertEqual(
             result["lean_name"],
-            "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+            "CrouzeixConjecture.PolynomialCrouzeixBound",
         )
         self.assertEqual(
             result["source_locator"],
             (
                 "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:"
-                "Lean/CrouzeixConjecture/Statements.lean#L13-L18"
+                "Lean/CrouzeixConjecture/Statements.lean#L21-L22"
             ),
         )
 
     def test_main_json_materialize_creates_default_task(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
+            source_map = Path(directory).resolve() / "source-map.json"
+            write_source_map(source_map, rows_with_pending_polynomial_bound())
             task_dir = Path(directory).resolve() / "attempt-001"
 
             result = proof_slice.main_json(
-                ["materialize", "--task-dir", str(task_dir)]
+                [
+                    "materialize",
+                    "--task-dir",
+                    str(task_dir),
+                    "--source-map",
+                    str(source_map),
+                ]
             )
 
             self.assertEqual(result["task_dir"], str(task_dir))
-            self.assertEqual(result["row_id"], "jin-max-polynomial-modulus")
+            self.assertEqual(result["row_id"], "jin-polynomial-bound")
             self.assertTrue((task_dir / "task.json").exists())
             task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
             self.assertEqual(
                 task["descriptor"]["allowed_imports"],
                 ["Crouzeix.Jin.MaxPolynomialModulus"],
             )
-            self.assertEqual(task["descriptor"]["dependency_receipts"], [])
+            self.assertEqual(
+                task["descriptor"]["dependency_receipts"],
+                [
+                    {
+                        "row_id": "jin-max-polynomial-modulus",
+                        "receipt_sha256": (
+                            "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba"
+                        ),
+                    }
+                ],
+            )
 
     def test_main_json_run_returns_run_task_result_shape(self) -> None:
         expected = {
@@ -689,22 +800,25 @@ class ProofSliceCliTests(unittest.TestCase):
         self.assertEqual(stdout.getvalue(), '{"a": 2, "z": 1}\n')
 
     def test_script_entrypoint_prints_json(self) -> None:
-        result = subprocess.run(
-            [
-                sys.executable,
-                str(LAB / "proof_slice.py"),
-                "select",
-                "--source-map",
-                str(SOURCE_MAP),
-            ],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
+        with tempfile.TemporaryDirectory() as directory:
+            source_map = Path(directory).resolve() / "source-map.json"
+            write_source_map(source_map, rows_with_pending_polynomial_bound())
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(LAB / "proof_slice.py"),
+                    "select",
+                    "--source-map",
+                    str(source_map),
+                ],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
 
         payload = json.loads(result.stdout)
-        self.assertEqual(payload["row_id"], "jin-max-polynomial-modulus")
+        self.assertEqual(payload["row_id"], "jin-polynomial-bound")
 
 
 class ProofSliceRunTaskTests(unittest.TestCase):
