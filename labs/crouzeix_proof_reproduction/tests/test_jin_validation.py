@@ -51,7 +51,16 @@ class JinValidationTests(unittest.TestCase):
         self.assertIsNone(rows[1].failed_reason)
         self.assertIsNone(rows[1].blocked_reason)
         self.assertEqual(rows[-1].lean_name, "CrouzeixConjecture.crouzeixConjecture")
-        self.assertEqual(rows[-1].status, "mapped")
+        self.assertEqual(rows[-1].status, "failed")
+        self.assertEqual(
+            rows[-1].receipt_sha256,
+            "203634cd574af599c6428c65e04e487fc54e63b7945fef5944ed5669d9eb00eb",
+        )
+        self.assertIn(
+            "Unknown identifier `CrouzeixConjecture.crouzeixConjecture`",
+            str(rows[-1].failed_reason),
+        )
+        self.assertIsNone(rows[-1].blocked_reason)
         self.assertIn("565b6a3e0659b6e0785f783b016c3f6d9f171fa5", rows[-1].source_locator)
         self.assertEqual(rows[-1].statement_sha256, target.target.statement_sha256)
 

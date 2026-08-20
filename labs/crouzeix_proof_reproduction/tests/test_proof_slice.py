@@ -82,6 +82,33 @@ def dependent_descriptor() -> dict[str, object]:
     return value
 
 
+def terminal_descriptor() -> dict[str, object]:
+    value = descriptor("jin-terminal-crouzeix")
+    value.update(
+        {
+            "pinned_source_locator": (
+                "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:"
+                "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+            ),
+            "informal_statement_sha256": (
+                "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4"
+            ),
+            "expected_lean_declaration": "CrouzeixConjecture.crouzeixConjecture",
+            "allowed_imports": ["Crouzeix.Jin.Terminal"],
+            "dependency_receipts": [
+                {
+                    "row_id": "jin-polynomial-bound",
+                    "receipt_sha256": (
+                        "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                    ),
+                }
+            ],
+            "output_declaration_name": "CrouzeixConjecture.crouzeixConjecture",
+        }
+    )
+    return value
+
+
 def rows() -> tuple[jin_validation.SourceMapRow, ...]:
     return jin_validation.load_source_map(SOURCE_MAP, formal_target.load_lock())
 
@@ -206,6 +233,14 @@ class ProofSliceDescriptorTests(unittest.TestCase):
         self.assertEqual(row.row_id, "jin-polynomial-bound")
         self.assertNotEqual(row.lean_name, target.target.declaration_name)
 
+    def test_selects_terminal_jin_row_after_nonterminal_dependencies_pass(self) -> None:
+        target = formal_target.load_lock()
+
+        row = proof_slice.select_terminal_jin_slice(rows(), target)
+
+        self.assertEqual(row.row_id, "jin-terminal-crouzeix")
+        self.assertEqual(row.lean_name, target.target.declaration_name)
+
     def test_default_descriptor_uses_passed_dependency_receipt(self) -> None:
         target = formal_target.load_lock()
         source_rows = rows_with_pending_polynomial_bound()
@@ -270,6 +305,25 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
         with self.assertRaisesRegex(protocol.ValidationError, "terminal"):
             proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
+
+    def test_terminal_descriptor_accepts_passed_dependency_receipt(self) -> None:
+        desc = proof_slice.validate_terminal_descriptor(
+            terminal_descriptor(), formal_target.load_lock(), rows()
+        )
+
+        self.assertEqual(desc.source_map_row_id, "jin-terminal-crouzeix")
+        self.assertEqual(desc.allowed_imports, ("Crouzeix.Jin.Terminal",))
+        self.assertEqual(
+            desc.dependency_receipts,
+            (
+                proof_slice.DependencyReceipt(
+                    row_id="jin-polynomial-bound",
+                    receipt_sha256=(
+                        "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                    ),
+                ),
+            ),
+        )
 
     def test_descriptor_rejects_imports_outside_formal_target_allowlist(self) -> None:
         value = descriptor()
@@ -632,6 +686,34 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 ],
             )
 
+    def test_materialize_terminal_task_uses_harp_owned_terminal_module(self) -> None:
+        target = formal_target.load_lock()
+        source_rows = rows()
+        desc = proof_slice.validate_terminal_descriptor(
+            terminal_descriptor(), target, source_rows
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = Path(directory).resolve() / "terminal-attempt"
+
+            proof_slice.materialize_task(task_dir, desc, source_rows)
+
+            source = (task_dir / "module/Slice.lean").read_text(encoding="utf-8")
+            self.assertIn("import Crouzeix.Jin.Terminal", source)
+            self.assertNotIn("CrouzeixConjecture.FinalTheorems", source)
+            self.assertIn("#check CrouzeixConjecture.crouzeixConjecture", source)
+            task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                task["descriptor"]["dependency_receipts"],
+                [
+                    {
+                        "row_id": "jin-polynomial-bound",
+                        "receipt_sha256": (
+                            "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                        ),
+                    }
+                ],
+            )
+
     def test_materialize_task_rejects_stale_source_row_before_creation(self) -> None:
         target = formal_target.load_lock()
         source_rows = rows_with_passed_first_receipt()
@@ -719,6 +801,24 @@ class ProofSliceCliTests(unittest.TestCase):
             ),
         )
 
+    def test_main_json_select_terminal_returns_terminal_slice_identity(self) -> None:
+        result = proof_slice.main_json(
+            ["select", "--terminal", "--source-map", str(SOURCE_MAP)]
+        )
+
+        self.assertEqual(result["row_id"], "jin-terminal-crouzeix")
+        self.assertEqual(
+            result["lean_name"],
+            "CrouzeixConjecture.crouzeixConjecture",
+        )
+        self.assertEqual(
+            result["source_locator"],
+            (
+                "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:"
+                "Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23"
+            ),
+        )
+
     def test_main_json_materialize_creates_default_task(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source_map = Path(directory).resolve() / "source-map.json"
@@ -750,6 +850,40 @@ class ProofSliceCliTests(unittest.TestCase):
                         "row_id": "jin-max-polynomial-modulus",
                         "receipt_sha256": (
                             "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba"
+                        ),
+                    }
+                ],
+            )
+
+    def test_main_json_materialize_terminal_creates_terminal_task(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = Path(directory).resolve() / "attempt-terminal"
+
+            result = proof_slice.main_json(
+                [
+                    "materialize",
+                    "--terminal",
+                    "--task-dir",
+                    str(task_dir),
+                    "--source-map",
+                    str(SOURCE_MAP),
+                ]
+            )
+
+            self.assertEqual(result["task_dir"], str(task_dir))
+            self.assertEqual(result["row_id"], "jin-terminal-crouzeix")
+            task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                task["descriptor"]["allowed_imports"],
+                ["Crouzeix.Jin.Terminal"],
+            )
+            self.assertEqual(
+                task["descriptor"]["dependency_receipts"],
+                [
+                    {
+                        "row_id": "jin-polynomial-bound",
+                        "receipt_sha256": (
+                            "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
                         ),
                     }
                 ],
@@ -884,13 +1018,28 @@ class ProofSliceRunTaskTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             task_dir = materialized_task(Path(directory).resolve())
             executor = FakeExecutor(
-                proof_slice.CommandResult(1, b"", b"type mismatch\n")
+                proof_slice.CommandResult(
+                    1,
+                    b"Slice.lean:4:7: error: Unknown identifier\n",
+                    b"type mismatch\n",
+                )
             )
 
             result = proof_slice.run_task(task_dir, executor=executor)
 
             self.assertEqual(result["status"], "failed")
             self.assertIn("exit code 1", str(result["reason"]))
+            self.assertIn("Unknown identifier", str(result["reason"]))
+            result_json = json.loads(
+                (task_dir / "result.json").read_text(encoding="utf-8")
+            )
+            self.assertIn("Unknown identifier", str(result_json["reason"]))
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertIn("Unknown identifier", str(receipt["reason"]))
+            self.assertEqual(
+                (task_dir / "build/stdout.log").read_bytes(),
+                b"Slice.lean:4:7: error: Unknown identifier\n",
+            )
             self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"type mismatch\n")
 
     def test_run_task_classifies_blocker(self) -> None:

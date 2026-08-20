@@ -1,0 +1,13 @@
+{
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "expected_declaration": "CrouzeixConjecture.crouzeixConjecture",
+  "observed_axioms": [],
+  "reason": "axiom scan not applicable because command failed",
+  "scan_performed": false,
+  "schema_version": "crouzeix-jin-proof-slice-axioms/v1",
+  "status": "not_applicable"
+}

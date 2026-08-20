@@ -25,10 +25,12 @@ TERMINAL_REFERENCE_IMPORTS = frozenset({"CrouzeixConjecture.FinalTheorems"})
 HARP_NATIVE_ROW_IMPORTS = {
     "jin-max-polynomial-modulus": ("Crouzeix.Jin.MaxPolynomialModulus",),
     "jin-polynomial-bound": ("Crouzeix.Jin.MaxPolynomialModulus",),
+    "jin-terminal-crouzeix": ("Crouzeix.Jin.Terminal",),
 }
 HARP_NATIVE_ROW_ALLOWED_AXIOMS = {
     "jin-max-polynomial-modulus": ("Classical.choice", "Quot.sound", "propext"),
     "jin-polynomial-bound": ("Classical.choice", "Quot.sound", "propext"),
+    "jin-terminal-crouzeix": ("Classical.choice", "Quot.sound", "propext"),
 }
 BUILD_TARGET = "module/Slice.lean"
 MAX_ALLOWED_IMPORTS = 32
@@ -209,6 +211,22 @@ def select_first_jin_slice(
     raise protocol.ValidationError("no nonterminal Jin row is selectable")
 
 
+def select_terminal_jin_slice(
+    rows: tuple[jin_validation.SourceMapRow, ...],
+    target: formal_target.FormalTargetLock,
+) -> jin_validation.SourceMapRow:
+    row_by_id = {row.row_id: row for row in rows}
+    terminal_rows = tuple(row for row in rows if _is_terminal_row(row, target))
+    if len(terminal_rows) != 1:
+        raise protocol.ValidationError("expected exactly one terminal Jin row")
+    row = terminal_rows[0]
+    if row.status == "passed":
+        raise protocol.ValidationError("terminal Jin row is already passed")
+    if not _dependencies_passed(row, row_by_id):
+        raise protocol.ValidationError("terminal Jin row dependencies are not passed")
+    return row
+
+
 def default_descriptor_for_row(
     row: jin_validation.SourceMapRow,
     rows: tuple[jin_validation.SourceMapRow, ...] | None = None,
@@ -236,6 +254,8 @@ def default_descriptor_for_row(
             "max_output_bytes": 1048576,
         },
     }
+    if _is_terminal_row(row, lock):
+        return validate_terminal_descriptor(value, lock, source_rows)
     return validate_descriptor(value, lock, source_rows)
 
 
@@ -245,10 +265,12 @@ def main_json(argv: list[str]) -> dict[str, object]:
 
     select_parser = subcommands.add_parser("select")
     select_parser.add_argument("--source-map", type=Path, required=True)
+    select_parser.add_argument("--terminal", action="store_true")
 
     materialize_parser = subcommands.add_parser("materialize")
     materialize_parser.add_argument("--task-dir", type=Path, required=True)
     materialize_parser.add_argument("--source-map", type=Path, default=DEFAULT_SOURCE_MAP)
+    materialize_parser.add_argument("--terminal", action="store_true")
 
     run_parser = subcommands.add_parser("run")
     run_parser.add_argument("--task-dir", type=Path, required=True)
@@ -258,7 +280,11 @@ def main_json(argv: list[str]) -> dict[str, object]:
 
     if args.command == "select":
         rows = jin_validation.load_source_map(args.source_map, target)
-        row = select_first_jin_slice(rows, target)
+        row = (
+            select_terminal_jin_slice(rows, target)
+            if args.terminal
+            else select_first_jin_slice(rows, target)
+        )
         return {
             "row_id": row.row_id,
             "lean_name": row.lean_name,
@@ -267,12 +293,16 @@ def main_json(argv: list[str]) -> dict[str, object]:
 
     if args.command == "materialize":
         rows = jin_validation.load_source_map(args.source_map, target)
-        row = select_first_jin_slice(rows, target)
-        descriptor = validate_descriptor(
-            default_descriptor_for_row(row, rows, target).to_json(),
-            target,
-            rows,
+        row = (
+            select_terminal_jin_slice(rows, target)
+            if args.terminal
+            else select_first_jin_slice(rows, target)
         )
+        default_descriptor = default_descriptor_for_row(row, rows, target).to_json()
+        if args.terminal:
+            descriptor = validate_terminal_descriptor(default_descriptor, target, rows)
+        else:
+            descriptor = validate_descriptor(default_descriptor, target, rows)
         task_dir = materialize_task(args.task_dir, descriptor, rows)
         return {
             "task_dir": str(task_dir),
@@ -297,6 +327,24 @@ def validate_descriptor(
     target: formal_target.FormalTargetLock,
     rows: tuple[jin_validation.SourceMapRow, ...],
 ) -> ProofSliceDescriptor:
+    return _validate_descriptor(value, target, rows, allow_terminal=False)
+
+
+def validate_terminal_descriptor(
+    value: Mapping[str, Any],
+    target: formal_target.FormalTargetLock,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+) -> ProofSliceDescriptor:
+    return _validate_descriptor(value, target, rows, allow_terminal=True)
+
+
+def _validate_descriptor(
+    value: Mapping[str, Any],
+    target: formal_target.FormalTargetLock,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+    *,
+    allow_terminal: bool,
+) -> ProofSliceDescriptor:
     _require_fields(value, DESCRIPTOR_FIELDS, "proof-slice descriptor")
     _require_equal(value["schema_version"], SCHEMA_VERSION, "schema_version")
 
@@ -309,7 +357,10 @@ def validate_descriptor(
     row = row_by_id.get(row_id)
     if row is None:
         raise protocol.ValidationError("source_map_row_id does not exist in source map")
-    if _is_terminal_row(row, target):
+    row_is_terminal = _is_terminal_row(row, target)
+    if allow_terminal and not row_is_terminal:
+        raise protocol.ValidationError("terminal descriptor must target terminal Jin row")
+    if not allow_terminal and row_is_terminal:
         raise protocol.ValidationError("terminal Jin row is out of scope for the first slice")
 
     pinned_source_locator = _bounded_string(
@@ -493,7 +544,7 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
     )
     rows = jin_validation.load_source_map(source_map, target)
     task = _task_object(root / "task.json")
-    descriptor = validate_descriptor(
+    descriptor = _validate_task_descriptor(
         _mapping(task["descriptor"], "task.descriptor"),
         target,
         rows,
@@ -561,7 +612,7 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
         )
 
     if command_result.exit_code != 0:
-        reason = f"Lean command failed with exit code {command_result.exit_code}"
+        reason = _lean_failure_reason(command_result)
         axiom_audit = _axiom_audit(
             descriptor,
             (),
@@ -663,6 +714,21 @@ def _validate_materialization_row_binding(
     )
 
 
+def _validate_task_descriptor(
+    value: Mapping[str, Any],
+    target: formal_target.FormalTargetLock,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+) -> ProofSliceDescriptor:
+    row_id = _runtime_id(value.get("source_map_row_id"), "source_map_row_id")
+    row_by_id = {row.row_id: row for row in rows}
+    row = row_by_id.get(row_id)
+    if row is None:
+        raise protocol.ValidationError("source_map_row_id does not exist in source map")
+    if _is_terminal_row(row, target):
+        return validate_terminal_descriptor(value, target, rows)
+    return validate_descriptor(value, target, rows)
+
+
 def _dependencies_passed(
     row: jin_validation.SourceMapRow,
     row_by_id: Mapping[str, jin_validation.SourceMapRow],
@@ -731,7 +797,7 @@ def _lean_slice_source(descriptor: ProofSliceDescriptor) -> str:
             "",
             (
                 "/- Harp-owned proof-slice adapter. This file checks only the "
-                "selected nonterminal declaration. -/"
+                "selected declaration. -/"
             ),
             f"#check {descriptor.expected_lean_declaration}",
         ]
@@ -1031,6 +1097,25 @@ def _output_cap_reason(
         return "output cap policy violation: stdout exceeds max_output_bytes"
     if command_result.stderr_truncated or len(command_result.stderr) > max_output_bytes:
         return "output cap policy violation: stderr exceeds max_output_bytes"
+    return None
+
+
+def _lean_failure_reason(command_result: CommandResult) -> str:
+    reason = f"Lean command failed with exit code {command_result.exit_code}"
+    diagnostic = _first_diagnostic_line(command_result.stdout) or _first_diagnostic_line(
+        command_result.stderr
+    )
+    if diagnostic is not None:
+        return f"{reason}: {diagnostic}"
+    return reason
+
+
+def _first_diagnostic_line(output: bytes) -> str | None:
+    text = output.decode("utf-8", errors="replace")
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped:
+            return stripped[:512]
     return None
 
 

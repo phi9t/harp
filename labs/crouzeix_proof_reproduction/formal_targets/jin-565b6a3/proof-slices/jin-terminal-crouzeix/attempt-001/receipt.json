@@ -1,0 +1,18 @@
+{
+  "axioms_sha256": "3791e756cb5f29fdd24fd6c5d026ff7349109e03ea982dc34c86be7e44e290aa",
+  "command_exit_code": 1,
+  "command_sha256": "c460ec16c8bd059a69a44f49fb5acfd761c44d7872be31f65f2b3ef392e3517d",
+  "expected_lean_declaration": "CrouzeixConjecture.crouzeixConjecture",
+  "max_output_bytes": 1048576,
+  "reason": "Lean command failed with exit code 1: ../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/module/Slice.lean:4:7: error(lean.unknownIdentifier): Unknown identifier `CrouzeixConjecture.crouzeixConjecture`",
+  "result_sha256": "c30952d6831e0046eb12307f4d2ebdc9e3cb1f4befb92084104f2ae56e2cd567",
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
+  "source_map_row_id": "jin-terminal-crouzeix",
+  "status": "failed",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_truncated": false,
+  "stdout_sha256": "280827475ca9c7d9fdec899691c305e4f55c927b3d2288c26089ce85563a8242",
+  "stdout_truncated": false,
+  "task_sha256": "8574fad5f0c59bb12c5101c8cabbf4223a0d94df18d6956ec78f6b174ef379eb"
+}
