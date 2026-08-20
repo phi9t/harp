@@ -1,0 +1,34 @@
+{
+  "build_target": "module/Slice.lean",
+  "descriptor": {
+    "allowed_imports": [],
+    "attempt_budget": {
+      "max_output_bytes": 1048576,
+      "timeout_seconds": 3600
+    },
+    "axiom_policy": {
+      "allowed_axioms": []
+    },
+    "build_target": "module/Slice.lean",
+    "dependency_receipts": [],
+    "expected_lean_declaration": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+    "informal_statement_sha256": "49bb4a5ac09489c9c7642215474b2f099f69d1e6a3e431f7a9dfd2b95ed736d0",
+    "output_declaration_name": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+    "pinned_source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean#L13-L18",
+    "proof_hole_policy": {
+      "reject_tokens": [
+        "sorry",
+        "admit"
+      ]
+    },
+    "route_id": "jin",
+    "schema_version": "crouzeix-jin-proof-slice-descriptor/v1",
+    "source_map_row_id": "jin-max-polynomial-modulus"
+  },
+  "expected_lean_declaration": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+  "max_output_bytes": 1048576,
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-task/v1",
+  "source_map_row_id": "jin-max-polynomial-modulus",
+  "timeout_seconds": 3600
+}
