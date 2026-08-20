@@ -35,12 +35,13 @@ class JinValidationTests(unittest.TestCase):
         rows = jin_validation.load_source_map(SOURCE_MAP, target)
 
         self.assertEqual(rows[0].row_id, "jin-max-polynomial-modulus")
-        self.assertEqual(rows[0].status, "blocked")
+        self.assertEqual(rows[0].status, "failed")
         self.assertEqual(
             rows[0].receipt_sha256,
-            "02cc44c196571463addafbf343ff71118112c9f7e840eb3f6a0d2c18b09aeced",
+            "5f8f828dde00552a7bdea5f874b77dbe0c9cc283449d90be8d2e578a66ef34e6",
         )
-        self.assertEqual(rows[0].blocked_reason, "missing executable: lake")
+        self.assertEqual(rows[0].failed_reason, "Lean command failed with exit code 1")
+        self.assertIsNone(rows[0].blocked_reason)
         self.assertEqual(rows[-1].lean_name, "CrouzeixConjecture.crouzeixConjecture")
         self.assertEqual(rows[-1].status, "mapped")
         self.assertIn("565b6a3e0659b6e0785f783b016c3f6d9f171fa5", rows[-1].source_locator)
