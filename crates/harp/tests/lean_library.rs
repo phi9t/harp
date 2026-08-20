@@ -38,11 +38,32 @@ fn fake_lake_bin(script: &str) -> (TempDir, OsString) {
     (fake_bin, path)
 }
 
+fn write_fake_mathlib_artifact(root: &Path, module: &str) {
+    let artifact = root.join(module.replace('.', "/")).with_extension("olean");
+    fs::create_dir_all(artifact.parent().expect("artifact parent"))
+        .expect("create artifact parent");
+    fs::write(artifact, b"olean-test-fixture").expect("write fake mathlib artifact");
+}
+
+fn write_fake_mathlib_artifacts(root: &Path, modules: &[&str]) {
+    for module in modules {
+        write_fake_mathlib_artifact(root, module);
+    }
+}
+
 #[test]
 fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
-    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" > \"$LAKE_ARGS\"\n");
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
     let scoped_elan_home = scoped_elan_home();
     let lake_args = scoped_elan_home.path().join("lake-args");
+    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    write_fake_mathlib_artifacts(
+        &artifact_root,
+        &[
+            "Mathlib.Algebra.BigOperators.Fin",
+            "Mathlib.Data.Matrix.Basic",
+        ],
+    );
 
     Command::new("/bin/sh")
         .current_dir(repo_root())
@@ -50,6 +71,7 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
         .arg("AutodiffGeometry")
         .env("ELAN_HOME", scoped_elan_home.path())
         .env("LAKE_ARGS", &lake_args)
+        .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
         .env("PATH", path)
         .assert()
         .success()
@@ -57,6 +79,7 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
             predicate::str::contains("[lean] target=AutodiffGeometry")
                 .and(predicate::str::contains("[lean] root=formalization/lean"))
                 .and(predicate::str::contains("[lean] scan_seconds="))
+                .and(predicate::str::contains("[lean] cache_seconds="))
                 .and(predicate::str::contains("[lean] lake_seconds="))
                 .and(predicate::str::contains("[lean] total_seconds="))
                 .and(predicate::str::contains("[lean] outcome=passed")),
@@ -64,13 +87,13 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
 
     assert_eq!(
         fs::read_to_string(lake_args).expect("read lake arguments"),
-        "build AutodiffGeometry\n"
+        "--try-cache build AutodiffGeometry\n"
     );
 }
 
 #[test]
 fn shared_wrapper_builds_crouzeix_focused_target() {
-    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" > \"$LAKE_ARGS\"\n");
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
     let scoped_elan_home = scoped_elan_home();
     let lake_args = scoped_elan_home.path().join("lake-args");
 
@@ -91,17 +114,36 @@ fn shared_wrapper_builds_crouzeix_focused_target() {
 
     assert_eq!(
         fs::read_to_string(lake_args).expect("read lake arguments"),
-        "build Crouzeix\n"
+        "--try-cache build Crouzeix\n"
     );
 }
 
 #[test]
 fn shared_wrapper_builds_all_targets_from_shared_root_once() {
     let (_fake_bin, path) =
-        fake_lake_bin("#!/bin/sh\npwd > \"$LAKE_PWD\"\nprintf '%s\n' \"$*\" > \"$LAKE_ARGS\"\n");
+        fake_lake_bin("#!/bin/sh\npwd > \"$LAKE_PWD\"\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
     let scoped_elan_home = scoped_elan_home();
     let lake_args = scoped_elan_home.path().join("lake-args");
     let lake_pwd = scoped_elan_home.path().join("lake-pwd");
+    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    write_fake_mathlib_artifacts(
+        &artifact_root,
+        &[
+            "Mathlib",
+            "Mathlib.Algebra.BigOperators.Fin",
+            "Mathlib.Algebra.BigOperators.Ring.Finset",
+            "Mathlib.Algebra.Module.Submodule.Ker",
+            "Mathlib.Analysis.InnerProductSpace.PiL2",
+            "Mathlib.Analysis.SpecificLimits.Normed",
+            "Mathlib.Data.Matrix.Basic",
+            "Mathlib.Data.Real.Basic",
+            "Mathlib.LinearAlgebra.Matrix.DotProduct",
+            "Mathlib.LinearAlgebra.Matrix.PosDef",
+            "Mathlib.LinearAlgebra.Matrix.ToLin",
+            "Mathlib.Tactic.FieldSimp",
+            "Mathlib.Tactic.Ring",
+        ],
+    );
 
     Command::new("/bin/sh")
         .current_dir(repo_root())
@@ -110,6 +152,7 @@ fn shared_wrapper_builds_all_targets_from_shared_root_once() {
         .env("ELAN_HOME", scoped_elan_home.path())
         .env("LAKE_ARGS", &lake_args)
         .env("LAKE_PWD", &lake_pwd)
+        .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
         .env("PATH", path)
         .assert()
         .success()
@@ -120,11 +163,94 @@ fn shared_wrapper_builds_all_targets_from_shared_root_once() {
 
     assert_eq!(
         fs::read_to_string(lake_args).expect("read lake arguments"),
-        "build\n"
+        "--try-cache build\n"
     );
     assert_eq!(
         fs::read_to_string(lake_pwd).expect("read lake working directory"),
         format!("{}\n", repo_root().join("formalization/lean").display())
+    );
+}
+
+#[test]
+fn shared_wrapper_fails_before_build_when_mathlib_cache_is_missing() {
+    let (_fake_bin, path) = fake_lake_bin(
+        r#"#!/bin/sh
+printf '%s\n' "$*" >> "$LAKE_ARGS"
+if [ "$1" = "--try-cache" ] && [ "$2" = "build" ]; then
+  : > "$LAKE_BUILD_MARKER"
+fi
+"#,
+    );
+    let scoped_elan_home = scoped_elan_home();
+    let lake_args = scoped_elan_home.path().join("lake-args");
+    let lake_build_marker = scoped_elan_home.path().join("lake-build-was-called");
+    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("AutodiffGeometry")
+        .env("ELAN_HOME", scoped_elan_home.path())
+        .env("LAKE_ARGS", &lake_args)
+        .env("LAKE_BUILD_MARKER", &lake_build_marker)
+        .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "Lean verification refuses to rebuild common dependencies",
+        ))
+        .stdout(
+            predicate::str::contains("[lean] outcome=failed")
+                .and(predicate::str::contains("[lean] failure_stage=cache")),
+        );
+
+    assert!(
+        !lake_args.exists(),
+        "lake ran despite a missing common dependency cache"
+    );
+    assert!(
+        !lake_build_marker.exists(),
+        "lake build ran despite a missing common dependency cache"
+    );
+}
+
+#[test]
+fn shared_wrapper_rejects_invalid_mathlib_cache_artifacts() {
+    let scoped_elan_home = scoped_elan_home();
+    let lake_args = scoped_elan_home.path().join("lake-args");
+    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    let invalid_artifact = artifact_root
+        .join("Mathlib/Algebra/BigOperators/Fin")
+        .with_extension("olean");
+    fs::create_dir_all(invalid_artifact.parent().expect("invalid artifact parent"))
+        .expect("create invalid artifact parent");
+    fs::write(&invalid_artifact, b"").expect("write invalid fake mathlib artifact");
+    write_fake_mathlib_artifact(&artifact_root, "Mathlib.Data.Matrix.Basic");
+    let (_fake_bin, path) = fake_lake_bin(
+        r#"#!/bin/sh
+printf '%s\n' "$*" >> "$LAKE_ARGS"
+"#,
+    );
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("AutodiffGeometry")
+        .env("ELAN_HOME", scoped_elan_home.path())
+        .env("LAKE_ARGS", &lake_args)
+        .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "Lean dependency cache is missing or invalid",
+        ))
+        .stdout(predicate::str::contains("[lean] failure_stage=cache"));
+
+    assert!(
+        !lake_args.exists(),
+        "lake ran despite an invalid common dependency cache"
     );
 }
 

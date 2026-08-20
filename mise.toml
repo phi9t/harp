@@ -98,6 +98,16 @@ description = "Prepare task-scoped Lean environment variables for shared-root pr
 env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
 run = "mkdir -p /private/tmp/harp-mathematical-foundations-elan"
 
+[tasks.lean-cache]
+description = "Explicitly hydrate the shared Lean/mathlib cache before proof verification"
+depends = ["lean-env"]
+env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
+run = """
+set -euo pipefail
+cd formalization/lean
+lake --try-cache exe cache get Mathlib
+"""
+
 [tasks.lean-training]
 description = "Build the Training Dynamics Lean library from the shared Lake root"
 depends = ["lean-env"]

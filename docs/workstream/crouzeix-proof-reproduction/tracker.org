@@ -661,6 +661,14 @@ guarantees from CPFR-L003 declared-write-surface checks.
 - Blocked by missing CPFR-L007 implementation authorization and design.
 - Current CPFR-L003 evidence is intentionally limited to declared write-surface
   containment in a local process runner.
+- Shared-root Jin proof-slice attempt:
+  =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-003/receipt.json=
+- The attempt no longer blocks on =missing executable: lake=; it reached the
+  shared Lean root and produced status =failed= with reason =Lean command failed with exit code 1=.
+- Focused validation:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_slice -v=
+- Source-map validation:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:

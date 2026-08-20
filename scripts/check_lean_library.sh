@@ -18,11 +18,13 @@ report_failure() {
   target_label=$1
   stage=$2
   scan_seconds=${3:-0}
-  lake_seconds=${4:-0}
-  total_seconds=${5:-0}
+  cache_seconds=${4:-0}
+  lake_seconds=${5:-0}
+  total_seconds=${6:-0}
   printf '%s\n' "[lean] target=$target_label"
   printf '%s\n' "[lean] root=$relative_root"
   printf '%s\n' "[lean] scan_seconds=$scan_seconds"
+  printf '%s\n' "[lean] cache_seconds=$cache_seconds"
   printf '%s\n' "[lean] lake_seconds=$lake_seconds"
   printf '%s\n' "[lean] total_seconds=$total_seconds"
   printf '%s\n' "[lean] outcome=failed"
@@ -32,11 +34,13 @@ report_failure() {
 report_success() {
   target_label=$1
   scan_seconds=$2
-  lake_seconds=$3
-  total_seconds=$4
+  cache_seconds=$3
+  lake_seconds=$4
+  total_seconds=$5
   printf '%s\n' "[lean] target=$target_label"
   printf '%s\n' "[lean] root=$relative_root"
   printf '%s\n' "[lean] scan_seconds=$scan_seconds"
+  printf '%s\n' "[lean] cache_seconds=$cache_seconds"
   printf '%s\n' "[lean] lake_seconds=$lake_seconds"
   printf '%s\n' "[lean] total_seconds=$total_seconds"
   printf '%s\n' "[lean] outcome=passed"
@@ -44,6 +48,11 @@ report_success() {
 
 now_seconds() {
   date +%s
+}
+
+has_valid_olean_header() {
+  artifact_path=$1
+  [ -s "$artifact_path" ] && [ "$(dd if="$artifact_path" bs=5 count=1 2>/dev/null)" = olean ]
 }
 
 case "$#" in
@@ -142,10 +151,20 @@ fi
 
 if ! scan_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-sources.XXXXXX"); then
   printf '%s\n' "$human_label Lean source scan failed: could not create a temporary file" >&2
-  report_failure "$scan_label" scan 0 0 0
+  report_failure "$scan_label" scan 0 0 0 0
   exit 1
 fi
-trap 'rm -f "$scan_list"' EXIT HUP INT TERM
+if ! required_cache_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-cache-modules.XXXXXX"); then
+  printf '%s\n' "$human_label Lean source scan failed: could not create a temporary file" >&2
+  report_failure "$scan_label" scan 0 0 0 0
+  exit 1
+fi
+if ! missing_cache_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-missing-cache-modules.XXXXXX"); then
+  printf '%s\n' "$human_label Lean source scan failed: could not create a temporary file" >&2
+  report_failure "$scan_label" scan 0 0 0 0
+  exit 1
+fi
+trap 'rm -f "$scan_list" "$required_cache_list" "$missing_cache_list"' EXIT HUP INT TERM
 
 append_sources() {
   source_path=$1
@@ -165,7 +184,7 @@ scan_started=$(now_seconds)
 if [ "$normal_build" = false ]; then
   if ! append_sources "$project_dir"; then
     scan_finished=$(now_seconds)
-    report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"
+    report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
     exit 1
   fi
 else
@@ -174,7 +193,7 @@ else
       for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix; do
         if ! append_sources "$project_dir/$library.lean" || ! append_sources "$project_dir/$library"; then
           scan_finished=$(now_seconds)
-          report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"
+          report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
           exit 1
         fi
       done
@@ -182,7 +201,7 @@ else
     *)
       if ! append_sources "$project_dir/$target.lean" || ! append_sources "$project_dir/$target"; then
         scan_finished=$(now_seconds)
-        report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"
+        report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
         exit 1
       fi
       ;;
@@ -199,7 +218,7 @@ while IFS= read -r source_file || [ -n "$source_file" ]; do
       if [ "$grep_status" -ne 1 ]; then
         scan_finished=$(now_seconds)
         printf '%s\n' "$human_label Lean source scan failed" >&2
-        report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"
+        report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
         exit 1
       fi
     fi
@@ -214,7 +233,7 @@ while IFS= read -r source_file || [ -n "$source_file" ]; do
           if [ "$grep_status" -ne 1 ]; then
             scan_finished=$(now_seconds)
             printf '%s\n' "$human_label Lean source scan failed" >&2
-            report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 "$((scan_finished - scan_started))"
+            report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
             exit 1
           fi
         fi
@@ -227,24 +246,68 @@ scan_seconds=$((scan_finished - scan_started))
 
 if [ "$proof_holes_found" = true ]; then
   printf '%s\n' "$human_label Lean source contains forbidden proof-placeholder text." >&2
-  report_failure "$scan_label" scan "$scan_seconds" 0 "$scan_seconds"
+  report_failure "$scan_label" scan "$scan_seconds" 0 0 "$scan_seconds"
   exit 1
 fi
+
+cache_started=$(now_seconds)
+cache_seconds=0
+if [ "$normal_build" = true ]; then
+  while IFS= read -r source_file || [ -n "$source_file" ]; do
+    awk '
+      /^import[[:space:]]/ {
+        for (i = 2; i <= NF; i++) {
+          if ($i ~ /^Mathlib($|\.)/) {
+            print $i
+          }
+        }
+      }
+    ' "$source_file" >> "$required_cache_list"
+  done < "$scan_list"
+  sort -u "$required_cache_list" -o "$required_cache_list"
+
+  if [ -s "$required_cache_list" ]; then
+    cd "$project_dir"
+    mathlib_artifact_root=${HARP_LEAN_MATHLIB_ARTIFACT_ROOT:-"$project_dir/.lake/packages/mathlib/.lake/build/lib/lean"}
+    while IFS= read -r required_module || [ -n "$required_module" ]; do
+      required_path=$(printf '%s\n' "$required_module" | tr . /)
+      required_artifact="$mathlib_artifact_root/$required_path.olean"
+      if ! has_valid_olean_header "$required_artifact"; then
+        printf '%s\n' "$required_module" >> "$missing_cache_list"
+      fi
+    done < "$required_cache_list"
+
+    if [ -s "$missing_cache_list" ]; then
+      while IFS= read -r required_module || [ -n "$required_module" ]; do
+        required_path=$(printf '%s\n' "$required_module" | tr . /)
+        required_artifact="$mathlib_artifact_root/$required_path.olean"
+        printf '%s\n' "$human_label Lean dependency cache is missing or invalid: $required_artifact" >&2
+      done < "$missing_cache_list"
+      cache_finished=$(now_seconds)
+      cache_seconds=$((cache_finished - cache_started))
+      printf '%s\n' "$human_label Lean verification refuses to rebuild common dependencies; run explicit cache hydration before this gate." >&2
+      report_failure "$scan_label" cache "$scan_seconds" "$cache_seconds" 0 "$((scan_seconds + cache_seconds))"
+      exit 1
+    fi
+  fi
+fi
+cache_finished=$(now_seconds)
+cache_seconds=$((cache_finished - cache_started))
 
 lake_started=$(now_seconds)
 cd "$project_dir"
 if [ "$target" = all ]; then
-  if lake build; then
+  if lake --try-cache build; then
     lake_finished=$(now_seconds)
     lake_seconds=$((lake_finished - lake_started))
-    report_success "$scan_label" "$scan_seconds" "$lake_seconds" "$((scan_seconds + lake_seconds))"
+    report_success "$scan_label" "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"
     exit 0
   fi
 else
-  if lake build "$target"; then
+  if lake --try-cache build "$target"; then
     lake_finished=$(now_seconds)
     lake_seconds=$((lake_finished - lake_started))
-    report_success "$scan_label" "$scan_seconds" "$lake_seconds" "$((scan_seconds + lake_seconds))"
+    report_success "$scan_label" "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"
     exit 0
   fi
 fi
@@ -252,5 +315,5 @@ fi
 lake_finished=$(now_seconds)
 lake_seconds=$((lake_finished - lake_started))
 printf '%s\n' "$human_label Lean build failed" >&2
-report_failure "$scan_label" lake "$scan_seconds" "$lake_seconds" "$((scan_seconds + lake_seconds))"
+report_failure "$scan_label" lake "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"
 exit 1
