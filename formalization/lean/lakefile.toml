@@ -22,6 +22,9 @@ name = "AutodiffGeometry"
 [[lean_lib]]
 name = "Crouzeix"
 
+[[lean_lib]]
+name = "CrouzeixConjecture"
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"

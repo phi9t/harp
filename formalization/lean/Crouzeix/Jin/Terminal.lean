@@ -1,4 +1,5 @@
 import Crouzeix.Jin.MaxPolynomialModulus
+import CrouzeixConjecture.HolomorphicConsequences
 
 /-!
 Harp-owned terminal assembly surface for Jin's Crouzeix route.
@@ -36,5 +37,16 @@ terminal statement can be declared without trusted assumptions. -/
 def terminalCrouzeixAssemblyBlocker : Prop :=
   ∀ (A : SquareMatrix n) (p : Polynomial ℂ),
     PolynomialCrouzeixBound A p
+
+/-- The polynomial specialization of Jin's main theorem, assembled in Harp
+from the lower holomorphic Crouzeix route rather than by importing Jin's
+terminal theorem. -/
+theorem crouzeixConjecture [Nonempty n] (A : SquareMatrix n) (p : Polynomial ℂ) :
+    ‖polynomialEval p A‖ ≤
+      2 * maxPolynomialModulusOnNumericalRange A p := by
+  have hbound := holomorphicCrouzeixBound A isOpen_univ (Set.subset_univ _)
+    p.differentiableOn
+  rw [holomorphicMatrixEval_polynomial] at hbound
+  simpa only [maxFunctionModulusOnSet, maxPolynomialModulusOnNumericalRange] using hbound
 
 end CrouzeixConjecture

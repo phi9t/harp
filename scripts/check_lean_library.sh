@@ -190,7 +190,7 @@ if [ "$normal_build" = false ]; then
 else
   case "$target" in
     all)
-      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix; do
+      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix CrouzeixConjecture; do
         if ! append_sources "$project_dir/$library.lean" || ! append_sources "$project_dir/$library"; then
           scan_finished=$(now_seconds)
           report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
@@ -203,6 +203,13 @@ else
         scan_finished=$(now_seconds)
         report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
         exit 1
+      fi
+      if [ "$target" = Crouzeix ]; then
+        if ! append_sources "$project_dir/CrouzeixConjecture"; then
+          scan_finished=$(now_seconds)
+          report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
+          exit 1
+        fi
       fi
       ;;
   esac

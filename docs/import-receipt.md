@@ -220,9 +220,28 @@ manifold-level theorem coverage, or promote textbook claims beyond the
 currently captured evidence boundary. This extension does not alter the fixed
 521-row initial import account.
 
+## Post-import Jin Crouzeix proof-port extension
+
+The maintained product also adds a Harp-local Lean 4.32 port of Jin's
+holomorphic Crouzeix route:
+
+- a tracked `formalization/lean/CrouzeixConjecture/` proof implementation
+  derived from Jin commit `565b6a3e0659b6e0785f783b016c3f6d9f171fa5`;
+- a shared-root `CrouzeixConjecture` Lean library and a Harp-owned terminal
+  assembly theorem under `Crouzeix.Jin.Terminal`;
+- receipt-backed source-map status for all three Jin rows, including the
+  terminal theorem `CrouzeixConjecture.crouzeixConjecture`; and
+- proof-slice audit evidence that the terminal theorem compiles under the
+  cached shared Lean root with observed axioms `propext`, `Classical.choice`,
+  and `Quot.sound`.
+
+The unmodified upstream archive remains remote-only evidence by URL, byte
+count, and digest because the upstream revision had no license file present.
+This extension does not alter the fixed 521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`cdedc9530e2b78aabd7dae9e3e33c67ecee12143fe4451754ccc1124f4fe3e1d`
+`9759021974f0444451f4a0549306c684e1d4c9c040f93c6aefc8b6ce2bfa7e2b`

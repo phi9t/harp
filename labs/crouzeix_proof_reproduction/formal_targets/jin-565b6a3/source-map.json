@@ -24,13 +24,12 @@
       "dependency_ids": [
         "jin-polynomial-bound"
       ],
-      "failed_reason": "Lean command failed with exit code 1: ../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/module/Slice.lean:4:7: error(lean.unknownIdentifier): Unknown identifier `CrouzeixConjecture.crouzeixConjecture`",
       "lean_name": "CrouzeixConjecture.crouzeixConjecture",
-      "receipt_sha256": "203634cd574af599c6428c65e04e487fc54e63b7945fef5944ed5669d9eb00eb",
+      "receipt_sha256": "5702ceaac0ad5cb6f9456bfcefd37c642c0ed45038125d23c7f463c0cb01e4f3",
       "row_id": "jin-terminal-crouzeix",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23",
       "statement_sha256": "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4",
-      "status": "failed"
+      "status": "passed"
     }
   ],
   "schema_version": "crouzeix-jin-source-map/v1",

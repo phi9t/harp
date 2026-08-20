@@ -5,9 +5,13 @@
     "propext"
   ],
   "expected_declaration": "CrouzeixConjecture.crouzeixConjecture",
-  "observed_axioms": [],
-  "reason": "axiom scan not applicable because command failed",
-  "scan_performed": false,
+  "observed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "reason": "Lean command succeeded and axiom audit passed",
+  "scan_performed": true,
   "schema_version": "crouzeix-jin-proof-slice-axioms/v1",
-  "status": "not_applicable"
+  "status": "passed"
 }

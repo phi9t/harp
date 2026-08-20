@@ -1,7 +1,4 @@
-import Mathlib.Algebra.Polynomial.AlgebraMap
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Matrix.Mul
+import CrouzeixConjecture.Statements
 
 /- Harp-native Crouzeix route scaffolding.
 
@@ -17,26 +14,5 @@ namespace CrouzeixConjecture
 open scoped Matrix.Norms.L2Operator
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
-
-abbrev SquareMatrix (n : Type*) := Matrix n n ℂ
-
-/-- Numerical range of a finite complex matrix, as the values of the quadratic
-form on unit vectors. -/
-def numericalRange (A : SquareMatrix n) : Set ℂ :=
-  {z | ∃ x : n → ℂ, ‖x‖ = 1 ∧ z = dotProduct (star x) (A.mulVec x)}
-
-/-- The maximum modulus appearing in Jin's manuscript and Lean source map,
-represented as the supremum of polynomial moduli on the numerical range. -/
-def maxPolynomialModulusOnNumericalRange (A : SquareMatrix n) (p : Polynomial ℂ) : ℝ :=
-  sSup ((fun z : ℂ => ‖p.eval z‖) '' numericalRange A)
-
-/-- Matrix polynomial evaluation, matching Jin's `polynomialEval p A` boundary
-notation while delegating the algebra evaluation to mathlib. -/
-noncomputable abbrev polynomialEval (p : Polynomial ℂ) (A : SquareMatrix n) : SquareMatrix n :=
-  Polynomial.aeval A p
-
-/-- The polynomial specialization of Jin's main Crouzeix bound. -/
-def PolynomialCrouzeixBound (A : SquareMatrix n) (p : Polynomial ℂ) : Prop :=
-  ‖polynomialEval p A‖ ≤ 2 * maxPolynomialModulusOnNumericalRange A p
 
 end CrouzeixConjecture

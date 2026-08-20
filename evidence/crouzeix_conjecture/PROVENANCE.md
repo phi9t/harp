@@ -7,6 +7,14 @@ records immutable identities, byte counts, SHA-256 digests, rights status, and
 semantic source paths. It does not vendor manuscript, PDF, TeX, Lean, prompt,
 or repository bytes.
 
+As of `2026-08-19`, `formalization/lean/CrouzeixConjecture/` is a tracked
+Harp-local Lean 4.32 proof port derived from Jin commit
+`565b6a3e0659b6e0785f783b016c3f6d9f171fa5`. That tree is proof implementation,
+not raw evidence: the unmodified upstream archive remains represented here only
+by remote URL, byte count, and digest, and the upstream revision still had no
+license file present. Treat the port as Harp-maintained formalization code with
+explicit source attribution, not as a normalized copy of the evidence bundle.
+
 `acquire.sh` created fresh detached checkouts for the two Jin revisions,
 verified remote and Git identity, ran each revision's `Lean/verify.sh`, and
 performed a metadata-only tracked-source scan. Build logs replace the checkout

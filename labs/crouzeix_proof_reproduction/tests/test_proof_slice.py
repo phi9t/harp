@@ -159,6 +159,27 @@ def rows_with_pending_polynomial_bound() -> tuple[jin_validation.SourceMapRow, .
     )
 
 
+def rows_with_pending_terminal() -> tuple[jin_validation.SourceMapRow, ...]:
+    return tuple(
+        jin_validation.SourceMapRow(
+            row_id=row.row_id,
+            source_locator=row.source_locator,
+            statement_sha256=row.statement_sha256,
+            lean_name=row.lean_name,
+            dependency_ids=row.dependency_ids,
+            status="mapped" if row.row_id == "jin-terminal-crouzeix" else row.status,
+            receipt_sha256=(
+                None if row.row_id == "jin-terminal-crouzeix" else row.receipt_sha256
+            ),
+            blocked_reason=row.blocked_reason,
+            failed_reason=(
+                None if row.row_id == "jin-terminal-crouzeix" else row.failed_reason
+            ),
+        )
+        for row in rows()
+    )
+
+
 def write_source_map(path: Path, source_rows: tuple[jin_validation.SourceMapRow, ...]) -> None:
     value = {
         "schema_version": "crouzeix-jin-source-map/v1",
@@ -236,10 +257,16 @@ class ProofSliceDescriptorTests(unittest.TestCase):
     def test_selects_terminal_jin_row_after_nonterminal_dependencies_pass(self) -> None:
         target = formal_target.load_lock()
 
-        row = proof_slice.select_terminal_jin_slice(rows(), target)
+        row = proof_slice.select_terminal_jin_slice(rows_with_pending_terminal(), target)
 
         self.assertEqual(row.row_id, "jin-terminal-crouzeix")
         self.assertEqual(row.lean_name, target.target.declaration_name)
+
+    def test_live_source_map_has_no_remaining_terminal_jin_slice(self) -> None:
+        target = formal_target.load_lock()
+
+        with self.assertRaisesRegex(protocol.ValidationError, "already passed"):
+            proof_slice.select_terminal_jin_slice(rows(), target)
 
     def test_default_descriptor_uses_passed_dependency_receipt(self) -> None:
         target = formal_target.load_lock()
@@ -802,9 +829,13 @@ class ProofSliceCliTests(unittest.TestCase):
         )
 
     def test_main_json_select_terminal_returns_terminal_slice_identity(self) -> None:
-        result = proof_slice.main_json(
-            ["select", "--terminal", "--source-map", str(SOURCE_MAP)]
-        )
+        with tempfile.TemporaryDirectory() as directory:
+            source_map = Path(directory).resolve() / "source-map.json"
+            write_source_map(source_map, rows_with_pending_terminal())
+
+            result = proof_slice.main_json(
+                ["select", "--terminal", "--source-map", str(source_map)]
+            )
 
         self.assertEqual(result["row_id"], "jin-terminal-crouzeix")
         self.assertEqual(
@@ -857,6 +888,8 @@ class ProofSliceCliTests(unittest.TestCase):
 
     def test_main_json_materialize_terminal_creates_terminal_task(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
+            source_map = Path(directory).resolve() / "source-map.json"
+            write_source_map(source_map, rows_with_pending_terminal())
             task_dir = Path(directory).resolve() / "attempt-terminal"
 
             result = proof_slice.main_json(
@@ -866,7 +899,7 @@ class ProofSliceCliTests(unittest.TestCase):
                     "--task-dir",
                     str(task_dir),
                     "--source-map",
-                    str(SOURCE_MAP),
+                    str(source_map),
                 ]
             )
 

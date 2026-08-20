@@ -709,35 +709,48 @@ guarantees from CPFR-L003 declared-write-surface checks.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=:
   11 tests, 0 failures.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v=:
-  299 tests, 0 failures.
-- =mise run lean-crouzeix=:
-  passed from the shared Lean root using the existing cache; repeat focused gate
-  completed in 19 seconds.
+  305 tests, 0 failures.
+- =ELAN_HOME=/private/tmp/harp-mathematical-foundations-elan PATH="/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:$PATH" scripts/check_lean_library.sh Crouzeix=:
+  passed from the shared Lean root using the existing cache and the stricter
+  =CrouzeixConjecture= source scan; final focused gate completed in 52 seconds.
 - Terminal Harp-owned Jin proof-slice attempt:
   =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json=.
 - =attempt-001= imports only =Crouzeix.Jin.Terminal= and dependency receipt
   =jin-polynomial-bound= =
   35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913=.
-- The Harp terminal module =Crouzeix.Jin.Terminal= compiles in the shared Lean
-  root and intentionally does not declare
-  =CrouzeixConjecture.crouzeixConjecture= until the holomorphic Crouzeix route
-  is formalized locally.
-- Terminal attempt result: =status= =failed= with reason
-  =Lean command failed with exit code 1: ../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/module/Slice.lean:4:7: error(lean.unknownIdentifier): Unknown identifier `CrouzeixConjecture.crouzeixConjecture`=.
+- The Harp terminal module =Crouzeix.Jin.Terminal= now assembles
+  =CrouzeixConjecture.crouzeixConjecture= from the Harp-local port of Jin's
+  holomorphic route, using =holomorphicCrouzeixBound= and
+  =holomorphicMatrixEval_polynomial= rather than importing Jin's
+  =FinalTheorems= terminal theorem as proof authority.
+- Terminal attempt result: =status= =passed= with reason
+  =Lean command succeeded and axiom audit passed=.
 - Terminal attempt receipt digest:
-  =203634cd574af599c6428c65e04e487fc54e63b7945fef5944ed5669d9eb00eb=.
-- Source-map row =jin-terminal-crouzeix= records =status= =failed= with the
-  receipt digest above; this is a typed, reproducible blocker, not a terminal
-  theorem proof. The next mathematical slice is to port/prove Jin's
-  =holomorphicCrouzeixBound= route and =holomorphicMatrixEval_polynomial=
-  bridge under Harp-owned modules.
+  =5702ceaac0ad5cb6f9456bfcefd37c642c0ed45038125d23c7f463c0cb01e4f3=.
+- Terminal attempt axiom audit observed exactly =propext=,
+  =Classical.choice=, and =Quot.sound= under the row's allowed-axiom policy.
+- Source-map row =jin-terminal-crouzeix= records =status= =passed= with the
+  receipt digest above; all Jin source-map rows are now Harp-native,
+  shared-root, receipt-backed proof-slice declarations.
+- =evidence/crouzeix_conjecture/PROVENANCE.md= records that
+  =formalization/lean/CrouzeixConjecture/= is a tracked Harp-local Lean 4.32
+  proof port derived from Jin commit
+  =565b6a3e0659b6e0785f783b016c3f6d9f171fa5=, while the unmodified upstream
+  archive remains remote-only evidence by URL, size, and digest.
 - Verification commands for the terminal slice:
   =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_slice.py materialize --terminal --task-dir labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001 --source-map labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json=:
-  exit 0.
+  expected create-only refusal after the task directory already existed.
 - =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_slice.py run --task-dir labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001=:
-  exit 0, emitted =status= =failed= and the unknown-identifier reason above.
+  exit 0, emitted =status= =passed= and reason =Lean command succeeded and
+  axiom audit passed=.
 - =ELAN_HOME=/private/tmp/harp-mathematical-foundations-elan ELAN_TOOLCHAIN=leanprover/lean4:v4.32.1 PATH="/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:/usr/bin:/bin" lake build Crouzeix.Jin.Terminal=:
   passed from the shared Lean root using the existing cache.
+- Final release gate:
+  =mise run verify= exited 0 after refreshing =docs/import-receipt.md= to the
+  repository verifier's payload digest. It passed Atlas tests/build/static
+  export, Rust formatting/clippy/tests/shell/source checks, the 305-test
+  Crouzeix lab discovery suite, cached shared-root =lean-all= with 8737 Lean
+  jobs, Git LFS fsck, and =harp repository verify=.
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:
