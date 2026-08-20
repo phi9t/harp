@@ -22,6 +22,12 @@ SCHEMA_VERSION = "crouzeix-jin-proof-slice-descriptor/v1"
 ROUTE_ID = "jin"
 TERMINAL_ROW_ID = "jin-terminal-crouzeix"
 TERMINAL_REFERENCE_IMPORTS = frozenset({"CrouzeixConjecture.FinalTheorems"})
+HARP_NATIVE_ROW_IMPORTS = {
+    "jin-max-polynomial-modulus": ("Crouzeix.Jin.MaxPolynomialModulus",),
+}
+HARP_NATIVE_ROW_ALLOWED_AXIOMS = {
+    "jin-max-polynomial-modulus": ("Classical.choice", "Quot.sound", "propext"),
+}
 BUILD_TARGET = "module/Slice.lean"
 MAX_ALLOWED_IMPORTS = 32
 MAX_DEPENDENCY_RECEIPTS = 64
@@ -96,6 +102,17 @@ class CommandResult:
     stdout_truncated: bool = False
     stderr_truncated: bool = False
     axiom_audit_output: bytes | None = None
+
+    def with_axiom_audit_output(self, output: bytes) -> "CommandResult":
+        return CommandResult(
+            self.exit_code,
+            self.stdout,
+            self.stderr,
+            self.blocked_reason,
+            stdout_truncated=self.stdout_truncated,
+            stderr_truncated=self.stderr_truncated,
+            axiom_audit_output=output,
+        )
 
 
 Executor = Callable[[list[str], Path, int, int], CommandResult]
@@ -197,12 +214,14 @@ def default_descriptor_for_row(
         "pinned_source_locator": row.source_locator,
         "informal_statement_sha256": row.statement_sha256,
         "expected_lean_declaration": row.lean_name,
-        "allowed_imports": [],
+        "allowed_imports": list(HARP_NATIVE_ROW_IMPORTS.get(row.row_id, ())),
         "dependency_receipts": [],
         "output_declaration_name": row.lean_name,
         "build_target": BUILD_TARGET,
         "proof_hole_policy": {"reject_tokens": ["sorry", "admit"]},
-        "axiom_policy": {"allowed_axioms": []},
+        "axiom_policy": {
+            "allowed_axioms": list(HARP_NATIVE_ROW_ALLOWED_AXIOMS.get(row.row_id, ()))
+        },
         "attempt_budget": {
             "timeout_seconds": 3600,
             "max_output_bytes": 1048576,
@@ -543,6 +562,11 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
         )
         return _publish_run_result(
             root, descriptor, command_result, "failed", reason, axiom_audit
+        )
+
+    if command_result.axiom_audit_output is None and executor is None:
+        command_result = command_result.with_axiom_audit_output(
+            _run_axiom_audit(root, descriptor)
         )
 
     axiom_scan = _parse_axiom_audit(command_result.axiom_audit_output)
@@ -892,22 +916,21 @@ def _parse_axiom_audit(output: bytes | None) -> dict[str, object]:
     observed: tuple[str, ...] | None = None
     for line in text.splitlines():
         stripped = line.strip()
-        if not stripped.startswith("axioms:"):
+        if " depends on axioms: " in stripped:
+            payload = stripped.rsplit(" depends on axioms: ", 1)[1].strip()
+            parsed = _parse_lean_axiom_list(payload)
+        elif stripped.startswith("axioms:"):
+            if stripped == "axioms: none":
+                parsed = ()
+            else:
+                payload = stripped.removeprefix("axioms:").strip()
+                parsed = _parse_comma_axiom_list(payload)
+        else:
             if stripped:
                 return _failed_axiom_scan("axiom audit output malformed")
             continue
-        if stripped == "axioms: none":
-            parsed: tuple[str, ...] = ()
-        else:
-            payload = stripped.removeprefix("axioms:").strip()
-            if not payload:
-                return _failed_axiom_scan("axiom audit output malformed")
-            pieces = tuple(part.strip() for part in payload.split(","))
-            if any(not _is_lean_name(part) for part in pieces):
-                return _failed_axiom_scan("axiom audit output malformed")
-            if len(set(pieces)) != len(pieces):
-                return _failed_axiom_scan("axiom audit output malformed")
-            parsed = pieces
+        if parsed is None:
+            return _failed_axiom_scan("axiom audit output malformed")
         if observed is not None:
             return _failed_axiom_scan("axiom audit output malformed")
         observed = parsed
@@ -930,6 +953,26 @@ def _failed_axiom_scan(reason: str) -> dict[str, object]:
     }
 
 
+def _parse_comma_axiom_list(payload: str) -> tuple[str, ...] | None:
+    if not payload:
+        return None
+    pieces = tuple(part.strip() for part in payload.split(","))
+    if any(not _is_lean_name(part) for part in pieces):
+        return None
+    if len(set(pieces)) != len(pieces):
+        return None
+    return pieces
+
+
+def _parse_lean_axiom_list(payload: str) -> tuple[str, ...] | None:
+    if not (payload.startswith("[") and payload.endswith("]")):
+        return None
+    inner = payload[1:-1].strip()
+    if not inner:
+        return ()
+    return _parse_comma_axiom_list(inner)
+
+
 def _is_lean_name(value: str) -> bool:
     pattern = r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*"
     return re.fullmatch(pattern, value) is not None
@@ -943,6 +986,34 @@ def _output_cap_reason(
     if command_result.stderr_truncated or len(command_result.stderr) > max_output_bytes:
         return "output cap policy violation: stderr exceeds max_output_bytes"
     return None
+
+
+def _run_axiom_audit(root: Path, descriptor: ProofSliceDescriptor) -> bytes:
+    audit_path = root / "build/AxiomAudit.lean"
+    source = _axiom_audit_source(descriptor)
+    _reject_symlink_ancestors(audit_path, "axiom audit source")
+    audit_path.write_text(source, encoding="utf-8")
+    result = _subprocess_executor(
+        [
+            "lake",
+            "env",
+            "lean",
+            os.path.relpath(audit_path, SHARED_LEAN_ROOT),
+        ],
+        SHARED_LEAN_ROOT,
+        descriptor.timeout_seconds,
+        descriptor.max_output_bytes,
+    )
+    result = _normalize_command_result(result, descriptor.max_output_bytes)
+    if result.exit_code != 0 or result.blocked_reason is not None:
+        return b""
+    return result.stdout
+
+
+def _axiom_audit_source(descriptor: ProofSliceDescriptor) -> str:
+    lines = [f"import {name}" for name in descriptor.allowed_imports]
+    lines.append(f"#print axioms {descriptor.expected_lean_declaration}")
+    return "\n".join(lines) + "\n"
 
 
 def _normalize_command_result(

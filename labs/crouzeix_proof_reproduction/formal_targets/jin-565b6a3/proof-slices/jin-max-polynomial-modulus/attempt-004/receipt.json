@@ -1,0 +1,18 @@
+{
+  "axioms_sha256": "cebd9ca38b6dbd075aa797837d4eb0363fb17f1e87f9eb2410a50355446a0d6e",
+  "command_exit_code": 0,
+  "command_sha256": "6a3638b8a77434df9e5f2082fde6fa8804dd450e664951618389aef5a706f584",
+  "expected_lean_declaration": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+  "max_output_bytes": 1048576,
+  "reason": "Lean command succeeded and axiom audit passed",
+  "result_sha256": "2a74340372665ab71b85c614e9029741ead0f572f35ec48c7d6c71f7dc340ae0",
+  "route_id": "jin",
+  "schema_version": "crouzeix-jin-proof-slice-receipt/v1",
+  "source_map_row_id": "jin-max-polynomial-modulus",
+  "status": "passed",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_truncated": false,
+  "stdout_sha256": "5188354689d41eb11d0df3bc9415d269a365a63b8f4d8a77cde32f376dea981f",
+  "stdout_truncated": false,
+  "task_sha256": "1619cbd09b6afd10f90c01a43c9064c86294e2181468bac2bfafed1f708137ad"
+}

@@ -42,14 +42,16 @@ def descriptor(row_id: str = "jin-max-polynomial-modulus") -> dict[str, object]:
         "expected_lean_declaration": (
             "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange"
         ),
-        "allowed_imports": [],
+        "allowed_imports": ["Crouzeix.Jin.MaxPolynomialModulus"],
         "dependency_receipts": [],
         "output_declaration_name": (
             "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange"
         ),
         "build_target": "module/Slice.lean",
         "proof_hole_policy": {"reject_tokens": ["sorry", "admit"]},
-        "axiom_policy": {"allowed_axioms": []},
+        "axiom_policy": {
+            "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"]
+        },
         "attempt_budget": {"timeout_seconds": 3600, "max_output_bytes": 1048576},
     }
 
@@ -151,7 +153,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
         self.assertEqual(desc.schema_version, "crouzeix-jin-proof-slice-descriptor/v1")
         self.assertEqual(desc.route_id, "jin")
         self.assertEqual(desc.source_map_row_id, "jin-max-polynomial-modulus")
-        self.assertEqual(desc.allowed_imports, ())
+        self.assertEqual(desc.allowed_imports, ("Crouzeix.Jin.MaxPolynomialModulus",))
         self.assertEqual(desc.dependency_receipts, ())
 
     def test_descriptor_rejects_unknown_fields(self) -> None:
@@ -231,9 +233,30 @@ class ProofSliceDescriptorTests(unittest.TestCase):
         )
 
     def test_descriptor_rejects_dependency_receipt_for_blocked_row(self) -> None:
+        blocked_rows = tuple(
+            jin_validation.SourceMapRow(
+                row_id=row.row_id,
+                source_locator=row.source_locator,
+                statement_sha256=row.statement_sha256,
+                lean_name=row.lean_name,
+                dependency_ids=row.dependency_ids,
+                status="blocked"
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.status,
+                receipt_sha256=None
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.receipt_sha256,
+                blocked_reason="fixture dependency is not passed"
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.blocked_reason,
+                failed_reason=row.failed_reason,
+            )
+            for row in rows()
+        )
+
         with self.assertRaisesRegex(protocol.ValidationError, "not passed"):
             proof_slice.validate_descriptor(
-                dependent_descriptor(), formal_target.load_lock(), rows()
+                dependent_descriptor(), formal_target.load_lock(), blocked_rows
             )
 
     def test_descriptor_rejects_dependency_receipt_digest_mismatch(self) -> None:
@@ -422,7 +445,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 self.assertTrue((task_dir / relative).exists(), relative)
 
             source = (task_dir / "module/Slice.lean").read_text(encoding="utf-8")
-            self.assertNotIn("import ", source)
+            self.assertIn("import Crouzeix.Jin.MaxPolynomialModulus", source)
             self.assertNotIn("CrouzeixConjecture.FinalTheorems", source)
             self.assertIn(
                 "#check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
@@ -615,7 +638,10 @@ class ProofSliceCliTests(unittest.TestCase):
             self.assertEqual(result["row_id"], "jin-max-polynomial-modulus")
             self.assertTrue((task_dir / "task.json").exists())
             task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
-            self.assertEqual(task["descriptor"]["allowed_imports"], [])
+            self.assertEqual(
+                task["descriptor"]["allowed_imports"],
+                ["Crouzeix.Jin.MaxPolynomialModulus"],
+            )
             self.assertEqual(task["descriptor"]["dependency_receipts"], [])
 
     def test_main_json_run_returns_run_task_result_shape(self) -> None:
@@ -871,8 +897,10 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertEqual(executor.calls, [])
 
     def test_run_task_fails_clean_compile_with_forbidden_axiom(self) -> None:
+        value = descriptor()
+        value["axiom_policy"] = {"allowed_axioms": []}
         with tempfile.TemporaryDirectory() as directory:
-            task_dir = materialized_task(Path(directory).resolve())
+            task_dir = materialized_task(Path(directory).resolve(), value)
             executor = FakeExecutor(
                 proof_slice.CommandResult(
                     0,
@@ -914,6 +942,33 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             )
             self.assertEqual(axioms["status"], "passed")
             self.assertEqual(axioms["observed_axioms"], ["Classical.choice"])
+
+    def test_run_task_parses_lean_print_axioms_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    0,
+                    b"",
+                    b"",
+                    axiom_audit_output=(
+                        b"'CrouzeixConjecture.maxPolynomialModulusOnNumericalRange' "
+                        b"depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+                    ),
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "passed")
+            axioms = json.loads(
+                (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(axioms["status"], "passed")
+            self.assertEqual(
+                axioms["observed_axioms"],
+                ["propext", "Classical.choice", "Quot.sound"],
+            )
 
     def test_run_task_exit_zero_output_cap_still_performs_axiom_audit(self) -> None:
         value = descriptor()

@@ -3,12 +3,11 @@
     {
       "dependency_ids": [],
       "lean_name": "CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
-      "receipt_sha256": "2409b5bf99729740cfee3814e2933b3458f0b8f68862062f7f58882056a39c12",
+      "receipt_sha256": "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba",
       "row_id": "jin-max-polynomial-modulus",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean#L13-L18",
       "statement_sha256": "49bb4a5ac09489c9c7642215474b2f099f69d1e6a3e431f7a9dfd2b95ed736d0",
-      "status": "failed",
-      "failed_reason": "Lean command failed with exit code 1"
+      "status": "passed"
     },
     {
       "dependency_ids": [

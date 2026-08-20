@@ -669,6 +669,20 @@ guarantees from CPFR-L003 declared-write-surface checks.
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_slice -v=
 - Source-map validation:
   =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
+- Passed Harp-owned Jin source-map slice:
+  =labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-max-polynomial-modulus/attempt-004/receipt.json=
+- =attempt-004= compiles the shared-root declaration
+  =CrouzeixConjecture.maxPolynomialModulusOnNumericalRange= and records a passed
+  axiom audit with observed axioms =propext=, =Classical.choice=, and
+  =Quot.sound= under the row's explicit allowed-axiom policy.
+- Receipt digest:
+  =ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba=.
+- Focused proof-slice validation:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_slice -v=
+- Jin source-map validation:
+  =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_jin_validation -v=
+- Focused Lean validation:
+  =mise run lean-crouzeix=.
 
 ** DONE Reconstruct Historical Prompt And Process Evidence :docs:evidence:
 :PROPERTIES:

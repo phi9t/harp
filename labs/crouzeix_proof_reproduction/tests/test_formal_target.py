@@ -76,7 +76,10 @@ def lock_for(root: Path, *, artifact_path: str = "artifacts/Target.lean") -> dic
             }
         ],
         "ledger_path": "ledger",
-        "import_allowlist": ["CrouzeixConjecture.FinalTheorems"],
+        "import_allowlist": [
+            "Crouzeix.Jin.MaxPolynomialModulus",
+            "CrouzeixConjecture.FinalTheorems",
+        ],
     }
 
 
@@ -283,6 +286,7 @@ class FormalTargetProductionLockTests(unittest.TestCase):
         self.assertEqual(lock.toolchain.lean, "leanprover/lean4:v4.28.0")
         self.assertEqual(lock.toolchain.mathlib_revision, "8f9d9cff6bd728b17a24e163c9402775d9e6a365")
         self.assertEqual(lock.command.argv, ("lake", "build"))
+        self.assertIn("Crouzeix.Jin.MaxPolynomialModulus", lock.import_allowlist)
         self.assertIn("CrouzeixConjecture.FinalTheorems", lock.import_allowlist)
         self.assertEqual(lock.target.declaration_name, "CrouzeixConjecture.crouzeixConjecture")
         self.assertEqual(lock.target.statement_sha256, "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4")

@@ -35,12 +35,12 @@ class JinValidationTests(unittest.TestCase):
         rows = jin_validation.load_source_map(SOURCE_MAP, target)
 
         self.assertEqual(rows[0].row_id, "jin-max-polynomial-modulus")
-        self.assertEqual(rows[0].status, "failed")
+        self.assertEqual(rows[0].status, "passed")
         self.assertEqual(
             rows[0].receipt_sha256,
-            "2409b5bf99729740cfee3814e2933b3458f0b8f68862062f7f58882056a39c12",
+            "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba",
         )
-        self.assertEqual(rows[0].failed_reason, "Lean command failed with exit code 1")
+        self.assertIsNone(rows[0].failed_reason)
         self.assertIsNone(rows[0].blocked_reason)
         self.assertEqual(rows[-1].lean_name, "CrouzeixConjecture.crouzeixConjecture")
         self.assertEqual(rows[-1].status, "mapped")
@@ -379,7 +379,7 @@ class JinValidationTests(unittest.TestCase):
         self.assertEqual(task.task_id, "jin-target-alignment")
         self.assertEqual(task.expected_declaration, target.target.declaration_name)
         self.assertEqual(task.target_type_sha256, target.target.statement_sha256)
-        self.assertEqual(task.imports, tuple(target.import_allowlist))
+        self.assertEqual(task.imports, ("CrouzeixConjecture.FinalTheorems",))
 
         with tempfile.TemporaryDirectory() as directory:
             bad_target = Path(directory).resolve() / "Target.lean"
