@@ -689,14 +689,10 @@ def _command_argv(descriptor: ProofSliceDescriptor, task_dir: Path) -> list[str]
 
 
 def _shared_lean_environment() -> dict[str, str]:
-    path_entries = [SHARED_TOOLCHAIN_BIN.as_posix()]
-    ambient_path = os.environ.get("PATH")
-    if ambient_path:
-        path_entries.append(ambient_path)
     return {
         "ELAN_HOME": SHARED_ELAN_HOME.as_posix(),
         "ELAN_TOOLCHAIN": SHARED_LEAN_TOOLCHAIN,
-        "PATH": os.pathsep.join(path_entries),
+        "PATH": SHARED_TOOLCHAIN_BIN.as_posix(),
     }
 
 
@@ -949,6 +945,7 @@ def _output_cap_reason(
 def _normalize_command_result(
     command_result: CommandResult, max_output_bytes: int
 ) -> CommandResult:
+    command_result = _portable_command_result(command_result)
     stdout_truncated = (
         command_result.stdout_truncated
         or len(command_result.stdout) > max_output_bytes
@@ -971,6 +968,21 @@ def _normalize_command_result(
         command_result.blocked_reason,
         stdout_truncated=stdout_truncated,
         stderr_truncated=stderr_truncated,
+        axiom_audit_output=command_result.axiom_audit_output,
+    )
+
+
+def _portable_command_result(command_result: CommandResult) -> CommandResult:
+    workspace = REPO_ROOT.as_posix().encode("utf-8")
+    if workspace not in command_result.stdout and workspace not in command_result.stderr:
+        return command_result
+    return CommandResult(
+        command_result.exit_code,
+        command_result.stdout.replace(workspace, b"<harp-workspace>"),
+        command_result.stderr.replace(workspace, b"<harp-workspace>"),
+        command_result.blocked_reason,
+        stdout_truncated=command_result.stdout_truncated,
+        stderr_truncated=command_result.stderr_truncated,
         axiom_audit_output=command_result.axiom_audit_output,
     )
 

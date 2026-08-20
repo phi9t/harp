@@ -9,7 +9,7 @@
   "env": {
     "ELAN_HOME": "/private/tmp/harp-mathematical-foundations-elan",
     "ELAN_TOOLCHAIN": "leanprover/lean4:v4.32.1",
-    "PATH": "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:/Users/bytedance/.trae/cli/tmp/arg0/traecli-7vcB6U:/Users/bytedance/.local/bin:/Users/bytedance/Library/pnpm:/opt/homebrew/Caskroom/miniconda/base/bin:/opt/homebrew/Caskroom/miniconda/base/condabin:/opt/draccus/spack/var/spack/environments/tarocco/.spack-env/view/bin:/opt/draccus/spack/bin:/Users/bytedance/.bytebm/bin:/Users/bytedance/.local/bin:/Users/bytedance/.nvm/versions/node/v24.13.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/private/tmp/harp-lean-runtime.Ca5T9X/elan/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/usr/local/sbin:/opt/puppetlabs/bin:/Users/bytedance/.cargo/bin:/Applications/Ghostty.app/Contents/MacOS:/Users/bytedance/.aiden/global-install/bin:/Users/bytedance/go/bin:/Users/bytedance/.local/share/bytedance/bin:/Users/bytedance/.config/emacs/bin:/Users/bytedance/.aiden/global-install/bin"
+    "PATH": "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin"
   },
   "max_output_bytes": 1048576,
   "schema_version": "crouzeix-jin-proof-slice-command/v1",

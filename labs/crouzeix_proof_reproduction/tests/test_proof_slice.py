@@ -452,10 +452,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 "/private/tmp/harp-mathematical-foundations-elan",
             )
             self.assertEqual(env.get("ELAN_TOOLCHAIN"), "leanprover/lean4:v4.32.1")
-            self.assertTrue(
-                str(env.get("PATH", "")).startswith(
-                    "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin"
-                )
+            self.assertEqual(
+                env.get("PATH"),
+                "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin",
             )
             self.assertNotIn("HOME", env)
 
@@ -993,6 +992,33 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertTrue(axioms["scan_performed"])
             self.assertEqual(axioms["status"], "passed")
 
+    def test_run_task_scrubs_workspace_path_from_command_logs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            workspace_path = proof_slice.REPO_ROOT.as_posix().encode("utf-8")
+            executor = FakeExecutor(
+                proof_slice.CommandResult(
+                    1,
+                    b"",
+                    b"error at " + workspace_path + b"/formalization/lean\n",
+                )
+            )
+
+            result = proof_slice.run_task(task_dir, executor=executor)
+
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(
+                (task_dir / "build/stderr.log").read_bytes(),
+                b"error at <harp-workspace>/formalization/lean\n",
+            )
+            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                receipt["stderr_sha256"],
+                proof_slice.protocol.sha256_bytes(
+                    b"error at <harp-workspace>/formalization/lean\n"
+                ),
+            )
+
     def test_run_task_exit_zero_without_axiom_audit_line_fails(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             task_dir = materialized_task(Path(directory).resolve())
@@ -1155,10 +1181,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             "/private/tmp/harp-mathematical-foundations-elan",
         )
         self.assertEqual(env["ELAN_TOOLCHAIN"], "leanprover/lean4:v4.32.1")
-        self.assertTrue(
-            env["PATH"].startswith(
-                "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:"
-            )
+        self.assertEqual(
+            env["PATH"],
+            "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin",
         )
         self.assertNotIn("HOME", env)
 
