@@ -47,6 +47,7 @@ SHARED_TOOLCHAIN_BIN = (
     / "leanprover--lean4---v4.32.1"
     / "bin"
 )
+SHARED_SYSTEM_PATH = (Path("/usr/bin"), Path("/bin"))
 
 DESCRIPTOR_FIELDS = frozenset(
     {
@@ -692,7 +693,9 @@ def _shared_lean_environment() -> dict[str, str]:
     return {
         "ELAN_HOME": SHARED_ELAN_HOME.as_posix(),
         "ELAN_TOOLCHAIN": SHARED_LEAN_TOOLCHAIN,
-        "PATH": SHARED_TOOLCHAIN_BIN.as_posix(),
+        "PATH": os.pathsep.join(
+            path.as_posix() for path in (SHARED_TOOLCHAIN_BIN, *SHARED_SYSTEM_PATH)
+        ),
     }
 
 

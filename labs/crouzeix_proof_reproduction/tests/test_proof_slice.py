@@ -21,6 +21,10 @@ import protocol
 
 
 SOURCE_MAP = LAB / "formal_targets/jin-565b6a3/source-map.json"
+EXPECTED_SHARED_PATH = (
+    "/private/tmp/harp-mathematical-foundations-elan/toolchains/"
+    "leanprover--lean4---v4.32.1/bin:/usr/bin:/bin"
+)
 
 
 def descriptor(row_id: str = "jin-max-polynomial-modulus") -> dict[str, object]:
@@ -454,7 +458,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
             self.assertEqual(env.get("ELAN_TOOLCHAIN"), "leanprover/lean4:v4.32.1")
             self.assertEqual(
                 env.get("PATH"),
-                "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin",
+                EXPECTED_SHARED_PATH,
             )
             self.assertNotIn("HOME", env)
 
@@ -1181,10 +1185,7 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             "/private/tmp/harp-mathematical-foundations-elan",
         )
         self.assertEqual(env["ELAN_TOOLCHAIN"], "leanprover/lean4:v4.32.1")
-        self.assertEqual(
-            env["PATH"],
-            "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin",
-        )
+        self.assertEqual(env["PATH"], EXPECTED_SHARED_PATH)
         self.assertNotIn("HOME", env)
 
     def test_subprocess_executor_resolves_executable_before_passing_environment(self) -> None:

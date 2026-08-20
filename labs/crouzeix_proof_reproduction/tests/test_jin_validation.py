@@ -38,7 +38,7 @@ class JinValidationTests(unittest.TestCase):
         self.assertEqual(rows[0].status, "failed")
         self.assertEqual(
             rows[0].receipt_sha256,
-            "8e3893b24b4f6dbac1adf71aa585817b626a16ad00477a779f4a5119af3e0de0",
+            "2409b5bf99729740cfee3814e2933b3458f0b8f68862062f7f58882056a39c12",
         )
         self.assertEqual(rows[0].failed_reason, "Lean command failed with exit code 1")
         self.assertIsNone(rows[0].blocked_reason)

@@ -9,7 +9,7 @@
   "env": {
     "ELAN_HOME": "/private/tmp/harp-mathematical-foundations-elan",
     "ELAN_TOOLCHAIN": "leanprover/lean4:v4.32.1",
-    "PATH": "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin"
+    "PATH": "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:/usr/bin:/bin"
   },
   "max_output_bytes": 1048576,
   "schema_version": "crouzeix-jin-proof-slice-command/v1",
