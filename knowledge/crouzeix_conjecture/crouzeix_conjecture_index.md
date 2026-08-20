@@ -4,7 +4,7 @@ title: Crouzeix conjecture two-proof index
 type: index
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-20
 tags: [crouzeix-conjecture, numerical-range, spectral-set, formal-verification]
 confidence: medium
 canonical: crouzeix_conjecture_index.md
@@ -77,7 +77,8 @@ claim ceilings.
 7. [[knowledge/crouzeix_conjecture/07_jin_lean_verification|Jin Lean verification]]
 8. [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery|AI-assisted discovery]]
 9. [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|Status and critical assessment]]
-10. [[knowledge/crouzeix_conjecture/reproduction_research|Proof-reproduction research]]
+10. [[knowledge/crouzeix_conjecture/10_jin_proof_editorial|Jin proof editorial]]
+11. [[knowledge/crouzeix_conjecture/reproduction_research|Proof-reproduction research]]
 
 ## Expert route
 
@@ -100,6 +101,8 @@ boundaries.
   Read the [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery#Documented action matrix|action matrix]].
 - **What evidence remains missing?**
   Read the [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment#Evidence that would raise confidence|confidence-raising evidence]].
+- **What should a frontier-lab MTS take away from Jin's proof?**
+  Read the [[knowledge/crouzeix_conjecture/10_jin_proof_editorial|editorial technical article]].
 - **What part of the original proof-discovery process can be reproduced?**
   Read the [[knowledge/crouzeix_conjecture/reproduction_research#Reproduction anchor|proof-reproduction research]].
 
@@ -122,6 +125,7 @@ The canonical packet consists of:
 - [[knowledge/crouzeix_conjecture/07_jin_lean_verification|07_jin_lean_verification.md]]
 - [[knowledge/crouzeix_conjecture/08_ai_assisted_discovery|08_ai_assisted_discovery.md]]
 - [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|09_status_and_critical_assessment.md]]
+- [[knowledge/crouzeix_conjecture/10_jin_proof_editorial|10_jin_proof_editorial.md]]
 - [[knowledge/crouzeix_conjecture/reproduction_research|reproduction_research.md]]
 - [[knowledge/crouzeix_conjecture/glossary|glossary.md]]
 - [[knowledge/crouzeix_conjecture/source_registry|source_registry.md]]

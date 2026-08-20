@@ -4,7 +4,7 @@ use std::path::{Component, Path, PathBuf};
 
 use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
-const EXPECTED_FILES: [&str; 14] = [
+const EXPECTED_FILES: [&str; 15] = [
     "01_problem_and_prior_barrier.md",
     "02_shared_power_family.md",
     "03_jin_proof_spine.md",
@@ -14,6 +14,7 @@ const EXPECTED_FILES: [&str; 14] = [
     "07_jin_lean_verification.md",
     "08_ai_assisted_discovery.md",
     "09_status_and_critical_assessment.md",
+    "10_jin_proof_editorial.md",
     "claim_evidence_ledger.md",
     "crouzeix_conjecture_index.md",
     "glossary.md",
@@ -248,6 +249,16 @@ fn markdown_links(text: &str) -> Vec<String> {
         .collect()
 }
 
+fn iso_date(value: &str) -> bool {
+    let bytes = value.as_bytes();
+    bytes.len() == 10
+        && bytes[0..4].iter().all(u8::is_ascii_digit)
+        && bytes[4] == b'-'
+        && bytes[5..7].iter().all(u8::is_ascii_digit)
+        && bytes[7] == b'-'
+        && bytes[8..10].iter().all(u8::is_ascii_digit)
+}
+
 fn frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     let rest = text
         .strip_prefix("---\n")
@@ -275,8 +286,9 @@ fn frontmatter(text: &str) -> Result<BTreeMap<&str, &str>, String> {
     if keys != expected {
         return Err(format!("frontmatter schema drifted: {keys:?}"));
     }
-    if values["created"] != "2026-08-14"
-        || values["updated"] != "2026-08-14"
+    if !iso_date(values["created"])
+        || !iso_date(values["updated"])
+        || values["updated"] < values["created"]
         || !matches!(values["confidence"], "low" | "medium" | "high")
         || !values["tags"].starts_with('[')
         || !values["tags"].ends_with(']')

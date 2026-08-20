@@ -153,7 +153,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
         "knowledge/autodiff_geometry/autodiff_geometry_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 80] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 81] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -349,6 +349,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 80] = [
     (
         "crouzeix-status-and-critical-assessment",
         "knowledge/crouzeix_conjecture/09_status_and_critical_assessment.md",
+    ),
+    (
+        "crouzeix-jin-proof-editorial",
+        "knowledge/crouzeix_conjecture/10_jin_proof_editorial.md",
     ),
     (
         "crouzeix-proof-reproduction-research",

@@ -239,9 +239,24 @@ The unmodified upstream archive remains remote-only evidence by URL, byte
 count, and digest because the upstream revision had no license file present.
 This extension does not alter the fixed 521-row initial import account.
 
+## Post-import Crouzeix editorial extension
+
+The maintained product also adds a reader-facing technical editorial on the
+Crouzeix conjecture and Jin's proof:
+
+- one canonical Markdown article under `knowledge/crouzeix_conjecture/` aimed
+  at senior ML research-engineering readers;
+- stable corpus registration and packet-roster coverage for the article; and
+- regenerated Atlas corpus and static export artifacts.
+
+The article synthesizes the existing Crouzeix packet and Harp-local proof-port
+receipts. It does not add new upstream source evidence, alter the pinned Jin
+source identities, claim peer-review completion, or alter the fixed 521-row
+initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`99cafd55c8bdbb8a7a07a19db40dd7250db3f72a5d685ffa6885f8d99820145a`
+`cb723c1ef6382254d4edfddeb3f2f414f94a769f9d0717bf7ac3e67fbaf90455`
