@@ -225,4 +225,4 @@ currently captured evidence boundary. This extension does not alter the fixed
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`2467f8398bc00adee4ad94d9cdbd1ff148417c7f8cc94fb7e77776970032f4ac`
+`cdedc9530e2b78aabd7dae9e3e33c67ecee12143fe4451754ccc1124f4fe3e1d`
