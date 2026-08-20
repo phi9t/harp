@@ -17,11 +17,8 @@ theorem. Harp's terminal source-map declaration is assembled separately in
 `Crouzeix.Jin.Terminal`. -/
 theorem jinFinalCrouzeixConjecture (A : SquareMatrix n) (p : Polynomial ℂ) :
     ‖polynomialEval p A‖ ≤
-      2 * maxPolynomialModulusOnNumericalRange A p := by
-  have hbound := holomorphicCrouzeixBound A isOpen_univ (Set.subset_univ _)
-    p.differentiableOn
-  rw [holomorphicMatrixEval_polynomial] at hbound
-  simpa only [maxFunctionModulusOnSet, maxPolynomialModulusOnNumericalRange] using hbound
+      2 * maxPolynomialModulusOnNumericalRange A p :=
+  polynomialCrouzeixBound_of_holomorphicCrouzeixBound A p
 
 /-- The manuscript's rational spectral-set discussion, kept as a separate corollary.  Pole
 freeness is required on exactly the numerical range, and the same constant `2` and induced

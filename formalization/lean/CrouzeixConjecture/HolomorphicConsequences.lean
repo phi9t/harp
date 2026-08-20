@@ -113,6 +113,18 @@ theorem holomorphicCrouzeixPolynomialErrorBound
     holomorphicMatrixEval_polynomial] at hbound
   exact hbound
 
+/-- The polynomial specialization of the holomorphic Crouzeix route. This is
+the shared terminal assembly used by both the Jin source-map declaration and
+the public final-theorem surface. -/
+theorem polynomialCrouzeixBound_of_holomorphicCrouzeixBound
+    (A : SquareMatrix n) (p : Polynomial ℂ) :
+    ‖polynomialEval p A‖ ≤
+      2 * maxPolynomialModulusOnNumericalRange A p := by
+  have hbound := holomorphicCrouzeixBound A isOpen_univ (Set.subset_univ _)
+    p.differentiableOn
+  rw [holomorphicMatrixEval_polynomial] at hbound
+  simpa only [maxFunctionModulusOnSet, maxPolynomialModulusOnNumericalRange] using hbound
+
 /-- The manuscript's rational matrix-function error estimate.  Pole-freeness only on the
 numerical range is needed: intersecting the given neighborhood with the rational holomorphy
 domain supplies the common neighborhood used by the functional calculus. -/

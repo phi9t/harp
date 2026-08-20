@@ -72,9 +72,9 @@ requires later independent re-review.
 - Live model calls are explicit operator actions and never run from
   `mise run verify`.
 - The Jin formal-validation lane is sealed by `formal_target.lock.json`. In the
-  current checked-in preflight, production Jin runtime materialization is
-  `blocked` by insufficient disk for the pinned Mathlib cache; fixture tests may
-  exercise the receipt path, but they are not a Lean proof.
+  source map, the terminal row's `statement_sha256` is the formal target
+  statement digest pinned by that lock, not a digest of the local theorem body
+  after Harp renaming or assembly refactors.
 
 The approved experiment contract is
 `docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-design.md`.

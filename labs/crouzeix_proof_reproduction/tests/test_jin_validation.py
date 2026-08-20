@@ -61,6 +61,31 @@ class JinValidationTests(unittest.TestCase):
         self.assertIn("565b6a3e0659b6e0785f783b016c3f6d9f171fa5", rows[-1].source_locator)
         self.assertEqual(rows[-1].statement_sha256, target.target.statement_sha256)
 
+    def test_terminal_source_map_hash_is_formal_target_statement_digest(self) -> None:
+        target = formal_target.load_lock()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory).resolve() / "source-map.json"
+            write_json(
+                path,
+                {
+                    "schema_version": "crouzeix-jin-source-map/v1",
+                    "source_commit": target.source.commit,
+                    "rows": [
+                        {
+                            "row_id": "jin-terminal",
+                            "source_locator": target.target.source_locator,
+                            "statement_sha256": "f" * 64,
+                            "lean_name": target.target.declaration_name,
+                            "dependency_ids": [],
+                            "status": "mapped",
+                        }
+                    ],
+                },
+            )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "terminal"):
+                jin_validation.load_source_map(path, target)
+
     def test_source_map_accepts_optional_outcome_fields(self) -> None:
         target = formal_target.load_lock()
         with tempfile.TemporaryDirectory() as directory:
