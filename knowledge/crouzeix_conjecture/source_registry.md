@@ -149,14 +149,19 @@ their mathematics correct.
 ## HARP-LOCAL-VERIFY: Local build and scan observations {#harp-local-verify-local-build-and-scan-observations}
 
 - Class: Harp-generated, revision-bound verification receipts.
-- Identity: normalization `crouzeix-log-normalization/v1`, Lean
-  `leanprover/lean4:v4.28.0`, Mathlib
-  `8f9d9cff6bd728b17a24e163c9402775d9e6a365`.
+- Identity: verification manifest normalization
+  `crouzeix-log-normalization/v1` for the upstream Jin checks, plus
+  Harp-local shared-root Lean `leanprover/lean4:v4.32.1` proof-slice
+  receipts.
 - Local receipt: [[evidence/crouzeix_conjecture/verification_manifest.tsv|verification manifest]] ([exact lines 1–1](../../evidence/crouzeix_conjecture/verification_manifest.tsv#L1)).
-- Can support: two zero-finding prohibited-token scans and two typed build
-  blocks caused by the recorded disk preflight.
-- Cannot support: a successful Lean build, absence of all proof gaps,
-  manuscript correspondence beyond named records, or theorem truth.
+- Local proof receipt note: [[evidence/crouzeix_conjecture/PROVENANCE|Harp-local LS scalar receipt record]] ([exact lines 18–22](../../evidence/crouzeix_conjecture/PROVENANCE.md#L18)).
+- Can support: two zero-finding prohibited-token scans, two typed build blocks
+  caused by the recorded disk preflight, and named Harp-local proof-slice
+  receipt facts for declarations compiled under the shared Lean root.
+- Cannot support: manuscript correspondence beyond named records, theorem
+  truth beyond the exact local Lean declarations and hypotheses recorded in the
+  cited receipts, or closure of proof obligations not represented by passed
+  receipt rows.
 
 ## Quotation audit
 

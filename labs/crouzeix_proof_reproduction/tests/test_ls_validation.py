@@ -41,6 +41,10 @@ class LSValidationTests(unittest.TestCase):
         self.assertEqual(graph[2].node_id, "ls-scalar-contradiction")
         self.assertEqual(graph[2].status, "passed")
         self.assertIsNotNone(graph[2].receipt_sha256)
+        self.assertEqual(graph[4].node_id, "ls-double-layer-realization")
+        self.assertEqual(graph[4].status, "blocked")
+        self.assertIn("ls-perturbation-lemma", graph[-1].dependencies)
+        self.assertIn("ls-double-layer-realization", graph[-1].dependencies)
         self.assertTrue(all("565b6a3" not in row.source_locator for row in graph))
         self.assertTrue(all("JIN" not in row.source_locator for row in graph))
 
@@ -136,10 +140,12 @@ class LSValidationTests(unittest.TestCase):
             )
             self.assertEqual(first_result["status"], "passed")
             self.assertTrue((root / "ls-perturbation-lemma" / "task.json").is_file())
+            self.assertTrue((root / "ls-double-layer-realization" / "task.json").is_file())
             self.assertTrue((root / "assembly" / "result.json").is_file())
             terminal_result = json.loads((root / "assembly" / "result.json").read_text())
             self.assertEqual(terminal_result["status"], "blocked")
             self.assertIn("ls-perturbation-lemma", terminal_result["blocked_by"])
+            self.assertIn("ls-double-layer-realization", terminal_result["blocked_by"])
 
     def test_materialize_ls_tasks_rejects_unpublished_predecessor_and_jin_imports(self) -> None:
         graph = ls_validation.load_route_graph(GRAPH)
