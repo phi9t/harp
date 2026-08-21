@@ -4,7 +4,7 @@ title: Crouzeix proof status and critical assessment
 type: deep-dive
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-20
 tags: [crouzeix-conjecture, publication-status, critical-review, missing-evidence]
 confidence: medium
 canonical: 09_status_and_critical_assessment.md
@@ -29,14 +29,17 @@ can reproduce their finite-dimensional cores from the inspected sources:
 
 Jin's repository also contains a broad Lean development whose source-level
 declaration graph matches the advertised route. Harp's scans found no
-prohibited tokens. Harp did not complete either clean-room Lean build because
-the disk policy blocked cache materialization.
+prohibited tokens. Harp did not complete either clean-room build of Jin's
+upstream repository revision because the disk policy blocked cache
+materialization. Separately, Harp now has a local Lean port whose terminal
+polynomial assembly compiles under the shared root with proof-slice receipts.
 
 The strongest justified status is therefore:
 
-> two source-backed candidate proofs, one with substantial source-level formal
-> verification artifacts, pending independent mathematical review and a
-> successful Harp-local formal build.
+> two source-backed candidate proofs; one Harp-local source-mapped Lean port
+> with passing terminal proof-slice receipts for the polynomial route; upstream
+> clean-room Jin repository builds, publication status, Preprints.org byte
+> identity, and independent mathematical review remain open evidence channels.
 
 ## Jin Git manuscript versus Preprints.org metadata {#jin-git-manuscript-versus-preprints-metadata}
 
@@ -68,8 +71,9 @@ This creates three distinct questions:
    presented?
 
 The source graph provides evidence for question 2. The blocked local builds
-leave question 1 unresolved in Harp. The digest mismatch limits question 3 at
-repository head.
+leave question 1 unresolved for the upstream Jin repositories in Harp. The
+Harp-owned proof port is a separate local formalization channel with its own
+receipts. The digest mismatch limits question 3 at repository head.
 
 ## Lorist-Schwenninger publication status {#lorist-schwenninger-publication-status}
 
@@ -145,10 +149,10 @@ For Lorist-Schwenninger:
 
 The most valuable next evidence is:
 
-1. a clean build of both Jin revisions under their pinned Lean and Mathlib
-   identities;
-2. machine-captured axiom output for the exported polynomial and rational
-   theorems;
+1. a clean build of both upstream Jin revisions under their pinned Lean and
+   Mathlib identities;
+2. machine-captured axiom output for the upstream exported polynomial and
+   rational theorems;
 3. a refreshed manuscript audit bound to the exact current TeX digest;
 4. independent expert review of both finite-dimensional cores and inherited
    reduction steps;

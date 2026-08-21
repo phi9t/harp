@@ -108,6 +108,99 @@ The simple-spectrum assumption is on the auxiliary matrix, not on the target
 values $\lambda_i$. Repeated target values are allowed.
 **[[knowledge/crouzeix_conjecture/claim_evidence_ledger#cc-011-auxiliary-basis-permits-repeated-target-values|EVIDENCE - CC-011]].**
 
+## A proof walk-through for engineers {#proof-walkthrough-for-engineers}
+
+Read the proof as a sequence of contracts. Each contract preserves one piece
+of structure that would be expensive, or impossible, to recover later.
+
+First, normalize on a fixed outer domain. Given a matrix $A$, put
+$K=W(A)$, choose a holomorphic neighborhood $U$ of $K$, and work on an
+outer neighborhood $\Omega_\varepsilon$ whose closure lies in $U$. After
+normalizing by
+
+$$
+m_\varepsilon=\max_{z\in\overline{\Omega_\varepsilon}}|f(z)|,
+$$
+
+the scalar values $f(\beta_i)$ used in the simple-spectrum approximation lie
+in the closed unit disk. This is the input needed by the Cayley family and by
+the sampled-kernel denominators.
+
+Second, use simple-spectrum matrices only as an auxiliary interface. Approximate
+$A$ by matrices $B$ with distinct eigenvalues, write
+
+$$
+B=S\operatorname{diag}(\beta_1,\ldots,\beta_n)S^{-1},
+\qquad
+T=f(B)=S\operatorname{diag}(\lambda_1,\ldots,\lambda_n)S^{-1},
+$$
+
+and set $G=S^*S$. The distinct $\beta_i$ identify the correction algebra as a
+diagonal algebra in this basis; the target values $\lambda_i$ still may repeat.
+
+Third, package the whole power family before taking any norm bound. The Cayley
+transform makes
+
+$$
+c_w(t)=1+2\sum_{m=1}^{\infty}w^m f(t)^m
+$$
+
+and the double-layer map turns this into a positive-real matrix function
+$H(w)$. The important invariant is not just positivity of one expression. It is
+positivity of an analytic family whose resolvent defect has diagonal adjoint
+shape.
+
+Fourth, cancel the defect at the kernel level. Positive real part gives the
+Herglotz kernel. Sampling at $w_i=\overline{\lambda_i}/2$ and adding the origin
+sample with $v=-G^{-1}Pu$ makes the correction contribution contain
+
+$$
+Gv+Pu=0.
+$$
+
+This is the proof's central design move. The unknown correction is not bounded
+or assumed friendly. It is routed through an interface where it cancels.
+
+Fifth, preserve matrix order. The cancellation leaves
+
+$$
+4Y-YG^{-1}P-PG^{-1}Y\succeq0,
+$$
+
+and after balancing this becomes
+
+$$
+4\widehat Y-\widehat Y\widehat P-\widehat P\widehat Y\succeq0.
+$$
+
+This is an ordered noncommutative statement, not a scalar inequality. A proof
+summary that commutes the factors has already lost the theorem's hard part.
+
+Sixth, extract the constant two from the first nonconstant Gramian term. The
+weighted Gramian expansion gives
+
+$$
+\widehat P=
+\sum_{k=0}^{\infty}4^{-k}\widetilde T^{*k}\widetilde T^k.
+$$
+
+The anticommutator inequality rules out any eigenvalue of $\widehat P$ above
+two. Since
+
+$$
+\widehat P=I+\frac14\widetilde T^*\widetilde T+\cdots,
+$$
+
+one obtains $\|\widetilde T\|\le2$. The final transfer back to $T$ uses the
+polar decomposition of $S$; a bare similarity argument would not preserve the
+operator norm.
+
+Finally, return to the original matrix in the right order. For fixed
+$\varepsilon$, send the simple-spectrum approximation $B_k$ to $A$ using
+continuity of the holomorphic functional calculus. Only after that shrink
+$\varepsilon$ to zero. This separates the matrix limit from the moving-boundary
+limit instead of hiding both in one uniformity claim.
+
 ## The cancellation as a proof primitive {#the-cancellation-as-a-proof-primitive}
 
 The central device is a sampled Herglotz-kernel inequality. If $F$ is analytic
@@ -145,8 +238,8 @@ $$
 **[[knowledge/crouzeix_conjecture/claim_evidence_ledger#cc-014-ordered-pre-gramian-inequality|EVIDENCE - CC-014]].**
 The order matters. Treating this like a scalar inequality or silently
 commuting the factors changes the claim. This is one reason the proof is a good
-formalization target: it contains exactly the sort of noncommutative book-
-keeping that looks harmless in prose and becomes unforgiving in Lean.
+formalization target: it contains exactly the sort of noncommutative
+bookkeeping that looks harmless in prose and becomes unforgiving in Lean.
 
 ## Why the constant two appears {#why-the-constant-two-appears}
 
@@ -179,8 +272,8 @@ operator norm.
 
 This is a useful proof-reading checksum. If a summary of Jin's proof does not
 mention the origin sample, the ordered anticommutator, and the polar-unitary
-endpoint, it is probably describing the shape of the proof without the load-
-bearing machinery.
+endpoint, it is probably describing the shape of the proof without the
+load-bearing machinery.
 
 ## From the finite lemma to the conjecture {#from-the-finite-lemma-to-the-conjecture}
 
@@ -222,7 +315,7 @@ The social question "is the proof done?" becomes several sharper questions:
 Harp's formal target lock binds the terminal target to Jin's audited commit
 `565b6a3e0659b6e0785f783b016c3f6d9f171fa5`, its source tree, the expected
 declaration `CrouzeixConjecture.crouzeixConjecture`, and the statement digest
-([formal_target.lock.json](../../labs/crouzeix_proof_reproduction/formal_target.lock.json#L49)).
+([formal_target.lock.json](../../labs/crouzeix_proof_reproduction/formal_target.lock.json#L55)).
 The terminal proof-slice receipt records that the expected Lean declaration
 passed and that its axiom audit passed
 ([receipt.json](../../labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/proof-slices/jin-terminal-crouzeix/attempt-001/receipt.json#L1)).
@@ -246,10 +339,10 @@ The current strongest Harp-local statement is narrow and valuable:
 
 That statement is not the same as saying that the external mathematical
 community has completed review, that the Preprints.org bytes were locally
-acquired, or that every revision of Jin's repository has the same manuscript-
-to-Lean correspondence. Those are different evidence channels. The packet's
-critical assessment keeps those boundaries explicit, including the missing
-Preprints.org byte mapping and publication-status evidence
+acquired, or that every revision of Jin's repository has the same
+manuscript-to-Lean correspondence. Those are different evidence channels. The
+packet's critical assessment keeps those boundaries explicit, including the
+missing Preprints.org byte mapping and publication-status evidence
 ([[knowledge/crouzeix_conjecture/09_status_and_critical_assessment#evidence-that-would-raise-confidence|critical assessment]]).
 
 For a senior ML systems reader, this is the most important lesson in the
