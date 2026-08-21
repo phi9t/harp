@@ -177,6 +177,22 @@ double-layer, outer-limit, polynomial, rational, and Hilbert-space layers.
 Without a completed Harp build, the strongest local statement is that these
 audit artifacts exist at the pinned revisions and their bytes are receipt-bound.
 
+## Harp-local proof-slice receipts {#harp-local-proof-slice-receipts}
+
+Harp also maintains a local source-mapped Lean port under the shared
+formalization root. The current proof-slice chain is:
+
+| Source-map row | Local declaration | Receipt |
+|---|---|---|
+| `jin-max-polynomial-modulus` | `CrouzeixConjecture.maxPolynomialModulusOnNumericalRange` | `9e0cf882a8f866a4897a46548c7e387fb0d07b7dee159b3c2260ef9ece1fb563` |
+| `jin-polynomial-bound` | `CrouzeixConjecture.PolynomialCrouzeixBound` | `b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8` |
+| `jin-terminal-crouzeix` | `CrouzeixConjecture.crouzeixConjecture` | `a8b6fdc904ed35de4a533b924bf8847c923f3a50e3cc19785ced4bee5f7da0f9` |
+
+These receipts are Harp-local proof checks against
+`formalization/lean/Crouzeix/Jin/`, not clean-room builds of the upstream Jin
+repository. The receipt chain is validated by the Crouzeix proof-slice tests
+and by the shared-root Lean build.
+
 Even a successful `#print axioms` result would trust Lean's kernel, Mathlib, the
 formal definitions, the compiler/runtime used to build them, and the
 correspondence between formal statements and the mathematical claim. Formal

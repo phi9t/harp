@@ -73,7 +73,7 @@ lemma for the abstract finite-dimensional perturbation interface:
 in `formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean`.
 The proof-slice receipt is
 [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|ls-equation-one-terminal-bound/attempt-001]].
-This is not yet a proof of Lemma 1: the scalar recurrence below and the
+This is not yet a proof of Lemma 1: the operator recurrence below and the
 double-layer realization remain separate formal obligations.
 
 ## The perturbation recurrence {#the-perturbation-recurrence}
@@ -180,6 +180,18 @@ $$
 If $\kappa>2$, the coefficient on the left is positive and the left side is
 nonnegative, while the right side is negative. This contradiction proves
 $\kappa\le2$.
+
+Harp now has this final real-algebra endpoint as a compiled Lean support
+lemma:
+**[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-033A: Harp Lean proves the Lorist-Schwenninger scalar endpoint|INFERENCE - CC-033A]].**
+`CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two`
+in `formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean`.
+The proof-slice receipt is
+[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction/attempt-001]].
+This theorem assumes the recurrence lower bound and the Hilbert-space upper
+bound as scalar hypotheses and proves the contradiction endpoint. It does not
+construct $x$, prove the recurrence from the commuting perturbation family, or
+realize the double-layer data.
 
 ## Double-layer realization {#double-layer-realization}
 

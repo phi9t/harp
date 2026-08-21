@@ -35,8 +35,12 @@ class LSValidationTests(unittest.TestCase):
         self.assertEqual(graph[0].node_id, "ls-equation-one-terminal-bound")
         self.assertEqual(graph[0].status, "passed")
         self.assertIsNotNone(graph[0].receipt_sha256)
+        self.assertEqual(graph[1].node_id, "ls-power-recurrence")
         self.assertEqual(graph[1].status, "blocked")
         self.assertIsNotNone(graph[1].blocked_reason)
+        self.assertEqual(graph[2].node_id, "ls-scalar-contradiction")
+        self.assertEqual(graph[2].status, "passed")
+        self.assertIsNotNone(graph[2].receipt_sha256)
         self.assertTrue(all("565b6a3" not in row.source_locator for row in graph))
         self.assertTrue(all("JIN" not in row.source_locator for row in graph))
 

@@ -1,2 +1,2 @@
-CrouzeixConjecture.maxPolynomialModulusOnNumericalRange.{u_1} {n : Type u_1} [Fintype n]
+CrouzeixConjecture.maxPolynomialModulusOnNumericalRange.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
   (A : CrouzeixConjecture.SquareMatrix n) (p : Polynomial ℂ) : ℝ

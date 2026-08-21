@@ -61,6 +61,11 @@ by either source.
 - Lorist-Schwenninger is pinned to arXiv `2608.03841v1`.
 - Harp's source scans passed. Both clean-room Lean build attempts are recorded
   as `blocked` by the 8 GiB disk preflight, not passed or failed.
+- Separately, Harp's shared Lean root contains a local source-mapped Jin proof
+  chain with passing terminal proof-slice receipts, plus Lorist-Schwenninger
+  support slices for the Equation 1 terminal bound and scalar contradiction
+  endpoint. The Lorist-Schwenninger terminal theorem remains blocked on the
+  operator recurrence, perturbation lemma, and double-layer realization.
 
 See the [[knowledge/crouzeix_conjecture/source_registry|source registry]], [[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim ledger]],
 and [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|critical assessment]] for exact

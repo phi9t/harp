@@ -1,0 +1,9 @@
+{
+  "build_target": "formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
+  "expected_lean_declaration": "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
+  "max_output_bytes": 1048576,
+  "route_id": "lorist-schwenninger",
+  "schema_version": "crouzeix-ls-proof-slice-task/v1",
+  "source_node_id": "ls-scalar-contradiction",
+  "timeout_seconds": 3600
+}

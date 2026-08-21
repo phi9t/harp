@@ -11,21 +11,32 @@
       "status": "passed"
     },
     {
-      "blocked_reason": "Scalar recurrence and contradiction above two are not yet formalized in Lean.",
+      "blocked_reason": "Operator recurrence construction remains to be formalized: derive the lower bound on Re <E_1 T x, x> from the commuting perturbation family and terminal product boundedness.",
       "dependencies": [
         "ls-equation-one-terminal-bound"
       ],
       "lean_name": "CrouzeixConjecture.LoristSchwenninger.PowerRecurrenceStatement",
       "node_id": "ls-power-recurrence",
       "role": "intermediate",
-      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L74-L90",
       "statement_sha256": "0b80e8d8bf6e2f5f9d3e3c0fb7e3d2e3f9c9ec7b5ecb392a6d211c7ef7ac0f3d",
       "status": "blocked"
     },
     {
+      "dependencies": [],
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
+      "node_id": "ls-scalar-contradiction",
+      "receipt_sha256": "ad13640a3a8676aa6dd7a2bfdb9f5c1975a0fdbee037cf0555767c8e40549781",
+      "role": "intermediate",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98",
+      "statement_sha256": "966cabe377c00b287b67e3a96de1ab53a12b8c4d35d130c26ae2bc899557f9fa",
+      "status": "passed"
+    },
+    {
       "blocked_reason": "Full LS perturbation lemma awaits the scalar recurrence proof over a top singular vector.",
       "dependencies": [
-        "ls-power-recurrence"
+        "ls-power-recurrence",
+        "ls-scalar-contradiction"
       ],
       "lean_name": "CrouzeixConjecture.LoristSchwenninger.PerturbationLemma",
       "node_id": "ls-perturbation-lemma",

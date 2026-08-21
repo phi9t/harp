@@ -7,6 +7,12 @@
       "statement_sha256": "f560ccaca9499f62c8cc30fe1a93338d1024101e129b439fbc880df29cb23311"
     },
     {
+      "fact_id": "ls-scalar-contradiction",
+      "resolution": "local_compiled",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98",
+      "statement_sha256": "966cabe377c00b287b67e3a96de1ab53a12b8c4d35d130c26ae2bc899557f9fa"
+    },
+    {
       "fact_id": "ls-uniform-perturbation-bound",
       "resolution": "local_task",
       "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",

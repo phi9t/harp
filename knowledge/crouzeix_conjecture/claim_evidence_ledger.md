@@ -350,6 +350,20 @@ the upstream theorem.
 - Mode: `paraphrase`
 - Source stability: `pinned`
 
+## CC-033A: Harp Lean proves the Lorist-Schwenninger scalar endpoint {#cc-033a-harp-lean-proves-the-lorist-schwenninger-scalar-endpoint}
+
+- Class: `INFERENCE`
+- Statement: Harp's local Lean route proves that the scalar recurrence lower bound and Hilbert-space upper bound from the Lorist-Schwenninger proof imply `κ ≤ 2`.
+- Source: [[knowledge/crouzeix_conjecture/source_registry#HARP-LOCAL-VERIFY: Local build and scan observations|HARP-LOCAL-VERIFY]]
+- Locator: [[evidence/crouzeix_conjecture/PROVENANCE|local LS scalar receipt record]] ([exact lines 18–22](../../evidence/crouzeix_conjecture/PROVENANCE.md#L18)) and [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json|ls-scalar-contradiction receipt]]
+- Scope: Local theorem `CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two`, assuming the scalar lower and upper inequalities as hypotheses.
+- Reproduction: Run `ELAN_HOME=/private/tmp/harp-mathematical-foundations-elan PATH="/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:$PATH" scripts/check_lean_library.sh Crouzeix` from the repository root with the shared `.lake` cache.
+- Confidence: `high`
+- Confidence basis: Compiled Lean declaration plus axiom audit reporting only `Classical.choice`, `Quot.sound`, and `propext`.
+- Caveat: This does not prove the operator recurrence, the existence of a norm-attaining vector in the needed setup, the double-layer realization, or the terminal Lorist-Schwenninger Crouzeix theorem.
+- Weakens if: The recorded proof-slice receipt no longer matches the checked-in Lean module or build artifacts.
+- Falsified by: A cached shared-root Crouzeix build or axiom audit showing the named theorem is absent, fails to compile, or depends on unrecorded axioms.
+
 ## CC-034: Functional calculus independently bounds E-n T-n {#cc-034-functional-calculus-independently-bounds-en-tn}
 
 - Class: `INFERENCE`

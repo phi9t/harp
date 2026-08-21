@@ -15,6 +15,13 @@ by remote URL, byte count, and digest, and the upstream revision still had no
 license file present. Treat the port as Harp-maintained formalization code with
 explicit source attribution, not as a normalized copy of the evidence bundle.
 
+As of `2026-08-20`, the Lorist-Schwenninger scalar endpoint has a Harp-local
+Lean receipt at
+`labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-scalar-contradiction/attempt-001/receipt.json`
+with file SHA-256
+`ad13640a3a8676aa6dd7a2bfdb9f5c1975a0fdbee037cf0555767c8e40549781`.
+This is a local proof-slice receipt, not upstream source evidence.
+
 `acquire.sh` created fresh detached checkouts for the two Jin revisions,
 verified remote and Git identity, ran each revision's `Lean/verify.sh`, and
 performed a metadata-only tracked-source scan. Build logs replace the checkout

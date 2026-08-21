@@ -99,7 +99,7 @@ def terminal_descriptor() -> dict[str, object]:
                 {
                     "row_id": "jin-polynomial-bound",
                     "receipt_sha256": (
-                        "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                        "b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8"
                     ),
                 }
             ],
@@ -286,7 +286,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 proof_slice.DependencyReceipt(
                     row_id="jin-max-polynomial-modulus",
                     receipt_sha256=(
-                        "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba"
+                        "9e0cf882a8f866a4897a46548c7e387fb0d07b7dee159b3c2260ef9ece1fb563"
                     ),
                 ),
             ),
@@ -346,7 +346,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 proof_slice.DependencyReceipt(
                     row_id="jin-polynomial-bound",
                     receipt_sha256=(
-                        "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                        "b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8"
                     ),
                 ),
             ),
@@ -735,7 +735,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                     {
                         "row_id": "jin-polynomial-bound",
                         "receipt_sha256": (
-                            "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                            "b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8"
                         ),
                     }
                 ],
@@ -880,7 +880,7 @@ class ProofSliceCliTests(unittest.TestCase):
                     {
                         "row_id": "jin-max-polynomial-modulus",
                         "receipt_sha256": (
-                            "ba66a41a1bef5a84977161cd5a8a568c95b0bee6d84d705fbd9cd63db3e823ba"
+                            "9e0cf882a8f866a4897a46548c7e387fb0d07b7dee159b3c2260ef9ece1fb563"
                         ),
                     }
                 ],
@@ -916,7 +916,7 @@ class ProofSliceCliTests(unittest.TestCase):
                     {
                         "row_id": "jin-polynomial-bound",
                         "receipt_sha256": (
-                            "35459464f1260cdfbde4af756e1dff4e3e37860f81bb56665726f285fb14f913"
+                            "b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8"
                         ),
                     }
                 ],

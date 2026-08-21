@@ -33,16 +33,19 @@ prohibited tokens. Harp did not complete either clean-room build of Jin's
 upstream repository revision because the disk policy blocked cache
 materialization. Separately, Harp now has a local Jin Lean port whose terminal
 polynomial assembly compiles under the shared root with proof-slice receipts.
-For the Lorist-Schwenninger route, Harp has one compiled Lean support slice:
+For the Lorist-Schwenninger route, Harp has two compiled Lean support slices:
 the Equation 1 terminal-product boundedness estimate for the abstract
-perturbation interface. The scalar recurrence, full perturbation lemma, and
-double-layer application are still open formalization work.
+perturbation interface, and the final scalar-algebra contradiction showing that
+the stated recurrence and upper-bound inequalities imply `κ ≤ 2`. The operator
+recurrence, full perturbation lemma, and double-layer application are still
+open formalization work.
 
 The strongest justified status is therefore:
 
 > two source-backed candidate proofs; one Harp-local source-mapped Lean port
-> with passing terminal proof-slice receipts for the polynomial route; one
-> compiled Lorist-Schwenninger support slice for the Equation 1 terminal bound;
+> with passing terminal proof-slice receipts for the polynomial route; two
+> compiled Lorist-Schwenninger support slices for the Equation 1 terminal bound
+> and scalar contradiction endpoint;
 > upstream clean-room Jin repository builds, publication status, Preprints.org
 > byte identity, and independent mathematical review remain open evidence
 > channels.
@@ -87,9 +90,10 @@ The registered artifact is arXiv `2608.03841v1`, with versioned TeX, PDF, Atom
 metadata, and source-archive digests. Harp has no peer-review, acceptance, or
 journal-publication receipt for this proof. Its mathematical claims remain
 preprint claims even though the packet reproduces the core derivation. Harp's
-current Lean surface formalizes the abstract perturbation data and the direct
-Equation 1 product-bound estimate; it does not yet formalize the scalar
-recurrence, contradiction above two, or double-layer realization.
+current Lean surface formalizes the abstract perturbation data, the direct
+Equation 1 product-bound estimate, and the scalar contradiction above two from
+the recurrence/output inequalities. It does not yet formalize the operator
+recurrence, full perturbation lemma, or double-layer realization.
 
 The note itself reports that Jin's proof appeared independently and uses a
 different approach. That statement is preserved as the authors' report, not as

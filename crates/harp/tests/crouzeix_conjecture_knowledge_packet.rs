@@ -22,11 +22,11 @@ const EXPECTED_FILES: [&str; 15] = [
     "source_registry.md",
 ];
 
-const REQUIRED_CLAIMS: [&str; 34] = [
+const REQUIRED_CLAIMS: [&str; 35] = [
     "CC-001", "CC-002", "CC-003", "CC-004", "CC-005", "CC-010", "CC-011", "CC-012", "CC-013",
     "CC-014", "CC-015", "CC-016", "CC-017", "CC-020", "CC-021", "CC-022", "CC-023", "CC-024",
-    "CC-025", "CC-030", "CC-031", "CC-032", "CC-033", "CC-034", "CC-035", "CC-036", "CC-037",
-    "CC-040", "CC-041", "CC-042", "CC-043", "CC-044", "CC-045", "CC-046",
+    "CC-025", "CC-030", "CC-031", "CC-032", "CC-033", "CC-033A", "CC-034", "CC-035", "CC-036",
+    "CC-037", "CC-040", "CC-041", "CC-042", "CC-043", "CC-044", "CC-045", "CC-046",
 ];
 
 const REQUIRED_FIELDS: [&str; 9] = [
