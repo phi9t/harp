@@ -1,0 +1,27 @@
+{
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "axiom_audit_sha256": "4a2bc0411f5c0463f2ba199f911ae7935a8c819849b3cc94f27980ac48aaa1a7",
+  "build_target": "formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean",
+  "command_sha256": "ba92bacb63caa050fafca38f3e4d78311d0b6dbb26d8fe4bea8dec96c3fa69b5",
+  "expected_lean_declaration": "CrouzeixConjecture.LoristSchwenninger.perturbation_mul_target_power_norm_le",
+  "module_sha256": "b0a42c128264cb7ac0e08c60e4728e3e8522f5692df28e2cc55a0ce4e2ef9ba6",
+  "observed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "reason": "Lean command succeeded; Crouzeix aggregate build passed; axiom audit reported only allowed axioms.",
+  "result_sha256": "52b0354b9e0557e2ee910f241841080c6b285974c757ee6f95bd44167318af31",
+  "route_id": "lorist-schwenninger",
+  "schema_version": "crouzeix-ls-proof-slice-receipt/v1",
+  "source_node_id": "ls-equation-one-terminal-bound",
+  "source_slice_sha256": "2a10979470c966e26d5a506ce67d3c03df8f39a6a07dba531ef63db5f5ce72be",
+  "status": "passed",
+  "stderr_sha256": "b7a56f39e66a55e6a75d9dd8d0f1e8e503a565608b9d847a12dcaefd71ad6a8c",
+  "stdout_sha256": "e7807ea14f3cf21515853933b03d496326b03dfedb06e9d6528ba5e7765d02c7",
+  "task_sha256": "0db3c09035d2cbd54e89ba09effbb9cccb91defcb412d420c1dc844f3f12d61f"
+}

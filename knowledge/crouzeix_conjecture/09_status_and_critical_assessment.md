@@ -31,15 +31,21 @@ Jin's repository also contains a broad Lean development whose source-level
 declaration graph matches the advertised route. Harp's scans found no
 prohibited tokens. Harp did not complete either clean-room build of Jin's
 upstream repository revision because the disk policy blocked cache
-materialization. Separately, Harp now has a local Lean port whose terminal
+materialization. Separately, Harp now has a local Jin Lean port whose terminal
 polynomial assembly compiles under the shared root with proof-slice receipts.
+For the Lorist-Schwenninger route, Harp has one compiled Lean support slice:
+the Equation 1 terminal-product boundedness estimate for the abstract
+perturbation interface. The scalar recurrence, full perturbation lemma, and
+double-layer application are still open formalization work.
 
 The strongest justified status is therefore:
 
 > two source-backed candidate proofs; one Harp-local source-mapped Lean port
-> with passing terminal proof-slice receipts for the polynomial route; upstream
-> clean-room Jin repository builds, publication status, Preprints.org byte
-> identity, and independent mathematical review remain open evidence channels.
+> with passing terminal proof-slice receipts for the polynomial route; one
+> compiled Lorist-Schwenninger support slice for the Equation 1 terminal bound;
+> upstream clean-room Jin repository builds, publication status, Preprints.org
+> byte identity, and independent mathematical review remain open evidence
+> channels.
 
 ## Jin Git manuscript versus Preprints.org metadata {#jin-git-manuscript-versus-preprints-metadata}
 
@@ -80,7 +86,10 @@ receipts. The digest mismatch limits question 3 at repository head.
 The registered artifact is arXiv `2608.03841v1`, with versioned TeX, PDF, Atom
 metadata, and source-archive digests. Harp has no peer-review, acceptance, or
 journal-publication receipt for this proof. Its mathematical claims remain
-preprint claims even though the packet reproduces the core derivation.
+preprint claims even though the packet reproduces the core derivation. Harp's
+current Lean surface formalizes the abstract perturbation data and the direct
+Equation 1 product-bound estimate; it does not yet formalize the scalar
+recurrence, contradiction above two, or double-layer realization.
 
 The note itself reports that Jin's proof appeared independently and uses a
 different approach. That statement is preserved as the authors' report, not as

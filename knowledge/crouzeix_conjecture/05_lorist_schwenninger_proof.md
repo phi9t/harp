@@ -4,7 +4,7 @@ title: Lorist-Schwenninger 2-dilation proof
 type: derivation
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-20
 tags: [crouzeix-conjecture, lorist-schwenninger, dilation, perturbation]
 confidence: medium
 canonical: 05_lorist_schwenninger_proof.md
@@ -66,6 +66,15 @@ $$
 
 No additional boundedness hypothesis is needed. The boundedness of $E_n$,
 the isometry $V$, and the contraction $Q$ are exactly the inputs.
+
+Harp now has this terminal boundedness estimate as a compiled Lean support
+lemma for the abstract finite-dimensional perturbation interface:
+`CrouzeixConjecture.LoristSchwenninger.perturbation_mul_target_power_norm_le`
+in `formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean`.
+The proof-slice receipt is
+[[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|ls-equation-one-terminal-bound/attempt-001]].
+This is not yet a proof of Lemma 1: the scalar recurrence below and the
+double-layer realization remain separate formal obligations.
 
 ## The perturbation recurrence {#the-perturbation-recurrence}
 

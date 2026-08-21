@@ -24,11 +24,12 @@ NODE_FIELDS = frozenset(
         "status",
     }
 )
+NODE_OPTIONAL_FIELDS = frozenset({"receipt_sha256", "blocked_reason", "failed_reason"})
 INVENTORY_FIELDS = frozenset({"schema_version", "source_identity", "facts"})
 FACT_FIELDS = frozenset({"fact_id", "statement_sha256", "source_locator", "resolution"})
 NODE_ROLES = frozenset({"definition", "adapter", "library_fact", "intermediate", "terminal"})
-NODE_STATUSES = frozenset({"mapped", "blocked"})
-FACT_RESOLUTIONS = frozenset({"mathlib_available", "local_task", "blocked"})
+NODE_STATUSES = frozenset({"mapped", "blocked", "passed", "failed"})
+FACT_RESOLUTIONS = frozenset({"mathlib_available", "local_task", "local_compiled", "blocked"})
 LS_SOURCE_IDENTITY = "arxiv:2608.03841v1"
 
 
@@ -41,6 +42,9 @@ class LSGraphRow:
     dependencies: tuple[str, ...]
     role: str
     status: str
+    receipt_sha256: str | None = None
+    blocked_reason: str | None = None
+    failed_reason: str | None = None
 
 
 def load_route_graph(path: Path) -> tuple[LSGraphRow, ...]:
@@ -117,7 +121,7 @@ def materialize_tasks(rows: tuple[LSGraphRow, ...], root: Path) -> dict[str, obj
                 "schema_version": "crouzeix-ls-result/v1",
                 "node_id": row.node_id,
                 "status": row.status,
-                "reason": "mapped LS node requires later formal proof slice",
+                "reason": _node_result_reason(row),
             },
         )
         published.add(row.node_id)
@@ -143,6 +147,18 @@ def materialize_tasks(rows: tuple[LSGraphRow, ...], root: Path) -> dict[str, obj
     }
 
 
+def _node_result_reason(row: LSGraphRow) -> str:
+    if row.status == "passed":
+        return "LS node has a compiled Lean receipt"
+    if row.status == "blocked":
+        assert row.blocked_reason is not None
+        return row.blocked_reason
+    if row.status == "failed":
+        assert row.failed_reason is not None
+        return row.failed_reason
+    return "mapped LS node requires later formal proof slice"
+
+
 def _node_list(value: Any) -> list[LSGraphRow]:
     if not isinstance(value, list) or not value:
         raise protocol.ValidationError("LS graph nodes must be a nonempty list")
@@ -152,8 +168,25 @@ def _node_list(value: Any) -> list[LSGraphRow]:
 
 
 def _node(value: Mapping[str, Any]) -> LSGraphRow:
-    _require_fields(value, NODE_FIELDS, "LS graph node")
+    _require_node_fields(value)
     locator = _source_locator(value["source_locator"], "source_locator")
+    status = _enum(value["status"], NODE_STATUSES, "status")
+    receipt_sha256 = _optional_digest(value.get("receipt_sha256"), "receipt_sha256")
+    blocked_reason = _optional_bounded_string(
+        value.get("blocked_reason"), "blocked_reason", 1, 4096
+    )
+    failed_reason = _optional_bounded_string(
+        value.get("failed_reason"), "failed_reason", 1, 4096
+    )
+    _validate_node_outcome_fields(
+        status,
+        receipt_sha256,
+        blocked_reason,
+        failed_reason,
+        has_receipt_sha256="receipt_sha256" in value,
+        has_blocked_reason="blocked_reason" in value,
+        has_failed_reason="failed_reason" in value,
+    )
     return LSGraphRow(
         node_id=formal_target._runtime_id(value["node_id"], "node_id"),
         source_locator=locator,
@@ -161,7 +194,10 @@ def _node(value: Mapping[str, Any]) -> LSGraphRow:
         lean_name=_bounded_string(value["lean_name"], "lean_name", 1, 256),
         dependencies=tuple(_runtime_id_list(value["dependencies"], "dependencies")),
         role=_enum(value["role"], NODE_ROLES, "role"),
-        status=_enum(value["status"], NODE_STATUSES, "status"),
+        status=status,
+        receipt_sha256=receipt_sha256,
+        blocked_reason=blocked_reason,
+        failed_reason=failed_reason,
     )
 
 
@@ -173,6 +209,70 @@ def _fact(value: Mapping[str, Any]) -> dict[str, object]:
         "source_locator": _source_locator(value["source_locator"], "source_locator"),
         "resolution": _enum(value["resolution"], FACT_RESOLUTIONS, "resolution"),
     }
+
+
+def _require_node_fields(value: Mapping[str, Any]) -> None:
+    fields = set(value)
+    required = set(NODE_FIELDS)
+    allowed = required | set(NODE_OPTIONAL_FIELDS)
+    missing = sorted(required - fields)
+    extra = sorted(fields - allowed)
+    if missing or extra:
+        detail = []
+        if missing:
+            detail.append(f"missing {', '.join(missing)}")
+        if extra:
+            detail.append(f"unknown {', '.join(extra)}")
+        raise protocol.ValidationError(
+            f"LS graph node fields are invalid: {'; '.join(detail)}"
+        )
+
+
+def _validate_node_outcome_fields(
+    status: str,
+    receipt_sha256: str | None,
+    blocked_reason: str | None,
+    failed_reason: str | None,
+    *,
+    has_receipt_sha256: bool,
+    has_blocked_reason: bool,
+    has_failed_reason: bool,
+) -> None:
+    if status == "mapped":
+        if has_receipt_sha256:
+            raise protocol.ValidationError("mapped LS graph node rejects receipt_sha256")
+        if has_blocked_reason:
+            raise protocol.ValidationError("mapped LS graph node rejects blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("mapped LS graph node rejects failed_reason")
+        return
+
+    if status == "blocked":
+        if not has_blocked_reason or blocked_reason is None:
+            raise protocol.ValidationError("blocked LS graph node requires blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("blocked LS graph node rejects failed_reason")
+        return
+
+    if status == "failed":
+        if not has_receipt_sha256 or receipt_sha256 is None:
+            raise protocol.ValidationError("failed LS graph node requires receipt_sha256")
+        if not has_failed_reason or failed_reason is None:
+            raise protocol.ValidationError("failed LS graph node requires failed_reason")
+        if has_blocked_reason:
+            raise protocol.ValidationError("failed LS graph node rejects blocked_reason")
+        return
+
+    if status == "passed":
+        if not has_receipt_sha256 or receipt_sha256 is None:
+            raise protocol.ValidationError("passed LS graph node requires receipt_sha256")
+        if has_blocked_reason:
+            raise protocol.ValidationError("passed LS graph node rejects blocked_reason")
+        if has_failed_reason:
+            raise protocol.ValidationError("passed LS graph node rejects failed_reason")
+        return
+
+    raise AssertionError(f"unhandled LS graph status: {status}")
 
 
 def _reject_cycles(rows: list[LSGraphRow]) -> None:
@@ -319,6 +419,20 @@ def _bounded_string(value: Any, label: str, minimum: int, maximum: int) -> str:
             f"{label} must be a non-NUL string of length {minimum}..{maximum}"
         )
     return value
+
+
+def _optional_bounded_string(
+    value: Any, label: str, minimum: int, maximum: int
+) -> str | None:
+    if value is None:
+        return None
+    return _bounded_string(value, label, minimum, maximum)
+
+
+def _optional_digest(value: Any, label: str) -> str | None:
+    if value is None:
+        return None
+    return formal_target._digest(value, label)
 
 
 def _runtime_id_list(value: Any, label: str) -> list[str]:

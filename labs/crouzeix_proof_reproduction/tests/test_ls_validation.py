@@ -32,6 +32,11 @@ class LSValidationTests(unittest.TestCase):
 
         self.assertEqual(graph[-1].node_id, "ls-terminal-crouzeix")
         self.assertEqual(graph[-1].role, "terminal")
+        self.assertEqual(graph[0].node_id, "ls-equation-one-terminal-bound")
+        self.assertEqual(graph[0].status, "passed")
+        self.assertIsNotNone(graph[0].receipt_sha256)
+        self.assertEqual(graph[1].status, "blocked")
+        self.assertIsNotNone(graph[1].blocked_reason)
         self.assertTrue(all("565b6a3" not in row.source_locator for row in graph))
         self.assertTrue(all("JIN" not in row.source_locator for row in graph))
 
@@ -51,6 +56,7 @@ class LSValidationTests(unittest.TestCase):
                         "dependencies": [],
                         "role": "terminal",
                         "status": "blocked",
+                        "blocked_reason": "fixture blocker",
                     }
                 ],
             }
@@ -88,7 +94,7 @@ class LSValidationTests(unittest.TestCase):
         self.assertEqual(inventory["source_identity"], "arxiv:2608.03841v1")
         self.assertEqual(
             {item["resolution"] for item in inventory["facts"]},
-            {"local_task", "blocked"},
+            {"local_compiled", "local_task", "blocked"},
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -120,11 +126,16 @@ class LSValidationTests(unittest.TestCase):
 
             self.assertEqual(summary["status"], "blocked")
             self.assertEqual(summary["terminal_node_id"], "ls-terminal-crouzeix")
+            self.assertTrue((root / "ls-equation-one-terminal-bound" / "task.json").is_file())
+            first_result = json.loads(
+                (root / "ls-equation-one-terminal-bound" / "result.json").read_text()
+            )
+            self.assertEqual(first_result["status"], "passed")
             self.assertTrue((root / "ls-perturbation-lemma" / "task.json").is_file())
             self.assertTrue((root / "assembly" / "result.json").is_file())
             terminal_result = json.loads((root / "assembly" / "result.json").read_text())
             self.assertEqual(terminal_result["status"], "blocked")
-            self.assertIn("ls-power-recurrence", terminal_result["blocked_by"])
+            self.assertIn("ls-perturbation-lemma", terminal_result["blocked_by"])
 
     def test_materialize_ls_tasks_rejects_unpublished_predecessor_and_jin_imports(self) -> None:
         graph = ls_validation.load_route_graph(GRAPH)
@@ -155,6 +166,66 @@ class LSValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(protocol.ValidationError, "Jin"):
                 ls_validation.materialize_tasks(tuple(leaky), Path(directory).resolve())
+
+    def test_ls_graph_rejects_status_outcome_field_mismatches(self) -> None:
+        cases = (
+            (
+                {"status": "mapped", "receipt_sha256": "a" * 64},
+                "mapped.*receipt_sha256",
+            ),
+            (
+                {"status": "mapped", "blocked_reason": "blocked"},
+                "mapped.*blocked_reason",
+            ),
+            ({"status": "blocked"}, "blocked.*blocked_reason"),
+            (
+                {
+                    "status": "blocked",
+                    "blocked_reason": "blocked",
+                    "failed_reason": "failed",
+                },
+                "blocked.*failed_reason",
+            ),
+            ({"status": "failed"}, "failed.*receipt_sha256"),
+            (
+                {"status": "failed", "receipt_sha256": "a" * 64},
+                "failed.*failed_reason",
+            ),
+            ({"status": "passed"}, "passed.*receipt_sha256"),
+            (
+                {
+                    "status": "passed",
+                    "receipt_sha256": "a" * 64,
+                    "blocked_reason": "blocked",
+                },
+                "passed.*blocked_reason",
+            ),
+        )
+        for overrides, pattern in cases:
+            with self.subTest(overrides=overrides):
+                with tempfile.TemporaryDirectory() as directory:
+                    path = Path(directory).resolve() / "source-graph.json"
+                    node = {
+                        "node_id": "ls-terminal-crouzeix",
+                        "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128",
+                        "statement_sha256": "a" * 64,
+                        "lean_name": "LS.CrouzeixTerminal",
+                        "dependencies": [],
+                        "role": "terminal",
+                    }
+                    node.update(overrides)
+                    write_json(
+                        path,
+                        {
+                            "schema_version": "crouzeix-ls-source-graph/v1",
+                            "source_id": "LS-ARXIV-V1",
+                            "source_identity": "arxiv:2608.03841v1",
+                            "nodes": [node],
+                        },
+                    )
+
+                    with self.assertRaisesRegex(protocol.ValidationError, pattern):
+                        ls_validation.load_route_graph(path)
 
 
 if __name__ == "__main__":

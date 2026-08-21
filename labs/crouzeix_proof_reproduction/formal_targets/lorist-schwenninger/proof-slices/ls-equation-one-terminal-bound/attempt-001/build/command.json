@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "scripts/check_lean_library.sh",
+    "Crouzeix"
+  ],
+  "cache_policy": "reuse existing shared .lake cache; do not rebuild common Lean dependencies",
+  "cwd": ".",
+  "elan_home": "/private/tmp/harp-mathematical-foundations-elan",
+  "exit_code": 0,
+  "schema_version": "crouzeix-ls-lean-command/v1"
+}

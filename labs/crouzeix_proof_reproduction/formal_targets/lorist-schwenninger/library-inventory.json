@@ -1,6 +1,12 @@
 {
   "facts": [
     {
+      "fact_id": "ls-equation-one-terminal-bound",
+      "resolution": "local_compiled",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",
+      "statement_sha256": "f560ccaca9499f62c8cc30fe1a93338d1024101e129b439fbc880df29cb23311"
+    },
+    {
       "fact_id": "ls-uniform-perturbation-bound",
       "resolution": "local_task",
       "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",

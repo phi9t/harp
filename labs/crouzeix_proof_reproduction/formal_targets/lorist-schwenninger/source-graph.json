@@ -2,18 +2,20 @@
   "nodes": [
     {
       "dependencies": [],
-      "lean_name": "LS.PerturbationLemma",
-      "node_id": "ls-perturbation-lemma",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.perturbation_mul_target_power_norm_le",
+      "node_id": "ls-equation-one-terminal-bound",
+      "receipt_sha256": "e596548fe22a946e5bef0d5f942a99d64da3579c76dbd5afd0a4e46de33317cb",
       "role": "intermediate",
       "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",
-      "statement_sha256": "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86",
-      "status": "blocked"
+      "statement_sha256": "f560ccaca9499f62c8cc30fe1a93338d1024101e129b439fbc880df29cb23311",
+      "status": "passed"
     },
     {
+      "blocked_reason": "Scalar recurrence and contradiction above two are not yet formalized in Lean.",
       "dependencies": [
-        "ls-perturbation-lemma"
+        "ls-equation-one-terminal-bound"
       ],
-      "lean_name": "LS.PowerRecurrence",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.PowerRecurrenceStatement",
       "node_id": "ls-power-recurrence",
       "role": "intermediate",
       "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124",
@@ -21,10 +23,23 @@
       "status": "blocked"
     },
     {
+      "blocked_reason": "Full LS perturbation lemma awaits the scalar recurrence proof over a top singular vector.",
       "dependencies": [
         "ls-power-recurrence"
       ],
-      "lean_name": "LS.CrouzeixTerminal",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.PerturbationLemma",
+      "node_id": "ls-perturbation-lemma",
+      "role": "intermediate",
+      "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99",
+      "statement_sha256": "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86",
+      "status": "blocked"
+    },
+    {
+      "blocked_reason": "Terminal LS theorem awaits the full perturbation lemma and double-layer realization.",
+      "dependencies": [
+        "ls-perturbation-lemma"
+      ],
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.CrouzeixTerminal",
       "node_id": "ls-terminal-crouzeix",
       "role": "terminal",
       "source_locator": "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128",
