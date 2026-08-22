@@ -1,4 +1,4 @@
-import Crouzeix.LoristSchwenninger.Perturbation
+import CrouzeixConjecture.Definitions
 
 /-!
 Scalar endpoint for the Lorist-Schwenninger perturbation route.
@@ -11,9 +11,8 @@ real inequalities in two scalars:
 * a recurrence lower bound on `m`;
 * a Hilbert-space upper bound on `b`.
 
-This module proves the final real-algebra step.  It does not prove the
-operator recurrence or construct the dilation data; those remain separate
-source-mapped LS obligations.
+This module proves the final real-algebra step.  The operator recurrence and
+concrete dilation are proved in later modules of the source-faithful chain.
 -/
 
 noncomputable section
