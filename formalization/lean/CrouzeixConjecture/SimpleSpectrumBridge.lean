@@ -1,6 +1,5 @@
 module
 
-public import CrouzeixConjecture.CompletionStatement
 public import CrouzeixConjecture.SimpleSpectrum
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Charpoly

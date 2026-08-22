@@ -2,6 +2,7 @@ module
 
 public import CrouzeixConjecture.HolomorphicRadialContour
 public import CrouzeixConjecture.CompletionDiagonalization
+public import CrouzeixConjecture.DoubleLayerBoundary
 
 @[expose] public section
 

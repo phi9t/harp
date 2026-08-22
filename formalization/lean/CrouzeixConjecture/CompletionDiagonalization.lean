@@ -1,6 +1,7 @@
 module
 
 public import CrouzeixConjecture.PositiveRealCompletion
+public import CrouzeixConjecture.CompletionStatement
 public import CrouzeixConjecture.SimpleSpectrumBridge
 public import CrouzeixConjecture.GeneratedAlgebra
 public import CrouzeixConjecture.MatrixHerglotz

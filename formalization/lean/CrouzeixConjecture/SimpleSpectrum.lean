@@ -39,6 +39,11 @@ structure SimpleDiagonalization (B : SquareMatrix n) where
   eq_conjugate : B = innerConjugation changeBasis (Matrix.diagonal eigenvalues)
   eigenvalues_injective : Function.Injective eigenvalues
 
+/-- A spectral encoding of “all eigenvalues are distinct”.  Over `ℂ`, the characteristic
+polynomial splits and has degree `card n`, so noduplicity of its roots is exactly the
+manuscript's simple-spectrum hypothesis. -/
+def HasDistinctEigenvalues (T : SquareMatrix n) : Prop := T.charpoly.roots.Nodup
+
 /-- Every diagonal entry in an explicit diagonalization belongs to the matrix spectrum. -/
 theorem SimpleDiagonalization.eigenvalue_mem_matrixSpectrum
     {B : SquareMatrix n} (hB : SimpleDiagonalization B) (i : n) :

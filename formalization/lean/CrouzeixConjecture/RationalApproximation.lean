@@ -288,11 +288,12 @@ theorem exists_polynomial_tendstoUniformlyOn_prod_linear_reciprocal
         continuousOn_prod_linear_reciprocal poles htail
       have hproduct :
           TendstoLocallyUniformlyOn
-            ((fun N z ↦ Polynomial.eval z (qa N)) *
-              (fun N z ↦ Polynomial.eval z (qt N)))
-            ((fun z ↦ (z - a)⁻¹) *
-              (fun z ↦ (poles.map fun b ↦ (z - b)⁻¹).prod)) atTop K :=
-        hqa.tendstoLocallyUniformlyOn.mul₀ hqt.tendstoLocallyUniformlyOn hca hct
+            (fun N z ↦ Polynomial.eval z (qa N) * Polynomial.eval z (qt N))
+            (fun z ↦ (z - a)⁻¹ *
+              (poles.map fun b ↦ (z - b)⁻¹).prod) atTop K :=
+        ((hqa.tendstoLocallyUniformlyOn.mul₀ hqt.tendstoLocallyUniformlyOn hca hct).congr
+          fun _ _ _ ↦ by simp only [Pi.mul_apply]).congr_right
+            fun _ _ ↦ by simp only [Pi.mul_apply]
       apply
         (tendstoLocallyUniformlyOn_iff_tendstoUniformlyOn_of_compact hKcompact).mp
       simpa [Polynomial.eval_mul] using hproduct
@@ -354,14 +355,14 @@ theorem exists_polynomial_tendstoUniformlyOn_rationalScalarEval
     ContinuousOn.inv₀ r.denom.continuous.continuousOn hdenfree
   have hproduct :
       TendstoLocallyUniformlyOn
-        ((fun _ : ℕ ↦ fun z ↦ Polynomial.eval z r.num) *
-          (fun N z ↦ Polynomial.eval z (q N)))
-        ((fun z ↦ Polynomial.eval z r.num) *
-          (fun z ↦ (Polynomial.eval z r.denom)⁻¹)) atTop K :=
-    hnum.tendstoLocallyUniformlyOn.mul₀ hq.tendstoLocallyUniformlyOn
-      hnumContinuous hdenContinuous
+        (fun N z ↦ Polynomial.eval z r.num * Polynomial.eval z (q N))
+        (rationalScalarEval r) atTop K :=
+    ((hnum.tendstoLocallyUniformlyOn.mul₀ hq.tendstoLocallyUniformlyOn
+      hnumContinuous hdenContinuous).congr fun _ _ _ ↦ by
+        simp only [Pi.mul_apply]).congr_right fun _ _ ↦ by
+          simp only [Pi.mul_apply, rationalScalarEval, div_eq_mul_inv]
   apply (tendstoLocallyUniformlyOn_iff_tendstoUniformlyOn_of_compact hKcompact).mp
-  simpa [Polynomial.eval_mul, rationalScalarEval, div_eq_mul_inv] using hproduct
+  simpa [Polynomial.eval_mul] using hproduct
 
 /-- Epsilon form of the complete scalar rational-approximation theorem. -/
 theorem exists_polynomial_uniformly_approximates_rationalScalarEval
@@ -456,12 +457,12 @@ theorem tendsto_rationalMatrixEval_of_tendstoUniformlyOn_numericalRange
         (isCompact_numericalRange A)).mp hproductLocal
     have hright :
         TendstoUniformlyOn
-          ((fun N z ↦ Polynomial.eval z (q N)) *
-            (fun _ : ℕ ↦ fun z ↦ Polynomial.eval z r.denom))
+          (fun N z ↦ Polynomial.eval z (q N) * Polynomial.eval z r.denom)
           (fun z ↦ Polynomial.eval z r.num) atTop (numericalRange A) :=
-      hproductUniform.congr_right (fun z hz ↦ by
+      (hproductUniform.congr_right (fun z hz ↦ by
         simp only [Pi.mul_apply, rationalScalarEval]
-        exact div_mul_cancel₀ _ (hdenfree z hz))
+        exact div_mul_cancel₀ _ (hdenfree z hz))).congr <|
+          Filter.Eventually.of_forall fun _ _ _ ↦ by simp only [Pi.mul_apply]
     simpa [Polynomial.eval_mul] using hright
   have hmatrixProduct :=
     tendsto_polynomialEval_of_tendstoUniformlyOn_numericalRange

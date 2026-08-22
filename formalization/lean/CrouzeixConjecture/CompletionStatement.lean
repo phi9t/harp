@@ -19,11 +19,6 @@ def unitDisk : Set ℂ := Metric.ball 0 1
 /-- The closed unit disk containing the spectrum in the completion lemma. -/
 def closedUnitDisk : Set ℂ := Metric.closedBall 0 1
 
-/-- A spectral encoding of “all eigenvalues are distinct”.  Over `ℂ`, the characteristic
-polynomial splits and has degree `card n`, so noduplicity of its roots is exactly the
-manuscript's simple-spectrum hypothesis. -/
-def HasDistinctEigenvalues (T : SquareMatrix n) : Prop := T.charpoly.roots.Nodup
-
 /-- The pointwise analytic positive-real completion conditions for an auxiliary pair `B, T`.
 The function is represented on all of `ℂ`, but every condition is restricted to the open unit
 disk, so values outside the manuscript's domain are immaterial.  The defect from the resolvent of

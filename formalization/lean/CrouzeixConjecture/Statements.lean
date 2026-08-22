@@ -26,4 +26,9 @@ positive-dimension convention needed for a nonempty numerical range. -/
 def MainTheoremStatement [Nonempty n] : Prop :=
   ∀ (A : SquareMatrix n) (p : Polynomial ℂ), PolynomialCrouzeixBound A p
 
+/-- The finite-matrix theorem needed to transport the polynomial bound to Hilbert spaces.
+Only standard finite index types are required because the transport uses `stdOrthonormalBasis`. -/
+def FiniteMatrixMainTheoremStatement : Prop :=
+  ∀ (d : ℕ) [Nonempty (Fin d)], MainTheoremStatement (n := Fin d)
+
 end CrouzeixConjecture

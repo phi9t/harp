@@ -1,6 +1,7 @@
 module
 
-public import CrouzeixConjecture.DoubleLayerBoundary
+public import CrouzeixConjecture.ParametricBoundary
+public import CrouzeixConjecture.SimpleSpectrum
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
@@ -754,20 +755,6 @@ theorem hasParametricPolynomialCauchyFormula_of_simpleDiagonalization
       rw [hbase]
     _ = polynomialEval q B := by
       rw [smul_smul, cauchyNormalization_mul_period_I, one_smul]
-
-/-- The geometric oriented radial boundary therefore supplies the complete double-layer
-provider required by the simple-spectrum perturbation argument. -/
-theorem hasDoubleLayerCompletionProvider_of_simpleDiagonalization
-    {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
-    (R : PositivePeriodicRadialData) (c : ℂ) {Omega : Set ℂ}
-    (G : OrientedRadialConvexBoundary R c Omega)
-    (B : SquareMatrix n) (hB : SimpleDiagonalization B)
-    (hWB : numericalRange B ⊆ Omega) :
-    HasDoubleLayerCompletionProvider B (closure Omega) := by
-  exact hasDoubleLayerCompletionProvider_of_parametricBoundary
-    (G.parametricBoundary R c) B hWB
-    (G.hasParametricPolynomialCauchyFormula_of_simpleDiagonalization
-      R c B hB hWB)
 
 end OrientedRadialConvexBoundary
 

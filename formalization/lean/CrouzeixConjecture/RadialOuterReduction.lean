@@ -2,6 +2,7 @@ module
 
 public import CrouzeixConjecture.CanonicalParallelRadialGeometry
 public import CrouzeixConjecture.MainOuterLimit
+public import CrouzeixConjecture.RadialContourCompletion
 
 @[expose] public section
 
