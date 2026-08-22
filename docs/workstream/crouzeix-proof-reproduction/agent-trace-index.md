@@ -31,6 +31,16 @@ The durable normalized capture is
 That file preserves the active handoff rule, unchanged proof state, CPFR-R014
 repair contract, trace evidence protocols, and amendment reachability protocol.
 
+## Three-Route Proof Session
+
+The parent session with ID `01a011a1-5880-7251-b88a-e75c11512157` covers the
+subsequent shared-Lean consolidation and Jin, Lorist--Schwenninger, and Harp
+proof effort from 2026-08-17 through 2026-08-22. Its durable process findings
+are distilled in `retrospective-002.md`; the raw local JSONL remains private
+execution evidence and is not a repository dependency. Current proof status is
+derived from tracked source, route ledgers, and receipts rather than from that
+transcript.
+
 ## Raw-File Removal Rule
 
 The raw amendment files may be removed from the old

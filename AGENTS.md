@@ -44,6 +44,22 @@ Keep Rust errors typed, validate JSON at boundaries, reject symlinked generated
 targets, and preserve strict TypeScript boundary parsing and exhaustive variant
 handling.
 
+### Lean cache discipline
+
+- Treat the primary checkout's `formalization/lean/.lake` as the canonical
+  machine-local dependency cache. A Lean feature worktree should use a
+  symlink to that cache after verifying its target and ancestry.
+- Never hydrate or update common Lean dependencies during proof iteration. Do
+  not run `lake update`, `lake --try-cache exe cache get Mathlib`, or
+  `mise run lean-cache` unless the project owner explicitly requests cache
+  maintenance. Missing cache state is a blocked precondition.
+- Rebuilding Harp-owned modules against the warm cache is expected. Run the
+  narrow route target while iterating; run `lean-all` and the full repository
+  gate only after the candidate is frozen.
+- Before an expensive gate, verify the pinned toolchain, cache link, required
+  dependency artifacts, worktree-local mise trust, and exact target without
+  invoking Lake.
+
 ## Workspace management and landing
 
 - Do not push unless the project owner explicitly asks for a push.

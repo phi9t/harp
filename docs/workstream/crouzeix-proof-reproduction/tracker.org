@@ -7,6 +7,10 @@
 This file is the active execution ledger for the workstream. Read
 [[file:design.md][design.md]], the linked approved design, and the PRD before
 claiming a ticket.
+For the three-route formal-proof completion phase, also read
+[[file:../../superpowers/specs/2026-08-22-crouzeix-three-route-proof-completion-design.md][the completion design]],
+[[file:../../superpowers/plans/2026-08-22-crouzeix-three-route-proof-completion.md][the implementation plan]],
+and [[file:retrospective-002.md][the execution retrospective]].
 
 Every task must have both:
 
@@ -60,6 +64,7 @@ files use empty-blob base
 | M2 Live expert frontier | CPFR-030..CPFR-036 | immutable E-arm run completed or typed blocked |
 | M3 Evidence and mathematical review | CPFR-040..CPFR-049, CPFR-060..CPFR-068 | evidence verified, findings frozen, and guided-arm trigger resolved |
 | M4 Reader integration and landing | CPFR-050..CPFR-057 | release gate passes and local master fast-forwards |
+| M5 Three-route proof completion | CPFR-082..CPFR-091 | Jin, LS, and Harp are route-isolated, mapped, reviewed, receipt-backed, published, and locally landed |
 
 * Work Items
 
@@ -6277,4 +6282,554 @@ review.
   6 tests, 0 failures.
 - =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_formal_target -v=:
   16 tests, 0 failures.
+
+** DONE Pin Historical LS Receipt Fixture :tests:evidence:ticket:
+:PROPERTIES:
+:ID: CPFR-R019
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: docs/crouzeix-proof-completion-plan
+:WORKTREE: .worktrees/crouzeix-proof-completion-plan
+:DEPENDS_ON: CPFR-081
+:OWNER: trae-cli
+:AGENT_RUN: crouzeix-ls-v1-fixture-repair
+:MODEL: gpt-5.4
+:END:
+Make immutable LS v1 receipt tests independent of the moving Git =HEAD=.
+
+*** Scope
+Replace the test helper's =git show HEAD:<module>= fallback with a digest-named
+fixture containing the exact historical =Scalar.lean= bytes bound by the v1 receipt.
+
+*** Non-goals
+- No change to historical receipt, graph, or production-validator semantics.
+- No rewrite of current LS proof source.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/fixtures/ls_v1/1e75e90b54c750a110e83b54e8fffa2ceb9efcf44a6747e742217f42b0b453b6.lean=
+- =labs/crouzeix_proof_reproduction/tests/test_ls_validation.py=
+- CPFR-R019 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Tests never consult a moving Git ref for immutable receipt-bound bytes.
+- The fixture filename and content both match the receipt's module SHA-256.
+- The full LS validation suite passes after the proof source is committed.
+
+*** Implementation Steps
+1. Reproduce the post-commit =module_sha256 mismatch=.
+2. Confirm that the v1 receipt matches the pre-refactor blob and current =HEAD= does not.
+3. Add the exact historical bytes as a digest-named fixture.
+4. Load only a fixture whose content matches the requested digest.
+5. Run the LS suite and commit the focused repair.
+
+*** Verification Plan
+- =shasum -a 256 labs/crouzeix_proof_reproduction/fixtures/ls_v1/1e75e90b54c750a110e83b54e8fffa2ceb9efcf44a6747e742217f42b0b453b6.lean=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_ls_validation -v=
+- =git diff --check=
+
+*** Verification Evidence
+- RED: 5 of 48 LS validation tests errored with =module_sha256 mismatch= after =Scalar.lean= became part of =HEAD=.
+- Root cause: =copy_committed_receipts= fetched historical bytes from the moving =HEAD= ref.
+- Fixture digest is exactly =1e75e90b54c750a110e83b54e8fffa2ceb9efcf44a6747e742217f42b0b453b6=.
+- GREEN: all 48 LS validation tests passed.
+- Focused repair commit: =3148ce0=.
+
+** DONE Land Three-Route Proof Base And Record Retrospective :lean:review:landing:ticket:
+:PROPERTIES:
+:ID: CPFR-082
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: docs/crouzeix-proof-completion-plan
+:WORKTREE: .worktrees/crouzeix-proof-completion-plan
+:DEPENDS_ON: CPFR-R019
+:OWNER: trae-cli
+:AGENT_RUN: crouzeix-proof-integrity-landing
+:MODEL: gpt-5.4
+:END:
+Land the provider-neutral foundation, compiled LS and Harp terminal routes, and
+production verification machinery without promoting deferred proof evidence.
+
+*** Scope
+Record the five-commit local-master landing and distill the full execution trace
+into a durable retrospective and three-route completion design.
+
+*** Non-goals
+- No LS graph promotion or local formalization evidence publication.
+- No rewrite of historical Jin or LS receipt bytes.
+- No claim that compilation alone establishes complete source fidelity.
+
+*** Owned Files
+- =AGENTS.md=
+- =docs/workstream/crouzeix-proof-reproduction/retrospective-002.md=
+- =docs/workstream/crouzeix-proof-reproduction/agent-trace-index.md=
+- =docs/superpowers/specs/2026-08-22-crouzeix-three-route-proof-completion-design.md=
+- =docs/superpowers/plans/2026-08-22-crouzeix-three-route-proof-completion.md=
+- CPFR-082 subtree in =docs/workstream/crouzeix-proof-reproduction/tracker.org=
+
+*** Acceptance Criteria
+- Local =master= contains the reviewed proof base as focused commits.
+- The exact candidate passed the full warm-cache repository gate.
+- Historical LS graph and upstream Jin verification records remain unchanged.
+- The retrospective separates compiled theorem status from route certification.
+- The plan gives a fresh agent exact files, commands, dependencies, and claim boundaries.
+
+*** Implementation Steps
+1. Verify and land the frozen proof-integrity worktree.
+2. Inspect the parent transcript and three-lens reflection outputs.
+3. Reconcile the trace with current source, ledgers, evidence, and worktrees.
+4. Author the retrospective, completion design, implementation plan, and tracker continuation.
+5. Validate the tracker and documentation, refresh the repository receipt, and land locally.
+
+*** Verification Plan
+- =mise run verify= on the proof-integrity candidate with the shared Lean cache.
+- =python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =git diff --check=
+- =cargo run -q -p harp -- repository verify= after the final receipt refresh.
+
+*** Verification Evidence
+- Proof-integrity commits =e5144cc=, =862173f=, =19adb7c=, =319f55f=, and =c8237e3= were fast-forwarded to local =master=.
+- The exact candidate passed =mise run verify=; the shared Lean gate completed 8,771 jobs in 198 seconds with no dependency hydration.
+- Independent Standards and Spec reviews reported no remaining Critical or Important finding.
+- Historical LS graph, upstream Jin verification manifest, and local evidence publication state remained unchanged.
+- The post-commit fixture regression was repaired in =3148ce0= and the full LS validation suite passed 48/48.
+
+** TODO Add Route-Isolated Targets And No-Build Preflight :lean:infra:ticket:
+:PROPERTIES:
+:ID: CPFR-083
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-082
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Make Jin, LS, and Harp independently buildable from one warm dependency cache.
+
+*** Scope
+Add dedicated Jin and Harp aggregates beside the existing LS aggregate, extend
+the wrapper and mise tasks, and add a read-only preflight command.
+
+*** Non-goals
+- No dependency hydration, receipt publication, or mathematical source-map changes.
+- No second Lake root or remote cache service.
+
+*** Owned Files
+- =formalization/lean/CrouzeixJin.lean=
+- =formalization/lean/CrouzeixHarp.lean=
+- =formalization/lean/lakefile.toml=
+- =scripts/check_lean_library.sh=
+- =mise.toml=
+- =labs/crouzeix_proof_reproduction/proof_evidence.py=
+- focused wrapper and preflight tests
+
+*** Acceptance Criteria
+- Each route has a dedicated target with fail-closed cross-provider policy.
+- Preflight checks toolchain, cache identity, manifest, closure, and required artifacts without invoking Lean.
+- All three focused targets pass from the canonical shared cache.
+- Missing cache state is reported as blocked and never triggers hydration.
+
+*** Implementation Steps
+1. Add RED tests for missing targets, cross-provider imports, and preflight failures.
+2. Add dedicated aggregate modules and route-policy-driven wrapper behavior.
+3. Implement the read-only preflight and focused mise tasks.
+4. Run focused tests and all three cached route builds.
+5. Review and commit the isolated target surface.
+
+*** Verification Plan
+- =cargo test -p harp --test lean_library -- --test-threads=1=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_evidence -v=
+- =python3 labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route all=
+- cached =CrouzeixJin=, =CrouzeixLoristSchwenninger=, and =CrouzeixHarp= builds
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Define Common Route Proof Evidence Contracts :lean:evidence:tests:ticket:
+:PROPERTIES:
+:ID: CPFR-084
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-083
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Define strict shared manifest, receipt, and review contracts before publication.
+
+*** Scope
+Implement route manifests, route receipts, mathematical review manifests, and
+closure-to-ledger reconciliation with concrete adversarial fixtures.
+
+*** Non-goals
+- No real receipt publication or canonical claim promotion.
+- No broad rewrite of the existing hardened publisher and verifier modules.
+
+*** Owned Files
+- =labs/crouzeix_proof_reproduction/route_validation.py=
+- =labs/crouzeix_proof_reproduction/proof_evidence.py=
+- route manifest, receipt, and review JSON schemas
+- =labs/crouzeix_proof_reproduction/tests/test_route_validation.py=
+
+*** Acceptance Criteria
+- Producer and validator round-trip the same concrete artifact tree.
+- Unknown fields, cycles, unmapped modules, invalid provenance, provider drift, theorem-type drift, and forbidden axioms fail closed.
+- Unpublished routes report their exact incomplete claim level.
+- Jin/LS source provenance and Harp derivation/reuse provenance are distinct types.
+
+*** Implementation Steps
+1. Freeze the schema and security invariants as RED tests.
+2. Implement strict typed parsing and semantic validation.
+3. Reuse the active Lean import parser for closure reconciliation.
+4. Add the read-only validation CLI.
+5. Run Python, schema, and diff checks; review and commit.
+
+*** Verification Plan
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_route_validation -v=
+- =python3 -m json.tool= on all three new schemas
+- =git diff --check=
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Certify Complete Jin Route Correspondence :lean:evidence:review:ticket:
+:PROPERTIES:
+:ID: CPFR-085
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-084
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Extend Jin's three-row terminal ledger to the complete proof chain and publish a route receipt.
+
+*** Scope
+Map every load-bearing Jin proof declaration to pinned source, review the full
+correspondence, and publish a dedicated-route receipt.
+
+*** Non-goals
+- No rewrite of historical proof-slice receipts.
+- No requirement to hydrate or rebuild the upstream Jin environment.
+
+*** Owned Files
+- Jin =route-manifest.json= under the pinned formal target
+- =evidence/crouzeix_conjecture/reviews/jin.json=
+- =evidence/crouzeix_conjecture/routes/jin/=
+- focused route-validation tests
+
+*** Acceptance Criteria
+- The complete active Jin closure is mapped to pinned source or explicit shared foundations.
+- The dedicated target has no LS or Harp imports.
+- Independent Spec review finds no unresolved Critical or Important issue.
+- The immutable route receipt binds target, closure, theorem type, outputs, and allowed axioms.
+
+*** Implementation Steps
+1. Generate and classify the Jin terminal closure.
+2. Add exact pinned source locators for every load-bearing node.
+3. Validate the unpublished manifest.
+4. Obtain and bind independent review.
+5. Publish, validate in Python and Rust, and commit.
+
+*** Verification Plan
+- dedicated cached Jin target
+- =proof_evidence.py validate --route jin=
+- focused Python route tests
+- Rust Crouzeix source tests
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Publish And Promote Six-Node Lorist-Schwenninger Route :lean:evidence:review:ticket:
+:PROPERTIES:
+:ID: CPFR-086
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-084
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Publish six current v2 receipts and atomically promote the LS graph and inventory.
+
+*** Scope
+Build the dedicated LS aggregate once, audit all six declarations, publish
+create-only candidates, review source correspondence, and promote the full graph.
+
+*** Non-goals
+- No mutation of historical v1 attempts.
+- No broad Crouzeix or cross-provider receipt substituted for the LS route.
+
+*** Owned Files
+- LS proof-slice attempt directories
+- LS =source-graph.json= and =library-inventory.json=
+- LS =route-manifest.json=
+- =evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json=
+- =evidence/crouzeix_conjecture/routes/lorist-schwenninger/=
+
+*** Acceptance Criteria
+- All six canonical nodes have valid v2 receipts sharing one aggregate identity.
+- Source orientation, recurrence, double-layer realization, and limits pass independent review.
+- Graph and inventory are promoted atomically.
+- Python and Rust validate historical v1 and current v2 evidence.
+
+*** Implementation Steps
+1. Run no-build preflight and freeze the candidate commit.
+2. Publish all six candidate receipts once.
+3. Independently validate candidates and review the source correspondence.
+4. Atomically promote graph and inventory.
+5. Run dedicated LS, Python, and Rust gates; commit.
+
+*** Verification Plan
+- cached =scripts/check_lean_library.sh CrouzeixLoristSchwenninger=
+- =proof_evidence.py validate --route lorist-schwenninger=
+- LS receipt and validation unit suites
+- Rust Crouzeix source tests
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
+:PROPERTIES:
+:ID: CPFR-087
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-084
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Describe and certify Harp's derived route, including every lower-level LS reuse.
+
+*** Scope
+Create the Harp derivation ledger, run mathematical and novelty reviews, and
+publish a dedicated-route receipt.
+
+*** Non-goals
+- No claim of full mathematical independence from LS.
+- No Jin or LS terminal-provider import.
+
+*** Owned Files
+- Harp =route-manifest.json=
+- =evidence/crouzeix_conjecture/reviews/harp.json=
+- =evidence/crouzeix_conjecture/routes/harp/=
+- focused route-validation tests
+
+*** Acceptance Criteria
+- The finite cubature, counting-L2, finite-horizon, perturbation, and limit chain is explicit.
+- All eleven lower-level LS module dependencies are declared and reviewed.
+- The dedicated target has no Jin or LS terminal/provider import.
+- The route receipt and review validate in Python and Rust.
+
+*** Implementation Steps
+1. Write and validate the complete derivation/reuse graph.
+2. Obtain mathematical and novelty-boundary reviews.
+3. Run the dedicated Harp build and axiom audits.
+4. Publish the create-only route receipt.
+5. Validate and commit.
+
+*** Verification Plan
+- cached =scripts/check_lean_library.sh CrouzeixHarp=
+- =proof_evidence.py validate --route harp=
+- focused Python route tests
+- Rust Crouzeix source tests
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
+:PROPERTIES:
+:ID: CPFR-088
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-085 CPFR-086 CPFR-087
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Publish one atomic local evidence bundle for terminal and closed-range claims from all routes.
+
+*** Scope
+Extend the four-row publisher to six rows, bind route manifests and reviews,
+publish once, and make the Rust verifier require the resulting bundle.
+
+*** Non-goals
+- No acceptance of caller-supplied precomputed build output.
+- No change to the upstream verification manifest.
+
+*** Owned Files
+- local formalization publisher and tests
+- Rust Crouzeix verifier and tests
+- =evidence/crouzeix_conjecture/local_formalization/=
+
+*** Acceptance Criteria
+- The bundle contains exactly six required rows and all bound artifacts.
+- One broad build, six axiom audits, and three provider audits are recorded.
+- Missing, altered, aliased, symlinked, or cross-route artifacts fail closed.
+- The mandatory-enforcement flag and genuine bundle land atomically.
+
+*** Implementation Steps
+1. Add RED six-row and route-binding tests.
+2. Extend Python and Rust with shared concrete fixtures.
+3. Run preflight and publish the genuine bundle once.
+4. Enable mandatory verification in the same commit.
+5. Validate sources and commit.
+
+*** Verification Plan
+- local formalization Python tests
+- Rust Crouzeix source tests
+- =cargo run -q -p harp -- sources verify=
+- cached broad Crouzeix build
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
+:PROPERTIES:
+:ID: CPFR-089
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-088
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Derive canonical prose and Atlas output from the published three-route evidence.
+
+*** Scope
+Update the packet, claim ledger, source registry, provenance, lab instructions,
+and generated reader artifacts to reflect exact route claim levels.
+
+*** Non-goals
+- No peer-review, publication, complete-boundedness, or author-endorsement claim.
+- No manual edit of generated Atlas files.
+
+*** Owned Files
+- canonical Crouzeix knowledge packet files
+- =evidence/crouzeix_conjecture/PROVENANCE.md=
+- lab README and packet tests
+- generated Atlas corpus, HTML, and receipt
+
+*** Acceptance Criteria
+- Every proof-status statement points to a validated route or local-bundle artifact.
+- Jin upstream and Harp-local claims remain separate.
+- LS and Harp descriptions state exact source fidelity and reuse boundaries.
+- Atlas outputs are regenerated together and packet tests pass.
+
+*** Implementation Steps
+1. Add RED tests for the new proof-state vocabulary and route IDs.
+2. Update canonical prose from validated evidence only.
+3. Regenerate all Atlas outputs together.
+4. Run packet and link tests.
+5. Review and commit.
+
+*** Verification Plan
+- Crouzeix knowledge-packet Rust tests
+- corpus build and check
+- Atlas lint, typecheck, tests, build, and static export test
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Run Final Three-Route Review And Local Landing :review:landing:ticket:
+:PROPERTIES:
+:ID: CPFR-090
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-089
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Freeze, independently review, fully verify, and fast-forward the completed proof program.
+
+*** Scope
+Run independent Standards and Spec reviews, the warm-cache release gate, final
+payload-digest refresh, and local fast-forward landing.
+
+*** Non-goals
+- No push.
+- No post-review source edit without rerunning the affected review and gate.
+
+*** Owned Files
+- review manifests and any explicitly reviewed repairs
+- CPFR-090 tracker subtree
+- =docs/import-receipt.md= as the final tracked edit
+
+*** Acceptance Criteria
+- No Critical or Important review finding remains.
+- All three route manifests and receipts validate.
+- The six-row local bundle is mandatory and valid.
+- The exact final tree passes =mise run verify=.
+- Local =master= advances by fast-forward only.
+
+*** Implementation Steps
+1. Freeze the candidate and run both review axes.
+2. Repair findings with RED/GREEN tests and rerun affected reviews.
+3. Run the full warm-cache release gate.
+4. Refresh and stage the import receipt last, then rerun the gate.
+5. Commit focused concerns and fast-forward local =master=.
+
+*** Verification Plan
+- =proof_evidence.py validate --route all=
+- full focused Python and Rust proof suites
+- all three route builds and =lean-all=
+- =mise run verify=
+- =cargo run -q -p harp -- repository verify=
+
+*** Verification Evidence
+Pending implementation.
+
+** TODO Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
+:PROPERTIES:
+:ID: CPFR-091
+:DESIGN_SECTION: Crouzeix Three-Route Proof Completion
+:BRANCH: unassigned
+:WORKTREE: unassigned
+:DEPENDS_ON: CPFR-090
+:OWNER: unassigned
+:AGENT_RUN: unassigned
+:MODEL: unassigned
+:END:
+Classify every remaining Crouzeix branch and worktree before safe local cleanup.
+
+*** Scope
+Record current heads, unique commits, tracked and untracked state, process use,
+and containment in =master=; remove only clean fully represented worktrees.
+
+*** Non-goals
+- No deletion of divergent commits or unexplained dirty state.
+- No cleanup of unrelated non-Crouzeix worktrees.
+
+*** Owned Files
+- =docs/workstream/crouzeix-proof-reproduction/worktree-inventory-002.md=
+- CPFR-091 tracker subtree
+- final receipt only if tracked documentation changes
+
+*** Acceptance Criteria
+- Every Crouzeix worktree and branch has an explicit disposition.
+- Dirty or divergent work remains preserved.
+- Only clean, merged worktrees and then their branches are removed.
+- Primary-checkout untracked paths remain untouched.
+
+*** Implementation Steps
+1. Capture status, head, merge base, unique commits, and active processes.
+2. Compare divergent commits by patch identity against =master=.
+3. Preserve or recover all unique work before removal.
+4. Remove only audited safe candidates.
+5. Update the inventory and verify final Git state.
+
+*** Verification Plan
+- =git worktree list --porcelain=
+- =git branch --no-merged master=
+- per-worktree =git status --short --untracked-files=all=
+- per-branch =git merge-base --is-ancestor <branch> master=
+
+*** Verification Evidence
+Pending implementation.
 - =git diff --check=: exit 0.
