@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -24,6 +23,7 @@ GRAPH = LAB / "formal_targets/lorist-schwenninger/source-graph.json"
 INVENTORY = LAB / "formal_targets/lorist-schwenninger/library-inventory.json"
 FORMAL_TARGET = LAB / "formal_targets/lorist-schwenninger"
 REPOSITORY_ROOT = LAB.parents[1]
+V1_FIXTURES = LAB / "fixtures/ls_v1"
 VALIDATOR_STDOUT = (
     b"[lean] target=CrouzeixLoristSchwenninger\n"
     b"[lean] root=formalization/lean\n"
@@ -91,16 +91,10 @@ def copy_committed_receipts(root: Path) -> tuple[Path, Path]:
             module_path = repository_root / build_target
             if not module_path.is_file() or sha256_file(module_path) == module_sha256:
                 continue
-            try:
-                historical = subprocess.run(
-                    ["git", "show", f"HEAD:{build_target}"],
-                    cwd=REPOSITORY_ROOT,
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                ).stdout
-            except subprocess.CalledProcessError:
+            fixture = V1_FIXTURES / f"{module_sha256}.lean"
+            if not fixture.is_file():
                 continue
+            historical = fixture.read_bytes()
             if protocol.sha256_bytes(historical) == module_sha256:
                 module_path.write_bytes(historical)
     return formal_target_root, repository_root
