@@ -11,7 +11,7 @@ relative_root=formalization/lean
 allowed_elan_root=/private/tmp/harp-mathematical-foundations-elan
 
 usage() {
-  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|all [--project-for-test <directory>]" >&2
+  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixLoristSchwenninger|all [--project-for-test <directory>]" >&2
 }
 
 report_failure() {
@@ -103,6 +103,11 @@ case "$target" in
     scan_label=Crouzeix
     forbidden_words="sorry admit"
     ;;
+  CrouzeixLoristSchwenninger)
+    human_label="Crouzeix Lorist--Schwenninger"
+    scan_label=CrouzeixLoristSchwenninger
+    forbidden_words="sorry admit"
+    ;;
   all)
     human_label="Harp formalization"
     scan_label=all
@@ -164,7 +169,17 @@ if ! missing_cache_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-missing-cache-module
   report_failure "$scan_label" scan 0 0 0 0
   exit 1
 fi
-trap 'rm -f "$scan_list" "$required_cache_list" "$missing_cache_list"' EXIT HUP INT TERM
+if ! closure_sources_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-closure-sources.XXXXXX"); then
+  printf '%s\n' "$human_label Lean source scan failed: could not create a temporary file" >&2
+  report_failure "$scan_label" scan 0 0 0 0
+  exit 1
+fi
+if ! local_import_list=$(mktemp "${TMPDIR:-/tmp}/harp-lean-local-imports.XXXXXX"); then
+  printf '%s\n' "$human_label Lean source scan failed: could not create a temporary file" >&2
+  report_failure "$scan_label" scan 0 0 0 0
+  exit 1
+fi
+trap 'rm -f "$scan_list" "$required_cache_list" "$missing_cache_list" "$closure_sources_list" "$local_import_list"' EXIT HUP INT TERM
 
 append_sources() {
   source_path=$1
@@ -180,8 +195,116 @@ append_sources() {
   fi
 }
 
+extract_lean_imports() {
+  source_file=$1
+  import_prefix=$2
+  include_public=$3
+  awk -v prefix="$import_prefix" -v include_public="$include_public" '
+    function uncomment(line,    clean, cursor, pair) {
+      clean = ""
+      cursor = 1
+      while (cursor <= length(line)) {
+        pair = substr(line, cursor, 2)
+        if (comment_depth > 0) {
+          if (pair == "/-") {
+            comment_depth++
+            cursor += 2
+          } else if (pair == "-/") {
+            comment_depth--
+            cursor += 2
+          } else {
+            cursor++
+          }
+        } else if (pair == "/-") {
+          comment_depth++
+          cursor += 2
+        } else if (pair == "--") {
+          break
+        } else {
+          clean = clean substr(line, cursor, 1)
+          cursor++
+        }
+      }
+      return clean
+    }
+    {
+      line = uncomment($0)
+      sub(/^[[:space:]]+/, "", line)
+      field_count = split(line, fields, /[[:space:]]+/)
+      first_module = 0
+      if (fields[1] == "import") {
+        first_module = 2
+      } else if (include_public == "true" && fields[1] == "public" &&
+          fields[2] == "import") {
+        first_module = 3
+      }
+      for (i = first_module; i > 0 && i <= field_count; i++) {
+        if (fields[i] == prefix || index(fields[i], prefix ".") == 1) {
+          print fields[i]
+        }
+      }
+    }
+    END {
+      if (comment_depth != 0) {
+        exit 2
+      }
+    }
+  ' "$source_file"
+}
+
+append_ls_only_sources() {
+  if ! append_sources "$project_dir/CrouzeixLoristSchwenninger.lean"; then
+    return 1
+  fi
+
+  closure_changed=true
+  while [ "$closure_changed" = true ]; do
+    closure_changed=false
+    cp "$scan_list" "$closure_sources_list"
+    while IFS= read -r source_file || [ -n "$source_file" ]; do
+      if ! {
+        extract_lean_imports "$source_file" Crouzeix true
+        extract_lean_imports "$source_file" CrouzeixConjecture true
+      } > "$local_import_list"; then
+        printf '%s\n' "$human_label Lean source scan failed while reading imports from $source_file" >&2
+        return 1
+      fi
+      while IFS= read -r imported_module || [ -n "$imported_module" ]; do
+        case "$imported_module" in
+          Crouzeix.Jin|Crouzeix.Jin.*|Crouzeix.Harp|Crouzeix.Harp.*|Crouzeix)
+            printf '%s\n' "$human_label Lean source scan rejected provider import $imported_module in $source_file" >&2
+            return 1
+            ;;
+          Crouzeix.LoristSchwenninger|Crouzeix.LoristSchwenninger.*|CrouzeixConjecture|CrouzeixConjecture.*)
+            imported_path=$(printf '%s\n' "$imported_module" | tr . /)
+            imported_source="$project_dir/$imported_path.lean"
+            if [ ! -f "$imported_source" ]; then
+              printf '%s\n' "$human_label Lean source scan failed: missing local import $imported_module ($imported_source)" >&2
+              return 1
+            fi
+            if ! grep -F -x -q "$imported_source" "$scan_list"; then
+              printf '%s\n' "$imported_source" >> "$scan_list"
+              closure_changed=true
+            fi
+            ;;
+          Crouzeix.*)
+            printf '%s\n' "$human_label Lean source scan rejected non-LS import $imported_module in $source_file" >&2
+            return 1
+            ;;
+        esac
+      done < "$local_import_list"
+    done < "$closure_sources_list"
+  done
+}
+
 scan_started=$(now_seconds)
-if [ "$normal_build" = false ]; then
+if [ "$target" = CrouzeixLoristSchwenninger ]; then
+  if ! append_ls_only_sources; then
+    scan_finished=$(now_seconds)
+    report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
+    exit 1
+  fi
+elif [ "$normal_build" = false ]; then
   if ! append_sources "$project_dir"; then
     scan_finished=$(now_seconds)
     report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
@@ -232,7 +355,7 @@ while IFS= read -r source_file || [ -n "$source_file" ]; do
   done
   if [ "$target" = all ]; then
     case "$source_file" in
-      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*|"$project_dir/Crouzeix.lean"|"$project_dir/Crouzeix/"*)
+      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*|"$project_dir/Crouzeix.lean"|"$project_dir/Crouzeix/"*|"$project_dir/CrouzeixConjecture.lean"|"$project_dir/CrouzeixConjecture/"*)
         if grep -n -H 'admit' "$source_file"; then
           proof_holes_found=true
         else
@@ -261,15 +384,23 @@ cache_started=$(now_seconds)
 cache_seconds=0
 if [ "$normal_build" = true ]; then
   while IFS= read -r source_file || [ -n "$source_file" ]; do
-    awk '
-      /^import[[:space:]]/ {
-        for (i = 2; i <= NF; i++) {
-          if ($i ~ /^Mathlib($|\.)/) {
-            print $i
+    if [ "$target" = CrouzeixLoristSchwenninger ]; then
+      if ! extract_lean_imports "$source_file" Mathlib true >> "$required_cache_list"; then
+        printf '%s\n' "$human_label Lean source scan failed while reading imports from $source_file" >&2
+        report_failure "$scan_label" scan "$scan_seconds" 0 0 "$scan_seconds"
+        exit 1
+      fi
+    else
+      awk '
+        /^import[[:space:]]/ {
+          for (i = 2; i <= NF; i++) {
+            if ($i ~ /^Mathlib($|\.)/) {
+              print $i
+            }
           }
         }
-      }
-    ' "$source_file" >> "$required_cache_list"
+      ' "$source_file" >> "$required_cache_list"
+    fi
   done < "$scan_list"
   sort -u "$required_cache_list" -o "$required_cache_list"
 

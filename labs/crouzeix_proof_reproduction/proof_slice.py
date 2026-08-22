@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import signal
@@ -52,10 +53,7 @@ SHARED_LEAN_ROOT = REPO_ROOT / SHARED_LEAN_CWD
 SHARED_ELAN_HOME = Path("/private/tmp/harp-mathematical-foundations-elan")
 SHARED_LEAN_TOOLCHAIN = "leanprover/lean4:v4.32.1"
 SHARED_TOOLCHAIN_BIN = (
-    SHARED_ELAN_HOME
-    / "toolchains"
-    / "leanprover--lean4---v4.32.1"
-    / "bin"
+    SHARED_ELAN_HOME / "toolchains" / "leanprover--lean4---v4.32.1" / "bin"
 )
 SHARED_SYSTEM_PATH = (Path("/usr/bin"), Path("/bin"))
 
@@ -95,6 +93,72 @@ TASK_FIELDS = frozenset(
 COMMAND_FIELDS = frozenset(
     {"schema_version", "argv", "cwd", "env", "timeout_seconds", "max_output_bytes"}
 )
+SOURCE_SLICE_FIELDS = frozenset(
+    {
+        "schema_version",
+        "row_id",
+        "source_locator",
+        "statement_sha256",
+        "lean_name",
+        "dependency_ids",
+    }
+)
+AXIOM_AUDIT_FIELDS = frozenset(
+    {
+        "schema_version",
+        "scan_performed",
+        "expected_declaration",
+        "allowed_axioms",
+        "observed_axioms",
+        "status",
+        "reason",
+    }
+)
+RESULT_FIELDS = frozenset({"schema_version", "status", "reason"})
+RECEIPT_BASE_FIELDS = frozenset(
+    {
+        "schema_version",
+        "route_id",
+        "source_map_row_id",
+        "expected_lean_declaration",
+        "status",
+        "reason",
+        "task_sha256",
+    }
+)
+RECEIPT_EXECUTION_FIELDS = frozenset(
+    {
+        "command_sha256",
+        "command_exit_code",
+        "stdout_sha256",
+        "stderr_sha256",
+        "stdout_truncated",
+        "stderr_truncated",
+        "max_output_bytes",
+        "axioms_sha256",
+        "result_sha256",
+    }
+)
+COMMITTED_ATTEMPT_MEMBERS = frozenset(
+    {
+        "task.json",
+        "source-slice.json",
+        "module/Slice.lean",
+        "build/command.json",
+        "build/stdout.log",
+        "build/stderr.log",
+        "build/axioms.json",
+        "result.json",
+        "receipt.json",
+    }
+)
+OPTIONAL_COMMITTED_ATTEMPT_MEMBERS = frozenset({"build/AxiomAudit.lean"})
+COMMITTED_ATTEMPT_DIRECTORIES = frozenset({"build", "module"})
+ATTEMPT_STATUSES = frozenset({"not_attempted", "blocked", "failed", "passed"})
+AXIOM_AUDIT_STATUSES = frozenset(
+    {"not_attempted", "not_applicable", "failed", "passed"}
+)
+MAX_ATTEMPT_SOURCE_BYTES = 1024 * 1024
 
 
 @dataclass(frozen=True)
@@ -269,7 +333,9 @@ def main_json(argv: list[str]) -> dict[str, object]:
 
     materialize_parser = subcommands.add_parser("materialize")
     materialize_parser.add_argument("--task-dir", type=Path, required=True)
-    materialize_parser.add_argument("--source-map", type=Path, default=DEFAULT_SOURCE_MAP)
+    materialize_parser.add_argument(
+        "--source-map", type=Path, default=DEFAULT_SOURCE_MAP
+    )
     materialize_parser.add_argument("--terminal", action="store_true")
 
     run_parser = subcommands.add_parser("run")
@@ -359,15 +425,21 @@ def _validate_descriptor(
         raise protocol.ValidationError("source_map_row_id does not exist in source map")
     row_is_terminal = _is_terminal_row(row, target)
     if allow_terminal and not row_is_terminal:
-        raise protocol.ValidationError("terminal descriptor must target terminal Jin row")
+        raise protocol.ValidationError(
+            "terminal descriptor must target terminal Jin row"
+        )
     if not allow_terminal and row_is_terminal:
-        raise protocol.ValidationError("terminal Jin row is out of scope for the first slice")
+        raise protocol.ValidationError(
+            "terminal Jin row is out of scope for the first slice"
+        )
 
     pinned_source_locator = _bounded_string(
         value["pinned_source_locator"], "pinned_source_locator", 1, 4096
     )
     if pinned_source_locator != row.source_locator:
-        raise protocol.ValidationError("pinned_source_locator must match source-map row")
+        raise protocol.ValidationError(
+            "pinned_source_locator must match source-map row"
+        )
 
     informal_statement_sha256 = _digest(
         value["informal_statement_sha256"], "informal_statement_sha256"
@@ -409,9 +481,7 @@ def _validate_descriptor(
         raise protocol.ValidationError("build_target must be module/Slice.lean")
 
     proof_hole_policy = _mapping(value["proof_hole_policy"], "proof_hole_policy")
-    _require_fields(
-        proof_hole_policy, PROOF_HOLE_POLICY_FIELDS, "proof_hole_policy"
-    )
+    _require_fields(proof_hole_policy, PROOF_HOLE_POLICY_FIELDS, "proof_hole_policy")
     reject_tokens = _unique_string_tuple(
         proof_hole_policy["reject_tokens"],
         "proof_hole_policy.reject_tokens",
@@ -488,7 +558,9 @@ def materialize_task(
     try:
         destination.mkdir(parents=True, mode=0o700)
         created_destination = True
-        _write_json_create_only(destination / "task.json", _task_json(descriptor), "task")
+        _write_json_create_only(
+            destination / "task.json", _task_json(descriptor), "task"
+        )
         _write_json_create_only(
             destination / "source-slice.json", _source_slice_json(row), "source slice"
         )
@@ -501,6 +573,11 @@ def materialize_task(
             destination / "build/command.json",
             _command_json(descriptor, destination),
             "command",
+        )
+        _write_text_create_only(
+            destination / "build/AxiomAudit.lean",
+            _axiom_audit_source(descriptor),
+            "axiom audit source",
         )
         _write_text_create_only(destination / "build/stdout.log", "", "stdout log")
         _write_text_create_only(destination / "build/stderr.log", "", "stderr log")
@@ -551,6 +628,7 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
     )
     _validate_task_binding(task, descriptor)
     _validate_command_json(root / "build/command.json", descriptor, root)
+    _write_axiom_audit_source(root, descriptor)
 
     source_path = root / descriptor.build_target
     _ensure_existing_file(source_path, "Lean slice")
@@ -570,7 +648,9 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
             reason="axiom scan not applicable because slice validation failed",
             scan_performed=False,
         )
-        return _publish_run_result(root, descriptor, result, "failed", reason, axiom_audit)
+        return _publish_run_result(
+            root, descriptor, result, "failed", reason, axiom_audit
+        )
 
     proof_hole = _first_proof_hole_token(source, descriptor.reject_tokens)
     if proof_hole is not None:
@@ -583,7 +663,9 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
             reason="axiom scan not applicable because proof-hole policy failed",
             scan_performed=False,
         )
-        return _publish_run_result(root, descriptor, result, "failed", reason, axiom_audit)
+        return _publish_run_result(
+            root, descriptor, result, "failed", reason, axiom_audit
+        )
 
     _ensure_existing_directory(SHARED_LEAN_ROOT, "shared Lean root")
     command_result = (executor or _subprocess_executor)(
@@ -677,6 +759,128 @@ def run_task(task_dir: Path, *, executor: Executor | None = None) -> dict[str, o
     return _publish_run_result(
         root, descriptor, command_result, "passed", reason, axiom_audit
     )
+
+
+def validate_committed_attempt(
+    attempt_dir: Path,
+    rows: tuple[jin_validation.SourceMapRow, ...],
+    *,
+    dependency_attempts: Mapping[str, Path] | None = None,
+) -> dict[str, object]:
+    """Validate a persisted Jin proof-slice attempt without modifying it."""
+
+    root = attempt_dir.expanduser().absolute()
+    _validate_committed_attempt_members(root)
+    target = formal_target.load_lock()
+    task = _task_object(root / "task.json")
+    descriptor_value = _mapping(task["descriptor"], "task.descriptor")
+    row_id = _runtime_id(descriptor_value.get("source_map_row_id"), "source_map_row_id")
+    row_by_id = {row.row_id: row for row in rows}
+    row = row_by_id.get(row_id)
+    if row is None:
+        raise protocol.ValidationError("source_map_row_id does not exist in source map")
+    expected_dependency_ids = _transitive_dependency_ids(row, row_by_id)
+    descriptor = _validate_task_descriptor(descriptor_value, target, rows)
+    _validate_task_binding(task, descriptor)
+    _validate_command_json(root / "build/command.json", descriptor, root)
+
+    source_slice = formal_target._read_strict_json_object(
+        root / "source-slice.json", "proof-slice source slice"
+    )
+    _validate_committed_source_slice(source_slice, row)
+
+    command = formal_target._read_strict_json_object(
+        root / "build/command.json", "proof-slice command"
+    )
+    axioms = formal_target._read_strict_json_object(
+        root / "build/axioms.json", "proof-slice axiom audit"
+    )
+    result = formal_target._read_strict_json_object(
+        root / "result.json", "proof-slice result"
+    )
+    receipt_path = root / "receipt.json"
+    receipt = formal_target._read_strict_json_object(
+        receipt_path, "proof-slice receipt"
+    )
+    status, reason = _validate_committed_result(result)
+    receipt_sha256 = protocol.sha256_bytes(receipt_path.read_bytes())
+    if status != "not_attempted" and row.receipt_sha256 != receipt_sha256:
+        raise protocol.ValidationError(
+            f"source-map receipt_sha256 mismatch for row {row.row_id}: "
+            f"expected {row.receipt_sha256}, observed {receipt_sha256}"
+        )
+    source_policy_failure = _validate_committed_lean_sources(
+        root, descriptor, status, reason
+    )
+    axiom_status = _validate_committed_axioms(axioms, descriptor, status, reason)
+    _validate_committed_receipt(
+        receipt,
+        descriptor,
+        status,
+        reason,
+        task,
+        command,
+        axioms,
+        axiom_status,
+        result,
+        root,
+        source_policy_failure=source_policy_failure,
+    )
+
+    if status == "not_attempted":
+        if row.status != "mapped" or row.receipt_sha256 is not None:
+            raise protocol.ValidationError(
+                f"source-map row is inconsistent with not_attempted attempt: {row.row_id}"
+            )
+    if status != "not_attempted" and row.status != status:
+        raise protocol.ValidationError(
+            f"source-map status does not match attempt for row: {row.row_id}"
+        )
+    if status == "blocked" and row.blocked_reason != reason:
+        raise protocol.ValidationError(
+            "source-map blocked_reason does not match result"
+        )
+    if status == "failed" and row.failed_reason != reason:
+        raise protocol.ValidationError("source-map failed_reason does not match result")
+
+    dependency_paths = dependency_attempts or {}
+    observed_dependency_ids = set(dependency_paths)
+    missing_dependency_ids = sorted(expected_dependency_ids - observed_dependency_ids)
+    extra_dependency_ids = sorted(observed_dependency_ids - expected_dependency_ids)
+    if missing_dependency_ids:
+        raise protocol.ValidationError(
+            f"missing dependency attempt for row: {missing_dependency_ids[0]}"
+        )
+    if extra_dependency_ids:
+        raise protocol.ValidationError(
+            f"unexpected dependency attempt for row: {extra_dependency_ids[0]}"
+        )
+    for dependency in descriptor.dependency_receipts:
+        dependency_path = dependency_paths[dependency.row_id]
+        dependency_validation = validate_committed_attempt(
+            dependency_path,
+            rows,
+            dependency_attempts={
+                dependency_id: path
+                for dependency_id, path in dependency_paths.items()
+                if dependency_id
+                in _transitive_dependency_ids(row_by_id[dependency.row_id], row_by_id)
+            },
+        )
+        if dependency_validation["source_map_row_id"] != dependency.row_id:
+            raise protocol.ValidationError(
+                f"dependency attempt row mismatch for row: {dependency.row_id}"
+            )
+        if dependency_validation["receipt_sha256"] != dependency.receipt_sha256:
+            raise protocol.ValidationError(
+                f"dependency attempt receipt digest mismatch for row: {dependency.row_id}"
+            )
+
+    return {
+        "source_map_row_id": row.row_id,
+        "status": status,
+        "receipt_sha256": receipt_sha256,
+    }
 
 
 def _validate_materialization_row_binding(
@@ -805,7 +1009,9 @@ def _lean_slice_source(descriptor: ProofSliceDescriptor) -> str:
     return "\n".join(lines).lstrip("\n") + "\n"
 
 
-def _command_json(descriptor: ProofSliceDescriptor, task_dir: Path) -> dict[str, object]:
+def _command_json(
+    descriptor: ProofSliceDescriptor, task_dir: Path
+) -> dict[str, object]:
     return {
         "schema_version": "crouzeix-jin-proof-slice-command/v1",
         "argv": _command_argv(descriptor, task_dir),
@@ -893,7 +1099,9 @@ def _receipt_json(
 def _is_terminal_row(
     row: jin_validation.SourceMapRow, target: formal_target.FormalTargetLock
 ) -> bool:
-    return row.row_id == TERMINAL_ROW_ID or row.lean_name == target.target.declaration_name
+    return (
+        row.row_id == TERMINAL_ROW_ID or row.lean_name == target.target.declaration_name
+    )
 
 
 def _validate_allowed_imports(
@@ -943,7 +1151,9 @@ def _validate_task_binding(
     if task["timeout_seconds"] != descriptor.timeout_seconds:
         raise protocol.ValidationError("task timeout_seconds does not match descriptor")
     if task["max_output_bytes"] != descriptor.max_output_bytes:
-        raise protocol.ValidationError("task max_output_bytes does not match descriptor")
+        raise protocol.ValidationError(
+            "task max_output_bytes does not match descriptor"
+        )
 
 
 def _validate_command_json(
@@ -964,9 +1174,13 @@ def _validate_command_json(
     if command["env"] != _shared_lean_environment():
         raise protocol.ValidationError("command env must match shared Lean environment")
     if command["timeout_seconds"] != descriptor.timeout_seconds:
-        raise protocol.ValidationError("command timeout_seconds does not match descriptor")
+        raise protocol.ValidationError(
+            "command timeout_seconds does not match descriptor"
+        )
     if command["max_output_bytes"] != descriptor.max_output_bytes:
-        raise protocol.ValidationError("command max_output_bytes does not match descriptor")
+        raise protocol.ValidationError(
+            "command max_output_bytes does not match descriptor"
+        )
 
 
 def _first_proof_hole_token(source: str, reject_tokens: tuple[str, ...]) -> str | None:
@@ -1006,9 +1220,7 @@ def _lean_code_prefix(line: str, block_comment_depth: int) -> tuple[str, int]:
             continue
         line_comment = line.find("--", index)
         block_comment = line.find("/-", index)
-        if line_comment != -1 and (
-            block_comment == -1 or line_comment < block_comment
-        ):
+        if line_comment != -1 and (block_comment == -1 or line_comment < block_comment):
             output.append(line[index:line_comment])
             return "".join(output), False
         if block_comment != -1:
@@ -1102,9 +1314,9 @@ def _output_cap_reason(
 
 def _lean_failure_reason(command_result: CommandResult) -> str:
     reason = f"Lean command failed with exit code {command_result.exit_code}"
-    diagnostic = _first_diagnostic_line(command_result.stdout) or _first_diagnostic_line(
-        command_result.stderr
-    )
+    diagnostic = _first_diagnostic_line(
+        command_result.stdout
+    ) or _first_diagnostic_line(command_result.stderr)
     if diagnostic is not None:
         return f"{reason}: {diagnostic}"
     return reason
@@ -1120,10 +1332,7 @@ def _first_diagnostic_line(output: bytes) -> str | None:
 
 
 def _run_axiom_audit(root: Path, descriptor: ProofSliceDescriptor) -> bytes:
-    audit_path = root / "build/AxiomAudit.lean"
-    source = _axiom_audit_source(descriptor)
-    _reject_symlink_ancestors(audit_path, "axiom audit source")
-    audit_path.write_text(source, encoding="utf-8")
+    audit_path = _write_axiom_audit_source(root, descriptor)
     result = _subprocess_executor(
         [
             "lake",
@@ -1141,6 +1350,20 @@ def _run_axiom_audit(root: Path, descriptor: ProofSliceDescriptor) -> bytes:
     return result.stdout
 
 
+def _write_axiom_audit_source(root: Path, descriptor: ProofSliceDescriptor) -> Path:
+    audit_path = root / "build/AxiomAudit.lean"
+    _reject_symlink_ancestors(audit_path, "axiom audit source")
+    if audit_path.exists() or audit_path.is_symlink():
+        _ensure_existing_file(audit_path, "axiom audit source")
+    try:
+        audit_path.write_text(_axiom_audit_source(descriptor), encoding="utf-8")
+    except OSError as error:
+        raise protocol.ValidationError(
+            f"cannot write axiom audit source: {error}"
+        ) from error
+    return audit_path
+
+
 def _axiom_audit_source(descriptor: ProofSliceDescriptor) -> str:
     lines = [f"import {name}" for name in descriptor.allowed_imports]
     lines.append(f"#print axioms {descriptor.expected_lean_declaration}")
@@ -1152,12 +1375,10 @@ def _normalize_command_result(
 ) -> CommandResult:
     command_result = _portable_command_result(command_result)
     stdout_truncated = (
-        command_result.stdout_truncated
-        or len(command_result.stdout) > max_output_bytes
+        command_result.stdout_truncated or len(command_result.stdout) > max_output_bytes
     )
     stderr_truncated = (
-        command_result.stderr_truncated
-        or len(command_result.stderr) > max_output_bytes
+        command_result.stderr_truncated or len(command_result.stderr) > max_output_bytes
     )
     if (
         len(command_result.stdout) <= max_output_bytes
@@ -1179,7 +1400,10 @@ def _normalize_command_result(
 
 def _portable_command_result(command_result: CommandResult) -> CommandResult:
     workspace = REPO_ROOT.as_posix().encode("utf-8")
-    if workspace not in command_result.stdout and workspace not in command_result.stderr:
+    if (
+        workspace not in command_result.stdout
+        and workspace not in command_result.stderr
+    ):
         return command_result
     return CommandResult(
         command_result.exit_code,
@@ -1230,8 +1454,12 @@ def _publish_run_result(
         axiom_audit=axiom_audit,
         result=result,
     )
-    _write_bytes_existing(root / "build/stdout.log", command_result.stdout, "stdout log")
-    _write_bytes_existing(root / "build/stderr.log", command_result.stderr, "stderr log")
+    _write_bytes_existing(
+        root / "build/stdout.log", command_result.stdout, "stdout log"
+    )
+    _write_bytes_existing(
+        root / "build/stderr.log", command_result.stderr, "stderr log"
+    )
     _write_json_existing(root / "build/axioms.json", axiom_audit, "axiom audit")
     _write_json_existing(root / "result.json", result, "result")
     _write_json_existing(root / "receipt.json", receipt, "receipt")
@@ -1420,6 +1648,424 @@ def _validate_dependency_receipt_bindings(
             )
 
 
+def _validate_committed_attempt_members(root: Path) -> None:
+    _ensure_existing_directory(root, "committed proof-slice attempt directory")
+    observed_files: set[str] = set()
+    observed_directories: set[str] = set()
+    try:
+        entries = tuple(root.rglob("*"))
+    except OSError as error:
+        raise protocol.ValidationError(
+            f"cannot inspect committed proof-slice attempt: {error}"
+        ) from error
+    for path in entries:
+        relative = path.relative_to(root).as_posix()
+        try:
+            metadata = path.lstat()
+        except OSError as error:
+            raise protocol.ValidationError(
+                f"cannot inspect attempt member {relative}: {error}"
+            ) from error
+        if stat.S_ISLNK(metadata.st_mode):
+            raise protocol.ValidationError(
+                f"attempt member cannot be a symlink: {relative}"
+            )
+        if stat.S_ISDIR(metadata.st_mode):
+            observed_directories.add(relative)
+            continue
+        if not stat.S_ISREG(metadata.st_mode):
+            raise protocol.ValidationError(
+                f"attempt member must be a regular file: {relative}"
+            )
+        observed_files.add(relative)
+
+    missing_directories = sorted(COMMITTED_ATTEMPT_DIRECTORIES - observed_directories)
+    if missing_directories:
+        raise protocol.ValidationError(
+            f"missing attempt directory: {missing_directories[0]}"
+        )
+    extra_directories = sorted(observed_directories - COMMITTED_ATTEMPT_DIRECTORIES)
+    if extra_directories:
+        raise protocol.ValidationError(
+            f"unexpected attempt directory: {extra_directories[0]}"
+        )
+    missing_files = sorted(COMMITTED_ATTEMPT_MEMBERS - observed_files)
+    if missing_files:
+        raise protocol.ValidationError(f"missing attempt member: {missing_files[0]}")
+    extra_files = sorted(
+        observed_files - COMMITTED_ATTEMPT_MEMBERS - OPTIONAL_COMMITTED_ATTEMPT_MEMBERS
+    )
+    if extra_files:
+        raise protocol.ValidationError(f"unexpected attempt member: {extra_files[0]}")
+
+
+def _validate_committed_source_slice(
+    value: Mapping[str, Any], row: jin_validation.SourceMapRow
+) -> None:
+    _require_fields(value, SOURCE_SLICE_FIELDS, "proof-slice source slice")
+    _require_equal(
+        value["schema_version"],
+        "crouzeix-jin-source-slice/v1",
+        "source slice schema_version",
+    )
+    expected = _source_slice_json(row)
+    if value != expected:
+        raise protocol.ValidationError("source slice does not match source-map row")
+
+
+def _validate_committed_lean_sources(
+    root: Path,
+    descriptor: ProofSliceDescriptor,
+    result_status: str,
+    result_reason: str,
+) -> str | None:
+    source_path = root / descriptor.build_target
+    source = _read_bounded_utf8_file(source_path, "Lean slice")
+    imports = _active_lean_imports(source)
+    if imports != descriptor.allowed_imports:
+        raise protocol.ValidationError("Lean slice imports do not match descriptor")
+    missing_declaration = not _has_active_expected_declaration_check(
+        source, descriptor.expected_lean_declaration
+    )
+    proof_hole = _first_proof_hole_token(source, descriptor.reject_tokens)
+    source_failure: str | None = None
+    if missing_declaration:
+        source_failure = (
+            "Lean slice missing active expected declaration check: "
+            f"#check {descriptor.expected_lean_declaration}"
+        )
+    elif proof_hole is not None:
+        source_failure = f"proof-hole token rejected before execution: {proof_hole}"
+    if source_failure is not None and (
+        result_status != "failed" or result_reason != source_failure
+    ):
+        raise protocol.ValidationError(source_failure)
+    if (
+        source_failure is None
+        and result_status == "failed"
+        and (
+            result_reason.startswith(
+                "Lean slice missing active expected declaration check"
+            )
+            or result_reason.startswith("proof-hole token rejected before execution")
+        )
+    ):
+        raise protocol.ValidationError(
+            "failed source-policy result does not match Lean slice"
+        )
+
+    audit_path = root / "build/AxiomAudit.lean"
+    _ensure_existing_file(audit_path, "axiom audit source")
+    audit_source = _read_bounded_utf8_file(audit_path, "axiom audit source")
+    if audit_source != _axiom_audit_source(descriptor):
+        raise protocol.ValidationError("axiom audit source does not match descriptor")
+    return source_failure
+
+
+def _active_lean_imports(source: str) -> tuple[str, ...]:
+    imports: list[str] = []
+    block_comment_depth = 0
+    for line in source.splitlines():
+        code, block_comment_depth = _lean_code_prefix(line, block_comment_depth)
+        stripped = code.strip()
+        if stripped.startswith("import "):
+            imports.append(stripped.removeprefix("import ").strip())
+    return tuple(imports)
+
+
+def _validate_committed_result(value: Mapping[str, Any]) -> tuple[str, str]:
+    _require_fields(value, RESULT_FIELDS, "proof-slice result")
+    _require_equal(
+        value["schema_version"],
+        "crouzeix-jin-proof-slice-result/v1",
+        "result schema_version",
+    )
+    status = _attempt_status(value["status"], "result status")
+    reason = _bounded_string(value["reason"], "result reason", 1, 4096)
+    return status, reason
+
+
+def _validate_committed_axioms(
+    value: Mapping[str, Any],
+    descriptor: ProofSliceDescriptor,
+    result_status: str,
+    result_reason: str,
+) -> str:
+    _require_fields(value, AXIOM_AUDIT_FIELDS, "proof-slice axiom audit")
+    _require_equal(
+        value["schema_version"],
+        "crouzeix-jin-proof-slice-axioms/v1",
+        "axiom audit schema_version",
+    )
+    if not isinstance(value["scan_performed"], bool):
+        raise protocol.ValidationError("axiom scan_performed must be boolean")
+    if value["expected_declaration"] != descriptor.expected_lean_declaration:
+        raise protocol.ValidationError(
+            "axiom expected_declaration does not match descriptor"
+        )
+    allowed_axioms = _unique_string_tuple(
+        value["allowed_axioms"],
+        "axiom allowed_axioms",
+        minimum=0,
+        maximum=MAX_ALLOWED_AXIOMS,
+    )
+    if allowed_axioms != descriptor.allowed_axioms:
+        raise protocol.ValidationError("axiom allowed_axioms do not match descriptor")
+    observed_axioms = _unique_string_tuple(
+        value["observed_axioms"],
+        "axiom observed_axioms",
+        minimum=0,
+        maximum=MAX_ALLOWED_AXIOMS,
+    )
+    status = _enum_string(value["status"], AXIOM_AUDIT_STATUSES, "axiom status")
+    reason = _bounded_string(value["reason"], "axiom reason", 1, 4096)
+    scan_performed = value["scan_performed"]
+    if status == "passed" and not scan_performed:
+        raise protocol.ValidationError("passed axiom audit requires a performed scan")
+    if status in {"not_attempted", "not_applicable"} and scan_performed:
+        raise protocol.ValidationError(
+            f"{status} axiom audit cannot report a performed scan"
+        )
+    if status == "failed" and not scan_performed and observed_axioms:
+        raise protocol.ValidationError(
+            "failed unperformed axiom audit cannot contain observed axioms"
+        )
+    if (
+        status == "failed"
+        and reason
+        not in {
+            "axiom audit output missing",
+            "axiom audit output malformed",
+        }
+        and not reason.startswith("forbidden axiom observed: ")
+    ):
+        raise protocol.ValidationError("failed axiom audit reason is invalid")
+    if status == "passed":
+        forbidden = sorted(set(observed_axioms) - set(allowed_axioms))
+        if forbidden:
+            raise protocol.ValidationError(
+                f"passed axiom audit contains forbidden axiom: {forbidden[0]}"
+            )
+    if result_status == "passed":
+        if status != "passed":
+            raise protocol.ValidationError("passed result requires passed axiom audit")
+        if reason != result_reason:
+            raise protocol.ValidationError(
+                "passed axiom reason does not match result reason"
+            )
+    if result_status == "not_attempted" and status != "not_attempted":
+        raise protocol.ValidationError(
+            "not_attempted result requires not_attempted axiom audit"
+        )
+    if result_status == "blocked" and status != "not_applicable":
+        raise protocol.ValidationError(
+            "blocked result requires not_applicable axiom audit"
+        )
+    if result_status == "failed" and status == "not_attempted":
+        raise protocol.ValidationError(
+            "failed result cannot have not_attempted axiom audit"
+        )
+    return status
+
+
+def _validate_committed_receipt(
+    receipt: Mapping[str, Any],
+    descriptor: ProofSliceDescriptor,
+    status: str,
+    reason: str,
+    task: Mapping[str, object],
+    command: Mapping[str, object],
+    axioms: Mapping[str, object],
+    axiom_status: str,
+    result: Mapping[str, object],
+    root: Path,
+    *,
+    source_policy_failure: str | None,
+) -> None:
+    expected_fields = RECEIPT_BASE_FIELDS
+    if status != "not_attempted":
+        expected_fields |= RECEIPT_EXECUTION_FIELDS
+    _require_fields(receipt, expected_fields, "proof-slice receipt")
+    _require_equal(
+        receipt["schema_version"],
+        "crouzeix-jin-proof-slice-receipt/v1",
+        "receipt schema_version",
+    )
+    bindings = (
+        ("route_id", descriptor.route_id),
+        ("source_map_row_id", descriptor.source_map_row_id),
+        ("expected_lean_declaration", descriptor.expected_lean_declaration),
+        ("status", status),
+        ("reason", reason),
+    )
+    for field, expected in bindings:
+        if receipt[field] != expected:
+            raise protocol.ValidationError(
+                f"receipt {field} does not match {'result' if field in {'status', 'reason'} else 'descriptor'}"
+            )
+
+    _require_digest_match(receipt, "task_sha256", _canonical_sha256(task), "task")
+    if status == "not_attempted":
+        return
+    _require_digest_match(
+        receipt, "command_sha256", _canonical_sha256(command), "command"
+    )
+    stdout_sha256 = _bounded_file_sha256(
+        root / "build/stdout.log", "stdout log", descriptor.max_output_bytes
+    )
+    stderr_sha256 = _bounded_file_sha256(
+        root / "build/stderr.log", "stderr log", descriptor.max_output_bytes
+    )
+    _require_digest_match(
+        receipt,
+        "stdout_sha256",
+        stdout_sha256,
+        "stdout",
+    )
+    _require_digest_match(
+        receipt,
+        "stderr_sha256",
+        stderr_sha256,
+        "stderr",
+    )
+    _require_digest_match(receipt, "axioms_sha256", _canonical_sha256(axioms), "axioms")
+    _require_digest_match(receipt, "result_sha256", _canonical_sha256(result), "result")
+    if receipt["max_output_bytes"] != descriptor.max_output_bytes:
+        raise protocol.ValidationError(
+            "receipt max_output_bytes does not match descriptor"
+        )
+    for field in ("stdout_truncated", "stderr_truncated"):
+        if not isinstance(receipt[field], bool):
+            raise protocol.ValidationError(f"receipt {field} must be boolean")
+    exit_code = receipt["command_exit_code"]
+    if exit_code is not None and (
+        isinstance(exit_code, bool) or not isinstance(exit_code, int)
+    ):
+        raise protocol.ValidationError(
+            "receipt command_exit_code must be integer or null"
+        )
+    if status == "passed":
+        if exit_code != 0:
+            raise protocol.ValidationError(
+                "passed receipt requires command_exit_code 0"
+            )
+        if receipt["stdout_truncated"] or receipt["stderr_truncated"]:
+            raise protocol.ValidationError(
+                "passed receipt cannot contain truncated output"
+            )
+    elif status == "blocked" and exit_code is not None:
+        raise protocol.ValidationError(
+            "blocked receipt requires null command_exit_code"
+        )
+    elif status == "failed":
+        valid_failed_outcome = (
+            (
+                source_policy_failure is not None
+                and exit_code is None
+                and axiom_status == "not_applicable"
+            )
+            or (
+                exit_code is not None
+                and exit_code != 0
+                and axiom_status == "not_applicable"
+            )
+            or (exit_code == 0 and axiom_status == "failed")
+            or (
+                exit_code == 0
+                and axiom_status in {"passed", "failed"}
+                and (receipt["stdout_truncated"] or receipt["stderr_truncated"])
+            )
+        )
+        if not valid_failed_outcome:
+            raise protocol.ValidationError("failed attempt outcome is inconsistent")
+
+
+def _require_digest_match(
+    value: Mapping[str, Any], field: str, observed: str, label: str
+) -> None:
+    expected = _digest(value[field], field)
+    if expected != observed:
+        raise protocol.ValidationError(
+            f"{label} SHA-256 mismatch: expected {expected}, observed {observed}"
+        )
+
+
+def _attempt_status(value: Any, label: str) -> str:
+    return _enum_string(value, ATTEMPT_STATUSES, label)
+
+
+def _enum_string(value: Any, allowed: frozenset[str], label: str) -> str:
+    text = _bounded_string(value, label, 1, 64)
+    if text not in allowed:
+        raise protocol.ValidationError(
+            f"{label} must be one of: {', '.join(sorted(allowed))}"
+        )
+    return text
+
+
+def _read_bounded_utf8_file(path: Path, label: str) -> str:
+    _ensure_existing_file(path, label)
+    try:
+        data = path.read_bytes()
+        if len(data) > MAX_ATTEMPT_SOURCE_BYTES:
+            raise protocol.ValidationError(f"{label} exceeds byte cap")
+        return data.decode("utf-8")
+    except (OSError, UnicodeDecodeError) as error:
+        raise protocol.ValidationError(f"cannot read {label}: {error}") from error
+
+
+def _bounded_file_sha256(path: Path, label: str, maximum: int) -> str:
+    _ensure_existing_file(path, label)
+    try:
+        metadata = path.lstat()
+        if metadata.st_size > maximum:
+            raise protocol.ValidationError(f"{label} exceeds max_output_bytes")
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            while chunk := handle.read(64 * 1024):
+                digest.update(chunk)
+        return digest.hexdigest()
+    except OSError as error:
+        raise protocol.ValidationError(f"cannot read {label}: {error}") from error
+
+
+def _transitive_dependency_ids(
+    row: jin_validation.SourceMapRow,
+    row_by_id: Mapping[str, jin_validation.SourceMapRow],
+) -> set[str]:
+    dependencies: set[str] = set()
+    path = [row.row_id]
+    active_positions = {row.row_id: 0}
+    stack = [(row, 0)]
+    while stack:
+        current, dependency_index = stack[-1]
+        if dependency_index == len(current.dependency_ids):
+            stack.pop()
+            active_positions.pop(current.row_id)
+            path.pop()
+            continue
+        dependency_id = current.dependency_ids[dependency_index]
+        stack[-1] = (current, dependency_index + 1)
+        cycle_start = active_positions.get(dependency_id)
+        if cycle_start is not None:
+            cycle = path[cycle_start:] + [dependency_id]
+            raise protocol.ValidationError(
+                f"source-map dependency cycle detected: {' -> '.join(cycle)}"
+            )
+        if dependency_id in dependencies:
+            continue
+        dependency = row_by_id.get(dependency_id)
+        if dependency is None:
+            raise protocol.ValidationError(
+                f"source-map row dependency is missing: {dependency_id}"
+            )
+        dependencies.add(dependency_id)
+        active_positions[dependency_id] = len(path)
+        path.append(dependency_id)
+        stack.append((dependency, 0))
+    return dependencies
+
+
 def _unique_string_tuple(
     value: Any,
     label: str,
@@ -1447,7 +2093,9 @@ def _lean_module(value: Any, label: str) -> str:
     return text
 
 
-def _require_fields(value: Mapping[str, Any], allowed: frozenset[str], label: str) -> None:
+def _require_fields(
+    value: Mapping[str, Any], allowed: frozenset[str], label: str
+) -> None:
     return formal_target._require_fields(value, allowed, label)
 
 
@@ -1514,9 +2162,7 @@ def _write_text_create_only(path: Path, value: str, label: str) -> None:
         handle.write(value)
 
 
-def _write_json_existing(
-    path: Path, value: Mapping[str, object], label: str
-) -> None:
+def _write_json_existing(path: Path, value: Mapping[str, object], label: str) -> None:
     _write_bytes_existing(path, _stable_json(value).encode("utf-8"), label)
 
 

@@ -14,13 +14,17 @@ from pathlib import Path
 LAB = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LAB))
 
-import formal_target
-import jin_validation
-import proof_slice
-import protocol
+import formal_target  # noqa: E402
+import jin_validation  # noqa: E402
+import proof_slice  # noqa: E402
+import protocol  # noqa: E402
 
 
 SOURCE_MAP = LAB / "formal_targets/jin-565b6a3/source-map.json"
+PROOF_SLICES = SOURCE_MAP.parent / "proof-slices"
+MAX_POLYNOMIAL_ATTEMPT_004 = PROOF_SLICES / "jin-max-polynomial-modulus/attempt-004"
+POLYNOMIAL_BOUND_ATTEMPT_001 = PROOF_SLICES / "jin-polynomial-bound/attempt-001"
+TERMINAL_ATTEMPT_001 = PROOF_SLICES / "jin-terminal-crouzeix/attempt-001"
 EXPECTED_SHARED_PATH = (
     "/private/tmp/harp-mathematical-foundations-elan/toolchains/"
     "leanprover--lean4---v4.32.1/bin:/usr/bin:/bin"
@@ -67,9 +71,7 @@ def dependent_descriptor() -> dict[str, object]:
             "informal_statement_sha256": (
                 "4bddb24fd47159593c2223a973569e56d99873f754fa638b75b1f55a93e7167b"
             ),
-            "expected_lean_declaration": (
-                "CrouzeixConjecture.PolynomialCrouzeixBound"
-            ),
+            "expected_lean_declaration": ("CrouzeixConjecture.PolynomialCrouzeixBound"),
             "dependency_receipts": [
                 {
                     "row_id": "jin-max-polynomial-modulus",
@@ -123,7 +125,9 @@ def rows_with_passed_first_receipt(
             statement_sha256=row.statement_sha256,
             lean_name=row.lean_name,
             dependency_ids=row.dependency_ids,
-            status="passed" if row.row_id == "jin-max-polynomial-modulus" else row.status,
+            status="passed"
+            if row.row_id == "jin-max-polynomial-modulus"
+            else row.status,
             receipt_sha256=(
                 receipt_sha256
                 if row.row_id == "jin-max-polynomial-modulus"
@@ -135,6 +139,40 @@ def rows_with_passed_first_receipt(
                 else row.blocked_reason
             ),
             failed_reason=row.failed_reason,
+        )
+        for row in rows()
+    )
+
+
+def rows_with_first_outcome(
+    status: str,
+    *,
+    receipt_sha256: str | None = None,
+    reason: str | None = None,
+) -> tuple[jin_validation.SourceMapRow, ...]:
+    return tuple(
+        jin_validation.SourceMapRow(
+            row_id=row.row_id,
+            source_locator=row.source_locator,
+            statement_sha256=row.statement_sha256,
+            lean_name=row.lean_name,
+            dependency_ids=row.dependency_ids,
+            status=status if row.row_id == "jin-max-polynomial-modulus" else row.status,
+            receipt_sha256=(
+                receipt_sha256
+                if row.row_id == "jin-max-polynomial-modulus"
+                else row.receipt_sha256
+            ),
+            blocked_reason=(
+                reason
+                if row.row_id == "jin-max-polynomial-modulus" and status == "blocked"
+                else row.blocked_reason
+            ),
+            failed_reason=(
+                reason
+                if row.row_id == "jin-max-polynomial-modulus" and status == "failed"
+                else row.failed_reason
+            ),
         )
         for row in rows()
     )
@@ -180,7 +218,9 @@ def rows_with_pending_terminal() -> tuple[jin_validation.SourceMapRow, ...]:
     )
 
 
-def write_source_map(path: Path, source_rows: tuple[jin_validation.SourceMapRow, ...]) -> None:
+def write_source_map(
+    path: Path, source_rows: tuple[jin_validation.SourceMapRow, ...]
+) -> None:
     value = {
         "schema_version": "crouzeix-jin-source-map/v1",
         "source_commit": formal_target.load_lock().source.commit,
@@ -237,6 +277,35 @@ def materialized_task(directory: Path, value: dict[str, object] | None = None) -
     return proof_slice.materialize_task(directory / "task", desc, source_rows)
 
 
+def passed_committed_attempt(
+    directory: Path,
+) -> tuple[Path, tuple[jin_validation.SourceMapRow, ...]]:
+    task_dir = materialized_task(directory)
+    proof_slice.run_task(
+        task_dir,
+        executor=FakeExecutor(
+            proof_slice.CommandResult(
+                0,
+                b"ok\n",
+                b"",
+                axiom_audit_output=b"axioms: none\n",
+            )
+        ),
+    )
+    receipt_sha256 = protocol.sha256_bytes((task_dir / "receipt.json").read_bytes())
+    return task_dir, rows_with_passed_first_receipt(receipt_sha256)
+
+
+def rows_for_committed_attempt(
+    task_dir: Path, status: str, reason: str
+) -> tuple[jin_validation.SourceMapRow, ...]:
+    return rows_with_first_outcome(
+        status,
+        receipt_sha256=protocol.sha256_bytes((task_dir / "receipt.json").read_bytes()),
+        reason=reason,
+    )
+
+
 class ProofSliceDescriptorTests(unittest.TestCase):
     def test_live_source_map_has_no_remaining_nonterminal_jin_slice(self) -> None:
         target = formal_target.load_lock()
@@ -257,7 +326,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
     def test_selects_terminal_jin_row_after_nonterminal_dependencies_pass(self) -> None:
         target = formal_target.load_lock()
 
-        row = proof_slice.select_terminal_jin_slice(rows_with_pending_terminal(), target)
+        row = proof_slice.select_terminal_jin_slice(
+            rows_with_pending_terminal(), target
+        )
 
         self.assertEqual(row.row_id, "jin-terminal-crouzeix")
         self.assertEqual(row.lean_name, target.target.declaration_name)
@@ -320,9 +391,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 "informal_statement_sha256": (
                     "1a2e841ea3af7c41ca815a982e20710e04ca17242aa510b70cbfadbcd17c2bb4"
                 ),
-                "expected_lean_declaration": (
-                    "CrouzeixConjecture.crouzeixConjecture"
-                ),
+                "expected_lean_declaration": ("CrouzeixConjecture.crouzeixConjecture"),
                 "dependency_receipts": [
                     {"row_id": "jin-polynomial-bound", "receipt_sha256": "a" * 64}
                 ],
@@ -363,7 +432,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
         value = descriptor()
         value["allowed_imports"] = ["CrouzeixConjecture.FinalTheorems"]
 
-        with self.assertRaisesRegex(protocol.ValidationError, "terminal|reference|import"):
+        with self.assertRaisesRegex(
+            protocol.ValidationError, "terminal|reference|import"
+        ):
             proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
 
     def test_descriptor_rejects_declaration_mismatches(self) -> None:
@@ -372,7 +443,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 value = descriptor()
                 value[field] = "CrouzeixConjecture.other"
                 with self.assertRaisesRegex(protocol.ValidationError, "declaration"):
-                    proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
+                    proof_slice.validate_descriptor(
+                        value, formal_target.load_lock(), rows()
+                    )
 
     def test_descriptor_rejects_rows_with_dependencies_without_receipts(self) -> None:
         value = dependent_descriptor()
@@ -491,9 +564,13 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 value = dependent_descriptor()
                 value["dependency_receipts"] = dependency_receipts
                 with self.assertRaisesRegex(protocol.ValidationError, pattern):
-                    proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
+                    proof_slice.validate_descriptor(
+                        value, formal_target.load_lock(), rows()
+                    )
 
-    def test_descriptor_rejects_duplicate_dependency_receipt_sha256_values(self) -> None:
+    def test_descriptor_rejects_duplicate_dependency_receipt_sha256_values(
+        self,
+    ) -> None:
         target = formal_target.load_lock()
         synthetic_rows = (
             jin_validation.SourceMapRow(
@@ -549,7 +626,11 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
     def test_descriptor_rejects_bad_policy_shapes(self) -> None:
         cases = (
-            ("proof_hole_policy", {"reject_tokens": ["sorry", "admit"], "extra": True}, "unknown"),
+            (
+                "proof_hole_policy",
+                {"reject_tokens": ["sorry", "admit"], "extra": True},
+                "unknown",
+            ),
             ("proof_hole_policy", {"reject_tokens": ["sorry"]}, "admit"),
             ("proof_hole_policy", {"reject_tokens": ["admit"]}, "sorry"),
             ("axiom_policy", {"allowed_axioms": [], "extra": True}, "unknown"),
@@ -574,7 +655,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 value = descriptor()
                 value[field] = replacement
                 with self.assertRaisesRegex(protocol.ValidationError, pattern):
-                    proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
+                    proof_slice.validate_descriptor(
+                        value, formal_target.load_lock(), rows()
+                    )
 
     def test_descriptor_rejects_unsafe_or_nonstandard_build_target(self) -> None:
         for build_target, pattern in (
@@ -585,7 +668,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 value = descriptor()
                 value["build_target"] = build_target
                 with self.assertRaisesRegex(protocol.ValidationError, pattern):
-                    proof_slice.validate_descriptor(value, formal_target.load_lock(), rows())
+                    proof_slice.validate_descriptor(
+                        value, formal_target.load_lock(), rows()
+                    )
 
     def test_materialize_task_writes_create_only_tree_and_slice_module(self) -> None:
         target = formal_target.load_lock()
@@ -602,6 +687,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 "source-slice.json",
                 "module/Slice.lean",
                 "build/command.json",
+                "build/AxiomAudit.lean",
                 "build/stdout.log",
                 "build/stderr.log",
                 "build/axioms.json",
@@ -654,7 +740,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
             result_json = json.loads(
                 (task_dir / "result.json").read_text(encoding="utf-8")
             )
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             axioms = json.loads(
                 (task_dir / "build/axioms.json").read_text(encoding="utf-8")
             )
@@ -696,7 +784,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
     def test_materialize_task_preserves_row_bound_dependency_receipts(self) -> None:
         target = formal_target.load_lock()
         source_rows = rows_with_passed_first_receipt()
-        desc = proof_slice.validate_descriptor(dependent_descriptor(), target, source_rows)
+        desc = proof_slice.validate_descriptor(
+            dependent_descriptor(), target, source_rows
+        )
         with tempfile.TemporaryDirectory() as directory:
             task_dir = Path(directory).resolve() / "task"
 
@@ -744,7 +834,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
     def test_materialize_task_rejects_stale_source_row_before_creation(self) -> None:
         target = formal_target.load_lock()
         source_rows = rows_with_passed_first_receipt()
-        desc = proof_slice.validate_descriptor(dependent_descriptor(), target, source_rows)
+        desc = proof_slice.validate_descriptor(
+            dependent_descriptor(), target, source_rows
+        )
         stale_rows = tuple(
             jin_validation.SourceMapRow(
                 row_id=row.row_id,
@@ -754,7 +846,9 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                     else row.source_locator
                 ),
                 statement_sha256=(
-                    "f" * 64 if row.row_id == desc.source_map_row_id else row.statement_sha256
+                    "f" * 64
+                    if row.row_id == desc.source_map_row_id
+                    else row.statement_sha256
                 ),
                 lean_name=(
                     "CrouzeixConjecture.Stale"
@@ -762,9 +856,7 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                     else row.lean_name
                 ),
                 dependency_ids=(
-                    ()
-                    if row.row_id == desc.source_map_row_id
-                    else row.dependency_ids
+                    () if row.row_id == desc.source_map_row_id else row.dependency_ids
                 ),
                 status=row.status,
             )
@@ -778,15 +870,15 @@ class ProofSliceDescriptorTests(unittest.TestCase):
 
             self.assertFalse(task_dir.exists())
 
-    def test_materialize_task_removes_created_directory_after_midway_failure(self) -> None:
+    def test_materialize_task_removes_created_directory_after_midway_failure(
+        self,
+    ) -> None:
         target = formal_target.load_lock()
         source_rows = jin_validation.load_source_map(SOURCE_MAP, target)
         desc = proof_slice.validate_descriptor(descriptor(), target, source_rows)
         original = proof_slice._write_json_create_only
 
-        def fail_after_source_slice(
-            path: Path, value: object, label: str
-        ) -> None:
+        def fail_after_source_slice(path: Path, value: object, label: str) -> None:
             original(path, value, label)
             if label == "source slice":
                 raise RuntimeError("forced materialization failure")
@@ -801,6 +893,572 @@ class ProofSliceDescriptorTests(unittest.TestCase):
                 proof_slice._write_json_create_only = original
 
             self.assertFalse(task_dir.exists())
+
+
+class CommittedAttemptValidationTests(unittest.TestCase):
+    def test_validate_committed_attempt_accepts_safe_bundle_without_writing(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            before = {
+                path.relative_to(task_dir): (path.read_bytes(), path.stat().st_mtime_ns)
+                for path in task_dir.rglob("*")
+                if path.is_file()
+            }
+
+            validation = proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+            after = {
+                path.relative_to(task_dir): (path.read_bytes(), path.stat().st_mtime_ns)
+                for path in task_dir.rglob("*")
+                if path.is_file()
+            }
+            self.assertEqual(
+                validation["source_map_row_id"], "jin-max-polynomial-modulus"
+            )
+            self.assertEqual(validation["status"], "passed")
+            self.assertEqual(
+                validation["receipt_sha256"], source_rows[0].receipt_sha256
+            )
+            self.assertEqual(after, before)
+
+    def test_validate_committed_attempt_accepts_not_attempted_mapped_bundle(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            validation = proof_slice.validate_committed_attempt(
+                task_dir, rows_with_first_outcome("mapped")
+            )
+
+            self.assertEqual(validation["status"], "not_attempted")
+
+    def test_validate_committed_attempt_accepts_live_passed_dependency_chain(
+        self,
+    ) -> None:
+        source_rows = rows()
+        cases = (
+            (
+                MAX_POLYNOMIAL_ATTEMPT_004,
+                {},
+                "9e0cf882a8f866a4897a46548c7e387fb0d07b7dee159b3c2260ef9ece1fb563",
+            ),
+            (
+                POLYNOMIAL_BOUND_ATTEMPT_001,
+                {"jin-max-polynomial-modulus": MAX_POLYNOMIAL_ATTEMPT_004},
+                "b25ca01a109ad93708d474feb60389e6544f5fb54fe64f557e24571cd7de58c8",
+            ),
+            (
+                TERMINAL_ATTEMPT_001,
+                {
+                    "jin-max-polynomial-modulus": MAX_POLYNOMIAL_ATTEMPT_004,
+                    "jin-polynomial-bound": POLYNOMIAL_BOUND_ATTEMPT_001,
+                },
+                "a8b6fdc904ed35de4a533b924bf8847c923f3a50e3cc19785ced4bee5f7da0f9",
+            ),
+        )
+        for attempt_dir, dependency_attempts, receipt_sha256 in cases:
+            with self.subTest(attempt_dir=attempt_dir):
+                validation = proof_slice.validate_committed_attempt(
+                    attempt_dir,
+                    source_rows,
+                    dependency_attempts=dependency_attempts,
+                )
+
+                self.assertEqual(validation["status"], "passed")
+                self.assertEqual(validation["receipt_sha256"], receipt_sha256)
+
+    def test_validate_committed_attempt_requires_exact_safe_members(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            (task_dir / "extra.txt").write_text("unexpected\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "unexpected attempt member: extra.txt"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            (task_dir / "build/AxiomAudit.lean").unlink()
+
+            with self.assertRaisesRegex(protocol.ValidationError, "axiom audit source"):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            stdout = task_dir / "build/stdout.log"
+            stdout.unlink()
+            stdout.symlink_to(task_dir / "build/stderr.log")
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "attempt member cannot be a symlink"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_recomputes_every_recorded_member_hash(
+        self,
+    ) -> None:
+        cases = (
+            ("task_sha256", "task"),
+            ("command_sha256", "command"),
+            ("stdout_sha256", "stdout"),
+            ("stderr_sha256", "stderr"),
+            ("axioms_sha256", "axioms"),
+            ("result_sha256", "result"),
+        )
+        for field, label in cases:
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                task_dir, _ = passed_committed_attempt(Path(directory).resolve())
+                receipt_path = task_dir / "receipt.json"
+                receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                receipt[field] = "0" * 64
+                receipt_path.write_text(
+                    proof_slice._stable_json(receipt), encoding="utf-8"
+                )
+                source_rows = rows_with_passed_first_receipt(
+                    protocol.sha256_bytes(receipt_path.read_bytes())
+                )
+
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, rf"{label} SHA-256 mismatch"
+                ):
+                    proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_binds_source_and_module_declaration(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            source_slice_path = task_dir / "source-slice.json"
+            source_slice = json.loads(source_slice_path.read_text(encoding="utf-8"))
+            source_slice["statement_sha256"] = "f" * 64
+            source_slice_path.write_text(
+                proof_slice._stable_json(source_slice), encoding="utf-8"
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "source slice does not match source-map row"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            source_path = task_dir / "module/Slice.lean"
+            source_path.write_text(
+                source_path.read_text(encoding="utf-8").replace(
+                    "import Crouzeix.Jin.MaxPolynomialModulus",
+                    "import Crouzeix.Jin.Terminal",
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "Lean slice imports do not match descriptor"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, source_rows = passed_committed_attempt(Path(directory).resolve())
+            source_path = task_dir / "module/Slice.lean"
+            source_path.write_text(
+                source_path.read_text(encoding="utf-8").replace(
+                    "#check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+                    "#check CrouzeixConjecture.other",
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "missing active expected declaration check"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_checks_result_axiom_and_declaration_consistency(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, _ = passed_committed_attempt(Path(directory).resolve())
+            axioms_path = task_dir / "build/axioms.json"
+            axioms = json.loads(axioms_path.read_text(encoding="utf-8"))
+            axioms["expected_declaration"] = "CrouzeixConjecture.other"
+            axioms_path.write_text(proof_slice._stable_json(axioms), encoding="utf-8")
+            receipt_path = task_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["axioms_sha256"] = proof_slice._canonical_sha256(axioms)
+            receipt_path.write_text(proof_slice._stable_json(receipt), encoding="utf-8")
+            source_rows = rows_with_passed_first_receipt(
+                protocol.sha256_bytes(receipt_path.read_bytes())
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "axiom expected_declaration does not match descriptor",
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_accepts_runner_failed_axiom_scan(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            proof_slice.run_task(
+                task_dir,
+                executor=FakeExecutor(
+                    proof_slice.CommandResult(0, b"ok\n", b"", axiom_audit_output=b"")
+                ),
+            )
+            receipt_sha256 = protocol.sha256_bytes(
+                (task_dir / "receipt.json").read_bytes()
+            )
+
+            validation = proof_slice.validate_committed_attempt(
+                task_dir,
+                rows_with_first_outcome(
+                    "failed",
+                    receipt_sha256=receipt_sha256,
+                    reason="axiom audit output missing",
+                ),
+            )
+
+            self.assertEqual(validation["status"], "failed")
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, _ = passed_committed_attempt(Path(directory).resolve())
+            result_path = task_dir / "result.json"
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            result.update({"status": "failed", "reason": "fixture failure"})
+            result_path.write_text(proof_slice._stable_json(result), encoding="utf-8")
+            receipt_path = task_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["result_sha256"] = proof_slice._canonical_sha256(result)
+            receipt_path.write_text(proof_slice._stable_json(receipt), encoding="utf-8")
+            source_rows = rows_with_passed_first_receipt(
+                protocol.sha256_bytes(receipt_path.read_bytes())
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "receipt status does not match result"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_accepts_runner_source_policy_failures(
+        self,
+    ) -> None:
+        cases = (
+            (
+                lambda source: source.replace(
+                    "#check CrouzeixConjecture.maxPolynomialModulusOnNumericalRange",
+                    "#check CrouzeixConjecture.other",
+                ),
+                "Lean slice missing active expected declaration check",
+            ),
+            (
+                lambda source: source + "example : True := by sorry\n",
+                "proof-hole token",
+            ),
+        )
+        for mutate, reason_fragment in cases:
+            with (
+                self.subTest(reason=reason_fragment),
+                tempfile.TemporaryDirectory() as directory,
+            ):
+                task_dir = materialized_task(Path(directory).resolve())
+                source_path = task_dir / "module/Slice.lean"
+                source_path.write_text(
+                    mutate(source_path.read_text(encoding="utf-8")),
+                    encoding="utf-8",
+                )
+                executor = FakeExecutor(
+                    proof_slice.CommandResult(
+                        0, b"unexpected", b"", axiom_audit_output=b"axioms: none\n"
+                    )
+                )
+
+                result = proof_slice.run_task(task_dir, executor=executor)
+                validation = proof_slice.validate_committed_attempt(
+                    task_dir,
+                    rows_for_committed_attempt(
+                        task_dir, "failed", str(result["reason"])
+                    ),
+                )
+
+                self.assertEqual(validation["status"], "failed")
+                self.assertIn(reason_fragment, str(result["reason"]))
+                self.assertEqual(executor.calls, [])
+                self.assertTrue((task_dir / "build/AxiomAudit.lean").is_file())
+
+    def test_validate_committed_attempt_accepts_runner_failed_outcome_matrix(
+        self,
+    ) -> None:
+        cases = (
+            (
+                descriptor(),
+                proof_slice.CommandResult(1, b"Lean error\n", b""),
+                "not_applicable",
+                None,
+            ),
+            (
+                descriptor(),
+                proof_slice.CommandResult(0, b"ok\n", b"", axiom_audit_output=b""),
+                "failed",
+                None,
+            ),
+            (
+                descriptor() | {"axiom_policy": {"allowed_axioms": []}},
+                proof_slice.CommandResult(
+                    0,
+                    b"ok\n",
+                    b"",
+                    axiom_audit_output=b"axioms: Classical.choice\n",
+                ),
+                "failed",
+                None,
+            ),
+            (
+                descriptor()
+                | {
+                    "attempt_budget": {
+                        "timeout_seconds": 3600,
+                        "max_output_bytes": 1,
+                    }
+                },
+                proof_slice.CommandResult(
+                    0, b"over cap", b"", axiom_audit_output=b"axioms: none\n"
+                ),
+                "passed",
+                True,
+            ),
+        )
+        for value, command_result, axiom_status, truncated in cases:
+            with (
+                self.subTest(axiom_status=axiom_status),
+                tempfile.TemporaryDirectory() as directory,
+            ):
+                task_dir = materialized_task(Path(directory).resolve(), value)
+                result = proof_slice.run_task(
+                    task_dir, executor=FakeExecutor(command_result)
+                )
+                task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+                desc = proof_slice.validate_descriptor(
+                    task["descriptor"], formal_target.load_lock(), rows()
+                )
+                (task_dir / "build/AxiomAudit.lean").write_text(
+                    proof_slice._axiom_audit_source(desc), encoding="utf-8"
+                )
+
+                validation = proof_slice.validate_committed_attempt(
+                    task_dir,
+                    rows_for_committed_attempt(
+                        task_dir, "failed", str(result["reason"])
+                    ),
+                )
+
+                axioms = json.loads(
+                    (task_dir / "build/axioms.json").read_text(encoding="utf-8")
+                )
+                receipt = json.loads(
+                    (task_dir / "receipt.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(validation["status"], "failed")
+                self.assertEqual(axioms["status"], axiom_status)
+                if truncated is not None:
+                    self.assertIs(receipt["stdout_truncated"], truncated)
+
+    def test_validate_committed_attempt_rejects_impossible_failed_outcome(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, _ = passed_committed_attempt(Path(directory).resolve())
+            result = proof_slice._result_json("failed", "fabricated failure")
+            (task_dir / "result.json").write_text(
+                proof_slice._stable_json(result), encoding="utf-8"
+            )
+            receipt_path = task_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt.update(
+                {
+                    "status": "failed",
+                    "reason": "fabricated failure",
+                    "result_sha256": proof_slice._canonical_sha256(result),
+                }
+            )
+            receipt_path.write_text(proof_slice._stable_json(receipt), encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "failed attempt outcome is inconsistent"
+            ):
+                proof_slice.validate_committed_attempt(
+                    task_dir,
+                    rows_for_committed_attempt(
+                        task_dir, "failed", "fabricated failure"
+                    ),
+                )
+
+    def test_validate_committed_attempt_binds_failed_axiom_and_source_map_reasons(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            result = proof_slice.run_task(
+                task_dir,
+                executor=FakeExecutor(
+                    proof_slice.CommandResult(0, b"ok\n", b"", axiom_audit_output=b"")
+                ),
+            )
+            axioms_path = task_dir / "build/axioms.json"
+            axioms = json.loads(axioms_path.read_text(encoding="utf-8"))
+            axioms["reason"] = "fabricated axiom failure"
+            axioms_path.write_text(proof_slice._stable_json(axioms), encoding="utf-8")
+            receipt_path = task_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["axioms_sha256"] = proof_slice._canonical_sha256(axioms)
+            receipt_path.write_text(proof_slice._stable_json(receipt), encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "failed axiom audit reason is invalid"
+            ):
+                proof_slice.validate_committed_attempt(
+                    task_dir,
+                    rows_for_committed_attempt(
+                        task_dir, "failed", str(result["reason"])
+                    ),
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir = materialized_task(Path(directory).resolve())
+            result = proof_slice.run_task(
+                task_dir,
+                executor=FakeExecutor(
+                    proof_slice.CommandResult(1, b"Lean error\n", b"")
+                ),
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "source-map failed_reason does not match result",
+            ):
+                proof_slice.validate_committed_attempt(
+                    task_dir,
+                    rows_for_committed_attempt(
+                        task_dir, "failed", "different source-map reason"
+                    ),
+                )
+
+    def test_validate_committed_attempt_requires_transitive_dependency_attempts(
+        self,
+    ) -> None:
+        with self.assertRaisesRegex(
+            protocol.ValidationError,
+            "missing dependency attempt for row: jin-max-polynomial-modulus",
+        ):
+            proof_slice.validate_committed_attempt(POLYNOMIAL_BOUND_ATTEMPT_001, rows())
+
+        with self.assertRaisesRegex(
+            protocol.ValidationError,
+            "missing dependency attempt for row: jin-max-polynomial-modulus",
+        ):
+            proof_slice.validate_committed_attempt(
+                TERMINAL_ATTEMPT_001,
+                rows(),
+                dependency_attempts={
+                    "jin-polynomial-bound": POLYNOMIAL_BOUND_ATTEMPT_001
+                },
+            )
+
+        with self.assertRaisesRegex(
+            protocol.ValidationError,
+            "unexpected dependency attempt for row: jin-polynomial-bound",
+        ):
+            proof_slice.validate_committed_attempt(
+                MAX_POLYNOMIAL_ATTEMPT_004,
+                rows(),
+                dependency_attempts={
+                    "jin-polynomial-bound": POLYNOMIAL_BOUND_ATTEMPT_001
+                },
+            )
+
+    def test_validate_committed_attempt_rejects_cyclic_dependency_graph(self) -> None:
+        cyclic_rows = tuple(
+            jin_validation.SourceMapRow(
+                row_id=row.row_id,
+                source_locator=row.source_locator,
+                statement_sha256=row.statement_sha256,
+                lean_name=row.lean_name,
+                dependency_ids=(
+                    ("jin-polynomial-bound",)
+                    if row.row_id == "jin-max-polynomial-modulus"
+                    else row.dependency_ids
+                ),
+                status=row.status,
+                receipt_sha256=row.receipt_sha256,
+                blocked_reason=row.blocked_reason,
+                failed_reason=row.failed_reason,
+            )
+            for row in rows()
+        )
+
+        with self.assertRaisesRegex(
+            protocol.ValidationError,
+            (
+                "source-map dependency cycle detected: "
+                "jin-polynomial-bound -> jin-max-polynomial-modulus -> "
+                "jin-polynomial-bound"
+            ),
+        ):
+            proof_slice.validate_committed_attempt(
+                TERMINAL_ATTEMPT_001,
+                cyclic_rows,
+                dependency_attempts={
+                    "jin-max-polynomial-modulus": MAX_POLYNOMIAL_ATTEMPT_004,
+                    "jin-polynomial-bound": POLYNOMIAL_BOUND_ATTEMPT_001,
+                },
+            )
+
+    def test_validate_committed_attempt_bounds_persisted_logs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            task_dir, _ = passed_committed_attempt(Path(directory).resolve())
+            stdout_path = task_dir / "build/stdout.log"
+            stdout_path.write_bytes(b"x" * (1048576 + 1))
+            receipt_path = task_dir / "receipt.json"
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["stdout_sha256"] = protocol.sha256_bytes(stdout_path.read_bytes())
+            receipt_path.write_text(proof_slice._stable_json(receipt), encoding="utf-8")
+            source_rows = rows_with_passed_first_receipt(
+                protocol.sha256_bytes(receipt_path.read_bytes())
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "stdout log exceeds max_output_bytes"
+            ):
+                proof_slice.validate_committed_attempt(task_dir, source_rows)
+
+    def test_validate_committed_attempt_rejects_superseded_attempt_with_precise_digest(
+        self,
+    ) -> None:
+        attempt = PROOF_SLICES / "jin-max-polynomial-modulus/attempt-003"
+
+        with self.assertRaisesRegex(
+            protocol.ValidationError,
+            (
+                "source-map receipt_sha256 mismatch for row "
+                "jin-max-polynomial-modulus: expected "
+                "9e0cf882a8f866a4897a46548c7e387fb0d07b7dee159b3c2260ef9ece1fb563, "
+                "observed "
+                "2409b5bf99729740cfee3814e2933b3458f0b8f68862062f7f58882056a39c12"
+            ),
+        ):
+            proof_slice.validate_committed_attempt(attempt, rows())
+
+    def test_validate_committed_attempt_rejects_historical_command_contracts(
+        self,
+    ) -> None:
+        cases = (
+            ("attempt-001", "command argv does not match descriptor"),
+            ("attempt-002", "command env must match shared Lean environment"),
+        )
+        for attempt_name, pattern in cases:
+            with self.subTest(attempt=attempt_name):
+                attempt = PROOF_SLICES / "jin-max-polynomial-modulus" / attempt_name
+                with self.assertRaisesRegex(protocol.ValidationError, pattern):
+                    proof_slice.validate_committed_attempt(attempt, rows())
 
 
 class ProofSliceCliTests(unittest.TestCase):
@@ -1030,7 +1688,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             result_json = json.loads(
                 (task_dir / "result.json").read_text(encoding="utf-8")
             )
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             command = json.loads(
                 (task_dir / "build/command.json").read_text(encoding="utf-8")
             )
@@ -1067,13 +1727,17 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 (task_dir / "result.json").read_text(encoding="utf-8")
             )
             self.assertIn("Unknown identifier", str(result_json["reason"]))
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertIn("Unknown identifier", str(receipt["reason"]))
             self.assertEqual(
                 (task_dir / "build/stdout.log").read_bytes(),
                 b"Slice.lean:4:7: error: Unknown identifier\n",
             )
-            self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"type mismatch\n")
+            self.assertEqual(
+                (task_dir / "build/stderr.log").read_bytes(), b"type mismatch\n"
+            )
 
     def test_run_task_classifies_blocker(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -1091,7 +1755,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
 
             self.assertEqual(result["status"], "blocked")
             self.assertIn("missing pinned toolchain", str(result["reason"]))
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertEqual(receipt["status"], "blocked")
             command = json.loads(
                 (task_dir / "build/command.json").read_text(encoding="utf-8")
@@ -1119,7 +1785,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
 
             self.assertEqual(result["status"], "blocked")
             self.assertIn("missing pinned toolchain", str(result["reason"]))
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertEqual(receipt["status"], "blocked")
 
     def test_run_task_rejects_stale_empty_command_environment(self) -> None:
@@ -1167,7 +1835,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertEqual(result["status"], "failed")
             self.assertIn("expected declaration check", str(result["reason"]))
             self.assertEqual(executor.calls, [])
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertIsNone(receipt["command_exit_code"])
 
     def test_run_task_rejects_expected_check_inside_comment(self) -> None:
@@ -1312,7 +1982,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             )
             self.assertTrue(axioms["scan_performed"])
             self.assertEqual(axioms["status"], "passed")
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertTrue(receipt["stdout_truncated"])
             self.assertFalse(receipt["stderr_truncated"])
             self.assertEqual(receipt["max_output_bytes"], 1048576)
@@ -1337,7 +2009,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertIn("output cap", str(result["reason"]))
             self.assertEqual((task_dir / "build/stdout.log").read_bytes(), b"abcd")
             self.assertEqual((task_dir / "build/stderr.log").read_bytes(), b"vwxy")
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertTrue(receipt["stdout_truncated"])
             self.assertTrue(receipt["stderr_truncated"])
             self.assertEqual(receipt["max_output_bytes"], 4)
@@ -1366,7 +2040,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
                 (task_dir / "build/stderr.log").read_bytes(),
                 b"error at <harp-workspace>/formalization/lean\n",
             )
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertEqual(
                 receipt["stderr_sha256"],
                 proof_slice.protocol.sha256_bytes(
@@ -1447,7 +2123,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             self.assertIn("proof-hole token", str(result["reason"]))
             self.assertEqual(executor.calls, [])
             self.assertEqual((task_dir / "build/stdout.log").read_bytes(), b"")
-            receipt = json.loads((task_dir / "receipt.json").read_text(encoding="utf-8"))
+            receipt = json.loads(
+                (task_dir / "receipt.json").read_text(encoding="utf-8")
+            )
             self.assertIsNone(receipt["command_exit_code"])
 
     def test_run_task_rejects_expected_check_inside_nested_block_comment(self) -> None:
@@ -1539,7 +2217,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
         self.assertEqual(env["PATH"], EXPECTED_SHARED_PATH)
         self.assertNotIn("HOME", env)
 
-    def test_subprocess_executor_resolves_executable_before_passing_environment(self) -> None:
+    def test_subprocess_executor_resolves_executable_before_passing_environment(
+        self,
+    ) -> None:
         captured: dict[str, object] = {}
         original_popen = proof_slice.subprocess.Popen
         original_which = proof_slice.shutil.which
@@ -1590,7 +2270,9 @@ class ProofSliceRunTaskTests(unittest.TestCase):
             proof_slice._shared_lean_environment(),
         )
 
-    def test_subprocess_executor_blocks_when_executable_cannot_be_resolved(self) -> None:
+    def test_subprocess_executor_blocks_when_executable_cannot_be_resolved(
+        self,
+    ) -> None:
         original_which = proof_slice.shutil.which
 
         def fake_which(executable: str, path: str | None = None) -> str | None:
