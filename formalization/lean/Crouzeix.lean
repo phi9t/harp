@@ -1,4 +1,3 @@
-import Crouzeix.Jin.MaxPolynomialModulus
 import Crouzeix.Jin.Terminal
-import Crouzeix.LoristSchwenninger.Perturbation
-import Crouzeix.LoristSchwenninger.Scalar
+import Crouzeix.LoristSchwenninger.Consequences
+import Crouzeix.Harp.Consequences

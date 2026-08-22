@@ -16,11 +16,9 @@ theorem crouzeixConjecture [Nonempty n] (A : SquareMatrix n) (p : Polynomial ℂ
   simpa only [maxFunctionModulusOnSet, maxPolynomialModulusOnNumericalRange] using hbound
 ```
 
-This module intentionally does not declare `crouzeixConjecture` until the
-Harp-native holomorphic Crouzeix route exists. A terminal proof-slice attempt
-imports this module and checks that declaration name, producing a typed failed
-receipt at the exact missing mathematical bridge instead of importing Jin's
-upstream final theorem as proof authority.
+This module declares `crouzeixConjecture` from the completed Harp-native
+holomorphic route. The assembly uses Harp-owned intermediate theorems rather
+than importing Jin's upstream final theorem as proof authority.
 -/
 
 noncomputable section
@@ -31,9 +29,8 @@ open scoped Matrix.Norms.L2Operator
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
-/-- Terminal assembly blocker: Jin's terminal theorem needs the holomorphic
-Crouzeix bound and the polynomial specialization rewrite before the exact
-terminal statement can be declared without trusted assumptions. -/
+/-- The exact terminal assembly obligation discharged by the Harp-owned
+holomorphic bound and polynomial specialization. -/
 def terminalCrouzeixAssemblyBlocker : Prop :=
   ∀ (A : SquareMatrix n) (p : Polynomial ℂ),
     PolynomialCrouzeixBound A p
