@@ -10,6 +10,8 @@ use walkdir::WalkDir;
 use super::{sha256_file, valid_digest, verify_file};
 use crate::error::AppError;
 
+mod route;
+
 pub(super) const ROOT: &str = "evidence/crouzeix_conjecture";
 
 pub(super) const SOURCE_HEADER: &str = "schema_version\treceipt_id\tsource_id\tsource_class\trole\timmutable_identity\tsource_url\tupstream_path\tbytes\tsha256\tlocal_path\tobserved\tlicense_status\tredistribution_status";
@@ -377,9 +379,9 @@ struct SourceDigestRecord<'a> {
     sha256: &'a str,
 }
 
-struct LocalSourceClosure {
-    sources: Vec<(String, PathBuf)>,
-    digest: String,
+pub(super) struct LocalSourceClosure {
+    pub(super) sources: Vec<(String, PathBuf)>,
+    pub(super) digest: String,
 }
 
 #[derive(PartialEq, Eq)]
@@ -397,6 +399,8 @@ pub(super) struct Report {
 }
 
 pub(super) fn verify(repo_root: &Path) -> Result<Report, AppError> {
+    route::verify_published_routes(repo_root)
+        .map_err(|detail| invalid("sources.crouzeix.route_contracts", detail))?;
     let local_evidence = verify_local_formalization_bundle_if_present(repo_root)?;
     verify_exact_roster(repo_root, local_evidence.as_ref())?;
     let source_receipts = verify_source_manifest(repo_root)?;
@@ -1575,7 +1579,7 @@ fn ls_aggregate_modules(
     )
 }
 
-fn local_source_closure(
+pub(super) fn local_source_closure(
     repo_root: &Path,
     roots: &[&str],
     manifest: &Path,
@@ -3099,7 +3103,7 @@ fn managed_local_module(module: &str) -> bool {
         })
 }
 
-fn lean_header_imports(
+pub(super) fn lean_header_imports(
     source: &str,
     module: &str,
     manifest: &Path,
@@ -3306,7 +3310,7 @@ fn provider_error<T>(
     ))
 }
 
-fn mask_lean_source(
+pub(super) fn mask_lean_source(
     source: &str,
     module: &str,
     manifest: &Path,

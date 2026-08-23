@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp.local/schemas/crouzeix-route-proof-receipt-v1.json",
+  "title": "Crouzeix route proof receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "route_id", "aggregate_module", "build_target", "manifest_path", "manifest_sha256", "candidate_commit", "candidate_tree", "command_artifact_path", "command_artifact_sha256", "argv", "working_directory", "cache_identity", "toolchain", "local_closure_modules", "local_closure_sha256", "mathlib_artifacts", "mathlib_artifacts_sha256", "declaration_types", "allowed_axioms", "axiom_audit_path", "axiom_audit_sha256", "axiom_results", "provider_report_path", "provider_report_sha256", "stdout_path", "stdout_sha256", "stderr_path", "stderr_sha256", "exit_code", "status", "receipt_sha256"],
+  "properties": {
+    "schema_version": {"const": "crouzeix-route-proof-receipt/v1"},
+    "route_id": {"enum": ["jin", "lorist-schwenninger", "harp"]},
+    "aggregate_module": {"$ref": "#/$defs/module"},
+    "build_target": {"$ref": "#/$defs/module"},
+    "manifest_path": {"$ref": "#/$defs/path"}, "manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "candidate_commit": {"$ref": "#/$defs/gitId"}, "candidate_tree": {"$ref": "#/$defs/gitId"},
+    "command_artifact_path": {"$ref": "#/$defs/path"}, "command_artifact_sha256": {"$ref": "#/$defs/sha256"},
+    "argv": {"type": "array", "minItems": 2, "maxItems": 16, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+    "working_directory": {"const": "."}, "cache_identity": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "toolchain": {"const": "leanprover/lean4:v4.32.1"},
+    "local_closure_modules": {"$ref": "#/$defs/modules"}, "local_closure_sha256": {"$ref": "#/$defs/sha256"},
+    "mathlib_artifacts": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/fileDigest"}},
+    "mathlib_artifacts_sha256": {"$ref": "#/$defs/sha256"},
+    "declaration_types": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/declarationType"}},
+    "allowed_axioms": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"enum": ["Classical.choice", "Quot.sound", "propext"]}},
+    "axiom_audit_path": {"$ref": "#/$defs/path"}, "axiom_audit_sha256": {"$ref": "#/$defs/sha256"},
+    "axiom_results": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/axiomResult"}},
+    "provider_report_path": {"$ref": "#/$defs/path"}, "provider_report_sha256": {"$ref": "#/$defs/sha256"},
+    "stdout_path": {"$ref": "#/$defs/path"}, "stdout_sha256": {"$ref": "#/$defs/sha256"},
+    "stderr_path": {"$ref": "#/$defs/path"}, "stderr_sha256": {"$ref": "#/$defs/sha256"},
+    "exit_code": {"type": "integer", "minimum": 0, "maximum": 255},
+    "status": {"enum": ["passed", "failed"]}, "receipt_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "passed"}}, "required": ["status"]}, "then": {"properties": {"exit_code": {"const": 0}}}},
+    {"if": {"properties": {"status": {"const": "failed"}}, "required": ["status"]}, "then": {"properties": {"exit_code": {"minimum": 1}}}}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitId": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$", "maxLength": 4096},
+    "module": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_']*(\\.[A-Za-z_][A-Za-z0-9_']*)*$", "maxLength": 1024},
+    "modules": {"type": "array", "minItems": 1, "maxItems": 4096, "uniqueItems": true, "items": {"$ref": "#/$defs/module"}},
+    "fileDigest": {"type": "object", "additionalProperties": false, "required": ["module", "path", "sha256"], "properties": {"module": {"$ref": "#/$defs/module"}, "path": {"$ref": "#/$defs/path"}, "sha256": {"$ref": "#/$defs/sha256"}}},
+    "declarationType": {"type": "object", "additionalProperties": false, "required": ["declaration", "type_artifact_path", "type_artifact_sha256", "statement_sha256"], "properties": {"declaration": {"$ref": "#/$defs/module"}, "type_artifact_path": {"$ref": "#/$defs/path"}, "type_artifact_sha256": {"$ref": "#/$defs/sha256"}, "statement_sha256": {"$ref": "#/$defs/sha256"}}},
+    "axiomResult": {"type": "object", "additionalProperties": false, "required": ["declaration", "axioms"], "properties": {"declaration": {"$ref": "#/$defs/module"}, "axioms": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"enum": ["Classical.choice", "Quot.sound", "propext"]}}}}
+  }
+}

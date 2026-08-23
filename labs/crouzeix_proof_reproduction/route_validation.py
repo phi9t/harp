@@ -1,0 +1,1149 @@
+"""Strict, read-only contracts for Crouzeix route proof evidence."""
+
+from __future__ import annotations
+
+import hashlib
+import errno
+import json
+import os
+import re
+import stat
+import subprocess
+from dataclasses import asdict, dataclass
+from pathlib import Path, PurePosixPath
+from typing import Any, Mapping, Sequence
+
+try:
+    from .provider_independence import (
+        ProviderIndependenceError,
+        audit_provider_independence,
+        parse_active_imports,
+    )
+except ImportError:  # pragma: no cover - direct script import path
+    from provider_independence import (
+        ProviderIndependenceError,
+        audit_provider_independence,
+        parse_active_imports,
+    )
+
+MANIFEST_SCHEMA_VERSION = "crouzeix-route-proof-manifest/v1"
+RECEIPT_SCHEMA_VERSION = "crouzeix-route-proof-receipt/v1"
+REVIEW_SCHEMA_VERSION = "crouzeix-proof-review/v1"
+ROUTE_IDS = ("jin", "lorist-schwenninger", "harp")
+CLAIM_KINDS = ("source-faithful", "derived")
+PROVENANCE_KINDS = ("source", "shared-foundation", "reused-route", "derived")
+FINDING_SEVERITIES = ("Critical", "Important", "Minor")
+ALLOWED_AXIOMS = ("Classical.choice", "Quot.sound", "propext")
+MAX_JSON_BYTES = 2 * 1024 * 1024
+MAX_STRING_BYTES = 16 * 1024
+MAX_ARRAY_ITEMS = 4096
+MAX_JSON_DEPTH = 32
+PINNED_TOOLCHAIN = "leanprover/lean4:v4.32.1"
+COMMAND_SCHEMA_VERSION = "crouzeix-route-command/v1"
+AXIOM_SCHEMA_VERSION = "crouzeix-route-axiom-audit/v1"
+SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
+GIT_ID_RE = re.compile(r"[0-9a-f]{40,64}\Z")
+IDENTITY_RE = re.compile(r"sha256:[0-9a-f]{64}\Z")
+MODULE_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
+NODE_ID_RE = re.compile(r"[a-z0-9][a-z0-9-]{0,127}\Z")
+SOURCE_LOCATOR_RE = re.compile(r"(?P<path>[^#]+)#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z")
+NODE_ROLES = ("load-bearing", "terminal", "consequence")
+
+ROUTE_AGGREGATES = {
+    "jin": "CrouzeixJin",
+    "lorist-schwenninger": "CrouzeixLoristSchwenninger",
+    "harp": "CrouzeixHarp",
+}
+ROUTE_MANIFEST_PATHS = {
+    "jin": Path("labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json"),
+    "lorist-schwenninger": Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"),
+    "harp": Path("labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json"),
+}
+HARP_ALLOWED_LS_SUPPORT = frozenset({
+    "Crouzeix.LoristSchwenninger.BoundaryEmbedding",
+    "Crouzeix.LoristSchwenninger.BoundaryMultiplier",
+    "Crouzeix.LoristSchwenninger.BoundarySquareRoot",
+    "Crouzeix.LoristSchwenninger.CompanionAlgebra",
+    "Crouzeix.LoristSchwenninger.CompletedSquare",
+    "Crouzeix.LoristSchwenninger.CompressionMoments",
+    "Crouzeix.LoristSchwenninger.Dilation",
+    "Crouzeix.LoristSchwenninger.NormAttainment",
+    "Crouzeix.LoristSchwenninger.PolynomialPowerCauchy",
+    "Crouzeix.LoristSchwenninger.Recurrence",
+    "Crouzeix.LoristSchwenninger.Scalar",
+})
+
+
+class RouteValidationError(ValueError):
+    """A route artifact is malformed, inconsistent, or unsafe."""
+
+
+@dataclass(frozen=True)
+class RouteNode:
+    node_id: str
+    role: str
+    declaration: str
+    module_path: str
+    dependency_ids: tuple[str, ...]
+    provenance_kind: str
+    source_locator: str | None
+    reused_from_route: str | None
+    reused_node_id: str | None
+    declaration_type_path: str
+    statement_sha256: str
+
+
+@dataclass(frozen=True)
+class RouteManifest:
+    schema_version: str
+    route_id: str
+    claim_kind: str
+    aggregate_module: str
+    build_target: str
+    terminal_declaration: str
+    terminal_type_sha256: str
+    consequence_declarations: tuple[str, ...]
+    source_identities: tuple[str, ...]
+    shared_foundation_modules: tuple[str, ...]
+    module_closure: tuple[str, ...]
+    module_closure_sha256: str
+    allowed_axioms: tuple[str, ...]
+    review_path: str
+    review_sha256: str | None
+    receipt_path: str
+    receipt_sha256: str | None
+    nodes: tuple[RouteNode, ...]
+
+
+@dataclass(frozen=True)
+class RouteValidationResult:
+    route_id: str
+    claim_level: str
+    status: str
+    manifest_path: str
+    reason: str | None = None
+
+
+MANIFEST_FIELDS = frozenset({
+    "schema_version", "route_id", "claim_kind", "aggregate_module",
+    "build_target", "terminal_declaration", "terminal_type_sha256",
+    "consequence_declarations", "source_identities", "shared_foundation_modules",
+    "module_closure", "module_closure_sha256", "allowed_axioms",
+    "review_path", "review_sha256", "receipt_path", "receipt_sha256", "nodes",
+})
+NODE_FIELDS = frozenset({
+    "node_id", "role", "declaration", "module_path", "dependency_ids",
+    "provenance_kind", "source_locator", "reused_from_route", "reused_node_id",
+    "declaration_type_path", "statement_sha256",
+})
+RECEIPT_FIELDS = frozenset({
+    "schema_version", "route_id", "aggregate_module", "build_target",
+    "manifest_path", "manifest_sha256", "candidate_commit", "candidate_tree",
+    "command_artifact_path", "command_artifact_sha256", "argv",
+    "working_directory", "cache_identity", "toolchain", "local_closure_modules",
+    "local_closure_sha256", "mathlib_artifacts", "mathlib_artifacts_sha256",
+    "declaration_types", "allowed_axioms", "axiom_audit_path",
+    "axiom_audit_sha256", "axiom_results", "provider_report_path",
+    "provider_report_sha256", "stdout_path", "stdout_sha256", "stderr_path",
+    "stderr_sha256", "exit_code", "status", "receipt_sha256",
+})
+REVIEW_FIELDS = frozenset({
+    "schema_version", "route_id", "reviewed_commit", "reviewed_tree",
+    "manifest_path", "manifest_sha256", "terminal_type_sha256", "review_id",
+    "reviewer_identity", "reviewer_model", "reviewer_run_id", "verdict",
+    "outcome", "source_fidelity_check", "derivation_reuse_check",
+    "findings", "review_sha256",
+})
+
+
+def canonical_json_bytes(value: object) -> bytes:
+    text = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    return (text + "\n").encode("utf-8")
+
+
+def _sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def self_digest(value: Mapping[str, object], field: str) -> str:
+    payload = dict(value)
+    payload[field] = None
+    return _sha256(canonical_json_bytes(payload))
+
+
+def manifest_contract_sha256(value: Mapping[str, object] | RouteManifest) -> str:
+    payload = route_manifest_to_dict(value) if isinstance(value, RouteManifest) else dict(value)
+    payload["receipt_sha256"] = None
+    payload["review_sha256"] = None
+    return _sha256(canonical_json_bytes(payload))
+
+
+def normalized_type_sha256(source: str) -> str:
+    normalized = " ".join(source.split())
+    if not normalized:
+        raise RouteValidationError("declaration type cannot be empty")
+    return _sha256(normalized.encode("utf-8"))
+
+
+def string_roster_sha256(values: Sequence[str]) -> str:
+    return _sha256(canonical_json_bytes(list(values)))
+
+
+def record_roster_sha256(values: Sequence[Mapping[str, object]]) -> str:
+    return _sha256(canonical_json_bytes(list(values)))
+
+
+def module_relative_path(module: str) -> Path:
+    return Path(*module.split(".")).with_suffix(".lean")
+
+
+def mathlib_source_path(module: str) -> Path:
+    return Path("formalization/lean/.lake/packages/mathlib") / module_relative_path(module)
+
+
+def mathlib_artifact_path(module: str) -> Path:
+    return (
+        Path("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean")
+        / Path(*module.split("."))
+    ).with_suffix(".olean")
+
+
+def active_local_closure(lean_root: Path, aggregate_module: str) -> tuple[str, ...]:
+    repository_root = lean_root.resolve().parents[1]
+    pending = [aggregate_module]
+    visited: set[str] = set()
+    while pending:
+        module = pending.pop()
+        if module in visited:
+            continue
+        path = lean_root / module_relative_path(module)
+        if not path.exists():
+            if _managed_local_module(module):
+                raise RouteValidationError(f"missing managed local import: {module}")
+            continue
+        source = _read_bytes(
+            repository_root,
+            (Path("formalization/lean") / module_relative_path(module)).as_posix(),
+            f"Lean module {module}",
+        ).decode("utf-8")
+        visited.add(module)
+        try:
+            imports = parse_active_imports(source, module)
+        except ProviderIndependenceError as error:
+            raise RouteValidationError(str(error)) from error
+        for imported in reversed(imports):
+            if _managed_local_module(imported):
+                pending.append(imported)
+    return tuple(sorted(visited))
+
+
+def active_mathlib_closure(repo_root: Path, local_modules: Sequence[str]) -> tuple[str, ...]:
+    lean_root = repo_root / "formalization/lean"
+    cache_root = resolve_approved_cache_root(repo_root)
+    pending: list[str] = []
+    for module in local_modules:
+        source = _read_bytes(
+            repo_root,
+            (Path("formalization/lean") / module_relative_path(module)).as_posix(),
+            f"Lean module {module}",
+        ).decode("utf-8")
+        try:
+            pending.extend(
+                imported for imported in parse_active_imports(source, module)
+                if imported == "Mathlib" or imported.startswith("Mathlib.")
+            )
+        except ProviderIndependenceError as error:
+            raise RouteValidationError(str(error)) from error
+    visited: set[str] = set()
+    while pending:
+        module = pending.pop()
+        if module in visited:
+            continue
+        relative = module_relative_path(module) if module != "Mathlib" else Path("Mathlib.lean")
+        source = _read_cache_bytes(cache_root, Path("packages/mathlib") / relative, f"Mathlib source {module}")
+        try:
+            text = source.decode("utf-8")
+        except UnicodeDecodeError as error:
+            raise RouteValidationError(f"Mathlib source is not UTF-8: {module}") from error
+        visited.add(module)
+        try:
+            imports = parse_active_imports(text, module)
+        except ProviderIndependenceError as error:
+            raise RouteValidationError(str(error)) from error
+        pending.extend(
+            imported for imported in imports
+            if imported == "Mathlib" or imported.startswith("Mathlib.")
+        )
+    return tuple(sorted(visited))
+
+
+def _managed_local_module(module: str) -> bool:
+    return (
+        module in {"Crouzeix", *ROUTE_AGGREGATES.values()}
+        or module.startswith(("Crouzeix.", "CrouzeixConjecture."))
+    )
+
+
+def resolve_approved_cache_root(repository_root: Path) -> Path:
+    root = Path(repository_root).resolve()
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            capture_output=True, text=True, check=False,
+        )
+    except OSError as error:
+        raise RouteValidationError(f"approved primary cache lookup unavailable: {error}") from error
+    if result.returncode != 0 or not result.stdout.strip():
+        raise RouteValidationError("approved primary cache lookup failed")
+    common = Path(result.stdout.strip()).resolve()
+    if common.name != ".git":
+        raise RouteValidationError("Git common-dir is not a primary .git directory")
+    approved = common.parent / "formalization/lean/.lake"
+    link = root / "formalization/lean/.lake"
+    if root == common.parent.resolve():
+        if link.is_symlink() or not link.is_dir():
+            raise RouteValidationError("primary cache must be a real directory")
+    elif not link.is_symlink() or link.resolve() != approved.resolve():
+        raise RouteValidationError("worktree .lake does not target approved primary cache")
+    approved = approved.resolve(strict=True)
+    for relative in (Path("packages"), Path("packages/mathlib")):
+        probe = approved / relative
+        if probe.is_symlink():
+            raise RouteValidationError(f"approved cache contains nested symlink: {relative}")
+    return approved
+
+
+def _read_cache_bytes(cache_root: Path, relative: Path, label: str) -> bytes:
+    return _read_rooted_bytes(cache_root.resolve(strict=True), relative.as_posix(), label)
+
+
+def cache_contract_identity(repository_root: Path) -> str:
+    lean_root = Path(repository_root) / "formalization/lean"
+    toolchain = _read_bytes(Path(repository_root), "formalization/lean/lean-toolchain", "lean-toolchain").decode("utf-8").strip()
+    if toolchain != PINNED_TOOLCHAIN:
+        raise RouteValidationError("toolchain does not match pinned route toolchain")
+    manifest = _read_json(Path(repository_root), Path("formalization/lean/lake-manifest.json"), "lake manifest")
+    payload = {
+        "schema_version": "crouzeix-route-cache-identity/v1",
+        "toolchain": toolchain,
+        "lake_manifest_sha256": _sha256(canonical_json_bytes(manifest)),
+    }
+    return f"sha256:{_sha256(canonical_json_bytes(payload))}"
+
+
+def _pairs_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise RouteValidationError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _check_json_shape(value: object, depth: int = 0) -> None:
+    if depth > MAX_JSON_DEPTH:
+        raise RouteValidationError("JSON nesting exceeds depth bound")
+    if isinstance(value, str):
+        if len(value.encode("utf-8")) > MAX_STRING_BYTES:
+            raise RouteValidationError("JSON string exceeds size bound")
+    elif isinstance(value, list):
+        if len(value) > MAX_ARRAY_ITEMS:
+            raise RouteValidationError("JSON array exceeds item bound")
+        for item in value:
+            _check_json_shape(item, depth + 1)
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            _check_json_shape(key, depth + 1)
+            _check_json_shape(item, depth + 1)
+
+
+def _safe_relative(value: object, label: str, *, locator: bool = False) -> str:
+    if not isinstance(value, str) or not value or len(value.encode()) > MAX_STRING_BYTES:
+        raise RouteValidationError(f"{label} must be a safe repository-relative path")
+    path_text = value.split("#", 1)[0] if locator else value
+    path = PurePosixPath(path_text)
+    if path.is_absolute() or path_text.startswith(("/", "\\")) or ":" in path.parts[0]:
+        raise RouteValidationError(f"{label} must be a safe repository-relative path")
+    if any(part in {"", ".", ".."} for part in path.parts) or chr(92) in path_text:
+        raise RouteValidationError(f"{label} must be a safe repository-relative path")
+    if locator:
+        fragment = value.split("#", 1)[1] if "#" in value else ""
+        if re.fullmatch(r"L[1-9][0-9]*-L[1-9][0-9]*", fragment) is None:
+            raise RouteValidationError(f"{label} requires a pinned #Lx-Ly source span")
+    return path_text
+
+
+def _read_rooted_bytes(root_path: Path, relative: str, label: str) -> bytes:
+    root_fd = os.open(root_path, os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_CLOEXEC", 0))
+    current_fd = root_fd
+    try:
+        parts = PurePosixPath(relative).parts
+        for part in parts[:-1]:
+            next_fd = os.open(
+                part,
+                os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0),
+                dir_fd=current_fd,
+            )
+            if current_fd != root_fd:
+                os.close(current_fd)
+            current_fd = next_fd
+        leaf_fd = os.open(
+            parts[-1],
+            os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0),
+            dir_fd=current_fd,
+        )
+        try:
+            metadata = os.fstat(leaf_fd)
+            if not stat.S_ISREG(metadata.st_mode):
+                raise RouteValidationError(f"{label} is not a regular file: {relative}")
+            if metadata.st_nlink != 1:
+                raise RouteValidationError(f"{label} cannot be a hardlink alias: {relative}")
+            if metadata.st_size > MAX_JSON_BYTES:
+                raise RouteValidationError(f"{label} exceeds byte bound")
+            with os.fdopen(leaf_fd, "rb", closefd=False) as handle:
+                data = handle.read(MAX_JSON_BYTES + 1)
+            if len(data) > MAX_JSON_BYTES:
+                raise RouteValidationError(f"{label} exceeds byte bound")
+            return data
+        finally:
+            os.close(leaf_fd)
+    except OSError as error:
+        if error.errno == errno.ELOOP:
+            raise RouteValidationError(f"{label} path contains symlink: {relative}") from error
+        raise RouteValidationError(f"cannot open {label} without following links: {relative}: {error}") from error
+    finally:
+        if current_fd != root_fd:
+            os.close(current_fd)
+        os.close(root_fd)
+
+
+def _checked_file(repo_root: Path, value: object, label: str, *, locator: bool = False) -> Path:
+    relative = _safe_relative(value, label, locator=locator)
+    root = repo_root.resolve(strict=True)
+    candidate = root / relative
+    probe = root
+    for part in PurePosixPath(relative).parts:
+        probe = probe / part
+        try:
+            probe.lstat()
+        except FileNotFoundError as error:
+            raise RouteValidationError(f"{label} is missing: {relative}") from error
+        if probe.is_symlink():
+            raise RouteValidationError(f"{label} cannot contain a symlink: {relative}")
+    metadata = candidate.stat()
+    if not candidate.is_file():
+        raise RouteValidationError(f"{label} is not a regular file: {relative}")
+    if metadata.st_nlink != 1:
+        raise RouteValidationError(f"{label} cannot be a hardlink alias: {relative}")
+    try:
+        candidate.resolve(strict=True).relative_to(root)
+    except ValueError as error:
+        raise RouteValidationError(f"{label} escapes repository root: {relative}") from error
+    return candidate
+
+
+def _read_bytes(repo_root: Path, value: object, label: str, *, locator: bool = False) -> bytes:
+    relative = _safe_relative(value, label, locator=locator)
+    return _read_rooted_bytes(repo_root.resolve(strict=True), relative, label)
+
+
+def _read_json(repo_root: Path, path: Path | str, label: str) -> dict[str, object]:
+    relative = path.as_posix() if isinstance(path, Path) else path
+    data = _read_bytes(repo_root, relative, label)
+    try:
+        value = json.loads(data.decode("utf-8"), object_pairs_hook=_pairs_no_duplicates)
+    except UnicodeDecodeError as error:
+        raise RouteValidationError(f"{label} is not UTF-8") from error
+    except json.JSONDecodeError as error:
+        raise RouteValidationError(f"{label} is invalid JSON: {error.msg}") from error
+    if not isinstance(value, dict):
+        raise RouteValidationError(f"{label} must be a JSON object")
+    _check_json_shape(value)
+    return value
+
+
+def _exact_fields(value: Mapping[str, object], fields: frozenset[str], label: str) -> None:
+    unknown = sorted(set(value) - fields)
+    missing = sorted(fields - set(value))
+    if unknown:
+        raise RouteValidationError(f"{label} has unknown field: {unknown[0]}")
+    if missing:
+        raise RouteValidationError(f"{label} is missing field: {missing[0]}")
+
+
+def _text(value: object, label: str, *, pattern: re.Pattern[str] | None = None) -> str:
+    if not isinstance(value, str) or not value or len(value.encode()) > MAX_STRING_BYTES:
+        raise RouteValidationError(f"{label} must be a bounded nonempty string")
+    if pattern is not None and pattern.fullmatch(value) is None:
+        raise RouteValidationError(f"invalid {label}: {value!r}")
+    return value
+
+
+def _optional_digest(value: object, label: str) -> str | None:
+    if value is None:
+        return None
+    return _text(value, label, pattern=SHA256_RE)
+
+
+def _string_tuple(value: object, label: str, *, pattern: re.Pattern[str] | None = None, allow_empty: bool = False) -> tuple[str, ...]:
+    if not isinstance(value, list) or len(value) > MAX_ARRAY_ITEMS or (not value and not allow_empty):
+        raise RouteValidationError(f"{label} must be a bounded array")
+    result = tuple(_text(item, label, pattern=pattern) for item in value)
+    if len(result) != len(set(result)):
+        raise RouteValidationError(f"duplicate {label}")
+    return result
+
+
+def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
+    _exact_fields(value, MANIFEST_FIELDS, "route manifest")
+    if value["schema_version"] != MANIFEST_SCHEMA_VERSION:
+        raise RouteValidationError("invalid route manifest schema version")
+    route_id = _text(value["route_id"], "route id")
+    if route_id not in ROUTE_IDS:
+        raise RouteValidationError("invalid route id")
+    claim_kind = _text(value["claim_kind"], "claim kind")
+    if claim_kind not in CLAIM_KINDS:
+        raise RouteValidationError("invalid claim kind")
+    aggregate = _text(value["aggregate_module"], "aggregate module", pattern=MODULE_RE)
+    if aggregate != ROUTE_AGGREGATES[route_id] or value["build_target"] != aggregate:
+        raise RouteValidationError("route aggregate/build target mismatch")
+    raw_nodes = value["nodes"]
+    if not isinstance(raw_nodes, list) or not raw_nodes or len(raw_nodes) > MAX_ARRAY_ITEMS:
+        raise RouteValidationError("nodes must be a bounded nonempty array")
+    nodes: list[RouteNode] = []
+    for raw in raw_nodes:
+        if not isinstance(raw, dict):
+            raise RouteValidationError("route node must be an object")
+        _exact_fields(raw, NODE_FIELDS, "route node")
+        provenance = _text(raw["provenance_kind"], "provenance kind")
+        if provenance not in PROVENANCE_KINDS:
+            raise RouteValidationError("invalid provenance kind")
+        source = raw["source_locator"]
+        reused_route = raw["reused_from_route"]
+        reused_node = raw["reused_node_id"]
+        if source is not None:
+            _safe_relative(source, "source locator", locator=True)
+        if provenance == "source":
+            if source is None:
+                raise RouteValidationError("source node requires a pinned source locator")
+            if reused_route is not None or reused_node is not None:
+                raise RouteValidationError("source node cannot declare route reuse")
+        elif provenance == "reused-route":
+            valid_reuse = (
+                reused_route in ROUTE_IDS
+                and isinstance(reused_node, str)
+                and NODE_ID_RE.fullmatch(reused_node) is not None
+            )
+            if not valid_reuse:
+                raise RouteValidationError("reused-route node requires exact route and node identities")
+            if source is not None:
+                raise RouteValidationError("reused-route node cannot have a source locator")
+        elif source is not None or reused_route is not None or reused_node is not None:
+            raise RouteValidationError(f"{provenance} node cannot claim source or reuse provenance")
+        if raw["role"] not in NODE_ROLES:
+            raise RouteValidationError(f"invalid node role: {raw['role']!r}")
+        nodes.append(RouteNode(
+            node_id=_text(raw["node_id"], "node id", pattern=NODE_ID_RE),
+            role=_text(raw["role"], "node role"),
+            declaration=_text(raw["declaration"], "declaration", pattern=MODULE_RE),
+            module_path=_safe_relative(raw["module_path"], "node module path"),
+            dependency_ids=_string_tuple(raw["dependency_ids"], "dependency id", pattern=NODE_ID_RE, allow_empty=True),
+            provenance_kind=provenance,
+            source_locator=source if isinstance(source, str) else None,
+            reused_from_route=reused_route if isinstance(reused_route, str) else None,
+            reused_node_id=reused_node if isinstance(reused_node, str) else None,
+            declaration_type_path=_safe_relative(raw["declaration_type_path"], "declaration type path"),
+            statement_sha256=_text(raw["statement_sha256"], "statement sha256", pattern=SHA256_RE),
+        ))
+    return RouteManifest(
+        schema_version=MANIFEST_SCHEMA_VERSION,
+        route_id=route_id,
+        claim_kind=claim_kind,
+        aggregate_module=aggregate,
+        build_target=_text(value["build_target"], "build target", pattern=MODULE_RE),
+        terminal_declaration=_text(value["terminal_declaration"], "terminal declaration", pattern=MODULE_RE),
+        terminal_type_sha256=_text(value["terminal_type_sha256"], "terminal type sha256", pattern=SHA256_RE),
+        consequence_declarations=_string_tuple(value["consequence_declarations"], "consequence declaration", pattern=MODULE_RE),
+        source_identities=_string_tuple(value["source_identities"], "source identity", pattern=IDENTITY_RE, allow_empty=True),
+        shared_foundation_modules=_string_tuple(value["shared_foundation_modules"], "shared foundation module", pattern=MODULE_RE, allow_empty=True),
+        module_closure=_string_tuple(value["module_closure"], "module closure entry", pattern=MODULE_RE),
+        module_closure_sha256=_text(value["module_closure_sha256"], "module closure sha256", pattern=SHA256_RE),
+        allowed_axioms=_string_tuple(value["allowed_axioms"], "allowed axiom", pattern=MODULE_RE, allow_empty=True),
+        review_path=_safe_relative(value["review_path"], "review path"),
+        review_sha256=_optional_digest(value["review_sha256"], "review sha256"),
+        receipt_path=_safe_relative(value["receipt_path"], "receipt path"),
+        receipt_sha256=_optional_digest(value["receipt_sha256"], "receipt sha256"),
+        nodes=tuple(nodes),
+    )
+
+
+def route_manifest_to_dict(manifest: RouteManifest | Mapping[str, object]) -> dict[str, object]:
+    if not isinstance(manifest, RouteManifest):
+        return dict(manifest)
+    value = asdict(manifest)
+    value["nodes"] = [asdict(node) for node in manifest.nodes]
+    return value
+
+
+def load_route_manifest(repo_root: Path, relative_path: Path) -> RouteManifest:
+    return parse_route_manifest(_read_json(Path(repo_root), relative_path, "route manifest"))
+
+
+def _module_from_path(path: str) -> str:
+    if not path.endswith(".lean"):
+        raise RouteValidationError(f"node module path must end in .lean: {path}")
+    module = path[:-5].replace("/", ".")
+    if MODULE_RE.fullmatch(module) is None:
+        raise RouteValidationError(f"invalid node module path: {path}")
+    return module
+
+
+def _provider_policy(manifest: RouteManifest) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    if manifest.route_id == "jin":
+        return ("Crouzeix", "CrouzeixLoristSchwenninger", "CrouzeixHarp"), ("Crouzeix.LoristSchwenninger", "Crouzeix.Harp")
+    if manifest.route_id == "lorist-schwenninger":
+        return ("Crouzeix", "CrouzeixJin", "CrouzeixHarp"), ("Crouzeix.Jin", "Crouzeix.Harp")
+    return (
+        "Crouzeix",
+        "CrouzeixJin",
+        "CrouzeixLoristSchwenninger",
+        "Crouzeix.LoristSchwenninger.MainTheorem",
+        "Crouzeix.LoristSchwenninger.Consequences",
+    ), ("Crouzeix.Jin",)
+
+
+def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: RouteManifest) -> None:
+    if manifest.route_id in {"jin", "lorist-schwenninger"}:
+        if manifest.claim_kind != "source-faithful":
+            raise RouteValidationError("Jin and Lorist-Schwenninger must be source-faithful")
+        if not manifest.source_identities:
+            raise RouteValidationError("source-faithful route requires source identities")
+        if any(node.provenance_kind != "source" for node in manifest.nodes):
+            raise RouteValidationError("source-faithful route nodes must have source provenance")
+    else:
+        if manifest.claim_kind != "derived":
+            raise RouteValidationError("Harp route must be derived")
+        if manifest.source_identities:
+            raise RouteValidationError("Harp route source identities must be empty")
+        reused = [node for node in manifest.nodes if node.provenance_kind == "reused-route"]
+        if not reused:
+            raise RouteValidationError("Harp route must explicitly record LS reuse")
+        if any(node.reused_from_route != "lorist-schwenninger" for node in reused):
+            raise RouteValidationError("Harp may reuse only lorist-schwenninger nodes")
+    if manifest.allowed_axioms != tuple(sorted(manifest.allowed_axioms)):
+        raise RouteValidationError("allowed axioms must be sorted")
+    if any(item not in ALLOWED_AXIOMS for item in manifest.allowed_axioms):
+        raise RouteValidationError("manifest contains forbidden axiom")
+    ids = [node.node_id for node in manifest.nodes]
+    if len(ids) != len(set(ids)):
+        raise RouteValidationError("duplicate node_id")
+    modules = [_module_from_path(node.module_path) for node in manifest.nodes]
+    if len(modules) != len(set(modules)):
+        raise RouteValidationError("duplicate node module")
+    seen: set[str] = set()
+    all_ids = set(ids)
+    for node in manifest.nodes:
+        canonical_module_path = module_relative_path(_module_from_path(node.module_path)).as_posix()
+        if node.module_path != canonical_module_path:
+            raise RouteValidationError(f"node module path is not canonical: {node.module_path}")
+        for dependency in node.dependency_ids:
+            if dependency == node.node_id:
+                raise RouteValidationError("self dependency")
+            if dependency not in all_ids:
+                raise RouteValidationError(f"unknown dependency: {dependency}")
+            if dependency not in seen:
+                raise RouteValidationError("dependency cycle or unstable topological order")
+        seen.add(node.node_id)
+        if node.source_locator is not None:
+            source_bytes = _read_bytes(
+                repo_root, node.source_locator, "source locator", locator=True
+            )
+            match = SOURCE_LOCATOR_RE.fullmatch(node.source_locator)
+            assert match is not None
+            start = int(match.group("start"))
+            end = int(match.group("end"))
+            if start > end:
+                raise RouteValidationError("reversed source locator span")
+            try:
+                line_count = len(source_bytes.decode("utf-8").splitlines())
+            except UnicodeDecodeError as error:
+                raise RouteValidationError("source locator file is not UTF-8") from error
+            if end > line_count:
+                raise RouteValidationError("source locator span exceeds file line count")
+            source_identity = f"sha256:{_sha256(source_bytes)}"
+            if source_identity not in manifest.source_identities:
+                raise RouteValidationError("source locator digest is not declared by a source identity")
+        type_bytes = _read_bytes(repo_root, node.declaration_type_path, "declaration type artifact")
+        try:
+            observed = normalized_type_sha256(type_bytes.decode("utf-8"))
+        except UnicodeDecodeError as error:
+            raise RouteValidationError("declaration type artifact is not UTF-8") from error
+        if observed != node.statement_sha256:
+            raise RouteValidationError(f"declaration type digest mismatch for {node.declaration}")
+    terminals = [node for node in manifest.nodes if node.role == "terminal"]
+    if len(terminals) != 1:
+        raise RouteValidationError("exactly one terminal node is required")
+    if terminals[0].declaration != manifest.terminal_declaration:
+        raise RouteValidationError("terminal declaration mismatch")
+    if terminals[0].statement_sha256 != manifest.terminal_type_sha256:
+        raise RouteValidationError("terminal type digest mismatch")
+    represented = {node.declaration for node in manifest.nodes}
+    if any(item not in represented for item in manifest.consequence_declarations):
+        raise RouteValidationError("consequence declaration is not represented")
+    consequence_set = set(manifest.consequence_declarations)
+    consequence_nodes = {node.declaration for node in manifest.nodes if node.role == "consequence"}
+    if consequence_set - consequence_nodes:
+        raise RouteValidationError("consequence role mismatch")
+    if consequence_nodes - consequence_set:
+        raise RouteValidationError("undeclared consequence-role node")
+    forbidden, prefixes = _provider_policy(manifest)
+    try:
+        report = audit_provider_independence(
+            lean_root,
+            (manifest.aggregate_module,),
+            forbidden,
+            forbidden_prefixes=prefixes,
+        )
+    except ProviderIndependenceError as error:
+        raise RouteValidationError(f"provider policy violation: {error}") from error
+    if manifest.route_id == "harp":
+        drift = sorted(
+            module for module in report.modules
+            if module.startswith("Crouzeix.LoristSchwenninger.")
+            and module not in HARP_ALLOWED_LS_SUPPORT
+        )
+        if drift:
+            raise RouteValidationError(f"provider policy drift: {drift[0]}")
+    closure = active_local_closure(lean_root, manifest.aggregate_module)
+    if closure != manifest.module_closure:
+        missing = sorted(set(closure) - set(manifest.module_closure))
+        if missing:
+            raise RouteValidationError(f"unmapped active closure module: {missing[0]}")
+        raise RouteValidationError("module closure roster mismatch")
+    if string_roster_sha256(closure) != manifest.module_closure_sha256:
+        raise RouteValidationError("module closure digest mismatch")
+    node_modules = set(modules)
+    shared = set(manifest.shared_foundation_modules)
+    overlap = sorted(node_modules & shared)
+    if overlap:
+        raise RouteValidationError(f"module covered by both a node and shared foundation: {overlap[0]}")
+    declared_coverage = node_modules | shared
+    extra = sorted(declared_coverage - set(closure))
+    if extra:
+        raise RouteValidationError(f"inactive node/shared module in closure coverage: {extra[0]}")
+    for module in closure:
+        coverage = int(module in node_modules) + int(module in shared)
+        if coverage == 0:
+            raise RouteValidationError(f"unmapped active closure module: {module}")
+        if coverage > 1:
+            raise RouteValidationError(f"duplicate closure coverage: {module}")
+    if manifest.route_id == "harp":
+        active_ls = set(closure) & HARP_ALLOWED_LS_SUPPORT
+        reused_nodes = [node for node in manifest.nodes if node.provenance_kind == "reused-route"]
+        reused_modules = {_module_from_path(node.module_path) for node in reused_nodes}
+        if active_ls != reused_modules:
+            raise RouteValidationError("Harp LS support reuse coverage mismatch")
+        if shared & HARP_ALLOWED_LS_SUPPORT:
+            raise RouteValidationError("Harp LS support module cannot be shared foundation")
+        ls_path = ROUTE_MANIFEST_PATHS["lorist-schwenninger"]
+        try:
+            ls_manifest = load_route_manifest(repo_root, ls_path)
+        except RouteValidationError as error:
+            raise RouteValidationError(f"LS route manifest is missing or invalid: {error}") from error
+        ls_nodes = {node.node_id: node for node in ls_manifest.nodes}
+        for node in reused_nodes:
+            referenced = ls_nodes.get(node.reused_node_id or "")
+            if referenced is None:
+                raise RouteValidationError(f"LS reuse has dangling node: {node.reused_node_id}")
+            if (
+                referenced.module_path != node.module_path
+                or referenced.declaration != node.declaration
+                or referenced.statement_sha256 != node.statement_sha256
+            ):
+                raise RouteValidationError(f"LS reuse mismatch for node: {node.node_id}")
+
+
+def _artifact_digest(repo_root: Path, path: object, expected: object, label: str) -> bytes:
+    data = _read_bytes(repo_root, path, label)
+    digest = _text(expected, f"{label} sha256", pattern=SHA256_RE)
+    if _sha256(data) != digest:
+        raise RouteValidationError(f"{label} digest mismatch")
+    return data
+
+
+def _validate_axiom_results(
+    results: object, declarations: set[str], allowed: tuple[str, ...]
+) -> tuple[dict[str, object], ...]:
+    if not isinstance(results, list) or not results or len(results) > MAX_ARRAY_ITEMS:
+        raise RouteValidationError("axiom results must be a bounded nonempty array")
+    output: list[dict[str, object]] = []
+    seen: set[str] = set()
+    for raw in results:
+        if not isinstance(raw, dict):
+            raise RouteValidationError("axiom result must be an object")
+        _exact_fields(raw, frozenset({"declaration", "axioms"}), "axiom result")
+        declaration = _text(raw["declaration"], "axiom declaration", pattern=MODULE_RE)
+        axioms = _string_tuple(raw["axioms"], "observed axiom", pattern=MODULE_RE, allow_empty=True)
+        if axioms != tuple(sorted(axioms)):
+            raise RouteValidationError("observed axioms must be sorted")
+        if declaration in seen:
+            raise RouteValidationError("duplicate axiom declaration")
+        if declaration not in declarations:
+            raise RouteValidationError("axiom result names unknown declaration")
+        forbidden = sorted(set(axioms) - set(allowed))
+        if forbidden:
+            raise RouteValidationError(f"forbidden axiom: {forbidden[0]}")
+        seen.add(declaration)
+        output.append(dict(raw))
+    if seen != declarations:
+        raise RouteValidationError("axiom audit does not cover every route declaration")
+    return tuple(output)
+
+
+def _validate_receipt(
+    repo_root: Path,
+    manifest_path: Path,
+    manifest_raw: Mapping[str, object],
+    manifest: RouteManifest,
+) -> dict[str, object]:
+    raw = _read_json(repo_root, manifest.receipt_path, "route receipt")
+    _exact_fields(raw, RECEIPT_FIELDS, "route receipt")
+    if raw["schema_version"] != RECEIPT_SCHEMA_VERSION:
+        raise RouteValidationError("invalid route receipt schema version")
+    if raw["route_id"] != manifest.route_id:
+        raise RouteValidationError("receipt route mismatch")
+    if raw["aggregate_module"] != manifest.aggregate_module or raw["build_target"] != manifest.build_target:
+        raise RouteValidationError("receipt aggregate mismatch")
+    if raw["manifest_path"] != manifest_path.as_posix():
+        raise RouteValidationError("receipt manifest path mismatch")
+    if raw["manifest_sha256"] != manifest_contract_sha256(manifest_raw):
+        raise RouteValidationError("receipt manifest digest mismatch")
+    candidate_commit = _text(raw["candidate_commit"], "candidate commit", pattern=GIT_ID_RE)
+    candidate_tree = _text(raw["candidate_tree"], "candidate tree", pattern=GIT_ID_RE)
+    _validate_git_identity(
+        repo_root, candidate_commit, candidate_tree, manifest.module_closure
+    )
+    if raw["receipt_sha256"] != self_digest(raw, "receipt_sha256"):
+        raise RouteValidationError("receipt identity digest mismatch")
+    command_data = _artifact_digest(
+        repo_root, raw["command_artifact_path"], raw["command_artifact_sha256"], "command artifact"
+    )
+    try:
+        command = json.loads(command_data.decode(), object_pairs_hook=_pairs_no_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RouteValidationError("command artifact is invalid JSON") from error
+    command_fields = frozenset({
+        "schema_version", "argv", "working_directory", "aggregate_module",
+        "build_target", "cache_identity", "toolchain",
+    })
+    if not isinstance(command, dict):
+        raise RouteValidationError("command artifact must be an object")
+    _exact_fields(command, command_fields, "command artifact")
+    if command["schema_version"] != COMMAND_SCHEMA_VERSION:
+        raise RouteValidationError("command artifact schema version mismatch")
+    for field in ("argv", "working_directory", "aggregate_module", "build_target", "cache_identity", "toolchain"):
+        if command[field] != raw[field]:
+            raise RouteValidationError(f"receipt command mismatch: {field}")
+    if raw["argv"] != ["scripts/check_lean_library.sh", manifest.build_target]:
+        raise RouteValidationError("receipt command mismatch: argv")
+    if raw["working_directory"] != ".":
+        raise RouteValidationError("working directory must be repository root '.'")
+    if raw["toolchain"] != PINNED_TOOLCHAIN:
+        raise RouteValidationError("toolchain mismatch")
+    if raw["cache_identity"] != cache_contract_identity(repo_root):
+        raise RouteValidationError("cache identity mismatch")
+    if raw["local_closure_modules"] != list(manifest.module_closure):
+        raise RouteValidationError("receipt local closure mismatch")
+    if raw["local_closure_sha256"] != manifest.module_closure_sha256:
+        raise RouteValidationError("receipt local closure mismatch")
+    artifacts = raw["mathlib_artifacts"]
+    if not isinstance(artifacts, list):
+        raise RouteValidationError("Mathlib artifacts must be an array")
+    expected_mathlib = active_mathlib_closure(repo_root, manifest.module_closure)
+    expected_pairs = [
+        (module, mathlib_artifact_path(module).as_posix()) for module in expected_mathlib
+    ]
+    actual_pairs = [
+        (item.get("module"), item.get("path"))
+        for item in artifacts
+        if isinstance(item, dict)
+    ]
+    if len(actual_pairs) != len(artifacts) or actual_pairs != expected_pairs:
+        raise RouteValidationError("Mathlib artifact roster mismatch")
+    cache_root = resolve_approved_cache_root(repo_root)
+    for item in artifacts:
+        if not isinstance(item, dict):
+            raise RouteValidationError("Mathlib artifact entry must be an object")
+        _exact_fields(item, frozenset({"module", "path", "sha256"}), "Mathlib artifact")
+        artifact_relative = Path(*str(item["module"]).split(".")).with_suffix(".olean")
+        data = _read_cache_bytes(
+            cache_root,
+            Path("packages/mathlib/.lake/build/lib/lean") / artifact_relative,
+            "Mathlib artifact",
+        )
+        if _sha256(data) != item["sha256"]:
+            raise RouteValidationError("Mathlib artifact digest mismatch")
+    if raw["mathlib_artifacts_sha256"] != record_roster_sha256(artifacts):
+        raise RouteValidationError("Mathlib roster digest mismatch")
+    types = raw["declaration_types"]
+    if not isinstance(types, list) or len(types) != len(manifest.nodes):
+        raise RouteValidationError("receipt declaration type roster mismatch")
+    expected_nodes = {node.declaration: node for node in manifest.nodes}
+    actual_declarations = [item.get("declaration") for item in types if isinstance(item, dict)]
+    if len(actual_declarations) != len(set(actual_declarations)) or set(actual_declarations) != set(expected_nodes):
+        raise RouteValidationError("receipt declaration type roster mismatch")
+    for item in types:
+        if not isinstance(item, dict):
+            raise RouteValidationError("declaration type entry must be an object")
+        _exact_fields(
+            item,
+            frozenset({"declaration", "type_artifact_path", "type_artifact_sha256", "statement_sha256"}),
+            "declaration type entry",
+        )
+        declaration = item["declaration"]
+        if declaration not in expected_nodes:
+            raise RouteValidationError("receipt declaration type names unknown declaration")
+        node = expected_nodes[str(declaration)]
+        if item["type_artifact_path"] != node.declaration_type_path or item["statement_sha256"] != node.statement_sha256:
+            raise RouteValidationError("receipt declaration type mismatch")
+        data = _artifact_digest(
+            repo_root, item["type_artifact_path"], item["type_artifact_sha256"], "declaration type artifact"
+        )
+        if normalized_type_sha256(data.decode()) != node.statement_sha256:
+            raise RouteValidationError("receipt declaration type digest mismatch")
+    if raw["allowed_axioms"] != list(manifest.allowed_axioms):
+        raise RouteValidationError("receipt allowed axioms mismatch")
+    declarations = set(expected_nodes)
+    receipt_results = _validate_axiom_results(raw["axiom_results"], declarations, manifest.allowed_axioms)
+    audit_data = _artifact_digest(repo_root, raw["axiom_audit_path"], raw["axiom_audit_sha256"], "axiom audit")
+    try:
+        audit = json.loads(audit_data.decode(), object_pairs_hook=_pairs_no_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RouteValidationError("axiom audit is invalid JSON") from error
+    audit_fields = frozenset({"schema_version", "route_id", "allowed_axioms", "results", "status"})
+    if not isinstance(audit, dict):
+        raise RouteValidationError("axiom audit must be an object")
+    _exact_fields(audit, audit_fields, "axiom audit")
+    audit_matches = (
+        audit["schema_version"] == AXIOM_SCHEMA_VERSION
+        and audit["route_id"] == manifest.route_id
+        and audit["allowed_axioms"] == list(manifest.allowed_axioms)
+        and audit["results"] == list(receipt_results)
+        and audit["status"] == "passed"
+    )
+    if not audit_matches:
+        raise RouteValidationError("axiom audit mismatch")
+    provider_data = _artifact_digest(
+        repo_root, raw["provider_report_path"], raw["provider_report_sha256"], "provider report"
+    )
+    try:
+        provider = json.loads(provider_data.decode(), object_pairs_hook=_pairs_no_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RouteValidationError("provider report is invalid JSON") from error
+    expected_provider = {
+        "schema_version": "crouzeix-route-provider-report/v1",
+        "route_id": manifest.route_id,
+        "aggregate_module": manifest.aggregate_module,
+        "modules": list(manifest.module_closure),
+        "module_closure_sha256": manifest.module_closure_sha256,
+        "status": "passed",
+    }
+    if provider != expected_provider:
+        raise RouteValidationError("provider report content mismatch")
+    _artifact_digest(repo_root, raw["stdout_path"], raw["stdout_sha256"], "stdout")
+    _artifact_digest(repo_root, raw["stderr_path"], raw["stderr_sha256"], "stderr")
+    if (raw["status"] == "passed") != (raw["exit_code"] == 0):
+        raise RouteValidationError("receipt status/exit mismatch")
+    if raw["status"] != "passed" or raw["exit_code"] != 0:
+        raise RouteValidationError("route receipt is not successful")
+    return raw
+
+
+def _validate_git_identity(
+    repo_root: Path,
+    commit: str,
+    expected_tree: str,
+    local_modules: Sequence[str],
+) -> None:
+    try:
+        exists = subprocess.run(
+            ["git", "-C", str(repo_root), "cat-file", "-e", f"{commit}^{{commit}}"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if exists.returncode != 0:
+            detail = exists.stderr.strip() or "object is unreachable"
+            raise RouteValidationError(f"candidate commit is not a reachable Git commit: {detail}")
+        ancestor = subprocess.run(
+            ["git", "-C", str(repo_root), "merge-base", "--is-ancestor", commit, "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if ancestor.returncode != 0:
+            raise RouteValidationError("candidate commit is not an ancestor of HEAD")
+        tree = subprocess.run(
+            ["git", "-C", str(repo_root), "rev-parse", f"{commit}^{{tree}}"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError as error:
+        raise RouteValidationError(f"Git identity validation unavailable: {error}") from error
+    if tree.returncode != 0:
+        raise RouteValidationError(f"cannot resolve candidate Git tree: {tree.stderr.strip()}")
+    if tree.stdout.strip() != expected_tree:
+        raise RouteValidationError("candidate tree mismatch")
+    for module in local_modules:
+        relative = Path("formalization/lean") / module_relative_path(module)
+        current = _read_bytes(repo_root, relative.as_posix(), f"route source {module}")
+        try:
+            candidate = subprocess.run(
+                ["git", "-C", str(repo_root), "show", f"{commit}:{relative.as_posix()}"],
+                capture_output=True,
+                check=False,
+            )
+        except OSError as error:
+            raise RouteValidationError(f"Git source binding unavailable: {error}") from error
+        if candidate.returncode != 0 or candidate.stdout != current:
+            raise RouteValidationError(f"candidate route source blob mismatch: {relative.as_posix()}")
+
+
+def _validate_review(
+    repo_root: Path,
+    manifest_path: Path,
+    manifest_raw: Mapping[str, object],
+    manifest: RouteManifest,
+    receipt: Mapping[str, object],
+) -> None:
+    raw = _read_json(repo_root, manifest.review_path, "proof review")
+    _exact_fields(raw, REVIEW_FIELDS, "proof review")
+    if raw["schema_version"] != REVIEW_SCHEMA_VERSION:
+        raise RouteValidationError("invalid proof review schema version")
+    if raw["review_sha256"] != self_digest(raw, "review_sha256"):
+        raise RouteValidationError("review identity digest mismatch")
+    if raw["route_id"] != manifest.route_id:
+        raise RouteValidationError("review route mismatch")
+    if raw["reviewed_commit"] != receipt["candidate_commit"] or raw["reviewed_tree"] != receipt["candidate_tree"]:
+        raise RouteValidationError("review commit mismatch")
+    if raw["manifest_path"] != manifest_path.as_posix():
+        raise RouteValidationError("review manifest digest mismatch")
+    if raw["manifest_sha256"] != manifest_contract_sha256(manifest_raw):
+        raise RouteValidationError("review manifest digest mismatch")
+    if raw["terminal_type_sha256"] != manifest.terminal_type_sha256:
+        raise RouteValidationError("review terminal type mismatch")
+    for field in ("review_id", "reviewer_identity", "reviewer_model", "reviewer_run_id"):
+        _text(raw[field], field.replace("_", " "))
+    if manifest.claim_kind == "source-faithful":
+        checks_match = (
+            raw["source_fidelity_check"] == "passed"
+            and raw["derivation_reuse_check"] == "not-applicable"
+        )
+        if not checks_match:
+            raise RouteValidationError("source-fidelity review checks mismatch")
+    else:
+        checks_match = (
+            raw["source_fidelity_check"] == "not-applicable"
+            and raw["derivation_reuse_check"] == "passed"
+        )
+        if not checks_match:
+            raise RouteValidationError("derivation-reuse review checks mismatch")
+    findings = raw["findings"]
+    if not isinstance(findings, list) or len(findings) > MAX_ARRAY_ITEMS:
+        raise RouteValidationError("review findings must be a bounded array")
+    finding_fields = frozenset({
+        "finding_id", "severity", "resolved", "locator", "statement",
+        "falsifying_test_or_gap",
+    })
+    unresolved_blocking = False
+    seen: set[str] = set()
+    for finding in findings:
+        if not isinstance(finding, dict):
+            raise RouteValidationError("review finding must be an object")
+        _exact_fields(finding, finding_fields, "review finding")
+        finding_id = _text(finding["finding_id"], "finding id")
+        if finding_id in seen:
+            raise RouteValidationError("duplicate review finding id")
+        seen.add(finding_id)
+        if finding["severity"] not in FINDING_SEVERITIES:
+            raise RouteValidationError("invalid finding severity")
+        if not isinstance(finding["resolved"], bool):
+            raise RouteValidationError("finding resolved must be boolean")
+        _safe_relative(finding["locator"], "finding locator")
+        _text(finding["statement"], "finding statement")
+        _text(finding["falsifying_test_or_gap"], "falsifying test or gap")
+        unresolved_blocking |= (
+            finding["severity"] in {"Critical", "Important"}
+            and not finding["resolved"]
+        )
+    if raw["verdict"] == "complete" and unresolved_blocking:
+        raise RouteValidationError("complete review has unresolved Critical/Important finding")
+    if raw["verdict"] != "complete" or raw["outcome"] != "approved":
+        raise RouteValidationError("proof review is not complete and approved")
+
+
+def validate_route_bundle(
+    repo_root: Path,
+    manifest_path: Path,
+    *,
+    lean_root: Path = Path("formalization/lean"),
+    allow_unpublished: bool = False,
+) -> RouteValidationResult:
+    root = Path(repo_root).resolve(strict=True)
+    manifest_raw = _read_json(root, manifest_path, "route manifest")
+    manifest = parse_route_manifest(manifest_raw)
+    _validate_manifest_semantics(root, root / lean_root, manifest)
+    receipt_candidate = root / manifest.receipt_path
+    review_candidate = root / manifest.review_path
+    receipt_present = receipt_candidate.exists() or receipt_candidate.is_symlink()
+    review_present = review_candidate.exists() or review_candidate.is_symlink()
+    if review_present and not receipt_present:
+        raise RouteValidationError("review publication requires a receipt")
+    if receipt_present != (manifest.receipt_sha256 is not None):
+        raise RouteValidationError("receipt publication presence/digest mismatch")
+    if review_present != (manifest.review_sha256 is not None):
+        raise RouteValidationError("review publication presence/digest mismatch")
+    receipt: dict[str, object] | None = None
+    if receipt_present:
+        receipt_bytes = _read_bytes(root, manifest.receipt_path, "route receipt")
+        if manifest.receipt_sha256 is not None and _sha256(receipt_bytes) != manifest.receipt_sha256:
+            raise RouteValidationError("manifest receipt digest mismatch")
+        receipt = _validate_receipt(root, manifest_path, manifest_raw, manifest)
+    if review_present:
+        if receipt is None:
+            raise RouteValidationError("proof review cannot exist without a route receipt")
+        review_bytes = _read_bytes(root, manifest.review_path, "proof review")
+        if manifest.review_sha256 is not None and _sha256(review_bytes) != manifest.review_sha256:
+            raise RouteValidationError("manifest review digest mismatch")
+        _validate_review(root, manifest_path, manifest_raw, manifest, receipt)
+    if manifest.receipt_sha256 is not None and manifest.review_sha256 is not None:
+        return RouteValidationResult(
+            manifest.route_id, "complete-local", "complete", manifest_path.as_posix()
+        )
+    if not allow_unpublished:
+        raise RouteValidationError("route has partial publication")
+    claim_level = "receipt-backed" if manifest.receipt_sha256 is not None else "mapped"
+    return RouteValidationResult(
+        manifest.route_id,
+        claim_level,
+        "incomplete",
+        manifest_path.as_posix(),
+        "receipt or review is unpublished",
+    )
+
+
+def inspect_route(
+    repo_root: Path, route_id: str, *, allow_unpublished: bool = False
+) -> RouteValidationResult:
+    if route_id not in ROUTE_IDS:
+        raise RouteValidationError("invalid route id")
+    path = ROUTE_MANIFEST_PATHS[route_id]
+    root = Path(repo_root)
+    if not (root / path).exists():
+        if not allow_unpublished:
+            raise RouteValidationError("route manifest is unpublished")
+        return RouteValidationResult(
+            route_id, "authored", "incomplete", path.as_posix(), "route manifest is unpublished"
+        )
+    return validate_route_bundle(root, path, allow_unpublished=allow_unpublished)

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://harp.local/schemas/crouzeix-proof-review-v1.json",
+  "title": "Crouzeix proof review v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "route_id", "reviewed_commit", "reviewed_tree", "manifest_path", "manifest_sha256", "terminal_type_sha256", "review_id", "reviewer_identity", "reviewer_model", "reviewer_run_id", "verdict", "outcome", "source_fidelity_check", "derivation_reuse_check", "findings", "review_sha256"],
+  "properties": {
+    "schema_version": {"const": "crouzeix-proof-review/v1"},
+    "route_id": {"enum": ["jin", "lorist-schwenninger", "harp"]},
+    "reviewed_commit": {"$ref": "#/$defs/gitId"}, "reviewed_tree": {"$ref": "#/$defs/gitId"},
+    "manifest_path": {"$ref": "#/$defs/path"}, "manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "terminal_type_sha256": {"$ref": "#/$defs/sha256"},
+    "review_id": {"$ref": "#/$defs/text"}, "reviewer_identity": {"$ref": "#/$defs/text"},
+    "reviewer_model": {"$ref": "#/$defs/text"}, "reviewer_run_id": {"$ref": "#/$defs/text"},
+    "verdict": {"enum": ["complete", "incomplete"]}, "outcome": {"enum": ["approved", "changes-required"]},
+    "source_fidelity_check": {"enum": ["passed", "failed", "not-applicable"]},
+    "derivation_reuse_check": {"enum": ["passed", "failed", "not-applicable"]},
+    "findings": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/finding"}},
+    "review_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {"if": {"properties": {"route_id": {"enum": ["jin", "lorist-schwenninger"]}}, "required": ["route_id"]}, "then": {"properties": {"source_fidelity_check": {"const": "passed"}, "derivation_reuse_check": {"const": "not-applicable"}}}},
+    {"if": {"properties": {"route_id": {"const": "harp"}}, "required": ["route_id"]}, "then": {"properties": {"source_fidelity_check": {"const": "not-applicable"}, "derivation_reuse_check": {"const": "passed"}}}},
+    {"if": {"properties": {"verdict": {"const": "complete"}}, "required": ["verdict"]}, "then": {"properties": {"outcome": {"const": "approved"}}}}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitId": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$", "maxLength": 4096},
+    "text": {"type": "string", "minLength": 1, "maxLength": 16384},
+    "finding": {"type": "object", "additionalProperties": false, "required": ["finding_id", "severity", "resolved", "locator", "statement", "falsifying_test_or_gap"], "properties": {"finding_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}, "severity": {"enum": ["Critical", "Important", "Minor"]}, "resolved": {"type": "boolean"}, "locator": {"$ref": "#/$defs/path"}, "statement": {"$ref": "#/$defs/text"}, "falsifying_test_or_gap": {"$ref": "#/$defs/text"}}}
+  }
+}

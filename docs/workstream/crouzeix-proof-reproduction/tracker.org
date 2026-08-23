@@ -6461,16 +6461,16 @@ the wrapper and mise tasks, and add a read-only preflight command.
   Standards review reported no Critical, Important, or Minor finding and
   =Ready to land? Yes=.
 
-** TODO Define Common Route Proof Evidence Contracts :lean:evidence:tests:ticket:
+** DONE Define Common Route Proof Evidence Contracts :lean:evidence:tests:ticket:
 :PROPERTIES:
 :ID: CPFR-084
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-084-route-contracts
+:WORKTREE: .worktrees/cpfr-084-route-contracts
 :DEPENDS_ON: CPFR-083
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-084-route-contracts
+:MODEL: GPT-5.4
 :END:
 Define strict shared manifest, receipt, and review contracts before publication.
 
@@ -6507,7 +6507,26 @@ closure-to-ledger reconciliation with concrete adversarial fixtures.
 - =git diff --check=
 
 *** Verification Evidence
-Pending implementation.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_route_validation -v= passed 32/32.
+- The inherited no-build preflight suite passed 27/27 and retained its exact
+  canonical shared-cache boundary.
+- =cargo test -p harp --lib sources::crouzeix::route::tests -- --test-threads=1=
+  passed 22/22. All three JSON schemas parse, =cargo fmt --all -- --check=
+  passes, and =git diff --check= is clean.
+- =proof_evidence.py validate --route all --allow-unpublished= exits 1 and
+  reports =authored=/=incomplete= for Jin, Lorist--Schwenninger, and Harp. It
+  does not promote absent route artifacts or invoke Lean.
+- Python and Rust independently bind active provider closure, transitive
+  Mathlib artifacts, exact declaration and axiom rosters, pinned source spans,
+  all eleven Harp-to-LS reuse edges, reachable Git commit/tree/source bytes,
+  and exact receipt/review publication state. Structured evidence is read once,
+  digest-checked, and parsed from the same bounded no-follow buffer.
+- No real route manifest, receipt, review, source graph, or local evidence
+  bundle was published, and =REQUIRE_LOCAL_FORMALIZATION_MANIFEST= remains
+  =false=.
+- Independent Spec review reported =PASS: Spec compliant=. Independent
+  Standards review reported no Critical, Important, or Minor finding and
+  =Ready to land? Yes=.
 
 ** TODO Certify Complete Jin Route Correspondence :lean:evidence:review:ticket:
 :PROPERTIES:

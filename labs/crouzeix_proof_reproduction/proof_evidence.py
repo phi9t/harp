@@ -9,6 +9,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+try:
+    from . import route_validation
+except ImportError:  # direct script execution
+    import route_validation
+
 
 PINNED_TOOLCHAIN = "leanprover/lean4:v4.32.1"
 SCHEMA_VERSION = "crouzeix-proof-preflight/v1"
@@ -849,12 +854,58 @@ def main(argv: list[str]) -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
     preflight = subparsers.add_parser("preflight")
     preflight.add_argument("--route", choices=(*ROUTE_ORDER, "all"), required=True)
+    validate = subparsers.add_parser("validate")
+    validate.add_argument("--route", choices=(*ROUTE_ORDER, "all"), required=True)
+    validate.add_argument("--allow-unpublished", action="store_true")
     args = parser.parse_args(argv)
+
+    repository_root = canonical_repository_root()
+    if args.command == "validate":
+        selected = ROUTE_ORDER if args.route == "all" else (args.route,)
+        routes: list[dict[str, object]] = []
+        exit_code = 0
+        for route_id in selected:
+            try:
+                result = route_validation.inspect_route(
+                    repository_root,
+                    route_id,
+                    allow_unpublished=args.allow_unpublished,
+                )
+                payload = {
+                    "schema_version": "crouzeix-route-validation/v1",
+                    "route_id": result.route_id,
+                    "status": result.status,
+                    "claim_level": result.claim_level,
+                    "manifest_path": result.manifest_path,
+                }
+                if result.reason is not None:
+                    payload["reason"] = result.reason
+                if result.status != "complete":
+                    exit_code = 1
+            except route_validation.RouteValidationError as error:
+                payload = {
+                    "schema_version": "crouzeix-route-validation/v1",
+                    "route_id": route_id,
+                    "status": "invalid",
+                    "claim_level": "authored",
+                    "manifest_path": route_validation.ROUTE_MANIFEST_PATHS[route_id].as_posix(),
+                    "reason": str(error),
+                }
+                exit_code = 1
+            routes.append(payload)
+        if args.route == "all":
+            sys.stdout.write(canonical_json({
+                "schema_version": "crouzeix-route-validation/v1",
+                "route_id": "all",
+                "routes": routes,
+            }))
+        else:
+            sys.stdout.write(canonical_json(routes[0]))
+        return exit_code
 
     if args.command != "preflight":
         parser.error("unknown command")
 
-    repository_root = canonical_repository_root()
     try:
         _, approved_cache_root = resolve_primary_checkout_cache(repository_root)
     except RuntimeError as error:
