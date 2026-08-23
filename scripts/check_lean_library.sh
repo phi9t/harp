@@ -11,7 +11,7 @@ relative_root=formalization/lean
 allowed_elan_root=/private/tmp/harp-mathematical-foundations-elan
 
 usage() {
-  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixLoristSchwenninger|all [--project-for-test <directory>]" >&2
+  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp|all [--project-for-test <directory>]" >&2
 }
 
 report_failure() {
@@ -103,9 +103,19 @@ case "$target" in
     scan_label=Crouzeix
     forbidden_words="sorry admit"
     ;;
+  CrouzeixJin)
+    human_label="Crouzeix Jin"
+    scan_label=CrouzeixJin
+    forbidden_words="sorry admit"
+    ;;
   CrouzeixLoristSchwenninger)
     human_label="Crouzeix Lorist--Schwenninger"
     scan_label=CrouzeixLoristSchwenninger
+    forbidden_words="sorry admit"
+    ;;
+  CrouzeixHarp)
+    human_label="Crouzeix Harp"
+    scan_label=CrouzeixHarp
     forbidden_words="sorry admit"
     ;;
   all)
@@ -119,6 +129,47 @@ case "$target" in
     exit 2
     ;;
 esac
+
+is_route_isolated_target() {
+  case "$1" in
+    CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+route_preflight_name() {
+  case "$1" in
+    CrouzeixJin)
+      printf '%s\n' jin
+      ;;
+    CrouzeixLoristSchwenninger)
+      printf '%s\n' lorist-schwenninger
+      ;;
+    CrouzeixHarp)
+      printf '%s\n' harp
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+if [ "$normal_build" = true ] && is_route_isolated_target "$target"; then
+  preflight_route=$(route_preflight_name "$target") || {
+    printf '%s\n' "Unknown route-isolated Lean target: $target" >&2
+    report_failure "$scan_label" preflight 0 0 0 0
+    exit 1
+  }
+  if ! preflight_output=$(cd "$script_dir/.." && python3 labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route "$preflight_route" 2>&1); then
+    printf '%s\n' "$preflight_output" >&2
+    report_failure "$scan_label" preflight 0 0 0 0
+    exit 1
+  fi
+fi
 
 if ! command -v lake >/dev/null 2>&1; then
   printf '%s\n' "$human_label Lean toolchain is unavailable" >&2
@@ -239,7 +290,7 @@ extract_lean_imports() {
         first_module = 3
       }
       for (i = first_module; i > 0 && i <= field_count; i++) {
-        if (fields[i] == prefix || index(fields[i], prefix ".") == 1) {
+        if (prefix == "" || fields[i] == prefix || index(fields[i], prefix ".") == 1) {
           print fields[i]
         }
       }
@@ -252,8 +303,117 @@ extract_lean_imports() {
   ' "$source_file"
 }
 
-append_ls_only_sources() {
-  if ! append_sources "$project_dir/CrouzeixLoristSchwenninger.lean"; then
+is_managed_local_import() {
+  case "$1" in
+    Crouzeix|Crouzeix.*|CrouzeixConjecture|CrouzeixConjecture.*|CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+is_harp_allowed_ls_support_module() {
+  case "$1" in
+    Crouzeix.LoristSchwenninger.BoundaryEmbedding|\
+    Crouzeix.LoristSchwenninger.BoundaryMultiplier|\
+    Crouzeix.LoristSchwenninger.BoundarySquareRoot|\
+    Crouzeix.LoristSchwenninger.CompanionAlgebra|\
+    Crouzeix.LoristSchwenninger.CompletedSquare|\
+    Crouzeix.LoristSchwenninger.CompressionMoments|\
+    Crouzeix.LoristSchwenninger.Dilation|\
+    Crouzeix.LoristSchwenninger.NormAttainment|\
+    Crouzeix.LoristSchwenninger.PolynomialPowerCauchy|\
+    Crouzeix.LoristSchwenninger.Recurrence|\
+    Crouzeix.LoristSchwenninger.Scalar)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+configure_route_policy() {
+  route_policy_target=$1
+  route_provider_name=
+  case "$route_policy_target" in
+    CrouzeixJin)
+      route_provider_name=jin
+      route_aggregate_module=CrouzeixJin
+      ;;
+    CrouzeixLoristSchwenninger)
+      route_provider_name=lorist-schwenninger
+      route_aggregate_module=CrouzeixLoristSchwenninger
+      ;;
+    CrouzeixHarp)
+      route_provider_name=harp
+      route_aggregate_module=CrouzeixHarp
+      ;;
+    *)
+      printf '%s\n' "Unknown route-isolated Lean target: $route_policy_target" >&2
+      return 1
+      ;;
+  esac
+}
+
+route_accepts_local_import() {
+  imported_module=$1
+  case "$route_provider_name" in
+    jin)
+      case "$imported_module" in
+        CrouzeixJin|Crouzeix.Jin|Crouzeix.Jin.*|CrouzeixConjecture|CrouzeixConjecture.*)
+          return 0
+          ;;
+        CrouzeixHarp|Crouzeix.Harp|Crouzeix.Harp.*|\
+        CrouzeixLoristSchwenninger|Crouzeix.LoristSchwenninger|Crouzeix.LoristSchwenninger.*|\
+        Crouzeix|Crouzeix.*)
+          return 1
+          ;;
+      esac
+      ;;
+    lorist-schwenninger)
+      case "$imported_module" in
+        CrouzeixLoristSchwenninger|Crouzeix.LoristSchwenninger|Crouzeix.LoristSchwenninger.*|\
+        CrouzeixConjecture|CrouzeixConjecture.*)
+          return 0
+          ;;
+        CrouzeixJin|Crouzeix.Jin|Crouzeix.Jin.*|\
+        CrouzeixHarp|Crouzeix.Harp|Crouzeix.Harp.*|\
+        Crouzeix|Crouzeix.*)
+          return 1
+          ;;
+      esac
+      ;;
+    harp)
+      case "$imported_module" in
+        CrouzeixHarp|Crouzeix.Harp|Crouzeix.Harp.*|CrouzeixConjecture|CrouzeixConjecture.*)
+          return 0
+          ;;
+        Crouzeix.LoristSchwenninger|Crouzeix.LoristSchwenninger.*)
+          if is_harp_allowed_ls_support_module "$imported_module"; then
+            return 0
+          fi
+          return 1
+          ;;
+        Crouzeix.LoristSchwenninger.Consequences|Crouzeix.LoristSchwenninger.MainTheorem|\
+        CrouzeixLoristSchwenninger|\
+        CrouzeixJin|Crouzeix.Jin|Crouzeix.Jin.*|\
+        Crouzeix|Crouzeix.*)
+          return 1
+          ;;
+      esac
+      ;;
+  esac
+  return 1
+}
+
+append_route_isolated_sources() {
+  if ! configure_route_policy "$target"; then
+    return 1
+  fi
+  if ! append_sources "$project_dir/$route_aggregate_module.lean"; then
     return 1
   fi
 
@@ -262,44 +422,36 @@ append_ls_only_sources() {
     closure_changed=false
     cp "$scan_list" "$closure_sources_list"
     while IFS= read -r source_file || [ -n "$source_file" ]; do
-      if ! {
-        extract_lean_imports "$source_file" Crouzeix true
-        extract_lean_imports "$source_file" CrouzeixConjecture true
-      } > "$local_import_list"; then
+      if ! extract_lean_imports "$source_file" "" true > "$local_import_list"; then
         printf '%s\n' "$human_label Lean source scan failed while reading imports from $source_file" >&2
         return 1
       fi
       while IFS= read -r imported_module || [ -n "$imported_module" ]; do
-        case "$imported_module" in
-          Crouzeix.Jin|Crouzeix.Jin.*|Crouzeix.Harp|Crouzeix.Harp.*|Crouzeix)
-            printf '%s\n' "$human_label Lean source scan rejected provider import $imported_module in $source_file" >&2
-            return 1
-            ;;
-          Crouzeix.LoristSchwenninger|Crouzeix.LoristSchwenninger.*|CrouzeixConjecture|CrouzeixConjecture.*)
-            imported_path=$(printf '%s\n' "$imported_module" | tr . /)
-            imported_source="$project_dir/$imported_path.lean"
-            if [ ! -f "$imported_source" ]; then
-              printf '%s\n' "$human_label Lean source scan failed: missing local import $imported_module ($imported_source)" >&2
-              return 1
-            fi
-            if ! grep -F -x -q "$imported_source" "$scan_list"; then
-              printf '%s\n' "$imported_source" >> "$scan_list"
-              closure_changed=true
-            fi
-            ;;
-          Crouzeix.*)
-            printf '%s\n' "$human_label Lean source scan rejected non-LS import $imported_module in $source_file" >&2
-            return 1
-            ;;
-        esac
+        if ! is_managed_local_import "$imported_module"; then
+          continue
+        fi
+        if ! route_accepts_local_import "$imported_module"; then
+          printf '%s\n' "$human_label Lean source scan rejected provider import $imported_module in $source_file" >&2
+          return 1
+        fi
+        imported_path=$(printf '%s\n' "$imported_module" | tr . /)
+        imported_source="$project_dir/$imported_path.lean"
+        if [ ! -f "$imported_source" ]; then
+          printf '%s\n' "$human_label Lean source scan failed: missing local import $imported_module ($imported_source)" >&2
+          return 1
+        fi
+        if ! grep -F -x -q "$imported_source" "$scan_list"; then
+          printf '%s\n' "$imported_source" >> "$scan_list"
+          closure_changed=true
+        fi
       done < "$local_import_list"
     done < "$closure_sources_list"
   done
 }
 
 scan_started=$(now_seconds)
-if [ "$target" = CrouzeixLoristSchwenninger ]; then
-  if ! append_ls_only_sources; then
+if is_route_isolated_target "$target"; then
+  if ! append_route_isolated_sources; then
     scan_finished=$(now_seconds)
     report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
     exit 1
@@ -384,7 +536,7 @@ cache_started=$(now_seconds)
 cache_seconds=0
 if [ "$normal_build" = true ]; then
   while IFS= read -r source_file || [ -n "$source_file" ]; do
-    if [ "$target" = CrouzeixLoristSchwenninger ]; then
+    if is_route_isolated_target "$target"; then
       if ! extract_lean_imports "$source_file" Mathlib true >> "$required_cache_list"; then
         printf '%s\n' "$human_label Lean source scan failed while reading imports from $source_file" >&2
         report_failure "$scan_label" scan "$scan_seconds" 0 0 "$scan_seconds"

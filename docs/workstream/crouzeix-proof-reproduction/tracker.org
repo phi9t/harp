@@ -6391,16 +6391,16 @@ into a durable retrospective and three-route completion design.
 - Historical LS graph, upstream Jin verification manifest, and local evidence publication state remained unchanged.
 - The post-commit fixture regression was repaired in =3148ce0= and the full LS validation suite passed 48/48.
 
-** TODO Add Route-Isolated Targets And No-Build Preflight :lean:infra:ticket:
+** DONE Add Route-Isolated Targets And No-Build Preflight :lean:infra:ticket:
 :PROPERTIES:
 :ID: CPFR-083
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-083-route-targets
+:WORKTREE: .worktrees/cpfr-083-route-targets
 :DEPENDS_ON: CPFR-082
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-083-route-targets
+:MODEL: GPT-5.4
 :END:
 Make Jin, LS, and Harp independently buildable from one warm dependency cache.
 
@@ -6441,7 +6441,25 @@ the wrapper and mise tasks, and add a read-only preflight command.
 - cached =CrouzeixJin=, =CrouzeixLoristSchwenninger=, and =CrouzeixHarp= builds
 
 *** Verification Evidence
-Pending implementation.
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_proof_evidence -v= passed 27/27.
+- =cargo test -p harp --test lean_library -- --test-threads=1= passed 23/23.
+- The production wrapper runs the read-only Python preflight before Lake for
+  each route target. Tests prove blocked preflight state cannot invoke Lake,
+  and shell/Python provider-policy decisions agree at the supported boundary.
+- The preflight binds the pinned toolchain, complete normalized Lake manifest
+  and Lakefile contracts, canonical shared cache and nested roots, transitive
+  local and Mathlib closures, and every required Mathlib =.olean= header. It
+  rejects caller-selected roots, symlink escapes, provider crossings, and
+  missing or corrupt dependency artifacts without writing files.
+- The production cache identity is derived portably from Git common-directory
+  metadata; no machine-specific checkout path is embedded in Harp source.
+- On the final reviewed tree, cached =CrouzeixJin= passed 3,406 jobs in 62
+  seconds; cached =CrouzeixLoristSchwenninger= passed 3,386 jobs in 19
+  seconds; cached =CrouzeixHarp= passed 3,395 jobs in 15 seconds. No dependency
+  hydration ran.
+- Independent Spec review reported =PASS: Spec compliant=. Independent
+  Standards review reported no Critical, Important, or Minor finding and
+  =Ready to land? Yes=.
 
 ** TODO Define Common Route Proof Evidence Contracts :lean:evidence:tests:ticket:
 :PROPERTIES:

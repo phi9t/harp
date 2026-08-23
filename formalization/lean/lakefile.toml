@@ -23,7 +23,13 @@ name = "AutodiffGeometry"
 name = "Crouzeix"
 
 [[lean_lib]]
+name = "CrouzeixJin"
+
+[[lean_lib]]
 name = "CrouzeixLoristSchwenninger"
+
+[[lean_lib]]
+name = "CrouzeixHarp"
 
 [[lean_lib]]
 name = "CrouzeixConjecture"

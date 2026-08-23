@@ -38,6 +38,24 @@ fn fake_lake_bin(script: &str) -> (TempDir, OsString) {
     (fake_bin, path)
 }
 
+fn write_executable(path: &Path, contents: &str) {
+    fs::write(path, contents).expect("write executable fixture");
+    let mut permissions = fs::metadata(path)
+        .expect("read executable permissions")
+        .permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(path, permissions).expect("make executable fixture");
+}
+
+fn fake_python_and_lake_bin(python_script: &str, lake_script: &str) -> (TempDir, OsString) {
+    let fake_bin = TempDir::new().expect("fake tool directory");
+    write_executable(&fake_bin.path().join("python3"), python_script);
+    write_executable(&fake_bin.path().join("lake"), lake_script);
+    let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
+        .expect("construct PATH with fake python and lake");
+    (fake_bin, path)
+}
+
 fn write_fake_mathlib_artifact(root: &Path, module: &str) {
     let artifact = root.join(module.replace('.', "/")).with_extension("olean");
     fs::create_dir_all(artifact.parent().expect("artifact parent"))
@@ -49,6 +67,13 @@ fn write_fake_mathlib_artifacts(root: &Path, modules: &[&str]) {
     for module in modules {
         write_fake_mathlib_artifact(root, module);
     }
+}
+
+fn write_lean_module(root: &Path, module: &str, source: &str) {
+    let path = root.join(module.replace('.', "/")).with_extension("lean");
+    fs::create_dir_all(path.parent().expect("Lean module parent"))
+        .expect("create Lean module parent");
+    fs::write(path, source).expect("write Lean module fixture");
 }
 
 #[test]
@@ -243,6 +268,430 @@ fn shared_wrapper_builds_ls_only_cached_target_without_scanning_other_providers(
 }
 
 #[test]
+fn shared_wrapper_builds_jin_only_cached_target_without_scanning_other_providers() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixJin",
+        "import Crouzeix.Jin.Terminal\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Jin.Terminal",
+        "import CrouzeixConjecture.NeutralDependency\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixConjecture.NeutralDependency",
+        "/-\nimport Crouzeix.LoristSchwenninger.Consequences\nimport Crouzeix.Harp.Consequences\n-/\n\
+theorem neutral_dependency_fixture : True := by trivial\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.LoristSchwenninger.Consequences",
+        "theorem ls_fixture_must_not_be_scanned : True := by sorry\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.Consequences",
+        "theorem harp_fixture_must_not_be_scanned : True := by admit\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Jin.Unrelated",
+        "theorem unrelated_jin_fixture_must_not_be_scanned : True := by sorry\n",
+    );
+
+    let (fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
+    let fake_grep = fake_bin.path().join("grep");
+    fs::write(
+        &fake_grep,
+        "#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$GREP_ARGS\"\nexec /usr/bin/grep \"$@\"\n",
+    )
+    .expect("write recording grep");
+    let mut permissions = fs::metadata(&fake_grep)
+        .expect("read fake grep permissions")
+        .permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake_grep, permissions).expect("make fake grep executable");
+
+    let lake_args = temporary_project.path().join("lake-args");
+    let grep_args = temporary_project.path().join("grep-args");
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixJin")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_ARGS", &lake_args)
+        .env("GREP_ARGS", &grep_args)
+        .env("PATH", path)
+        .assert()
+        .success()
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixJin")
+                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] outcome=passed")),
+        );
+
+    assert_eq!(
+        fs::read_to_string(lake_args).expect("read lake arguments"),
+        "--try-cache build CrouzeixJin\n"
+    );
+    let grep_invocations = fs::read_to_string(grep_args).expect("read grep arguments");
+    let canonical_project =
+        fs::canonicalize(temporary_project.path()).expect("canonicalize temporary Lean project");
+    let mut scanned_sources = grep_invocations
+        .lines()
+        .filter_map(|line| line.strip_prefix("-n -H sorry "))
+        .collect::<Vec<_>>();
+    scanned_sources.sort_unstable();
+    let mut expected_sources = [
+        canonical_project
+            .join("CrouzeixJin.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("Crouzeix/Jin/Terminal.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("CrouzeixConjecture/NeutralDependency.lean")
+            .to_string_lossy()
+            .into_owned(),
+    ];
+    expected_sources.sort_unstable();
+    assert_eq!(
+        scanned_sources,
+        expected_sources
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        "Jin-only scan did not match the exact import closure"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/LoristSchwenninger/"),
+        "LS source entered the Jin-only scan: {grep_invocations}"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/Harp/"),
+        "Harp source entered the Jin-only scan: {grep_invocations}"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/Jin/Unrelated.lean"),
+        "non-closure Jin source entered the Jin-only scan: {grep_invocations}"
+    );
+}
+
+#[test]
+fn jin_only_wrapper_rejects_a_direct_ls_provider_import() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixJin",
+        "import Crouzeix.Jin.Terminal\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Jin.Terminal",
+        "import Crouzeix.LoristSchwenninger.Consequences\n",
+    );
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
+    let lake_marker = temporary_project.path().join("lake-was-called");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixJin")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "rejected provider import Crouzeix.LoristSchwenninger.Consequences",
+        ))
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixJin")
+                .and(predicate::str::contains("[lean] failure_stage=scan")),
+        );
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a direct LS provider import"
+    );
+}
+
+#[test]
+fn jin_only_wrapper_rejects_a_transitive_harp_provider_import() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixJin",
+        "import Crouzeix.Jin.Terminal\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Jin.Terminal",
+        "import CrouzeixConjecture.NeutralDependency\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixConjecture.NeutralDependency",
+        "import Crouzeix.Harp.Consequences\n",
+    );
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
+    let lake_marker = temporary_project.path().join("lake-was-called");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixJin")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "rejected provider import Crouzeix.Harp.Consequences",
+        ))
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixJin")
+                .and(predicate::str::contains("[lean] failure_stage=scan")),
+        );
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a transitive Harp provider import"
+    );
+}
+
+#[test]
+fn shared_wrapper_builds_harp_only_cached_target_without_scanning_terminal_ls_provider() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixHarp",
+        "import Crouzeix.Harp.Consequences\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.Consequences",
+        "import Crouzeix.Harp.MainTheorem\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.MainTheorem",
+        "import Crouzeix.LoristSchwenninger.Dilation\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.LoristSchwenninger.Dilation",
+        "import CrouzeixConjecture.NeutralDependency\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixConjecture.NeutralDependency",
+        "theorem neutral_dependency_fixture : True := by trivial\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.LoristSchwenninger.Consequences",
+        "theorem ls_consequences_fixture_must_not_be_scanned : True := by sorry\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.LoristSchwenninger.MainTheorem",
+        "theorem ls_terminal_fixture_must_not_be_scanned : True := by admit\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Jin.Terminal",
+        "theorem jin_fixture_must_not_be_scanned : True := by sorry\n",
+    );
+
+    let (fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
+    let fake_grep = fake_bin.path().join("grep");
+    fs::write(
+        &fake_grep,
+        "#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$GREP_ARGS\"\nexec /usr/bin/grep \"$@\"\n",
+    )
+    .expect("write recording grep");
+    let mut permissions = fs::metadata(&fake_grep)
+        .expect("read fake grep permissions")
+        .permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake_grep, permissions).expect("make fake grep executable");
+
+    let lake_args = temporary_project.path().join("lake-args");
+    let grep_args = temporary_project.path().join("grep-args");
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixHarp")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_ARGS", &lake_args)
+        .env("GREP_ARGS", &grep_args)
+        .env("PATH", path)
+        .assert()
+        .success()
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixHarp")
+                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] outcome=passed")),
+        );
+
+    assert_eq!(
+        fs::read_to_string(lake_args).expect("read lake arguments"),
+        "--try-cache build CrouzeixHarp\n"
+    );
+    let grep_invocations = fs::read_to_string(grep_args).expect("read grep arguments");
+    let canonical_project =
+        fs::canonicalize(temporary_project.path()).expect("canonicalize temporary Lean project");
+    let mut scanned_sources = grep_invocations
+        .lines()
+        .filter_map(|line| line.strip_prefix("-n -H sorry "))
+        .collect::<Vec<_>>();
+    scanned_sources.sort_unstable();
+    let mut expected_sources = [
+        canonical_project
+            .join("CrouzeixHarp.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("Crouzeix/Harp/Consequences.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("Crouzeix/Harp/MainTheorem.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("Crouzeix/LoristSchwenninger/Dilation.lean")
+            .to_string_lossy()
+            .into_owned(),
+        canonical_project
+            .join("CrouzeixConjecture/NeutralDependency.lean")
+            .to_string_lossy()
+            .into_owned(),
+    ];
+    expected_sources.sort_unstable();
+    assert_eq!(
+        scanned_sources,
+        expected_sources
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        "Harp-only scan did not match the exact import closure"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/LoristSchwenninger/Consequences.lean"),
+        "LS consequences source entered the Harp-only scan: {grep_invocations}"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/LoristSchwenninger/MainTheorem.lean"),
+        "LS terminal source entered the Harp-only scan: {grep_invocations}"
+    );
+    assert!(
+        !grep_invocations.contains("Crouzeix/Jin/"),
+        "Jin source entered the Harp-only scan: {grep_invocations}"
+    );
+}
+
+#[test]
+fn harp_only_wrapper_rejects_a_direct_ls_terminal_provider_import() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixHarp",
+        "import Crouzeix.Harp.Consequences\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.Consequences",
+        "import Crouzeix.LoristSchwenninger.Consequences\n",
+    );
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
+    let lake_marker = temporary_project.path().join("lake-was-called");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixHarp")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "rejected provider import Crouzeix.LoristSchwenninger.Consequences",
+        ))
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixHarp")
+                .and(predicate::str::contains("[lean] failure_stage=scan")),
+        );
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a direct LS terminal provider import"
+    );
+}
+
+#[test]
+fn harp_only_wrapper_rejects_a_transitive_jin_provider_import() {
+    let temporary_project = TempDir::new().expect("temporary Lean project");
+    write_lean_module(
+        temporary_project.path(),
+        "CrouzeixHarp",
+        "import Crouzeix.Harp.Consequences\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.Consequences",
+        "import Crouzeix.Harp.MainTheorem\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.Harp.MainTheorem",
+        "import Crouzeix.LoristSchwenninger.Dilation\n",
+    );
+    write_lean_module(
+        temporary_project.path(),
+        "Crouzeix.LoristSchwenninger.Dilation",
+        "import Crouzeix.Jin.Terminal\n",
+    );
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
+    let lake_marker = temporary_project.path().join("lake-was-called");
+
+    Command::new("/bin/sh")
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixHarp")
+        .arg("--project-for-test")
+        .arg(temporary_project.path())
+        .env("LAKE_CALLED_FILE", &lake_marker)
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains(
+            "rejected provider import Crouzeix.Jin.Terminal",
+        ))
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixHarp")
+                .and(predicate::str::contains("[lean] failure_stage=scan")),
+        );
+
+    assert!(
+        !lake_marker.exists(),
+        "lake ran despite a transitive Jin provider import"
+    );
+}
+
+#[test]
 fn ls_only_wrapper_rejects_a_missing_provider_neutral_import_before_lake_runs() {
     let temporary_project = TempDir::new().expect("temporary Lean project");
     let ls_dir = temporary_project.path().join("Crouzeix/LoristSchwenninger");
@@ -430,6 +879,14 @@ fn ls_only_target_is_not_part_of_default_or_all_builds() {
         !default_targets.contains("CrouzeixLoristSchwenninger"),
         "receipt-only target entered defaultTargets: {default_targets}"
     );
+    assert!(
+        !default_targets.contains("CrouzeixJin"),
+        "route-isolated Jin target entered defaultTargets: {default_targets}"
+    );
+    assert!(
+        !default_targets.contains("CrouzeixHarp"),
+        "route-isolated Harp target entered defaultTargets: {default_targets}"
+    );
 
     let wrapper = fs::read_to_string(repo_root().join("scripts/check_lean_library.sh"))
         .expect("read Lean wrapper");
@@ -441,6 +898,14 @@ fn ls_only_target_is_not_part_of_default_or_all_builds() {
     assert!(
         !all_target_loop.contains("CrouzeixLoristSchwenninger"),
         "receipt-only target entered all: {all_target_loop}"
+    );
+    assert!(
+        !all_target_loop.contains("CrouzeixJin"),
+        "route-isolated Jin target entered all: {all_target_loop}"
+    );
+    assert!(
+        !all_target_loop.contains("CrouzeixHarp"),
+        "route-isolated Harp target entered all: {all_target_loop}"
     );
 }
 
@@ -731,4 +1196,102 @@ fn all_rejects_crouzeix_conjecture_admit_before_lake_runs() {
         !lake_marker.exists(),
         "lake ran despite a CrouzeixConjecture admit fixture"
     );
+}
+
+#[test]
+fn route_wrappers_fail_closed_on_python_preflight_block_before_lake() {
+    let cases = [
+        ("CrouzeixJin", "jin"),
+        ("CrouzeixLoristSchwenninger", "lorist-schwenninger"),
+        ("CrouzeixHarp", "harp"),
+    ];
+
+    for (target, route) in cases {
+        let scoped_elan_home = scoped_elan_home();
+        let python_args = scoped_elan_home.path().join(format!("{route}-python-args"));
+        let lake_marker = scoped_elan_home.path().join(format!("{route}-lake-marker"));
+        let (fake_bin, path) = fake_python_and_lake_bin(
+            "#!/bin/sh\nprintf '%s\n' \"$*\" > \"$PYTHON_ARGS\"\nprintf '%s\n' '{\"status\":\"blocked\",\"reason\":\"missing-mathlib-artifacts\",\"missing_artifacts\":[\"transitive-only.olean\"]}'\nexit 1\n",
+            "#!/bin/sh\n: > \"$LAKE_MARKER\"\nexit 0\n",
+        );
+
+        let assert = Command::new("/bin/sh")
+            .current_dir(repo_root())
+            .arg("scripts/check_lean_library.sh")
+            .arg(target)
+            .env("ELAN_HOME", scoped_elan_home.path())
+            .env("PYTHON_ARGS", &python_args)
+            .env("LAKE_MARKER", &lake_marker)
+            .env("PATH", &path)
+            .assert();
+
+        assert
+            .failure()
+            .stdout(
+                predicate::str::contains(format!("[lean] target={target}"))
+                    .and(predicate::str::contains("[lean] outcome=failed"))
+                    .and(predicate::str::contains("[lean] failure_stage=preflight")),
+            )
+            .stderr(predicate::str::contains("missing-mathlib-artifacts"));
+
+        assert_eq!(
+            fs::read_to_string(&python_args).expect("read fake python args"),
+            format!(
+                "labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route {route}\n"
+            ),
+            "wrapper did not call python preflight with the exact route mapping",
+        );
+        assert!(
+            !lake_marker.exists(),
+            "lake ran despite blocked python preflight for {target}"
+        );
+        drop(fake_bin);
+    }
+}
+
+#[test]
+fn route_wrappers_run_lake_once_after_successful_python_preflight() {
+    let cases = [
+        ("CrouzeixJin", "jin"),
+        ("CrouzeixLoristSchwenninger", "lorist-schwenninger"),
+        ("CrouzeixHarp", "harp"),
+    ];
+
+    for (target, route) in cases {
+        let scoped_elan_home = scoped_elan_home();
+        let python_args = scoped_elan_home.path().join(format!("{route}-python-args"));
+        let lake_args = scoped_elan_home.path().join(format!("{route}-lake-args"));
+        let (_fake_bin, path) = fake_python_and_lake_bin(
+            "#!/bin/sh\nprintf '%s\n' \"$*\" > \"$PYTHON_ARGS\"\nexit 0\n",
+            "#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\nexit 0\n",
+        );
+
+        Command::new("/bin/sh")
+            .current_dir(repo_root())
+            .arg("scripts/check_lean_library.sh")
+            .arg(target)
+            .env("ELAN_HOME", scoped_elan_home.path())
+            .env("PYTHON_ARGS", &python_args)
+            .env("LAKE_ARGS", &lake_args)
+            .env("PATH", path)
+            .assert()
+            .success()
+            .stdout(
+                predicate::str::contains(format!("[lean] target={target}"))
+                    .and(predicate::str::contains("[lean] outcome=passed")),
+            );
+
+        assert_eq!(
+            fs::read_to_string(&python_args).expect("read fake python args"),
+            format!(
+                "labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route {route}\n"
+            ),
+            "wrapper did not call python preflight with the exact route mapping",
+        );
+        assert_eq!(
+            fs::read_to_string(&lake_args).expect("read fake lake args"),
+            format!("--try-cache build {target}\n"),
+            "lake should run exactly once after a successful python preflight",
+        );
+    }
 }
