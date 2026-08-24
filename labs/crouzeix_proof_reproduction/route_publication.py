@@ -863,14 +863,15 @@ def _release_lock(descriptor: int) -> None:
 
 
 def _rename_no_replace(root: Path, source: Path, destination: Path) -> None:
-    source_parent_fd = _open_rooted_directory(root, source.parent.relative_to(root))
-    destination_parent_fd = _open_rooted_directory(root, destination.parent.relative_to(root))
     authority = _STAGE_AUTHORITIES.get(source.as_posix())
     if authority is None:
-        os.close(source_parent_fd)
-        os.close(destination_parent_fd)
         raise RoutePublicationError("route stage identity is unbound")
+    source_parent_fd = _open_rooted_directory(root, source.parent.relative_to(root))
+    destination_parent_fd: int | None = None
     try:
+        destination_parent_fd = _open_or_create_rooted_directory(
+            root, destination.parent.relative_to(root)
+        )
         metadata = os.stat(
             source.name, dir_fd=source_parent_fd, follow_symlinks=False
         )
@@ -895,7 +896,8 @@ def _rename_no_replace(root: Path, source: Path, destination: Path) -> None:
         os.close(authority.parent_fd)
     finally:
         os.close(source_parent_fd)
-        os.close(destination_parent_fd)
+        if destination_parent_fd is not None:
+            os.close(destination_parent_fd)
 
 
 def _rename_file_no_replace_at(
@@ -1069,6 +1071,7 @@ def _open_or_create_rooted_directory(root: Path, relative: Path) -> int:
                     metadata = os.stat(part, dir_fd=descriptor, follow_symlinks=False)
                 except FileNotFoundError:
                     os.mkdir(part, mode=0o700, dir_fd=descriptor)
+                    os.fsync(descriptor)
                     next_fd = route_validation._open_directory_component(
                         descriptor, part, "route publication directory"
                     )

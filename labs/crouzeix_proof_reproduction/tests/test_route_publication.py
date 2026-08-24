@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import inspect
+import errno
 import os
 import time
 import shutil
@@ -338,6 +339,75 @@ class RoutePublicationBehaviorTests(unittest.TestCase):
         for call in audit_calls:
             audit_source = call[1] / call[0][-1]
             self.assertFalse(audit_source.exists())
+
+    def test_receipt_publication_creates_missing_final_parent_and_publishes_exact_tree(self) -> None:
+        fixture = make_unpublished_fixture(self)
+        executor = RecordingExecutor()
+        routes_parent = fixture.repo / route_validation.ROUTE_FINAL_ROOT
+        shutil.rmtree(routes_parent)
+
+        publication = route_publication.publish_route_receipt(
+            fixture.repo, "jin", executor=executor
+        )
+
+        final_root = fixture.repo / publication.artifact_root
+        self.assertTrue(routes_parent.is_dir())
+        self.assertEqual(
+            sorted(
+                path.relative_to(final_root).as_posix()
+                for path in final_root.rglob("*")
+                if path.is_file()
+            ),
+            [
+                "audit/axioms.json",
+                "audit/provider.json",
+                "build/command.json",
+                "build/stderr.log",
+                "build/stdout.log",
+                "receipt.json",
+            ],
+        )
+        payload = json.loads((fixture.repo / publication.receipt_path).read_text(encoding="utf-8"))
+        self.assertEqual(payload["schema_version"], "crouzeix-route-proof-receipt/v1")
+        self.assertEqual(payload["route_id"], "jin")
+        self.assertEqual(
+            publication.receipt_sha256,
+            route_validation._sha256(
+                (fixture.repo / publication.receipt_path).read_bytes()
+            ),
+        )
+
+    def test_receipt_publication_reports_post_rename_parent_fsync_failure_as_committed(self) -> None:
+        fixture = make_unpublished_fixture(self)
+        executor = RecordingExecutor()
+        routes_parent = fixture.repo / route_validation.ROUTE_FINAL_ROOT
+        shutil.rmtree(routes_parent)
+        original_fsync_directory = route_publication._fsync_directory
+        calls: list[Path] = []
+
+        def fail_only_on_created_routes_parent(path: Path) -> None:
+            calls.append(path)
+            if path.resolve() == routes_parent.resolve():
+                raise OSError(errno.EIO, "durability failure")
+            original_fsync_directory(path)
+
+        with mock.patch.object(
+            route_publication,
+            "_fsync_directory",
+            side_effect=fail_only_on_created_routes_parent,
+        ):
+            with self.assertRaises(route_publication.CommittedPublicationError) as context:
+                route_publication.publish_route_receipt(
+                    fixture.repo, "jin", executor=executor
+                )
+
+        self.assertTrue((fixture.repo / fixture.receipt_path).exists())
+        self.assertEqual(context.exception.path, (fixture.repo / fixture.receipt_path).resolve())
+        self.assertEqual(
+            context.exception.digest,
+            route_validation._sha256((fixture.repo / fixture.receipt_path).read_bytes()),
+        )
+        self.assertIn(routes_parent.resolve(), [path.resolve() for path in calls])
 
     def test_axiom_audit_executes_real_print_axioms_source(self) -> None:
         fixture = make_unpublished_fixture(self)
