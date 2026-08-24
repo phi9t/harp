@@ -161,6 +161,7 @@ class RouteFixture:
 
     def _node(self, key: str, dependency_ids: list[str]) -> dict[str, object]:
         provenance = "source" if self.claim_kind == "source-faithful" else "derived"
+        source_bytes = (self.repo / self.source_path).read_bytes()
         node: dict[str, object] = {
             "node_id": key,
             "role": "terminal" if key == "main" else ("consequence" if key == "consequence" else "load-bearing"),
@@ -168,11 +169,22 @@ class RouteFixture:
             "module_path": self.module_path(self.modules[key]).as_posix(),
             "dependency_ids": dependency_ids,
             "provenance_kind": provenance,
+            "correspondence_kind": (
+                "direct-source" if provenance == "source" else "derived-extraction"
+            ),
             "source_locator": (
                 f"{self.source_path.as_posix()}#L1-L1"
                 if provenance == "source"
                 else None
             ),
+            "source_archive_sha256": None,
+            "source_file_sha256": (
+                sha256_bytes(source_bytes) if provenance == "source" else None
+            ),
+            "source_excerpt_sha256": (
+                sha256_bytes(source_bytes) if provenance == "source" else None
+            ),
+            "source_line_count": 1 if provenance == "source" else None,
             "reused_from_route": None,
             "reused_node_id": None,
             "declaration_type_path": self.type_paths[key].as_posix(),
@@ -182,6 +194,7 @@ class RouteFixture:
         }
         if self.route_id == "harp" and key.startswith("reuse-"):
             node["provenance_kind"] = "reused-route"
+            node["correspondence_kind"] = "reused-route"
             node["reused_from_route"] = "lorist-schwenninger"
             node["reused_node_id"] = key
         return node
@@ -235,7 +248,16 @@ class RouteFixture:
                 {
                     **self._node(key, []),
                     "provenance_kind": "source",
+                    "correspondence_kind": "direct-source",
                     "source_locator": f"{self.source_path.as_posix()}#L1-L1",
+                    "source_archive_sha256": None,
+                    "source_file_sha256": sha256_bytes(
+                        (self.repo / self.source_path).read_bytes()
+                    ),
+                    "source_excerpt_sha256": sha256_bytes(
+                        (self.repo / self.source_path).read_bytes()
+                    ),
+                    "source_line_count": 1,
                     "reused_from_route": None,
                     "reused_node_id": None,
                     "module_path": self.module_path(module).as_posix(),
@@ -580,6 +602,50 @@ class RouteValidationTests(unittest.TestCase):
         fixture.rewrite_manifest()
         self.assert_invalid(fixture, "source locator digest is not declared")
 
+    def test_source_faithful_route_allows_explicit_derived_nodes_only_without_source_data(self) -> None:
+        fixture = self.fixture()
+        (fixture.repo / fixture.receipt_path).unlink()
+        (fixture.repo / fixture.review_path).unlink()
+        fixture.manifest["receipt_sha256"] = None
+        fixture.manifest["review_sha256"] = None
+        node = fixture.manifest["nodes"][0]
+        node["provenance_kind"] = "derived"
+        node["correspondence_kind"] = "derived-extraction"
+        node["source_locator"] = None
+        node["source_archive_sha256"] = None
+        node["source_file_sha256"] = None
+        node["source_excerpt_sha256"] = None
+        node["source_line_count"] = None
+        fixture.rewrite_manifest()
+
+        self.assertEqual(fixture.validate(allow_unpublished=True).claim_level, "mapped")
+
+        node["source_file_sha256"] = HEX_A
+        fixture.rewrite_manifest()
+        self.assert_invalid(fixture, "derived node cannot claim source or reuse provenance")
+
+        node["source_file_sha256"] = None
+        node["provenance_kind"] = "reused-route"
+        node["correspondence_kind"] = "reused-route"
+        node["reused_from_route"] = "harp"
+        node["reused_node_id"] = "foreign"
+        fixture.rewrite_manifest()
+        self.assert_invalid(fixture, "source-faithful route cannot reuse another route")
+
+    def test_local_source_locator_recomputes_file_excerpt_and_line_metadata(self) -> None:
+        cases = (
+            ("source_file_sha256", HEX_B, "source file digest"),
+            ("source_excerpt_sha256", HEX_B, "source excerpt digest"),
+            ("source_line_count", 2, "source line count"),
+            ("source_archive_sha256", HEX_A, "local source locator cannot declare an archive"),
+        )
+        for field, value, pattern in cases:
+            with self.subTest(field=field):
+                fixture = self.fixture()
+                fixture.manifest["nodes"][0][field] = value
+                fixture.rewrite_manifest()
+                self.assert_invalid(fixture, pattern)
+
     def test_reuse_is_declared_cross_route_and_required_for_harp(self) -> None:
         fixture = self.fixture("harp")
         fixture.manifest["nodes"][0]["reused_node_id"] = None
@@ -593,10 +659,50 @@ class RouteValidationTests(unittest.TestCase):
 
         fixture = self.fixture("harp")
         fixture.manifest["nodes"][0]["provenance_kind"] = "derived"
+        fixture.manifest["nodes"][0]["correspondence_kind"] = "derived-extraction"
         fixture.manifest["nodes"][0]["reused_from_route"] = None
         fixture.manifest["nodes"][0]["reused_node_id"] = None
         fixture.rewrite_manifest()
         self.assert_invalid(fixture, "Harp route must explicitly record LS reuse|LS support reuse coverage mismatch")
+
+    def test_correspondence_kind_matrix_is_exact_and_checked_during_parse(self) -> None:
+        allowed = {
+            "source": ("direct-source", "compatibility-port", "structural-refactor"),
+            "derived": ("derived-extraction",),
+            "shared-foundation": ("shared-foundation",),
+            "reused-route": ("reused-route",),
+        }
+        all_kinds = tuple(
+            kind for kinds in allowed.values() for kind in kinds
+        )
+        for provenance, kinds in allowed.items():
+            for correspondence in kinds:
+                with self.subTest(valid=(provenance, correspondence)):
+                    fixture = self.fixture()
+                    node = fixture.manifest["nodes"][0]
+                    node["provenance_kind"] = provenance
+                    node["correspondence_kind"] = correspondence
+                    if provenance != "source":
+                        for field in (
+                            "source_locator", "source_archive_sha256",
+                            "source_file_sha256", "source_excerpt_sha256",
+                            "source_line_count",
+                        ):
+                            node[field] = None
+                    if provenance == "reused-route":
+                        node["reused_from_route"] = "lorist-schwenninger"
+                        node["reused_node_id"] = "support"
+                    route_validation.parse_route_manifest(fixture.manifest)
+            invalid = next(kind for kind in all_kinds if kind not in kinds)
+            with self.subTest(invalid=(provenance, invalid)):
+                fixture = self.fixture()
+                node = fixture.manifest["nodes"][0]
+                node["provenance_kind"] = provenance
+                node["correspondence_kind"] = invalid
+                with self.assertRaisesRegex(
+                    route_validation.RouteValidationError, "incompatible"
+                ):
+                    route_validation.parse_route_manifest(fixture.manifest)
 
     def test_harp_resolves_all_eleven_support_modules_against_ls_manifest(self) -> None:
         fixture = self.fixture("harp")
@@ -1111,7 +1217,8 @@ class RouteValidationTests(unittest.TestCase):
         allowed_payload = json.loads(allowed.stdout)
         for payload in (ordinary_payload, allowed_payload):
             self.assertEqual(payload["route_id"], "jin")
-            self.assertEqual(payload["claim_level"], "authored")
+        self.assertEqual(ordinary_payload["claim_level"], "authored")
+        self.assertEqual(allowed_payload["claim_level"], "mapped")
         self.assertEqual(ordinary_payload["status"], "invalid")
         self.assertEqual(allowed_payload["status"], "incomplete")
         self.assertTrue(all(not marker.exists() for marker in markers))

@@ -1,0 +1,7 @@
+CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.norm_functionEval_le_two_of_holomorphic_of_simpleDiagonalization.{u_2}
+  {n : Type u_2} [Fintype n] [DecidableEq n] [Nonempty n] (R : CrouzeixConjecture.PositivePeriodicRadialData) (c : ℂ)
+  {Omega V : Set ℂ} (G : R.OrientedRadialConvexBoundary c Omega) (hVopen : IsOpen V)
+  (hclosureCompact : IsCompact (closure Omega)) (hclosure : closure Omega ⊆ V) {f : ℂ → ℂ} (hf : DifferentiableOn ℂ f V)
+  (hbound : ∀ z ∈ closure Omega, ‖f z‖ ≤ 1) (B : CrouzeixConjecture.SquareMatrix n)
+  (hB : CrouzeixConjecture.SimpleDiagonalization B) (hWB : CrouzeixConjecture.numericalRange B ⊆ Omega) :
+  ‖hB.functionEval f‖ ≤ 2

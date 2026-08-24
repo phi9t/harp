@@ -1,0 +1,8 @@
+CrouzeixConjecture.norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel.{u_1} {n : Type u_1} [Fintype n]
+  [DecidableEq n] [Nonempty n] (S : CrouzeixConjecture.SquareMatrix n) (hS : IsUnit S) (lambda : n → ℂ)
+  (hlambda : ∀ (i : n), ‖lambda i‖ ≤ 1) (d : ℂ → n → ℂ) (hd0 : d 0 = 0)
+  (hKernel :
+    CrouzeixConjecture.IsPositiveMatrixKernelOn CrouzeixConjecture.openUnitDisk
+      (CrouzeixConjecture.matrixHerglotzKernel
+        (CrouzeixConjecture.completionKernelModel (CrouzeixConjecture.completionGramMatrix S) lambda d))) :
+  ‖CrouzeixConjecture.completionDiagonalizableMatrix S lambda‖ ≤ 2

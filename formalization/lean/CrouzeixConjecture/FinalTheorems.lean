@@ -1,6 +1,7 @@
 module
 
-public import CrouzeixConjecture.HolomorphicConsequences
+public import Crouzeix.Jin.Terminal
+public import Crouzeix.Jin.RationalBridge
 
 @[expose] public section
 
@@ -18,14 +19,14 @@ theorem. Harp's terminal source-map declaration is assembled separately in
 theorem jinFinalCrouzeixConjecture (A : SquareMatrix n) (p : Polynomial ℂ) :
     ‖polynomialEval p A‖ ≤
       2 * maxPolynomialModulusOnNumericalRange A p :=
-  polynomialCrouzeixBound_of_holomorphicCrouzeixBound A p
+  crouzeixConjecture A p
 
 /-- The manuscript's rational spectral-set discussion, kept as a separate corollary.  Pole
 freeness is required on exactly the numerical range, and the same constant `2` and induced
 Euclidean matrix norm occur in the conclusion. -/
 theorem crouzeixRationalSpectralSetCorollary :
     RationalSpectralSetCorollaryStatement (n := n) :=
-  fun A r hfree ↦ holomorphicCrouzeixRationalBound A r hfree
+  fun A r hfree ↦ jinHolomorphicCrouzeixRationalBound A r hfree
 
 /-- Pointwise form of the separate rational corollary. -/
 theorem crouzeixRationalBound
@@ -33,6 +34,6 @@ theorem crouzeixRationalBound
     (hfree : RationalPoleFreeOn r (numericalRange A)) :
     ‖rationalMatrixEval r A‖ ≤
       2 * maxRationalModulusOnNumericalRange A r :=
-  holomorphicCrouzeixRationalBound A r hfree
+  jinHolomorphicCrouzeixRationalBound A r hfree
 
 end CrouzeixConjecture

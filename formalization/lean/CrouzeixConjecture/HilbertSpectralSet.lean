@@ -15,7 +15,7 @@ namespace CrouzeixConjecture
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 private theorem jinFiniteMatrixMainTheorem : FiniteMatrixMainTheoremStatement :=
-  fun d => jinFinalCrouzeixConjecture (n := Fin d)
+  fun d => crouzeixConjecture (n := Fin d)
 
 section RationalApproximation
 

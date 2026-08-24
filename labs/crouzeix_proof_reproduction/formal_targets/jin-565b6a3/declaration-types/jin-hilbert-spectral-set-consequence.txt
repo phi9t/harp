@@ -1,0 +1,3 @@
+CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet.{u_1} {H : Type u_1} [NormedAddCommGroup H]
+  [InnerProductSpace ℂ H] [CompleteSpace H] [Nontrivial H] (A : H →L[ℂ] H) :
+  CrouzeixConjecture.ClosedOperatorNumericalRangeIsTwoSpectralSet A

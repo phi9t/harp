@@ -1,0 +1,16 @@
+CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  {G H Hinv : CrouzeixConjecture.SquareMatrix n} (hsqrt : CrouzeixConjecture.CompletionSquareRootData G H Hinv)
+  (lambda : n → ℂ) (hlambda : ∀ (i : n), ‖lambda i‖ ≤ 1)
+  (hsource :
+    (4 * CrouzeixConjecture.completionX G lambda -
+          CrouzeixConjecture.completionX G lambda * G⁻¹ * CrouzeixConjecture.completionP G lambda -
+        CrouzeixConjecture.completionP G lambda * G⁻¹ * CrouzeixConjecture.completionX G lambda).PosSemidef) :
+  (4 *
+          (CrouzeixConjecture.gramian 2 (CrouzeixConjecture.completionSimilarity H Hinv lambda) -
+            CrouzeixConjecture.gramian 4 (CrouzeixConjecture.completionSimilarity H Hinv lambda)) -
+        (CrouzeixConjecture.gramian 2 (CrouzeixConjecture.completionSimilarity H Hinv lambda) -
+            CrouzeixConjecture.gramian 4 (CrouzeixConjecture.completionSimilarity H Hinv lambda)) *
+          CrouzeixConjecture.gramian 4 (CrouzeixConjecture.completionSimilarity H Hinv lambda) -
+      CrouzeixConjecture.gramian 4 (CrouzeixConjecture.completionSimilarity H Hinv lambda) *
+        (CrouzeixConjecture.gramian 2 (CrouzeixConjecture.completionSimilarity H Hinv lambda) -
+          CrouzeixConjecture.gramian 4 (CrouzeixConjecture.completionSimilarity H Hinv lambda))).PosSemidef

@@ -139,6 +139,41 @@ enum ProvenanceKind {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
+enum CorrespondenceKind {
+    DirectSource,
+    CompatibilityPort,
+    StructuralRefactor,
+    DerivedExtraction,
+    SharedFoundation,
+    ReusedRoute,
+}
+
+fn correspondence_matches(provenance: ProvenanceKind, correspondence: CorrespondenceKind) -> bool {
+    matches!(
+        (provenance, correspondence),
+        (ProvenanceKind::Source, CorrespondenceKind::DirectSource)
+            | (
+                ProvenanceKind::Source,
+                CorrespondenceKind::CompatibilityPort
+            )
+            | (
+                ProvenanceKind::Source,
+                CorrespondenceKind::StructuralRefactor
+            )
+            | (
+                ProvenanceKind::Derived,
+                CorrespondenceKind::DerivedExtraction
+            )
+            | (
+                ProvenanceKind::SharedFoundation,
+                CorrespondenceKind::SharedFoundation
+            )
+            | (ProvenanceKind::ReusedRoute, CorrespondenceKind::ReusedRoute)
+    )
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "kebab-case")]
 enum NodeRole {
     LoadBearing,
     Terminal,
@@ -154,7 +189,12 @@ struct RouteNode {
     module_path: String,
     dependency_ids: Vec<String>,
     provenance_kind: ProvenanceKind,
+    correspondence_kind: CorrespondenceKind,
     source_locator: Option<String>,
+    source_archive_sha256: Option<String>,
+    source_file_sha256: Option<String>,
+    source_excerpt_sha256: Option<String>,
+    source_line_count: Option<u64>,
     reused_from_route: Option<RouteId>,
     reused_node_id: Option<String>,
     declaration_type_path: String,
@@ -362,6 +402,27 @@ fn safe_path(value: &str) -> bool {
             .all(|component| matches!(component, Component::Normal(_)))
 }
 
+fn parse_source_locator(value: &str) -> Option<(bool, Option<&str>, &str, u64, u64)> {
+    let (head, span) = value.rsplit_once("#L")?;
+    let (start, end) = span.split_once("-L")?;
+    let start = start.parse::<u64>().ok()?;
+    let end = end.parse::<u64>().ok()?;
+    if start == 0 || end == 0 {
+        return None;
+    }
+    if let Some(rest) = head.strip_prefix("git:") {
+        let (commit, path) = rest.split_once(':')?;
+        if commit.len() != 40 || !valid_git_id(commit) || path.contains('#') || !safe_path(path) {
+            return None;
+        }
+        Some((true, Some(commit), path, start, end))
+    } else if safe_path(head) {
+        Some((false, None, head, start, end))
+    } else {
+        None
+    }
+}
+
 fn sorted_unique(values: &[String]) -> bool {
     values.windows(2).all(|items| items[0] < items[1])
 }
@@ -446,6 +507,19 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
         if !valid_digest(&node.statement_sha256) {
             return Err("invalid statement digest".into());
         }
+        let source_metadata = [
+            node.source_archive_sha256.as_deref(),
+            node.source_file_sha256.as_deref(),
+            node.source_excerpt_sha256.as_deref(),
+        ];
+        if source_metadata
+            .iter()
+            .flatten()
+            .any(|digest| !valid_digest(digest))
+            || node.source_line_count == Some(0)
+        {
+            return Err("invalid source metadata".into());
+        }
         for dependency in &node.dependency_ids {
             if dependency == &node.node_id {
                 return Err("self dependency".into());
@@ -459,7 +533,11 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
                 if node
                     .source_locator
                     .as_deref()
-                    .is_none_or(|path| !safe_path(path))
+                    .and_then(parse_source_locator)
+                    .is_none()
+                    || node.source_file_sha256.is_none()
+                    || node.source_excerpt_sha256.is_none()
+                    || node.source_line_count.is_none()
                     || node.reused_from_route.is_some()
                     || node.reused_node_id.is_some()
                 {
@@ -468,6 +546,10 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
             }
             ProvenanceKind::ReusedRoute => {
                 if node.source_locator.is_some()
+                    || node.source_archive_sha256.is_some()
+                    || node.source_file_sha256.is_some()
+                    || node.source_excerpt_sha256.is_some()
+                    || node.source_line_count.is_some()
                     || node.reused_from_route.is_none()
                     || node.reused_node_id.is_none()
                 {
@@ -482,6 +564,10 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
             }
             ProvenanceKind::SharedFoundation | ProvenanceKind::Derived => {
                 if node.source_locator.is_some()
+                    || node.source_archive_sha256.is_some()
+                    || node.source_file_sha256.is_some()
+                    || node.source_excerpt_sha256.is_some()
+                    || node.source_line_count.is_some()
                     || node.reused_from_route.is_some()
                     || node.reused_node_id.is_some()
                 {
@@ -489,10 +575,16 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
                 }
             }
         }
+        if !correspondence_matches(node.provenance_kind, node.correspondence_kind) {
+            return Err("correspondence kind is incompatible with provenance kind".into());
+        }
         if manifest.claim_kind == ClaimKind::SourceFaithful
-            && node.provenance_kind != ProvenanceKind::Source
+            && !matches!(
+                node.provenance_kind,
+                ProvenanceKind::Source | ProvenanceKind::Derived
+            )
         {
-            return Err("source-faithful route has non-source node".into());
+            return Err("source-faithful route cannot reuse another route".into());
         }
         if node.role == NodeRole::Terminal && terminal.replace(node).is_some() {
             return Err("multiple terminal nodes".into());
@@ -500,6 +592,14 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
         seen.insert(node.node_id.as_str());
     }
     let terminal = terminal.ok_or("missing terminal node")?;
+    if manifest.claim_kind == ClaimKind::SourceFaithful
+        && !manifest
+            .nodes
+            .iter()
+            .any(|node| node.provenance_kind == ProvenanceKind::Source)
+    {
+        return Err("source-faithful route requires at least one source node".into());
+    }
     if terminal.declaration != manifest.terminal_declaration
         || terminal.statement_sha256 != manifest.terminal_type_sha256
     {
@@ -850,9 +950,7 @@ fn validate_manifest_files(repo_root: &Path, manifest: &RouteManifest) -> Result
         return Err("Harp source identities must be empty".into());
     }
     for node in &manifest.nodes {
-        if let Some(locator) = &node.source_locator {
-            validate_source_provenance(repo_root, locator, &manifest.source_identities)?;
-        }
+        validate_source_provenance(repo_root, manifest, node)?;
         let bytes = read_bounded_regular(
             repo_root,
             &node.declaration_type_path,
@@ -928,9 +1026,7 @@ fn verify_bound_files(
         return Err("provider report does not match active closure".into());
     }
     for node in &manifest.nodes {
-        if let Some(locator) = &node.source_locator {
-            validate_source_provenance(repo_root, locator, &manifest.source_identities)?;
-        }
+        validate_source_provenance(repo_root, manifest, node)?;
         let bytes = read_bounded_regular(
             repo_root,
             &node.declaration_type_path,
@@ -1267,37 +1363,100 @@ fn read_cache_regular(cache_root: &Path, relative: &str, label: &str) -> Result<
 
 fn validate_source_provenance(
     repo_root: &Path,
-    locator: &str,
-    identities: &[String],
+    manifest: &RouteManifest,
+    node: &RouteNode,
 ) -> Result<(), String> {
-    let (path, span) = locator
-        .split_once('#')
-        .ok_or("source locator lacks line span")?;
-    let span = span
-        .strip_prefix('L')
-        .ok_or("source locator lacks line span")?;
-    let (start, end) = span
-        .split_once("-L")
-        .ok_or("source locator lacks line span")?;
-    let start = start
-        .parse::<usize>()
-        .map_err(|_| "invalid source locator start")?;
-    let end = end
-        .parse::<usize>()
-        .map_err(|_| "invalid source locator end")?;
-    if start == 0 || start > end {
+    let metadata_present = node.source_archive_sha256.is_some()
+        || node.source_file_sha256.is_some()
+        || node.source_excerpt_sha256.is_some()
+        || node.source_line_count.is_some();
+    if node.provenance_kind != ProvenanceKind::Source {
+        return if node.source_locator.is_none() && !metadata_present {
+            Ok(())
+        } else {
+            Err("non-source provenance carries source metadata".into())
+        };
+    }
+    let locator = node
+        .source_locator
+        .as_deref()
+        .ok_or("source locator is missing")?;
+    let (is_git, commit, path, start, end) =
+        parse_source_locator(locator).ok_or("invalid source locator")?;
+    if start > end {
         return Err("reversed source locator span".into());
     }
-    let bytes = read_bounded_regular(repo_root, path, "source locator")?;
-    let line_count = String::from_utf8(bytes.clone())
-        .map_err(|_| "source locator is not UTF-8")?
-        .lines()
-        .count();
+    let file_sha = node
+        .source_file_sha256
+        .as_deref()
+        .ok_or("source file digest is missing")?;
+    let excerpt_sha = node
+        .source_excerpt_sha256
+        .as_deref()
+        .ok_or("source excerpt digest is missing")?;
+    let line_count = node
+        .source_line_count
+        .ok_or("source line count is missing")?;
     if end > line_count {
-        return Err("source locator exceeds line count".into());
+        return Err("source locator exceeds declared line count".into());
     }
-    let identity = format!("sha256:{:x}", Sha256::digest(bytes));
-    if !identities.contains(&identity) {
+    if is_git {
+        let archive_sha = node
+            .source_archive_sha256
+            .as_deref()
+            .ok_or("Git source locator requires archive digest")?;
+        if !manifest
+            .source_identities
+            .contains(&format!("sha256:{archive_sha}"))
+        {
+            return Err("source archive identity digest mismatch".into());
+        }
+        if manifest.route_id != RouteId::Jin {
+            return Ok(());
+        }
+        let artifact_path =
+            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json";
+        let artifact = read_json_value(repo_root, artifact_path, "Jin artifact manifest")?;
+        if artifact["source_commit"].as_str() != commit
+            || artifact["archive"]["sha256"].as_str() != Some(archive_sha)
+        {
+            return Err("Jin source commit/archive identity mismatch".into());
+        }
+        if let Some(artifacts) = artifact["artifacts"].as_object() {
+            let matching = artifacts
+                .values()
+                .filter(|record| record["path"].as_str() == Some(path))
+                .collect::<Vec<_>>();
+            if matching.len() != 1 {
+                return Err("exactly one artifact record must match Git source path".into());
+            }
+            if matching[0]["sha256"].as_str() != Some(file_sha) {
+                return Err("Jin source file digest mismatch".into());
+            }
+        } else {
+            return Err("Jin artifact manifest artifacts must be an object".into());
+        }
+        return Ok(());
+    }
+    if node.source_archive_sha256.is_some() {
+        return Err("local source locator cannot declare an archive digest".into());
+    }
+    let bytes = read_bounded_regular(repo_root, path, "source locator")?;
+    let text = String::from_utf8(bytes.clone()).map_err(|_| "source locator is not UTF-8")?;
+    let lines = text.split_inclusive('\n').collect::<Vec<_>>();
+    let observed_line_count = text.lines().count() as u64;
+    if observed_line_count != line_count {
+        return Err("source line count mismatch".into());
+    }
+    if format!("{:x}", Sha256::digest(&bytes)) != file_sha {
+        return Err("source file digest mismatch".into());
+    }
+    let excerpt = lines[(start - 1) as usize..end as usize].concat();
+    if format!("{:x}", Sha256::digest(excerpt.as_bytes())) != excerpt_sha {
+        return Err("source excerpt digest mismatch".into());
+    }
+    let identity = format!("sha256:{file_sha}");
+    if !manifest.source_identities.contains(&identity) {
         return Err("source identity digest mismatch".into());
     }
     Ok(())
@@ -1543,10 +1702,11 @@ mod tests {
     use tempfile::TempDir;
 
     use super::{
-        active_mathlib_closure, active_route_closure, cache_contract_identity, parse,
-        read_bounded_regular, read_json_value, validate_declaration_roster, validate_harp_reuse,
-        validate_manifest_against_closure, validate_mathlib_roster, validate_records,
-        validate_source_provenance, verify_published_routes, ClaimKind, NodeRole, ProvenanceKind,
+        active_mathlib_closure, active_route_closure, cache_contract_identity,
+        correspondence_matches, parse, parse_source_locator, read_bounded_regular, read_json_value,
+        validate_declaration_roster, validate_harp_reuse, validate_manifest_against_closure,
+        validate_mathlib_roster, validate_records, validate_source_provenance,
+        verify_published_routes, ClaimKind, CorrespondenceKind, NodeRole, ProvenanceKind,
         RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt, MANIFEST_SCHEMA,
     };
 
@@ -1602,7 +1762,12 @@ mod tests {
                     "declaration": "CrouzeixConjecture.jinBase",
                     "module_path": "Crouzeix/Jin/Base.lean", "dependency_ids": [],
                     "provenance_kind": "source",
+                    "correspondence_kind": "direct-source",
                     "source_locator": "evidence/crouzeix_conjecture/source.md#L1-L1",
+                    "source_archive_sha256": null,
+                    "source_file_sha256": "b".repeat(64),
+                    "source_excerpt_sha256": "b".repeat(64),
+                    "source_line_count": 1,
                     "reused_from_route": null, "reused_node_id": null,
                     "declaration_type_path": "evidence/crouzeix_conjecture/types/base.txt",
                     "statement_sha256": "e".repeat(64)
@@ -1612,7 +1777,12 @@ mod tests {
                     "declaration": "CrouzeixConjecture.jinMain",
                     "module_path": "Crouzeix/Jin/Main.lean", "dependency_ids": ["base"],
                     "provenance_kind": "source",
+                    "correspondence_kind": "direct-source",
                     "source_locator": "evidence/crouzeix_conjecture/source.md#L2-L2",
+                    "source_archive_sha256": null,
+                    "source_file_sha256": "b".repeat(64),
+                    "source_excerpt_sha256": "b".repeat(64),
+                    "source_line_count": 2,
                     "reused_from_route": null, "reused_node_id": null,
                     "declaration_type_path": "evidence/crouzeix_conjecture/types/main.txt",
                     "statement_sha256": "a".repeat(64)
@@ -1622,7 +1792,12 @@ mod tests {
                     "declaration": "CrouzeixConjecture.jinConsequence",
                     "module_path": "Crouzeix/Jin/Consequence.lean", "dependency_ids": ["main"],
                     "provenance_kind": "source",
+                    "correspondence_kind": "direct-source",
                     "source_locator": "evidence/crouzeix_conjecture/source.md#L3-L3",
+                    "source_archive_sha256": null,
+                    "source_file_sha256": "b".repeat(64),
+                    "source_excerpt_sha256": "b".repeat(64),
+                    "source_line_count": 3,
                     "reused_from_route": null, "reused_node_id": null,
                     "declaration_type_path": "evidence/crouzeix_conjecture/types/consequence.txt",
                     "statement_sha256": "f".repeat(64)
@@ -2347,34 +2522,153 @@ mod tests {
         let root = TempDir::new().unwrap();
         fs::create_dir_all(root.path().join("evidence")).unwrap();
         fs::write(root.path().join("evidence/source.md"), b"one\ntwo\n").unwrap();
-        let identity = format!("sha256:{:x}", Sha256::digest(b"one\ntwo\n"));
-        validate_source_provenance(
-            root.path(),
-            "evidence/source.md#L1-L2",
-            std::slice::from_ref(&identity),
+        let file_sha = format!("{:x}", Sha256::digest(b"one\ntwo\n"));
+        let excerpt_sha = file_sha.clone();
+        let (manifest_value, _, _) = fixture();
+        let mut manifest: RouteManifest = parse(&manifest_value, "manifest").unwrap();
+        manifest.source_identities = vec![format!("sha256:{file_sha}")];
+        let mut node = manifest.nodes[0].clone();
+        node.source_locator = Some("evidence/source.md#L1-L2".into());
+        node.source_file_sha256 = Some(file_sha);
+        node.source_excerpt_sha256 = Some(excerpt_sha);
+        node.source_line_count = Some(2);
+        validate_source_provenance(root.path(), &manifest, &node).unwrap();
+
+        node.source_locator = Some("evidence/source.md#L2-L1".into());
+        assert!(validate_source_provenance(root.path(), &manifest, &node)
+            .unwrap_err()
+            .contains("reversed"));
+        node.source_locator = Some("evidence/source.md#L1-L3".into());
+        assert!(validate_source_provenance(root.path(), &manifest, &node)
+            .unwrap_err()
+            .contains("line count"));
+        node.source_locator = Some("evidence/source.md#L1-L2".into());
+        manifest.source_identities = vec![format!("sha256:{}", "0".repeat(64))];
+        assert!(validate_source_provenance(root.path(), &manifest, &node)
+            .unwrap_err()
+            .contains("source identity"));
+    }
+
+    #[test]
+    fn jin_git_locator_requires_exactly_one_registered_artifact_path() {
+        let root = TempDir::new().unwrap();
+        let artifact_path = root.path().join(
+            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json",
+        );
+        fs::create_dir_all(artifact_path.parent().unwrap()).unwrap();
+        let commit = "a".repeat(40);
+        let archive = "b".repeat(64);
+        fs::write(
+            artifact_path,
+            serde_json::to_vec(&json!({
+                "schema_version": "crouzeix-formal-artifact-manifest/v1",
+                "source_commit": commit,
+                "archive": {"sha256": archive},
+                "artifacts": {
+                    "registered": {
+                        "path": "Lean/CrouzeixConjecture/Registered.lean",
+                        "sha256": "c".repeat(64),
+                    }
+                },
+            }))
+            .unwrap(),
         )
         .unwrap();
-        assert!(validate_source_provenance(
-            root.path(),
-            "evidence/source.md#L2-L1",
-            std::slice::from_ref(&identity)
+        let (manifest_value, _, _) = fixture();
+        let mut manifest: RouteManifest = parse(&manifest_value, "manifest").unwrap();
+        manifest.source_identities = vec![format!("sha256:{archive}")];
+        let mut node = manifest.nodes[0].clone();
+        node.source_locator = Some(format!(
+            "git:{commit}:Lean/CrouzeixConjecture/Unregistered.lean#L1-L1"
+        ));
+        node.source_archive_sha256 = Some(archive.clone());
+        node.source_file_sha256 = Some("d".repeat(64));
+        node.source_excerpt_sha256 = Some("e".repeat(64));
+        node.source_line_count = Some(1);
+
+        assert!(validate_source_provenance(root.path(), &manifest, &node)
+            .unwrap_err()
+            .contains("exactly one artifact record must match Git source path"));
+
+        let artifact_path = root.path().join(
+            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json",
+        );
+        fs::write(
+            artifact_path,
+            serde_json::to_vec(&json!({
+                "schema_version": "crouzeix-formal-artifact-manifest/v1",
+                "source_commit": commit,
+                "archive": {"sha256": archive},
+                "artifacts": {
+                    "first": {
+                        "path": "Lean/CrouzeixConjecture/Unregistered.lean",
+                        "sha256": "d".repeat(64),
+                    },
+                    "duplicate": {
+                        "path": "Lean/CrouzeixConjecture/Unregistered.lean",
+                        "sha256": "d".repeat(64),
+                    }
+                },
+            }))
+            .unwrap(),
         )
-        .unwrap_err()
-        .contains("reversed"));
-        assert!(validate_source_provenance(
-            root.path(),
-            "evidence/source.md#L1-L3",
-            std::slice::from_ref(&identity)
-        )
-        .unwrap_err()
-        .contains("line count"));
-        assert!(validate_source_provenance(
-            root.path(),
-            "evidence/source.md#L1-L2",
-            &[format!("sha256:{}", "0".repeat(64))]
-        )
-        .unwrap_err()
-        .contains("source identity"));
+        .unwrap();
+        assert!(validate_source_provenance(root.path(), &manifest, &node)
+            .unwrap_err()
+            .contains("exactly one artifact record must match Git source path"));
+    }
+
+    #[test]
+    fn git_locator_rejects_opaque_path_fragment() {
+        let locator = format!("git:{}:Lean/Foo.lean#opaque#L1-L1", "a".repeat(40));
+        assert!(parse_source_locator(&locator).is_none());
+    }
+
+    #[test]
+    fn correspondence_kind_matrix_is_exact() {
+        let allowed = [
+            (ProvenanceKind::Source, CorrespondenceKind::DirectSource),
+            (
+                ProvenanceKind::Source,
+                CorrespondenceKind::CompatibilityPort,
+            ),
+            (
+                ProvenanceKind::Source,
+                CorrespondenceKind::StructuralRefactor,
+            ),
+            (
+                ProvenanceKind::Derived,
+                CorrespondenceKind::DerivedExtraction,
+            ),
+            (
+                ProvenanceKind::SharedFoundation,
+                CorrespondenceKind::SharedFoundation,
+            ),
+            (ProvenanceKind::ReusedRoute, CorrespondenceKind::ReusedRoute),
+        ];
+        let provenances = [
+            ProvenanceKind::Source,
+            ProvenanceKind::Derived,
+            ProvenanceKind::SharedFoundation,
+            ProvenanceKind::ReusedRoute,
+        ];
+        let correspondences = [
+            CorrespondenceKind::DirectSource,
+            CorrespondenceKind::CompatibilityPort,
+            CorrespondenceKind::StructuralRefactor,
+            CorrespondenceKind::DerivedExtraction,
+            CorrespondenceKind::SharedFoundation,
+            CorrespondenceKind::ReusedRoute,
+        ];
+        for provenance in provenances {
+            for correspondence in correspondences {
+                assert_eq!(
+                    correspondence_matches(provenance, correspondence),
+                    allowed.contains(&(provenance, correspondence)),
+                    "unexpected matrix result for {provenance:?}/{correspondence:?}"
+                );
+            }
+        }
     }
 
     #[test]
@@ -2444,7 +2738,12 @@ mod tests {
                 module_path: format!("{}.lean", module.replace('.', "/")),
                 dependency_ids: Vec::new(),
                 provenance_kind: ProvenanceKind::ReusedRoute,
+                correspondence_kind: CorrespondenceKind::ReusedRoute,
                 source_locator: None,
+                source_archive_sha256: None,
+                source_file_sha256: None,
+                source_excerpt_sha256: None,
+                source_line_count: None,
                 reused_from_route: Some(RouteId::LoristSchwenninger),
                 reused_node_id: Some(format!("reuse-{index}")),
                 declaration_type_path: format!("evidence/type-{index}.txt"),
@@ -2452,7 +2751,11 @@ mod tests {
             };
             harp_nodes.push(node.clone());
             node.provenance_kind = ProvenanceKind::Source;
+            node.correspondence_kind = CorrespondenceKind::DirectSource;
             node.source_locator = Some("evidence/source.md#L1-L1".into());
+            node.source_file_sha256 = Some("b".repeat(64));
+            node.source_excerpt_sha256 = Some("b".repeat(64));
+            node.source_line_count = Some(1);
             node.reused_from_route = None;
             node.reused_node_id = None;
             ls_nodes.push(node);
@@ -2662,8 +2965,12 @@ mod tests {
         fs::create_dir_all(root.path().join(source_path).parent().unwrap()).unwrap();
         let source_bytes = b"source line one\nsource line two\nsource line three\n";
         fs::write(root.path().join(source_path), source_bytes).unwrap();
-        manifest["source_identities"] =
-            json!([format!("sha256:{:x}", Sha256::digest(source_bytes))]);
+        let source_sha = format!("{:x}", Sha256::digest(source_bytes));
+        manifest["source_identities"] = json!([format!("sha256:{source_sha}")]);
+        manifest["nodes"][0]["source_file_sha256"] = json!(source_sha);
+        manifest["nodes"][0]["source_excerpt_sha256"] =
+            json!(format!("{:x}", Sha256::digest(b"source line two\n")));
+        manifest["nodes"][0]["source_line_count"] = json!(3);
         let type_bytes = b"forall n, n = n\n";
         let type_digest = format!("{:x}", Sha256::digest(b"forall n, n = n"));
         manifest["nodes"][0]["statement_sha256"] = json!(type_digest.clone());

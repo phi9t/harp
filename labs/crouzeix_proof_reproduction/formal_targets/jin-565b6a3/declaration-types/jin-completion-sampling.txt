@@ -1,0 +1,13 @@
+CrouzeixConjecture.completion_X_inequality_of_sampling.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  {G : CrouzeixConjecture.SquareMatrix n} {lambda : n → ℂ} (hGherm : Matrix.IsHermitian G) (hG : IsUnit G)
+  (hquad :
+    ∀ (u : n → ℂ),
+      0 ≤
+        star u ⬝ᵥ
+          Matrix.mulVec
+            (CrouzeixConjecture.completionSampleCoefficient G (CrouzeixConjecture.completionP G lambda)
+              (CrouzeixConjecture.completionR G lambda))
+            u) :
+  (4 * CrouzeixConjecture.completionX G lambda -
+        CrouzeixConjecture.completionX G lambda * G⁻¹ * CrouzeixConjecture.completionP G lambda -
+      CrouzeixConjecture.completionP G lambda * G⁻¹ * CrouzeixConjecture.completionX G lambda).PosSemidef

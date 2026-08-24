@@ -19,7 +19,7 @@ theorem finiteDimensionalHilbertPolynomialCrouzeix
     ‖operatorPolynomialEval p A‖ ≤
       2 * supPolynomialModulusOnOperatorNumericalRange A p :=
   finiteDimensionalHilbertPolynomialCrouzeix_of_mainTheorem
-    (fun d => jinFinalCrouzeixConjecture (n := Fin d)) A p
+    (fun d => crouzeixConjecture (n := Fin d)) A p
 
 /-- The manuscript's Hilbert-space consequence, using the existing Jin theorem provider. -/
 theorem hilbertSpacePolynomialCrouzeix [CompleteSpace H] [Nontrivial H]
@@ -27,6 +27,6 @@ theorem hilbertSpacePolynomialCrouzeix [CompleteSpace H] [Nontrivial H]
     ‖operatorPolynomialEval p A‖ ≤
       2 * supPolynomialModulusOnOperatorNumericalRange A p :=
   hilbertSpacePolynomialCrouzeix_of_mainTheorem
-    (fun d => jinFinalCrouzeixConjecture (n := Fin d)) A p
+    (fun d => crouzeixConjecture (n := Fin d)) A p
 
 end CrouzeixConjecture

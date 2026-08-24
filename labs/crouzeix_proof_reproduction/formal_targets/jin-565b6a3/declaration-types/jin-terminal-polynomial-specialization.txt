@@ -1,0 +1,3 @@
+CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  [Nonempty n] (A : CrouzeixConjecture.SquareMatrix n) (p : Polynomial ℂ) :
+  ‖CrouzeixConjecture.polynomialEval p A‖ ≤ 2 * CrouzeixConjecture.maxPolynomialModulusOnNumericalRange A p

@@ -1,0 +1,5 @@
+CrouzeixConjecture.holomorphicCrouzeixBound.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n] [Nonempty n]
+  (A : CrouzeixConjecture.SquareMatrix n) {U : Set ℂ} (hUopen : IsOpen U)
+  (hWU : CrouzeixConjecture.numericalRange A ⊆ U) {f : ℂ → ℂ} (hf : DifferentiableOn ℂ f U) :
+  ‖CrouzeixConjecture.holomorphicMatrixEval A f‖ ≤
+    2 * CrouzeixConjecture.maxFunctionModulusOnSet (CrouzeixConjecture.numericalRange A) f

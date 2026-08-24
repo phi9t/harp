@@ -1,0 +1,2 @@
+CrouzeixConjecture.numericalRange_convex.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  (A : CrouzeixConjecture.SquareMatrix n) : Convex ℝ (CrouzeixConjecture.numericalRange A)

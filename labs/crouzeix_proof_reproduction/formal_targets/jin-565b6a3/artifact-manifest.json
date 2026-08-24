@@ -5,12 +5,96 @@
     "source_url": "https://github.com/jinshanmu/CrouzeixConjecture/archive/565b6a3e0659b6e0785f783b016c3f6d9f171fa5.tar.gz"
   },
   "artifacts": {
+    "completionalgebra": {
+      "path": "Lean/CrouzeixConjecture/CompletionAlgebra.lean",
+      "bytes": 7795,
+      "sha256": "11d73aa8bf8a78287c8f019ae9e7e3638174f794ed77c41ced57bc82ddfa31c3",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionAlgebra.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "completiondiagonalization": {
+      "path": "Lean/CrouzeixConjecture/CompletionDiagonalization.lean",
+      "bytes": 18394,
+      "sha256": "ea7a0bc2c024e137eecfdbe73f392d4340bc5470b5e50a53712adeb5d5f16b58",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionDiagonalization.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "completioneigenvector": {
+      "path": "Lean/CrouzeixConjecture/CompletionEigenvector.lean",
+      "bytes": 9280,
+      "sha256": "8e7523896a8e494972a92b77558cd0d77925ca87b15bcd8548676efacb8130b8",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionEigenvector.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "completiongramianbridge": {
+      "path": "Lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+      "bytes": 18297,
+      "sha256": "d48d981159fe49e6a80912eaa76c93b1f63d2203a312e2775de0aacb5fa409f9",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionGramianBridge.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "completionkernelmodel": {
+      "path": "Lean/CrouzeixConjecture/CompletionKernelModel.lean",
+      "bytes": 36372,
+      "sha256": "a4613b0e6b01e6d975c9bff9fbfade33cc7cdbd7b2534579bb3df5df0e9b4254",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionKernelModel.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "completionsampling": {
+      "path": "Lean/CrouzeixConjecture/CompletionSampling.lean",
+      "bytes": 4178,
+      "sha256": "fcebf036243c9d9fdd8d85411f2cf603ee974a6fd99a36dfaf832c4990b5e326",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionSampling.lean",
+      "license_status": "not-present-at-revision"
+    },
     "final-theorems": {
-      "bytes": 1650,
-      "license_status": "not-present-at-revision",
       "path": "Lean/CrouzeixConjecture/FinalTheorems.lean",
+      "bytes": 1650,
       "sha256": "1f5051077f4fb08eaee9cf34862b9c004b69ae68b32528c2d4e69e27b929af0a",
-      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean"
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "functionmaximum": {
+      "path": "Lean/CrouzeixConjecture/FunctionMaximum.lean",
+      "bytes": 4814,
+      "sha256": "90fe125933d91924c4fee3349cb5f39419cb3df32f3ba74f132f9ede5952b3f1",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FunctionMaximum.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "hilbertspace": {
+      "path": "Lean/CrouzeixConjecture/HilbertSpace.lean",
+      "bytes": 13715,
+      "sha256": "a04714fdeaffff93ac5ab2c3191b702637034554b26fb15a0efe60f6c50536d1",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HilbertSpace.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "hilbertspectralset": {
+      "path": "Lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+      "bytes": 25083,
+      "sha256": "67b38c70b52ed21bb3e2b46d93ef13ab51c9da398d453fe25a615d4ac9063048",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "holomorphicdoublelayer": {
+      "path": "Lean/CrouzeixConjecture/HolomorphicDoubleLayer.lean",
+      "bytes": 17840,
+      "sha256": "db29988aadcb4dc223e7577b72476a4156c79ee91b3c217a4509a4d7f653e9cf",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HolomorphicDoubleLayer.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "holomorphicconsequences": {
+      "path": "Lean/CrouzeixConjecture/HolomorphicConsequences.lean",
+      "bytes": 7522,
+      "sha256": "8f66bbed416a2e31e45be8f4b48297afc7c6fec913320f584ab2960cfc86a5e5",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HolomorphicConsequences.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "holomorphicouterlimit": {
+      "path": "Lean/CrouzeixConjecture/HolomorphicOuterLimit.lean",
+      "bytes": 21537,
+      "sha256": "9a10c04d45b1af729a1544b1a85eb41ea4d2220219995601334bfd82648b505f",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HolomorphicOuterLimit.lean",
+      "license_status": "not-present-at-revision"
     },
     "lake-manifest": {
       "bytes": 3146,
@@ -25,6 +109,34 @@
       "path": "Lean/lean-toolchain",
       "sha256": "db7bb24b756d745bbde83fe92718b51bd3625dae3701ba0f598d0eedcd3f3028",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/lean-toolchain"
+    },
+    "numericalrangeconvexity": {
+      "path": "Lean/CrouzeixConjecture/NumericalRangeConvexity.lean",
+      "bytes": 20604,
+      "sha256": "16d61fa8b3f18e567839da882a4814e6a9700b0091f318aca5f90cf6c2795cf9",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/NumericalRangeConvexity.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "positiverealcompletion": {
+      "path": "Lean/CrouzeixConjecture/PositiveRealCompletion.lean",
+      "bytes": 2690,
+      "sha256": "40692f86e2a9c9384e264351f0f47b3ec9fe02aaeb4749c63490b4a0f2e5c5b8",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/PositiveRealCompletion.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "simplespectrumdensity": {
+      "path": "Lean/CrouzeixConjecture/SimpleSpectrumDensity.lean",
+      "bytes": 12100,
+      "sha256": "a85fc4187b39bde1a8716fe2b5e1e6b0c7cf85a54e14287298887be00edd98e7",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/SimpleSpectrumDensity.lean",
+      "license_status": "not-present-at-revision"
+    },
+    "statements": {
+      "path": "Lean/CrouzeixConjecture/Statements.lean",
+      "bytes": 1094,
+      "sha256": "acabb06e2ba9191cb33aaaaf99f1ce33e854fa8ad5d73b06f3422df03c29f154",
+      "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/Statements.lean",
+      "license_status": "not-present-at-revision"
     },
     "verify": {
       "bytes": 58,

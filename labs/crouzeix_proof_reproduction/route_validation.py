@@ -32,6 +32,20 @@ REVIEW_SCHEMA_VERSION = "crouzeix-proof-review/v1"
 ROUTE_IDS = ("jin", "lorist-schwenninger", "harp")
 CLAIM_KINDS = ("source-faithful", "derived")
 PROVENANCE_KINDS = ("source", "shared-foundation", "reused-route", "derived")
+CORRESPONDENCE_KINDS = (
+    "direct-source",
+    "compatibility-port",
+    "structural-refactor",
+    "derived-extraction",
+    "shared-foundation",
+    "reused-route",
+)
+ALLOWED_CORRESPONDENCE_KINDS = {
+    "source": frozenset({"direct-source", "compatibility-port", "structural-refactor"}),
+    "derived": frozenset({"derived-extraction"}),
+    "shared-foundation": frozenset({"shared-foundation"}),
+    "reused-route": frozenset({"reused-route"}),
+}
 FINDING_SEVERITIES = ("Critical", "Important", "Minor")
 ALLOWED_AXIOMS = ("Classical.choice", "Quot.sound", "propext")
 MAX_JSON_BYTES = 2 * 1024 * 1024
@@ -46,7 +60,13 @@ GIT_ID_RE = re.compile(r"[0-9a-f]{40,64}\Z")
 IDENTITY_RE = re.compile(r"sha256:[0-9a-f]{64}\Z")
 MODULE_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
 NODE_ID_RE = re.compile(r"[a-z0-9][a-z0-9-]{0,127}\Z")
-SOURCE_LOCATOR_RE = re.compile(r"(?P<path>[^#]+)#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z")
+LOCAL_SOURCE_LOCATOR_RE = re.compile(
+    r"(?P<path>[^#]+)#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z"
+)
+GIT_SOURCE_LOCATOR_RE = re.compile(
+    r"git:(?P<commit>[0-9a-f]{40}):(?P<path>[^#]+)"
+    r"#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z"
+)
 NODE_ROLES = ("load-bearing", "terminal", "consequence")
 
 ROUTE_AGGREGATES = {
@@ -86,7 +106,12 @@ class RouteNode:
     module_path: str
     dependency_ids: tuple[str, ...]
     provenance_kind: str
+    correspondence_kind: str
     source_locator: str | None
+    source_archive_sha256: str | None
+    source_file_sha256: str | None
+    source_excerpt_sha256: str | None
+    source_line_count: int | None
     reused_from_route: str | None
     reused_node_id: str | None
     declaration_type_path: str
@@ -133,7 +158,9 @@ MANIFEST_FIELDS = frozenset({
 })
 NODE_FIELDS = frozenset({
     "node_id", "role", "declaration", "module_path", "dependency_ids",
-    "provenance_kind", "source_locator", "reused_from_route", "reused_node_id",
+    "provenance_kind", "correspondence_kind", "source_locator", "source_archive_sha256",
+    "source_file_sha256", "source_excerpt_sha256", "source_line_count",
+    "reused_from_route", "reused_node_id",
     "declaration_type_path", "statement_sha256",
 })
 RECEIPT_FIELDS = frozenset({
@@ -373,6 +400,38 @@ def _safe_relative(value: object, label: str, *, locator: bool = False) -> str:
     return path_text
 
 
+def _source_locator(
+    value: object, label: str
+) -> tuple[str, str | None, str, int, int]:
+    if not isinstance(value, str) or not value or len(value.encode()) > MAX_STRING_BYTES:
+        raise RouteValidationError(f"{label} must be a pinned local or immutable Git locator")
+    git_match = GIT_SOURCE_LOCATOR_RE.fullmatch(value)
+    if git_match is not None:
+        path = _safe_relative(git_match.group("path"), f"{label} Git path")
+        start = int(git_match.group("start"))
+        end = int(git_match.group("end"))
+        return "git", git_match.group("commit"), path, start, end
+    local_match = LOCAL_SOURCE_LOCATOR_RE.fullmatch(value)
+    if local_match is None:
+        raise RouteValidationError(f"{label} requires path#Lx-Ly or git:<40hex>:path#Lx-Ly")
+    path = _safe_relative(local_match.group("path"), f"{label} local path")
+    return (
+        "local",
+        None,
+        path,
+        int(local_match.group("start")),
+        int(local_match.group("end")),
+    )
+
+
+def _nullable_positive_int(value: object, label: str) -> int | None:
+    if value is None:
+        return None
+    if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+        raise RouteValidationError(f"{label} must be null or a positive integer")
+    return value
+
+
 def _read_rooted_bytes(root_path: Path, relative: str, label: str) -> bytes:
     root_fd = os.open(root_path, os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_CLOEXEC", 0))
     current_fd = root_fd
@@ -518,11 +577,31 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
         provenance = _text(raw["provenance_kind"], "provenance kind")
         if provenance not in PROVENANCE_KINDS:
             raise RouteValidationError("invalid provenance kind")
+        correspondence = _text(raw["correspondence_kind"], "correspondence kind")
+        if correspondence not in CORRESPONDENCE_KINDS:
+            raise RouteValidationError("invalid correspondence kind")
+        if correspondence not in ALLOWED_CORRESPONDENCE_KINDS[provenance]:
+            raise RouteValidationError(
+                f"correspondence kind {correspondence!r} is incompatible with "
+                f"provenance kind {provenance!r}"
+            )
         source = raw["source_locator"]
         reused_route = raw["reused_from_route"]
         reused_node = raw["reused_node_id"]
         if source is not None:
-            _safe_relative(source, "source locator", locator=True)
+            _source_locator(source, "source locator")
+        source_archive_sha256 = _optional_digest(
+            raw["source_archive_sha256"], "source archive sha256"
+        )
+        source_file_sha256 = _optional_digest(
+            raw["source_file_sha256"], "source file sha256"
+        )
+        source_excerpt_sha256 = _optional_digest(
+            raw["source_excerpt_sha256"], "source excerpt sha256"
+        )
+        source_line_count = _nullable_positive_int(
+            raw["source_line_count"], "source line count"
+        )
         if provenance == "source":
             if source is None:
                 raise RouteValidationError("source node requires a pinned source locator")
@@ -549,7 +628,12 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
             module_path=_safe_relative(raw["module_path"], "node module path"),
             dependency_ids=_string_tuple(raw["dependency_ids"], "dependency id", pattern=NODE_ID_RE, allow_empty=True),
             provenance_kind=provenance,
+            correspondence_kind=correspondence,
             source_locator=source if isinstance(source, str) else None,
+            source_archive_sha256=source_archive_sha256,
+            source_file_sha256=source_file_sha256,
+            source_excerpt_sha256=source_excerpt_sha256,
+            source_line_count=source_line_count,
             reused_from_route=reused_route if isinstance(reused_route, str) else None,
             reused_node_id=reused_node if isinstance(reused_node, str) else None,
             declaration_type_path=_safe_relative(raw["declaration_type_path"], "declaration type path"),
@@ -612,14 +696,102 @@ def _provider_policy(manifest: RouteManifest) -> tuple[tuple[str, ...], tuple[st
     ), ("Crouzeix.Jin",)
 
 
+def _source_excerpt(source: bytes, start: int, end: int) -> bytes:
+    return b"".join(source.splitlines(keepends=True)[start - 1:end])
+
+
+def _jin_artifact_manifest(repo_root: Path) -> dict[str, object]:
+    return _read_json(
+        repo_root,
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json",
+        "Jin artifact manifest",
+    )
+
+
+def validate_source_provenance_metadata(
+    repo_root: Path, manifest: RouteManifest, node: RouteNode
+) -> None:
+    metadata = (
+        node.source_archive_sha256,
+        node.source_file_sha256,
+        node.source_excerpt_sha256,
+        node.source_line_count,
+    )
+    if node.provenance_kind != "source":
+        if any(value is not None for value in metadata):
+            raise RouteValidationError(
+                f"{node.provenance_kind} node cannot claim source or reuse provenance"
+            )
+        return
+    assert node.source_locator is not None
+    kind, commit, path, start, end = _source_locator(node.source_locator, "source locator")
+    if start > end:
+        raise RouteValidationError("reversed source locator span")
+    if node.source_file_sha256 is None or node.source_excerpt_sha256 is None:
+        raise RouteValidationError("source node requires file and excerpt digests")
+    if node.source_line_count is None:
+        raise RouteValidationError("source node requires a declared source line count")
+    if end > node.source_line_count:
+        raise RouteValidationError("source locator span exceeds file line count")
+    if kind == "local":
+        if node.source_archive_sha256 is not None:
+            raise RouteValidationError("local source locator cannot declare an archive digest")
+        source_bytes = _read_bytes(repo_root, path, "source locator")
+        try:
+            observed_line_count = len(source_bytes.decode("utf-8").splitlines())
+        except UnicodeDecodeError as error:
+            raise RouteValidationError("source locator file is not UTF-8") from error
+        if observed_line_count != node.source_line_count:
+            raise RouteValidationError("source line count mismatch")
+        if _sha256(source_bytes) != node.source_file_sha256:
+            raise RouteValidationError("source file digest mismatch")
+        if _sha256(_source_excerpt(source_bytes, start, end)) != node.source_excerpt_sha256:
+            raise RouteValidationError("source excerpt digest mismatch")
+        source_identity = f"sha256:{node.source_file_sha256}"
+        if source_identity not in manifest.source_identities:
+            raise RouteValidationError("source locator digest is not declared by a source identity")
+        return
+
+    if node.source_archive_sha256 is None:
+        raise RouteValidationError("Git source locator requires an archive digest")
+    if f"sha256:{node.source_archive_sha256}" not in manifest.source_identities:
+        raise RouteValidationError("source archive digest is not declared by a source identity")
+    if manifest.route_id != "jin":
+        return
+    artifact = _jin_artifact_manifest(repo_root)
+    if artifact.get("source_commit") != commit:
+        raise RouteValidationError("Jin Git source commit does not match artifact manifest")
+    archive = artifact.get("archive")
+    if not isinstance(archive, dict) or archive.get("sha256") != node.source_archive_sha256:
+        raise RouteValidationError("Jin source archive digest does not match artifact manifest")
+    artifacts = artifact.get("artifacts")
+    if not isinstance(artifacts, dict):
+        raise RouteValidationError("Jin artifact manifest artifacts must be an object")
+    matches = [
+        record for record in artifacts.values()
+        if isinstance(record, dict) and record.get("path") == path
+    ]
+    if len(matches) != 1:
+        raise RouteValidationError(
+            "exactly one Jin artifact record must match Git source path"
+        )
+    if matches[0].get("sha256") != node.source_file_sha256:
+        raise RouteValidationError("Jin source file digest does not match artifact manifest")
+
+
 def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: RouteManifest) -> None:
     if manifest.route_id in {"jin", "lorist-schwenninger"}:
         if manifest.claim_kind != "source-faithful":
             raise RouteValidationError("Jin and Lorist-Schwenninger must be source-faithful")
         if not manifest.source_identities:
             raise RouteValidationError("source-faithful route requires source identities")
-        if any(node.provenance_kind != "source" for node in manifest.nodes):
-            raise RouteValidationError("source-faithful route nodes must have source provenance")
+        if not any(node.provenance_kind == "source" for node in manifest.nodes):
+            raise RouteValidationError("source-faithful route requires at least one source node")
+        if any(
+            node.provenance_kind not in {"source", "derived"}
+            for node in manifest.nodes
+        ):
+            raise RouteValidationError("source-faithful route cannot reuse another route")
     else:
         if manifest.claim_kind != "derived":
             raise RouteValidationError("Harp route must be derived")
@@ -654,25 +826,7 @@ def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: Rou
             if dependency not in seen:
                 raise RouteValidationError("dependency cycle or unstable topological order")
         seen.add(node.node_id)
-        if node.source_locator is not None:
-            source_bytes = _read_bytes(
-                repo_root, node.source_locator, "source locator", locator=True
-            )
-            match = SOURCE_LOCATOR_RE.fullmatch(node.source_locator)
-            assert match is not None
-            start = int(match.group("start"))
-            end = int(match.group("end"))
-            if start > end:
-                raise RouteValidationError("reversed source locator span")
-            try:
-                line_count = len(source_bytes.decode("utf-8").splitlines())
-            except UnicodeDecodeError as error:
-                raise RouteValidationError("source locator file is not UTF-8") from error
-            if end > line_count:
-                raise RouteValidationError("source locator span exceeds file line count")
-            source_identity = f"sha256:{_sha256(source_bytes)}"
-            if source_identity not in manifest.source_identities:
-                raise RouteValidationError("source locator digest is not declared by a source identity")
+        validate_source_provenance_metadata(repo_root, manifest, node)
         type_bytes = _read_bytes(repo_root, node.declaration_type_path, "declaration type artifact")
         try:
             observed = normalized_type_sha256(type_bytes.decode("utf-8"))

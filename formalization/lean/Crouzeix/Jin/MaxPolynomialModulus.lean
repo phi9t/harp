@@ -1,4 +1,8 @@
-import CrouzeixConjecture.Statements
+module
+
+public import CrouzeixConjecture.Statements
+
+@[expose] public section
 
 /- Harp-native Crouzeix route scaffolding.
 

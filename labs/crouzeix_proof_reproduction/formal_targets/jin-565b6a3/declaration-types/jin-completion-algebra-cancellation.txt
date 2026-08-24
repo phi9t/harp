@@ -1,0 +1,3 @@
+CrouzeixConjecture.completion_mulVec_add_eq_zero.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  (G P : CrouzeixConjecture.SquareMatrix n) (u : n → ℂ) (hG : IsUnit G) :
+  Matrix.mulVec G (CrouzeixConjecture.completionV G P u) + Matrix.mulVec P u = 0

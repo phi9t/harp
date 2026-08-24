@@ -1,0 +1,6 @@
+CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation {f : ℂ → ℂ} {K C : Set ℂ}
+  (hKcompact : IsCompact K) (hKne : K.Nonempty) (hCcompact : IsCompact C) (hf : ContinuousOn f C) {s : ℕ → Set ℂ}
+  (hscompact : ∀ (k : ℕ), IsCompact (s k)) (hKs : ∀ (k : ℕ), K ⊆ s k) (hsC : ∀ (k : ℕ), s k ⊆ C) {radius : ℕ → ℝ}
+  (hradius : Filter.Tendsto radius Filter.atTop (nhds 0)) (hclose : ∀ (k : ℕ), ∀ z ∈ s k, ∃ w ∈ K, ‖z - w‖ ≤ radius k) :
+  Filter.Tendsto (fun k => CrouzeixConjecture.maxFunctionModulusOnSet (s k) f) Filter.atTop
+    (nhds (CrouzeixConjecture.maxFunctionModulusOnSet K f))

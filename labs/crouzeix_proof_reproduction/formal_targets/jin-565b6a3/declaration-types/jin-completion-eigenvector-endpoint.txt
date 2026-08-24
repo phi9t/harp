@@ -1,0 +1,8 @@
+CrouzeixConjecture.norm_le_two_of_gramian_inequality.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n] [Nonempty n]
+  {M : ℝ} (hM : 0 ≤ M) (C : CrouzeixConjecture.SquareMatrix n) (hbound : ∀ (k : ℕ), ‖C ^ k‖ ≤ M)
+  (hineq :
+    Matrix.PosSemidef
+      (4 • (CrouzeixConjecture.gramian 2 C - CrouzeixConjecture.gramian 4 C) -
+          (CrouzeixConjecture.gramian 2 C - CrouzeixConjecture.gramian 4 C) * CrouzeixConjecture.gramian 4 C -
+        CrouzeixConjecture.gramian 4 C * (CrouzeixConjecture.gramian 2 C - CrouzeixConjecture.gramian 4 C))) :
+  ‖C‖ ≤ 2

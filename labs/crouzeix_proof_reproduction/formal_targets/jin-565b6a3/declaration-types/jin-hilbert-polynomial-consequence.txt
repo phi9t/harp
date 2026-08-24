@@ -1,0 +1,4 @@
+CrouzeixConjecture.hilbertSpacePolynomialCrouzeix.{u_1} {H : Type u_1} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  [CompleteSpace H] [Nontrivial H] (A : H →L[ℂ] H) (p : Polynomial ℂ) :
+  ‖CrouzeixConjecture.operatorPolynomialEval p A‖ ≤
+    2 * CrouzeixConjecture.supPolynomialModulusOnOperatorNumericalRange A p

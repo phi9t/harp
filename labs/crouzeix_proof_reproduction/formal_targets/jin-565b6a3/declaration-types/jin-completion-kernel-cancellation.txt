@@ -1,0 +1,9 @@
+CrouzeixConjecture.completion_X_inequality_of_positiveKernel.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  {G : CrouzeixConjecture.SquareMatrix n} (hGherm : Matrix.IsHermitian G) (hG : IsUnit G) (lambda : n → ℂ)
+  (hlambda : ∀ (i : n), ‖lambda i‖ ≤ 1) (d : ℂ → n → ℂ) (hd0 : d 0 = 0)
+  (hKernel :
+    CrouzeixConjecture.IsPositiveMatrixKernelOn CrouzeixConjecture.openUnitDisk
+      (CrouzeixConjecture.matrixHerglotzKernel (CrouzeixConjecture.completionKernelModel G lambda d))) :
+  (4 * CrouzeixConjecture.completionX G lambda -
+        CrouzeixConjecture.completionX G lambda * G⁻¹ * CrouzeixConjecture.completionP G lambda -
+      CrouzeixConjecture.completionP G lambda * G⁻¹ * CrouzeixConjecture.completionX G lambda).PosSemidef

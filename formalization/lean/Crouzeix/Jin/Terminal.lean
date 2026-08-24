@@ -1,5 +1,9 @@
-import Crouzeix.Jin.MaxPolynomialModulus
-import CrouzeixConjecture.HolomorphicConsequences
+module
+
+public import Crouzeix.Jin.MaxPolynomialModulus
+public import CrouzeixConjecture.HolomorphicConsequences
+
+@[expose] public section
 
 /-!
 Harp-owned terminal assembly surface for Jin's Crouzeix route.

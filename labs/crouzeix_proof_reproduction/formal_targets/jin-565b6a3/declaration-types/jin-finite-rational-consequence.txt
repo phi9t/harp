@@ -1,0 +1,4 @@
+CrouzeixConjecture.crouzeixRationalBound.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n] [Nonempty n]
+  (A : CrouzeixConjecture.SquareMatrix n) (r : RatFunc ℂ)
+  (hfree : CrouzeixConjecture.RationalPoleFreeOn r (CrouzeixConjecture.numericalRange A)) :
+  ‖CrouzeixConjecture.rationalMatrixEval r A‖ ≤ 2 * CrouzeixConjecture.maxRationalModulusOnNumericalRange A r

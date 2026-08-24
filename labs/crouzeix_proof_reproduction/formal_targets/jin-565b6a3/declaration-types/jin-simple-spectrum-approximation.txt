@@ -1,0 +1,3 @@
+CrouzeixConjecture.tendsto_simpleSpectrumApproximation.{u_1} {n : Type u_1} [Fintype n] [DecidableEq n]
+  (A : CrouzeixConjecture.SquareMatrix n) [Nonempty n] :
+  Filter.Tendsto (CrouzeixConjecture.simpleSpectrumApproximation A) Filter.atTop (nhds A)
