@@ -1410,20 +1410,28 @@ def _validate_route_receipt_tree(
     *,
     require_final_absent: bool,
 ) -> RouteValidationResult:
-    members = _read_exact_receipt_tree(root, relative_root)
     manifest_raw = _read_json(root, manifest_path, "route manifest")
     manifest = parse_route_manifest(manifest_raw)
-    if manifest.receipt_sha256 is not None or manifest.review_sha256 is not None:
-        raise RouteValidationError("route manifest must be unpublished before receipt publication")
     final_root = Path(manifest.receipt_path).parent
+    if require_final_absent and (
+        manifest.receipt_sha256 is not None or manifest.review_sha256 is not None
+    ):
+        raise RouteValidationError("route manifest must be unpublished before receipt publication")
     if not require_final_absent and relative_root != final_root:
         raise RouteValidationError("published route receipt root mismatch")
+    members = _read_exact_receipt_tree(root, relative_root)
     if require_final_absent and (
         _rooted_entry_exists(root, final_root)
         or _rooted_entry_exists(root, Path(manifest.review_path))
     ):
         raise RouteValidationError("route final publication path already exists")
     _validate_manifest_semantics(root, root / "formalization/lean", manifest)
+    if (
+        not require_final_absent
+        and manifest.receipt_sha256 is not None
+        and _sha256(members["receipt.json"]) != manifest.receipt_sha256
+    ):
+        raise RouteValidationError("manifest receipt digest mismatch")
     receipt_raw = _json_from_bytes(members["receipt.json"], "route receipt candidate")
     _validate_staged_receipt(
         root, manifest_path, manifest_raw, manifest, members, receipt_raw

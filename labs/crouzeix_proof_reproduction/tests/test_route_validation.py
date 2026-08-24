@@ -495,6 +495,51 @@ class RouteValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(route_validation.RouteValidationError, pattern):
             fixture.validate()
 
+    def materialize_published_receipt_tree(self, fixture: RouteFixture) -> Path:
+        final_root = fixture.repo / route_validation.ROUTE_FINAL_ROOT / fixture.route_id
+        original_types_root = final_root / "types"
+        relocated_types_root = (
+            fixture.repo
+            / "evidence/crouzeix_conjecture/type_artifacts"
+            / fixture.route_id
+        )
+        path_rewrites: dict[str, str] = {}
+        for node in fixture.manifest["nodes"]:
+            original = Path(str(node["declaration_type_path"]))
+            relocated = relocated_types_root / original.name
+            relocated.parent.mkdir(parents=True, exist_ok=True)
+            (fixture.repo / original).replace(relocated)
+            node["declaration_type_path"] = relocated.relative_to(fixture.repo).as_posix()
+            path_rewrites[original.as_posix()] = node["declaration_type_path"]
+        for declaration in fixture.receipt["declaration_types"]:
+            original = str(declaration["type_artifact_path"])
+            declaration["type_artifact_path"] = path_rewrites[original]
+        if original_types_root.exists():
+            shutil.rmtree(original_types_root)
+        (final_root / "build").mkdir(parents=True, exist_ok=True)
+        (final_root / "audit").mkdir(parents=True, exist_ok=True)
+        rewrites = {
+            "command_artifact_path": ("command.json", "build/command.json"),
+            "stdout_path": ("stdout.log", "build/stdout.log"),
+            "stderr_path": ("stderr.log", "build/stderr.log"),
+            "axiom_audit_path": ("axioms.json", "audit/axioms.json"),
+            "provider_report_path": ("provider.json", "audit/provider.json"),
+        }
+        for field, (source_name, destination_name) in rewrites.items():
+            source = final_root / source_name
+            destination = final_root / destination_name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            source.replace(destination)
+            fixture.receipt[field] = (
+                route_validation.ROUTE_FINAL_ROOT / fixture.route_id / destination_name
+            ).as_posix()
+        fixture.receipt["manifest_sha256"] = route_validation.manifest_contract_sha256(
+            fixture.manifest
+        )
+        fixture.rewrite_receipt()
+        fixture.rewrite_manifest()
+        return final_root
+
     def test_concrete_producer_validator_round_trip(self) -> None:
         fixture = self.fixture()
         loaded = route_validation.load_route_manifest(
@@ -1101,6 +1146,79 @@ class RouteValidationTests(unittest.TestCase):
         fixture = self.fixture()
         self.assertEqual(route_validation.inspect_route(fixture.repo, "jin").claim_level, "complete-local")
 
+    def test_published_route_receipt_accepts_complete_and_receipt_bound_states(self) -> None:
+        fixture = self.fixture()
+        final_root = self.materialize_published_receipt_tree(fixture)
+
+        result = route_validation._validate_published_route_receipt(
+            fixture.repo,
+            fixture.manifest_path,
+            final_root,
+        )
+
+        self.assertEqual(result.route_id, "jin")
+        self.assertEqual(result.claim_level, "receipt-candidate")
+        self.assertEqual(result.status, "valid")
+
+        receipt_bound = self.fixture()
+        final_root = self.materialize_published_receipt_tree(receipt_bound)
+        (receipt_bound.repo / receipt_bound.review_path).unlink()
+        receipt_bound.manifest["review_sha256"] = None
+        receipt_bound.rewrite_manifest()
+
+        result = route_validation._validate_published_route_receipt(
+            receipt_bound.repo,
+            receipt_bound.manifest_path,
+            final_root,
+        )
+
+        self.assertEqual(result.route_id, "jin")
+        self.assertEqual(result.claim_level, "receipt-candidate")
+        self.assertEqual(result.status, "valid")
+
+    def test_published_route_receipt_rejects_wrong_root_and_wrong_manifest_receipt_digest(self) -> None:
+        fixture = self.fixture()
+        final_root = self.materialize_published_receipt_tree(fixture)
+
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError,
+            "published route receipt root mismatch",
+        ):
+            route_validation._validate_published_route_receipt(
+                fixture.repo,
+                fixture.manifest_path,
+                fixture.repo / "evidence/crouzeix_conjecture/routes",
+            )
+
+        fixture.manifest["receipt_sha256"] = "0" * 64
+        fixture.rewrite_manifest()
+
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError,
+            "manifest receipt digest mismatch",
+        ):
+            route_validation._validate_published_route_receipt(
+                fixture.repo,
+                fixture.manifest_path,
+                final_root,
+            )
+
+    def test_staged_route_receipt_still_rejects_published_manifest_state(self) -> None:
+        fixture = self.fixture()
+        final_root = self.materialize_published_receipt_tree(fixture)
+        stage = fixture.repo / route_validation.ROUTE_STAGING_PARENT / ".candidate"
+        shutil.copytree(final_root, stage)
+        shutil.rmtree(final_root)
+        (fixture.repo / fixture.review_path).unlink()
+
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError,
+            "route manifest must be unpublished before receipt publication",
+        ):
+            route_validation.validate_route_receipt_candidate(
+                fixture.repo, fixture.manifest_path, stage
+            )
+
     def test_fake_or_mismatched_git_identity_is_rejected(self) -> None:
         fixture = self.fixture()
         fixture.receipt["candidate_commit"] = "1" * 40
@@ -1260,6 +1378,12 @@ class RouteValidationTests(unittest.TestCase):
                 self._assert_closed_objects(child)
 
     def test_cli_absent_artifacts_and_allow_unpublished_are_non_successful_and_read_only(self) -> None:
+        current = route_validation.inspect_route(REPO, "jin", allow_unpublished=True)
+        if current.claim_level != "mapped":
+            self.skipTest(
+                "canonical repository no longer has absent route artifacts for jin"
+            )
+
         def source_snapshot() -> dict[str, str]:
             snapshot: dict[str, str] = {}
             for root_name in ("labs", "formalization", "evidence"):
