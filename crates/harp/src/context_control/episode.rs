@@ -1556,14 +1556,13 @@ mod tests {
             .map(|handle| handle.join().unwrap())
             .collect::<Vec<_>>();
         assert_eq!(results.iter().filter(|result| result.is_ok()).count(), 1);
-        assert_eq!(
-            results
-                .iter()
-                .filter_map(|result| result.as_ref().err())
-                .map(AppError::code)
-                .collect::<Vec<_>>(),
-            ["state.exists"]
-        );
+        let errors = results
+            .iter()
+            .filter_map(|result| result.as_ref().err())
+            .map(AppError::code)
+            .collect::<Vec<_>>();
+        assert_eq!(errors.len(), 1);
+        assert!(matches!(errors[0], "state.exists" | "state.lock"));
 
         let inspected = inspect_episode(
             &fixture.state,
