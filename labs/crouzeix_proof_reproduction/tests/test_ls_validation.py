@@ -777,7 +777,8 @@ import Hidden.Late
         source = b"""/- module and public import inside comments are inactive -/
 module
 public import Visible.Public
-import Visible.One Visible.Two
+import Visible.One
+import Visible.Two
 def marker := "import Hidden.String"
 import Hidden.AfterHeader
 """

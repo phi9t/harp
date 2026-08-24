@@ -863,7 +863,7 @@ class JinRouteManifestTests(unittest.TestCase):
         git_pattern = schema["$defs"]["locator"]["oneOf"][1]["pattern"]
         self.assertIsNone(re.fullmatch(git_pattern, malformed))
 
-    def test_validate_reports_mapped_incomplete_without_publishing(self) -> None:
+    def test_validate_reports_complete_local_without_mutation(self) -> None:
         before = subprocess.run(
             ["git", "status", "--short"],
             cwd=REPO, text=True, capture_output=True, check=True,
@@ -881,14 +881,17 @@ class JinRouteManifestTests(unittest.TestCase):
             cwd=REPO, text=True, capture_output=True, check=True,
         ).stdout
         payload = json.loads(allowed.stdout)
+        default_payload = json.loads(default.stdout)
 
-        self.assertEqual(allowed.returncode, 1)
-        self.assertEqual(payload["claim_level"], "mapped")
-        self.assertEqual(payload["status"], "incomplete")
-        self.assertNotEqual(default.returncode, 0)
+        self.assertEqual(allowed.returncode, 0)
+        self.assertEqual(default.returncode, 0)
+        self.assertEqual(payload["claim_level"], "complete-local")
+        self.assertEqual(payload["status"], "complete")
+        self.assertEqual(default_payload["claim_level"], "complete-local")
+        self.assertEqual(default_payload["status"], "complete")
         self.assertEqual(before, after)
-        self.assertFalse((REPO / "evidence/crouzeix_conjecture/routes/jin").exists())
-        self.assertFalse((REPO / "evidence/crouzeix_conjecture/reviews/jin.json").exists())
+        self.assertTrue((REPO / "evidence/crouzeix_conjecture/routes/jin/receipt.json").is_file())
+        self.assertTrue((REPO / "evidence/crouzeix_conjecture/reviews/jin.json").is_file())
 
     def test_manifest_schema_requires_remote_source_metadata(self) -> None:
         schema = json.loads(

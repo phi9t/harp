@@ -910,12 +910,15 @@ def _validate_wrapper_cache_policy(data: bytes) -> None:
     for line in source.splitlines():
         active_tokens.extend(_strip_shell_comment(line).split())
     normalized = " ".join(active_tokens)
-    if any(
-        re.search(
-            rf"(?<![A-Za-z0-9_]){re.escape(command).replace(r'\ ', r'\s+')}(?![A-Za-z0-9_])",
-            normalized,
+    forbidden_patterns = []
+    for command in WRAPPER_FORBIDDEN_COMMANDS:
+        command_pattern = re.escape(command).replace("\\ ", r"\s+")
+        forbidden_patterns.append(
+            rf"(?<![A-Za-z0-9_]){command_pattern}(?![A-Za-z0-9_])"
         )
-        for command in WRAPPER_FORBIDDEN_COMMANDS
+    if any(
+        re.search(pattern, normalized)
+        for pattern in forbidden_patterns
     ):
         raise protocol.ValidationError(
             "aggregate Lean wrapper cache policy contains a forbidden hydration command"

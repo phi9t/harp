@@ -361,8 +361,10 @@ class LSReceiptPublisherTests(unittest.TestCase):
                 self.assertEqual(call["max_output_bytes"], 1048576)
                 self.assertNotIn("update", call["argv"])
                 self.assertNotIn("get", call["argv"])
+            audited_calls = executor.calls[1:]
+            self.assertEqual(len(audited_calls), len(NODE_BINDINGS))
             for call, (node_id, (declaration, build_target)) in zip(
-                executor.calls[1:], NODE_BINDINGS.items(), strict=True
+                audited_calls, NODE_BINDINGS.items()
             ):
                 module = (
                     Path(build_target).relative_to("formalization/lean").with_suffix("")

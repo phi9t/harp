@@ -498,7 +498,9 @@ class ProofEvidencePreflightTests(unittest.TestCase):
             [route["aggregate_module"] for route in routes],
             [ROUTE_TARGETS[route] for route in ROUTE_ORDER],
         )
-        for route, aggregate in zip(routes, (ROUTE_TARGETS[item] for item in ROUTE_ORDER), strict=True):
+        expected_aggregates = [ROUTE_TARGETS[item] for item in ROUTE_ORDER]
+        self.assertEqual(len(routes), len(expected_aggregates))
+        for route, aggregate in zip(routes, expected_aggregates):
             self.assertEqual(route["cache_root"], "formalization/lean/.lake")
             self.assertEqual(route["cache_identity"], str(fixture.cache_root.resolve()))
             self.assertEqual(
