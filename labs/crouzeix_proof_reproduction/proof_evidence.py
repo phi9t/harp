@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Iterable
 
 try:
-    from . import route_validation
+    from . import goal_validation, route_validation
 except ImportError:  # direct script execution
+    import goal_validation
     import route_validation
 
 
@@ -857,9 +858,27 @@ def main(argv: list[str]) -> int:
     validate = subparsers.add_parser("validate")
     validate.add_argument("--route", choices=(*ROUTE_ORDER, "all"), required=True)
     validate.add_argument("--allow-unpublished", action="store_true")
+    validate_goal_parser = subparsers.add_parser("validate-goal")
+    validate_goal_parser.add_argument(
+        "--goal-plan",
+        default=str(goal_validation.FIXED_PLAN_PATH),
+    )
     args = parser.parse_args(argv)
 
     repository_root = canonical_repository_root()
+    if args.command == "validate-goal":
+        fixed_goal = repository_root / goal_validation.FIXED_PLAN_PATH
+        requested_goal = Path(args.goal_plan)
+        if requested_goal != goal_validation.FIXED_PLAN_PATH:
+            return 2
+        exit_code, payload = goal_validation.validate_goal_payload(
+            repository_root,
+            goal_path=fixed_goal,
+            execution_ledger_path=repository_root / goal_validation.FIXED_LEDGER_PATH,
+        )
+        sys.stdout.write(goal_validation.canonical_json(payload))
+        return exit_code
+
     if args.command == "validate":
         selected = ROUTE_ORDER if args.route == "all" else (args.route,)
         routes: list[dict[str, object]] = []
