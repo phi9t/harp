@@ -266,14 +266,14 @@ class GoalValidationTests(unittest.TestCase):
             + "\t\t\t\t\t\n"
         )
 
-    def test_validate_goal_cli_reports_incomplete_at_cpfr085(self) -> None:
+    def test_validate_goal_cli_reports_next_incomplete_phase(self) -> None:
         result = run_cli("validate-goal")
 
         self.assertEqual(result.returncode, 1)
         payload = json.loads(result.stdout)
         self.assertEqual(payload["status"], "incomplete")
         self.assertEqual(payload["goal_status"], "in-progress")
-        self.assertEqual(payload["earliest_incomplete_phase"], "cpfr-085")
+        self.assertEqual(payload["earliest_incomplete_phase"], "cpfr-086")
         self.assertEqual(payload["verified_commits"], [])
         self.assertIn(
             "docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv",
