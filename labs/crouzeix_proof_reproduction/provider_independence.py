@@ -12,11 +12,43 @@ from typing import Iterable
 LEAN_MODULE_NAME = re.compile(
     r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z"
 )
+LEAN_MODULE_NAME_BODY = r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*"
+LEAN_SECTION_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_']*\Z")
 IMPORT_COMMAND = re.compile(
-    r"(?:(?P<public>public)\s+)?(?:(?P<meta>meta)\s+)?import(?:\s+(?P<modules>.*))?\Z"
+    r"(?:(?P<public>public)\s+)?"
+    r"(?:(?P<meta>meta)\s+)?"
+    r"import"
+    r"(?:\s+(?P<all>all))?"
+    rf"\s+(?P<module>{LEAN_MODULE_NAME_BODY})\Z"
 )
 SECTION_COMMAND = re.compile(
-    r"public\s+(?:meta\s+)?section(?:\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*))?\Z"
+    r"(?:(?:public)\s+)?(?:meta\s+)?"
+    r"section(?:\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*))?\Z"
+)
+HEADER_INITIAL_KEYWORDS = frozenset(
+    {"all", "import", "meta", "module", "prelude", "public"}
+)
+MODIFIED_BODY_COMMANDS = frozenset(
+    {
+        "abbrev",
+        "axiom",
+        "class",
+        "def",
+        "elab",
+        "example",
+        "inductive",
+        "instance",
+        "lemma",
+        "macro",
+        "notation",
+        "opaque",
+        "prefix",
+        "postfix",
+        "scoped",
+        "structure",
+        "syntax",
+        "theorem",
+    }
 )
 TOKEN = re.compile(r"(?<![\w'])[_A-Za-z][A-Za-z0-9_']*(?![\w'!?])")
 DANGER_TOKENS = frozenset(
@@ -60,14 +92,14 @@ def parse_active_imports(source: str, module: str) -> tuple[str, ...]:
     lines do not end the header.
     """
 
-    active = _mask_inactive_source(source, module)
     imports: list[str] = []
     saw_module = False
     saw_prelude = False
-    for line_number, line in enumerate(active.splitlines(), start=1):
-        command = line.strip()
-        if not command:
-            continue
+    for line_number, command, is_header_candidate in _iter_active_header_commands(
+        source, module
+    ):
+        if not is_header_candidate:
+            break
         if command == "module":
             if saw_module or saw_prelude or imports:
                 raise ProviderIndependenceError(
@@ -92,27 +124,164 @@ def parse_active_imports(source: str, module: str) -> tuple[str, ...]:
             )
         import_match = IMPORT_COMMAND.fullmatch(command)
         if import_match is not None:
-            operands = (import_match.group("modules") or "").split()
-            if not operands or any(
-                LEAN_MODULE_NAME.fullmatch(item) is None for item in operands
-            ):
+            if (
+                import_match.group("public") is not None
+                or import_match.group("meta") is not None
+                or import_match.group("all") is not None
+            ) and not saw_module:
                 raise ProviderIndependenceError(
-                    f"malformed import command in {module}:{line_number}"
+                    f"modified import requires module in {module}:{line_number}"
                 )
-            imports.extend(operands)
+            imports.append(import_match.group("module"))
             continue
         if SECTION_COMMAND.fullmatch(command) is not None:
+            break
+        if _is_valid_modified_body_command(command):
             break
         if (
             _starts_keyword(command, "import")
             or _starts_keyword(command, "meta")
             or _starts_keyword(command, "public")
+            or _starts_keyword(command, "all")
         ):
             raise ProviderIndependenceError(
                 f"malformed import-like command in {module}:{line_number}"
             )
         break
     return tuple(imports)
+
+
+def _iter_active_header_commands(
+    source: str, module: str
+) -> Iterable[tuple[int, str, bool]]:
+    """Yield comment-masked header candidate lines until the first body command."""
+
+    index = 0
+    line_number = 1
+    block_depth = 0
+    while index < len(source):
+        start_line = line_number
+        command: list[str] = []
+        saw_header_initial_keyword = False
+
+        while index < len(source):
+            pair = source[index : index + 2]
+            character = source[index]
+            if block_depth:
+                if pair == "/-":
+                    block_depth += 1
+                    index += 2
+                    continue
+                if pair == "-/":
+                    block_depth -= 1
+                    index += 2
+                    if command:
+                        command.append(" ")
+                    continue
+                if character in "\r\n":
+                    index, line_number = _consume_newline(
+                        source, index, line_number
+                    )
+                    break
+                index += 1
+                continue
+
+            if pair == "--":
+                index = _skip_to_newline(source, index + 2)
+                if index < len(source):
+                    index, line_number = _consume_newline(
+                        source, index, line_number
+                    )
+                break
+            if pair == "/-":
+                if command:
+                    command.append(" ")
+                block_depth = 1
+                index += 2
+                continue
+            if pair == "-/":
+                raise ProviderIndependenceError(
+                    f"unmatched block comment close in {module}"
+                )
+            if character in "\r\n":
+                index, line_number = _consume_newline(source, index, line_number)
+                break
+            if not command and character.isspace():
+                index += 1
+                continue
+            if _is_identifier_start(character):
+                token_start = index
+                index += 1
+                while index < len(source) and _is_identifier_part(source[index]):
+                    index += 1
+                token = source[token_start:index]
+                if not command and token not in HEADER_INITIAL_KEYWORDS:
+                    yield start_line, token, False
+                    return
+                if not command:
+                    saw_header_initial_keyword = True
+                command.append(token)
+                continue
+            if not saw_header_initial_keyword:
+                yield start_line, character, False
+                return
+            command.append(character)
+            index += 1
+        else:
+            if block_depth:
+                raise ProviderIndependenceError(
+                    f"unterminated block comment in {module}"
+                )
+
+        stripped = "".join(command).strip()
+        if stripped:
+            yield start_line, stripped, True
+
+    if block_depth:
+        raise ProviderIndependenceError(f"unterminated block comment in {module}")
+
+
+def _is_valid_modified_body_command(command: str) -> bool:
+    parts = command.split()
+    if len(parts) < 2:
+        return False
+    if parts[0] == "meta":
+        return parts[1] in MODIFIED_BODY_COMMANDS
+    if parts[0] != "public":
+        return False
+    if parts[1] in MODIFIED_BODY_COMMANDS:
+        return True
+    if parts[1] == "noncomputable":
+        return (
+            len(parts) in {3, 4}
+            and parts[2] == "section"
+            and (len(parts) == 3 or LEAN_SECTION_NAME.fullmatch(parts[3]) is not None)
+        )
+    if len(parts) < 3 or parts[1] != "meta":
+        return False
+    return parts[2] in MODIFIED_BODY_COMMANDS
+
+
+def _consume_newline(
+    source: str, index: int, line_number: int
+) -> tuple[int, int]:
+    if source.startswith("\r\n", index):
+        return index + 2, line_number + 1
+    return index + 1, line_number + 1
+
+
+def _skip_to_newline(source: str, index: int) -> int:
+    while index < len(source) and source[index] not in "\r\n":
+        index += 1
+    return index
+
+
+def _is_identifier_start(character: str) -> bool:
+    return character == "_" or character.isalpha()
+
+
+def _is_identifier_part(character: str) -> bool:
+    return character == "_" or character == "'" or character.isalnum()
 
 
 def scan_active_source(source: str, module: str) -> SourceScan:

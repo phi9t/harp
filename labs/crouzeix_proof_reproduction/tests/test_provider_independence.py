@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -35,6 +36,24 @@ LEGACY_FORBIDDEN = frozenset(
 )
 
 
+class PythonCompatibilityTests(unittest.TestCase):
+    def test_provider_independence_compiles_under_system_python(self) -> None:
+        result = subprocess.run(
+            [
+                "/usr/bin/python3",
+                "-m",
+                "py_compile",
+                str(LAB / "provider_independence.py"),
+            ],
+            cwd=REPOSITORY_ROOT,
+            stderr=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+
 def write_module(lean_root: Path, module: str, source: str) -> None:
     path = lean_root.joinpath(*module.split(".")).with_suffix(".lean")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -67,7 +86,7 @@ module
 
 public   import Alpha.One
 public	import Alpha.Tabbed
-import Alpha.Two Beta.Three
+import Alpha.Two
 
 namespace Fixture
 """
@@ -76,7 +95,7 @@ namespace Fixture
 
         self.assertEqual(
             parsed,
-            ("Alpha.One", "Alpha.Tabbed", "Alpha.Two", "Beta.Three"),
+            ("Alpha.One", "Alpha.Tabbed", "Alpha.Two"),
         )
 
     def test_public_section_terminates_import_header_after_public_import(self) -> None:
@@ -89,7 +108,7 @@ namespace Fixture
     def test_accepts_meta_imports_and_public_section_terminators(self) -> None:
         cases = (
             (
-                "meta import Qq\nnamespace Fixture\n",
+                "module\nmeta import Qq\nnamespace Fixture\n",
                 ("Qq",),
             ),
             (
@@ -114,8 +133,176 @@ namespace Fixture
                     expected,
                 )
 
+    def test_parses_pinned_mathlib_style_headers(self) -> None:
+        cases = (
+            (
+                "module\n\n"
+                "public meta import Qq\n"
+                "public meta import Mathlib.Util.AtomM\n"
+                "public import Mathlib.Data.List.TFAE\n"
+                "public import Mathlib.Data.Nat.Notation\n"
+                "public import Mathlib.Tactic.ExtendDoc\n"
+                "public import Mathlib.Util.AtomM\n\n"
+                "/-! # The Following Are Equivalent -/\n\n"
+                "public meta section\n"
+                "namespace Mathlib.Tactic.TFAE\n",
+                (
+                    "Qq",
+                    "Mathlib.Util.AtomM",
+                    "Mathlib.Data.List.TFAE",
+                    "Mathlib.Data.Nat.Notation",
+                    "Mathlib.Tactic.ExtendDoc",
+                    "Mathlib.Util.AtomM",
+                ),
+            ),
+            (
+                "module\n\n"
+                "public meta import Lean.Elab.Command\n"
+                "public meta import Lean.Elab.ParseImportsFast\n"
+                "public meta import Std.Sync.Mutex\n"
+                "public import Lean.Parser.Module\n"
+                "public import Mathlib.Tactic.Linter.DirectoryDependency\n\n"
+                "/-! # The header linter -/\n\n"
+                "meta section\n"
+                "open Lean Elab Command Linter\n",
+                (
+                    "Lean.Elab.Command",
+                    "Lean.Elab.ParseImportsFast",
+                    "Std.Sync.Mutex",
+                    "Lean.Parser.Module",
+                    "Mathlib.Tactic.Linter.DirectoryDependency",
+                ),
+            ),
+            (
+                "module\n\n"
+                "public import Mathlib.Init\n"
+                "public meta import Lean.Elab.SyntheticMVars\n"
+                "public meta import Lean.Meta.Tactic.Constructor\n\n"
+                "/-! # The constructor tactics -/\n\n"
+                "public meta section\n"
+                "open Lean Elab Tactic\n",
+                (
+                    "Mathlib.Init",
+                    "Lean.Elab.SyntheticMVars",
+                    "Lean.Meta.Tactic.Constructor",
+                ),
+            ),
+        )
+
+        for source, expected in cases:
+            with self.subTest(source=source):
+                self.assertEqual(
+                    provider_independence.parse_active_imports(source, "Fixture.Root"),
+                    expected,
+                )
+
+    def test_import_header_accepts_all_modifier(self) -> None:
+        cases = (
+            ("module\nimport all Alpha.One\nnamespace Fixture\n", ("Alpha.One",)),
+            ("module\npublic import all Alpha.One\nnamespace Fixture\n", ("Alpha.One",)),
+            ("module\nmeta import all Alpha.One\nnamespace Fixture\n", ("Alpha.One",)),
+            ("module\npublic meta import all Alpha.One\nnamespace Fixture\n", ("Alpha.One",)),
+        )
+
+        for source, expected in cases:
+            with self.subTest(source=source):
+                self.assertEqual(
+                    provider_independence.parse_active_imports(source, "Fixture.Root"),
+                    expected,
+                )
+
+    def test_modified_imports_require_module_header(self) -> None:
+        for command in (
+            "public import Alpha.One",
+            "meta import Alpha.One",
+            "import all Alpha.One",
+            "public meta import Alpha.One",
+            "public import all Alpha.One",
+        ):
+            with (
+                self.subTest(command=command),
+                self.assertRaisesRegex(
+                    provider_independence.ProviderIndependenceError,
+                    "modified import requires module.*Fixture.Root",
+                ),
+            ):
+                provider_independence.parse_active_imports(
+                    f"{command}\nnamespace Fixture\n", "Fixture.Root"
+                )
+
+    def test_import_header_requires_one_module_and_correct_modifier_order(self) -> None:
+        for command in (
+            "module\nimport Alpha.One Beta.Two",
+            "module\npublic import Alpha.One Beta.Two",
+            "module\nimport all Alpha.One Beta.Two",
+            "module\nmeta public import Alpha.One",
+            "module\npublic import meta Alpha.One",
+            "module\npublic all import Alpha.One",
+            "module\nall import Alpha.One",
+        ):
+            with (
+                self.subTest(command=command),
+                self.assertRaisesRegex(
+                    provider_independence.ProviderIndependenceError,
+                    "malformed import.*Fixture.Root",
+                ),
+            ):
+                provider_independence.parse_active_imports(
+                    f"{command}\nnamespace Fixture\n", "Fixture.Root"
+                )
+
+    def test_body_syntax_after_header_is_not_scanned_by_import_parser(self) -> None:
+        source = (
+            "module\n"
+            "public import Mathlib.X\n"
+            "namespace Fixture\n"
+            "def apostrophe := 'x'\n"
+            "def openChar := '\n"
+            "def stringLiteral := \"unterminated\n"
+            "import Hidden.Late\n"
+        )
+
+        self.assertEqual(
+            provider_independence.parse_active_imports(source, "Fixture.Root"),
+            ("Mathlib.X",),
+        )
+
+    def test_public_and_meta_body_commands_after_header_terminate_parser(self) -> None:
+        cases = (
+            "module\npublic import Mathlib.X\npublic theorem visible : True := by trivial\n",
+            "module\npublic import Mathlib.X\nmeta def helper := 1\n",
+            "module\npublic import Mathlib.X\npublic noncomputable section\n",
+        )
+
+        for source in cases:
+            with self.subTest(source=source):
+                self.assertEqual(
+                    provider_independence.parse_active_imports(source, "Fixture.Root"),
+                    ("Mathlib.X",),
+                )
+
+    def test_rejects_malformed_modified_body_near_misses_before_late_import(self) -> None:
+        for malformed in (
+            "public meta sections",
+            "public meta importx",
+            "meta sectionx",
+        ):
+            with (
+                self.subTest(malformed=malformed),
+                self.assertRaisesRegex(
+                    provider_independence.ProviderIndependenceError,
+                    "malformed import.*Fixture.Root",
+                ),
+            ):
+                provider_independence.parse_active_imports(
+                    f"module\npublic import Mathlib.X\n{malformed}\n"
+                    "import Forbidden.Terminal\n",
+                    "Fixture.Root",
+                )
+
     def test_ignores_imports_in_line_and_nested_block_comments(self) -> None:
         source = """
+module
 -- import Hidden.Line
 /- import Hidden.Block
    /- public import Hidden.Nested -/
@@ -164,24 +351,22 @@ import Hidden.Late
         )
 
     def test_rejects_malformed_import_like_command(self) -> None:
-        for command in (
-            "import",
-            "import Good.Module, Bad.Module",
-            "public import",
-            "meta import",
-            "public meta import",
-            "public nope",
+        for source in (
+            "module\nimport\nnamespace Fixture\n",
+            "module\nimport Good.Module, Bad.Module\nnamespace Fixture\n",
+            "module\npublic import\nnamespace Fixture\n",
+            "module\nmeta import\nnamespace Fixture\n",
+            "module\npublic meta import\nnamespace Fixture\n",
+            "module\npublic nope\nnamespace Fixture\n",
         ):
             with (
-                self.subTest(command=command),
+                self.subTest(source=source),
                 self.assertRaisesRegex(
                     provider_independence.ProviderIndependenceError,
                     "malformed import.*Fixture.Root",
                 ),
             ):
-                provider_independence.parse_active_imports(
-                    f"{command}\nnamespace Fixture\n", "Fixture.Root"
-                )
+                provider_independence.parse_active_imports(source, "Fixture.Root")
 
     def test_rejects_malformed_or_repeated_module_command(self) -> None:
         for source in (
@@ -439,8 +624,8 @@ class ProviderIndependencePolicyTests(unittest.TestCase):
     def test_computes_transitive_local_closure_from_explicit_roots(self) -> None:
         report = self.audit(
             {
-                "Route.Main": "import Route.Middle External.Library\n",
-                "Route.Middle": "public import Route.Leaf\n",
+                "Route.Main": "import Route.Middle\nimport External.Library\n",
+                "Route.Middle": "module\npublic import Route.Leaf\n",
                 "Route.Leaf": "theorem safe : True := by trivial\n",
                 "Route.Unrelated": "theorem unused : True := by sorry\n",
             }
@@ -568,7 +753,8 @@ class ProviderIndependencePolicyTests(unittest.TestCase):
             {
                 "Route.Zed": "set_option maxRecDepth 2000\n",
                 "Route.Main": (
-                    "import Route.Zed Route.Alpha\n"
+                    "import Route.Zed\n"
+                    "import Route.Alpha\n"
                     "set_option maxHeartbeats 800000 in\n"
                     "theorem safe : True := by trivial\n"
                 ),
@@ -579,7 +765,7 @@ class ProviderIndependencePolicyTests(unittest.TestCase):
         self.assertEqual(report.modules, ("Route.Alpha", "Route.Main", "Route.Zed"))
         self.assertEqual(
             tuple((item.module, item.line) for item in report.set_options),
-            (("Route.Alpha", 1), ("Route.Main", 2), ("Route.Zed", 1)),
+            (("Route.Alpha", 1), ("Route.Main", 3), ("Route.Zed", 1)),
         )
 
     def test_rejects_root_beneath_symlinked_namespace_directory(self) -> None:
