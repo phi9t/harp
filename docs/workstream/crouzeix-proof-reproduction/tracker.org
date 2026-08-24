@@ -6528,16 +6528,16 @@ closure-to-ledger reconciliation with concrete adversarial fixtures.
   Standards review reported no Critical, Important, or Minor finding and
   =Ready to land? Yes=.
 
-** TODO Certify Complete Jin Route Correspondence :lean:evidence:review:ticket:
+** IMPLEMENTING Certify Complete Jin Route Correspondence :lean:evidence:review:ticket:
 :PROPERTIES:
 :ID: CPFR-085
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-085-jin-certification
+:WORKTREE: .worktrees/cpfr-085-jin-certification
 :DEPENDS_ON: CPFR-084
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: trae-cli
+:AGENT_RUN: cpfr-085-jin-certification
+:MODEL: GPT-5.4
 :END:
 Extend Jin's three-row terminal ledger to the complete proof chain and publish a route receipt.
 
