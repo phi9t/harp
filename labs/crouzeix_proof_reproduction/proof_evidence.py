@@ -10,9 +10,10 @@ from pathlib import Path
 from typing import Iterable
 
 try:
-    from . import goal_validation, route_validation
+    from . import goal_validation, route_publication, route_validation
 except ImportError:  # direct script execution
     import goal_validation
+    import route_publication
     import route_validation
 
 
@@ -858,6 +859,10 @@ def main(argv: list[str]) -> int:
     validate = subparsers.add_parser("validate")
     validate.add_argument("--route", choices=(*ROUTE_ORDER, "all"), required=True)
     validate.add_argument("--allow-unpublished", action="store_true")
+    publish_route = subparsers.add_parser("publish-route")
+    publish_route.add_argument("--route", choices=ROUTE_ORDER, required=True)
+    publish_review = subparsers.add_parser("publish-review")
+    publish_review.add_argument("--route", choices=ROUTE_ORDER, required=True)
     validate_goal_parser = subparsers.add_parser("validate-goal")
     validate_goal_parser.add_argument(
         "--goal-plan",
@@ -921,6 +926,57 @@ def main(argv: list[str]) -> int:
         else:
             sys.stdout.write(canonical_json(routes[0]))
         return exit_code
+
+    if args.command == "publish-route":
+        try:
+            publication = route_publication.publish_route_receipt(
+                repository_root, args.route
+            )
+        except (
+            route_publication.RoutePublicationError,
+            route_validation.RouteValidationError,
+        ) as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": "crouzeix-route-publication/v1",
+                "route_id": args.route,
+                "status": "blocked",
+                "reason": str(error),
+            }))
+            return 1
+        sys.stdout.write(canonical_json({
+            "schema_version": "crouzeix-route-publication/v1",
+            "route_id": publication.route_id,
+            "status": "published-unreferenced",
+            "artifact_root": publication.artifact_root.as_posix(),
+            "receipt_path": publication.receipt_path.as_posix(),
+            "receipt_sha256": publication.receipt_sha256,
+        }))
+        return 0
+
+    if args.command == "publish-review":
+        try:
+            publication = route_publication.publish_route_review(
+                repository_root, args.route
+            )
+        except (
+            route_publication.RoutePublicationError,
+            route_validation.RouteValidationError,
+        ) as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": "crouzeix-review-publication/v1",
+                "route_id": args.route,
+                "status": "blocked",
+                "reason": str(error),
+            }))
+            return 1
+        sys.stdout.write(canonical_json({
+            "schema_version": "crouzeix-review-publication/v1",
+            "route_id": publication.route_id,
+            "status": "published-unreferenced",
+            "review_path": publication.review_path.as_posix(),
+            "review_sha256": publication.review_sha256,
+        }))
+        return 0
 
     if args.command != "preflight":
         parser.error("unknown command")

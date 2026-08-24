@@ -79,6 +79,18 @@ ROUTE_MANIFEST_PATHS = {
     "lorist-schwenninger": Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"),
     "harp": Path("labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json"),
 }
+ROUTE_STAGING_PARENT = Path(".build/crouzeix-route-publication-staging")
+ROUTE_FINAL_ROOT = Path("evidence/crouzeix_conjecture/routes")
+ROUTE_REVIEW_CANDIDATE_PARENT = Path(".build/crouzeix-route-review-candidates")
+ROUTE_REVIEW_FINAL_ROOT = Path("evidence/crouzeix_conjecture/reviews")
+ROUTE_RECEIPT_MEMBERS = frozenset({
+    "receipt.json",
+    "build/command.json",
+    "build/stdout.log",
+    "build/stderr.log",
+    "audit/axioms.json",
+    "audit/provider.json",
+})
 HARP_ALLOWED_LS_SUPPORT = frozenset({
     "Crouzeix.LoristSchwenninger.BoundaryEmbedding",
     "Crouzeix.LoristSchwenninger.BoundaryMultiplier",
@@ -1172,6 +1184,16 @@ def _validate_review(
     receipt: Mapping[str, object],
 ) -> None:
     raw = _read_json(repo_root, manifest.review_path, "proof review")
+    _validate_review_payload(manifest_path, manifest_raw, manifest, receipt, raw)
+
+
+def _validate_review_payload(
+    manifest_path: Path,
+    manifest_raw: Mapping[str, object],
+    manifest: RouteManifest,
+    receipt: Mapping[str, object],
+    raw: Mapping[str, object],
+) -> None:
     _exact_fields(raw, REVIEW_FIELDS, "proof review")
     if raw["schema_version"] != REVIEW_SCHEMA_VERSION:
         raise RouteValidationError("invalid proof review schema version")
@@ -1285,6 +1307,355 @@ def validate_route_bundle(
         manifest_path.as_posix(),
         "receipt or review is unpublished",
     )
+
+
+def validate_route_receipt_candidate(
+    repo_root: Path, manifest_path: Path, candidate_root: Path
+) -> RouteValidationResult:
+    """Validate a staged route receipt bundle without requiring final publication.
+
+    The staged directory must live directly under the pinned publication staging
+    parent. Candidate receipts still bind the final public paths; this seam
+    remaps those final path fields to the staged bytes for validation only.
+    """
+
+    input_root = Path(os.path.abspath(os.fspath(repo_root)))
+    root = input_root.resolve(strict=True)
+    candidate = Path(os.path.abspath(os.fspath(candidate_root)))
+    try:
+        relative_candidate = candidate.relative_to(input_root)
+    except ValueError as error:
+        raise RouteValidationError("route receipt candidate is outside pinned staging parent") from error
+    expected_parent = ROUTE_STAGING_PARENT.parts
+    if (
+        relative_candidate.parts[:-1] != expected_parent
+        or not relative_candidate.name.startswith(".")
+        or len(relative_candidate.parts) != len(expected_parent) + 1
+    ):
+        raise RouteValidationError("route receipt candidate must be a direct staging child")
+    return _validate_route_receipt_tree(
+        root, manifest_path, relative_candidate, require_final_absent=True
+    )
+
+
+def _validate_published_route_receipt(
+    repo_root: Path, manifest_path: Path, published_root: Path
+) -> RouteValidationResult:
+    input_root = Path(os.path.abspath(os.fspath(repo_root)))
+    root = input_root.resolve(strict=True)
+    published = Path(os.path.abspath(os.fspath(published_root)))
+    try:
+        relative = published.relative_to(input_root)
+    except ValueError as error:
+        raise RouteValidationError("published route receipt escapes repository") from error
+    return _validate_route_receipt_tree(
+        root, manifest_path, relative, require_final_absent=False
+    )
+
+
+def _validate_route_receipt_tree(
+    root: Path,
+    manifest_path: Path,
+    relative_root: Path,
+    *,
+    require_final_absent: bool,
+) -> RouteValidationResult:
+    members = _read_exact_receipt_tree(root, relative_root)
+    manifest_raw = _read_json(root, manifest_path, "route manifest")
+    manifest = parse_route_manifest(manifest_raw)
+    if manifest.receipt_sha256 is not None or manifest.review_sha256 is not None:
+        raise RouteValidationError("route manifest must be unpublished before receipt publication")
+    final_root = Path(manifest.receipt_path).parent
+    if not require_final_absent and relative_root != final_root:
+        raise RouteValidationError("published route receipt root mismatch")
+    if require_final_absent and (
+        _rooted_entry_exists(root, final_root)
+        or _rooted_entry_exists(root, Path(manifest.review_path))
+    ):
+        raise RouteValidationError("route final publication path already exists")
+    _validate_manifest_semantics(root, root / "formalization/lean", manifest)
+    receipt_raw = _json_from_bytes(members["receipt.json"], "route receipt candidate")
+    _validate_staged_receipt(
+        root, manifest_path, manifest_raw, manifest, members, receipt_raw
+    )
+    return RouteValidationResult(
+        manifest.route_id,
+        "receipt-candidate",
+        "valid",
+        manifest_path.as_posix(),
+    )
+
+def _rooted_entry_exists(root: Path, relative: Path) -> bool:
+    flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    descriptor = os.open(root, flags)
+    try:
+        for index, part in enumerate(relative.parts):
+            try:
+                metadata = os.stat(part, dir_fd=descriptor, follow_symlinks=False)
+            except FileNotFoundError:
+                return False
+            if stat.S_ISLNK(metadata.st_mode):
+                raise RouteValidationError("route publication path contains a symlink")
+            if index == len(relative.parts) - 1:
+                return True
+            if not stat.S_ISDIR(metadata.st_mode):
+                raise RouteValidationError("route publication ancestor is not a directory")
+            next_fd = _open_directory_component(
+                descriptor, part, "route publication ancestor"
+            )
+            os.close(descriptor)
+            descriptor = next_fd
+        return True
+    finally:
+        os.close(descriptor)
+
+
+def _open_directory_component(parent_fd: int, name: str, label: str) -> int:
+    flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    try:
+        descriptor = os.open(name, flags, dir_fd=parent_fd)
+    except OSError as error:
+        raise RouteValidationError(f"cannot open {label} without following links: {error}") from error
+    metadata = os.fstat(descriptor)
+    if not stat.S_ISDIR(metadata.st_mode):
+        os.close(descriptor)
+        raise RouteValidationError(f"{label} is not a directory")
+    return descriptor
+
+
+def _read_file_at(directory_fd: int, name: str, label: str) -> bytes:
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    try:
+        descriptor = os.open(name, flags, dir_fd=directory_fd)
+    except OSError as error:
+        if error.errno == errno.ELOOP:
+            raise RouteValidationError(f"{label} is a symlink") from error
+        raise RouteValidationError(f"cannot open {label} without following links: {error}") from error
+    try:
+        before = os.fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode):
+            raise RouteValidationError(f"{label} is not a regular file")
+        if before.st_nlink != 1:
+            raise RouteValidationError(f"{label} cannot be a hardlink alias")
+        if before.st_size > MAX_JSON_BYTES:
+            raise RouteValidationError(f"{label} exceeds byte bound")
+        chunks: list[bytes] = []
+        size = 0
+        while True:
+            chunk = os.read(descriptor, min(64 * 1024, MAX_JSON_BYTES + 1 - size))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            size += len(chunk)
+            if size > MAX_JSON_BYTES:
+                raise RouteValidationError(f"{label} exceeds byte bound")
+        after = os.fstat(descriptor)
+        current = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        identity = lambda item: (
+            item.st_dev, item.st_ino, item.st_mode, item.st_size,
+            item.st_mtime_ns, item.st_ctime_ns, item.st_nlink,
+        )
+        if identity(before) != identity(after) or identity(after) != identity(current):
+            raise RouteValidationError(f"{label} changed while being read")
+        return b"".join(chunks)
+    finally:
+        os.close(descriptor)
+
+
+def _exact_directory_names(directory_fd: int, expected: set[str], label: str) -> None:
+    try:
+        names = set(os.listdir(directory_fd))
+    except OSError as error:
+        raise RouteValidationError(f"cannot inspect {label}: {error}") from error
+    if names != expected:
+        missing = sorted(expected - names)
+        unknown = sorted(names - expected)
+        if missing:
+            raise RouteValidationError(f"route receipt candidate missing member: {missing[0]}")
+        raise RouteValidationError(f"route receipt candidate has unknown member: {unknown[0]}")
+
+
+def _read_exact_receipt_tree(root: Path, relative_root: Path) -> dict[str, bytes]:
+    flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0)
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
+    root_fd = os.open(root, flags)
+    opened = [root_fd]
+    try:
+        current = root_fd
+        for part in relative_root.parts:
+            current = _open_directory_component(current, part, "route receipt directory")
+            opened.append(current)
+        _exact_directory_names(current, {"receipt.json", "build", "audit"}, "route receipt root")
+        build_fd = _open_directory_component(current, "build", "route receipt build directory")
+        opened.append(build_fd)
+        audit_fd = _open_directory_component(current, "audit", "route receipt audit directory")
+        opened.append(audit_fd)
+        _exact_directory_names(build_fd, {"command.json", "stdout.log", "stderr.log"}, "route receipt build directory")
+        _exact_directory_names(audit_fd, {"axioms.json", "provider.json"}, "route receipt audit directory")
+        return {
+            "receipt.json": _read_file_at(current, "receipt.json", "route receipt candidate receipt"),
+            "build/command.json": _read_file_at(build_fd, "command.json", "command artifact"),
+            "build/stdout.log": _read_file_at(build_fd, "stdout.log", "stdout"),
+            "build/stderr.log": _read_file_at(build_fd, "stderr.log", "stderr"),
+            "audit/axioms.json": _read_file_at(audit_fd, "axioms.json", "axiom audit"),
+            "audit/provider.json": _read_file_at(audit_fd, "provider.json", "provider report"),
+        }
+    finally:
+        for descriptor in reversed(opened):
+            os.close(descriptor)
+
+
+def _json_from_bytes(data: bytes, label: str) -> dict[str, object]:
+    try:
+        value = json.loads(data.decode("utf-8"), object_pairs_hook=_pairs_no_duplicates)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RouteValidationError(f"{label} is invalid JSON") from error
+    if not isinstance(value, dict):
+        raise RouteValidationError(f"{label} must be an object")
+    return value
+
+
+def _validate_staged_receipt(
+    repo_root: Path,
+    manifest_path: Path,
+    manifest_raw: Mapping[str, object],
+    manifest: RouteManifest,
+    members: Mapping[str, bytes],
+    raw: Mapping[str, object],
+) -> None:
+    _exact_fields(raw, RECEIPT_FIELDS, "route receipt")
+    if raw["schema_version"] != RECEIPT_SCHEMA_VERSION:
+        raise RouteValidationError("invalid route receipt schema version")
+    if raw["route_id"] != manifest.route_id:
+        raise RouteValidationError("receipt route mismatch")
+    if raw["aggregate_module"] != manifest.aggregate_module or raw["build_target"] != manifest.build_target:
+        raise RouteValidationError("receipt aggregate mismatch")
+    if raw["manifest_path"] != manifest_path.as_posix():
+        raise RouteValidationError("receipt manifest path mismatch")
+    if raw["manifest_sha256"] != manifest_contract_sha256(manifest_raw):
+        raise RouteValidationError("receipt manifest digest mismatch")
+    candidate_commit = _text(raw["candidate_commit"], "candidate commit", pattern=GIT_ID_RE)
+    candidate_tree = _text(raw["candidate_tree"], "candidate tree", pattern=GIT_ID_RE)
+    _validate_git_identity(
+        repo_root, candidate_commit, candidate_tree, manifest.module_closure
+    )
+    if raw["receipt_sha256"] != self_digest(raw, "receipt_sha256"):
+        raise RouteValidationError("receipt identity digest mismatch")
+    final_root = ROUTE_FINAL_ROOT / manifest.route_id
+    expected_paths = {
+        "command_artifact_path": final_root / "build/command.json",
+        "stdout_path": final_root / "build/stdout.log",
+        "stderr_path": final_root / "build/stderr.log",
+        "axiom_audit_path": final_root / "audit/axioms.json",
+        "provider_report_path": final_root / "audit/provider.json",
+    }
+    for field, path in expected_paths.items():
+        if raw[field] != path.as_posix():
+            raise RouteValidationError(f"receipt path mismatch: {field}")
+    if raw["argv"] != ["scripts/check_lean_library.sh", manifest.build_target]:
+        raise RouteValidationError("receipt command mismatch: argv")
+    if raw["working_directory"] != ".":
+        raise RouteValidationError("working directory must be repository root '.'")
+    if raw["toolchain"] != PINNED_TOOLCHAIN:
+        raise RouteValidationError("toolchain mismatch")
+    if raw["cache_identity"] != cache_contract_identity(repo_root):
+        raise RouteValidationError("cache identity mismatch")
+    if raw["local_closure_modules"] != list(manifest.module_closure):
+        raise RouteValidationError("receipt local closure mismatch")
+    if raw["local_closure_sha256"] != manifest.module_closure_sha256:
+        raise RouteValidationError("receipt local closure mismatch")
+    command_data = _validate_staged_file(members["build/command.json"], raw["command_artifact_sha256"], "command artifact")
+    command = _json_from_bytes(command_data, "command artifact")
+    if command != {
+        "schema_version": COMMAND_SCHEMA_VERSION,
+        "argv": raw["argv"],
+        "working_directory": ".",
+        "aggregate_module": manifest.aggregate_module,
+        "build_target": manifest.build_target,
+        "cache_identity": raw["cache_identity"],
+        "toolchain": PINNED_TOOLCHAIN,
+    }:
+        raise RouteValidationError("command artifact content mismatch")
+    expected_nodes = {node.declaration: node for node in manifest.nodes}
+    declarations = set(expected_nodes)
+    if raw["allowed_axioms"] != list(manifest.allowed_axioms):
+        raise RouteValidationError("receipt allowed axioms mismatch")
+    receipt_results = _validate_axiom_results(raw["axiom_results"], declarations, manifest.allowed_axioms)
+    audit_data = _validate_staged_file(members["audit/axioms.json"], raw["axiom_audit_sha256"], "axiom audit")
+    audit = _json_from_bytes(audit_data, "axiom audit")
+    if audit != {
+        "schema_version": AXIOM_SCHEMA_VERSION,
+        "route_id": manifest.route_id,
+        "allowed_axioms": list(manifest.allowed_axioms),
+        "results": list(receipt_results),
+        "status": "passed",
+    }:
+        raise RouteValidationError("axiom audit mismatch")
+    provider_data = _validate_staged_file(members["audit/provider.json"], raw["provider_report_sha256"], "provider report")
+    provider = _json_from_bytes(provider_data, "provider report")
+    if provider != {
+        "schema_version": "crouzeix-route-provider-report/v1",
+        "route_id": manifest.route_id,
+        "aggregate_module": manifest.aggregate_module,
+        "modules": list(manifest.module_closure),
+        "module_closure_sha256": manifest.module_closure_sha256,
+        "status": "passed",
+    }:
+        raise RouteValidationError("provider report content mismatch")
+    _validate_staged_file(members["build/stdout.log"], raw["stdout_sha256"], "stdout")
+    _validate_staged_file(members["build/stderr.log"], raw["stderr_sha256"], "stderr")
+    if raw["status"] != "passed" or raw["exit_code"] != 0:
+        raise RouteValidationError("route receipt is not successful")
+    if raw["mathlib_artifacts_sha256"] != record_roster_sha256(raw["mathlib_artifacts"]):
+        raise RouteValidationError("Mathlib roster digest mismatch")
+    artifacts = raw["mathlib_artifacts"]
+    if not isinstance(artifacts, list):
+        raise RouteValidationError("Mathlib artifacts must be an array")
+    expected_mathlib = active_mathlib_closure(repo_root, manifest.module_closure)
+    expected_pairs = [
+        (module, mathlib_artifact_path(module).as_posix()) for module in expected_mathlib
+    ]
+    actual_pairs = [
+        (item.get("module"), item.get("path"))
+        for item in artifacts if isinstance(item, dict)
+    ]
+    if len(actual_pairs) != len(artifacts) or actual_pairs != expected_pairs:
+        raise RouteValidationError("Mathlib artifact roster mismatch")
+    cache_root = resolve_approved_cache_root(repo_root)
+    for item in artifacts:
+        assert isinstance(item, dict)
+        _exact_fields(item, frozenset({"module", "path", "sha256"}), "Mathlib artifact")
+        artifact_relative = Path(*str(item["module"]).split(".")).with_suffix(".olean")
+        data = _read_cache_bytes(
+            cache_root,
+            Path("packages/mathlib/.lake/build/lib/lean") / artifact_relative,
+            "Mathlib artifact",
+        )
+        if _sha256(data) != item["sha256"]:
+            raise RouteValidationError("Mathlib artifact digest mismatch")
+    if raw["declaration_types"] != [
+        {
+            "declaration": node.declaration,
+            "type_artifact_path": node.declaration_type_path,
+            "type_artifact_sha256": _sha256(_read_bytes(repo_root, node.declaration_type_path, "declaration type artifact")),
+            "statement_sha256": node.statement_sha256,
+        }
+        for node in manifest.nodes
+    ]:
+        raise RouteValidationError("receipt declaration type roster mismatch")
+
+
+def _validate_staged_file(data: bytes, expected_digest: object, label: str) -> bytes:
+    if _sha256(data) != _text(expected_digest, f"{label} sha256", pattern=SHA256_RE):
+        raise RouteValidationError(f"{label} digest mismatch")
+    return data
 
 
 def inspect_route(
