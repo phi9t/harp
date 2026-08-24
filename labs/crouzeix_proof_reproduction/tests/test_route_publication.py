@@ -137,6 +137,12 @@ def write_review_candidate(fixture: RouteFixture, *, mutate: dict[str, object] |
 
 
 class RoutePublicationApiTests(unittest.TestCase):
+    def test_command_result_annotations_are_postponed_strings(self) -> None:
+        self.assertEqual(
+            route_publication.CommandResult.__annotations__["exit_code"],
+            "int | None",
+        )
+
     def test_route_publication_is_frozen_public_receipt_dataclass(self) -> None:
         self.assertTrue(is_dataclass(route_publication.RoutePublication))
         publication = route_publication.RoutePublication(
@@ -185,11 +191,11 @@ class RoutePublicationApiTests(unittest.TestCase):
         )
         self.assertEqual(
             signature.parameters["repository_root"].annotation,
-            Path,
+            "Path",
         )
         self.assertEqual(
             signature.parameters["route_id"].annotation,
-            str,
+            "str",
         )
         self.assertEqual(
             signature.parameters["executor"].kind,
@@ -201,7 +207,7 @@ class RoutePublicationApiTests(unittest.TestCase):
         )
         self.assertEqual(
             signature.return_annotation,
-            route_publication.RoutePublication,
+            "RoutePublication",
         )
 
     def test_publish_route_review_signature_has_no_evidence_injection(self) -> None:
@@ -210,13 +216,13 @@ class RoutePublicationApiTests(unittest.TestCase):
         self.assertEqual(list(signature.parameters), ["repository_root", "route_id"])
         self.assertEqual(
             signature.parameters["repository_root"].annotation,
-            Path,
+            "Path",
         )
         self.assertEqual(
             signature.parameters["route_id"].annotation,
-            str,
+            "str",
         )
-        self.assertEqual(signature.return_annotation, route_publication.ReviewPublication)
+        self.assertEqual(signature.return_annotation, "ReviewPublication")
 
 
 class RoutePublicationBehaviorTests(unittest.TestCase):
