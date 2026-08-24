@@ -1094,7 +1094,7 @@ fn validate_mathlib_roster(
         }
         let actual = format!(
             "{:x}",
-            Sha256::digest(read_cache_mathlib_artifact(&cache_root, &module)?)
+            Sha256::digest(read_cache_mathlib_artifact(&cache_root, module)?)
         );
         if actual != item.sha256 {
             return Err(format!("Mathlib artifact digest mismatch: {module}"));
