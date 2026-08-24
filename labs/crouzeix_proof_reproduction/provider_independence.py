@@ -13,7 +13,10 @@ LEAN_MODULE_NAME = re.compile(
     r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z"
 )
 IMPORT_COMMAND = re.compile(
-    r"(?:(?P<public>public)\s+)?import(?:\s+(?P<modules>.*))?\Z"
+    r"(?:(?P<public>public)\s+)?(?:(?P<meta>meta)\s+)?import(?:\s+(?P<modules>.*))?\Z"
+)
+SECTION_COMMAND = re.compile(
+    r"public\s+(?:meta\s+)?section(?:\s+(?P<name>[A-Za-z_][A-Za-z0-9_']*))?\Z"
 )
 TOKEN = re.compile(r"(?<![\w'])[_A-Za-z][A-Za-z0-9_']*(?![\w'!?])")
 DANGER_TOKENS = frozenset(
@@ -98,9 +101,13 @@ def parse_active_imports(source: str, module: str) -> tuple[str, ...]:
                 )
             imports.extend(operands)
             continue
-        if command == "public section":
+        if SECTION_COMMAND.fullmatch(command) is not None:
             break
-        if _starts_keyword(command, "import") or _starts_keyword(command, "public"):
+        if (
+            _starts_keyword(command, "import")
+            or _starts_keyword(command, "meta")
+            or _starts_keyword(command, "public")
+        ):
             raise ProviderIndependenceError(
                 f"malformed import-like command in {module}:{line_number}"
             )

@@ -86,6 +86,34 @@ namespace Fixture
 
         self.assertEqual(parsed, ("Mathlib.X",))
 
+    def test_accepts_meta_imports_and_public_section_terminators(self) -> None:
+        cases = (
+            (
+                "meta import Qq\nnamespace Fixture\n",
+                ("Qq",),
+            ),
+            (
+                "module\npublic meta import Qq\npublic meta import Mathlib.Util.AtomM\n"
+                "namespace Fixture\n",
+                ("Qq", "Mathlib.Util.AtomM"),
+            ),
+            (
+                "module\npublic meta import Qq\npublic meta section\nnamespace Fixture\n",
+                ("Qq",),
+            ),
+            (
+                "module\npublic import Mathlib.X\npublic section ParserSmoke\nnamespace Fixture\n",
+                ("Mathlib.X",),
+            ),
+        )
+
+        for source, expected in cases:
+            with self.subTest(source=source):
+                self.assertEqual(
+                    provider_independence.parse_active_imports(source, "Fixture.Root"),
+                    expected,
+                )
+
     def test_ignores_imports_in_line_and_nested_block_comments(self) -> None:
         source = """
 -- import Hidden.Line
@@ -140,6 +168,8 @@ import Hidden.Late
             "import",
             "import Good.Module, Bad.Module",
             "public import",
+            "meta import",
+            "public meta import",
             "public nope",
         ):
             with (
