@@ -6575,19 +6575,23 @@ correspondence, and publish a dedicated-route receipt.
 - Rust Crouzeix source tests
 
 *** Verification Evidence
-- Candidate commit: =8c3ca032707da2f87627b944c3f336e6c4062653=.
-- Candidate tree: =3d64daccf2f523ec38397c827ed720ba47238e84=.
+- Candidate commit: =d0f89f5357ac4e566f283fc038eff44a0c2849ae=.
+- Candidate tree: =97df1146b647bf710757510a31c9c4bf92b0f77b=.
 - Route manifest SHA-256:
-  =2126b53195db60deb398ed5329136bf2c986a440f7286afbeee5356f29b62e7d=.
+  =e5645e3784d15d956e3f94b0120db9e718eb47c6c59442e3dc7ca6bc9bfc057a=.
 - Artifact manifest SHA-256:
   =9a25ac6b2173c4cd4ac3953bac46367b4596f0a54ed162a2921e8f68c6f1deaa=.
 - Active 66-module closure SHA-256:
   =e0498425be2f30edc876eb5e802628169f80dedd54204b1861dfe62715eb5b7f=.
 - Pinned Jin archive SHA-256:
   =33ee5b75c1037866c4d2bda8eff872cc0640fd42e7c31c58a8e6047405f69542=.
-- Cached =CrouzeixJin= build passed with 3,407 jobs. Focused Python
-  passed 78 tests with one optional source-tree skip; Rust route validation
-  passed 25 tests; production-lock validation passed 2 tests.
+- The corrected dependency graph records minimal actual Lean proof providers
+  after contracting unmapped helper declarations. A regression test checks the
+  required and forbidden provider calls in the active theorem bodies.
+- Cached =CrouzeixJin= build passed with 3,407 jobs in 138 seconds. Focused
+  Jin and route-validation Python passed 52 tests with one optional source-tree
+  skip; Rust route validation passed 25 tests; production-lock validation
+  passed 2 tests. The route CLI also imports under the system Python 3.9.
 - No Jin route receipt or proof review exists. Route validation reports
   =mapped / incomplete= solely because the receipt or review is unpublished.
 
