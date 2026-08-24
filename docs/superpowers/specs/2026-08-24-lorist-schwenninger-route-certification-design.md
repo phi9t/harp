@@ -164,12 +164,16 @@ Every passed node receipt binds:
 - source locator, manuscript identity, and statement digest;
 - exact dependency receipt identities;
 - dedicated aggregate target and successful command result;
-- candidate commit and tree;
+- exact theorem-module bytes;
 - local source closure and required Mathlib artifact digests;
-- normalized declaration type;
 - declaration-specific axiom output;
-- provider-independence report;
-- canonical self-digest.
+- provider-independent closure evidence; and
+- an externally computed receipt-file digest that the promoted graph records.
+
+The later route receipt binds the frozen Git commit and tree plus normalized
+types for every certified declaration. Keeping these identities at the route
+level matches the existing v2 node-receipt schema and avoids rewriting
+historical receipt contracts.
 
 The only allowed axioms are `Classical.choice`, `Quot.sound`, and `propext`. The
 active route closure must contain no Jin or Harp provider module. Source scanning
@@ -219,10 +223,18 @@ a new candidate commit and invalidates the previous review and node receipts.
 
 ## Route publication
 
-After graph promotion and a passing mathematical review, the route manifest
-binds the six nodes, all shared modules, exact closure, terminal type, allowed
-axioms, source identities, receipt path, and review path. The manifest initially
-has null receipt and review digests.
+Before mathematical review, an unpublished route manifest binds the proposed
+six nodes, all shared modules, exact closure, terminal type, allowed axioms,
+source identities, receipt path, and review path. Its receipt and review digests
+are null. While the historical graph remains active, validation reports this as
+an authored incomplete candidate. After approved graph promotion, the same
+manifest becomes eligible for route publication.
+
+For the LS route, validation also reads the promoted source graph, library
+inventory, promotion marker, and six selected v2 receipts. It checks their
+semantics and verifies that their current bytes match the route candidate Git
+commit. The route receipt therefore covers the promoted six-node evidence chain
+through its candidate identity without changing the generic receipt schema.
 
 Publication then proceeds in this order:
 
