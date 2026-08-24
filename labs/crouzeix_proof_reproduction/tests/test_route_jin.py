@@ -200,17 +200,15 @@ ALLOWED_CORRESPONDENCE = {
 EXPECTED_DEPENDENCIES = {
     "jin-polynomial-bound": [],
     "jin-numerical-range-convexity": [],
-    "jin-simple-spectrum-approximation": ["jin-numerical-range-convexity"],
+    "jin-simple-spectrum-approximation": [],
     "jin-completion-algebra-cancellation": [],
-    "jin-completion-sampling": ["jin-completion-algebra-cancellation"],
-    "jin-completion-kernel-cancellation": [
-        "jin-completion-algebra-cancellation",
-        "jin-completion-sampling",
-    ],
-    "jin-completion-gramian-bridge": ["jin-completion-algebra-cancellation"],
-    "jin-completion-eigenvector-endpoint": ["jin-completion-gramian-bridge"],
+    "jin-completion-sampling": [],
+    "jin-completion-kernel-cancellation": ["jin-completion-sampling"],
+    "jin-completion-gramian-bridge": [],
+    "jin-completion-eigenvector-endpoint": [],
     "jin-positive-real-completion": [
         "jin-completion-kernel-cancellation",
+        "jin-completion-gramian-bridge",
         "jin-completion-eigenvector-endpoint",
     ],
     "jin-positive-real-completion-statement": ["jin-positive-real-completion"],
@@ -222,17 +220,11 @@ EXPECTED_DEPENDENCIES = {
         "jin-double-layer-realization",
         "jin-function-maximum-convergence",
     ],
-    "jin-terminal-polynomial-specialization": [
-        "jin-polynomial-bound",
-        "jin-fixed-outer-domain-convergence",
-    ],
-    "jin-terminal-crouzeix": [
-        "jin-polynomial-bound",
-        "jin-terminal-polynomial-specialization",
-    ],
+    "jin-terminal-polynomial-specialization": ["jin-fixed-outer-domain-convergence"],
+    "jin-terminal-crouzeix": ["jin-terminal-polynomial-specialization"],
     "jin-holomorphic-rational-bridge": ["jin-fixed-outer-domain-convergence"],
     "jin-finite-rational-consequence": ["jin-holomorphic-rational-bridge"],
-    "jin-hilbert-polynomial-core": ["jin-numerical-range-convexity"],
+    "jin-hilbert-polynomial-core": [],
     "jin-hilbert-polynomial-consequence": [
         "jin-terminal-crouzeix",
         "jin-hilbert-polynomial-core",
@@ -244,6 +236,212 @@ EXPECTED_DEPENDENCIES = {
         "jin-terminal-crouzeix",
         "jin-hilbert-spectral-set-core",
     ],
+}
+
+AUDITED_DEPENDENCY_EVIDENCE = {
+    "jin-simple-spectrum-approximation": {
+        "reason": (
+            "The body closes by squeezing the quantitative simple-spectrum "
+            "error bound; numerical-range convexity is not in the provider chain."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/SimpleSpectrumDensity.lean",
+            "tendsto_simpleSpectrumApproximation",
+            ["norm_simpleSpectrumApproximation_sub_lt", "squeeze_zero"],
+            ["numericalRange_convex"],
+        )],
+    },
+    "jin-completion-sampling": {
+        "reason": (
+            "The exported sampling theorem uses local sampling/coefficient lemmas; "
+            "shared algebra only appears below unmapped helper declarations."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/CompletionSampling.lean",
+            "completion_X_inequality_of_sampling",
+            ["completionSampleCoefficient_posSemidef_of_quadratic_nonneg"],
+            ["completion_mulVec_add_eq_zero"],
+        )],
+    },
+    "jin-completion-kernel-cancellation": {
+        "reason": (
+            "The mapped theorem calls the mapped sampling theorem after an "
+            "unmapped positive-kernel calculation, so sampling is the only "
+            "contracted mapped provider."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/CompletionKernelModel.lean",
+            "completion_X_inequality_of_positiveKernel",
+            [
+                "completion_X_inequality_of_sampling",
+                "completionSampleCoefficient_quadratic_nonneg_of_positiveKernel",
+            ],
+            ["completion_mulVec_add_eq_zero"],
+        )],
+    },
+    "jin-completion-gramian-bridge": {
+        "reason": (
+            "The bridge consumes the Gramian-source inequality as an argument "
+            "and rewrites through local congruence lemmas; it does not call the "
+            "mapped completion algebra cancellation theorem."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/CompletionGramianBridge.lean",
+            "completion_gramian_expression_posSemidef_of_source",
+            [
+                "hsource.conjTranspose_mul_mul_same",
+                "completion_PRX_congruence_eq_gramian_expression",
+            ],
+            ["completion_mulVec_add_eq_zero"],
+        )],
+    },
+    "jin-completion-eigenvector-endpoint": {
+        "reason": (
+            "The endpoint assumes the Gramian inequality as `hineq` and derives "
+            "the norm endpoint, so there is no mapped Gramian provider edge."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/CompletionEigenvector.lean",
+            "norm_le_two_of_gramian_inequality",
+            ["four_sub_conjTranspose_mul_self_posSemidef_of_gramian_inequality"],
+            ["completion_gramian_expression_posSemidef_of_source"],
+        )],
+    },
+    "jin-positive-real-completion": {
+        "reason": (
+            "The completion theorem directly calls kernel cancellation, the "
+            "Gramian bridge, and the eigenvector endpoint."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/PositiveRealCompletion.lean",
+            "norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel",
+            [
+                "completion_X_inequality_of_positiveKernel",
+                "completion_gramian_expression_posSemidef_of_source",
+                "norm_le_two_of_gramian_inequality",
+            ],
+            [],
+        )],
+    },
+    "jin-terminal-polynomial-specialization": {
+        "reason": (
+            "The derived specialization calls the holomorphic theorem directly; "
+            "the polynomial-bound predicate is statement shape only."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/HolomorphicConsequences.lean",
+            "polynomialCrouzeixBound_of_holomorphicCrouzeixBound",
+            ["holomorphicCrouzeixBound"],
+            ["PolynomialCrouzeixBound"],
+        )],
+    },
+    "jin-terminal-crouzeix": {
+        "reason": (
+            "The route terminal delegates to the derived polynomial "
+            "specialization, not to the polynomial-bound predicate."
+        ),
+        "checks": [(
+            "Crouzeix/Jin/Terminal.lean",
+            "crouzeixConjecture",
+            ["polynomialCrouzeixBound_of_holomorphicCrouzeixBound"],
+            ["PolynomialCrouzeixBound"],
+        )],
+    },
+    "jin-holomorphic-rational-bridge": {
+        "reason": (
+            "The route-local bridge calls an unmapped rational specialization; "
+            "that theorem's body calls `holomorphicCrouzeixBound`, so contraction "
+            "keeps the fixed-outer provider."
+        ),
+        "checks": [
+            (
+                "Crouzeix/Jin/RationalBridge.lean",
+                "jinHolomorphicCrouzeixRationalBound",
+                ["holomorphicCrouzeixRationalBound"],
+                ["PolynomialCrouzeixBound"],
+            ),
+            (
+                "CrouzeixConjecture/HolomorphicConsequences.lean",
+                "holomorphicCrouzeixRationalBound",
+                ["holomorphicCrouzeixBound"],
+                ["PolynomialCrouzeixBound"],
+            ),
+        ],
+    },
+    "jin-hilbert-polynomial-core": {
+        "reason": (
+            "The core theorem accepts `hMain` and routes through local Hilbert "
+            "helpers; it does not call numerical-range convexity as a mapped "
+            "provider."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/HilbertSpaceCore.lean",
+            "hilbertSpacePolynomialCrouzeix_of_mainTheorem",
+            ["operatorPolynomialEval_apply_le_of_norm_one_of_mainTheorem hMain"],
+            ["numericalRange_convex", "crouzeixConjecture"],
+        )],
+    },
+    "jin-hilbert-spectral-set-core": {
+        "reason": (
+            "The spectral core accepts `hMain` and calls unmapped rational and "
+            "spectral helpers; that helper chain contracts through the mapped "
+            "Hilbert polynomial core."
+        ),
+        "checks": [
+            (
+                "CrouzeixConjecture/HilbertSpectralSetCore.lean",
+                "norm_operatorPolynomialEval_le_of_forall_closedNumericalRange_of_mainTheorem",
+                ["hilbertSpacePolynomialCrouzeix_of_mainTheorem hMain"],
+                ["crouzeixConjecture"],
+            ),
+            (
+                "CrouzeixConjecture/HilbertSpectralSetCore.lean",
+                "closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem",
+                [
+                    "spectrum_subset_closedOperatorNumericalRange_of_mainTheorem hMain",
+                    "operatorRationalEval_eq_num_mul_inverse_denom_of_mainTheorem hMain",
+                    "hilbertSpaceRationalCrouzeix_of_mainTheorem hMain",
+                ],
+                ["crouzeixConjecture"],
+            ),
+        ],
+    },
+    "jin-hilbert-polynomial-consequence": {
+        "reason": (
+            "The public polynomial consequence supplies the terminal "
+            "`crouzeixConjecture` provider to the Hilbert polynomial core."
+        ),
+        "checks": [(
+            "CrouzeixConjecture/HilbertSpace.lean",
+            "hilbertSpacePolynomialCrouzeix",
+            [
+                "hilbertSpacePolynomialCrouzeix_of_mainTheorem",
+                "fun d => crouzeixConjecture (n := Fin d)",
+            ],
+            [],
+        )],
+    },
+    "jin-hilbert-spectral-set-consequence": {
+        "reason": (
+            "The public spectral consequence calls the spectral core and supplies "
+            "the terminal `crouzeixConjecture` provider through "
+            "`jinFiniteMatrixMainTheorem`."
+        ),
+        "checks": [
+            (
+                "CrouzeixConjecture/HilbertSpectralSet.lean",
+                "jinFiniteMatrixMainTheorem",
+                ["fun d => crouzeixConjecture (n := Fin d)"],
+                [],
+            ),
+            (
+                "CrouzeixConjecture/HilbertSpectralSet.lean",
+                "closedOperatorNumericalRange_isTwoSpectralSet",
+                ["closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem"],
+                ["hilbertSpacePolynomialCrouzeix_of_mainTheorem"],
+            ),
+        ],
+    },
 }
 
 HISTORICAL_RECEIPTS = {
@@ -275,6 +473,44 @@ def git_locator_parts(locator: str) -> tuple[str, PurePosixPath, int, int]:
 
 def excerpt_bytes(source: bytes, start: int, end: int) -> bytes:
     return b"".join(source.splitlines(keepends=True)[start - 1 : end])
+
+
+def strip_lean_block_comments(source: str) -> str:
+    result: list[str] = []
+    index = 0
+    depth = 0
+    while index < len(source):
+        if source.startswith("/-", index):
+            result.extend("  ")
+            index += 2
+            depth += 1
+            continue
+        if depth and source.startswith("-/", index):
+            result.extend("  ")
+            index += 2
+            depth -= 1
+            continue
+        char = source[index]
+        if depth:
+            result.append("\n" if char == "\n" else " ")
+        else:
+            result.append(char)
+        index += 1
+    return "".join(result)
+
+
+def lean_declaration_body(relative_path: str, declaration: str) -> str:
+    source = (REPO / "formalization/lean" / relative_path).read_text(encoding="utf-8")
+    searchable = strip_lean_block_comments(source)
+    declaration_re = re.compile(
+        rf"(?m)^(?:private\s+)?(?:theorem|lemma|def)\s+{re.escape(declaration)}(?:\s|$)"
+    )
+    match = declaration_re.search(searchable)
+    if match is None:
+        raise AssertionError(f"missing Lean declaration {declaration} in {relative_path}")
+    next_re = re.compile(r"(?m)^(?:private\s+)?(?:theorem|lemma|def)\s+[A-Za-z_][A-Za-z0-9_']*")
+    next_match = next_re.search(searchable, match.end())
+    return source[match.start() : next_match.start() if next_match else len(source)]
 
 
 class JinRouteManifestTests(unittest.TestCase):
@@ -329,6 +565,22 @@ class JinRouteManifestTests(unittest.TestCase):
         self.assertIsNone(derived["source_excerpt_sha256"])
         self.assertIsNone(derived["source_line_count"])
         self.assertFalse(any(node["provenance_kind"] == "reused-route" for node in nodes.values()))
+
+    def test_audited_dependency_edges_match_active_provider_calls(self) -> None:
+        manifest = load_manifest()
+        nodes = {node["node_id"]: node for node in manifest["nodes"]}
+
+        for node_id, audit in AUDITED_DEPENDENCY_EVIDENCE.items():
+            with self.subTest(node_id=node_id, field="dependencies"):
+                self.assertEqual(nodes[node_id]["dependency_ids"], EXPECTED_DEPENDENCIES[node_id])
+            for relative_path, declaration, required, forbidden in audit["checks"]:
+                body = lean_declaration_body(relative_path, declaration)
+                for token in required:
+                    with self.subTest(node_id=node_id, declaration=declaration, required=token):
+                        self.assertIn(token, body)
+                for token in forbidden:
+                    with self.subTest(node_id=node_id, declaration=declaration, forbidden=token):
+                        self.assertNotIn(token, body)
 
     def test_consequence_declarations_match_exact_consequence_nodes(self) -> None:
         manifest = load_manifest()

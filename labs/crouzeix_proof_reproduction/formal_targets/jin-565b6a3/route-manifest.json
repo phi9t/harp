@@ -181,9 +181,7 @@
       "role": "load-bearing",
       "declaration": "CrouzeixConjecture.tendsto_simpleSpectrumApproximation",
       "module_path": "CrouzeixConjecture/SimpleSpectrumDensity.lean",
-      "dependency_ids": [
-        "jin-numerical-range-convexity"
-      ],
+      "dependency_ids": [],
       "provenance_kind": "source",
       "correspondence_kind": "direct-source",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/SimpleSpectrumDensity.lean#L224-L252",
@@ -219,9 +217,7 @@
       "role": "load-bearing",
       "declaration": "CrouzeixConjecture.completion_X_inequality_of_sampling",
       "module_path": "CrouzeixConjecture/CompletionSampling.lean",
-      "dependency_ids": [
-        "jin-completion-algebra-cancellation"
-      ],
+      "dependency_ids": [],
       "provenance_kind": "source",
       "correspondence_kind": "direct-source",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionSampling.lean#L72-L84",
@@ -240,7 +236,6 @@
       "declaration": "CrouzeixConjecture.completion_X_inequality_of_positiveKernel",
       "module_path": "CrouzeixConjecture/CompletionKernelModel.lean",
       "dependency_ids": [
-        "jin-completion-algebra-cancellation",
         "jin-completion-sampling"
       ],
       "provenance_kind": "source",
@@ -260,9 +255,7 @@
       "role": "load-bearing",
       "declaration": "CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source",
       "module_path": "CrouzeixConjecture/CompletionGramianBridge.lean",
-      "dependency_ids": [
-        "jin-completion-algebra-cancellation"
-      ],
+      "dependency_ids": [],
       "provenance_kind": "source",
       "correspondence_kind": "direct-source",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionGramianBridge.lean#L359-L377",
@@ -280,9 +273,7 @@
       "role": "load-bearing",
       "declaration": "CrouzeixConjecture.norm_le_two_of_gramian_inequality",
       "module_path": "CrouzeixConjecture/CompletionEigenvector.lean",
-      "dependency_ids": [
-        "jin-completion-gramian-bridge"
-      ],
+      "dependency_ids": [],
       "provenance_kind": "source",
       "correspondence_kind": "direct-source",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/CompletionEigenvector.lean#L196-L203",
@@ -302,6 +293,7 @@
       "module_path": "CrouzeixConjecture/PositiveRealCompletion.lean",
       "dependency_ids": [
         "jin-completion-kernel-cancellation",
+        "jin-completion-gramian-bridge",
         "jin-completion-eigenvector-endpoint"
       ],
       "provenance_kind": "source",
@@ -403,7 +395,6 @@
       "declaration": "CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound",
       "module_path": "CrouzeixConjecture/HolomorphicConsequences.lean",
       "dependency_ids": [
-        "jin-polynomial-bound",
         "jin-fixed-outer-domain-convergence"
       ],
       "provenance_kind": "derived",
@@ -424,7 +415,6 @@
       "declaration": "CrouzeixConjecture.crouzeixConjecture",
       "module_path": "Crouzeix/Jin/Terminal.lean",
       "dependency_ids": [
-        "jin-polynomial-bound",
         "jin-terminal-polynomial-specialization"
       ],
       "provenance_kind": "source",
@@ -484,9 +474,7 @@
       "role": "load-bearing",
       "declaration": "CrouzeixConjecture.hilbertSpacePolynomialCrouzeix_of_mainTheorem",
       "module_path": "CrouzeixConjecture/HilbertSpaceCore.lean",
-      "dependency_ids": [
-        "jin-numerical-range-convexity"
-      ],
+      "dependency_ids": [],
       "provenance_kind": "source",
       "correspondence_kind": "structural-refactor",
       "source_locator": "git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/HilbertSpace.lean#L279-L304",
