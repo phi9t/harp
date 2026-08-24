@@ -427,6 +427,14 @@ import Hidden.Late
 
 
 class ActiveSourceScannerTests(unittest.TestCase):
+    def test_identifier_apostrophe_at_end_of_file_is_not_a_character_literal(self) -> None:
+        source = "replaceMainGoal mvarIds'"
+
+        scan = provider_independence.scan_active_source(source, "Fixture.Root")
+
+        self.assertEqual(scan.dangers, ())
+        self.assertEqual(scan.set_options, ())
+
     def test_reports_danger_tokens_but_ignores_comments_and_identifiers(self) -> None:
         source = """
 -- sorry admit unsafe native_decide implemented_by

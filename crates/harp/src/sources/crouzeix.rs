@@ -399,10 +399,10 @@ pub(super) struct Report {
 }
 
 pub(super) fn verify(repo_root: &Path) -> Result<Report, AppError> {
-    route::verify_published_routes(repo_root)
+    let route_evidence = route::verify_published_routes(repo_root)
         .map_err(|detail| invalid("sources.crouzeix.route_contracts", detail))?;
     let local_evidence = verify_local_formalization_bundle_if_present(repo_root)?;
-    verify_exact_roster(repo_root, local_evidence.as_ref())?;
+    verify_exact_roster(repo_root, local_evidence.as_ref(), &route_evidence)?;
     let source_receipts = verify_source_manifest(repo_root)?;
     let verification_receipts = verify_verification_manifest(repo_root)?;
     Ok(Report {
@@ -414,6 +414,7 @@ pub(super) fn verify(repo_root: &Path) -> Result<Report, AppError> {
 fn verify_exact_roster(
     repo_root: &Path,
     local_evidence: Option<&BTreeSet<String>>,
+    route_evidence: &BTreeSet<String>,
 ) -> Result<(), AppError> {
     let mut expected = [
         "PROVENANCE.md",
@@ -432,6 +433,7 @@ fn verify_exact_roster(
         expected.insert(LOCAL_FORMALIZATION_MANIFEST.to_owned());
         expected.extend(local_evidence.iter().cloned());
     }
+    expected.extend(route_evidence.iter().cloned());
     let root = repo_root.join(ROOT);
     let mut actual = BTreeSet::new();
     for entry in WalkDir::new(&root).follow_links(false) {
@@ -3161,37 +3163,23 @@ pub(super) fn lean_header_imports(
                 "malformed prelude command",
             );
         }
-        let import_command = if starts_lean_keyword(command, "public") {
-            command
-                .strip_prefix("public")
-                .map(str::trim_start)
-                .filter(|rest| starts_lean_keyword(rest, "import"))
-        } else if starts_lean_keyword(command, "import") {
-            Some(command)
-        } else {
-            None
-        };
-        let operands = import_command.map(|import_command| {
-            import_command
-                .strip_prefix("import")
-                .expect("import command prefix checked")
-                .trim_start()
-        });
-        if let Some(operands) = operands {
-            let parsed = operands.split_whitespace().collect::<Vec<_>>();
-            if parsed.is_empty() || parsed.iter().any(|name| !valid_lean_name(name)) {
-                return provider_error(
-                    manifest,
-                    line,
-                    module,
-                    source_line + 1,
-                    "malformed import command",
-                );
+        let parts = command.split_whitespace().collect::<Vec<_>>();
+        if let Some(imported) = parse_lean_import_command(&parts, saw_module) {
+            match imported {
+                Ok(imported) => imports.push(imported.to_owned()),
+                Err(detail) => {
+                    return provider_error(manifest, line, module, source_line + 1, detail);
+                }
             }
-            imports.extend(parsed.into_iter().map(str::to_owned));
             continue;
         }
-        if starts_lean_keyword(command, "import") || starts_lean_keyword(command, "public") {
+        if valid_lean_section_command(&parts) || valid_lean_modified_body_command(&parts) {
+            break;
+        }
+        if ["import", "meta", "public", "all"]
+            .into_iter()
+            .any(|keyword| starts_lean_keyword(command, keyword))
+        {
             return provider_error(
                 manifest,
                 line,
@@ -3203,6 +3191,97 @@ pub(super) fn lean_header_imports(
         break;
     }
     Ok(imports)
+}
+
+fn parse_lean_import_command<'a>(
+    parts: &'a [&'a str],
+    saw_module: bool,
+) -> Option<Result<&'a str, &'static str>> {
+    let mut index = 0;
+    let mut modified = false;
+    if parts.get(index) == Some(&"public") {
+        modified = true;
+        index += 1;
+    }
+    if parts.get(index) == Some(&"meta") {
+        modified = true;
+        index += 1;
+    }
+    if parts.get(index) != Some(&"import") {
+        return None;
+    }
+    index += 1;
+    if parts.get(index) == Some(&"all") {
+        modified = true;
+        index += 1;
+    }
+    if modified && !saw_module {
+        return Some(Err("modified import requires module"));
+    }
+    let Some(imported) = parts.get(index) else {
+        return Some(Err("malformed import command"));
+    };
+    if index + 1 != parts.len() || !valid_lean_name(imported) {
+        return Some(Err("malformed import command"));
+    }
+    Some(Ok(imported))
+}
+
+fn valid_lean_section_command(parts: &[&str]) -> bool {
+    let mut index = 0;
+    if parts.get(index) == Some(&"public") {
+        index += 1;
+    }
+    if parts.get(index) == Some(&"meta") {
+        index += 1;
+    }
+    if parts.get(index) != Some(&"section") {
+        return false;
+    }
+    index += 1;
+    index == parts.len()
+        || index + 1 == parts.len() && parts.get(index).is_some_and(|name| valid_lean_name(name))
+}
+
+fn valid_lean_modified_body_command(parts: &[&str]) -> bool {
+    const MODIFIED_BODY_COMMANDS: [&str; 17] = [
+        "abbrev",
+        "axiom",
+        "class",
+        "def",
+        "elab",
+        "example",
+        "inductive",
+        "instance",
+        "lemma",
+        "macro",
+        "notation",
+        "opaque",
+        "prefix",
+        "postfix",
+        "scoped",
+        "structure",
+        "syntax",
+    ];
+    const THEOREM: &str = "theorem";
+
+    let body_command = |part: Option<&&str>| {
+        part.is_some_and(|part| MODIFIED_BODY_COMMANDS.contains(part) || *part == THEOREM)
+    };
+    if parts.first() == Some(&"meta") {
+        return body_command(parts.get(1));
+    }
+    if parts.first() != Some(&"public") {
+        return false;
+    }
+    if body_command(parts.get(1)) {
+        return true;
+    }
+    if parts.get(1) == Some(&"noncomputable") {
+        return matches!(parts, ["public", "noncomputable", "section"])
+            || matches!(parts, ["public", "noncomputable", "section", name] if valid_lean_name(name));
+    }
+    parts.get(1) == Some(&"meta") && body_command(parts.get(2))
 }
 
 fn starts_lean_keyword(command: &str, keyword: &str) -> bool {
@@ -3353,6 +3432,9 @@ pub(super) fn mask_lean_source(
     }
 
     fn starts_character_literal(chars: &[char], index: usize) -> bool {
+        if index > 0 && lean_token_neighbor(chars[index - 1]) {
+            return false;
+        }
         index + 2 >= chars.len()
             || chars.get(index + 1) == Some(&'\\')
             || chars.get(index + 2) == Some(&'\'')
@@ -6286,6 +6368,16 @@ mod tests {
     }
 
     #[test]
+    fn provider_scan_allows_identifier_apostrophe_at_end_of_file() {
+        let manifest = Path::new("fixture.tsv");
+        let source = "replaceMainGoal mvarIds'";
+
+        let active = mask_lean_source(source, "Fixture.Root", manifest, 1).unwrap();
+
+        assert_eq!(active, source);
+    }
+
+    #[test]
     fn python_parity_provider_policy_uses_the_local_bundle_forbidden_sets() {
         let legacy = [
             "Crouzeix.Jin.Terminal",
@@ -6331,7 +6423,8 @@ mod tests {
             "prelude\n",
             "public   import Alpha.One\n",
             "public\timport Alpha.Tabbed\n",
-            "import Alpha.Two Beta.Three\n",
+            "import Alpha.Two\n",
+            "import Beta.Three\n",
             "moduleName := 1\n",
             "import Hidden.Late\n",
         );
@@ -6340,6 +6433,65 @@ mod tests {
             lean_header_imports(&active, "Fixture.Root", manifest, 1).unwrap(),
             ["Alpha.One", "Alpha.Tabbed", "Alpha.Two", "Beta.Three"]
         );
+    }
+
+    #[test]
+    fn python_parity_provider_imports_stop_at_public_section() {
+        let manifest = Path::new("fixture.tsv");
+        let source = concat!(
+            "module\n",
+            "public import Mathlib.Algebra.Polynomial.AlgebraMap\n",
+            "public section\n",
+            "import Hidden.Late\n",
+        );
+        let active = mask_lean_source(source, "Fixture.Root", manifest, 1).unwrap();
+
+        assert_eq!(
+            lean_header_imports(&active, "Fixture.Root", manifest, 1).unwrap(),
+            ["Mathlib.Algebra.Polynomial.AlgebraMap"]
+        );
+    }
+
+    #[test]
+    fn python_parity_provider_imports_accept_modifiers_and_body_terminators() {
+        let manifest = Path::new("fixture.tsv");
+        for (source, expected) in [
+            (
+                "module\nmeta import Qq\npublic meta import all Mathlib.Util.AtomM\npublic meta section\nimport Hidden.Late\n",
+                vec!["Qq", "Mathlib.Util.AtomM"],
+            ),
+            (
+                "module\npublic import Mathlib.X\nmeta def helper := 1\nimport Hidden.Late\n",
+                vec!["Mathlib.X"],
+            ),
+            (
+                "module\npublic import Mathlib.X\npublic noncomputable section Named\nimport Hidden.Late\n",
+                vec!["Mathlib.X"],
+            ),
+        ] {
+            let active = mask_lean_source(source, "Fixture.Root", manifest, 1).unwrap();
+            assert_eq!(
+                lean_header_imports(&active, "Fixture.Root", manifest, 1).unwrap(),
+                expected
+            );
+        }
+    }
+
+    #[test]
+    fn python_parity_provider_imports_reject_invalid_modified_headers() {
+        let manifest = Path::new("fixture.tsv");
+        for source in [
+            "public import Alpha.One\n",
+            "module\nimport Alpha.One Beta.Two\n",
+            "module\nmeta public import Alpha.One\n",
+            "module\npublic meta importx Alpha.One\nimport Hidden.Late\n",
+        ] {
+            let active = mask_lean_source(source, "Fixture.Root", manifest, 1).unwrap();
+            assert!(
+                lean_header_imports(&active, "Fixture.Root", manifest, 1).is_err(),
+                "accepted invalid header: {source:?}"
+            );
+        }
     }
 
     #[test]

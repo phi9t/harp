@@ -582,6 +582,8 @@ def _at_token_start(source: str, index: int) -> bool:
 
 
 def _starts_character_literal(source: str, index: int) -> bool:
+    if index > 0 and _is_identifier_part(source[index - 1]):
+        return False
     if index + 2 >= len(source):
         return True
     if source[index + 1] == "\\":

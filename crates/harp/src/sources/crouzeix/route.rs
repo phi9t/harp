@@ -858,7 +858,8 @@ fn validate_review(
     Ok(())
 }
 
-pub(super) fn verify_published_routes(repo_root: &Path) -> Result<(), String> {
+pub(super) fn verify_published_routes(repo_root: &Path) -> Result<BTreeSet<String>, String> {
+    let mut route_evidence = BTreeSet::new();
     for manifest_path in ROUTE_MANIFESTS {
         match fs::symlink_metadata(repo_root.join(manifest_path)) {
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
@@ -889,6 +890,20 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<(), String> {
             validate_harp_reuse(&manifest, &closure, &ls_manifest)?;
         }
         validate_manifest_files(repo_root, &manifest)?;
+        for node in &manifest.nodes {
+            if let Some(relative) = crouzeix_evidence_member(&node.declaration_type_path) {
+                route_evidence.insert(relative);
+            }
+            if let Some(locator) = node.source_locator.as_deref() {
+                let (is_git, _, path, _, _) = parse_source_locator(locator)
+                    .expect("source locator was validated with the route manifest");
+                if !is_git {
+                    if let Some(relative) = crouzeix_evidence_member(path) {
+                        route_evidence.insert(relative);
+                    }
+                }
+            }
+        }
         let receipt_exists = artifact_state(repo_root, &manifest.receipt_path, "route receipt")?;
         let review_exists = artifact_state(repo_root, &manifest.review_path, "proof review")?;
         if review_exists && !receipt_exists {
@@ -918,6 +933,16 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<(), String> {
                 &closure,
             )?;
             verify_bound_files(repo_root, &manifest, &receipt, &closure)?;
+            for path in [
+                &manifest.receipt_path,
+                &receipt.command_artifact_path,
+                &receipt.axiom_audit_path,
+                &receipt.provider_report_path,
+                &receipt.stdout_path,
+                &receipt.stderr_path,
+            ] {
+                route_evidence.insert(crouzeix_evidence_relative(path)?);
+            }
             if review_exists {
                 verify_file_digest(
                     repo_root,
@@ -929,10 +954,23 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<(), String> {
                     read_json_value(repo_root, &manifest.review_path, "proof review")?;
                 let review: ProofReview = parse(&review_value, "review")?;
                 validate_review(&manifest, &receipt, &review_value, &review)?;
+                route_evidence.insert(crouzeix_evidence_relative(&manifest.review_path)?);
             }
         }
     }
-    Ok(())
+    Ok(route_evidence)
+}
+
+fn crouzeix_evidence_relative(path: &str) -> Result<String, String> {
+    crouzeix_evidence_member(path)
+        .ok_or_else(|| "route publication path must stay beneath Crouzeix evidence root".to_owned())
+}
+
+fn crouzeix_evidence_member(path: &str) -> Option<String> {
+    Path::new(path)
+        .strip_prefix(super::ROOT)
+        .ok()
+        .map(super::slash_path)
 }
 
 fn artifact_state(repo_root: &Path, relative: &str, label: &str) -> Result<bool, String> {
@@ -2312,7 +2350,7 @@ mod tests {
         fs::write(
             root.path()
                 .join("formalization/lean/.lake/packages/mathlib/Mathlib/A.lean"),
-            b"public import Mathlib.B\n",
+            b"module\npublic import Mathlib.B\n",
         )
         .unwrap();
         fs::write(
@@ -2462,6 +2500,23 @@ mod tests {
     fn published_route_validates_mathlib_artifacts_through_approved_cache_link() {
         let (_primary, _linked_parent, linked, _basic, _transitive) = linked_published_fixture();
         verify_published_routes(&linked).unwrap();
+    }
+
+    #[test]
+    fn published_route_reports_every_validated_in_root_evidence_member() {
+        let (_primary, _linked_parent, linked, _basic, _transitive) = linked_published_fixture();
+
+        let evidence = verify_published_routes(&linked).unwrap();
+
+        assert!(evidence.contains("routes/jin/receipt.json"));
+        assert!(evidence.contains("routes/jin/command.json"));
+        assert!(evidence.contains("routes/jin/axioms.json"));
+        assert!(evidence.contains("routes/jin/provider.json"));
+        assert!(evidence.contains("routes/jin/stdout.log"));
+        assert!(evidence.contains("routes/jin/stderr.log"));
+        assert!(evidence.contains("reviews/jin.json"));
+        assert!(evidence.contains("types/main.txt"));
+        assert!(evidence.contains("source.md"));
     }
 
     #[cfg(unix)]
