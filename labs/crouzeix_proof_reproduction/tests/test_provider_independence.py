@@ -79,6 +79,13 @@ namespace Fixture
             ("Alpha.One", "Alpha.Tabbed", "Alpha.Two", "Beta.Three"),
         )
 
+    def test_public_section_terminates_import_header_after_public_import(self) -> None:
+        source = "module\npublic import Mathlib.X\npublic section\nnamespace Fixture\n"
+
+        parsed = provider_independence.parse_active_imports(source, "Fixture.Root")
+
+        self.assertEqual(parsed, ("Mathlib.X",))
+
     def test_ignores_imports_in_line_and_nested_block_comments(self) -> None:
         source = """
 -- import Hidden.Line

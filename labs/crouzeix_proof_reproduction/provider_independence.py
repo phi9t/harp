@@ -98,6 +98,8 @@ def parse_active_imports(source: str, module: str) -> tuple[str, ...]:
                 )
             imports.extend(operands)
             continue
+        if command == "public section":
+            break
         if _starts_keyword(command, "import") or _starts_keyword(command, "public"):
             raise ProviderIndependenceError(
                 f"malformed import-like command in {module}:{line_number}"
