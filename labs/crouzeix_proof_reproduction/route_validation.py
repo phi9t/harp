@@ -49,6 +49,7 @@ ALLOWED_CORRESPONDENCE_KINDS = {
 FINDING_SEVERITIES = ("Critical", "Important", "Minor")
 ALLOWED_AXIOMS = ("Classical.choice", "Quot.sound", "propext")
 MAX_JSON_BYTES = 2 * 1024 * 1024
+MAX_CACHE_ARTIFACT_BYTES = 8 * 1024 * 1024
 MAX_STRING_BYTES = 16 * 1024
 MAX_ARRAY_ITEMS = 4096
 MAX_JSON_DEPTH = 32
@@ -247,6 +248,22 @@ def mathlib_artifact_path(module: str) -> Path:
     ).with_suffix(".olean")
 
 
+def _mathlib_source_cache_relative(module: str) -> Path:
+    if MODULE_RE.fullmatch(module) is None:
+        raise RouteValidationError(f"invalid Mathlib module: {module!r}")
+    return Path("packages/mathlib") / (
+        Path("Mathlib.lean") if module == "Mathlib" else module_relative_path(module)
+    )
+
+
+def _mathlib_artifact_cache_relative(module: str) -> Path:
+    if MODULE_RE.fullmatch(module) is None:
+        raise RouteValidationError(f"invalid Mathlib module: {module!r}")
+    return (
+        Path("packages/mathlib/.lake/build/lib/lean") / Path(*module.split("."))
+    ).with_suffix(".olean")
+
+
 def active_local_closure(lean_root: Path, aggregate_module: str) -> tuple[str, ...]:
     repository_root = lean_root.resolve().parents[1]
     pending = [aggregate_module]
@@ -298,8 +315,7 @@ def active_mathlib_closure(repo_root: Path, local_modules: Sequence[str]) -> tup
         module = pending.pop()
         if module in visited:
             continue
-        relative = module_relative_path(module) if module != "Mathlib" else Path("Mathlib.lean")
-        source = _read_cache_bytes(cache_root, Path("packages/mathlib") / relative, f"Mathlib source {module}")
+        source = _read_mathlib_source_bytes(cache_root, module)
         try:
             text = source.decode("utf-8")
         except UnicodeDecodeError as error:
@@ -352,8 +368,41 @@ def resolve_approved_cache_root(repository_root: Path) -> Path:
     return approved
 
 
-def _read_cache_bytes(cache_root: Path, relative: Path, label: str) -> bytes:
-    return _read_rooted_bytes(cache_root.resolve(strict=True), relative.as_posix(), label)
+def _read_cache_bytes(cache_root: Path, relative: Path | str, label: str) -> bytes:
+    relative_text = relative.as_posix() if isinstance(relative, Path) else relative
+    parts = relative_text.split("/")
+    prefix = ["packages", "mathlib", ".lake", "build", "lib", "lean"]
+    if (
+        relative_text.startswith("/")
+        or not parts
+        or any(part in {"", ".", ".."} for part in parts)
+        or len(parts) <= len(prefix)
+        or parts[:len(prefix)] != prefix
+        or not relative_text.endswith(".olean")
+    ):
+        raise RouteValidationError(f"{label} must use a validated Mathlib artifact path")
+    return _read_rooted_bytes(
+        cache_root.resolve(strict=True),
+        relative_text,
+        label,
+        max_bytes=MAX_CACHE_ARTIFACT_BYTES,
+    )
+
+
+def _read_mathlib_source_bytes(cache_root: Path, module: str) -> bytes:
+    return _read_rooted_bytes(
+        cache_root.resolve(strict=True),
+        _mathlib_source_cache_relative(module).as_posix(),
+        f"Mathlib source {module}",
+    )
+
+
+def _read_mathlib_artifact_bytes(cache_root: Path, module: str) -> bytes:
+    return _read_cache_bytes(
+        cache_root,
+        _mathlib_artifact_cache_relative(module),
+        "Mathlib artifact",
+    )
 
 
 def cache_contract_identity(repository_root: Path) -> str:
@@ -444,7 +493,13 @@ def _nullable_positive_int(value: object, label: str) -> int | None:
     return value
 
 
-def _read_rooted_bytes(root_path: Path, relative: str, label: str) -> bytes:
+def _read_rooted_bytes(
+    root_path: Path,
+    relative: str,
+    label: str,
+    *,
+    max_bytes: int = MAX_JSON_BYTES,
+) -> bytes:
     root_fd = os.open(root_path, os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_CLOEXEC", 0))
     current_fd = root_fd
     try:
@@ -469,11 +524,11 @@ def _read_rooted_bytes(root_path: Path, relative: str, label: str) -> bytes:
                 raise RouteValidationError(f"{label} is not a regular file: {relative}")
             if metadata.st_nlink != 1:
                 raise RouteValidationError(f"{label} cannot be a hardlink alias: {relative}")
-            if metadata.st_size > MAX_JSON_BYTES:
+            if metadata.st_size > max_bytes:
                 raise RouteValidationError(f"{label} exceeds byte bound")
             with os.fdopen(leaf_fd, "rb", closefd=False) as handle:
-                data = handle.read(MAX_JSON_BYTES + 1)
-            if len(data) > MAX_JSON_BYTES:
+                data = handle.read(max_bytes + 1)
+            if len(data) > max_bytes:
                 raise RouteValidationError(f"{label} exceeds byte bound")
             return data
         finally:
@@ -1041,12 +1096,7 @@ def _validate_receipt(
         if not isinstance(item, dict):
             raise RouteValidationError("Mathlib artifact entry must be an object")
         _exact_fields(item, frozenset({"module", "path", "sha256"}), "Mathlib artifact")
-        artifact_relative = Path(*str(item["module"]).split(".")).with_suffix(".olean")
-        data = _read_cache_bytes(
-            cache_root,
-            Path("packages/mathlib/.lake/build/lib/lean") / artifact_relative,
-            "Mathlib artifact",
-        )
+        data = _read_mathlib_artifact_bytes(cache_root, str(item["module"]))
         if _sha256(data) != item["sha256"]:
             raise RouteValidationError("Mathlib artifact digest mismatch")
     if raw["mathlib_artifacts_sha256"] != record_roster_sha256(artifacts):
@@ -1632,12 +1682,7 @@ def _validate_staged_receipt(
     for item in artifacts:
         assert isinstance(item, dict)
         _exact_fields(item, frozenset({"module", "path", "sha256"}), "Mathlib artifact")
-        artifact_relative = Path(*str(item["module"]).split(".")).with_suffix(".olean")
-        data = _read_cache_bytes(
-            cache_root,
-            Path("packages/mathlib/.lake/build/lib/lean") / artifact_relative,
-            "Mathlib artifact",
-        )
+        data = _read_mathlib_artifact_bytes(cache_root, str(item["module"]))
         if _sha256(data) != item["sha256"]:
             raise RouteValidationError("Mathlib artifact digest mismatch")
     if raw["declaration_types"] != [

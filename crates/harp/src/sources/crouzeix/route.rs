@@ -18,6 +18,7 @@ const RECEIPT_SCHEMA: &str = "crouzeix-route-proof-receipt/v1";
 const REVIEW_SCHEMA: &str = "crouzeix-proof-review/v1";
 const ALLOWED_AXIOMS: [&str; 3] = ["Classical.choice", "Quot.sound", "propext"];
 const MAX_ARTIFACT_BYTES: u64 = 2 * 1024 * 1024;
+const MAX_CACHE_ARTIFACT_BYTES: u64 = 8 * 1024 * 1024;
 const ROUTE_MANIFESTS: [&str; 3] = [
     "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
     "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json",
@@ -1091,17 +1092,9 @@ fn validate_mathlib_roster(
         if item.module != module || item.path != path {
             return Err("Mathlib artifact module/path mismatch".into());
         }
-        let relative = format!(
-            "packages/mathlib/.lake/build/lib/lean/{}.olean",
-            module.replace('.', "/")
-        );
         let actual = format!(
             "{:x}",
-            Sha256::digest(read_cache_regular(
-                &cache_root,
-                &relative,
-                "Mathlib artifact"
-            )?)
+            Sha256::digest(read_cache_mathlib_artifact(&cache_root, &module)?)
         );
         if actual != item.sha256 {
             return Err(format!("Mathlib artifact digest mismatch: {module}"));
@@ -1255,17 +1248,8 @@ fn active_mathlib_closure(
         if !visited.insert(module.clone()) {
             continue;
         }
-        let relative = if module == "Mathlib" {
-            "packages/mathlib/Mathlib.lean".to_owned()
-        } else {
-            format!("packages/mathlib/{}.lean", module.replace('.', "/"))
-        };
-        let source = String::from_utf8(read_cache_regular(
-            &cache_root,
-            &relative,
-            "Mathlib source",
-        )?)
-        .map_err(|_| "Mathlib source is not UTF-8")?;
+        let source = String::from_utf8(read_cache_mathlib_source(&cache_root, &module)?)
+            .map_err(|_| "Mathlib source is not UTF-8")?;
         let active = super::mask_lean_source(&source, &module, manifest, 1)
             .map_err(|error| error.message)?;
         pending.extend(
@@ -1357,8 +1341,67 @@ fn cache_contract_identity(repo_root: &Path) -> Result<String, String> {
     Ok(format!("sha256:{}", canonical_digest(&payload)?))
 }
 
+fn mathlib_source_cache_relative(module: &str) -> Result<String, String> {
+    if module.is_empty()
+        || module.split('.').any(|part| {
+            part.is_empty()
+                || !part
+                    .chars()
+                    .all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '\'')
+        })
+    {
+        return Err(format!("invalid Mathlib module: {module}"));
+    }
+    Ok(if module == "Mathlib" {
+        "packages/mathlib/Mathlib.lean".to_owned()
+    } else {
+        format!("packages/mathlib/{}.lean", module.replace('.', "/"))
+    })
+}
+
+fn mathlib_artifact_cache_relative(module: &str) -> Result<String, String> {
+    if module.is_empty()
+        || module.split('.').any(|part| {
+            part.is_empty()
+                || !part
+                    .chars()
+                    .all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '\'')
+        })
+    {
+        return Err(format!("invalid Mathlib module: {module}"));
+    }
+    Ok(format!(
+        "packages/mathlib/.lake/build/lib/lean/{}.olean",
+        module.replace('.', "/")
+    ))
+}
+
+fn read_cache_mathlib_source(cache_root: &Path, module: &str) -> Result<Vec<u8>, String> {
+    let relative = mathlib_source_cache_relative(module)?;
+    read_openat(
+        cache_root,
+        &relative,
+        &format!("Mathlib source {module}"),
+        MAX_ARTIFACT_BYTES,
+    )
+}
+
 fn read_cache_regular(cache_root: &Path, relative: &str, label: &str) -> Result<Vec<u8>, String> {
-    read_openat(cache_root, relative, label)
+    let expected_prefix = Path::new("packages/mathlib/.lake/build/lib/lean");
+    let path = Path::new(relative);
+    if !path.starts_with(expected_prefix)
+        || path.extension().and_then(|ext| ext.to_str()) != Some("olean")
+    {
+        return Err(format!(
+            "{label} must use a validated Mathlib artifact path"
+        ));
+    }
+    read_openat(cache_root, relative, label, MAX_CACHE_ARTIFACT_BYTES)
+}
+
+fn read_cache_mathlib_artifact(cache_root: &Path, module: &str) -> Result<Vec<u8>, String> {
+    let relative = mathlib_artifact_cache_relative(module)?;
+    read_cache_regular(cache_root, &relative, "Mathlib artifact")
 }
 
 fn validate_source_provenance(
@@ -1615,10 +1658,15 @@ fn read_bounded_regular(repo_root: &Path, relative: &str, label: &str) -> Result
     if !safe_path(relative) {
         return Err(format!("unsafe {label} path: {relative}"));
     }
-    read_openat(repo_root, relative, label)
+    read_openat(repo_root, relative, label, MAX_ARTIFACT_BYTES)
 }
 
-fn read_openat(root: &Path, relative: &str, label: &str) -> Result<Vec<u8>, String> {
+fn read_openat(
+    root: &Path,
+    relative: &str,
+    label: &str,
+    max_bytes: u64,
+) -> Result<Vec<u8>, String> {
     let root = root
         .canonicalize()
         .map_err(|error| format!("cannot resolve {label} root: {error}"))?;
@@ -1678,14 +1726,14 @@ fn read_openat(root: &Path, relative: &str, label: &str) -> Result<Vec<u8>, Stri
     if metadata.nlink() != 1 {
         return Err(format!("{label} cannot be a hardlink alias"));
     }
-    if !metadata.is_file() || metadata.len() > MAX_ARTIFACT_BYTES {
+    if !metadata.is_file() || metadata.len() > max_bytes {
         return Err(format!("{label} is not a bounded unique regular file"));
     }
     let mut bytes = Vec::new();
-    file.take(MAX_ARTIFACT_BYTES + 1)
+    file.take(max_bytes + 1)
         .read_to_end(&mut bytes)
         .map_err(|error| format!("cannot read {label}: {error}"))?;
-    if bytes.len() as u64 > MAX_ARTIFACT_BYTES {
+    if bytes.len() as u64 > max_bytes {
         return Err(format!("{label} exceeds byte bound"));
     }
     Ok(bytes)
@@ -2125,6 +2173,104 @@ mod tests {
         assert!(read_bounded_regular(root.path(), "oversize", "artifact")
             .unwrap_err()
             .contains("bounded"));
+    }
+
+    #[test]
+    fn cache_artifact_reader_rejects_cached_lean_source_above_two_mebibytes() {
+        let root = TempDir::new().unwrap();
+        let relative = "packages/mathlib/Mathlib/Data/Matrix/Basic.lean";
+        let path = root.path().join(relative);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        fs::write(&path, vec![b'x'; super::MAX_ARTIFACT_BYTES as usize + 1]).unwrap();
+
+        let error = super::read_cache_regular(root.path(), relative, "Mathlib source").unwrap_err();
+        assert!(
+            error.contains("Mathlib source")
+                || error.contains("bounded")
+                || error.contains("artifact path")
+        );
+    }
+
+    #[test]
+    fn cache_artifact_reader_rejects_dot_segment_escape() {
+        let root = TempDir::new().unwrap();
+        let escaped = "packages/mathlib/escaped.olean";
+        let escaped_path = root.path().join(escaped);
+        fs::create_dir_all(escaped_path.parent().unwrap()).unwrap();
+        fs::write(
+            &escaped_path,
+            vec![b'x'; super::MAX_ARTIFACT_BYTES as usize + 1],
+        )
+        .unwrap();
+
+        let error = super::read_cache_regular(
+            root.path(),
+            "packages/mathlib/.lake/build/lib/lean/../../../../escaped.olean",
+            "Mathlib artifact",
+        )
+        .unwrap_err();
+        assert!(error.contains("unsafe") || error.contains("validated Mathlib artifact path"));
+    }
+
+    #[test]
+    fn cache_source_reader_rejects_cached_lean_source_above_two_mebibytes() {
+        let root = TempDir::new().unwrap();
+        let relative = "packages/mathlib/Mathlib/Data/Matrix/Basic.lean";
+        let path = root.path().join(relative);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        fs::write(&path, vec![b'x'; super::MAX_ARTIFACT_BYTES as usize + 1]).unwrap();
+
+        let error =
+            super::read_cache_mathlib_source(root.path(), "Mathlib.Data.Matrix.Basic").unwrap_err();
+        assert!(
+            error.contains("Mathlib source Mathlib.Data.Matrix.Basic") && error.contains("bounded")
+        );
+    }
+
+    #[test]
+    fn cache_artifact_reader_accepts_large_olean_within_cache_specific_bound() {
+        let root = TempDir::new().unwrap();
+        let relative = "packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean";
+        let path = root.path().join(relative);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        let payload = vec![b'x'; 3_365_968];
+        fs::write(&path, &payload).unwrap();
+
+        assert_eq!(
+            super::read_cache_regular(root.path(), relative, "cache artifact").unwrap(),
+            payload
+        );
+    }
+
+    #[test]
+    fn cache_artifact_reader_rejects_artifacts_above_eight_mebibytes() {
+        let root = TempDir::new().unwrap();
+        let relative = "packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/TooLarge.olean";
+        let path = root.path().join(relative);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        fs::write(&path, vec![b'x'; 8 * 1024 * 1024 + 1]).unwrap();
+
+        assert!(
+            super::read_cache_regular(root.path(), relative, "cache artifact")
+                .unwrap_err()
+                .contains("bounded")
+        );
+    }
+
+    #[test]
+    fn structured_reader_keeps_two_mebibyte_bound() {
+        let root = TempDir::new().unwrap();
+        fs::write(
+            root.path().join("oversize-structured"),
+            vec![0u8; 2 * 1024 * 1024 + 1],
+        )
+        .unwrap();
+
+        assert!(
+            read_bounded_regular(root.path(), "oversize-structured", "structured artifact")
+                .unwrap_err()
+                .contains("bounded")
+        );
     }
 
     #[test]

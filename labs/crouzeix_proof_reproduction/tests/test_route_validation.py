@@ -1151,6 +1151,92 @@ class RouteValidationTests(unittest.TestCase):
         )
         self.assert_invalid(fixture, "candidate route source blob mismatch")
 
+    def test_cache_artifact_reader_rejects_cached_lean_source_above_two_mebibytes(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        relative = Path("packages/mathlib/Mathlib/Data/Matrix/Basic.lean")
+
+        write_bytes(cache_root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+
+        with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib source|artifact path|byte bound"):
+            route_validation._read_cache_bytes(cache_root, relative, "Mathlib source")
+
+    def test_cache_artifact_reader_rejects_dot_segment_escape(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        escaped = Path("packages/mathlib/escaped.olean")
+        relative = Path("packages/mathlib/.lake/build/lib/lean/../../../../escaped.olean")
+
+        write_bytes(cache_root / escaped, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+
+        with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib artifact|validated Mathlib artifact path|unsafe"):
+            route_validation._read_cache_bytes(cache_root, relative, "Mathlib artifact")
+
+    def test_cache_artifact_reader_rejects_other_non_normal_paths(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        valid = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean")
+        write_bytes(cache_root / valid, b"x")
+
+        for raw in (
+            "/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean",
+            "packages/mathlib/.lake/build/lib/lean/./Mathlib/Data/Matrix/Basic.olean",
+            r"packages\mathlib\.lake\build\lib\lean\Mathlib\Data\Matrix\Basic.olean",
+        ):
+            with self.subTest(raw=raw):
+                with self.assertRaisesRegex(route_validation.RouteValidationError, "validated Mathlib artifact path|unsafe"):
+                    route_validation._read_cache_bytes(cache_root, raw, "Mathlib artifact")
+
+    def test_cache_source_reader_rejects_cached_lean_source_above_two_mebibytes(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        relative = Path("packages/mathlib/Mathlib/Data/Matrix/Basic.lean")
+
+        write_bytes(cache_root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+
+        with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib source Mathlib.Data.Matrix.Basic exceeds byte bound"):
+            route_validation._read_mathlib_source_bytes(cache_root, "Mathlib.Data.Matrix.Basic")
+
+    def test_cache_artifact_reader_accepts_large_olean_within_cache_specific_bound(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        relative = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean")
+        payload = b"x" * 3_365_968
+
+        write_bytes(cache_root / relative, payload)
+
+        self.assertEqual(
+            route_validation._read_cache_bytes(cache_root, relative, "cache artifact"),
+            payload,
+        )
+
+    def test_cache_artifact_reader_rejects_artifacts_above_eight_mebibytes(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        cache_root = Path(temporary.name)
+        relative = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/TooLarge.olean")
+
+        write_bytes(cache_root / relative, b"x" * (8 * 1024 * 1024 + 1))
+
+        with self.assertRaisesRegex(route_validation.RouteValidationError, "cache artifact exceeds byte bound"):
+            route_validation._read_cache_bytes(cache_root, relative, "cache artifact")
+
+    def test_structured_reader_keeps_two_mebibyte_bound(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        relative = Path("artifacts/oversize.json")
+
+        write_bytes(root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+
+        with self.assertRaisesRegex(route_validation.RouteValidationError, "structured artifact exceeds byte bound"):
+            route_validation._read_rooted_bytes(root, relative.as_posix(), "structured artifact")
+
     def test_schema_files_are_draft_2020_12_and_closed_recursively(self) -> None:
         schema_root = REPO / "labs/crouzeix_proof_reproduction/schemas"
         for name in (
