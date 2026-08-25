@@ -6633,16 +6633,16 @@ correspondence, and publish a dedicated-route receipt.
   =5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331=
   and payload commit =66045b6fd0be878bf76ad0171387e53619bf09f0=.
 
-** TODO Publish And Promote Six-Node Lorist-Schwenninger Route :lean:evidence:review:ticket:
+** IMPLEMENTING Publish And Promote Six-Node Lorist-Schwenninger Route :lean:evidence:review:ticket:
 :PROPERTIES:
 :ID: CPFR-086
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-086-ls-certification
+:WORKTREE: .worktrees/cpfr-086-ls-certification
 :DEPENDS_ON: CPFR-084
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: CPFR-086 implementation subagent
+:AGENT_RUN: current worker thread
+:MODEL: GPT-5.5
 :END:
 Publish six current v2 receipts and atomically promote the LS graph and inventory.
 
@@ -6681,7 +6681,12 @@ create-only candidates, review source correspondence, and promote the full graph
 - Rust Crouzeix source tests
 
 *** Verification Evidence
-Pending implementation.
+- Base and candidate commit frozen at
+  =56742c15cf62ea017526705e38b657d4122adcbc= in fresh worktree
+  =.worktrees/cpfr-086-ls-certification= on branch
+  =feat/cpfr-086-ls-certification=.
+- LS no-build preflight previously reported =ready= with 56 local modules and
+  no missing dependency artifacts. Certification evidence remains unpublished.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
