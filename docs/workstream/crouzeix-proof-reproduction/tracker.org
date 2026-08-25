@@ -6694,8 +6694,8 @@ create-only candidates, review source correspondence, and promote the full graph
   reported =ready= with 56 local modules and =missing_artifacts: []=. This is
   not a =locally-verified= transition; candidate receipts and the unpublished
   route manifest are not yet bound.
-- The single create-only =publish-ls= invocation completed successfully and
-  published six unreferenced v2 candidates, committed as
+- One coherent create-only =publish-ls= result published six unreferenced v2
+  candidates, committed as
   =18b35435d378521a3c7195d985569af51679a201=:
   - =ls-equation-one-terminal-bound/attempt-002=
     =289ab539299d35bfe5c2d8f83c5d19d3f05a9f4550831d2bca6fe19fe92e7646=
@@ -6717,11 +6717,10 @@ create-only candidates, review source correspondence, and promote the full graph
   and local source closure digest
   =62e415435cb529041163072a5348cc8438fe3b594a0f20919f015a22cf0970d5=.
   Every audit reported exactly =Classical.choice=, =Quot.sound=, and
-  =propext=. The 16 historical v1 member digests remained byte-identical
-  before and after publication (snapshot digest
-  =4509c0cb6f27d1fffcdd88d3bbbc52fc1044deb550cdf4ed110e70f14d66a8f9=).
-  The candidates remain unreferenced; no graph or inventory promotion has
-  occurred and no execution-ledger state advanced.
+  =propext=. Git-object comparison confirmed that all 16 historical v1 member
+  files remained byte-identical across the Task 5 range. The candidates remain
+  unreferenced; no graph or inventory promotion has occurred and no
+  execution-ledger state advanced.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
