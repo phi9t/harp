@@ -583,6 +583,24 @@ class LoristSchwenningerContractTests(unittest.TestCase):
                 REPO, REPO / "formalization/lean", stale
             )
 
+    def test_reviewed_source_contract_rejects_noncanonical_ls_node_order(
+        self,
+    ) -> None:
+        manifest = route_validation.load_route_manifest(
+            REPO, ROUTE_MANIFEST_PATH.relative_to(REPO)
+        )
+        reordered = type(manifest)(
+            **{
+                **manifest.__dict__,
+                "nodes": (manifest.nodes[1], manifest.nodes[0], *manifest.nodes[2:]),
+            }
+        )
+
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError, "noncanonical LS node order"
+        ):
+            route_validation.validate_ls_reviewed_source_contract(reordered)
+
     def test_theorem_body_audits_require_exact_provider_calls(self) -> None:
         audits = ls_validation.audit_required_theorem_provider_calls(REPO)
         self.assertEqual(

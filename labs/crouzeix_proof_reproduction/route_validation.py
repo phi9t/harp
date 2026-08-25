@@ -1067,7 +1067,7 @@ def validate_ls_reviewed_source_contract(manifest: RouteManifest) -> None:
         import ls_contract
 
     if tuple(node.node_id for node in manifest.nodes) != ls_contract.NODE_ORDER:
-        return
+        raise RouteValidationError("noncanonical LS node order")
     for node in manifest.nodes:
         expected = ls_contract.BY_ID[node.node_id]
         if node.source_locator != expected.source_locator:
@@ -1077,7 +1077,6 @@ def validate_ls_reviewed_source_contract(manifest: RouteManifest) -> None:
 
 
 def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: RouteManifest) -> None:
-    validate_ls_reviewed_source_contract(manifest)
     if manifest.route_id in {"jin", "lorist-schwenninger"}:
         if manifest.claim_kind != "source-faithful":
             raise RouteValidationError("Jin and Lorist-Schwenninger must be source-faithful")
@@ -1213,6 +1212,7 @@ def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: Rou
                 or referenced.statement_sha256 != node.statement_sha256
             ):
                 raise RouteValidationError(f"LS reuse mismatch for node: {node.node_id}")
+    validate_ls_reviewed_source_contract(manifest)
 
 
 def _artifact_digest(repo_root: Path, path: object, expected: object, label: str) -> bytes:
