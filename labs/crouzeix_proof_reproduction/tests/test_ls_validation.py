@@ -26,6 +26,7 @@ INVENTORY = LAB / "formal_targets/lorist-schwenninger/library-inventory.json"
 FORMAL_TARGET = LAB / "formal_targets/lorist-schwenninger"
 REPOSITORY_ROOT = LAB.parents[1]
 V1_FIXTURES = LAB / "fixtures/ls_v1"
+HISTORICAL_GRAPH = LAB / "tests/fixtures/ls_historical/source-graph.json"
 VALIDATOR_STDOUT = (
     b"[lean] target=CrouzeixLoristSchwenninger\n"
     b"[lean] root=formalization/lean\n"
@@ -107,9 +108,15 @@ def historical_passed_rows() -> tuple[ls_validation.LSGraphRow, ...]:
 
     return tuple(
         row
-        for row in ls_validation.load_route_graph(GRAPH)
+        for row in historical_graph_rows()
         if row.status == "passed" and row.receipt_sha256 is not None
     )
+
+
+def historical_graph_rows() -> tuple[ls_validation.LSGraphRow, ...]:
+    if sha256_file(HISTORICAL_GRAPH) != ls_validation.LS_HISTORICAL_GRAPH_SHA256:
+        raise AssertionError("historical LS graph fixture digest drifted")
+    return ls_validation.load_route_graph(HISTORICAL_GRAPH)
 
 
 def current_target_overrides(
@@ -402,7 +409,7 @@ def make_v2_receipts(
     (repository_root / "scripts/check_lean_library.sh").write_text(
         '#!/bin/sh\nlake --try-cache build "$1"\n', encoding="utf-8"
     )
-    rows = ls_validation.load_route_graph(GRAPH)
+    rows = historical_graph_rows()
     published = ls_receipts.publish_ls_receipts(
         rows, repository_root, formal_target_root, executor=ValidatorExecutor()
     )
@@ -439,16 +446,11 @@ class LSValidationTests(unittest.TestCase):
         self.assertEqual(graph[-1].role, "terminal")
         self.assertEqual(
             {row.node_id for row in graph if row.status == "passed"},
-            {"ls-equation-one-terminal-bound", "ls-scalar-contradiction"},
+            set(ls_contract.NODE_ORDER),
         )
         self.assertEqual(
             {row.node_id for row in graph if row.status == "blocked"},
-            {
-                "ls-power-recurrence",
-                "ls-perturbation-lemma",
-                "ls-double-layer-realization",
-                "ls-terminal-crouzeix",
-            },
+            set(),
         )
         self.assertTrue(
             all(
@@ -457,8 +459,7 @@ class LSValidationTests(unittest.TestCase):
                 if row.status == "passed"
             )
         )
-        self.assertIn("ls-perturbation-lemma", graph[-1].dependencies)
-        self.assertIn("ls-double-layer-realization", graph[-1].dependencies)
+        self.assertEqual(graph[-1].dependencies, ("ls-double-layer-realization",))
         self.assertTrue(all("565b6a3" not in row.source_locator for row in graph))
         self.assertTrue(all("JIN" not in row.source_locator for row in graph))
 
@@ -523,27 +524,23 @@ class LSValidationTests(unittest.TestCase):
                     ):
                         ls_validation.load_route_graph(path)
 
-    def test_live_graph_is_accepted_only_as_exact_legacy_contract(self) -> None:
+    def test_live_graph_is_exact_promoted_canonical_contract(self) -> None:
         rows = ls_validation.load_route_graph(GRAPH)
         self.assertEqual(
             tuple(row.lean_name for row in rows),
-            tuple(
-                (node.legacy_graph_lean_name or node.declaration)
-                for node in ls_contract.NODES
-            ),
+            tuple(node.declaration for node in ls_contract.NODES),
         )
         self.assertEqual(
             tuple(row.dependencies for row in rows),
-            tuple(node.legacy_dependencies for node in ls_contract.NODES),
+            tuple(node.dependencies for node in ls_contract.NODES),
         )
         ls_validation._validate_graph_contract(rows, allow_legacy=True)
-        with self.assertRaisesRegex(protocol.ValidationError, "canonical LS graph"):
-            ls_validation._validate_graph_contract(rows, allow_legacy=False)
+        ls_validation._validate_graph_contract(rows, allow_legacy=False)
 
     def test_graph_contract_rejects_legacy_declaration_with_canonical_dependencies(
         self,
     ) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         hybrid = replace_graph_row(
             rows,
             "ls-terminal-crouzeix",
@@ -557,7 +554,7 @@ class LSValidationTests(unittest.TestCase):
     def test_graph_contract_rejects_canonical_declaration_with_legacy_dependencies(
         self,
     ) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         hybrid = replace_graph_row(
             rows,
             "ls-terminal-crouzeix",
@@ -614,7 +611,7 @@ class LSValidationTests(unittest.TestCase):
         node_id = "ls-equation-one-terminal-bound"
         rows = tuple(
             row
-            for row in ls_validation.load_route_graph(GRAPH)
+            for row in historical_graph_rows()
             if row.node_id == node_id
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -638,7 +635,7 @@ class LSValidationTests(unittest.TestCase):
                 validate_receipts(failed_rows, formal_target_root, repository_root)
 
     def test_failed_receipt_requires_failed_execution_evidence(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -756,7 +753,7 @@ class LSValidationTests(unittest.TestCase):
                 )
 
     def test_failed_receipt_rejects_successful_axiom_evidence(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -783,7 +780,7 @@ class LSValidationTests(unittest.TestCase):
                 validate_receipts(failed_rows, formal_target_root, repository_root)
 
     def test_committed_receipts_reject_published_mapped_or_blocked_rows(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         source = next(
             row for row in rows if row.node_id == "ls-equation-one-terminal-bound"
         )
@@ -813,7 +810,7 @@ class LSValidationTests(unittest.TestCase):
                         validate_receipts(bad_rows, formal_target_root, repository_root)
 
     def test_committed_receipt_build_target_has_exact_node_mapping(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -848,7 +845,7 @@ class LSValidationTests(unittest.TestCase):
                     )
 
     def test_committed_receipt_build_target_is_in_active_import_closure(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
                 Path(directory).resolve()
@@ -920,7 +917,7 @@ import Hidden.AfterHeader
         )
 
     def test_committed_receipts_require_exact_selected_attempt_tree(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         for extra_kind in ("file", "directory", "fifo", "symlink"):
             with self.subTest(extra_kind=extra_kind):
@@ -945,7 +942,7 @@ import Hidden.AfterHeader
                         validate_receipts(rows, formal_target_root, repository_root)
 
     def test_committed_receipts_enforce_each_output_log_budget(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         for log_name, digest_field in (
             ("stdout.log", "stdout_sha256"),
@@ -1457,7 +1454,7 @@ import Hidden.AfterHeader
         )
 
     def test_committed_receipts_accept_zero_axioms_and_bind_declaration(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1502,7 +1499,7 @@ import Hidden.AfterHeader
                 validate_receipts(bad_rows, formal_target_root, repository_root)
 
     def test_committed_receipts_reject_duplicate_json_keys(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         cases = (
             ("receipt.json", None),
@@ -1540,7 +1537,7 @@ import Hidden.AfterHeader
                         validate_receipts(bad_rows, formal_target_root, repository_root)
 
     def test_committed_receipt_discovery_bounds_attempt_count(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1559,7 +1556,7 @@ import Hidden.AfterHeader
                 validate_receipts(rows, formal_target_root, repository_root)
 
     def test_committed_receipt_discovery_bounds_all_node_entries(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1575,7 +1572,7 @@ import Hidden.AfterHeader
                 validate_receipts(rows, formal_target_root, repository_root)
 
     def test_committed_receipt_selected_attempt_walk_fails_early(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1622,7 +1619,7 @@ import Hidden.AfterHeader
                     validate_receipts(rows, formal_target_root, repository_root)
 
     def test_source_discovery_rejects_non_lake_symlink(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             formal_target_root, repository_root = copy_committed_receipts(root)
@@ -1638,7 +1635,7 @@ import Hidden.AfterHeader
     def test_committed_receipt_import_discovery_bounds_all_source_entries(
         self,
     ) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
                 Path(directory).resolve()
@@ -1650,7 +1647,7 @@ import Hidden.AfterHeader
                     validate_receipts(rows, formal_target_root, repository_root)
 
     def test_committed_receipt_discovery_bounds_aggregate_receipt_bytes(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1683,7 +1680,7 @@ import Hidden.AfterHeader
             self.assertEqual(next_attempt_number(node_root), 4)
 
     def test_committed_receipts_reject_duplicate_dependency_ids(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-scalar-contradiction"
         dependency_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
@@ -1725,7 +1722,7 @@ import Hidden.AfterHeader
                     )
                     member = (
                         selected_attempt(
-                            ls_validation.load_route_graph(GRAPH),
+                            historical_graph_rows(),
                             formal_target_root,
                             "ls-equation-one-terminal-bound",
                         )
@@ -1737,7 +1734,7 @@ import Hidden.AfterHeader
                         protocol.ValidationError, f"{digest_field}.*mismatch"
                     ):
                         validate_receipts(
-                            ls_validation.load_route_graph(GRAPH),
+                            historical_graph_rows(),
                             formal_target_root,
                             repository_root,
                         )
@@ -1747,7 +1744,7 @@ import Hidden.AfterHeader
                 Path(directory).resolve()
             )
             attempt = selected_attempt(
-                ls_validation.load_route_graph(GRAPH),
+                historical_graph_rows(),
                 formal_target_root,
                 "ls-equation-one-terminal-bound",
             )
@@ -1759,13 +1756,13 @@ import Hidden.AfterHeader
                 protocol.ValidationError, "module_sha256.*mismatch"
             ):
                 validate_receipts(
-                    ls_validation.load_route_graph(GRAPH),
+                    historical_graph_rows(),
                     formal_target_root,
                     repository_root,
                 )
 
     def test_committed_receipts_reject_graph_receipt_and_status_drift(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1813,7 +1810,7 @@ import Hidden.AfterHeader
                 validate_receipts(bad_rows, formal_target_root, repository_root)
 
     def test_committed_receipts_reject_axiom_and_declaration_drift(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1858,7 +1855,7 @@ import Hidden.AfterHeader
                 validate_receipts(bad_rows, formal_target_root, repository_root)
 
     def test_committed_receipts_reject_missing_symlinked_and_unsafe_files(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1930,7 +1927,7 @@ import Hidden.AfterHeader
     def test_passed_node_requires_passed_mechanically_validated_predecessors(
         self,
     ) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-scalar-contradiction"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -1981,7 +1978,7 @@ import Hidden.AfterHeader
                 validate_receipts(dependent_first, formal_target_root, repository_root)
 
     def test_committed_receipt_selects_one_matching_attempt_among_history(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             formal_target_root, repository_root = copy_committed_receipts(
@@ -2039,7 +2036,7 @@ import Hidden.AfterHeader
                 )
 
     def test_committed_receipt_ignores_missing_nonmatching_history(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -2052,7 +2049,7 @@ import Hidden.AfterHeader
             self.assertIn(node_id, receipts)
 
     def test_committed_receipt_rejects_symlinked_historical_entries(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         for historical_state in ("attempt", "receipt"):
             with self.subTest(historical_state=historical_state):
@@ -2079,7 +2076,7 @@ import Hidden.AfterHeader
                         validate_receipts(rows, formal_target_root, repository_root)
 
     def test_selected_build_swap_after_tree_check_is_rejected(self) -> None:
-        rows = ls_validation.load_route_graph(GRAPH)
+        rows = historical_graph_rows()
         node_id = "ls-equation-one-terminal-bound"
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
@@ -2180,7 +2177,7 @@ import Hidden.AfterHeader
         self.assertEqual(inventory["source_identity"], "arxiv:2608.03841v1")
         self.assertEqual(
             {item["resolution"] for item in inventory["facts"]},
-            {"local_compiled", "local_task", "blocked"},
+            {"local_compiled"},
         )
 
         with tempfile.TemporaryDirectory() as directory:
@@ -2208,7 +2205,7 @@ import Hidden.AfterHeader
     ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
-            graph = ls_validation.load_route_graph(GRAPH)
+            graph = historical_graph_rows()
 
             summary = ls_validation.materialize_tasks(graph, root)
 

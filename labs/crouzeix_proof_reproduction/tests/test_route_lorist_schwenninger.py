@@ -374,13 +374,13 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
 
 
 class LoristSchwenningerContractTests(unittest.TestCase):
-    def test_unpromoted_ls_manifest_is_authored_and_incomplete(self) -> None:
+    def test_promoted_ls_manifest_is_mapped_and_incomplete(self) -> None:
         result = route_validation.inspect_route(
             REPO, "lorist-schwenninger", allow_unpublished=True
         )
-        self.assertEqual(result.claim_level, "authored")
+        self.assertEqual(result.claim_level, "mapped")
         self.assertEqual(result.status, "incomplete")
-        self.assertEqual(result.reason, "LS graph is not promoted")
+        self.assertEqual(result.reason, "receipt or review is unpublished")
 
     def test_route_manifest_matches_exact_task7_contract(self) -> None:
         payload = json.loads(ROUTE_MANIFEST_PATH.read_text(encoding="utf-8"))

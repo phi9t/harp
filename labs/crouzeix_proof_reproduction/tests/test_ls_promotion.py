@@ -33,7 +33,7 @@ FORMAL_TARGET_RELATIVE = Path(
 GRAPH_NAME = "source-graph.json"
 INVENTORY_NAME = "library-inventory.json"
 PROMOTION_NAME = "promotion.json"
-COMMITTED_TARGET_ROOT = Path(__file__).resolve().parents[1] / "formal_targets/lorist-schwenninger"
+HISTORICAL_TARGET_ROOT = Path(__file__).resolve().parent / "fixtures/ls_historical"
 
 
 def canonical_json_bytes(value: object) -> bytes:
@@ -58,8 +58,14 @@ def read_json(path: Path) -> dict[str, object]:
 
 
 def seed_historical_pair(formal_target_root: Path) -> None:
-    shutil.copy2(COMMITTED_TARGET_ROOT / GRAPH_NAME, formal_target_root / GRAPH_NAME)
-    shutil.copy2(COMMITTED_TARGET_ROOT / INVENTORY_NAME, formal_target_root / INVENTORY_NAME)
+    graph = HISTORICAL_TARGET_ROOT / GRAPH_NAME
+    inventory = HISTORICAL_TARGET_ROOT / INVENTORY_NAME
+    if sha256_file(graph) != ls_validation.LS_HISTORICAL_GRAPH_SHA256:
+        raise AssertionError("historical LS graph fixture digest drifted")
+    if sha256_file(inventory) != ls_validation.LS_HISTORICAL_INVENTORY_SHA256:
+        raise AssertionError("historical LS inventory fixture digest drifted")
+    shutil.copy2(graph, formal_target_root / GRAPH_NAME)
+    shutil.copy2(inventory, formal_target_root / INVENTORY_NAME)
 
 
 def published_candidate_receipts(repository_root: Path) -> dict[str, dict[str, str]]:
