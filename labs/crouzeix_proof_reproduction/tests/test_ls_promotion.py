@@ -409,6 +409,69 @@ class LSPromotionTests(unittest.TestCase):
             self.assertEqual(transaction_roots(formal_target_root), [])
             self.assertEqual(stage_entries(formal_target_root), [])
 
+    def test_pre_marker_rollback_failure_surfaces_original_and_rollback_errors(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            original_graph = (formal_target_root / GRAPH_NAME).read_bytes()
+            original_inventory = (formal_target_root / INVENTORY_NAME).read_bytes()
+            candidates = candidate_roster(repository_root)
+
+            original_replace = ls_promotion._replace_file_from_transaction
+
+            def hook(name: str) -> None:
+                if name == "after_graph_fsync":
+                    raise RuntimeError("original pre-marker failure")
+
+            def failing_replace(target_directory, transaction, source_name: str, destination_name: str) -> None:
+                if (
+                    source_name == "original-graph.json"
+                    and destination_name == GRAPH_NAME
+                ):
+                    raise OSError("rollback restore failure")
+                original_replace(target_directory, transaction, source_name, destination_name)
+
+            with mock.patch.object(
+                ls_promotion,
+                "_replace_file_from_transaction",
+                side_effect=failing_replace,
+            ):
+                with self.assertRaises(ls_promotion.RollbackPromotionError) as caught:
+                    run_promotion_with_hook(repository_root, candidates, hook)
+
+            self.assertIsInstance(caught.exception.original_error, RuntimeError)
+            self.assertEqual(str(caught.exception.original_error), "original pre-marker failure")
+            self.assertIsInstance(caught.exception.rollback_error, OSError)
+            self.assertEqual(str(caught.exception.rollback_error), "rollback restore failure")
+            self.assertEqual((formal_target_root / INVENTORY_NAME).read_bytes(), original_inventory)
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+            self.assertNotEqual((formal_target_root / GRAPH_NAME).read_bytes(), original_graph)
+
+    def test_rename_no_replace_rejects_unsupported_platform_without_mutation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            source = root / "marker.stage"
+            destination = root / PROMOTION_NAME
+            source.write_text("staged-marker\n", encoding="utf-8")
+            destination.write_text("existing-marker\n", encoding="utf-8")
+
+            parent_fd = os.open(root, os.O_RDONLY)
+            try:
+                with mock.patch.object(ls_promotion.platform, "system", return_value="Plan9"):
+                    with mock.patch.object(ls_promotion.os, "replace") as replace_mock:
+                        with self.assertRaisesRegex(
+                            protocol.ValidationError, "unsupported platform"
+                        ):
+                            ls_promotion._rename_file_no_replace_at(
+                                parent_fd, source.name, destination.name
+                            )
+                replace_mock.assert_not_called()
+            finally:
+                os.close(parent_fd)
+
+            self.assertEqual(source.read_text(encoding="utf-8"), "staged-marker\n")
+            self.assertEqual(destination.read_text(encoding="utf-8"), "existing-marker\n")
+
     def test_transaction_creation_failure_cleans_partial_owned_state(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             repository_root, formal_target_root = make_workspace(Path(directory).resolve())

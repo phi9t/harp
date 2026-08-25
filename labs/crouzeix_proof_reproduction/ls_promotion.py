@@ -68,6 +68,18 @@ class CommittedPromotionError(protocol.ValidationError):
         super().__init__(message)
 
 
+class RollbackPromotionError(protocol.ValidationError):
+    """Pre-marker failure plus rollback failure at the LS promotion boundary."""
+
+    def __init__(self, original_error: Exception, rollback_error: Exception) -> None:
+        self.original_error = original_error
+        self.rollback_error = rollback_error
+        super().__init__(
+            "LS pre-marker failure was followed by rollback failure: "
+            f"original={original_error}; rollback={rollback_error}"
+        )
+
+
 @dataclass(frozen=True)
 class _CandidateReceipt:
     node_id: str
@@ -428,7 +440,11 @@ def _publish_generation(
                 protocol.sha256_bytes(inventory_bytes),
             ) from error
         _rollback_pre_marker(
-            target_directory, transaction, graph_replaced=graph_replaced, inventory_replaced=inventory_replaced
+            target_directory,
+            transaction,
+            original_error=error,
+            graph_replaced=graph_replaced,
+            inventory_replaced=inventory_replaced,
         )
         raise
 
@@ -517,6 +533,7 @@ def _rollback_pre_marker(
     target_directory: ls_validation._PinnedDirectory,
     transaction: _Transaction,
     *,
+    original_error: Exception,
     graph_replaced: bool,
     inventory_replaced: bool,
 ) -> None:
@@ -538,9 +555,7 @@ def _rollback_pre_marker(
         _remove_transaction(transaction)
         _fsync_descriptor(target_directory.descriptor)
     except Exception as rollback_error:
-        raise protocol.ValidationError(
-            f"LS pre-marker rollback failed: {rollback_error}"
-        ) from rollback_error
+        raise RollbackPromotionError(original_error, rollback_error) from rollback_error
 
 
 def _replace_file_from_transaction(
@@ -958,10 +973,8 @@ def _rename_file_no_replace_at(
     if system == "Linux":
         _renameat2(parent_fd, source_name, parent_fd, destination_name)
         return
-    if os.path.exists(destination_name):
-        raise protocol.ValidationError("destination already exists")
-    os.replace(
-        source_name, destination_name, src_dir_fd=parent_fd, dst_dir_fd=parent_fd
+    raise protocol.ValidationError(
+        f"atomic no-replace rename unsupported platform: {system}"
     )
 
 
