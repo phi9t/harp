@@ -526,8 +526,6 @@ def _source_locator(
         if start > end:
             raise RouteValidationError("reversed source locator span")
         identity = f"arxiv:{arxiv_match.group('version')}"
-        if identity == LS_SOURCE_IDENTITY and path != LS_SOURCE_PATH:
-            raise RouteValidationError("invalid LS arXiv source path")
         return "arxiv", identity, path, start, end
     git_match = GIT_SOURCE_LOCATOR_RE.fullmatch(value)
     if git_match is not None:
@@ -848,7 +846,7 @@ def _jin_artifact_manifest(repo_root: Path) -> dict[str, object]:
 
 
 def _read_source_manifest_rows(repo_root: Path) -> list[dict[str, str]]:
-    data = _read_bytes(repo_root, SOURCE_MANIFEST_PATH, "source manifest")
+    data = _read_bytes(repo_root, SOURCE_MANIFEST_PATH.as_posix(), "source manifest")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as error:

@@ -493,24 +493,12 @@ fn parse_source_locator(value: &str) -> Option<(SourceLocatorKind<'_>, &str, u64
         Some((SourceLocatorKind::Git(commit), path, start, end))
     } else if let Some(rest) = head.strip_prefix("arxiv:") {
         let (version, path) = rest.split_once(':')?;
-        if path.contains('#')
-            || !safe_path(path)
-            || !valid_arxiv_identity(
-                value
-                    .split_once(':')
-                    .map(|_| &head[..head.len() - path.len() - 1])
-                    .unwrap_or(""),
-            )
-            || path != LS_SOURCE_PATH
-        {
+        let identity = head.strip_suffix(&format!(":{path}"))?;
+        if path.contains('#') || !safe_path(path) || !valid_arxiv_identity(identity) {
             return None;
         }
-        Some((
-            SourceLocatorKind::Arxiv(&value[..5 + version.len()]),
-            path,
-            start,
-            end,
-        ))
+        debug_assert_eq!(identity, format!("arxiv:{version}"));
+        Some((SourceLocatorKind::Arxiv(identity), path, start, end))
     } else if safe_path(head) {
         Some((SourceLocatorKind::Local, head, start, end))
     } else {
@@ -2068,7 +2056,10 @@ mod tests {
         validate_declaration_roster, validate_harp_reuse, validate_manifest_against_closure,
         validate_mathlib_roster, validate_records, validate_source_provenance,
         verify_published_routes, ClaimKind, CorrespondenceKind, NodeRole, ProvenanceKind,
-        RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt, MANIFEST_SCHEMA,
+        RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt, SourceLocatorKind,
+        LS_ARTIFACT_MANIFEST_PATH, LS_SOURCE_ARCHIVE_SHA256, LS_SOURCE_BYTES,
+        LS_SOURCE_FILE_SHA256, LS_SOURCE_ID, LS_SOURCE_IDENTITY, LS_SOURCE_LINES, LS_SOURCE_PATH,
+        MANIFEST_SCHEMA, SOURCE_MANIFEST_PATH,
     };
 
     fn digest(value: &Value) -> String {
@@ -3098,6 +3089,112 @@ mod tests {
     fn git_locator_rejects_opaque_path_fragment() {
         let locator = format!("git:{}:Lean/Foo.lean#opaque#L1-L1", "a".repeat(40));
         assert!(parse_source_locator(&locator).is_none());
+    }
+
+    #[test]
+    fn arxiv_locator_preserves_full_identity_and_accepts_generic_safe_path() {
+        let locator = "arxiv:2608.03841v2:appendix.tex#L1-L2";
+        let (kind, path, start, end) = parse_source_locator(locator).unwrap();
+        assert_eq!(path, "appendix.tex");
+        assert_eq!((start, end), (1, 2));
+        match kind {
+            SourceLocatorKind::Arxiv(identity) => {
+                assert_eq!(identity, "arxiv:2608.03841v2");
+            }
+            other => panic!("expected arxiv locator, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn ls_arxiv_validation_rejects_wrong_identity_and_path_after_generic_parse() {
+        let root = TempDir::new().unwrap();
+        fs::create_dir_all(
+            root.path()
+                .join("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger"),
+        )
+        .unwrap();
+        fs::write(
+            root.path().join(LS_ARTIFACT_MANIFEST_PATH),
+            serde_json::to_vec(&json!({
+                "archive_sha256": LS_SOURCE_ARCHIVE_SHA256,
+                "manuscript_bytes": LS_SOURCE_BYTES,
+                "manuscript_path": LS_SOURCE_PATH,
+                "manuscript_sha256": LS_SOURCE_FILE_SHA256,
+                "line_count": LS_SOURCE_LINES,
+                "schema_version": "crouzeix-arxiv-artifact-manifest/v1",
+                "source_id": LS_SOURCE_ID,
+                "source_identity": LS_SOURCE_IDENTITY,
+            }))
+            .unwrap(),
+        )
+        .unwrap();
+        fs::create_dir_all(root.path().join("evidence/crouzeix_conjecture")).unwrap();
+        fs::write(
+            root.path().join(SOURCE_MANIFEST_PATH),
+            concat!(
+                "schema_version\treceipt_id\tsource_id\tsource_class\trole\timmutable_identity\t",
+                "source_url\tupstream_path\tbytes\tsha256\tlocal_path\tobserved\tlicense_status\tredistribution_status\n",
+                "crouzeix-source-receipt/v1\tLS-ARXIV-V1-SOURCE-ARCHIVE\tLS-ARXIV-V1\tarxiv-artifact\tsource\tarxiv:2608.03841v1\thttps://export.arxiv.org/e-print/2608.03841v1\tsource.tar.gz\t7330\tb4b6ddcdd726897826db500743e06649eddee5de5f32ded53e0d1adaa5f512c9\t-\t2026-08-14\tarxiv-nonexclusive\tquotation-only\n",
+                "crouzeix-source-receipt/v1\tLS-ARXIV-V1-TEX\tLS-ARXIV-V1\tarxiv-artifact\tmanuscript\tarxiv:2608.03841v1\thttps://export.arxiv.org/e-print/2608.03841v1\tCrouzeixConjecturev2.tex\t18783\t20aad7aedd831e32e8a8b452fc51542185251a052830620c2201ff9863709f0a\t-\t2026-08-14\tarxiv-nonexclusive\tquotation-only\n"
+            ),
+        )
+        .unwrap();
+
+        let manifest = RouteManifest {
+            schema_version: MANIFEST_SCHEMA.into(),
+            route_id: RouteId::LoristSchwenninger,
+            claim_kind: ClaimKind::SourceFaithful,
+            aggregate_module: "CrouzeixLoristSchwenninger".into(),
+            build_target: "CrouzeixLoristSchwenninger".into(),
+            terminal_declaration: "CrouzeixConjecture.loristSchwenningerMainTheorem".into(),
+            terminal_type_sha256: "c".repeat(64),
+            consequence_declarations: vec![
+                "CrouzeixConjecture.loristSchwenningerMainTheorem".into()
+            ],
+            source_identities: vec![
+                "arxiv:2608.03841v2".into(),
+                format!("sha256:{LS_SOURCE_FILE_SHA256}"),
+                format!("sha256:{LS_SOURCE_ARCHIVE_SHA256}"),
+            ],
+            shared_foundation_modules: vec!["CrouzeixLoristSchwenninger".into()],
+            module_closure: vec!["CrouzeixLoristSchwenninger".into()],
+            module_closure_sha256: "d".repeat(64),
+            allowed_axioms: vec![
+                "Classical.choice".into(),
+                "Quot.sound".into(),
+                "propext".into(),
+            ],
+            review_path: "evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json".into(),
+            review_sha256: None,
+            receipt_path: "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"
+                .into(),
+            receipt_sha256: None,
+            nodes: vec![RouteNode {
+                node_id: "ls-terminal-crouzeix".into(),
+                role: NodeRole::Terminal,
+                declaration: "CrouzeixConjecture.loristSchwenningerMainTheorem".into(),
+                module_path: "CrouzeixLoristSchwenninger.lean".into(),
+                dependency_ids: Vec::new(),
+                provenance_kind: ProvenanceKind::Source,
+                correspondence_kind: CorrespondenceKind::DirectSource,
+                source_locator: Some("arxiv:2608.03841v2:appendix.tex#L1-L2".into()),
+                source_archive_sha256: Some(LS_SOURCE_ARCHIVE_SHA256.into()),
+                source_file_sha256: Some(LS_SOURCE_FILE_SHA256.into()),
+                source_excerpt_sha256: Some("e".repeat(64)),
+                source_line_count: Some(2),
+                reused_from_route: None,
+                reused_node_id: None,
+                declaration_type_path:
+                    "evidence/crouzeix_conjecture/routes/lorist-schwenninger/types/main.txt".into(),
+                statement_sha256: "c".repeat(64),
+            }],
+        };
+
+        assert!(
+            validate_source_provenance(root.path(), &manifest, &manifest.nodes[0])
+                .unwrap_err()
+                .contains("source identities must be exact")
+        );
     }
 
     #[test]
