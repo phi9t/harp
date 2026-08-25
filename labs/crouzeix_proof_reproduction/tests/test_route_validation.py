@@ -19,6 +19,14 @@ SCRIPT = REPO / "labs/crouzeix_proof_reproduction/proof_evidence.py"
 HEX_A = "a" * 64
 HEX_B = "b" * 64
 HARP_SUPPORT = tuple(sorted(route_validation.HARP_ALLOWED_LS_SUPPORT))
+LS_MANIFEST_PATH = Path(
+    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+)
+LS_RECEIPT_PATH = Path(
+    "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"
+)
+LS_MANIFEST_SHA256 = "c8c4aa731781015a356b0cc43f080df36a9d489a0b60700fea8e331c5993fbaa"
+LS_RECEIPT_SHA256 = "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b"
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -85,9 +93,9 @@ class RouteFixture:
                 )
         self._write_sources()
         self._write_bound_artifacts()
-        self.manifest = self._manifest_payload()
         if route_id == "harp":
-            self._write_ls_manifest()
+            self._write_ls_dependency()
+        self.manifest = self._manifest_payload()
         write_json(self.repo / self.manifest_path, self.manifest)
         self._initialize_git()
         self._write_bundle()
@@ -196,12 +204,12 @@ class RouteFixture:
             node["provenance_kind"] = "reused-route"
             node["correspondence_kind"] = "reused-route"
             node["reused_from_route"] = "lorist-schwenninger"
-            node["reused_node_id"] = key
+            node["reused_node_id"] = None
         return node
 
     def _manifest_payload(self) -> dict[str, object]:
         closure = sorted(self.modules.values())
-        return {
+        manifest = {
             "schema_version": "crouzeix-route-proof-manifest/v1",
             "route_id": self.route_id,
             "claim_kind": self.claim_kind,
@@ -238,55 +246,31 @@ class RouteFixture:
                 ]
             ),
         }
-
-    def _write_ls_manifest(self) -> None:
-        ls_path = route_validation.ROUTE_MANIFEST_PATHS["lorist-schwenninger"]
-        nodes = []
-        for index, module in enumerate(HARP_SUPPORT):
-            key = f"reuse-{index}"
-            nodes.append(
+        if self.route_id == "harp":
+            manifest["route_dependencies"] = [
                 {
-                    **self._node(key, []),
-                    "provenance_kind": "source",
-                    "correspondence_kind": "direct-source",
-                    "source_locator": f"{self.source_path.as_posix()}#L1-L1",
-                    "source_archive_sha256": None,
-                    "source_file_sha256": sha256_bytes(
-                        (self.repo / self.source_path).read_bytes()
-                    ),
-                    "source_excerpt_sha256": sha256_bytes(
-                        (self.repo / self.source_path).read_bytes()
-                    ),
-                    "source_line_count": 1,
-                    "reused_from_route": None,
-                    "reused_node_id": None,
-                    "module_path": self.module_path(module).as_posix(),
-                    "role": "terminal" if index == len(HARP_SUPPORT) - 1 else "load-bearing",
+                    "route_id": "lorist-schwenninger",
+                    "manifest_path": LS_MANIFEST_PATH.as_posix(),
+                    "manifest_sha256": LS_MANIFEST_SHA256,
+                    "receipt_path": LS_RECEIPT_PATH.as_posix(),
+                    "receipt_sha256": LS_RECEIPT_SHA256,
                 }
-            )
-        payload = {
-            "schema_version": "crouzeix-route-proof-manifest/v1",
-            "route_id": "lorist-schwenninger",
-            "claim_kind": "source-faithful",
-            "aggregate_module": "CrouzeixLoristSchwenninger",
-            "build_target": "CrouzeixLoristSchwenninger",
-            "terminal_declaration": nodes[-1]["declaration"],
-            "terminal_type_sha256": nodes[-1]["statement_sha256"],
-            "consequence_declarations": [nodes[-1]["declaration"]],
-            "source_identities": self.manifest.get("source_identities") or [
-                f"sha256:{sha256_bytes((self.repo / self.source_path).read_bytes())}"
-            ],
-            "shared_foundation_modules": [],
-            "module_closure": list(HARP_SUPPORT),
-            "module_closure_sha256": route_validation.string_roster_sha256(HARP_SUPPORT),
-            "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
-            "review_path": "evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json",
-            "review_sha256": None,
-            "receipt_path": "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json",
-            "receipt_sha256": None,
-            "nodes": nodes,
-        }
-        write_json(self.repo / ls_path, payload)
+            ]
+        return manifest
+
+    def _write_ls_dependency(self) -> None:
+        manifest_bytes = (REPO / LS_MANIFEST_PATH).read_bytes()
+        receipt_bytes = (REPO / LS_RECEIPT_PATH).read_bytes()
+        self.assert_landed_ls_hashes(manifest_bytes, receipt_bytes)
+        write_bytes(self.repo / LS_MANIFEST_PATH, manifest_bytes)
+        write_bytes(self.repo / LS_RECEIPT_PATH, receipt_bytes)
+
+    @staticmethod
+    def assert_landed_ls_hashes(manifest_bytes: bytes, receipt_bytes: bytes) -> None:
+        if sha256_bytes(manifest_bytes) != LS_MANIFEST_SHA256:
+            raise AssertionError("landed LS manifest fixture identity drifted")
+        if sha256_bytes(receipt_bytes) != LS_RECEIPT_SHA256:
+            raise AssertionError("landed LS receipt fixture identity drifted")
 
     def _initialize_git(self) -> None:
         subprocess.run(["git", "init", "-q"], cwd=self.repo, check=True)
@@ -693,14 +677,12 @@ class RouteValidationTests(unittest.TestCase):
 
     def test_reuse_is_declared_cross_route_and_required_for_harp(self) -> None:
         fixture = self.fixture("harp")
-        fixture.manifest["nodes"][0]["reused_node_id"] = None
-        fixture.rewrite_manifest()
-        self.assert_invalid(fixture, "reused-route node requires exact route and node identities")
-
-        fixture = self.fixture("harp")
         fixture.manifest["nodes"][0]["reused_from_route"] = "jin"
         fixture.rewrite_manifest()
-        self.assert_invalid(fixture, "Harp may reuse only lorist-schwenninger")
+        self.assert_invalid(
+            fixture,
+            "reused-route node requires exact route and node identities|Harp may reuse only lorist-schwenninger",
+        )
 
         fixture = self.fixture("harp")
         fixture.manifest["nodes"][0]["provenance_kind"] = "derived"
@@ -757,6 +739,7 @@ class RouteValidationTests(unittest.TestCase):
         ]
         self.assertEqual({fixture.modules[node["node_id"]] for node in reused}, set(HARP_SUPPORT))
         self.assertEqual(len(reused), 11)
+        self.assertTrue(all(node["reused_node_id"] is None for node in reused))
         self.assertEqual(fixture.validate().claim_level, "complete-local")
 
         for index in range(len(HARP_SUPPORT)):
@@ -769,31 +752,176 @@ class RouteValidationTests(unittest.TestCase):
                 candidate.rewrite_manifest()
                 self.assert_invalid(candidate, "LS support reuse coverage mismatch|unmapped active closure module")
 
-    def test_harp_reuse_rejects_missing_dangling_and_mismatched_ls_manifest(self) -> None:
-        ls_path = route_validation.ROUTE_MANIFEST_PATHS["lorist-schwenninger"]
-        cases = ("missing", "dangling", "module", "declaration", "digest")
+    def test_harp_route_dependency_rejects_missing_wrong_or_duplicate_bindings(self) -> None:
+        cases = (
+            "missing", "route", "manifest-path", "manifest-hash",
+            "receipt-path", "receipt-hash", "duplicate",
+        )
         for case in cases:
             with self.subTest(case=case):
                 fixture = self.fixture("harp")
                 if case == "missing":
-                    (fixture.repo / ls_path).unlink()
-                elif case == "dangling":
-                    fixture.manifest["nodes"][0]["reused_node_id"] = "absent"
-                    fixture.rewrite_manifest()
-                else:
-                    payload = json.loads((fixture.repo / ls_path).read_text())
-                    field = {
-                        "module": "module_path",
-                        "declaration": "declaration",
-                        "digest": "statement_sha256",
-                    }[case]
-                    payload["nodes"][0][field] = (
-                        "Crouzeix/LoristSchwenninger/Wrong.lean"
-                        if case == "module"
-                        else ("Wrong.declaration" if case == "declaration" else HEX_B)
+                    fixture.manifest.pop("route_dependencies")
+                elif case == "duplicate":
+                    fixture.manifest["route_dependencies"].append(
+                        copy.deepcopy(fixture.manifest["route_dependencies"][0])
                     )
-                    write_json(fixture.repo / ls_path, payload)
-                self.assert_invalid(fixture, "LS reuse|LS route manifest")
+                else:
+                    dependency = fixture.manifest["route_dependencies"][0]
+                    field, value = {
+                        "route": ("route_id", "jin"),
+                        "manifest-path": ("manifest_path", "evidence/wrong.json"),
+                        "manifest-hash": ("manifest_sha256", HEX_B),
+                        "receipt-path": ("receipt_path", "evidence/wrong.json"),
+                        "receipt-hash": ("receipt_sha256", HEX_B),
+                    }[case]
+                    dependency[field] = value
+                fixture.rewrite_manifest()
+                self.assert_invalid(fixture, "route dependency|LS route manifest|dependency")
+
+        for artifact, expected in (
+            (LS_MANIFEST_PATH, "manifest digest"),
+            (LS_RECEIPT_PATH, "receipt digest"),
+        ):
+            with self.subTest(tampered=artifact.as_posix()):
+                fixture = self.fixture("harp")
+                write_bytes(fixture.repo / artifact, b"{}\n")
+                fixture.rewrite_manifest()
+                self.assert_invalid(fixture, expected)
+
+    def test_harp_support_reuse_rejects_unlisted_omitted_and_unbound_modules(self) -> None:
+        fixture = self.fixture("harp")
+        extra = copy.deepcopy(fixture.manifest["nodes"][0])
+        extra.update(
+            node_id="reuse-extra",
+            declaration="CrouzeixConjecture.LoristSchwenninger.extra",
+            module_path="Crouzeix/LoristSchwenninger/Extra.lean",
+            declaration_type_path="evidence/crouzeix_conjecture/routes/harp/types/extra.txt",
+        )
+        write_bytes(fixture.repo / extra["declaration_type_path"], b"Nat -> Prop\n")
+        extra["statement_sha256"] = route_validation.normalized_type_sha256("Nat -> Prop\n")
+        fixture.manifest["nodes"].insert(len(HARP_SUPPORT), extra)
+        fixture._write_module("Crouzeix.LoristSchwenninger.Extra", ())
+        fixture._write_module(
+            fixture.modules["main"],
+            (*HARP_SUPPORT, "Crouzeix.LoristSchwenninger.Extra"),
+        )
+        closure = sorted((*fixture.manifest["module_closure"], "Crouzeix.LoristSchwenninger.Extra"))
+        fixture.manifest["module_closure"] = closure
+        fixture.manifest["module_closure_sha256"] = route_validation.string_roster_sha256(closure)
+        fixture.rewrite_manifest()
+        self.assert_invalid(fixture, "provider policy drift|support reuse")
+
+        fixture = self.fixture("harp")
+        fixture.manifest["nodes"].pop(0)
+        fixture.manifest["nodes"][len(HARP_SUPPORT) - 1]["dependency_ids"].remove("reuse-0")
+        fixture.rewrite_manifest()
+        self.assert_invalid(fixture, "support reuse coverage|unmapped active closure")
+
+        fixture = self.fixture("harp")
+        manifest = route_validation.parse_route_manifest(fixture.manifest)
+        dependency_manifest = route_validation.load_route_manifest(
+            fixture.repo, LS_MANIFEST_PATH
+        )
+        dependency_manifest = route_validation.RouteManifest(
+            **{
+                **dependency_manifest.__dict__,
+                "module_closure": tuple(
+                    module for module in dependency_manifest.module_closure
+                    if module != HARP_SUPPORT[0]
+                ),
+            }
+        )
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError,
+            "absent from bound LS module closure",
+        ):
+            route_validation._validate_harp_reuse(
+                manifest, manifest.module_closure, dependency_manifest
+            )
+
+    def test_null_reuse_id_is_rejected_outside_harp_support_context(self) -> None:
+        fixture = self.fixture()
+        node = fixture.manifest["nodes"][0]
+        node.update(
+            provenance_kind="reused-route",
+            correspondence_kind="reused-route",
+            source_locator=None,
+            source_archive_sha256=None,
+            source_file_sha256=None,
+            source_excerpt_sha256=None,
+            source_line_count=None,
+            reused_from_route="lorist-schwenninger",
+            reused_node_id=None,
+        )
+        fixture.rewrite_manifest()
+        self.assert_invalid(fixture, "exact route and node identities|support reuse")
+
+    def test_direct_ls_node_reuse_still_requires_exact_node_identity(self) -> None:
+        fixture = self.fixture("harp")
+        dependency_manifest = json.loads((fixture.repo / LS_MANIFEST_PATH).read_text())
+        direct = dependency_manifest["nodes"][0]
+        direct_module = direct["module_path"][:-5].replace("/", ".")
+        node = next(
+            item for item in fixture.manifest["nodes"]
+            if item["module_path"] == direct["module_path"]
+        )
+        node["reused_node_id"] = direct["node_id"]
+        for field in ("declaration", "declaration_type_path", "statement_sha256"):
+            node[field] = direct[field]
+        source_type_path = REPO / direct["declaration_type_path"]
+        write_bytes(fixture.repo / direct["declaration_type_path"], source_type_path.read_bytes())
+        self.assertIn(direct_module, HARP_SUPPORT)
+        manifest = route_validation.parse_route_manifest(fixture.manifest)
+        ls_manifest = route_validation.load_route_manifest(fixture.repo, LS_MANIFEST_PATH)
+        route_validation._validate_harp_reuse(
+            manifest, manifest.module_closure, ls_manifest
+        )
+
+        node["declaration"] = "CrouzeixConjecture.wrong"
+        manifest = route_validation.parse_route_manifest(fixture.manifest)
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError, "LS reuse mismatch"
+        ):
+            route_validation._validate_harp_reuse(
+                manifest, manifest.module_closure, ls_manifest
+            )
+
+    def test_legacy_manifest_round_trip_omits_empty_route_dependencies(self) -> None:
+        fixture = self.fixture()
+        original_digest = route_validation.manifest_contract_sha256(fixture.manifest)
+        parsed = route_validation.parse_route_manifest(fixture.manifest)
+        serialized = route_validation.route_manifest_to_dict(parsed)
+
+        self.assertNotIn("route_dependencies", serialized)
+        self.assertEqual(route_validation.manifest_contract_sha256(parsed), original_digest)
+
+    def test_route_dependency_and_nullable_support_edge_are_in_schema(self) -> None:
+        schema = json.loads(
+            (REPO / "labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json")
+            .read_text()
+        )
+        dependency = schema["$defs"]["routeDependency"]
+        self.assertIs(dependency["additionalProperties"], False)
+        self.assertEqual(
+            set(dependency["required"]),
+            {"route_id", "manifest_path", "manifest_sha256", "receipt_path", "receipt_sha256"},
+        )
+        reused_id = schema["$defs"]["node"]["properties"]["reused_node_id"]
+        self.assertTrue(any(option.get("type") == "null" for option in reused_id["oneOf"]))
+        source_rule, harp_rule = schema["allOf"]
+        self.assertEqual(
+            source_rule["then"]["properties"]["route_dependencies"]["maxItems"],
+            0,
+        )
+        self.assertEqual(
+            {
+                key: harp_rule["then"]["properties"]["route_dependencies"][key]
+                for key in ("minItems", "maxItems")
+            },
+            {"minItems": 1, "maxItems": 1},
+        )
+        self.assertIn("route_dependencies", harp_rule["then"]["required"])
 
     def test_provider_policy_rejects_direct_transitive_and_allowlist_drift(self) -> None:
         cases = [

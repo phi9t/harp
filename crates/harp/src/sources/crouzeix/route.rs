@@ -25,6 +25,13 @@ const ROUTE_MANIFESTS: [&str; 3] = [
     "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json",
     "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
 ];
+const LS_ROUTE_MANIFEST_PATH: &str = ROUTE_MANIFESTS[1];
+const LS_ROUTE_MANIFEST_SHA256: &str =
+    "c8c4aa731781015a356b0cc43f080df36a9d489a0b60700fea8e331c5993fbaa";
+const LS_ROUTE_RECEIPT_PATH: &str =
+    "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json";
+const LS_ROUTE_RECEIPT_SHA256: &str =
+    "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b";
 const LS_ARTIFACT_MANIFEST_PATH: &str =
     "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json";
 const LS_TARGET_ROOT: &str = "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger";
@@ -246,6 +253,16 @@ struct RouteNode {
     statement_sha256: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct RouteDependency {
+    route_id: RouteId,
+    manifest_path: String,
+    manifest_sha256: String,
+    receipt_path: String,
+    receipt_sha256: String,
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 struct RouteManifest {
@@ -266,6 +283,8 @@ struct RouteManifest {
     review_sha256: Option<String>,
     receipt_path: String,
     receipt_sha256: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    route_dependencies: Vec<RouteDependency>,
     nodes: Vec<RouteNode>,
 }
 
@@ -636,6 +655,20 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
     if !safe_path(&manifest.review_path) || !safe_path(&manifest.receipt_path) {
         return Err("unsafe manifest path".into());
     }
+    let mut dependency_routes = Vec::new();
+    for dependency in &manifest.route_dependencies {
+        if dependency_routes.contains(&dependency.route_id) {
+            return Err("duplicate route dependency".into());
+        }
+        dependency_routes.push(dependency.route_id);
+        if !safe_path(&dependency.manifest_path)
+            || !safe_path(&dependency.receipt_path)
+            || !valid_digest(&dependency.manifest_sha256)
+            || !valid_digest(&dependency.receipt_sha256)
+        {
+            return Err("invalid route dependency path or digest".into());
+        }
+    }
     if !sorted_unique(&manifest.module_closure)
         || !sorted_unique(&manifest.allowed_axioms)
         || manifest
@@ -656,6 +689,9 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
             {
                 return Err("source-faithful route requires source identities".into());
             }
+            if !manifest.route_dependencies.is_empty() {
+                return Err("source-faithful routes cannot declare route dependencies".into());
+            }
             if manifest.source_identities.iter().any(|item| {
                 !(valid_arxiv_identity(item)
                     || item.starts_with("sha256:") && valid_digest(&item[7..]))
@@ -665,6 +701,9 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
         }
         RouteId::Harp if manifest.claim_kind != ClaimKind::Derived => {
             return Err("Harp route must be derived".into());
+        }
+        RouteId::Harp if manifest.route_dependencies.len() != 1 => {
+            return Err("Harp route must declare exactly one LS route dependency".into());
         }
         RouteId::Harp => {}
     }
@@ -726,13 +765,16 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
                 }
             }
             ProvenanceKind::ReusedRoute => {
+                let support_reuse = manifest.route_id == RouteId::Harp
+                    && node.reused_from_route == Some(RouteId::LoristSchwenninger)
+                    && node.reused_node_id.is_none();
                 if node.source_locator.is_some()
                     || node.source_archive_sha256.is_some()
                     || node.source_file_sha256.is_some()
                     || node.source_excerpt_sha256.is_some()
                     || node.source_line_count.is_some()
                     || node.reused_from_route.is_none()
-                    || node.reused_node_id.is_none()
+                    || node.reused_node_id.is_none() && !support_reuse
                 {
                     return Err("invalid reused-route provenance".into());
                 }
@@ -1064,9 +1106,7 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<BTreeSet<Strin
         }
         validate_manifest_against_closure(&manifest, &closure)?;
         if manifest.route_id == RouteId::Harp {
-            let ls_value = read_json_value(repo_root, ROUTE_MANIFESTS[1], "LS route manifest")
-                .map_err(|error| format!("missing or invalid LS route manifest: {error}"))?;
-            let ls_manifest: RouteManifest = parse(&ls_value, "LS route manifest")?;
+            let ls_manifest = resolve_harp_route_dependency(repo_root, &manifest)?;
             validate_harp_reuse(&manifest, &closure, &ls_manifest)?;
         }
         validate_manifest_files(repo_root, &manifest)?;
@@ -2538,8 +2578,20 @@ fn validate_harp_reuse(
         if node.reused_from_route != Some(RouteId::LoristSchwenninger) {
             return Err("Harp reuse names wrong route".into());
         }
+        let module = module_from_path(&node.module_path).ok_or("invalid reuse module path")?;
+        let Some(reused_node_id) = node.reused_node_id.as_deref() else {
+            if !HARP_ALLOWED_LS_SUPPORT.contains(&module.as_str()) {
+                return Err("unlisted Harp LS support reuse module".into());
+            }
+            if !ls.module_closure.contains(&module) {
+                return Err(
+                    "Harp support reuse module is absent from bound LS module closure".into(),
+                );
+            }
+            continue;
+        };
         let referenced = ls_nodes
-            .get(node.reused_node_id.as_deref().unwrap_or(""))
+            .get(reused_node_id)
             .ok_or("dangling Harp LS reuse")?;
         if referenced.module_path != node.module_path
             || referenced.declaration != node.declaration
@@ -2549,6 +2601,58 @@ fn validate_harp_reuse(
         }
     }
     Ok(())
+}
+
+fn resolve_harp_route_dependency(
+    repo_root: &Path,
+    manifest: &RouteManifest,
+) -> Result<RouteManifest, String> {
+    let [dependency] = manifest.route_dependencies.as_slice() else {
+        return Err("Harp route must declare exactly one LS route dependency".into());
+    };
+    let expected = RouteDependency {
+        route_id: RouteId::LoristSchwenninger,
+        manifest_path: LS_ROUTE_MANIFEST_PATH.into(),
+        manifest_sha256: LS_ROUTE_MANIFEST_SHA256.into(),
+        receipt_path: LS_ROUTE_RECEIPT_PATH.into(),
+        receipt_sha256: LS_ROUTE_RECEIPT_SHA256.into(),
+    };
+    if dependency != &expected {
+        return Err("Harp LS route dependency identity mismatch".into());
+    }
+    let manifest_bytes = read_bounded_regular(
+        repo_root,
+        &dependency.manifest_path,
+        "LS route dependency manifest",
+    )?;
+    if format!("{:x}", Sha256::digest(&manifest_bytes)) != dependency.manifest_sha256 {
+        return Err("LS route dependency manifest digest mismatch".into());
+    }
+    let receipt_bytes = read_bounded_regular(
+        repo_root,
+        &dependency.receipt_path,
+        "LS route dependency receipt",
+    )?;
+    if format!("{:x}", Sha256::digest(&receipt_bytes)) != dependency.receipt_sha256 {
+        return Err("LS route dependency receipt digest mismatch".into());
+    }
+    let mut deserializer = serde_json::Deserializer::from_slice(&manifest_bytes);
+    let StrictValue(value) = StrictValue::deserialize(&mut deserializer)
+        .map_err(|error| format!("invalid LS route dependency manifest JSON: {error}"))?;
+    deserializer
+        .end()
+        .map_err(|error| format!("invalid LS route dependency manifest JSON: {error}"))?;
+    let bound: RouteManifest = parse(&value, "LS route dependency manifest")?;
+    validate_manifest(&bound)?;
+    if bound.route_id != dependency.route_id {
+        return Err("LS route dependency route id mismatch".into());
+    }
+    if bound.receipt_path != dependency.receipt_path
+        || bound.receipt_sha256.as_deref() != Some(dependency.receipt_sha256.as_str())
+    {
+        return Err("LS route dependency receipt binding mismatch".into());
+    }
+    Ok(bound)
 }
 
 fn verify_file_digest(
@@ -2698,7 +2802,10 @@ mod tests {
     use std::fs;
     use std::path::Path;
     use std::process::Command;
+    use std::str::FromStr;
 
+    use harp_contracts::TaskId;
+    use harp_engine::{decode_result_envelope, EngineError};
     use serde_json::{json, Value};
     use sha2::{Digest as _, Sha256};
     use tempfile::TempDir;
@@ -2706,13 +2813,16 @@ mod tests {
     use super::{
         active_mathlib_closure, active_route_closure, cache_contract_identity,
         correspondence_matches, parse, parse_source_locator, read_bounded_regular, read_json_value,
-        validate_declaration_roster, validate_git_identity, validate_harp_reuse,
-        validate_manifest_against_closure, validate_mathlib_roster, validate_records,
-        validate_source_provenance, verify_published_routes, ClaimKind, CorrespondenceKind,
-        NodeRole, ProvenanceKind, RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt,
-        SourceLocatorKind, LS_ARTIFACT_MANIFEST_PATH, LS_SOURCE_ARCHIVE_SHA256, LS_SOURCE_BYTES,
-        LS_SOURCE_FILE_SHA256, LS_SOURCE_ID, LS_SOURCE_IDENTITY, LS_SOURCE_LINES, LS_SOURCE_PATH,
-        MANIFEST_SCHEMA, SOURCE_MANIFEST_PATH,
+        resolve_harp_route_dependency, validate_declaration_roster, validate_git_identity,
+        validate_harp_reuse, validate_manifest, validate_manifest_against_closure,
+        validate_mathlib_roster, validate_records, validate_source_provenance,
+        verify_published_routes, ClaimKind, CorrespondenceKind, NodeRole, ProvenanceKind,
+        RouteCommand, RouteDependency, RouteId, RouteManifest, RouteNode, RouteReceipt,
+        SourceLocatorKind, HARP_ALLOWED_LS_SUPPORT, LS_ARTIFACT_MANIFEST_PATH,
+        LS_ROUTE_MANIFEST_PATH, LS_ROUTE_MANIFEST_SHA256, LS_ROUTE_RECEIPT_PATH,
+        LS_ROUTE_RECEIPT_SHA256, LS_SOURCE_ARCHIVE_SHA256, LS_SOURCE_BYTES, LS_SOURCE_FILE_SHA256,
+        LS_SOURCE_ID, LS_SOURCE_IDENTITY, LS_SOURCE_LINES, LS_SOURCE_PATH, MANIFEST_SCHEMA,
+        SOURCE_MANIFEST_PATH,
     };
 
     fn digest(value: &Value) -> String {
@@ -2732,6 +2842,16 @@ mod tests {
         normalized["receipt_sha256"] = Value::Null;
         normalized["review_sha256"] = Value::Null;
         digest(&normalized)
+    }
+
+    fn schema_accepts(schema: &Value, instance: &Value) -> bool {
+        let raw = serde_json::to_vec(instance).unwrap();
+        let task_id = TaskId::from_str("schema-probe").unwrap();
+        match decode_result_envelope(schema, &raw, &task_id, None) {
+            Err(EngineError::OutputJson { .. }) => true,
+            Err(EngineError::OutputSchema { .. }) => false,
+            result => panic!("unexpected schema probe result: {result:?}"),
+        }
     }
 
     fn fixture() -> (Value, Value, Value) {
@@ -3836,6 +3956,7 @@ mod tests {
             receipt_path: "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"
                 .into(),
             receipt_sha256: None,
+            route_dependencies: Vec::new(),
             nodes: vec![RouteNode {
                 node_id: "ls-terminal-crouzeix".into(),
                 role: NodeRole::Terminal,
@@ -3944,7 +4065,7 @@ mod tests {
 
     #[test]
     fn harp_reuse_resolves_all_eleven_and_rejects_mutations() {
-        let (manifest, ls, closure) = harp_reuse_fixture();
+        let (manifest, mut ls, closure) = harp_reuse_fixture();
         validate_harp_reuse(&manifest, &closure, &ls).unwrap();
         let mut omitted = manifest.clone();
         omitted.nodes.remove(0);
@@ -3956,11 +4077,229 @@ mod tests {
         assert!(validate_harp_reuse(&dangling, &closure, &ls)
             .unwrap_err()
             .contains("dangling"));
-        let mut mismatch = ls.clone();
-        mismatch.nodes[0].statement_sha256 = "0".repeat(64);
-        assert!(validate_harp_reuse(&manifest, &closure, &mismatch)
+        ls.module_closure.remove(0);
+        assert!(validate_harp_reuse(&manifest, &closure, &ls)
+            .unwrap_err()
+            .contains("bound LS module closure"));
+
+        let (mut direct, ls, closure) = harp_reuse_fixture();
+        direct.nodes[0].reused_node_id = Some("reuse-0".into());
+        validate_harp_reuse(&direct, &closure, &ls).unwrap();
+        direct.nodes[0].declaration = "CrouzeixConjecture.wrong".into();
+        assert!(validate_harp_reuse(&direct, &closure, &ls)
             .unwrap_err()
             .contains("mismatch"));
+    }
+
+    #[test]
+    fn route_dependencies_are_optional_strict_and_bind_landed_ls_bytes() {
+        let (manifest_value, _, _) = fixture();
+        let legacy: RouteManifest = parse(&manifest_value, "manifest").unwrap();
+        let serialized = serde_json::to_value(&legacy).unwrap();
+        assert!(serialized.get("route_dependencies").is_none());
+        assert_eq!(
+            manifest_digest(&manifest_value),
+            manifest_digest(&serialized)
+        );
+
+        let mut source_with_dependency = legacy.clone();
+        source_with_dependency.route_dependencies = vec![RouteDependency {
+            route_id: RouteId::LoristSchwenninger,
+            manifest_path: LS_ROUTE_MANIFEST_PATH.into(),
+            manifest_sha256: LS_ROUTE_MANIFEST_SHA256.into(),
+            receipt_path: LS_ROUTE_RECEIPT_PATH.into(),
+            receipt_sha256: LS_ROUTE_RECEIPT_SHA256.into(),
+        }];
+        assert!(validate_manifest(&source_with_dependency)
+            .unwrap_err()
+            .contains("source-faithful"));
+
+        let (mut harp, _, _) = harp_reuse_fixture();
+        harp.route_dependencies = vec![RouteDependency {
+            route_id: RouteId::LoristSchwenninger,
+            manifest_path: LS_ROUTE_MANIFEST_PATH.into(),
+            manifest_sha256: LS_ROUTE_MANIFEST_SHA256.into(),
+            receipt_path: LS_ROUTE_RECEIPT_PATH.into(),
+            receipt_sha256: LS_ROUTE_RECEIPT_SHA256.into(),
+        }];
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let ls = resolve_harp_route_dependency(&root, &harp).unwrap();
+        assert_eq!(ls.route_id, RouteId::LoristSchwenninger);
+        validate_harp_reuse(&harp, &harp.module_closure, &ls).unwrap();
+
+        for case in [
+            "route",
+            "manifest-path",
+            "manifest-hash",
+            "receipt-path",
+            "receipt-hash",
+        ] {
+            let (mut wrong, _, _) = harp_reuse_fixture();
+            let mut dependency = harp.route_dependencies[0].clone();
+            match case {
+                "route" => dependency.route_id = RouteId::Jin,
+                "manifest-path" => dependency.manifest_path = "evidence/wrong.json".into(),
+                "manifest-hash" => dependency.manifest_sha256 = "b".repeat(64),
+                "receipt-path" => dependency.receipt_path = "evidence/wrong.json".into(),
+                "receipt-hash" => dependency.receipt_sha256 = "b".repeat(64),
+                _ => unreachable!(),
+            }
+            wrong.route_dependencies = vec![dependency];
+            assert!(resolve_harp_route_dependency(&root, &wrong)
+                .unwrap_err()
+                .contains("identity mismatch"));
+        }
+
+        let (mut missing, _, _) = harp_reuse_fixture();
+        assert!(validate_manifest(&missing)
+            .unwrap_err()
+            .contains("exactly one"));
+        missing.route_dependencies = vec![harp.route_dependencies[0].clone(); 2];
+        assert!(validate_manifest(&missing)
+            .unwrap_err()
+            .contains("duplicate route dependency"));
+        assert!(resolve_harp_route_dependency(&root, &missing)
+            .unwrap_err()
+            .contains("exactly one"));
+
+        let (mut malformed, _, _) = harp_reuse_fixture();
+        malformed.route_dependencies = vec![RouteDependency {
+            route_id: RouteId::LoristSchwenninger,
+            manifest_path: "../route.json".into(),
+            manifest_sha256: "not-a-digest".into(),
+            receipt_path: LS_ROUTE_RECEIPT_PATH.into(),
+            receipt_sha256: LS_ROUTE_RECEIPT_SHA256.into(),
+        }];
+        assert!(validate_manifest(&malformed)
+            .unwrap_err()
+            .contains("route dependency path or digest"));
+    }
+
+    #[test]
+    fn route_manifest_schema_declares_dependency_and_nullable_reuse_id() {
+        let schema: Value = serde_json::from_str(include_str!(
+            "../../../../../labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json"
+        ))
+        .unwrap();
+        let dependency = &schema["$defs"]["routeDependency"];
+        assert_eq!(dependency["additionalProperties"], false);
+        assert_eq!(dependency["required"].as_array().unwrap().len(), 5);
+        assert!(
+            schema["$defs"]["node"]["properties"]["reused_node_id"]["oneOf"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|option| option["type"] == "null")
+        );
+
+        let harp_rule = &schema["allOf"][1]["then"];
+        let exact_dependency =
+            &harp_rule["properties"]["route_dependencies"]["items"]["allOf"][1]["properties"];
+        assert_eq!(exact_dependency["route_id"]["const"], "lorist-schwenninger");
+        assert_eq!(
+            exact_dependency["manifest_path"]["const"],
+            LS_ROUTE_MANIFEST_PATH
+        );
+        assert_eq!(
+            exact_dependency["manifest_sha256"]["const"],
+            LS_ROUTE_MANIFEST_SHA256
+        );
+        assert_eq!(
+            exact_dependency["receipt_path"]["const"],
+            LS_ROUTE_RECEIPT_PATH
+        );
+        assert_eq!(
+            exact_dependency["receipt_sha256"]["const"],
+            LS_ROUTE_RECEIPT_SHA256
+        );
+        let support_edge =
+            &harp_rule["properties"]["nodes"]["items"]["allOf"][1]["then"]["properties"];
+        assert_eq!(
+            support_edge["reused_from_route"]["const"],
+            "lorist-schwenninger"
+        );
+        assert_eq!(
+            support_edge["module_path"]["enum"].as_array().unwrap(),
+            &HARP_ALLOWED_LS_SUPPORT
+                .iter()
+                .map(|module| Value::String(format!("{}.lean", module.replace('.', "/"))))
+                .collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn route_manifest_schema_validates_full_harp_and_legacy_instances() {
+        let schema: Value = serde_json::from_str(include_str!(
+            "../../../../../labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json"
+        ))
+        .unwrap();
+        let (mut harp, _, _) = harp_reuse_fixture();
+        harp.route_dependencies = vec![RouteDependency {
+            route_id: RouteId::LoristSchwenninger,
+            manifest_path: LS_ROUTE_MANIFEST_PATH.into(),
+            manifest_sha256: LS_ROUTE_MANIFEST_SHA256.into(),
+            receipt_path: LS_ROUTE_RECEIPT_PATH.into(),
+            receipt_sha256: LS_ROUTE_RECEIPT_SHA256.into(),
+        }];
+        let mut harp_value = serde_json::to_value(&harp).unwrap();
+        harp_value["consequence_declarations"] = json!(["CrouzeixConjecture.terminal"]);
+        let (legacy, _, _) = fixture();
+        assert!(schema_accepts(&schema, &harp_value));
+        assert!(schema_accepts(&schema, &legacy));
+
+        for case in [
+            "route",
+            "manifest-path",
+            "manifest-hash",
+            "receipt-path",
+            "receipt-hash",
+        ] {
+            let mut invalid = harp_value.clone();
+            let dependency = &mut invalid["route_dependencies"][0];
+            let (field, value) = match case {
+                "route" => ("route_id", json!("jin")),
+                "manifest-path" => ("manifest_path", json!("evidence/wrong.json")),
+                "manifest-hash" => ("manifest_sha256", json!("b".repeat(64))),
+                "receipt-path" => ("receipt_path", json!("evidence/wrong.json")),
+                "receipt-hash" => ("receipt_sha256", json!("b".repeat(64))),
+                _ => unreachable!(),
+            };
+            dependency[field] = value;
+            assert!(!schema_accepts(&schema, &invalid), "accepted {case}");
+        }
+
+        for route in ["jin", "harp"] {
+            let mut invalid = harp_value.clone();
+            invalid["nodes"][0]["reused_from_route"] = json!(route);
+            assert!(
+                !schema_accepts(&schema, &invalid),
+                "accepted null-ID support edge from {route}"
+            );
+        }
+
+        let mut invalid = harp_value;
+        invalid["nodes"][0]["module_path"] = json!("Crouzeix/LoristSchwenninger/Unlisted.lean");
+        assert!(
+            !schema_accepts(&schema, &invalid),
+            "accepted unlisted null-ID support module"
+        );
+
+        invalid["nodes"][0]["reused_node_id"] = json!("direct-proof-node");
+        assert!(
+            schema_accepts(&schema, &invalid),
+            "non-null direct reuse was constrained as support reuse"
+        );
+
+        let mut derived = serde_json::to_value(&harp).unwrap();
+        derived["consequence_declarations"] = json!(["CrouzeixConjecture.terminal"]);
+        let node = &mut derived["nodes"][0];
+        node["provenance_kind"] = json!("derived");
+        node["correspondence_kind"] = json!("derived-extraction");
+        node["reused_from_route"] = Value::Null;
+        assert!(
+            schema_accepts(&schema, &derived),
+            "derived node with null source/reuse fields was constrained as support reuse"
+        );
     }
 
     fn harp_reuse_fixture() -> (RouteManifest, RouteManifest, Vec<String>) {
@@ -3985,7 +4324,7 @@ mod tests {
                 source_excerpt_sha256: None,
                 source_line_count: None,
                 reused_from_route: Some(RouteId::LoristSchwenninger),
-                reused_node_id: Some(format!("reuse-{index}")),
+                reused_node_id: None,
                 declaration_type_path: format!("evidence/type-{index}.txt"),
                 statement_sha256: format!("{:064x}", index + 1),
             };
@@ -4018,6 +4357,7 @@ mod tests {
             review_sha256: None,
             receipt_path: "evidence/receipt.json".into(),
             receipt_sha256: None,
+            route_dependencies: Vec::new(),
             nodes,
         };
         (

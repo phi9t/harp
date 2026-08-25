@@ -90,6 +90,12 @@ ROUTE_MANIFEST_PATHS = {
     "lorist-schwenninger": Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"),
     "harp": Path("labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json"),
 }
+LS_ROUTE_MANIFEST_PATH = ROUTE_MANIFEST_PATHS["lorist-schwenninger"]
+LS_ROUTE_MANIFEST_SHA256 = "c8c4aa731781015a356b0cc43f080df36a9d489a0b60700fea8e331c5993fbaa"
+LS_ROUTE_RECEIPT_PATH = Path(
+    "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"
+)
+LS_ROUTE_RECEIPT_SHA256 = "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b"
 ROUTE_STAGING_PARENT = Path(".build/crouzeix-route-publication-staging")
 ROUTE_FINAL_ROOT = Path("evidence/crouzeix_conjecture/routes")
 ROUTE_REVIEW_CANDIDATE_PARENT = Path(".build/crouzeix-route-review-candidates")
@@ -184,6 +190,15 @@ class RouteNode:
 
 
 @dataclass(frozen=True)
+class RouteDependency:
+    route_id: str
+    manifest_path: str
+    manifest_sha256: str
+    receipt_path: str
+    receipt_sha256: str
+
+
+@dataclass(frozen=True)
 class RouteManifest:
     schema_version: str
     route_id: str
@@ -202,6 +217,7 @@ class RouteManifest:
     review_sha256: str | None
     receipt_path: str
     receipt_sha256: str | None
+    route_dependencies: tuple[RouteDependency, ...]
     nodes: tuple[RouteNode, ...]
 
 
@@ -219,7 +235,12 @@ MANIFEST_FIELDS = frozenset({
     "build_target", "terminal_declaration", "terminal_type_sha256",
     "consequence_declarations", "source_identities", "shared_foundation_modules",
     "module_closure", "module_closure_sha256", "allowed_axioms",
-    "review_path", "review_sha256", "receipt_path", "receipt_sha256", "nodes",
+    "review_path", "review_sha256", "receipt_path", "receipt_sha256",
+    "route_dependencies", "nodes",
+})
+ROUTE_DEPENDENCY_FIELDS = frozenset({
+    "route_id", "manifest_path", "manifest_sha256", "receipt_path",
+    "receipt_sha256",
 })
 NODE_FIELDS = frozenset({
     "node_id", "role", "declaration", "module_path", "dependency_ids",
@@ -660,9 +681,15 @@ def _read_json(repo_root: Path, path: Path | str, label: str) -> dict[str, objec
     return value
 
 
-def _exact_fields(value: Mapping[str, object], fields: frozenset[str], label: str) -> None:
+def _exact_fields(
+    value: Mapping[str, object],
+    fields: frozenset[str],
+    label: str,
+    *,
+    optional: frozenset[str] = frozenset(),
+) -> None:
     unknown = sorted(set(value) - fields)
-    missing = sorted(fields - set(value))
+    missing = sorted(fields - optional - set(value))
     if unknown:
         raise RouteValidationError(f"{label} has unknown field: {unknown[0]}")
     if missing:
@@ -693,7 +720,9 @@ def _string_tuple(value: object, label: str, *, pattern: re.Pattern[str] | None 
 
 
 def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
-    _exact_fields(value, MANIFEST_FIELDS, "route manifest")
+    _exact_fields(
+        value, MANIFEST_FIELDS, "route manifest", optional=frozenset({"route_dependencies"})
+    )
     if value["schema_version"] != MANIFEST_SCHEMA_VERSION:
         raise RouteValidationError("invalid route manifest schema version")
     route_id = _text(value["route_id"], "route id")
@@ -747,10 +776,20 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
             if reused_route is not None or reused_node is not None:
                 raise RouteValidationError("source node cannot declare route reuse")
         elif provenance == "reused-route":
+            support_reuse = (
+                route_id == "harp"
+                and reused_route == "lorist-schwenninger"
+                and reused_node is None
+            )
             valid_reuse = (
                 reused_route in ROUTE_IDS
-                and isinstance(reused_node, str)
-                and NODE_ID_RE.fullmatch(reused_node) is not None
+                and (
+                    support_reuse
+                    or (
+                        isinstance(reused_node, str)
+                        and NODE_ID_RE.fullmatch(reused_node) is not None
+                    )
+                )
             )
             if not valid_reuse:
                 raise RouteValidationError("reused-route node requires exact route and node identities")
@@ -778,6 +817,38 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
             declaration_type_path=_safe_relative(raw["declaration_type_path"], "declaration type path"),
             statement_sha256=_text(raw["statement_sha256"], "statement sha256", pattern=SHA256_RE),
         ))
+    raw_dependencies = value.get("route_dependencies", [])
+    if not isinstance(raw_dependencies, list) or len(raw_dependencies) > MAX_ARRAY_ITEMS:
+        raise RouteValidationError("route dependencies must be a bounded array")
+    route_dependencies: list[RouteDependency] = []
+    dependency_route_ids: set[str] = set()
+    for raw in raw_dependencies:
+        if not isinstance(raw, dict):
+            raise RouteValidationError("route dependency must be an object")
+        _exact_fields(raw, ROUTE_DEPENDENCY_FIELDS, "route dependency")
+        dependency_route_id = _text(raw["route_id"], "route dependency route id")
+        if dependency_route_id not in ROUTE_IDS:
+            raise RouteValidationError("invalid route dependency route id")
+        if dependency_route_id in dependency_route_ids:
+            raise RouteValidationError(f"duplicate route dependency: {dependency_route_id}")
+        dependency_route_ids.add(dependency_route_id)
+        route_dependencies.append(RouteDependency(
+            route_id=dependency_route_id,
+            manifest_path=_safe_relative(
+                raw["manifest_path"], "route dependency manifest path"
+            ),
+            manifest_sha256=_text(
+                raw["manifest_sha256"], "route dependency manifest sha256",
+                pattern=SHA256_RE,
+            ),
+            receipt_path=_safe_relative(
+                raw["receipt_path"], "route dependency receipt path"
+            ),
+            receipt_sha256=_text(
+                raw["receipt_sha256"], "route dependency receipt sha256",
+                pattern=SHA256_RE,
+            ),
+        ))
     return RouteManifest(
         schema_version=MANIFEST_SCHEMA_VERSION,
         route_id=route_id,
@@ -796,6 +867,7 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
         review_sha256=_optional_digest(value["review_sha256"], "review sha256"),
         receipt_path=_safe_relative(value["receipt_path"], "receipt path"),
         receipt_sha256=_optional_digest(value["receipt_sha256"], "receipt sha256"),
+        route_dependencies=tuple(route_dependencies),
         nodes=tuple(nodes),
     )
 
@@ -804,6 +876,8 @@ def route_manifest_to_dict(manifest: RouteManifest | Mapping[str, object]) -> di
     if not isinstance(manifest, RouteManifest):
         return dict(manifest)
     value = asdict(manifest)
+    if not manifest.route_dependencies:
+        value.pop("route_dependencies")
     value["nodes"] = [asdict(node) for node in manifest.nodes]
     return value
 
@@ -1076,8 +1150,106 @@ def validate_ls_reviewed_source_contract(manifest: RouteManifest) -> None:
             )
 
 
+def _resolve_harp_route_dependency(
+    repo_root: Path, manifest: RouteManifest
+) -> RouteManifest:
+    if len(manifest.route_dependencies) != 1:
+        raise RouteValidationError(
+            "Harp route must declare exactly one LS route dependency"
+        )
+    dependency = manifest.route_dependencies[0]
+    expected = RouteDependency(
+        route_id="lorist-schwenninger",
+        manifest_path=LS_ROUTE_MANIFEST_PATH.as_posix(),
+        manifest_sha256=LS_ROUTE_MANIFEST_SHA256,
+        receipt_path=LS_ROUTE_RECEIPT_PATH.as_posix(),
+        receipt_sha256=LS_ROUTE_RECEIPT_SHA256,
+    )
+    if dependency != expected:
+        raise RouteValidationError("Harp LS route dependency identity mismatch")
+    manifest_bytes = _read_bytes(
+        repo_root, dependency.manifest_path, "LS route dependency manifest"
+    )
+    if _sha256(manifest_bytes) != dependency.manifest_sha256:
+        raise RouteValidationError("LS route dependency manifest digest mismatch")
+    receipt_bytes = _read_bytes(
+        repo_root, dependency.receipt_path, "LS route dependency receipt"
+    )
+    if _sha256(receipt_bytes) != dependency.receipt_sha256:
+        raise RouteValidationError("LS route dependency receipt digest mismatch")
+    try:
+        raw = json.loads(
+            manifest_bytes.decode("utf-8"), object_pairs_hook=_pairs_no_duplicates
+        )
+    except UnicodeDecodeError as error:
+        raise RouteValidationError(
+            "LS route dependency manifest is not UTF-8"
+        ) from error
+    except json.JSONDecodeError as error:
+        raise RouteValidationError(
+            f"LS route dependency manifest is invalid JSON: {error.msg}"
+        ) from error
+    if not isinstance(raw, dict):
+        raise RouteValidationError("LS route dependency manifest must be an object")
+    _check_json_shape(raw)
+    bound = parse_route_manifest(raw)
+    if bound.route_id != dependency.route_id:
+        raise RouteValidationError("LS route dependency route id mismatch")
+    if (
+        bound.receipt_path != dependency.receipt_path
+        or bound.receipt_sha256 != dependency.receipt_sha256
+    ):
+        raise RouteValidationError("LS route dependency receipt binding mismatch")
+    return bound
+
+
+def _validate_harp_reuse(
+    manifest: RouteManifest,
+    closure: Sequence[str],
+    ls_manifest: RouteManifest,
+) -> None:
+    active_ls = set(closure) & HARP_ALLOWED_LS_SUPPORT
+    reused_nodes = [
+        node for node in manifest.nodes if node.provenance_kind == "reused-route"
+    ]
+    reused_modules = {_module_from_path(node.module_path) for node in reused_nodes}
+    if active_ls != reused_modules:
+        raise RouteValidationError("Harp LS support reuse coverage mismatch")
+    if set(manifest.shared_foundation_modules) & HARP_ALLOWED_LS_SUPPORT:
+        raise RouteValidationError("Harp LS support module cannot be shared foundation")
+    ls_closure = set(ls_manifest.module_closure)
+    ls_nodes = {node.node_id: node for node in ls_manifest.nodes}
+    for node in reused_nodes:
+        if node.reused_from_route != "lorist-schwenninger":
+            raise RouteValidationError("Harp reuse names wrong route")
+        module = _module_from_path(node.module_path)
+        if node.reused_node_id is None:
+            if module not in HARP_ALLOWED_LS_SUPPORT:
+                raise RouteValidationError(
+                    f"unlisted Harp LS support reuse module: {module}"
+                )
+            if module not in ls_closure:
+                raise RouteValidationError(
+                    f"Harp support reuse module is absent from bound LS module closure: {module}"
+                )
+            continue
+        referenced = ls_nodes.get(node.reused_node_id)
+        if referenced is None:
+            raise RouteValidationError(
+                f"LS reuse has dangling node: {node.reused_node_id}"
+            )
+        if (
+            referenced.module_path != node.module_path
+            or referenced.declaration != node.declaration
+            or referenced.statement_sha256 != node.statement_sha256
+        ):
+            raise RouteValidationError(f"LS reuse mismatch for node: {node.node_id}")
+
+
 def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: RouteManifest) -> None:
     if manifest.route_id in {"jin", "lorist-schwenninger"}:
+        if manifest.route_dependencies:
+            raise RouteValidationError("source-faithful routes cannot declare route dependencies")
         if manifest.claim_kind != "source-faithful":
             raise RouteValidationError("Jin and Lorist-Schwenninger must be source-faithful")
         if not manifest.source_identities:
@@ -1099,6 +1271,7 @@ def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: Rou
             raise RouteValidationError("Harp route must explicitly record LS reuse")
         if any(node.reused_from_route != "lorist-schwenninger" for node in reused):
             raise RouteValidationError("Harp may reuse only lorist-schwenninger nodes")
+        ls_manifest = _resolve_harp_route_dependency(repo_root, manifest)
     if manifest.allowed_axioms != tuple(sorted(manifest.allowed_axioms)):
         raise RouteValidationError("allowed axioms must be sorted")
     if any(item not in ALLOWED_AXIOMS for item in manifest.allowed_axioms):
@@ -1189,29 +1362,7 @@ def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: Rou
         if coverage > 1:
             raise RouteValidationError(f"duplicate closure coverage: {module}")
     if manifest.route_id == "harp":
-        active_ls = set(closure) & HARP_ALLOWED_LS_SUPPORT
-        reused_nodes = [node for node in manifest.nodes if node.provenance_kind == "reused-route"]
-        reused_modules = {_module_from_path(node.module_path) for node in reused_nodes}
-        if active_ls != reused_modules:
-            raise RouteValidationError("Harp LS support reuse coverage mismatch")
-        if shared & HARP_ALLOWED_LS_SUPPORT:
-            raise RouteValidationError("Harp LS support module cannot be shared foundation")
-        ls_path = ROUTE_MANIFEST_PATHS["lorist-schwenninger"]
-        try:
-            ls_manifest = load_route_manifest(repo_root, ls_path)
-        except RouteValidationError as error:
-            raise RouteValidationError(f"LS route manifest is missing or invalid: {error}") from error
-        ls_nodes = {node.node_id: node for node in ls_manifest.nodes}
-        for node in reused_nodes:
-            referenced = ls_nodes.get(node.reused_node_id or "")
-            if referenced is None:
-                raise RouteValidationError(f"LS reuse has dangling node: {node.reused_node_id}")
-            if (
-                referenced.module_path != node.module_path
-                or referenced.declaration != node.declaration
-                or referenced.statement_sha256 != node.statement_sha256
-            ):
-                raise RouteValidationError(f"LS reuse mismatch for node: {node.node_id}")
+        _validate_harp_reuse(manifest, closure, ls_manifest)
     validate_ls_reviewed_source_contract(manifest)
 
 
