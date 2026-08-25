@@ -1,0 +1,7 @@
+CrouzeixConjecture.LoristSchwenninger.parametricBoundaryCompanion_commute_of_mem_generatedAlgebra.{u_1, u_2}
+  {i : Type u_1} {n : Type u_2} [TopologicalSpace i] [CompactSpace i] [MeasurableSpace i] [OpensMeasurableSpace i]
+  [Fintype n] [DecidableEq n] {mu : MeasureTheory.Measure i} [MeasureTheory.IsFiniteMeasure mu] {Omega : Set ℂ}
+  (Gamma : CrouzeixConjecture.ParametricConvexBoundary Omega) (B T : CrouzeixConjecture.SquareMatrix n)
+  (hWB : CrouzeixConjecture.numericalRange B ⊆ Omega) (h : BoundedContinuousFunction i ℂ)
+  (hT : T ∈ CrouzeixConjecture.generatedAlgebra B) :
+  Commute (CrouzeixConjecture.parametricBoundaryCompanion Gamma mu B h) T

@@ -1,0 +1,8 @@
+CrouzeixConjecture.Harp.exists_positive_cubature_finite_measure.{u, v} {X : Type u} {E : Type v} [TopologicalSpace X]
+  [MeasurableSpace X] [OpensMeasurableSpace X] [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+  (μ : MeasureTheory.Measure X) [MeasureTheory.IsFiniteMeasure μ] [NeZero μ] {α : Set X} (hα_compact : IsCompact α)
+  (hα_measurable : MeasurableSet α) (hμ_support : ∀ᵐ (x : X) ∂μ, x ∈ α) (g : X → E) (hg : ContinuousOn g α) :
+  ∃ ι x nodes weights,
+    Fintype.card ι ≤ Module.finrank ℝ E + 1 ∧
+      (∀ (j : ι), nodes j ∈ α) ∧
+        (∀ (j : ι), 0 < weights j) ∧ ∑ j, weights j = μ.real Set.univ ∧ ∑ j, weights j • g (nodes j) = ∫ (x : X), g x ∂μ

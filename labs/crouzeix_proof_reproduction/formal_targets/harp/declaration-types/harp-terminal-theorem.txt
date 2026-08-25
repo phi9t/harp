@@ -1,0 +1,2 @@
+CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem {n : Type} [Fintype n] [DecidableEq n] [Nonempty n] :
+  CrouzeixConjecture.MainTheoremStatement

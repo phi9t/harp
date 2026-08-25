@@ -1,0 +1,12 @@
+CrouzeixConjecture.Harp.exists_positive_matrix_moment_cubature.{u} {i : Type u} {n : Type} [TopologicalSpace i]
+  [CompactSpace i] [MeasurableSpace i] [OpensMeasurableSpace i] [Fintype n] [DecidableEq n] {Ω : Set ℂ} (N : ℕ)
+  (Gamma : CrouzeixConjecture.ParametricConvexBoundary Ω) (μ : MeasureTheory.Measure i)
+  [MeasureTheory.IsFiniteMeasure μ] [NeZero μ] (B : CrouzeixConjecture.SquareMatrix n)
+  (hWB : CrouzeixConjecture.numericalRange B ⊆ Ω) (q : Polynomial ℂ) :
+  ∃ ι x nodes weights,
+    Fintype.card ι ≤ Module.finrank ℝ (Fin (N + 2) → CrouzeixConjecture.SquareMatrix n) + 1 ∧
+      (∀ (j : ι), 0 < weights j) ∧
+        ∑ j, weights j = μ.real Set.univ ∧
+          ∀ (k : Fin (N + 2)),
+            ∑ j, weights j • CrouzeixConjecture.Harp.matrixMomentObservable N Gamma B q (nodes j) k =
+              ∫ (x : i), CrouzeixConjecture.Harp.matrixMomentObservable N Gamma B q x k ∂μ

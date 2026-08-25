@@ -1,0 +1,8 @@
+CrouzeixConjecture.Harp.finiteAtomicL2DilationWitness.{u} {i : Type u} {n : Type} [TopologicalSpace i] [CompactSpace i]
+  [MeasurableSpace i] [OpensMeasurableSpace i] [Fintype n] [DecidableEq n] [Nonempty n] {Ω : Set ℂ} (N : ℕ)
+  (Gamma : CrouzeixConjecture.ParametricConvexBoundary Ω) (μ : MeasureTheory.Measure i)
+  [MeasureTheory.IsFiniteMeasure μ] [NeZero μ] (B : CrouzeixConjecture.SquareMatrix n)
+  (hWB : CrouzeixConjecture.numericalRange B ⊆ Ω) (q : Polynomial ℂ) (hq : ∀ z ∈ closure Ω, ‖Polynomial.eval z q‖ ≤ 1)
+  (hCauchy : CrouzeixConjecture.HasParametricPolynomialCauchyFormula Gamma μ B) :
+  CrouzeixConjecture.Harp.FiniteAtomicL2DilationWitness
+    (CrouzeixConjecture.Harp.finiteHorizonPolynomialCore Gamma μ B hWB q hq) N

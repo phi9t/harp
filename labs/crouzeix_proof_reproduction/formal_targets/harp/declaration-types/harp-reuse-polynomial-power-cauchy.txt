@@ -1,0 +1,9 @@
+CrouzeixConjecture.LoristSchwenninger.parametricPolynomialPowerCauchy.{u_1, u_2} {i : Type u_1} {n : Type u_2}
+  [TopologicalSpace i] [CompactSpace i] [MeasurableSpace i] [Fintype n] [DecidableEq n] {mu : MeasureTheory.Measure i}
+  {Omega : Set ℂ} (Gamma : CrouzeixConjecture.ParametricConvexBoundary Omega) (q : Polynomial ℂ)
+  (B : CrouzeixConjecture.SquareMatrix n) (hCauchy : CrouzeixConjecture.HasParametricPolynomialCauchyFormula Gamma mu B)
+  (k : ℕ) :
+  ∫ (x : i),
+      (CrouzeixConjecture.parametricPolynomialBoundaryFunction Gamma q) x ^ k •
+        CrouzeixConjecture.parametricBoundaryFirstPart Gamma B x ∂mu =
+    CrouzeixConjecture.polynomialEval q B ^ k

@@ -1,0 +1,8 @@
+CrouzeixConjecture.Harp.FiniteHorizonDilationData.equation_three_finite_lower_bound.{u_1, u_2} {E : Type u_1}
+  {K : Type u_2} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E] [Nontrivial E] [NormedAddCommGroup K]
+  [InnerProductSpace ℂ K] [CompleteSpace K] {core : CrouzeixConjecture.Harp.CommutingPerturbationData E} {N : ℕ}
+  (data : CrouzeixConjecture.Harp.FiniteHorizonDilationData core K N) {κ : ℝ} (hκ : 1 < κ) (x : E)
+  (hsingular : (ContinuousLinearMap.adjoint core.T) (core.T x) = ↑(κ ^ 2) • x) :
+  κ⁻¹ ^ N * core.recurrenceScalar x (N + 1) +
+      (∑ i ∈ Finset.range N, κ⁻¹ ^ (i + 1)) * (-data.displacementSq κ x / (κ ^ 2 - κ)) ≤
+    core.recurrenceScalar x 1

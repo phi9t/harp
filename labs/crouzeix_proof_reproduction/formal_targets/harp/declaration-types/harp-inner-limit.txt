@@ -1,0 +1,5 @@
+CrouzeixConjecture.norm_polynomialEval_le_of_tendsto.{u_1, u_2} {n : Type u_1} [Fintype n] [DecidableEq n]
+  {ι : Type u_2} {l : Filter ι} [l.NeBot] (p : Polynomial ℂ) {B : ι → CrouzeixConjecture.SquareMatrix n}
+  {A : CrouzeixConjecture.SquareMatrix n} {C : ℝ} (hB : Filter.Tendsto B l (nhds A))
+  (hBound : ∀ᶠ (k : ι) in l, ‖CrouzeixConjecture.polynomialEval p (B k)‖ ≤ C) :
+  ‖CrouzeixConjecture.polynomialEval p A‖ ≤ C

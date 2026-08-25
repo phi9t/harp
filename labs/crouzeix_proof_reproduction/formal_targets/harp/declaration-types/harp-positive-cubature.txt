@@ -1,0 +1,9 @@
+CrouzeixConjecture.Harp.exists_positive_cubature_moments_through_succ.{u} {X : Type u} [TopologicalSpace X]
+  [MeasurableSpace X] [OpensMeasurableSpace X] (N : ℕ) (μ : MeasureTheory.Measure X)
+  [MeasureTheory.IsProbabilityMeasure μ] {α : Set X} (hα_compact : IsCompact α) (hα_measurable : MeasurableSet α)
+  (hμ_support : ∀ᵐ (x : X) ∂μ, x ∈ α) (φ : Fin (N + 2) → X → ℝ) (hφ : ∀ (k : Fin (N + 2)), ContinuousOn (φ k) α) :
+  ∃ ι x nodes weights,
+    Fintype.card ι ≤ N + 3 ∧
+      (∀ (i : ι), nodes i ∈ α) ∧
+        (∀ (i : ι), 0 < weights i) ∧
+          ∑ i, weights i = 1 ∧ ∀ (k : Fin (N + 2)), ∑ i, weights i * φ k (nodes i) = ∫ (x : X), φ k x ∂μ

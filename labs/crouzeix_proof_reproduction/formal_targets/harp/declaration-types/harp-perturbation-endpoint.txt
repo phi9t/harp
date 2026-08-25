@@ -1,0 +1,5 @@
+CrouzeixConjecture.Harp.norm_target_le_two_of_finiteHorizonDilationData.{u_1, u_2} {E : Type u_1} [NormedAddCommGroup E]
+  [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [CompleteSpace E] [Nontrivial E] {K : ℕ → Type u_2}
+  [(N : ℕ) → NormedAddCommGroup (K N)] [(N : ℕ) → InnerProductSpace ℂ (K N)] [∀ (N : ℕ), CompleteSpace (K N)]
+  (core : CrouzeixConjecture.Harp.CommutingPerturbationData E)
+  (data : (N : ℕ) → CrouzeixConjecture.Harp.FiniteHorizonDilationData core (K N) N) : ‖core.T‖ ≤ 2

@@ -1,0 +1,3 @@
+CrouzeixConjecture.LoristSchwenninger.compressedAdjointPower.{u_1, u_2} {E : Type u_1} {K : Type u_2}
+  [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E] [NormedAddCommGroup K] [InnerProductSpace ℂ K]
+  [CompleteSpace K] (V : E →L[ℂ] K) (Q : K →L[ℂ] K) (n : ℕ) : E →L[ℂ] E

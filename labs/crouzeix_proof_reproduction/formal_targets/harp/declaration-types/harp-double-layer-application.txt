@@ -1,0 +1,10 @@
+CrouzeixConjecture.two_smul_boundaryPhi_parametric_eq.{u_1, u_2} {i : Type u_1} {n : Type u_2} [TopologicalSpace i]
+  [CompactSpace i] [MeasurableSpace i] [OpensMeasurableSpace i] [Fintype n] [DecidableEq n]
+  {mu : MeasureTheory.Measure i} {Omega : Set ℂ} [MeasureTheory.IsFiniteMeasure mu]
+  (Gamma : CrouzeixConjecture.ParametricConvexBoundary Omega) (B : CrouzeixConjecture.SquareMatrix n)
+  (hWB : CrouzeixConjecture.numericalRange B ⊆ Omega)
+  (hCauchy : CrouzeixConjecture.HasParametricPolynomialCauchyFormula Gamma mu B) (h : BoundedContinuousFunction i ℂ)
+  (hB : CrouzeixConjecture.SquareMatrix n)
+  (hCauchyValue : ∫ (x : i), h x • CrouzeixConjecture.parametricBoundaryFirstPart Gamma B x ∂mu = hB) :
+  2 • (CrouzeixConjecture.boundaryPhiCLM (CrouzeixConjecture.parametricPositiveBoundaryDensity Gamma B hWB hCauchy)) h =
+    hB + Matrix.conjTranspose (CrouzeixConjecture.parametricBoundaryCompanion Gamma mu B h)

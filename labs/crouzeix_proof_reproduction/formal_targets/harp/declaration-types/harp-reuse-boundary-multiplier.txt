@@ -1,0 +1,5 @@
+CrouzeixConjecture.LoristSchwenninger.bcfMulL.{u_1, u_2} {i : Type u_1} {n : Type u_2} [MeasurableSpace i]
+  [TopologicalSpace i] [BorelSpace i] [SecondCountableTopologyEither i ℂ] [Fintype n] {mu : MeasureTheory.Measure i}
+  (h : BoundedContinuousFunction i ℂ) :
+  ↥(MeasureTheory.Lp (CrouzeixConjecture.EuclideanVector n) 2 mu) →L[ℂ]
+    ↥(MeasureTheory.Lp (CrouzeixConjecture.EuclideanVector n) 2 mu)

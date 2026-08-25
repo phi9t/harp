@@ -1,0 +1,3 @@
+CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two {κ b m : ℝ} (hb : 0 ≤ b) (hkpos : 0 < κ)
+  (hkminus1sqpos : 0 < (κ - 1) ^ 2) (hlower : m ≥ -b / (κ * (κ - 1) ^ 2)) (hupper : b ≤ 2 * κ ^ 2 - κ * m - κ ^ 3) :
+  κ ≤ 2

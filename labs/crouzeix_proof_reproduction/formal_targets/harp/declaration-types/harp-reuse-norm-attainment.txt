@@ -1,0 +1,3 @@
+CrouzeixConjecture.LoristSchwenninger.exists_unit_norm_attaining_and_adjoint_apply.{u_1} {E : Type u_1}
+  [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [Nontrivial E] (T : E →L[ℂ] E) :
+  ∃ x, ‖x‖ = 1 ∧ ‖T x‖ = ‖T‖ ∧ (ContinuousLinearMap.adjoint T) (T x) = ↑(‖T‖ ^ 2) • x

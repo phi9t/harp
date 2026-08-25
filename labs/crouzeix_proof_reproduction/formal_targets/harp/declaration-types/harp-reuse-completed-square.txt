@@ -1,0 +1,3 @@
+CrouzeixConjecture.LoristSchwenninger.pre_square_lower_bound.{u_1} {E : Type u_1} [NormedAddCommGroup E]
+  [InnerProductSpace ℂ E] {a lhs : ℝ} (ha : 0 < a) (u y : E) (hpre : lhs = a * ‖u‖ ^ 2 - (inner ℂ y u).re) :
+  -‖y‖ ^ 2 / (4 * a) ≤ lhs

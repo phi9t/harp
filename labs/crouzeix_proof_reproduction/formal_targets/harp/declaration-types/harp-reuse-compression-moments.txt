@@ -1,0 +1,8 @@
+CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding.{u_1, u_2}
+  {i : Type u_1} {n : Type u_2} [MeasurableSpace i] [TopologicalSpace i] [BorelSpace i]
+  [SecondCountableTopologyEither i ℂ] [Fintype n] [DecidableEq n] {mu : MeasureTheory.Measure i}
+  (D : CrouzeixConjecture.PositiveBoundaryDensity mu) (h : BoundedContinuousFunction i ℂ) (k : ℕ) :
+  ContinuousLinearMap.adjoint (CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding D).toContinuousLinearMap ∘SL
+      (CrouzeixConjecture.LoristSchwenninger.bcfMulL h ^ k) ∘SL
+        (CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding D).toContinuousLinearMap =
+    CrouzeixConjecture.euclideanOperator ((CrouzeixConjecture.boundaryPhiCLM D) (h ^ k))

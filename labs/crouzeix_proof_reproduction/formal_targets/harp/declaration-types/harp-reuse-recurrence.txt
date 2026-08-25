@@ -1,0 +1,3 @@
+CrouzeixConjecture.LoristSchwenninger.recurrence_finite_iteration_of_constant_error {κ c : ℝ} {m r : ℕ → ℝ} (hκ : 0 < κ)
+  (hrec : ∀ (n : ℕ), 1 ≤ n → r n ≤ κ * m n - m (n + 1)) (herror : ∀ (n : ℕ), 1 ≤ n → c ≤ r n) (N : ℕ) :
+  κ⁻¹ ^ N * m (N + 1) + (∑ i ∈ Finset.range N, κ⁻¹ ^ (i + 1)) * c ≤ m 1
