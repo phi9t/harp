@@ -657,8 +657,8 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
                 return Err("source-faithful route requires source identities".into());
             }
             if manifest.source_identities.iter().any(|item| {
-                !(item.starts_with("sha256:") && valid_digest(&item[7..]))
-                    && !valid_arxiv_identity(item)
+                !(valid_arxiv_identity(item)
+                    || item.starts_with("sha256:") && valid_digest(&item[7..]))
             }) {
                 return Err("invalid source identity".into());
             }
