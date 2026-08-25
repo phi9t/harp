@@ -6785,6 +6785,38 @@ create-only candidates, review source correspondence, and promote the full graph
   and empty stderr. Python and Rust route gates passed, while route validation
   remains deliberately =authored / incomplete= with reason =LS graph is not
   promoted=. No execution-ledger state advanced.
+- Independent mathematical re-review at repair commit
+  =dfd0ed5542fe21d4e43e225d17f6c8decb84a894=, tree
+  =04e80ac20ffc25caf3397bd443f9014028391724=, withdrew the erroneous
+  cross-layer digest objection and reported =PASS= with no Critical or
+  Important findings after the two locator repairs. It authorized exactly the
+  final mixed six-receipt roster recorded above.
+- The reviewed promotion API atomically promoted that roster at commit
+  =530c645bcfee7ee76591cc44df1ef3b5fdfd00d0=, tree
+  =ee69e85f25e3845ea58b71b13e63c3c9e058b5fd=. The promotion marker file
+  has SHA-256
+  =b153c84720588897b66708470514044940a28d085e3f6ecfa5bc2aa2ee6c097d=
+  and binds graph SHA-256
+  =ebe63abaf21d2ea620bfaa9be7b154ef39dbe4411535533314c14db264ab3826=
+  plus inventory SHA-256
+  =97ea21ee0af6c9d0e38cbc566ad0fc46c5f31b2785fb2f575bcc0e23d84c9b8c=.
+  All six graph rows are =passed= and all six inventory facts are
+  =local_compiled=. The required post-promotion suite passed 166 tests. Route
+  validation is now deliberately =mapped / incomplete= because no route
+  receipt or final review has been published.
+- Final binding review =cpfr086-ls-promotion-bind-20260825-c19e= confirmed that
+  every reviewed Lean source, declaration type, locator, dependency, provider
+  edge, and selected receipt remained byte-identical at the promoted commit.
+  It reported =PASS= with no Critical or Important findings. The unpublished
+  canonical review candidate at
+  =.build/crouzeix-route-review-candidates/lorist-schwenninger.json= has file
+  SHA-256
+  =9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a=
+  and self-digest
+  =b67fbd93714679422cd80c80d78e5b4b76ab03f11042187b74a6a5be4b34196d=.
+  The execution ledger advanced through =locally-verified= and
+  =spec-approved= at the promoted candidate. No route evidence is published
+  yet.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
