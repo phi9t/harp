@@ -6836,7 +6836,16 @@ create-only candidates, review source correspondence, and promote the full graph
   and theorem identities, Python/Rust parity, historical immutability, cache
   discipline, graph-promotion recovery, create-only publication, and the
   complete receipt/review digest chain. The execution ledger advanced to
-  =standards-approved=; release verification remains pending.
+  =standards-approved=.
+- The focused release gate passed at
+  =df8da81f9bbf38f88c0f20517c8af3099b271781=: no-build preflight was
+  =ready=; the sandboxed cached LS build completed 3,386 jobs in 13 seconds
+  total (six seconds in Lake); Python discovery passed 739 tests with two
+  documented skips; Rust Crouzeix tests passed 97 tests; formatting and diff
+  checks passed; and route validation remained =complete-local=. The shared
+  dependency snapshot digest remained
+  =3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e=
+  before and after the build, so no common dependency was hydrated or replaced.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
