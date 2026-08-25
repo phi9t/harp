@@ -38,6 +38,16 @@ TRANSACTION_FIELDS = frozenset(
         "new_inventory_sha256",
     }
 )
+TRANSACTION_MEMBER_NAMES = frozenset(
+    {
+        "journal.json",
+        "original-graph.json",
+        "original-inventory.json",
+        "new-graph.json",
+        "new-inventory.json",
+        "marker.json",
+    }
+)
 DARWIN_RENAME_EXCL = 0x00000004
 LINUX_RENAME_NOREPLACE = 0x00000001
 _HOOK: Callable[[str], None] | None = None
@@ -102,10 +112,27 @@ def promote_six_node_route(repository_root, candidate_receipts) -> None:
         if current["promotion"] is not None:
             _require_current_generation(current, graph_bytes, inventory_bytes)
             return
-        _publish_generation(formal_target_root, target_directory, graph_bytes, inventory_bytes)
+        _publish_generation(
+            formal_target_root,
+            target_directory,
+            repository_directory,
+            candidates,
+            graph_bytes,
+            inventory_bytes,
+        )
     finally:
         if lock is not None and formal_target_chain:
-            _release_lock(formal_target_chain[-1], lock)
+            try:
+                _release_lock(formal_target_chain[-1], lock)
+            except OSError as error:
+                if _committed_generation_present(formal_target_chain[-1]):
+                    raise CommittedPromotionError(
+                        "LS promotion committed new graph/inventory, but lock release failed: "
+                        f"{error}",
+                        _file_sha256(formal_target_chain[-1], GRAPH_NAME),
+                        _file_sha256(formal_target_chain[-1], INVENTORY_NAME),
+                    ) from error
+                raise
         if formal_target_chain:
             ls_validation._close_pinned_directories(formal_target_chain)
         ls_validation._close_pinned_directories(repository_chain)
@@ -309,6 +336,8 @@ def _require_current_generation(
 def _publish_generation(
     formal_target_root: Path,
     target_directory: ls_validation._PinnedDirectory,
+    repository_directory: ls_validation._PinnedDirectory,
+    candidates: tuple[_CandidateReceipt, ...],
     graph_bytes: bytes,
     inventory_bytes: bytes,
 ) -> None:
@@ -362,6 +391,13 @@ def _publish_generation(
         _checkpoint("after_inventory_rename")
         _fsync_descriptor(target_directory.descriptor)
         _checkpoint("after_inventory_fsync")
+        _final_pre_marker_revalidation(
+            candidates,
+            repository_directory,
+            target_directory,
+            graph_bytes,
+        )
+        _checkpoint("after_final_revalidation")
 
         _checkpoint("before_marker_stage_write")
         _stage_file_from_transaction(
@@ -407,12 +443,7 @@ def _create_transaction(
     transaction_id = uuid.uuid4().hex
     name = f"{TRANSACTION_PREFIX}{transaction_id}"
     os.mkdir(name, mode=0o700, dir_fd=target_directory.descriptor)
-    pinned = ls_validation._pin_directory_at(
-        target_directory,
-        name,
-        target_directory.path / name,
-        "LS promotion transaction",
-    )
+    pinned: ls_validation._PinnedDirectory | None = None
     marker = {
         "schema_version": "crouzeix-ls-promotion/v1",
         "graph_sha256": protocol.sha256_bytes(new_graph),
@@ -429,21 +460,41 @@ def _create_transaction(
         "new_graph_sha256": marker["graph_sha256"],
         "new_inventory_sha256": marker["inventory_sha256"],
     }
-    _write_file_create_only_at(pinned.descriptor, "original-graph.json", original_graph)
-    _write_file_create_only_at(
-        pinned.descriptor, "original-inventory.json", original_inventory
-    )
-    _write_file_create_only_at(pinned.descriptor, "new-graph.json", new_graph)
-    _write_file_create_only_at(pinned.descriptor, "new-inventory.json", new_inventory)
-    _write_file_create_only_at(
-        pinned.descriptor, "marker.json", _canonical_json_bytes(marker)
-    )
-    _write_file_create_only_at(
-        pinned.descriptor, "journal.json", _canonical_json_bytes(record)
-    )
-    _fsync_descriptor(pinned.descriptor)
-    _fsync_descriptor(target_directory.descriptor)
-    return _Transaction(pinned=pinned, record=record)
+    try:
+        pinned = ls_validation._pin_directory_at(
+            target_directory,
+            name,
+            target_directory.path / name,
+            "LS promotion transaction",
+        )
+        _write_file_create_only_at(pinned.descriptor, "original-graph.json", original_graph)
+        _checkpoint("after_tx_original_graph_write")
+        _write_file_create_only_at(
+            pinned.descriptor, "original-inventory.json", original_inventory
+        )
+        _checkpoint("after_tx_original_inventory_write")
+        _write_file_create_only_at(pinned.descriptor, "new-graph.json", new_graph)
+        _checkpoint("after_tx_new_graph_write")
+        _write_file_create_only_at(pinned.descriptor, "new-inventory.json", new_inventory)
+        _checkpoint("after_tx_new_inventory_write")
+        _write_file_create_only_at(
+            pinned.descriptor, "marker.json", _canonical_json_bytes(marker)
+        )
+        _checkpoint("after_tx_marker_write")
+        _write_file_create_only_at(
+            pinned.descriptor, "journal.json", _canonical_json_bytes(record)
+        )
+        _checkpoint("after_tx_journal_write")
+        _fsync_descriptor(pinned.descriptor)
+        _checkpoint("after_tx_fsync")
+        _fsync_descriptor(target_directory.descriptor)
+        return _Transaction(pinned=pinned, record=record)
+    except Exception:
+        if pinned is not None:
+            _remove_incomplete_transaction(target_directory, pinned)
+        else:
+            _cleanup_stage(target_directory.descriptor, name)
+        raise
 
 
 def _stage_file_from_transaction(
@@ -520,7 +571,7 @@ def _recover_pending_transaction(target_directory: ls_validation._PinnedDirector
         target_directory.path / names[0],
         "LS promotion transaction",
     )
-    transaction = _load_transaction(pinned)
+    transaction: _Transaction | None = None
     try:
         marker = ls_validation._optional_read_file_at(
             target_directory, PROMOTION_NAME, "LS promotion marker", ls_validation.MAX_JSON_BYTES
@@ -532,7 +583,24 @@ def _recover_pending_transaction(target_directory: ls_validation._PinnedDirector
                 raise protocol.ValidationError(
                     f"LS promotion marker is invalid during recovery: {error}"
                 ) from error
-            _remove_transaction(transaction)
+            if not _has_only_recognized_transaction_entries(pinned):
+                raise protocol.ValidationError(
+                    "LS promotion transaction is incomplete or ambiguous"
+                )
+            try:
+                _remove_incomplete_transaction(target_directory, pinned)
+            except Exception as error:
+                raise CommittedPromotionError(
+                    "LS promotion committed new graph/inventory, but post-marker cleanup "
+                    f"failed during recovery: {error}",
+                    _file_sha256(target_directory, GRAPH_NAME),
+                    _file_sha256(target_directory, INVENTORY_NAME),
+                ) from error
+            return
+        transaction = _load_transaction_or_incomplete(pinned)
+        if transaction is None:
+            _remove_incomplete_transaction(target_directory, pinned)
+            _fsync_descriptor(target_directory.descriptor)
             return
         current_graph = ls_validation._read_file_at(
             target_directory, GRAPH_NAME, "LS source graph", ls_validation.MAX_JSON_BYTES
@@ -559,7 +627,7 @@ def _recover_pending_transaction(target_directory: ls_validation._PinnedDirector
         _remove_transaction(transaction)
         _fsync_descriptor(target_directory.descriptor)
     finally:
-        if transaction.pinned.descriptor >= 0:
+        if transaction is not None and transaction.pinned.descriptor >= 0:
             ls_validation._close_pinned_directories((transaction.pinned,))
 
 
@@ -576,13 +644,17 @@ def _transaction_names(target_directory: ls_validation._PinnedDirectory) -> tupl
     return tuple(sorted(names))
 
 
-def _load_transaction(pinned: ls_validation._PinnedDirectory) -> _Transaction:
-    record = ls_validation._json_object_from_bytes(
-        ls_validation._read_file_at(
-            pinned, "journal.json", "LS promotion journal", ls_validation.MAX_JSON_BYTES
-        ),
-        "LS promotion journal",
+def _load_transaction_or_incomplete(
+    pinned: ls_validation._PinnedDirectory,
+) -> _Transaction | None:
+    journal = ls_validation._optional_read_file_at(
+        pinned, "journal.json", "LS promotion journal", ls_validation.MAX_JSON_BYTES
     )
+    if journal is None:
+        if _has_only_recognized_transaction_entries(pinned):
+            return None
+        raise protocol.ValidationError("LS promotion transaction is incomplete or ambiguous")
+    record = ls_validation._json_object_from_bytes(journal, "LS promotion journal")
     ls_validation._require_fields(record, TRANSACTION_FIELDS, "LS promotion journal")
     ls_validation._require_equal(
         record["schema_version"], "crouzeix-ls-promotion-transaction/v1", "schema_version"
@@ -648,6 +720,30 @@ def _load_transaction(pinned: ls_validation._PinnedDirectory) -> _Transaction:
     return _Transaction(pinned=pinned, record=normalized)
 
 
+def _has_only_recognized_transaction_entries(
+    pinned: ls_validation._PinnedDirectory,
+) -> bool:
+    names = set(os.listdir(pinned.descriptor))
+    return names <= TRANSACTION_MEMBER_NAMES
+
+
+def _remove_incomplete_transaction(
+    target_directory: ls_validation._PinnedDirectory,
+    pinned: ls_validation._PinnedDirectory,
+) -> None:
+    if not _has_only_recognized_transaction_entries(pinned):
+        raise protocol.ValidationError("LS promotion transaction is incomplete or ambiguous")
+    for name in sorted(os.listdir(pinned.descriptor)):
+        _cleanup_stage(pinned.descriptor, name)
+    parent = pinned.parent
+    if parent is None or pinned.entry_name is None:
+        raise protocol.ValidationError("LS promotion transaction parent is missing")
+    os.rmdir(pinned.entry_name, dir_fd=parent.descriptor)
+    _fsync_descriptor(target_directory.descriptor)
+    ls_validation._close_pinned_directories((pinned,))
+    object.__setattr__(pinned, "descriptor", -1)
+
+
 def _require_known_generation(
     transaction: _Transaction, current_graph: bytes, current_inventory: bytes
 ) -> None:
@@ -705,6 +801,10 @@ def _acquire_lock(target_directory: ls_validation._PinnedDirectory) -> _OwnedLoc
                 lock["schema_version"], "crouzeix-ls-promotion-lock/v1", "schema_version"
             )
             pid = ls_validation._integer(lock["pid"], "pid", 1, 2**31 - 1)
+            if pid == os.getpid() and _committed_generation_present(target_directory):
+                _cleanup_stage(target_directory.descriptor, LOCK_NAME)
+                _fsync_descriptor(target_directory.descriptor)
+                continue
             if _pid_alive(pid):
                 raise PromotionCollisionError(
                     f"another LS promotion publisher is active: pid {pid}"
@@ -741,6 +841,54 @@ def _release_lock(
         pass
     finally:
         os.close(lock.descriptor)
+
+
+def _final_pre_marker_revalidation(
+    candidates: tuple[_CandidateReceipt, ...],
+    repository_directory: ls_validation._PinnedDirectory,
+    target_directory: ls_validation._PinnedDirectory,
+    graph_bytes: bytes,
+) -> None:
+    try:
+        receipts = _validate_candidate_receipts(
+            candidates, target_directory, repository_directory
+        )
+    except protocol.ValidationError as error:
+        if "local_source_closure_sha256" in str(error):
+            raise protocol.ValidationError(
+                "candidate source closure changed before promotion marker"
+            ) from error
+        raise
+    rebound_graph = _canonical_graph_bytes(candidates, receipts)
+    if rebound_graph != graph_bytes:
+        raise protocol.ValidationError(
+            "candidate receipt binding changed before promotion marker"
+        )
+    source_closure = ls_validation._active_import_closure_at(repository_directory)
+    expected_source_closure = {
+        receipts[node_id]["local_source_closure_sha256"]
+        for node_id in ls_contract.NODE_ORDER
+    }
+    if len(expected_source_closure) != 1:
+        raise protocol.ValidationError(
+            "candidate source closure is inconsistent across selected receipts"
+        )
+    expected = next(iter(expected_source_closure))
+    if source_closure.sha256 != expected:
+        raise protocol.ValidationError("candidate source closure changed before promotion marker")
+
+
+def _file_sha256(directory: ls_validation._PinnedDirectory, name: str) -> str:
+    return protocol.sha256_bytes(
+        ls_validation._read_file_at(directory, name, name, ls_validation.MAX_JSON_BYTES)
+    )
+
+
+def _committed_generation_present(target_directory: ls_validation._PinnedDirectory) -> bool:
+    marker = ls_validation._optional_read_file_at(
+        target_directory, PROMOTION_NAME, "LS promotion marker", ls_validation.MAX_JSON_BYTES
+    )
+    return marker is not None
 
 
 def _pid_alive(pid: int) -> bool:

@@ -107,6 +107,10 @@ def run_promotion_with_hook(
         ls_promotion.promote_six_node_route(repository_root, candidates)
 
 
+def first_candidate_attempt(repository_root: Path, candidates: tuple[dict[str, str], ...]) -> Path:
+    return repository_root / candidates[0]["attempt_path"]
+
+
 class LSPromotionTests(unittest.TestCase):
     def test_public_signature_is_closed_two_argument_api(self) -> None:
         self.assertEqual(
@@ -357,6 +361,173 @@ class LSPromotionTests(unittest.TestCase):
             state = ls_validation.load_route_state(formal_target_root)
             self.assertIsNotNone(state["promotion"])
             self.assertEqual(tuple(row.status for row in state["graph"]), ("passed",) * 6)
+
+    def test_late_selected_receipt_mutation_before_marker_restores_history(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            original_graph = (formal_target_root / GRAPH_NAME).read_bytes()
+            original_inventory = (formal_target_root / INVENTORY_NAME).read_bytes()
+            candidates = candidate_roster(repository_root)
+            attempt = first_candidate_attempt(repository_root, candidates)
+
+            def hook(name: str) -> None:
+                if name == "after_inventory_fsync":
+                    (attempt / "receipt.json").write_text("{\"broken\":true}\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "candidate receipt"):
+                run_promotion_with_hook(repository_root, candidates, hook)
+
+            self.assertEqual((formal_target_root / GRAPH_NAME).read_bytes(), original_graph)
+            self.assertEqual((formal_target_root / INVENTORY_NAME).read_bytes(), original_inventory)
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+
+    def test_late_reachable_source_mutation_before_marker_restores_history(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            original_graph = (formal_target_root / GRAPH_NAME).read_bytes()
+            original_inventory = (formal_target_root / INVENTORY_NAME).read_bytes()
+            candidates = candidate_roster(repository_root)
+            module_path = repository_root / ls_contract.NODES[0].build_target
+
+            def hook(name: str) -> None:
+                if name == "after_inventory_fsync":
+                    module_path.write_text(
+                        "import Mathlib.Algebra.Order.Ring.Defs\n-- mutated late source\n",
+                        encoding="utf-8",
+                    )
+
+            with self.assertRaisesRegex(protocol.ValidationError, "candidate source closure"):
+                run_promotion_with_hook(repository_root, candidates, hook)
+
+            self.assertEqual((formal_target_root / GRAPH_NAME).read_bytes(), original_graph)
+            self.assertEqual((formal_target_root / INVENTORY_NAME).read_bytes(), original_inventory)
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+
+    def test_transaction_creation_failure_cleans_partial_owned_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            original_graph = (formal_target_root / GRAPH_NAME).read_bytes()
+            original_inventory = (formal_target_root / INVENTORY_NAME).read_bytes()
+            candidates = candidate_roster(repository_root)
+
+            original_write = ls_promotion._write_file_create_only_at
+            calls = {"count": 0}
+
+            def failing_write(parent_fd: int, name: str, data: bytes) -> None:
+                calls["count"] += 1
+                if calls["count"] == 3:
+                    raise OSError("tx create failure")
+                original_write(parent_fd, name, data)
+
+            with mock.patch.object(ls_promotion, "_write_file_create_only_at", side_effect=failing_write):
+                with self.assertRaisesRegex(OSError, "tx create failure"):
+                    ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertEqual((formal_target_root / GRAPH_NAME).read_bytes(), original_graph)
+            self.assertEqual((formal_target_root / INVENTORY_NAME).read_bytes(), original_inventory)
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+
+    def test_transaction_creation_base_exception_recovery_on_retry(self) -> None:
+        class SimulatedCrash(BaseException):
+            pass
+
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            candidates = candidate_roster(repository_root)
+
+            original_write = ls_promotion._write_file_create_only_at
+            calls = {"count": 0}
+
+            def crashing_write(parent_fd: int, name: str, data: bytes) -> None:
+                calls["count"] += 1
+                if calls["count"] == 3:
+                    raise SimulatedCrash("tx create crash")
+                original_write(parent_fd, name, data)
+
+            with mock.patch.object(ls_promotion, "_write_file_create_only_at", side_effect=crashing_write):
+                with self.assertRaises(SimulatedCrash):
+                    ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertEqual(len(transaction_roots(formal_target_root)), 1)
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+
+            ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            state = ls_validation.load_route_state(formal_target_root)
+            self.assertIsNotNone(state["promotion"])
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+
+    def test_post_marker_partial_transaction_cleanup_surfaces_committed_error_and_retry_cleans(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            candidates = candidate_roster(repository_root)
+
+            original_remove = ls_promotion._remove_transaction
+            fail_once = {"used": False}
+
+            def partial_remove(transaction) -> None:
+                if not fail_once["used"]:
+                    fail_once["used"] = True
+                    ls_promotion._cleanup_stage(transaction.pinned.descriptor, "marker.json")
+                    raise OSError("partial cleanup failure")
+                original_remove(transaction)
+
+            with mock.patch.object(ls_promotion, "_remove_transaction", side_effect=partial_remove):
+                with self.assertRaises(ls_promotion.CommittedPromotionError) as caught:
+                    ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertIn("partial cleanup failure", str(caught.exception))
+            state = ls_validation.load_route_state(formal_target_root)
+            self.assertIsNotNone(state["promotion"])
+            self.assertEqual(len(transaction_roots(formal_target_root)), 1)
+
+            ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+            state = ls_validation.load_route_state(formal_target_root)
+            self.assertIsNotNone(state["promotion"])
+
+    def test_post_marker_lock_release_failure_surfaces_committed_error_and_retry_recovers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            candidates = candidate_roster(repository_root)
+
+            original_release = ls_promotion._release_lock
+            fail_once = {"used": False}
+
+            def failing_release(target_directory, lock) -> None:
+                if not fail_once["used"]:
+                    fail_once["used"] = True
+                    raise OSError("release failure")
+                original_release(target_directory, lock)
+
+            with mock.patch.object(ls_promotion, "_release_lock", side_effect=failing_release):
+                with self.assertRaises(ls_promotion.CommittedPromotionError) as caught:
+                    ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertIn("release failure", str(caught.exception))
+            state = ls_validation.load_route_state(formal_target_root)
+            self.assertIsNotNone(state["promotion"])
+            self.assertTrue((formal_target_root / ls_promotion.LOCK_NAME).exists())
+
+            ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertFalse((formal_target_root / ls_promotion.LOCK_NAME).exists())
+            self.assertEqual(transaction_roots(formal_target_root), [])
 
     def test_marker_unknown_field_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
