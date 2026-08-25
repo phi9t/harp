@@ -8,16 +8,16 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+LAB = Path(__file__).resolve().parents[1]
+import sys
+if str(LAB) not in sys.path:
+    sys.path.insert(0, str(LAB))
+
 from labs.crouzeix_proof_reproduction import (
     ls_contract,
     ls_validation as package_ls_validation,
     route_validation,
 )
-
-LAB = Path(__file__).resolve().parents[1]
-import sys
-if str(LAB) not in sys.path:
-    sys.path.insert(0, str(LAB))
 
 import ls_validation  # noqa: E402
 
@@ -245,7 +245,7 @@ class LoristSchwenningerSchemaParityTests(unittest.TestCase):
 class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
     def _write_isolated_repo(self, directory: str) -> Path:
         repo_root = Path(directory)
-        source_manifest_target = repo_root / SOURCE_MANIFEST_PATH
+        source_manifest_target = repo_root / SOURCE_MANIFEST_PATH.relative_to(REPO)
         source_manifest_target.parent.mkdir(parents=True, exist_ok=True)
         source_manifest_target.write_text(
             SOURCE_MANIFEST_PATH.read_text(encoding="utf-8"),
@@ -258,6 +258,17 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
             encoding="utf-8",
         )
         return repo_root
+
+    def test_isolated_repo_writes_source_manifest_under_temp_root(self) -> None:
+        tracked_source_manifest = SOURCE_MANIFEST_PATH.read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            repo_root = self._write_isolated_repo(directory)
+            source_manifest_target = repo_root / SOURCE_MANIFEST_PATH.relative_to(REPO)
+
+            self.assertTrue(source_manifest_target.is_file())
+            self.assertTrue(source_manifest_target.is_relative_to(repo_root))
+            self.assertEqual(source_manifest_target.read_bytes(), tracked_source_manifest)
+        self.assertEqual(SOURCE_MANIFEST_PATH.read_bytes(), tracked_source_manifest)
 
     def test_artifact_manifest_matches_exact_closed_ls_payload(self) -> None:
         manifest = json.loads(ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8"))
@@ -322,6 +333,7 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
 
     def test_artifact_manifest_mutations_fail_closed(self) -> None:
         self.assertTrue(ARTIFACT_MANIFEST_PATH.is_file())
+        tracked_source_manifest = SOURCE_MANIFEST_PATH.read_bytes()
         manifest = json.loads(ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8"))
         parsed = parsed_ls_manifest()
         node = parsed.nodes[0]
@@ -341,6 +353,8 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
         for field, mutated, pattern in expectations:
             with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
                 repo_root = self._write_isolated_repo(directory)
+                source_manifest_path = repo_root / SOURCE_MANIFEST_PATH.relative_to(REPO)
+                self.assertTrue(source_manifest_path.is_relative_to(repo_root))
                 artifact_manifest_path = (
                     repo_root / ARTIFACT_MANIFEST_PATH.relative_to(REPO)
                 )
@@ -360,6 +374,10 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
                     route_validation.validate_source_provenance_metadata(
                         repo_root, parsed, node
                     )
+                self.assertEqual(
+                    SOURCE_MANIFEST_PATH.read_bytes(),
+                    tracked_source_manifest,
+                )
 
     def test_ls_provenance_validation_rejects_wrong_identity_and_wrong_path_after_generic_parse(self) -> None:
         payload = ls_manifest_payload()
