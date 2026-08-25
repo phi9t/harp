@@ -6,8 +6,16 @@ import re
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
-from labs.crouzeix_proof_reproduction import ls_contract, ls_validation, route_validation
+from labs.crouzeix_proof_reproduction import ls_contract, route_validation
+
+LAB = Path(__file__).resolve().parents[1]
+import sys
+if str(LAB) not in sys.path:
+    sys.path.insert(0, str(LAB))
+
+import ls_validation  # noqa: E402
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -22,6 +30,12 @@ ARTIFACT_MANIFEST_PATH = (
     REPO
     / "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json"
 )
+ROUTE_MANIFEST_PATH = (
+    REPO
+    / "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+)
+SOURCE_GRAPH_PATH = ROUTE_MANIFEST_PATH.parent / "source-graph.json"
+DECLARATION_TYPES_ROOT = ROUTE_MANIFEST_PATH.parent / "declaration-types"
 
 SOURCE_ID = "LS-ARXIV-V1"
 SOURCE_IDENTITY = "arxiv:2608.03841v1"
@@ -35,6 +49,25 @@ SOURCE_PATH = "CrouzeixConjecturev2.tex"
 SOURCE_BYTES = 18_783
 SOURCE_LINES = 281
 SOURCE_LOCATOR = "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99"
+SOURCE_IDENTITIES = sorted(
+    [
+        SOURCE_IDENTITY,
+        f"sha256:{SOURCE_ARCHIVE_SHA256}",
+        f"sha256:{SOURCE_FILE_SHA256}",
+    ]
+)
+NODE_CORRESPONDENCE_KINDS = (
+    ("ls-equation-one-terminal-bound", "direct-source"),
+    ("ls-power-recurrence", "structural-refactor"),
+    ("ls-scalar-contradiction", "direct-source"),
+    ("ls-perturbation-lemma", "structural-refactor"),
+    ("ls-double-layer-realization", "structural-refactor"),
+    ("ls-terminal-crouzeix", "structural-refactor"),
+)
+DECLARATION_TYPE_FILES = {
+    node_id: DECLARATION_TYPES_ROOT / f"{node_id}.txt"
+    for node_id in ls_contract.NODE_ORDER
+}
 
 
 def load_schema() -> dict[str, object]:
@@ -341,6 +374,139 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
 
 
 class LoristSchwenningerContractTests(unittest.TestCase):
+    def test_unpromoted_ls_manifest_is_authored_and_incomplete(self) -> None:
+        result = route_validation.inspect_route(
+            REPO, "lorist-schwenninger", allow_unpublished=True
+        )
+        self.assertEqual(result.claim_level, "authored")
+        self.assertEqual(result.status, "incomplete")
+        self.assertEqual(result.reason, "LS graph is not promoted")
+
+    def test_route_manifest_matches_exact_task7_contract(self) -> None:
+        payload = json.loads(ROUTE_MANIFEST_PATH.read_text(encoding="utf-8"))
+        manifest = route_validation.parse_route_manifest(payload)
+        closure = route_validation.active_local_closure(
+            REPO / "formalization/lean",
+            "CrouzeixLoristSchwenninger",
+        )
+        self.assertEqual(manifest.route_id, "lorist-schwenninger")
+        self.assertEqual(manifest.claim_kind, "source-faithful")
+        self.assertEqual(manifest.aggregate_module, "CrouzeixLoristSchwenninger")
+        self.assertEqual(manifest.build_target, "CrouzeixLoristSchwenninger")
+        self.assertEqual(
+            manifest.terminal_declaration,
+            "CrouzeixConjecture.loristSchwenningerMainTheorem",
+        )
+        self.assertEqual(manifest.consequence_declarations, ())
+        self.assertEqual(list(manifest.source_identities), SOURCE_IDENTITIES)
+        self.assertEqual(manifest.allowed_axioms, route_validation.ALLOWED_AXIOMS)
+        self.assertEqual(
+            manifest.review_path,
+            "evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json",
+        )
+        self.assertIsNone(manifest.review_sha256)
+        self.assertEqual(
+            manifest.receipt_path,
+            "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json",
+        )
+        self.assertIsNone(manifest.receipt_sha256)
+        self.assertEqual(tuple(node.node_id for node in manifest.nodes), ls_contract.NODE_ORDER)
+        self.assertEqual(
+            tuple(node.role for node in manifest.nodes),
+            ("load-bearing", "load-bearing", "load-bearing", "load-bearing", "load-bearing", "terminal"),
+        )
+        self.assertEqual(
+            tuple((node.node_id, node.correspondence_kind) for node in manifest.nodes),
+            NODE_CORRESPONDENCE_KINDS,
+        )
+        self.assertEqual(
+            tuple(node.declaration for node in manifest.nodes),
+            tuple(node.declaration for node in ls_contract.NODES),
+        )
+        self.assertEqual(
+            tuple(node.dependency_ids for node in manifest.nodes),
+            tuple(node.dependencies for node in ls_contract.NODES),
+        )
+        self.assertEqual(
+            tuple(node.source_locator for node in manifest.nodes),
+            tuple(node.source_locator for node in ls_contract.NODES),
+        )
+        self.assertEqual(
+            tuple(node.source_archive_sha256 for node in manifest.nodes),
+            (SOURCE_ARCHIVE_SHA256,) * len(ls_contract.NODES),
+        )
+        self.assertEqual(
+            tuple(node.source_file_sha256 for node in manifest.nodes),
+            (SOURCE_FILE_SHA256,) * len(ls_contract.NODES),
+        )
+        self.assertEqual(
+            tuple(node.source_line_count for node in manifest.nodes),
+            (SOURCE_LINES,) * len(ls_contract.NODES),
+        )
+        self.assertEqual(manifest.module_closure, closure)
+        self.assertEqual(
+            manifest.module_closure_sha256,
+            route_validation.string_roster_sha256(closure),
+        )
+        node_module_names = {
+            route_validation._module_from_path(node.module_path) for node in manifest.nodes
+        }
+        self.assertEqual(
+            manifest.shared_foundation_modules,
+            tuple(module for module in closure if module not in node_module_names),
+        )
+        self.assertEqual(
+            manifest.terminal_type_sha256,
+            manifest.nodes[-1].statement_sha256,
+        )
+
+    def test_exactly_six_declaration_type_artifacts_exist_and_match_statement_hashes(self) -> None:
+        self.assertEqual(
+            sorted(path.name for path in DECLARATION_TYPES_ROOT.glob("*.txt")),
+            sorted(f"{node_id}.txt" for node_id in ls_contract.NODE_ORDER),
+        )
+        manifest = route_validation.load_route_manifest(REPO, ROUTE_MANIFEST_PATH.relative_to(REPO))
+        self.assertEqual(len(manifest.nodes), 6)
+        for node in manifest.nodes:
+            with self.subTest(node_id=node.node_id):
+                path = DECLARATION_TYPE_FILES[node.node_id]
+                text = path.read_text(encoding="utf-8")
+                self.assertEqual(node.declaration_type_path, path.relative_to(REPO).as_posix())
+                self.assertEqual(
+                    node.statement_sha256,
+                    route_validation.normalized_type_sha256(text),
+                )
+                self.assertTrue(text.endswith("\n"))
+                self.assertEqual(text, text.strip() + "\n")
+
+    def test_promoted_ls_authority_uses_shared_state_and_receipt_validation(self) -> None:
+        promoted_rows = tuple(
+            row
+            for row in ls_validation.load_route_graph(SOURCE_GRAPH_PATH)
+        )
+        state = {"graph": promoted_rows, "promotion": {"schema_version": "fixture"}}
+        selected = {
+            row.node_id: {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    f"lorist-schwenninger/proof-slices/{row.node_id}/attempt-999"
+                )
+            }
+            for row in promoted_rows
+        }
+        with mock.patch.object(ls_validation, "load_route_state", return_value=state) as load, mock.patch.object(
+            ls_validation, "validate_committed_receipts", return_value=selected
+        ) as validate:
+            roster = ls_validation.validated_route_authority_paths(REPO)
+
+        load.assert_called_once()
+        validate.assert_called_once()
+        self.assertIn(
+            Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json"),
+            roster,
+        )
+        self.assertEqual(len(roster), 4 + 6 * len(ls_validation.ATTEMPT_FILES))
+
     def test_exact_node_authority_uses_canonical_terminal_dependency_only(self) -> None:
         by_id = ls_contract.BY_ID
         self.assertEqual(

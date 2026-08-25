@@ -1,0 +1,6 @@
+CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound.{u_1, u_2} {E : Type u_1} {K : Type u_2}
+  [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [CompleteSpace E] [Nontrivial E]
+  [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
+  (data : CrouzeixConjecture.LoristSchwenninger.DilationData) {κ : ℝ} (hκ : 1 < κ) {x : E} (hx : ‖x‖ = 1)
+  (hsingular : (ContinuousLinearMap.adjoint data.T) (data.T x) = ↑(κ ^ 2) • x) :
+  -‖data.displacement κ x‖ ^ 2 / (κ * (κ - 1) ^ 2) ≤ (inner ℂ x ((data.perturbation 1) (data.T x))).re

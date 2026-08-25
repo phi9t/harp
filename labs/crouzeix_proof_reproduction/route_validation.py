@@ -786,7 +786,7 @@ def parse_route_manifest(value: Mapping[str, object]) -> RouteManifest:
         build_target=_text(value["build_target"], "build target", pattern=MODULE_RE),
         terminal_declaration=_text(value["terminal_declaration"], "terminal declaration", pattern=MODULE_RE),
         terminal_type_sha256=_text(value["terminal_type_sha256"], "terminal type sha256", pattern=SHA256_RE),
-        consequence_declarations=_string_tuple(value["consequence_declarations"], "consequence declaration", pattern=MODULE_RE),
+        consequence_declarations=_string_tuple(value["consequence_declarations"], "consequence declaration", pattern=MODULE_RE, allow_empty=True),
         source_identities=_string_tuple(value["source_identities"], "source identity", pattern=IDENTITY_RE, allow_empty=True),
         shared_foundation_modules=_string_tuple(value["shared_foundation_modules"], "shared foundation module", pattern=MODULE_RE, allow_empty=True),
         module_closure=_string_tuple(value["module_closure"], "module closure entry", pattern=MODULE_RE),
@@ -1254,7 +1254,8 @@ def _validate_receipt(
     candidate_commit = _text(raw["candidate_commit"], "candidate commit", pattern=GIT_ID_RE)
     candidate_tree = _text(raw["candidate_tree"], "candidate tree", pattern=GIT_ID_RE)
     _validate_git_identity(
-        repo_root, candidate_commit, candidate_tree, manifest.module_closure
+        repo_root, candidate_commit, candidate_tree, manifest.module_closure,
+        authority_paths=_ls_authority_paths(repo_root, manifest),
     )
     if raw["receipt_sha256"] != self_digest(raw, "receipt_sha256"):
         raise RouteValidationError("receipt identity digest mismatch")
@@ -1392,6 +1393,8 @@ def _validate_git_identity(
     commit: str,
     expected_tree: str,
     local_modules: Sequence[str],
+    *,
+    authority_paths: Sequence[Path] = (),
 ) -> None:
     try:
         exists = subprocess.run(
@@ -1423,9 +1426,13 @@ def _validate_git_identity(
         raise RouteValidationError(f"cannot resolve candidate Git tree: {tree.stderr.strip()}")
     if tree.stdout.strip() != expected_tree:
         raise RouteValidationError("candidate tree mismatch")
-    for module in local_modules:
-        relative = Path("formalization/lean") / module_relative_path(module)
-        current = _read_bytes(repo_root, relative.as_posix(), f"route source {module}")
+    bound_paths = [
+        (Path("formalization/lean") / module_relative_path(module), f"route source {module}", "source")
+        for module in local_modules
+    ]
+    bound_paths.extend((path, "route authority input", "authority") for path in authority_paths)
+    for relative, label, kind in bound_paths:
+        current = _read_bytes(repo_root, relative.as_posix(), label)
         try:
             candidate = subprocess.run(
                 ["git", "-C", str(repo_root), "show", f"{commit}:{relative.as_posix()}"],
@@ -1435,7 +1442,22 @@ def _validate_git_identity(
         except OSError as error:
             raise RouteValidationError(f"Git source binding unavailable: {error}") from error
         if candidate.returncode != 0 or candidate.stdout != current:
-            raise RouteValidationError(f"candidate route source blob mismatch: {relative.as_posix()}")
+            raise RouteValidationError(
+                f"candidate route {kind} blob mismatch: {relative.as_posix()}"
+            )
+
+
+def _ls_authority_paths(repo_root: Path, manifest: RouteManifest) -> tuple[Path, ...]:
+    if manifest.route_id != "lorist-schwenninger":
+        return ()
+    try:
+        from . import ls_validation
+    except ImportError:  # pragma: no cover - direct script execution path
+        import ls_validation
+    try:
+        return ls_validation.validated_route_authority_paths(repo_root)
+    except Exception as error:
+        raise RouteValidationError(f"LS graph state is invalid: {error}") from error
 
 
 def _validate_review(
@@ -1532,6 +1554,28 @@ def validate_route_bundle(
     manifest_raw = _read_json(root, manifest_path, "route manifest")
     manifest = parse_route_manifest(manifest_raw)
     _validate_manifest_semantics(root, root / lean_root, manifest)
+    if manifest.route_id == "lorist-schwenninger":
+        try:
+            from . import ls_validation
+        except ImportError:  # pragma: no cover - direct script execution path
+            import ls_validation
+        try:
+            state = ls_validation.load_route_state(
+                root / "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger"
+            )
+        except Exception as error:
+            raise RouteValidationError(f"LS graph state is invalid: {error}") from error
+        if state["promotion"] is None:
+            if not allow_unpublished:
+                raise RouteValidationError("LS graph is not promoted")
+            return RouteValidationResult(
+                manifest.route_id,
+                "authored",
+                "incomplete",
+                manifest_path.as_posix(),
+                "LS graph is not promoted",
+            )
+        _ls_authority_paths(root, manifest)
     receipt_candidate = root / manifest.receipt_path
     review_candidate = root / manifest.review_path
     receipt_present = receipt_candidate.exists() or receipt_candidate.is_symlink()
@@ -1814,7 +1858,8 @@ def _validate_staged_receipt(
     candidate_commit = _text(raw["candidate_commit"], "candidate commit", pattern=GIT_ID_RE)
     candidate_tree = _text(raw["candidate_tree"], "candidate tree", pattern=GIT_ID_RE)
     _validate_git_identity(
-        repo_root, candidate_commit, candidate_tree, manifest.module_closure
+        repo_root, candidate_commit, candidate_tree, manifest.module_closure,
+        authority_paths=_ls_authority_paths(repo_root, manifest),
     )
     if raw["receipt_sha256"] != self_digest(raw, "receipt_sha256"):
         raise RouteValidationError("receipt identity digest mismatch")

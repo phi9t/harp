@@ -1,0 +1,5 @@
+CrouzeixConjecture.LoristSchwenninger.DilationData.perturbation_mul_target_power_norm_le.{u_1, u_2} {E : Type u_1}
+  {K : Type u_2} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [CompleteSpace E] [Nontrivial E]
+  [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
+  (data : CrouzeixConjecture.LoristSchwenninger.DilationData) (n : ℕ) :
+  ‖data.perturbation n * data.T ^ n‖ ≤ data.bound * (2 + data.bound)

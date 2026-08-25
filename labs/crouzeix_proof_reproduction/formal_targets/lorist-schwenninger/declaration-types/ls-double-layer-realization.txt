@@ -1,0 +1,9 @@
+CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary.{u_1, u_2}
+  {i : Type u_1} {n : Type u_2} [TopologicalSpace i] [CompactSpace i] [MeasurableSpace i] [BorelSpace i]
+  [OpensMeasurableSpace i] [SecondCountableTopologyEither i ℂ] [Fintype n] [DecidableEq n] [Nonempty n]
+  {mu : MeasureTheory.Measure i} [MeasureTheory.IsFiniteMeasure mu] {Omega : Set ℂ}
+  (Gamma : CrouzeixConjecture.ParametricConvexBoundary Omega) (B : CrouzeixConjecture.SquareMatrix n)
+  (hWB : CrouzeixConjecture.numericalRange B ⊆ Omega) (q : Polynomial ℂ)
+  (hq : ∀ z ∈ closure Omega, ‖Polynomial.eval z q‖ ≤ 1)
+  (hCauchy : CrouzeixConjecture.HasParametricPolynomialCauchyFormula Gamma mu B) :
+  ‖CrouzeixConjecture.euclideanOperator (CrouzeixConjecture.polynomialEval q B)‖ ≤ 2

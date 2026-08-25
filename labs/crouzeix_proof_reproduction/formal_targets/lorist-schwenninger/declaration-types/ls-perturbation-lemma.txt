@@ -1,0 +1,4 @@
+CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two.{u_1, u_2} {E : Type u_1} {K : Type u_2}
+  [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [CompleteSpace E] [Nontrivial E]
+  [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
+  (data : CrouzeixConjecture.LoristSchwenninger.DilationData) : ‖data.T‖ ≤ 2

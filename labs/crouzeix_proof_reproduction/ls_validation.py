@@ -123,6 +123,9 @@ MEMBER_PATHS = {
 }
 ATTEMPT_DIRECTORIES = frozenset({"build"})
 ATTEMPT_FILES = frozenset({"receipt.json", *MEMBER_PATHS.values()})
+LS_TARGET_RELATIVE = PurePosixPath(
+    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger"
+)
 ATTEMPT_NAME = re.compile(r"attempt-[0-9]+\Z")
 AXIOM_AUDIT = re.compile(
     r"\A'(?P<declaration>[^'\r\n]+)' depends on axioms: \[(?P<axioms>.*?)\]\s*\Z",
@@ -771,6 +774,55 @@ def validate_committed_receipts(
         _close_pinned_directories(target_chain)
 
 
+def validated_route_authority_paths(repository_root: Path) -> tuple[Path, ...]:
+    """Validate and return the complete promoted LS route authority roster.
+
+    Discovery delegates to the descriptor-pinned state and receipt validators,
+    so callers never need to rescan attempts or reread receipt bytes by path.
+    Historical attempts are intentionally omitted; only the unique attempts
+    selected by the promoted graph receipts are route authority.
+    """
+
+    root = Path(os.path.abspath(os.fspath(repository_root)))
+    target_relative = Path(*LS_TARGET_RELATIVE.parts)
+    target_root = root / target_relative
+    state = load_route_state(target_root)
+    if state["promotion"] is None:
+        raise protocol.ValidationError("LS graph is not promoted")
+    graph = state["graph"]
+    if not isinstance(graph, tuple):
+        raise protocol.ValidationError("promoted LS graph state is invalid")
+    selected = validate_committed_receipts(graph, target_root, root)
+    if tuple(selected) != ls_contract.NODE_ORDER:
+        raise protocol.ValidationError(
+            "promoted LS receipt selection must cover the canonical six nodes"
+        )
+    roster = {
+        target_relative / "artifact-manifest.json",
+        target_relative / "source-graph.json",
+        target_relative / "library-inventory.json",
+        target_relative / "promotion.json",
+    }
+    for node_id in ls_contract.NODE_ORDER:
+        attempt_value = selected[node_id].get("attempt_path")
+        if not isinstance(attempt_value, str):
+            raise protocol.ValidationError(
+                f"validated LS receipt lacks attempt_path: {node_id}"
+            )
+        attempt = PurePosixPath(attempt_value)
+        if attempt.is_absolute() or any(part in {"", ".", ".."} for part in attempt.parts):
+            raise protocol.ValidationError(
+                f"validated LS attempt_path is unsafe: {node_id}"
+            )
+        for member in ATTEMPT_FILES:
+            roster.add(
+                target_relative
+                / Path(*attempt.parts)
+                / Path(*PurePosixPath(member).parts)
+            )
+    return tuple(sorted(roster))
+
+
 def _validate_committed_receipt(
     row: LSGraphRow,
     proof_slices: _PinnedDirectory,
@@ -909,6 +961,9 @@ def _validate_committed_receipt(
             receipt["local_source_closure_sha256"] = command[
                 "local_source_closure_sha256"
             ]
+        receipt["attempt_path"] = (
+            PurePosixPath("proof-slices") / row.node_id / attempt.path.name
+        ).as_posix()
         return receipt
     finally:
         if "build" in locals():

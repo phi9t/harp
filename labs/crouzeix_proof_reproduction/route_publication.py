@@ -268,6 +268,8 @@ def _preflight_ready(root: Path, route_id: str) -> None:
         raise RoutePublicationError(f"route preflight blocked: {error}") from error
     if result.route_id != route_id or result.status not in {"incomplete", "complete"}:
         raise RoutePublicationError(f"route preflight blocked: {result.reason or result.status}")
+    if route_id == "lorist-schwenninger" and result.reason == "LS graph is not promoted":
+        raise RoutePublicationError("route preflight blocked: LS graph is not promoted")
 
 
 def _shared_environment() -> dict[str, str]:
@@ -692,6 +694,8 @@ def _input_snapshot(root: Path, manifest: route_validation.RouteManifest) -> tup
     }
     if manifest.route_id == "jin":
         paths.add(Path("labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json"))
+    if manifest.route_id == "lorist-schwenninger":
+        paths.update(_ls_route_authority_paths(root))
     for module in manifest.module_closure:
         paths.add(Path("formalization/lean") / route_validation.module_relative_path(module))
     for node in manifest.nodes:
@@ -781,9 +785,23 @@ def _require_route_inputs_at_commit(
     required: list[Path] = [_manifest_path(manifest.route_id), Path("scripts/check_lean_library.sh"), Path("formalization/lean/lake-manifest.json"), Path("formalization/lean/lakefile.toml"), Path("formalization/lean/lean-toolchain")]
     if manifest.route_id == "jin":
         required.append(Path("labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json"))
+    if manifest.route_id == "lorist-schwenninger":
+        required.extend(_ls_route_authority_paths(root))
     required.extend(Path(node.declaration_type_path) for node in manifest.nodes)
     required.extend(Path("formalization/lean") / route_validation.module_relative_path(module) for module in manifest.module_closure)
     _require_paths_at_commit(root, candidate_commit, required, session=session)
+
+
+def _ls_route_authority_paths(root: Path) -> tuple[Path, ...]:
+    """Return the descriptor-validated promoted LS authority roster."""
+    try:
+        from . import ls_validation
+    except ImportError:  # pragma: no cover - direct script execution path
+        import ls_validation
+    try:
+        return ls_validation.validated_route_authority_paths(root)
+    except Exception as error:
+        raise RoutePublicationError(f"invalid promoted LS authority: {error}") from error
 
 
 def _require_paths_at_commit(

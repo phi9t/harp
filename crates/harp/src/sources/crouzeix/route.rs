@@ -5,6 +5,7 @@ use std::fs::{self, File};
 use std::io::Read;
 use std::os::fd::{AsRawFd, FromRawFd, OwnedFd};
 use std::os::unix::ffi::OsStrExt;
+use std::os::unix::fs::MetadataExt;
 use std::path::{Component, Path};
 use std::process::Command;
 
@@ -26,6 +27,25 @@ const ROUTE_MANIFESTS: [&str; 3] = [
 ];
 const LS_ARTIFACT_MANIFEST_PATH: &str =
     "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json";
+const LS_TARGET_ROOT: &str = "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger";
+const LS_NODE_IDS: [&str; 6] = [
+    "ls-equation-one-terminal-bound",
+    "ls-power-recurrence",
+    "ls-scalar-contradiction",
+    "ls-perturbation-lemma",
+    "ls-double-layer-realization",
+    "ls-terminal-crouzeix",
+];
+const LS_ATTEMPT_MEMBERS: [&str; 8] = [
+    "receipt.json",
+    "task.json",
+    "source-slice.json",
+    "result.json",
+    "build/command.json",
+    "build/stdout.log",
+    "build/stderr.log",
+    "build/axioms.txt",
+];
 const SOURCE_MANIFEST_PATH: &str = "evidence/crouzeix_conjecture/source_manifest.tsv";
 const LS_SOURCE_ID: &str = "LS-ARXIV-V1";
 const LS_SOURCE_IDENTITY: &str = "arxiv:2608.03841v1";
@@ -1050,6 +1070,21 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<BTreeSet<Strin
             validate_harp_reuse(&manifest, &closure, &ls_manifest)?;
         }
         validate_manifest_files(repo_root, &manifest)?;
+        let ls_authority = if manifest.route_id == RouteId::LoristSchwenninger {
+            match artifact_state(
+                repo_root,
+                &format!("{LS_TARGET_ROOT}/promotion.json"),
+                "LS promotion marker",
+            )? {
+                true => ls_authority_paths(repo_root)?,
+                false if manifest.receipt_sha256.is_none() && manifest.review_sha256.is_none() => {
+                    Vec::new()
+                }
+                false => return Err("LS graph is not promoted".into()),
+            }
+        } else {
+            Vec::new()
+        };
         for node in &manifest.nodes {
             if let Some(relative) = crouzeix_evidence_member(&node.declaration_type_path) {
                 route_evidence.insert(relative);
@@ -1091,6 +1126,7 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<BTreeSet<Strin
                 &receipt.candidate_commit,
                 &receipt.candidate_tree,
                 &closure,
+                &ls_authority,
             )?;
             verify_bound_files(repo_root, &manifest, &receipt, &closure)?;
             for path in [
@@ -1262,6 +1298,598 @@ fn verify_bound_files(
     Ok(())
 }
 
+fn ls_authority_paths(repo_root: &Path) -> Result<Vec<String>, String> {
+    let graph_path = format!("{LS_TARGET_ROOT}/source-graph.json");
+    let inventory_path = format!("{LS_TARGET_ROOT}/library-inventory.json");
+    let marker_path = format!("{LS_TARGET_ROOT}/promotion.json");
+    let graph_bytes = read_bounded_regular(repo_root, &graph_path, "LS source graph")?;
+    let inventory_bytes = read_bounded_regular(repo_root, &inventory_path, "LS library inventory")?;
+    let graph = parse_strict_json(&graph_bytes, "LS source graph")?;
+    let inventory = parse_strict_json(&inventory_bytes, "LS library inventory")?;
+    let artifact = read_json_value(repo_root, LS_ARTIFACT_MANIFEST_PATH, "LS artifact manifest")?;
+    exact_object_fields(
+        &artifact,
+        &[
+            "schema_version",
+            "source_id",
+            "source_identity",
+            "archive_sha256",
+            "manuscript_path",
+            "manuscript_sha256",
+            "manuscript_bytes",
+            "line_count",
+        ],
+        "LS artifact manifest",
+    )?;
+    if artifact.get("schema_version").and_then(Value::as_str)
+        != Some("crouzeix-arxiv-artifact-manifest/v1")
+        || artifact.get("source_id").and_then(Value::as_str) != Some(LS_SOURCE_ID)
+        || artifact.get("source_identity").and_then(Value::as_str) != Some(LS_SOURCE_IDENTITY)
+        || artifact.get("archive_sha256").and_then(Value::as_str) != Some(LS_SOURCE_ARCHIVE_SHA256)
+        || artifact.get("manuscript_path").and_then(Value::as_str) != Some(LS_SOURCE_PATH)
+        || artifact.get("manuscript_sha256").and_then(Value::as_str) != Some(LS_SOURCE_FILE_SHA256)
+        || artifact.get("manuscript_bytes").and_then(Value::as_u64) != Some(LS_SOURCE_BYTES)
+        || artifact.get("line_count").and_then(Value::as_u64) != Some(LS_SOURCE_LINES)
+    {
+        return Err("LS artifact manifest contract mismatch".into());
+    }
+    let marker = read_json_value(repo_root, &marker_path, "LS promotion marker")?;
+    exact_object_fields(
+        &marker,
+        &["schema_version", "graph_sha256", "inventory_sha256"],
+        "LS promotion marker",
+    )?;
+    if marker.get("schema_version").and_then(Value::as_str) != Some("crouzeix-ls-promotion/v1")
+        || marker.get("graph_sha256").and_then(Value::as_str) != Some(&sha256_hex(&graph_bytes))
+        || marker.get("inventory_sha256").and_then(Value::as_str)
+            != Some(&sha256_hex(&inventory_bytes))
+    {
+        return Err("LS promotion marker digest mismatch".into());
+    }
+    let nodes = graph
+        .get("nodes")
+        .and_then(Value::as_array)
+        .ok_or("invalid LS source graph nodes")?;
+    let facts = inventory
+        .get("facts")
+        .and_then(Value::as_array)
+        .ok_or("invalid LS inventory facts")?;
+    exact_object_fields(
+        &graph,
+        &["schema_version", "source_id", "source_identity", "nodes"],
+        "LS source graph",
+    )?;
+    exact_object_fields(
+        &inventory,
+        &["schema_version", "source_identity", "facts"],
+        "LS library inventory",
+    )?;
+    if graph.get("schema_version").and_then(Value::as_str) != Some("crouzeix-ls-source-graph/v1")
+        || graph.get("source_id").and_then(Value::as_str) != Some(LS_SOURCE_ID)
+        || graph.get("source_identity").and_then(Value::as_str) != Some(LS_SOURCE_IDENTITY)
+        || inventory.get("schema_version").and_then(Value::as_str)
+            != Some("crouzeix-ls-library-inventory/v1")
+        || inventory.get("source_identity").and_then(Value::as_str) != Some(LS_SOURCE_IDENTITY)
+        || nodes.len() != 6
+        || facts.len() != 6
+    {
+        return Err("invalid promoted LS graph/inventory".into());
+    }
+    let mut paths = vec![
+        LS_ARTIFACT_MANIFEST_PATH.to_owned(),
+        graph_path,
+        inventory_path,
+        marker_path,
+    ];
+    let mut aggregate_identity: Option<(String, String, String, String)> = None;
+    for (index, node_id) in LS_NODE_IDS.iter().enumerate() {
+        let node = &nodes[index];
+        let expected = ls_node_contract(index);
+        exact_object_fields(
+            node,
+            &[
+                "node_id",
+                "source_locator",
+                "statement_sha256",
+                "lean_name",
+                "dependencies",
+                "role",
+                "status",
+                "receipt_sha256",
+            ],
+            "promoted LS graph node",
+        )?;
+        exact_object_fields(
+            &facts[index],
+            &[
+                "fact_id",
+                "resolution",
+                "source_locator",
+                "statement_sha256",
+            ],
+            "promoted LS inventory fact",
+        )?;
+        let receipt_digest = node
+            .get("receipt_sha256")
+            .and_then(Value::as_str)
+            .ok_or("promoted LS node lacks receipt_sha256")?;
+        if node.get("node_id").and_then(Value::as_str) != Some(*node_id)
+            || node.get("lean_name").and_then(Value::as_str) != Some(expected.0)
+            || node.get("role").and_then(Value::as_str) != Some(expected.1)
+            || node.get("source_locator").and_then(Value::as_str) != Some(expected.2)
+            || node.get("statement_sha256").and_then(Value::as_str) != Some(expected.3)
+            || value_string_list(node.get("dependencies"), "LS graph dependencies")? != expected.4
+            || node.get("status").and_then(Value::as_str) != Some("passed")
+            || !valid_digest(receipt_digest)
+            || facts[index].get("fact_id").and_then(Value::as_str) != Some(*node_id)
+            || facts[index].get("resolution").and_then(Value::as_str) != Some("local_compiled")
+            || facts[index].get("statement_sha256").and_then(Value::as_str) != Some(expected.3)
+            || facts[index].get("source_locator").and_then(Value::as_str) != Some(expected.2)
+        {
+            return Err(format!("invalid promoted LS node/inventory: {node_id}"));
+        }
+        let node_root = repo_root.join(format!("{LS_TARGET_ROOT}/proof-slices/{node_id}"));
+        let mut matches = Vec::new();
+        let entries =
+            fs::read_dir(&node_root).map_err(|e| format!("cannot inspect LS attempts: {e}"))?;
+        let mut entry_count = 0usize;
+        for entry in entries {
+            entry_count += 1;
+            if entry_count > 256 {
+                return Err(format!("LS attempt count exceeds cap: {node_id}"));
+            }
+            let entry = entry.map_err(|e| format!("cannot inspect LS attempt: {e}"))?;
+            let name = entry.file_name().to_string_lossy().into_owned();
+            let metadata = fs::symlink_metadata(entry.path())
+                .map_err(|e| format!("cannot inspect LS attempt: {e}"))?;
+            if metadata.file_type().is_symlink() {
+                return Err(format!("LS attempt cannot be a symlink: {name}"));
+            }
+            if !metadata.is_dir() {
+                continue;
+            }
+            if canonical_ls_attempt_name(&name).is_none() {
+                continue;
+            }
+            let relative = format!("{LS_TARGET_ROOT}/proof-slices/{node_id}/{name}/receipt.json");
+            if let Ok(bytes) = read_bounded_regular(repo_root, &relative, "LS selected receipt") {
+                if format!("{:x}", Sha256::digest(&bytes)) == receipt_digest {
+                    matches.push(name);
+                }
+            }
+        }
+        if matches.len() != 1 {
+            return Err(format!(
+                "exactly one selected LS receipt is required: {node_id}"
+            ));
+        }
+        let attempt = format!("{LS_TARGET_ROOT}/proof-slices/{node_id}/{}", matches[0]);
+        validate_ls_attempt(repo_root, &attempt, node, expected)?;
+        let receipt = read_json_value(repo_root, &format!("{attempt}/receipt.json"), "LS receipt")?;
+        let command = read_json_value(
+            repo_root,
+            &format!("{attempt}/build/command.json"),
+            "LS command",
+        )?;
+        let identity = (
+            receipt
+                .get("command_sha256")
+                .and_then(Value::as_str)
+                .ok_or("LS command digest missing")?
+                .to_owned(),
+            receipt
+                .get("stdout_sha256")
+                .and_then(Value::as_str)
+                .ok_or("LS stdout digest missing")?
+                .to_owned(),
+            receipt
+                .get("stderr_sha256")
+                .and_then(Value::as_str)
+                .ok_or("LS stderr digest missing")?
+                .to_owned(),
+            command
+                .get("local_source_closure_sha256")
+                .and_then(Value::as_str)
+                .ok_or("LS local closure digest missing")?
+                .to_owned(),
+        );
+        if aggregate_identity
+            .as_ref()
+            .is_some_and(|previous| previous != &identity)
+        {
+            return Err("canonical LS receipts must share aggregate evidence".into());
+        }
+        aggregate_identity = Some(identity);
+        for member in LS_ATTEMPT_MEMBERS {
+            let relative = format!("{attempt}/{member}");
+            read_bounded_regular(repo_root, &relative, "LS selected attempt member")?;
+            paths.push(relative);
+        }
+    }
+    paths.sort();
+    Ok(paths)
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    format!("{:x}", Sha256::digest(bytes))
+}
+
+fn parse_strict_json(bytes: &[u8], label: &str) -> Result<Value, String> {
+    let mut deserializer = serde_json::Deserializer::from_slice(bytes);
+    let StrictValue(value) = StrictValue::deserialize(&mut deserializer)
+        .map_err(|error| format!("invalid {label} JSON: {error}"))?;
+    deserializer
+        .end()
+        .map_err(|error| format!("invalid {label} JSON: {error}"))?;
+    Ok(value)
+}
+
+fn exact_object_fields(value: &Value, fields: &[&str], label: &str) -> Result<(), String> {
+    let object = value
+        .as_object()
+        .ok_or_else(|| format!("{label} must be an object"))?;
+    if object.len() != fields.len() || fields.iter().any(|field| !object.contains_key(*field)) {
+        return Err(format!("{label} fields are not exact"));
+    }
+    Ok(())
+}
+
+fn value_string_list(value: Option<&Value>, label: &str) -> Result<Vec<String>, String> {
+    let values = value
+        .and_then(Value::as_array)
+        .ok_or_else(|| format!("{label} must be an array"))?;
+    let result = values
+        .iter()
+        .map(|value| {
+            value
+                .as_str()
+                .map(str::to_owned)
+                .ok_or_else(|| format!("{label} must contain strings"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if result.len() > 128
+        || result.iter().any(|value| value.is_empty())
+        || result.iter().collect::<BTreeSet<_>>().len() != result.len()
+    {
+        return Err(format!("{label} must be bounded and unique"));
+    }
+    Ok(result)
+}
+
+fn canonical_ls_attempt_name(name: &str) -> Option<usize> {
+    let digits = name.strip_prefix("attempt-")?;
+    if digits.is_empty() || !digits.bytes().all(|byte| byte.is_ascii_digit()) {
+        return None;
+    }
+    let value = digits.parse::<usize>().ok()?;
+    (format!("attempt-{value:03}") == name).then_some(value)
+}
+
+fn ls_node_contract(
+    index: usize,
+) -> (
+    &'static str,
+    &'static str,
+    &'static str,
+    &'static str,
+    Vec<String>,
+) {
+    match index {
+        0 => ("CrouzeixConjecture.LoristSchwenninger.DilationData.perturbation_mul_target_power_norm_le", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99", "f560ccaca9499f62c8cc30fe1a93338d1024101e129b439fbc880df29cb23311", vec![]),
+        1 => ("CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L74-L90", "0b80e8d8bf6e2f5f9d3e3c0fb7e3d2e3f9c9ec7b5ecb392a6d211c7ef7ac0f3d", vec![LS_NODE_IDS[0].into()]),
+        2 => ("CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98", "966cabe377c00b287b67e3a96de1ab53a12b8c4d35d130c26ae2bc899557f9fa", vec![]),
+        3 => ("CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99", "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86", vec![LS_NODE_IDS[1].into(), LS_NODE_IDS[2].into()]),
+        4 => ("CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124", "be32b0c50689d78d037f7359bcd03ab51a0e8ef06b8c5e64d533fbdb2cfaa280", vec![LS_NODE_IDS[3].into()]),
+        5 => ("CrouzeixConjecture.loristSchwenningerMainTheorem", "terminal", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128", "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67", vec![LS_NODE_IDS[4].into()]),
+        _ => unreachable!(),
+    }
+}
+
+fn validate_ls_attempt(
+    repo_root: &Path,
+    attempt: &str,
+    node: &Value,
+    expected: (&str, &str, &str, &str, Vec<String>),
+) -> Result<(), String> {
+    let attempt_path = repo_root.join(attempt);
+    let mut actual = BTreeSet::new();
+    let mut entries = vec![(attempt_path.clone(), String::new())];
+    while let Some((directory, prefix)) = entries.pop() {
+        for entry in fs::read_dir(&directory)
+            .map_err(|error| format!("cannot inspect LS attempt members: {error}"))?
+        {
+            let entry =
+                entry.map_err(|error| format!("cannot inspect LS attempt member: {error}"))?;
+            let relative = if prefix.is_empty() {
+                entry.file_name().to_string_lossy().into_owned()
+            } else {
+                format!("{prefix}/{}", entry.file_name().to_string_lossy())
+            };
+            let metadata = fs::symlink_metadata(entry.path())
+                .map_err(|error| format!("cannot inspect LS attempt member: {error}"))?;
+            if metadata.file_type().is_symlink() {
+                return Err(format!("LS attempt member cannot be a symlink: {relative}"));
+            }
+            if metadata.is_dir() {
+                if relative != "build" {
+                    return Err(format!(
+                        "unexpected LS attempt member directory: {relative}"
+                    ));
+                }
+                entries.push((entry.path(), relative));
+            } else if metadata.is_file() && metadata.nlink() == 1 {
+                actual.insert(relative);
+            } else {
+                return Err(format!(
+                    "LS attempt member is not a unique regular file: {relative}"
+                ));
+            }
+        }
+    }
+    let expected_members = LS_ATTEMPT_MEMBERS
+        .iter()
+        .map(|member| (*member).to_owned())
+        .collect::<BTreeSet<_>>();
+    if actual != expected_members {
+        return Err("LS attempt member roster is not exact".into());
+    }
+    let receipt_bytes =
+        read_bounded_regular(repo_root, &format!("{attempt}/receipt.json"), "LS receipt")?;
+    let receipt = parse_strict_json(&receipt_bytes, "LS receipt")?;
+    exact_object_fields(
+        &receipt,
+        &[
+            "schema_version",
+            "route_id",
+            "source_node_id",
+            "status",
+            "reason",
+            "build_target",
+            "expected_lean_declaration",
+            "allowed_axioms",
+            "observed_axioms",
+            "task_sha256",
+            "source_slice_sha256",
+            "command_sha256",
+            "stdout_sha256",
+            "stderr_sha256",
+            "axiom_audit_sha256",
+            "result_sha256",
+            "module_sha256",
+        ],
+        "LS receipt",
+    )?;
+    if receipt.get("schema_version").and_then(Value::as_str)
+        != Some("crouzeix-ls-proof-slice-receipt/v1")
+        || receipt.get("route_id").and_then(Value::as_str) != Some("lorist-schwenninger")
+        || receipt.get("source_node_id") != node.get("node_id")
+        || receipt.get("status").and_then(Value::as_str) != Some("passed")
+        || receipt
+            .get("expected_lean_declaration")
+            .and_then(Value::as_str)
+            != Some(expected.0)
+        || value_string_list(receipt.get("allowed_axioms"), "LS receipt allowed_axioms")?
+            != ALLOWED_AXIOMS
+                .iter()
+                .map(|value| (*value).to_owned())
+                .collect::<Vec<_>>()
+    {
+        return Err("LS receipt contract mismatch".into());
+    }
+    let target = ls_build_target(
+        node.get("node_id")
+            .and_then(Value::as_str)
+            .ok_or("LS node id missing")?,
+    )?;
+    if receipt.get("build_target").and_then(Value::as_str) != Some(target) {
+        return Err("LS receipt build target mismatch".into());
+    }
+    for (field, member) in [
+        ("task_sha256", "task.json"),
+        ("source_slice_sha256", "source-slice.json"),
+        ("result_sha256", "result.json"),
+        ("command_sha256", "build/command.json"),
+        ("stdout_sha256", "build/stdout.log"),
+        ("stderr_sha256", "build/stderr.log"),
+        ("axiom_audit_sha256", "build/axioms.txt"),
+    ] {
+        let bytes = read_bounded_regular(
+            repo_root,
+            &format!("{attempt}/{member}"),
+            "LS receipt member",
+        )?;
+        if receipt.get(field).and_then(Value::as_str) != Some(sha256_hex(&bytes).as_str()) {
+            return Err(format!("LS receipt member digest mismatch: {field}"));
+        }
+    }
+    let module = read_bounded_regular(repo_root, target, "LS build target")?;
+    if receipt.get("module_sha256").and_then(Value::as_str) != Some(sha256_hex(&module).as_str()) {
+        return Err("LS receipt module digest mismatch".into());
+    }
+    let task = read_json_value(repo_root, &format!("{attempt}/task.json"), "LS task")?;
+    exact_object_fields(
+        &task,
+        &[
+            "schema_version",
+            "route_id",
+            "source_node_id",
+            "build_target",
+            "expected_lean_declaration",
+            "max_output_bytes",
+            "timeout_seconds",
+        ],
+        "LS task",
+    )?;
+    if task.get("schema_version").and_then(Value::as_str) != Some("crouzeix-ls-proof-slice-task/v1")
+        || task.get("route_id").and_then(Value::as_str) != Some("lorist-schwenninger")
+        || task.get("source_node_id") != node.get("node_id")
+        || task.get("build_target").and_then(Value::as_str) != Some(target)
+        || task
+            .get("expected_lean_declaration")
+            .and_then(Value::as_str)
+            != Some(expected.0)
+        || task.get("max_output_bytes").and_then(Value::as_u64) != Some(1_048_576)
+        || task.get("timeout_seconds").and_then(Value::as_u64) != Some(3600)
+    {
+        return Err("LS task contract mismatch".into());
+    }
+    let slice = read_json_value(
+        repo_root,
+        &format!("{attempt}/source-slice.json"),
+        "LS source slice",
+    )?;
+    exact_object_fields(
+        &slice,
+        &[
+            "schema_version",
+            "node_id",
+            "source_locator",
+            "statement_sha256",
+            "lean_name",
+            "dependency_ids",
+        ],
+        "LS source slice",
+    )?;
+    if slice.get("schema_version").and_then(Value::as_str) != Some("crouzeix-ls-source-slice/v1")
+        || slice.get("node_id") != node.get("node_id")
+        || slice.get("source_locator").and_then(Value::as_str) != Some(expected.2)
+        || slice.get("statement_sha256").and_then(Value::as_str) != Some(expected.3)
+        || slice.get("lean_name").and_then(Value::as_str) != Some(expected.0)
+        || value_string_list(slice.get("dependency_ids"), "LS source slice dependencies")?
+            != expected.4
+    {
+        return Err("LS source slice contract mismatch".into());
+    }
+    let result = read_json_value(repo_root, &format!("{attempt}/result.json"), "LS result")?;
+    exact_object_fields(
+        &result,
+        &["schema_version", "status", "reason"],
+        "LS result",
+    )?;
+    if result.get("schema_version").and_then(Value::as_str)
+        != Some("crouzeix-ls-proof-slice-result/v1")
+        || result.get("status").and_then(Value::as_str) != Some("passed")
+        || result.get("reason") != receipt.get("reason")
+    {
+        return Err("LS result contract mismatch".into());
+    }
+    let command = read_json_value(
+        repo_root,
+        &format!("{attempt}/build/command.json"),
+        "LS command",
+    )?;
+    validate_ls_v2_command(&command)?;
+    let stdout = read_bounded_regular(
+        repo_root,
+        &format!("{attempt}/build/stdout.log"),
+        "LS stdout",
+    )?;
+    let stdout = String::from_utf8(stdout).map_err(|_| "LS stdout is not UTF-8")?;
+    for line in [
+        "[lean] target=CrouzeixLoristSchwenninger",
+        "[lean] root=formalization/lean",
+        "[lean] outcome=passed",
+    ] {
+        if stdout.lines().filter(|actual| *actual == line).count() != 1 {
+            return Err("LS stdout lacks exact success markers".into());
+        }
+    }
+    let audit = String::from_utf8(read_bounded_regular(
+        repo_root,
+        &format!("{attempt}/build/axioms.txt"),
+        "LS axioms",
+    )?)
+    .map_err(|_| "LS axioms are not UTF-8")?;
+    if !audit.starts_with(&format!("'{}' ", expected.0))
+        || !receipt
+            .get("observed_axioms")
+            .and_then(Value::as_array)
+            .is_some_and(|values| {
+                values.iter().all(|value| {
+                    value
+                        .as_str()
+                        .is_some_and(|axiom| ALLOWED_AXIOMS.contains(&axiom))
+                })
+            })
+    {
+        return Err("LS axiom audit mismatch".into());
+    }
+    Ok(())
+}
+
+fn ls_build_target(node_id: &str) -> Result<&'static str, String> {
+    Ok(match node_id {
+        "ls-equation-one-terminal-bound" => {
+            "formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean"
+        }
+        "ls-power-recurrence" => {
+            "formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean"
+        }
+        "ls-scalar-contradiction" => "formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean",
+        "ls-perturbation-lemma" => {
+            "formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean"
+        }
+        "ls-double-layer-realization" => {
+            "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean"
+        }
+        "ls-terminal-crouzeix" => "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
+        _ => return Err("unknown LS node id".into()),
+    })
+}
+
+fn validate_ls_v2_command(value: &Value) -> Result<(), String> {
+    exact_object_fields(
+        value,
+        &[
+            "schema_version",
+            "argv",
+            "cwd",
+            "exit_code",
+            "cache_policy",
+            "elan_toolchain",
+            "env",
+            "output_cap_bytes",
+            "timeout_seconds",
+            "wrapper_sha256",
+            "lake_manifest_sha256",
+            "dependency_cache_metadata_sha256",
+            "required_mathlib_artifacts_sha256",
+            "local_source_closure_sha256",
+        ],
+        "LS command",
+    )?;
+    if value.get("schema_version").and_then(Value::as_str) != Some("crouzeix-ls-lean-command/v2")
+        || value.get("argv")
+            != Some(&serde_json::json!([
+                "scripts/check_lean_library.sh",
+                "CrouzeixLoristSchwenninger"
+            ]))
+        || value.get("cwd").and_then(Value::as_str) != Some(".")
+        || value.get("exit_code").and_then(Value::as_i64) != Some(0)
+        || value.get("elan_toolchain").and_then(Value::as_str) != Some("leanprover/lean4:v4.32.1")
+        || value.get("output_cap_bytes").and_then(Value::as_u64) != Some(1_048_576)
+        || value.get("timeout_seconds").and_then(Value::as_u64) != Some(3600)
+    {
+        return Err("LS command contract mismatch".into());
+    }
+    for field in [
+        "wrapper_sha256",
+        "lake_manifest_sha256",
+        "dependency_cache_metadata_sha256",
+        "required_mathlib_artifacts_sha256",
+        "local_source_closure_sha256",
+    ] {
+        if !value
+            .get(field)
+            .and_then(Value::as_str)
+            .is_some_and(valid_digest)
+        {
+            return Err(format!("invalid LS command digest: {field}"));
+        }
+    }
+    Ok(())
+}
+
 fn validate_mathlib_roster(
     repo_root: &Path,
     receipt: &RouteReceipt,
@@ -1306,6 +1934,7 @@ fn validate_git_identity(
     commit: &str,
     expected_tree: &str,
     closure: &[String],
+    authority_paths: &[String],
 ) -> Result<(), String> {
     let exists = Command::new("git")
         .args([
@@ -1360,6 +1989,23 @@ fn validate_git_identity(
             .map_err(|error| format!("Git source binding unavailable: {error}"))?;
         if !candidate.status.success() || candidate.stdout != current {
             return Err(format!("candidate route source blob mismatch: {relative}"));
+        }
+    }
+    for relative in authority_paths {
+        let current = read_bounded_regular(repo_root, relative, "route authority input")?;
+        let candidate = Command::new("git")
+            .args([
+                "-C",
+                repo_root.to_str().ok_or("repository path is not UTF-8")?,
+                "show",
+                &format!("{commit}:{relative}"),
+            ])
+            .output()
+            .map_err(|error| format!("Git authority binding unavailable: {error}"))?;
+        if !candidate.status.success() || candidate.stdout != current {
+            return Err(format!(
+                "candidate route authority blob mismatch: {relative}"
+            ));
         }
     }
     Ok(())
@@ -2060,11 +2706,11 @@ mod tests {
     use super::{
         active_mathlib_closure, active_route_closure, cache_contract_identity,
         correspondence_matches, parse, parse_source_locator, read_bounded_regular, read_json_value,
-        validate_declaration_roster, validate_harp_reuse, validate_manifest_against_closure,
-        validate_mathlib_roster, validate_records, validate_source_provenance,
-        verify_published_routes, ClaimKind, CorrespondenceKind, NodeRole, ProvenanceKind,
-        RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt, SourceLocatorKind,
-        LS_ARTIFACT_MANIFEST_PATH, LS_SOURCE_ARCHIVE_SHA256, LS_SOURCE_BYTES,
+        validate_declaration_roster, validate_git_identity, validate_harp_reuse,
+        validate_manifest_against_closure, validate_mathlib_roster, validate_records,
+        validate_source_provenance, verify_published_routes, ClaimKind, CorrespondenceKind,
+        NodeRole, ProvenanceKind, RouteCommand, RouteId, RouteManifest, RouteNode, RouteReceipt,
+        SourceLocatorKind, LS_ARTIFACT_MANIFEST_PATH, LS_SOURCE_ARCHIVE_SHA256, LS_SOURCE_BYTES,
         LS_SOURCE_FILE_SHA256, LS_SOURCE_ID, LS_SOURCE_IDENTITY, LS_SOURCE_LINES, LS_SOURCE_PATH,
         MANIFEST_SCHEMA, SOURCE_MANIFEST_PATH,
     };
@@ -3601,5 +4247,106 @@ mod tests {
         )
         .unwrap();
         (root, manifest_path)
+    }
+
+    #[test]
+    fn ls_candidate_identity_rejects_each_authority_mutation_and_wrong_tree() {
+        let root = TempDir::new().unwrap();
+        Command::new("git")
+            .args(["init", "-q"])
+            .current_dir(root.path())
+            .status()
+            .unwrap();
+        let authority = [
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json",
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/library-inventory.json",
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/promotion.json",
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001/receipt.json",
+        ];
+        let source = "formalization/lean/CrouzeixLoristSchwenninger.lean";
+        for path in authority.iter().chain(std::iter::once(&source)) {
+            let file = root.path().join(path);
+            fs::create_dir_all(file.parent().unwrap()).unwrap();
+            fs::write(file, format!("fixture: {path}\n")).unwrap();
+        }
+        Command::new("git")
+            .args(["add", "."])
+            .current_dir(root.path())
+            .status()
+            .unwrap();
+        Command::new("git")
+            .args([
+                "-c",
+                "user.name=Fixture",
+                "-c",
+                "user.email=fixture@example.invalid",
+                "commit",
+                "-qm",
+                "authority fixture",
+            ])
+            .current_dir(root.path())
+            .status()
+            .unwrap();
+        let git = |args: &[&str]| {
+            String::from_utf8(
+                Command::new("git")
+                    .args(args)
+                    .current_dir(root.path())
+                    .output()
+                    .unwrap()
+                    .stdout,
+            )
+            .unwrap()
+            .trim()
+            .to_owned()
+        };
+        let commit = git(&["rev-parse", "HEAD"]);
+        let tree = git(&["rev-parse", "HEAD^{tree}"]);
+        validate_git_identity(
+            root.path(),
+            &commit,
+            &tree,
+            &["CrouzeixLoristSchwenninger".into()],
+            &authority
+                .iter()
+                .map(|path| (*path).to_owned())
+                .collect::<Vec<_>>(),
+        )
+        .unwrap();
+        for path in authority {
+            fs::write(root.path().join(path), b"mutated\n").unwrap();
+            assert!(
+                validate_git_identity(
+                    root.path(),
+                    &commit,
+                    &tree,
+                    &["CrouzeixLoristSchwenninger".into()],
+                    &[path.into()]
+                )
+                .unwrap_err()
+                .contains("authority blob mismatch"),
+                "{path}"
+            );
+            fs::write(root.path().join(path), format!("fixture: {path}\n")).unwrap();
+        }
+        assert!(validate_git_identity(
+            root.path(),
+            &commit,
+            &"0".repeat(40),
+            &["CrouzeixLoristSchwenninger".into()],
+            &[]
+        )
+        .unwrap_err()
+        .contains("tree mismatch"));
+        assert!(validate_git_identity(
+            root.path(),
+            &"0".repeat(40),
+            &tree,
+            &["CrouzeixLoristSchwenninger".into()],
+            &[]
+        )
+        .unwrap_err()
+        .contains("unreachable"));
     }
 }
