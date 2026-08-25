@@ -6864,12 +6864,12 @@ create-only candidates, review source correspondence, and promote the full graph
 :PROPERTIES:
 :ID: CPFR-087
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-087-harp-certification
+:WORKTREE: .worktrees/cpfr-087-harp-certification
 :DEPENDS_ON: CPFR-084
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: bytedance
+:AGENT_RUN: /root/cpfr087_preflight_impl
+:MODEL: GPT-5-based-TraeCode-session
 :END:
 Describe and certify Harp's derived route, including every lower-level LS reuse.
 
@@ -6907,7 +6907,9 @@ publish a dedicated-route receipt.
 - Rust Crouzeix source tests
 
 *** Verification Evidence
-Pending implementation.
+- Implementation began after =bytedance= claimed Kata =harp#2qy3=; the
+  no-build preflight reported =status=ready= and =missing_artifacts=0= with the
+  canonical cache linked. No dependency hydration or build ran.
 
 ** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
