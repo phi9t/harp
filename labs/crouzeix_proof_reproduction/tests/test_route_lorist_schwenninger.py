@@ -38,7 +38,7 @@ ROUTE_MANIFEST_PATH = (
     REPO
     / "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
 )
-SOURCE_GRAPH_PATH = ROUTE_MANIFEST_PATH.parent / "source-graph.json"
+LS_GRAPH_PATH = ROUTE_MANIFEST_PATH.parent / "source-graph.json"
 DECLARATION_TYPES_ROOT = ROUTE_MANIFEST_PATH.parent / "declaration-types"
 
 SOURCE_ID = "LS-ARXIV-V1"
@@ -521,7 +521,7 @@ class LoristSchwenningerContractTests(unittest.TestCase):
     def test_promoted_ls_authority_uses_shared_state_and_receipt_validation(self) -> None:
         promoted_rows = tuple(
             row
-            for row in ls_validation.load_route_graph(SOURCE_GRAPH_PATH)
+            for row in ls_validation.load_route_graph(LS_GRAPH_PATH)
         )
         state = {"graph": promoted_rows, "promotion": {"schema_version": "fixture"}}
         selected = {
