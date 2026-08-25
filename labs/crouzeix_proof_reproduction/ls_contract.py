@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
+import re
 
 
 SCHEMA_VERSION = "crouzeix-ls-source-graph/v1"
@@ -49,6 +51,7 @@ class LSNodeContract:
     declaration: str
     build_target: str
     dependencies: tuple[str, ...]
+    legacy_dependencies: tuple[str, ...]
     role: str
     source_locator: str
     statement_sha256: str
@@ -76,6 +79,7 @@ NODES = (
         ),
         build_target=("formalization/lean/Crouzeix/LoristSchwenninger/Dilation.lean"),
         dependencies=(),
+        legacy_dependencies=(),
         role="intermediate",
         source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99"),
         statement_sha256=(
@@ -103,6 +107,7 @@ NODES = (
             "formalization/lean/Crouzeix/LoristSchwenninger/OperatorRecurrence.lean"
         ),
         dependencies=("ls-equation-one-terminal-bound",),
+        legacy_dependencies=("ls-equation-one-terminal-bound",),
         role="intermediate",
         source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L74-L90"),
         statement_sha256=(
@@ -123,6 +128,7 @@ NODES = (
         declaration=("CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two"),
         build_target=("formalization/lean/Crouzeix/LoristSchwenninger/Scalar.lean"),
         dependencies=(),
+        legacy_dependencies=(),
         role="intermediate",
         source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98"),
         statement_sha256=(
@@ -145,6 +151,7 @@ NODES = (
             "formalization/lean/Crouzeix/LoristSchwenninger/PerturbationLemma.lean"
         ),
         dependencies=("ls-power-recurrence", "ls-scalar-contradiction"),
+        legacy_dependencies=("ls-power-recurrence", "ls-scalar-contradiction"),
         role="intermediate",
         source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99"),
         statement_sha256=(
@@ -169,6 +176,7 @@ NODES = (
             "formalization/lean/Crouzeix/LoristSchwenninger/ConcreteDilation.lean"
         ),
         dependencies=("ls-perturbation-lemma",),
+        legacy_dependencies=("ls-perturbation-lemma",),
         role="intermediate",
         source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124"),
         statement_sha256=(
@@ -190,7 +198,8 @@ NODES = (
         build_target=(
             "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean"
         ),
-        dependencies=(
+        dependencies=("ls-double-layer-realization",),
+        legacy_dependencies=(
             "ls-perturbation-lemma",
             "ls-double-layer-realization",
         ),
@@ -211,3 +220,116 @@ NODES = (
 )
 BY_ID = {node.node_id: node for node in NODES}
 NODE_ORDER = tuple(node.node_id for node in NODES)
+
+_BODY_AUDIT_PREFIX = "formalization/lean/Crouzeix/LoristSchwenninger"
+_THEOREM_BODY_AUDITS: dict[str, dict[str, object]] = {
+    "ls-power-recurrence": {
+        "path": f"{_BODY_AUDIT_PREFIX}/OperatorRecurrence.lean",
+        "theorem": "equation_three_lower_bound",
+        "required_calls": (
+            "recurrence_lower_bound",
+            "recurrence_difference_lower_bound",
+        ),
+        "forbidden_calls": (
+            "jinMainTheorem",
+            "harpFiniteHorizonMainTheorem",
+        ),
+    },
+    "ls-perturbation-lemma": {
+        "path": f"{_BODY_AUDIT_PREFIX}/PerturbationLemma.lean",
+        "theorem": "norm_target_le_two",
+        "required_calls": (
+            "equation_three_lower_bound",
+            "displacementSq_le",
+            "scalar_endpoint_le_two",
+        ),
+        "forbidden_calls": (
+            "jinMainTheorem",
+            "harpFiniteHorizonMainTheorem",
+        ),
+    },
+    "ls-double-layer-realization": {
+        "path": f"{_BODY_AUDIT_PREFIX}/ConcreteDilation.lean",
+        "theorem": "norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+        "required_calls": (
+            "dilationDataOfParametricPolynomial",
+            "norm_target_le_two",
+        ),
+        "forbidden_calls": (
+            "jinMainTheorem",
+            "harpFiniteHorizonMainTheorem",
+        ),
+    },
+    "ls-terminal-crouzeix": {
+        "path": f"{_BODY_AUDIT_PREFIX}/MainTheorem.lean",
+        "theorem": "loristSchwenningerMainTheorem",
+        "required_calls": (
+            "norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+            "norm_polynomialEval_le_of_tendsto",
+            "tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+        ),
+        "forbidden_calls": (
+            "jinMainTheorem",
+            "harpFiniteHorizonMainTheorem",
+            "loristSchwenningerFiniteMatrixMainTheorem",
+        ),
+    },
+}
+
+
+def _theorem_body(source: str, theorem_name: str) -> str:
+    pattern = re.compile(
+        rf"theorem\s+{re.escape(theorem_name)}\b.*?:=\s*by\b", re.DOTALL
+    )
+    match = pattern.search(source)
+    if match is None:
+        raise ValueError(f"missing theorem body: {theorem_name}")
+    start = match.end()
+    next_match = re.search(r"(?m)^theorem\s+", source[start:])
+    end = len(source) if next_match is None else start + next_match.start()
+    return source[start:end]
+
+
+def _called_names(body: str) -> frozenset[str]:
+    return frozenset(re.findall(r"\b([A-Za-z_][A-Za-z0-9_']*)\b", body))
+
+
+def audit_required_theorem_provider_calls(
+    repository_root: Path,
+) -> dict[str, tuple[str, ...]]:
+    """Return the exact audited provider names for the four concrete LS bodies."""
+
+    audited: dict[str, tuple[str, ...]] = {}
+    root = Path(repository_root)
+    for node_id, spec in _THEOREM_BODY_AUDITS.items():
+        source = (root / str(spec["path"])).read_text(encoding="utf-8")
+        body = _theorem_body(source, str(spec["theorem"]))
+        calls = _called_names(body)
+        required = tuple(str(name) for name in spec["required_calls"])
+        forbidden = tuple(str(name) for name in spec["forbidden_calls"])
+        missing = [name for name in required if name not in calls]
+        if missing:
+            raise ValueError(
+                f"{node_id} theorem body is missing required provider calls: "
+                + ", ".join(missing)
+            )
+        present_forbidden = [name for name in forbidden if name in calls]
+        if present_forbidden:
+            raise ValueError(
+                f"{node_id} theorem body uses forbidden provider calls: "
+                + ", ".join(present_forbidden)
+            )
+        extra_main_theorem = {
+            name
+            for name in calls
+            if name.endswith("MainTheorem")
+            and name not in set(required)
+            and name != str(spec["theorem"])
+        }
+        if extra_main_theorem:
+            raise ValueError(
+                f"{node_id} theorem body uses unexpected terminal provider calls: "
+                + ", ".join(sorted(extra_main_theorem))
+            )
+        audited[node_id] = required
+    return audited

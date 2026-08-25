@@ -391,7 +391,12 @@ def _validate_rows(
             raise protocol.ValidationError(
                 f"LS receipt row has unknown dependency: {node_id}"
             )
-        if row.dependencies != LS_RECEIPT_DEPENDENCIES[node_id]:
+        expected_contract = ls_contract.BY_ID[node_id]
+        accepted_dependencies = {
+            expected_contract.dependencies,
+            expected_contract.legacy_dependencies,
+        }
+        if row.dependencies not in accepted_dependencies:
             raise protocol.ValidationError(
                 f"LS receipt dependencies do not match fixed graph: {node_id}"
             )
@@ -403,7 +408,23 @@ def _validate_rows(
                 f"LS receipt role does not match fixed graph: {node_id}"
             )
     ls_validation._reject_cycles(list(materialized))
-    return tuple(by_id[node_id] for node_id in LS_RECEIPT_BINDINGS)
+    return tuple(_canonicalize_row(by_id[node_id]) for node_id in LS_RECEIPT_BINDINGS)
+
+
+def _canonicalize_row(row: ls_validation.LSGraphRow) -> ls_validation.LSGraphRow:
+    expected = ls_contract.BY_ID[row.node_id]
+    return ls_validation.LSGraphRow(
+        node_id=row.node_id,
+        source_locator=expected.source_locator,
+        statement_sha256=expected.statement_sha256,
+        lean_name=expected.declaration,
+        dependencies=expected.dependencies,
+        role=expected.role,
+        status=row.status,
+        receipt_sha256=row.receipt_sha256,
+        blocked_reason=row.blocked_reason,
+        failed_reason=row.failed_reason,
+    )
 
 
 def _plan_attempts(

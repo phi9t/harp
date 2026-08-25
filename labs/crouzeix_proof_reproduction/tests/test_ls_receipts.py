@@ -263,6 +263,22 @@ def canonical_json_bytes(value: object) -> bytes:
     )
 
 
+def canonical_rows() -> tuple[ls_validation.LSGraphRow, ...]:
+    return tuple(
+        ls_validation.LSGraphRow(
+            node_id=node.node_id,
+            source_locator=node.source_locator,
+            statement_sha256=node.statement_sha256,
+            lean_name=node.declaration,
+            dependencies=node.dependencies,
+            role=node.role,
+            status="passed",
+            receipt_sha256="a" * 64,
+        )
+        for node in ls_contract.NODES
+    )
+
+
 def exception_group_members(error: BaseException) -> tuple[BaseException, ...]:
     members = getattr(error, "exceptions", ())
     if not isinstance(members, tuple):
@@ -467,7 +483,7 @@ class LSReceiptPublisherTests(unittest.TestCase):
                 )
                 updated_rows.append(
                     replace(
-                        row,
+                        canonical_rows()[list(NODE_BINDINGS).index(row.node_id)],
                         lean_name=publication["lean_name"],
                         status=publication["status"],
                         receipt_sha256=publication["receipt_sha256"],
@@ -2317,14 +2333,14 @@ class LSReceiptPublisherTests(unittest.TestCase):
                 )
             updated = tuple(
                 replace(
-                    row,
+                    canonical_row,
                     lean_name=published[row.node_id]["lean_name"],
                     status=published[row.node_id]["status"],
                     receipt_sha256=published[row.node_id]["receipt_sha256"],
                     blocked_reason=None,
                     failed_reason=None,
                 )
-                for row in rows
+                for row, canonical_row in zip(rows, canonical_rows(), strict=True)
             )
             self.assertEqual(
                 set(
@@ -2356,6 +2372,89 @@ class LSReceiptPublisherTests(unittest.TestCase):
 
             self.assertEqual(executor.calls, [])
             self.assertEqual(list(outside.iterdir()), [])
+
+    def test_live_legacy_graph_publishes_canonical_v2_source_slices(self) -> None:
+        rows = make_rows()
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            published = ls_receipts.publish_ls_receipts(
+                rows,
+                repository_root,
+                formal_target_root,
+                executor=FakeExecutor(),
+            )
+
+            for node in ls_contract.NODES:
+                attempt = repository_root / published[node.node_id]["attempt_path"]
+                source_slice = json.loads(
+                    (attempt / "source-slice.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(source_slice["lean_name"], node.declaration)
+                self.assertEqual(
+                    source_slice["dependency_ids"], list(node.dependencies)
+                )
+
+            terminal_slice = json.loads(
+                (
+                    repository_root
+                    / published["ls-terminal-crouzeix"]["attempt_path"]
+                    / "source-slice.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                terminal_slice["dependency_ids"],
+                ["ls-double-layer-realization"],
+            )
+
+    def test_publisher_rejects_hybrid_terminal_dependency_row(self) -> None:
+        rows = list(make_rows())
+        terminal = ls_contract.BY_ID["ls-terminal-crouzeix"]
+        rows[-1] = replace(
+            rows[-1],
+            lean_name=terminal.declaration,
+            dependencies=terminal.legacy_dependencies,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "canonical LS graph"
+            ):
+                ls_receipts.publish_ls_receipts(
+                    tuple(rows),
+                    repository_root,
+                    formal_target_root,
+                    executor=FakeExecutor(),
+                )
+
+    def test_canonical_passed_rows_validate_against_new_v2_receipts(self) -> None:
+        legacy_rows = make_rows()
+        canonical = canonical_rows()
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            published = ls_receipts.publish_ls_receipts(
+                legacy_rows,
+                repository_root,
+                formal_target_root,
+                executor=FakeExecutor(),
+            )
+            updated = tuple(
+                replace(
+                    row,
+                    status=published[row.node_id]["status"],
+                    receipt_sha256=published[row.node_id]["receipt_sha256"],
+                )
+                for row in canonical
+            )
+            validated = ls_validation.validate_committed_receipts(
+                updated, formal_target_root, repository_root
+            )
+            self.assertEqual(set(validated), set(NODE_BINDINGS))
 
 
 if __name__ == "__main__":

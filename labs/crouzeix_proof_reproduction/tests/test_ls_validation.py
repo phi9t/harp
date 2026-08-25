@@ -16,6 +16,7 @@ sys.path.insert(0, str(LAB))
 
 import ls_validation  # noqa: E402
 import ls_receipts  # noqa: E402
+import ls_contract  # noqa: E402
 import protocol  # noqa: E402
 
 
@@ -180,6 +181,22 @@ def replace_graph_row(
     )
 
 
+def canonical_rows() -> tuple[ls_validation.LSGraphRow, ...]:
+    return tuple(
+        ls_validation.LSGraphRow(
+            node_id=node.node_id,
+            source_locator=node.source_locator,
+            statement_sha256=node.statement_sha256,
+            lean_name=node.declaration,
+            dependencies=node.dependencies,
+            role=node.role,
+            status="passed",
+            receipt_sha256="a" * 64,
+        )
+        for node in ls_contract.NODES
+    )
+
+
 def sha256_file(path: Path) -> str:
     return protocol.sha256_bytes(path.read_bytes())
 
@@ -329,14 +346,14 @@ def make_v2_receipts(
     )
     current_rows = tuple(
         replace(
-            row,
+            canonical_row,
             lean_name=published[row.node_id]["lean_name"],
             status="passed",
             receipt_sha256=published[row.node_id]["receipt_sha256"],
             blocked_reason=None,
             failed_reason=None,
         )
-        for row in rows
+        for row, canonical_row in zip(rows, canonical_rows(), strict=True)
     )
     return current_rows, formal_target_root, repository_root
 
@@ -443,6 +460,58 @@ class LSValidationTests(unittest.TestCase):
                         protocol.ValidationError, "canonical LS graph"
                     ):
                         ls_validation.load_route_graph(path)
+
+    def test_live_graph_is_accepted_only_as_exact_legacy_contract(self) -> None:
+        rows = ls_validation.load_route_graph(GRAPH)
+        self.assertEqual(
+            tuple(row.lean_name for row in rows),
+            tuple(
+                (node.legacy_graph_lean_name or node.declaration)
+                for node in ls_contract.NODES
+            ),
+        )
+        self.assertEqual(
+            tuple(row.dependencies for row in rows),
+            tuple(node.legacy_dependencies for node in ls_contract.NODES),
+        )
+        ls_validation._validate_graph_contract(rows, allow_legacy=True)
+        with self.assertRaisesRegex(protocol.ValidationError, "canonical LS graph"):
+            ls_validation._validate_graph_contract(rows, allow_legacy=False)
+
+    def test_graph_contract_rejects_legacy_declaration_with_canonical_dependencies(
+        self,
+    ) -> None:
+        rows = ls_validation.load_route_graph(GRAPH)
+        hybrid = replace_graph_row(
+            rows,
+            "ls-terminal-crouzeix",
+            dependencies=ls_contract.BY_ID["ls-terminal-crouzeix"].dependencies,
+        )
+        with self.assertRaisesRegex(
+            protocol.ValidationError, "canonical LS graph"
+        ):
+            ls_validation._validate_graph_contract(hybrid, allow_legacy=True)
+
+    def test_graph_contract_rejects_canonical_declaration_with_legacy_dependencies(
+        self,
+    ) -> None:
+        rows = ls_validation.load_route_graph(GRAPH)
+        hybrid = replace_graph_row(
+            rows,
+            "ls-terminal-crouzeix",
+            lean_name=ls_contract.BY_ID["ls-terminal-crouzeix"].declaration,
+        )
+        with self.assertRaisesRegex(
+            protocol.ValidationError, "canonical LS graph"
+        ):
+            ls_validation._validate_graph_contract(hybrid, allow_legacy=True)
+
+    def test_canonical_rows_use_exact_terminal_dependency_without_redundant_edge(
+        self,
+    ) -> None:
+        rows = canonical_rows()
+        ls_validation._validate_graph_contract(rows, allow_legacy=False)
+        self.assertEqual(rows[-1].dependencies, ("ls-double-layer-realization",))
 
     def test_validate_committed_receipts_accepts_bound_passed_bundles(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

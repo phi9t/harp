@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from labs.crouzeix_proof_reproduction import route_validation
+from labs.crouzeix_proof_reproduction import ls_contract, route_validation
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -338,3 +338,72 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
             route_validation.validate_source_provenance_metadata(
                 REPO, manifest, manifest.nodes[0]
             )
+
+
+class LoristSchwenningerContractTests(unittest.TestCase):
+    def test_exact_node_authority_uses_canonical_terminal_dependency_only(self) -> None:
+        by_id = ls_contract.BY_ID
+        self.assertEqual(
+            tuple(node.node_id for node in ls_contract.NODES),
+            (
+                "ls-equation-one-terminal-bound",
+                "ls-power-recurrence",
+                "ls-scalar-contradiction",
+                "ls-perturbation-lemma",
+                "ls-double-layer-realization",
+                "ls-terminal-crouzeix",
+            ),
+        )
+        self.assertEqual(
+            by_id["ls-terminal-crouzeix"].dependencies,
+            ("ls-double-layer-realization",),
+        )
+        self.assertEqual(
+            by_id["ls-terminal-crouzeix"].legacy_dependencies,
+            ("ls-perturbation-lemma", "ls-double-layer-realization"),
+        )
+
+    def test_source_claim_hashes_stay_separate_from_route_type_hashes(self) -> None:
+        payload = ls_manifest_payload()
+        payload["terminal_type_sha256"] = "d" * 64
+        payload["nodes"][0]["statement_sha256"] = "c" * 64
+        parsed = route_validation.parse_route_manifest(payload)
+        self.assertNotEqual(
+            ls_contract.BY_ID["ls-terminal-crouzeix"].statement_sha256,
+            parsed.terminal_type_sha256,
+        )
+        self.assertEqual(parsed.nodes[0].statement_sha256, "c" * 64)
+        self.assertEqual(parsed.terminal_type_sha256, "d" * 64)
+
+    def test_theorem_body_audits_require_exact_provider_calls(self) -> None:
+        audits = ls_contract.audit_required_theorem_provider_calls(REPO)
+        self.assertEqual(
+            audits["ls-power-recurrence"],
+            (
+                "recurrence_lower_bound",
+                "recurrence_difference_lower_bound",
+            ),
+        )
+        self.assertEqual(
+            audits["ls-perturbation-lemma"],
+            (
+                "equation_three_lower_bound",
+                "displacementSq_le",
+                "scalar_endpoint_le_two",
+            ),
+        )
+        self.assertEqual(
+            audits["ls-double-layer-realization"],
+            (
+                "dilationDataOfParametricPolynomial",
+                "norm_target_le_two",
+            ),
+        )
+        self.assertEqual(
+            audits["ls-terminal-crouzeix"],
+            (
+                "norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+                "norm_polynomialEval_le_of_tendsto",
+                "tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+            ),
+        )

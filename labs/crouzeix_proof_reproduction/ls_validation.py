@@ -442,7 +442,11 @@ def _is_legacy_contract_row(
     row: LSGraphRow, expected: ls_contract.LSNodeContract
 ) -> bool:
     return (
-        expected.legacy_status is not None
+        row.dependencies == expected.legacy_dependencies
+        and expected.legacy_status is not None
+        and row.role == expected.role
+        and row.source_locator == expected.source_locator
+        and row.statement_sha256 == expected.statement_sha256
         and row.lean_name == (expected.legacy_graph_lean_name or expected.declaration)
         and row.status == expected.legacy_status
         and row.receipt_sha256 == expected.legacy_receipt_sha256
@@ -469,34 +473,26 @@ def _validate_graph_contract(
             raise protocol.ValidationError(
                 f"canonical LS graph node is unknown: {row.node_id}"
             )
-        identity = (
+        canonical_identity = (
             row.dependencies,
             row.role,
             row.source_locator,
             row.statement_sha256,
+            row.lean_name,
         )
-        expected_identity = (
+        expected_canonical_identity = (
             expected.dependencies,
             expected.role,
             expected.source_locator,
             expected.statement_sha256,
+            expected.declaration,
         )
-        if identity != expected_identity:
-            raise protocol.ValidationError(
-                f"canonical LS graph identity is invalid: {row.node_id}"
-            )
-        if row.lean_name == expected.declaration:
+        if canonical_identity == expected_canonical_identity:
             continue
-        if allow_legacy and row.lean_name == (
-            expected.legacy_graph_lean_name or expected.declaration
-        ):
-            if require_complete and not _is_legacy_contract_row(row, expected):
-                raise protocol.ValidationError(
-                    f"canonical LS graph legacy state is invalid: {row.node_id}"
-                )
+        if allow_legacy and _is_legacy_contract_row(row, expected):
             continue
         raise protocol.ValidationError(
-            f"canonical LS graph declaration is invalid: {row.node_id}"
+            f"canonical LS graph identity is invalid: {row.node_id}"
         )
 
 
