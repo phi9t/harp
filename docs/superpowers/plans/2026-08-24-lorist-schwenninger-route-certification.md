@@ -1225,33 +1225,52 @@ boundaries:
   Homebrew Git plus `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_SYSTEM=/dev/null`
   and produced exactly one remedial sandboxed elaboration of the six theorem
   types while preserving cache identity.
+- Sandbox preflight must test the verifier's own temporary and runtime
+  namespace, including explicit `/private/tmp` fixtures, and must prove actual
+  nested `mise`, Git, Node/Corepack, Cargo, and Lake startup. The final policy
+  kept writes prefix-scoped and its negative probes blocked source, Git,
+  toolchain, shared Mathlib cache, arbitrary temporary, and network mutation.
+- Current-state assertions must be backed by immutable fixtures or explicit
+  setup. The verifier should not infer historical behavior from whatever the
+  live branch currently contains.
+- Path remapping helpers must resolve the input path relative to the repository
+  before joining it under a temporary root; otherwise an absolute fixture can
+  escape the intended test tree.
+- Python 3.9 remains the strict compatibility floor. For strict pair iteration,
+  use an explicit equal-length check followed by plain `zip`, not
+  Python 3.10-only `zip(strict=True)`.
 - Final metadata is release-critical. The focused release gate at commit
   `df8da81` passed with route validation `complete-local`, 3,386 cached Lean
   jobs, 739 Python tests passed with 2 skipped, 97 Rust Crouzeix tests passed,
   and unchanged cache snapshot
-  `3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e`; later
-  full `mise run verify` attempts still exposed environment and repository
-  verification issues, and current head `d174957` still requires the deliberate
-  `docs/import-receipt.md` digest refresh before the final repository gate can
-  pass.
+  `3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e`. The
+  definitive full `mise run verify` then passed on head
+  `2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be` under Seatbelt policy
+  `1c663a29e3574ed3a471a37b2791c176c9c70629fa585a55a8ce6ee6bb4ab6b6`; local
+  fast-forward and Kata closure remain pending until the controller recomputes
+  the payload digest after documentation edits and refreshes
+  `docs/import-receipt.md`.
 - Claim ceilings stay explicit. CPFR-086 may record route claim
   `complete-local`, six node receipts, route receipt digest
   `f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b`, and
   review digest
   `9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a`. The
-  route must not be fast-forwarded until the controller refreshes
-  `docs/import-receipt.md`, runs the definitive full repository gate on the
-  final metadata commit, and performs the local landing.
+  final full repository gate passed on head
+  `2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be`; the route must not be
+  fast-forwarded until the controller refreshes `docs/import-receipt.md` for
+  the post-documentation payload, verifies repository metadata, and performs
+  the local landing.
 
 ## Completion footer
 
 ```yaml
 phase: cpfr-086
-status: complete_local_release_gated_landing_metadata_prepared
+status: verified_pending_local_fast_forward
 route: lorist-schwenninger
 claim_level: complete-local
 node_receipts: 6
-candidate_commit: d1749570825afc277fd96ff6c79b532449afbd16
+candidate_commit: 2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be
+final_verification_head: 2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be
 promoted_payload_commit: 530c645bcfee7ee76591cc44df1ef3b5fdfd00d0
 promoted_payload_tree: ee69e85f25e3845ea58b71b13e63c3c9e058b5fd
 graph_sha256: ebe63abaf21d2ea620bfaa9be7b154ef39dbe4411535533314c14db264ab3826
@@ -1265,11 +1284,27 @@ mathematical_review: cpfr086-ls-promotion-bind-20260825-c19e PASS no Critical/Im
 standards_review: /root/cpfr086_final_standards PASS no Critical/Important/Minor at df8da81 over 11d2820
 focused_release_gate: df8da81 preflight ready; 3386 Lean jobs; 739 Python passed and 2 skipped; 97 Rust Crouzeix passed; formatting and diff passed
 cache_snapshot: 3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e
-full_repository_gate: required on final metadata commit before local fast-forward
+full_repository_gate: passed
+full_gate_command: mise run verify under /usr/bin/sandbox-exec
+full_gate_wall_seconds: 791.63
+full_gate_user_seconds: 113.06
+full_gate_sys_seconds: 117.22
+atlas_tests: 63
+atlas_test_files: 13
+rust_tests: 854
+meta_harness_python_tests: 13
+python_tests: 740
+python_skips: 2
+lean_jobs: 8771
+lean_total_seconds: 16
+repository_import_rows: 521
+dependency_cache_snapshot: e22fd9dbbb48edface954c43ee9c62e169c1a268b4997deda331c6bbc1625c36
+seatbelt_policy_sha256: 1c663a29e3574ed3a471a37b2791c176c9c70629fa585a55a8ce6ee6bb4ab6b6
+final_repairs: 9877b59 goal progression and path fixture repair; f175839 Python 3.9 strict-length repair
 landing_commit: d1749570825afc277fd96ff6c79b532449afbd16
 post_execution_review: PASS Spec and Standards with no findings after legacy-token repair
 plan_revision: docs/workstream/crouzeix-proof-reproduction/cpfr-086-retrospective.md
-local_fast_forward: pending controller gate
-kata_close: pending post-landing evidence
+local_fast_forward: pending
+kata: pending
 next_phase: cpfr-087
 ```

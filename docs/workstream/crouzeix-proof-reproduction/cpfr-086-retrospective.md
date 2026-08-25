@@ -10,8 +10,11 @@ Lorist--Schwenninger theorem claim beyond the route validation state
 The execution started from base commit
 `56742c15cf62ea017526705e38b657d4122adcbc`; the graph promotion payload is
 commit `530c645bcfee7ee76591cc44df1ef3b5fdfd00d0` with tree
-`ee69e85f25e3845ea58b71b13e63c3c9e058b5fd`, and this retrospective was drafted
-after branch head `d1749570825afc277fd96ff6c79b532449afbd16`.
+`ee69e85f25e3845ea58b71b13e63c3c9e058b5fd`. The existing verified proof and
+code payload remains ledger landing commit
+`d1749570825afc277fd96ff6c79b532449afbd16`, while the final full verifier was
+run on head `2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be` before this
+documentation-only update.
 
 The promoted route evidence is bounded by graph SHA-256
 `ebe63abaf21d2ea620bfaa9be7b154ef39dbe4411535533314c14db264ab3826`,
@@ -48,14 +51,14 @@ ledger row `evidence-published`, binding route receipt digest
 digest `9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a`,
 201 Python tests, and 97 Rust Crouzeix tests.
 
-The definitive final full repository gate is intentionally not claimed here: later
-`mise run verify` attempts first omitted `mise` from the restricted `PATH`, then
-found a Clippy `nonminimal_bool` issue fixed by commit `d97ad79`, then reached
-repository verification and found the legacy underscore-form source-graph token
-in a test identifier fixed by commit `d174957`; targeted repository verification now
-fails only because `docs/import-receipt.md` still carries the prior payload
-digest and is deliberately refreshed by the controller before the final gate
-and local fast-forward.
+The full repository gate later ran successfully on head
+`2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be` under `/usr/bin/sandbox-exec` with
+temporary policy SHA-256
+`1c663a29e3574ed3a471a37b2791c176c9c70629fa585a55a8ce6ee6bb4ab6b6`. It
+passed Atlas, Rust, shell, Python, Lean, and repository verification. Local
+fast-forward and Kata closure remain pending at documentation time; the
+controller still owns the final import-receipt refresh after these doc edits
+change the repository payload.
 
 ## Failed assumptions and root causes
 
@@ -71,7 +74,7 @@ original rollback error and a racy non-Darwin/Linux no-replace fallback; commit
 
 Task 7 could not be accepted from implementation status alone: the frozen route
 candidate at commit `4e9808a56ac74eaf1e19d649b0862c2eb3a82281` still required
-later locator, validation, route-publication, and forbidden-token repairs in
+later locator, validation, route-publication, and repository-token repairs in
 commits `dfd0ed5`, `0f1c434`, `48d7faf`, and `d174957` before CPFR-086 could
 record `complete-local`.
 
@@ -83,6 +86,14 @@ used a narrow policy plus read-only Homebrew Git and
 `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_SYSTEM=/dev/null`, and the CPFR-086
 tracker records stdout SHA-256
 `315f2a2974fa3ad573604c77e0317f34235028ed0be1d6b6047bad312b010cca`.
+
+The final sandbox preflight also had to prove the actual nested runtime, not a
+synthetic command surface: `mise`, Git, Node/Corepack, Cargo, and Lake startup
+all needed explicit coverage. Negative probes blocked arbitrary `/private/tmp`
+writes, tracked Lean source writes, worktree `.git` writes, pinned toolchain
+dylib writes, shared Mathlib artifact writes, and network socket creation. An
+earlier isolated timeout occurred only while other gates overlapped; the
+authoritative run used `RUST_TEST_THREADS=1` and passed.
 
 ## Verifier findings
 
@@ -106,8 +117,16 @@ phase-aware assertions.
 
 Validator behavior also needed post-review tightening: commit `0f1c434` added a
 fail-closed LS source-order check, and commit `d174957` removed the remaining
-legacy underscore-form source-graph token that repository verification rejected
-in a test identifier.
+legacy source-graph spelling that repository verification rejected in a test
+identifier.
+
+The final full gate exposed two verifier-facing defects after the proof payload
+was already reviewed. Commit `9877b59` fixed goal progression and an
+absolute-path test fixture escape; commit `f175839` replaced remaining
+Python 3.10-only `zip(strict=True)` uses with explicit equal-length checks that
+work on Python 3.9. Both repairs received independent Spec and Standards
+`PASS`; they harden verification and fixtures and do not change the proof
+semantics.
 
 ## Cache and runtime measurements
 
@@ -129,6 +148,22 @@ Exactly one remedial sandboxed Lean elaboration produced the six theorem types
 after the Git/runtime configuration was corrected; the earlier sandboxed Lake
 attempt was blocked by Seatbelt before cache mutation when Lake misread the
 unchanged Mathlib remote and tried forbidden cache replacement.
+
+The definitive full gate on head
+`2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be` completed in 791.63 seconds real
+time, 113.06 seconds user time, and 117.22 seconds system time. Atlas reported
+13 test files and 63 tests passed, generated corpus matching, and offline export
+passing. Rust passed across the full workspace, with 854 passed tests when
+aggregating all `test result: ok` rows, plus formatting, Clippy, shell
+regressions, no-DWARF, corpus, source, and search checks. Meta-harness Python
+reported 13 passed. Crouzeix Python reported 740 passed, 2 skipped, in
+298.978 seconds. Lean all reported 8,771 jobs with scan 1 second, cache 1
+second, Lake 14 seconds, total 16 seconds, and passed. Repository verification
+reported 521 import rows; its pre-documentation payload digest is not carried
+forward here because these documentation edits intentionally change the
+repository payload. Dependency cache metadata stayed unchanged before and after
+the run at
+`e22fd9dbbb48edface954c43ee9c62e169c1a268b4997deda331c6bbc1625c36`.
 
 ## Publication and recovery behavior
 
@@ -174,18 +209,34 @@ identity under the intended Seatbelt policy because the first sandboxed Lake
 attempt reached a forbidden cache-replacement path before the corrected
 read-only Git environment produced one successful six-theorem elaboration.
 
-The plan now keeps the full repository gate and final digest refresh after
-control metadata preparation because the branch still requires the intentional
-`docs/import-receipt.md` payload-digest refresh before the definitive final
-repository gate and local fast-forward can pass.
+The plan now requires the sandbox to test its own temporary and runtime
+namespaces under Seatbelt, including explicit `/private/tmp` fixture names, and
+to keep write access prefix-scoped while denying source, Git, toolchain, common
+cache, and network mutation.
+
+The plan now requires verifier tests to assert current state from immutable
+fixtures or explicit current-state setup, not from whatever the live branch
+happens to contain. It also requires temporary path helpers to resolve the
+original path relative to the repository before joining it under a temporary
+root, so absolute fixtures cannot escape the intended test tree.
+
+The plan now records Python 3.9 as the compatibility floor for strict
+length-pairing logic: use an explicit equal-length check followed by plain
+`zip`, not Python 3.10-only `zip(strict=True)`.
+
+The plan now keeps local fast-forward and Kata closure after the final
+documentation and import-receipt settlement. The definitive full repository
+gate has passed on head `2fb2e4212e19d8f2a0d70f6bd7a9f50178f7b5be`, but the
+controller must recompute the payload digest after this documentation edit,
+patch `docs/import-receipt.md`, and perform the local landing.
 
 ## Rejected changes
 
 The plan treats the CPFR-086 `landed` ledger row as control metadata pointing to
 existing verified payload commit
 `d1749570825afc277fd96ff6c79b532449afbd16`; it does not claim that
-`docs/import-receipt.md` has been refreshed, the definitive final full
-repository gate has passed, or the local fast-forward has occurred.
+`docs/import-receipt.md` has been refreshed after this documentation edit, that
+local `master` has been fast-forwarded, or that Kata has been closed.
 
 The plan does not weaken source fidelity, theorem identity, receipt
 immutability, or independent review boundaries because the accepted evidence is
