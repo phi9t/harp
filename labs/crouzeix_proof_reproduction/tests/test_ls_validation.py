@@ -17,6 +17,7 @@ sys.path.insert(0, str(LAB))
 import ls_validation  # noqa: E402
 import ls_receipts  # noqa: E402
 import ls_contract  # noqa: E402
+import provider_independence  # noqa: E402
 import protocol  # noqa: E402
 
 
@@ -195,6 +196,55 @@ def canonical_rows() -> tuple[ls_validation.LSGraphRow, ...]:
         )
         for node in ls_contract.NODES
     )
+
+
+def write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def write_bytes(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data)
+
+
+def make_audit_repo(root: Path, module_bodies: dict[str, bytes | str]) -> Path:
+    repository_root = root / "repository"
+    for node_id, spec in ls_contract.THEOREM_BODY_AUDITS.items():
+        content = module_bodies.get(node_id)
+        if content is None:
+            raise AssertionError(f"missing audit fixture for {node_id}")
+        target = repository_root / str(spec["path"])
+        if isinstance(content, bytes):
+            write_bytes(target, content)
+        else:
+            write_text(target, content)
+    return repository_root
+
+
+def valid_theorem_fixture(theorem_name: str, required_calls: tuple[str, ...]) -> str:
+    lines = [
+        "namespace Fixture",
+        f"theorem {theorem_name} : True := by",
+        *[f"  have _ := {name}" for name in required_calls],
+        "  trivial",
+        "",
+        "lemma trailing_guard : True := by",
+        "  trivial",
+        "end Fixture",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def valid_audit_sources() -> dict[str, str]:
+    return {
+        node_id: valid_theorem_fixture(
+            str(spec["theorem"]),
+            tuple(str(name) for name in spec["required_calls"]),
+        )
+        for node_id, spec in ls_contract.THEOREM_BODY_AUDITS.items()
+    }
 
 
 def sha256_file(path: Path) -> str:
@@ -1148,6 +1198,251 @@ import Hidden.AfterHeader
                         ls_validation.validate_committed_receipts(
                             rows, formal_target_root, repository_root
                         )
+
+    def test_theorem_body_audit_accepts_active_exact_body(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(
+                Path(directory).resolve(), valid_audit_sources()
+            )
+            audits = ls_validation.audit_required_theorem_provider_calls(repository_root)
+        self.assertEqual(
+            audits["ls-terminal-crouzeix"],
+            (
+                "norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+                "norm_polynomialEval_le_of_tendsto",
+                "tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+            ),
+        )
+
+    def test_theorem_body_audit_rejects_required_names_only_in_comments(self) -> None:
+        sources = valid_audit_sources()
+        sources["ls-power-recurrence"] = "\n".join(
+            [
+                "namespace Fixture",
+                "theorem equation_three_lower_bound : True := by",
+                "  -- recurrence_lower_bound",
+                "  /- recurrence_difference_lower_bound -/",
+                "  trivial",
+                "end Fixture",
+                "",
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "missing required provider calls",
+            ):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_required_names_only_in_strings(self) -> None:
+        sources = valid_audit_sources()
+        sources["ls-perturbation-lemma"] = "\n".join(
+            [
+                "namespace Fixture",
+                "theorem norm_target_le_two : True := by",
+                '  let _ := "equation_three_lower_bound displacementSq_le"',
+                '  let _ := s!"scalar_endpoint_le_two"',
+                '  let _ := r#"equation_three_lower_bound"#',
+                "  trivial",
+                "end Fixture",
+                "",
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "missing required provider calls",
+            ):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_names_only_in_following_lemma(self) -> None:
+        sources = valid_audit_sources()
+        sources["ls-double-layer-realization"] = "\n".join(
+            [
+                "namespace Fixture",
+                "theorem norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary : True := by",
+                "  trivial",
+                "",
+                "lemma trailing_guard : True := by",
+                "  have _ := dilationDataOfParametricPolynomial",
+                "  have _ := norm_target_le_two",
+                "  trivial",
+                "end Fixture",
+                "",
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "missing required provider calls",
+            ):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_missing_duplicate_malformed_and_nonby_theorem(
+        self,
+    ) -> None:
+        cases = {
+            "missing": "namespace Fixture\nlemma other : True := by\n  trivial\nend Fixture\n",
+            "duplicate": "\n".join(
+                [
+                    "namespace Fixture",
+                    "theorem equation_three_lower_bound : True := by",
+                    "  have _ := recurrence_lower_bound",
+                    "  have _ := recurrence_difference_lower_bound",
+                    "  trivial",
+                    "theorem equation_three_lower_bound : True := by",
+                    "  have _ := recurrence_lower_bound",
+                    "  have _ := recurrence_difference_lower_bound",
+                    "  trivial",
+                    "end Fixture",
+                    "",
+                ]
+            ),
+            "malformed": "namespace Fixture\ntheorem equation_three_lower_bound\nend Fixture\n",
+            "nonby": (
+                "namespace Fixture\n"
+                "theorem equation_three_lower_bound : True := True.intro\n"
+                "end Fixture\n"
+            ),
+        }
+        expected = {
+            "missing": "missing theorem declaration",
+            "duplicate": "duplicate theorem declaration",
+            "malformed": "malformed theorem declaration",
+            "nonby": "non-by theorem declaration",
+        }
+        for case, content in cases.items():
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                sources = valid_audit_sources()
+                sources["ls-power-recurrence"] = content
+                repository_root = make_audit_repo(Path(directory).resolve(), sources)
+                with self.assertRaisesRegex(protocol.ValidationError, expected[case]):
+                    ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_empty_theorem_body(self) -> None:
+        sources = valid_audit_sources()
+        sources["ls-power-recurrence"] = (
+            "namespace Fixture\n"
+            "theorem equation_three_lower_bound : True := by\n"
+            "lemma next_command : True := by\n"
+            "  trivial\n"
+            "end Fixture\n"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            with self.assertRaisesRegex(protocol.ValidationError, "empty theorem body"):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_symlinked_parent_or_file(self) -> None:
+        for case in ("parent", "file"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory).resolve()
+                repository_root = make_audit_repo(root, valid_audit_sources())
+                target = repository_root / str(
+                    ls_contract.THEOREM_BODY_AUDITS["ls-power-recurrence"]["path"]
+                )
+                outside = root / "outside.lean"
+                write_text(outside, valid_audit_sources()["ls-power-recurrence"])
+                if case == "parent":
+                    parent = target.parent
+                    moved = root / "moved-parent"
+                    parent.rename(moved)
+                    parent.symlink_to(moved, target_is_directory=True)
+                else:
+                    target.unlink()
+                    target.symlink_to(outside)
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, "symlink|regular file"
+                ):
+                    ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_hardlinked_final_file(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository_root = make_audit_repo(root, valid_audit_sources())
+            target = repository_root / str(
+                ls_contract.THEOREM_BODY_AUDITS["ls-power-recurrence"]["path"]
+            )
+            alias = root / "alias.lean"
+            os.link(target, alias)
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "exactly one hard link"
+            ):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_rejects_oversize_and_invalid_utf8(self) -> None:
+        cases = {
+            "oversize": b"x" * (provider_independence.MAX_SOURCE_BYTES + 1),
+            "utf8": b"\xff\xfe\xfd",
+        }
+        for case, payload in cases.items():
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                sources = valid_audit_sources()
+                sources["ls-power-recurrence"] = payload
+                repository_root = make_audit_repo(Path(directory).resolve(), sources)
+                with self.assertRaisesRegex(
+                    protocol.ValidationError,
+                    "exceeds byte cap|cannot decode",
+                ):
+                    ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_forbidden_terminal_provider_in_active_code_fails(
+        self,
+    ) -> None:
+        sources = valid_audit_sources()
+        sources["ls-terminal-crouzeix"] = "\n".join(
+            [
+                "namespace Fixture",
+                "theorem loristSchwenningerMainTheorem : True := by",
+                "  have _ := norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+                "  have _ := norm_polynomialEval_le_of_tendsto",
+                "  have _ := tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+                "  have _ := harpFiniteHorizonMainTheorem",
+                "  trivial",
+                "end Fixture",
+                "",
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            with self.assertRaisesRegex(
+                protocol.ValidationError,
+                "forbidden provider calls",
+            ):
+                ls_validation.audit_required_theorem_provider_calls(repository_root)
+
+    def test_theorem_body_audit_forbidden_name_in_comment_or_string_does_not_trip(
+        self,
+    ) -> None:
+        sources = valid_audit_sources()
+        sources["ls-terminal-crouzeix"] = "\n".join(
+            [
+                "namespace Fixture",
+                "theorem loristSchwenningerMainTheorem : True := by",
+                "  -- harpFiniteHorizonMainTheorem",
+                '  let _ := "harpFiniteHorizonMainTheorem"',
+                "  have _ := norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+                "  have _ := norm_polynomialEval_le_of_tendsto",
+                "  have _ := tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+                "  trivial",
+                "end Fixture",
+                "",
+            ]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root = make_audit_repo(Path(directory).resolve(), sources)
+            audits = ls_validation.audit_required_theorem_provider_calls(repository_root)
+        self.assertEqual(
+            audits["ls-terminal-crouzeix"],
+            (
+                "norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+                "norm_polynomialEval_le_of_tendsto",
+                "tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
+            ),
+        )
 
     def test_committed_receipts_accept_zero_axioms_and_bind_declaration(self) -> None:
         rows = ls_validation.load_route_graph(GRAPH)

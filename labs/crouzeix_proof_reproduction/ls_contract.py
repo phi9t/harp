@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import Path
-import re
 
 
 SCHEMA_VERSION = "crouzeix-ls-source-graph/v1"
@@ -222,7 +220,7 @@ BY_ID = {node.node_id: node for node in NODES}
 NODE_ORDER = tuple(node.node_id for node in NODES)
 
 _BODY_AUDIT_PREFIX = "formalization/lean/Crouzeix/LoristSchwenninger"
-_THEOREM_BODY_AUDITS: dict[str, dict[str, object]] = {
+THEOREM_BODY_AUDITS: dict[str, dict[str, object]] = {
     "ls-power-recurrence": {
         "path": f"{_BODY_AUDIT_PREFIX}/OperatorRecurrence.lean",
         "theorem": "equation_three_lower_bound",
@@ -275,61 +273,3 @@ _THEOREM_BODY_AUDITS: dict[str, dict[str, object]] = {
         ),
     },
 }
-
-
-def _theorem_body(source: str, theorem_name: str) -> str:
-    pattern = re.compile(
-        rf"theorem\s+{re.escape(theorem_name)}\b.*?:=\s*by\b", re.DOTALL
-    )
-    match = pattern.search(source)
-    if match is None:
-        raise ValueError(f"missing theorem body: {theorem_name}")
-    start = match.end()
-    next_match = re.search(r"(?m)^theorem\s+", source[start:])
-    end = len(source) if next_match is None else start + next_match.start()
-    return source[start:end]
-
-
-def _called_names(body: str) -> frozenset[str]:
-    return frozenset(re.findall(r"\b([A-Za-z_][A-Za-z0-9_']*)\b", body))
-
-
-def audit_required_theorem_provider_calls(
-    repository_root: Path,
-) -> dict[str, tuple[str, ...]]:
-    """Return the exact audited provider names for the four concrete LS bodies."""
-
-    audited: dict[str, tuple[str, ...]] = {}
-    root = Path(repository_root)
-    for node_id, spec in _THEOREM_BODY_AUDITS.items():
-        source = (root / str(spec["path"])).read_text(encoding="utf-8")
-        body = _theorem_body(source, str(spec["theorem"]))
-        calls = _called_names(body)
-        required = tuple(str(name) for name in spec["required_calls"])
-        forbidden = tuple(str(name) for name in spec["forbidden_calls"])
-        missing = [name for name in required if name not in calls]
-        if missing:
-            raise ValueError(
-                f"{node_id} theorem body is missing required provider calls: "
-                + ", ".join(missing)
-            )
-        present_forbidden = [name for name in forbidden if name in calls]
-        if present_forbidden:
-            raise ValueError(
-                f"{node_id} theorem body uses forbidden provider calls: "
-                + ", ".join(present_forbidden)
-            )
-        extra_main_theorem = {
-            name
-            for name in calls
-            if name.endswith("MainTheorem")
-            and name not in set(required)
-            and name != str(spec["theorem"])
-        }
-        if extra_main_theorem:
-            raise ValueError(
-                f"{node_id} theorem body uses unexpected terminal provider calls: "
-                + ", ".join(sorted(extra_main_theorem))
-            )
-        audited[node_id] = required
-    return audited

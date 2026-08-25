@@ -127,6 +127,10 @@ AXIOM_AUDIT_NONE = re.compile(
 LEAN_MODULE_NAME = re.compile(
     r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z"
 )
+LS_AUDIT_CALL_TOKEN = re.compile(
+    r"(?<![\w'])[_A-Za-z][A-Za-z0-9_']*(?:\.[_A-Za-z][A-Za-z0-9_']*)*(?![\w'!?])"
+)
+LS_AUDIT_TOPLEVEL_COMMAND = re.compile(r"^[A-Za-z_]")
 
 
 @dataclass(frozen=True)
@@ -332,6 +336,14 @@ def _read_file_at(
     except FileNotFoundError as error:
         raise protocol.ValidationError(f"{label} does not exist") from error
     except OSError as error:
+        try:
+            metadata = os.stat(name, dir_fd=directory.descriptor, follow_symlinks=False)
+        except OSError:
+            metadata = None
+        if metadata is not None and stat.S_ISLNK(metadata.st_mode):
+            raise protocol.ValidationError(f"{label} cannot be a symlink") from error
+        if getattr(error, "errno", None) == getattr(os, "ELOOP", 62):
+            raise protocol.ValidationError(f"{label} cannot be a symlink") from error
         raise protocol.ValidationError(f"cannot inspect {label}: {error}") from error
     try:
         before = os.fstat(descriptor)
@@ -1472,6 +1484,145 @@ def _active_lean_imports(data: bytes, module: str) -> tuple[str, ...]:
         raise protocol.ValidationError(
             f"cannot parse imports for LS Lean module {module}: {error}"
         ) from error
+
+
+def audit_required_theorem_provider_calls(
+    repository_root: Path,
+) -> dict[str, tuple[str, ...]]:
+    """Audit required provider calls in exact active theorem bodies."""
+
+    chain = _pin_absolute_chain(repository_root, "LS repository root")
+    root = chain[-1]
+    try:
+        audited: dict[str, tuple[str, ...]] = {}
+        for node_id, spec in ls_contract.THEOREM_BODY_AUDITS.items():
+            path = str(spec["path"])
+            module = _build_target_module(path)
+            data = _read_relative_file(
+                root,
+                path,
+                f"LS theorem audit source for {node_id}",
+                provider_independence.MAX_SOURCE_BYTES,
+            )
+            try:
+                source = data.decode("utf-8")
+            except UnicodeDecodeError as error:
+                raise protocol.ValidationError(
+                    f"cannot decode LS theorem audit source for {node_id}: {error}"
+                ) from error
+            try:
+                masked = provider_independence._mask_inactive_source(source, module)
+            except provider_independence.ProviderIndependenceError as error:
+                raise protocol.ValidationError(
+                    f"cannot mask LS theorem audit source for {node_id}: {error}"
+                ) from error
+            body = _extract_top_level_theorem_body(
+                masked,
+                str(spec["theorem"]),
+                f"LS theorem audit source for {node_id}",
+            )
+            calls = _active_identifier_leaves(body)
+            required = tuple(str(name) for name in spec["required_calls"])
+            forbidden = tuple(str(name) for name in spec["forbidden_calls"])
+            missing = [name for name in required if name not in calls]
+            if missing:
+                raise protocol.ValidationError(
+                    f"{node_id} theorem body is missing required provider calls: "
+                    + ", ".join(missing)
+                )
+            present_forbidden = [name for name in forbidden if name in calls]
+            if present_forbidden:
+                raise protocol.ValidationError(
+                    f"{node_id} theorem body uses forbidden provider calls: "
+                    + ", ".join(present_forbidden)
+                )
+            extra_main_theorem = {
+                name
+                for name in calls
+                if name.endswith("MainTheorem")
+                and name not in set(required)
+                and name != str(spec["theorem"])
+            }
+            if extra_main_theorem:
+                raise protocol.ValidationError(
+                    f"{node_id} theorem body uses unexpected terminal provider calls: "
+                    + ", ".join(sorted(extra_main_theorem))
+                )
+            audited[node_id] = required
+        return audited
+    finally:
+        _close_pinned_directories(chain)
+
+
+def _extract_top_level_theorem_body(
+    masked_source: str, theorem_name: str, label: str
+) -> str:
+    matches: list[tuple[int, int]] = []
+    lines = masked_source.splitlines(keepends=True)
+    offset = 0
+    for index, line in enumerate(lines):
+        stripped = line.rstrip("\r\n")
+        if stripped.startswith(f"theorem {theorem_name}"):
+            signature_lines = [stripped]
+            cursor = index + 1
+            while ":= by" not in "\n".join(signature_lines) and cursor < len(lines):
+                next_line = lines[cursor].rstrip("\r\n")
+                if next_line and next_line[0] not in " \t":
+                    break
+                signature_lines.append(next_line)
+                cursor += 1
+            signature = "\n".join(signature_lines)
+            if ":= by" not in signature:
+                if ":=" in signature:
+                    raise protocol.ValidationError(
+                        f"non-by theorem declaration in {label}: {theorem_name}"
+                    )
+                if signature.strip() == f"theorem {theorem_name}":
+                    raise protocol.ValidationError(
+                        f"malformed theorem declaration in {label}: {theorem_name}"
+                    )
+                continue
+            if not re.fullmatch(
+                rf"theorem\s+{re.escape(theorem_name)}\b[\s\S]*:=\s*by\s*",
+                signature,
+            ):
+                raise protocol.ValidationError(
+                    f"malformed theorem declaration in {label}: {theorem_name}"
+                )
+            start = offset + sum(len(lines[i]) for i in range(index, cursor))
+            if cursor < len(lines):
+                start += 0
+            matches.append((start, cursor))
+        offset += len(line)
+    if not matches:
+        raise protocol.ValidationError(
+            f"missing theorem declaration in {label}: {theorem_name}"
+        )
+    if len(matches) != 1:
+        raise protocol.ValidationError(
+            f"duplicate theorem declaration in {label}: {theorem_name}"
+        )
+    start, start_line_index = matches[0]
+    lines = masked_source.splitlines(keepends=True)
+    end = len(masked_source)
+    running = sum(len(lines[i]) for i in range(start_line_index))
+    for line in lines[start_line_index:]:
+        if line and line[0] not in " \t\r\n" and LS_AUDIT_TOPLEVEL_COMMAND.match(line):
+            end = running
+            break
+        running += len(line)
+    body = masked_source[start:end]
+    if not body.strip():
+        raise protocol.ValidationError(f"empty theorem body in {label}: {theorem_name}")
+    return body
+
+
+def _active_identifier_leaves(body: str) -> frozenset[str]:
+    leaves = set()
+    for match in LS_AUDIT_CALL_TOKEN.finditer(body):
+        token = match.group(0)
+        leaves.add(token.rsplit(".", 1)[-1])
+    return frozenset(leaves)
 
 
 def _safe_build_target(value: Any) -> str:

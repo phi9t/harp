@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from labs.crouzeix_proof_reproduction import ls_contract, route_validation
+from labs.crouzeix_proof_reproduction import ls_contract, ls_validation, route_validation
 
 
 REPO = Path(__file__).resolve().parents[3]
@@ -376,7 +376,7 @@ class LoristSchwenningerContractTests(unittest.TestCase):
         self.assertEqual(parsed.terminal_type_sha256, "d" * 64)
 
     def test_theorem_body_audits_require_exact_provider_calls(self) -> None:
-        audits = ls_contract.audit_required_theorem_provider_calls(REPO)
+        audits = ls_validation.audit_required_theorem_provider_calls(REPO)
         self.assertEqual(
             audits["ls-power-recurrence"],
             (
