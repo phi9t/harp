@@ -939,17 +939,27 @@ def _normalize_publish_ls_success(
 
 def _candidate_node_id_from_attempt_path(attempt_path: str) -> str:
     prefix = "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/"
-    suffix = "/attempt-"
-    if not attempt_path.startswith(prefix) or suffix not in attempt_path:
+    if not attempt_path.startswith(prefix):
         raise PublishLsNormalizationError(
             "publish-ls candidate attempt_path does not identify a canonical LS node"
         )
-    node_id, _, tail = attempt_path[len(prefix):].partition(suffix)
-    if not node_id or not tail.isdigit():
+    relative_path = attempt_path[len(prefix):]
+    node_id, separator, attempt_name = relative_path.partition("/")
+    if not node_id or separator != "/" or "/" in attempt_name:
         raise PublishLsNormalizationError(
             "publish-ls candidate attempt_path does not identify a canonical LS node"
         )
     if node_id not in ls_contract.NODE_ORDER:
+        raise PublishLsNormalizationError(
+            "publish-ls candidate attempt_path does not identify a canonical LS node"
+        )
+    match = ls_receipts.ATTEMPT_NAME.fullmatch(attempt_name)
+    if match is None:
+        raise PublishLsNormalizationError(
+            "publish-ls candidate attempt_path does not identify a canonical LS node"
+        )
+    attempt_number = int(match.group("number"))
+    if attempt_name != f"attempt-{attempt_number:03d}":
         raise PublishLsNormalizationError(
             "publish-ls candidate attempt_path does not identify a canonical LS node"
         )
@@ -1187,15 +1197,6 @@ def main(argv: list[str]) -> int:
             return 1
         except protocol.ValidationError as error:
             sys.stdout.write(canonical_json(_publish_ls_blocked_payload(str(error))))
-            return 1
-        except Exception:
-            sys.stdout.write(
-                canonical_json(
-                    _publish_ls_blocked_payload(
-                        "publish-ls encountered an internal error"
-                    )
-                )
-            )
             return 1
         sys.stdout.write(canonical_json(payload))
         return 0
