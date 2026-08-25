@@ -74,6 +74,7 @@ EXPECTED_LAKEFILE_CONTRACT = {
 LS_TARGET = Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger")
 LS_GRAPH = LS_TARGET / "source-graph.json"
 LS_PUBLICATION_SCHEMA_VERSION = "crouzeix-ls-receipt-publication/v1"
+PUBLISH_LS_MAX_REASON_BYTES = 4096
 SAFE_PATH_RE = re.compile(
     r"^(?!/)(?!\\)(?![^/]*:)(?!\.\.?$)(?!\.\.?/)[A-Za-z0-9._-]+(?:/(?!\.\.?$)(?!\.\.?/)[A-Za-z0-9._-]+)*\Z"
 )
@@ -841,17 +842,36 @@ def _publish_ls_blocked_payload(reason: str) -> dict[str, object]:
         "schema_version": LS_PUBLICATION_SCHEMA_VERSION,
         "route_id": "lorist-schwenninger",
         "status": "blocked",
-        "reason": reason,
+        "reason": _publish_ls_reason_text(reason),
     }
 
 
 def _safe_publish_ls_string(value: object, label: str, *, maximum: int = 4096) -> str:
     if not isinstance(value, str):
         raise PublishLsNormalizationError(f"publish-ls {label} must be a string")
+    value = _publish_ls_reason_text(value, maximum=maximum)
     encoded = value.encode("utf-8")
     if not value or len(encoded) > maximum:
         raise PublishLsNormalizationError(f"publish-ls {label} is invalid")
     return value
+
+
+def _publish_ls_reason_text(value: object, *, maximum: int = PUBLISH_LS_MAX_REASON_BYTES) -> str:
+    if not isinstance(value, str):
+        value = str(value)
+    sanitized = value.replace("\x00", " ").replace("\r", " ").replace("\n", " ")
+    sanitized = " ".join(sanitized.split())
+    if not sanitized:
+        return "publish-ls blocked"
+    encoded = sanitized.encode("utf-8")
+    if len(encoded) <= maximum:
+        return sanitized
+    truncated = encoded[:maximum]
+    while True:
+        try:
+            return truncated.decode("utf-8")
+        except UnicodeDecodeError:
+            truncated = truncated[:-1]
 
 
 def _safe_publish_ls_path(value: object, label: str) -> str:
@@ -897,6 +917,11 @@ def _normalize_publish_ls_success(
         receipt_sha256 = _safe_publish_ls_digest(
             item.get("receipt_sha256"), f"candidate {node_id} receipt_sha256"
         )
+        bound_node_id = _candidate_node_id_from_attempt_path(attempt_path)
+        if bound_node_id != node_id:
+            raise PublishLsNormalizationError(
+                f"publish-ls candidate {node_id} attempt_path does not match node_id"
+            )
         candidates.append(
             {
                 "node_id": node_id,
@@ -936,22 +961,27 @@ def _normalize_publish_ls_partial(
 ) -> dict[str, object]:
     seen: set[str] = set()
     candidates_by_node: dict[str, dict[str, str]] = {}
+    invalid_candidate_count = 0
     for item in error.candidates:
-        if not isinstance(item, dict) or set(item) != {"attempt_path", "receipt_sha256"}:
-            raise PublishLsNormalizationError(
-                "publish-ls partial publication candidates must contain only attempt_path and receipt_sha256"
+        try:
+            if not isinstance(item, dict) or set(item) != {"attempt_path", "receipt_sha256"}:
+                raise PublishLsNormalizationError(
+                    "publish-ls partial publication candidates must contain only attempt_path and receipt_sha256"
+                )
+            attempt_path = _safe_publish_ls_path(
+                item.get("attempt_path"), "partial candidate attempt_path"
             )
-        attempt_path = _safe_publish_ls_path(
-            item.get("attempt_path"), "partial candidate attempt_path"
-        )
-        receipt_sha256 = _safe_publish_ls_digest(
-            item.get("receipt_sha256"), "partial candidate receipt_sha256"
-        )
-        node_id = _candidate_node_id_from_attempt_path(attempt_path)
-        if node_id in seen:
-            raise PublishLsNormalizationError(
-                "publish-ls partial publication candidates must not duplicate nodes"
+            receipt_sha256 = _safe_publish_ls_digest(
+                item.get("receipt_sha256"), "partial candidate receipt_sha256"
             )
+            node_id = _candidate_node_id_from_attempt_path(attempt_path)
+            if node_id in seen:
+                raise PublishLsNormalizationError(
+                    "publish-ls partial publication candidates must not duplicate nodes"
+                )
+        except PublishLsNormalizationError:
+            invalid_candidate_count += 1
+            continue
         seen.add(node_id)
         candidates_by_node[node_id] = {
             "node_id": node_id,
@@ -964,6 +994,12 @@ def _normalize_publish_ls_partial(
         for node_id in ls_contract.NODE_ORDER
         if node_id in candidates_by_node
     ]
+    payload["recovery_status"] = (
+        "complete-candidate-set"
+        if invalid_candidate_count == 0
+        else "incomplete-candidate-set"
+    )
+    payload["invalid_candidate_count"] = invalid_candidate_count
     return payload
 
 

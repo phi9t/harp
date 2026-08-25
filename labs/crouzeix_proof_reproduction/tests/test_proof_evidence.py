@@ -630,6 +630,102 @@ class ProofEvidencePreflightTests(unittest.TestCase):
             )
         self.assertEqual(before, after, "publish-ls changed the repository tree")
 
+    def test_publish_ls_rejects_success_path_that_binds_to_different_node(self) -> None:
+        fixture = self.build_fixture()
+        rows = ("row-sentinel",)
+        published = {
+            node_id: {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    f"lorist-schwenninger/proof-slices/{node_id}/attempt-001"
+                ),
+                "receipt_sha256": "a" * 64,
+                "lean_name": "ignored",
+                "status": "passed",
+            }
+            for node_id in ls_contract.NODE_ORDER
+        }
+        published["ls-equation-one-terminal-bound"] = {
+            "attempt_path": (
+                "labs/crouzeix_proof_reproduction/formal_targets/"
+                "lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001"
+            ),
+            "receipt_sha256": "a" * 64,
+            "lean_name": "ignored",
+            "status": "passed",
+        }
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.ls_validation, "load_route_graph", return_value=rows
+            ),
+            mock.patch.object(
+                proof_evidence.ls_receipts,
+                "publish_ls_receipts",
+                return_value=published,
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-ls"])
+
+        payload = json.loads("".join(stdout))
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(payload["status"], "blocked")
+        self.assertIn("does not match node_id", payload["reason"])
+
+    def test_publish_ls_rejects_success_path_alias_suffix_tricks(self) -> None:
+        fixture = self.build_fixture()
+        rows = ("row-sentinel",)
+        published = {
+            node_id: {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    f"lorist-schwenninger/proof-slices/{node_id}/attempt-001"
+                ),
+                "receipt_sha256": "a" * 64,
+                "lean_name": "ignored",
+                "status": "passed",
+            }
+            for node_id in ls_contract.NODE_ORDER
+        }
+        published["ls-terminal-crouzeix"] = {
+            "attempt_path": (
+                "labs/crouzeix_proof_reproduction/formal_targets/"
+                "lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001/suffix"
+            ),
+            "receipt_sha256": "a" * 64,
+            "lean_name": "ignored",
+            "status": "passed",
+        }
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.ls_validation, "load_route_graph", return_value=rows
+            ),
+            mock.patch.object(
+                proof_evidence.ls_receipts,
+                "publish_ls_receipts",
+                return_value=published,
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-ls"])
+
+        payload = json.loads("".join(stdout))
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(payload["status"], "blocked")
+        self.assertIn("canonical LS node", payload["reason"])
+
     def test_publish_ls_rejects_malformed_publisher_success_result(self) -> None:
         fixture = self.build_fixture()
         rows = ("row-sentinel",)
@@ -775,10 +871,26 @@ class ProofEvidencePreflightTests(unittest.TestCase):
         after = fixture.snapshot_tree()
         payload = json.loads("".join(stdout))
         self.assertEqual(exit_code, 1)
-        self.assertEqual(payload["schema_version"], "crouzeix-ls-receipt-publication/v1")
+        self.assertEqual(
+            set(payload),
+            {
+                "schema_version",
+                "route_id",
+                "status",
+                "reason",
+                "recovery_status",
+                "invalid_candidate_count",
+                "candidates",
+            },
+        )
+        self.assertEqual(
+            payload["schema_version"], "crouzeix-ls-receipt-publication/v1"
+        )
         self.assertEqual(payload["route_id"], "lorist-schwenninger")
         self.assertEqual(payload["status"], "blocked")
         self.assertIn("visible candidates remain unreferenced", payload["reason"])
+        self.assertEqual(payload["recovery_status"], "complete-candidate-set")
+        self.assertEqual(payload["invalid_candidate_count"], 0)
         self.assertEqual(
             [candidate["node_id"] for candidate in payload["candidates"]],
             ["ls-equation-one-terminal-bound", "ls-terminal-crouzeix"],
@@ -855,7 +967,158 @@ class ProofEvidencePreflightTests(unittest.TestCase):
                 payload = json.loads("".join(stdout))
                 self.assertEqual(exit_code, 1)
                 self.assertEqual(payload["status"], "blocked")
-                self.assertNotIn("candidates", payload)
+                self.assertEqual(payload["recovery_status"], "incomplete-candidate-set")
+                expected_invalid = 1 if len(candidates) == 2 else len(candidates)
+                self.assertEqual(payload["invalid_candidate_count"], expected_invalid)
+                if len(candidates) == 2:
+                    self.assertEqual(
+                        payload["candidates"],
+                        [
+                            {
+                                "node_id": "ls-terminal-crouzeix",
+                                "attempt_path": valid_path,
+                                "receipt_sha256": "a" * 64,
+                            }
+                        ],
+                    )
+                else:
+                    self.assertEqual(payload["candidates"], [])
+
+    def test_publish_ls_partial_preserves_valid_subset_when_entries_are_mixed(self) -> None:
+        fixture = self.build_fixture()
+        rows = ("row-sentinel",)
+        candidates = (
+            {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    "lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001"
+                ),
+                "receipt_sha256": "c" * 64,
+            },
+            {
+                "attempt_path": "../escape/attempt-001",
+                "receipt_sha256": "d" * 64,
+            },
+            {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    "lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001"
+                ),
+                "receipt_sha256": "a" * 64,
+            },
+            {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    "lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-002"
+                ),
+                "receipt_sha256": "e" * 64,
+            },
+        )
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.ls_validation, "load_route_graph", return_value=rows
+            ),
+            mock.patch.object(
+                proof_evidence.ls_receipts,
+                "publish_ls_receipts",
+                side_effect=ls_receipts.PartialPublicationError(
+                    "visible candidates remain unreferenced", candidates
+                ),
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-ls"])
+
+        payload = json.loads("".join(stdout))
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(payload["status"], "blocked")
+        self.assertEqual(payload["recovery_status"], "incomplete-candidate-set")
+        self.assertEqual(payload["invalid_candidate_count"], 2)
+        self.assertEqual(
+            [candidate["node_id"] for candidate in payload["candidates"]],
+            ["ls-equation-one-terminal-bound", "ls-terminal-crouzeix"],
+        )
+        self.assertEqual(
+            payload["candidates"][1]["receipt_sha256"],
+            "c" * 64,
+        )
+
+    def test_publish_ls_bounds_and_sanitizes_validation_reasons(self) -> None:
+        fixture = self.build_fixture()
+        rows = ("row-sentinel",)
+        long_reason = ("bad\x00reason\n" * 700)
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.ls_validation, "load_route_graph", return_value=rows
+            ),
+            mock.patch.object(
+                proof_evidence.ls_receipts,
+                "publish_ls_receipts",
+                side_effect=protocol.ValidationError(long_reason),
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-ls"])
+
+        payload = json.loads("".join(stdout))
+        reason = payload["reason"]
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(payload["status"], "blocked")
+        self.assertLessEqual(len(reason.encode("utf-8")), 4096)
+        self.assertNotIn("\x00", reason)
+        self.assertNotIn("\n", reason)
+
+    def test_publish_ls_bounds_and_sanitizes_partial_reason(self) -> None:
+        fixture = self.build_fixture()
+        rows = ("row-sentinel",)
+        stdout: list[str] = []
+        candidates = (
+            {
+                "attempt_path": (
+                    "labs/crouzeix_proof_reproduction/formal_targets/"
+                    "lorist-schwenninger/proof-slices/ls-terminal-crouzeix/attempt-001"
+                ),
+                "receipt_sha256": "c" * 64,
+            },
+        )
+        long_reason = ("partial\x00reason\n" * 700)
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.ls_validation, "load_route_graph", return_value=rows
+            ),
+            mock.patch.object(
+                proof_evidence.ls_receipts,
+                "publish_ls_receipts",
+                side_effect=ls_receipts.PartialPublicationError(long_reason, candidates),
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-ls"])
+
+        payload = json.loads("".join(stdout))
+        reason = payload["reason"]
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(payload["status"], "blocked")
+        self.assertLessEqual(len(reason.encode("utf-8")), 4096)
+        self.assertNotIn("\x00", reason)
+        self.assertNotIn("\n", reason)
 
     def test_production_source_contains_no_workspace_absolute_paths(self) -> None:
         source = SCRIPT.read_text(encoding="utf-8")
