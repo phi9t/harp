@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -10,9 +11,21 @@ from pathlib import Path
 from typing import Iterable
 
 try:
-    from . import goal_validation, route_publication, route_validation
+    from . import (
+        goal_validation,
+        ls_contract,
+        ls_receipts,
+        ls_validation,
+        protocol,
+        route_publication,
+        route_validation,
+    )
 except ImportError:  # direct script execution
     import goal_validation
+    import ls_contract
+    import ls_receipts
+    import ls_validation
+    import protocol
     import route_publication
     import route_validation
 
@@ -58,6 +71,12 @@ EXPECTED_LAKEFILE_CONTRACT = {
     "lean_lib": [{"name": name} for name in EXPECTED_LEAN_LIBS],
     "require": [dict(EXPECTED_REQUIRE_ENTRY)],
 }
+LS_TARGET = Path("labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger")
+LS_GRAPH = LS_TARGET / "source-graph.json"
+LS_PUBLICATION_SCHEMA_VERSION = "crouzeix-ls-receipt-publication/v1"
+SAFE_PATH_RE = re.compile(
+    r"^(?!/)(?!\\)(?![^/]*:)(?!\.\.?$)(?!\.\.?/)[A-Za-z0-9._-]+(?:/(?!\.\.?$)(?!\.\.?/)[A-Za-z0-9._-]+)*\Z"
+)
 
 
 @dataclass(frozen=True)
@@ -185,6 +204,10 @@ class ToolchainError(RuntimeError):
     def __init__(self, reason: str, observed_toolchain: str | None) -> None:
         super().__init__(reason)
         self.observed_toolchain = observed_toolchain
+
+
+class PublishLsNormalizationError(protocol.ValidationError):
+    pass
 
 
 def canonical_json(value: object) -> str:
@@ -813,6 +836,137 @@ def canonical_repository_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
+def _publish_ls_blocked_payload(reason: str) -> dict[str, object]:
+    return {
+        "schema_version": LS_PUBLICATION_SCHEMA_VERSION,
+        "route_id": "lorist-schwenninger",
+        "status": "blocked",
+        "reason": reason,
+    }
+
+
+def _safe_publish_ls_string(value: object, label: str, *, maximum: int = 4096) -> str:
+    if not isinstance(value, str):
+        raise PublishLsNormalizationError(f"publish-ls {label} must be a string")
+    encoded = value.encode("utf-8")
+    if not value or len(encoded) > maximum:
+        raise PublishLsNormalizationError(f"publish-ls {label} is invalid")
+    return value
+
+
+def _safe_publish_ls_path(value: object, label: str) -> str:
+    path = _safe_publish_ls_string(value, label)
+    if SAFE_PATH_RE.fullmatch(path) is None:
+        raise PublishLsNormalizationError(f"publish-ls {label} must be a safe repository-relative path")
+    return path
+
+
+def _safe_publish_ls_digest(value: object, label: str) -> str:
+    digest = _safe_publish_ls_string(value, label, maximum=64)
+    if protocol.SHA256.fullmatch(digest) is None:
+        raise PublishLsNormalizationError(f"publish-ls {label} must be a sha256 digest")
+    return digest
+
+
+def _normalize_publish_ls_success(
+    publication: object,
+) -> dict[str, object]:
+    if not isinstance(publication, dict):
+        raise PublishLsNormalizationError("publish-ls publisher result must be an object")
+    unexpected_nodes = sorted(
+        key for key in publication if key not in ls_contract.NODE_ORDER
+    )
+    if unexpected_nodes:
+        raise PublishLsNormalizationError(
+            "publish-ls publisher result contains unexpected node ids"
+        )
+    candidates: list[dict[str, str]] = []
+    for node_id in ls_contract.NODE_ORDER:
+        if node_id not in publication:
+            raise PublishLsNormalizationError(
+                "publish-ls publisher result must include every canonical LS node"
+            )
+        item = publication[node_id]
+        if not isinstance(item, dict):
+            raise PublishLsNormalizationError(
+                f"publish-ls candidate {node_id} must be an object"
+            )
+        attempt_path = _safe_publish_ls_path(
+            item.get("attempt_path"), f"candidate {node_id} attempt_path"
+        )
+        receipt_sha256 = _safe_publish_ls_digest(
+            item.get("receipt_sha256"), f"candidate {node_id} receipt_sha256"
+        )
+        candidates.append(
+            {
+                "node_id": node_id,
+                "attempt_path": attempt_path,
+                "receipt_sha256": receipt_sha256,
+            }
+        )
+    return {
+        "schema_version": LS_PUBLICATION_SCHEMA_VERSION,
+        "route_id": "lorist-schwenninger",
+        "status": "published-unreferenced",
+        "candidates": candidates,
+    }
+
+
+def _candidate_node_id_from_attempt_path(attempt_path: str) -> str:
+    prefix = "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/"
+    suffix = "/attempt-"
+    if not attempt_path.startswith(prefix) or suffix not in attempt_path:
+        raise PublishLsNormalizationError(
+            "publish-ls candidate attempt_path does not identify a canonical LS node"
+        )
+    node_id, _, tail = attempt_path[len(prefix):].partition(suffix)
+    if not node_id or not tail.isdigit():
+        raise PublishLsNormalizationError(
+            "publish-ls candidate attempt_path does not identify a canonical LS node"
+        )
+    if node_id not in ls_contract.NODE_ORDER:
+        raise PublishLsNormalizationError(
+            "publish-ls candidate attempt_path does not identify a canonical LS node"
+        )
+    return node_id
+
+
+def _normalize_publish_ls_partial(
+    error: ls_receipts.PartialPublicationError,
+) -> dict[str, object]:
+    seen: set[str] = set()
+    candidates_by_node: dict[str, dict[str, str]] = {}
+    for item in error.candidates:
+        if not isinstance(item, dict) or set(item) != {"attempt_path", "receipt_sha256"}:
+            raise PublishLsNormalizationError(
+                "publish-ls partial publication candidates must contain only attempt_path and receipt_sha256"
+            )
+        attempt_path = _safe_publish_ls_path(
+            item.get("attempt_path"), "partial candidate attempt_path"
+        )
+        receipt_sha256 = _safe_publish_ls_digest(
+            item.get("receipt_sha256"), "partial candidate receipt_sha256"
+        )
+        node_id = _candidate_node_id_from_attempt_path(attempt_path)
+        if node_id in seen:
+            raise PublishLsNormalizationError(
+                "publish-ls partial publication candidates must not duplicate nodes"
+            )
+        seen.add(node_id)
+        candidates_by_node[node_id] = {
+            "node_id": node_id,
+            "attempt_path": attempt_path,
+            "receipt_sha256": receipt_sha256,
+        }
+    payload = _publish_ls_blocked_payload(str(error))
+    payload["candidates"] = [
+        candidates_by_node[node_id]
+        for node_id in ls_contract.NODE_ORDER
+        if node_id in candidates_by_node
+    ]
+    return payload
+
+
 def resolve_primary_checkout_cache(repository_root: Path) -> tuple[Path, Path]:
     result = subprocess.run(
         [
@@ -863,6 +1017,7 @@ def main(argv: list[str]) -> int:
     publish_route.add_argument("--route", choices=ROUTE_ORDER, required=True)
     publish_review = subparsers.add_parser("publish-review")
     publish_review.add_argument("--route", choices=ROUTE_ORDER, required=True)
+    subparsers.add_parser("publish-ls")
     validate_goal_parser = subparsers.add_parser("validate-goal")
     validate_goal_parser.add_argument(
         "--goal-plan",
@@ -976,6 +1131,37 @@ def main(argv: list[str]) -> int:
             "review_path": publication.review_path.as_posix(),
             "review_sha256": publication.review_sha256,
         }))
+        return 0
+
+    if args.command == "publish-ls":
+        try:
+            rows = ls_validation.load_route_graph(repository_root / LS_GRAPH)
+            publication = ls_receipts.publish_ls_receipts(
+                rows,
+                repository_root,
+                repository_root / LS_TARGET,
+            )
+            payload = _normalize_publish_ls_success(publication)
+        except ls_receipts.PartialPublicationError as error:
+            try:
+                payload = _normalize_publish_ls_partial(error)
+            except protocol.ValidationError as normalization_error:
+                payload = _publish_ls_blocked_payload(str(normalization_error))
+            sys.stdout.write(canonical_json(payload))
+            return 1
+        except protocol.ValidationError as error:
+            sys.stdout.write(canonical_json(_publish_ls_blocked_payload(str(error))))
+            return 1
+        except Exception:
+            sys.stdout.write(
+                canonical_json(
+                    _publish_ls_blocked_payload(
+                        "publish-ls encountered an internal error"
+                    )
+                )
+            )
+            return 1
+        sys.stdout.write(canonical_json(payload))
         return 0
 
     if args.command != "preflight":
