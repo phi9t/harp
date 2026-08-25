@@ -1579,8 +1579,8 @@ fn ls_node_contract(
         1 => ("CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L74-L90", "0b80e8d8bf6e2f5f9d3e3c0fb7e3d2e3f9c9ec7b5ecb392a6d211c7ef7ac0f3d", vec![LS_NODE_IDS[0].into()]),
         2 => ("CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L90-L98", "966cabe377c00b287b67e3a96de1ab53a12b8c4d35d130c26ae2bc899557f9fa", vec![]),
         3 => ("CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L67-L99", "0d38ea668014d371f14b3ffb7d5e5bdce7417a2aef2cfd81f663257e72d79d86", vec![LS_NODE_IDS[1].into(), LS_NODE_IDS[2].into()]),
-        4 => ("CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124", "be32b0c50689d78d037f7359bcd03ab51a0e8ef06b8c5e64d533fbdb2cfaa280", vec![LS_NODE_IDS[3].into()]),
-        5 => ("CrouzeixConjecture.loristSchwenningerMainTheorem", "terminal", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128", "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67", vec![LS_NODE_IDS[4].into()]),
+        4 => ("CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary", "intermediate", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L116-L128", "be32b0c50689d78d037f7359bcd03ab51a0e8ef06b8c5e64d533fbdb2cfaa280", vec![LS_NODE_IDS[3].into()]),
+        5 => ("CrouzeixConjecture.loristSchwenningerMainTheorem", "terminal", "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L107-L129", "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67", vec![LS_NODE_IDS[4].into()]),
         _ => unreachable!(),
     }
 }

@@ -577,7 +577,8 @@ def _is_legacy_contract_row(
         row.dependencies == expected.legacy_dependencies
         and expected.legacy_status is not None
         and row.role == expected.role
-        and row.source_locator == expected.source_locator
+        and row.source_locator
+        == (expected.legacy_source_locator or expected.source_locator)
         and row.statement_sha256 == expected.statement_sha256
         and row.lean_name == (expected.legacy_graph_lean_name or expected.declaration)
         and row.status == expected.legacy_status
@@ -632,6 +633,8 @@ def validate_committed_receipts(
     rows: tuple[LSGraphRow, ...],
     formal_target_root: Path,
     lean_root: Path,
+    *,
+    allow_legacy_source_locator_for: frozenset[str] = frozenset(),
 ) -> dict[str, dict[str, object]]:
     """Validate every graph-published LS receipt against committed bytes.
 
@@ -643,6 +646,10 @@ def validate_committed_receipts(
     target_root = Path(os.path.abspath(os.fspath(formal_target_root)))
     repository_root = Path(os.path.abspath(os.fspath(lean_root)))
     by_id: dict[str, LSGraphRow] = {}
+    if not isinstance(allow_legacy_source_locator_for, frozenset):
+        raise protocol.ValidationError(
+            "legacy source-locator allowance must be a frozen node set"
+        )
     for row in rows:
         if not isinstance(row, LSGraphRow):
             raise protocol.ValidationError("LS committed receipt row is invalid")
@@ -720,6 +727,9 @@ def validate_committed_receipts(
                     repository_directory,
                     None,
                     None,
+                    allow_legacy_source_locator=(
+                        row.node_id in allow_legacy_source_locator_for
+                    ),
                 )
             finally:
                 visiting.remove(row.node_id)
@@ -734,6 +744,9 @@ def validate_committed_receipts(
                     repository_directory,
                     None,
                     None,
+                    allow_legacy_source_locator=(
+                        row.node_id in allow_legacy_source_locator_for
+                    ),
                 )
 
         result = {
@@ -829,6 +842,8 @@ def _validate_committed_receipt(
     repository_root: _PinnedDirectory,
     legacy_reachable_modules: frozenset[str] | None = None,
     current_source_closure: _LocalSourceClosure | None = None,
+    *,
+    allow_legacy_source_locator: bool = False,
 ) -> dict[str, object]:
     attempt, receipt_bytes = _resolve_committed_attempt(row, proof_slices)
     try:
@@ -873,6 +888,7 @@ def _validate_committed_receipt(
                 f"LS committed source slice for node {row.node_id}",
             ),
             row,
+            allow_legacy_source_locator=allow_legacy_source_locator,
         )
         result = _validate_result_object(
             _json_object_from_bytes(
@@ -1185,7 +1201,10 @@ def _validate_task_object(
 
 
 def _validate_source_slice_object(
-    value: Mapping[str, Any], row: LSGraphRow
+    value: Mapping[str, Any],
+    row: LSGraphRow,
+    *,
+    allow_legacy_source_locator: bool = False,
 ) -> dict[str, object]:
     _require_fields(value, SOURCE_SLICE_FIELDS, "LS committed source slice")
     _require_equal(
@@ -1202,7 +1221,15 @@ def _validate_source_slice_object(
             "LS committed source-slice declaration does not match graph node"
         )
     source_locator = _source_locator(value["source_locator"], "source_locator")
-    if source_locator != row.source_locator:
+    accepted_locators = {row.source_locator}
+    contract = ls_contract.BY_ID.get(row.node_id)
+    if (
+        allow_legacy_source_locator
+        and contract is not None
+        and contract.legacy_source_locator is not None
+    ):
+        accepted_locators.add(contract.legacy_source_locator)
+    if source_locator not in accepted_locators:
         raise protocol.ValidationError(
             "LS committed source-slice locator does not match graph node"
         )

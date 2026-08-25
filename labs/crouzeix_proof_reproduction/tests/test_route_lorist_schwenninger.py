@@ -541,6 +541,48 @@ class LoristSchwenningerContractTests(unittest.TestCase):
         self.assertEqual(parsed.nodes[0].statement_sha256, "c" * 64)
         self.assertEqual(parsed.terminal_type_sha256, "d" * 64)
 
+    def test_reviewed_source_locators_cover_the_actual_claims(self) -> None:
+        manifest = route_validation.load_route_manifest(
+            REPO, ROUTE_MANIFEST_PATH.relative_to(REPO)
+        )
+        by_id = {node.node_id: node for node in manifest.nodes}
+        expected = {
+            "ls-double-layer-realization": (
+                "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L116-L128",
+                "067ea553be5b993a7695aa33e666d6ef05a7831e430aa8325716c25769b62a85",
+            ),
+            "ls-terminal-crouzeix": (
+                "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L107-L129",
+                "35e1efc2b96f9c5297fa841aac08c34f92c3a1a53a78ea91c73481ff6469becd",
+            ),
+        }
+        for node_id, (locator, excerpt_sha256) in expected.items():
+            with self.subTest(node_id=node_id):
+                self.assertEqual(ls_contract.BY_ID[node_id].source_locator, locator)
+                self.assertEqual(by_id[node_id].source_locator, locator)
+                self.assertEqual(by_id[node_id].source_excerpt_sha256, excerpt_sha256)
+
+        payload = json.loads(ROUTE_MANIFEST_PATH.read_text(encoding="utf-8"))
+        for node in payload["nodes"]:
+            if node["node_id"] not in expected:
+                continue
+            old_locator = {
+                "ls-double-layer-realization": (
+                    "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124"
+                ),
+                "ls-terminal-crouzeix": (
+                    "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128"
+                ),
+            }[node["node_id"]]
+            node["source_locator"] = old_locator
+        stale = route_validation.parse_route_manifest(payload)
+        with self.assertRaisesRegex(
+            route_validation.RouteValidationError, "reviewed source locator"
+        ):
+            route_validation._validate_manifest_semantics(
+                REPO, REPO / "formalization/lean", stale
+            )
+
     def test_theorem_body_audits_require_exact_provider_calls(self) -> None:
         audits = ls_validation.audit_required_theorem_provider_calls(REPO)
         self.assertEqual(

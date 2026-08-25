@@ -13,7 +13,7 @@ import stat
 import subprocess
 import threading
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Mapping, Sequence
 
@@ -60,6 +60,9 @@ LINUX_AT_FDCWD = -100
 LINUX_RENAME_NOREPLACE = 0x00000001
 BUNDLE_ROOT_FILES = ("task.json", "source-slice.json", "result.json", "receipt.json")
 BUNDLE_BUILD_FILES = ("command.json", "stdout.log", "stderr.log", "axioms.txt")
+LOCATOR_CORRECTION_NODE_IDS = frozenset(
+    ("ls-double-layer-realization", "ls-terminal-crouzeix")
+)
 
 
 LS_RECEIPT_BINDINGS = {
@@ -200,6 +203,184 @@ def publish_ls_receipts(
         ) from error
 
 
+def republish_ls_receipt_metadata(
+    rows: Sequence[ls_validation.LSGraphRow],
+    repository_root: Path,
+    formal_target_root: Path,
+    prior_receipt_sha256: Mapping[str, str],
+    node_ids: Sequence[str],
+) -> dict[str, dict[str, str]]:
+    """Create corrected receipt metadata while reusing validated v2 execution bytes.
+
+    This path never invokes Lean. It is intentionally limited to a nonempty
+    subset of canonical rows and preserves the selected attempt's command,
+    stdout, stderr, and axiom-audit bytes exactly.
+    """
+
+    repository = _absolute_normalized(repository_root)
+    target = _absolute_normalized(formal_target_root)
+    _require_descendant(target, repository, "LS formal target root")
+    canonical_rows = {row.node_id: row for row in _validate_rows(rows)}
+    selected_ids = tuple(node_ids)
+    if not selected_ids or len(set(selected_ids)) != len(selected_ids):
+        raise protocol.ValidationError(
+            "LS metadata republisher requires unique selected nodes"
+        )
+    if (
+        set(prior_receipt_sha256) != set(canonical_rows)
+        or set(selected_ids) != LOCATOR_CORRECTION_NODE_IDS
+    ):
+        raise protocol.ValidationError(
+            "LS metadata republisher node set is invalid"
+        )
+    repository_directory = _pin_absolute_directory(repository, "repository root")
+    target_directory: _PinnedDirectory | None = None
+    proof_slices: _PinnedDirectory | None = None
+    publication_lock: _PublicationLock | None = None
+    stage: _PinnedDirectory | None = None
+    publication_candidates: list[_PublicationCandidate] = []
+    try:
+        relative_target = target.relative_to(repository)
+        target_directory = _pin_directory_chain_at(
+            repository_directory, relative_target.parts, target, "LS formal target root"
+        )
+        proof_slices = _pin_directory_at(
+            target_directory, "proof-slices", target / "proof-slices",
+            "LS proof-slices root",
+        )
+        publication_lock = _acquire_publication_lock(proof_slices)
+        old_rows = tuple(
+            replace(
+                row,
+                receipt_sha256=prior_receipt_sha256[row.node_id],
+                status="passed",
+                blocked_reason=None,
+                failed_reason=None,
+            )
+            for row in canonical_rows.values()
+        )
+        selected_old_rows = tuple(
+            row for row in old_rows if row.node_id in selected_ids
+        )
+        _require_v2_republication_sources(selected_old_rows, proof_slices)
+        validated = ls_validation.validate_committed_receipts(
+            old_rows,
+            target,
+            repository,
+            allow_legacy_source_locator_for=frozenset(selected_ids),
+        )
+        selected_rows = tuple(
+            canonical_rows[node_id]
+            for node_id in ls_contract.NODE_ORDER
+            if node_id in selected_ids
+        )
+        plans = _plan_attempts(selected_rows, proof_slices)
+        execution_snapshot = _read_execution_snapshot(
+            repository, (ls_contract.AGGREGATE_MODULE,)
+        )
+        module_snapshots = _read_module_snapshots(repository, plans)
+        stage = _create_unique_directory_at(
+            target_directory, STAGE_PREFIX, "LS receipt staging directory"
+        )
+        for plan in plans:
+            old_row = next(row for row in old_rows if row.node_id == plan.row.node_id)
+            old_attempt_path = target / str(validated[plan.row.node_id]["attempt_path"])
+            old_attempt = _pin_absolute_directory(
+                old_attempt_path, f"prior LS receipt for {plan.row.node_id}"
+            )
+            try:
+                attempt = _create_stage_attempt(stage, plan)
+                try:
+                    _stage_republished_bundle(
+                        attempt, plan, old_attempt, repository
+                    )
+                finally:
+                    _close_pinned_directory(attempt)
+            finally:
+                _close_pinned_directory(old_attempt)
+            if old_row.node_id != plan.row.node_id:
+                raise protocol.ValidationError("LS metadata source node changed")
+        _require_module_snapshots(repository, plans, module_snapshots)
+        _require_execution_snapshot(
+            repository, (ls_contract.AGGREGATE_MODULE,), execution_snapshot
+        )
+        return _publish_staged_bundles(
+            stage, proof_slices, plans, repository, module_snapshots,
+            execution_snapshot, publication_candidates,
+        )
+    finally:
+        try:
+            if stage is not None:
+                _remove_stage(stage, target_directory)
+        finally:
+            for directory in (stage, proof_slices, target_directory, repository_directory):
+                if directory is not None:
+                    _close_pinned_directory(directory)
+            if publication_lock is not None:
+                _release_publication_lock(publication_lock)
+
+
+def _require_v2_republication_sources(
+    rows: Sequence[ls_validation.LSGraphRow],
+    proof_slices: _PinnedDirectory,
+) -> None:
+    """Reject every non-v2 selected source before staging any output."""
+
+    for row in rows:
+        if row.receipt_sha256 is None:
+            raise protocol.ValidationError(
+                f"LS metadata source requires receipt_sha256: {row.node_id}"
+            )
+        node_root = _pin_directory_at(
+            proof_slices,
+            row.node_id,
+            proof_slices.path / row.node_id,
+            f"prior LS receipt node for {row.node_id}",
+        )
+        matches: list[_PinnedDirectory] = []
+        try:
+            with os.scandir(node_root.descriptor) as entries:
+                for entry in entries:
+                    if ATTEMPT_NAME.fullmatch(entry.name) is None:
+                        continue
+                    metadata = entry.stat(follow_symlinks=False)
+                    if not stat.S_ISDIR(metadata.st_mode):
+                        continue
+                    attempt = _pin_directory_at(
+                        node_root,
+                        entry.name,
+                        node_root.path / entry.name,
+                        f"prior LS attempt for {row.node_id}",
+                    )
+                    receipt = _read_bundle_file_at(
+                        attempt,
+                        "receipt.json",
+                        f"prior LS receipt for {row.node_id}",
+                        MAX_MEMBER_BYTES,
+                    )
+                    if protocol.sha256_bytes(receipt) == row.receipt_sha256:
+                        matches.append(attempt)
+                    else:
+                        _close_pinned_directory(attempt)
+            if len(matches) != 1:
+                raise protocol.ValidationError(
+                    f"LS metadata source requires exactly one prior receipt: {row.node_id}"
+                )
+            prior = _read_bundle_bytes_at(
+                matches[0], f"prior LS receipt for {row.node_id}"
+            )
+            command = ls_validation._json_object_from_bytes(
+                prior["build/command.json"],
+                f"prior LS command for {row.node_id}",
+            )
+        finally:
+            for attempt in matches:
+                _close_pinned_directory(attempt)
+            _close_pinned_directory(node_root)
+        if command.get("schema_version") != "crouzeix-ls-lean-command/v2":
+            raise protocol.ValidationError(
+                "LS metadata republisher requires v2 execution evidence"
+            )
 def _publish_ls_receipts(
     rows: Sequence[ls_validation.LSGraphRow],
     repository_root: Path,
@@ -1207,6 +1388,112 @@ def _stage_bundle(
         attempt.descriptor,
         "receipt.json",
         _canonical_json_bytes(receipt),
+        "LS staged receipt",
+    )
+
+
+def _stage_republished_bundle(
+    attempt: _PinnedDirectory,
+    plan: _AttemptPlan,
+    prior_attempt: _PinnedDirectory,
+    repository_root: Path,
+) -> None:
+    prior = _read_bundle_bytes_at(prior_attempt, "prior LS receipt")
+    prior_receipt = json.loads(prior["receipt.json"])
+    command = json.loads(prior["build/command.json"])
+    if command.get("schema_version") != "crouzeix-ls-lean-command/v2":
+        raise protocol.ValidationError(
+            "LS metadata republisher requires v2 execution evidence"
+        )
+    execution_snapshot = _read_execution_snapshot(
+        repository_root, (ls_contract.AGGREGATE_MODULE,)
+    )
+    expected_execution = {
+        "wrapper_sha256": protocol.sha256_bytes(execution_snapshot.wrapper.data),
+        "lake_manifest_sha256": protocol.sha256_bytes(
+            execution_snapshot.lake_manifest.data
+        ),
+        "dependency_cache_metadata_sha256": (
+            execution_snapshot.dependency_cache_metadata_sha256
+        ),
+        "required_mathlib_artifacts_sha256": (
+            execution_snapshot.required_mathlib_artifacts_sha256
+        ),
+        "local_source_closure_sha256": (
+            execution_snapshot.local_source_closure_sha256
+        ),
+    }
+    for field, expected in expected_execution.items():
+        if command.get(field) != expected:
+            raise protocol.ValidationError(
+                f"LS metadata republisher execution evidence is stale: {field}"
+            )
+
+    os.mkdir("build", mode=0o700, dir_fd=attempt.descriptor)
+    task = {
+        "schema_version": "crouzeix-ls-proof-slice-task/v1",
+        "route_id": "lorist-schwenninger",
+        "source_node_id": plan.row.node_id,
+        "build_target": plan.build_target,
+        "expected_lean_declaration": plan.declaration,
+        "max_output_bytes": MAX_OUTPUT_BYTES,
+        "timeout_seconds": TIMEOUT_SECONDS,
+    }
+    source_slice = {
+        "schema_version": "crouzeix-ls-source-slice/v1",
+        "node_id": plan.row.node_id,
+        "source_locator": plan.row.source_locator,
+        "statement_sha256": plan.row.statement_sha256,
+        "lean_name": plan.declaration,
+        "dependency_ids": list(plan.row.dependencies),
+    }
+    reason = (
+        "No new Lean invocation; corrected source-contract metadata published as "
+        f"{plan.attempt_name} using byte-identical aggregate execution and axiom "
+        f"evidence from {prior_attempt.path.name}."
+    )
+    result = {
+        "schema_version": "crouzeix-ls-proof-slice-result/v1",
+        "status": "passed",
+        "reason": reason,
+    }
+    members = {
+        "task_sha256": ("task.json", _canonical_json_bytes(task)),
+        "source_slice_sha256": ("source-slice.json", _canonical_json_bytes(source_slice)),
+        "result_sha256": ("result.json", _canonical_json_bytes(result)),
+        "command_sha256": ("build/command.json", prior["build/command.json"]),
+        "stdout_sha256": ("build/stdout.log", prior["build/stdout.log"]),
+        "stderr_sha256": ("build/stderr.log", prior["build/stderr.log"]),
+        "axiom_audit_sha256": ("build/axioms.txt", prior["build/axioms.txt"]),
+    }
+    build = _pin_directory_at(
+        attempt, "build", attempt.path / "build", "LS staged build"
+    )
+    try:
+        for _, (relative_path, data) in members.items():
+            parent = build if relative_path.startswith("build/") else attempt
+            name = relative_path.removeprefix("build/")
+            _write_bytes_create_only_at(
+                parent.descriptor, name, data, f"LS staged {relative_path}"
+            )
+    finally:
+        _close_pinned_directory(build)
+    receipt = {
+        "schema_version": "crouzeix-ls-proof-slice-receipt/v1",
+        "route_id": "lorist-schwenninger",
+        "source_node_id": plan.row.node_id,
+        "status": "passed",
+        "reason": reason,
+        "build_target": plan.build_target,
+        "expected_lean_declaration": plan.declaration,
+        "allowed_axioms": prior_receipt["allowed_axioms"],
+        "observed_axioms": prior_receipt["observed_axioms"],
+        "module_sha256": prior_receipt["module_sha256"],
+    }
+    for digest_field, (_, data) in members.items():
+        receipt[digest_field] = protocol.sha256_bytes(data)
+    _write_bytes_create_only_at(
+        attempt.descriptor, "receipt.json", _canonical_json_bytes(receipt),
         "LS staged receipt",
     )
 

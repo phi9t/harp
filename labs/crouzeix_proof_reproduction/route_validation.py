@@ -1058,7 +1058,26 @@ def validate_source_provenance_metadata(
         raise RouteValidationError("Jin source file digest does not match artifact manifest")
 
 
+def validate_ls_reviewed_source_contract(manifest: RouteManifest) -> None:
+    if manifest.route_id != "lorist-schwenninger":
+        return
+    try:
+        from . import ls_contract
+    except ImportError:  # pragma: no cover - direct script execution path
+        import ls_contract
+
+    if tuple(node.node_id for node in manifest.nodes) != ls_contract.NODE_ORDER:
+        return
+    for node in manifest.nodes:
+        expected = ls_contract.BY_ID[node.node_id]
+        if node.source_locator != expected.source_locator:
+            raise RouteValidationError(
+                f"LS reviewed source locator mismatch: {node.node_id}"
+            )
+
+
 def _validate_manifest_semantics(repo_root: Path, lean_root: Path, manifest: RouteManifest) -> None:
+    validate_ls_reviewed_source_contract(manifest)
     if manifest.route_id in {"jin", "lorist-schwenninger"}:
         if manifest.claim_kind != "source-faithful":
             raise RouteValidationError("Jin and Lorist-Schwenninger must be source-faithful")

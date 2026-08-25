@@ -279,6 +279,22 @@ def canonical_rows() -> tuple[ls_validation.LSGraphRow, ...]:
     )
 
 
+def rewrite_attempt_member(attempt: Path, relative_path: str, value: object | bytes) -> str:
+    member = attempt / relative_path
+    data = value if isinstance(value, bytes) else canonical_json_bytes(value)
+    member.write_bytes(data)
+    receipt_path = attempt / "receipt.json"
+    receipt = json.loads(receipt_path.read_bytes())
+    digest_field = next(
+        field
+        for field, registered_path in ls_validation.MEMBER_PATHS.items()
+        if registered_path == relative_path
+    )
+    receipt[digest_field] = protocol.sha256_bytes(data)
+    receipt_path.write_bytes(canonical_json_bytes(receipt))
+    return protocol.sha256_bytes(receipt_path.read_bytes())
+
+
 def exception_group_members(error: BaseException) -> tuple[BaseException, ...]:
     members = getattr(error, "exceptions", ())
     if not isinstance(members, tuple):
@@ -2406,6 +2422,186 @@ class LSReceiptPublisherTests(unittest.TestCase):
             self.assertEqual(
                 terminal_slice["dependency_ids"],
                 ["ls-double-layer-realization"],
+            )
+
+    def test_republishes_only_corrected_metadata_without_running_lean(self) -> None:
+        rows = canonical_rows()
+        repaired_ids = ("ls-double-layer-realization", "ls-terminal-crouzeix")
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            first = ls_receipts.publish_ls_receipts(
+                rows, repository_root, formal_target_root, executor=FakeExecutor()
+            )
+            proof_slices = formal_target_root / "proof-slices"
+            before = {
+                path.relative_to(proof_slices).as_posix(): path.read_bytes()
+                for path in proof_slices.rglob("*")
+                if path.is_file()
+            }
+
+            repaired = ls_receipts.republish_ls_receipt_metadata(
+                rows,
+                repository_root,
+                formal_target_root,
+                {node_id: first[node_id]["receipt_sha256"] for node_id in first},
+                repaired_ids,
+            )
+
+            self.assertEqual(tuple(repaired), repaired_ids)
+            self.assertEqual(
+                sorted(
+                    path.relative_to(proof_slices).as_posix()
+                    for path in proof_slices.glob("*/attempt-002")
+                ),
+                [f"{node_id}/attempt-002" for node_id in repaired_ids],
+            )
+            for relative, data in before.items():
+                self.assertEqual((proof_slices / relative).read_bytes(), data)
+            for node_id in repaired_ids:
+                old_attempt = repository_root / first[node_id]["attempt_path"]
+                new_attempt = repository_root / repaired[node_id]["attempt_path"]
+                for member in ls_receipts.BUNDLE_BUILD_FILES:
+                    self.assertEqual(
+                        (new_attempt / "build" / member).read_bytes(),
+                        (old_attempt / "build" / member).read_bytes(),
+                    )
+                result = json.loads((new_attempt / "result.json").read_bytes())
+                self.assertIn("No new Lean invocation", result["reason"])
+                self.assertIn("attempt-001", result["reason"])
+                source_slice = json.loads(
+                    (new_attempt / "source-slice.json").read_bytes()
+                )
+                self.assertEqual(
+                    source_slice["source_locator"],
+                    ls_contract.BY_ID[node_id].source_locator,
+                )
+
+            selected = tuple(
+                replace(
+                    row,
+                    receipt_sha256=(
+                        repaired[row.node_id]["receipt_sha256"]
+                        if row.node_id in repaired
+                        else first[row.node_id]["receipt_sha256"]
+                    ),
+                )
+                for row in rows
+            )
+            self.assertEqual(
+                tuple(
+                    ls_validation.validate_committed_receipts(
+                        selected, formal_target_root, repository_root
+                    )
+                ),
+                tuple(NODE_BINDINGS),
+            )
+
+    def test_canonical_rows_reject_legacy_locator_receipts_before_republication(
+        self,
+    ) -> None:
+        rows = canonical_rows()
+        repaired_ids = ("ls-double-layer-realization", "ls-terminal-crouzeix")
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            published = ls_receipts.publish_ls_receipts(
+                rows, repository_root, formal_target_root, executor=FakeExecutor()
+            )
+            prior = {node_id: item["receipt_sha256"] for node_id, item in published.items()}
+            for node_id in repaired_ids:
+                attempt = repository_root / published[node_id]["attempt_path"]
+                source_slice = json.loads((attempt / "source-slice.json").read_bytes())
+                source_slice["source_locator"] = ls_contract.BY_ID[
+                    node_id
+                ].legacy_source_locator
+                prior[node_id] = rewrite_attempt_member(
+                    attempt, "source-slice.json", source_slice
+                )
+
+            old_selected = tuple(
+                replace(row, receipt_sha256=prior[row.node_id]) for row in rows
+            )
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "source-slice locator"
+            ):
+                ls_validation.validate_committed_receipts(
+                    old_selected, formal_target_root, repository_root
+                )
+
+            repaired = ls_receipts.republish_ls_receipt_metadata(
+                rows, repository_root, formal_target_root, prior, repaired_ids
+            )
+            mixed = tuple(
+                replace(
+                    row,
+                    receipt_sha256=(
+                        repaired[row.node_id]["receipt_sha256"]
+                        if row.node_id in repaired
+                        else prior[row.node_id]
+                    ),
+                )
+                for row in rows
+            )
+            self.assertEqual(
+                tuple(
+                    ls_validation.validate_committed_receipts(
+                        mixed, formal_target_root, repository_root
+                    )
+                ),
+                tuple(NODE_BINDINGS),
+            )
+
+    def test_metadata_republisher_rejects_selected_v1_before_any_attempt_exists(
+        self,
+    ) -> None:
+        rows = canonical_rows()
+        repaired_ids = ("ls-double-layer-realization", "ls-terminal-crouzeix")
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(
+                Path(directory).resolve()
+            )
+            published = ls_receipts.publish_ls_receipts(
+                rows, repository_root, formal_target_root, executor=FakeExecutor()
+            )
+            prior = {node_id: item["receipt_sha256"] for node_id, item in published.items()}
+            node_id = repaired_ids[-1]
+            attempt = repository_root / published[node_id]["attempt_path"]
+            command = {
+                "schema_version": "crouzeix-ls-lean-command/v1",
+                "argv": ["scripts/check_lean_library.sh", "Crouzeix"],
+                "cache_policy": "historical policy",
+                "cwd": ".",
+                "elan_home": EXPECTED_ENV["ELAN_HOME"],
+                "exit_code": 0,
+            }
+            prior[node_id] = rewrite_attempt_member(
+                attempt, "build/command.json", command
+            )
+            prior[node_id] = rewrite_attempt_member(
+                attempt,
+                "build/stdout.log",
+                AGGREGATE_STDOUT.replace(
+                    b"target=CrouzeixLoristSchwenninger", b"target=Crouzeix"
+                ),
+            )
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "requires v2 execution evidence"
+            ):
+                ls_receipts.republish_ls_receipt_metadata(
+                    rows, repository_root, formal_target_root, prior, repaired_ids
+                )
+
+            self.assertEqual(
+                list(
+                    formal_target_root.glob(
+                        "proof-slices/*/attempt-002"
+                    )
+                ),
+                [],
             )
 
     def test_publisher_rejects_hybrid_terminal_dependency_row(self) -> None:

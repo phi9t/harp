@@ -53,6 +53,7 @@ class LSNodeContract:
     role: str
     source_locator: str
     statement_sha256: str
+    legacy_source_locator: str | None = None
     legacy_graph_lean_name: str | None = None
     legacy_status: str | None = None
     legacy_receipt_sha256: str | None = None
@@ -176,9 +177,12 @@ NODES = (
         dependencies=("ls-perturbation-lemma",),
         legacy_dependencies=("ls-perturbation-lemma",),
         role="intermediate",
-        source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124"),
+        source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L116-L128"),
         statement_sha256=(
             "be32b0c50689d78d037f7359bcd03ab51a0e8ef06b8c5e64d533fbdb2cfaa280"
+        ),
+        legacy_source_locator=(
+            "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L100-L124"
         ),
         legacy_graph_lean_name=(
             "CrouzeixConjecture.LoristSchwenninger.DoubleLayerRealization"
@@ -202,9 +206,12 @@ NODES = (
             "ls-double-layer-realization",
         ),
         role="terminal",
-        source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128"),
+        source_locator=("arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L107-L129"),
         statement_sha256=(
             "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67"
+        ),
+        legacy_source_locator=(
+            "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L125-L128"
         ),
         legacy_graph_lean_name=(
             "CrouzeixConjecture.LoristSchwenninger.CrouzeixTerminal"
