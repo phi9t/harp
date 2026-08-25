@@ -6694,6 +6694,34 @@ create-only candidates, review source correspondence, and promote the full graph
   reported =ready= with 56 local modules and =missing_artifacts: []=. This is
   not a =locally-verified= transition; candidate receipts and the unpublished
   route manifest are not yet bound.
+- The single create-only =publish-ls= invocation completed successfully and
+  published six unreferenced v2 candidates, committed as
+  =18b35435d378521a3c7195d985569af51679a201=:
+  - =ls-equation-one-terminal-bound/attempt-002=
+    =289ab539299d35bfe5c2d8f83c5d19d3f05a9f4550831d2bca6fe19fe92e7646=
+  - =ls-power-recurrence/attempt-001=
+    =118dcdd0dd1bef0e6ad62344f774098533145b192ec5016dd1c36bd5fc086494=
+  - =ls-scalar-contradiction/attempt-002=
+    =ab3c537bceafec6a51e592994efb806361b4b96dc089426f4783d9e552ae6d5f=
+  - =ls-perturbation-lemma/attempt-001=
+    =4ab5034ddab3983e9ff7deb31e310ba76dc11da69afdf8055e2a945abd9123ae=
+  - =ls-double-layer-realization/attempt-001=
+    =702ffee7d9c27a8204a44cb47de46683e4d01bdd939737a1e70b3ec871df129e=
+  - =ls-terminal-crouzeix/attempt-001=
+    =750f149b4958298de16bdbd439091bbabb18d1fc93db2c48ee5f3d8b738f3628=
+- Independent committed-receipt validation passed for canonical all-passed
+  rows. All six candidates share aggregate command digest
+  =8eeeb91e097ae3303377b5d523d2b210808cf88868d93c51e301af8bf42dca88=,
+  required Mathlib artifacts digest
+  =73bb909f81dbdbebf141f73c8c1601c9569bde4c6aa5122881607bf2f46f2fbd=,
+  and local source closure digest
+  =62e415435cb529041163072a5348cc8438fe3b594a0f20919f015a22cf0970d5=.
+  Every audit reported exactly =Classical.choice=, =Quot.sound=, and
+  =propext=. The 16 historical v1 member digests remained byte-identical
+  before and after publication (snapshot digest
+  =4509c0cb6f27d1fffcdd88d3bbbc52fc1044deb550cdf4ed110e70f14d66a8f9=).
+  The candidates remain unreferenced; no graph or inventory promotion has
+  occurred and no execution-ledger state advanced.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
