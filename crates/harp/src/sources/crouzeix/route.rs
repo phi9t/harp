@@ -24,6 +24,23 @@ const ROUTE_MANIFESTS: [&str; 3] = [
     "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json",
     "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
 ];
+const LS_ARTIFACT_MANIFEST_PATH: &str =
+    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json";
+const SOURCE_MANIFEST_PATH: &str = "evidence/crouzeix_conjecture/source_manifest.tsv";
+const LS_SOURCE_ID: &str = "LS-ARXIV-V1";
+const LS_SOURCE_IDENTITY: &str = "arxiv:2608.03841v1";
+const LS_SOURCE_ARCHIVE_SHA256: &str =
+    "b4b6ddcdd726897826db500743e06649eddee5de5f32ded53e0d1adaa5f512c9";
+const LS_SOURCE_FILE_SHA256: &str =
+    "20aad7aedd831e32e8a8b452fc51542185251a052830620c2201ff9863709f0a";
+const LS_SOURCE_PATH: &str = "CrouzeixConjecturev2.tex";
+const LS_SOURCE_BYTES: u64 = 18_783;
+const LS_SOURCE_LINES: u64 = 281;
+const LS_SOURCE_IDENTITIES: [&str; 3] = [
+    "arxiv:2608.03841v1",
+    "sha256:20aad7aedd831e32e8a8b452fc51542185251a052830620c2201ff9863709f0a",
+    "sha256:b4b6ddcdd726897826db500743e06649eddee5de5f32ded53e0d1adaa5f512c9",
+];
 const HARP_ALLOWED_LS_SUPPORT: [&str; 11] = [
     "Crouzeix.LoristSchwenninger.BoundaryEmbedding",
     "Crouzeix.LoristSchwenninger.BoundaryMultiplier",
@@ -39,6 +56,13 @@ const HARP_ALLOWED_LS_SUPPORT: [&str; 11] = [
 ];
 
 struct StrictValue(Value);
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SourceLocatorKind<'a> {
+    Local,
+    Git(&'a str),
+    Arxiv(&'a str),
+}
 
 impl<'de> Deserialize<'de> for StrictValue {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
@@ -359,6 +383,37 @@ struct ProofReview {
     review_sha256: String,
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LsArtifactManifest {
+    archive_sha256: String,
+    manuscript_bytes: u64,
+    manuscript_path: String,
+    manuscript_sha256: String,
+    line_count: u64,
+    schema_version: String,
+    source_id: String,
+    source_identity: String,
+}
+
+#[derive(Debug)]
+struct SourceManifestRow<'a> {
+    schema_version: &'a str,
+    receipt_id: &'a str,
+    source_id: &'a str,
+    source_class: &'a str,
+    role: &'a str,
+    immutable_identity: &'a str,
+    source_url: &'a str,
+    upstream_path: &'a str,
+    bytes: &'a str,
+    sha256: &'a str,
+    local_path: &'a str,
+    observed: &'a str,
+    license_status: &'a str,
+    redistribution_status: &'a str,
+}
+
 fn canonical_digest(value: &Value) -> Result<String, String> {
     let mut bytes = serde_json::to_vec(value).map_err(|error| error.to_string())?;
     bytes.push(b'\n');
@@ -392,6 +447,25 @@ fn valid_git_id(value: &str) -> bool {
             .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
 }
 
+fn valid_arxiv_identity(value: &str) -> bool {
+    let Some(rest) = value.strip_prefix("arxiv:") else {
+        return false;
+    };
+    let Some((year_month, version)) = rest.rsplit_once('v') else {
+        return false;
+    };
+    let Some((year, number)) = year_month.split_once('.') else {
+        return false;
+    };
+    year.len() == 4
+        && year.bytes().all(|byte| byte.is_ascii_digit())
+        && (4..=5).contains(&number.len())
+        && number.bytes().all(|byte| byte.is_ascii_digit())
+        && !version.is_empty()
+        && version.bytes().all(|byte| byte.is_ascii_digit())
+        && !version.starts_with('0')
+}
+
 fn safe_path(value: &str) -> bool {
     if value.is_empty() || value.len() > 4096 || value.contains('\\') {
         return false;
@@ -403,7 +477,7 @@ fn safe_path(value: &str) -> bool {
             .all(|component| matches!(component, Component::Normal(_)))
 }
 
-fn parse_source_locator(value: &str) -> Option<(bool, Option<&str>, &str, u64, u64)> {
+fn parse_source_locator(value: &str) -> Option<(SourceLocatorKind<'_>, &str, u64, u64)> {
     let (head, span) = value.rsplit_once("#L")?;
     let (start, end) = span.split_once("-L")?;
     let start = start.parse::<u64>().ok()?;
@@ -416,12 +490,97 @@ fn parse_source_locator(value: &str) -> Option<(bool, Option<&str>, &str, u64, u
         if commit.len() != 40 || !valid_git_id(commit) || path.contains('#') || !safe_path(path) {
             return None;
         }
-        Some((true, Some(commit), path, start, end))
+        Some((SourceLocatorKind::Git(commit), path, start, end))
+    } else if let Some(rest) = head.strip_prefix("arxiv:") {
+        let (version, path) = rest.split_once(':')?;
+        if path.contains('#')
+            || !safe_path(path)
+            || !valid_arxiv_identity(
+                value
+                    .split_once(':')
+                    .map(|_| &head[..head.len() - path.len() - 1])
+                    .unwrap_or(""),
+            )
+            || path != LS_SOURCE_PATH
+        {
+            return None;
+        }
+        Some((
+            SourceLocatorKind::Arxiv(&value[..5 + version.len()]),
+            path,
+            start,
+            end,
+        ))
     } else if safe_path(head) {
-        Some((false, None, head, start, end))
+        Some((SourceLocatorKind::Local, head, start, end))
     } else {
         None
     }
+}
+
+fn validate_source_manifest_row(
+    repo_root: &Path,
+    expected: SourceManifestRow<'_>,
+) -> Result<(), String> {
+    let bytes = read_bounded_regular(repo_root, SOURCE_MANIFEST_PATH, "source manifest")?;
+    let text = String::from_utf8(bytes).map_err(|_| "source manifest is not UTF-8")?;
+    let mut lines = text.lines();
+    let header = lines.next().ok_or("source manifest is empty")?;
+    let expected_header = "schema_version\treceipt_id\tsource_id\tsource_class\trole\timmutable_identity\tsource_url\tupstream_path\tbytes\tsha256\tlocal_path\tobserved\tlicense_status\tredistribution_status";
+    if header != expected_header {
+        return Err("source manifest header mismatch".into());
+    }
+    let rows = lines
+        .map(|line| line.split('\t').collect::<Vec<_>>())
+        .collect::<Vec<_>>();
+    let matching = rows
+        .iter()
+        .filter(|row| row.len() == 14 && row[1] == expected.receipt_id)
+        .collect::<Vec<_>>();
+    if matching.len() != 1 {
+        return Err(format!(
+            "expected exactly one source manifest row for {}",
+            expected.receipt_id
+        ));
+    }
+    let row = matching[0];
+    let actual = SourceManifestRow {
+        schema_version: row[0],
+        receipt_id: row[1],
+        source_id: row[2],
+        source_class: row[3],
+        role: row[4],
+        immutable_identity: row[5],
+        source_url: row[6],
+        upstream_path: row[7],
+        bytes: row[8],
+        sha256: row[9],
+        local_path: row[10],
+        observed: row[11],
+        license_status: row[12],
+        redistribution_status: row[13],
+    };
+    if actual.schema_version != expected.schema_version
+        || actual.receipt_id != expected.receipt_id
+        || actual.source_id != expected.source_id
+        || actual.source_class != expected.source_class
+        || actual.role != expected.role
+        || actual.immutable_identity != expected.immutable_identity
+        || actual.source_url != expected.source_url
+        || actual.upstream_path != expected.upstream_path
+        || actual.bytes != expected.bytes
+        || actual.sha256 != expected.sha256
+        || actual.local_path != expected.local_path
+        || actual.observed != expected.observed
+        || actual.license_status != expected.license_status
+        || actual.redistribution_status != expected.redistribution_status
+    {
+        return Err(format!(
+            "source manifest {} row mismatch",
+            expected.receipt_id
+        ));
+    }
+    Ok(())
 }
 
 fn sorted_unique(values: &[String]) -> bool {
@@ -481,6 +640,12 @@ fn validate_manifest(manifest: &RouteManifest) -> Result<(), String> {
                 || manifest.source_identities.is_empty()
             {
                 return Err("source-faithful route requires source identities".into());
+            }
+            if manifest.source_identities.iter().any(|item| {
+                !(item.starts_with("sha256:") && valid_digest(&item[7..]))
+                    && !valid_arxiv_identity(item)
+            }) {
+                return Err("invalid source identity".into());
             }
         }
         RouteId::Harp if manifest.claim_kind != ClaimKind::Derived => {
@@ -895,9 +1060,9 @@ pub(super) fn verify_published_routes(repo_root: &Path) -> Result<BTreeSet<Strin
                 route_evidence.insert(relative);
             }
             if let Some(locator) = node.source_locator.as_deref() {
-                let (is_git, _, path, _, _) = parse_source_locator(locator)
+                let (kind, path, _, _) = parse_source_locator(locator)
                     .expect("source locator was validated with the route manifest");
-                if !is_git {
+                if !matches!(kind, SourceLocatorKind::Git(_)) {
                     if let Some(relative) = crouzeix_evidence_member(path) {
                         route_evidence.insert(relative);
                     }
@@ -1462,8 +1627,7 @@ fn validate_source_provenance(
         .source_locator
         .as_deref()
         .ok_or("source locator is missing")?;
-    let (is_git, commit, path, start, end) =
-        parse_source_locator(locator).ok_or("invalid source locator")?;
+    let (kind, path, start, end) = parse_source_locator(locator).ok_or("invalid source locator")?;
     if start > end {
         return Err("reversed source locator span".into());
     }
@@ -1481,43 +1645,154 @@ fn validate_source_provenance(
     if end > line_count {
         return Err("source locator exceeds declared line count".into());
     }
-    if is_git {
-        let archive_sha = node
-            .source_archive_sha256
-            .as_deref()
-            .ok_or("Git source locator requires archive digest")?;
-        if !manifest
-            .source_identities
-            .contains(&format!("sha256:{archive_sha}"))
-        {
-            return Err("source archive identity digest mismatch".into());
-        }
-        if manifest.route_id != RouteId::Jin {
+    match kind {
+        SourceLocatorKind::Git(commit) => {
+            let archive_sha = node
+                .source_archive_sha256
+                .as_deref()
+                .ok_or("Git source locator requires archive digest")?;
+            if !manifest
+                .source_identities
+                .contains(&format!("sha256:{archive_sha}"))
+            {
+                return Err("source archive identity digest mismatch".into());
+            }
+            if manifest.route_id != RouteId::Jin {
+                return Ok(());
+            }
+            let artifact_path =
+                "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json";
+            let artifact = read_json_value(repo_root, artifact_path, "Jin artifact manifest")?;
+            if artifact["source_commit"].as_str() != Some(commit)
+                || artifact["archive"]["sha256"].as_str() != Some(archive_sha)
+            {
+                return Err("Jin source commit/archive identity mismatch".into());
+            }
+            if let Some(artifacts) = artifact["artifacts"].as_object() {
+                let matching = artifacts
+                    .values()
+                    .filter(|record| record["path"].as_str() == Some(path))
+                    .collect::<Vec<_>>();
+                if matching.len() != 1 {
+                    return Err("exactly one artifact record must match Git source path".into());
+                }
+                if matching[0]["sha256"].as_str() != Some(file_sha) {
+                    return Err("Jin source file digest mismatch".into());
+                }
+            } else {
+                return Err("Jin artifact manifest artifacts must be an object".into());
+            }
             return Ok(());
         }
-        let artifact_path =
-            "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json";
-        let artifact = read_json_value(repo_root, artifact_path, "Jin artifact manifest")?;
-        if artifact["source_commit"].as_str() != commit
-            || artifact["archive"]["sha256"].as_str() != Some(archive_sha)
-        {
-            return Err("Jin source commit/archive identity mismatch".into());
-        }
-        if let Some(artifacts) = artifact["artifacts"].as_object() {
-            let matching = artifacts
-                .values()
-                .filter(|record| record["path"].as_str() == Some(path))
-                .collect::<Vec<_>>();
-            if matching.len() != 1 {
-                return Err("exactly one artifact record must match Git source path".into());
+        SourceLocatorKind::Arxiv(identity) => {
+            let archive_sha = node
+                .source_archive_sha256
+                .as_deref()
+                .ok_or("arXiv source locator requires archive digest")?;
+            if !manifest
+                .source_identities
+                .contains(&format!("sha256:{archive_sha}"))
+            {
+                return Err("source archive identity digest mismatch".into());
             }
-            if matching[0]["sha256"].as_str() != Some(file_sha) {
-                return Err("Jin source file digest mismatch".into());
+            if !manifest
+                .source_identities
+                .contains(&format!("sha256:{file_sha}"))
+            {
+                return Err("source identity digest mismatch".into());
             }
-        } else {
-            return Err("Jin artifact manifest artifacts must be an object".into());
+            if !manifest.source_identities.contains(&identity.to_string()) {
+                return Err("arXiv source identity mismatch".into());
+            }
+            if manifest.route_id != RouteId::LoristSchwenninger {
+                return Ok(());
+            }
+            if manifest.source_identities
+                != LS_SOURCE_IDENTITIES
+                    .iter()
+                    .map(|item| item.to_string())
+                    .collect::<Vec<_>>()
+            {
+                return Err("LS route manifest source identities must be exact".into());
+            }
+            let artifact: LsArtifactManifest = read_digest_bound_json_with(
+                "LS artifact manifest",
+                &format!(
+                    "{:x}",
+                    Sha256::digest(read_bounded_regular(
+                        repo_root,
+                        LS_ARTIFACT_MANIFEST_PATH,
+                        "LS artifact manifest",
+                    )?)
+                ),
+                || {
+                    read_bounded_regular(
+                        repo_root,
+                        LS_ARTIFACT_MANIFEST_PATH,
+                        "LS artifact manifest",
+                    )
+                },
+            )?;
+            if artifact.schema_version != "crouzeix-arxiv-artifact-manifest/v1"
+                || artifact.source_id != LS_SOURCE_ID
+                || artifact.source_identity != LS_SOURCE_IDENTITY
+                || artifact.archive_sha256 != LS_SOURCE_ARCHIVE_SHA256
+                || artifact.manuscript_sha256 != LS_SOURCE_FILE_SHA256
+                || artifact.manuscript_path != LS_SOURCE_PATH
+                || artifact.manuscript_bytes != LS_SOURCE_BYTES
+                || artifact.line_count != LS_SOURCE_LINES
+            {
+                return Err("LS artifact manifest mismatch".into());
+            }
+            if identity != artifact.source_identity
+                || archive_sha != artifact.archive_sha256
+                || file_sha != artifact.manuscript_sha256
+                || path != artifact.manuscript_path
+                || line_count != artifact.line_count
+            {
+                return Err("LS source provenance does not match artifact manifest".into());
+            }
+            validate_source_manifest_row(
+                repo_root,
+                SourceManifestRow {
+                    schema_version: "crouzeix-source-receipt/v1",
+                    receipt_id: "LS-ARXIV-V1-SOURCE-ARCHIVE",
+                    source_id: LS_SOURCE_ID,
+                    source_class: "arxiv-artifact",
+                    role: "source",
+                    immutable_identity: LS_SOURCE_IDENTITY,
+                    source_url: "https://export.arxiv.org/e-print/2608.03841v1",
+                    upstream_path: "source.tar.gz",
+                    bytes: "7330",
+                    sha256: LS_SOURCE_ARCHIVE_SHA256,
+                    local_path: "-",
+                    observed: "2026-08-14",
+                    license_status: "arxiv-nonexclusive",
+                    redistribution_status: "quotation-only",
+                },
+            )?;
+            validate_source_manifest_row(
+                repo_root,
+                SourceManifestRow {
+                    schema_version: "crouzeix-source-receipt/v1",
+                    receipt_id: "LS-ARXIV-V1-TEX",
+                    source_id: LS_SOURCE_ID,
+                    source_class: "arxiv-artifact",
+                    role: "manuscript",
+                    immutable_identity: LS_SOURCE_IDENTITY,
+                    source_url: "https://export.arxiv.org/e-print/2608.03841v1",
+                    upstream_path: LS_SOURCE_PATH,
+                    bytes: "18783",
+                    sha256: LS_SOURCE_FILE_SHA256,
+                    local_path: "-",
+                    observed: "2026-08-14",
+                    license_status: "arxiv-nonexclusive",
+                    redistribution_status: "quotation-only",
+                },
+            )?;
+            return Ok(());
         }
-        return Ok(());
+        SourceLocatorKind::Local => {}
     }
     if node.source_archive_sha256.is_some() {
         return Err("local source locator cannot declare an archive digest".into());

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import hashlib
+import csv
 import errno
+import io
 import json
 import os
 import re
@@ -58,7 +60,10 @@ COMMAND_SCHEMA_VERSION = "crouzeix-route-command/v1"
 AXIOM_SCHEMA_VERSION = "crouzeix-route-axiom-audit/v1"
 SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
 GIT_ID_RE = re.compile(r"[0-9a-f]{40,64}\Z")
-IDENTITY_RE = re.compile(r"sha256:[0-9a-f]{64}\Z")
+ARXIV_IDENTITY_RE = re.compile(r"arxiv:[0-9]{4}\.[0-9]{4,5}v[1-9][0-9]*\Z")
+IDENTITY_RE = re.compile(
+    r"(?:sha256:[0-9a-f]{64}|arxiv:[0-9]{4}\.[0-9]{4,5}v[1-9][0-9]*)\Z"
+)
 MODULE_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
 NODE_ID_RE = re.compile(r"[a-z0-9][a-z0-9-]{0,127}\Z")
 LOCAL_SOURCE_LOCATOR_RE = re.compile(
@@ -66,6 +71,11 @@ LOCAL_SOURCE_LOCATOR_RE = re.compile(
 )
 GIT_SOURCE_LOCATOR_RE = re.compile(
     r"git:(?P<commit>[0-9a-f]{40}):(?P<path>[^#]+)"
+    r"#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z"
+)
+ARXIV_SOURCE_LOCATOR_RE = re.compile(
+    r"arxiv:(?P<version>[0-9]{4}\.[0-9]{4,5}v[1-9][0-9]*):"
+    r"(?P<path>[A-Za-z0-9._/-]+)"
     r"#L(?P<start>[1-9][0-9]*)-L(?P<end>[1-9][0-9]*)\Z"
 )
 NODE_ROLES = ("load-bearing", "terminal", "consequence")
@@ -105,6 +115,48 @@ HARP_ALLOWED_LS_SUPPORT = frozenset({
     "Crouzeix.LoristSchwenninger.Recurrence",
     "Crouzeix.LoristSchwenninger.Scalar",
 })
+LS_ARTIFACT_MANIFEST_PATH = Path(
+    "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/artifact-manifest.json"
+)
+SOURCE_MANIFEST_PATH = Path("evidence/crouzeix_conjecture/source_manifest.tsv")
+LS_SOURCE_ID = "LS-ARXIV-V1"
+LS_SOURCE_IDENTITY = "arxiv:2608.03841v1"
+LS_SOURCE_ARCHIVE_SHA256 = "b4b6ddcdd726897826db500743e06649eddee5de5f32ded53e0d1adaa5f512c9"
+LS_SOURCE_FILE_SHA256 = "20aad7aedd831e32e8a8b452fc51542185251a052830620c2201ff9863709f0a"
+LS_SOURCE_PATH = "CrouzeixConjecturev2.tex"
+LS_SOURCE_BYTES = 18_783
+LS_SOURCE_LINES = 281
+LS_SOURCE_IDENTITIES = tuple(sorted((
+    LS_SOURCE_IDENTITY,
+    f"sha256:{LS_SOURCE_ARCHIVE_SHA256}",
+    f"sha256:{LS_SOURCE_FILE_SHA256}",
+)))
+LS_ARTIFACT_MANIFEST_FIELDS = frozenset({
+    "archive_sha256",
+    "manuscript_bytes",
+    "manuscript_path",
+    "manuscript_sha256",
+    "line_count",
+    "schema_version",
+    "source_id",
+    "source_identity",
+})
+SOURCE_MANIFEST_FIELDS = (
+    "schema_version",
+    "receipt_id",
+    "source_id",
+    "source_class",
+    "role",
+    "immutable_identity",
+    "source_url",
+    "upstream_path",
+    "bytes",
+    "sha256",
+    "local_path",
+    "observed",
+    "license_status",
+    "redistribution_status",
+)
 
 
 class RouteValidationError(ValueError):
@@ -466,22 +518,42 @@ def _source_locator(
 ) -> tuple[str, str | None, str, int, int]:
     if not isinstance(value, str) or not value or len(value.encode()) > MAX_STRING_BYTES:
         raise RouteValidationError(f"{label} must be a pinned local or immutable Git locator")
+    arxiv_match = ARXIV_SOURCE_LOCATOR_RE.fullmatch(value)
+    if arxiv_match is not None:
+        path = _safe_relative(arxiv_match.group("path"), f"{label} arXiv path")
+        start = int(arxiv_match.group("start"))
+        end = int(arxiv_match.group("end"))
+        if start > end:
+            raise RouteValidationError("reversed source locator span")
+        identity = f"arxiv:{arxiv_match.group('version')}"
+        if identity == LS_SOURCE_IDENTITY and path != LS_SOURCE_PATH:
+            raise RouteValidationError("invalid LS arXiv source path")
+        return "arxiv", identity, path, start, end
     git_match = GIT_SOURCE_LOCATOR_RE.fullmatch(value)
     if git_match is not None:
         path = _safe_relative(git_match.group("path"), f"{label} Git path")
         start = int(git_match.group("start"))
         end = int(git_match.group("end"))
+        if start > end:
+            raise RouteValidationError("reversed source locator span")
         return "git", git_match.group("commit"), path, start, end
     local_match = LOCAL_SOURCE_LOCATOR_RE.fullmatch(value)
     if local_match is None:
-        raise RouteValidationError(f"{label} requires path#Lx-Ly or git:<40hex>:path#Lx-Ly")
+        raise RouteValidationError(
+            f"{label} requires path#Lx-Ly, git:<40hex>:path#Lx-Ly, "
+            "or arxiv:<idvN>:path#Lx-Ly"
+        )
     path = _safe_relative(local_match.group("path"), f"{label} local path")
+    start = int(local_match.group("start"))
+    end = int(local_match.group("end"))
+    if start > end:
+        raise RouteValidationError("reversed source locator span")
     return (
         "local",
         None,
         path,
-        int(local_match.group("start")),
-        int(local_match.group("end")),
+        start,
+        end,
     )
 
 
@@ -775,6 +847,122 @@ def _jin_artifact_manifest(repo_root: Path) -> dict[str, object]:
     )
 
 
+def _read_source_manifest_rows(repo_root: Path) -> list[dict[str, str]]:
+    data = _read_bytes(repo_root, SOURCE_MANIFEST_PATH, "source manifest")
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise RouteValidationError("source manifest is not UTF-8") from error
+    reader = csv.DictReader(io.StringIO(text), delimiter="\t")
+    if reader.fieldnames != list(SOURCE_MANIFEST_FIELDS):
+        raise RouteValidationError("source manifest header mismatch")
+    rows = list(reader)
+    for row in rows:
+        if set(row) != set(SOURCE_MANIFEST_FIELDS):
+            raise RouteValidationError("source manifest row shape mismatch")
+    return rows
+
+
+def _source_manifest_row(
+    repo_root: Path,
+    receipt_id: str,
+    *,
+    source_id: str,
+    source_class: str,
+    role: str,
+    immutable_identity: str,
+    source_url: str,
+    upstream_path: str,
+    bytes_value: str,
+    sha256: str,
+    local_path: str,
+    observed: str,
+    license_status: str,
+    redistribution_status: str,
+) -> dict[str, str]:
+    rows = _read_source_manifest_rows(repo_root)
+    matching = [row for row in rows if row["receipt_id"] == receipt_id]
+    if len(matching) != 1:
+        raise RouteValidationError(f"expected exactly one source manifest row for {receipt_id}")
+    row = matching[0]
+    expected = {
+        "schema_version": "crouzeix-source-receipt/v1",
+        "receipt_id": receipt_id,
+        "source_id": source_id,
+        "source_class": source_class,
+        "role": role,
+        "immutable_identity": immutable_identity,
+        "source_url": source_url,
+        "upstream_path": upstream_path,
+        "bytes": bytes_value,
+        "sha256": sha256,
+        "local_path": local_path,
+        "observed": observed,
+        "license_status": license_status,
+        "redistribution_status": redistribution_status,
+    }
+    for field, expected_value in expected.items():
+        if row[field] != expected_value:
+            raise RouteValidationError(
+                f"source manifest {receipt_id} field {field} mismatch"
+            )
+    return row
+
+
+def _ls_artifact_manifest(repo_root: Path) -> dict[str, object]:
+    artifact = _read_json(repo_root, LS_ARTIFACT_MANIFEST_PATH, "LS artifact manifest")
+    _exact_fields(artifact, LS_ARTIFACT_MANIFEST_FIELDS, "LS artifact manifest")
+    if artifact["schema_version"] != "crouzeix-arxiv-artifact-manifest/v1":
+        raise RouteValidationError("invalid LS artifact manifest schema version")
+    if artifact["source_id"] != LS_SOURCE_ID:
+        raise RouteValidationError("LS artifact manifest source_id mismatch")
+    if artifact["source_identity"] != LS_SOURCE_IDENTITY:
+        raise RouteValidationError("LS artifact manifest source_identity mismatch")
+    if artifact["archive_sha256"] != LS_SOURCE_ARCHIVE_SHA256:
+        raise RouteValidationError("LS artifact manifest archive digest mismatch")
+    if artifact["manuscript_sha256"] != LS_SOURCE_FILE_SHA256:
+        raise RouteValidationError("LS artifact manifest manuscript digest mismatch")
+    if artifact["manuscript_path"] != LS_SOURCE_PATH:
+        raise RouteValidationError("LS artifact manifest manuscript path mismatch")
+    if artifact["manuscript_bytes"] != LS_SOURCE_BYTES:
+        raise RouteValidationError("LS artifact manifest manuscript byte count mismatch")
+    if artifact["line_count"] != LS_SOURCE_LINES:
+        raise RouteValidationError("LS artifact manifest line count mismatch")
+    _source_manifest_row(
+        repo_root,
+        "LS-ARXIV-V1-SOURCE-ARCHIVE",
+        source_id=LS_SOURCE_ID,
+        source_class="arxiv-artifact",
+        role="source",
+        immutable_identity=LS_SOURCE_IDENTITY,
+        source_url="https://export.arxiv.org/e-print/2608.03841v1",
+        upstream_path="source.tar.gz",
+        bytes_value="7330",
+        sha256=LS_SOURCE_ARCHIVE_SHA256,
+        local_path="-",
+        observed="2026-08-14",
+        license_status="arxiv-nonexclusive",
+        redistribution_status="quotation-only",
+    )
+    _source_manifest_row(
+        repo_root,
+        "LS-ARXIV-V1-TEX",
+        source_id=LS_SOURCE_ID,
+        source_class="arxiv-artifact",
+        role="manuscript",
+        immutable_identity=LS_SOURCE_IDENTITY,
+        source_url="https://export.arxiv.org/e-print/2608.03841v1",
+        upstream_path=LS_SOURCE_PATH,
+        bytes_value=str(LS_SOURCE_BYTES),
+        sha256=LS_SOURCE_FILE_SHA256,
+        local_path="-",
+        observed="2026-08-14",
+        license_status="arxiv-nonexclusive",
+        redistribution_status="quotation-only",
+    )
+    return artifact
+
+
 def validate_source_provenance_metadata(
     repo_root: Path, manifest: RouteManifest, node: RouteNode
 ) -> None:
@@ -792,14 +980,38 @@ def validate_source_provenance_metadata(
         return
     assert node.source_locator is not None
     kind, commit, path, start, end = _source_locator(node.source_locator, "source locator")
-    if start > end:
-        raise RouteValidationError("reversed source locator span")
     if node.source_file_sha256 is None or node.source_excerpt_sha256 is None:
         raise RouteValidationError("source node requires file and excerpt digests")
     if node.source_line_count is None:
         raise RouteValidationError("source node requires a declared source line count")
     if end > node.source_line_count:
         raise RouteValidationError("source locator span exceeds file line count")
+    if kind == "arxiv":
+        if node.source_archive_sha256 is None:
+            raise RouteValidationError("arXiv source locator requires an archive digest")
+        if commit is None or ARXIV_IDENTITY_RE.fullmatch(commit) is None:
+            raise RouteValidationError("invalid arXiv source identity")
+        if f"sha256:{node.source_archive_sha256}" not in manifest.source_identities:
+            raise RouteValidationError("source archive digest is not declared by a source identity")
+        if f"sha256:{node.source_file_sha256}" not in manifest.source_identities:
+            raise RouteValidationError("source file digest is not declared by a source identity")
+        if commit not in manifest.source_identities:
+            raise RouteValidationError("arXiv source identity is not declared by the route manifest")
+        if manifest.route_id == "lorist-schwenninger":
+            artifact = _ls_artifact_manifest(repo_root)
+            if manifest.source_identities != LS_SOURCE_IDENTITIES:
+                raise RouteValidationError("LS route manifest source identities must be the exact sorted arXiv identity set")
+            if commit != artifact["source_identity"]:
+                raise RouteValidationError("LS arXiv source identity does not match artifact manifest")
+            if path != artifact["manuscript_path"]:
+                raise RouteValidationError("LS arXiv source path does not match artifact manifest")
+            if node.source_archive_sha256 != artifact["archive_sha256"]:
+                raise RouteValidationError("LS source archive digest does not match artifact manifest")
+            if node.source_file_sha256 != artifact["manuscript_sha256"]:
+                raise RouteValidationError("LS source file digest does not match artifact manifest")
+            if node.source_line_count != artifact["line_count"]:
+                raise RouteValidationError("LS source line count does not match artifact manifest")
+        return
     if kind == "local":
         if node.source_archive_sha256 is not None:
             raise RouteValidationError("local source locator cannot declare an archive digest")
