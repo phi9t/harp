@@ -413,6 +413,8 @@ def make_v2_receipts(
     published = ls_receipts.publish_ls_receipts(
         rows, repository_root, formal_target_root, executor=ValidatorExecutor()
     )
+    canonical = canonical_rows()
+    assert len(rows) == len(canonical)
     current_rows = tuple(
         replace(
             canonical_row,
@@ -422,7 +424,7 @@ def make_v2_receipts(
             blocked_reason=None,
             failed_reason=None,
         )
-        for row, canonical_row in zip(rows, canonical_rows(), strict=True)
+        for row, canonical_row in zip(rows, canonical)
     )
     return current_rows, formal_target_root, repository_root
 

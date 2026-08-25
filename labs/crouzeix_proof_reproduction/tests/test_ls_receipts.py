@@ -2347,6 +2347,8 @@ class LSReceiptPublisherTests(unittest.TestCase):
                 ls_validation.validate_committed_receipts(
                     rows, formal_target_root, repository_root
                 )
+            canonical = canonical_rows()
+            self.assertEqual(len(rows), len(canonical))
             updated = tuple(
                 replace(
                     canonical_row,
@@ -2356,7 +2358,7 @@ class LSReceiptPublisherTests(unittest.TestCase):
                     blocked_reason=None,
                     failed_reason=None,
                 )
-                for row, canonical_row in zip(rows, canonical_rows(), strict=True)
+                for row, canonical_row in zip(rows, canonical)
             )
             self.assertEqual(
                 set(
