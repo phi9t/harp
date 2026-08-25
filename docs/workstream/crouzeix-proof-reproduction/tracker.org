@@ -6721,6 +6721,43 @@ create-only candidates, review source correspondence, and promote the full graph
   files remained byte-identical across the Task 5 range. The candidates remain
   unreferenced; no graph or inventory promotion has occurred and no
   execution-ledger state advanced.
+- Frozen Task 7 route candidate: commit
+  =4e9808a56ac74eaf1e19d649b0862c2eb3a82281=, tree
+  =e58902816bd116cc6788c58293cfff43c0826ee4=. The unpublished route
+  manifest has file SHA-256
+  =28d1c916d089b74343c904ae9d4de0b452b492f1449201aec95a00548f7c3cf2=
+  and manifest-contract SHA-256
+  =67696b7b21f0517f1bdd91d9f96cb45160c16f098e2db2d7106b6ca62e00baa2=.
+  It records 56 local closure modules, 50 shared foundation modules, six
+  canonical LS nodes, no consequence declarations, and null route receipt and
+  review digests. The normalized declaration-type digests are:
+  - =ls-equation-one-terminal-bound=
+    =3105d4f26806b762105e96f04e5c5cf60122da105c98a8f62ffd7a99f64deb77=
+  - =ls-power-recurrence=
+    =630a76c99530e4d27abd1efbde2833005b3b30d51bb1e6e4983c0149b96dadc2=
+  - =ls-scalar-contradiction=
+    =2e326c41a32e17f57e6faefba0ede84da2ebbcd2d51cee289aedc43a62a36950=
+  - =ls-perturbation-lemma=
+    =3597dfdf5d456327e91bc2a0b958a88f1f70d683e940dd1b72aea567bcd8a6d2=
+  - =ls-double-layer-realization=
+    =edad4a3c2bc5952d480ff5b01ffbf8aee0049c20030bfd91cb362be769125f9b=
+  - =ls-terminal-crouzeix=
+    =3913b16a52e942e39af8ad2c523f8ffb9967e226fb2c5bf723809605ea50d4e9=.
+  Pinned arXiv source was reacquired outside Git at
+  =/private/tmp/harp-ls-source.6ESHv3= and matched archive SHA-256
+  =b4b6ddcdd726897826db500743e06649eddee5de5f32ded53e0d1adaa5f512c9=
+  plus TeX SHA-256
+  =20aad7aedd831e32e8a8b452fc51542185251a052830620c2201ff9863709f0a=,
+  18,783 bytes, and 281 lines. One initial sandboxed Lake dependency
+  preflight was blocked before Lean when unavailable Git configuration made
+  Lake misidentify the unchanged Mathlib remote and attempt a forbidden cache
+  replacement; Seatbelt prevented all cache mutation. After correcting the
+  read-only Git environment, exactly one sandboxed Lean elaboration printed
+  all six =#check= types successfully with stdout SHA-256
+  =315f2a2974fa3ad573604c77e0317f34235028ed0be1d6b6047bad312b010cca=
+  and empty stderr. Python and Rust route gates passed, while route validation
+  remains deliberately =authored / incomplete= with reason =LS graph is not
+  promoted=. No execution-ledger state advanced.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
