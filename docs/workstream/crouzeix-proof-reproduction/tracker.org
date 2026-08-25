@@ -6907,9 +6907,13 @@ publish a dedicated-route receipt.
 - Rust Crouzeix source tests
 
 *** Verification Evidence
-- Implementation began after =bytedance= claimed Kata =harp#2qy3=; the
-  no-build preflight reported =status=ready= and =missing_artifacts=0= with the
-  canonical cache linked. No dependency hydration or build ran.
+- Implementation began after =bytedance= claimed Kata =harp#2qy3=. The no-build
+  preflight command was:
+  #+begin_src sh
+  PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route harp
+  #+end_src
+  It reported =status=ready= and =missing_artifacts=0= with the canonical cache
+  linked. No dependency hydration or build ran.
 
 ** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
