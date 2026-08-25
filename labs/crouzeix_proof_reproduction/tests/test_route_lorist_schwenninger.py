@@ -8,7 +8,11 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from labs.crouzeix_proof_reproduction import ls_contract, route_validation
+from labs.crouzeix_proof_reproduction import (
+    ls_contract,
+    ls_validation as package_ls_validation,
+    route_validation,
+)
 
 LAB = Path(__file__).resolve().parents[1]
 import sys
@@ -374,10 +378,39 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
 
 
 class LoristSchwenningerContractTests(unittest.TestCase):
-    def test_promoted_ls_manifest_is_mapped_and_incomplete(self) -> None:
+    def test_published_ls_manifest_is_complete_local(self) -> None:
         result = route_validation.inspect_route(
             REPO, "lorist-schwenninger", allow_unpublished=True
         )
+        self.assertEqual(result.claim_level, "complete-local")
+        self.assertEqual(result.status, "complete")
+        self.assertIsNone(result.reason)
+
+    def test_promoted_unpublished_manifest_is_mapped_and_incomplete(self) -> None:
+        payload = json.loads(ROUTE_MANIFEST_PATH.read_text(encoding="utf-8"))
+        payload["receipt_sha256"] = None
+        payload["review_sha256"] = None
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            manifest_path = Path("route-manifest.json")
+            (root / manifest_path).write_text(
+                json.dumps(payload, separators=(",", ":")) + "\n",
+                encoding="utf-8",
+            )
+            promoted_state = {"promotion": {"schema_version": "fixture"}}
+            with mock.patch.object(
+                route_validation, "_validate_manifest_semantics"
+            ), mock.patch.object(
+                package_ls_validation,
+                "load_route_state",
+                return_value=promoted_state,
+            ), mock.patch.object(
+                route_validation, "_ls_authority_paths", return_value=()
+            ):
+                result = route_validation.validate_route_bundle(
+                    root, manifest_path, allow_unpublished=True
+                )
+
         self.assertEqual(result.claim_level, "mapped")
         self.assertEqual(result.status, "incomplete")
         self.assertEqual(result.reason, "receipt or review is unpublished")
@@ -404,12 +437,18 @@ class LoristSchwenningerContractTests(unittest.TestCase):
             manifest.review_path,
             "evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json",
         )
-        self.assertIsNone(manifest.review_sha256)
+        self.assertEqual(
+            manifest.review_sha256,
+            "9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a",
+        )
         self.assertEqual(
             manifest.receipt_path,
             "evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json",
         )
-        self.assertIsNone(manifest.receipt_sha256)
+        self.assertEqual(
+            manifest.receipt_sha256,
+            "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b",
+        )
         self.assertEqual(tuple(node.node_id for node in manifest.nodes), ls_contract.NODE_ORDER)
         self.assertEqual(
             tuple(node.role for node in manifest.nodes),
