@@ -471,10 +471,17 @@ fn safe_path(value: &str) -> bool {
         return false;
     }
     let path = value.split_once('#').map_or(value, |(path, _)| path);
-    !Path::new(path).is_absolute()
-        && Path::new(path)
-            .components()
-            .all(|component| matches!(component, Component::Normal(_)))
+    if path.starts_with('/') || path.starts_with('\\') {
+        return false;
+    }
+    let mut parts = path.split('/');
+    let Some(first) = parts.next() else {
+        return false;
+    };
+    if first.is_empty() || first == "." || first == ".." || first.contains(':') {
+        return false;
+    }
+    parts.all(|part| !part.is_empty() && part != "." && part != "..")
 }
 
 fn parse_source_locator(value: &str) -> Option<(SourceLocatorKind<'_>, &str, u64, u64)> {
@@ -3102,6 +3109,20 @@ mod tests {
                 assert_eq!(identity, "arxiv:2608.03841v2");
             }
             other => panic!("expected arxiv locator, got {other:?}"),
+        }
+    }
+
+    #[test]
+    fn source_locator_rejects_aliasing_path_forms_for_all_locator_kinds() {
+        for locator in [
+            "dir//file.tex#L1-L2",
+            "./dir/file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:dir//file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:./dir/file.tex#L1-L2",
+            "arxiv:2608.03841v1:dir//file.tex#L1-L2",
+            "arxiv:2608.03841v1:./dir/file.tex#L1-L2",
+        ] {
+            assert!(parse_source_locator(locator).is_none(), "{locator}");
         }
     }
 

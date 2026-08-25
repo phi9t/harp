@@ -501,10 +501,12 @@ def _safe_relative(value: object, label: str, *, locator: bool = False) -> str:
     if not isinstance(value, str) or not value or len(value.encode()) > MAX_STRING_BYTES:
         raise RouteValidationError(f"{label} must be a safe repository-relative path")
     path_text = value.split("#", 1)[0] if locator else value
-    path = PurePosixPath(path_text)
-    if path.is_absolute() or path_text.startswith(("/", "\\")) or ":" in path.parts[0]:
+    if path_text.startswith(("/", "\\")) or ":" in path_text.split("/", 1)[0]:
         raise RouteValidationError(f"{label} must be a safe repository-relative path")
-    if any(part in {"", ".", ".."} for part in path.parts) or chr(92) in path_text:
+    if chr(92) in path_text:
+        raise RouteValidationError(f"{label} must be a safe repository-relative path")
+    parts = path_text.split("/")
+    if any(part in {"", ".", ".."} for part in parts):
         raise RouteValidationError(f"{label} must be a safe repository-relative path")
     if locator:
         fragment = value.split("#", 1)[1] if "#" in value else ""

@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import re
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -150,6 +151,20 @@ class LoristSchwenningerSourceLocatorTests(unittest.TestCase):
                 with self.assertRaises(route_validation.RouteValidationError):
                     route_validation._source_locator(locator, "source locator")
 
+    def test_source_locator_rejects_aliasing_path_forms_for_all_locator_kinds(self) -> None:
+        cases = (
+            "dir//file.tex#L1-L2",
+            "./dir/file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:dir//file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:./dir/file.tex#L1-L2",
+            "arxiv:2608.03841v1:dir//file.tex#L1-L2",
+            "arxiv:2608.03841v1:./dir/file.tex#L1-L2",
+        )
+        for locator in cases:
+            with self.subTest(locator=locator):
+                with self.assertRaises(route_validation.RouteValidationError):
+                    route_validation._source_locator(locator, "source locator")
+
 
 class LoristSchwenningerSchemaParityTests(unittest.TestCase):
     def test_schema_accepts_exact_ls_arxiv_identities_and_locator(self) -> None:
@@ -176,8 +191,37 @@ class LoristSchwenningerSchemaParityTests(unittest.TestCase):
                 else:
                     self.assertFalse(schema_accepts_locator(value))
 
+    def test_schema_rejects_aliasing_path_forms_for_all_locator_kinds(self) -> None:
+        cases = (
+            "dir//file.tex#L1-L2",
+            "./dir/file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:dir//file.tex#L1-L2",
+            "git:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:./dir/file.tex#L1-L2",
+            "arxiv:2608.03841v1:dir//file.tex#L1-L2",
+            "arxiv:2608.03841v1:./dir/file.tex#L1-L2",
+        )
+        for value in cases:
+            with self.subTest(value=value):
+                self.assertFalse(schema_accepts_locator(value))
+
 
 class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
+    def _write_isolated_repo(self, directory: str) -> Path:
+        repo_root = Path(directory)
+        source_manifest_target = repo_root / SOURCE_MANIFEST_PATH
+        source_manifest_target.parent.mkdir(parents=True, exist_ok=True)
+        source_manifest_target.write_text(
+            SOURCE_MANIFEST_PATH.read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        artifact_manifest_target = repo_root / ARTIFACT_MANIFEST_PATH.relative_to(REPO)
+        artifact_manifest_target.parent.mkdir(parents=True, exist_ok=True)
+        artifact_manifest_target.write_text(
+            ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        return repo_root
+
     def test_artifact_manifest_matches_exact_closed_ls_payload(self) -> None:
         manifest = json.loads(ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8"))
         self.assertEqual(
@@ -258,28 +302,26 @@ class LoristSchwenningerArtifactManifestTests(unittest.TestCase):
             ("manuscript_sha256", "0" * 64, "manuscript digest mismatch"),
         )
         for field, mutated, pattern in expectations:
-            with self.subTest(field=field):
-                original = manifest[field]
-                patched = ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8")
-                old_text = json.dumps(original)
-                new_text = json.dumps(mutated)
-                if old_text not in patched:
-                    self.fail(f"could not locate serialized field value for {field}")
-                ARTIFACT_MANIFEST_PATH.write_text(
-                    patched.replace(old_text, new_text, 1),
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                repo_root = self._write_isolated_repo(directory)
+                artifact_manifest_path = (
+                    repo_root / ARTIFACT_MANIFEST_PATH.relative_to(REPO)
+                )
+                mutated_manifest = copy.deepcopy(manifest)
+                mutated_manifest[field] = mutated
+                artifact_manifest_path.write_text(
+                    json.dumps(mutated_manifest, indent=2) + "\n",
                     encoding="utf-8",
                 )
-                try:
-                    with self.assertRaisesRegex(
-                        route_validation.RouteValidationError, pattern
-                    ):
-                        route_validation.validate_source_provenance_metadata(
-                            REPO, parsed, node
-                        )
-                finally:
-                    ARTIFACT_MANIFEST_PATH.write_text(
-                        json.dumps(manifest, indent=2) + "\n",
-                        encoding="utf-8",
+                self.assertEqual(
+                    ARTIFACT_MANIFEST_PATH.read_text(encoding="utf-8"),
+                    json.dumps(manifest, indent=2) + "\n",
+                )
+                with self.assertRaisesRegex(
+                    route_validation.RouteValidationError, pattern
+                ):
+                    route_validation.validate_source_provenance_metadata(
+                        repo_root, parsed, node
                     )
 
     def test_ls_provenance_validation_rejects_wrong_identity_and_wrong_path_after_generic_parse(self) -> None:
