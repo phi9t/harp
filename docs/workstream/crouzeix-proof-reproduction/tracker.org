@@ -6817,6 +6817,19 @@ create-only candidates, review source correspondence, and promote the full graph
   The execution ledger advanced through =locally-verified= and
   =spec-approved= at the promoted candidate. No route evidence is published
   yet.
+- The create-only route publisher rebuilt only Harp-owned LS modules against
+  the warm shared cache, audited all six declarations, and published the
+  six-file route bundle with receipt file SHA-256
+  =f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b=
+  and receipt self-digest
+  =b2a82c49454f4c24a29e06f864305ca5b8afba656ae0d5e862651833649e7b3e=.
+  The bound proof review was published with file SHA-256
+  =9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a=
+  and self-digest
+  =b67fbd93714679422cd80c80d78e5b4b76ab03f11042187b74a6a5be4b34196d=.
+  Python validation now reports =complete-local=. The Task 9 focused gate
+  passed 201 Python tests and 97 Rust Crouzeix tests; no dependency hydration
+  ran. The execution ledger advanced to =evidence-published=.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
