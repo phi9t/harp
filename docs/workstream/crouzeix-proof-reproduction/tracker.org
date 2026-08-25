@@ -6633,7 +6633,7 @@ correspondence, and publish a dedicated-route receipt.
   =5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331=
   and payload commit =66045b6fd0be878bf76ad0171387e53619bf09f0=.
 
-** IMPLEMENTING Publish And Promote Six-Node Lorist-Schwenninger Route :lean:evidence:review:ticket:
+** DONE Publish And Promote Six-Node Lorist-Schwenninger Route :lean:evidence:review:ticket:
 :PROPERTIES:
 :ID: CPFR-086
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
@@ -6846,6 +6846,19 @@ create-only candidates, review source correspondence, and promote the full graph
   dependency snapshot digest remained
   =3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e=
   before and after the build, so no common dependency was hydrated or replaced.
+- Post-execution retrospective:
+  =docs/workstream/crouzeix-proof-reproduction/cpfr-086-retrospective.md=.
+  Independent Spec review and Standards review both re-ran after final metadata
+  preparation and reported =PASS= with no findings.
+- Controller-detected policy repair removed a legacy underscore-form
+  source-graph token that repository verification rejected; the subsequent
+  independent re-reviews were successful.
+- Final landing metadata binds the existing verified payload commit
+  =d1749570825afc277fd96ff6c79b532449afbd16= and route receipt file SHA-256
+  =f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b=.
+- Definitive full repository gate, =docs/import-receipt.md= refresh, local
+  fast-forward, and Kata closure remain controller steps after this metadata
+  preparation; they are not completed evidence in this tracker row.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:

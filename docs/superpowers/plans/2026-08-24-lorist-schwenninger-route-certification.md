@@ -1206,22 +1206,70 @@ work are not stop conditions.
 
 ## Plan evolution
 
-No execution-derived revisions have been recorded. Task 10 must replace this
-sentence with evidence-backed changes or an evidence-backed statement that no
-change was warranted.
+CPFR-086 execution changed this plan's operating guidance without weakening the
+theorem, evidence, authority, source-fidelity, independent-review, or cache
+boundaries:
+
+- Expected failures must be phase-aware and fixture-backed. Post-promotion
+  tests initially used live state as historical evidence; commit `5422d12`
+  replaced that with immutable historical fixtures and phase-aware assertions.
+- Review findings must either become regression tests or be explicitly rejected
+  with a safety reason before the next gate. Task 6 review findings were fixed
+  in commits `259cf6c` and `5e030e6`; the suggestion to treat
+  `os.kill(pid, 0)` `PermissionError` as a stale lock remains rejected because
+  it could delete a live cross-user lock.
+- Sandbox preflight must exercise real tool startup, Git identity, and the
+  intended Seatbelt policy before a proof command is treated as meaningful. The
+  first sandboxed Lake attempt lacked readable Git/runtime configuration and
+  tried forbidden cache replacement; the corrected environment used read-only
+  Homebrew Git plus `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_SYSTEM=/dev/null`
+  and produced exactly one remedial sandboxed elaboration of the six theorem
+  types while preserving cache identity.
+- Final metadata is release-critical. The focused release gate at commit
+  `df8da81` passed with route validation `complete-local`, 3,386 cached Lean
+  jobs, 739 Python tests passed with 2 skipped, 97 Rust Crouzeix tests passed,
+  and unchanged cache snapshot
+  `3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e`; later
+  full `mise run verify` attempts still exposed environment and repository
+  verification issues, and current head `d174957` still requires the deliberate
+  `docs/import-receipt.md` digest refresh before the final repository gate can
+  pass.
+- Claim ceilings stay explicit. CPFR-086 may record route claim
+  `complete-local`, six node receipts, route receipt digest
+  `f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b`, and
+  review digest
+  `9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a`. The
+  route must not be fast-forwarded until the controller refreshes
+  `docs/import-receipt.md`, runs the definitive full repository gate on the
+  final metadata commit, and performs the local landing.
 
 ## Completion footer
 
 ```yaml
 phase: cpfr-086
-status: planned
+status: complete_local_release_gated_landing_metadata_prepared
 route: lorist-schwenninger
-claim_level: authored
-node_receipts: 2-historical-of-6
-route_receipt: absent
-review: absent
-landing_commit: null
-post_execution_review: pending
-plan_revision: null
+claim_level: complete-local
+node_receipts: 6
+candidate_commit: d1749570825afc277fd96ff6c79b532449afbd16
+promoted_payload_commit: 530c645bcfee7ee76591cc44df1ef3b5fdfd00d0
+promoted_payload_tree: ee69e85f25e3845ea58b71b13e63c3c9e058b5fd
+graph_sha256: ebe63abaf21d2ea620bfaa9be7b154ef39dbe4411535533314c14db264ab3826
+inventory_sha256: 97ea21ee0af6c9d0e38cbc566ad0fc46c5f31b2785fb2f575bcc0e23d84c9b8c
+route_receipt: f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b
+route_receipt_self: b2a82c49454f4c24a29e06f864305ca5b8afba656ae0d5e862651833649e7b3e
+review: 9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a
+review_self: b67fbd93714679422cd80c80d78e5b4b76ab03f11042187b74a6a5be4b34196d
+manifest_contract_sha256: 38c953c8c70fae2d9e416994ff1684e73f7a63e7e501172fc267e8f706558d7d
+mathematical_review: cpfr086-ls-promotion-bind-20260825-c19e PASS no Critical/Important
+standards_review: /root/cpfr086_final_standards PASS no Critical/Important/Minor at df8da81 over 11d2820
+focused_release_gate: df8da81 preflight ready; 3386 Lean jobs; 739 Python passed and 2 skipped; 97 Rust Crouzeix passed; formatting and diff passed
+cache_snapshot: 3b8e37fc7ec9e5d8496c56fd89fa58d62293b2bb7fd3ee37276683a08804ce2e
+full_repository_gate: required on final metadata commit before local fast-forward
+landing_commit: d1749570825afc277fd96ff6c79b532449afbd16
+post_execution_review: PASS Spec and Standards with no findings after legacy-token repair
+plan_revision: docs/workstream/crouzeix-proof-reproduction/cpfr-086-retrospective.md
+local_fast_forward: pending controller gate
+kata_close: pending post-landing evidence
 next_phase: cpfr-087
 ```
