@@ -6694,6 +6694,33 @@ create-only candidates, review source correspondence, and promote the full graph
   reported =ready= with 56 local modules and =missing_artifacts: []=. This is
   not a =locally-verified= transition; candidate receipts and the unpublished
   route manifest are not yet bound.
+- Focused mathematical review corrected two source locators without changing
+  either semantic digest layer: =ls-double-layer-realization= now binds
+  =L116-L128= (excerpt SHA-256
+  =067ea553be5b993a7695aa33e666d6ef05a7831e430aa8325716c25769b62a85=)
+  and =ls-terminal-crouzeix= now binds =L107-L129= (excerpt SHA-256
+  =35e1efc2b96f9c5297fa841aac08c34f92c3a1a53a78ea91c73481ff6469becd=).
+  The earlier digest-layer finding is withdrawn: source-graph
+  =statement_sha256= is a frozen normalized semantic claim (as demonstrated by
+  the prior locator-only =ls-power-recurrence= repair), while route-manifest
+  =statement_sha256= is the normalized Lean declaration type. Neither changes
+  for a locator-span correction.
+- A create-only metadata republisher validated the prior canonical six-node v2
+  selection, current modules, wrapper, manifest, cache metadata, Mathlib
+  artifacts, and source closure, then published exactly two new attempts. It
+  did not invoke Lean; each result says so and reuses the prior aggregate
+  command, stdout, stderr, and axiom bytes byte-identically:
+  - =ls-double-layer-realization/attempt-002=
+    =664249ba38de0c8420df98eb2d576bf0bfda7deae0402344c81e903461a86d51=
+  - =ls-terminal-crouzeix/attempt-002=
+    =d8abdd61ab401840bceea052c3814019dba96cf3abdd930725692f39f046f6ed=
+- The corrected unpublished route manifest has file SHA-256
+  =c2a87136b309c0476eb82c54cb80863eb657bfd95fc9469053cf9e4665d05c97=
+  and manifest-contract SHA-256
+  =38c953c8c70fae2d9e416994ff1684e73f7a63e7e501172fc267e8f706558d7d=.
+  Promotion remains unperformed: graph and inventory retain their old bytes,
+  =promotion.json= is absent, and no execution-ledger state advanced. Stop for
+  focused mathematical re-review of the corrected candidate.
 - One coherent create-only =publish-ls= result published six unreferenced v2
   candidates, committed as
   =18b35435d378521a3c7195d985569af51679a201=:
