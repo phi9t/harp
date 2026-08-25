@@ -6914,6 +6914,36 @@ publish a dedicated-route receipt.
   #+end_src
   It reported =status=ready= and =missing_artifacts=0= with the canonical cache
   linked. No dependency hydration or build ran.
+- The mapped Harp route was authored and verified at candidate
+  =909b7813cb7c7c164345b265fcca11691670edb4=, tree
+  =b9724fd0a3e84eb47c4f9b8cdcb5141f6abddf17=. Its manifest raw SHA-256 is
+  =8c336ba56f2b69fd9a59ab4381e2ac12eff608d89d1e9f7ff54a62fb83b0b476=,
+  manifest contract SHA-256 is
+  =281b2b58e0fad6c0f0fd586b0a0192e6fcca7a42433718f1eeb46143faa67e17=,
+  terminal type SHA-256 is
+  =d2a15e37b9f4b0b2dca077aa6b55e71e5819eb7b81fc7aa7ae39f0b18a04c927=,
+  and its 59-module closure SHA-256 is
+  =d0901748dd51b8850603918f528b2da2feb7b3fe653c7f5be77423f40b5ab137=.
+  The route has 24 graph nodes, 35 shared modules, and exactly 11 declared LS
+  reuses.
+- The cached build passed 3,395 jobs in 25 seconds total, including a 14-second
+  scan, two-second cache check, and nine seconds in Lake. The dependency-cache
+  metadata digest was unchanged before and after at
+  =e22fd9dbbb48edface954c43ee9c62e169c1a268b4997deda331c6bbc1625c36=.
+  The terminal type probe matched the manifest, focused Python verification
+  passed 61 tests with two conditional skips, and the Rust route suite passed
+  39 tests. Route validation with =--allow-unpublished= returned the expected
+  mapped/incomplete result, exit 1, because the receipt or review is unpublished.
+- The initial Spec review found that the double-layer edge was misplaced. The
+  graph was repaired so the double-layer application is upstream of the
+  counting-L2 witness and therefore transitively upstream of the terminal
+  theorem.
+- The final full mathematical and novelty review by =TraeCode independent Harp
+  mathematical and novelty Spec reviewer=, model =GPT-5=, run
+  =/root/cpfr087_harp_math_review=, reported =PASS= on the exact candidate,
+  tree, and manifest contract above. It confirmed 24 nodes and exactly 11 LS
+  reuses, with no Critical, Important, or Minor findings, and authorized
+  create-only publication of this candidate. Publication has not run.
 
 ** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
