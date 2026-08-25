@@ -276,6 +276,18 @@ def selected_attempt(
     return matches[0]
 
 
+def next_attempt_number(node_root: Path) -> int:
+    highest = 0
+    for path in node_root.iterdir():
+        if not path.is_dir():
+            continue
+        match = ls_validation.ATTEMPT_NAME.fullmatch(path.name)
+        if match is None:
+            continue
+        highest = max(highest, int(path.name.removeprefix("attempt-")))
+    return highest + 1
+
+
 def rewrite_receipt(
     rows: tuple[ls_validation.LSGraphRow, ...],
     formal_target_root: Path,
@@ -1535,7 +1547,8 @@ import Hidden.AfterHeader
                 Path(directory).resolve()
             )
             node_root = formal_target_root / "proof-slices" / node_id
-            for attempt_number in range(2, 258):
+            start = next_attempt_number(node_root)
+            for attempt_number in range(start, start + 256):
                 historical = node_root / f"attempt-{attempt_number:03d}"
                 historical.mkdir()
                 (historical / "receipt.json").write_text("{}\n", encoding="utf-8")
@@ -1644,7 +1657,8 @@ import Hidden.AfterHeader
                 Path(directory).resolve()
             )
             node_root = formal_target_root / "proof-slices" / node_id
-            for attempt_number in range(2, 6):
+            start = next_attempt_number(node_root)
+            for attempt_number in range(start, start + 4):
                 historical = node_root / f"attempt-{attempt_number:03d}"
                 historical.mkdir()
                 (historical / "receipt.json").write_bytes(b"x" * (1024 * 1024))
@@ -1653,6 +1667,20 @@ import Hidden.AfterHeader
                 protocol.ValidationError, "aggregate receipt bytes exceed cap"
             ):
                 validate_receipts(rows, formal_target_root, repository_root)
+
+    def test_next_attempt_number_uses_monotone_slot_after_tracked_history(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            formal_target_root, _ = copy_committed_receipts(Path(directory).resolve())
+            node_root = (
+                formal_target_root
+                / "proof-slices"
+                / "ls-equation-one-terminal-bound"
+            )
+
+            self.assertEqual(next_attempt_number(node_root), 3)
+
+            (node_root / "attempt-003").mkdir()
+            self.assertEqual(next_attempt_number(node_root), 4)
 
     def test_committed_receipts_reject_duplicate_dependency_ids(self) -> None:
         rows = ls_validation.load_route_graph(GRAPH)

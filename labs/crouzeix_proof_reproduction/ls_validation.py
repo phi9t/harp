@@ -34,6 +34,7 @@ NODE_FIELDS = frozenset(
 NODE_OPTIONAL_FIELDS = frozenset({"receipt_sha256", "blocked_reason", "failed_reason"})
 INVENTORY_FIELDS = frozenset({"schema_version", "source_identity", "facts"})
 FACT_FIELDS = frozenset({"fact_id", "statement_sha256", "source_locator", "resolution"})
+PROMOTION_FIELDS = frozenset({"schema_version", "graph_sha256", "inventory_sha256"})
 NODE_ROLES = frozenset(
     {"definition", "adapter", "library_fact", "intermediate", "terminal"}
 )
@@ -46,6 +47,12 @@ LS_ROUTE_ID = ls_contract.ROUTE_ID
 LS_ALLOWED_AXIOMS = ls_contract.ALLOWED_AXIOMS
 LS_AGGREGATE_MODULE = ls_contract.AGGREGATE_MODULE
 LS_NODE_BUILD_TARGETS = {node.node_id: node.build_target for node in ls_contract.NODES}
+LS_HISTORICAL_GRAPH_SHA256 = (
+    "47eca594e163f6a015797807de77f3023084fb396a1b28bdf01e4ea59897dc44"
+)
+LS_HISTORICAL_INVENTORY_SHA256 = (
+    "ecba7642417de8505728af6f4eea6bbbc3ec1413f81e89ccd26f09fc2c1dbae0"
+)
 RECEIPT_FIELDS = frozenset(
     {
         "schema_version",
@@ -404,6 +411,10 @@ def _read_relative_file(
 
 def load_route_graph(path: Path) -> tuple[LSGraphRow, ...]:
     value = _read_json_object(path, "LS source graph")
+    return _load_route_graph_value(value)
+
+
+def _load_route_graph_value(value: Mapping[str, Any]) -> tuple[LSGraphRow, ...]:
     _require_fields(value, GRAPH_FIELDS, "LS source graph")
     _require_equal(
         value["schema_version"], ls_contract.SCHEMA_VERSION, "schema_version"
@@ -431,6 +442,10 @@ def load_route_graph(path: Path) -> tuple[LSGraphRow, ...]:
 
 def load_library_inventory(path: Path) -> dict[str, object]:
     value = _read_json_object(path, "LS library inventory")
+    return _load_library_inventory_value(value)
+
+
+def _load_library_inventory_value(value: Mapping[str, Any]) -> dict[str, object]:
     _require_fields(value, INVENTORY_FIELDS, "LS library inventory")
     _require_equal(
         value["schema_version"], "crouzeix-ls-library-inventory/v1", "schema_version"
@@ -448,6 +463,108 @@ def load_library_inventory(path: Path) -> dict[str, object]:
         "source_identity": LS_SOURCE_IDENTITY,
         "facts": normalized,
     }
+
+
+def load_route_state(formal_target_root: Path) -> dict[str, object]:
+    chain = _pin_absolute_chain(
+        Path(os.path.abspath(os.fspath(formal_target_root))), "LS formal target root"
+    )
+    try:
+        root = chain[-1]
+        graph_data = _read_file_at(root, "source-graph.json", "LS source graph", MAX_JSON_BYTES)
+        inventory_data = _read_file_at(
+            root, "library-inventory.json", "LS library inventory", MAX_JSON_BYTES
+        )
+        promotion_data = _optional_read_file_at(
+            root, "promotion.json", "LS promotion marker", MAX_JSON_BYTES
+        )
+
+        graph_sha256 = protocol.sha256_bytes(graph_data)
+        inventory_sha256 = protocol.sha256_bytes(inventory_data)
+        graph = _load_route_graph_value(_json_object_from_bytes(graph_data, "LS source graph"))
+        inventory = _load_library_inventory_value(
+            _json_object_from_bytes(inventory_data, "LS library inventory")
+        )
+        if promotion_data is None:
+            if (
+                graph_sha256 != LS_HISTORICAL_GRAPH_SHA256
+                or inventory_sha256 != LS_HISTORICAL_INVENTORY_SHA256
+            ):
+                raise protocol.ValidationError(
+                    "LS promoted graph/inventory require a valid promotion marker"
+                )
+            return {
+                "graph": graph,
+                "inventory": inventory,
+                "promotion": None,
+                "graph_sha256": graph_sha256,
+                "inventory_sha256": inventory_sha256,
+            }
+
+        promotion = _validate_promotion_marker(
+            _json_object_from_bytes(promotion_data, "LS promotion marker"),
+            graph_sha256,
+            inventory_sha256,
+        )
+        _validate_promoted_route_state(graph, inventory)
+        return {
+            "graph": graph,
+            "inventory": inventory,
+            "promotion": promotion,
+            "graph_sha256": graph_sha256,
+            "inventory_sha256": inventory_sha256,
+        }
+    finally:
+        _close_pinned_directories(chain)
+
+
+def _validate_promotion_marker(
+    value: Mapping[str, Any], graph_sha256: str, inventory_sha256: str
+) -> dict[str, str]:
+    _require_fields(value, PROMOTION_FIELDS, "LS promotion marker")
+    _require_equal(
+        value["schema_version"], "crouzeix-ls-promotion/v1", "schema_version"
+    )
+    marker = {
+        "schema_version": "crouzeix-ls-promotion/v1",
+        "graph_sha256": formal_target._digest(value["graph_sha256"], "graph_sha256"),
+        "inventory_sha256": formal_target._digest(
+            value["inventory_sha256"], "inventory_sha256"
+        ),
+    }
+    if marker["graph_sha256"] != graph_sha256:
+        raise protocol.ValidationError("LS promotion marker graph_sha256 mismatch")
+    if marker["inventory_sha256"] != inventory_sha256:
+        raise protocol.ValidationError("LS promotion marker inventory_sha256 mismatch")
+    return marker
+
+
+def _validate_promoted_route_state(
+    graph: tuple[LSGraphRow, ...], inventory: Mapping[str, object]
+) -> None:
+    _validate_graph_contract(graph, allow_legacy=False)
+    if any(row.status != "passed" for row in graph):
+        raise protocol.ValidationError("promoted LS graph must mark all six nodes passed")
+    facts = inventory.get("facts")
+    if not isinstance(facts, list) or len(facts) != len(ls_contract.NODES):
+        raise protocol.ValidationError("promoted LS inventory must contain exactly six facts")
+    if [fact.get("fact_id") for fact in facts] != list(ls_contract.NODE_ORDER):
+        raise protocol.ValidationError("promoted LS inventory fact_id order is invalid")
+    for node, fact in zip(ls_contract.NODES, facts):
+        if not isinstance(fact, Mapping):
+            raise protocol.ValidationError("promoted LS inventory fact is invalid")
+        if fact["statement_sha256"] != node.statement_sha256:
+            raise protocol.ValidationError(
+                f"promoted LS inventory statement_sha256 mismatch: {node.node_id}"
+            )
+        if fact["source_locator"] != node.source_locator:
+            raise protocol.ValidationError(
+                f"promoted LS inventory source_locator mismatch: {node.node_id}"
+            )
+        if fact["resolution"] != "local_compiled":
+            raise protocol.ValidationError(
+                f"promoted LS inventory resolution mismatch: {node.node_id}"
+            )
 
 
 def _is_legacy_contract_row(
@@ -1763,6 +1880,17 @@ def _read_safe_bytes(path: Path, label: str, maximum: int) -> bytes:
         return _read_file_at(chain[-1], absolute.name, label, maximum)
     finally:
         _close_pinned_directories(chain)
+
+
+def _optional_read_file_at(
+    directory: _PinnedDirectory, name: str, label: str, maximum: int
+) -> bytes | None:
+    try:
+        return _read_file_at(directory, name, label, maximum)
+    except protocol.ValidationError as error:
+        if str(error).endswith("does not exist"):
+            return None
+        raise
 
 
 def _json_object_from_bytes(data: bytes, label: str) -> dict[str, Any]:
