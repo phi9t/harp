@@ -6687,6 +6687,13 @@ create-only candidates, review source correspondence, and promote the full graph
   =feat/cpfr-086-ls-certification=.
 - LS no-build preflight previously reported =ready= with 56 local modules and
   no missing dependency artifacts. Certification evidence remains unpublished.
+- Frozen Task 5 executable candidate: commit
+  =acd6a610025da7e415d8a7acaf22005f80305e97=, tree
+  =4f363049e05db90a80fe148dcde40c64b4bde933=. Fresh no-build command
+  =python3 labs/crouzeix_proof_reproduction/proof_evidence.py preflight --route lorist-schwenninger=
+  reported =ready= with 56 local modules and =missing_artifacts: []=. This is
+  not a =locally-verified= transition; candidate receipts and the unpublished
+  route manifest are not yet bound.
 
 ** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
