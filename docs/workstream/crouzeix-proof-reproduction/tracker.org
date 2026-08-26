@@ -6860,7 +6860,7 @@ create-only candidates, review source correspondence, and promote the full graph
   fast-forward, and Kata closure remain controller steps after this metadata
   preparation; they are not completed evidence in this tracker row.
 
-** IMPLEMENTING Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
+** DONE Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
 :ID: CPFR-087
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
@@ -7012,6 +7012,13 @@ publish a dedicated-route receipt.
   and the published receipt and review raw hashes remain unchanged. Full
   repository =mise run verify=, =docs/import-receipt.md= refresh, landing, and
   Kata closure are still pending. CPFR-087 remains =IMPLEMENTING=.
+- Fully verified payload commit
+  =d9031068a883731cdab7b4eb80c744eda1912c07= was fast-forwarded to local
+  =master= after the definitive full repository gate passed; master/feature
+  divergence was =0 0= at first landing. CPFR-087 closeout metadata, the final
+  payload-digest/full repository gate, and the second local fast-forward remain
+  controller steps at this commit-preparation moment. The closeout commit is not
+  yet landed, and Kata is not yet closed.
 
 ** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
