@@ -8,8 +8,11 @@ from pathlib import Path, PurePosixPath
 from types import MappingProxyType
 from typing import Any, Mapping
 
-import protocol
-import tickets
+if __package__:
+    from . import protocol, tickets
+else:  # pragma: no cover - direct script execution path
+    import protocol
+    import tickets
 
 
 PRODUCTION_LOCK_PATH = Path(__file__).resolve().with_name("formal_target.lock.json")

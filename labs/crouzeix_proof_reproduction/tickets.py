@@ -10,7 +10,10 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Mapping
 
-from protocol import ValidationError, sha256_bytes
+if __package__:
+    from .protocol import ValidationError, sha256_bytes
+else:  # pragma: no cover - direct script execution path
+    from protocol import ValidationError, sha256_bytes
 
 
 TRACKER_REQUIRED_PROPERTIES = frozenset(

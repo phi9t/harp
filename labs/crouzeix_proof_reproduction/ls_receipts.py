@@ -17,10 +17,13 @@ from dataclasses import dataclass, replace
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Mapping, Sequence
 
-import ls_validation
-import ls_contract
-import provider_independence
-import protocol
+if __package__:
+    from . import ls_validation, ls_contract, provider_independence, protocol
+else:  # pragma: no cover - direct script execution path
+    import ls_validation
+    import ls_contract
+    import provider_independence
+    import protocol
 
 
 MAX_OUTPUT_BYTES = 1024 * 1024

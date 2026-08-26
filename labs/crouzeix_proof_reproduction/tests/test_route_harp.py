@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import copy
+import importlib
 import importlib.util
+import inspect
 import json
 import subprocess
 import tempfile
@@ -32,6 +34,12 @@ LS_RECEIPT_PATH = (
 )
 LS_RECEIPT_SHA256 = (
     "f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b"
+)
+HARP_REVIEW_SHA256 = (
+    "60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6"
+)
+HARP_RECEIPT_SHA256 = (
+    "5bc448e9a27968d6b73c7448fe72e41b52e2c1ec82d7b7ddf898dcf1aaa79883"
 )
 
 EXPECTED_CONCEPTUAL_NODES = {
@@ -285,8 +293,15 @@ class HarpRouteManifestTests(unittest.TestCase):
     def test_manifest_exists_for_mapped_claim(self) -> None:
         self.assertTrue((REPO / MANIFEST_PATH).is_file())
 
-    def test_unpublished_manifest_validates_as_mapped_and_incomplete(self) -> None:
-        result = subprocess.run(
+    def test_published_manifest_validates_as_complete_local_without_mutation(self) -> None:
+        before = subprocess.run(
+            ["git", "status", "--short"],
+            cwd=REPO,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
+        allowed = subprocess.run(
             [
                 "python3",
                 str(SCRIPT),
@@ -300,18 +315,77 @@ class HarpRouteManifestTests(unittest.TestCase):
             capture_output=True,
             check=False,
         )
-        self.assertEqual(result.returncode, 1, result.stderr)
-        self.assertEqual(
-            json.loads(result.stdout),
-            {
-                "schema_version": "crouzeix-route-validation/v1",
-                "route_id": "harp",
-                "status": "incomplete",
-                "claim_level": "mapped",
-                "manifest_path": MANIFEST_PATH.as_posix(),
-                "reason": "receipt or review is unpublished",
-            },
+        default = subprocess.run(
+            ["python3", str(SCRIPT), "validate", "--route", "harp"],
+            cwd=REPO,
+            text=True,
+            capture_output=True,
+            check=False,
         )
+        after = subprocess.run(
+            ["git", "status", "--short"],
+            cwd=REPO,
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
+        expected = {
+            "schema_version": "crouzeix-route-validation/v1",
+            "route_id": "harp",
+            "status": "complete",
+            "claim_level": "complete-local",
+            "manifest_path": MANIFEST_PATH.as_posix(),
+        }
+
+        self.assertEqual(allowed.returncode, 0, allowed.stderr)
+        self.assertEqual(default.returncode, 0, default.stderr)
+        self.assertEqual(json.loads(allowed.stdout), expected)
+        self.assertEqual(json.loads(default.stdout), expected)
+        self.assertEqual(before, after)
+
+    def test_ls_receipts_supports_package_and_direct_script_imports(self) -> None:
+        module = importlib.import_module(
+            "labs.crouzeix_proof_reproduction.ls_receipts"
+        )
+        package = "labs.crouzeix_proof_reproduction"
+        siblings = {
+            name: getattr(module, name)
+            for name in (
+                "ls_validation",
+                "ls_contract",
+                "provider_independence",
+                "protocol",
+            )
+        }
+        result = subprocess.run(
+            [
+                "python3",
+                str(REPO / "labs/crouzeix_proof_reproduction/ls_receipts.py"),
+            ],
+            cwd=REPO,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+
+        self.assertEqual(
+            module.__package__, package
+        )
+        self.assertEqual(
+            {name: sibling.__name__ for name, sibling in siblings.items()},
+            {name: f"{package}.{name}" for name in siblings},
+        )
+        for imported_module in (
+            module,
+            siblings["ls_validation"],
+            siblings["ls_validation"].formal_target,
+            siblings["ls_validation"].formal_target.tickets,
+        ):
+            with self.subTest(module=imported_module.__name__):
+                self.assertNotIn(
+                    "except ImportError", inspect.getsource(imported_module)
+                )
+        self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_manifest_binds_exact_route_and_ls_evidence_contract(self) -> None:
         manifest = load_manifest()
@@ -335,10 +409,16 @@ class HarpRouteManifestTests(unittest.TestCase):
             manifest["allowed_axioms"],
             ["Classical.choice", "Quot.sound", "propext"],
         )
-        self.assertEqual(manifest["review_path"], "evidence/crouzeix_conjecture/reviews/harp.json")
-        self.assertIsNone(manifest["review_sha256"])
-        self.assertEqual(manifest["receipt_path"], "evidence/crouzeix_conjecture/routes/harp/receipt.json")
-        self.assertIsNone(manifest["receipt_sha256"])
+        self.assertEqual(
+            manifest["review_path"],
+            "evidence/crouzeix_conjecture/reviews/harp.json",
+        )
+        self.assertEqual(manifest["review_sha256"], HARP_REVIEW_SHA256)
+        self.assertEqual(
+            manifest["receipt_path"],
+            "evidence/crouzeix_conjecture/routes/harp/receipt.json",
+        )
+        self.assertEqual(manifest["receipt_sha256"], HARP_RECEIPT_SHA256)
         self.assertEqual(manifest["route_dependencies"], [{
             "route_id": "lorist-schwenninger",
             "manifest_path": LS_MANIFEST_PATH,

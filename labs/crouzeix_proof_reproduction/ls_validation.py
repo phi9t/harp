@@ -8,10 +8,13 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Mapping, Sequence
 
-import formal_target
-import ls_contract
-import provider_independence
-import protocol
+if __package__:
+    from . import formal_target, ls_contract, provider_independence, protocol
+else:  # pragma: no cover - direct script execution path
+    import formal_target
+    import ls_contract
+    import provider_independence
+    import protocol
 
 
 MAX_JSON_BYTES = 1024 * 1024
