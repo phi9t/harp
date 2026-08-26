@@ -86,8 +86,15 @@ class VerifyRegistrationTests(unittest.TestCase):
             verify_atlas,
         )
         self.assertEqual(verify_atlas.count(f'"{bin_dir}/tsc" -b'), 2)
-        self.assertIn(f'"{bin_dir}/vitest" run', verify_atlas)
-        self.assertIn(f'"{bin_dir}/vite" build', verify_atlas)
+        self.assertIn(
+            f'"{bin_dir}/vitest" run --configLoader runner --no-cache',
+            verify_atlas,
+        )
+        self.assertIn(
+            f'"{bin_dir}/vite" build --configLoader runner',
+            verify_atlas,
+        )
+        self.assertNotIn("--configLoader bundle", verify_atlas)
         self.assertIn("corepack pnpm install --frozen-lockfile", bootstrap)
 
     def test_atlas_dependency_guard_checks_executable_local_tools(self) -> None:

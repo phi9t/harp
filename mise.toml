@@ -86,9 +86,9 @@ mise run build
   cd "$atlas_dir"
   "$atlas_dir/node_modules/.bin/eslint" . --ignore-pattern dist --ignore-pattern target
   "$atlas_dir/node_modules/.bin/tsc" -b
-  "$atlas_dir/node_modules/.bin/vitest" run
+  "$atlas_dir/node_modules/.bin/vitest" run --configLoader runner --no-cache
   "$atlas_dir/node_modules/.bin/tsc" -b
-  "$atlas_dir/node_modules/.bin/vite" build
+  "$atlas_dir/node_modules/.bin/vite" build --configLoader runner
   node scripts/export-static.mjs
   node tests/static-export.test.mjs
 )
