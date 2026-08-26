@@ -1158,10 +1158,30 @@ receipt last, fast-forward local `master`, close `harp#2eb2`, and mark CPFR-086
 - Create: `evidence/crouzeix_conjecture/reviews/harp.json`
 - Modify: CPFR-087 tracker subtree and execution ledger
 
+Apply these phase-entry and commit controls before changing proof metadata:
+
+- Treat the claim as one validated claim transaction before the first metadata
+  commit. The tracker heading must be `IMPLEMENTING`; `BRANCH`, `WORKTREE`,
+  `OWNER`, `AGENT_RUN`, and `MODEL` must be claimed and non-placeholder; the
+  tracker must record the exact preflight command, its `ready` result,
+  `missing_artifacts: []`, and the verified canonical cache link; and the
+  execution ledger must contain one matching first row in state `implementing`.
+  No combined claim-transaction command exists in this plan. Add or extend a
+  focused assertion test for these conditions rather than inventing a CLI.
+- Before every future commit, validate that the proposed message contains the
+  exact trailer `Co-authored-by: TRAE CLI <noreply@bytedance.com>`; after the
+  commit, read it back and assert the trailer is present. Before publication,
+  audit every commit in the candidate range for that trailer. Record any older
+  evidence-bound exception as historical debt; never rewrite reviewed or
+  published history to repair a trailer.
+
 - [ ] **Step 1: Create and preflight the Harp phase worktree**
 
 Create `feat/cpfr-087-harp-certification` from the LS landing, link the canonical
-cache, run `preflight --route harp`, and claim Kata `harp#2qy3`.
+cache, run `preflight --route harp`, and claim Kata `harp#2qy3`. Complete the
+phase-entry transaction above and run its focused assertion test before the
+first metadata commit. The recorded command must be the command actually run,
+not a result-only paraphrase.
 
 - [ ] **Step 2: Write the RED derivation/reuse tests**
 
@@ -1182,10 +1202,23 @@ terminal theorem
 closed-range consequence
 ```
 
-Require every active `Crouzeix.LoristSchwenninger.*` module to match one of the
-eleven allowed support modules and an explicit `reused-route` node or declared
-reuse edge. Reject a twelfth module, an LS terminal/provider, any Jin module, a
-missing reuse, or a claim that the route is wholly mathematically independent.
+Treat route proof nodes and imported support modules as separate rosters. The
+six LS proof nodes do not stand in for the eleven lower-level LS modules that
+Harp imports. Require every active `Crouzeix.LoristSchwenninger.*` module to
+match exactly one of the eleven allowed support modules and an explicit
+`reused-route` support node. Set `reused_node_id` only when the support
+declaration has a real matching node in the bound LS route; never synthesize a
+node identity to make the rosters align. Require one `route_dependencies` entry
+that binds the exact landed LS manifest and route receipt. Reject a twelfth
+module, an LS terminal/provider, any Jin module, a missing or extra route
+dependency, a stale bound digest, or a claim that the route is wholly
+mathematically independent.
+
+Use canonical complete instances, not field-only samples, for contract parity.
+Run the same full valid Harp instance, valid legacy instance, and invalid
+mutations through the draft 2020-12 JSON Schema, Python parser/validator, and
+Rust schema/typed validator. The three implementations must make the same
+accept/reject decision for every instance.
 
 - [ ] **Step 3: Write the complete derived manifest**
 
@@ -1193,7 +1226,12 @@ Use `claim_kind: derived`. Classify Harp-owned nodes as `derived-extraction` or
 the plan-approved derived classification and LS dependencies as `reused-route`.
 Bind exact declaration types, module paths, dependency IDs, closure, and the LS
 route manifest/receipt identities being reused. `source_identities` remains
-empty because source ownership is represented through the bound LS route.
+empty because source ownership is represented through the bound LS route. For
+each load-bearing node, compare its direct `dependency_ids` with the declaration
+body, imports, and provider report. A required declaration must have an edge at
+its first direct consumer; mere presence elsewhere in the graph is insufficient.
+In particular, test that the double-layer application is a direct dependency of
+the counting-L2 witness and therefore transitively precedes the terminal theorem.
 
 - [ ] **Step 4: Validate and review before publication**
 
@@ -1206,6 +1244,24 @@ Expected: exit 1, `mapped / incomplete`. The Spec reviewer checks cubature,
 moment preservation, finite counting-L2 realization, dimension bound,
 finite-horizon recurrence, perturbation endpoint, double-layer instantiation,
 limits, theorem assembly, and the novelty/reuse boundary.
+
+Keep immutable fixtures for all three lifecycle states: authoring without
+receipt or review, receipt-bound but not fully published, and fully published.
+Tests for historical states consume those fixtures. A test against the live
+canonical manifest asserts only its current final state. Do not make an
+unpublished-state test depend on whatever the branch currently contains.
+
+Before invoking any independent reviewer or verifier, capture a tracked-state
+snapshot that includes `git status --short` and a digest of the tracked diff.
+Capture it again afterward and require equality. A reviewer or verifier reports
+required repairs but never edits tracked files. The controller assigns any
+repair separately and requests a fresh review.
+
+Before publication, audit the whole phase commit range for the exact mandatory
+co-author trailer. A missing trailer blocks new publication. If the range
+contains older commits already bound by immutable review or publication
+evidence, record the debt and require the trailer on every later commit; do not
+rewrite those existing commits.
 
 - [ ] **Step 5: Publish and validate**
 
@@ -1226,6 +1282,41 @@ cargo test -p harp sources::crouzeix --lib -- --test-threads=1
 Expected: route `complete-local`. Obtain Standards approval, commit focused
 concerns, refresh the import receipt last, fast-forward local `master`, close
 `harp#2qy3`, and mark CPFR-087 `DONE`.
+
+Python modules used both as package imports and direct scripts must branch on
+`__package__` explicitly. Package mode uses relative sibling imports; direct
+script mode uses direct sibling imports. Do not catch broad `ImportError` to
+select a mode, and do not modify `sys.path` to hide package-boundary defects.
+Tests must import the package form and execute the direct-script form. Child
+Python processes use `sys.executable`, except for a separately named system
+Python compatibility probe.
+
+Before the expensive gate, freeze and probe a Seatbelt runtime namespace
+manifest. Use an ignored, offline, unseeded uv-managed Python environment by
+default. The write allowlist is limited to the chosen audit root and its
+`TMPDIR`, required worktree build outputs, Harp-owned Lean build outputs, test
+roots matching `/private/tmp/tmp*`,
+`/private/tmp/harp-ls-receipts-locks`, and bounded Darwin temporary entries
+matching `xcrun_db-*`. `/var`, `/etc`, `/tmp`, and their `/private` aliases are
+metadata/read namespaces only, apart from that bounded `xcrun_db-*` exception.
+Run positive fake probes for the selected interpreter, system-Python
+compatibility, sanitized Git, test temp Git repositories, LS lock lifecycle,
+and intended build paths. Run negative fake probes for tracked source, Git
+metadata, canonical dependency cache, undeclared temp siblings, broad
+`/var`/`/etc`/`/tmp` writes, neighboring `xcrun` paths, and IPv4/IPv6 network
+access. Resolve all namespaces before the Lean, Python, or Rust gate begins.
+
+Run audit helpers that import repository packages with repository-root
+`PYTHONPATH`, or invoke a repository module with `python -m`. Do not repair an
+audit helper by mutating `sys.path`.
+
+The `release-verified` ledger note must contain exactly these 19 keys, unless
+the row instead binds a future schema-validated typed JSON evidence object:
+`head`, `verifier_run_id`, `policy_sha256`, `wrapper_sha256`, `probe_sha256`,
+`preflight`, `python_tests`, `python_skips`, `rust_tests`, `lean_jobs`,
+`lean_total_seconds`, `validation`, `cache_snapshot`, `cache_records_before`,
+`cache_records_after`, `uv_python`, `cargo_fmt`, `git_diff_check`, and
+`manifest_raw_sha256`. Reject missing, duplicate, or additional keys.
 
 ### Task 7: Publish and require the six-row local bundle
 
@@ -1681,9 +1772,28 @@ commit IDs, candidate worktree, claimed artifact paths/hashes, and source
 identities. Check tree identity and dirty state, run the phase's exact verifier
 commands, recompute source/type/closure/provider/axiom/evidence digests, test
 negative mutations, verify review ordering and publication state, and confirm
-the proposed next transition. Do not rely on implementer narration and do not
-edit, publish, merge, push, or clean up. Return the required structured
-verdict.
+the proposed next transition. Before running anything, capture git status and a
+digest of the tracked diff; repeat both checks afterward and fail if tracked
+state changed. Use the phase's ignored, offline, unseeded uv-managed Python and
+use sys.executable for Python children, except for an explicit system-Python
+compatibility probe. Require a precomputed, passing Seatbelt namespace manifest
+and fake-probe matrix before any expensive gate. Run audit helpers with
+repository-root PYTHONPATH or as repository modules with python -m. Audit the
+branch range and require the exact mandatory `Co-authored-by: TRAE CLI
+<noreply@bytedance.com>` trailer on every new commit that is not already bound
+by immutable evidence. Identify and disposition every historical
+evidence-bound exception; never silently pass it or rewrite its history.
+Validate ledger evidence for the proposed state. For `release-verified`, require
+exactly the note keys `head`, `verifier_run_id`, `policy_sha256`,
+`wrapper_sha256`, `probe_sha256`, `preflight`, `python_tests`, `python_skips`,
+`rust_tests`, `lean_jobs`, `lean_total_seconds`, `validation`, `cache_snapshot`,
+`cache_records_before`, `cache_records_after`, `uv_python`, `cargo_fmt`,
+`git_diff_check`, and `manifest_raw_sha256`, or require a reference to a
+schema-validated typed evidence object that carries the same state-specific
+facts. Reject missing, duplicate, or unknown keys. Do not rely on implementer
+narration. Do not repair any finding or edit, publish, merge, push, clean up, or
+otherwise mutate tracked state. Report required repairs for separate controller
+assignment, then return the required structured verdict.
 ```
 
 ### Program Spec reviewer prompt
@@ -1743,9 +1853,29 @@ conditions.
 
 ## Plan evolution
 
-No post-execution revisions have been applied. Phase 8 must replace this
-sentence with evidence-linked changes or an evidence-linked statement that no
-procedural change was warranted.
+- CPFR-086 showed that publication and verification need lifecycle-aware
+  fixtures, review findings need regression tests, and a final sandbox must
+  exercise real tool startup and narrow runtime namespaces before the release
+  gate. Those changes are recorded in the
+  [CPFR-086 retrospective](../../workstream/crouzeix-proof-reproduction/cpfr-086-retrospective.md)
+  and its ledger rows through `landed`. They do not mark later program phases
+  complete.
+- CPFR-087 added immediate phase assertions for an atomic claim record, separate
+  proof-node and support-module reuse semantics, bound `route_dependencies`,
+  canonical full-instance JSON Schema/Python/Rust parity, direct provider-edge
+  checks, immutable lifecycle fixtures, explicit package/direct-script imports,
+  precomputed Seatbelt namespaces, uv Python child-process discipline,
+  repository-root audit imports, read-only verifier snapshots, a closed
+  release-ledger key set, and mandatory commit-trailer checks. The
+  [CPFR-087 retrospective](../../workstream/crouzeix-proof-reproduction/cpfr-087-retrospective.md)
+  ties each change to the phase evidence. CPFR-087 is `complete-local` through
+  `release-verified`; CPFR-088 and later phases, full repository verification,
+  digest refresh, landing, and Kata closure remain pending.
+- Transactional ticket APIs, generated cross-language validators, package-only
+  CLIs, a reusable hermetic-policy generator, a capability-separated verifier
+  runtime, and a fully typed ledger require later architecture work. This plan
+  adds focused assertions and tests now without treating those designs as
+  implemented.
 
 ## Completion footer
 
