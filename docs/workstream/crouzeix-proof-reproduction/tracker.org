@@ -6860,7 +6860,7 @@ create-only candidates, review source correspondence, and promote the full graph
   fast-forward, and Kata closure remain controller steps after this metadata
   preparation; they are not completed evidence in this tracker row.
 
-** TODO Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
+** IMPLEMENTING Certify Harp Finite-Horizon Route :lean:evidence:review:ticket:
 :PROPERTIES:
 :ID: CPFR-087
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
@@ -6972,7 +6972,7 @@ publish a dedicated-route receipt.
   This is not final Standards approval for the whole CPFR-087 phase. The
   resumed focused gate passed 96 Python tests with two conditional skips and
   100 Rust tests; =cargo fmt --all -- --check= and =git diff --check= also
-  passed. CPFR-087 remains =TODO= pending controller-owned final review, full
+  passed. CPFR-087 remains =IMPLEMENTING= pending controller-owned final review, full
   repository verification, landing, and Kata closure.
 - Final whole-phase Standards review by =TraeCode independent final Standards
   reviewer=, model =GPT-5=, run =/root/cpfr087_final_standards=, reported
