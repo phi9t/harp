@@ -6982,6 +6982,36 @@ publish a dedicated-route receipt.
   identities, confirmed 96 Python passes with two skips and route validation
   =complete-local=, and authorized the controller-owned release gate only.
   Release verification, landing, =DONE=, and Kata closure remain unperformed.
+- The definitive focused release gate by =TraeCode CPFR-087 phase-gate worker=,
+  model =GPT-5=, run =/root/cpfr087_phase_gate_worker=, passed at exact HEAD
+  =8b2fc8899664d7af71017354a3918293d71f30d3=. The closed temporary namespace
+  policy
+  =/private/tmp/harp-cpfr087-release-exhaustive.carZk2/lean.sbpl= had SHA-256
+  =e2018846e0cb9015530f90519d0d156bf6e48d9a2e856e618d96bcd0bbeb8059=;
+  its =run-sandbox.sh= wrapper had SHA-256
+  =8bc0fb731a130ee6b41ebfcf25fefe7c5fb0b829a5544dd12f0a965f46a51163=;
+  and the probe matrix had SHA-256
+  =6eaacc1a22764d57f684085460865645f55ae780fc11103689b948e2698d0a10=
+  with 25 of 25 probes passing. The ignored, offline, unseeded uv environment
+  =.build/cpfr087-python= used CPython =3.12.10= at real interpreter
+  =/Users/bytedance/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/bin/python3.12=.
+  Preflight was =ready= for all 59 modules with =missing=0=. The cached
+  =CrouzeixHarp= build completed 3,395 jobs in 11 wrapper seconds and 14.15
+  wall-clock seconds; full Python discovery passed 757 tests with three skips
+  in 237.653 seconds; and the Rust Crouzeix suite passed 100 tests with 320
+  filtered in 31.35 seconds. =cargo fmt=, =git diff --check=, and route
+  validation passed with =status=complete= and =claim_level=complete-local=.
+  The dependency cache held 134,192 records before and after with exact digest
+  =e22fd9dbbb48edface954c43ee9c62e169c1a268b4997deda331c6bbc1625c36=,
+  so the gate performed no hydration. All identities matched. The final
+  canonical manifest raw SHA-256 is
+  =4be259ffa3056d0baae71aacae975f19d11c341686c6da9c2257cfbfea5a96fe=,
+  correcting a transcription error in the verifier narrative; its contract
+  SHA-256 remains
+  =281b2b58e0fad6c0f0fd586b0a0192e6fcca7a42433718f1eeb46143faa67e17=,
+  and the published receipt and review raw hashes remain unchanged. Full
+  repository =mise run verify=, =docs/import-receipt.md= refresh, landing, and
+  Kata closure are still pending. CPFR-087 remains =IMPLEMENTING=.
 
 ** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
