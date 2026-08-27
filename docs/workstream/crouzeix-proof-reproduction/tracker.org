@@ -7213,16 +7213,16 @@ and generated reader artifacts to reflect exact route claim levels.
   fast-forward, and Kata closure remain pending controller steps at this
   commit-preparation moment.
 
-** TODO Run Final Three-Route Review And Local Landing :review:landing:ticket:
+** DONE Run Final Three-Route Review And Local Landing :review:landing:ticket:
 :PROPERTIES:
 :ID: CPFR-090
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
 :BRANCH: review/cpfr-090-three-route-finalization
 :WORKTREE: .worktrees/cpfr-090-three-route-finalization
 :DEPENDS_ON: CPFR-089
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: bytedance
+:AGENT_RUN: /root/cpfr090-closeout
+:MODEL: GPT-5.4-controller
 :END:
 Freeze, independently review, fully verify, and fast-forward the completed proof program.
 
@@ -7294,9 +7294,13 @@ payload-digest refresh, and local fast-forward landing.
   unchanged. No process was active at follow-up; an isolated Seatbelt
   =verify-atlas= passed and changed zero entries. This is recorded as an
   external volatile-metadata caveat, not strict full-window invariance.
-- CPFR-090 remains =TODO=. Pending controller work is the final
-  =docs/import-receipt.md= refresh, the final full gate over closeout metadata,
-  focused commit, local fast-forward, =landed= ledger row, and Kata closure.
+- Local =master= fast-forward landed at commit
+  =98af685eabda905076879c15920f2fb7d526b632=, tree
+  =6b1067768270261122a4e5ba11bbc64e94fd96d4=.
+- The final full gate (pass2) completed under Seatbelt and passed with exit code
+  0 in 684.230117 seconds. The pass2 log is at
+  =.build/cpfr090-program-gate/final-full-gate-pass2.log=.
+- Only Kata closure remains pending while this closeout commit is prepared.
 
 ** TODO Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
 :PROPERTIES:
