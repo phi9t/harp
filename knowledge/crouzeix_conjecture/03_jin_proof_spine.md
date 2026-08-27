@@ -4,7 +4,7 @@ title: Jin proof spine from outer domains to constant two
 type: deep-dive
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-26
 tags: [crouzeix-conjecture, jin-proof, cayley-family, outer-limit]
 confidence: medium
 canonical: 03_jin_proof_spine.md
@@ -20,6 +20,19 @@ This chapter follows the formalization-matched v4 artifact. It keeps the
 positive-real completion theorem as a named finite-dimensional boundary; the
 next chapter opens that boundary and derives its cancellation and Gramian
 steps.
+
+Separately from the historical upstream clean-room Jin builds that remained
+blocked by disk preflight, Harp now has a local `complete-local` Jin route
+publication surface bound by the
+[[evidence/crouzeix_conjecture/routes/jin/receipt.json|route receipt]],
+[[evidence/crouzeix_conjecture/reviews/jin.json|route review]], and the
+six-row bundle
+[[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest]]
+([exact lines 1–7](../../evidence/crouzeix_conjecture/local_formalization/manifest.tsv#L1)).
+That local evidence certifies named declarations only, including the terminal
+theorem `CrouzeixConjecture.crouzeixConjecture` and its recorded consequence
+surface, and does not widen the claim ceiling to peer review, publication,
+author endorsement, upstream clean-room build success, or complete boundedness.
 
 ## Normalize on a fixed outer domain {#normalize-on-a-fixed-outer-domain}
 

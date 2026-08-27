@@ -7124,16 +7124,16 @@ publish once, and make the Rust verifier require the resulting bundle.
   fast-forward remain controller steps at this commit-preparation moment. Kata
   =harp#ga15= is not yet closed.
 
-** TODO Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
+** IMPLEMENTING Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
 :PROPERTIES:
 :ID: CPFR-089
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: docs/cpfr-089-crouzeix-proof-status
+:WORKTREE: .worktrees/cpfr-089-reader-reconciliation
 :DEPENDS_ON: CPFR-088
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: bytedance
+:AGENT_RUN: cpfr089-reader-reconciliation-20260826
+:MODEL: GPT-5.4 worker
 :END:
 Derive canonical prose and Atlas output from the published three-route evidence.
 
@@ -7170,7 +7170,9 @@ and generated reader artifacts to reflect exact route claim levels.
 - Atlas lint, typecheck, tests, build, and static export test
 
 *** Verification Evidence
-Pending implementation.
+- Active implementation in the existing reconciliation worktree updates the
+  canonical packet from validated local evidence only. No generated Atlas files
+  or receipt refreshes have been edited yet in this ticket state.
 
 ** TODO Run Final Three-Route Review And Local Landing :review:landing:ticket:
 :PROPERTIES:

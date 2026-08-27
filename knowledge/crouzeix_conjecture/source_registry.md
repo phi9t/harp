@@ -4,7 +4,7 @@ title: Crouzeix conjecture source registry
 type: source-registry
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-26
 tags: [crouzeix-conjecture, numerical-range, provenance, source-registry]
 confidence: high
 canonical: source_registry.md
@@ -21,6 +21,26 @@ packet. Upstream proof bytes remain remote-only. The local
 [[evidence/crouzeix_conjecture/source_manifest.tsv|source manifest]] ([exact lines 1–1](../../evidence/crouzeix_conjecture/source_manifest.tsv#L1))
 binds remote artifacts to immutable identities and digests; it does not make
 their mathematics correct.
+
+Separately, Harp now has three route receipts and matching reviews for the
+published local proof program:
+[[evidence/crouzeix_conjecture/routes/jin/receipt.json|jin route receipt]],
+[[evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json|lorist-schwenninger route receipt]],
+[[evidence/crouzeix_conjecture/routes/harp/receipt.json|harp route receipt]],
+[[evidence/crouzeix_conjecture/reviews/jin.json|jin review]],
+[[evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json|lorist-schwenninger review]],
+and [[evidence/crouzeix_conjecture/reviews/harp.json|harp review]]. Those
+records certify a Harp-local `complete-local` ceiling only. The packet also
+binds the exact terminal and closed-range publication surface through the
+six-row local bundle
+[[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest]]
+([exact lines 1–7](../../evidence/crouzeix_conjecture/local_formalization/manifest.tsv#L1)),
+whose SHA-256 is
+`efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+Within that local bundle, Harp's route remains derived rather than independent:
+it reuses exactly eleven approved lower-level Lorist-Schwenninger support
+modules before publishing its own downstream terminal and closed-range
+declarations.
 
 ## JIN-V4-AUDITED: Formalization-matched Git manuscript {#jin-v4-audited-formalization-matched-git-manuscript}
 
@@ -157,7 +177,9 @@ their mathematics correct.
 - Local proof receipt note: [[evidence/crouzeix_conjecture/PROVENANCE|Harp-local LS scalar receipt record]] ([exact lines 18–22](../../evidence/crouzeix_conjecture/PROVENANCE.md#L18)).
 - Can support: two zero-finding prohibited-token scans, two typed build blocks
   caused by the recorded disk preflight, and named Harp-local proof-slice
-  receipt facts for declarations compiled under the shared Lean root.
+  receipt facts for declarations compiled under the shared Lean root, plus the
+  local publication boundary recorded by the three route receipts, three route
+  reviews, and the six-row local bundle manifest.
 - Cannot support: manuscript correspondence beyond named records, theorem
   truth beyond the exact local Lean declarations and hypotheses recorded in the
   cited receipts, or closure of proof obligations not represented by passed

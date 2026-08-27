@@ -734,11 +734,223 @@ fn crouzeix_conjecture_packet_has_complete_observable_contract() {
         fs::read_to_string(root.join("07_jin_lean_verification.md")).expect("read Lean audit");
     assert!(lean.contains("PositiveRealCompletionStatement"));
     assert!(lean.contains("positiveRealCompletionStatement"));
+    assert!(lean.contains("CrouzeixConjecture.PolynomialCrouzeixBound"));
+    assert!(lean.contains("CrouzeixConjecture.crouzeixRationalBound"));
+    assert!(lean.contains("CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet"));
+    assert!(lean.contains("finite-dimensional polynomial"));
+    assert!(lean.contains("complete-local"));
+    assert!(lean.contains("evidence/crouzeix_conjecture/routes/jin/receipt.json"));
+    assert!(lean.contains("evidence/crouzeix_conjecture/reviews/jin.json"));
+    assert!(lean.contains("5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331"));
+    assert!(lean.contains("a1962f75a98a3ebf73ee33a472ace2c4ff91eead538156f777b8dcf21dcddb4e"));
 
     let status = fs::read_to_string(root.join("09_status_and_critical_assessment.md"))
         .expect("read critical assessment");
     assert!(status.contains("Preprints.org"));
     assert!(status.contains("metadata only"));
+    assert!(status.contains("complete-local"));
+    assert!(status.contains("CrouzeixConjecture.crouzeixConjecture"));
+    assert!(status.contains("CrouzeixConjecture.loristSchwenningerMainTheorem"));
+    assert!(status.contains("CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem"));
+    assert!(status.contains("CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet"));
+    assert!(status.contains(
+        "CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet"
+    ));
+    assert!(status.contains(
+        "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet"
+    ));
+    assert!(status.contains("The six-row bundle"));
+    assert!(status.contains("efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7"));
+    assert!(status.contains("records source_node_id as `-`"));
+    assert!(
+        status.contains("exactly eleven approved lower-level Lorist-Schwenninger support modules")
+    );
+    assert!(status.contains("not mathematically independent"));
+    assert!(status.contains("Classical.choice"));
+    assert!(status.contains("Quot.sound"));
+    assert!(status.contains("propext"));
+    assert!(status.contains("three named route reviews are complete"));
+    assert!(status.contains("broader external or peer mathematical scrutiny"));
+    assert!(!status.contains("terminal theorem remains blocked"));
+    assert!(!status.contains("two compiled Lorist-Schwenninger support slices"));
+    assert!(!status.contains("Harp-local source-mapped Lean port"));
+    assert!(!status.contains("fully independent"));
+    assert!(!status.contains("independent mathematical review remain open evidence channels"));
+
+    let lorist = fs::read_to_string(root.join("05_lorist_schwenninger_proof.md"))
+        .expect("read Lorist-Schwenninger proof page");
+    assert!(lorist.contains("source-faithful"));
+    assert!(lorist.contains("source_fidelity_check"));
+    assert!(lorist.contains("passed"));
+
+    let index = fs::read_to_string(root.join("crouzeix_conjecture_index.md"))
+        .expect("read packet index for status alignment");
+    assert!(index.contains("complete-local"));
+    assert!(index.contains("evidence/crouzeix_conjecture/routes/jin/receipt.json"));
+    assert!(index.contains("evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"));
+    assert!(index.contains("evidence/crouzeix_conjecture/routes/harp/receipt.json"));
+    assert!(index.contains("evidence/crouzeix_conjecture/reviews/jin.json"));
+    assert!(index.contains("evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json"));
+    assert!(index.contains("evidence/crouzeix_conjecture/reviews/harp.json"));
+    assert!(index.contains("efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7"));
+    assert!(!index.contains("terminal theorem remains blocked"));
+    assert!(!index.contains("two compiled Lorist-Schwenninger support slices"));
+
+    let comparison =
+        fs::read_to_string(root.join("06_proof_comparison.md")).expect("read proof comparison");
+    assert!(comparison
+        .contains("exactly eleven approved lower-level Lorist-Schwenninger support modules"));
+    assert!(comparison.contains("not mathematically independent"));
+    assert!(comparison.contains("complete-local"));
+    assert!(comparison.contains("source-faithful"));
+    assert!(comparison.contains("source_fidelity_check"));
+    assert!(comparison.contains("passed"));
+    assert!(!comparison.contains("fully independent"));
+
+    let editorial =
+        fs::read_to_string(root.join("10_jin_proof_editorial.md")).expect("read editorial");
+    assert!(editorial.contains("finite-dimensional polynomial"));
+    assert!(editorial.contains("scalar rational"));
+    assert!(editorial.contains("Hilbert-space"));
+
+    let ledger = fs::read_to_string(root.join("claim_evidence_ledger.md"))
+        .expect("read claim ledger for evidence alignment");
+    assert!(ledger.contains("evidence/crouzeix_conjecture/routes/jin/receipt.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/routes/harp/receipt.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/reviews/jin.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/reviews/harp.json"));
+    assert!(ledger.contains("evidence/crouzeix_conjecture/local_formalization/manifest.tsv"));
+    assert!(ledger.contains("efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7"));
+    assert!(ledger.contains("5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331"));
+    assert!(ledger.contains("f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b"));
+    assert!(ledger.contains("5bc448e9a27968d6b73c7448fe72e41b52e2c1ec82d7b7ddf898dcf1aaa79883"));
+    assert!(ledger.contains("a1962f75a98a3ebf73ee33a472ace2c4ff91eead538156f777b8dcf21dcddb4e"));
+    assert!(ledger.contains("9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a"));
+    assert!(ledger.contains("60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6"));
+
+    let registry = fs::read_to_string(root.join("source_registry.md"))
+        .expect("read registry for status alignment");
+    assert!(registry.contains("complete-local"));
+    assert!(registry.contains("three route receipts"));
+    assert!(registry.contains("six-row local bundle"));
+
+    let provenance =
+        fs::read_to_string(workspace_root().join("evidence/crouzeix_conjecture/PROVENANCE.md"))
+            .expect("read Crouzeix provenance");
+    assert!(provenance.contains("complete-local"));
+    assert!(provenance.contains("six-row"));
+    assert!(provenance.contains("local_formalization/manifest.tsv"));
+    assert!(provenance.contains("efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7"));
+
+    let lab_readme =
+        fs::read_to_string(workspace_root().join("labs/crouzeix_proof_reproduction/README.md"))
+            .expect("read reproduction lab README");
+    assert!(lab_readme.contains("complete-local"));
+    assert!(lab_readme.contains("evidence/crouzeix_conjecture/local_formalization/manifest.tsv"));
+    assert!(lab_readme.contains(
+        "python3 labs/crouzeix_proof_reproduction/proof_evidence.py validate --route all"
+    ));
+    assert!(lab_readme.contains("validate_local_formalization_bundle"));
+    assert!(lab_readme.contains(
+        "from labs.crouzeix_proof_reproduction.local_formalization_validation import validate_local_formalization_bundle"
+    ));
+    assert!(lab_readme.contains("from pathlib import Path"));
+    assert!(lab_readme.contains("validate_local_formalization_bundle(Path.cwd())"));
+    assert!(lab_readme.contains("harp sources verify"));
+    assert!(!lab_readme.contains("bundle_validation"));
+
+    let jin_receipt = fs::read_to_string(
+        workspace_root().join("evidence/crouzeix_conjecture/routes/jin/receipt.json"),
+    )
+    .expect("read Jin route receipt");
+    assert!(jin_receipt.contains("\"route_id\":\"jin\""));
+    assert!(jin_receipt.contains("\"status\":\"passed\""));
+    assert!(jin_receipt.contains("CrouzeixConjecture.crouzeixConjecture"));
+    assert!(
+        jin_receipt.contains("CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet")
+    );
+    assert!(jin_receipt.contains("CrouzeixConjecture.crouzeixRationalBound"));
+    assert!(jin_receipt.contains("CrouzeixConjecture.hilbertSpacePolynomialCrouzeix"));
+
+    let ls_receipt = fs::read_to_string(
+        workspace_root()
+            .join("evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json"),
+    )
+    .expect("read Lorist-Schwenninger route receipt");
+    assert!(ls_receipt.contains("\"route_id\":\"lorist-schwenninger\""));
+    assert!(ls_receipt.contains("\"status\":\"passed\""));
+    assert!(ls_receipt.contains("CrouzeixConjecture.loristSchwenningerMainTheorem"));
+
+    let harp_receipt = fs::read_to_string(
+        workspace_root().join("evidence/crouzeix_conjecture/routes/harp/receipt.json"),
+    )
+    .expect("read Harp route receipt");
+    assert!(harp_receipt.contains("\"route_id\":\"harp\""));
+    assert!(harp_receipt.contains("\"status\":\"passed\""));
+    assert!(harp_receipt.contains("CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem"));
+    assert!(harp_receipt.contains(
+        "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet"
+    ));
+    assert!(harp_receipt.contains("CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two"));
+
+    let jin_review =
+        fs::read_to_string(workspace_root().join("evidence/crouzeix_conjecture/reviews/jin.json"))
+            .expect("read Jin route review");
+    assert!(jin_review.contains("\"route_id\":\"jin\""));
+    assert!(jin_review.contains("\"verdict\":\"complete\""));
+
+    let ls_review = fs::read_to_string(
+        workspace_root().join("evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json"),
+    )
+    .expect("read Lorist-Schwenninger route review");
+    assert!(ls_review.contains("\"route_id\":\"lorist-schwenninger\""));
+    assert!(ls_review.contains("\"verdict\":\"complete\""));
+
+    let harp_review =
+        fs::read_to_string(workspace_root().join("evidence/crouzeix_conjecture/reviews/harp.json"))
+            .expect("read Harp route review");
+    assert!(harp_review.contains("\"route_id\":\"harp\""));
+    assert!(harp_review.contains("\"verdict\":\"complete\""));
+    assert!(harp_review.contains("\"derivation_reuse_check\":\"passed\""));
+    assert!(!harp_review.contains("\"derivation_reuse_check\":\"not-applicable\""));
+
+    let bundle_manifest = fs::read_to_string(
+        workspace_root().join("evidence/crouzeix_conjecture/local_formalization/manifest.tsv"),
+    )
+    .expect("read six-row bundle manifest");
+    assert_eq!(
+        bundle_manifest.lines().count(),
+        7,
+        "bundle manifest must contain header plus six rows"
+    );
+    for formalization_id in [
+        "jin-main-theorem",
+        "jin-closed-numerical-range",
+        "ls-main-theorem",
+        "ls-closed-numerical-range",
+        "harp-main-theorem",
+        "harp-closed-numerical-range",
+    ] {
+        assert!(
+            bundle_manifest.contains(formalization_id),
+            "bundle manifest lacks {formalization_id}"
+        );
+    }
+    assert!(bundle_manifest.contains("\tlorist-schwenninger\t-\tCrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet\t"));
+    assert!(bundle_manifest
+        .contains("5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331"));
+    assert!(bundle_manifest
+        .contains("f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b"));
+    assert!(bundle_manifest
+        .contains("5bc448e9a27968d6b73c7448fe72e41b52e2c1ec82d7b7ddf898dcf1aaa79883"));
+    assert!(bundle_manifest
+        .contains("a1962f75a98a3ebf73ee33a472ace2c4ff91eead538156f777b8dcf21dcddb4e"));
+    assert!(bundle_manifest
+        .contains("9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a"));
+    assert!(bundle_manifest
+        .contains("60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6"));
 
     assert_packet_registration();
 }

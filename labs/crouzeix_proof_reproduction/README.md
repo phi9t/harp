@@ -76,5 +76,45 @@ requires later independent re-review.
   statement digest pinned by that lock, not a digest of the local theorem body
   after Harp renaming or assembly refactors.
 
+## Published local certification artifacts
+
+The proof-reproduction lab also consumes published local certification
+artifacts under `evidence/crouzeix_conjecture/`. Those artifacts are
+`complete-local` only: they certify named local declarations and bundle rows,
+not peer review, publication, author endorsement, or complete boundedness.
+
+Use these read-only validation commands when checking the published evidence:
+
+```sh
+python3 labs/crouzeix_proof_reproduction/proof_evidence.py validate --route all
+
+python3 - <<'PY'
+from pathlib import Path
+from labs.crouzeix_proof_reproduction.local_formalization_validation import validate_local_formalization_bundle
+
+validate_local_formalization_bundle(Path.cwd())
+print("local bundle validated")
+PY
+
+cargo run -q -p harp -- sources verify
+```
+
+Equivalent installed CLI form: `harp sources verify`.
+
+The six-row local bundle is
+`evidence/crouzeix_conjecture/local_formalization/manifest.tsv` with SHA-256
+`efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+Its rows bind the terminal declarations
+`CrouzeixConjecture.crouzeixConjecture`,
+`CrouzeixConjecture.loristSchwenningerMainTheorem`, and
+`CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem`, plus the closed-range
+consequence declarations
+`CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet`,
+`CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`,
+and
+`CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet`.
+The Lorist-Schwenninger closed-range row uses `source_node_id` `-`, so the
+bundle certifies that consequence without attributing it to a named route node.
+
 The approved experiment contract is
 `docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-design.md`.

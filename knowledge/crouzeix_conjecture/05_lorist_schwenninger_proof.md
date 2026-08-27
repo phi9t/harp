@@ -4,7 +4,7 @@ title: Lorist-Schwenninger 2-dilation proof
 type: derivation
 status: active
 created: 2026-08-14
-updated: 2026-08-20
+updated: 2026-08-26
 tags: [crouzeix-conjecture, lorist-schwenninger, dilation, perturbation]
 confidence: medium
 canonical: 05_lorist_schwenninger_proof.md
@@ -41,6 +41,18 @@ The commutation hypothesis is used when adjacent powers are combined in the
 recurrence. Uniform boundedness controls the terminal term and verifies the
 interface in the numerical-range application.
 
+Harp's published local route for this source-faithful proof is now the
+`complete-local` receipt
+[[evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json|lorist-schwenninger route receipt]]
+with matching
+[[evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json|route review]].
+That review records `source_fidelity_check` as `passed`.
+That local publication binds the terminal theorem
+`CrouzeixConjecture.loristSchwenningerMainTheorem` and the closed-range
+consequence
+`CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`.
+It does not claim peer review or complete boundedness.
+
 ## Equation 1 controls the terminal term {#equation-one-controls-the-terminal-term}
 
 Let
@@ -73,8 +85,10 @@ lemma for the abstract finite-dimensional perturbation interface:
 in `formalization/lean/Crouzeix/LoristSchwenninger/Perturbation.lean`.
 The proof-slice receipt is
 [[labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/proof-slices/ls-equation-one-terminal-bound/attempt-001/receipt.json|ls-equation-one-terminal-bound/attempt-001]].
-This is not yet a proof of Lemma 1: the operator recurrence below and the
-double-layer realization remain separate formal obligations.
+This support lemma is narrower than the published route theorem: it isolates
+the terminal product bound used inside the finite-dimensional perturbation
+argument, while the published `complete-local` route receipt covers the full
+terminal theorem and its closed-range consequence surface.
 
 ## The perturbation recurrence {#the-perturbation-recurrence}
 

@@ -4,7 +4,7 @@ title: Jin Lean verification audit
 type: deep-dive
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-26
 tags: [crouzeix-conjecture, lean, formal-verification, source-audit]
 confidence: medium
 canonical: 07_jin_lean_verification.md
@@ -17,8 +17,10 @@ canonical: 07_jin_lean_verification.md
 > verification logs live under `evidence/`.
 
 This chapter distinguishes source-level theorem structure, author-maintained
-correspondence records, Harp's local scan observations, and the clean-room
-builds that did not run because the disk preflight blocked them.
+correspondence records, Harp's local scan observations, the clean-room
+builds that did not run because the disk preflight blocked them, and the
+separate Harp-local `complete-local` route certification artifacts now
+published under `evidence/crouzeix_conjecture/routes/jin/`.
 
 ## Revision identities {#revision-identities}
 
@@ -92,6 +94,20 @@ The rational declarations specialize the holomorphic result under pole
 freeness. The least-constant declaration uses the finite two-dimensional
 sharpness witness.
 
+Harp's local certification surface keeps the finite-dimensional theorem and
+its downstream consequences separate. The Jin route manifest records terminal
+declaration `CrouzeixConjecture.crouzeixConjecture` together with consequence
+declarations `CrouzeixConjecture.crouzeixRationalBound`,
+`CrouzeixConjecture.hilbertSpacePolynomialCrouzeix`, and
+`CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet`
+([[evidence/crouzeix_conjecture/routes/jin/receipt.json|route receipt]],
+[[evidence/crouzeix_conjecture/reviews/jin.json|route review]]).
+That is a Harp-local `complete-local` statement about named declarations,
+not a claim that the upstream Jin checkout completed a clean-room build.
+In reader-facing terms, the current local publication surface covers the
+finite-dimensional polynomial theorem, the scalar rational consequence surface,
+and the Hilbert-space consequence surface.
+
 ## Exported polynomial theorem {#exported-polynomial-theorem}
 
 **[[knowledge/crouzeix_conjecture/claim_evidence_ledger#CC-020: Lean exports the polynomial theorem|EVIDENCE - CC-020]].**
@@ -107,6 +123,17 @@ Its body calls `holomorphicCrouzeixBound`, rewrites holomorphic evaluation to
 polynomial evaluation, and simplifies the maximum-modulus definition. This is
 a direct source observation. Harp did not complete an independent build of the
 declaration.
+
+The Harp-local route certification is stronger on the exact local declaration
+surface and narrower on claim ceiling. The published Jin route receipt records
+status `passed`, route ID `jin`, allowed axioms
+`Classical.choice`, `Quot.sound`, and `propext`, and a `complete-local`
+publication state keyed by raw receipt hash
+`5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331`
+with matching review hash
+`a1962f75a98a3ebf73ee33a472ace2c4ff91eead538156f777b8dcf21dcddb4e`
+([[evidence/crouzeix_conjecture/routes/jin/receipt.json|receipt]],
+[[evidence/crouzeix_conjecture/reviews/jin.json|review]]).
 
 ## Formalized mechanism map {#formalized-mechanism-map}
 
@@ -177,7 +204,7 @@ double-layer, outer-limit, polynomial, rational, and Hilbert-space layers.
 Without a completed Harp build, the strongest local statement is that these
 audit artifacts exist at the pinned revisions and their bytes are receipt-bound.
 
-## Harp-local proof-slice receipts {#harp-local-proof-slice-receipts}
+## Harp-local route and proof-slice receipts {#harp-local-route-and-proof-slice-receipts}
 
 Harp also maintains a local source-mapped Lean port under the shared
 formalization root. The current proof-slice chain is:
@@ -192,6 +219,24 @@ These receipts are Harp-local proof checks against
 `formalization/lean/Crouzeix/Jin/`, not clean-room builds of the upstream Jin
 repository. The receipt chain is validated by the Crouzeix proof-slice tests
 and by the shared-root Lean build.
+
+The route-level publication adds the consequence boundary that the older
+packet did not yet surface. In the six-row local bundle,
+`CrouzeixConjecture.crouzeixConjecture` and
+`CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet` are both
+certified rows for route `jin`
+([[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|bundle manifest]]).
+That bundle has six data rows and aggregate SHA-256
+`efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+
+The resulting claim ceiling is:
+
+1. upstream Jin source inspection supports the source-level theorem graph and
+   revision-specific correspondence discussion;
+2. upstream Jin clean-room builds remain blocked by disk preflight; and
+3. Harp-local `complete-local` certification now covers the finite-dimensional
+   polynomial theorem, scalar rational consequence surface, and Hilbert-space
+   consequence surface for the local Jin route declarations named above.
 
 Even a successful `#print axioms` result would trust Lean's kernel, Mathlib, the
 formal definitions, the compiler/runtime used to build them, and the

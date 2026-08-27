@@ -4,7 +4,7 @@ title: Comparison of the Jin and Lorist-Schwenninger proofs
 type: deep-dive
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-26
 tags: [crouzeix-conjecture, proof-comparison, positive-real, dilation]
 confidence: medium
 canonical: 06_proof_comparison.md
@@ -29,7 +29,7 @@ different notation.
 | Decisive estimate | Origin sample cancels the diagonal correction; sampled positivity compares weighted Gramians | Completing the square produces a scalar recurrence; a terminal estimate and singular-vector inequality rule out $\kappa>2$ |
 | Order-sensitive input | $YG^{-1}P$, $PG^{-1}Y$, and the two Gramian weights cannot be collapsed or reordered | $E_nT=TE_n$ is needed to link adjacent recurrence terms |
 | Double-layer route | Positive unital map applied to the full Cayley family creates $H$ and an adjoint-algebra defect | Boundary-density Stinespring form creates $V,Q$, while $\alpha(f^n)(A)$ supplies $E_n$ |
-| Formalization evidence | Source-level Lean theorem graph and pinned audit; Harp build blocked by disk preflight | No formalization registered in the inspected arXiv bundle |
+| Formalization evidence | Source-level Lean theorem graph and pinned audit; upstream Harp clean-room build blocked by disk preflight, but Harp-local route certification is `complete-local` for the Jin terminal and consequence declarations | Harp-local route certification is `complete-local` for the Lorist-Schwenninger terminal theorem and closed-range consequence, with source-faithful review and `source_fidelity_check` passed |
 | Completely bounded limitation | No direct matrix-amplified conclusion established | Source says commutation is unavailable after amplification |
 
 ## Shared structure without equivalence {#shared-structure-without-equivalence}
@@ -79,13 +79,51 @@ modular Stinespring-style extension.
 ## Evidence asymmetry {#evidence-asymmetry}
 
 The mathematical comparison is source-backed, but the verification evidence is
-asymmetric. Jin's repository exposes Lean source, declaration maps, audits, and
-revision history. Lorist-Schwenninger arXiv v1 exposes TeX and PDF but no
-registered formalization. Harp's local scans cover only the two Jin revisions,
-and both Lean builds remain blocked.
+still asymmetric. Jin's repository exposes Lean source, declaration maps,
+audits, and revision history. Lorist-Schwenninger arXiv v1 exposes TeX and PDF
+but no upstream registered formalization. Harp's local scans cover only the two
+Jin revisions, and both upstream Jin clean-room builds remain blocked.
+
+The Harp-local certification surface is broader than the earlier packet state.
+The Jin, Lorist-Schwenninger, and Harp routes each now have published
+`complete-local` receipts and matching reviews
+([[evidence/crouzeix_conjecture/routes/jin/receipt.json|jin]],
+[[evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json|lorist-schwenninger]],
+[[evidence/crouzeix_conjecture/routes/harp/receipt.json|harp]]).
+For the certified Lorist-Schwenninger route in particular, the local review is
+source-faithful and records `source_fidelity_check` as `passed`.
+The six-row bundle
+([[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest]])
+binds terminal and closed-range rows for all three routes, with aggregate
+SHA-256 `efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
 
 That asymmetry is a reason to separate proof mechanism from verification
 status, not a reason to rank the mathematical arguments.
+
+## Harp derivation boundary {#harp-derivation-boundary}
+
+Harp's route is not mathematically independent of Lorist-Schwenninger. The
+published Harp route review marks derivation reuse as passed, and the Harp
+manifest records exactly eleven approved lower-level Lorist-Schwenninger reuse
+modules:
+
+1. `BoundarySquareRoot`
+2. `BoundaryEmbedding`
+3. `BoundaryMultiplier`
+4. `CompressionMoments`
+5. `Dilation`
+6. `NormAttainment`
+7. `CompletedSquare`
+8. `CompanionAlgebra`
+9. `PolynomialPowerCauchy`
+10. `Recurrence`
+11. `Scalar`
+
+After those reused modules, Harp derives its own finite cubature, finite-horizon
+recurrence, perturbation endpoint, terminal theorem, and closed-range
+consequence. The safe statement is therefore: Harp is a derived route with
+exactly eleven approved lower-level Lorist-Schwenninger support modules, not a
+mathematically independent third proof.
 
 ## Common limitation {#common-limitation}
 

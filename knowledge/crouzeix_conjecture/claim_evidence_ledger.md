@@ -4,7 +4,7 @@ title: Crouzeix conjecture claim-evidence ledger
 type: claim-ledger
 status: active
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-26
 tags: [crouzeix-conjecture, claims, evidence, provenance]
 confidence: medium
 canonical: claim_evidence_ledger.md
@@ -19,6 +19,26 @@ canonical: claim_evidence_ledger.md
 The ledger fixes the packet's material claims. A local locator proves that Harp
 inspected a particular receipt or observation; it does not inherit the truth of
 the upstream theorem.
+
+Route publication and bundle publication are separate local evidence channels.
+The three route receipts and reviews live under `evidence/crouzeix_conjecture/routes/`
+and `evidence/crouzeix_conjecture/reviews/`, while the aggregate six-row local
+bundle is
+[[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest.tsv]]
+([exact lines 1–7](../../evidence/crouzeix_conjecture/local_formalization/manifest.tsv#L1))
+with SHA-256 `efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+Those records bind Harp's current `complete-local` ceiling; they do not widen
+the packet into a peer-review, publication, or mathematical-independence claim.
+
+The published route and review hashes are:
+
+- Jin route file: `evidence/crouzeix_conjecture/routes/jin/receipt.json`; review file: `evidence/crouzeix_conjecture/reviews/jin.json`.
+- Lorist-Schwenninger route file: `evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json`; review file: `evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json`.
+- Harp route file: `evidence/crouzeix_conjecture/routes/harp/receipt.json`; review file: `evidence/crouzeix_conjecture/reviews/harp.json`.
+- Aggregate bundle file: `evidence/crouzeix_conjecture/local_formalization/manifest.tsv`.
+- Jin route `5931d52d80b2c2c6440900cc85d61cb48169c70e9803f0615ed4ade9b58c4331`, review `a1962f75a98a3ebf73ee33a472ace2c4ff91eead538156f777b8dcf21dcddb4e`.
+- Lorist-Schwenninger route `f672bb002c9d7ebc516683d61ba87b2c1ff2bed891daac0e6781aeb50cc7a01b`, review `9f3fa1cffafc84b82e64c406cd843f43bbb4b1fc83197d69ed44c3f36d921d0a`.
+- Harp route `5bc448e9a27968d6b73c7448fe72e41b52e2c1ec82d7b7ddf898dcf1aaa79883`, review `60e9bbc25979c8b2e4f38e0d03fa3fc68c8ff077949f94e81a024a56dd1957d6`.
 
 ## CC-001: Crouzeix constant-two conjecture {#cc-001-crouzeix-constant-two-conjecture}
 

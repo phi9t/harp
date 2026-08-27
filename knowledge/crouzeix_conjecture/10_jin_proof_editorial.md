@@ -4,7 +4,7 @@ title: Crouzeix, Jin, and why the proof is an engineering object
 type: editorial
 status: active
 created: 2026-08-20
-updated: 2026-08-20
+updated: 2026-08-26
 tags: [crouzeix-conjecture, jin-proof, lean, mathematical-engineering, frontier-lab]
 confidence: medium
 canonical: 10_jin_proof_editorial.md
@@ -328,6 +328,19 @@ This does not mean every surrounding mathematical or publication question is
 settled. It means the proof discussion now has a machine-checkable spine:
 there is a named theorem, a locked statement identity, a compiled terminal
 assembly, and receipts for the proof slices Harp claims to have run.
+
+The current publication surface is broader than the early proof-slice story but
+still local in claim level. Harp has now published a `complete-local` Jin route
+receipt
+[[evidence/crouzeix_conjecture/routes/jin/receipt.json|route receipt]] and
+matching [[evidence/crouzeix_conjecture/reviews/jin.json|review]] for the
+finite-dimensional polynomial theorem
+`CrouzeixConjecture.crouzeixConjecture`, the scalar rational consequence
+`CrouzeixConjecture.crouzeixRationalBound`, and the Hilbert-space consequence
+`CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet`. Those local
+artifacts are also reflected in the six-row bundle
+[[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest]]
+([exact lines 1–7](../../evidence/crouzeix_conjecture/local_formalization/manifest.tsv#L1)).
 
 ## The status boundary {#the-status-boundary}
 

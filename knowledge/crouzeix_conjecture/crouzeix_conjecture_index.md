@@ -4,7 +4,7 @@ title: Crouzeix conjecture two-proof index
 type: index
 status: active
 created: 2026-08-14
-updated: 2026-08-20
+updated: 2026-08-26
 tags: [crouzeix-conjecture, numerical-range, spectral-set, formal-verification]
 confidence: medium
 canonical: crouzeix_conjecture_index.md
@@ -61,11 +61,33 @@ by either source.
 - Lorist-Schwenninger is pinned to arXiv `2608.03841v1`.
 - Harp's source scans passed. Both clean-room Lean build attempts are recorded
   as `blocked` by the 8 GiB disk preflight, not passed or failed.
-- Separately, Harp's shared Lean root contains a local source-mapped Jin proof
-  chain with passing terminal proof-slice receipts, plus Lorist-Schwenninger
-  support slices for the Equation 1 terminal bound and scalar contradiction
-  endpoint. The Lorist-Schwenninger terminal theorem remains blocked on the
-  operator recurrence, perturbation lemma, and double-layer realization.
+- Separately, Harp's shared Lean root now has three published `complete-local`
+  route certifications:
+  [[evidence/crouzeix_conjecture/routes/jin/receipt.json|jin route receipt]]
+  with matching
+  [[evidence/crouzeix_conjecture/reviews/jin.json|review]],
+  [[evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json|lorist-schwenninger route receipt]]
+  with matching
+  [[evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json|review]],
+  and [[evidence/crouzeix_conjecture/routes/harp/receipt.json|harp route receipt]]
+  with matching [[evidence/crouzeix_conjecture/reviews/harp.json|review]].
+- Their terminal declarations are exactly
+  `CrouzeixConjecture.crouzeixConjecture`,
+  `CrouzeixConjecture.loristSchwenningerMainTheorem`, and
+  `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem`.
+- The local bundle
+  [[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest.tsv]]
+  has six certified rows and SHA-256
+  `efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+- The closed-range consequence declarations are exactly
+  `CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet`,
+  `CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`,
+  and
+  `CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet`.
+- Harp remains a derived route, not a mathematically independent proof. Its
+  manifest reuses exactly eleven approved lower-level
+  Lorist-Schwenninger support modules before deriving the finite-horizon
+  cubature, recurrence, perturbation, and terminal layers.
 
 See the [[knowledge/crouzeix_conjecture/source_registry|source registry]], [[knowledge/crouzeix_conjecture/claim_evidence_ledger|claim ledger]],
 and [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|critical assessment]] for exact

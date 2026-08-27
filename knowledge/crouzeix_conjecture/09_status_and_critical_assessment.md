@@ -4,7 +4,7 @@ title: Crouzeix proof status and critical assessment
 type: deep-dive
 status: active
 created: 2026-08-14
-updated: 2026-08-20
+updated: 2026-08-26
 tags: [crouzeix-conjecture, publication-status, critical-review, missing-evidence]
 confidence: medium
 canonical: 09_status_and_critical_assessment.md
@@ -31,24 +31,54 @@ Jin's repository also contains a broad Lean development whose source-level
 declaration graph matches the advertised route. Harp's scans found no
 prohibited tokens. Harp did not complete either clean-room build of Jin's
 upstream repository revision because the disk policy blocked cache
-materialization. Separately, Harp now has a local Jin Lean port whose terminal
-polynomial assembly compiles under the shared root with proof-slice receipts.
-For the Lorist-Schwenninger route, Harp has two compiled Lean support slices:
-the Equation 1 terminal-product boundedness estimate for the abstract
-perturbation interface, and the final scalar-algebra contradiction showing that
-the stated recurrence and upper-bound inequalities imply `κ ≤ 2`. The operator
-recurrence, full perturbation lemma, and double-layer application are still
-open formalization work.
+materialization.
+
+Separately, Harp's shared Lean root now has three published `complete-local`
+route certifications with matching reviews:
+
+- Jin:
+  [[evidence/crouzeix_conjecture/routes/jin/receipt.json|route receipt]] and
+  [[evidence/crouzeix_conjecture/reviews/jin.json|review]]
+- Lorist-Schwenninger:
+  [[evidence/crouzeix_conjecture/routes/lorist-schwenninger/receipt.json|route receipt]]
+  and
+  [[evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json|review]]
+- Harp:
+  [[evidence/crouzeix_conjecture/routes/harp/receipt.json|route receipt]] and
+  [[evidence/crouzeix_conjecture/reviews/harp.json|review]]
+
+Their exact terminal declarations are:
+
+- `CrouzeixConjecture.crouzeixConjecture`
+- `CrouzeixConjecture.loristSchwenningerMainTheorem`
+- `CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem`
+
+The six-row bundle
+([[evidence/crouzeix_conjecture/local_formalization/manifest.tsv|manifest.tsv]])
+adds the corresponding closed-range consequence rows and has aggregate
+SHA-256 `efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+Its Lorist-Schwenninger closed-range row records source_node_id as `-`, so that
+consequence is bundle-certified without claiming that the row comes from a
+named route node.
+
+The exact closed-range declarations are:
+
+- `CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet`
+- `CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`
+- `CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet`
 
 The strongest justified status is therefore:
 
-> two source-backed candidate proofs; one Harp-local source-mapped Lean port
-> with passing terminal proof-slice receipts for the polynomial route; two
-> compiled Lorist-Schwenninger support slices for the Equation 1 terminal bound
-> and scalar contradiction endpoint;
-> upstream clean-room Jin repository builds, publication status, Preprints.org
-> byte identity, and independent mathematical review remain open evidence
-> channels.
+> two source-backed candidate proofs plus one Harp-derived local route; three
+> Harp-local `complete-local` route certifications for the exact terminal
+> declarations above; three corresponding closed-range consequence rows in the
+> six-row local bundle; and allowed theorem axioms restricted to
+> `Classical.choice`, `Quot.sound`, and `propext`.
+> The three named route reviews are complete within Harp's local certification boundary, while broader external or peer mathematical scrutiny,
+> publication status, upstream clean-room Jin repository builds,
+> Preprints.org byte identity, author endorsement, peer review outside those
+> local route reviews, and complete boundedness remain outside Harp's local
+> certification.
 
 ## Jin Git manuscript versus Preprints.org metadata {#jin-git-manuscript-versus-preprints-metadata}
 
@@ -90,10 +120,13 @@ The registered artifact is arXiv `2608.03841v1`, with versioned TeX, PDF, Atom
 metadata, and source-archive digests. Harp has no peer-review, acceptance, or
 journal-publication receipt for this proof. Its mathematical claims remain
 preprint claims even though the packet reproduces the core derivation. Harp's
-current Lean surface formalizes the abstract perturbation data, the direct
-Equation 1 product-bound estimate, and the scalar contradiction above two from
-the recurrence/output inequalities. It does not yet formalize the operator
-recurrence, full perturbation lemma, or double-layer realization.
+current local certification surface includes complete-local route publication
+for `CrouzeixConjecture.loristSchwenningerMainTheorem` plus a six-row bundle
+row for
+`CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet`.
+That certified local route is source-faithful, and its review records
+`source_fidelity_check` as `passed`. This is a local declaration-certification
+statement only; it is not a journal or external peer-review claim.
 
 The note itself reports that Jin's proof appeared independently and uses a
 different approach. That statement is preserved as the authors' report, not as
@@ -127,6 +160,9 @@ line-by-line verification:
   differently.
 - Neither direct route establishes the completely bounded case.
 - Both AI disclosures lack underlying interaction transcripts.
+- Harp's route review explicitly treats Harp as derived, reusing exactly eleven approved lower-level Lorist-Schwenninger support modules rather than constituting a mathematically independent third proof.
+- Harp is not mathematically independent of the Lorist-Schwenninger support
+  stack that it reuses.
 
 The two mechanisms are independent enough to be valuable cross-checks at the
 architecture level, but they can still share an error in a common prerequisite
