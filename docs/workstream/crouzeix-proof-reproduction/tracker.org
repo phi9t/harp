@@ -7303,16 +7303,16 @@ payload-digest refresh, and local fast-forward landing.
 - Kata =harp#jzg9= was closed after the verified closeout commit landed on local
   =master=.
 
-** TODO Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
+** DONE Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
 :PROPERTIES:
 :ID: CPFR-091
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
 :BRANCH: chore/cpfr-091-crouzeix-worktree-audit
 :WORKTREE: .worktrees/cpfr-091-crouzeix-worktree-audit
 :DEPENDS_ON: CPFR-090
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: bytedance
+:AGENT_RUN: /root/cpfr091-closeout
+:MODEL: GPT-5.4-controller
 :END:
 Audit and retire only clean, inactive Crouzeix worktrees and branches whose
 history is fully represented on =master=.
@@ -7396,3 +7396,7 @@ dependency order and reconcile the remaining state.
   =30248fd543222ce8e53c1409aa06e8f4335f651c52160cf059dd6d63ffebe29f=.
 - Primary-checkout tracked state is clean, and its unrelated untracked paths
   remain untouched.
+- The reviewed audit commit landed by fast-forward on local =master= at
+  =87f5130b3415ffc628217f33b24294c9b1c36b89=, tree
+  =6e0f1b8f7ebcda7d8d60db60b86ee9dda60d74d5=. Kata closure remains the
+  controller's final external bookkeeping step.
