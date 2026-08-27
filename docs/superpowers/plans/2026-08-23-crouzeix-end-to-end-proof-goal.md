@@ -1904,15 +1904,15 @@ conditions.
 ## Completion footer
 
 ```yaml
-goal_status: in-progress
-jin: incomplete
-lorist_schwenninger: incomplete
-harp: incomplete
-local_bundle: absent-or-optional
-reader_surfaces: unreconciled
-program_verifier: pending
-master_landing: null
-worktree_audit: pending
-post_execution_review: pending
-plan_revision: null
+goal_status: complete
+jin: complete-local
+lorist_schwenninger: complete-local
+harp: complete-local
+local_bundle: required-and-valid
+reader_surfaces: reconciled
+program_verifier: passed
+master_landing: 98af685eabda905076879c15920f2fb7d526b632
+worktree_audit: passed
+post_execution_review: passed
+plan_revision: cf42ba921eff48a7908c3aa335346ad74d67caa3
 ```

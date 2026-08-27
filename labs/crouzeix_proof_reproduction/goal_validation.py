@@ -32,6 +32,7 @@ GIT_POLL_INTERVAL_SECONDS = 0.01
 PLAN_BYTES_CAP = 1024 * 1024
 LEDGER_BYTES_CAP = 256 * 1024
 ARTIFACT_BYTES_CAP = 1024 * 1024
+READER_ARTIFACT_BYTES_CAP = 4 * 1024 * 1024
 FOOTER_ORDER = (
     "goal_status",
     "jin",
@@ -882,14 +883,14 @@ def _validate_reader_surfaces(repository_root: Path) -> tuple[str, ...]:
         repository_root,
         READER_EVIDENCE_PATHS[0],
         label="atlas artifact",
-        max_bytes=ARTIFACT_BYTES_CAP,
+        max_bytes=READER_ARTIFACT_BYTES_CAP,
         missing_message="generated-reader receipt is required",
     )
     html_bytes = _read_repository_artifact(
         repository_root,
         READER_EVIDENCE_PATHS[1],
         label="atlas artifact",
-        max_bytes=ARTIFACT_BYTES_CAP,
+        max_bytes=READER_ARTIFACT_BYTES_CAP,
         missing_message="generated-reader receipt is required",
     )
     if receipt.get("corpus_sha256") != _sha256_bytes(corpus_bytes):

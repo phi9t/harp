@@ -44,6 +44,7 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
         text=True,
         capture_output=True,
         check=False,
+        timeout=300,
     )
 
 
@@ -266,15 +267,21 @@ class GoalValidationTests(unittest.TestCase):
             + "\t\t\t\t\t\n"
         )
 
-    def test_validate_goal_cli_reports_next_incomplete_phase(self) -> None:
+    def test_validate_goal_cli_reports_complete_goal(self) -> None:
         result = run_cli("validate-goal")
 
-        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.returncode, 0)
         payload = json.loads(result.stdout)
-        self.assertEqual(payload["status"], "incomplete")
-        self.assertEqual(payload["goal_status"], "in-progress")
-        self.assertEqual(payload["earliest_incomplete_phase"], "phase-8-plan-review")
-        self.assertEqual(payload["verified_commits"], [])
+        self.assertEqual(payload["status"], "complete")
+        self.assertEqual(payload["goal_status"], "complete")
+        self.assertIsNone(payload["earliest_incomplete_phase"])
+        self.assertEqual(
+            payload["verified_commits"],
+            [
+                "98af685eabda905076879c15920f2fb7d526b632",
+                "cf42ba921eff48a7908c3aa335346ad74d67caa3",
+            ],
+        )
         self.assertIn(
             "docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv",
             payload["evidence_paths"],
@@ -335,6 +342,7 @@ class GoalValidationTests(unittest.TestCase):
                 text=True,
                 capture_output=True,
                 check=False,
+                timeout=300,
             )
 
             after = {
@@ -342,7 +350,8 @@ class GoalValidationTests(unittest.TestCase):
                 for path in (GOAL_PLAN, LEDGER_PATH)
             }
 
-        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)["status"], "complete")
         self.assertFalse(marker.exists(), "validate-goal invoked lean or lake")
         self.assertEqual(before, after, "validate-goal wrote to tracked inputs")
 
@@ -877,6 +886,44 @@ class GoalValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "atlas receipt corpus_sha256 mismatch"):
                 goal_validation._validate_reader_surfaces(root)
 
+    def test_reader_surfaces_accept_current_sized_members_but_remain_bounded(self) -> None:
+        from labs.crouzeix_proof_reproduction import goal_validation
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            corpus = self.write_bytes(
+                root,
+                "atlas/src/content/generated/corpus.json",
+                b"c" * (goal_validation.ARTIFACT_BYTES_CAP + 1),
+            )
+            html = self.write_bytes(
+                root,
+                "atlas/dist/harp-atlas.html",
+                b"h" * (2 * goal_validation.ARTIFACT_BYTES_CAP + 1),
+            )
+            self.write_text(
+                root,
+                "atlas/dist/harp-atlas.receipt.json",
+                json.dumps(
+                    {
+                        "schema_version": "harp-atlas-export/v1",
+                        "corpus_sha256": sha256_bytes(corpus.read_bytes()),
+                        "app_inputs_sha256": "0" * 64,
+                        "html_sha256": sha256_bytes(html.read_bytes()),
+                    }
+                )
+                + "\n",
+            )
+
+            self.assertEqual(
+                goal_validation._validate_reader_surfaces(root),
+                goal_validation.READER_EVIDENCE_PATHS,
+            )
+
+            html.write_bytes(b"h" * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1))
+            with self.assertRaisesRegex(ValueError, "atlas artifact exceeds cap"):
+                goal_validation._validate_reader_surfaces(root)
+
     def test_git_adapter_rejects_timeout_overflow_and_malformed_output(self) -> None:
         from labs.crouzeix_proof_reproduction import goal_validation
 
@@ -1099,7 +1146,11 @@ class GoalValidationTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            self.write_bytes(root, "atlas/src/content/generated/corpus.json", b"a" * (1024 * 1024 + 1))
+            self.write_bytes(
+                root,
+                "atlas/src/content/generated/corpus.json",
+                b"a" * (4 * 1024 * 1024 + 1),
+            )
             self.write_text(root, "atlas/dist/harp-atlas.html", "<html></html>\n")
             self.write_text(
                 root,
