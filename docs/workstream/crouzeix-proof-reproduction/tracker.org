@@ -7217,8 +7217,8 @@ and generated reader artifacts to reflect exact route claim levels.
 :PROPERTIES:
 :ID: CPFR-090
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: review/cpfr-090-three-route-finalization
+:WORKTREE: .worktrees/cpfr-090-three-route-finalization
 :DEPENDS_ON: CPFR-089
 :OWNER: unassigned
 :AGENT_RUN: unassigned
@@ -7261,7 +7261,42 @@ payload-digest refresh, and local fast-forward landing.
 - =cargo run -q -p harp -- repository verify=
 
 *** Verification Evidence
-Pending implementation.
+- Program Spec review =/root/cpfr090_program_spec= and Program Standards review
+  =/root/cpfr090_program_standards= both reported =PASS= with zero Critical,
+  zero Important, and zero Minor findings for frozen commit
+  =e08152dbf507dcc07261aa073973c8ea4a274ef2=, tree
+  =d33097a5f4173b551fa023ded002e584dbc51963=.
+- The exact ordered release sequence ran under Seatbelt and passed in 1,015
+  seconds: all-route preflight, all-route validation, the =CrouzeixJin=,
+  =CrouzeixLoristSchwenninger=, and =CrouzeixHarp= library checks, then the full
+  =mise run verify= gate. The combined ignored diagnostic log has SHA-256
+  =099b9346876af6acab84b48a44048b2b6180a08a8d92fdc415bfbd4d84921e5f=.
+- Jin built 3,407 jobs in 25 seconds, Lorist--Schwenninger built 3,386 jobs in
+  10 seconds, Harp built 3,395 jobs in 16 seconds, and =lean-all= built 8,775
+  jobs in 33 seconds. All three routes validate =complete-local= with exactly
+  =Classical.choice=, =Quot.sound=, and =propext=. Harp remains a derived route
+  that reuses exactly eleven approved lower-level LS modules; it is not
+  mathematically independent.
+- The repository gate passed 63 Atlas tests and one static export test, 859 Rust
+  tests, 13 Meta-Harness tests, and 773 Crouzeix Python tests with three skips.
+  Source verification reported 477 artifacts and 189 snapshots; repository
+  verification reported 521 rows. The canonical 123,454-record Lean cache was
+  unchanged at SHA-256
+  =30248fd543222ce8e53c1409aa06e8f4335f651c52160cf059dd6d63ffebe29f=.
+- The 85-case Seatbelt probe matrix passed all cases: 39 allowed and 46 denied.
+  The policy, wrapper, and probe-matrix SHA-256 values are recorded in
+  =program-verification-003.json= together with all route, review, bundle, and
+  reader-surface digests and theorem/claim boundaries.
+- Shared Atlas dependency metadata changed from roster digest
+  =63736943b8a15dfe8af61db91c18e3a3478101ab42d46f3c46158da523de04fc= to
+  =ebbc88f78e8bc028ea927282a29848e2ea88164019a3e13b5bbfb6bf659cd7d4=
+  while its 9,201-record count and package, lock, and modules hashes stayed
+  unchanged. No process was active at follow-up; an isolated Seatbelt
+  =verify-atlas= passed and changed zero entries. This is recorded as an
+  external volatile-metadata caveat, not strict full-window invariance.
+- CPFR-090 remains =TODO=. Pending controller work is the final
+  =docs/import-receipt.md= refresh, the final full gate over closeout metadata,
+  focused commit, local fast-forward, =landed= ledger row, and Kata closure.
 
 ** TODO Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
 :PROPERTIES:
