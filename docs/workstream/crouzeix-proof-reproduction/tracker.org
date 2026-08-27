@@ -7300,53 +7300,99 @@ payload-digest refresh, and local fast-forward landing.
 - The final full gate (pass2) completed under Seatbelt and passed with exit code
   0 in 684.230117 seconds. The pass2 log is at
   =.build/cpfr090-program-gate/final-full-gate-pass2.log=.
-- Only Kata closure remains pending while this closeout commit is prepared.
+- Kata =harp#jzg9= was closed after the verified closeout commit landed on local
+  =master=.
 
 ** TODO Audit And Retire Superseded Crouzeix Worktrees :git:hygiene:ticket:
 :PROPERTIES:
 :ID: CPFR-091
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: chore/cpfr-091-crouzeix-worktree-audit
+:WORKTREE: .worktrees/cpfr-091-crouzeix-worktree-audit
 :DEPENDS_ON: CPFR-090
 :OWNER: unassigned
 :AGENT_RUN: unassigned
 :MODEL: unassigned
 :END:
-Classify every remaining Crouzeix branch and worktree before safe local cleanup.
+Audit and retire only clean, inactive Crouzeix worktrees and branches whose
+history is fully represented on =master=.
 
 *** Scope
-Record current heads, unique commits, tracked and untracked state, process use,
-and containment in =master=; remove only clean fully represented worktrees.
+Record current heads, merge bases, divergence, patch-equivalence deltas, dirty
+counts, active-process observations, and Atlas cache dependencies for every
+Crouzeix branch and worktree; then remove only the reviewed safe candidates in
+dependency order and reconcile the remaining state.
 
 *** Non-goals
-- No deletion of divergent commits or unexplained dirty state.
+- No Lean gate, full repository gate, commit, merge, push, or import-receipt
+  refresh before the cleanup inventory and reviews are complete.
 - No cleanup of unrelated non-Crouzeix worktrees.
+- No forced deletion or removal of dirty, divergent, active, cache-providing,
+  branch-only, or explicitly preserved work.
 
 *** Owned Files
 - =docs/workstream/crouzeix-proof-reproduction/worktree-inventory-002.md=
 - CPFR-091 tracker subtree
-- final receipt only if tracked documentation changes
+- =docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv=
 
 *** Acceptance Criteria
 - Every Crouzeix worktree and branch has an explicit disposition.
 - Dirty or divergent work remains preserved.
-- Only clean, merged worktrees and then their branches are removed.
-- Primary-checkout untracked paths remain untouched.
+- Cache-provider and cache-consumer ordering is recorded for CPFR-085 through
+  CPFR-090.
+- Only reviewed clean, inactive, contained, patch-equivalent worktrees and
+  then their branches are removed through the just-in-time deletion gate.
 
 *** Implementation Steps
-1. Capture status, head, merge base, unique commits, and active processes.
-2. Compare divergent commits by patch identity against =master=.
-3. Preserve or recover all unique work before removal.
-4. Remove only audited safe candidates.
-5. Update the inventory and verify final Git state.
+1. Capture status, head, merge base, divergence, and active-process state.
+2. Recompute =git cherry master= patch-equivalence notes for divergent refs.
+3. Re-scan Atlas =node_modules= providers and symlink consumers.
+4. Repair and independently review the inventory and cleanup procedure.
+5. Remove only the approved candidates in dependency order, then re-inventory
+   and verify the preserved state.
 
 *** Verification Plan
 - =git worktree list --porcelain=
 - =git branch --no-merged master=
 - per-worktree =git status --short --untracked-files=all=
 - per-branch =git merge-base --is-ancestor <branch> master=
+- per-branch =git cherry master <branch>=
+- Atlas cache provider/consumer symlink scan
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/tickets.py validate-tracker docs/workstream/crouzeix-proof-reproduction/tracker.org=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_execution_ledger -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_goal_validation -v=
+- =PYTHONDONTWRITEBYTECODE=1 python3 labs/crouzeix_proof_reproduction/proof_evidence.py validate-goal=
+- =git diff --check=
 
 *** Verification Evidence
-Pending implementation.
-- =git diff --check=: exit 0.
+- The pre-cleanup inventory records 29 attached Crouzeix/CPFR worktrees and
+  32 matching local branches: 11 branch heads are contained in =master= and
+  21 are not merged.
+- Five worktrees are dirty, including one quarantined index with 1,156 tracked
+  changes and 356 untracked paths; the other 24 are tracked-clean. All dirty
+  and patch-divergent states are preserved.
+- =git cherry master <branch>= found patch-unique commits on every non-contained
+  branch. None is authorized for removal.
+- The cache-consumer scan keeps CPFR-085 as the Atlas-cache provider for the
+  user-preserved CPFR-090 worktree. CPFR-087, CPFR-088, and CPFR-089 must be
+  removed before CPFR-086 can be reconsidered.
+- The current removal proposal is limited to six clean, inactive, contained
+  worktrees and their branches, with CPFR-086 ordered after its three current
+  consumers.
+- The six reviewed candidates were removed non-forcibly in dependency order,
+  followed by branch deletion with =git branch -d=. The post-cleanup state has
+  23 attached Crouzeix/CPFR worktrees, 26 matching local branches, five
+  contained branches, and 21 unmerged branches.
+- CPFR-085 remains as the Atlas-cache provider for the user-preserved CPFR-090
+  worktree. Every dirty, patch-divergent, branch-only, and explicitly preserved
+  state remains intact.
+- Fresh post-cleanup Spec and Standards reviews both report =PASS= with zero
+  Critical, Important, or Minor findings for inventory digest
+  =3bef1b809a351b08b112aa5531637e84ec029d433f3b8e6ad0f4283c18e32ded=.
+- The post-cleanup definitive full release gate passed in 604 seconds: 859 Rust tests,
+  773 Crouzeix Python tests with three skips, 8,775 Lean jobs in 28 seconds,
+  477 evidence artifacts, 189 snapshots, and 521 repository rows. The
+  123,454-record Lean dependency cache remained byte-identical at SHA-256
+  =30248fd543222ce8e53c1409aa06e8f4335f651c52160cf059dd6d63ffebe29f=.
+- Primary-checkout tracked state is clean, and its unrelated untracked paths
+  remain untouched.
