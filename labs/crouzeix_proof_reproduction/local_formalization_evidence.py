@@ -15,24 +15,37 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Callable, Mapping
 
-import ls_receipts
-import ls_contract
-import ls_validation
-import protocol
-import provider_independence
+if __package__:
+    from . import (
+        ls_contract,
+        ls_receipts,
+        ls_validation,
+        protocol,
+        provider_independence,
+        route_validation,
+    )
+else:  # pragma: no cover - direct script execution path
+    import ls_contract
+    import ls_receipts
+    import ls_validation
+    import protocol
+    import provider_independence
+    import route_validation
 
 
 HEADER = (
     "schema_version\tformalization_id\troute_id\tsource_node_id\t"
-    "declaration_name\tmodule_path\tmodule_sha256\treceipt_path\t"
-    "receipt_sha256\tbuild_command_path\tbuild_command_sha256\t"
+    "declaration_name\tmodule_path\tmodule_sha256\troute_manifest_path\t"
+    "route_manifest_sha256\troute_receipt_path\troute_receipt_sha256\t"
+    "route_review_path\troute_review_sha256\tbuild_command_path\t"
+    "build_command_sha256\t"
     "build_stdout_path\tbuild_stdout_sha256\tbuild_stderr_path\t"
     "build_stderr_sha256\taxiom_audit_path\taxiom_audit_sha256\t"
     "allowed_axioms\tobserved_axioms\tprovider_independence_path\t"
     "provider_independence_sha256\tlean_toolchain\t"
     "lean_toolchain_sha256\tlake_manifest_sha256\tstatus"
 )
-SCHEMA_VERSION = "crouzeix-local-formalization/v1"
+SCHEMA_VERSION = "crouzeix-local-formalization/v2"
 BUILD_SCHEMA_VERSION = "crouzeix-local-build-command/v1"
 PROVIDER_SCHEMA_VERSION = "crouzeix-provider-independence/v1"
 ALLOWED_AXIOMS = ("Classical.choice", "Quot.sound", "propext")
@@ -83,7 +96,7 @@ FORMALIZATIONS = (
     FormalizationSpec(
         "harp-closed-numerical-range",
         "harp",
-        "-",
+        "harp-closed-range-consequence",
         "CrouzeixConjecture."
         "harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
         "formalization/lean/Crouzeix/Harp/Consequences.lean",
@@ -91,9 +104,23 @@ FORMALIZATIONS = (
     FormalizationSpec(
         "harp-main-theorem",
         "harp",
-        "-",
+        "harp-terminal-theorem",
         "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
         "formalization/lean/Crouzeix/Harp/MainTheorem.lean",
+    ),
+    FormalizationSpec(
+        "jin-closed-numerical-range",
+        "jin",
+        "jin-hilbert-spectral-set-consequence",
+        "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet",
+        "formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+    ),
+    FormalizationSpec(
+        "jin-main-theorem",
+        "jin",
+        "jin-terminal-crouzeix",
+        "CrouzeixConjecture.crouzeixConjecture",
+        "formalization/lean/Crouzeix/Jin/Terminal.lean",
     ),
     FormalizationSpec(
         "ls-closed-numerical-range",
@@ -112,6 +139,7 @@ FORMALIZATIONS = (
     ),
 )
 
+JIN_ROOTS = ("CrouzeixJin",)
 HARP_ROOTS = (
     "Crouzeix.Harp.Consequences",
     "Crouzeix.Harp.FiniteAtomicL2Dilation",
@@ -189,6 +217,16 @@ class _TerminalEvidence:
     members: tuple[tuple[str, ls_receipts._FileSnapshot], ...]
 
 
+@dataclass(frozen=True)
+class _RouteEvidence:
+    manifest_path: str
+    manifest: ls_receipts._FileSnapshot
+    receipt_path: str
+    receipt: ls_receipts._FileSnapshot
+    review_path: str
+    review: ls_receipts._FileSnapshot
+
+
 _PINNED_STAGE_CLEANUP: ContextVar[
     tuple[ls_receipts._PinnedDirectory, ls_receipts._PinnedDirectory] | None
 ] = ContextVar("local_formalization_pinned_stage_cleanup", default=None)
@@ -204,7 +242,7 @@ def publish_local_formalization_evidence(
     *,
     executor: Executor | None = None,
 ) -> Publication:
-    """Build and create the exact four-row local evidence bundle once."""
+    """Build and create the exact six-row local evidence bundle once."""
 
     repository = _absolute_normalized(repository_root)
     _ensure_directory(repository, "repository root")
@@ -242,6 +280,7 @@ def publish_local_formalization_evidence(
         lake_manifest_sha256 = protocol.sha256_bytes(build_state.lake_manifest.data)
         modules = _snapshot_modules(repository)
         terminal = _snapshot_terminal_evidence(repository, modules["ls-main-theorem"])
+        routes = _snapshot_route_evidence(repository)
 
         run = executor or ls_receipts._subprocess_executor
         environment = ls_receipts._shared_environment()
@@ -293,6 +332,9 @@ def publish_local_formalization_evidence(
             "providers",
             "staged local formalization provider directory",
         )
+        route_directory = _create_directory_at(
+            staged_bundle, "routes", "staged local formalization route directory"
+        )
 
         stdout_path = _published_path("build/stdout.log")
         stderr_path = _published_path("build/stderr.log")
@@ -332,11 +374,14 @@ def publish_local_formalization_evidence(
             ][0]
         for route_id, report in reports.items():
             members[f"providers/{route_id}.json"] = _canonical_json_bytes(report)
+        for route_id, route in routes.items():
+            members[f"routes/{route_id}.manifest.json"] = route.manifest.data
+            members[f"routes/{route_id}.receipt.json"] = route.receipt.data
+            members[f"routes/{route_id}.review.json"] = route.review.data
         members[MANIFEST_NAME] = _manifest_bytes(
             members=members,
             modules=modules,
-            terminal_receipt_path=terminal.receipt_path,
-            terminal_receipt_sha256=terminal.receipt_sha256,
+            routes=routes,
             audits=audits,
             lean_toolchain=lean_toolchain,
             toolchain_sha256=toolchain_sha256,
@@ -349,6 +394,7 @@ def publish_local_formalization_evidence(
                     build_directory,
                     axiom_directory,
                     provider_directory,
+                    route_directory,
                     relative_path,
                 )
                 _write_bytes_create_only_at(
@@ -356,7 +402,7 @@ def publish_local_formalization_evidence(
                 )
         finally:
             _close_pinned_directories(
-                (build_directory, axiom_directory, provider_directory)
+                (build_directory, axiom_directory, provider_directory, route_directory)
             )
 
         _require_build_state(repository, build_state)
@@ -365,6 +411,10 @@ def publish_local_formalization_evidence(
                 "local formalization modules changed during evidence generation"
             )
         _require_terminal_evidence(repository, terminal, modules["ls-main-theorem"])
+        ls_receipts._require_descriptor_identity(
+            destination_parent, "local formalization evidence bundle parent"
+        )
+        _require_route_evidence(repository, routes)
         _require_staged_bundle(staged_bundle, members)
         _require_entry_absent(
             destination_parent, DESTINATION_NAME, "local formalization evidence bundle"
@@ -377,6 +427,10 @@ def publish_local_formalization_evidence(
                 "local formalization modules changed during evidence generation"
             )
         _require_terminal_evidence(repository, terminal, modules["ls-main-theorem"])
+        ls_receipts._require_descriptor_identity(
+            destination_parent, "local formalization evidence bundle parent"
+        )
+        _require_route_evidence(repository, routes)
         _require_staged_bundle(staged_bundle, members)
         _require_entry_absent(
             destination_parent, DESTINATION_NAME, "local formalization evidence bundle"
@@ -744,13 +798,18 @@ def _run_axiom_audits(
 def _provider_reports(lean_root: Path) -> dict[str, dict[str, object]]:
     reports: dict[str, dict[str, object]] = {}
     for route_id, roots, other_roots in (
+        ("jin", JIN_ROOTS, (*LS_ROOTS, *HARP_ROOTS)),
         ("harp", HARP_ROOTS, LS_ROOTS),
-        ("lorist-schwenninger", LS_ROOTS, HARP_ROOTS),
+        ("lorist-schwenninger", LS_ROOTS, (*HARP_ROOTS, *JIN_ROOTS)),
     ):
-        forbidden, forbidden_prefixes = ls_contract.provider_policy(
-            route_id,
-            tuple(sorted((*LEGACY_FORBIDDEN, *other_roots))),
-        )
+        if route_id == "jin":
+            forbidden = tuple(sorted(("Crouzeix", "CrouzeixLoristSchwenninger", "CrouzeixHarp")))
+            forbidden_prefixes = ("Crouzeix.LoristSchwenninger", "Crouzeix.Harp")
+        else:
+            forbidden, forbidden_prefixes = ls_contract.provider_policy(
+                route_id,
+                tuple(sorted((*LEGACY_FORBIDDEN, *other_roots))),
+            )
         try:
             report = provider_independence.audit_provider_independence(
                 lean_root,
@@ -805,12 +864,110 @@ def _snapshot_modules(repository: Path) -> dict[str, str]:
     return snapshots
 
 
+def _snapshot_route_evidence(repository: Path) -> dict[str, _RouteEvidence]:
+    snapshots: dict[str, _RouteEvidence] = {}
+    for route_id in route_validation.ROUTE_IDS:
+        result = route_validation.inspect_route(repository, route_id)
+        if result.status != "complete" or result.claim_level != "complete-local":
+            raise protocol.ValidationError(f"{route_id} route is not complete-local")
+        manifest_path = route_validation.ROUTE_MANIFEST_PATHS[route_id]
+        manifest_raw = route_validation._read_json(
+            repository, manifest_path, f"{route_id} route manifest"
+        )
+        if manifest_raw.get("route_id") != route_id:
+            raise protocol.ValidationError(f"{route_id} route manifest identity mismatch")
+        receipt_path = manifest_raw.get("receipt_path")
+        receipt_sha256 = manifest_raw.get("receipt_sha256")
+        review_path = manifest_raw.get("review_path")
+        review_sha256 = manifest_raw.get("review_sha256")
+        if not all(
+            isinstance(value, str) and value
+            for value in (receipt_path, receipt_sha256, review_path, review_sha256)
+        ):
+            raise protocol.ValidationError(
+                f"{route_id} route manifest lacks receipt or review binding"
+            )
+        try:
+            receipt_path = route_validation._safe_relative(
+                receipt_path, f"{route_id} route receipt path"
+            )
+            review_path = route_validation._safe_relative(
+                review_path, f"{route_id} route review path"
+            )
+        except route_validation.RouteValidationError as error:
+            raise protocol.ValidationError(
+                f"{route_id} route manifest has an unsafe publication path: {error}"
+            ) from error
+        snapshots[route_id] = _RouteEvidence(
+            manifest_path=manifest_path.as_posix(),
+            manifest=ls_receipts._read_file_snapshot(
+                repository / manifest_path, f"{route_id} route manifest", MAX_MEMBER_BYTES
+            ),
+            receipt_path=receipt_path,
+            receipt=ls_receipts._read_file_snapshot(
+                repository.joinpath(*PurePosixPath(receipt_path).parts),
+                f"{route_id} route receipt",
+                MAX_MEMBER_BYTES,
+            ),
+            review_path=review_path,
+            review=ls_receipts._read_file_snapshot(
+                repository.joinpath(*PurePosixPath(review_path).parts),
+                f"{route_id} route review",
+                MAX_MEMBER_BYTES,
+            ),
+        )
+        confirmed = route_validation.inspect_route(repository, route_id)
+        if confirmed.status != "complete" or confirmed.claim_level != "complete-local":
+            raise protocol.ValidationError(f"{route_id} route is not complete-local")
+        current = snapshots[route_id]
+        if (
+            ls_receipts._read_file_snapshot(
+                repository / manifest_path,
+                f"{route_id} route manifest",
+                MAX_MEMBER_BYTES,
+            )
+            != current.manifest
+            or ls_receipts._read_file_snapshot(
+                repository.joinpath(*PurePosixPath(receipt_path).parts),
+                f"{route_id} route receipt",
+                MAX_MEMBER_BYTES,
+            )
+            != current.receipt
+            or ls_receipts._read_file_snapshot(
+                repository.joinpath(*PurePosixPath(review_path).parts),
+                f"{route_id} route review",
+                MAX_MEMBER_BYTES,
+            )
+            != current.review
+        ):
+            raise protocol.ValidationError(
+                f"{route_id} route evidence changed during validation"
+            )
+    return snapshots
+
+
+def _require_route_evidence(
+    repository: Path, expected: Mapping[str, _RouteEvidence]
+) -> None:
+    try:
+        observed = _snapshot_route_evidence(repository)
+    except protocol.ValidationError as error:
+        if "evidence/crouzeix_conjecture" in str(error):
+            raise protocol.ValidationError(
+                "local formalization evidence bundle parent identity changed"
+            ) from error
+        raise
+    if observed != dict(expected):
+        raise protocol.ValidationError(
+            "published route evidence changed during local bundle generation"
+        )
+
+
 def _manifest_bytes(
     *,
     members: Mapping[str, bytes],
     modules: Mapping[str, str],
-    terminal_receipt_path: str,
-    terminal_receipt_sha256: str,
+    routes: Mapping[str, _RouteEvidence],
     audits: Mapping[str, tuple[bytes, tuple[str, ...]]],
     lean_toolchain: str,
     toolchain_sha256: str,
@@ -823,11 +980,10 @@ def _manifest_bytes(
     for spec in FORMALIZATIONS:
         audit = f"axioms/{spec.formalization_id}.txt"
         provider = f"providers/{spec.route_id}.json"
-        receipt_path, receipt_digest = (
-            (terminal_receipt_path, terminal_receipt_sha256)
-            if spec.source_node_id == LS_TERMINAL_NODE
-            else ("-", "-")
-        )
+        route = routes[spec.route_id]
+        route_manifest = f"routes/{spec.route_id}.manifest.json"
+        route_receipt = f"routes/{spec.route_id}.receipt.json"
+        route_review = f"routes/{spec.route_id}.review.json"
         observed = audits[spec.formalization_id][1]
         rows.append(
             (
@@ -838,8 +994,12 @@ def _manifest_bytes(
                 spec.declaration_name,
                 spec.module_path,
                 modules[spec.formalization_id],
-                receipt_path,
-                receipt_digest,
+                _published_path(route_manifest),
+                protocol.sha256_bytes(members[route_manifest]),
+                _published_path(route_receipt),
+                protocol.sha256_bytes(members[route_receipt]),
+                _published_path(route_review),
+                protocol.sha256_bytes(members[route_review]),
                 _published_path(command),
                 protocol.sha256_bytes(members[command]),
                 _published_path(stdout),
@@ -1013,12 +1173,18 @@ def _member_destination(
     build: ls_receipts._PinnedDirectory,
     axioms: ls_receipts._PinnedDirectory,
     providers: ls_receipts._PinnedDirectory,
+    routes: ls_receipts._PinnedDirectory,
     relative_path: str,
 ) -> tuple[ls_receipts._PinnedDirectory, str]:
     path = PurePosixPath(relative_path)
     if len(path.parts) == 1:
         return root, path.name
-    directories = {"build": build, "axioms": axioms, "providers": providers}
+    directories = {
+        "build": build,
+        "axioms": axioms,
+        "providers": providers,
+        "routes": routes,
+    }
     if len(path.parts) != 2 or path.parts[0] not in directories:
         raise protocol.ValidationError("local evidence member path is unsafe")
     return directories[path.parts[0]], path.name
@@ -1075,16 +1241,24 @@ def _require_staged_bundle(
 
 
 def _bundle_member_snapshots(directory_descriptor: int) -> dict[str, bytes]:
+    provider_paths = {
+        f"providers/{route_id}.json" for route_id in {spec.route_id for spec in FORMALIZATIONS}
+    }
+    route_paths = {
+        f"routes/{route_id}.{kind}.json"
+        for route_id in {spec.route_id for spec in FORMALIZATIONS}
+        for kind in ("manifest", "receipt", "review")
+    }
     expected_files = {
         MANIFEST_NAME,
         "build/command.json",
         "build/stdout.log",
         "build/stderr.log",
-        "providers/harp.json",
-        "providers/lorist-schwenninger.json",
+        *provider_paths,
+        *route_paths,
         *(f"axioms/{spec.formalization_id}.txt" for spec in FORMALIZATIONS),
     }
-    expected_directories = {"build", "axioms", "providers"}
+    expected_directories = {"build", "axioms", "providers", "routes"}
     files: dict[str, bytes] = {}
     directories: set[str] = set()
     entries_seen = [0]

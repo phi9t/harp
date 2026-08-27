@@ -10,9 +10,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-try:
+if __package__:
     from . import (
         goal_validation,
+        local_formalization_evidence,
         ls_contract,
         ls_receipts,
         ls_validation,
@@ -20,8 +21,9 @@ try:
         route_publication,
         route_validation,
     )
-except ImportError:  # direct script execution
+else:  # pragma: no cover - direct script execution path
     import goal_validation
+    import local_formalization_evidence
     import ls_contract
     import ls_receipts
     import ls_validation
@@ -1064,6 +1066,7 @@ def main(argv: list[str]) -> int:
     publish_review = subparsers.add_parser("publish-review")
     publish_review.add_argument("--route", choices=ROUTE_ORDER, required=True)
     subparsers.add_parser("publish-ls")
+    subparsers.add_parser("publish-local")
     validate_goal_parser = subparsers.add_parser("validate-goal")
     validate_goal_parser.add_argument(
         "--goal-plan",
@@ -1199,6 +1202,41 @@ def main(argv: list[str]) -> int:
             sys.stdout.write(canonical_json(_publish_ls_blocked_payload(str(error))))
             return 1
         sys.stdout.write(canonical_json(payload))
+        return 0
+
+    if args.command == "publish-local":
+        try:
+            publication = (
+                local_formalization_evidence.publish_local_formalization_evidence(
+                    repository_root
+                )
+            )
+        except local_formalization_evidence.PublicationCommittedError as error:
+            sys.stdout.write(
+                canonical_json(
+                    {
+                        "schema_version": (
+                            "crouzeix-local-formalization-publication/v1"
+                        ),
+                        "status": "committed-recovery-required",
+                        "artifact_root": error.publication.artifact_root.as_posix(),
+                        "manifest_path": error.publication.manifest_path.as_posix(),
+                        "recovery_path": error.recovery_path.as_posix(),
+                        "reason": _publish_ls_reason_text(str(error)),
+                    }
+                )
+            )
+            return 1
+        sys.stdout.write(
+            canonical_json(
+                {
+                    "schema_version": "crouzeix-local-formalization-publication/v1",
+                    "status": "published-unreferenced",
+                    "artifact_root": publication.artifact_root.as_posix(),
+                    "manifest_path": publication.manifest_path.as_posix(),
+                }
+            )
+        )
         return 0
 
     if args.command != "preflight":

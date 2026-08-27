@@ -637,6 +637,38 @@ class GoalValidationTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "local formalization bundle is required"):
                     goal_validation._validate_local_bundle(root)
 
+    def test_local_bundle_validation_requires_passed_read_only_bundle_verdict(self) -> None:
+        from labs.crouzeix_proof_reproduction import goal_validation
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            class Result:
+                status = "blocked"
+
+            validator = mock.Mock()
+            validator.validate_local_formalization_bundle.return_value = Result()
+
+            with mock.patch.object(goal_validation, "local_formalization_validation", validator):
+                with self.assertRaisesRegex(ValueError, "local formalization bundle is required"):
+                    goal_validation._validate_local_bundle(root)
+
+    def test_local_bundle_validation_preserves_validator_reason(self) -> None:
+        from labs.crouzeix_proof_reproduction import goal_validation
+
+        validator = mock.Mock()
+        validator.validate_local_formalization_bundle.side_effect = ValueError(
+            "route review digest mismatch"
+        )
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(
+            goal_validation, "local_formalization_validation", validator
+        ):
+            with self.assertRaisesRegex(
+                ValueError,
+                "local formalization bundle is required: route review digest mismatch",
+            ):
+                goal_validation._validate_local_bundle(Path(directory))
+
     def test_landed_rows_require_exact_evidence_paths_and_real_digests(self) -> None:
         from labs.crouzeix_proof_reproduction import goal_validation
 

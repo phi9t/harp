@@ -20,13 +20,14 @@ import ls_contract  # noqa: E402
 import ls_receipts  # noqa: E402
 import ls_validation  # noqa: E402
 import protocol  # noqa: E402
+import route_validation  # noqa: E402
 
 
 FORMALIZATIONS = (
     (
         "harp-closed-numerical-range",
         "harp",
-        "-",
+        "harp-closed-range-consequence",
         "CrouzeixConjecture."
         "harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
         "formalization/lean/Crouzeix/Harp/Consequences.lean",
@@ -34,9 +35,23 @@ FORMALIZATIONS = (
     (
         "harp-main-theorem",
         "harp",
-        "-",
+        "harp-terminal-theorem",
         "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
         "formalization/lean/Crouzeix/Harp/MainTheorem.lean",
+    ),
+    (
+        "jin-closed-numerical-range",
+        "jin",
+        "jin-hilbert-spectral-set-consequence",
+        "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet",
+        "formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+    ),
+    (
+        "jin-main-theorem",
+        "jin",
+        "jin-terminal-crouzeix",
+        "CrouzeixConjecture.crouzeixConjecture",
+        "formalization/lean/Crouzeix/Jin/Terminal.lean",
     ),
     (
         "ls-closed-numerical-range",
@@ -115,12 +130,23 @@ def make_workspace(
     )
     (lean_root / "Crouzeix.lean").write_text(
         f"import {REQUIRED_MATHLIB_MODULE}\n"
+        "import CrouzeixJin\n"
         "import Crouzeix.Harp.Consequences\n"
         "import Crouzeix.LoristSchwenninger.Consequences\n",
         encoding="utf-8",
     )
 
     modules = {
+        "CrouzeixJin": (
+            "import Crouzeix.Jin.Terminal\n"
+            "import CrouzeixConjecture.HilbertSpectralSet\n"
+        ),
+        "Crouzeix.Jin.Terminal": (
+            "import Crouzeix.Jin.Support\n\n"
+            "theorem CrouzeixConjecture.crouzeixConjecture "
+            ": True := by\n  trivial\n"
+        ),
+        "Crouzeix.Jin.Support": "def Jin.support : True := True\n",
         "Crouzeix.Harp.Consequences": (
             "import Crouzeix.Harp.MainTheorem\n\n"
             "theorem CrouzeixConjecture."
@@ -151,6 +177,18 @@ def make_workspace(
             ": True := by\n  trivial\n"
         ),
         "Crouzeix.LoristSchwenninger.Support": "def LS.support : True := True\n",
+        "CrouzeixConjecture.HilbertSpectralSet": (
+            "import CrouzeixConjecture.HilbertSpectralSetCore\n\n"
+            "theorem CrouzeixConjecture."
+            "closedOperatorNumericalRange_isTwoSpectralSet "
+            ": True := by\n  trivial\n"
+        ),
+        "CrouzeixConjecture.HilbertSpectralSetCore": (
+            "import Crouzeix.Jin.Terminal\n\n"
+            "theorem CrouzeixConjecture."
+            "closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem "
+            ": True := by\n  trivial\n"
+        ),
     }
     for contract in ls_contract.NODES:
         module = (
@@ -193,6 +231,28 @@ def make_workspace(
     )
     dependency_probe.parent.mkdir(parents=True)
     dependency_probe.write_bytes(b"olean-dependency-cache-probe\n")
+
+    for route_id, manifest_path in route_validation.ROUTE_MANIFEST_PATHS.items():
+        receipt_path = Path(
+            f"evidence/crouzeix_conjecture/routes/{route_id}/receipt.json"
+        )
+        review_path = Path(f"evidence/crouzeix_conjecture/reviews/{route_id}.json")
+        receipt_bytes = canonical_json_bytes({"route_id": route_id, "kind": "receipt"})
+        review_bytes = canonical_json_bytes({"route_id": route_id, "kind": "review"})
+        (repository / receipt_path).parent.mkdir(parents=True, exist_ok=True)
+        (repository / review_path).parent.mkdir(parents=True, exist_ok=True)
+        (repository / receipt_path).write_bytes(receipt_bytes)
+        (repository / review_path).write_bytes(review_bytes)
+        write_json(
+            repository / manifest_path,
+            {
+                "route_id": route_id,
+                "receipt_path": receipt_path.as_posix(),
+                "receipt_sha256": protocol.sha256_bytes(receipt_bytes),
+                "review_path": review_path.as_posix(),
+                "review_sha256": protocol.sha256_bytes(review_bytes),
+            },
+        )
 
     target = (
         repository
@@ -333,6 +393,32 @@ def stage_directories(repository: Path) -> list[Path]:
 
 
 class LocalFormalizationEvidenceTests(unittest.TestCase):
+    def setUp(self) -> None:
+        for name, side_effect in (
+            (
+                "inspect_route",
+                lambda _root, route_id: route_validation.RouteValidationResult(
+                    route_id,
+                    "complete-local",
+                    "complete",
+                    route_validation.ROUTE_MANIFEST_PATHS[route_id].as_posix(),
+                ),
+            ),
+            (
+                "_read_json",
+                lambda root, path, _label: json.loads(
+                    (Path(root) / path).read_text(encoding="utf-8")
+                ),
+            ),
+        ):
+            patcher = mock.patch.object(
+                local_formalization_evidence.route_validation,
+                name,
+                side_effect=side_effect,
+            )
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
     def test_uses_a_local_active_source_scan_bound(self) -> None:
         self.assertEqual(
             local_formalization_evidence.MAX_ACTIVE_SOURCE_FILES,
@@ -453,7 +539,20 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
         self.assertEqual(validate.call_count, 3)
         return publication
 
-    def test_publishes_one_exact_bundle_from_one_aggregate_and_four_audits(
+    def test_publication_roster_is_the_exact_sorted_six_row_contract(self) -> None:
+        self.assertEqual(
+            [item[0] for item in FORMALIZATIONS],
+            [
+                "harp-closed-numerical-range",
+                "harp-main-theorem",
+                "jin-closed-numerical-range",
+                "jin-main-theorem",
+                "ls-closed-numerical-range",
+                "ls-main-theorem",
+            ],
+        )
+
+    def test_publishes_one_exact_bundle_from_one_aggregate_and_six_audits(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -477,7 +576,7 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                 validate_real=True,
             )
 
-            self.assertEqual(len(executor.calls), 5)
+            self.assertEqual(len(executor.calls), 7)
             self.assertEqual(
                 executor.calls[0]["argv"],
                 ["scripts/check_lean_library.sh", "Crouzeix"],
@@ -490,7 +589,7 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
             )
             self.assertEqual(
                 [(call["cwd"] / call["argv"][-1]).name for call in executor.calls[1:]],
-                ["Audit.lean"] * 4,
+                ["Audit.lean"] * 6,
             )
             self.assertEqual(graph_path.read_bytes(), graph_before)
             self.assertEqual(
@@ -512,7 +611,13 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                 "build/stdout.log",
                 "build/stderr.log",
                 "providers/harp.json",
+                "providers/jin.json",
                 "providers/lorist-schwenninger.json",
+                *(
+                    f"routes/{route_id}.{kind}.json"
+                    for route_id in route_validation.ROUTE_IDS
+                    for kind in ("manifest", "receipt", "review")
+                ),
                 *(f"axioms/{item[0]}.txt" for item in FORMALIZATIONS),
             }
             self.assertEqual(
@@ -536,8 +641,8 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
             ).splitlines()
             self.assertEqual(manifest_lines[0], local_formalization_evidence.HEADER)
             rows = [line.split("\t") for line in manifest_lines[1:]]
-            self.assertEqual(len(rows), 4)
-            self.assertTrue(all(len(row) == 25 for row in rows))
+            self.assertEqual(len(rows), 6)
+            self.assertTrue(all(len(row) == 29 for row in rows))
             self.assertEqual(
                 [row[1] for row in rows], [item[0] for item in FORMALIZATIONS]
             )
@@ -548,24 +653,24 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                 [row[3] for row in rows], [item[2] for item in FORMALIZATIONS]
             )
             self.assertTrue(
-                all(row[17] == "Classical.choice,Quot.sound,propext" for row in rows)
+                all(row[21] == "Classical.choice,Quot.sound,propext" for row in rows)
             )
             self.assertTrue(
-                all(row[18] == "Classical.choice,Quot.sound,propext" for row in rows)
-            )
-            self.assertTrue(all(row[7:9] == ["-", "-"] for row in rows[:3]))
-            self.assertTrue(rows[3][7].endswith(f"/{attempt.name}/receipt.json"))
-            self.assertEqual(
-                rows[3][8],
-                protocol.sha256_bytes((repository / rows[3][7]).read_bytes()),
+                all(row[22] == "Classical.choice,Quot.sound,propext" for row in rows)
             )
             for row in rows:
+                for path_index, digest_index in ((7, 8), (9, 10), (11, 12)):
+                    self.assertEqual(
+                        row[digest_index],
+                        protocol.sha256_bytes((repository / row[path_index]).read_bytes()),
+                    )
+            for row in rows:
                 for path_index, digest_index in (
-                    (9, 10),
-                    (11, 12),
                     (13, 14),
                     (15, 16),
+                    (17, 18),
                     (19, 20),
+                    (23, 24),
                 ):
                     self.assertTrue(
                         row[path_index].startswith(
@@ -680,6 +785,19 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
         ).parameters
         self.assertNotIn("aggregate_build", parameters)
         self.assertFalse(hasattr(local_formalization_evidence, "SuccessfulBuildPaths"))
+
+    def test_route_snapshot_rejects_unsafe_manifest_path_before_read(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository, _, _ = make_workspace(Path(directory).resolve())
+            manifest_path = route_validation.ROUTE_MANIFEST_PATHS["harp"]
+            manifest = json.loads((repository / manifest_path).read_text(encoding="utf-8"))
+            manifest["receipt_path"] = "../outside/receipt.json"
+            write_json(repository / manifest_path, manifest)
+
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "manifest is invalid|unsafe|path"
+            ):
+                local_formalization_evidence._snapshot_route_evidence(repository)
 
     def test_rejects_executed_build_without_exact_success_markers(self) -> None:
         bad_outputs = (
@@ -1644,7 +1762,13 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                 "build/stdout.log",
                 "build/stderr.log",
                 "providers/harp.json",
+                "providers/jin.json",
                 "providers/lorist-schwenninger.json",
+                *(
+                    f"routes/{route_id}.{kind}.json"
+                    for route_id in route_validation.ROUTE_IDS
+                    for kind in ("manifest", "receipt", "review")
+                ),
                 *(f"axioms/{item[0]}.txt" for item in FORMALIZATIONS),
             }
             self.assertEqual(

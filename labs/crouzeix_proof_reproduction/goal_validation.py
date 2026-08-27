@@ -16,19 +16,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Iterator
 
-try:
-    from . import execution_ledger, route_validation
-    try:
-        from . import local_formalization_validation
-    except ImportError:
-        local_formalization_validation = None  # type: ignore[assignment]
-except ImportError:  # pragma: no cover - direct script execution
+if __package__:
+    from . import execution_ledger, local_formalization_validation, route_validation
+else:  # pragma: no cover - direct script execution
     import execution_ledger  # type: ignore
+    import local_formalization_validation  # type: ignore
     import route_validation  # type: ignore
-    try:
-        import local_formalization_validation  # type: ignore
-    except ImportError:
-        local_formalization_validation = None  # type: ignore[assignment]
 
 
 MAX_GOAL_BYTES = 1024 * 1024
@@ -614,7 +607,12 @@ def _validate_local_bundle(repository_root: Path) -> tuple[str, ...]:
     validator = local_formalization_validation
     if validator is None:
         raise ValueError("local formalization bundle is required")
-    result = validator.validate_local_formalization_bundle(Path(repository_root))
+    try:
+        result = validator.validate_local_formalization_bundle(Path(repository_root))
+    except Exception as error:
+        raise ValueError(
+            f"local formalization bundle is required: {error}"
+        ) from error
     if getattr(result, "status", None) != "passed":
         raise ValueError("local formalization bundle is required")
     manifest = (

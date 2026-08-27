@@ -1356,6 +1356,86 @@ class ProofEvidencePreflightTests(unittest.TestCase):
         self.assertNotIn("\x00", reason)
         self.assertNotIn("\n", reason)
 
+    def test_publish_local_invokes_closed_canonical_publication(self) -> None:
+        fixture = self.build_fixture()
+        publication = mock.Mock()
+        publication.artifact_root = (
+            fixture.repo / "evidence/crouzeix_conjecture/local_formalization"
+        )
+        publication.manifest_path = publication.artifact_root / "manifest.tsv"
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.local_formalization_evidence,
+                "publish_local_formalization_evidence",
+                return_value=publication,
+            ) as publish_mock,
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-local"])
+
+        payload = json.loads("".join(stdout))
+        self.assertEqual(exit_code, 0)
+        publish_mock.assert_called_once_with(fixture.repo)
+        self.assertEqual(payload["status"], "published-unreferenced")
+        self.assertEqual(payload["artifact_root"], publication.artifact_root.as_posix())
+        self.assertEqual(payload["manifest_path"], publication.manifest_path.as_posix())
+
+    def test_publish_local_reports_committed_publication_recovery_metadata(self) -> None:
+        fixture = self.build_fixture()
+        artifact_root = (
+            fixture.repo / "evidence/crouzeix_conjecture/local_formalization"
+        )
+        publication = proof_evidence.local_formalization_evidence.Publication(
+            artifact_root=artifact_root,
+            manifest_path=artifact_root / "manifest.tsv",
+        )
+        error = proof_evidence.local_formalization_evidence.PublicationCommittedError(
+            publication,
+            artifact_root,
+            (protocol.ValidationError("post-commit\x00 failure\nneeds recovery"),),
+        )
+        stdout: list[str] = []
+
+        with (
+            mock.patch.object(
+                proof_evidence, "canonical_repository_root", return_value=fixture.repo
+            ),
+            mock.patch.object(
+                proof_evidence.local_formalization_evidence,
+                "publish_local_formalization_evidence",
+                side_effect=error,
+            ),
+            mock.patch.object(proof_evidence.sys, "stdout") as stdout_mock,
+        ):
+            stdout_mock.write.side_effect = stdout.append
+            exit_code = proof_evidence.main(["publish-local"])
+
+        payload = json.loads("".join(stdout))
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(
+            payload,
+            {
+                "schema_version": (
+                    "crouzeix-local-formalization-publication/v1"
+                ),
+                "status": "committed-recovery-required",
+                "artifact_root": artifact_root.as_posix(),
+                "manifest_path": (artifact_root / "manifest.tsv").as_posix(),
+                "recovery_path": artifact_root.as_posix(),
+                "reason": (
+                    "local formalization evidence was committed at "
+                    f"{artifact_root}, but post-commit durability or cleanup failed: "
+                    "post-commit failure needs recovery"
+                ),
+            },
+        )
+
     def test_publish_ls_propagates_unexpected_exceptions_without_output(self) -> None:
         fixture = self.build_fixture()
         rows = ("row-sentinel",)
@@ -1771,10 +1851,18 @@ class ProofEvidencePreflightTests(unittest.TestCase):
 
     def test_cli_real_repository_still_supports_route_all(self) -> None:
         result = self.build_fixture().run_real_cli("all")
-
-        self.assertEqual(result.returncode, 0, result.stderr)
         payload = json.loads(result.stdout)
         self.assertEqual(payload["route_id"], "all")
+        self.assertEqual(payload["schema_version"], proof_evidence.SCHEMA_VERSION)
+        self.assertEqual(
+            [route["route_id"] for route in payload["routes"]],
+            list(proof_evidence.ROUTE_ORDER),
+        )
+        self.assertIn(result.returncode, (0, 1))
+        if result.returncode == 1:
+            self.assertTrue(
+                all(route["status"] == "blocked" for route in payload["routes"])
+            )
 
 
 if __name__ == "__main__":

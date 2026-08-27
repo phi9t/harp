@@ -7020,16 +7020,16 @@ publish a dedicated-route receipt.
   controller steps at this commit-preparation moment. The closeout commit is not
   yet landed, and Kata is not yet closed.
 
-** TODO Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
+** IMPLEMENTING Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
 :ID: CPFR-088
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
-:BRANCH: unassigned
-:WORKTREE: unassigned
+:BRANCH: feat/cpfr-088-six-route-bundle
+:WORKTREE: .worktrees/cpfr-088-six-route-bundle
 :DEPENDS_ON: CPFR-085 CPFR-086 CPFR-087
-:OWNER: unassigned
-:AGENT_RUN: unassigned
-:MODEL: unassigned
+:OWNER: bytedance
+:AGENT_RUN: cpfr088-six-route-bundle-20260826
+:MODEL: GPT-5-based-TraeCode-session
 :END:
 Publish one atomic local evidence bundle for terminal and closed-range claims from all routes.
 
@@ -7066,7 +7066,43 @@ publish once, and make the Rust verifier require the resulting bundle.
 - cached broad Crouzeix build
 
 *** Verification Evidence
-Pending implementation.
+- Implementation started from landed =master=
+  =5209c19fca4212c27695f258faeb63ab50861b53= after Kata =harp#ga15=
+  was claimed. The worktree links =formalization/lean/.lake= to the canonical
+  primary-checkout cache and uses offline uv-managed CPython 3.12.10. No
+  dependency hydration or genuine evidence publication has occurred.
+- RED captured 103 Python tests with three failures and one error for the
+  missing six-row validator/fixture behavior. The v2 pre-publication candidate
+  passed 106 Python tests and 100 focused Rust Crouzeix tests before
+  publication, including route-snapshot drift and cross-route substitution
+  rejection.
+- The create-only publisher ran once after all three routes validated
+  =complete-local=. Its one cached =Crouzeix= build completed 3,447 jobs in 27
+  seconds. It published 22 immutable files: a 29-column six-row manifest, one
+  build command and two logs, six axiom audits, three provider reports, and
+  nine route manifest/receipt/review snapshots. The manifest raw SHA-256 is
+  =efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7=.
+  Every declaration uses only =Classical.choice=, =Quot.sound=, and =propext=.
+  No dependency hydration or update command ran.
+- Post-publication verification exposed and repaired three Rust/Python parity
+  defects without changing the visible bundle: the complete LS forbidden
+  provider set, the canonical immediate terminal dependency edge, and
+  propagation of all nine route snapshots into the top-level evidence roster.
+  Each repair has a RED/GREEN regression. The real source verifier now reports
+  477 evidence artifacts and 189 snapshot files.
+- Final post-publication Spec review =/root/cpfr088_final_spec_review= and
+  Standards review =/root/cpfr088_final_standards_review= both report =PASS=
+  with zero Critical, Important, or Minor findings. The Standards review first
+  found that =publish-local= did not serialize committed-after-rename recovery
+  metadata; the CLI and its regression were repaired, the focused four-module
+  Python gate passed 112 tests, and both reviews passed the exact repaired
+  surface.
+- The frozen focused release gate passed 112 Python tests and 102 Rust
+  Crouzeix tests, =cargo fmt=, =git diff --check=, the read-only six-row bundle
+  validator, and =sources verify=. The 85-case Seatbelt probe matrix passed 39
+  allowed and 46 denied probes before any release Lean execution. Full
+  repository verification, the final payload receipt, local landing, and Kata
+  closure remain pending.
 
 ** TODO Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
 :PROPERTIES:

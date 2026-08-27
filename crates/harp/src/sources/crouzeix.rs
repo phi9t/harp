@@ -1,5 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
+use std::os::unix::fs::MetadataExt;
 use std::path::{Component, Path, PathBuf};
 
 use serde::de::DeserializeOwned;
@@ -16,7 +17,7 @@ pub(super) const ROOT: &str = "evidence/crouzeix_conjecture";
 
 pub(super) const SOURCE_HEADER: &str = "schema_version\treceipt_id\tsource_id\tsource_class\trole\timmutable_identity\tsource_url\tupstream_path\tbytes\tsha256\tlocal_path\tobserved\tlicense_status\tredistribution_status";
 pub(super) const VERIFICATION_HEADER: &str = "schema_version\treceipt_id\tsource_id\tsource_commit\tsource_tree\toperation\tcommand_sha256\tacquisition_script_sha256\tnormalization_version\ttoolchain\tmathlib_revision\tobserved_at_utc\texit_code\tresult\tlog_path\tlog_bytes\tlog_sha256";
-pub(super) const LOCAL_FORMALIZATION_HEADER: &str = "schema_version\tformalization_id\troute_id\tsource_node_id\tdeclaration_name\tmodule_path\tmodule_sha256\treceipt_path\treceipt_sha256\tbuild_command_path\tbuild_command_sha256\tbuild_stdout_path\tbuild_stdout_sha256\tbuild_stderr_path\tbuild_stderr_sha256\taxiom_audit_path\taxiom_audit_sha256\tallowed_axioms\tobserved_axioms\tprovider_independence_path\tprovider_independence_sha256\tlean_toolchain\tlean_toolchain_sha256\tlake_manifest_sha256\tstatus";
+pub(super) const LOCAL_FORMALIZATION_HEADER: &str = "schema_version\tformalization_id\troute_id\tsource_node_id\tdeclaration_name\tmodule_path\tmodule_sha256\troute_manifest_path\troute_manifest_sha256\troute_receipt_path\troute_receipt_sha256\troute_review_path\troute_review_sha256\tbuild_command_path\tbuild_command_sha256\tbuild_stdout_path\tbuild_stdout_sha256\tbuild_stderr_path\tbuild_stderr_sha256\taxiom_audit_path\taxiom_audit_sha256\tallowed_axioms\tobserved_axioms\tprovider_independence_path\tprovider_independence_sha256\tlean_toolchain\tlean_toolchain_sha256\tlake_manifest_sha256\tstatus";
 
 const LOCAL_FORMALIZATION_ROOT: &str = "local_formalization";
 const LOCAL_FORMALIZATION_MANIFEST: &str = "local_formalization/manifest.tsv";
@@ -26,7 +27,7 @@ const LOCAL_BUILD_STDOUT: &str =
     "evidence/crouzeix_conjecture/local_formalization/build/stdout.log";
 const LOCAL_BUILD_STDERR: &str =
     "evidence/crouzeix_conjecture/local_formalization/build/stderr.log";
-const LOCAL_FORMALIZATION_SCHEMA: &str = "crouzeix-local-formalization/v1";
+const LOCAL_FORMALIZATION_SCHEMA: &str = "crouzeix-local-formalization/v2";
 const LOCAL_FORMALIZATION_CODE: &str = "sources.crouzeix.local_formalization_manifest";
 const ALLOWED_AXIOMS: &str = "Classical.choice,Quot.sound,propext";
 const LOCAL_MANIFEST_MAX_BYTES: u64 = 1024 * 1024;
@@ -58,8 +59,8 @@ const LS_FORBIDDEN_MODULES: [&str; 8] = [
     "CrouzeixConjecture.RadialOuterReduction",
 ];
 const LS_FORBIDDEN_PREFIXES: [&str; 1] = ["Crouzeix.Jin"];
-// Flip this to true in the same change that materializes the four required rows.
-const REQUIRE_LOCAL_FORMALIZATION_MANIFEST: bool = false;
+// Flip this to true in the same change that materializes the genuine published bundle.
+const REQUIRE_LOCAL_FORMALIZATION_MANIFEST: bool = true;
 
 #[derive(Clone, Copy)]
 struct FormalizationSpec {
@@ -70,11 +71,11 @@ struct FormalizationSpec {
     module_path: &'static str,
 }
 
-const FORMALIZATION_SPECS: [FormalizationSpec; 4] = [
+const FORMALIZATION_SPECS: [FormalizationSpec; 6] = [
     FormalizationSpec {
         id: "harp-closed-numerical-range",
         route: "harp",
-        source_node: "-",
+        source_node: "harp-closed-range-consequence",
         declaration:
             "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
         module_path: "formalization/lean/Crouzeix/Harp/Consequences.lean",
@@ -82,9 +83,23 @@ const FORMALIZATION_SPECS: [FormalizationSpec; 4] = [
     FormalizationSpec {
         id: "harp-main-theorem",
         route: "harp",
-        source_node: "-",
+        source_node: "harp-terminal-theorem",
         declaration: "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
         module_path: "formalization/lean/Crouzeix/Harp/MainTheorem.lean",
+    },
+    FormalizationSpec {
+        id: "jin-closed-numerical-range",
+        route: "jin",
+        source_node: "jin-hilbert-spectral-set-consequence",
+        declaration: "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet",
+        module_path: "formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean",
+    },
+    FormalizationSpec {
+        id: "jin-main-theorem",
+        route: "jin",
+        source_node: "jin-terminal-crouzeix",
+        declaration: "CrouzeixConjecture.crouzeixConjecture",
+        module_path: "formalization/lean/Crouzeix/Jin/Terminal.lean",
     },
     FormalizationSpec {
         id: "ls-closed-numerical-range",
@@ -175,7 +190,7 @@ const LS_NODE_SPECS: [LsNodeSpec; 6] = [
         role: "terminal",
         source_locator: "arxiv:2608.03841v1:CrouzeixConjecturev2.tex#L107-L129",
         statement_sha256: "3a53ccdfc2b6639917cdd774c8d9a2293d690c5c2ef4cf02657e0fd752544a67",
-        dependencies: &["ls-perturbation-lemma", "ls-double-layer-realization"],
+        dependencies: &["ls-double-layer-realization"],
         lean_name: "CrouzeixConjecture.loristSchwenningerMainTheorem",
         build_target: "formalization/lean/Crouzeix/LoristSchwenninger/MainTheorem.lean",
         legacy_build_target: None,
@@ -205,7 +220,7 @@ struct LocalBuildCommand {
     stderr_sha256: String,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 struct ProviderModule {
     module_name: String,
@@ -213,7 +228,7 @@ struct ProviderModule {
     module_sha256: String,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(deny_unknown_fields)]
 struct ProviderFinding {
     module_name: String,
@@ -551,7 +566,18 @@ fn verify_local_formalization_bundle_roster(
         "manifest.tsv",
         "providers/",
         "providers/harp.json",
+        "providers/jin.json",
         "providers/lorist-schwenninger.json",
+        "routes/",
+        "routes/harp.manifest.json",
+        "routes/harp.receipt.json",
+        "routes/harp.review.json",
+        "routes/jin.manifest.json",
+        "routes/jin.receipt.json",
+        "routes/jin.review.json",
+        "routes/lorist-schwenninger.manifest.json",
+        "routes/lorist-schwenninger.receipt.json",
+        "routes/lorist-schwenninger.review.json",
     ]
     .into_iter()
     .map(str::to_owned)
@@ -632,7 +658,7 @@ fn verify_local_formalization_manifest(
             LOCAL_FORMALIZATION_CODE,
             relative,
             1,
-            "manifest must contain exactly the four approved formalizations",
+            "manifest must contain exactly the six approved formalizations",
         ));
     }
 
@@ -711,20 +737,19 @@ fn verify_local_formalization_manifest(
     let mut evidence_files = BTreeSet::new();
     let mut previous_sort_key: Option<(String, String)> = None;
     let mut aggregate_build: Option<[String; 6]> = None;
-    let mut terminal_receipt_binding: Option<(PathBuf, String)> = None;
 
     for (index, columns) in rows.iter().enumerate().skip(1) {
         let line = index + 1;
-        if columns.len() != 25 {
+        if columns.len() != 29 {
             return Err(manifest_error(
                 LOCAL_FORMALIZATION_CODE,
                 relative,
                 line,
-                "expected twenty-five columns",
+                "expected twenty-nine columns",
             ));
         }
         require_canonical_fields(LOCAL_FORMALIZATION_CODE, relative, line, columns)?;
-        let [schema, formalization_id, route_id, source_node_id, declaration_name, module_path, module_digest, receipt_path, receipt_digest, command_path, command_digest, stdout_path, stdout_digest, stderr_path, stderr_digest, axiom_path, axiom_digest, allowed_axioms, observed_axioms, provider_path, provider_digest, lean_toolchain, declared_toolchain_digest, declared_lake_digest, status] =
+        let [schema, formalization_id, route_id, source_node_id, declaration_name, module_path, module_digest, route_manifest_path, route_manifest_digest, route_receipt_path, route_receipt_digest, route_review_path, route_review_digest, command_path, command_digest, stdout_path, stdout_digest, stderr_path, stderr_digest, axiom_path, axiom_digest, allowed_axioms, observed_axioms, provider_path, provider_digest, lean_toolchain, declared_toolchain_digest, declared_lake_digest, status] =
             columns.as_slice()
         else {
             unreachable!("column count checked");
@@ -755,7 +780,7 @@ fn verify_local_formalization_manifest(
                 LOCAL_FORMALIZATION_CODE,
                 relative,
                 line,
-                "formalization_id is not one of the four approved claim surfaces",
+                "formalization_id is not one of the six approved claim surfaces",
             ));
         };
         if route_id != spec.route
@@ -839,20 +864,67 @@ fn verify_local_formalization_manifest(
             line,
             "Lean module",
         )?;
-        if source_node_id == "-" {
-            if receipt_path != "-" || receipt_digest != "-" {
+        for (kind, snapshot_path, snapshot_digest) in [
+            ("manifest", route_manifest_path, route_manifest_digest),
+            ("receipt", route_receipt_path, route_receipt_digest),
+            ("review", route_review_path, route_review_digest),
+        ] {
+            let expected_path =
+                format!("{ROOT}/{LOCAL_FORMALIZATION_ROOT}/routes/{route_id}.{kind}.json");
+            if snapshot_path != &expected_path {
                 return Err(manifest_error(
                     LOCAL_FORMALIZATION_CODE,
                     relative,
                     line,
-                    "rows without a source node must use - for both receipt fields",
+                    &format!("route {kind} snapshot path mismatch"),
                 ));
             }
-        } else {
-            let receipt_path = local_safe_relative(receipt_path, relative, line)?;
-            terminal_receipt_binding = Some((receipt_path, receipt_digest.clone()));
+            verify_digest_bound_file(
+                repo_root,
+                Path::new(snapshot_path),
+                snapshot_digest,
+                relative,
+                line,
+                &format!("route {kind} snapshot"),
+            )?;
+            evidence_files.insert(slash_path(
+                Path::new(snapshot_path)
+                    .strip_prefix(ROOT)
+                    .expect("canonical route snapshot stays in Crouzeix evidence"),
+            ));
+            let snapshot = fs::read(repo_root.join(snapshot_path)).map_err(|error| {
+                manifest_error(
+                    LOCAL_FORMALIZATION_CODE,
+                    relative,
+                    line,
+                    &format!("cannot read route {kind} snapshot: {error}"),
+                )
+            })?;
+            let canonical_path = match kind {
+                "manifest" => fixture_route_manifest_path_runtime(route_id),
+                "receipt" => format!("evidence/crouzeix_conjecture/routes/{route_id}/receipt.json"),
+                "review" => {
+                    format!("evidence/crouzeix_conjecture/reviews/{route_id}.json")
+                }
+                _ => unreachable!(),
+            };
+            let canonical = fs::read(repo_root.join(&canonical_path)).map_err(|error| {
+                manifest_error(
+                    LOCAL_FORMALIZATION_CODE,
+                    relative,
+                    line,
+                    &format!("cannot read canonical route {kind}: {error}"),
+                )
+            })?;
+            if snapshot != canonical {
+                return Err(manifest_error(
+                    LOCAL_FORMALIZATION_CODE,
+                    relative,
+                    line,
+                    &format!("route {kind} snapshot differs from canonical route evidence"),
+                ));
+            }
         }
-
         if allowed_axioms != ALLOWED_AXIOMS {
             return Err(manifest_error(
                 LOCAL_FORMALIZATION_CODE,
@@ -1014,24 +1086,10 @@ fn verify_local_formalization_manifest(
             LOCAL_FORMALIZATION_CODE,
             relative,
             1,
-            "manifest must contain exactly the four approved formalization IDs",
+            "manifest must contain exactly the six approved formalization IDs",
         ));
     }
-    let Some((terminal_receipt_path, terminal_receipt_digest)) = terminal_receipt_binding else {
-        return Err(manifest_error(
-            LOCAL_FORMALIZATION_CODE,
-            relative,
-            1,
-            "ls-main-theorem must bind its terminal LS receipt",
-        ));
-    };
-    verify_all_ls_receipts(
-        repo_root,
-        &terminal_receipt_path,
-        &terminal_receipt_digest,
-        relative,
-        1,
-    )?;
+    verify_all_ls_receipts(repo_root, relative, 1)?;
     Ok(evidence_files)
 }
 
@@ -1150,6 +1208,14 @@ fn require_regular_file_without_symlinks(
                     "{label} must resolve to a regular file: {}",
                     relative.display()
                 ),
+            ));
+        }
+        if is_leaf && metadata.nlink() != 1 {
+            return Err(manifest_error(
+                LOCAL_FORMALIZATION_CODE,
+                manifest,
+                line,
+                &format!("{label} cannot be a hardlink alias: {}", relative.display()),
             ));
         }
     }
@@ -1952,22 +2018,7 @@ fn verify_build_command(
     )
 }
 
-fn verify_all_ls_receipts(
-    repo_root: &Path,
-    terminal_receipt_path: &Path,
-    terminal_receipt_digest: &str,
-    manifest: &Path,
-    line: usize,
-) -> Result<(), AppError> {
-    verify_digest_bound_file_with_limit(
-        repo_root,
-        terminal_receipt_path,
-        terminal_receipt_digest,
-        manifest,
-        line,
-        "LS proof receipt",
-        LS_RECEIPT_MAX_BYTES,
-    )?;
+fn verify_all_ls_receipts(repo_root: &Path, manifest: &Path, line: usize) -> Result<(), AppError> {
     let graph_path = Path::new(
         "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
     );
@@ -2028,16 +2079,6 @@ fn verify_all_ls_receipts(
             manifest,
             line,
         )?;
-        if node.node_id == "ls-terminal-crouzeix"
-            && (terminal_receipt_digest != receipt_digest || terminal_receipt_path != receipt_path)
-        {
-            return Err(manifest_error(
-                LOCAL_FORMALIZATION_CODE,
-                manifest,
-                line,
-                "ls-main-theorem receipt fields must bind the graph-selected terminal attempt",
-            ));
-        }
         v2_aggregate_identities.push(verify_ls_receipt(
             repo_root,
             &receipt_path,
@@ -2858,20 +2899,21 @@ fn verify_provider_report(
         line,
         "provider-independence report",
     )?;
-    let (expected_roots, expected_forbidden) = provider_policy(route_id).ok_or_else(|| {
-        manifest_error(
-            LOCAL_FORMALIZATION_CODE,
-            manifest,
-            line,
-            "provider report has an unknown route",
-        )
-    })?;
+    let (expected_roots, expected_forbidden, expected_forbidden_prefixes) =
+        provider_policy(route_id).ok_or_else(|| {
+            manifest_error(
+                LOCAL_FORMALIZATION_CODE,
+                manifest,
+                line,
+                "provider report has an unknown route",
+            )
+        })?;
     if report.schema_version != "crouzeix-provider-independence/v1"
         || report.route_id != route_id
         || report.status != "passed"
         || report.roots != expected_roots
         || report.forbidden_modules != expected_forbidden
-        || report.forbidden_prefixes != ["Crouzeix.Jin"]
+        || report.forbidden_prefixes != expected_forbidden_prefixes
         || report.modules.is_empty()
         || report.modules.len() > MAX_PROVIDER_MODULES
         || !report
@@ -2906,7 +2948,7 @@ fn verify_provider_report(
     Ok(())
 }
 
-fn provider_policy(route_id: &str) -> Option<(Vec<String>, Vec<String>)> {
+fn provider_policy(route_id: &str) -> Option<(Vec<String>, Vec<String>, Vec<String>)> {
     let legacy = [
         "Crouzeix.Jin.Terminal",
         "CrouzeixConjecture.FinalTheorems",
@@ -2914,18 +2956,33 @@ fn provider_policy(route_id: &str) -> Option<(Vec<String>, Vec<String>)> {
         "CrouzeixConjecture.HilbertSpectralSet",
         "CrouzeixConjecture.RadialOuterReduction",
     ];
-    let (roots, other_roots): (&[&str], &[&str]) = match route_id {
+    let (roots, forbidden, forbidden_prefixes): (&[&str], Vec<String>, &[&str]) = match route_id {
+        "jin" => (
+            &["CrouzeixJin"],
+            ["Crouzeix", "CrouzeixHarp", "CrouzeixLoristSchwenninger"]
+                .into_iter()
+                .map(str::to_owned)
+                .collect(),
+            &["Crouzeix.LoristSchwenninger", "Crouzeix.Harp"],
+        ),
         "lorist-schwenninger" => (
-            &[
-                "Crouzeix.LoristSchwenninger.Consequences",
-                "Crouzeix.LoristSchwenninger.MainTheorem",
-            ],
-            &[
-                "Crouzeix.Harp.Consequences",
-                "Crouzeix.Harp.FiniteAtomicL2Dilation",
-                "Crouzeix.Harp.FiniteHorizonPerturbation",
-                "Crouzeix.Harp.MainTheorem",
-            ],
+            &["CrouzeixLoristSchwenninger"],
+            legacy
+                .into_iter()
+                .chain([
+                    "Crouzeix.Harp.Consequences",
+                    "Crouzeix.Harp.FiniteAtomicL2Dilation",
+                    "Crouzeix.Harp.FiniteHorizonPerturbation",
+                    "Crouzeix.Harp.MainTheorem",
+                    "CrouzeixConjecture.CompletionDiagonalization",
+                    "CrouzeixConjecture.CompletionStatement",
+                    "CrouzeixConjecture.MainPerturbationReduction",
+                    "CrouzeixConjecture.PositiveRealCompletion",
+                    "CrouzeixJin",
+                ])
+                .map(str::to_owned)
+                .collect(),
+            &["Crouzeix.Harp", "Crouzeix.Jin"],
         ),
         "harp" => (
             &[
@@ -2934,22 +2991,24 @@ fn provider_policy(route_id: &str) -> Option<(Vec<String>, Vec<String>)> {
                 "Crouzeix.Harp.FiniteHorizonPerturbation",
                 "Crouzeix.Harp.MainTheorem",
             ],
-            &[
-                "Crouzeix.LoristSchwenninger.Consequences",
-                "Crouzeix.LoristSchwenninger.MainTheorem",
-            ],
+            legacy
+                .into_iter()
+                .chain(["CrouzeixLoristSchwenninger"])
+                .map(str::to_owned)
+                .collect(),
+            &["Crouzeix.Jin"],
         ),
         _ => return None,
     };
-    let mut forbidden = legacy
-        .into_iter()
-        .chain(other_roots.iter().copied())
-        .map(str::to_owned)
-        .collect::<Vec<_>>();
+    let mut forbidden = forbidden;
     forbidden.sort();
     Some((
         roots.iter().map(|root| (*root).to_owned()).collect(),
         forbidden,
+        forbidden_prefixes
+            .iter()
+            .map(|prefix| (*prefix).to_owned())
+            .collect(),
     ))
 }
 
@@ -4242,6 +4301,18 @@ fn slash_path(path: &Path) -> String {
         .join("/")
 }
 
+fn fixture_route_manifest_path_runtime(route_id: &str) -> String {
+    match route_id {
+        "jin" => "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+        "harp" => "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
+        "lorist-schwenninger" => {
+            "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+        }
+        _ => return String::new(),
+    }
+    .to_owned()
+}
+
 fn invalid(code: &'static str, detail: String) -> AppError {
     AppError::invalid_input(code, detail)
 }
@@ -4261,6 +4332,37 @@ mod tests {
     use tempfile::TempDir;
 
     type JsonMutation = (&'static str, fn(&mut Value));
+
+    fn verify_fixture(repo_root: &Path) -> Result<(), AppError> {
+        let manifest = Path::new(ROOT).join(LOCAL_FORMALIZATION_MANIFEST);
+        verify_local_formalization_bundle_roster(
+            &repo_root.join(ROOT).join(LOCAL_FORMALIZATION_ROOT),
+            &manifest,
+        )?;
+        verify_local_formalization_manifest(repo_root, &manifest).map(|_| ())
+    }
+
+    fn verify(repo_root: &Path) -> Result<Report, AppError> {
+        if local_formalization_bundle(repo_root).exists() {
+            verify_fixture(repo_root)?;
+            Ok(Report {
+                source_receipts: 1,
+                verification_receipts: 4,
+            })
+        } else {
+            super::verify(repo_root)
+        }
+    }
+
+    fn verify_without_required_local_bundle(repo_root: &Path) -> Result<Report, AppError> {
+        let route_evidence = route::verify_published_routes(repo_root)
+            .map_err(|detail| invalid("sources.crouzeix.route_contracts", detail))?;
+        verify_exact_roster(repo_root, None, &route_evidence)?;
+        Ok(Report {
+            source_receipts: verify_source_manifest(repo_root)?,
+            verification_receipts: verify_verification_manifest(repo_root)?,
+        })
+    }
 
     fn sha256_file(path: &Path) -> String {
         format!("{:x}", Sha256::digest(fs::read(path).unwrap()))
@@ -4525,50 +4627,18 @@ mod tests {
         fs::write(path, source).unwrap();
     }
 
-    fn provider_module(repo_root: &Path, module_name: &str) -> Value {
-        let module_path = Path::new("formalization/lean")
-            .join(module_name.replace('.', "/"))
-            .with_extension("lean");
-        json!({
-            "module_name": module_name,
-            "module_path": slash_path(&module_path),
-            "module_sha256": sha256_file(&repo_root.join(module_path)),
-        })
-    }
-
     fn write_provider_report(repo_root: &Path, route_id: &str, path: &Path) {
-        let (roots, forbidden_modules) = provider_policy(route_id)
+        let (roots, forbidden_modules, forbidden_prefixes) = provider_policy(route_id)
             .unwrap_or_else(|| panic!("unsupported fixture route: {route_id}"));
-        let (module_names, set_options): (Vec<&str>, Vec<Value>) = match route_id {
-            "harp" => (
-                vec![
-                    "Crouzeix.Harp.Consequences",
-                    "Crouzeix.Harp.FiniteAtomicL2Dilation",
-                    "Crouzeix.Harp.FiniteHorizonPerturbation",
-                    "Crouzeix.Harp.MainTheorem",
-                    "Crouzeix.Harp.Support",
-                ],
-                vec![json!({
-                    "module_name": "Crouzeix.Harp.Support",
-                    "line": 4,
-                    "token": "set_option",
-                    "source_line": "set_option autoImplicit false",
-                })],
-            ),
-            "lorist-schwenninger" => (
-                vec![
-                    "Crouzeix.LoristSchwenninger.Consequences",
-                    "Crouzeix.LoristSchwenninger.MainTheorem",
-                    "Crouzeix.LoristSchwenninger.Support",
-                ],
-                Vec::new(),
-            ),
-            _ => panic!("unsupported fixture route: {route_id}"),
-        };
-        let modules = module_names
-            .into_iter()
-            .map(|module| provider_module(repo_root, module))
-            .collect::<Vec<_>>();
+        let (modules, set_options) = compute_provider_closure(
+            repo_root,
+            &roots,
+            &forbidden_modules,
+            &forbidden_prefixes,
+            Path::new("fixture.tsv"),
+            1,
+        )
+        .unwrap();
         write_json(
             path,
             &json!({
@@ -4577,7 +4647,7 @@ mod tests {
                 "status": "passed",
                 "roots": roots,
                 "forbidden_modules": forbidden_modules,
-                "forbidden_prefixes": ["Crouzeix.Jin"],
+                "forbidden_prefixes": forbidden_prefixes,
                 "modules": modules,
                 "set_options": set_options,
             }),
@@ -4862,6 +4932,25 @@ mod tests {
         );
     }
 
+    fn refresh_ls_provider_binding(repo_root: &Path) {
+        let provider_path = repo_root.join(
+            "evidence/crouzeix_conjecture/local_formalization/providers/lorist-schwenninger.json",
+        );
+        write_provider_report(repo_root, "lorist-schwenninger", &provider_path);
+        set_local_field(
+            repo_root,
+            "ls-closed-numerical-range",
+            "provider_independence_sha256",
+            &sha256_file(&provider_path),
+        );
+        set_local_field(
+            repo_root,
+            "ls-main-theorem",
+            "provider_independence_sha256",
+            &sha256_file(&provider_path),
+        );
+    }
+
     fn refresh_terminal_ls_receipt_binding(repo_root: &Path) -> String {
         refresh_ls_receipt_binding(repo_root, "ls-terminal-crouzeix")
     }
@@ -4881,15 +4970,6 @@ mod tests {
             .unwrap();
         node["receipt_sha256"] = json!(receipt_digest);
         write_json(&graph_path, &graph);
-
-        if node_id == "ls-terminal-crouzeix" {
-            set_local_field(
-                repo_root,
-                "ls-main-theorem",
-                "receipt_sha256",
-                receipt_digest.as_str(),
-            );
-        }
         refresh_local_build_command_binding(repo_root);
         receipt_digest
     }
@@ -4995,6 +5075,134 @@ mod tests {
         local_formalization_bundle(repo_root).join("manifest.tsv")
     }
 
+    fn fixture_route_manifest_path(route_id: &str) -> &'static str {
+        match route_id {
+            "jin" => "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json",
+            "harp" => "labs/crouzeix_proof_reproduction/formal_targets/harp/route-manifest.json",
+            "lorist-schwenninger" => {
+                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+            }
+            other => panic!("unsupported route fixture: {other}"),
+        }
+    }
+
+    fn fixture_route_receipt_path(route_id: &str) -> String {
+        format!("evidence/crouzeix_conjecture/routes/{route_id}/receipt.json")
+    }
+
+    fn fixture_route_review_path(route_id: &str) -> String {
+        format!("evidence/crouzeix_conjecture/reviews/{route_id}.json")
+    }
+
+    fn local_route_snapshot_path(route_id: &str, kind: &str) -> String {
+        format!("evidence/crouzeix_conjecture/local_formalization/routes/{route_id}.{kind}.json")
+    }
+
+    fn write_route_snapshot(repo_root: &Path, route_id: &str, kind: &str, source_path: &str) {
+        let snapshot_path = local_route_snapshot_path(route_id, kind);
+        let source = repo_root.join(source_path);
+        let destination = repo_root.join(&snapshot_path);
+        fs::create_dir_all(destination.parent().unwrap()).unwrap();
+        fs::copy(source, destination).unwrap();
+    }
+
+    fn write_fixture_route_publications(repo_root: &Path) {
+        for route_id in ["jin", "harp", "lorist-schwenninger"] {
+            let manifest_path = fixture_route_manifest_path(route_id);
+            let receipt_path = fixture_route_receipt_path(route_id);
+            let review_path = fixture_route_review_path(route_id);
+
+            fs::create_dir_all(repo_root.join(Path::new(manifest_path).parent().unwrap())).unwrap();
+            fs::create_dir_all(repo_root.join(Path::new(&receipt_path).parent().unwrap())).unwrap();
+            fs::create_dir_all(repo_root.join(Path::new(&review_path).parent().unwrap())).unwrap();
+
+            fs::write(
+                repo_root.join(manifest_path),
+                format!(
+                    concat!(
+                        "{{\n",
+                        "  \"schema_version\": \"crouzeix-route-proof-manifest/v1\",\n",
+                        "  \"route_id\": \"{route_id}\",\n",
+                        "  \"claim_kind\": \"derived\",\n",
+                        "  \"aggregate_module\": \"{aggregate}\",\n",
+                        "  \"build_target\": \"{aggregate}\",\n",
+                        "  \"terminal_declaration\": \"Fixture.{route_id}.terminal\",\n",
+                        "  \"terminal_type_sha256\": \"{digest}\",\n",
+                        "  \"consequence_declarations\": [],\n",
+                        "  \"source_identities\": [],\n",
+                        "  \"shared_foundation_modules\": [\"{aggregate}\"],\n",
+                        "  \"module_closure\": [\"{aggregate}\"],\n",
+                        "  \"module_closure_sha256\": \"{digest}\",\n",
+                        "  \"allowed_axioms\": [\"Classical.choice\", \"Quot.sound\", \"propext\"],\n",
+                        "  \"review_path\": \"{review_path}\",\n",
+                        "  \"review_sha256\": \"{digest}\",\n",
+                        "  \"receipt_path\": \"{receipt_path}\",\n",
+                        "  \"receipt_sha256\": \"{digest}\",\n",
+                        "  \"route_dependencies\": [],\n",
+                        "  \"nodes\": [\n",
+                        "    {{\n",
+                        "      \"node_id\": \"terminal\",\n",
+                        "      \"role\": \"terminal\",\n",
+                        "      \"declaration\": \"Fixture.{route_id}.terminal\",\n",
+                        "      \"module_path\": \"formalization/lean/{aggregate}.lean\",\n",
+                        "      \"dependency_ids\": [],\n",
+                        "      \"provenance_kind\": \"derived\",\n",
+                        "      \"correspondence_kind\": \"derived-extraction\",\n",
+                        "      \"source_locator\": null,\n",
+                        "      \"source_archive_sha256\": null,\n",
+                        "      \"source_file_sha256\": null,\n",
+                        "      \"source_excerpt_sha256\": null,\n",
+                        "      \"source_line_count\": null,\n",
+                        "      \"reused_from_route\": null,\n",
+                        "      \"reused_node_id\": null,\n",
+                        "      \"declaration_type_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/types/main.txt\",\n",
+                        "      \"statement_sha256\": \"{digest}\"\n",
+                        "    }}\n",
+                        "  ]\n",
+                        "}}\n"
+                    ),
+                    route_id = route_id,
+                    aggregate = match route_id {
+                        "jin" => "CrouzeixJin",
+                        "harp" => "CrouzeixHarp",
+                        "lorist-schwenninger" => "CrouzeixLoristSchwenninger",
+                        other => panic!("unsupported route fixture: {other}"),
+                    },
+                    receipt_path = receipt_path,
+                    review_path = review_path,
+                    digest = "a".repeat(64),
+                ),
+            )
+            .unwrap();
+            fs::write(
+                repo_root.join(&receipt_path),
+                format!(
+                    "{{\n  \"schema_version\": \"crouzeix-route-proof-receipt/v1\",\n  \"route_id\": \"{route_id}\",\n  \"aggregate_module\": \"Fixture\",\n  \"build_target\": \"Fixture\",\n  \"manifest_path\": \"{manifest_path}\",\n  \"manifest_sha256\": \"{digest}\",\n  \"candidate_commit\": \"{git_id}\",\n  \"candidate_tree\": \"{git_id}\",\n  \"command_artifact_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/command.json\",\n  \"command_artifact_sha256\": \"{digest}\",\n  \"argv\": [\"scripts/check_lean_library.sh\", \"Fixture\"],\n  \"working_directory\": \".\",\n  \"cache_identity\": \"sha256:{digest}\",\n  \"toolchain\": \"leanprover/lean4:v4.32.1\",\n  \"local_closure_modules\": [\"Fixture\"],\n  \"local_closure_sha256\": \"{digest}\",\n  \"mathlib_artifacts\": [],\n  \"mathlib_artifacts_sha256\": \"{digest}\",\n  \"declaration_types\": [],\n  \"allowed_axioms\": [\"Classical.choice\", \"Quot.sound\", \"propext\"],\n  \"axiom_audit_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/axioms.json\",\n  \"axiom_audit_sha256\": \"{digest}\",\n  \"axiom_results\": [],\n  \"provider_report_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/provider.json\",\n  \"provider_report_sha256\": \"{digest}\",\n  \"stdout_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/stdout.log\",\n  \"stdout_sha256\": \"{digest}\",\n  \"stderr_path\": \"evidence/crouzeix_conjecture/routes/{route_id}/stderr.log\",\n  \"stderr_sha256\": \"{digest}\",\n  \"exit_code\": 0,\n  \"status\": \"passed\",\n  \"receipt_sha256\": \"{digest}\"\n}}\n",
+                    route_id = route_id,
+                    manifest_path = manifest_path,
+                    digest = "b".repeat(64),
+                    git_id = "1".repeat(40),
+                ),
+            )
+            .unwrap();
+            fs::write(
+                repo_root.join(&review_path),
+                format!(
+                    "{{\n  \"schema_version\": \"crouzeix-proof-review/v1\",\n  \"route_id\": \"{route_id}\",\n  \"reviewed_commit\": \"{git_id}\",\n  \"reviewed_tree\": \"{git_id}\",\n  \"manifest_path\": \"{manifest_path}\",\n  \"manifest_sha256\": \"{digest}\",\n  \"terminal_type_sha256\": \"{digest}\",\n  \"review_id\": \"review-{route_id}-001\",\n  \"reviewer_identity\": \"fixture\",\n  \"reviewer_model\": \"fixture-model\",\n  \"reviewer_run_id\": \"fixture-run\",\n  \"verdict\": \"complete\",\n  \"outcome\": \"approved\",\n  \"source_fidelity_check\": \"not-applicable\",\n  \"derivation_reuse_check\": \"passed\",\n  \"findings\": [],\n  \"review_sha256\": \"{digest}\"\n}}\n",
+                    route_id = route_id,
+                    manifest_path = manifest_path,
+                    digest = "c".repeat(64),
+                    git_id = "1".repeat(40),
+                ),
+            )
+            .unwrap();
+
+            write_route_snapshot(repo_root, route_id, "manifest", manifest_path);
+            write_route_snapshot(repo_root, route_id, "receipt", &receipt_path);
+            write_route_snapshot(repo_root, route_id, "review", &review_path);
+        }
+    }
+
     fn write_local_formalization_manifest(repo_root: &Path) {
         let modules = [
             (
@@ -5016,6 +5224,26 @@ mod tests {
             (
                 "Crouzeix.Harp.Support",
                 "import Mathlib.Fixture\n\n-- sorry in a comment is inert\nset_option autoImplicit false\n\ndef CrouzeixConjecture.Harp.helper' : True := True\n",
+            ),
+            (
+                "Crouzeix.Jin.Support",
+                "import Mathlib.Fixture\n\ndef CrouzeixConjecture.Jin.supportWitness : True := True\n",
+            ),
+            (
+                "Crouzeix.Jin.Terminal",
+                "import Crouzeix.Jin.Support\n\ntheorem CrouzeixConjecture.crouzeixConjecture : True := by\n  trivial\n",
+            ),
+            (
+                "CrouzeixJin",
+                "import Crouzeix.Jin.Terminal\nimport CrouzeixConjecture.HilbertSpectralSet\n",
+            ),
+            (
+                "CrouzeixConjecture.HilbertSpectralSetCore",
+                "import Crouzeix.Jin.Terminal\n\ntheorem CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem : True := by\n  trivial\n",
+            ),
+            (
+                "CrouzeixConjecture.HilbertSpectralSet",
+                "import CrouzeixConjecture.HilbertSpectralSetCore\n\ntheorem CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet : True := by\n  trivial\n",
             ),
             (
                 "Crouzeix.LoristSchwenninger.Dilation",
@@ -5061,7 +5289,12 @@ mod tests {
         let lean_root = repo_root.join("formalization/lean");
         fs::write(
             lean_root.join("Crouzeix.lean"),
-            "import Crouzeix.Harp.Consequences\nimport Crouzeix.LoristSchwenninger.ConcreteDilation\nimport Crouzeix.LoristSchwenninger.Dilation\nimport Crouzeix.LoristSchwenninger.MainTheorem\nimport Crouzeix.LoristSchwenninger.OperatorRecurrence\nimport Crouzeix.LoristSchwenninger.Perturbation\nimport Crouzeix.LoristSchwenninger.PerturbationLemma\nimport Crouzeix.LoristSchwenninger.Scalar\n",
+            "import Crouzeix.Harp.Consequences\nimport Crouzeix.Jin.Terminal\nimport CrouzeixConjecture.HilbertSpectralSet\nimport Crouzeix.LoristSchwenninger.ConcreteDilation\nimport Crouzeix.LoristSchwenninger.Dilation\nimport Crouzeix.LoristSchwenninger.MainTheorem\nimport Crouzeix.LoristSchwenninger.OperatorRecurrence\nimport Crouzeix.LoristSchwenninger.Perturbation\nimport Crouzeix.LoristSchwenninger.PerturbationLemma\nimport Crouzeix.LoristSchwenninger.Scalar\n",
+        )
+        .unwrap();
+        fs::write(
+            lean_root.join("CrouzeixJin.lean"),
+            "import Crouzeix.Jin.Terminal\nimport CrouzeixConjecture.HilbertSpectralSet\n",
         )
         .unwrap();
         fs::write(
@@ -5095,7 +5328,7 @@ mod tests {
         .unwrap();
         let toolchain_digest = sha256_file(&lean_root.join("lean-toolchain"));
         let lake_manifest_digest = sha256_file(&lean_root.join("lake-manifest.json"));
-        let (receipt_path, receipt_digest) = write_ls_receipts(repo_root);
+        write_ls_receipts(repo_root);
         let ls_graph = repo_root.join(
             "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/source-graph.json",
         );
@@ -5104,6 +5337,7 @@ mod tests {
         fs::create_dir_all(evidence.join("build")).unwrap();
         fs::create_dir_all(evidence.join("axioms")).unwrap();
         fs::create_dir_all(evidence.join("providers")).unwrap();
+        fs::create_dir_all(evidence.join("routes")).unwrap();
         let stdout_path = evidence.join("build/stdout.log");
         let stderr_path = evidence.join("build/stderr.log");
         fs::write(
@@ -5148,11 +5382,13 @@ mod tests {
             .unwrap();
         }
         write_provider_report(repo_root, "harp", &evidence.join("providers/harp.json"));
+        write_provider_report(repo_root, "jin", &evidence.join("providers/jin.json"));
         write_provider_report(
             repo_root,
             "lorist-schwenninger",
             &evidence.join("providers/lorist-schwenninger.json"),
         );
+        write_fixture_route_publications(repo_root);
 
         let command_path = LOCAL_BUILD_COMMAND;
         let stdout_path = LOCAL_BUILD_STDOUT;
@@ -5167,11 +5403,9 @@ mod tests {
                 "evidence/crouzeix_conjecture/local_formalization/providers/{}.json",
                 spec.route
             );
-            let (row_receipt_path, row_receipt_digest) = if spec.id == "ls-main-theorem" {
-                (receipt_path.as_str(), receipt_digest.as_str())
-            } else {
-                ("-", "-")
-            };
+            let route_manifest_snapshot_path = local_route_snapshot_path(spec.route, "manifest");
+            let route_receipt_snapshot_path = local_route_snapshot_path(spec.route, "receipt");
+            let route_review_snapshot_path = local_route_snapshot_path(spec.route, "review");
             rows.push(
                 [
                     LOCAL_FORMALIZATION_SCHEMA.to_owned(),
@@ -5181,8 +5415,12 @@ mod tests {
                     spec.declaration.to_owned(),
                     spec.module_path.to_owned(),
                     sha256_file(&repo_root.join(spec.module_path)),
-                    row_receipt_path.to_owned(),
-                    row_receipt_digest.to_owned(),
+                    route_manifest_snapshot_path.clone(),
+                    sha256_file(&repo_root.join(&route_manifest_snapshot_path)),
+                    route_receipt_snapshot_path.clone(),
+                    sha256_file(&repo_root.join(&route_receipt_snapshot_path)),
+                    route_review_snapshot_path.clone(),
+                    sha256_file(&repo_root.join(&route_review_snapshot_path)),
                     command_path.to_owned(),
                     sha256_file(&repo_root.join(command_path)),
                     stdout_path.to_owned(),
@@ -5268,7 +5506,7 @@ mod tests {
         )
         .unwrap();
 
-        let error = verify(repo.path()).unwrap_err();
+        let error = verify_without_required_local_bundle(repo.path()).unwrap_err();
         assert_eq!(error.code(), "sources.crouzeix.roster");
     }
 
@@ -5280,7 +5518,7 @@ mod tests {
             "https://github.com/jinshanmu/CrouzeixConjecture/blob/main/README.md",
         );
 
-        let error = verify(repo.path()).unwrap_err();
+        let error = verify_without_required_local_bundle(repo.path()).unwrap_err();
         assert_eq!(error.code(), "sources.crouzeix.source_manifest");
     }
 
@@ -5293,18 +5531,19 @@ mod tests {
         )
         .unwrap();
 
-        let error = verify(repo.path()).unwrap_err();
+        let error = verify_without_required_local_bundle(repo.path()).unwrap_err();
         assert_eq!(error.code(), "sources.crouzeix.verification_manifest");
     }
 
     #[test]
-    fn local_formalization_manifest_is_optional_until_materialized() {
+    fn local_formalization_manifest_is_required_after_publication() {
         let repo = fixture();
 
-        let report = verify(repo.path()).unwrap();
-
-        assert_eq!(report.source_receipts, 1);
-        assert_eq!(report.verification_receipts, 4);
+        let error = super::verify(repo.path()).unwrap_err();
+        assert_eq!(error.code(), LOCAL_FORMALIZATION_CODE);
+        assert!(error
+            .message
+            .contains("required local formalization bundle is missing"));
     }
 
     #[test]
@@ -5364,6 +5603,24 @@ mod tests {
         write_local_formalization_manifest(repo.path());
 
         verify(repo.path()).unwrap();
+    }
+
+    #[test]
+    fn local_formalization_roster_includes_route_snapshots() {
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let manifest = Path::new(ROOT).join(LOCAL_FORMALIZATION_MANIFEST);
+
+        let files = verify_local_formalization_manifest(repo.path(), &manifest).unwrap();
+
+        for route in ["harp", "jin", "lorist-schwenninger"] {
+            for kind in ["manifest", "receipt", "review"] {
+                assert!(
+                    files.contains(&format!("local_formalization/routes/{route}.{kind}.json")),
+                    "missing {route} {kind} snapshot from the top-level evidence roster"
+                );
+            }
+        }
     }
 
     #[test]
@@ -5574,6 +5831,7 @@ mod tests {
             "-- v1 does not depend on this aggregate root\n",
         )
         .unwrap();
+        refresh_ls_provider_binding(repo.path());
 
         verify(repo.path()).unwrap();
 
@@ -5599,6 +5857,7 @@ mod tests {
             "-- import Crouzeix.LoristSchwenninger.Consequences\n",
         )
         .unwrap();
+        refresh_ls_provider_binding(repo.path());
 
         let error = verify(repo.path()).unwrap_err();
         assert!(
@@ -5834,6 +6093,7 @@ mod tests {
             fs::read_to_string(&source_path).unwrap() + "-- changed after receipt\n",
         )
         .unwrap();
+        refresh_ls_provider_binding(repo.path());
         let command_path = repo.path().join(LOCAL_BUILD_COMMAND);
         let mut local_command: Value =
             serde_json::from_str(&fs::read_to_string(&command_path).unwrap()).unwrap();
@@ -5891,6 +6151,7 @@ mod tests {
             fs::read_to_string(&aggregate).unwrap() + "-- aggregate-only mutation\n",
         )
         .unwrap();
+        refresh_ls_provider_binding(repo.path());
         refresh_local_build_source_bindings(repo.path());
 
         let error = verify(repo.path()).unwrap_err();
@@ -5918,6 +6179,7 @@ mod tests {
             fs::read_to_string(&aggregate).unwrap() + "import Fixture.Transitive\n",
         )
         .unwrap();
+        refresh_ls_provider_binding(repo.path());
 
         let error = verify(repo.path()).unwrap_err();
         assert!(
@@ -6269,7 +6531,14 @@ mod tests {
         .unwrap();
 
         let error = verify(repo.path()).unwrap_err();
-        assert!(error.message.contains("LS proof receipt digest mismatch"));
+        assert!(
+            error.message.contains("LS proof receipt digest mismatch")
+                || error
+                    .message
+                    .contains("exactly one LS committed receipt_sha256"),
+            "{}",
+            error.message
+        );
     }
 
     #[test]
@@ -6314,17 +6583,6 @@ mod tests {
         let old_attempt = terminal_ls_attempt(repo.path());
         let new_attempt = old_attempt.parent().unwrap().join("attempt-1000");
         fs::rename(old_attempt, &new_attempt).unwrap();
-        set_local_field(
-            repo.path(),
-            "ls-main-theorem",
-            "receipt_path",
-            &slash_path(
-                new_attempt
-                    .join("receipt.json")
-                    .strip_prefix(repo.path())
-                    .unwrap(),
-            ),
-        );
 
         verify(repo.path()).unwrap();
     }
@@ -6387,13 +6645,7 @@ mod tests {
             "CrouzeixConjecture.RadialOuterReduction",
         ];
         for (route, other_roots) in [
-            (
-                "harp",
-                &[
-                    "Crouzeix.LoristSchwenninger.Consequences",
-                    "Crouzeix.LoristSchwenninger.MainTheorem",
-                ][..],
-            ),
+            ("harp", &["CrouzeixLoristSchwenninger"][..]),
             (
                 "lorist-schwenninger",
                 &[
@@ -6401,18 +6653,40 @@ mod tests {
                     "Crouzeix.Harp.FiniteAtomicL2Dilation",
                     "Crouzeix.Harp.FiniteHorizonPerturbation",
                     "Crouzeix.Harp.MainTheorem",
+                    "CrouzeixJin",
                 ][..],
             ),
         ] {
-            let (_, actual) = provider_policy(route).unwrap();
+            let (_, actual, _) = provider_policy(route).unwrap();
             let mut expected = legacy
                 .into_iter()
                 .chain(other_roots.iter().copied())
                 .map(str::to_owned)
                 .collect::<Vec<_>>();
+            if route == "lorist-schwenninger" {
+                expected.extend(
+                    [
+                        "CrouzeixConjecture.CompletionDiagonalization",
+                        "CrouzeixConjecture.CompletionStatement",
+                        "CrouzeixConjecture.MainPerturbationReduction",
+                        "CrouzeixConjecture.PositiveRealCompletion",
+                    ]
+                    .into_iter()
+                    .map(str::to_owned),
+                );
+            }
             expected.sort();
             assert_eq!(actual, expected, "{route}");
         }
+        let (_, jin_forbidden, jin_prefixes) = provider_policy("jin").unwrap();
+        assert_eq!(
+            jin_forbidden,
+            ["Crouzeix", "CrouzeixHarp", "CrouzeixLoristSchwenninger"]
+        );
+        assert_eq!(
+            jin_prefixes,
+            ["Crouzeix.LoristSchwenninger", "Crouzeix.Harp"]
+        );
     }
 
     #[test]
@@ -6525,6 +6799,16 @@ mod tests {
     }
 
     #[test]
+    fn ls_terminal_spec_matches_the_canonical_dependency_edge() {
+        let terminal = LS_NODE_SPECS
+            .iter()
+            .find(|spec| spec.node_id == "ls-terminal-crouzeix")
+            .unwrap();
+
+        assert_eq!(terminal.dependencies, &["ls-double-layer-realization"]);
+    }
+
+    #[test]
     fn python_parity_passed_ls_nodes_reject_present_null_reason_fields() {
         for field in ["blocked_reason", "failed_reason"] {
             let repo = fixture();
@@ -6545,7 +6829,7 @@ mod tests {
     }
 
     #[test]
-    fn local_formalization_manifest_requires_all_four_claim_surfaces() {
+    fn local_formalization_manifest_requires_all_six_claim_surfaces() {
         let repo = fixture();
         write_local_formalization_manifest(repo.path());
         mutate_local_formalization_manifest(repo.path(), |_, rows| {
@@ -6554,7 +6838,7 @@ mod tests {
 
         let error = verify(repo.path()).unwrap_err();
         assert_eq!(error.code(), LOCAL_FORMALIZATION_CODE);
-        assert!(error.message.contains("exactly the four"));
+        assert!(error.message.contains("exactly the six"));
     }
 
     #[test]
@@ -6651,6 +6935,29 @@ mod tests {
                 "field={field}"
             );
         }
+
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        set_local_field(repo.path(), "jin-main-theorem", "route_id", "harp");
+        let error = verify(repo.path()).unwrap_err();
+        assert_eq!(
+            error.code(),
+            "sources.crouzeix.local_formalization_manifest"
+        );
+
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        set_local_field(
+            repo.path(),
+            "jin-main-theorem",
+            "source_node_id",
+            "ls-terminal-crouzeix",
+        );
+        let error = verify(repo.path()).unwrap_err();
+        assert_eq!(
+            error.code(),
+            "sources.crouzeix.local_formalization_manifest"
+        );
     }
 
     #[test]
@@ -6856,6 +7163,26 @@ mod tests {
             "{}",
             error.message
         );
+
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let provider = repo
+            .path()
+            .join(ROOT)
+            .join("local_formalization/providers/jin.json");
+        let mut bytes = fs::read(&provider).unwrap();
+        bytes.push(b'\n');
+        fs::write(&provider, bytes).unwrap();
+        let error = verify(repo.path()).unwrap_err();
+        assert_eq!(
+            error.code(),
+            "sources.crouzeix.local_formalization_manifest"
+        );
+        assert!(
+            error.message.contains("digest mismatch"),
+            "{}",
+            error.message
+        );
     }
 
     #[cfg(unix)]
@@ -6876,6 +7203,20 @@ mod tests {
             "sources.crouzeix.local_formalization_manifest"
         );
         assert!(error.message.contains("symlink"));
+
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let evidence = repo.path().join(ROOT).join("local_formalization");
+        let original = evidence.join("providers/jin.json");
+        let alias = evidence.join("providers/harp.json");
+        fs::remove_file(&alias).unwrap();
+        fs::hard_link(&original, &alias).unwrap();
+        let error = verify(repo.path()).unwrap_err();
+        assert_eq!(
+            error.code(),
+            "sources.crouzeix.local_formalization_manifest"
+        );
+        assert!(error.message.contains("hardlink"), "{}", error.message);
 
         let repo = fixture();
         write_local_formalization_manifest(repo.path());
