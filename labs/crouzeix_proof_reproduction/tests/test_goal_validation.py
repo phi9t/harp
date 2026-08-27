@@ -273,7 +273,7 @@ class GoalValidationTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual(payload["status"], "incomplete")
         self.assertEqual(payload["goal_status"], "in-progress")
-        self.assertEqual(payload["earliest_incomplete_phase"], "cpfr-089")
+        self.assertEqual(payload["earliest_incomplete_phase"], "cpfr-090")
         self.assertEqual(payload["verified_commits"], [])
         self.assertIn(
             "docs/workstream/crouzeix-proof-reproduction/execution-ledger-003.tsv",

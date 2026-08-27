@@ -7124,7 +7124,7 @@ publish once, and make the Rust verifier require the resulting bundle.
   fast-forward remain controller steps at this commit-preparation moment. Kata
   =harp#ga15= is not yet closed.
 
-** IMPLEMENTING Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
+** DONE Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
 :PROPERTIES:
 :ID: CPFR-089
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
@@ -7170,9 +7170,48 @@ and generated reader artifacts to reflect exact route claim levels.
 - Atlas lint, typecheck, tests, build, and static export test
 
 *** Verification Evidence
-- Active implementation in the existing reconciliation worktree updates the
-  canonical packet from validated local evidence only. No generated Atlas files
-  or receipt refreshes have been edited yet in this ticket state.
+- Implementation began from landed =master=
+  =0a5b855fa5a88fc18d45008fdea8c8143c834f72= in the isolated
+  =docs/cpfr-089-crouzeix-proof-status= worktree after Kata =harp#bjpn= was
+  claimed. The worktree reused the canonical Lean cache and locked Atlas
+  dependency tree; no dependency hydration occurred.
+- RED packet assertions exposed the stale reader state: the packet still said
+  the LS terminal theorem was blocked, described only two LS support slices,
+  and omitted the three route receipts/reviews and mandatory six-row bundle.
+  The corrected packet names all three =complete-local= routes, their exact
+  terminal and closed-range declarations, the finite-dimensional polynomial,
+  scalar rational, and Hilbert consequence boundaries, and Harp's exact eleven
+  lower-level LS reuses.
+- Initial Spec review found two wording defects. The status page incorrectly
+  left independent mathematical review open after citing approved route
+  reviews, and the certified LS route used the weaker =source-backed= label.
+  After repair, the packet says the three named local reviews are complete,
+  reserves broader external or peer scrutiny, and uses the manifest's exact
+  =source-faithful= claim kind with =source_fidelity_check= passed. Spec and
+  Standards re-review both reported =PASS= with no Critical, Important, or
+  Minor findings.
+- The canonical corpus, standalone Atlas HTML, and Atlas receipt were
+  regenerated together. The Atlas receipt binds corpus SHA-256
+  =01bbd18d0e73e0a732968e68f5c65bd0d0a0a30ab73deb04c3a8725801f7057d=
+  and HTML SHA-256
+  =6492e0145db0214c21d66869470365b673ac8d39cf893a71b265574fa97dccd3=.
+  The packet gate passed three tests; Atlas passed 63 tests and its static
+  export test.
+- The Seatbelt-contained full repository gate passed in 835 seconds: Rust
+  passed 859 tests, Meta-Harness passed 13 tests, Crouzeix passed 773 Python
+  tests with three conditional skips, =lean-all= built 8,775 jobs in 26
+  seconds, source verification reported 477 evidence artifacts and 189
+  snapshots, and repository verification reported 521 import rows. The
+  123,454-record Lean dependency-cache digest remained
+  =30248fd543222ce8e53c1409aa06e8f4335f651c52160cf059dd6d63ffebe29f=,
+  and the staged payload plus immutable six-row bundle remained byte-identical.
+  A quiescent isolated =verify-atlas= rerun changed zero entries in the shared
+  9,201-entry dependency tree.
+- Local =master= was fast-forwarded to the exact reviewed reader payload commit
+  =573d92909972f8171e5c35ae3179a1d0181982e9=. CPFR-089 closeout metadata,
+  final payload-digest/full repository verification, second local
+  fast-forward, and Kata closure remain pending controller steps at this
+  commit-preparation moment.
 
 ** TODO Run Final Three-Route Review And Local Landing :review:landing:ticket:
 :PROPERTIES:
