@@ -1858,8 +1858,7 @@ conditions.
   exercise real tool startup and narrow runtime namespaces before the release
   gate. Those changes are recorded in the
   [CPFR-086 retrospective](../../workstream/crouzeix-proof-reproduction/cpfr-086-retrospective.md)
-  and its ledger rows through `landed`. They do not mark later program phases
-  complete.
+  and its ledger rows through `landed`.
 - CPFR-087 added immediate phase assertions for an atomic claim record, separate
   proof-node and support-module reuse semantics, bound `route_dependencies`,
   canonical full-instance JSON Schema/Python/Rust parity, direct provider-edge
@@ -1868,14 +1867,39 @@ conditions.
   repository-root audit imports, read-only verifier snapshots, a closed
   release-ledger key set, and mandatory commit-trailer checks. The
   [CPFR-087 retrospective](../../workstream/crouzeix-proof-reproduction/cpfr-087-retrospective.md)
-  ties each change to the phase evidence. CPFR-087 is `complete-local` through
-  `release-verified`; CPFR-088 and later phases, full repository verification,
-  digest refresh, landing, and Kata closure remain pending.
+  ties each change to the phase evidence.
+- Distinguish `proof-complete` from `certification-complete` as first-class
+  entry and exit states. A compiling or even reviewed route is not yet a
+  landed certificate.
+- Before work starts, freeze one recovery packet with the exact base and
+  candidate commits and trees, current phase state, publication state, cache
+  provider/consumer links, dirty paths, and licensing boundary.
+- Before review, freeze one bundle with the tracked diff digest,
+  cross-language parity checks, lifecycle fixtures, recovery-path smoke, and
+  read-only before/after snapshots.
+- Before any expensive gate, precompute the exact Seatbelt/runtime namespace
+  and run a fake-probe pass that exercises the real tool startup surface.
+- Serialize Lean/Lake and expensive release gates, require one quiescent
+  shared-tool window, and distinguish strict proof/cache/reader invariance
+  from explicitly caveated volatile dependency metadata with the smallest
+  isolated rerun.
+- Record cache provider/consumer edges during phase setup and rescan them
+  immediately before any worktree deletion.
+- Separate proof-freeze full verification from closeout-metadata verification:
+  any proof, bundle, reader, or runtime change invalidates the full gate;
+  metadata-only closeout gets exact focused gates plus repository verification
+  unless the governing task explicitly requires another full gate.
+- Bind the exact uv-managed interpreter and child `sys.executable` path, and
+  keep a Python 3.9 compatibility probe in the phase boundary.
+- Refresh `docs/import-receipt.md` strictly last and verify again. Command
+  automation for that refresh remains deferred.
+- Bind reviewer identity, require controller/reviewer separation, and require
+  immutable before/after tracked-state snapshots for every independent review.
 - Transactional ticket APIs, generated cross-language validators, package-only
   CLIs, a reusable hermetic-policy generator, a capability-separated verifier
-  runtime, and a fully typed ledger require later architecture work. This plan
-  adds focused assertions and tests now without treating those designs as
-  implemented.
+  runtime, typed ledger evidence, receipt-refresh automation, and a worktree
+  safe-remove command require later architecture work. This revision records
+  the need without treating those designs as implemented.
 
 ## Completion footer
 
