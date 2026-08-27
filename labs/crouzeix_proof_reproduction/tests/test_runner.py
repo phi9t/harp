@@ -357,7 +357,8 @@ class CallTests(unittest.TestCase):
                     write_fake_cli(cli, mode)
                     run_dir = write_run(root, "historical", cli)
                     spec = protocol.read_run_spec(run_dir / "run_spec.json")
-                    spec["timeout_seconds"] = 1
+                    if mode == "timeout":
+                        spec["timeout_seconds"] = 1
 
                     result = runner.run_call(
                         run_dir,
