@@ -7020,7 +7020,7 @@ publish a dedicated-route receipt.
   controller steps at this commit-preparation moment. The closeout commit is not
   yet landed, and Kata is not yet closed.
 
-** IMPLEMENTING Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
+** DONE Publish And Require Six-Row Local Formalization Bundle :lean:evidence:security:ticket:
 :PROPERTIES:
 :ID: CPFR-088
 :DESIGN_SECTION: Crouzeix Three-Route Proof Completion
@@ -7100,9 +7100,29 @@ publish once, and make the Rust verifier require the resulting bundle.
 - The frozen focused release gate passed 112 Python tests and 102 Rust
   Crouzeix tests, =cargo fmt=, =git diff --check=, the read-only six-row bundle
   validator, and =sources verify=. The 85-case Seatbelt probe matrix passed 39
-  allowed and 46 denied probes before any release Lean execution. Full
-  repository verification, the final payload receipt, local landing, and Kata
-  closure remain pending.
+  allowed and 46 denied probes before any release Lean execution.
+- The first full repository gate at =b5bc300feb1d50d72d13ef7c5ad6935e94bba683=
+  exposed one unrelated runner-test timing defect: all five result-shape cases
+  shared a one-second timeout, so Seatbelt startup could misclassify an
+  immediate =missing_usage= completion as =timed_out=. The test now applies the
+  one-second limit only to the actual timeout case; the exact contained
+  regression and all 12 runner tests passed, and both final reviewers approved
+  the one-line test-only repair.
+- The definitive full repository gate passed at
+  =c09a0dc2a9fb6db19e0073d87e333f8fe86d92e7= in 689 seconds: Atlas passed
+  63 tests, Rust passed 859 tests, Meta-Harness passed 13 tests, Crouzeix
+  passed 773 Python tests with three conditional skips, and =lean-all= built
+  8,775 jobs in 12 seconds. Source verification reported 477 evidence artifacts
+  and 189 snapshots; repository verification reported 521 import rows. The
+  123,454-record dependency-cache digest remained
+  =30248fd543222ce8e53c1409aa06e8f4335f651c52160cf059dd6d63ffebe29f=,
+  the shared Atlas dependency tree was unchanged, and the immutable bundle was
+  byte-identical before and after.
+- Local =master= was fast-forwarded to the verified payload commit
+  =c09a0dc2a9fb6db19e0073d87e333f8fe86d92e7=. CPFR-088 closeout metadata,
+  the final payload-digest/full repository gate, and the second local
+  fast-forward remain controller steps at this commit-preparation moment. Kata
+  =harp#ga15= is not yet closed.
 
 ** TODO Reconcile Crouzeix Claims And Reader Artifacts :docs:evidence:atlas:ticket:
 :PROPERTIES:
