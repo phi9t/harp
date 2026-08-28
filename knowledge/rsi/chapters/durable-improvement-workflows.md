@@ -28,6 +28,35 @@ The workflow owns control state. The model may choose a hypothesis or propose co
 
 Represent run state as `S = (phase, attempt, inputs, outputs, pending, owner, history)`. A transition `δ(S, event) → S'` is valid only if the event matches the current phase, required inputs exist, and the caller holds the current writer token. Persist `S'` before acknowledging completion.
 
+## Durable controller contract
+
+**INFERENCE — imported consolidation.** A durable controller needs more than a
+phase name. Its state identifies the run, schema version, revision, active
+writer and fencing token, pending external action, completed action receipts,
+budget allocation, and the next legal transition. The candidate may propose a
+change, but it cannot rewrite this control state, evaluator result, budget, or
+promotion decision.
+
+For an external effect, the controller validates the current writer, lease,
+fence, revision, and legal transition. It then persists a prepared action with
+its semantic action key, request digest, continuation, and fence before it
+calls the receiver. It records the receiver operation identity as soon as it is
+known and reconciles until the receiver reports success, failure, denial, or
+cancellation. Only then does it persist the successor phase and clear pending
+state.
+
+The state store and receiver are not one transaction. Persisting intent does
+not prove exactly-once external execution. After a timeout or controller loss,
+the next controller starts from the pending action, queries the authoritative
+receiver by operation identity or supported action key, and records the
+observed state. It retries only when the receiver idempotency contract or a
+conclusive absence check makes that safe.
+
+**INFERENCE — split-brain boundary.** Compare-and-swap protects state writes,
+not an expired controller external call. The receiver or a controller-owned
+dispatcher must validate the current fencing token. Without that check, do not
+transfer ownership while an effect remains ambiguous.
+
 ## Plan-execute-observe-improve
 
 1. **Plan.** The model proposes a bounded change and an expected measurable effect.
@@ -57,6 +86,13 @@ A retry is safe only when the operation is idempotent or reconciled. Give each e
 `k = hash(run_id, phase, logical_action, input_digest)`
 
 Before executing, the worker asks the authoritative target whether `k` already completed. If yes, it records the existing result. If no, it executes once and stores the target's operation identifier. A timeout is not proof of failure; reconcile before retry.
+
+**INFERENCE — inclusive accounting.** The action budget includes preparation,
+receiver calls, evaluator work, retries, and all descendant work. Track elapsed
+time separately from additive resource quantities. Concurrent child wall times
+must not be summed as though they were CPU time. An unreachable child or
+unknown effect consumes an unresolved or conservatively reserved budget. It is
+never silently counted as zero.
 
 Separate delivery attempts from semantic attempts. A workflow engine may redeliver a task because a worker died. The domain state machine decides whether the experiment itself may be attempted again.
 

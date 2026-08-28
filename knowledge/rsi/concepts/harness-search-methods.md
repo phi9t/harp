@@ -14,6 +14,11 @@ human_review: null
 
 # Harness search methods
 
+The owning [[knowledge/rsi/chapters/harness-search|harness-search chapter]]
+defines the constrained archive contract. The labels below distinguish the
+representation being searched. They do not collapse correctness, integrity,
+cost, and novelty into one after-the-fact score.
+
 Harness search chooses which part of agent policy is editable and which process proposes and selects candidates. The search method determines cost, diversity, and how easily evaluator leakage can enter.
 
 ## Context optimization
@@ -39,6 +44,14 @@ Quality-diversity methods archive candidates by both performance and behavioral 
 ## Open-ended search
 
 Open-ended search allows objectives, niches, or candidate structures to expand over time instead of optimizing one fixed target. It can discover unexpected methods, but evaluation becomes harder as tasks and candidates co-evolve. Protected safety and capability tests must remain comparable even when the search frontier changes.
+
+## Budget and cohort controls
+
+Count proposal work, development checks, evaluator calls, retries, and all
+descendant work against the matched root-tree budget. Development evidence may
+guide search. A protected cohort can support only its predeclared number of
+adaptive choices, after which it must retire. Hidden answers are not safe merely
+because the proposer cannot read their text.
 
 <details>
 <summary>Original sources for this mechanism</summary>

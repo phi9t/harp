@@ -5,7 +5,7 @@ type: gap-map
 mode: RESEARCH PLANNING
 status: active
 created: 2026-08-09
-updated: 2026-08-09
+updated: 2026-08-28
 tags: [recursive-self-improvement, gap-map, research-planning, survey]
 confidence: medium
 ---
@@ -38,6 +38,7 @@ explicit gap.
 | `Harness-R1` | Directly matches Harp's executable harness-editing interest. | Hub full-scaffold entry. | Identity only. |
 | `RSI-Bench` | A mechanism benchmark explicitly named for recursive self-improvement. | Hub evaluation entry and link inventory. | Identity only; needs verifier/access-policy capture before use. |
 | `AstaBench` / `MLS-Bench` | Scientific and AI-building benchmark branch overlaps evaluator-integrity work. | Hub evaluation entry. | Identity only. |
+| Agent-Harness evaluation and diagnosis studies | The internal synthesis identifies target, evaluation, and meta-Harness separation, matched-budget attribution, and diagnosis-before-patching as gaps that benchmark scores can hide. | Internal synthesis only; public links named there are not yet captured as primary evidence. | Identity and review questions only. Capture the named public paper, implementation, and evaluator contract before a mechanism claim. |
 
 ## Anti-goals
 

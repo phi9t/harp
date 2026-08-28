@@ -153,7 +153,7 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
         "knowledge/autodiff_geometry/autodiff_geometry_index.md",
     ),
 ];
-pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 81] = [
+pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 82] = [
     (
         "agentic-eval-apply",
         "knowledge/rsi/sicp/agentic_eval_apply.md",
@@ -241,6 +241,10 @@ pub(super) const AUXILIARY_DOCUMENTS: [(&str, &str); 81] = [
     (
         "codex-state-continuity",
         "knowledge/rsi/codex_state_continuity_and_compaction.md",
+    ),
+    (
+        "rsi-standalone-consolidation",
+        "knowledge/rsi/standalone_consolidation.md",
     ),
     (
         "context-engineering-deep-dive",

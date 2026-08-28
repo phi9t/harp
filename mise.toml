@@ -19,7 +19,22 @@ corepack pnpm install --frozen-lockfile
 
 [tasks.test]
 description = "Run workspace tests with the compact test profile"
-run = 'CARGO_TARGET_DIR="$HARP_TARGET_DIR" cargo test --profile test-small --workspace'
+run = '''
+set -euo pipefail
+# Context-control tests create disposable Git repositories. They must not inherit
+# a host-managed hooksPath through Git's command-line configuration environment.
+unset GIT_CONFIG_COUNT GIT_CONFIG_PARAMETERS
+unset TRAE_GIT_ATTRIBUTION_CONFIG_SLOT TRAE_GIT_ATTRIBUTION_HELPER
+unset TRAE_GIT_ATTRIBUTION_MANAGED_HOOK
+unset TRAE_GIT_ATTRIBUTION_ORIGINAL_CONFIG_PARAMETERS
+unset TRAE_GIT_ATTRIBUTION_ORIGINAL_CONFIG_PARAMETERS_PRESENT
+index=0
+while [ "$index" -lt 32 ]; do
+  unset "GIT_CONFIG_KEY_$index" "GIT_CONFIG_VALUE_$index"
+  index=$((index + 1))
+done
+CARGO_TARGET_DIR="$HARP_TARGET_DIR" cargo test --profile test-small --workspace
+'''
 
 [tasks.test-shell]
 description = "Run compact build-policy shell regressions"

@@ -954,6 +954,39 @@ fn agentic_eval_apply_is_discoverable_and_links_to_registered_documents() {
 }
 
 #[test]
+fn rsi_standalone_consolidation_record_is_registered_with_its_pinned_boundary() {
+    let corpus = compile(workspace_root()).unwrap();
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "rsi-standalone-consolidation")
+        .expect("RSI consolidation record must be compiled");
+
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/rsi/standalone_consolidation.md"
+    );
+    for required in [
+        "861232a70beed5792c7f73ea00ee4cf4faebea7b",
+        "d14d0c5d2f07bfcecebe300d047fbb99e8ee36db",
+        "source_reconciliation.tsv",
+        "Harp is the only maintained authoring location",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "RSI consolidation record is missing {required}"
+        );
+    }
+    assert!(
+        AUXILIARY_DOCUMENTS.iter().any(|(document_id, path)| {
+            *document_id == "rsi-standalone-consolidation"
+                && *path == "knowledge/rsi/standalone_consolidation.md"
+        }),
+        "RSI consolidation record must be registered as an auxiliary document"
+    );
+}
+
+#[test]
 fn rlm_system_reading_links_eval_apply_and_preserves_code_boundaries() {
     let corpus = compile(workspace_root()).unwrap();
     let document = corpus

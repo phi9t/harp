@@ -16,6 +16,12 @@ human_review: null
 
 The same useful practice can live at several layers. The representation determines who can edit it, whether execution is guaranteed, and how broadly it generalizes.
 
+**INFERENCE - imported consolidation.** Update latency is the time from
+accepting a change to using it in a production run. Prompts update on the next
+invocation, skills on the next selected invocation, scripts after test and
+deployment, workflows after deployment and any active-state migration, and
+weights after training, validation, and checkpoint deployment.
+
 ## Prompt procedure
 
 A prompt procedure describes behavior in model-readable text. It is cheap to edit and inspect but consumes context and depends on instruction following. Its effect can disappear under conflicting context or distribution shift.
@@ -32,9 +38,19 @@ A script encodes deterministic transformations or checks in executable code. It 
 
 A workflow orders activities, records state transitions, and controls retries, waits, and approvals. It is the right representation when the useful practice concerns sequencing and durability rather than one transformation.
 
+## Demonstration data
+
+Demonstration data can influence later behavior without requiring an
+inference-time gate. Its update cost includes curation, training, validation,
+and deployment. It remains different from a workflow or permission boundary,
+which ordinary code can enforce on every execution.
+
 ## Model behavior procedure
 
 A learned procedure is encoded in weights and invoked by ordinary inference. It saves context and may generalize beyond explicit rules, but it is harder to inspect, patch, and guarantee. The four-way model-with-or-without-procedure test separates weight learning from dependence on an external procedure.
+
+Keep hard permission and evaluation constraints in external code and services
+even if the model learns to request or follow them.
 
 <details>
 <summary>Original sources for this mechanism</summary>

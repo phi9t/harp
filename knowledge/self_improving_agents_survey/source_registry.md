@@ -5,7 +5,7 @@ type: source-registry
 mode: SOURCE REGISTRY
 status: active
 created: 2026-08-09
-updated: 2026-08-09
+updated: 2026-08-28
 tags: [recursive-self-improvement, sources, provenance, claim-ceilings]
 confidence: medium
 ---
@@ -15,7 +15,8 @@ confidence: medium
 Mode: `SOURCE REGISTRY`.
 
 The authoritative structured rows are in `content/sources/source_registry.tsv`.
-This page gives packet-local reading guidance for the four new source IDs.
+This page gives packet-local reading guidance for the survey sources and one
+bounded internal synthesis source.
 
 | Source ID | Identity | Stability | Local artifacts | Claim ceiling |
 |---|---|---|---|---|
@@ -23,6 +24,7 @@ This page gives packet-local reading guidance for the four new source IDs.
 | `SIMAS-SITE` | `https://selfimproving-agent.github.io/` captured on 2026-08-09 | Mutable web page, captured as dated bytes; same bytes match the pinned site source commit in this bundle. | `evidence/self_improving_agents_survey/site/index.html`, `site/static/images/fig-si-main-001.png`, `site/index.txt` | Dated hub claims, paper-library counts, one-hop link topology, and first-party overview figure. |
 | `SIMAS-SITE-REPO` | GitHub Pages source repo at `d8af6607ced118351108670f823cd106649cb757` | Immutable Git commit. | `evidence/self_improving_agents_survey/repos/site_repo/` | Pinned source bytes and commit metadata for the hub page. |
 | `SIMAS-AWESOME-REPO` | `selfimproving-agent/Awesome-Self-Improving-Agents` default branch observed at `57a1d89e5bafcd65db7feb51e809422700aeb48a` | Repository is mutable; captured README/LICENSE use the observed commit. | `evidence/self_improving_agents_survey/repos/awesome_repo/` | Repository identity, README framing, MIT license text, and update-list metadata. No full tree audit. |
+| `LARK-HARNESS-BOUNDARY` | Internal Agent Harness industrial and academic synthesis, Lark docx `NCc2dbhZgovy1pxdTa1cMClinmf`, revision `80`, read under user-authorized access on 2026-08-28. | Mutable internal document; no raw capture is retained in Harp. | No tracked raw artifact. The source registry preserves identity, revision, access mode, and claim ceiling only. | Boundary vocabulary and review criteria: target, evaluation, and meta-Harness roles; durable design versus run state; matched-budget attribution; diagnosis before patching; and strong RSI. No paper mechanism, result, or implementation claim. |
 
 ## Capture inventory
 
@@ -57,3 +59,6 @@ packet or explicitly cited from a local artifact with its own claim ceiling.
   recursive-improvement standard; it only classifies update target and signal.
 - The extracted PDF text is a local reading aid. Raw PDF and HTML artifacts own
   source identity.
+- The internal synthesis note does not promote its recent-paper figures into
+  Harp evidence. Each result remains a candidate for a separately captured
+  public primary-source packet.

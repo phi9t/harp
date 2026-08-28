@@ -48,6 +48,24 @@ Let `M₀` be the original model, `M₁` the adapted model, `P₀` the minimal b
 
 Define procedure benefit before training as `PB₀ = Score(B) − Score(A)`. Define internalized gain as `IG = Score(C) − Score(A)`. Define residual procedure benefit as `RPB = Score(D) − Score(C)`.
 
+**INFERENCE — imported consolidation.** The four cells also expose an additive
+interaction:
+
+`I = [Score(M₁,P₁) − Score(M₁,P₀)] − [Score(M₀,P₁) − Score(M₀,P₀)] = RPB − PB₀`.
+
+`I` near zero means no detectable interaction within a predeclared tolerance.
+It does not prove independence. A negative interaction can indicate partial
+internalization, but can also result from conflict, score ceilings, or floors.
+A positive interaction is consistent with complementarity between the adapted
+model and procedure.
+
+To attribute a procedure-specific training effect, compare the adapted model
+with a matched control-trained model that used equal data volume and compute
+without the procedure signal. Freeze tasks, budgets, decoding, and evaluation
+across all arms. Predeclare the tolerance, behavioral measures, and paired
+uncertainty method. The contrast narrows alternative explanations. It does not
+by itself establish causality.
+
 Strong internalization has positive `IG` on held-out tasks and reduced but not necessarily zero `RPB`. If only `D` improves, training may have overfit to the procedure's state and action distribution. If `C` improves but `D` degrades, the external procedure may conflict with learned behavior.
 
 <details>

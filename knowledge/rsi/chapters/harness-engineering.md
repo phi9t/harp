@@ -54,6 +54,34 @@ Represent one agent step as:
 
 The loop is an implementation mechanism, not evidence of improvement. A recursive claim needs an outer process that proposes harness variants, evaluates them independently, promotes one, and tests whether it improves later harness work.
 
+## Proposal, dispatch, and authority
+
+**INFERENCE — imported consolidation.** Treat model output as a proposal, not
+an executable authority. The model may request a tool and provide arguments.
+Trusted controller code then normalizes that request, resolves the
+implementation through a registry, evaluates external permission policy,
+reserves budget, assigns the action key and deadline, and records intent before
+dispatch.
+
+Model-visible tool schemas describe request shape. They do not grant runtime
+authority. A candidate-owned prompt, schema, or capability request cannot
+expand permissions, evaluator access, or promotion authority. After an
+ambiguous action, the controller reconciles its durable intent with receiver
+state rather than trusting model recollection or blindly resending a request.
+
+**INFERENCE — context boundary.** Context construction projects durable state
+into a finite model window. The external runner reserves room for protected
+instructions, current approvals, unresolved actions, and tool schemas. The
+editable harness may select or order content only inside explicitly granted
+slots. If protected state does not fit, fail closed instead of dropping or
+summarizing it as optional background.
+
+Compaction may replace a model-visible range with a shorter projection, but it
+must preserve the full durable record, source-range identity, active task
+constraints, paired tool calls and results, unresolved actions, and approvals.
+Current permissions and external world state are recomputed outside a model
+summary.
+
 <details>
 <summary>Original sources for this mechanism</summary>
 

@@ -16,9 +16,25 @@ human_review: null
 
 Improvement runs often outlive one process or model context. Durability requires ordinary code to make completed work observable and repeated execution safe.
 
+The detailed controller contract is in [[knowledge/rsi/chapters/durable-improvement-workflows|workflows that persist across interruptions]]. This page keeps the terms that recur in other RSI chapters.
+
 ## Idempotency
 
 An operation is idempotent when repeating the same logical request leaves the system in the same valid state as one successful execution. Durable workflows use stable operation keys, compare-and-swap writes, and recorded completion results. Merely retrying a non-idempotent effect can create duplicate jobs, charges, messages, or promotions.
+
+An action key identifies one intended semantic effect across delivery attempts.
+An operation identifier names the receiver-side operation after acceptance. A
+local action key does not create exactly-once external execution. Recovery must
+query the authoritative receiver and retain an action as pending when status is
+unknown.
+
+## Writer fencing
+
+One controller with an unexpired lease and current fencing token may advance a
+run. Compare-and-swap protects durable state writes, but not an expired
+controller request that reaches a receiver after ownership changes. The
+receiver, or a controller-owned dispatcher, must validate the fencing token.
+Otherwise do not reassign ownership while an effect remains ambiguous.
 
 ## Checkpoints
 

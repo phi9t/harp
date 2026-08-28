@@ -32,6 +32,27 @@ For an RSI experiment, separate:
 
 `W` is the parameter tensor collection, `A` is architecture, `T` is tokenization and observation encoding, `x` is model-visible input, and `d` is decoding configuration. `H` is the harness and `s` is the larger environment state. A model-weight update changes `W`; a harness update can change the distribution of `x`, available actions, and consequences without touching `W`.
 
+## Training, serving, and harness attribution
+
+**INFERENCE — imported consolidation.** Separate a trained checkpoint from its
+served artifact and surrounding controller. A converted or quantized form of
+weights, runtime kernels, cache policy, batching, expert placement, and
+decoding can change serving behavior without changing the trained checkpoint.
+The harness changes context packing, tool availability, request interfaces,
+and memory policy. External permission policy remains outside both model and
+harness.
+
+This gives four explanations for a changed result: a weight update, a
+conversion or serving-runtime change, a harness change, or an evaluation
+change. An experiment must version all four. Retaining a trajectory changes
+data or session state. It changes weights only when an optimizer later consumes
+the trajectory through a recorded training update.
+
+Collection and development traces must stay separate from protected promotion
+evaluation. If a held-out task, answer, diagnostic result, or evaluator
+feedback enters training or development, retire that cohort and evaluate later
+successors against a fresh holdout.
+
 ## How weights change
 
 ### Pretraining

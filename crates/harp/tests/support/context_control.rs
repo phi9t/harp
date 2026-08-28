@@ -78,7 +78,7 @@ printf 'provider diagnostic \377\n' >&2
 printf 'final \376 message\n' > "$final_message"
 printf 'provider-committed\n' >> tracked.txt
 git add tracked.txt
-git commit --quiet -m 'provider commit'
+git -c core.hooksPath=/dev/null commit --quiet -m 'provider commit'
 exit 0
 "#
         .to_owned(),

@@ -30,6 +30,32 @@ Represent local research state as `Sᵣ,ₜ = (Kᵣ,ₜ, Yₜ, Zₜ, Mᵣ,ₜ)`.
 
 `ΔU` can include uncertainty reduction, expected capability gain, falsification value, or downstream decision value. It must not collapse scientific validity into the same score as model performance.
 
+## Result records and causal continuity
+
+**INFERENCE — imported consolidation.** A research loop is causal only when a
+retained result constrains the next hypothesis or intervention. Each experiment
+therefore needs a durable record containing its hypothesis identifiers,
+intervention, controls, seed policy, environment, metric definition, raw
+outputs, estimate, uncertainty, integrity status, competing explanations, and
+next decision.
+
+Separate execution integrity from scientific outcome. A valid positive result
+supports the predicted effect. A valid negative result does not. A valid
+inconclusive result completed but did not distinguish competing explanations.
+Invalid or interrupted runs are also inconclusive until their failure is
+explained or the experiment is rerun.
+
+Retain invalid, negative, and interrupted records. Removing them hides search
+cost, permits repeated dead ends, and lets a later agent mistake a missing
+control for supporting evidence. Summaries may guide retrieval, but they must
+link back to the full result record a reviewer needs to challenge a conclusion.
+
+**INFERENCE — authority boundary.** The research agent may propose and analyze
+an experiment. An external evaluator judges whether the frozen protocol and
+controls held. A separate promotion authority accepts consequential artifact or
+parent-to-child changes. Finishing an experiment is one research round, not a
+new accepted generation.
+
 ## End-to-end control flow
 
 1. Define the target question and current uncertainty.

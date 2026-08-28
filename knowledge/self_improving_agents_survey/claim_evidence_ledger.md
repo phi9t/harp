@@ -5,7 +5,7 @@ type: claim-ledger
 mode: CLAIM LEDGER
 status: active
 created: 2026-08-09
-updated: 2026-08-09
+updated: 2026-08-28
 tags: [recursive-self-improvement, claim-ledger, survey, evidence]
 confidence: medium
 ---
@@ -26,6 +26,11 @@ Mode: `CLAIM LEDGER`.
 | SIMAS-C008 | The hub places DGM, STOP, ADAS, AlphaEvolve, ShinkaEvolve, Continual Harness, and Hyperagents in the full-scaffold neighborhood. | [SIMAS-SITE], `site/index.txt:552-580` | source-backed | Hub classification only; existing Harp packets own inspected mechanisms. |
 | SIMAS-C009 | The hub adds an evaluation branch that distinguishes measuring improvement from benchmarking improvement. | [SIMAS-SITE], `site/index.txt:585-690` | source-backed | Does not validate benchmark access policies, hidden tests, or scores. |
 | SIMAS-C010 | The Awesome repository is a linked update list with MIT license text captured at commit `57a1d89e5bafcd65db7feb51e809422700aeb48a`. | [SIMAS-AWESOME-REPO], `repos/awesome_repo/default-branch-commit.json`, `README.md`, `LICENSE` | source-backed | Repository metadata and top-level files only; no full tree audit. |
+| LHB-C001 | The source distinguishes the target Harness that performs a task from an evaluation Harness that controls isolated measurement and a meta-Harness that proposes, evaluates, promotes, or rolls back target changes. | [LARK-HARNESS-BOUNDARY], docx `NCc2dbhZgovy1pxdTa1cMClinmf` revision `80`, sections on Harness roles and evaluation. | internal-source-bounded | An author synthesis and vocabulary aid. It does not prove that any named system has these separations. |
+| LHB-C002 | The source separates reviewed, persistent Harness design from per-run state such as retries, checkpoints, and current memory contents. | [LARK-HARNESS-BOUNDARY], revision `80`, working-boundary sections. | internal-source-bounded | Harp retains this as a design distinction, not a claim that every system persists or isolates state correctly. |
+| LHB-C003 | A harness-evolution comparison needs matched model, task split, environment, inference and feedback budget, cost, and seeds; development, repeated-gate, and final-test evidence must remain separate. | [LARK-HARNESS-BOUNDARY], revision `80`, causal-attribution sections. | internal-source-bounded | Review criterion only. It does not validate any existing paper protocol or result. |
+| LHB-C004 | A repair loop should distinguish diagnosis and localization from patch generation and final verification. | [LARK-HARNESS-BOUNDARY], revision `80`, diagnosis-and-localization sections. | internal-source-bounded | A decomposition for evaluating systems, not evidence that a particular benchmark measures diagnosis. |
+| LHB-C005 | Strong RSI requires an improved successor to perform the next improvement and an independent fixed meta-evaluation of transfer to unseen targets under comparable compute. | [LARK-HARNESS-BOUNDARY], revision `80`, RSI-boundary sections. | internal-source-bounded | Author criterion aligned with Harp's existing acceptance boundary. It does not establish open-ended RSI. |
 
 ## Ledger rules
 
@@ -37,3 +42,6 @@ Mode: `CLAIM LEDGER`.
   current bibliography metric.
 - Derived text locators are reading aids. When source identity matters, cite
   the raw PDF, raw HTML, or pinned repository file.
+- The Lark source has no tracked raw artifact by design. Cite its docx ID,
+  revision, access mode, and bounded claim ceiling. Do not derive paper
+  mechanism or numerical-result claims from the synthesis note.

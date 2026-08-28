@@ -17,9 +17,18 @@ human_review: null
 
 A harness is executable policy around a model. These components determine what the model observes, which effects it may request, what persists, and how the system detects failure.
 
+The [[knowledge/rsi/chapters/harness-engineering|harness-engineering chapter]]
+owns the end-to-end request and dispatch contract. This page names its
+components without treating model-visible interfaces as authority.
+
 ## Context construction
 
 Context construction selects instructions, history, retrieved records, tool schemas, and current state, then orders them inside the model's context limit. It is a policy because inclusion, omission, and ordering change behavior. A comparison must hold the underlying model fixed and record the exact assembled context.
+
+Protected instructions, approvals, unresolved actions, and tool schemas need
+reserved context budget. An editable harness can select and order content only
+inside declared slots. If protected state does not fit, the controller must fail
+closed rather than omit it or convert it into an unverified summary.
 
 The [[knowledge/rsi/context_engineering_deep_dive|context-engineering deep dive]]
 separates learned context artifacts from the procedures that retrieve, update,
@@ -43,6 +52,10 @@ Memory persists observations or conclusions across episodes. A reliable memory r
 
 Tool schemas translate model output into typed requests. Ordinary code validates arguments and enforces the permission policy before effects occur. A prompt saying "do not delete files" is not a capability boundary; the runtime must withhold or constrain the operation.
 
+A model proposal becomes an action only after trusted code resolves the tool
+implementation, applies external policy, reserves budget, assigns an action
+key, and records intent. The request schema does not grant authority.
+
 ## Filesystem state
 
 Filesystem state gives the agent durable artifacts, checkpoints, and code, but introduces races, symlink attacks, partial writes, and stale reads. Safe harnesses bind reads and writes to a held directory, publish atomically, and record the revision or digest consumed by evaluation.
@@ -54,6 +67,10 @@ Subagents split work into concurrent or specialized contexts. Delegation improve
 ## Verification and recovery
 
 Verification observes the real artifact through tests, static checks, or runtime probes before the harness claims success. Recovery resumes from durable state, distinguishes retryable from terminal failures, and avoids repeating completed side effects.
+
+Recovery starts from the pending intent and receiver observation, not from the
+model recollection. It records unresolved state when the receiver cannot prove
+completion or absence.
 
 <details>
 <summary>Original sources for this mechanism</summary>

@@ -58,6 +58,7 @@ READER_EVIDENCE_PATHS = (
     "atlas/dist/harp-atlas.html",
     "atlas/dist/harp-atlas.receipt.json",
 )
+HISTORICAL_LANDING_EVIDENCE_PHASES = frozenset({"cpfr-089"})
 ATLAS_APP_INPUT_PATHS = (
     "index.html",
     "package.json",
@@ -575,7 +576,7 @@ def _validate_landed_row_evidence(
         if row.state != "landed":
             continue
         landed_rows.append(row)
-        evidence_bytes = _read_bounded_artifact(repository_root, row.verifier)
+        evidence_bytes = _read_landed_row_evidence(repository_root, row, session=session)
         if row.evidence_digest != f"sha256:{_sha256_bytes(evidence_bytes)}":
             raise ValueError("landed row evidence digest mismatch")
         if row.phase == "phase-8-plan-review":
@@ -781,6 +782,33 @@ def _read_bounded_artifact(repository_root: Path, relative: str) -> bytes:
         max_bytes=ARTIFACT_BYTES_CAP,
         missing_message="landed row evidence is missing",
     )
+
+
+def _read_landed_row_evidence(
+    repository_root: Path,
+    row: execution_ledger.ExecutionLedgerRow,
+    *,
+    session: GitSession,
+) -> bytes:
+    current = _read_bounded_artifact(repository_root, row.verifier)
+    expected = row.evidence_digest.removeprefix("sha256:")
+    if _sha256_bytes(current) == expected or row.phase not in HISTORICAL_LANDING_EVIDENCE_PHASES:
+        return current
+    if not _git_commit_exists(repository_root, row.landing_commit, session=session):
+        raise ValueError("landed row landing_commit does not exist")
+    if not _git_is_ancestor(repository_root, row.landing_commit, "master", session=session):
+        raise ValueError("landed row landing_commit is not an ancestor of master")
+    relative = _safe_relative_artifact_path(row.verifier)
+    result = _run_git_checked(
+        repository_root,
+        session,
+        None,
+        "show",
+        f"{row.landing_commit}:{relative}",
+    )
+    if result.returncode != 0:
+        raise ValueError("landed row evidence is missing")
+    return result.stdout.encode("utf-8")
 
 
 def _validate_phase8_review_artifact(repository_root: Path, relative: str) -> None:

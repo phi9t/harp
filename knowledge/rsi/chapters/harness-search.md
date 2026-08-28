@@ -32,6 +32,35 @@ Let `h ∈ H` be a harness candidate, `T` a task distribution, and `b` a matched
 
 `S` is task outcome after hard correctness gates, `Cost` includes all descendant work, and `Risk` measures integrity or authority violations. In practice, correctness and evaluator integrity should be constraints rather than terms that a high task score can buy away.
 
+## Constrained archive selection
+
+**INFERENCE — imported consolidation.** Treat search as a constrained
+multi-objective problem rather than one score with untyped cost penalties.
+Track quality, cost, and novelty separately, subject to correctness, evaluator
+integrity, policy compliance, and every component of the matched root-tree
+budget. The resource vector records model tokens, accelerator and CPU time,
+evaluator calls, elapsed time, human time, and external spend in native units.
+Do not add those units into one number after seeing the result.
+
+The archive records candidate identity, parents, declared mutation, score
+vector, behavior descriptor, inclusive cost, and lifecycle state. Its cell key
+includes the behavior descriptor, model revision, and task cohort. A new model
+revision or task cohort begins a new namespace until a matched bridge
+experiment justifies comparison.
+
+Freeze the evaluator revision, descriptor function, mutation budget, seed
+policy, component budget, and protected-cohort query cap before search. Run
+schema, isolation, evaluator-integrity, and policy checks before scoring.
+Invalid attempts still debit the same budget. Development results may guide
+selection. Every protected result used for adaptive selection counts as
+optimization pressure. Retire a protected cohort at its predeclared query cap
+and use a fresh cohort rather than tuning indefinitely against hidden answers.
+
+Quality-diversity selection keeps nondominated variants in distinct behavior
+cells. A descriptor can describe tool strategy, decomposition depth, cost
+profile, or failure coverage, but must never encode protected task identity,
+task text, target answer, or a proxy for them.
+
 ## Search dimensions
 
 - **Context optimization** changes retained records, ordering, summaries, and selection policies.

@@ -804,6 +804,100 @@ class GoalValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             goal = self.make_complete_goal(root)
+            initial_commit, current_commit = self.init_git_repo_with_commit(root)
+            digests = self.materialize_landed_evidence(root)
+            subprocess.run(
+                ["/usr/bin/git", "add", "."],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+                env={
+                    "HOME": str(root),
+                    "LC_ALL": "C",
+                    "PATH": "/usr/bin:/bin",
+                },
+            )
+            subprocess.run(
+                ["/usr/bin/git", "commit", "-m", "record evidence"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+                env={
+                    "HOME": str(root),
+                    "LC_ALL": "C",
+                    "PATH": "/usr/bin:/bin",
+                },
+            )
+            current_commit = subprocess.run(
+                ["/usr/bin/git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+                env={
+                    "HOME": str(root),
+                    "LC_ALL": "C",
+                    "PATH": "/usr/bin:/bin",
+                },
+            ).stdout.strip()
+            self.write_text(
+                root,
+                self.LANDED_VERIFIER_PATHS["cpfr-089"],
+                "current reader receipt\n",
+            )
+            ledger_rows = []
+            for phase, ticket in (
+                ("cpfr-085", "CPFR-085"),
+                ("cpfr-086", "CPFR-086"),
+                ("cpfr-087", "CPFR-087"),
+                ("cpfr-088", "CPFR-088"),
+                ("cpfr-089", "CPFR-089"),
+                ("cpfr-090", "CPFR-090"),
+                ("cpfr-091", "CPFR-091"),
+                ("phase-8-plan-review", "PHASE-8-PLAN-REVIEW"),
+            ):
+                ledger_rows.append(
+                    self.landed_row(
+                        phase,
+                        ticket,
+                        evidence_digest=digests[phase],
+                        landing_commit=current_commit,
+                    )
+                )
+            ledger = self.write_ledger(root, *ledger_rows)
+
+            with mock.patch.object(
+                goal_validation,
+                "_validate_route_claims",
+            ), mock.patch.object(
+                goal_validation,
+                "_validate_local_bundle",
+                return_value=(),
+            ), mock.patch.object(
+                goal_validation,
+                "_validate_reader_surfaces",
+                return_value=(),
+            ), mock.patch.object(
+                goal_validation,
+                "_validate_commit_reference",
+                side_effect=[initial_commit, current_commit],
+            ), mock.patch.object(
+                goal_validation,
+                "_require_landed_program_phases",
+            ):
+                result = goal_validation.validate_goal(
+                    goal,
+                    execution_ledger_path=ledger,
+                    repository_root=root,
+                )
+
+            self.assertEqual(result.goal_status, "complete")
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            goal = self.make_complete_goal(root)
             digests = self.materialize_landed_evidence(root)
             self.write_text(
                 root,

@@ -5,7 +5,7 @@ type: survey-anchor
 mode: DOMAIN ORIENTATION
 status: active
 created: 2026-08-09
-updated: 2026-08-09
+updated: 2026-08-28
 tags: [recursive-self-improvement, survey, foundation-model-adaptation, scaffold-improvement, evaluation, bibliography]
 confidence: medium
 ---
@@ -121,6 +121,41 @@ MLS-Bench, WebArena, MINT, GAIA, and ToolEmu.
 | Meta-Harness, ADAS, AFlow, GEPA, Promptbreeder | The hub places these in scaffold optimization or prompt/workflow search neighborhoods. | Existing source packets own mechanisms. The survey provides crosswalk/topology only. |
 | RLM and joint adaptation | The survey's `theta` plus `Sigma` framing matches Harp's model-plus-harness adaptation vocabulary. | RLM-specific code and paper claims remain under the RLM packet. |
 | Evaluator integrity | The survey/hub adds many benchmark identities. | Harp's evaluator-integrity packet still owns access-policy, verifier, and benchmark-disclosure analysis. |
+
+## Harness boundary checklist from an internal synthesis
+
+**EVIDENCE. [LARK-HARNESS-BOUNDARY], docx
+`NCc2dbhZgovy1pxdTa1cMClinmf`, revision `80`, read 2026-08-28 under
+user-authorized access.** The source offers a useful review vocabulary:
+separate the target Harness that performs work, the evaluation Harness that
+controls measurement, and the meta-Harness that proposes, evaluates,
+promotes, or rolls back target changes. It also separates persistent Harness
+design from per-run state such as current memory, retries, and checkpoints.
+
+**INFERENCE.** Use that vocabulary to make a concrete review checklist:
+
+1. What code constructs context, validates and routes actions, updates run
+   state, and decides completion?
+2. Which parts belong to the task Harness, evaluator, or outer promotion
+   controller?
+3. Which design state persists across runs, and which state is only a record
+   of the current attempt?
+4. Are model, environment, task split, inference and feedback budgets, cost,
+   and seeds matched before interpreting a search result?
+5. Does the evidence show diagnosis and localization before patch generation,
+   or only that a patch happened to score well?
+
+**INFERENCE.** The source's strong-RSI criterion agrees with Harp's current
+claim boundary: repeated optimization by a fixed external optimizer is
+automation. A stronger recursive claim needs the accepted successor to carry
+out a later improvement and an independent, fixed meta-evaluation of transfer
+to unseen targets under comparable compute.
+
+The source's L0-L4 layers, model, behavior, runtime, product, and improvement
+loop, are an author-specific analysis aid. Harp does not treat them as standard
+field terminology. No raw document body, internal media, or paper-reported
+quantities are retained here. Public primary sources must be captured before
+any mechanism or numerical result is promoted beyond this bounded synthesis.
 
 ## Recommended Harp use
 
