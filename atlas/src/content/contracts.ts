@@ -692,9 +692,6 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
   const knownCases = new Set(
     diagnostics.cases.map((diagnosticCase) => diagnosticCase.case_id),
   );
-  if (systems.length !== 16) {
-    throw new Error("Canonical RSI corpus must contain sixteen system identities");
-  }
   if (wengSections.length !== 9) {
     throw new Error("Canonical RSI corpus must contain nine Weng sections");
   }
@@ -717,6 +714,9 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
         throw new Error(`Weng section ${section.section_id} has unknown system`);
       }
     }
+  }
+  if (systems.length !== 17) {
+    throw new Error("Canonical RSI corpus must contain seventeen system identities");
   }
   for (const system of systems) {
     for (const section of system.weng_section_ids) {

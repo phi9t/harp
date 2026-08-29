@@ -157,17 +157,17 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
     assert_eq!(
         envelope["data"],
         serde_json::json!({
-            "retained_concepts": 75,
-            "coverage_entries": 75,
-            "canonical_documents": 138,
-            "systems": 16,
+            "retained_concepts": 76,
+            "coverage_entries": 76,
+            "canonical_documents": 139,
+            "systems": 17,
             "weng_sections": 9,
             "diagnostic_fields": 28,
             "diagnostic_rules": 29,
             "diagnostic_cases": 12,
             "lessons": 6,
-            "source_registry_rows": 88,
-            "evidence_edges": 106
+            "source_registry_rows": 89,
+            "evidence_edges": 107
         })
     );
 }
@@ -440,7 +440,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
 
     assert_eq!(envelope["command"], "sources.verify");
     assert_eq!(envelope["status"], "ok");
-    assert_eq!(envelope["data"]["evidence_artifacts"], 477);
+    assert_eq!(envelope["data"]["evidence_artifacts"], 481);
     let lean_inventory = fs::read_to_string(
         repo_root().join("evidence/lean_proof_engineering/artifact_inventory.tsv"),
     )
@@ -455,7 +455,7 @@ fn sources_verify_accepts_the_tracked_offline_evidence() {
         .filter_map(|row| row.split('\t').next())
         .collect::<BTreeSet<_>>();
     assert_eq!(envelope["data"]["snapshot_files"], snapshot_rows.len());
-    assert_eq!(envelope["data"]["binary_objects"], 66);
+    assert_eq!(envelope["data"]["binary_objects"], 67);
     assert_eq!(
         envelope["data"]["implementation_sources"],
         implementation_sources.len()

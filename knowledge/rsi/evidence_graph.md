@@ -31,6 +31,7 @@ META-HARNESS-SITE → META-HARNESS
 META-HARNESS-REPO → META-HARNESS
 META-HARNESS-TB2-ARTIFACT → META-HARNESS-REPO
 META-HARNESS-TRAE-RUN → META-HARNESS-REPO
+ENVHARNESS ⇢ HARNESS-DISENTANGLE → activation/adherence boundary
 ```
 
 **INFERENCE — historical edge boundary.** The last relationship is conceptual rather than bibliographic. The RLM blog post-dates Weng's article and is represented by the typed `parallel-anchor` edge, not by a fabricated citation edge.
@@ -41,5 +42,10 @@ META-HARNESS-TRAE-RUN → META-HARNESS-REPO
 `instantiates` links a released artifact to the implementation it specializes.
 `evaluates-interface` records a local compatibility experiment without
 promoting it to benchmark or reproduction evidence.
+
+`contextualizes` records a Harp-authored comparison route without claiming that
+the sources cite, implement, or validate one another. EnvHarness is connected
+this way because its skill-retrieval pipeline needs the separate distinction
+between an update, its activation, and its downstream benefit.
 
 **MISSING.** No graph edge demonstrates that the current public systems form one integrated, repeatedly self-improving successor pipeline.

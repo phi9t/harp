@@ -522,7 +522,39 @@
       ],
       "diagnostic_case_path": null,
       "related_system_ids": [
-        "harness-disentangle"
+        "harness-disentangle",
+        "envharness"
+      ]
+    },
+    {
+      "system_id": "envharness",
+      "title": "EnvHarness",
+      "source_ids": [
+        "ENVHARNESS"
+      ],
+      "treatment": "full",
+      "publication_state": "published",
+      "canonical_markdown_path": "knowledge/rsi/systems/envharness.md",
+      "weng_section_ids": [],
+      "paper_routes": [
+        {
+          "source_id": "ENVHARNESS",
+          "public_url": "https://arxiv.org/abs/2608.19880",
+          "captured_locator": "evidence/envharness/text/envharness-2608.19880.txt:21-34",
+          "reading_sequence": {
+            "method": "§§2–3",
+            "algorithm": "§3.2, Figure 4",
+            "main_evaluation": "§4, Tables 2–3",
+            "ablation": "§5, Tables 4–5 and Figure 5",
+            "limitations": "§H, Limitations",
+            "appendix": "Appendix E.2–E.3 and F.1–F.2"
+          }
+        }
+      ],
+      "diagnostic_case_path": null,
+      "related_system_ids": [
+        "harness-disentangle",
+        "rlm"
       ]
     }
   ]

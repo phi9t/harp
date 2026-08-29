@@ -1026,6 +1026,48 @@ fn rlm_system_reading_links_eval_apply_and_preserves_code_boundaries() {
 }
 
 #[test]
+fn envharness_system_reading_preserves_environment_side_claim_boundary() {
+    let corpus = compile(workspace_root()).unwrap();
+    let document = corpus
+        .documents
+        .iter()
+        .find(|document| document.concept_id == "envharness")
+        .expect("EnvHarness system reading must be compiled");
+
+    assert_eq!(
+        document.canonical_markdown_path,
+        "knowledge/rsi/systems/envharness.md"
+    );
+    for required in [
+        "environment-side harness",
+        "ReasoningBank",
+        "frozen policy",
+        "same environment count",
+        "228.0M",
+        "five fresh rollouts",
+        "not strong RSI",
+        "Stage",
+        "Contract",
+        "Chain",
+    ] {
+        assert!(
+            document.html.contains(required),
+            "EnvHarness system reading is missing {required}"
+        );
+    }
+
+    let system = corpus
+        .systems
+        .iter()
+        .find(|system| system.system_id == "envharness")
+        .expect("EnvHarness must be present in the system registry");
+    assert_eq!(system.source_ids, ["ENVHARNESS"]);
+    assert!(system.weng_section_ids.is_empty());
+    assert_eq!(system.paper_routes.len(), 1);
+    assert_eq!(system.paper_routes[0].source_id, "ENVHARNESS");
+}
+
+#[test]
 fn context_engineering_companion_preserves_reader_and_source_contract() {
     let corpus = compile(workspace_root()).unwrap();
     let document = corpus

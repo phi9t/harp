@@ -26,6 +26,12 @@ Mode: `DOMAIN ORIENTATION`.
 
 **MISSING.** An independent reproduction of DGM, Meta-Harness, Self-Harness, AHE, or SIA across the same tasks, models, budgets, and acceptance rules.
 
+**MISSING.** EnvHarness needs an independently run, multi-seed factorial study
+that separates environment mutation from active selection over unmodified tasks,
+candidate-screening selection, and skill distillation. The study should match
+environment count, rollouts, designer calls, tokens, wall time, execution cost,
+and evaluator access, then test clean transfer on a held-out confirmation cohort.
+
 **MISSING.** A Meta-Harness reproduction that reconstructs the original
 candidate archive, per-dataset validation history, raw traces, proposer
 configuration, resource spend, and final held-out evaluation. The local TRAE

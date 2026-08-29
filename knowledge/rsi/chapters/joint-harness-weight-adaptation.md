@@ -86,6 +86,15 @@ Distillation can compress a stronger model or expensive procedure into a cheaper
 
 RLM training holds the recursive harness fixed and updates root-model weights. It demonstrates that harness-induced trajectories can change compositional transfer. It does not jointly search the harness, but it provides direct evidence that `H` changes the learning problem for `W`.
 
+### EnvHarness
+
+EnvHarness separates the two update surfaces across experiments. The main result
+holds weights fixed and updates an external retrieved skill bank from shaped
+environment rollouts. A separate single-seed GRPO experiment updates Qwen3-8B
+weights using EnvHarness environments. Neither result evaluates all four
+`(W,H)` combinations under a complete matched resource vector, so they motivate
+the coupling problem without establishing robust joint adaptation.
+
 ### Continual Harness
 
 Continual Harness collects experience under an evolving agent interaction, obtains teacher relabels and process rewards, and updates the model online. The mechanism addresses the gap between new harness states and old model behavior. Its current evidence is author-reported and task-bounded.

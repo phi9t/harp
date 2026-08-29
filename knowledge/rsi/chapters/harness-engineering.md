@@ -155,6 +155,17 @@ Hermes puts memory, skills, curation, sessions, and delegation into durable stor
 
 Codex separates model-visible tool specifications from runtime registration, persists rollouts, and manages thread ancestry and sandbox policy. It is a useful containment reference. The larger state space makes controlled attribution harder.
 
+### EnvHarness
+
+EnvHarness moves the harness boundary to the environment side: it wraps
+`reset`/`step` to stage reachable starting states or change the agent-visible
+interaction contract while retaining the base implementation and terminal
+verifier. Its main study extracts retrieved skills from these shaped rollouts
+with frozen policy weights. This makes it a useful harness-gap-mining mechanism,
+not evidence that the agent harness itself was autonomously improved. See
+[[knowledge/rsi/systems/envharness|the EnvHarness system reading]] for the
+resource and attribution boundary.
+
 ## Failure modes and tradeoffs
 
 - **Prompt-policy ambiguity.** Critical behavior exists only in prose and cannot be tested as a state transition.

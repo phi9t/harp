@@ -34,7 +34,7 @@ tracked file that names the source repository.
 - The initial standalone tree contained 49 binary evidence objects: 41 PDFs
   and eight RLM images. The planning estimate named seven images; the immutable
   source tree contains eight, so all eight were preserved.
-- The maintained tree now contains 65 binary evidence objects: 51 PDFs, nine
+- The maintained tree now contains 67 binary evidence objects: 53 PDFs, nine
   PNGs, one WebP, three WOFF2 font files, and one compressed archive. The
   Meta-Harness extension adds one captured WebP, three captured WOFF2 font
   files, and one deterministic raw TRAE archive. The Self-Improving Agents
@@ -254,9 +254,30 @@ receipts. It does not add new upstream source evidence, alter the pinned Jin
 source identities, claim peer-review completion, or alter the fixed 521-row
 initial import account.
 
+## Post-import EnvHarness evidence extension
+
+The maintained product also adds a bounded EnvHarness system reading:
+
+- arXiv `2608.19880v1` captured as a CC BY 4.0 PDF, Atom metadata, abstract
+  page, deterministic text sidecar, source manifest, artifact inventory, and
+  receipt under `evidence/envharness/`;
+- a seventeenth registered system reading under `knowledge/rsi/systems/` for
+  learner-conditioned environment intervention, external skill retrieval, and
+  the separate fixed-seed GRPO experiment;
+- source-registry, evidence-graph, claim-ledger, gap-map, and chapter cross
+  links that distinguish wrapper mechanics from semantic validity, environment
+  count from complete resource parity, screening from causal validation, and
+  skill-bank/curriculum co-adaptation from strong RSI; and
+- regenerated corpus and static Atlas artifacts.
+
+The packet does not reproduce the paper, assert semantic validity for every
+wrapper, establish matched total compute, or treat the reported loop as
+recursive successor improvement. This extension does not alter the fixed
+521-row initial import account.
+
 ## Standalone payload digest
 
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`6364b5fd478f3679ac9049c3c0a661c7145498e230116f27a73178bd2dac1e53`
+`e510e2e2c51f9a07feb0079cb553275dae318e19f0ca4421efc39f667a3955d5`

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/0j7Cxi5cpgEBW+7E0keTQaczXi4</id>
+  <title>arXiv Query: search_query=&amp;id_list=2608.19880&amp;start=0&amp;max_results=10</title>
+  <updated>2026-08-29T04:57:27Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2608.19880" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2608.19880v1</id>
+    <title>EnvHarness: Awakening Static Worlds for Agent Learning</title>
+    <updated>2026-08-20T10:42:06Z</updated>
+    <link href="https://arxiv.org/abs/2608.19880v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.19880v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM agents learn by interacting with environments, yet these environments are hand-built and static: blind to an agent's weaknesses, and quickly left behind as it improves. While recent environment generation methods attempt to address this, they require domain-specific pipelines, rely on expensive or unreliable verifiers, and still produce static environments. To alleviate the engineering burden of rebuilding environments from scratch, we propose Environment Harness (EnvHarness), a programmable layer of plug-in components that wraps a static environment to reshape its behavior without modifying the underlying logic. Operating through standard interfaces, EnvHarness applies across diverse domains while ensuring every reshaped environment retains its original verifier. To automate this process, we introduce EnvRigger, which treats the target policy as a black box, observing its execution trajectories to synthesize EnvHarness components targeting diagnosed flaws, and validating them via fresh rollouts. Across five benchmarks in four domains, EnvHarness outperforms both original environments and domain-specific environment generation pipelines, achieving up to a 9.0-point improvement on held-out instances with 9.8% fewer execution steps. Furthermore, EnvHarness provides a superior optimization signal for reinforcement learning, enabling continuous, targeted co-evolution of the policy and its environment.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-20T10:42:06Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Chengsong Huang</name>
+    </author>
+    <author>
+      <name>Zifeng Wang</name>
+    </author>
+    <author>
+      <name>Rujun Han</name>
+    </author>
+    <author>
+      <name>Jun Yan</name>
+    </author>
+    <author>
+      <name>Yanfei Chen</name>
+    </author>
+    <author>
+      <name>Zoey CuiZhu</name>
+    </author>
+    <author>
+      <name>Ke Jiang</name>
+    </author>
+    <author>
+      <name>Peng Xia</name>
+    </author>
+    <author>
+      <name>Han Yu</name>
+    </author>
+    <author>
+      <name>Yufan Zhuang</name>
+    </author>
+    <author>
+      <name>Yifei Ming</name>
+    </author>
+    <author>
+      <name>Jiaqi Pan</name>
+    </author>
+    <author>
+      <name>Bhavana Dalvi Mishra</name>
+    </author>
+    <author>
+      <name>Jiaxin Huang</name>
+    </author>
+    <author>
+      <name>Burak Gokturk</name>
+    </author>
+    <author>
+      <name>Tomas Pfister</name>
+    </author>
+    <author>
+      <name>Chen-Yu Lee</name>
+    </author>
+  </entry>
+</feed>

@@ -392,7 +392,6 @@ fn load_system_registry(
             || system.title.trim().is_empty()
             || system.title.trim() != system.title
             || system.source_ids.is_empty()
-            || system.weng_section_ids.is_empty()
             || system.paper_routes.is_empty()
         {
             return Err(invalid(

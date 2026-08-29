@@ -18,6 +18,7 @@ const IMPLEMENTATION_MANIFEST: &str = "evidence/implementations/manifest.tsv";
 const BENCHMARK_MANIFEST: &str = "evidence/benchmarks/manifest.tsv";
 const META_HARNESS_ROOT: &str = "evidence/meta_harness";
 const AGENTIC_ENGINEERING_ROOT: &str = "evidence/agentic_engineering";
+const ENVHARNESS_INVENTORY: &str = "evidence/envharness/artifact_inventory.tsv";
 const META_HARNESS_ARCHIVE_MAX_BYTES: u64 = 16 * 1024 * 1024;
 const META_HARNESS_DECOMPRESSED_MAX_BYTES: u64 = 64 * 1024 * 1024;
 const META_HARNESS_ARCHIVE_MAX_MEMBERS: usize = 256;
@@ -171,6 +172,14 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
         2,
         &mut expected_digests,
     )?;
+    let envharness = verify_artifact_inventory(
+        repo_root,
+        Path::new(ENVHARNESS_INVENTORY),
+        0,
+        1,
+        2,
+        &mut expected_digests,
+    )?;
     let darwinx = verify_artifact_inventory(
         repo_root,
         Path::new("evidence/darwinx/artifact_inventory.tsv"),
@@ -292,6 +301,7 @@ pub fn verify(repo_root: &Path) -> Result<SourcesReport, AppError> {
     Ok(SourcesReport {
         evidence_artifacts: weng
             + rlm
+            + envharness
             + darwinx
             + self_improving_agents_survey
             + verified_coevolution_agenda
@@ -1737,21 +1747,34 @@ fn verify_lfs_attributes(repo_root: &Path, binaries: &[PathBuf]) -> Result<(), A
 }
 
 fn verify_capture_receipts(repo_root: &Path) -> Result<(), AppError> {
-    for bundle in ["evidence/weng", "evidence/rlm"] {
+    for (bundle, capture_state) in [
+        ("evidence/weng", "imported-and-offline-verified"),
+        ("evidence/rlm", "imported-and-offline-verified"),
+        ("evidence/envharness", "captured-and-offline-verified"),
+    ] {
         let receipt = read_key_value_tsv(&repo_root.join(bundle).join("run-receipt.tsv"))?;
         if receipt.get("repository").map(String::as_str) != Some("Harp")
-            || receipt.get("capture_state").map(String::as_str)
-                != Some("imported-and-offline-verified")
+            || receipt.get("capture_state").map(String::as_str) != Some(capture_state)
         {
             return Err(AppError::invalid_input(
                 "sources.capture_receipt",
                 format!("{bundle} has an invalid Harp capture receipt"),
             ));
         }
-        for (key, relative) in [
-            ("acquisition_script_sha256", "acquire.sh"),
-            ("source_table_sha256", "sources.tsv"),
-        ] {
+        let bindings: &[(&str, &str)] = if bundle == "evidence/envharness" {
+            &[
+                ("acquisition_script_sha256", "acquire.sh"),
+                ("source_table_sha256", "sources.tsv"),
+                ("manifest_sha256", "manifest.tsv"),
+                ("artifact_inventory_sha256", "artifact_inventory.tsv"),
+            ]
+        } else {
+            &[
+                ("acquisition_script_sha256", "acquire.sh"),
+                ("source_table_sha256", "sources.tsv"),
+            ]
+        };
+        for &(key, relative) in bindings {
             let expected = receipt
                 .get(key)
                 .and_then(|value| value.strip_prefix("sha256:"))
@@ -2218,6 +2241,26 @@ mod tests {
         assert!(report.normalized_artifacts >= 8);
         assert!(report.raw_archive_members >= 7);
         assert!(report.raw_archive_bytes > 0);
+    }
+
+    #[test]
+    fn verifies_the_envharness_capture_bundle_and_receipt_bindings() {
+        let root = workspace_root();
+        let mut expected_digests = BTreeMap::new();
+
+        let artifact_count = verify_artifact_inventory(
+            root,
+            Path::new(ENVHARNESS_INVENTORY),
+            0,
+            1,
+            2,
+            &mut expected_digests,
+        )
+        .unwrap();
+
+        assert_eq!(artifact_count, 4);
+        assert_eq!(expected_digests.len(), 4);
+        verify_capture_receipts(root).unwrap();
     }
 
     #[test]

@@ -38,4 +38,11 @@ proposal-interface experiment. None inherits the paper's result authority.
 “COLM 2026” remains a site claim because no official venue record was located;
 the artifact's missing license remains explicit.
 
+**EVIDENCE. EnvHarness capture.** [ENVHARNESS] is arXiv
+`2608.19880v1`, captured as a CC BY 4.0 PDF, Atom metadata, abstract page,
+and text sidecar under `evidence/envharness/`. It is an independent later
+source, not a Weng-bibliography entry. Its paper supports the wrapper protocol
+and author-reported experiments, not semantic validity of every transformation,
+matched total-compute attribution, or strong RSI.
+
 **MISSING.** Most 2026 preprints in Weng's bibliography have not been interpreted beyond registration even though their source representations are now vendored. The RLM paper's 51 parsed citations and the blog's 11-entry bibliography likewise have not been admitted automatically. They remain available for bounded later expansion without inventing their contents.

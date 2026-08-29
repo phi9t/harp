@@ -28,7 +28,7 @@ export function SystemLibrary({
     <div className="route-reader">
       <section className="panel system-index">
         <header>
-          <p className="eyebrow">Sixteen source-bound identities</p>
+          <p className="eyebrow">Seventeen source-bound identities</p>
           <h1>Technical system readings</h1>
           <p>
             Every row opens a compiled canonical article and retains its Weng

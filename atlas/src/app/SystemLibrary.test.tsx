@@ -8,7 +8,7 @@ describe("system reading library", () => {
     window.location.hash = "#systems";
   });
 
-  it("lists all sixteen published system readings", () => {
+  it("lists all seventeen published system readings", () => {
     render(<AtlasApp />);
 
     const table = screen.getByRole("table", { name: "Technical system readings" });
@@ -16,8 +16,9 @@ describe("system reading library", () => {
     expect(
       screen.getByRole("button", { name: "Open AFlow system reading" }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("published")).toHaveLength(16);
+    expect(screen.getAllByText("published")).toHaveLength(17);
     expect(screen.getByText("Automated Design of Agentic Systems")).toBeInTheDocument();
+    expect(screen.getByText("EnvHarness")).toBeInTheDocument();
     expect(screen.queryByText("planned")).not.toBeInTheDocument();
   });
 });

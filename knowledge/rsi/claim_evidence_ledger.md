@@ -90,3 +90,12 @@ Mode: `DOMAIN ORIENTATION`.
 **MISSING.** Independent replications of the 2026 harness-evolution preprints are not present.
 
 **MISSING.** Independent reproduction and matched-token, matched-FLOP, matched-call, and matched-wall-clock evaluation of the July 2026 RLM post-training results are not present.
+
+## EnvHarness corrections
+
+| ID | Label | Statement | Source and locator | Boundary |
+|---|---|---|---|---|
+| `RSI-54` | EVIDENCE | The main EnvHarness study holds policy weights fixed, distills textual skills from trajectories generated in customized environments, and retrieves those skills when evaluating on held-out original tasks. | [ENVHARNESS], §4.1, `evidence/envharness/text/envharness-2608.19880.txt:410-440`. | Evidence for an environment-intervention → skill → retrieval pipeline, not direct policy-weight training. |
+| `RSI-55` | EVIDENCE | The scaling study fixes policy model, environment count, and skill-retrieval protocol, while EnvHarness generates later batches for the policy equipped with accumulated skills and the controls draw batches independently of that learner state. | [ENVHARNESS], §5 and Figure 5, `evidence/envharness/text/envharness-2608.19880.txt:591-629`. | Same environment count is not matched rollout, token, designer-call, wall-clock, or active-selection opportunity. |
+| `RSI-56` | EVIDENCE | The separate EnvHarness GRPO study trains Qwen3-8B-base with seed 0 and reports improvements on three of four listed metrics; ALFWorld OOD changes from 89.6 to 88.8. | [ENVHARNESS], Table 4 and Appendix F.1, `evidence/envharness/text/envharness-2608.19880.txt:520-556,1536-1569`. | Single-seed author-reported RL experiment; not evidence of consistent weight-level gains or an online recursive loop. |
+| `RSI-57` | MISSING | The EnvHarness results do not isolate executable wrapping from learner-conditioned curriculum selection, adaptive candidate filtering, skill distillation, or unequal resources. | [ENVHARNESS], §4.1, §5, Appendix E.2–E.3, and Table 11. | Run a factorial, multi-seed study with active unmodified-task controls and matched environment count, rollouts, tokens, designer calls, wall time, execution cost, independent confirmation, and clean-transfer cohorts. |
