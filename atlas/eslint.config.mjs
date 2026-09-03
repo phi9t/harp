@@ -29,6 +29,12 @@ const eslintConfig = defineConfig([
       globals: globals.node,
     },
   },
+  {
+    files: ["tests/jest-dom-vitest.d.ts"],
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
