@@ -9,6 +9,7 @@ import type {
 
 export type AtlasRoute =
   | { kind: "weng"; sectionId: WengSectionId }
+  | { kind: "workstreams" }
   | { kind: "systems" }
   | { kind: "system"; systemId: SystemId; returnTo: WengSectionId | null }
   | {
@@ -69,6 +70,9 @@ export function parseRoute(hash: string): AtlasRoute {
     return section
       ? { kind: "weng", sectionId: section.section_id }
       : defaultRoute();
+  }
+  if (family === "workstreams" && path === "workstreams") {
+    return { kind: "workstreams" };
   }
   if (family === "systems" && encodedId === "") {
     return { kind: "systems" };
@@ -142,6 +146,8 @@ export function formatRoute(route: AtlasRoute): string {
   switch (route.kind) {
     case "weng":
       return `#weng/${encodeURIComponent(route.sectionId)}`;
+    case "workstreams":
+      return "#workstreams";
     case "systems":
       return "#systems";
     case "system": {

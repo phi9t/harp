@@ -89,6 +89,8 @@ function currentLabel(route: AtlasRoute): string {
   switch (route.kind) {
     case "weng":
       return "Weng";
+    case "workstreams":
+      return "Workstreams";
     case "systems":
     case "system":
       return "Systems";

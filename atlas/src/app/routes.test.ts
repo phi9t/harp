@@ -68,6 +68,15 @@ describe("Atlas routes", () => {
       .toBe("#knowledge");
   });
 
+  it("parses and formats the workstreams console route", () => {
+    expect(parseRoute("#workstreams")).toEqual({ kind: "workstreams" });
+    expect(formatRoute({ kind: "workstreams" })).toBe("#workstreams");
+  });
+
+  it("falls back when a workstreams route includes an encoded identity", () => {
+    expect(parseRoute("#workstreams/extra")).toEqual(parseRoute(""));
+  });
+
   it("formats system and auxiliary document routes", () => {
     expect(formatRoute({
       kind: "system",
