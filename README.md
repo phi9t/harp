@@ -28,6 +28,7 @@ self-improvement research. It combines:
 - a durable agentic execution harness for RLM task graphs, with SQLite state,
   content-addressed artifacts, restart recovery, and CLI-process supervision;
 - a Rust validator/compiler and deterministic diagnosis contract;
+- **Workstreams console:** an offline operational view of proof, research, evaluator, and agentic-engineering work with explicit evidence boundaries.
 - a React 19 Atlas with a checked-in offline single-file export; and
 - a local SQLite FTS5 index.
 
@@ -216,6 +217,7 @@ corepack pnpm run test:export
 
 The checked-in offline reader is `atlas/dist/harp-atlas.html`. Open that file
 directly in a browser; it contains its JavaScript, styles, and compiled corpus.
+Open `atlas/dist/harp-atlas.html#workstreams` for the offline Workstreams reference snapshot.
 
 ## Evidence and licensing
 

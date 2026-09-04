@@ -18,6 +18,8 @@ entry point imports only this validated corpus.
 
 ## Reading and diagnosis
 
+Open `#workstreams` for the Harp Workstreams console. It renders a validated, repository-owned reference snapshot and keeps submitted command text in a bounded tab-local queue. The browser does not execute commands or read live agent services.
+
 - Weng is the default route and follows the original article in order.
 - Weng's context-engineering section opens a navigable deep dive through ACE,
   MCE, Meta-Harness, the runtime context pipeline, state continuity, causal
