@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from labs.crouzeix_proof_reproduction import route_validation
 
@@ -47,6 +48,16 @@ def write_json(path: Path, value: object) -> str:
 def write_manifest(path: Path, manifest: route_validation.RouteManifest) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(route_validation.canonical_json_bytes(route_validation.route_manifest_to_dict(manifest)))
+
+
+def remove_worktree_and_parent(primary: Path, linked: Path, parent: Path) -> None:
+    subprocess.run(
+        ["git", "worktree", "remove", "--force", str(linked)],
+        cwd=primary,
+        check=False,
+        capture_output=True,
+    )
+    shutil.rmtree(parent, ignore_errors=True)
 
 
 class RouteFixture:
@@ -966,8 +977,9 @@ class RouteValidationTests(unittest.TestCase):
     def test_linked_worktree_cache_accepts_only_approved_primary_cache(self) -> None:
         fixture = self.fixture()
         primary = fixture.repo
-        linked = Path(tempfile.mkdtemp()) / "linked"
-        self.addCleanup(lambda: subprocess.run(["git", "worktree", "remove", "--force", str(linked)], cwd=primary, check=False, capture_output=True))
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
         subprocess.run(["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"], cwd=primary, check=True)
         approved = primary / "formalization/lean/.lake"
         linked_cache = linked / "formalization/lean/.lake"
@@ -977,7 +989,12 @@ class RouteValidationTests(unittest.TestCase):
         elif linked_cache.exists():
             shutil.rmtree(linked_cache)
         linked_cache.symlink_to(approved, target_is_directory=True)
-        self.assertEqual(route_validation.resolve_approved_cache_root(linked), approved.resolve())
+        self.assertEqual(
+            route_validation.resolve_approved_cache_root(linked).path,
+            route_validation._bind_cache_root_identity(
+                approved.resolve(), "approved cache root"
+            ).path,
+        )
 
         linked_cache.unlink()
         hostile = primary / "hostile-cache"
@@ -994,6 +1011,378 @@ class RouteValidationTests(unittest.TestCase):
         mathlib.symlink_to(moved, target_is_directory=True)
         with self.assertRaisesRegex(route_validation.RouteValidationError, "nested symlink"):
             route_validation.active_mathlib_closure(linked, fixture.manifest["module_closure"])
+
+    def test_linked_worktree_cache_accepts_exact_xdg_packages_link(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = (primary / "xdg-cache").resolve()
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        packages.symlink_to(expected_packages, target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            resolved = route_validation.resolve_approved_cache_root(linked)
+            closure = route_validation.active_mathlib_closure(
+                linked, fixture.manifest["module_closure"]
+            )
+
+        self.assertEqual(
+            resolved.path,
+            route_validation._bind_cache_root_identity(
+                (xdg_cache_home / "harp/lean/lean-4.32.1").resolve(strict=True),
+                "approved cache root",
+            ).path,
+        )
+        self.assertEqual(closure, ("Mathlib.Data.Matrix.Basic",))
+
+    def test_linked_worktree_cache_accepts_exact_xdg_packages_link_without_home(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = (primary / "xdg-cache").resolve()
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        packages.symlink_to(expected_packages, target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            self.assertEqual(
+                route_validation.resolve_approved_cache_root(linked).path,
+                route_validation._bind_cache_root_identity(
+                    (xdg_cache_home / "harp/lean/lean-4.32.1").resolve(strict=True),
+                    "approved cache root",
+                ).path,
+            )
+
+    def test_linked_worktree_cache_rejects_non_xdg_packages_link(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        hostile = primary / "hostile-packages"
+        hostile.mkdir()
+        packages = approved / "packages"
+        packages.rename(hostile)
+        packages.symlink_to(hostile, target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(primary / "xdg-cache")},
+            clear=True,
+        ):
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError, "expected XDG cache"
+            ):
+                route_validation.resolve_approved_cache_root(linked)
+
+    def test_linked_worktree_cache_rejects_arbitrary_absolute_packages_link(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = (primary / "xdg-cache").resolve()
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        hostile = primary / "hostile-cache" / "packages"
+        hostile.parent.mkdir(parents=True)
+        hostile.symlink_to(expected_packages, target_is_directory=True)
+        packages.symlink_to(hostile, target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "approved cache packages symlink must target the expected XDG cache",
+            ):
+                route_validation.resolve_approved_cache_root(linked)
+
+    def test_linked_worktree_cache_rejects_nested_xdg_packages_target(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = (primary / "xdg-cache").resolve()
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        packages.symlink_to(expected_packages, target_is_directory=True)
+        mathlib = expected_packages / "mathlib"
+        moved = expected_packages / "mathlib-real"
+        mathlib.rename(moved)
+        mathlib.symlink_to(moved, target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "expected XDG cache mathlib must be a real directory",
+            ):
+                route_validation.resolve_approved_cache_root(linked)
+
+    def test_linked_worktree_cache_rejects_symlinked_xdg_cache_root_ancestor(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        real_cache_home = (primary / "xdg-cache-real").resolve()
+        expected_packages = real_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        xdg_cache_home = primary / "xdg-cache"
+        xdg_cache_home.symlink_to(real_cache_home, target_is_directory=True)
+        packages.symlink_to(xdg_cache_home / "harp/lean/lean-4.32.1/packages", target_is_directory=True)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "expected XDG cache root must be a canonical real directory",
+            ):
+                route_validation.resolve_approved_cache_root(linked)
+
+    def test_linked_worktree_cache_rejects_xdg_root_replacement_during_validation(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = (primary / "xdg-cache").resolve()
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        packages.symlink_to(expected_packages, target_is_directory=True)
+
+        original_require = route_validation._require_canonical_real_directory
+        swapped = False
+
+        def replacing_require(path: Path, label: str) -> Path:
+            nonlocal swapped
+            if not swapped and label == "expected XDG cache root":
+                cache_root = expected_packages.parent
+                moved = xdg_cache_home / "harp/lean/lean-4.32.1-original"
+                cache_root.rename(moved)
+                replacement = expected_packages.parent
+                (replacement / "packages/mathlib").mkdir(parents=True)
+                swapped = True
+            return original_require(path, label)
+
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            with mock.patch.object(
+                route_validation,
+                "_require_canonical_real_directory",
+                side_effect=replacing_require,
+            ):
+                with self.assertRaisesRegex(
+                    route_validation.RouteValidationError,
+                    "approved cache root identity changed",
+                ):
+                    route_validation.resolve_approved_cache_root(linked)
+        self.assertTrue(swapped)
+
+    def test_linked_worktree_cache_rejects_packages_link_without_valid_xdg_env(self) -> None:
+        fixture = self.fixture()
+        primary = fixture.repo
+        linked_parent = Path(tempfile.mkdtemp())
+        linked = linked_parent / "linked"
+        self.addCleanup(remove_worktree_and_parent, primary, linked, linked_parent)
+        subprocess.run(
+            ["git", "worktree", "add", "-q", "--detach", str(linked), "HEAD"],
+            cwd=primary,
+            check=True,
+        )
+        approved = primary / "formalization/lean/.lake"
+        linked_cache = linked / "formalization/lean/.lake"
+        linked_cache.parent.mkdir(parents=True, exist_ok=True)
+        if linked_cache.is_symlink():
+            linked_cache.unlink()
+        elif linked_cache.exists():
+            shutil.rmtree(linked_cache)
+        linked_cache.symlink_to(approved, target_is_directory=True)
+
+        xdg_cache_home = primary / "xdg-cache"
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        packages = approved / "packages"
+        packages.rename(expected_packages)
+        packages.symlink_to(expected_packages, target_is_directory=True)
+
+        for environment, pattern in (
+            ({}, "HOME must be set"),
+            ({"XDG_CACHE_HOME": "relative-cache"}, "XDG_CACHE_HOME must be absolute"),
+            ({"HOME": "relative-home"}, "HOME must be absolute"),
+        ):
+            with self.subTest(environment=environment):
+                with mock.patch.dict(os.environ, environment, clear=True):
+                    with self.assertRaisesRegex(
+                        route_validation.RouteValidationError, pattern
+                    ):
+                        route_validation.resolve_approved_cache_root(linked)
+
+    def test_read_rooted_bytes_rejects_symlinked_root_path_component(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            real_root = root / "real-root"
+            real_root.mkdir()
+            (real_root / "payload.txt").write_text("payload", encoding="utf-8")
+            symlink_root = root / "symlink-root"
+            symlink_root.symlink_to(real_root, target_is_directory=True)
+
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "cannot open payload root without following links",
+            ):
+                route_validation._read_rooted_bytes(
+                    symlink_root,
+                    "payload.txt",
+                    "payload",
+                )
+
+    def test_read_rooted_bytes_accepts_normal_repository_root(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            payload = root / "payload.txt"
+            payload.write_text("payload", encoding="utf-8")
+
+            self.assertEqual(
+                route_validation._read_rooted_bytes(root, "payload.txt", "payload"),
+                b"payload",
+            )
 
     def test_declaration_type_digest_drift_is_rejected(self) -> None:
         fixture = self.fixture()
@@ -1400,10 +1789,13 @@ class RouteValidationTests(unittest.TestCase):
     def test_cache_artifact_reader_rejects_cached_lean_source_above_two_mebibytes(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         relative = Path("packages/mathlib/Mathlib/Data/Matrix/Basic.lean")
 
-        write_bytes(cache_root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+        write_bytes(cache_root.path / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
 
         with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib source|artifact path|byte bound"):
             route_validation._read_cache_bytes(cache_root, relative, "Mathlib source")
@@ -1411,11 +1803,14 @@ class RouteValidationTests(unittest.TestCase):
     def test_cache_artifact_reader_rejects_dot_segment_escape(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         escaped = Path("packages/mathlib/escaped.olean")
         relative = Path("packages/mathlib/.lake/build/lib/lean/../../../../escaped.olean")
 
-        write_bytes(cache_root / escaped, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+        write_bytes(cache_root.path / escaped, b"x" * (route_validation.MAX_JSON_BYTES + 1))
 
         with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib artifact|validated Mathlib artifact path|unsafe"):
             route_validation._read_cache_bytes(cache_root, relative, "Mathlib artifact")
@@ -1423,9 +1818,12 @@ class RouteValidationTests(unittest.TestCase):
     def test_cache_artifact_reader_rejects_other_non_normal_paths(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         valid = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean")
-        write_bytes(cache_root / valid, b"x")
+        write_bytes(cache_root.path / valid, b"x")
 
         for raw in (
             "/packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean",
@@ -1439,22 +1837,103 @@ class RouteValidationTests(unittest.TestCase):
     def test_cache_source_reader_rejects_cached_lean_source_above_two_mebibytes(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         relative = Path("packages/mathlib/Mathlib/Data/Matrix/Basic.lean")
 
-        write_bytes(cache_root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
+        write_bytes(cache_root.path / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))
 
         with self.assertRaisesRegex(route_validation.RouteValidationError, "Mathlib source Mathlib.Data.Matrix.Basic exceeds byte bound"):
             route_validation._read_mathlib_source_bytes(cache_root, "Mathlib.Data.Matrix.Basic")
 
+    def test_cache_readers_reject_symlinked_root_path_component(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            real_root = root / "real-root"
+            real_root.mkdir()
+            source_relative = Path("packages/mathlib/Mathlib/Data/Matrix/Basic.lean")
+            artifact_relative = Path(
+                "packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean"
+            )
+            write_bytes(real_root / source_relative, b"source\n")
+            write_bytes(real_root / artifact_relative, b"artifact\n")
+            symlink_root = root / "symlink-root"
+            symlink_root.symlink_to(real_root, target_is_directory=True)
+            symlink_identity = route_validation.CacheRootIdentity(
+                symlink_root,
+                real_root.stat().st_dev,
+                real_root.stat().st_ino,
+            )
+
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "cannot open Mathlib source Mathlib.Data.Matrix.Basic root without following links",
+            ):
+                route_validation._read_mathlib_source_bytes(
+                    symlink_identity,
+                    "Mathlib.Data.Matrix.Basic",
+                )
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "cannot open Mathlib artifact root without following links",
+            ):
+                route_validation._read_cache_bytes(
+                    symlink_identity,
+                    artifact_relative,
+                    "Mathlib artifact",
+                )
+
+    def test_cache_readers_reject_cache_root_identity_swap_after_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = Path(directory).resolve()
+            cache_root_path = parent / "cache-root"
+            cache_root_path.mkdir()
+            relative = Path(
+                "packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean"
+            )
+            write_bytes(cache_root_path / relative, b"trusted\n")
+            cache_root = route_validation._bind_cache_root_identity(
+                cache_root_path,
+                "approved cache root",
+            )
+            moved = parent / "cache-root-original"
+            cache_root_path.rename(moved)
+            self.addCleanup(
+                lambda: shutil.rmtree(cache_root_path, ignore_errors=True)
+                if cache_root_path.exists()
+                else None
+            )
+            self.addCleanup(
+                lambda: shutil.rmtree(moved, ignore_errors=True)
+                if moved.exists()
+                else None
+            )
+            cache_root_path.mkdir()
+            write_bytes(cache_root_path / relative, b"hostile\n")
+
+            with self.assertRaisesRegex(
+                route_validation.RouteValidationError,
+                "approved cache root identity changed",
+            ):
+                route_validation._read_cache_bytes(
+                    cache_root,
+                    relative,
+                    "Mathlib artifact",
+                )
+
     def test_cache_artifact_reader_accepts_large_olean_within_cache_specific_bound(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         relative = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/Basic.olean")
         payload = b"x" * 3_365_968
 
-        write_bytes(cache_root / relative, payload)
+        write_bytes(cache_root.path / relative, payload)
 
         self.assertEqual(
             route_validation._read_cache_bytes(cache_root, relative, "cache artifact"),
@@ -1464,10 +1943,13 @@ class RouteValidationTests(unittest.TestCase):
     def test_cache_artifact_reader_rejects_artifacts_above_eight_mebibytes(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        cache_root = Path(temporary.name)
+        cache_root = route_validation._bind_cache_root_identity(
+            Path(temporary.name).resolve(),
+            "approved cache root",
+        )
         relative = Path("packages/mathlib/.lake/build/lib/lean/Mathlib/Data/Matrix/TooLarge.olean")
 
-        write_bytes(cache_root / relative, b"x" * (8 * 1024 * 1024 + 1))
+        write_bytes(cache_root.path / relative, b"x" * (8 * 1024 * 1024 + 1))
 
         with self.assertRaisesRegex(route_validation.RouteValidationError, "cache artifact exceeds byte bound"):
             route_validation._read_cache_bytes(cache_root, relative, "cache artifact")
@@ -1475,7 +1957,7 @@ class RouteValidationTests(unittest.TestCase):
     def test_structured_reader_keeps_two_mebibyte_bound(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        root = Path(temporary.name)
+        root = Path(temporary.name).resolve()
         relative = Path("artifacts/oversize.json")
 
         write_bytes(root / relative, b"x" * (route_validation.MAX_JSON_BYTES + 1))

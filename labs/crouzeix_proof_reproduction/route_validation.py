@@ -21,12 +21,14 @@ try:
         audit_provider_independence,
         parse_active_imports,
     )
+    from . import protocol
 except ImportError:  # pragma: no cover - direct script import path
     from provider_independence import (
         ProviderIndependenceError,
         audit_provider_independence,
         parse_active_imports,
     )
+    import protocol
 
 MANIFEST_SCHEMA_VERSION = "crouzeix-route-proof-manifest/v1"
 RECEIPT_SCHEMA_VERSION = "crouzeix-route-proof-receipt/v1"
@@ -230,6 +232,13 @@ class RouteValidationResult:
     reason: str | None = None
 
 
+@dataclass(frozen=True)
+class CacheRootIdentity:
+    path: Path
+    device: int
+    inode: int
+
+
 MANIFEST_FIELDS = frozenset({
     "schema_version", "route_id", "claim_kind", "aggregate_module",
     "build_target", "terminal_declaration", "terminal_type_sha256",
@@ -412,7 +421,7 @@ def _managed_local_module(module: str) -> bool:
     )
 
 
-def resolve_approved_cache_root(repository_root: Path) -> Path:
+def resolve_approved_cache_root(repository_root: Path) -> CacheRootIdentity:
     root = Path(repository_root).resolve()
     try:
         result = subprocess.run(
@@ -434,14 +443,85 @@ def resolve_approved_cache_root(repository_root: Path) -> Path:
     elif not link.is_symlink() or link.resolve() != approved.resolve():
         raise RouteValidationError("worktree .lake does not target approved primary cache")
     approved = approved.resolve(strict=True)
-    for relative in (Path("packages"), Path("packages/mathlib")):
-        probe = approved / relative
-        if probe.is_symlink():
-            raise RouteValidationError(f"approved cache contains nested symlink: {relative}")
-    return approved
+    packages = approved / "packages"
+    if packages.is_symlink():
+        try:
+            expected_packages = protocol.expected_xdg_packages_path()
+        except protocol.ValidationError as error:
+            raise RouteValidationError(str(error)) from error
+        raw_target = packages.readlink()
+        if not raw_target.is_absolute() or raw_target != expected_packages:
+            raise RouteValidationError(
+                "approved cache packages symlink must target the expected XDG cache"
+            )
+        try:
+            resolved_packages = packages.resolve(strict=True)
+            expected_resolved = expected_packages.resolve(strict=True)
+        except OSError as error:
+            raise RouteValidationError(
+                f"approved cache packages symlink cannot be resolved: {error}"
+            ) from error
+        if resolved_packages != expected_resolved:
+            raise RouteValidationError(
+                "approved cache packages symlink must resolve to the expected XDG cache"
+            )
+        cache_root = expected_resolved.parent
+        initial = _bind_cache_root_identity(cache_root, "approved cache root")
+        _require_canonical_real_directory(
+            expected_packages.parent,
+            "expected XDG cache root",
+        )
+        _require_canonical_real_directory(
+            expected_packages,
+            "expected XDG cache packages",
+        )
+        _require_canonical_real_directory(
+            expected_packages / "mathlib",
+            "expected XDG cache mathlib",
+        )
+    else:
+        cache_root = approved
+        initial = _bind_cache_root_identity(cache_root, "approved cache root")
+    probe = cache_root / "packages/mathlib"
+    if probe.is_symlink():
+        raise RouteValidationError("approved cache contains nested symlink: packages/mathlib")
+    observed = _bind_cache_root_identity(cache_root, "approved cache root")
+    if (observed.device, observed.inode) != (
+        initial.device,
+        initial.inode,
+    ):
+        raise RouteValidationError("approved cache root identity changed")
+    return initial
 
 
-def _read_cache_bytes(cache_root: Path, relative: Path | str, label: str) -> bytes:
+def _require_canonical_real_directory(path: Path, label: str) -> Path:
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError as error:
+        raise RouteValidationError(f"{label} is missing") from error
+    if not stat.S_ISDIR(metadata.st_mode):
+        raise RouteValidationError(f"{label} must be a real directory")
+    if path.is_symlink():
+        raise RouteValidationError(f"{label} must be a canonical real directory")
+    try:
+        resolved = path.resolve(strict=True)
+    except OSError as error:
+        raise RouteValidationError(f"{label} cannot be resolved: {error}") from error
+    if resolved != path:
+        raise RouteValidationError(f"{label} must be a canonical real directory")
+    return resolved
+
+
+def _bind_cache_root_identity(path: Path, label: str) -> CacheRootIdentity:
+    fd = _open_root_directory(path, label)
+    try:
+        metadata = os.fstat(fd)
+    finally:
+        os.close(fd)
+    return CacheRootIdentity(path=path, device=metadata.st_dev, inode=metadata.st_ino)
+
+
+def _read_cache_bytes(cache_root: CacheRootIdentity, relative: Path | str, label: str) -> bytes:
     relative_text = relative.as_posix() if isinstance(relative, Path) else relative
     parts = relative_text.split("/")
     prefix = ["packages", "mathlib", ".lake", "build", "lib", "lean"]
@@ -455,22 +535,22 @@ def _read_cache_bytes(cache_root: Path, relative: Path | str, label: str) -> byt
     ):
         raise RouteValidationError(f"{label} must use a validated Mathlib artifact path")
     return _read_rooted_bytes(
-        cache_root.resolve(strict=True),
+        cache_root,
         relative_text,
         label,
         max_bytes=MAX_CACHE_ARTIFACT_BYTES,
     )
 
 
-def _read_mathlib_source_bytes(cache_root: Path, module: str) -> bytes:
+def _read_mathlib_source_bytes(cache_root: CacheRootIdentity, module: str) -> bytes:
     return _read_rooted_bytes(
-        cache_root.resolve(strict=True),
+        cache_root,
         _mathlib_source_cache_relative(module).as_posix(),
         f"Mathlib source {module}",
     )
 
 
-def _read_mathlib_artifact_bytes(cache_root: Path, module: str) -> bytes:
+def _read_mathlib_artifact_bytes(cache_root: CacheRootIdentity, module: str) -> bytes:
     return _read_cache_bytes(
         cache_root,
         _mathlib_artifact_cache_relative(module),
@@ -587,15 +667,30 @@ def _nullable_positive_int(value: object, label: str) -> int | None:
 
 
 def _read_rooted_bytes(
-    root_path: Path,
+    root_path: Path | CacheRootIdentity,
     relative: str,
     label: str,
     *,
     max_bytes: int = MAX_JSON_BYTES,
 ) -> bytes:
-    root_fd = os.open(root_path, os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_CLOEXEC", 0))
+    identity: CacheRootIdentity | None
+    path: Path
+    if isinstance(root_path, CacheRootIdentity):
+        identity = root_path
+        path = root_path.path
+    else:
+        identity = None
+        path = root_path
+    root_fd = _open_root_directory(path, label)
     current_fd = root_fd
     try:
+        if identity is not None:
+            metadata = os.fstat(root_fd)
+            if (
+                not stat.S_ISDIR(metadata.st_mode)
+                or (metadata.st_dev, metadata.st_ino) != (identity.device, identity.inode)
+            ):
+                raise RouteValidationError("approved cache root identity changed")
         parts = PurePosixPath(relative).parts
         for part in parts[:-1]:
             next_fd = os.open(
@@ -634,6 +729,36 @@ def _read_rooted_bytes(
         if current_fd != root_fd:
             os.close(current_fd)
         os.close(root_fd)
+
+
+def _open_root_directory(root_path: Path, label: str) -> int:
+    root = Path(root_path)
+    if not root.is_absolute():
+        raise RouteValidationError(f"{label} root must be absolute")
+    flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+    current_fd = os.open("/", flags)
+    try:
+        for part in root.parts[1:]:
+            next_fd = os.open(part, flags, dir_fd=current_fd)
+            os.close(current_fd)
+            current_fd = next_fd
+        return current_fd
+    except OSError as error:
+        symlink_component = False
+        if error.errno in {errno.ELOOP, errno.ENOTDIR}:
+            try:
+                metadata = os.stat(part, dir_fd=current_fd, follow_symlinks=False)
+                symlink_component = stat.S_ISLNK(metadata.st_mode)
+            except OSError:
+                symlink_component = error.errno == errno.ELOOP
+        os.close(current_fd)
+        if symlink_component:
+            raise RouteValidationError(
+                f"cannot open {label} root without following links: {root}: {error}"
+            ) from error
+        raise RouteValidationError(
+            f"cannot open {label} root without following links: {root}: {error}"
+        ) from error
 
 
 def _checked_file(repo_root: Path, value: object, label: str, *, locator: bool = False) -> Path:

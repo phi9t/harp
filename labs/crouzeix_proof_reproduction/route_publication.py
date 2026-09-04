@@ -520,6 +520,7 @@ def _review_candidate_path(root: Path, route_id: str) -> Path:
 
 
 def _read_review_candidate(root: Path, path: Path, route_id: str) -> dict[str, object]:
+    root = root.resolve()
     expected = REVIEW_CANDIDATE_PARENT / f"{route_id}.json"
     try:
         relative = path.relative_to(root)

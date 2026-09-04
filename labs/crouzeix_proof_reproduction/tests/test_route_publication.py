@@ -814,18 +814,19 @@ class RoutePublicationBehaviorTests(unittest.TestCase):
     def test_review_candidate_reader_rejects_parent_symlink_hardlink_oversize_and_duplicate_keys(self) -> None:
         fixture = RouteFixture("jin")
         self.addCleanup(fixture.cleanup)
-        parent = fixture.repo / route_validation.ROUTE_REVIEW_CANDIDATE_PARENT
+        root = fixture.repo.resolve()
+        parent = root / route_validation.ROUTE_REVIEW_CANDIDATE_PARENT
         parent.mkdir(parents=True, exist_ok=True)
         candidate = parent / "jin.json"
         candidate.write_text("{}", encoding="utf-8")
 
-        alt_parent = fixture.repo / ".build/alt-review-parent"
+        alt_parent = root / ".build/alt-review-parent"
         alt_parent.mkdir(parents=True)
         parent.unlink(missing_ok=True) if parent.is_symlink() else None
         shutil.rmtree(parent)
         parent.symlink_to(alt_parent, target_is_directory=True)
         with self.assertRaisesRegex(route_publication.RoutePublicationError, "outside fixed parent|symlink"):
-            route_publication._read_review_candidate(fixture.repo, candidate, "jin")
+            route_publication._read_review_candidate(root, candidate, "jin")
 
         parent.unlink()
         parent.mkdir(parents=True)
@@ -834,16 +835,30 @@ class RoutePublicationBehaviorTests(unittest.TestCase):
         other.write_text("{}", encoding="utf-8")
         os.link(other, candidate)
         with self.assertRaisesRegex(route_publication.RoutePublicationError, "hardlink"):
-            route_publication._read_review_candidate(fixture.repo, candidate, "jin")
+            route_publication._read_review_candidate(root, candidate, "jin")
         candidate.unlink()
         other.unlink()
 
         candidate.write_bytes(b"x" * (route_validation.MAX_JSON_BYTES + 1))
         with self.assertRaisesRegex(route_publication.RoutePublicationError, "byte bound|exceeds"):
-            route_publication._read_review_candidate(fixture.repo, candidate, "jin")
+            route_publication._read_review_candidate(root, candidate, "jin")
         candidate.write_text('{"a":1,"a":2}\n', encoding="utf-8")
         with self.assertRaisesRegex(route_publication.RoutePublicationError, "invalid JSON"):
-            route_publication._read_review_candidate(fixture.repo, candidate, "jin")
+            route_publication._read_review_candidate(root, candidate, "jin")
+
+    def test_review_candidate_reader_accepts_noncanonical_repo_root_by_canonicalizing_boundary(self) -> None:
+        fixture = RouteFixture("jin")
+        self.addCleanup(fixture.cleanup)
+        canonical_root = fixture.repo.resolve()
+        raw_root = Path("/var") / canonical_root.relative_to(Path("/private/var"))
+        parent = canonical_root / route_validation.ROUTE_REVIEW_CANDIDATE_PARENT
+        parent.mkdir(parents=True, exist_ok=True)
+        candidate = parent / "jin.json"
+        candidate.write_text("{}", encoding="utf-8")
+
+        value = route_publication._read_review_candidate(raw_root, candidate, "jin")
+
+        self.assertEqual(value, {})
 
     def test_subprocess_executor_hard_caps_output_and_reaps_process(self) -> None:
         result = route_publication._subprocess_executor(
