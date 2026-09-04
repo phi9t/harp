@@ -144,6 +144,24 @@ class HistoricalPromptTests(unittest.TestCase):
             protocol.normalize_historical_prompt(b"no absolute output path")
 
 
+class CacheEnvironmentTests(unittest.TestCase):
+    def test_expected_xdg_packages_path_accepts_absolute_xdg_without_home(self) -> None:
+        with mock.patch.dict(
+            os.environ,
+            {"XDG_CACHE_HOME": "/var/tmp/harp-cache"},
+            clear=True,
+        ):
+            self.assertEqual(
+                protocol.expected_xdg_packages_path(),
+                Path("/var/tmp/harp-cache/harp/lean/lean-4.32.1/packages"),
+            )
+
+    def test_expected_xdg_packages_path_rejects_relative_home_fallback(self) -> None:
+        with mock.patch.dict(os.environ, {"HOME": "relative-home"}, clear=True):
+            with self.assertRaisesRegex(protocol.ValidationError, "HOME must be absolute"):
+                protocol.expected_xdg_packages_path()
+
+
 class RunSpecTests(unittest.TestCase):
     def test_run_spec_accepts_closed_historical_contract(self) -> None:
         value = run_spec()

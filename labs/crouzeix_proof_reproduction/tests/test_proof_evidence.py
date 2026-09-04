@@ -1765,6 +1765,20 @@ class ProofEvidencePreflightTests(unittest.TestCase):
 
         self.assertIn("expected XDG cache", payload["reason"])
 
+    def test_relative_home_fallback_reports_runtime_error(self) -> None:
+        fixture = self.build_fixture()
+        xdg_cache_home = fixture.root / "xdg-cache"
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        fixture.cache_root.joinpath("packages").rename(expected_packages)
+        fixture.cache_root.joinpath("packages").symlink_to(
+            expected_packages, target_is_directory=True
+        )
+
+        with mock.patch.dict(os.environ, {"HOME": "relative-home"}, clear=True):
+            with self.assertRaisesRegex(RuntimeError, "HOME must be absolute"):
+                proof_evidence.validate_mathlib_roots(fixture.cache_root)
+
     def test_olean_symlink_escape_blocks(self) -> None:
         fixture = self.build_fixture()
         outside = fixture.root / "outside.olean"

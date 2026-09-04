@@ -621,14 +621,15 @@ def _required_mathlib_artifact_snapshots(
         ls_receipts._resolve_approved_lake_root(lean_root),
         "approved Lean .lake root",
     )
+    packages: ls_receipts._PinnedDirectory | None = None
     try:
+        packages = ls_receipts._pin_approved_packages_root_at(lake)
         return tuple(
             (
                 module,
                 ls_receipts._read_file_snapshot_relative_at(
-                    lake,
+                    packages,
                     (
-                        "packages",
                         "mathlib",
                         ".lake",
                         "build",
@@ -644,6 +645,8 @@ def _required_mathlib_artifact_snapshots(
             for module in sorted(modules)
         )
     finally:
+        if packages is not None:
+            ls_receipts._close_pinned_directory(packages)
         ls_receipts._close_pinned_directory(lake)
 
 

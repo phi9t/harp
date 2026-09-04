@@ -499,6 +499,36 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
                     lean_root, sources
                 )
 
+    def test_mathlib_artifact_snapshot_accepts_exact_xdg_packages_link(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository, _, _ = make_workspace(root)
+            lean_root = repository / "formalization/lean"
+            sources = local_formalization_evidence._active_source_snapshots(repository)
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = lean_root / ".lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                snapshots = (
+                    local_formalization_evidence._required_mathlib_artifact_snapshots(
+                        lean_root, sources
+                    )
+                )
+
+            self.assertTrue(snapshots)
+            self.assertIn(
+                REQUIRED_MATHLIB_MODULE,
+                {module for module, _snapshot in snapshots},
+            )
+
     def test_provider_reports_reject_missing_transitive_managed_local_import(
         self,
     ) -> None:

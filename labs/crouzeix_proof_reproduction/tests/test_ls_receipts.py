@@ -1569,10 +1569,17 @@ class LSReceiptPublisherTests(unittest.TestCase):
             )
 
     def test_rejects_symlink_below_approved_lake_boundary(self) -> None:
-        for relative in (
-            "formalization/lean/.lake/packages",
-            "formalization/lean/.lake/packages/mathlib/.lake/build",
-        ):
+        cases = (
+            (
+                "formalization/lean/.lake/packages",
+                "symlink must target the expected XDG cache",
+            ),
+            (
+                "formalization/lean/.lake/packages/mathlib/.lake/build",
+                "cache.*symlink|cannot be a symlink",
+            ),
+        )
+        for relative, error_pattern in cases:
             with self.subTest(relative=relative):
                 with tempfile.TemporaryDirectory() as directory:
                     root = Path(directory).resolve()
@@ -1584,7 +1591,7 @@ class LSReceiptPublisherTests(unittest.TestCase):
                     executor = FakeExecutor()
 
                     with self.assertRaisesRegex(
-                        protocol.ValidationError, "cache.*symlink|cannot be a symlink"
+                        protocol.ValidationError, error_pattern
                     ):
                         ls_receipts.publish_ls_receipts(
                             make_rows(),
@@ -1594,6 +1601,139 @@ class LSReceiptPublisherTests(unittest.TestCase):
                         )
 
                     self.assertEqual(executor.calls, [])
+
+    def test_dependency_cache_metadata_accepts_exact_xdg_packages_link(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository_root, _ = make_workspace(root)
+            lean_root = repository_root / "formalization/lean"
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = lean_root / ".lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                snapshot = ls_receipts._dependency_cache_metadata_snapshot(lean_root)
+
+            self.assertTrue(snapshot)
+            self.assertIn(
+                (
+                    "mathlib/.lake/build",
+                    "directory",
+                    *snapshot[0][2:8],
+                )[:2],
+                tuple((record[0], record[1]) for record in snapshot),
+            )
+
+    def test_dependency_cache_metadata_rejects_non_xdg_packages_link(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository_root, _ = make_workspace(root)
+            lean_root = repository_root / "formalization/lean"
+            outside = root / "outside-packages"
+            packages = lean_root / ".lake/packages"
+            packages.rename(outside)
+            packages.symlink_to(outside, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(root / "xdg-cache")},
+                clear=True,
+            ):
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, "expected XDG cache|cannot be a symlink"
+                ):
+                    ls_receipts._dependency_cache_metadata_snapshot(lean_root)
+
+    def test_dependency_cache_metadata_rejects_packages_link_without_valid_xdg_env(
+        self,
+    ) -> None:
+        for environment, message in (
+            ({}, "HOME must be set"),
+            (
+                {"HOME": "/unused", "XDG_CACHE_HOME": "relative-cache"},
+                "XDG_CACHE_HOME must be absolute",
+            ),
+        ):
+            with self.subTest(environment=environment):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory).resolve()
+                    repository_root, _ = make_workspace(root)
+                    lean_root = repository_root / "formalization/lean"
+                    xdg_cache_home = root / "xdg-cache"
+                    expected_packages = (
+                        xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+                    )
+                    expected_packages.parent.mkdir(parents=True)
+                    packages = lean_root / ".lake/packages"
+                    packages.rename(expected_packages)
+                    packages.symlink_to(expected_packages, target_is_directory=True)
+
+                    with mock.patch.dict(os.environ, environment, clear=True):
+                        with self.assertRaisesRegex(protocol.ValidationError, message):
+                            ls_receipts._dependency_cache_metadata_snapshot(lean_root)
+
+    def test_required_mathlib_artifact_snapshots_accept_exact_xdg_packages_link(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository_root, _ = make_workspace(root)
+            lean_root = repository_root / "formalization/lean"
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = lean_root / ".lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                snapshots = ls_receipts._required_mathlib_artifact_snapshots(
+                    lean_root, (REQUIRED_MATHLIB_MODULE,)
+                )
+
+            self.assertEqual(len(snapshots), 1)
+            self.assertEqual(snapshots[0][0], REQUIRED_MATHLIB_MODULE)
+
+    def test_required_mathlib_artifact_snapshots_reject_nested_symlink_below_packages(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            repository_root, _ = make_workspace(root)
+            lean_root = repository_root / "formalization/lean"
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = lean_root / ".lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+            target = expected_packages / "mathlib/.lake/build/lib"
+            outside = root / "outside-mathlib-lib"
+            target.rename(outside)
+            target.symlink_to(outside, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, "cannot be a symlink|contains symlink"
+                ):
+                    ls_receipts._required_mathlib_artifact_snapshots(
+                        lean_root, (REQUIRED_MATHLIB_MODULE,)
+                    )
 
     def test_project_build_output_may_change(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

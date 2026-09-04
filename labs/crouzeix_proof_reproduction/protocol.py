@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import stat
 from pathlib import Path, PurePosixPath
@@ -126,6 +127,23 @@ ALLOWED_TRANSITIONS = frozenset(
 
 class ValidationError(ValueError):
     pass
+
+
+def expected_xdg_packages_path() -> Path:
+    xdg_cache_home = os.environ.get("XDG_CACHE_HOME")
+    if xdg_cache_home:
+        cache_home = Path(xdg_cache_home)
+        if not cache_home.is_absolute():
+            raise ValidationError("XDG_CACHE_HOME must be absolute")
+    else:
+        home = os.environ.get("HOME")
+        if not home:
+            raise ValidationError("HOME must be set for cached Lean preflight")
+        home_path = Path(home)
+        if not home_path.is_absolute():
+            raise ValidationError("HOME must be absolute for cached Lean preflight")
+        cache_home = home_path / ".cache"
+    return cache_home / "harp/lean/lean-4.32.1/packages"
 
 
 def sha256_bytes(data: bytes) -> str:

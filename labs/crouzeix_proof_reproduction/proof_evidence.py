@@ -717,20 +717,13 @@ def validate_cache_root(
     return actual, DISPLAY_CACHE_ROOT
 
 
-def expected_xdg_packages_path() -> Path:
-    home = os.environ.get("HOME")
-    if not home:
-        raise RuntimeError("HOME must be set for cached Lean preflight")
-    cache_home = Path(os.environ.get("XDG_CACHE_HOME", Path(home) / ".cache"))
-    if not cache_home.is_absolute():
-        raise RuntimeError("XDG_CACHE_HOME must be absolute")
-    return cache_home / "harp/lean/lean-4.32.1/packages"
-
-
 def validate_mathlib_roots(cache_root: Path) -> tuple[Path, Path]:
     packages = cache_root / "packages"
     if packages.is_symlink():
-        expected = expected_xdg_packages_path()
+        try:
+            expected = protocol.expected_xdg_packages_path()
+        except protocol.ValidationError as error:
+            raise RuntimeError(str(error)) from error
         raw_target = packages.readlink()
         if not raw_target.is_absolute() or raw_target != expected:
             raise RuntimeError(

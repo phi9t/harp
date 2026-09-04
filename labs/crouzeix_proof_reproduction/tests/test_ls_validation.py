@@ -1190,10 +1190,17 @@ import Hidden.AfterHeader
                 )
 
     def test_v2_rejects_symlink_below_approved_lake_boundary(self) -> None:
-        for relative in (
-            "formalization/lean/.lake/packages",
-            "formalization/lean/.lake/packages/mathlib/.lake/build",
-        ):
+        cases = (
+            (
+                "formalization/lean/.lake/packages",
+                "symlink must target the expected XDG cache",
+            ),
+            (
+                "formalization/lean/.lake/packages/mathlib/.lake/build",
+                "cannot be a symlink|cache.*symlink",
+            ),
+        )
+        for relative, error_pattern in cases:
             with self.subTest(relative=relative):
                 with tempfile.TemporaryDirectory() as directory:
                     root = Path(directory).resolve()
@@ -1204,11 +1211,156 @@ import Hidden.AfterHeader
                     target.symlink_to(outside, target_is_directory=True)
 
                     with self.assertRaisesRegex(
-                        protocol.ValidationError, "cannot be a symlink|cache.*symlink"
+                        protocol.ValidationError, error_pattern
                     ):
                         ls_validation.validate_committed_receipts(
                             rows, formal_target_root, repository_root
                         )
+
+    def test_required_mathlib_artifacts_digest_accepts_exact_xdg_packages_link(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            rows, formal_target_root, repository_root = make_v2_receipts(root)
+            del rows, formal_target_root
+            repository_chain = ls_validation._pin_absolute_chain(
+                repository_root, "LS repository root"
+            )
+            try:
+                source_closure = ls_validation._active_import_closure_at(
+                    repository_chain[-1]
+                )
+            finally:
+                ls_validation._close_pinned_directories(repository_chain)
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = repository_root / "formalization/lean/.lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                digest = ls_validation._required_mathlib_artifacts_digest(
+                    repository_root, source_closure
+                )
+
+            self.assertRegex(digest, r"^[0-9a-f]{64}$")
+
+    def test_required_mathlib_artifacts_digest_rejects_non_xdg_packages_link(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            rows, formal_target_root, repository_root = make_v2_receipts(root)
+            del rows, formal_target_root
+            repository_chain = ls_validation._pin_absolute_chain(
+                repository_root, "LS repository root"
+            )
+            try:
+                source_closure = ls_validation._active_import_closure_at(
+                    repository_chain[-1]
+                )
+            finally:
+                ls_validation._close_pinned_directories(repository_chain)
+            outside = root / "outside-packages"
+            packages = repository_root / "formalization/lean/.lake/packages"
+            packages.rename(outside)
+            packages.symlink_to(outside, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(root / "xdg-cache")},
+                clear=True,
+            ):
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, "expected XDG cache|cannot be a symlink"
+                ):
+                    ls_validation._required_mathlib_artifacts_digest(
+                        repository_root, source_closure
+                    )
+
+    def test_required_mathlib_artifacts_digest_rejects_nested_symlink_below_packages(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            rows, formal_target_root, repository_root = make_v2_receipts(root)
+            del rows, formal_target_root
+            repository_chain = ls_validation._pin_absolute_chain(
+                repository_root, "LS repository root"
+            )
+            try:
+                source_closure = ls_validation._active_import_closure_at(
+                    repository_chain[-1]
+                )
+            finally:
+                ls_validation._close_pinned_directories(repository_chain)
+            xdg_cache_home = root / "xdg-cache"
+            expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+            expected_packages.parent.mkdir(parents=True)
+            packages = repository_root / "formalization/lean/.lake/packages"
+            packages.rename(expected_packages)
+            packages.symlink_to(expected_packages, target_is_directory=True)
+            target = expected_packages / "mathlib/.lake/build/lib"
+            outside = root / "outside-mathlib-lib"
+            target.rename(outside)
+            target.symlink_to(outside, target_is_directory=True)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+                clear=True,
+            ):
+                with self.assertRaisesRegex(
+                    protocol.ValidationError, "cannot be a symlink|contains symlink"
+                ):
+                    ls_validation._required_mathlib_artifacts_digest(
+                        repository_root, source_closure
+                    )
+
+    def test_required_mathlib_artifacts_digest_rejects_packages_link_without_valid_xdg_env(
+        self,
+    ) -> None:
+        for environment, message in (
+            ({}, "HOME must be set"),
+            (
+                {"HOME": "/unused", "XDG_CACHE_HOME": "relative-cache"},
+                "XDG_CACHE_HOME must be absolute",
+            ),
+        ):
+            with self.subTest(environment=environment):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory).resolve()
+                    rows, formal_target_root, repository_root = make_v2_receipts(root)
+                    del rows, formal_target_root
+                    repository_chain = ls_validation._pin_absolute_chain(
+                        repository_root, "LS repository root"
+                    )
+                    try:
+                        source_closure = ls_validation._active_import_closure_at(
+                            repository_chain[-1]
+                        )
+                    finally:
+                        ls_validation._close_pinned_directories(repository_chain)
+                    xdg_cache_home = root / "xdg-cache"
+                    expected_packages = (
+                        xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+                    )
+                    expected_packages.parent.mkdir(parents=True)
+                    packages = repository_root / "formalization/lean/.lake/packages"
+                    packages.rename(expected_packages)
+                    packages.symlink_to(expected_packages, target_is_directory=True)
+
+                    with mock.patch.dict(os.environ, environment, clear=True):
+                        with self.assertRaisesRegex(protocol.ValidationError, message):
+                            ls_validation._required_mathlib_artifacts_digest(
+                                repository_root, source_closure
+                            )
 
     def test_theorem_body_audit_accepts_active_exact_body(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

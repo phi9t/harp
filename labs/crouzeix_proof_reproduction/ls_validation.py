@@ -1575,22 +1575,27 @@ def _required_mathlib_artifacts_digest(
         return protocol.sha256_bytes(b'{"artifacts":[]}\n')
     lake_root = _resolve_approved_lake_root(repository_root / "formalization/lean")
     lake_chain = _pin_absolute_chain(lake_root, "approved Lean .lake root")
+    packages_chain: tuple[_PinnedDirectory, ...] | None = None
     records = []
     try:
+        packages_chain = _pin_approved_packages_chain(lake_chain[-1])
+        packages_root = packages_chain[-1]
         for module in sorted(modules):
             relative = (
-                "packages/mathlib/.lake/build/lib/lean/"
+                "mathlib/.lake/build/lib/lean/"
                 + "/".join(module.split("."))
                 + ".olean"
             )
             data = _read_relative_file(
-                lake_chain[-1],
+                packages_root,
                 relative,
                 f"required Mathlib artifact for {module}",
                 MAX_MEMBER_BYTES,
             )
             records.append({"module": module, "sha256": protocol.sha256_bytes(data)})
     finally:
+        if packages_chain is not None:
+            _close_pinned_directories(packages_chain)
         _close_pinned_directories(lake_chain)
     return protocol.sha256_bytes(
         json.dumps(
@@ -1618,6 +1623,53 @@ def _resolve_approved_lake_root(lean_root: Path) -> Path:
             "approved Lean .lake boundary must be a directory or symlink"
         )
     return resolved
+
+
+def _pin_approved_packages_chain(
+    lake: _PinnedDirectory,
+) -> tuple[_PinnedDirectory, ...]:
+    packages_path = lake.path / "packages"
+    try:
+        return (_pin_directory_at(
+            lake, "packages", packages_path, "Lean dependency packages"
+        ),)
+    except protocol.ValidationError as error:
+        if "cannot be a symlink" not in str(error):
+            raise
+        original_error = error
+    try:
+        metadata = packages_path.lstat()
+    except OSError as stat_error:
+        raise protocol.ValidationError(
+            f"cannot inspect Lean dependency packages boundary: {stat_error}"
+        ) from stat_error
+    if not stat.S_ISLNK(metadata.st_mode):
+        raise original_error
+    expected = protocol.expected_xdg_packages_path()
+    try:
+        raw_target = packages_path.readlink()
+    except OSError as readlink_error:
+        raise protocol.ValidationError(
+            f"cannot inspect Lean dependency packages link: {readlink_error}"
+        ) from readlink_error
+    if not raw_target.is_absolute() or raw_target != expected:
+        raise protocol.ValidationError(
+            "Lean dependency packages symlink must target the expected XDG cache"
+        )
+    try:
+        resolved_target = packages_path.resolve(strict=True)
+        expected_resolved = expected.resolve(strict=True)
+    except OSError as resolve_error:
+        raise protocol.ValidationError(
+            f"cannot resolve Lean dependency packages link: {resolve_error}"
+        ) from resolve_error
+    if resolved_target != expected_resolved:
+        raise protocol.ValidationError(
+            "Lean dependency packages symlink must resolve to the expected XDG cache"
+        )
+    return _pin_absolute_chain(
+        expected_resolved, "approved Lean dependency packages root"
+    )
 
 
 def _bounded_tree_modules(
