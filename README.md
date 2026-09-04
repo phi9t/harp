@@ -78,6 +78,10 @@ reading, building, and search do not fetch research sources.
 
 ## CLI
 
+For a verified native executable and local installation, see
+[native release candidates](docs/releasing.md). Run `mise run release-candidate`
+from a clean, committed checkout with the full verification prerequisites ready.
+
 ```sh
 cargo run -p harp -- check
 cargo run -p harp -- build --check

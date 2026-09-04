@@ -1,6 +1,7 @@
 [tools]
 node = "22.22.3"
 rust = "1.92.0"
+git-lfs = "3.8.0"
 
 [env]
 HARP_TARGET_DIR = "{{config_root}}/.build/harp-target"
@@ -44,6 +45,7 @@ scripts/test_clean_build.sh
 scripts/test_check_no_dwarf.sh
 sh scripts/test_harp_xdg_env.sh
 sh scripts/test_lean_task_graph.sh
+python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
 """
 
 [tasks.fmt]
@@ -236,3 +238,7 @@ mise run build
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
 run = "mise run verify-atlas && mise run verify-rust && mise run lean-all && mise run verify-repository"
+
+[tasks.release-candidate]
+description = "Verify, package, and smoke-test a clean native release candidate"
+run = "python3 scripts/release_candidate.py"
