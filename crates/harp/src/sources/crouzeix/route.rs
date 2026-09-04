@@ -1,5 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
-use std::ffi::CString;
+use std::ffi::{CString, OsStr};
 use std::fmt;
 use std::fs::{self, File};
 use std::io::Read;
@@ -2147,6 +2147,59 @@ fn active_mathlib_closure(
 }
 
 fn resolve_approved_cache_root(repo_root: &Path) -> Result<std::path::PathBuf, String> {
+    let xdg_cache_home = std::env::var_os("XDG_CACHE_HOME").filter(|value| !value.is_empty());
+    let home = std::env::var_os("HOME").filter(|value| !value.is_empty());
+    let expected_packages = expected_xdg_packages_path(xdg_cache_home.as_deref(), home.as_deref())?;
+    resolve_approved_cache_root_with_expected_packages(repo_root, &expected_packages)
+}
+
+fn expected_xdg_packages_path(
+    xdg_cache_home: Option<&OsStr>,
+    home: Option<&OsStr>,
+) -> Result<std::path::PathBuf, String> {
+    let cache_home = if let Some(path) = xdg_cache_home {
+        std::path::PathBuf::from(path)
+    } else {
+        let home = home.ok_or("HOME must be set when XDG_CACHE_HOME is unset or empty")?;
+        std::path::PathBuf::from(home).join(".cache")
+    };
+    if !cache_home.is_absolute() {
+        return Err(if xdg_cache_home.is_some() {
+            "XDG_CACHE_HOME must be absolute".into()
+        } else {
+            "HOME must be absolute".into()
+        });
+    }
+    Ok(cache_home.join("harp/lean/lean-4.32.1/packages"))
+}
+
+fn require_canonical_real_directory(
+    path: &Path,
+    label: &str,
+) -> Result<std::path::PathBuf, String> {
+    if !path.is_absolute() {
+        return Err(format!("{label} must be absolute"));
+    }
+    let metadata = fs::symlink_metadata(path)
+        .map_err(|error| format!("{label} is missing or unreadable: {error}"))?;
+    if metadata.file_type().is_symlink() || !metadata.is_dir() {
+        return Err(format!("{label} must be a real directory"));
+    }
+    let canonical = path
+        .canonicalize()
+        .map_err(|error| format!("cannot resolve {label}: {error}"))?;
+    if canonical != path {
+        return Err(format!(
+            "{label} and its ancestors must be canonical real directories"
+        ));
+    }
+    Ok(canonical)
+}
+
+fn resolve_approved_cache_root_with_expected_packages(
+    repo_root: &Path,
+    expected_packages: &Path,
+) -> Result<std::path::PathBuf, String> {
     let repo_text = repo_root.to_str().ok_or("repository path is not UTF-8")?;
     let output = Command::new("git")
         .args([
@@ -2188,17 +2241,38 @@ fn resolve_approved_cache_root(repo_root: &Path) -> Result<std::path::PathBuf, S
         }
     }
     let approved = approved.canonicalize().map_err(|error| error.to_string())?;
-    for relative in ["packages", "packages/mathlib"] {
-        if fs::symlink_metadata(approved.join(relative))
-            .map_err(|error| error.to_string())?
-            .file_type()
-            .is_symlink()
-        {
-            return Err(format!(
-                "approved cache contains nested symlink: {relative}"
-            ));
+    let packages = approved.join("packages");
+    let packages_metadata = fs::symlink_metadata(&packages).map_err(|error| error.to_string())?;
+    if packages_metadata.file_type().is_symlink() {
+        if !expected_packages.is_absolute() {
+            return Err("expected XDG packages directory must be absolute".into());
         }
+        let raw_target = fs::read_link(&packages).map_err(|error| error.to_string())?;
+        if !raw_target.is_absolute() {
+            return Err("approved packages link target must be absolute".into());
+        }
+        if raw_target != expected_packages {
+            return Err(
+                "approved packages link does not target expected XDG packages directory".into(),
+            );
+        }
+        let cache_root = expected_packages
+            .parent()
+            .ok_or("expected XDG packages directory lacks cache root")?;
+        let cache_root = require_canonical_real_directory(cache_root, "XDG Lean cache root")?;
+        let expected_packages =
+            require_canonical_real_directory(expected_packages, "XDG packages directory")?;
+        if packages.canonicalize().map_err(|error| error.to_string())? != expected_packages {
+            return Err("approved packages link canonical target does not match expected XDG packages directory".into());
+        }
+        require_canonical_real_directory(
+            &expected_packages.join("mathlib"),
+            "XDG packages/mathlib",
+        )?;
+        return Ok(cache_root);
     }
+    require_canonical_real_directory(&packages, "approved cache packages")?;
+    require_canonical_real_directory(&packages.join("mathlib"), "approved packages/mathlib")?;
     Ok(approved)
 }
 
@@ -3451,6 +3525,141 @@ mod tests {
 
     #[cfg(unix)]
     #[test]
+    fn expected_xdg_packages_path_requires_an_absolute_cache_base() {
+        let missing = super::expected_xdg_packages_path(None, None).unwrap_err();
+        assert!(missing.contains("HOME must be set"), "{missing}");
+
+        let relative_xdg =
+            super::expected_xdg_packages_path(Some(std::ffi::OsStr::new("relative")), None)
+                .unwrap_err();
+        assert!(
+            relative_xdg.contains("XDG_CACHE_HOME must be absolute"),
+            "{relative_xdg}"
+        );
+
+        let relative_home =
+            super::expected_xdg_packages_path(None, Some(std::ffi::OsStr::new("relative")))
+                .unwrap_err();
+        assert!(
+            relative_home.contains("HOME must be absolute"),
+            "{relative_home}"
+        );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn approved_cache_accepts_exact_xdg_packages_link_and_reads_from_real_root() {
+        use std::os::unix::fs::symlink;
+
+        let primary = TempDir::new().unwrap();
+        Command::new("git")
+            .args(["init", "-q"])
+            .current_dir(primary.path())
+            .status()
+            .unwrap();
+        let lake_root = primary.path().join("formalization/lean/.lake");
+        fs::create_dir_all(&lake_root).unwrap();
+        let xdg_root = TempDir::new().unwrap();
+        let expected_packages = xdg_root
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join("harp/lean/lean-4.32.1/packages");
+        let mathlib_source = expected_packages.join("mathlib/Mathlib/Fixture.lean");
+        fs::create_dir_all(mathlib_source.parent().unwrap()).unwrap();
+        fs::write(&mathlib_source, b"fixture\n").unwrap();
+        symlink(&expected_packages, lake_root.join("packages")).unwrap();
+
+        let resolved = super::resolve_approved_cache_root_with_expected_packages(
+            primary.path(),
+            &expected_packages,
+        )
+        .unwrap();
+
+        assert_eq!(resolved, expected_packages.parent().unwrap());
+        assert_eq!(
+            super::read_cache_mathlib_source(&resolved, "Mathlib.Fixture").unwrap(),
+            b"fixture\n"
+        );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn approved_cache_rejects_arbitrary_packages_link() {
+        use std::os::unix::fs::symlink;
+
+        let primary = TempDir::new().unwrap();
+        Command::new("git")
+            .args(["init", "-q"])
+            .current_dir(primary.path())
+            .status()
+            .unwrap();
+        let lake_root = primary.path().join("formalization/lean/.lake");
+        fs::create_dir_all(&lake_root).unwrap();
+        let xdg_root = TempDir::new().unwrap();
+        let expected_packages = xdg_root
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join("harp/lean/lean-4.32.1/packages");
+        fs::create_dir_all(expected_packages.join("mathlib")).unwrap();
+        let arbitrary_packages = xdg_root
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join("arbitrary/packages");
+        fs::create_dir_all(arbitrary_packages.join("mathlib")).unwrap();
+        symlink(&arbitrary_packages, lake_root.join("packages")).unwrap();
+
+        let error = super::resolve_approved_cache_root_with_expected_packages(
+            primary.path(),
+            &expected_packages,
+        )
+        .unwrap_err();
+
+        assert!(error.contains("expected XDG packages directory"), "{error}");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn approved_cache_rejects_mathlib_link_inside_exact_xdg_packages() {
+        use std::os::unix::fs::symlink;
+
+        let primary = TempDir::new().unwrap();
+        Command::new("git")
+            .args(["init", "-q"])
+            .current_dir(primary.path())
+            .status()
+            .unwrap();
+        let lake_root = primary.path().join("formalization/lean/.lake");
+        fs::create_dir_all(&lake_root).unwrap();
+        let xdg_root = TempDir::new().unwrap();
+        let expected_packages = xdg_root
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join("harp/lean/lean-4.32.1/packages");
+        fs::create_dir_all(&expected_packages).unwrap();
+        let arbitrary_mathlib = xdg_root
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join("arbitrary-mathlib");
+        fs::create_dir_all(&arbitrary_mathlib).unwrap();
+        symlink(&arbitrary_mathlib, expected_packages.join("mathlib")).unwrap();
+        symlink(&expected_packages, lake_root.join("packages")).unwrap();
+
+        let error = super::resolve_approved_cache_root_with_expected_packages(
+            primary.path(),
+            &expected_packages,
+        )
+        .unwrap_err();
+
+        assert!(error.contains("packages/mathlib"), "{error}");
+    }
+
+    #[cfg(unix)]
+    #[test]
     fn linked_worktree_cache_accepts_only_primary_cache_and_rejects_nested_links() {
         use std::os::unix::fs::symlink;
 
@@ -3531,7 +3740,7 @@ mod tests {
         .unwrap();
         assert!(super::resolve_approved_cache_root(&linked_root)
             .unwrap_err()
-            .contains("nested symlink"));
+            .contains("packages/mathlib must be a real directory"));
     }
 
     #[cfg(unix)]

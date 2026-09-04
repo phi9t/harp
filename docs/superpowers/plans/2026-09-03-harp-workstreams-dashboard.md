@@ -38,7 +38,11 @@
 git worktree add .worktrees/harp-workstreams-dashboard -b feat/harp-workstreams-dashboard docs/harp-workstreams-dashboard-design
 cd .worktrees/harp-workstreams-dashboard
 mise trust mise.toml
-primary=/Users/bytedance/workspace/harp
+git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir)
+case "$git_common_dir" in
+  */.git) primary=${git_common_dir%/.git} ;;
+  *) printf '%s\n' "Git common directory must end in /.git: $git_common_dir" >&2; exit 1 ;;
+esac
 base=91e57411939c7a19ac1e694aaaab1f9f3a8b244a
 git merge-base --is-ancestor "$base" HEAD
 test -d "$primary/formalization/lean/.lake"
@@ -49,7 +53,13 @@ if [ ! -L formalization/lean/.lake ]; then
   ln -s "$primary/formalization/lean/.lake" formalization/lean/.lake
 fi
 test "$(readlink formalization/lean/.lake)" = "$primary/formalization/lean/.lake"
-shared_modules=/Users/bytedance/.cache/harp/node/atlas-node_modules
+cache_home=${XDG_CACHE_HOME:-}
+if [ -z "$cache_home" ]; then
+  test -n "${HOME:-}"
+  cache_home=$HOME/.cache
+fi
+case "$cache_home" in /*) ;; *) printf '%s\n' 'cache home must be absolute' >&2; exit 1 ;; esac
+shared_modules=$cache_home/harp/node/atlas-node_modules
 test -d "$shared_modules"
 if [ ! -L atlas/node_modules ]; then
   test ! -e atlas/node_modules
@@ -208,7 +218,13 @@ network navigation.
 
 ```sh
 test -L atlas/node_modules
-test "$(readlink atlas/node_modules)" = /Users/bytedance/.cache/harp/node/atlas-node_modules
+cache_home=${XDG_CACHE_HOME:-}
+if [ -z "$cache_home" ]; then
+  test -n "${HOME:-}"
+  cache_home=$HOME/.cache
+fi
+case "$cache_home" in /*) ;; *) printf '%s\n' 'cache home must be absolute' >&2; exit 1 ;; esac
+test "$(readlink atlas/node_modules)" = "$cache_home/harp/node/atlas-node_modules"
 scripts/check_atlas_dependencies.sh atlas
 (cd atlas && corepack pnpm --version)
 ```
@@ -1493,7 +1509,11 @@ Before the full gate, prove that the feature worktree reuses the canonical Lean
 cache without invoking Lake or changing dependencies:
 
 ```sh
-primary=/Users/bytedance/workspace/harp
+git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir)
+case "$git_common_dir" in
+  */.git) primary=${git_common_dir%/.git} ;;
+  *) printf '%s\n' "Git common directory must end in /.git: $git_common_dir" >&2; exit 1 ;;
+esac
 test -L formalization/lean/.lake
 test "$(readlink formalization/lean/.lake)" = "$primary/formalization/lean/.lake"
 test -s formalization/lean/lean-toolchain
