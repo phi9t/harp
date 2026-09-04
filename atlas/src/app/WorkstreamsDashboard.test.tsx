@@ -298,9 +298,10 @@ describe("WorkstreamsDashboard", () => {
     const workstreamsButton = controls.getByRole("button", { name: "Workstreams" });
     const runsButton = controls.getByRole("button", { name: "Runs" });
     const agentsButton = controls.getByRole("button", { name: "Agents" });
+    const evaluatorsButton = controls.getByRole("button", { name: "Evaluators" });
     const knowledgeButton = controls.getByRole("button", { name: "Knowledge" });
     const settingsControl = controls.getByRole("button", { name: "Settings" });
-    expect(settingsControl).toBeDisabled();
+    expect(settingsControl).not.toBeDisabled();
     expect(controls.getByText("Recently Active")).toBeInTheDocument();
     const recentItems = within(controls.getByRole("list", { name: "Recently Active list" }))
       .getAllByRole("listitem")
@@ -322,6 +323,9 @@ describe("WorkstreamsDashboard", () => {
     await user.click(agentsButton);
     expect(recentlyActive).toHaveFocus();
 
+    await user.click(evaluatorsButton);
+    expect(screen.getByRole("heading", { name: "Latest Research Insights" })).toHaveFocus();
+
     await user.click(knowledgeButton);
     expect(onNavigate).toHaveBeenCalledWith("#knowledge");
 
@@ -329,15 +333,228 @@ describe("WorkstreamsDashboard", () => {
     expect(onNavigate).toHaveBeenCalledWith("#mathematical-foundations");
 
     const agentVelocityRegion = screen.getByRole("region", { name: "Agent velocity" });
-    const insightsRegion = screen.getByRole("region", { name: "Insights" });
+    const insightsRegion = screen.getByRole("region", { name: "Latest Research Insights" });
     expect(agentVelocityRegion).toHaveAttribute("id", "agent-velocity");
     expect(agentVelocityRegion).toHaveAttribute("title", "Agent velocity");
     expect(insightsRegion).toHaveAttribute("id", "insights");
-    expect(insightsRegion).toHaveAttribute("title", "Insights");
     expect(
       within(agentVelocityRegion).getByRole("heading", { level: 2, name: "Harp agent" }),
     ).toBeInTheDocument();
-    expect(insightsRegion).toBeEmptyDOMElement();
+    expect(
+      within(insightsRegion).getByRole("heading", { name: "Latest Research Insights" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders search, filters workstreams and watchlist rows, and supports clear plus keyboard focus shortcuts", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    const search = screen.getByRole("searchbox", { name: "Search" });
+    expect(search).toBeInTheDocument();
+    expect(screen.getByText("Cmd K")).toBeInTheDocument();
+
+    expect(
+      within(screen.getByRole("region", { name: "Workstreams" })).getAllByRole(
+        "article",
+      ),
+    ).toHaveLength(4);
+    expect(
+      screen.getByRole("table", { name: "Workstream watchlist" }),
+    ).toBeInTheDocument();
+
+    await user.type(search, "autodiff");
+
+    expect(
+      within(screen.getByRole("region", { name: "Workstreams" })).getAllByRole(
+        "article",
+      ),
+    ).toHaveLength(1);
+    expect(screen.getByRole("article", { name: "Autodiff Geometry" }))
+      .toBeInTheDocument();
+
+    const watchlist = screen.getByRole("table", { name: "Workstream watchlist" });
+    const rows = within(watchlist).getAllByRole("row");
+    expect(rows).toHaveLength(2);
+    expect(within(rows[1]).getByText("Autodiff Geometry")).toBeInTheDocument();
+
+    const clear = screen.getByRole("button", { name: "Clear search" });
+    await user.click(clear);
+    expect(search).toHaveFocus();
+    expect(search).toHaveValue("");
+    expect(
+      within(screen.getByRole("region", { name: "Workstreams" })).getAllByRole(
+        "article",
+      ),
+    ).toHaveLength(4);
+
+    await user.type(search, "nonsense");
+    expect(
+      within(screen.getByRole("region", { name: "Workstreams" })).queryAllByRole(
+        "article",
+      ),
+    ).toHaveLength(0);
+    expect(
+      screen.getByText("No workstreams match the current search."),
+    ).toBeInTheDocument();
+    expect(within(watchlist).getByRole("columnheader", { name: "Workstream" }))
+      .toBeInTheDocument();
+    expect(within(watchlist).getAllByRole("row")).toHaveLength(2);
+    expect(
+      within(within(watchlist).getAllByRole("row")[1] as HTMLElement).getByText(
+        "No workstreams match this search.",
+      ),
+    ).toBeInTheDocument();
+
+    await user.click(clear);
+
+    await user.keyboard("{Meta>}{KeyK}{/Meta}");
+    expect(search).toHaveFocus();
+    (search as HTMLInputElement).blur();
+    await user.keyboard("{Control>}{KeyK}{/Control}");
+    expect(search).toBeInTheDocument();
+  });
+
+  it("supports evaluator-driven artifact selection, settings toggles, and sidebar focus behavior", async () => {
+    const onNavigate = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={onNavigate}
+      />,
+    );
+
+    const sidebar = screen.getByRole("complementary", {
+      name: "Workstreams navigation",
+    });
+    const controls = within(sidebar);
+    const heading = screen.getByRole("heading", { level: 1, name: "Harp Workstreams" });
+    const recentRuns = screen.getByRole("heading", { name: "Recent Runs" });
+    const recentlyActive = screen.getByRole("list", { name: "Recently Active list" });
+
+    heading.focus();
+    await user.click(controls.getByRole("button", { name: "Workstreams" }));
+    expect(heading).toHaveFocus();
+
+    await user.click(controls.getByRole("button", { name: "Runs" }));
+    expect(recentRuns).toHaveFocus();
+
+    await user.click(controls.getByRole("button", { name: "Agents" }));
+    expect(recentlyActive).toHaveFocus();
+
+    const insightsHeading = screen.getByRole("heading", { name: "Latest Research Insights" });
+    expect(insightsHeading).toHaveAttribute("tabindex", "-1");
+
+    const evaluators = controls.getByRole("button", { name: "Evaluators" });
+    await user.click(evaluators);
+    expect(insightsHeading).toHaveFocus();
+
+    const insightsSection = screen.getByRole("region", { name: "Latest Research Insights" });
+    const insightCards = within(insightsSection).getAllByRole("article");
+    expect(insightCards).toHaveLength(3);
+    for (const card of insightCards) {
+      const tablist = within(card).getByRole("tablist");
+      const selectedTabs = within(tablist).getAllByRole("tab", { selected: true });
+      expect(selectedTabs).toHaveLength(1);
+      expect(within(tablist).getByRole("tab", { selected: true })).toHaveTextContent(
+        /Research|Spec|Formalization/u,
+      );
+    }
+
+    const settings = controls.getByRole("button", { name: "Settings" });
+    expect(settings).not.toBeDisabled();
+    await user.click(settings);
+    expect(settings).toHaveAttribute("aria-expanded", "true");
+    const panel = screen.getByRole("region", { name: "Reference mode settings" });
+    expect(panel).toBeInTheDocument();
+    expect(within(panel).getByText(/No live data is connected\./)).toBeInTheDocument();
+    expect(within(panel).getByText(/Cmd\/Ctrl\+K/)).toBeInTheDocument();
+    expect(within(panel).getByText(/Shift\+Enter/)).toBeInTheDocument();
+    await user.click(within(panel).getByRole("button", { name: "Close settings" }));
+    expect(panel).not.toBeInTheDocument();
+    expect(settings).toHaveFocus();
+
+    await user.click(controls.getByRole("button", { name: "Knowledge" }));
+    expect(onNavigate).toHaveBeenCalledWith("#knowledge");
+  });
+
+  it("implements per-card roving tabs with keyboard wrapping, focus movement, and correct ARIA linkage", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard snapshot={workstreamsReference} onNavigate={vi.fn()} />,
+    );
+
+    const insights = screen.getByRole("region", { name: "Latest Research Insights" });
+    const cards = within(insights).getAllByRole("article");
+    expect(cards).toHaveLength(3);
+
+    const first = cards[0] as HTMLElement;
+    const second = cards[1] as HTMLElement;
+    const firstTablist = within(first).getByRole("tablist");
+    const secondTablist = within(second).getByRole("tablist");
+
+    const firstResearch = within(firstTablist).getByRole("tab", { name: "Research" });
+    const firstSpec = within(firstTablist).getByRole("tab", { name: "Spec" });
+    const firstFormal = within(firstTablist).getByRole("tab", { name: "Formalization" });
+    const secondResearch = within(secondTablist).getByRole("tab", { name: "Research" });
+
+    expect(firstResearch).toHaveAttribute("aria-selected", "true");
+    expect(firstResearch).toHaveAttribute("tabindex", "0");
+    expect(firstSpec).toHaveAttribute("tabindex", "-1");
+    expect(firstFormal).toHaveAttribute("tabindex", "-1");
+    expect(secondResearch).toHaveAttribute("aria-selected", "true");
+
+    firstResearch.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(firstSpec).toHaveAttribute("aria-selected", "true");
+    expect(firstSpec).toHaveFocus();
+    expect(secondResearch).toHaveAttribute("aria-selected", "true");
+
+    await user.keyboard("{ArrowLeft}");
+    expect(firstResearch).toHaveAttribute("aria-selected", "true");
+    expect(firstResearch).toHaveFocus();
+    expect(secondResearch).toHaveAttribute("aria-selected", "true");
+
+    await user.keyboard("{ArrowLeft}");
+    expect(firstFormal).toHaveAttribute("aria-selected", "true");
+    expect(firstFormal).toHaveFocus();
+    expect(secondResearch).toHaveAttribute("aria-selected", "true");
+
+    await user.keyboard("{ArrowRight}");
+    expect(firstResearch).toHaveAttribute("aria-selected", "true");
+    expect(firstResearch).toHaveFocus();
+
+    await user.keyboard("{End}");
+    expect(firstFormal).toHaveAttribute("aria-selected", "true");
+    expect(firstFormal).toHaveFocus();
+
+    await user.keyboard("{Home}");
+    expect(firstResearch).toHaveAttribute("aria-selected", "true");
+    expect(firstResearch).toHaveFocus();
+
+    expect(firstResearch).toHaveAttribute("tabindex", "0");
+    expect(firstSpec).toHaveAttribute("tabindex", "-1");
+    expect(firstFormal).toHaveAttribute("tabindex", "-1");
+
+    const researchPanelId = firstResearch.getAttribute("aria-controls");
+    expect(researchPanelId).not.toBeNull();
+    expect(firstResearch).toHaveAttribute("id");
+    expect(firstResearch).toHaveAttribute("aria-controls", researchPanelId ?? "");
+
+    const panel = within(first).getByRole("tabpanel");
+    expect(panel).toHaveAttribute("id", researchPanelId ?? "");
+    expect(panel).toHaveAttribute(
+      "aria-labelledby",
+      firstResearch.getAttribute("id") ?? "",
+    );
   });
 
   it("chooses the blocked focus strip from the lowest numeric blocked priority", async () => {
