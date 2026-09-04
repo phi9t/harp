@@ -1,7 +1,7 @@
 use std::ffi::OsString;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use assert_cmd::prelude::*;
@@ -15,13 +15,62 @@ fn repo_root() -> &'static Path {
         .expect("workspace root")
 }
 
-fn scoped_elan_home() -> TempDir {
-    let root = Path::new("/private/tmp/harp-mathematical-foundations-elan");
-    fs::create_dir_all(root).expect("create wrapper-owned Elan root");
-    Builder::new()
-        .prefix("test-")
-        .tempdir_in(root)
-        .expect("create scoped Elan home")
+fn canonical_mathlib_artifact_root() -> PathBuf {
+    repo_root()
+        .join("formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean")
+        .canonicalize()
+        .expect("canonical Mathlib artifact root must exist under formalization/lean/.lake/packages/mathlib/.lake/build/lib/lean")
+}
+
+struct LeanEnvFixture {
+    root: TempDir,
+    lean_cache_root: PathBuf,
+    allowed_elan_home: PathBuf,
+    scoped_elan_home: TempDir,
+}
+
+impl LeanEnvFixture {
+    fn new() -> Self {
+        let root = TempDir::new().expect("create Lean env fixture root");
+        let lean_cache_root = root.path().join("harp/lean/lean-4.32.1");
+        fs::create_dir_all(&lean_cache_root).expect("create wrapper-owned Lean cache root");
+        let allowed_elan_home = root.path().join("harp/lean/elan");
+        fs::create_dir_all(&allowed_elan_home).expect("create wrapper-owned Elan root");
+        let scoped_elan_home = Builder::new()
+            .prefix("test-")
+            .tempdir_in(&allowed_elan_home)
+            .expect("create scoped Elan home");
+        Self {
+            root,
+            lean_cache_root,
+            allowed_elan_home,
+            scoped_elan_home,
+        }
+    }
+
+    fn root(&self) -> &Path {
+        self.root.path()
+    }
+
+    fn lean_cache_root(&self) -> &Path {
+        &self.lean_cache_root
+    }
+
+    fn default_mathlib_artifact_root(&self) -> PathBuf {
+        self.lean_cache_root
+            .join("packages/mathlib/.lake/build/lib/lean")
+    }
+
+    fn scoped_elan_home(&self) -> &Path {
+        self.scoped_elan_home.path()
+    }
+
+    fn apply<'a>(&self, command: &'a mut Command) -> &'a mut Command {
+        command
+            .env("HARP_LEAN_CACHE_ROOT", self.lean_cache_root())
+            .env("HARP_ELAN_HOME", &self.allowed_elan_home)
+            .env("ELAN_HOME", self.scoped_elan_home())
+    }
 }
 
 fn fake_lake_bin(script: &str) -> (TempDir, OsString) {
@@ -69,6 +118,36 @@ fn write_fake_mathlib_artifacts(root: &Path, modules: &[&str]) {
     }
 }
 
+fn write_fake_crouzeix_mathlib_artifacts(root: &Path) {
+    write_fake_mathlib_artifacts(
+        root,
+        &[
+            "Mathlib.Analysis.Convex.Caratheodory",
+            "Mathlib.Analysis.Convex.Integral",
+            "Mathlib.Analysis.Convex.Topology",
+            "Mathlib.Analysis.InnerProductSpace.Adjoint",
+            "Mathlib.Analysis.InnerProductSpace.Rayleigh",
+            "Mathlib.Analysis.Normed.Module.FiniteDimension",
+            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic",
+            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric",
+            "Mathlib.Analysis.SpecificLimits.Basic",
+            "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional",
+            "Mathlib.LinearAlgebra.Complex.FiniteDimensional",
+            "Mathlib.MeasureTheory.Function.Holder",
+            "Mathlib.MeasureTheory.Function.L2Space",
+            "Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions",
+            "Mathlib.MeasureTheory.Function.LpSeminorm.Count",
+            "Mathlib.MeasureTheory.Integral.Average",
+            "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure",
+            "Mathlib.MeasureTheory.Measure.Count",
+            "Mathlib.MeasureTheory.SpecificCodomains.Pi",
+            "Mathlib.Tactic.FieldSimp",
+            "Mathlib.Tactic.Linarith",
+            "Mathlib.Tactic.Ring",
+        ],
+    );
+}
+
 fn write_lean_module(root: &Path, module: &str, source: &str) {
     let path = root.join(module.replace('.', "/")).with_extension("lean");
     fs::create_dir_all(path.parent().expect("Lean module parent"))
@@ -79,9 +158,9 @@ fn write_lean_module(root: &Path, module: &str, source: &str) {
 #[test]
 fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
     let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
-    let scoped_elan_home = scoped_elan_home();
-    let lake_args = scoped_elan_home.path().join("lake-args");
-    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    let artifact_root = fixture.root().join("fake-mathlib-artifacts");
     write_fake_mathlib_artifacts(
         &artifact_root,
         &[
@@ -90,11 +169,14 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
         ],
     );
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("AutodiffGeometry")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("AutodiffGeometry"),
+        )
         .env("LAKE_ARGS", &lake_args)
         .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
         .env("PATH", path)
@@ -119,14 +201,18 @@ fn shared_wrapper_builds_focused_lake_target_and_reports_timing() {
 #[test]
 fn shared_wrapper_builds_crouzeix_focused_target() {
     let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
-    let scoped_elan_home = scoped_elan_home();
-    let lake_args = scoped_elan_home.path().join("lake-args");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    write_fake_crouzeix_mathlib_artifacts(&fixture.default_mathlib_artifact_root());
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("Crouzeix")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("Crouzeix"),
+        )
         .env("LAKE_ARGS", &lake_args)
         .env("PATH", path)
         .assert()
@@ -830,16 +916,19 @@ fn ls_only_wrapper_rejects_a_harp_terminal_provider_import() {
 #[test]
 fn ls_only_wrapper_preflights_public_mathlib_imports_before_lake() {
     let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
-    let scoped_elan_home = scoped_elan_home();
-    let lake_marker = scoped_elan_home.path().join("lake-was-called");
-    let empty_artifact_root = scoped_elan_home.path().join("empty-mathlib-artifacts");
+    let fixture = LeanEnvFixture::new();
+    let lake_marker = fixture.root().join("lake-was-called");
+    let empty_artifact_root = fixture.root().join("empty-mathlib-artifacts");
     fs::create_dir_all(&empty_artifact_root).expect("create empty artifact root");
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("CrouzeixLoristSchwenninger")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("CrouzeixLoristSchwenninger"),
+        )
         .env("LAKE_CALLED_FILE", &lake_marker)
         .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &empty_artifact_root)
         .env("PATH", path)
@@ -913,10 +1002,10 @@ fn ls_only_target_is_not_part_of_default_or_all_builds() {
 fn shared_wrapper_builds_all_targets_from_shared_root_once() {
     let (_fake_bin, path) =
         fake_lake_bin("#!/bin/sh\npwd > \"$LAKE_PWD\"\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\n");
-    let scoped_elan_home = scoped_elan_home();
-    let lake_args = scoped_elan_home.path().join("lake-args");
-    let lake_pwd = scoped_elan_home.path().join("lake-pwd");
-    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    let lake_pwd = fixture.root().join("lake-pwd");
+    let artifact_root = fixture.root().join("fake-mathlib-artifacts");
     write_fake_mathlib_artifacts(
         &artifact_root,
         &[
@@ -961,11 +1050,14 @@ fn shared_wrapper_builds_all_targets_from_shared_root_once() {
         ],
     );
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("all")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("all"),
+        )
         .env("LAKE_ARGS", &lake_args)
         .env("LAKE_PWD", &lake_pwd)
         .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
@@ -997,16 +1089,19 @@ if [ "$1" = "--try-cache" ] && [ "$2" = "build" ]; then
 fi
 "#,
     );
-    let scoped_elan_home = scoped_elan_home();
-    let lake_args = scoped_elan_home.path().join("lake-args");
-    let lake_build_marker = scoped_elan_home.path().join("lake-build-was-called");
-    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    let lake_build_marker = fixture.root().join("lake-build-was-called");
+    let artifact_root = fixture.root().join("fake-mathlib-artifacts");
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("AutodiffGeometry")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("AutodiffGeometry"),
+        )
         .env("LAKE_ARGS", &lake_args)
         .env("LAKE_BUILD_MARKER", &lake_build_marker)
         .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
@@ -1033,9 +1128,9 @@ fi
 
 #[test]
 fn shared_wrapper_rejects_invalid_mathlib_cache_artifacts() {
-    let scoped_elan_home = scoped_elan_home();
-    let lake_args = scoped_elan_home.path().join("lake-args");
-    let artifact_root = scoped_elan_home.path().join("fake-mathlib-artifacts");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    let artifact_root = fixture.root().join("fake-mathlib-artifacts");
     let invalid_artifact = artifact_root
         .join("Mathlib/Algebra/BigOperators/Fin")
         .with_extension("olean");
@@ -1049,11 +1144,14 @@ printf '%s\n' "$*" >> "$LAKE_ARGS"
 "#,
     );
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("AutodiffGeometry")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("AutodiffGeometry"),
+        )
         .env("LAKE_ARGS", &lake_args)
         .env("HARP_LEAN_MATHLIB_ARTIFACT_ROOT", &artifact_root)
         .env("PATH", path)
@@ -1073,14 +1171,17 @@ printf '%s\n' "$*" >> "$LAKE_ARGS"
 #[test]
 fn shared_wrapper_rejects_unknown_targets_before_lake_runs() {
     let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\n");
-    let scoped_elan_home = scoped_elan_home();
-    let lake_marker = scoped_elan_home.path().join("lake-was-called");
+    let fixture = LeanEnvFixture::new();
+    let lake_marker = fixture.root().join("lake-was-called");
 
-    Command::new("/bin/sh")
-        .current_dir(repo_root())
-        .arg("scripts/check_lean_library.sh")
-        .arg("UnknownLibrary")
-        .env("ELAN_HOME", scoped_elan_home.path())
+    let mut command = Command::new("/bin/sh");
+    fixture
+        .apply(
+            command
+                .current_dir(repo_root())
+                .arg("scripts/check_lean_library.sh")
+                .arg("UnknownLibrary"),
+        )
         .env("LAKE_CALLED_FILE", &lake_marker)
         .env("PATH", path)
         .assert()
@@ -1207,19 +1308,22 @@ fn route_wrappers_fail_closed_on_python_preflight_block_before_lake() {
     ];
 
     for (target, route) in cases {
-        let scoped_elan_home = scoped_elan_home();
-        let python_args = scoped_elan_home.path().join(format!("{route}-python-args"));
-        let lake_marker = scoped_elan_home.path().join(format!("{route}-lake-marker"));
+        let fixture = LeanEnvFixture::new();
+        let python_args = fixture.root().join(format!("{route}-python-args"));
+        let lake_marker = fixture.root().join(format!("{route}-lake-marker"));
         let (fake_bin, path) = fake_python_and_lake_bin(
             "#!/bin/sh\nprintf '%s\n' \"$*\" > \"$PYTHON_ARGS\"\nprintf '%s\n' '{\"status\":\"blocked\",\"reason\":\"missing-mathlib-artifacts\",\"missing_artifacts\":[\"transitive-only.olean\"]}'\nexit 1\n",
             "#!/bin/sh\n: > \"$LAKE_MARKER\"\nexit 0\n",
         );
 
-        let assert = Command::new("/bin/sh")
-            .current_dir(repo_root())
-            .arg("scripts/check_lean_library.sh")
-            .arg(target)
-            .env("ELAN_HOME", scoped_elan_home.path())
+        let mut command = Command::new("/bin/sh");
+        let assert = fixture
+            .apply(
+                command
+                    .current_dir(repo_root())
+                    .arg("scripts/check_lean_library.sh")
+                    .arg(target),
+            )
             .env("PYTHON_ARGS", &python_args)
             .env("LAKE_MARKER", &lake_marker)
             .env("PATH", &path)
@@ -1256,23 +1360,31 @@ fn route_wrappers_run_lake_once_after_successful_python_preflight() {
         ("CrouzeixLoristSchwenninger", "lorist-schwenninger"),
         ("CrouzeixHarp", "harp"),
     ];
+    let canonical_mathlib_artifacts = canonical_mathlib_artifact_root();
 
     for (target, route) in cases {
-        let scoped_elan_home = scoped_elan_home();
-        let python_args = scoped_elan_home.path().join(format!("{route}-python-args"));
-        let lake_args = scoped_elan_home.path().join(format!("{route}-lake-args"));
+        let fixture = LeanEnvFixture::new();
+        let python_args = fixture.root().join(format!("{route}-python-args"));
+        let lake_args = fixture.root().join(format!("{route}-lake-args"));
         let (_fake_bin, path) = fake_python_and_lake_bin(
             "#!/bin/sh\nprintf '%s\n' \"$*\" > \"$PYTHON_ARGS\"\nexit 0\n",
             "#!/bin/sh\nprintf '%s\n' \"$*\" >> \"$LAKE_ARGS\"\nexit 0\n",
         );
 
-        Command::new("/bin/sh")
-            .current_dir(repo_root())
-            .arg("scripts/check_lean_library.sh")
-            .arg(target)
-            .env("ELAN_HOME", scoped_elan_home.path())
+        let mut command = Command::new("/bin/sh");
+        fixture
+            .apply(
+                command
+                    .current_dir(repo_root())
+                    .arg("scripts/check_lean_library.sh")
+                    .arg(target),
+            )
             .env("PYTHON_ARGS", &python_args)
             .env("LAKE_ARGS", &lake_args)
+            .env(
+                "HARP_LEAN_MATHLIB_ARTIFACT_ROOT",
+                &canonical_mathlib_artifacts,
+            )
             .env("PATH", path)
             .assert()
             .success()
