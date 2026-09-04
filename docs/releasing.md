@@ -1,14 +1,20 @@
 # Native release candidates
 
+[Documentation](README.md) / Native release candidates
+
 The first release milestone is a locally installable native Harp executable
 whose manifest identifies the verified Git commit. The packaging command does
 not create a GitHub repository, push commits, create a tag, or publish a release.
 
+To read the Atlas or build the CLI without packaging, use
+[getting started](getting-started.md).
+
 ## Prepare the checkout
 
-Install Mise and Python 3.9 or newer. Run `mise install`, review and trust this
-checkout's Mise configuration, then run `mise run bootstrap`. Mise pins Rust,
-Node, and Git LFS; bootstrap installs locked Cargo and Atlas dependencies.
+Follow [CLI setup](getting-started.md#build-the-cli), including reviewing and
+trusting Mise configuration before installing tools. Fetch the LFS objects.
+Mise pins Rust, Node, and Git LFS; bootstrap installs locked Cargo and Atlas
+dependencies.
 
 The full gate also requires the pinned Lean toolchain and an already populated
 Lean dependency cache. Follow the Lean cache discipline in `AGENTS.md` and
@@ -72,17 +78,18 @@ offline gate does not verify a live provider session.
 
 ## GitHub publication
 
-Select the destination repository and publication tree before uploading.
+The source repository is [phi9t/harp](https://github.com/phi9t/harp).
+Publishing source commits does not publish a binary release. Select the release
+commit and review its contents before uploading artifacts.
 Repository publication must account for tracked evidence, source-specific
 licenses, private inputs, Git history, and Git LFS objects. The technical gate
 does not decide redistribution permission. No repository-wide license is
 selected by this workflow.
 
-The separate `feat/public-repository-sanitization` branch contains publication
-work that needs its own reviewed integration decision. Do not substitute an
-upload of the current full history for that decision. Publish only artifacts
-whose manifest commit matches the selected release commit. Keep the manifest,
-checksums, archive, and notes together.
+Publish only artifacts whose manifest commit matches the selected release
+commit. Keep the manifest, checksums, archive, and notes together. Separate
+source-migration or licensing proposals require their own reviewed integration
+decision; they are not part of the packaging command.
 
 Architecture follow-ups and milestone status are recorded in the
 [release-readiness planner](superpowers/plans/2026-09-04-github-release-readiness.md).

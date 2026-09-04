@@ -3,8 +3,8 @@
 ## First milestone
 
 Prepare a host-native, local-first release candidate from a verified commit.
-The owner approved implementation and a subsequent GitHub landing. The GitHub
-destination is not configured in this checkout and must be supplied before upload.
+The owner approved implementation and a subsequent GitHub landing to
+[phi9t/harp](https://github.com/phi9t/harp).
 
 - [x] Prepare locked dependencies using Mise and link the existing warm Lean cache.
 - [x] Implement `mise run release-candidate`: require a clean checkout, run the
@@ -17,13 +17,16 @@ destination is not configured in this checkout and must be supplied before uploa
   repository content, external providers, and Lean dependencies.
 - [x] Verify rejection of dirty inputs, failed gates, changed inputs, unsafe
   output paths, wrong executable versions, and existing output.
-Release acceptance (the candidate manifest records the completed gate):
 
-- Refresh the import receipt after staging the settled payload; run the
-  full repository gate; commit the focused release-readiness slice.
-- Produce and verify a candidate from that clean commit.
-- Resolve the GitHub destination, authentication, and the separate publication branch before
-  uploading repository history or making a public release.
+Release acceptance:
+
+- [x] Refresh the import receipt, pass the full gate, and commit the focused
+  release-readiness slice as `6e367f629ecd19bb5ddca2a82ffed2850653fa1d`.
+- [x] Produce and verify the macOS ARM64 candidate from that clean commit.
+  Its manifest records the completed gate and artifact digests.
+- [x] Land the source commit and Git LFS objects on `phi9t/harp` at the owner's
+  request. No release tag or GitHub binary release was created in that landing.
+- [ ] Select and publish a GitHub binary release, if requested by the owner.
 
 Implementation lives in `scripts/release_candidate.py`; behavior tests live in
 `scripts/tests/test_release_candidate.py`. `mise.toml` registers the production

@@ -1,14 +1,69 @@
 # Contributing to Harp
 
-## Bootstrap
+[Documentation](README.md) / Contributing
 
-```sh
-mise run bootstrap
-```
+Start with [getting started](getting-started.md#build-the-cli) to install the
+pinned tools, fetch LFS evidence, and build the CLI. Read [AGENTS.md](../AGENTS.md)
+for repository rules and the [product contract](product-contract.md) for
+ownership and behavior. Harp must remain standalone; do not depend on another
+local checkout.
 
 The locked Cargo and pnpm registries may be used during bootstrap. Normal
 build, validation, reading, search, and offline source verification must not
 contact research sites.
+
+## Verification
+
+Use focused checks while iterating:
+
+```sh
+mise exec -- cargo test -p harp corpus::tests --lib -- --test-threads=1
+mise exec -- cargo test -p harp --test cli
+mise exec -- corepack pnpm --dir atlas run test
+```
+
+Some CLI and source-verification tests require the Lean evidence environment.
+The full landing gate requires the pinned Lean toolchain and an already
+populated dependency cache. Check those prerequisites without invoking Lake:
+
+```sh
+mise run lean-env
+```
+
+In a feature worktree, use a symlink from `formalization/lean/.lake` to the
+primary checkout's cache, after verifying the target and its ancestry. Do not
+run `lake update`, `lake --try-cache exe cache get Mathlib`, or
+`mise run lean-cache` during ordinary work. Missing cache state is a blocked
+prerequisite; ask the project owner for cache maintenance.
+
+Once the changes are settled, run:
+
+```sh
+mise run verify
+```
+
+This runs the Atlas, Rust, shell, Python, Lean, LFS, and repository checks. It
+can take substantially longer than a focused test. It uses fake provider
+fixtures, not live model sessions. A local Lean build is not a claim of
+hermetic proof execution.
+
+## Land a change
+
+Start new work in an isolated Git worktree. Keep commits focused and stage
+explicit path groups. Preserve unrelated changes in the primary checkout.
+
+The import receipt covers the tracked payload, including documentation:
+
+1. Settle the intended changes and stage their explicit paths so new files are
+   included in the payload.
+2. Run `.build/harp-target/size/harp repository verify` from the worktree.
+3. If it reports a stale payload digest, copy the expected digest into
+   `docs/import-receipt.md`, stage that file, and rerun the verifier.
+4. Run the full `mise run verify` gate before committing and landing locally.
+
+Use Mise for Git commands that invoke LFS hooks, such as
+`mise exec -- git commit`. Push only when the project owner explicitly asks.
+For executable packaging, follow [native release candidates](releasing.md).
 
 ## Agentic engineering
 
@@ -47,11 +102,12 @@ inform later distillation but are not themselves project guidance.
 3. Run `python3 scripts/migrate_obsidian_links.py --check` before committing a
    prose change. Resolve every reported local-link error; do not use `--write`
    without reviewing its diff.
-4. Run `cargo run -p harp -- check`.
-5. Run `cargo run -p harp -- build`.
-6. Refresh search with `cargo run -p harp -- search refresh`.
-7. Rebuild the offline Atlas with `cd atlas && corepack pnpm run test:export`.
-8. Run `mise run verify`.
+4. Run `.build/harp-target/size/harp check`.
+5. Run `.build/harp-target/size/harp build`.
+6. Refresh search with `.build/harp-target/size/harp search refresh`.
+7. Rebuild and test the offline Atlas with
+   `mise exec -- corepack pnpm --dir atlas run test:export`.
+8. Follow [the landing checklist](#land-a-change), including the full gate.
 
 Do not duplicate technical explanations in TypeScript. New canonical Markdown
 must have one stable role, one source/claim ceiling, valid local links, and
@@ -70,7 +126,7 @@ upstream bytes remain byte-faithful.
 ### Obsidian-native knowledge presentation
 
 Open the repository root as the Obsidian vault and begin at
-[[knowledge/harp_knowledge_home|Harp knowledge home]]. `knowledge/` is still
+[Harp knowledge home](../knowledge/harp_knowledge_home.md). `knowledge/` is still
 the sole technical-prose authority; Obsidian is a reader and navigation layer,
 not a second source of truth.
 
@@ -94,9 +150,6 @@ not a second source of truth.
   auxiliary-document registration as appropriate, extend search roots, add
   packet tests, and regenerate the corpus and Atlas projection. Do not make
   a packet canonical merely to make it discoverable.
-
-The locally installed `obsidian-markdown`, `obsidian-bases`, `json-canvas`,
-`obsidian-cli`, and `defuddle` TRAE CLI skills load after a TRAE CLI restart.
 
 ## Evidence changes
 
@@ -137,10 +190,10 @@ discriminated unions, and exhaustive matching. Run:
 
 ```sh
 cd atlas
-corepack pnpm run lint
-corepack pnpm run typecheck
-corepack pnpm run test
-corepack pnpm run test:export
+mise exec -- corepack pnpm run lint
+mise exec -- corepack pnpm run typecheck
+mise exec -- corepack pnpm run test
+mise exec -- corepack pnpm run test:export
 ```
 
 The decoded export test must inspect the inlined JavaScript rather than only
