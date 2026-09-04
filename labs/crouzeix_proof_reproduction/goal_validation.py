@@ -58,7 +58,7 @@ READER_EVIDENCE_PATHS = (
     "atlas/dist/harp-atlas.html",
     "atlas/dist/harp-atlas.receipt.json",
 )
-HISTORICAL_LANDING_EVIDENCE_PHASES = frozenset({"cpfr-089"})
+HISTORICAL_LANDING_EVIDENCE_PHASES = frozenset({"cpfr-088", "cpfr-089"})
 ATLAS_APP_INPUT_PATHS = (
     "index.html",
     "package.json",
@@ -344,9 +344,10 @@ def _run_git_bounded(
     session: GitSession,
     *args: str,
     executable: str | Path = GIT_BINARY,
+    stdout_cap: int = GIT_OUTPUT_CAP,
 ) -> subprocess.CompletedProcess[str]:
     argv = [str(executable), "-C", str(Path(repository_root).resolve()), *args]
-    stdout = _BoundedPipe(GIT_OUTPUT_CAP)
+    stdout = _BoundedPipe(stdout_cap)
     stderr = _BoundedPipe(GIT_OUTPUT_CAP)
     try:
         process = subprocess.Popen(
@@ -416,10 +417,17 @@ def _run_git_checked(
     runner: Callable[..., subprocess.CompletedProcess[str]] | None,
     *args: str,
     executable: str | Path = GIT_BINARY,
+    stdout_cap: int = GIT_OUTPUT_CAP,
 ) -> subprocess.CompletedProcess[str]:
     argv = [str(executable), "-C", str(Path(repository_root).resolve()), *args]
     if runner is None:
-        return _run_git_bounded(repository_root, session, *args, executable=executable)
+        return _run_git_bounded(
+            repository_root,
+            session,
+            *args,
+            executable=executable,
+            stdout_cap=stdout_cap,
+        )
     try:
         result = runner(
             argv,
@@ -434,7 +442,7 @@ def _run_git_checked(
         raise ValueError("git command timed out") from error
     stdout = result.stdout or ""
     stderr = result.stderr or ""
-    if len(stdout.encode("utf-8")) > GIT_OUTPUT_CAP:
+    if len(stdout.encode("utf-8")) > stdout_cap:
         raise ValueError("git stdout exceeds cap")
     if len(stderr.encode("utf-8")) > GIT_OUTPUT_CAP:
         raise ValueError("git stderr exceeds cap")
@@ -805,6 +813,7 @@ def _read_landed_row_evidence(
         None,
         "show",
         f"{row.landing_commit}:{relative}",
+        stdout_cap=ARTIFACT_BYTES_CAP,
     )
     if result.returncode != 0:
         raise ValueError("landed row evidence is missing")

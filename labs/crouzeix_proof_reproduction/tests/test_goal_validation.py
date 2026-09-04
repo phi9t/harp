@@ -806,6 +806,15 @@ class GoalValidationTests(unittest.TestCase):
             goal = self.make_complete_goal(root)
             initial_commit, current_commit = self.init_git_repo_with_commit(root)
             digests = self.materialize_landed_evidence(root)
+            historical_manifest = "m" * (goal_validation.GIT_OUTPUT_CAP + 1)
+            historical_manifest_path = self.write_text(
+                root,
+                self.LANDED_VERIFIER_PATHS["cpfr-088"],
+                historical_manifest,
+            )
+            digests["cpfr-088"] = "sha256:" + sha256_bytes(
+                historical_manifest_path.read_bytes()
+            )
             subprocess.run(
                 ["/usr/bin/git", "add", "."],
                 cwd=root,
@@ -846,6 +855,11 @@ class GoalValidationTests(unittest.TestCase):
                 root,
                 self.LANDED_VERIFIER_PATHS["cpfr-089"],
                 "current reader receipt\n",
+            )
+            self.write_text(
+                root,
+                self.LANDED_VERIFIER_PATHS["cpfr-088"],
+                "current local formalization manifest\n",
             )
             ledger_rows = []
             for phase, ticket in (
