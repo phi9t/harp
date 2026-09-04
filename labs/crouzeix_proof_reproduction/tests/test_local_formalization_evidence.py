@@ -425,6 +425,56 @@ class LocalFormalizationEvidenceTests(unittest.TestCase):
             4096,
         )
 
+    def test_shared_xdg_environment_uses_existing_pinned_toolchain(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            toolchain_bin = (
+                root
+                / "harp/lean/elan/toolchains/leanprover--lean4---v4.32.1/bin"
+            )
+            toolchain_bin.mkdir(parents=True)
+            for name in ("lake", "lean"):
+                executable = toolchain_bin / name
+                executable.write_text("#!/bin/sh\n", encoding="utf-8")
+                executable.chmod(0o755)
+
+            with mock.patch.dict(
+                os.environ,
+                {"HOME": "/unused", "XDG_CACHE_HOME": str(root)},
+                clear=True,
+            ):
+                environment = local_formalization_evidence._shared_xdg_environment()
+
+            self.assertEqual(
+                environment,
+                {
+                    "ELAN_HOME": (root / "harp/lean/elan").as_posix(),
+                    "ELAN_TOOLCHAIN": "leanprover/lean4:v4.32.1",
+                    "HARP_ELAN_HOME": (root / "harp/lean/elan").as_posix(),
+                    "HARP_LEAN_CACHE_ROOT": (
+                        root / "harp/lean/lean-4.32.1"
+                    ).as_posix(),
+                    "PATH": os.pathsep.join(
+                        (toolchain_bin.as_posix(), "/usr/bin", "/bin")
+                    ),
+                },
+            )
+
+    def test_shared_xdg_environment_rejects_missing_or_relative_roots(self) -> None:
+        with mock.patch.dict(os.environ, {}, clear=True):
+            with self.assertRaisesRegex(protocol.ValidationError, "HOME must be set"):
+                local_formalization_evidence._shared_xdg_environment()
+
+        with mock.patch.dict(
+            os.environ,
+            {"HOME": "/unused", "XDG_CACHE_HOME": "relative"},
+            clear=True,
+        ):
+            with self.assertRaisesRegex(
+                protocol.ValidationError, "XDG_CACHE_HOME must be absolute"
+            ):
+                local_formalization_evidence._shared_xdg_environment()
+
     def test_ls_policy_matches_shell_forbidden_prefixes(self) -> None:
         self.assertEqual(
             ls_contract.FORBIDDEN_PREFIXES,

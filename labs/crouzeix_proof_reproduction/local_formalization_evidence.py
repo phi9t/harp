@@ -283,7 +283,7 @@ def publish_local_formalization_evidence(
         routes = _snapshot_route_evidence(repository)
 
         run = executor or ls_receipts._subprocess_executor
-        environment = ls_receipts._shared_environment()
+        environment = _shared_xdg_environment()
         build = _require_build_report(
             _require_success(
                 run(
@@ -793,6 +793,49 @@ def _run_axiom_audits(
         observed = ls_receipts._parse_axiom_audit(result.stdout, spec.declaration_name)
         audits[spec.formalization_id] = (result.stdout, observed)
     return audits
+
+
+def _shared_xdg_environment() -> dict[str, str]:
+    home = os.environ.get("HOME")
+    if not home:
+        raise protocol.ValidationError("HOME must be set for cached Lean execution")
+    cache_home = Path(os.environ.get("XDG_CACHE_HOME", Path(home) / ".cache"))
+    if not cache_home.is_absolute():
+        raise protocol.ValidationError("XDG_CACHE_HOME must be absolute")
+    elan_home = cache_home / "harp/lean/elan"
+    toolchain_bin = (
+        elan_home / "toolchains/leanprover--lean4---v4.32.1/bin"
+    )
+    _ensure_directory(elan_home, "shared ELAN_HOME")
+    _ensure_directory(toolchain_bin, "shared Lean toolchain bin")
+    for executable in ("lake", "lean"):
+        path = toolchain_bin / executable
+        try:
+            metadata = path.lstat()
+        except OSError as error:
+            raise protocol.ValidationError(
+                f"shared Lean executable is unavailable: {path}: {error}"
+            ) from error
+        if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISREG(metadata.st_mode):
+            raise protocol.ValidationError(
+                f"shared Lean executable must be a regular file: {path}"
+            )
+        if not os.access(path, os.X_OK):
+            raise protocol.ValidationError(
+                f"shared Lean executable is not executable: {path}"
+            )
+    return {
+        "ELAN_HOME": elan_home.as_posix(),
+        "ELAN_TOOLCHAIN": "leanprover/lean4:v4.32.1",
+        "HARP_ELAN_HOME": elan_home.as_posix(),
+        "HARP_LEAN_CACHE_ROOT": (
+            cache_home / "harp/lean/lean-4.32.1"
+        ).as_posix(),
+        "PATH": os.pathsep.join(
+            path.as_posix()
+            for path in (toolchain_bin, Path("/usr/bin"), Path("/bin"))
+        ),
+    }
 
 
 def _provider_reports(lean_root: Path) -> dict[str, dict[str, object]]:
