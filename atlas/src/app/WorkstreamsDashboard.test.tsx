@@ -470,6 +470,7 @@ describe("WorkstreamsDashboard", () => {
     );
     expectCssDeclarations(desktopStylesheet, ".workstreams-shell .workstreams-grid", {
       "grid-column": "1",
+      "grid-template-columns": "repeat(2, minmax(0, 1fr))",
     });
     expectCssDeclarations(desktopStylesheet, ".workstreams-shell .agent-velocity", {
       "grid-column": "2",
@@ -485,6 +486,7 @@ describe("WorkstreamsDashboard", () => {
       ".workstreams-shell .workstreams-search button",
       ".workstreams-shell .reference-settings button",
       ".workstreams-shell .agent-velocity__header button",
+      ".workstreams-shell .agent-velocity form input",
       ".workstreams-shell .agent-velocity form button",
       ".workstreams-shell .agent-velocity details summary",
       ".workstreams-shell .insight-card__panel button",
@@ -506,13 +508,31 @@ describe("WorkstreamsDashboard", () => {
         gap: "8px",
       },
     );
+    expectCssDeclarations(stylesheet, '.workstreams-shell .status-chip[data-state="blocked"]', {
+      color: "var(--ops-text)",
+      "border-color": "var(--ops-red)",
+    });
+    expectCssDeclarations(
+      stylesheet,
+      '.workstreams-shell .status-chip[data-state="blocked"]::before',
+      { background: "var(--ops-red)" },
+    );
     expect(stylesheet).toContain("font-size: 16px;");
     expect(stylesheet).toContain("overflow-x: hidden;");
     expect(stylesheet).toContain("display: none;");
     expect(stylesheet).toContain(".workstreams-shell .workstreams-search button");
     expect(stylesheet).toContain(".workstreams-shell .workstreams-sidebar");
     expect(stylesheet).toContain(".workstreams-shell .reference-settings");
-    expect(stylesheet).toContain(".workstreams-shell .agent-velocity svg line");
+    expectCssDeclarations(stylesheet, ".workstreams-shell .agent-velocity__chart", {
+      display: "block",
+      width: "100%",
+      height: "auto",
+      overflow: "visible",
+    });
+    expectCssDeclarations(stylesheet, ".workstreams-shell .agent-velocity__chart polyline", {
+      stroke: "var(--ops-line)",
+    });
+    expect(stylesheet).not.toContain(".workstreams-shell .agent-velocity svg {");
     expect(stylesheet).toContain("transition: opacity 160ms ease, transform 160ms ease;");
     expect(stylesheet).not.toMatch(/gradient|shadow|url\(|@font-face|animation:/u);
     const bareSelectors = [
@@ -886,17 +906,24 @@ describe("WorkstreamsDashboard", () => {
     const chart = within(velocityRegion).getByRole("img", {
       name: "Agent velocity over 12 hours",
     });
+    expect(chart).toHaveClass("agent-velocity__chart");
     expect(chart.querySelector("title")).toHaveTextContent("Agent velocity over 12 hours");
     expect(chart.querySelector("desc")).toHaveTextContent(
       "Reference throughput rises from 2 to 10 runs per hour.",
     );
+    for (const icon of velocityRegion.querySelectorAll("svg.lucide")) {
+      expect(icon).not.toHaveClass("agent-velocity__chart");
+    }
 
-    const circles = within(velocityRegion).getAllByLabelText(
-      /\d{2}:\d{2}: \d+ runs \/ hour/u,
-    );
-    expect(circles).toHaveLength(12);
-    expect(circles[0]).toHaveAttribute("aria-label", "05:00: 2 runs / hour");
-    expect(circles[11]).toHaveAttribute("aria-label", "16:00: 10 runs / hour");
+    const samplePoints = within(velocityRegion).getAllByRole("img", {
+      name: /\d{2}:\d{2}: \d+ runs \/ hour/u,
+    });
+    expect(samplePoints).toHaveLength(12);
+    expect(samplePoints[0]).toHaveAccessibleName("05:00: 2 runs / hour");
+    expect(samplePoints[11]).toHaveAccessibleName("16:00: 10 runs / hour");
+    for (const point of samplePoints) {
+      expect(point).toHaveAttribute("tabindex", "0");
+    }
 
     const samplesSummary = within(velocityRegion)
       .getByText("View 12-hour samples")

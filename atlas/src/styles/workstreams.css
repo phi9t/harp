@@ -147,6 +147,7 @@
 .workstreams-shell .workstreams-search button,
 .workstreams-shell .reference-settings button,
 .workstreams-shell .agent-velocity__header button,
+.workstreams-shell .agent-velocity form input,
 .workstreams-shell .agent-velocity form button,
 .workstreams-shell .agent-velocity details summary,
 .workstreams-shell .insight-card__panel button,
@@ -380,14 +381,14 @@
   gap: 8px;
 }
 
-.workstreams-shell .agent-velocity svg {
+.workstreams-shell .agent-velocity__chart {
   display: block;
   width: 100%;
   height: auto;
   overflow: visible;
 }
 
-.workstreams-shell .agent-velocity svg line {
+.workstreams-shell .agent-velocity__chart polyline {
   stroke: var(--ops-line);
 }
 
@@ -494,7 +495,12 @@
 }
 
 .workstreams-shell .status-chip[data-state="blocked"] {
-  color: var(--ops-red);
+  color: var(--ops-text);
+  border-color: var(--ops-red);
+}
+
+.workstreams-shell .status-chip[data-state="blocked"]::before {
+  background: var(--ops-red);
 }
 
 .workstreams-shell .status-chip[data-state="planning"],
@@ -540,6 +546,7 @@
 
   .workstreams-shell .workstreams-grid {
     grid-column: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .workstreams-shell .agent-velocity {
@@ -619,6 +626,7 @@
   .workstreams-shell .workstreams-search button,
   .workstreams-shell .reference-settings button,
   .workstreams-shell .agent-velocity__header button,
+  .workstreams-shell .agent-velocity form input,
   .workstreams-shell .agent-velocity form button,
   .workstreams-shell .agent-velocity details summary,
   .workstreams-shell .insight-card__panel button,

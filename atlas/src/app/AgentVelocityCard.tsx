@@ -184,6 +184,7 @@ export function AgentVelocityCard({
         role="img"
         aria-labelledby={titleId}
         aria-describedby={descId}
+        className="agent-velocity__chart"
         viewBox="0 0 288 96"
       >
         <title id={titleId}>Agent velocity over 12 hours</title>
@@ -191,7 +192,6 @@ export function AgentVelocityCard({
         <polyline
           fill="none"
           points={polylinePoints}
-          stroke="#64748b"
           strokeWidth="2"
           transform="translate(12 12)"
         />
@@ -213,6 +213,7 @@ export function AgentVelocityCard({
               data-current={isCurrent ? "true" : "false"}
               fill={isCurrent ? "#06b6d4" : "#64748b"}
               r={isCurrent ? 5 : 4}
+              role="img"
               stroke="#0f172a"
               strokeWidth="1"
               tabIndex={0}
