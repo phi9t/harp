@@ -1,4 +1,4 @@
-⚠ [2834/2910] Replayed CrouzeixConjecture.Positivity
+⚠ [2841/3002] Replayed CrouzeixConjecture.Positivity
 warning: CrouzeixConjecture/Positivity.lean:71:13: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
 
 Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
@@ -11,15 +11,29 @@ Note: The updated constant is in a different namespace. Dot notation may need to
 warning: CrouzeixConjecture/Positivity.lean:72:35: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
 
 Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
-⚠ [2836/2910] Replayed CrouzeixConjecture.Spectrum
+⚠ [2842/3002] Replayed CrouzeixConjecture.Spectrum
 warning: CrouzeixConjecture/Spectrum.lean:1:0: 'Mathlib.RingTheory.Adjoin.Polynomial' has been deprecated: please replace this import by
 
 import Mathlib.RingTheory.Adjoin.Polynomial.Basic
-⚠ [2839/2910] Replayed CrouzeixConjecture.SimpleSpectrum
+⚠ [2852/3016] Replayed CrouzeixConjecture.SimpleSpectrum
 warning: CrouzeixConjecture/SimpleSpectrum.lean:60:8: try 'simp' instead of 'simpa'
 
 Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
-⚠ [2893/3120] Replayed CrouzeixConjecture.DoubleLayerGeometry
+⚠ [2869/3021] Replayed CrouzeixConjecture.CompletionSeries
+warning: CrouzeixConjecture/CompletionSeries.lean:107:10: `Matrix.isHermitian_iff_isSymmetric` has been deprecated: use isSymmetric_toEuclideanLin_iff.symm
+⚠ [2919/3089] Replayed CrouzeixConjecture.NumericalRange
+warning: CrouzeixConjecture/NumericalRange.lean:81:23: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+⚠ [2928/3098] Replayed CrouzeixConjecture.ConvexProjection
+warning: CrouzeixConjecture/ConvexProjection.lean:165:13: `Set.mem_diff` has been deprecated: Use `Set.mem_sdiff` instead
+⚠ [2942/3102] Replayed CrouzeixConjecture.ConvexDistance
+warning: CrouzeixConjecture/ConvexDistance.lean:111:18: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
+⚠ [2946/3102] Replayed CrouzeixConjecture.NumericalRangeConvexity
+warning: CrouzeixConjecture/NumericalRangeConvexity.lean:40:16: `Submodule.orthogonalProjection` has been deprecated: Use `Submodule.orthogonalProjectionOnto` instead
+⚠ [3276/3447] Replayed CrouzeixConjecture.DoubleLayerGeometry
 warning: CrouzeixConjecture/DoubleLayerGeometry.lean:70:10: `Matrix.isHermitian_iff_isSymmetric` has been deprecated: use isSymmetric_toEuclideanLin_iff.symm
 warning: CrouzeixConjecture/DoubleLayerGeometry.lean:92:41: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
 
@@ -33,38 +47,34 @@ Note: The updated constant is in a different namespace. Dot notation may need to
 warning: CrouzeixConjecture/DoubleLayerGeometry.lean:113:4: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
 
 Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
-⚠ [2894/3120] Replayed CrouzeixConjecture.DoubleLayerIntegration
+⚠ [3277/3447] Replayed CrouzeixConjecture.DoubleLayerIntegration
 warning: CrouzeixConjecture/DoubleLayerIntegration.lean:36:0: Definition `CrouzeixConjecture.squareMatrixClosedIciTopology` of class type must be marked with `@[reducible]` or `@[implicit_reducible]`
 warning: CrouzeixConjecture/DoubleLayerIntegration.lean:36:0: Definition `squareMatrixClosedIciTopology` is a proposition; use `theorem` instead of `def`
 
 Note: This linter can be disabled with `set_option linter.defProp false`
-⚠ [3006/3120] Replayed CrouzeixConjecture.CompletionSeries
-warning: CrouzeixConjecture/CompletionSeries.lean:107:10: `Matrix.isHermitian_iff_isSymmetric` has been deprecated: use isSymmetric_toEuclideanLin_iff.symm
-⚠ [3062/3120] Replayed CrouzeixConjecture.NumericalRange
-warning: CrouzeixConjecture/NumericalRange.lean:81:23: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
-
-Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
-⚠ [3065/3120] Replayed CrouzeixConjecture.ConvexProjection
-warning: CrouzeixConjecture/ConvexProjection.lean:165:13: `Set.mem_diff` has been deprecated: Use `Set.mem_sdiff` instead
-⚠ [3066/3120] Replayed CrouzeixConjecture.ConvexDistance
-warning: CrouzeixConjecture/ConvexDistance.lean:111:18: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
-
-Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
-⚠ [3080/3120] Replayed CrouzeixConjecture.ParallelRadialBoundary
-warning: CrouzeixConjecture/ParallelRadialBoundary.lean:121:16: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
-
-Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
-⚠ [3081/3120] Replayed CrouzeixConjecture.NumericalRangeConvexity
-warning: CrouzeixConjecture/NumericalRangeConvexity.lean:40:16: `Submodule.orthogonalProjection` has been deprecated: Use `Submodule.orthogonalProjectionOnto` instead
-⚠ [3099/3366] Replayed CrouzeixConjecture.SimpleSpectrumBridge
+⚠ [3309/3447] Replayed CrouzeixConjecture.SimpleSpectrumBridge
 warning: CrouzeixConjecture/SimpleSpectrumBridge.lean:126:8: try 'simp' instead of 'simpa'
 
 Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [3323/3447] Replayed CrouzeixConjecture.ParallelRadialBoundary
+warning: CrouzeixConjecture/ParallelRadialBoundary.lean:121:16: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
+✔ [3437/3447] Built Crouzeix.Jin.MaxPolynomialModulus (28s)
+✔ [3438/3447] Built Crouzeix.Jin.Terminal (13s)
+✔ [3439/3447] Built CrouzeixConjecture.FinalTheorems (3.7s)
+✔ [3440/3447] Built CrouzeixConjecture.HilbertSpace (3.6s)
+✔ [3441/3447] Built CrouzeixConjecture.HilbertSpectralSet (3.9s)
+✔ [3442/3447] Built Crouzeix.Harp.FiniteAtomicDilation (56s)
+✔ [3443/3447] Built Crouzeix.Harp.FiniteAtomicL2Dilation (11s)
+✔ [3444/3447] Built Crouzeix.Harp.MainTheorem (9.6s)
+✔ [3445/3447] Built Crouzeix.Harp.Consequences (12s)
+✔ [3446/3447] Built Crouzeix (6.6s)
 Build completed successfully (3447 jobs).
 [lean] target=Crouzeix
 [lean] root=formalization/lean
-[lean] scan_seconds=0
+[lean] scan_seconds=1
 [lean] cache_seconds=1
-[lean] lake_seconds=4
-[lean] total_seconds=5
+[lean] lake_seconds=156
+[lean] total_seconds=158
 [lean] outcome=passed
