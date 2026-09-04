@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   Activity,
   BadgeCheck,
@@ -28,6 +28,10 @@ function getStageTooltip(id: string): HTMLElement {
 }
 
 describe("WorkstreamsDashboard", () => {
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
   it("exposes exhaustive StageStatus and WorkstreamStatus presentation maps with exact labels and Lucide identities", () => {
     expect(stageStatusPresentation.complete.label).toBe("Complete");
     expect(stageStatusPresentation.complete.Icon).toBe(Check);
@@ -78,7 +82,11 @@ describe("WorkstreamsDashboard", () => {
     expect(heading).toBeInTheDocument();
     expect(screen.getByText("REFERENCE SNAPSHOT")).toBeInTheDocument();
     expect(screen.getByText("2026-09-03T16:00:00.000Z")).toBeInTheDocument();
-    expect(screen.getByText("Online at snapshot")).toBeInTheDocument();
+    const dashboardHeader = heading.closest("header");
+    expect(dashboardHeader).not.toBeNull();
+    expect(
+      within(dashboardHeader as HTMLElement).getByText("Online at snapshot"),
+    ).toBeInTheDocument();
 
     const sidebar = screen.getByRole("complementary", {
       name: "Workstreams navigation",
@@ -307,9 +315,8 @@ describe("WorkstreamsDashboard", () => {
     await user.click(workstreamsButton);
     expect(heading).toHaveFocus();
 
-    const agentVelocity = screen.getByRole("region", { name: "Agent velocity" });
     await user.click(runsButton);
-    expect(agentVelocity).toHaveFocus();
+    expect(screen.getByRole("heading", { name: "Recent Runs" })).toHaveFocus();
 
     const recentlyActive = screen.getByRole("list", { name: "Recently Active list" });
     await user.click(agentsButton);
@@ -327,7 +334,9 @@ describe("WorkstreamsDashboard", () => {
     expect(agentVelocityRegion).toHaveAttribute("title", "Agent velocity");
     expect(insightsRegion).toHaveAttribute("id", "insights");
     expect(insightsRegion).toHaveAttribute("title", "Insights");
-    expect(agentVelocityRegion).toBeEmptyDOMElement();
+    expect(
+      within(agentVelocityRegion).getByRole("heading", { level: 2, name: "Harp agent" }),
+    ).toBeInTheDocument();
     expect(insightsRegion).toBeEmptyDOMElement();
   });
 
@@ -379,5 +388,260 @@ describe("WorkstreamsDashboard", () => {
 
     await user.click(within(focusStrip).getByRole("button", { name: "FOCUS NOW" }));
     expect(onNavigate).toHaveBeenCalledWith("#mathematical-foundations");
+  });
+
+  it("renders agent velocity text, accessible chart metadata, and the exact 12-sample disclosure table", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    const velocityRegion = screen.getByRole("region", { name: "Agent velocity" });
+    const velocitySummary = velocityRegion.querySelector(".agent-velocity__summary");
+    expect(velocitySummary).not.toBeNull();
+    expect(within(velocityRegion).getByText("runs / hour")).toBeInTheDocument();
+    expect(within(velocityRegion).getByText("12h")).toBeInTheDocument();
+    expect(within(velocityRegion).getByText("+18%")).toBeInTheDocument();
+    expect(within(velocitySummary as HTMLElement).getByText("2")).toBeInTheDocument();
+    expect(within(velocitySummary as HTMLElement).getByText("10")).toBeInTheDocument();
+    expect(
+      within(velocitySummary as HTMLElement).getByText(
+        "Reference throughput rises from 2 to 10 runs per hour.",
+      ),
+    ).toBeInTheDocument();
+    expect(within(velocityRegion).getByText("Online at snapshot")).toBeInTheDocument();
+    expect(within(velocityRegion).getByText("Harp agent")).toBeInTheDocument();
+
+    const chart = within(velocityRegion).getByRole("img", {
+      name: "Agent velocity over 12 hours",
+    });
+    expect(chart.querySelector("title")).toHaveTextContent("Agent velocity over 12 hours");
+    expect(chart.querySelector("desc")).toHaveTextContent(
+      "Reference throughput rises from 2 to 10 runs per hour.",
+    );
+
+    const circles = within(velocityRegion).getAllByLabelText(
+      /\d{2}:\d{2}: \d+ runs \/ hour/u,
+    );
+    expect(circles).toHaveLength(12);
+    expect(circles[0]).toHaveAttribute("aria-label", "05:00: 2 runs / hour");
+    expect(circles[11]).toHaveAttribute("aria-label", "16:00: 10 runs / hour");
+
+    const samplesSummary = within(velocityRegion)
+      .getByText("View 12-hour samples")
+      .closest("summary");
+    expect(samplesSummary).not.toBeNull();
+    await user.click(samplesSummary as HTMLElement);
+    const rows = within(velocityRegion).getAllByRole("row");
+    expect(rows).toHaveLength(13);
+    expect(within(rows[1]).getByText("05:00")).toBeInTheDocument();
+    expect(within(rows[1]).getByText("2")).toBeInTheDocument();
+    expect(within(rows[12]).getByText("16:00")).toBeInTheDocument();
+    expect(within(rows[12]).getByText("10")).toBeInTheDocument();
+  });
+
+  it("focuses recent runs and announces the run count", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "View Recent Runs" }));
+
+    const heading = screen.getByRole("heading", { name: "Recent Runs" });
+    expect(heading).toHaveFocus();
+    expect(screen.getByRole("status")).toHaveTextContent("3 recent runs");
+  });
+
+  it("shows an inline error for an empty local command", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+    expect(screen.getByRole("status")).toHaveTextContent("Command must contain 1–240 characters");
+    expect(screen.getByLabelText("Local command")).toHaveValue("");
+  });
+
+  it("queues a local command from the form button", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Local command"), "verify Jin route");
+    await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+    expect(screen.getByRole("status")).toHaveTextContent("Queued locally");
+    expect(screen.getByLabelText("Local command")).toHaveFocus();
+    expect(screen.getByLabelText("Local command")).toHaveValue("");
+    expect(screen.getByText("Queued locally")).toBeInTheDocument();
+    expect(screen.getByText("verify Jin route")).toBeInTheDocument();
+  });
+
+  it("queues a local command on Shift+Enter", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(
+      screen.getByLabelText("Local command"),
+      "verify LS route{shift>}{enter}{/shift}",
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent("Queued locally");
+    expect(screen.getByText("verify LS route")).toBeInTheDocument();
+  });
+
+  it("renders queued local runs before the fixed repository runs", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Local command"), "verify Harp route");
+    await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+    const list = screen.getByRole("list", { name: "Recent runs list" });
+    const items = within(list).getAllByRole("listitem");
+    expect(within(items[0]).getByText("Queued locally")).toBeInTheDocument();
+    expect(within(items[0]).getByText("verify Harp route")).toBeInTheDocument();
+    expect(within(items[1]).getByText("Jin route")).toBeInTheDocument();
+  });
+
+  it("does not expose execution affordances for queued or fixed runs", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Local command"), "verify queue");
+    await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+    const recentRuns = screen.getByRole("list", { name: "Recent runs list" });
+    expect(within(recentRuns).queryByRole("button")).toBeNull();
+    expect(within(recentRuns).queryByRole("link")).toBeNull();
+  });
+
+  it("persists queued commands across unmount and remount", async () => {
+    const user = userEvent.setup();
+    const first = render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(
+      screen.getByLabelText("Local command"),
+      "verify Jin route{shift>}{enter}{/shift}",
+    );
+    expect(screen.getByRole("status")).toHaveTextContent("Queued locally");
+    first.unmount();
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText("verify Jin route")).toBeInTheDocument();
+  });
+
+  it("retains the command and reports storage errors when sessionStorage.setItem fails", async () => {
+    const user = userEvent.setup();
+    const setItemSpy = vi
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("setItem failed");
+      });
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Local command"), "verify blocked route");
+    await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+    expect(screen.getByRole("status")).toHaveTextContent("setItem failed");
+    expect(screen.getByLabelText("Local command")).toHaveValue("verify blocked route");
+
+    setItemSpy.mockRestore();
+  });
+
+  it("survives inaccessible sessionStorage and reports that the local queue is unavailable", async () => {
+    const user = userEvent.setup();
+    const storageOwner = [window, Window.prototype, Object.getPrototypeOf(window)].find(
+      (candidate) =>
+        Object.getOwnPropertyDescriptor(candidate, "sessionStorage") !== undefined,
+    );
+    expect(storageOwner).toBeDefined();
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      storageOwner as object,
+      "sessionStorage",
+    );
+    expect(originalDescriptor).toBeDefined();
+
+    Object.defineProperty(storageOwner as object, "sessionStorage", {
+      configurable: true,
+      get() {
+        throw new DOMException("Blocked", "SecurityError");
+      },
+    });
+
+    try {
+      render(
+        <WorkstreamsDashboard
+          snapshot={workstreamsReference}
+          onNavigate={vi.fn()}
+        />,
+      );
+
+      await user.type(screen.getByLabelText("Local command"), "verify guarded queue");
+      await user.click(screen.getByRole("button", { name: "Queue command" }));
+
+      expect(screen.getByRole("status")).toHaveTextContent("Local queue unavailable");
+      expect(screen.getByLabelText("Local command")).toHaveValue("verify guarded queue");
+      expect(screen.queryByText("Queued locally")).toBeNull();
+    } finally {
+      if (originalDescriptor) {
+        Object.defineProperty(storageOwner as object, "sessionStorage", originalDescriptor);
+      }
+    }
   });
 });

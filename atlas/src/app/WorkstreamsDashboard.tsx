@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 
 import type { DashboardHref, WorkstreamsSnapshot } from "../content/workstreams";
+import { AgentVelocityCard } from "./AgentVelocityCard";
 import { WorkstreamCard } from "./WorkstreamCard";
 
 export function WorkstreamsDashboard({
@@ -21,7 +22,7 @@ export function WorkstreamsDashboard({
   onNavigate: (href: DashboardHref) => void;
 }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const agentVelocityRef = useRef<HTMLElement>(null);
+  const recentRunsHeadingRef = useRef<HTMLHeadingElement>(null);
   const recentlyActiveRef = useRef<HTMLOListElement>(null);
 
   const blockedFocus = [...snapshot.workstreams]
@@ -49,7 +50,7 @@ export function WorkstreamsDashboard({
           <button
             type="button"
             className="workstreams-nav__button"
-            onClick={() => agentVelocityRef.current?.focus()}
+            onClick={() => recentRunsHeadingRef.current?.focus()}
           >
             <History aria-hidden="true" />
             <span>Runs</span>
@@ -129,12 +130,9 @@ export function WorkstreamsDashboard({
             <WorkstreamCard key={workstream.id} workstream={workstream} />
           ))}
         </section>
-        <section
-          id="agent-velocity"
-          aria-label="Agent velocity"
-          title="Agent velocity"
-          ref={agentVelocityRef}
-          tabIndex={-1}
+        <AgentVelocityCard
+          agent={snapshot.agent}
+          recentRunsHeadingRef={recentRunsHeadingRef}
         />
         <section id="insights" aria-label="Insights" title="Insights" />
       </main>
