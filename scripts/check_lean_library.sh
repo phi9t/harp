@@ -8,7 +8,19 @@ esac
 script_dir=${script_path%/*}
 canonical_project_dir=$(CDPATH= cd -- "$script_dir/../formalization/lean" && pwd -P)
 relative_root=formalization/lean
-allowed_elan_root=/private/tmp/harp-mathematical-foundations-elan
+
+resolve_default_lean_cache_root() {
+  : "${HOME:?HOME must be set}"
+  harp_cache_home=${XDG_CACHE_HOME:-"$HOME/.cache"}
+  case "$harp_cache_home" in
+    /*) ;;
+    *)
+      printf '%s\n' 'XDG_CACHE_HOME must be absolute' >&2
+      return 2
+      ;;
+  esac
+  printf '%s\n' "$harp_cache_home/harp/lean/lean-4.32.1"
+}
 
 usage() {
   printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp|all [--project-for-test <directory>]" >&2
@@ -178,6 +190,34 @@ if ! command -v lake >/dev/null 2>&1; then
 fi
 
 if [ "$normal_build" = true ]; then
+  if [ -n "${HARP_LEAN_CACHE_ROOT:-}" ]; then
+    allowed_lean_cache_root=$HARP_LEAN_CACHE_ROOT
+  else
+    allowed_lean_cache_root=$(resolve_default_lean_cache_root)
+  fi
+  case "$allowed_lean_cache_root" in
+    /*) ;;
+    *)
+      printf '%s\n' "$human_label Lean verification requires an absolute HARP_LEAN_CACHE_ROOT" >&2
+      report_failure "$scan_label" toolchain 0 0 0
+      exit 1
+      ;;
+  esac
+  if ! allowed_lean_cache_root=$(CDPATH= cd -P -- "$allowed_lean_cache_root" && pwd -P); then
+    printf '%s\n' "$human_label Lean verification requires a canonical HARP_LEAN_CACHE_ROOT directory" >&2
+    report_failure "$scan_label" toolchain 0 0 0
+    exit 1
+  fi
+  if [ -n "${HARP_ELAN_HOME:-}" ]; then
+    allowed_elan_root=$HARP_ELAN_HOME
+  else
+    allowed_elan_root=${allowed_lean_cache_root%/*}/elan
+  fi
+  if ! allowed_elan_root=$(CDPATH= cd -P -- "$allowed_elan_root" && pwd -P); then
+    printf '%s\n' "$human_label Lean verification requires a canonical sibling ELAN_HOME directory" >&2
+    report_failure "$scan_label" toolchain 0 0 0
+    exit 1
+  fi
   if [ -z "${ELAN_HOME:-}" ]; then
     printf '%s\n' "$human_label Lean verification requires a task-scoped ELAN_HOME" >&2
     report_failure "$scan_label" toolchain 0 0 0
@@ -558,7 +598,7 @@ if [ "$normal_build" = true ]; then
 
   if [ -s "$required_cache_list" ]; then
     cd "$project_dir"
-    mathlib_artifact_root=${HARP_LEAN_MATHLIB_ARTIFACT_ROOT:-"$project_dir/.lake/packages/mathlib/.lake/build/lib/lean"}
+    mathlib_artifact_root=${HARP_LEAN_MATHLIB_ARTIFACT_ROOT:-"$allowed_lean_cache_root/packages/mathlib/.lake/build/lib/lean"}
     while IFS= read -r required_module || [ -n "$required_module" ]; do
       required_path=$(printf '%s\n' "$required_module" | tr . /)
       required_artifact="$mathlib_artifact_root/$required_path.olean"

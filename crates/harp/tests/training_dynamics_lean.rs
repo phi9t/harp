@@ -1,10 +1,16 @@
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use assert_cmd::prelude::*;
-use tempfile::{Builder, TempDir};
+use tempfile::TempDir;
+
+struct ScopedLeanFixture {
+    _cache_root: TempDir,
+    elan_home: PathBuf,
+    lean_cache_root: PathBuf,
+}
 
 fn repo_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -13,13 +19,31 @@ fn repo_root() -> &'static Path {
         .expect("workspace root")
 }
 
-fn scoped_elan_home() -> TempDir {
-    let root = Path::new("/private/tmp/harp-mathematical-foundations-elan");
-    fs::create_dir_all(root).expect("create wrapper-owned Elan root");
-    Builder::new()
-        .prefix("test-")
-        .tempdir_in(root)
-        .expect("create scoped Elan home")
+fn scoped_lean_fixture() -> ScopedLeanFixture {
+    let cache_root = tempfile::tempdir().expect("XDG cache fixture");
+    let lean_root = cache_root.path().join("harp/lean");
+    let elan_home = lean_root.join("elan");
+    let lean_cache_root = lean_root.join("lean-4.32.1");
+    fs::create_dir_all(&elan_home).expect("create wrapper-owned Elan root");
+    fs::create_dir_all(&lean_cache_root).expect("create wrapper-owned Lean cache root");
+    ScopedLeanFixture {
+        _cache_root: cache_root,
+        elan_home,
+        lean_cache_root,
+    }
+}
+
+fn write_fake_mathlib_artifact(root: &Path, module: &str) {
+    let artifact = root.join(module.replace('.', "/")).with_extension("olean");
+    fs::create_dir_all(artifact.parent().expect("artifact parent"))
+        .expect("create artifact parent");
+    fs::write(artifact, b"olean-test-fixture").expect("write fake mathlib artifact");
+}
+
+fn write_fake_mathlib_artifacts(root: &Path, modules: &[&str]) {
+    for module in modules {
+        write_fake_mathlib_artifact(root, module);
+    }
 }
 
 #[test]
@@ -79,7 +103,10 @@ fn proof_holes_are_rejected_before_lake_runs() {
 #[test]
 fn ambient_project_override_is_ignored() {
     let temporary_project = TempDir::new().expect("temporary Lean project");
-    let scoped_elan_home = scoped_elan_home();
+    let fixture = scoped_lean_fixture();
+    let artifact_root = fixture
+        .lean_cache_root
+        .join("packages/mathlib/.lake/build/lib/lean");
     let source_dir = temporary_project.path().join("TrainingDynamics");
     fs::create_dir(&source_dir).expect("create scoped Lean source directory");
     fs::write(
@@ -92,6 +119,14 @@ fn ambient_project_override_is_ignored() {
     let fake_lake = fake_bin.path().join("lake");
     let path = std::env::join_paths([fake_bin.path(), Path::new("/usr/bin"), Path::new("/bin")])
         .expect("construct PATH with fake lake");
+    write_fake_mathlib_artifacts(
+        &artifact_root,
+        &[
+            "Mathlib",
+            "Mathlib.Algebra.BigOperators.Fin",
+            "Mathlib.Data.Matrix.Basic",
+        ],
+    );
 
     fs::write(&fake_lake, "#!/bin/sh\n: > \"$LAKE_CALLED_FILE\"\nexit 0\n")
         .expect("write fake lake");
@@ -108,7 +143,8 @@ fn ambient_project_override_is_ignored() {
             "HARP_TRAINING_DYNAMICS_PROJECT_ROOT",
             temporary_project.path(),
         )
-        .env("ELAN_HOME", scoped_elan_home.path())
+        .env("ELAN_HOME", &fixture.elan_home)
+        .env("HARP_LEAN_CACHE_ROOT", &fixture.lean_cache_root)
         .env("PATH", path)
         .env("LAKE_CALLED_FILE", &lake_marker)
         .assert()

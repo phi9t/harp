@@ -42,6 +42,8 @@ run = """
 set -euo pipefail
 scripts/test_clean_build.sh
 scripts/test_check_no_dwarf.sh
+sh scripts/test_harp_xdg_env.sh
+sh scripts/test_lean_task_graph.sh
 """
 
 [tasks.fmt]
@@ -111,15 +113,40 @@ mise run build
 
 [tasks.lean-env]
 description = "Prepare task-scoped Lean environment variables for shared-root proof builds"
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "mkdir -p /private/tmp/harp-mathematical-foundations-elan"
+run = """
+set -euo pipefail
+. scripts/harp_xdg_env.sh
+test "$(tr -d '\r\n' < formalization/lean/lean-toolchain)" = "$HARP_LEAN_TOOLCHAIN"
+test -d "$HARP_LEAN_CACHE_ROOT" && test ! -L "$HARP_LEAN_CACHE_ROOT"
+test -d "$HARP_ELAN_HOME" && test ! -L "$HARP_ELAN_HOME"
+test -d "$HARP_LEAN_TOOLCHAIN_ROOT" && test ! -L "$HARP_LEAN_TOOLCHAIN_ROOT"
+test -d "$HARP_LEAN_TOOLCHAIN_BIN" && test ! -L "$HARP_LEAN_TOOLCHAIN_BIN"
+test -x "$HARP_LEAN_TOOLCHAIN_BIN/lake"
+test -x "$HARP_LEAN_TOOLCHAIN_BIN/lean"
+git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir)
+case "$git_common_dir" in */.git) primary=${git_common_dir%/.git} ;; *) exit 1 ;; esac
+config_root="{{config_root}}"
+if [ "$config_root" = "$primary" ]; then
+  test -d formalization/lean/.lake
+  test ! -L formalization/lean/.lake
+else
+  test -L formalization/lean/.lake
+  test "$(readlink formalization/lean/.lake)" = "$primary/formalization/lean/.lake"
+fi
+test -L "$primary/formalization/lean/.lake/packages"
+test "$(readlink "$primary/formalization/lean/.lake/packages")" = "$HARP_LEAN_CACHE_ROOT/packages"
+test -d "$HARP_LEAN_CACHE_ROOT/packages/mathlib"
+test ! -L "$HARP_LEAN_CACHE_ROOT/packages/mathlib"
+"""
 
 [tasks.lean-cache]
 description = "Explicitly hydrate the shared Lean/mathlib cache before proof verification"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
 run = """
 set -euo pipefail
+. scripts/harp_xdg_env.sh
+export ELAN_HOME="$HARP_ELAN_HOME"
+export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"
 cd formalization/lean
 lake --try-cache exe cache get Mathlib
 """
@@ -127,56 +154,47 @@ lake --try-cache exe cache get Mathlib
 [tasks.lean-training]
 description = "Build the Training Dynamics Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh TrainingDynamics"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh TrainingDynamics'''
 
 [tasks.lean-foundations]
 description = "Build the Mathematical Foundations Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh MathematicalFoundations"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh MathematicalFoundations'''
 
 [tasks.lean-nng4]
 description = "Build the NNG4 introductory Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh NNG4Intro"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh NNG4Intro'''
 
 [tasks.lean-autodiff]
 description = "Build the Autodiff Geometry Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh AutodiffGeometry"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh AutodiffGeometry'''
 
 [tasks.lean-crouzeix]
 description = "Build the Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh Crouzeix"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh Crouzeix'''
 
 [tasks.lean-crouzeix-jin]
 description = "Build the route-isolated Jin Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh CrouzeixJin"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh CrouzeixJin'''
 
 [tasks.lean-crouzeix-ls]
 description = "Build the route-isolated Lorist-Schwenninger Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh CrouzeixLoristSchwenninger"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh CrouzeixLoristSchwenninger'''
 
 [tasks.lean-crouzeix-harp]
 description = "Build the route-isolated Harp Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh CrouzeixHarp"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh CrouzeixHarp'''
 
 [tasks.lean-all]
 description = "Build all Harp Lean libraries once from the shared Lake root"
 depends = ["lean-env"]
-env = { ELAN_HOME = "/private/tmp/harp-mathematical-foundations-elan", PATH = "/private/tmp/harp-mathematical-foundations-elan/toolchains/leanprover--lean4---v4.32.1/bin:{{env.PATH}}" }
-run = "scripts/check_lean_library.sh all"
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh all'''
 
 [tasks.lean-timing]
 description = "Print timing reports for the shared Lean root and focused proof targets"
