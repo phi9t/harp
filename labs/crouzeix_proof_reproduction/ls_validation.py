@@ -638,6 +638,7 @@ def validate_committed_receipts(
     lean_root: Path,
     *,
     allow_legacy_source_locator_for: frozenset[str] = frozenset(),
+    require_current_wrapper: bool = False,
 ) -> dict[str, dict[str, object]]:
     """Validate every graph-published LS receipt against committed bytes.
 
@@ -653,6 +654,8 @@ def validate_committed_receipts(
         raise protocol.ValidationError(
             "legacy source-locator allowance must be a frozen node set"
         )
+    if not isinstance(require_current_wrapper, bool):
+        raise protocol.ValidationError("require_current_wrapper must be a bool")
     for row in rows:
         if not isinstance(row, LSGraphRow):
             raise protocol.ValidationError("LS committed receipt row is invalid")
@@ -733,6 +736,7 @@ def validate_committed_receipts(
                     allow_legacy_source_locator=(
                         row.node_id in allow_legacy_source_locator_for
                     ),
+                    require_current_wrapper=require_current_wrapper,
                 )
             finally:
                 visiting.remove(row.node_id)
@@ -750,6 +754,7 @@ def validate_committed_receipts(
                     allow_legacy_source_locator=(
                         row.node_id in allow_legacy_source_locator_for
                     ),
+                    require_current_wrapper=require_current_wrapper,
                 )
 
         result = {
@@ -847,6 +852,7 @@ def _validate_committed_receipt(
     current_source_closure: _LocalSourceClosure | None = None,
     *,
     allow_legacy_source_locator: bool = False,
+    require_current_wrapper: bool = False,
 ) -> dict[str, object]:
     attempt, receipt_bytes = _resolve_committed_attempt(row, proof_slices)
     try:
@@ -904,7 +910,10 @@ def _validate_committed_receipt(
             f"LS committed command for node {row.node_id}",
         )
         command_exit_code = _validate_command_object(
-            command, repository_root, current_source_closure
+            command,
+            repository_root,
+            current_source_closure,
+            require_current_wrapper=require_current_wrapper,
         )
         _validate_execution_evidence(
             command_exit_code,
@@ -1269,7 +1278,11 @@ def _validate_command_object(
     value: Mapping[str, Any],
     repository_root: Path | _PinnedDirectory | None = None,
     source_closure: _LocalSourceClosure | None = None,
+    *,
+    require_current_wrapper: bool = False,
 ) -> int:
+    if not isinstance(require_current_wrapper, bool):
+        raise protocol.ValidationError("require_current_wrapper must be a bool")
     schema_version = value.get("schema_version")
     if schema_version == "crouzeix-ls-lean-command/v1":
         _require_fields(value, COMMAND_V1_FIELDS, "LS committed command")
@@ -1324,13 +1337,20 @@ def _validate_command_object(
             repository_directory = owned_chain[-1]
         try:
             for field, relative_path in (
-                ("wrapper_sha256", "scripts/check_lean_library.sh"),
                 ("lake_manifest_sha256", "formalization/lean/lake-manifest.json"),
             ):
                 data = _read_relative_file(
                     repository_directory, relative_path, field, MAX_MEMBER_BYTES
                 )
                 _require_bytes_digest(data, str(value[field]), field)
+            if require_current_wrapper:
+                data = _read_relative_file(
+                    repository_directory,
+                    "scripts/check_lean_library.sh",
+                    "wrapper_sha256",
+                    MAX_MEMBER_BYTES,
+                )
+                _require_bytes_digest(data, str(value["wrapper_sha256"]), "wrapper_sha256")
         finally:
             _close_pinned_directories(owned_chain)
         if source_closure is None:

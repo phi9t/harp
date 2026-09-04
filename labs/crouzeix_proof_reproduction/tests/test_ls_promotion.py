@@ -272,6 +272,29 @@ class LSPromotionTests(unittest.TestCase):
             with self.assertRaisesRegex(protocol.ValidationError, "local module does not exist"):
                 ls_promotion.promote_six_node_route(repository_root, candidates)
 
+    def test_stale_wrapper_candidate_is_rejected_before_graph_inventory_or_marker_mutation(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repository_root, formal_target_root = make_workspace(Path(directory).resolve())
+            seed_historical_pair(formal_target_root)
+            original_graph = (formal_target_root / GRAPH_NAME).read_bytes()
+            original_inventory = (formal_target_root / INVENTORY_NAME).read_bytes()
+            candidates = candidate_roster(repository_root)
+            wrapper = repository_root / "scripts/check_lean_library.sh"
+            wrapper.write_text("#!/bin/sh\n# stale wrapper\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(protocol.ValidationError, "wrapper_sha256"):
+                ls_promotion.promote_six_node_route(repository_root, candidates)
+
+            self.assertEqual((formal_target_root / GRAPH_NAME).read_bytes(), original_graph)
+            self.assertEqual(
+                (formal_target_root / INVENTORY_NAME).read_bytes(), original_inventory
+            )
+            self.assertFalse((formal_target_root / PROMOTION_NAME).exists())
+            self.assertEqual(transaction_roots(formal_target_root), [])
+            self.assertEqual(stage_entries(formal_target_root), [])
+
     def test_pre_marker_failures_restore_exact_original_snapshots(self) -> None:
         failpoints = (
             "before_graph_stage_write",

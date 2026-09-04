@@ -238,7 +238,10 @@ def _validate_candidate_receipts(
     try:
         _require_candidate_attempt_paths(candidates, proof_slices)
         return ls_validation.validate_committed_receipts(
-            rows, target_directory.path, repository_directory.path
+            rows,
+            target_directory.path,
+            repository_directory.path,
+            require_current_wrapper=True,
         )
     finally:
         ls_validation._close_pinned_directories((proof_slices,))

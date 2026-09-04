@@ -147,6 +147,10 @@ def validate_fixture_receipts(
 ) -> dict[str, dict[str, object]]:
     historical_targets = current_target_overrides(formal_target_root)
     aggregate = repository_root / "formalization/lean/Crouzeix.lean"
+    if not aggregate.is_file():
+        aggregate = (
+            repository_root / "formalization/lean/CrouzeixLoristSchwenninger.lean"
+        )
     historical_imports = []
     for target in historical_targets.values():
         module = Path(target).relative_to("formalization/lean").with_suffix("")
@@ -749,10 +753,67 @@ class LSValidationTests(unittest.TestCase):
                         )
 
             wrapper.write_bytes(b"#!/bin/sh\n# changed\n")
-            with self.assertRaisesRegex(protocol.ValidationError, "wrapper_sha256"):
+            self.assertEqual(
                 ls_validation._validate_command_object(
                     current, repository_root, closure
+                ),
+                0,
+            )
+            with self.assertRaisesRegex(protocol.ValidationError, "wrapper_sha256"):
+                ls_validation._validate_command_object(
+                    current,
+                    repository_root,
+                    closure,
+                    require_current_wrapper=True,
                 )
+
+    def test_validate_committed_receipts_historical_mode_accepts_changed_wrapper_bytes_but_rejects_malformed_digest(
+        self,
+    ) -> None:
+        rows, formal_target_root, repository_root = make_v2_receipts(
+            Path(tempfile.mkdtemp()).resolve()
+        )
+        self.addCleanup(shutil.rmtree, repository_root.parent, ignore_errors=True)
+        wrapper = repository_root / "scripts/check_lean_library.sh"
+        wrapper.write_text("#!/bin/sh\n# changed wrapper bytes\n", encoding="utf-8")
+
+        receipts = ls_validation.validate_committed_receipts(
+            rows, formal_target_root, repository_root
+        )
+        self.assertEqual(set(receipts), {row.node_id for row in rows})
+
+        node_id = rows[0].node_id
+        attempt = selected_attempt(rows, formal_target_root, node_id)
+        command_path = attempt / "build/command.json"
+        command = json.loads(command_path.read_text(encoding="utf-8"))
+        command["wrapper_sha256"] = "invalid"
+        write_json(command_path, command)
+        receipt = json.loads((attempt / "receipt.json").read_text(encoding="utf-8"))
+        receipt["command_sha256"] = sha256_file(command_path)
+        bad_rows = rewrite_receipt(rows, formal_target_root, node_id, receipt)
+
+        with self.assertRaisesRegex(protocol.ValidationError, "wrapper_sha256"):
+            ls_validation.validate_committed_receipts(
+                bad_rows, formal_target_root, repository_root
+            )
+
+    def test_validate_committed_receipts_strict_mode_rejects_changed_wrapper_bytes(
+        self,
+    ) -> None:
+        rows, formal_target_root, repository_root = make_v2_receipts(
+            Path(tempfile.mkdtemp()).resolve()
+        )
+        self.addCleanup(shutil.rmtree, repository_root.parent, ignore_errors=True)
+        wrapper = repository_root / "scripts/check_lean_library.sh"
+        wrapper.write_text("#!/bin/sh\n# changed wrapper bytes\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(protocol.ValidationError, "wrapper_sha256"):
+            ls_validation.validate_committed_receipts(
+                rows,
+                formal_target_root,
+                repository_root,
+                require_current_wrapper=True,
+            )
 
     def test_failed_receipt_rejects_successful_axiom_evidence(self) -> None:
         rows = historical_graph_rows()
