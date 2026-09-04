@@ -12,6 +12,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { DashboardHref, WorkstreamsSnapshot } from "../content/workstreams";
+import "../styles/workstreams.css";
 import { AgentVelocityCard } from "./AgentVelocityCard";
 import type { InsightArtifactKind, InsightSnapshot, WorkstreamSnapshot } from "../content/workstreams";
 import { ResearchInsights } from "./ResearchInsights";

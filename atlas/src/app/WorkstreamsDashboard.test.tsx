@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -346,6 +348,84 @@ describe("WorkstreamsDashboard", () => {
     expect(
       within(insightsRegion).getByRole("heading", { name: "Latest Research Insights" }),
     ).toBeInTheDocument();
+  });
+
+  it("wires an isolated workstreams stylesheet and exposes the structural hooks it styles", () => {
+    const dashboardSource = readFileSync("src/app/WorkstreamsDashboard.tsx", "utf8");
+    expect(dashboardSource).toMatch(/import\s+"..\/styles\/workstreams\.css";/u);
+
+    const stylesheet = readFileSync("src/styles/workstreams.css", "utf8");
+    for (const token of [
+      "canvas",
+      "sidebar",
+      "panel",
+      "raised",
+      "line",
+      "cyan",
+      "green",
+      "amber",
+      "red",
+      "text",
+      "muted",
+    ]) {
+      expect(stylesheet).toContain(`--workstreams-${token}:`);
+    }
+    expect(stylesheet).toContain(".workstreams-shell");
+    expect(stylesheet).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(stylesheet).toContain("@media print");
+    expect(stylesheet).toContain('[data-state="active"]');
+    expect(stylesheet).toContain('[data-state="blocked"]');
+    expect(stylesheet).toContain('[data-current="true"]');
+    expect(stylesheet).toContain(".watchlist-scroll:focus-visible");
+    expect(stylesheet).toContain(".workstream-card__stage-summary:focus-visible");
+    expect(stylesheet).not.toMatch(/gradient|shadow|url\(|@font-face/u);
+
+    render(
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={vi.fn()}
+      />,
+    );
+
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("main")).toHaveClass("workstreams-main");
+    expect(
+      screen.getByRole("complementary", { name: "Workstreams navigation" }),
+    ).toHaveClass("workstreams-sidebar");
+    expect(screen.getByRole("region", { name: "Blocked workstream focus" })).toHaveClass(
+      "workstreams-focus",
+    );
+    expect(screen.getByRole("region", { name: "Workstreams" })).toHaveClass(
+      "workstreams-grid",
+    );
+    expect(
+      screen.getByRole("region", {
+        name: "Workstream watchlist, scroll for more columns",
+      }),
+    ).toHaveAttribute("tabindex", "0");
+
+    const settingsButton = screen.getByRole("button", { name: "Settings" });
+    const knowledgeButton = screen.getByRole("button", {
+      name: "Open Harp knowledge Atlas",
+    });
+    expect(settingsButton.querySelector("svg")).not.toBeNull();
+    expect(knowledgeButton.querySelector("svg")).not.toBeNull();
+    expect(settingsButton).toHaveTextContent("Settings");
+    expect(knowledgeButton).toHaveTextContent("Knowledge");
+
+    const blockedCard = screen.getByRole("article", { name: "Autodiff Geometry" });
+    const cardStatus = blockedCard.querySelector(".workstream-card__status");
+    expect(cardStatus).not.toBeNull();
+    expect(cardStatus?.querySelector("svg")).not.toBeNull();
+    expect(within(cardStatus as HTMLElement).getByText("Blocked")).toBeInTheDocument();
+
+    const statusChip = document.querySelector(".status-chip[data-state]");
+    expect(statusChip).not.toBeNull();
+    expect(statusChip?.textContent?.trim()).not.toBe("");
+
+    expect(
+      document.querySelector('.agent-velocity__point--current[data-current="true"]'),
+    ).not.toBeNull();
   });
 
   it("renders search, filters workstreams and watchlist rows, and supports clear plus keyboard focus shortcuts", async () => {
