@@ -215,7 +215,7 @@ export function WorkstreamsDashboard({
                 onChange={(event) => setQuery(event.target.value)}
                 ref={searchRef}
               />
-              <span>Cmd K</span>
+              <span className="workstreams-shortcut">Cmd K</span>
               {normalizedQuery !== "" ? (
                 <button type="button" onClick={clearSearch} aria-label="Clear search">
                   Clear

@@ -29,6 +29,62 @@ function getStageTooltip(id: string): HTMLElement {
   return tooltip as HTMLElement;
 }
 
+function normalizeCssWhitespace(value: string): string {
+  return value
+    .replace(/\s+/gu, " ")
+    .replace(/\s*([,:(){}])\s*/gu, "$1")
+    .trim();
+}
+
+function cssBlock(source: string, prelude: string): string {
+  const normalizedSource = normalizeCssWhitespace(source);
+  const blockStart = normalizedSource.indexOf(`${normalizeCssWhitespace(prelude)}{`);
+  expect(blockStart, `Missing CSS block: ${prelude}`).toBeGreaterThanOrEqual(0);
+
+  const openingBrace = normalizedSource.indexOf("{", blockStart);
+  let depth = 1;
+  let closingBrace = openingBrace + 1;
+  while (closingBrace < normalizedSource.length && depth > 0) {
+    if (normalizedSource[closingBrace] === "{") {
+      depth += 1;
+    } else if (normalizedSource[closingBrace] === "}") {
+      depth -= 1;
+    }
+    closingBrace += 1;
+  }
+  expect(depth, `Unclosed CSS block: ${prelude}`).toBe(0);
+  return normalizedSource.slice(openingBrace + 1, closingBrace - 1);
+}
+
+function expectCssDeclarations(
+  source: string,
+  selectors: string | readonly string[],
+  declarations: Readonly<Record<string, string>>,
+): void {
+  const selectorPrelude = typeof selectors === "string" ? selectors : selectors.join(",");
+  const ruleBody = cssBlock(source, selectorPrelude);
+  const actualDeclarations = new Map(
+    ruleBody
+      .split(";")
+      .map((declaration) => declaration.trim())
+      .filter((declaration) => declaration.length > 0)
+      .map((declaration) => {
+        const separator = declaration.indexOf(":");
+        expect(separator, `Invalid CSS declaration: ${declaration}`).toBeGreaterThan(0);
+        return [
+          declaration.slice(0, separator).trim(),
+          normalizeCssWhitespace(declaration.slice(separator + 1)),
+        ];
+      }),
+  );
+
+  for (const [property, value] of Object.entries(declarations)) {
+    expect(actualDeclarations.get(property), `${selectorPrelude} ${property}`).toBe(
+      normalizeCssWhitespace(value),
+    );
+  }
+}
+
 describe("WorkstreamsDashboard", () => {
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -169,6 +225,7 @@ describe("WorkstreamsDashboard", () => {
         expect(tooltip).toHaveAttribute("role", "tooltip");
         expect(tooltip).toHaveTextContent(stage.detail);
         expect(tooltip).toHaveAttribute("hidden");
+        expect(tooltip).not.toBeVisible();
       }
     }
 
@@ -353,32 +410,139 @@ describe("WorkstreamsDashboard", () => {
   it("wires an isolated workstreams stylesheet and exposes the structural hooks it styles", () => {
     const dashboardSource = readFileSync("src/app/WorkstreamsDashboard.tsx", "utf8");
     expect(dashboardSource).toMatch(/import\s+"..\/styles\/workstreams\.css";/u);
+    expect(dashboardSource).toContain('className="workstreams-shell"');
+    expect(dashboardSource).toContain('className="workstreams-shortcut"');
 
     const stylesheet = readFileSync("src/styles/workstreams.css", "utf8");
-    for (const token of [
-      "canvas",
-      "sidebar",
-      "panel",
-      "raised",
-      "line",
-      "cyan",
-      "green",
-      "amber",
-      "red",
-      "text",
-      "muted",
-    ]) {
-      expect(stylesheet).toContain(`--workstreams-${token}:`);
+    const requiredTokens = {
+      "--ops-canvas": "#020617",
+      "--ops-sidebar": "#0f172a",
+      "--ops-panel": "#131c2e",
+      "--ops-panel-raised": "#1e293b",
+      "--ops-line": "#334155",
+      "--ops-cyan": "#38bdf8",
+      "--ops-green": "#3fb950",
+      "--ops-amber": "#d29922",
+      "--ops-red": "#f85149",
+      "--ops-text": "#f8fafc",
+      "--ops-muted": "#94a3b8",
+    };
+    for (const [token, value] of Object.entries(requiredTokens)) {
+      expect(stylesheet).toContain(`${token}: ${value};`);
     }
+    expect(stylesheet).not.toMatch(/--workstreams-|var\(--workstreams-/u);
     expect(stylesheet).toContain(".workstreams-shell");
-    expect(stylesheet).toContain('@media (prefers-reduced-motion: reduce)');
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-sidebar");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-main");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-shortcut");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-watchlist-cue");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-meta");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-mono");
+    expect(stylesheet).toContain("min-height: 100dvh;");
+    expect(stylesheet).toMatch(/font-family:\s*system-ui,\s*-apple-system,\s*BlinkMacSystemFont/u);
+    const desktopStylesheet = cssBlock(stylesheet, "@media (min-width: 1280px)");
+    expect(stylesheet).toContain("@media (min-width: 900px) and (max-width: 1279px)");
+    const mobileStylesheet = cssBlock(stylesheet, "@media (max-width: 899px)");
+    expect(stylesheet).toContain("@media (prefers-reduced-motion: reduce)");
     expect(stylesheet).toContain("@media print");
-    expect(stylesheet).toContain('[data-state="active"]');
-    expect(stylesheet).toContain('[data-state="blocked"]');
-    expect(stylesheet).toContain('[data-current="true"]');
-    expect(stylesheet).toContain(".watchlist-scroll:focus-visible");
-    expect(stylesheet).toContain(".workstream-card__stage-summary:focus-visible");
-    expect(stylesheet).not.toMatch(/gradient|shadow|url\(|@font-face/u);
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell", {
+      display: "grid",
+      "grid-template-columns": "224px minmax(0, 1fr)",
+    });
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell .workstreams-main", {
+      "grid-template-columns": "minmax(0, 1fr) 18rem",
+      "align-items": "start",
+    });
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell .workstreams-sidebar", {
+      position: "sticky",
+      top: "64px",
+    });
+    expectCssDeclarations(
+      desktopStylesheet,
+      [
+        ".workstreams-shell .workstreams-header",
+        ".workstreams-shell .workstreams-focus",
+        ".workstreams-shell #insights",
+        ".workstreams-shell .watchlist-scroll",
+        ".workstreams-shell .reference-settings",
+      ],
+      { "grid-column": "1 / -1" },
+    );
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell .workstreams-grid", {
+      "grid-column": "1",
+    });
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell .agent-velocity", {
+      "grid-column": "2",
+      "align-self": "start",
+    });
+    expectCssDeclarations(desktopStylesheet, ".workstreams-shell .insight-grid", {
+      "grid-template-columns": "repeat(3, minmax(0, 1fr))",
+    });
+    expect(stylesheet).toContain("grid-template-columns: 72px minmax(0, 1fr);");
+    const controlSelectors = [
+      ".workstreams-shell .workstreams-nav__button",
+      ".workstreams-shell .workstreams-focus__button",
+      ".workstreams-shell .workstreams-search button",
+      ".workstreams-shell .reference-settings button",
+      ".workstreams-shell .agent-velocity__header button",
+      ".workstreams-shell .agent-velocity form button",
+      ".workstreams-shell .agent-velocity details summary",
+      ".workstreams-shell .insight-card__panel button",
+      ".workstreams-shell .watchlist-scroll button",
+      '.workstreams-shell .insight-card [role="tab"]',
+      ".workstreams-shell .workstream-card__details summary",
+    ];
+    expectCssDeclarations(stylesheet, controlSelectors, {
+      "min-width": "24px",
+      "min-height": "24px",
+      gap: "8px",
+    });
+    expectCssDeclarations(
+      mobileStylesheet,
+      [...controlSelectors, ".workstreams-shell .workstream-card__stage-summary"],
+      {
+        "min-width": "44px",
+        "min-height": "44px",
+        gap: "8px",
+      },
+    );
+    expect(stylesheet).toContain("font-size: 16px;");
+    expect(stylesheet).toContain("overflow-x: hidden;");
+    expect(stylesheet).toContain("display: none;");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-search button");
+    expect(stylesheet).toContain(".workstreams-shell .workstreams-sidebar");
+    expect(stylesheet).toContain(".workstreams-shell .reference-settings");
+    expect(stylesheet).toContain(".workstreams-shell .agent-velocity svg line");
+    expect(stylesheet).toContain("transition: opacity 160ms ease, transform 160ms ease;");
+    expect(stylesheet).not.toMatch(/gradient|shadow|url\(|@font-face|animation:/u);
+    const bareSelectors = [
+      /(^|\n)\s*\.workstreams-sidebar\b/u,
+      /(^|\n)\s*\.workstreams-main\b/u,
+      /(^|\n)\s*\.workstreams-header\b/u,
+      /(^|\n)\s*\.workstreams-focus\b/u,
+      /(^|\n)\s*\.workstream-card\b/u,
+      /(^|\n)\s*\.agent-velocity\b/u,
+      /(^|\n)\s*\.research-insights\b/u,
+      /(^|\n)\s*\.watchlist-scroll\b/u,
+      /(^|\n)\s*\.reference-settings\b/u,
+      /(^|\n)\s*\[data-state=/u,
+    ];
+    for (const selector of bareSelectors) {
+      expect(stylesheet).not.toMatch(selector);
+    }
+
+    const radii = Array.from(stylesheet.matchAll(/border-radius:\s*([^;]+);/gu)).map(
+      (match) => match[1].trim(),
+    );
+    expect(radii.length).toBeGreaterThan(0);
+    for (const radius of radii) {
+      if (radius === "999px") {
+        continue;
+      }
+      const px = radius.match(/^([0-9]+(?:\.[0-9]+)?)px$/u);
+      expect(px).not.toBeNull();
+      expect(Number(px?.[1] ?? "999")).toBeLessThanOrEqual(6);
+    }
 
     render(
       <WorkstreamsDashboard
@@ -403,6 +567,7 @@ describe("WorkstreamsDashboard", () => {
         name: "Workstream watchlist, scroll for more columns",
       }),
     ).toHaveAttribute("tabindex", "0");
+    expect(screen.getByText("Cmd K")).toHaveClass("workstreams-shortcut");
 
     const settingsButton = screen.getByRole("button", { name: "Settings" });
     const knowledgeButton = screen.getByRole("button", {
