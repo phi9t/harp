@@ -2667,14 +2667,6 @@ fn valid_ls_command(
             } else {
                 verify_digest_bound_file(
                     repo_root,
-                    Path::new("scripts/check_lean_library.sh"),
-                    &command.wrapper_sha256,
-                    manifest,
-                    line,
-                    "LS aggregate wrapper",
-                )?;
-                verify_digest_bound_file(
-                    repo_root,
                     Path::new("formalization/lean/lake-manifest.json"),
                     &command.lake_manifest_sha256,
                     manifest,
@@ -6071,13 +6063,30 @@ mod tests {
     }
 
     #[test]
-    fn v2_ls_command_binds_wrapper_and_lake_manifest_bytes() {
-        for field in ["wrapper_sha256", "lake_manifest_sha256"] {
-            let message = rejected_v2_command_message(|command| {
-                command[field] = json!("f".repeat(64));
-            });
-            assert!(message.contains("digest mismatch"), "{field}: {message}");
-        }
+    fn v2_ls_command_treats_wrapper_as_historical_metadata_but_binds_lake_manifest_bytes() {
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let mut command = valid_ls_command_v2(repo.path());
+        command["wrapper_sha256"] = json!("f".repeat(64));
+        replace_ls_command(repo.path(), &command);
+
+        verify(repo.path()).unwrap();
+
+        let message = rejected_v2_command_message(|command| {
+            command["lake_manifest_sha256"] = json!("f".repeat(64));
+        });
+        assert!(message.contains("digest mismatch"), "{message}");
+    }
+
+    #[test]
+    fn local_build_command_still_binds_current_wrapper_bytes() {
+        let message = rejected_local_command_message(|command| {
+            command["wrapper_sha256"] = json!("f".repeat(64));
+        });
+        assert!(
+            message.contains("aggregate build wrapper digest mismatch"),
+            "{message}"
+        );
     }
 
     #[test]
