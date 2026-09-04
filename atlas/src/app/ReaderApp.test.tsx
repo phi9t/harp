@@ -152,6 +152,57 @@ describe("RSI technical reader", () => {
       .toHaveTextContent("Verified coevolution");
   });
 
+  it("opens the workstreams console from the reader top nav and drops reader footer chrome", async () => {
+    const user = userEvent.setup();
+    window.location.hash = "#knowledge";
+    render(<ReaderApp />);
+
+    const consoleButton = screen.getByRole("button", {
+      name: "Open Console / Workstreams",
+    });
+    expect(consoleButton).toHaveTextContent("Console / Workstreams");
+
+    await user.click(consoleButton);
+
+    expect(window.location.hash).toBe("#workstreams");
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Harp Workstreams",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Harp Atlas / source-bound technical reader"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("navigation", { name: "Atlas routes" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("returns from the workstreams console to the Harp knowledge Atlas route", async () => {
+    const user = userEvent.setup();
+    window.location.hash = "#workstreams";
+    render(<ReaderApp />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Open Harp knowledge Atlas" }),
+    );
+
+    expect(window.location.hash).toBe("#knowledge");
+    expect(
+      screen.getByRole("navigation", { name: "Atlas routes" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Harp Atlas / source-bound technical reader"),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", {
+        level: 1,
+        name: "Harp Workstreams",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
   it("blocks lineage promotion when any protected gate closes", async () => {
     const user = userEvent.setup();
     window.location.hash = "#loop";

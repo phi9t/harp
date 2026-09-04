@@ -5,6 +5,7 @@ import {
   canonicalCorpus,
   canonicalReaderRoutes,
 } from "../content/canonical";
+import { workstreamsReference } from "../content/workstreams";
 import type {
   CanonicalDocument,
   ConceptId,
@@ -26,6 +27,7 @@ import { KnowledgeHome } from "./KnowledgeHome";
 import { SystemArticle } from "./SystemArticle";
 import { SystemLibrary } from "./SystemLibrary";
 import { WengReader } from "./WengReader";
+import { WorkstreamsDashboard } from "./WorkstreamsDashboard";
 
 function documentById(documentId: string): CanonicalDocument {
   const document = canonicalCorpus.documents.find(
@@ -130,6 +132,17 @@ export function AtlasApp() {
     window.addEventListener("hashchange", readHash);
     return () => window.removeEventListener("hashchange", readHash);
   }, []);
+
+  if (route.kind === "workstreams") {
+    return (
+      <WorkstreamsDashboard
+        snapshot={workstreamsReference}
+        onNavigate={(href) => {
+          window.location.hash = href;
+        }}
+      />
+    );
+  }
 
   const sourceRoute = canonicalReaderRoutes.find(
     (candidate) => candidate.route.route_id === "sources",
@@ -264,6 +277,14 @@ export function AtlasApp() {
               })}
           >
             {mathematicalFoundationsRoute.route.label}
+          </button>
+          <button
+            className="nav-button"
+            type="button"
+            aria-label="Open Console / Workstreams"
+            onClick={() => navigate({ kind: "workstreams" })}
+          >
+            Console / Workstreams
           </button>
           <button
             className={

@@ -162,6 +162,7 @@ export function WorkstreamsDashboard({
           <button
             type="button"
             className="workstreams-nav__button"
+            aria-label="Open Harp knowledge Atlas"
             onClick={() => onNavigate("#knowledge")}
           >
             <Library aria-hidden="true" />

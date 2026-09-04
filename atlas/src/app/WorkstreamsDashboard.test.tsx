@@ -299,10 +299,13 @@ describe("WorkstreamsDashboard", () => {
     const runsButton = controls.getByRole("button", { name: "Runs" });
     const agentsButton = controls.getByRole("button", { name: "Agents" });
     const evaluatorsButton = controls.getByRole("button", { name: "Evaluators" });
-    const knowledgeButton = controls.getByRole("button", { name: "Knowledge" });
+    const knowledgeButton = controls.getByRole("button", {
+      name: "Open Harp knowledge Atlas",
+    });
     const settingsControl = controls.getByRole("button", { name: "Settings" });
     expect(settingsControl).not.toBeDisabled();
     expect(controls.getByText("Recently Active")).toBeInTheDocument();
+    expect(knowledgeButton).toHaveTextContent("Knowledge");
     const recentItems = within(controls.getByRole("list", { name: "Recently Active list" }))
       .getAllByRole("listitem")
       .map((item) => item.textContent);
@@ -481,7 +484,9 @@ describe("WorkstreamsDashboard", () => {
     expect(panel).not.toBeInTheDocument();
     expect(settings).toHaveFocus();
 
-    await user.click(controls.getByRole("button", { name: "Knowledge" }));
+    await user.click(
+      controls.getByRole("button", { name: "Open Harp knowledge Atlas" }),
+    );
     expect(onNavigate).toHaveBeenCalledWith("#knowledge");
   });
 
