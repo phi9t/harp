@@ -1729,6 +1729,42 @@ class ProofEvidencePreflightTests(unittest.TestCase):
         self.assertIn("mathlib source root", payload["reason"])
         self.assertIn("symlink", payload["reason"])
 
+    def test_exact_xdg_packages_link_is_accepted(self) -> None:
+        fixture = self.build_fixture()
+        xdg_cache_home = fixture.root / "xdg-cache"
+        expected_packages = xdg_cache_home / "harp/lean/lean-4.32.1/packages"
+        expected_packages.parent.mkdir(parents=True)
+        fixture.cache_root.joinpath("packages").rename(expected_packages)
+        fixture.cache_root.joinpath("packages").symlink_to(
+            expected_packages, target_is_directory=True
+        )
+
+        with mock.patch.dict(
+            os.environ,
+            {"HOME": "/unused", "XDG_CACHE_HOME": str(xdg_cache_home)},
+            clear=True,
+        ):
+            payload = fixture.evaluate_route("jin").to_json()
+
+        self.assertEqual(payload["status"], "ready")
+
+    def test_non_xdg_packages_link_is_rejected(self) -> None:
+        fixture = self.build_fixture()
+        outside = fixture.root / "outside-packages"
+        fixture.cache_root.joinpath("packages").rename(outside)
+        fixture.cache_root.joinpath("packages").symlink_to(
+            outside, target_is_directory=True
+        )
+
+        with mock.patch.dict(
+            os.environ,
+            {"HOME": "/unused", "XDG_CACHE_HOME": str(fixture.root / "xdg")},
+            clear=True,
+        ):
+            payload = fixture.blocked_json("jin")
+
+        self.assertIn("expected XDG cache", payload["reason"])
+
     def test_olean_symlink_escape_blocks(self) -> None:
         fixture = self.build_fixture()
         outside = fixture.root / "outside.olean"
