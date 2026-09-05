@@ -107,7 +107,7 @@ class LocalFormalizationValidationTests(unittest.TestCase):
             tuple(
                 local_formalization_validation.LocalBundleValidationResult.__dataclass_fields__
             ),
-            ("status", "formalization_ids", "route_ids", "manifest_sha256"),
+            ("status", "formalization_ids", "route_ids", "manifest_sha256", "manifest_path"),
         )
 
     def test_validator_accepts_exact_published_six_row_bundle(self) -> None:

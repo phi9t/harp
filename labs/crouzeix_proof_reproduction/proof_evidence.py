@@ -51,6 +51,7 @@ EXPECTED_DEFAULT_TARGETS = (
     "NNG4Intro",
     "AutodiffGeometry",
     "Crouzeix",
+    "CrouzeixTextbook",
 )
 EXPECTED_LEAN_LIBS = (
     "TrainingDynamics",
@@ -58,6 +59,7 @@ EXPECTED_LEAN_LIBS = (
     "NNG4Intro",
     "AutodiffGeometry",
     "Crouzeix",
+    "CrouzeixTextbook",
     "CrouzeixJin",
     "CrouzeixLoristSchwenninger",
     "CrouzeixHarp",
@@ -1092,6 +1094,7 @@ def main(argv: list[str]) -> int:
     publish_review.add_argument("--route", choices=ROUTE_ORDER, required=True)
     subparsers.add_parser("publish-ls")
     subparsers.add_parser("publish-local")
+    subparsers.add_parser("refresh-local")
     validate_goal_parser = subparsers.add_parser("validate-goal")
     validate_goal_parser.add_argument(
         "--goal-plan",
@@ -1229,13 +1232,14 @@ def main(argv: list[str]) -> int:
         sys.stdout.write(canonical_json(payload))
         return 0
 
-    if args.command == "publish-local":
+    if args.command in ("publish-local", "refresh-local"):
         try:
-            publication = (
-                local_formalization_evidence.publish_local_formalization_evidence(
-                    repository_root
-                )
+            publish = (
+                local_formalization_evidence.refresh_local_formalization_evidence
+                if args.command == "refresh-local"
+                else local_formalization_evidence.publish_local_formalization_evidence
             )
+            publication = publish(repository_root)
         except local_formalization_evidence.PublicationCommittedError as error:
             sys.stdout.write(
                 canonical_json(
@@ -1252,11 +1256,21 @@ def main(argv: list[str]) -> int:
                 )
             )
             return 1
+        except protocol.ValidationError as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": "crouzeix-local-formalization-publication/v1",
+                "status": "blocked",
+                "reason": _publish_ls_reason_text(str(error)),
+            }))
+            return 1
         sys.stdout.write(
             canonical_json(
                 {
                     "schema_version": "crouzeix-local-formalization-publication/v1",
-                    "status": "published-unreferenced",
+                    "status": (
+                        "published-selected" if args.command == "refresh-local"
+                        else "published-unreferenced"
+                    ),
                     "artifact_root": publication.artifact_root.as_posix(),
                     "manifest_path": publication.manifest_path.as_posix(),
                 }

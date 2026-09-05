@@ -35,6 +35,8 @@ const mathematicalFoundationsIndexPath =
   "knowledge/mathematical_foundations/mathematical_foundations_index.md";
 const autodiffGeometryIndexPath =
   "knowledge/autodiff_geometry/autodiff_geometry_index.md";
+const crouzeixTextbookIndexPath =
+  "knowledge/crouzeix_textbook/crouzeix_textbook_index.md";
 
 const companionId = (id: string): string => `weng-${id}`;
 const documentMetadata = (id: string) => ({
@@ -70,8 +72,8 @@ const systemIds: readonly string[] = [
 const systemSection = (index: number): string =>
   wengSectionIds[index % wengSectionIds.length];
 
-const validV5Fixture: unknown = {
-  schema_version: "rsi-technical-atlas/v5",
+const validV6Fixture: unknown = {
+  schema_version: "rsi-technical-atlas/v6",
   retained_concepts: chapterIds.map((id) => ({
     concept_id: id,
     source_ids: [],
@@ -155,6 +157,11 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
     {
+      route_id: "crouzeix-textbook",
+      label: "Crouzeix textbook",
+      canonical_markdown_path: crouzeixTextbookIndexPath,
+    },
+    {
       route_id: "mathematical-foundations",
       label: "Math foundations",
       canonical_markdown_path: mathematicalFoundationsIndexPath,
@@ -170,6 +177,7 @@ const validV5Fixture: unknown = {
       canonical_markdown_path: chapterPath(chapterIds[0]),
     },
   ],
+  document_aliases: [],
   documents: [
     ...chapterIds.map((id) => ({
       concept_id: id,
@@ -207,6 +215,15 @@ const validV5Fixture: unknown = {
       html_sha256: digest,
       html: "<h1>Autodiff geometry</h1>",
       metadata: documentMetadata("autodiff-geometry-index"),
+    },
+    {
+      concept_id: "crouzeix-textbook-index",
+      title: "Crouzeix textbook",
+      canonical_markdown_path: crouzeixTextbookIndexPath,
+      markdown_sha256: digest,
+      html_sha256: digest,
+      html: "<h1>Crouzeix textbook</h1>",
+      metadata: documentMetadata("crouzeix-textbook-index"),
     },
   ],
   systems: systemIds.map((id, index) => {
@@ -257,8 +274,109 @@ const validV5Fixture: unknown = {
 };
 
 describe("canonical corpus boundary", () => {
+  it("exports the complete forty-four-document Crouzeix textbook packet", () => {
+    const corpus = parseCorpusForTest(corpusData);
+    expect(corpus.reader_routes).toContainEqual({
+      route_id: "crouzeix-textbook",
+      label: "Crouzeix textbook",
+      canonical_markdown_path: crouzeixTextbookIndexPath,
+    });
+    expect(
+      corpus.documents.filter((document) =>
+        document.canonical_markdown_path.startsWith(
+          "knowledge/crouzeix_textbook/",
+        ),
+      ),
+    ).toHaveLength(44);
+  });
+
+  it("exports canonical textbook identities, theorem anchors, and Lean routes", () => {
+    const corpus = parseCorpusForTest(corpusData);
+    const chapter = corpus.documents.find(
+      (document) =>
+        document.canonical_markdown_path
+        === "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md",
+    );
+
+    expect(chapter?.concept_id).toBe(
+      "cft-chapter-01-objects-and-representations",
+    );
+    expect(chapter?.metadata.id).toBe(chapter?.concept_id);
+    expect(chapter?.html).toContain('<h3 id="cft-01-001">');
+    expect(chapter?.html).toContain(
+      'href="#documents/cft-lean-coverage-ledger"',
+    );
+  });
+
+  it("exports one canonical document target for every textbook legacy alias", () => {
+    const corpus = parseCorpusForTest(corpusData);
+    const aliases = corpus.document_aliases.filter((alias) =>
+      alias.alias_id.startsWith("crouzeix-textbook-")
+    );
+
+    expect(aliases).toHaveLength(44);
+    expect(new Set(aliases.map((alias) => alias.alias_id)).size).toBe(44);
+    for (const alias of aliases) {
+      expect(
+        corpus.documents.filter(
+          (document) => document.concept_id === alias.canonical_document_id,
+        ),
+      ).toHaveLength(1);
+    }
+  });
+
+  it("rejects document aliases that collide with another canonical document", () => {
+    const source = structuredClone(validV6Fixture);
+    if (
+      typeof source !== "object"
+      || source === null
+      || !("document_aliases" in source)
+      || !Array.isArray(source.document_aliases)
+    ) {
+      throw new Error("Test fixture has invalid document aliases");
+    }
+    source.document_aliases = [{
+      alias_id: chapterIds[1],
+      canonical_document_id: chapterIds[0],
+    }];
+
+    expect(() => parseCorpusForTest(source)).toThrow(/alias.*collides/i);
+  });
+
+  it("rejects document aliases with unknown canonical targets", () => {
+    const source = structuredClone(validV6Fixture);
+    if (
+      typeof source !== "object"
+      || source === null
+      || !("document_aliases" in source)
+      || !Array.isArray(source.document_aliases)
+    ) {
+      throw new Error("Test fixture has invalid document aliases");
+    }
+    source.document_aliases = [{
+      alias_id: "retired-document",
+      canonical_document_id: "missing-document",
+    }];
+
+    expect(() => parseCorpusForTest(source)).toThrow(/unknown canonical document/i);
+  });
+
+  it("rejects stable v5 instead of reinterpreting required v6 aliases", () => {
+    const source = structuredClone(validV6Fixture);
+    if (
+      typeof source !== "object"
+      || source === null
+      || !("schema_version" in source)
+    ) {
+      throw new Error("Test fixture is not an object");
+    }
+    source.schema_version = "rsi-technical-atlas/v5";
+
+    expect(() => parseCorpusForTest(source)).toThrow(/unsupported schema/i);
+  });
+
   it("rejects invalid document metadata confidence", () => {
-    const source = structuredClone(validV5Fixture);
+    const source = structuredClone(validV6Fixture);
     if (
       typeof source !== "object"
       || source === null
@@ -280,7 +398,7 @@ describe("canonical corpus boundary", () => {
   });
 
   it("rejects a Weng section with an unknown system", () => {
-    const source = structuredClone(validV5Fixture);
+    const source = structuredClone(validV6Fixture);
     if (
       typeof source !== "object"
       || source === null

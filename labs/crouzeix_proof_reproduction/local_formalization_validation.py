@@ -21,6 +21,15 @@ class LocalBundleValidationResult:
     formalization_ids: tuple[str, ...]
     route_ids: tuple[str, ...]
     manifest_sha256: str
+    manifest_path: Path | None = None
+
+
+class _BundleMembers(dict[str, bytes]):
+    """Immutable snapshot paths are scoped to the selected publication root."""
+
+    def __init__(self, members: dict[str, bytes], published_root: str):
+        super().__init__(members)
+        self.published_root = published_root
 
 
 @dataclass(frozen=True)
@@ -57,30 +66,41 @@ def validate_local_formalization_bundle(
                 repository / "evidence" / local_formalization_evidence.EVIDENCE_ROOT_NAME,
                 "local formalization validator crouzeix root",
             )
+            generation_root = None
             try:
+                selection = local_formalization_evidence._read_selection(crouzeix_root)
+                published_root = local_formalization_evidence.DESTINATION_NAME
+                bundle_parent = crouzeix_root
+                bundle_name = published_root
+                if selection.active != "legacy":
+                    generation_root = ls_receipts._pin_directory_at(
+                        crouzeix_root,
+                        local_formalization_evidence.GENERATIONS_NAME,
+                        crouzeix_root.path / local_formalization_evidence.GENERATIONS_NAME,
+                        "local formalization validator generation root",
+                    )
+                    bundle_parent = generation_root
+                    bundle_name = selection.active
+                    published_root = f"{local_formalization_evidence.GENERATIONS_NAME}/{bundle_name}"
                 bundle_root = ls_receipts._pin_directory_at(
-                    crouzeix_root,
-                    local_formalization_evidence.DESTINATION_NAME,
-                    repository
-                    / "evidence"
-                    / local_formalization_evidence.EVIDENCE_ROOT_NAME
-                    / local_formalization_evidence.DESTINATION_NAME,
+                    bundle_parent,
+                    bundle_name,
+                    bundle_parent.path / bundle_name,
                     "local formalization validator bundle root",
                 )
                 try:
-                    observed_members = local_formalization_evidence._bundle_member_snapshots(
-                        bundle_root.descriptor
+                    observed_members = _BundleMembers(
+                        local_formalization_evidence._bundle_member_snapshots(bundle_root.descriptor),
+                        published_root,
                     )
+                    if local_formalization_evidence._bundle_digest(observed_members) != dict(selection.catalog)[selection.active]:
+                        raise ValueError("selected local evidence bundle changed during validation")
                     manifest_bytes = observed_members[
                         local_formalization_evidence.MANIFEST_NAME
                     ]
                     manifest_sha256 = protocol.sha256_bytes(manifest_bytes)
                     header, rows = _parse_manifest(
-                        repository
-                        / "evidence"
-                        / local_formalization_evidence.EVIDENCE_ROOT_NAME
-                        / local_formalization_evidence.DESTINATION_NAME
-                        / local_formalization_evidence.MANIFEST_NAME,
+                        bundle_root.path / local_formalization_evidence.MANIFEST_NAME,
                         manifest_bytes,
                     )
                     if header != local_formalization_evidence.HEADER:
@@ -229,15 +249,21 @@ def validate_local_formalization_bundle(
                         if spec.route_id not in route_ids:
                             route_ids.append(spec.route_id)
 
+                    ls_receipts._require_pinned_directory(bundle_root, "validated local bundle")
+                    if local_formalization_evidence._read_selection(crouzeix_root) != selection:
+                        raise ValueError("local formalization selection changed during validation")
                     return LocalBundleValidationResult(
                         status="passed",
                         formalization_ids=tuple(formalization_ids),
                         route_ids=tuple(route_ids),
                         manifest_sha256=manifest_sha256,
+                        manifest_path=bundle_root.path / local_formalization_evidence.MANIFEST_NAME,
                     )
                 finally:
                     ls_receipts._close_pinned_directory(bundle_root)
             finally:
+                if generation_root is not None:
+                    ls_receipts._close_pinned_directory(generation_root)
                 ls_receipts._close_pinned_directory(crouzeix_root)
         finally:
             ls_receipts._close_pinned_directory(evidence_root)
@@ -282,7 +308,9 @@ def _validate_route_binding(
         (f"routes/{spec.route_id}.review.json", route.review.data),
     )
     for (member, data), path_index in zip(expected, (7, 9, 11)):
-        expected_path = local_formalization_evidence._published_path(member)
+        expected_path = local_formalization_evidence._published_path(
+            member, getattr(observed_members, "published_root", local_formalization_evidence.DESTINATION_NAME)
+        )
         if row[path_index] != expected_path:
             raise ValueError(f"route artifact path mismatch for {spec.route_id}")
         if (
@@ -422,7 +450,7 @@ def _member_bytes(relative_path: str, observed_members: dict[str, bytes]) -> byt
                     PurePosixPath(
                         "evidence",
                         local_formalization_evidence.EVIDENCE_ROOT_NAME,
-                        local_formalization_evidence.DESTINATION_NAME,
+                        getattr(observed_members, "published_root", local_formalization_evidence.DESTINATION_NAME),
                     )
                 )
             )

@@ -1,0 +1,13 @@
+{
+  "name": "harp-textbook-pdf",
+  "private": true,
+  "version": "0.1.0",
+  "engines": { "node": ">=22" },
+  "description": "Reading-edition PDFs from the canonical Crouzeix textbook Markdown",
+  "dependencies": {
+    "katex": "0.18.4",
+    "marked": "17.0.5",
+    "pdf-lib": "1.17.1",
+    "playwright": "1.62.1"
+  }
+}

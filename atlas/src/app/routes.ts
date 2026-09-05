@@ -102,8 +102,14 @@ export function parseRoute(hash: string): AtlasRoute {
       : defaultRoute();
   }
   if (family === "documents" && id !== null) {
-    const document = canonicalCorpus.documents.find(
+    const directDocument = canonicalCorpus.documents.find(
       (candidate) => candidate.concept_id === id,
+    );
+    const alias = canonicalCorpus.document_aliases.find(
+      (candidate) => candidate.alias_id === id,
+    );
+    const document = directDocument ?? canonicalCorpus.documents.find(
+      (candidate) => candidate.concept_id === alias?.canonical_document_id,
     );
     return document
       ? {

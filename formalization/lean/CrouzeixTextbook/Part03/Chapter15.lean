@@ -1,0 +1,22 @@
+import CrouzeixConjecture.HolomorphicFunctionalCalculus
+
+namespace CrouzeixTextbook.Part03
+open CrouzeixConjecture
+
+noncomputable section
+
+set_option linter.defProp false in
+def parametric_boundary_integral := @parametricBoundaryIntegral
+set_option linter.defProp false in
+def boundary_integral_continuous := @continuousOn_parametricBoundaryIntegral
+set_option linter.defProp false in
+def boundary_integral_is_function_eval := @PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval
+set_option linter.defProp false in
+def simple_spectrum_holomorphic_eval := @simpleSpectrumHolomorphicEval
+set_option linter.defProp false in
+def simple_spectrum_boundary_limit := @tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation
+set_option linter.defProp false in
+def simple_spectrum_eval_limit := @PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval
+
+end
+end CrouzeixTextbook.Part03

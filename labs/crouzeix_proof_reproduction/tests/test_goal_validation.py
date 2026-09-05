@@ -631,6 +631,20 @@ class GoalValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Phase 8 plan-review row is invalid"):
                 goal_validation.validate_goal(goal, execution_ledger_path=ledger, repository_root=root)
 
+    def test_local_bundle_reports_the_manifest_it_actually_validated(self) -> None:
+        from labs.crouzeix_proof_reproduction import goal_validation
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            selected = root / "evidence/crouzeix_conjecture/local_formalization_generations" / ("a" * 32) / "manifest.tsv"
+            validator = mock.Mock()
+            validator.validate_local_formalization_bundle.return_value = type(
+                "SelectedResult", (), {"status": "passed", "manifest_path": selected}
+            )()
+            with mock.patch.object(goal_validation, "local_formalization_validation", validator):
+                paths = goal_validation._validate_local_bundle(root)
+            self.assertEqual(paths, (selected.relative_to(root).as_posix(),))
+
     def test_local_bundle_validation_fails_closed_without_optional_validator(self) -> None:
         from labs.crouzeix_proof_reproduction import goal_validation
 

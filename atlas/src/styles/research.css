@@ -165,6 +165,32 @@
 .atlas-shell .canonical-markdown th { font: 500 0.9rem var(--font-display); text-transform: none; }
 .atlas-shell .canonical-markdown :is(th, td) { padding: 14px; border: 0; border-bottom: 1px solid var(--line); }
 .atlas-shell .canonical-markdown details { border: 0; border-left: 2px solid var(--evidence); background: var(--blueprint); }
+
+/* The textbook keeps navigation and evidence separate from the argument. */
+.textbook-navigation { max-width: 70ch; margin: 0 auto 28px; border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+.textbook-navigation .eyebrow { font: 0.78rem/1.6 var(--font-display); color: var(--muted); letter-spacing: 0.04em; }
+.textbook-navigation a { color: var(--cobalt); text-underline-offset: 3px; overflow-wrap: anywhere; }
+.textbook-navigation summary { cursor: pointer; padding: 12px 0; font: 0.88rem/1.5 var(--font-display); }
+.textbook-navigation nav ol { margin: 0 0 20px; padding-left: 0; list-style: none; }
+.textbook-navigation nav li { font: 0.88rem/1.5 var(--font-display); padding: 5px 0; break-inside: avoid; }
+.textbook-navigation [aria-current="page"] { color: var(--navy); font-weight: 700; }
+.textbook-proof-references { padding-left: 16px; border-left: 2px solid var(--evidence); margin: 4px 0 18px; }
+.textbook-proof-references p { color: var(--muted); font: 0.88rem/1.6 var(--font-display); max-width: 60ch; }
+.textbook-proof-references a { display: block; font: 0.88rem/1.6 var(--font-display); margin: 8px 0; }
+.textbook-neighbors { display: flex; flex-direction: column; gap: 12px; font: 0.8rem/1.6 var(--font-display); }
+.textbook-neighbors > * { flex: 1; min-width: 0; }
+.textbook-neighbors > :last-child { text-align: left; }
+.atlas-shell .textbook-reading .canonical-markdown { max-width: 70ch; }
+.atlas-shell .textbook-reading .canonical-markdown > h1 { font-family: var(--font-reading); font-weight: 400; }
+.atlas-shell .textbook-reading .canonical-markdown :is(p, li) { font-size: 1.16rem; line-height: 1.72; }
+.atlas-shell .textbook-reading .canonical-markdown .math-display { overflow-x: auto; max-width: 100%; }
+.atlas-shell .textbook-reading .canonical-markdown pre:has(code.language-text) { background: transparent; border: 0; padding-left: 20px; }
+.atlas-shell .textbook-reading .canonical-markdown h3 { margin-top: 36px; padding-top: 14px; border-top: 1px solid var(--line); }
+@media (max-width: 700px) {
+  .textbook-navigation nav ol { columns: 1; }
+  .textbook-neighbors { flex-direction: column; gap: 10px; }
+  .textbook-neighbors > :last-child { text-align: left; }
+}
 .atlas-shell .canonical-markdown summary { font: 500 0.88rem/1.6 var(--font-display); color: var(--evidence); }
 .atlas-shell .canonical-receipt { background: var(--blueprint); color: var(--muted); font-size: 0.7rem; }
 .atlas-shell .canonical-receipt span { color: var(--evidence); text-transform: none; }

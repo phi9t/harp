@@ -25,6 +25,7 @@ pub(super) enum RouteTarget {
 pub(super) fn compile_document(
     source: &ValidatedCanonicalSource,
     route_targets: &BTreeMap<String, RouteTarget>,
+    registered_document_ids: &BTreeMap<String, String>,
 ) -> Result<CanonicalDocument, AppError> {
     let body = markdown_body(&source.markdown, &source.path)?;
     debug_assert_eq!(source.body_sha256, sha256(body.as_bytes()));
@@ -37,7 +38,7 @@ pub(super) fn compile_document(
         )
     })?;
     let html = render_markdown_with_targets(body, &source.path, route_targets);
-    let concept_id = source_document_id(source);
+    let concept_id = source_document_id(source, registered_document_ids);
     Ok(CanonicalDocument {
         concept_id,
         title,
@@ -49,23 +50,25 @@ pub(super) fn compile_document(
     })
 }
 
-fn source_document_id(source: &ValidatedCanonicalSource) -> String {
-    source
-        .entries
-        .iter()
-        .find(|entry| entry.section_id.is_none())
-        .or_else(|| source.entries.first())
-        .map(|entry| entry.concept_id.clone())
-        .unwrap_or_else(|| auxiliary_document_id(&source.path))
+fn source_document_id(
+    source: &ValidatedCanonicalSource,
+    registered_document_ids: &BTreeMap<String, String>,
+) -> String {
+    registered_document_ids
+        .get(&source.path)
+        .cloned()
+        .or_else(|| {
+            source
+                .entries
+                .iter()
+                .find(|entry| entry.section_id.is_none())
+                .or_else(|| source.entries.first())
+                .map(|entry| entry.concept_id.clone())
+        })
+        .unwrap_or_else(|| fallback_document_id(&source.path))
 }
 
-fn auxiliary_document_id(path: &str) -> String {
-    if let Some((document_id, _)) = AUXILIARY_DOCUMENTS
-        .iter()
-        .find(|(_, document_path)| *document_path == path)
-    {
-        return (*document_id).to_owned();
-    }
+fn fallback_document_id(path: &str) -> String {
     Path::new(path)
         .file_stem()
         .and_then(|stem| stem.to_str())
@@ -86,7 +89,7 @@ fn auxiliary_document_id(path: &str) -> String {
         .unwrap_or_default()
 }
 
-pub(super) fn markdown_body<'a>(markdown: &'a str, path: &str) -> Result<&'a str, AppError> {
+pub(crate) fn markdown_body<'a>(markdown: &'a str, path: &str) -> Result<&'a str, AppError> {
     let Some(rest) = markdown.strip_prefix("---\n") else {
         return Ok(markdown);
     };
@@ -115,22 +118,28 @@ pub(super) fn heading_ids_for_source(
     markdown: &str,
     source_path: &str,
 ) -> Result<BTreeSet<String>, AppError> {
-    if !is_mathematics_packet(source_path) {
-        return Ok(parsed_heading_ids(markdown, source_path)
-            .into_iter()
-            .collect());
-    }
+    Ok(validated_heading_ids(markdown, source_path)?
+        .into_iter()
+        .collect())
+}
 
-    let mut unique = BTreeSet::new();
-    for heading_id in parsed_heading_ids(markdown, source_path) {
-        if !valid_id(&heading_id) || !unique.insert(heading_id.clone()) {
-            return Err(invalid(
-                "knowledge.rsi.heading_id",
-                format!("{source_path} has an invalid or duplicate heading ID: {heading_id}"),
-            ));
+pub(crate) fn validated_heading_ids(
+    markdown: &str,
+    source_path: &str,
+) -> Result<Vec<String>, AppError> {
+    let headings = parsed_heading_ids(markdown, source_path);
+    if is_mathematics_packet(source_path) {
+        let mut unique = BTreeSet::new();
+        for heading_id in &headings {
+            if !valid_id(heading_id) || !unique.insert(heading_id) {
+                return Err(invalid(
+                    "knowledge.rsi.heading_id",
+                    format!("{source_path} has an invalid or duplicate heading ID: {heading_id}"),
+                ));
+            }
         }
     }
-    Ok(unique)
+    Ok(headings)
 }
 
 fn parsed_heading_ids(markdown: &str, source_path: &str) -> Vec<String> {
@@ -181,6 +190,7 @@ fn slug(value: &str) -> String {
 pub(super) fn route_targets(
     coverage: &[CoverageEntry],
     canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
+    registered_document_ids: &BTreeMap<String, String>,
 ) -> BTreeMap<String, RouteTarget> {
     let mut targets = BTreeMap::new();
 
@@ -196,27 +206,26 @@ pub(super) fn route_targets(
                 addressable_heading_ids(body, &source.path)
             })
             .unwrap_or_default();
-        targets.insert(
-            chapter.canonical_markdown_path.clone(),
+        let target = if let Some(document_id) =
+            registered_document_ids.get(&chapter.canonical_markdown_path)
+        {
+            RouteTarget::Document {
+                document_id: document_id.clone(),
+                heading_ids,
+            }
+        } else {
             RouteTarget::Chapter {
                 concept_id: chapter.concept_id.clone(),
                 document_id: chapter.concept_id.clone(),
                 heading_ids,
-            },
-        );
-    }
-    for (document_id, path) in AUXILIARY_DOCUMENTS {
-        if let Some(source) = canonical_sources.get(path) {
-            targets.insert(
-                path.to_owned(),
-                document_target(document_id.to_owned(), source),
-            );
-        }
+            }
+        };
+        targets.insert(chapter.canonical_markdown_path.clone(), target);
     }
     for (path, source) in canonical_sources {
-        targets
-            .entry(path.clone())
-            .or_insert_with(|| document_target(source_document_id(source), source));
+        targets.entry(path.clone()).or_insert_with(|| {
+            document_target(source_document_id(source, registered_document_ids), source)
+        });
     }
     for (route_id, _, path) in READER_ROUTES {
         targets.insert(path.to_owned(), RouteTarget::Reader { route_id });
@@ -336,8 +345,9 @@ fn render_wiki_link(
     embeds: &mut Vec<EmbedFallback>,
 ) -> String {
     let path = link.path.as_deref();
+    let vault_rooted = path.is_some_and(|path| has_vault_root(Path::new(path)));
     let target = if let Some(path) = path {
-        if has_vault_root(Path::new(path)) {
+        if vault_rooted {
             PathBuf::from(path)
         } else {
             Path::new(source_path)
@@ -404,7 +414,11 @@ fn render_wiki_link(
             Some(WikiSubpath::Block(_)) => String::new(),
             None => String::new(),
         };
-        format!("../../{target_text}{suffix}")
+        if vault_rooted {
+            format!("/{target_text}{suffix}")
+        } else {
+            format!("../../{target_text}{suffix}")
+        }
     };
     format!("[{display}]({destination})")
 }
@@ -432,7 +446,17 @@ fn has_vault_root(path: &Path) -> bool {
             std::path::Component::Normal(value) => value.to_str(),
             _ => None,
         })
-        .is_some_and(|root| ["knowledge", "evidence", "content", "labs", "crates"].contains(&root))
+        .is_some_and(|root| {
+            [
+                "knowledge",
+                "evidence",
+                "content",
+                "labs",
+                "crates",
+                "formalization",
+            ]
+            .contains(&root)
+        })
 }
 
 fn markdown_options(source_path: &str) -> Options {
@@ -449,6 +473,7 @@ fn markdown_options(source_path: &str) -> Options {
 
 fn is_mathematics_packet(source_path: &str) -> bool {
     source_path.starts_with("knowledge/crouzeix_conjecture/")
+        || source_path.starts_with("knowledge/crouzeix_textbook/")
         || source_path.starts_with("knowledge/mathematical_foundations/")
         || source_path.starts_with("knowledge/autodiff_geometry/")
 }
@@ -580,7 +605,7 @@ pub(super) fn offline_link_destination_with_sources(
     coverage: &[CoverageEntry],
     canonical_sources: &BTreeMap<String, ValidatedCanonicalSource>,
 ) -> String {
-    let targets = route_targets(coverage, canonical_sources);
+    let targets = route_targets(coverage, canonical_sources, &BTreeMap::new());
     offline_link_destination_with_targets(value, source_parent, &targets)
 }
 

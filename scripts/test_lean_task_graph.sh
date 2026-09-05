@@ -10,7 +10,7 @@ task_block() {
   ' mise.toml
 }
 
-for task in lean-training lean-foundations lean-nng4 lean-autodiff lean-crouzeix lean-crouzeix-jin lean-crouzeix-ls lean-crouzeix-harp lean-all; do
+for task in lean-training lean-foundations lean-nng4 lean-autodiff lean-crouzeix lean-crouzeix-textbook crouzeix-textbook-publication lean-crouzeix-jin lean-crouzeix-ls lean-crouzeix-harp lean-all; do
   block=$(task_block "$task")
   printf '%s\n' "$block" | grep -F '. scripts/harp_xdg_env.sh' >/dev/null
   printf '%s\n' "$block" | grep -F 'export ELAN_HOME="$HARP_ELAN_HOME"' >/dev/null

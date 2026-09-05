@@ -12,7 +12,9 @@ use harp::context_control::provider::{
 };
 use harp::context_control::run::{run as run_context_control, RunReporter, RunRequest, RunResult};
 use harp::context_control::{ProviderId, WorkflowChoice, WorkflowId};
-use harp::{build_corpus, check_corpus, AppError, BuildMode};
+use harp::{
+    build_corpus, check_corpus, publish_crouzeix_textbook, AppError, BuildMode, TextbookPublishMode,
+};
 use harp_artifacts::ArtifactStore;
 use harp_cli_process::{CliProcessRuntime, ProcessRuntimeConfig};
 use harp_contracts::{DynamicWorkflow, RunId, TaskGraph, WorkspaceMode};
@@ -53,6 +55,11 @@ enum Command {
         check: bool,
         #[arg(long, default_value = "atlas/src/content/generated/corpus.json")]
         output: PathBuf,
+    },
+    /// Check or publish the verified Crouzeix textbook ledgers.
+    CrouzeixTextbook {
+        #[command(subcommand)]
+        command: CrouzeixTextbookCommand,
     },
     /// Manage the local full-text index.
     Search {
@@ -105,6 +112,18 @@ enum Command {
         approval: Option<ApprovalArg>,
         #[arg(last = true, required = true, num_args = 1..)]
         task: Vec<String>,
+    },
+}
+
+#[derive(Subcommand)]
+enum CrouzeixTextbookCommand {
+    Check {
+        #[arg(long, required = true)]
+        receipt: PathBuf,
+    },
+    Publish {
+        #[arg(long, required = true)]
+        receipt: PathBuf,
     },
 }
 
@@ -372,6 +391,45 @@ fn run(cli: &Cli) -> Result<(&'static str, String, Value), AppError> {
                 "build",
                 message,
                 serde_json::to_value(result).expect("build result serializes"),
+            ))
+        }
+        Command::CrouzeixTextbook { command } => {
+            let (receipt, mode, command_name) = match command {
+                CrouzeixTextbookCommand::Check { receipt } => (
+                    receipt,
+                    TextbookPublishMode::Check,
+                    "crouzeix-textbook.check",
+                ),
+                CrouzeixTextbookCommand::Publish { receipt } => (
+                    receipt,
+                    TextbookPublishMode::Write,
+                    "crouzeix-textbook.publish",
+                ),
+            };
+            let result = publish_crouzeix_textbook(root, receipt, mode)?;
+            if mode == TextbookPublishMode::Check && !result.matched {
+                return Err(AppError::invalid_input(
+                    "crouzeix-textbook.publication.stale",
+                    "Crouzeix textbook publication does not match canonical inputs",
+                ));
+            }
+            let message = match (mode, result.matched) {
+                (TextbookPublishMode::Check, true) => {
+                    "Crouzeix textbook publication matches canonical inputs".to_owned()
+                }
+                (TextbookPublishMode::Write, true) => {
+                    "Crouzeix textbook publication already matches canonical inputs".to_owned()
+                }
+                (TextbookPublishMode::Write, false) => format!(
+                    "published {} Crouzeix textbook ledgers",
+                    result.outputs.len()
+                ),
+                (TextbookPublishMode::Check, false) => unreachable!("stale check returned above"),
+            };
+            Ok((
+                command_name,
+                message,
+                serde_json::to_value(result).expect("textbook publication result serializes"),
             ))
         }
         Command::Search { command } => match command {

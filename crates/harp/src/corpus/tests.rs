@@ -164,6 +164,24 @@ fn write_complete_fixture(repo: &Path) {
         )
         .unwrap();
     }
+    let compatibility_path = "content/crouzeix_textbook/compatibility_routes.json";
+    let compatibility_bytes = fs::read(workspace_root().join(compatibility_path)).unwrap();
+    let compatibility: serde_json::Value = serde_json::from_slice(&compatibility_bytes).unwrap();
+    fs::create_dir_all(repo.join(compatibility_path).parent().unwrap()).unwrap();
+    fs::write(repo.join(compatibility_path), compatibility_bytes).unwrap();
+    for route in compatibility["routes"].as_array().unwrap() {
+        let document_id = route["canonical_id"].as_str().unwrap();
+        let path = route["canonical_path"].as_str().unwrap();
+        fs::create_dir_all(repo.join(path).parent().unwrap()).unwrap();
+        fs::write(
+            repo.join(path),
+            format!(
+                "---\nid: {document_id}\ntitle: {document_id}\ntype: technical-document\nstatus: active\ntags: [crouzeix-textbook]\nconfidence: high\n---\n# {}\n\n## Technical mechanism {{#fixture-mechanism}}\n\nTextbook fixture.\n",
+                document_id.replace('-', " ")
+            ),
+        )
+        .unwrap();
+    }
     let registry = repo.join(SOURCE_REGISTRY_PATH);
     fs::create_dir_all(registry.parent().unwrap()).unwrap();
     fs::write(registry, "source_id\nSELF-REFINE\n").unwrap();
@@ -533,7 +551,7 @@ fn weng_map_compiles_each_guided_companion_exactly_once() {
 }
 
 #[test]
-fn v5_payload_contains_ordered_weng_sections() {
+fn v6_payload_contains_ordered_weng_sections() {
     let repo = fixture();
     write_complete_fixture(repo.path());
     write_complete_system_registry_fixture(repo.path());
@@ -541,7 +559,7 @@ fn v5_payload_contains_ordered_weng_sections() {
 
     let corpus = compile(repo.path()).unwrap();
 
-    assert_eq!(corpus.schema_version, "rsi-technical-atlas/v5");
+    assert_eq!(corpus.schema_version, "rsi-technical-atlas/v6");
     assert_eq!(corpus.weng_sections.len(), 9);
     assert_eq!(corpus.systems.len(), 16);
     assert!(corpus
@@ -671,7 +689,7 @@ fn full_system_readings_require_a_complete_original_source_sequence() {
 }
 
 #[test]
-fn v5_payload_contains_all_approved_diagnostic_cases() {
+fn v6_payload_contains_all_approved_diagnostic_cases() {
     let corpus = compile(workspace_root()).unwrap();
     let expected = BTreeMap::from([
         ("ace", PrimaryClassification::PersistentAdaptation),
@@ -706,7 +724,7 @@ fn v5_payload_contains_all_approved_diagnostic_cases() {
         .map(|(case_id, classification)| (case_id, (classification, classification)))
         .collect::<BTreeMap<_, _>>();
 
-    assert_eq!(corpus.schema_version, "rsi-technical-atlas/v5");
+    assert_eq!(corpus.schema_version, "rsi-technical-atlas/v6");
     assert_eq!(actual, expected);
 }
 
@@ -836,7 +854,7 @@ fn handwritten_typescript_does_not_own_canonical_technical_prose() {
 }
 
 #[test]
-fn v5_payload_contains_six_ordered_comparison_lessons() {
+fn v6_payload_contains_six_ordered_comparison_lessons() {
     let corpus = compile(workspace_root()).unwrap();
 
     assert_eq!(corpus.lessons.len(), 6);
@@ -1414,6 +1432,7 @@ confidence: high\n\
             "verified-coevolution",
             "agentic-engineering",
             "crouzeix-conjecture",
+            "crouzeix-textbook",
             "mathematical-foundations",
             "autodiff-geometry",
             "knowledge",
@@ -1499,6 +1518,210 @@ fn compiles_the_mathematical_foundations_route_and_auxiliary_documents() {
         "duplicate or unexpected packet document ID"
     );
     assert_eq!(actual_document_ids, expected_document_ids);
+}
+
+#[test]
+fn compiles_the_crouzeix_textbook_route_and_current_packet() {
+    let corpus = compile(workspace_root()).unwrap();
+    assert!(corpus.reader_routes.iter().any(|route| {
+        route.route_id == "crouzeix-textbook"
+            && route.label == "Crouzeix textbook"
+            && route.canonical_markdown_path
+                == "knowledge/crouzeix_textbook/crouzeix_textbook_index.md"
+    }));
+
+    let routes: serde_json::Value = serde_json::from_slice(
+        &fs::read(workspace_root().join("content/crouzeix_textbook/compatibility_routes.json"))
+            .unwrap(),
+    )
+    .unwrap();
+    let routes = routes["routes"].as_array().unwrap();
+    assert_eq!(routes.len(), 44);
+    let documents = corpus
+        .documents
+        .iter()
+        .filter(|document| {
+            document
+                .canonical_markdown_path
+                .starts_with("knowledge/crouzeix_textbook/")
+        })
+        .map(|document| (document.canonical_markdown_path.as_str(), document))
+        .collect::<BTreeMap<_, _>>();
+    assert_eq!(documents.len(), 44);
+
+    let mut canonical_ids = BTreeSet::new();
+    let mut legacy_ids = BTreeSet::new();
+    let aliases = corpus
+        .document_aliases
+        .iter()
+        .map(|alias| {
+            (
+                alias.alias_id.as_str(),
+                alias.canonical_document_id.as_str(),
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+    assert_eq!(aliases.len(), 44);
+    for route in routes {
+        let canonical_id = route["canonical_id"].as_str().unwrap();
+        let legacy_id = route["legacy_concept_id"].as_str().unwrap();
+        let path = route["canonical_path"].as_str().unwrap();
+        let document = documents
+            .get(path)
+            .unwrap_or_else(|| panic!("legacy route {legacy_id} lost canonical path {path}"));
+        assert_eq!(document.concept_id, canonical_id);
+        assert_eq!(document.metadata.id, canonical_id);
+        assert_eq!(aliases.get(legacy_id), Some(&canonical_id));
+        assert!(canonical_ids.insert(canonical_id));
+        assert!(legacy_ids.insert(legacy_id));
+    }
+}
+
+#[test]
+fn crouzeix_textbook_rejects_invalid_and_cross_corpus_aliases_in_rust() {
+    for (alias, label) in [
+        ("Invalid Alias", "invalid alias grammar"),
+        ("recursive-improvement-loop", "coverage identity collision"),
+        ("lesson-self-refine", "lesson identity collision"),
+    ] {
+        let repo = fixture();
+        write_complete_fixture(repo.path());
+        mutate_json(
+            repo.path(),
+            "content/crouzeix_textbook/compatibility_routes.json",
+            |value| value["routes"][0]["legacy_concept_id"] = serde_json::json!(alias),
+        );
+
+        let error = compile(repo.path()).expect_err(label);
+        assert_eq!(error.code(), "knowledge.rsi.document_identity");
+    }
+}
+
+#[test]
+fn document_aliases_reject_supporting_coverage_identities() {
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+    let corpus = compile(repo.path()).unwrap();
+    let documents = corpus
+        .documents
+        .into_iter()
+        .map(|document| (document.canonical_markdown_path.clone(), document))
+        .collect::<BTreeMap<_, _>>();
+    let canonical_path = "knowledge/crouzeix_textbook/claim_evidence_ledger.md";
+    let canonical_id = documents[canonical_path].concept_id.clone();
+    let coverage = vec![CoverageEntry {
+        concept_id: "supporting-coverage-id".to_owned(),
+        coverage_depth: CoverageDepth::SupportingPage,
+        canonical_markdown_path: "knowledge/rsi/concepts/improvement-types.md".to_owned(),
+        section_id: Some("supporting-coverage-id".to_owned()),
+        parent_concept_id: Some("recursive-improvement-loop".to_owned()),
+    }];
+    let registered = BTreeMap::from([(canonical_path.to_owned(), canonical_id.clone())]);
+    let aliases = BTreeMap::from([("supporting-coverage-id".to_owned(), canonical_id)]);
+
+    let error = validate_document_namespace(&documents, &coverage, &registered, &aliases)
+        .expect_err("supporting coverage identity must remain reserved");
+    assert_eq!(error.code(), "knowledge.rsi.document_identity");
+}
+
+#[test]
+fn crouzeix_textbook_rejects_a_canonical_id_collision_with_coverage() {
+    let repo = fixture();
+    write_complete_fixture(repo.path());
+    let registration = repo
+        .path()
+        .join("content/crouzeix_textbook/compatibility_routes.json");
+    let mut routes: serde_json::Value =
+        serde_json::from_slice(&fs::read(&registration).unwrap()).unwrap();
+    let path = routes["routes"][0]["canonical_path"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    routes["routes"][0]["canonical_id"] = serde_json::json!("recursive-improvement-loop");
+    fs::write(&registration, serde_json::to_vec_pretty(&routes).unwrap()).unwrap();
+    let markdown_path = repo.path().join(path);
+    let markdown = fs::read_to_string(&markdown_path).unwrap();
+    let canonical = markdown
+        .lines()
+        .find_map(|line| line.strip_prefix("id: "))
+        .unwrap()
+        .to_owned();
+    fs::write(
+        markdown_path,
+        markdown.replacen(
+            &format!("id: {canonical}"),
+            "id: recursive-improvement-loop",
+            1,
+        ),
+    )
+    .unwrap();
+
+    let error = compile(repo.path()).expect_err("canonical collision must fail in Rust");
+    assert_eq!(error.code(), "knowledge.rsi.document_identity");
+}
+
+#[test]
+fn crouzeix_textbook_packet_rejects_symlinked_and_hardlinked_markdown() {
+    let canonical =
+        "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md";
+
+    let symlink_fixture = fixture();
+    write_complete_fixture(symlink_fixture.path());
+    let symlink_target = symlink_fixture.path().join("textbook-symlink-target.md");
+    fs::write(&symlink_target, "# replacement\n").unwrap();
+    fs::remove_file(symlink_fixture.path().join(canonical)).unwrap();
+    std::os::unix::fs::symlink(&symlink_target, symlink_fixture.path().join(canonical)).unwrap();
+    let error = compile(symlink_fixture.path()).expect_err("textbook symlink must fail closed");
+    assert_eq!(error.code, "knowledge.crouzeix_textbook.registration");
+
+    let hardlink_fixture = fixture();
+    write_complete_fixture(hardlink_fixture.path());
+    fs::hard_link(
+        hardlink_fixture.path().join(canonical),
+        hardlink_fixture.path().join("textbook-hardlink.md"),
+    )
+    .unwrap();
+    let error = compile(hardlink_fixture.path()).expect_err("textbook hardlink must fail closed");
+    assert_eq!(error.code, "knowledge.crouzeix_textbook.registration");
+}
+
+#[test]
+fn crouzeix_textbook_has_no_hard_coded_chapter_roster_in_corpus_source() {
+    let source =
+        fs::read_to_string(workspace_root().join("crates/harp/src/corpus/mod.rs")).unwrap();
+    assert!(!source.contains("CROUZEIX_TEXTBOOK_DOCUMENTS"));
+    assert!(!source.contains("crouzeix-textbook-chapter-01"));
+    assert!(!source.contains("crouzeix-textbook-chapter-35"));
+}
+
+#[test]
+fn crouzeix_textbook_registration_validation_has_one_owner() {
+    let source =
+        fs::read_to_string(workspace_root().join("crates/harp/src/corpus/contracts.rs")).unwrap();
+    for duplicate in [
+        "struct TextbookRoutes",
+        "struct TextbookRoute",
+        "include_str!",
+        "MAX_TEXTBOOK_DEPTH",
+        "MAX_TEXTBOOK_MARKDOWN_FILES",
+        "load_textbook_documents",
+    ] {
+        assert!(
+            !source.contains(duplicate),
+            "corpus duplicated textbook registration validator: {duplicate}"
+        );
+    }
+}
+
+#[test]
+fn crouzeix_textbook_markdown_enables_math_rendering() {
+    let rendered = render_markdown(
+        "Inline $Ax$ and display $$A^2x$$.",
+        "knowledge/crouzeix_textbook/example.md",
+        &[],
+    );
+    assert!(rendered.contains("class=\"math math-inline\""));
+    assert!(rendered.contains("class=\"math math-display\""));
 }
 
 #[test]
@@ -1711,10 +1934,12 @@ fn compiles_the_mathematical_foundations_formalization_map() {
     );
     let formalization_root = workspace_root().join("formalization/lean/MathematicalFoundations");
     let lean_sources = formalization_lean_sources(&formalization_root);
+    let manifest_suffix =
+        Path::new("MathematicalFoundations").join(["Public", "Theorems.lean"].concat());
     assert!(
         lean_sources
             .iter()
-            .any(|path| path.ends_with("PublicTheorems.lean")),
+            .any(|path| path.ends_with(&manifest_suffix)),
         "formalization source scan must discover the Lean-owned theorem manifest"
     );
     for path in lean_sources {
@@ -1884,7 +2109,7 @@ fn current_fixture_payload_is_byte_stable() {
     assert_eq!(first, second);
     assert_eq!(
         serde_json::from_slice::<serde_json::Value>(&first).unwrap()["schema_version"],
-        "rsi-technical-atlas/v5",
+        "rsi-technical-atlas/v6",
     );
 }
 
@@ -2079,6 +2304,24 @@ fn renders_source_relative_obsidian_wikilinks_as_offline_routes() {
 }
 
 #[test]
+fn renders_chapter_33_formalization_wikilinks_from_the_vault_root() {
+    let rendered = render::render_markdown_with_targets(
+        "[[formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean|Chapter33.lean]]",
+        "knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
+        &BTreeMap::new(),
+    );
+
+    assert!(
+        rendered
+            .contains("href=\"../../formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean\""),
+        "rendered Chapter 33 link: {rendered}"
+    );
+    assert!(
+        !rendered.contains("knowledge/crouzeix_textbook/part_06_constant_two_routes/formalization")
+    );
+}
+
+#[test]
 fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
     let rendered = render_markdown(
         "# Test\n\n| Field | Value |\n|---|---|\n| state | durable |\n",
@@ -2094,7 +2337,7 @@ fn wraps_tables_in_a_keyboard_accessible_scroll_region() {
 
 #[test]
 fn reader_route_targets_precede_document_routes_and_fragments_survive() {
-    let targets = render::route_targets(&[], &BTreeMap::new());
+    let targets = render::route_targets(&[], &BTreeMap::new(), &BTreeMap::new());
     assert_eq!(
         targets.get("knowledge/rsi/source_registry.md"),
         Some(&render::RouteTarget::Reader {
@@ -2180,7 +2423,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
             entries: Vec::new(),
         },
     );
-    let legacy_targets = render::route_targets(&[], &legacy_sources);
+    let legacy_targets = render::route_targets(&[], &legacy_sources, &BTreeMap::new());
     assert_eq!(
         render::offline_link_destination_with_targets(
             "legacy.md#generated-slug",
@@ -2189,6 +2432,28 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
         ),
         "#documents/legacy?section=generated-slug"
     );
+}
+
+#[test]
+fn registered_document_identity_precedes_coverage_for_the_same_path() {
+    let path = "knowledge/crouzeix_textbook/chapter.md";
+    let source = contracts::ValidatedCanonicalSource {
+        path: path.to_owned(),
+        markdown: "---\nid: cft-canonical\ntitle: Canonical\ntype: technical-document\nstatus: active\ntags: [crouzeix-textbook]\nconfidence: high\n---\n# Canonical\n"
+            .to_owned(),
+        body_sha256: sha256(b"# Canonical\n"),
+        entries: vec![CoverageEntry {
+            concept_id: "conflicting-coverage-id".to_owned(),
+            coverage_depth: CoverageDepth::SupportingPage,
+            canonical_markdown_path: path.to_owned(),
+            section_id: None,
+            parent_concept_id: None,
+        }],
+    };
+    let registered = BTreeMap::from([(path.to_owned(), "cft-canonical".to_owned())]);
+    let document = render::compile_document(&source, &BTreeMap::new(), &registered).unwrap();
+
+    assert_eq!(document.concept_id, "cft-canonical");
 }
 
 #[test]
@@ -2366,11 +2631,21 @@ fn validates_obsidian_wikilinks_in_product_roots() {
     let target = repo.path().join("knowledge/rsi/target.md");
     fs::create_dir_all(target.parent().unwrap()).unwrap();
     fs::write(target, "# Target\n\n## Result boundary\n\nText.\n").unwrap();
+    let lean_target = repo.path().join("formalization/lean/Example.lean");
+    fs::create_dir_all(lean_target.parent().unwrap()).unwrap();
+    fs::write(lean_target, "theorem example : True := by trivial\n").unwrap();
     let repository = HeldDirectory::open(repo.path(), "test repository").unwrap();
 
     validate_local_links(
         "knowledge/rsi/chapters/guide.md",
         "[[knowledge/rsi/target#Result boundary|Result]]",
+        &repository,
+    )
+    .unwrap();
+
+    validate_local_links(
+        "knowledge/rsi/chapters/guide.md",
+        "[[formalization/lean/Example.lean|Lean proof]]",
         &repository,
     )
     .unwrap();

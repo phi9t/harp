@@ -90,6 +90,8 @@ pub(super) struct ValidatedRsiInputs {
     pub(super) coverage: Vec<CoverageEntry>,
     pub(super) registered_sources: BTreeSet<String>,
     pub(super) canonical_sources: BTreeMap<String, ValidatedCanonicalSource>,
+    pub(super) registered_document_ids: BTreeMap<String, String>,
+    pub(super) registered_document_aliases: BTreeMap<String, String>,
     pub(super) weng_map: Option<WengReadingMap>,
     pub(super) system_registry: Option<SystemRegistry>,
 }
@@ -128,6 +130,26 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
     validate_evidence_graph(repository, &registered_sources)?;
     let system_registry = load_system_registry(repository, &registered_sources)?;
     let weng_map = load_weng_map(repository, &registered_sources, system_registry.as_ref())?;
+    let textbook_documents = crate::crouzeix_textbook::validated_registration(repository)
+        .map_err(textbook_registration_error)?;
+    let mut registered_document_aliases = BTreeMap::new();
+    for document in &textbook_documents {
+        registered_document_aliases
+            .insert(document.legacy_alias.clone(), document.canonical_id.clone());
+    }
+    let textbook_documents = textbook_documents
+        .into_iter()
+        .map(|document| (document.canonical_path.clone(), document))
+        .collect::<BTreeMap<_, _>>();
+    let mut registered_document_ids = AUXILIARY_DOCUMENTS
+        .iter()
+        .map(|(document_id, path)| ((*path).to_owned(), (*document_id).to_owned()))
+        .collect::<BTreeMap<_, _>>();
+    registered_document_ids.extend(
+        textbook_documents
+            .iter()
+            .map(|(path, document)| (path.clone(), document.canonical_id.clone())),
+    );
 
     let mut entries_by_path = BTreeMap::<String, Vec<CoverageEntry>>::new();
     for entry in &coverage {
@@ -141,6 +163,9 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
     }
     for (_, path) in AUXILIARY_DOCUMENTS {
         entries_by_path.entry(path.to_owned()).or_default();
+    }
+    for path in textbook_documents.keys() {
+        entries_by_path.entry(path.clone()).or_default();
     }
     let knowledge_home = Path::new("knowledge/harp_knowledge_home.md");
     if repository
@@ -174,7 +199,11 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
 
     let mut canonical_sources = BTreeMap::new();
     for (path, entries) in entries_by_path {
-        let markdown = read_canonical_markdown(repository, &path)?;
+        let textbook_document = textbook_documents.get(&path);
+        let markdown = textbook_document.map_or_else(
+            || read_canonical_markdown(repository, &path),
+            |document| Ok(document.markdown.clone()),
+        )?;
         if markdown.contains('\0') || markdown.contains('\r') {
             return Err(invalid(
                 "knowledge.rsi.canonical_encoding",
@@ -210,15 +239,42 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
         coverage,
         registered_sources,
         canonical_sources,
+        registered_document_ids,
+        registered_document_aliases,
         weng_map,
         system_registry,
     })
+}
+
+fn textbook_registration_error(
+    diagnostics: Vec<crate::crouzeix_textbook::TextbookDiagnostic>,
+) -> AppError {
+    let detail = diagnostics
+        .into_iter()
+        .map(|diagnostic| {
+            format!(
+                "{} {}: expected {}; observed {}",
+                diagnostic.code, diagnostic.field, diagnostic.expected, diagnostic.observed
+            )
+        })
+        .collect::<Vec<_>>()
+        .join("; ");
+    invalid("knowledge.crouzeix_textbook.registration", detail)
 }
 
 pub(super) fn document_metadata(
     markdown: &str,
     path: &str,
     entries: &[CoverageEntry],
+) -> Result<DocumentMetadata, AppError> {
+    document_metadata_with_frontmatter_mode(markdown, path, entries, false)
+}
+
+fn document_metadata_with_frontmatter_mode(
+    markdown: &str,
+    path: &str,
+    entries: &[CoverageEntry],
+    require_canonical_frontmatter: bool,
 ) -> Result<DocumentMetadata, AppError> {
     let default_id = entries
         .iter()
@@ -251,8 +307,39 @@ pub(super) fn document_metadata(
             .map(|entry| entry.concept_id.clone())
             .collect(),
     };
-    let Some(frontmatter) = markdown.strip_prefix("---\n") else {
+    let Some(fields) = frontmatter_fields(markdown, path, require_canonical_frontmatter)? else {
+        if require_canonical_frontmatter {
+            return Err(invalid(
+                "knowledge.rsi.frontmatter",
+                format!("{path} must have canonical frontmatter"),
+            ));
+        }
         return Ok(metadata);
+    };
+    if require_canonical_frontmatter && !fields.contains_key("id") {
+        return Err(invalid(
+            "knowledge.rsi.frontmatter",
+            format!("{path} frontmatter must contain id"),
+        ));
+    }
+    apply_frontmatter_fields(&mut metadata, fields, path)?;
+    Ok(metadata)
+}
+
+pub(crate) fn canonical_frontmatter_identity(
+    markdown: &str,
+    path: &str,
+) -> Result<String, AppError> {
+    Ok(document_metadata_with_frontmatter_mode(markdown, path, &[], true)?.id)
+}
+
+fn frontmatter_fields<'a>(
+    markdown: &'a str,
+    path: &str,
+    strict: bool,
+) -> Result<Option<BTreeMap<&'a str, &'a str>>, AppError> {
+    let Some(frontmatter) = markdown.strip_prefix("---\n") else {
+        return Ok(None);
     };
     let (frontmatter, _) = frontmatter.split_once("\n---\n").ok_or_else(|| {
         invalid(
@@ -263,7 +350,13 @@ pub(super) fn document_metadata(
     let mut fields = BTreeMap::new();
     for line in frontmatter.lines() {
         if line.is_empty() || line.starts_with([' ', '\t']) {
-            return Ok(metadata);
+            if strict {
+                return Err(invalid(
+                    "knowledge.rsi.frontmatter",
+                    format!("{path} frontmatter entries must be top-level nonempty lines"),
+                ));
+            }
+            return Ok(None);
         }
         let (key, value) = line.split_once(':').ok_or_else(|| {
             invalid(
@@ -272,12 +365,32 @@ pub(super) fn document_metadata(
             )
         })?;
         if key.is_empty() || key.trim() != key || value.is_empty() {
-            return Ok(metadata);
+            if strict {
+                return Err(invalid(
+                    "knowledge.rsi.frontmatter",
+                    format!("{path} has an invalid frontmatter entry"),
+                ));
+            }
+            return Ok(None);
         }
         if fields.insert(key, value.trim()).is_some() {
-            return Ok(metadata);
+            if strict {
+                return Err(invalid(
+                    "knowledge.rsi.frontmatter",
+                    format!("{path} has a duplicate frontmatter field: {key}"),
+                ));
+            }
+            return Ok(None);
         }
     }
+    Ok(Some(fields))
+}
+
+fn apply_frontmatter_fields(
+    metadata: &mut DocumentMetadata,
+    fields: BTreeMap<&str, &str>,
+    path: &str,
+) -> Result<(), AppError> {
     for (key, value) in fields {
         match key {
             "id" => metadata.id = metadata_id(value, path, key)?,
@@ -305,7 +418,7 @@ pub(super) fn document_metadata(
     metadata.source_ids.dedup();
     metadata.coverage_keys.sort();
     metadata.coverage_keys.dedup();
-    Ok(metadata)
+    Ok(())
 }
 
 fn metadata_id(value: &str, path: &str, key: &str) -> Result<String, AppError> {
@@ -1587,6 +1700,7 @@ pub(super) fn normalize_link_path(base: &Path, destination: &Path) -> Option<Pat
         || resolved.starts_with("knowledge")
         || resolved.starts_with("evidence")
         || resolved.starts_with("labs")
-        || resolved.starts_with("crates"))
+        || resolved.starts_with("crates")
+        || resolved.starts_with("formalization"))
     .then_some(resolved)
 }

@@ -396,6 +396,7 @@ test("exports an offline single-file Harp atlas", () => {
   assert.doesNotMatch(indexHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
   assert.doesNotMatch(atlasHtml, /file-entry-redirect|dist\/harp-atlas\.html/);
   assert.match(decodedModule, /application\/x-tex/);
+  assert.match(decodedModule, /rsi-technical-atlas\/v6/);
   assert.match(decodedModule, /\?section=/);
   assert.match(decodedModule, /math-error/);
   assert.match(decodedModule, /What makes an improvement loop recursive/);
@@ -448,6 +449,23 @@ test("exports an offline single-file Harp atlas", () => {
   assert.match(decodedModule, /origin sample cancels the diagonal correction/i);
   assert.match(decodedModule, /M\(2\+M\)/);
   assert.match(decodedModule, /knowledge\/crouzeix_conjecture\/04_jin_positive_real_completion\.md/);
+  const cftAnchors = new Set(
+    [...decodedModule.matchAll(/id="(cft-[0-9]{2}-[0-9]{3})"/g)]
+      .map((match) => match[1]),
+  );
+  assert.equal(cftAnchors.size, 210);
+  assert.match(decodedModule, /href="#documents\/cft-lean-coverage-ledger"/);
+  assert.match(decodedModule, /crouzeix-textbook-chapter-01/);
+  assert.match(decodedModule, /cft-chapter-01-objects-and-representations/);
+  assert.match(decodedModule, /crouzeix-textbook-index/);
+  assert.match(
+    decodedModule,
+    /alias_id:`crouzeix-textbook-chapter-01`,canonical_document_id:`cft-chapter-01-objects-and-representations`/,
+  );
+  assert.match(
+    decodedModule,
+    /alias_id:`crouzeix-textbook-index`,canonical_document_id:`crouzeix-textbook-index`/,
+  );
   assert.match(decodedModule, /class\.harness-improvement/);
   assert.match(decodedModule, /ceiling\.harness-improvement/);
   assert.match(decodedModule, /integrity\.evaluator-write/);

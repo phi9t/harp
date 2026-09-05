@@ -12,6 +12,7 @@ use super::{sha256_file, valid_digest, verify_file};
 use crate::error::AppError;
 
 mod route;
+mod selection;
 
 pub(super) const ROOT: &str = "evidence/crouzeix_conjecture";
 
@@ -21,10 +22,13 @@ pub(super) const LOCAL_FORMALIZATION_HEADER: &str = "schema_version\tformalizati
 
 const LOCAL_FORMALIZATION_ROOT: &str = "local_formalization";
 const LOCAL_FORMALIZATION_MANIFEST: &str = "local_formalization/manifest.tsv";
+#[cfg(test)]
 const LOCAL_BUILD_COMMAND: &str =
     "evidence/crouzeix_conjecture/local_formalization/build/command.json";
+#[cfg(test)]
 const LOCAL_BUILD_STDOUT: &str =
     "evidence/crouzeix_conjecture/local_formalization/build/stdout.log";
+#[cfg(test)]
 const LOCAL_BUILD_STDERR: &str =
     "evidence/crouzeix_conjecture/local_formalization/build/stderr.log";
 const LOCAL_FORMALIZATION_SCHEMA: &str = "crouzeix-local-formalization/v2";
@@ -489,6 +493,9 @@ fn verify_exact_roster(
 fn verify_local_formalization_bundle_if_present(
     repo_root: &Path,
 ) -> Result<Option<BTreeSet<String>>, AppError> {
+    if let Some(files) = selection::verify(repo_root)? {
+        return Ok(Some(files));
+    }
     let bundle = Path::new(ROOT).join(LOCAL_FORMALIZATION_ROOT);
     let manifest = Path::new(ROOT).join(LOCAL_FORMALIZATION_MANIFEST);
     let absolute_bundle = repo_root.join(&bundle);
@@ -647,6 +654,7 @@ fn verify_local_formalization_manifest(
     repo_root: &Path,
     relative: &Path,
 ) -> Result<BTreeSet<String>, AppError> {
+    let local_root = relative.parent().expect("bundle manifest has a parent");
     let rows = read_manifest(
         repo_root,
         relative,
@@ -870,7 +878,7 @@ fn verify_local_formalization_manifest(
             ("review", route_review_path, route_review_digest),
         ] {
             let expected_path =
-                format!("{ROOT}/{LOCAL_FORMALIZATION_ROOT}/routes/{route_id}.{kind}.json");
+                slash_path(&local_root.join(format!("routes/{route_id}.{kind}.json")));
             if snapshot_path != &expected_path {
                 return Err(manifest_error(
                     LOCAL_FORMALIZATION_CODE,
@@ -1015,8 +1023,7 @@ fn verify_local_formalization_manifest(
         let mut verified_paths = BTreeMap::new();
         for (role, path_text, digest, owner) in artifacts {
             let path = local_safe_relative(path_text, relative, line)?;
-            let local_root = Path::new(ROOT).join("local_formalization");
-            if !path.starts_with(&local_root) {
+            if !path.starts_with(local_root) {
                 return Err(manifest_error(
                     LOCAL_FORMALIZATION_CODE,
                     relative,
@@ -1060,12 +1067,12 @@ fn verify_local_formalization_manifest(
         verify_provider_report(repo_root, provider_path, route_id, relative, line)?;
 
         let expected_axiom_path =
-            format!("{ROOT}/{LOCAL_FORMALIZATION_ROOT}/axioms/{formalization_id}.txt");
+            slash_path(&local_root.join(format!("axioms/{formalization_id}.txt")));
         let expected_provider_path =
-            format!("{ROOT}/{LOCAL_FORMALIZATION_ROOT}/providers/{route_id}.json");
-        if command_path != LOCAL_BUILD_COMMAND
-            || stdout_path != LOCAL_BUILD_STDOUT
-            || stderr_path != LOCAL_BUILD_STDERR
+            slash_path(&local_root.join(format!("providers/{route_id}.json")));
+        if command_path != &slash_path(&local_root.join("build/command.json"))
+            || stdout_path != &slash_path(&local_root.join("build/stdout.log"))
+            || stderr_path != &slash_path(&local_root.join("build/stderr.log"))
             || axiom_path.to_str() != Some(&expected_axiom_path)
             || provider_path != &expected_provider_path
         {
@@ -4324,6 +4331,279 @@ mod tests {
     use tempfile::TempDir;
 
     type JsonMutation = (&'static str, fn(&mut Value));
+
+    const GENERATION_ID: &str = "0123456789abcdef0123456789abcdef";
+
+    fn selection_path(root: &Path) -> PathBuf {
+        root.join(ROOT).join("local_formalization.current.json")
+    }
+
+    fn fixture_bundle_digest(bundle: &Path) -> String {
+        let mut records = BTreeMap::new();
+        for entry in WalkDir::new(bundle) {
+            let entry = entry.unwrap();
+            if entry.file_type().is_file() {
+                records.insert(
+                    slash_path(entry.path().strip_prefix(bundle).unwrap()),
+                    sha256_file(entry.path()),
+                );
+            }
+        }
+        sha256_bytes(
+            records
+                .into_iter()
+                .map(|(path, digest)| format!("{path}\t{digest}\n"))
+                .collect::<String>()
+                .as_bytes(),
+        )
+    }
+
+    fn generation_fixture() -> TempDir {
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let legacy = local_formalization_bundle(repo.path());
+        let generation = repo
+            .path()
+            .join(ROOT)
+            .join("local_formalization_generations")
+            .join(GENERATION_ID);
+        for entry in WalkDir::new(&legacy) {
+            let entry = entry.unwrap();
+            let target = generation.join(entry.path().strip_prefix(&legacy).unwrap());
+            if entry.file_type().is_dir() {
+                fs::create_dir_all(target).unwrap();
+            } else {
+                let text = fs::read_to_string(entry.path()).unwrap().replace(
+                    &format!("{ROOT}/local_formalization/"),
+                    &format!("{ROOT}/local_formalization_generations/{GENERATION_ID}/"),
+                );
+                fs::write(target, text).unwrap();
+            }
+        }
+        let manifest = generation.join("manifest.tsv");
+        let text = fs::read_to_string(&manifest).unwrap();
+        let mut rows = text
+            .lines()
+            .map(|row| row.split('\t').map(str::to_owned).collect::<Vec<_>>())
+            .collect::<Vec<_>>();
+        let header = rows[0].clone();
+        for row in rows.iter_mut().skip(1) {
+            for (index, field) in header.iter().enumerate() {
+                if field.ends_with("_path")
+                    && header
+                        .get(index + 1)
+                        .is_some_and(|next| next.ends_with("_sha256"))
+                {
+                    row[index + 1] = sha256_file(&repo.path().join(&row[index]));
+                }
+            }
+        }
+        fs::write(
+            manifest,
+            rows.into_iter()
+                .map(|row| row.join("\t") + "\n")
+                .collect::<String>(),
+        )
+        .unwrap();
+        write_json(
+            &selection_path(repo.path()),
+            &json!({
+                "schema_version": "crouzeix-local-formalization-selection/v1",
+                "active_generation": GENERATION_ID,
+                "generations": [
+                    {"id": "legacy", "bundle_sha256": fixture_bundle_digest(&legacy)},
+                    {"id": GENERATION_ID, "bundle_sha256": fixture_bundle_digest(&generation)}
+                ]
+            }),
+        );
+        repo
+    }
+
+    #[test]
+    fn generation_selection_preserves_legacy_after_failed_first_refresh_cleanup() {
+        let repo = fixture();
+        write_local_formalization_manifest(repo.path());
+        let legacy = local_formalization_bundle(repo.path());
+        let before = fixture_bundle_digest(&legacy);
+        let expected = verify_local_formalization_bundle_if_present(repo.path()).unwrap();
+        let generations = repo
+            .path()
+            .join(ROOT)
+            .join("local_formalization_generations");
+
+        // A first refresh creates this container before running its executor.
+        fs::create_dir(&generations).unwrap();
+        assert!(!selection_path(repo.path()).exists());
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+
+        // Simulate its precommit cleanup: remove only the owned, empty container.
+        fs::remove_dir(&generations).unwrap();
+        assert!(!selection_path(repo.path()).exists());
+        assert_eq!(fixture_bundle_digest(&legacy), before);
+        assert_eq!(
+            verify_local_formalization_bundle_if_present(repo.path()).unwrap(),
+            expected
+        );
+    }
+
+    #[test]
+    fn generation_selection_verifies_active_bundle_without_revalidating_historical_inputs() {
+        let repo = generation_fixture();
+        let legacy_manifest = local_formalization_manifest(repo.path());
+        fs::write(
+            &legacy_manifest,
+            "historical manifest from another input state\n",
+        )
+        .unwrap();
+        let pointer = selection_path(repo.path());
+        let mut selection: Value = serde_json::from_slice(&fs::read(&pointer).unwrap()).unwrap();
+        selection["generations"][0]["bundle_sha256"] = json!(fixture_bundle_digest(
+            &local_formalization_bundle(repo.path())
+        ));
+        write_json(&pointer, &selection);
+        assert!(verify_local_formalization_manifest(
+            repo.path(),
+            Path::new(ROOT).join(LOCAL_FORMALIZATION_MANIFEST).as_path()
+        )
+        .is_err());
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_ok());
+    }
+
+    #[test]
+    fn generation_selection_rejects_invalid_selectors_and_unknown_directories() {
+        for mutate in [
+            (|value: &mut Value| value["active_generation"] = json!("../escape")) as fn(&mut Value),
+            |value| value["generations"][1]["bundle_sha256"] = json!("0".repeat(64)),
+            |value| value["generations"][0]["id"] = json!(GENERATION_ID),
+            |value| value["unexpected"] = json!(true),
+        ] {
+            let repo = generation_fixture();
+            let pointer = selection_path(repo.path());
+            let mut value: Value = serde_json::from_slice(&fs::read(&pointer).unwrap()).unwrap();
+            mutate(&mut value);
+            write_json(&pointer, &value);
+            assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        }
+        let repo = generation_fixture();
+        fs::create_dir(
+            repo.path()
+                .join(ROOT)
+                .join("local_formalization_generations/unregistered"),
+        )
+        .unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+    }
+
+    #[test]
+    fn generation_selection_rejects_duplicate_json_keys_and_link_aliases() {
+        let repo = generation_fixture();
+        let pointer = selection_path(repo.path());
+        let source = fs::read_to_string(&pointer).unwrap();
+        fs::write(
+            &pointer,
+            source.replacen(
+                '{',
+                "{\"schema_version\":\"crouzeix-local-formalization-selection/v1\",",
+                1,
+            ),
+        )
+        .unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        fs::write(&pointer, &source).unwrap();
+        let alias = repo.path().join("pointer-alias");
+        fs::hard_link(&pointer, &alias).unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        fs::remove_file(&alias).unwrap();
+        fs::rename(&pointer, &alias).unwrap();
+        std::os::unix::fs::symlink(&alias, &pointer).unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+    }
+
+    #[test]
+    fn generation_selection_keeps_active_source_and_historical_integrity_checks() {
+        let repo = generation_fixture();
+        fs::write(
+            repo.path().join("scripts/check_lean_library.sh"),
+            "changed wrapper\n",
+        )
+        .unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        let repo = generation_fixture();
+        fs::write(
+            local_formalization_bundle(repo.path()).join("build/stderr.log"),
+            "tamper\n",
+        )
+        .unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+    }
+
+    #[test]
+    fn generation_selection_enforces_catalog_bounds_and_membership() {
+        for mutate in [
+            (|value: &mut Value| value["generations"] = json!([])) as fn(&mut Value),
+            |value| value["generations"][0]["id"] = json!("abcdefabcdefabcdefabcdefabcdefab"),
+            |value| value["generations"][1]["extra"] = json!(0),
+            |value| value["active_generation"] = json!("ffffffffffffffffffffffffffffffff"),
+            |value| value["generations"] = json!(vec![value["generations"][0].clone(); 129]),
+        ] {
+            let repo = generation_fixture();
+            let pointer = selection_path(repo.path());
+            let mut value: Value = serde_json::from_slice(&fs::read(&pointer).unwrap()).unwrap();
+            mutate(&mut value);
+            write_json(&pointer, &value);
+            assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        }
+        let repo = generation_fixture();
+        let pointer = selection_path(repo.path());
+        let original = fs::read(&pointer).unwrap();
+        fs::write(&pointer, [original.as_slice(), &vec![b' '; 65537]].concat()).unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        fs::remove_file(pointer).unwrap();
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+    }
+
+    #[test]
+    fn generation_selection_checks_bundle_rosters_and_link_types_for_history() {
+        let repo = generation_fixture();
+        let legacy = local_formalization_bundle(repo.path());
+        fs::write(legacy.join("unregistered"), "unexpected").unwrap();
+        let pointer = selection_path(repo.path());
+        let mut value: Value = serde_json::from_slice(&fs::read(&pointer).unwrap()).unwrap();
+        value["generations"][0]["bundle_sha256"] = json!(fixture_bundle_digest(&legacy));
+        write_json(&pointer, &value);
+        assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+
+        for symlink in [false, true] {
+            let repo = generation_fixture();
+            let member = local_formalization_bundle(repo.path()).join("build/stdout.log");
+            let alias = repo.path().join("bundle-alias");
+            if symlink {
+                fs::rename(&member, &alias).unwrap();
+                std::os::unix::fs::symlink(alias, member).unwrap();
+            } else {
+                fs::hard_link(member, alias).unwrap();
+            }
+            assert!(verify_local_formalization_bundle_if_present(repo.path()).is_err());
+        }
+    }
+
+    #[test]
+    fn generation_selection_can_select_legacy_and_returns_complete_catalog_roster() {
+        let repo = generation_fixture();
+        let pointer = selection_path(repo.path());
+        let mut value: Value = serde_json::from_slice(&fs::read(&pointer).unwrap()).unwrap();
+        value["active_generation"] = json!("legacy");
+        write_json(&pointer, &value);
+        let files = verify_local_formalization_bundle_if_present(repo.path())
+            .unwrap()
+            .unwrap();
+        assert!(files.contains("local_formalization.current.json"));
+        assert!(files.contains("local_formalization/manifest.tsv"));
+        assert!(files.contains(&format!(
+            "local_formalization_generations/{GENERATION_ID}/manifest.tsv"
+        )));
+        assert_eq!(files.len(), 45);
+    }
 
     fn verify_fixture(repo_root: &Path) -> Result<(), AppError> {
         let manifest = Path::new(ROOT).join(LOCAL_FORMALIZATION_MANIFEST);

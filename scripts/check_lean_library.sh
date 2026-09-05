@@ -7,7 +7,9 @@ case "$0" in
 esac
 script_dir=${script_path%/*}
 canonical_project_dir=$(CDPATH= cd -- "$script_dir/../formalization/lean" && pwd -P)
+canonical_repository_dir=$(CDPATH= cd -- "$script_dir/.." && pwd -P)
 relative_root=formalization/lean
+receipt_output=
 
 resolve_default_lean_cache_root() {
   : "${HOME:?HOME must be set}"
@@ -23,7 +25,8 @@ resolve_default_lean_cache_root() {
 }
 
 usage() {
-  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp|all [--project-for-test <directory>]" >&2
+  printf '%s\n' "usage: $0 TrainingDynamics|MathematicalFoundations|NNG4Intro|AutodiffGeometry|Crouzeix|CrouzeixTextbook|CrouzeixJin|CrouzeixLoristSchwenninger|CrouzeixHarp|all [--project-for-test <directory>]" >&2
+  printf '%s\n' "       $0 CrouzeixTextbook --receipt-output <absolute-temporary-file>" >&2
 }
 
 report_failure() {
@@ -75,7 +78,11 @@ case "$#" in
     ;;
   3)
     target=$1
-    if [ "$2" = "--project-for-test" ] && [ -d "$3" ]; then
+    if [ "$2" = "--receipt-output" ]; then
+      receipt_output=$3
+      project_dir=$canonical_project_dir
+      normal_build=true
+    elif [ "$2" = "--project-for-test" ] && [ -d "$3" ]; then
       project_dir=$(CDPATH= cd -- "$3" && pwd -P)
       normal_build=false
     else
@@ -88,6 +95,52 @@ case "$#" in
     exit 2
     ;;
 esac
+
+if [ -n "$receipt_output" ]; then
+  if [ "$target" != CrouzeixTextbook ] || [ "$normal_build" != true ]; then
+    printf '%s\n' "Lean receipt output is accepted only for the canonical CrouzeixTextbook target" >&2
+    exit 2
+  fi
+  case "$receipt_output" in
+    /*) ;;
+    *)
+      printf '%s\n' "Lean receipt output must be an absolute temporary path" >&2
+      exit 2
+      ;;
+  esac
+  receipt_parent=${receipt_output%/*}
+  receipt_name=${receipt_output##*/}
+  if [ -z "$receipt_name" ] || [ "$receipt_name" = . ] || [ "$receipt_name" = .. ]; then
+    printf '%s\n' "Lean receipt output must name a new temporary file" >&2
+    exit 2
+  fi
+  if [ -L "$receipt_parent" ]; then
+    printf '%s\n' "Lean receipt output parent must not be a symlink" >&2
+    exit 2
+  fi
+  if ! canonical_receipt_parent=$(CDPATH= cd -P -- "$receipt_parent" && pwd -P); then
+    printf '%s\n' "Lean receipt output parent must already exist" >&2
+    exit 2
+  fi
+  receipt_output=$canonical_receipt_parent/$receipt_name
+  receipt_parent_owner=$(stat -f %u "$canonical_receipt_parent")
+  receipt_parent_mode=$(stat -f %Lp "$canonical_receipt_parent")
+  receipt_parent_identity=$(stat -f %d:%i "$canonical_receipt_parent")
+  if [ "$receipt_parent_owner" -ne "$(id -u)" ] || [ $((receipt_parent_mode % 100)) -ne 0 ]; then
+    printf '%s\n' "Lean receipt output parent must be caller-owned and private (0700 or stricter)" >&2
+    exit 2
+  fi
+  case "$receipt_output" in
+    "$canonical_repository_dir"|"$canonical_repository_dir"/*)
+      printf '%s\n' "Lean receipt output must be outside the repository" >&2
+      exit 2
+      ;;
+  esac
+  if [ -e "$receipt_output" ] || [ -L "$receipt_output" ]; then
+    printf '%s\n' "Lean receipt output must not already exist or be a symlink" >&2
+    exit 2
+  fi
+fi
 
 case "$target" in
   TrainingDynamics)
@@ -113,6 +166,11 @@ case "$target" in
   Crouzeix)
     human_label="Crouzeix"
     scan_label=Crouzeix
+    forbidden_words="sorry admit"
+    ;;
+  CrouzeixTextbook)
+    human_label="Crouzeix textbook"
+    scan_label=CrouzeixTextbook
     forbidden_words="sorry admit"
     ;;
   CrouzeixJin)
@@ -505,7 +563,7 @@ elif [ "$normal_build" = false ]; then
 else
   case "$target" in
     all)
-      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix CrouzeixConjecture; do
+      for library in TrainingDynamics MathematicalFoundations NNG4Intro AutodiffGeometry Crouzeix CrouzeixConjecture CrouzeixTextbook; do
         if ! append_sources "$project_dir/$library.lean" || ! append_sources "$project_dir/$library"; then
           scan_finished=$(now_seconds)
           report_failure "$scan_label" scan "$((scan_finished - scan_started))" 0 0 "$((scan_finished - scan_started))"
@@ -547,7 +605,7 @@ while IFS= read -r source_file || [ -n "$source_file" ]; do
   done
   if [ "$target" = all ]; then
     case "$source_file" in
-      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*|"$project_dir/Crouzeix.lean"|"$project_dir/Crouzeix/"*|"$project_dir/CrouzeixConjecture.lean"|"$project_dir/CrouzeixConjecture/"*)
+      "$project_dir/NNG4Intro.lean"|"$project_dir/NNG4Intro/"*|"$project_dir/Crouzeix.lean"|"$project_dir/Crouzeix/"*|"$project_dir/CrouzeixConjecture.lean"|"$project_dir/CrouzeixConjecture/"*|"$project_dir/CrouzeixTextbook.lean"|"$project_dir/CrouzeixTextbook/"*)
         if grep -n -H 'admit' "$source_file"; then
           proof_holes_found=true
         else
@@ -635,6 +693,24 @@ if [ "$target" = all ]; then
   fi
 else
   if lake --try-cache build "$target"; then
+    if [ -n "$receipt_output" ]; then
+      if ! (umask 077; lake env lean --run CrouzeixTextbook.lean "$receipt_output"); then
+        printf '%s\n' "$human_label Lean receipt export failed" >&2
+        rm -f -- "$receipt_output"
+        lake_finished=$(now_seconds)
+        lake_seconds=$((lake_finished - lake_started))
+        report_failure "$scan_label" receipt "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"
+        exit 1
+      fi
+      if [ "$(stat -f %d:%i "$canonical_receipt_parent")" != "$receipt_parent_identity" ] || [ -L "$receipt_output" ] || [ ! -f "$receipt_output" ] || [ "$(stat -f %u "$receipt_output")" -ne "$(id -u)" ] || [ "$(stat -f %l "$receipt_output")" -ne 1 ] || [ "$(stat -f %Lp "$receipt_output")" -ne 600 ] || [ "$(stat -f %z "$receipt_output")" -gt 4194304 ]; then
+        printf '%s\n' "$human_label Lean receipt output failed post-write validation" >&2
+        rm -f -- "$receipt_output"
+        lake_finished=$(now_seconds)
+        lake_seconds=$((lake_finished - lake_started))
+        report_failure "$scan_label" receipt "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"
+        exit 1
+      fi
+    fi
     lake_finished=$(now_seconds)
     lake_seconds=$((lake_finished - lake_started))
     report_success "$scan_label" "$scan_seconds" "$cache_seconds" "$lake_seconds" "$((scan_seconds + cache_seconds + lake_seconds))"

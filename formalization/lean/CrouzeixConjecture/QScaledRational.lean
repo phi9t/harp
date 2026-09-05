@@ -1,6 +1,6 @@
 module
 
-public import CrouzeixConjecture.FinalTheorems
+public import CrouzeixConjecture.HolomorphicConsequences
 public import CrouzeixConjecture.QNumericalRange
 
 @[expose] public section
@@ -76,7 +76,7 @@ def UniversalRationalNumericalRangeBound (K : ℝ) : Prop :=
 theorem universalRationalNumericalRangeBound_two :
     UniversalRationalNumericalRangeBound.{u} 2 := by
   intro m _ _ _ A r hfree
-  exact crouzeixRationalBound A r hfree
+  exact holomorphicCrouzeixRationalBound A r hfree
 
 /-- A polynomial, regarded as a rational function, has no finite poles. -/
 theorem rationalPoleFreeOn_algebraMap_polynomial

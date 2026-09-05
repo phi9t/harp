@@ -1,0 +1,45 @@
+{
+  "schema_version": "crouzeix-textbook-exercises/v2",
+  "exercises": [
+    {
+      "exercise_id": "CFT-01-E01",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e01",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": ["CFT-01-001"],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "line": 12,
+        "column": 1,
+        "type_sha256": "b7810b33d317e5b3ed563ad6c15ee32bddba9f6d6c67c5feecbac6406232babc",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E02",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e02",
+      "kind": "lean-proof",
+      "difficulty": "core",
+      "skills": ["CFT-01-002"],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "line": 18,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+        "line": 20,
+        "column": 1,
+        "type_sha256": "c3eeb7f8f2c6bd9e55f9f8ca624364aec3f997cd6d99e9da47b0fac59bf3405f",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    }
+  ]
+}

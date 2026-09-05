@@ -424,7 +424,16 @@ fn has_vault_root(path: &Path) -> bool {
             _ => None,
         })
         .is_some_and(|root| {
-            ["knowledge", "evidence", "content", "labs", "crates", "docs"].contains(&root)
+            [
+                "knowledge",
+                "evidence",
+                "content",
+                "labs",
+                "crates",
+                "docs",
+                "formalization",
+            ]
+            .contains(&root)
         })
 }
 
@@ -506,7 +515,9 @@ pub(super) fn canonical_heading_map(markdown: &str, source_path: &str) -> BTreeM
 
 fn canonical_heading_aliases(markdown: &str, source_path: &str) -> BTreeMap<String, Vec<String>> {
     let mut options = Options::empty();
-    if source_path.starts_with("knowledge/crouzeix_conjecture/") {
+    if source_path.starts_with("knowledge/crouzeix_conjecture/")
+        || source_path.starts_with("knowledge/crouzeix_textbook/")
+    {
         options |= Options::ENABLE_HEADING_ATTRIBUTES;
     }
     let mut aliases = BTreeMap::<String, Vec<String>>::new();
@@ -880,6 +891,25 @@ mod tests {
                 Some(expected)
             );
         }
+
+        fs::create_dir_all(repo.path().join("knowledge/crouzeix_textbook")).unwrap();
+        fs::write(
+            repo.path().join("knowledge/crouzeix_textbook/ledger.md"),
+            "# Ledger\n\n## Stable claim {#stable-claim}\n",
+        )
+        .unwrap();
+        let link =
+            parse_wiki_links("[[knowledge/crouzeix_textbook/ledger#stable-claim|Stable claim]]")
+                .unwrap()
+                .pop()
+                .unwrap();
+        assert_eq!(
+            resolve_wiki_link(&directory, "knowledge/crouzeix_textbook/source.md", &link,)
+                .unwrap()
+                .heading_id
+                .as_deref(),
+            Some("stable-claim")
+        );
     }
 
     fn fixture() -> TempDir {

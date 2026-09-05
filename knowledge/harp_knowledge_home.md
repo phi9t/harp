@@ -57,6 +57,7 @@ foundations. A theorem's exact statement, assumptions, and verification record
 matter more than a page-level completion label.
 
 - [[knowledge/crouzeix_conjecture/crouzeix_conjecture_index|Explore the Crouzeix proof routes]]
+- [[knowledge/crouzeix_textbook/crouzeix_textbook_index|Read Crouzeix foundations: linear algebra through the proof routes]]
   Compare the Jin and Lorist-Schwenninger arguments and Harp's local route.
 - [[knowledge/crouzeix_conjecture/09_status_and_critical_assessment|Check the proof status and limits]]
   Harp records three local route certifications. These do not establish upstream clean-room builds, author endorsement, or external peer review.

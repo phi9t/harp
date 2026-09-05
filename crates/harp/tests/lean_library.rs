@@ -1,6 +1,6 @@
 use std::ffi::OsString;
 use std::fs;
-use std::os::unix::fs::PermissionsExt;
+use std::os::unix::fs::{MetadataExt, PermissionsExt};
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -118,6 +118,70 @@ fn write_fake_mathlib_artifacts(root: &Path, modules: &[&str]) {
     }
 }
 
+fn write_fake_all_mathlib_artifacts(root: &Path) {
+    write_fake_mathlib_artifacts(
+        root,
+        &[
+            "Mathlib",
+            "Mathlib.Algebra.BigOperators.Fin",
+            "Mathlib.Algebra.BigOperators.Ring.Finset",
+            "Mathlib.Algebra.Module.Submodule.Ker",
+            "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "Mathlib.Algebra.Polynomial.Eval.Defs",
+            "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "Mathlib.Analysis.Calculus.TangentCone.Real",
+            "Mathlib.Analysis.Complex.Basic",
+            "Mathlib.Analysis.Convex.Caratheodory",
+            "Mathlib.Analysis.Convex.Integral",
+            "Mathlib.Analysis.Convex.Topology",
+            "Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic",
+            "Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap",
+            "Mathlib.Analysis.CStarAlgebra.Matrix",
+            "Mathlib.Analysis.InnerProductSpace.Adjoint",
+            "Mathlib.Analysis.InnerProductSpace.PiL2",
+            "Mathlib.Analysis.InnerProductSpace.Rayleigh",
+            "Mathlib.Analysis.Normed.Module.FiniteDimension",
+            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic",
+            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric",
+            "Mathlib.Analysis.SpecificLimits.Basic",
+            "Mathlib.Analysis.SpecificLimits.Normed",
+            "Mathlib.Data.Matrix.Basic",
+            "Mathlib.Data.Matrix.Mul",
+            "Mathlib.Data.Real.Basic",
+            "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional",
+            "Mathlib.LinearAlgebra.Basis.Defs",
+            "Mathlib.LinearAlgebra.Complex.FiniteDimensional",
+            "Mathlib.LinearAlgebra.Dimension.Finite",
+            "Mathlib.LinearAlgebra.Dual.Lemmas",
+            "Mathlib.LinearAlgebra.FiniteDimensional.Lemmas",
+            "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+            "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+            "Mathlib.LinearAlgebra.Matrix.DotProduct",
+            "Mathlib.LinearAlgebra.Matrix.PosDef",
+            "Mathlib.LinearAlgebra.Matrix.ToLin",
+            "Mathlib.LinearAlgebra.Matrix.Trace",
+            "Mathlib.LinearAlgebra.Quotient.Basic",
+            "Mathlib.Lean.CoreM",
+            "Mathlib.MeasureTheory.Function.Holder",
+            "Mathlib.MeasureTheory.Function.L2Space",
+            "Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions",
+            "Mathlib.MeasureTheory.Function.LpSeminorm.Count",
+            "Mathlib.MeasureTheory.Integral.Average",
+            "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure",
+            "Mathlib.MeasureTheory.Integral.CircleIntegral",
+            "Mathlib.MeasureTheory.SpecificCodomains.Pi",
+            "Mathlib.MeasureTheory.Measure.Count",
+            "Mathlib.NumberTheory.Real.Irrational",
+            "Mathlib.Tactic",
+            "Mathlib.Tactic.FieldSimp",
+            "Mathlib.Tactic.Linarith",
+            "Mathlib.Tactic.Ring",
+            "Mathlib.Topology.Separation.Connected",
+            "Mathlib.Util.AssertNoSorry",
+        ],
+    );
+}
+
 fn write_fake_crouzeix_mathlib_artifacts(root: &Path) {
     write_fake_mathlib_artifacts(
         root,
@@ -227,6 +291,163 @@ fn shared_wrapper_builds_crouzeix_focused_target() {
         fs::read_to_string(lake_args).expect("read lake arguments"),
         "--try-cache build Crouzeix\n"
     );
+}
+
+#[test]
+fn shared_wrapper_builds_crouzeix_textbook_target() {
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$LAKE_ARGS\"\n");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    write_fake_all_mathlib_artifacts(&fixture.default_mathlib_artifact_root());
+
+    fixture
+        .apply(&mut Command::new("/bin/sh"))
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .arg("CrouzeixTextbook")
+        .env("LAKE_ARGS", &lake_args)
+        .env("PATH", path)
+        .assert()
+        .success()
+        .stdout(
+            predicate::str::contains("[lean] target=CrouzeixTextbook")
+                .and(predicate::str::contains("[lean] root=formalization/lean"))
+                .and(predicate::str::contains("[lean] outcome=passed")),
+        );
+
+    assert_eq!(
+        fs::read_to_string(lake_args).expect("read lake arguments"),
+        "--try-cache build CrouzeixTextbook\n"
+    );
+}
+
+#[test]
+fn textbook_receipt_exporter_writes_the_exact_path_without_stdout_redirection() {
+    let (_fake_bin, path) = fake_lake_bin(
+        "#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$LAKE_ARGS\"\nif [ \"$1\" = env ]; then\n  printf '%s' \"$RECEIPT_PAYLOAD\" > \"$5\"\n  chmod 600 \"$5\"\n  printf '%s\\n' exporter-stdout-sentinel\nfi\n",
+    );
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    write_fake_all_mathlib_artifacts(&fixture.default_mathlib_artifact_root());
+    let receipt_dir = tempfile::tempdir().expect("receipt output directory");
+    fs::set_permissions(receipt_dir.path(), fs::Permissions::from_mode(0o700))
+        .expect("make receipt output directory private");
+    let receipt_path = receipt_dir.path().join("receipt.json");
+    let ambient_temp = tempfile::tempdir().expect("ambient temporary directory");
+    let receipt_payload = "{\"schema_version\":\"test\"}\n";
+
+    fixture
+        .apply(&mut Command::new("/bin/sh"))
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .args([
+            "CrouzeixTextbook",
+            "--receipt-output",
+            receipt_path.to_str().expect("UTF-8 receipt path"),
+        ])
+        .env("LAKE_ARGS", &lake_args)
+        .env("RECEIPT_PAYLOAD", receipt_payload)
+        .env("TMPDIR", ambient_temp.path())
+        .env("PATH", path)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("exporter-stdout-sentinel"));
+
+    assert_eq!(
+        fs::read_to_string(&receipt_path).expect("read exported receipt"),
+        receipt_payload
+    );
+    let metadata = fs::metadata(&receipt_path).expect("receipt metadata");
+    assert_eq!(metadata.permissions().mode() & 0o777, 0o600);
+    assert_eq!(metadata.nlink(), 1);
+    assert_eq!(
+        fs::read_to_string(lake_args).expect("read lake arguments"),
+        format!(
+            "--try-cache build CrouzeixTextbook\nenv lean --run CrouzeixTextbook.lean {}\n",
+            receipt_dir
+                .path()
+                .canonicalize()
+                .expect("canonical receipt directory")
+                .join("receipt.json")
+                .display()
+        )
+    );
+}
+
+#[test]
+fn textbook_receipt_rejects_public_parent_without_consulting_ambient_tmpdir() {
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$LAKE_ARGS\"\n");
+    let fixture = LeanEnvFixture::new();
+    let lake_args = fixture.root().join("lake-args");
+    write_fake_all_mathlib_artifacts(&fixture.default_mathlib_artifact_root());
+    let public_parent = tempfile::tempdir().expect("public receipt directory");
+    fs::set_permissions(public_parent.path(), fs::Permissions::from_mode(0o755))
+        .expect("make receipt directory public");
+    let output = public_parent.path().join("receipt.json");
+
+    fixture
+        .apply(&mut Command::new("/bin/sh"))
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .args([
+            "CrouzeixTextbook",
+            "--receipt-output",
+            output.to_str().expect("UTF-8 output"),
+        ])
+        .env("LAKE_ARGS", &lake_args)
+        .env("TMPDIR", repo_root())
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("caller-owned and private"));
+    assert!(!output.exists());
+    assert!(!lake_args.exists());
+}
+
+#[cfg(unix)]
+#[test]
+fn textbook_receipt_rejects_existing_targets_and_symlinked_parents_before_lake() {
+    let (_fake_bin, path) = fake_lake_bin("#!/bin/sh\nexit 99\n");
+    let fixture = LeanEnvFixture::new();
+    let private_parent = tempfile::tempdir().expect("private receipt directory");
+    fs::set_permissions(private_parent.path(), fs::Permissions::from_mode(0o700))
+        .expect("private receipt directory mode");
+    let existing = private_parent.path().join("receipt.json");
+    fs::write(&existing, "preserve").expect("existing receipt target");
+    fixture
+        .apply(&mut Command::new("/bin/sh"))
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .args([
+            "CrouzeixTextbook",
+            "--receipt-output",
+            existing.to_str().expect("UTF-8 existing target"),
+        ])
+        .env("PATH", &path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("must not already exist"));
+    assert_eq!(fs::read_to_string(&existing).unwrap(), "preserve");
+
+    let link_root = tempfile::tempdir().expect("parent link root");
+    let linked_parent = link_root.path().join("linked");
+    std::os::unix::fs::symlink(private_parent.path(), &linked_parent)
+        .expect("symlink receipt parent");
+    let linked_output = linked_parent.join("new.json");
+    fixture
+        .apply(&mut Command::new("/bin/sh"))
+        .current_dir(repo_root())
+        .arg("scripts/check_lean_library.sh")
+        .args([
+            "CrouzeixTextbook",
+            "--receipt-output",
+            linked_output.to_str().expect("UTF-8 linked output"),
+        ])
+        .env("PATH", path)
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("must not be a symlink"));
+    assert!(!private_parent.path().join("new.json").exists());
 }
 
 #[test]
@@ -1006,49 +1227,7 @@ fn shared_wrapper_builds_all_targets_from_shared_root_once() {
     let lake_args = fixture.root().join("lake-args");
     let lake_pwd = fixture.root().join("lake-pwd");
     let artifact_root = fixture.root().join("fake-mathlib-artifacts");
-    write_fake_mathlib_artifacts(
-        &artifact_root,
-        &[
-            "Mathlib",
-            "Mathlib.Algebra.BigOperators.Fin",
-            "Mathlib.Algebra.BigOperators.Ring.Finset",
-            "Mathlib.Algebra.Module.Submodule.Ker",
-            "Mathlib.Algebra.Polynomial.AlgebraMap",
-            "Mathlib.Algebra.Polynomial.Eval.Defs",
-            "Mathlib.Analysis.Complex.Basic",
-            "Mathlib.Analysis.Convex.Caratheodory",
-            "Mathlib.Analysis.Convex.Integral",
-            "Mathlib.Analysis.Convex.Topology",
-            "Mathlib.Analysis.CStarAlgebra.Matrix",
-            "Mathlib.Analysis.InnerProductSpace.Adjoint",
-            "Mathlib.Analysis.InnerProductSpace.PiL2",
-            "Mathlib.Analysis.InnerProductSpace.Rayleigh",
-            "Mathlib.Analysis.Normed.Module.FiniteDimension",
-            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic",
-            "Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric",
-            "Mathlib.Analysis.SpecificLimits.Basic",
-            "Mathlib.Analysis.SpecificLimits.Normed",
-            "Mathlib.Data.Matrix.Basic",
-            "Mathlib.Data.Matrix.Mul",
-            "Mathlib.Data.Real.Basic",
-            "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional",
-            "Mathlib.LinearAlgebra.Complex.FiniteDimensional",
-            "Mathlib.LinearAlgebra.Matrix.DotProduct",
-            "Mathlib.LinearAlgebra.Matrix.PosDef",
-            "Mathlib.LinearAlgebra.Matrix.ToLin",
-            "Mathlib.MeasureTheory.Function.Holder",
-            "Mathlib.MeasureTheory.Function.L2Space",
-            "Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions",
-            "Mathlib.MeasureTheory.Function.LpSeminorm.Count",
-            "Mathlib.MeasureTheory.Integral.Average",
-            "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure",
-            "Mathlib.MeasureTheory.SpecificCodomains.Pi",
-            "Mathlib.MeasureTheory.Measure.Count",
-            "Mathlib.Tactic.FieldSimp",
-            "Mathlib.Tactic.Linarith",
-            "Mathlib.Tactic.Ring",
-        ],
-    );
+    write_fake_all_mathlib_artifacts(&artifact_root);
 
     let mut command = Command::new("/bin/sh");
     fixture

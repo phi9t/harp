@@ -1,0 +1,225 @@
+{
+  "schema_version": "crouzeix-textbook-compatibility-routes/v1",
+  "routes": [
+    {
+      "canonical_id": "crouzeix-textbook-claim-evidence-ledger",
+      "legacy_concept_id": "crouzeix-textbook-claim-evidence-ledger",
+      "canonical_path": "knowledge/crouzeix_textbook/claim_evidence_ledger.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-index",
+      "legacy_concept_id": "crouzeix-textbook-index",
+      "canonical_path": "knowledge/crouzeix_textbook/crouzeix_textbook_index.md"
+    },
+    {
+      "canonical_id": "cft-exercise-index",
+      "legacy_concept_id": "crouzeix-textbook-exercise-index",
+      "canonical_path": "knowledge/crouzeix_textbook/exercise_index.md"
+    },
+    {
+      "canonical_id": "cft-lean-coverage-ledger",
+      "legacy_concept_id": "crouzeix-textbook-lean-coverage-ledger",
+      "canonical_path": "knowledge/crouzeix_textbook/lean_coverage_ledger.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-notation-and-glossary",
+      "legacy_concept_id": "crouzeix-textbook-notation-and-glossary",
+      "canonical_path": "knowledge/crouzeix_textbook/notation_and_glossary.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-reading-guide",
+      "legacy_concept_id": "crouzeix-textbook-reading-guide",
+      "canonical_path": "knowledge/crouzeix_textbook/reading_guide.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-source-registry",
+      "legacy_concept_id": "crouzeix-textbook-source-registry",
+      "canonical_path": "knowledge/crouzeix_textbook/source_registry.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-status-and-scope",
+      "legacy_concept_id": "crouzeix-textbook-status-and-scope",
+      "canonical_path": "knowledge/crouzeix_textbook/status_and_scope.md"
+    },
+    {
+      "canonical_id": "cft-theorem-dependency-map",
+      "legacy_concept_id": "crouzeix-textbook-theorem-dependency-map",
+      "canonical_path": "knowledge/crouzeix_textbook/theorem_dependency_map.md"
+    },
+    {
+      "canonical_id": "cft-chapter-01-objects-and-representations",
+      "legacy_concept_id": "crouzeix-textbook-chapter-01",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"
+    },
+    {
+      "canonical_id": "cft-chapter-02-vector-spaces-and-subspaces",
+      "legacy_concept_id": "crouzeix-textbook-chapter-02",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md"
+    },
+    {
+      "canonical_id": "cft-chapter-03-linear-maps-and-exact-structure",
+      "legacy_concept_id": "crouzeix-textbook-chapter-03",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/03_linear_maps_and_exact_structure.md"
+    },
+    {
+      "canonical_id": "cft-chapter-04-coordinates-and-duality",
+      "legacy_concept_id": "crouzeix-textbook-chapter-04",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/04_coordinates_and_duality.md"
+    },
+    {
+      "canonical_id": "cft-chapter-05-determinants-trace-and-exterior-algebra",
+      "legacy_concept_id": "crouzeix-textbook-chapter-05",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra.md"
+    },
+    {
+      "canonical_id": "cft-chapter-06-eigenvalues-and-polynomial-algebra",
+      "legacy_concept_id": "crouzeix-textbook-chapter-06",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/06_eigenvalues_and_polynomial_algebra.md"
+    },
+    {
+      "canonical_id": "cft-chapter-07-inner-product-spaces",
+      "legacy_concept_id": "crouzeix-textbook-chapter-07",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/07_inner_product_spaces.md"
+    },
+    {
+      "canonical_id": "cft-chapter-08-positive-operators-and-gram-geometry",
+      "legacy_concept_id": "crouzeix-textbook-chapter-08",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/08_positive_operators_and_gram_geometry.md"
+    },
+    {
+      "canonical_id": "cft-chapter-09-operator-norms-and-singular-values",
+      "legacy_concept_id": "crouzeix-textbook-chapter-09",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/09_operator_norms_and_singular_values.md"
+    },
+    {
+      "canonical_id": "cft-chapter-10-multilinear-maps-and-tensors",
+      "legacy_concept_id": "crouzeix-textbook-chapter-10",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/10_multilinear_maps_and_tensors.md"
+    },
+    {
+      "canonical_id": "cft-chapter-11-differentiation-as-linear-approximation",
+      "legacy_concept_id": "crouzeix-textbook-chapter-11",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/11_differentiation_as_linear_approximation.md"
+    },
+    {
+      "canonical_id": "cft-chapter-12-differential-forms-and-stokes",
+      "legacy_concept_id": "crouzeix-textbook-chapter-12",
+      "canonical_path": "knowledge/crouzeix_textbook/part_02_geometry_and_calculus/12_differential_forms_and_stokes.md"
+    },
+    {
+      "canonical_id": "cft-chapter-13-metric-and-normed-spaces",
+      "legacy_concept_id": "crouzeix-textbook-chapter-13",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/13_metric_and_normed_spaces.md"
+    },
+    {
+      "canonical_id": "cft-chapter-14-sequences-and-series-of-operators",
+      "legacy_concept_id": "crouzeix-textbook-chapter-14",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/14_sequences_and_series_of_operators.md"
+    },
+    {
+      "canonical_id": "cft-chapter-15-complex-differentiability",
+      "legacy_concept_id": "crouzeix-textbook-chapter-15",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/15_complex_differentiability.md"
+    },
+    {
+      "canonical_id": "cft-chapter-16-consequences-of-cauchy-theory",
+      "legacy_concept_id": "crouzeix-textbook-chapter-16",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/16_consequences_of_cauchy_theory.md"
+    },
+    {
+      "canonical_id": "cft-chapter-17-functions-of-matrices-and-operators",
+      "legacy_concept_id": "crouzeix-textbook-chapter-17",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/17_functions_of_matrices_and_operators.md"
+    },
+    {
+      "canonical_id": "cft-chapter-18-positive-real-analytic-functions",
+      "legacy_concept_id": "crouzeix-textbook-chapter-18",
+      "canonical_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/18_positive_real_analytic_functions.md"
+    },
+    {
+      "canonical_id": "cft-chapter-19-normality-and-nonnormality",
+      "legacy_concept_id": "crouzeix-textbook-chapter-19",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/19_normality_and_nonnormality.md"
+    },
+    {
+      "canonical_id": "cft-chapter-20-numerical-range",
+      "legacy_concept_id": "crouzeix-textbook-chapter-20",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/20_numerical_range.md"
+    },
+    {
+      "canonical_id": "cft-chapter-21-spectral-sets",
+      "legacy_concept_id": "crouzeix-textbook-chapter-21",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/21_spectral_sets.md"
+    },
+    {
+      "canonical_id": "cft-chapter-22-positive-and-completely-positive-maps",
+      "legacy_concept_id": "crouzeix-textbook-chapter-22",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/22_positive_and_completely_positive_maps.md"
+    },
+    {
+      "canonical_id": "cft-chapter-23-compression-and-dilation",
+      "legacy_concept_id": "crouzeix-textbook-chapter-23",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/23_compression_and_dilation.md"
+    },
+    {
+      "canonical_id": "cft-chapter-24-gramians-and-ordered-matrix-inequalities",
+      "legacy_concept_id": "crouzeix-textbook-chapter-24",
+      "canonical_path": "knowledge/crouzeix_textbook/part_04_operator_theory/24_gramians_and_ordered_matrix_inequalities.md"
+    },
+    {
+      "canonical_id": "cft-chapter-25-convex-boundaries-and-cauchy-layers",
+      "legacy_concept_id": "crouzeix-textbook-chapter-25",
+      "canonical_path": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md"
+    },
+    {
+      "canonical_id": "cft-chapter-26-double-layer-map",
+      "legacy_concept_id": "crouzeix-textbook-chapter-26",
+      "canonical_path": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/26_double_layer_map.md"
+    },
+    {
+      "canonical_id": "cft-chapter-27-one-plus-sqrt-two-barrier",
+      "legacy_concept_id": "crouzeix-textbook-chapter-27",
+      "canonical_path": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/27_one_plus_sqrt_two_barrier.md"
+    },
+    {
+      "canonical_id": "cft-chapter-28-complete-power-family",
+      "legacy_concept_id": "crouzeix-textbook-chapter-28",
+      "canonical_path": "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/28_complete_power_family.md"
+    },
+    {
+      "canonical_id": "cft-chapter-29-crouzeix-problem-and-sharpness",
+      "legacy_concept_id": "crouzeix-textbook-chapter-29",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/29_crouzeix_problem_and_sharpness.md"
+    },
+    {
+      "canonical_id": "cft-chapter-30-jin-positive-real-completion",
+      "legacy_concept_id": "crouzeix-textbook-chapter-30",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/30_jin_positive_real_completion.md"
+    },
+    {
+      "canonical_id": "cft-chapter-31-jin-correction-cancellation",
+      "legacy_concept_id": "crouzeix-textbook-chapter-31",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/31_jin_correction_cancellation.md"
+    },
+    {
+      "canonical_id": "cft-chapter-32-jin-constant-two-endpoint",
+      "legacy_concept_id": "crouzeix-textbook-chapter-32",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/32_jin_constant_two_endpoint.md"
+    },
+    {
+      "canonical_id": "cft-chapter-33-lorist-schwenninger-perturbation-lemma",
+      "legacy_concept_id": "crouzeix-textbook-chapter-33",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md"
+    },
+    {
+      "canonical_id": "cft-chapter-34-lorist-schwenninger-realization",
+      "legacy_concept_id": "crouzeix-textbook-chapter-34",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization.md"
+    },
+    {
+      "canonical_id": "cft-chapter-35-comparison-verification-and-boundaries",
+      "legacy_concept_id": "crouzeix-textbook-chapter-35",
+      "canonical_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries.md"
+    }
+  ]
+}

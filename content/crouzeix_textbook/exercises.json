@@ -1,0 +1,3330 @@
+{
+  "schema_version": "crouzeix-textbook-exercises/v2",
+  "exercises": [
+    {
+      "exercise_id": "CFT-01-E01",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-01-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 94,
+        "column": 9,
+        "type_sha256": "45f1568c0d3379424a5820f5c930186109e67439000fb294e623d768f3c9a68b",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E02",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e02",
+      "kind": "calculation",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-01-002"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 100,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 102,
+        "column": 9,
+        "type_sha256": "8834b0cf850c047c90aaf304d5cc72b3d1e31e4aa37a7968ad8601825f6ed87c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E03",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-01-003"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 110,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 112,
+        "column": 9,
+        "type_sha256": "ec72551a2d3c142974712268cfefe5d9250bdfd9734b51a31f36ae9cb404a4c1",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E04",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e04",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-01-004"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 119,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 121,
+        "column": 9,
+        "type_sha256": "fe1ec96921c6a51b6ba85842780b64689fea9f6060998e805123a794c108e74c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E05",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e05",
+      "kind": "boundary",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-01-005"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 130,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 132,
+        "column": 9,
+        "type_sha256": "f1d079677452c560e54cc7be3cc051844f9e10b24d1c5a2073d31367c0c47c27",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-01-E06",
+      "chapter": 1,
+      "anchor": "exercise-cft-01-e06",
+      "kind": "lean-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-01-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
+        "line": 160,
+        "column": 9,
+        "type_sha256": "b5b6ca511dd9090f1102e3183f1d835764dcf5e01349687ddf701dbc4dbacdc1",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-02-E01",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-02-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-02-E02",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-02-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-02-E03",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-02-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-02-E04",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-02-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-02-E05",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-02-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-02-E06",
+      "chapter": 2,
+      "anchor": "exercise-cft-02-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-02-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E01",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-03-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E02",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-03-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E03",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-03-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E04",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-03-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E05",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-03-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-03-E06",
+      "chapter": 3,
+      "anchor": "exercise-cft-03-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-03-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E01",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-04-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E02",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-04-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E03",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-04-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E04",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-04-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E05",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-04-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-04-E06",
+      "chapter": 4,
+      "anchor": "exercise-cft-04-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-04-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E01",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-05-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E02",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-05-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E03",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-05-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E04",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-05-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E05",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-05-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-05-E06",
+      "chapter": 5,
+      "anchor": "exercise-cft-05-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-05-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E01",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-06-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E02",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-06-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E03",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-06-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E04",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-06-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E05",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-06-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-06-E06",
+      "chapter": 6,
+      "anchor": "exercise-cft-06-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-06-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E01",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-07-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E02",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-07-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E03",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-07-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E04",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-07-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E05",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-07-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-07-E06",
+      "chapter": 7,
+      "anchor": "exercise-cft-07-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-07-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E01",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-08-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E02",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-08-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E03",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-08-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E04",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-08-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E05",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-08-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-08-E06",
+      "chapter": 8,
+      "anchor": "exercise-cft-08-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-08-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E01",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-09-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E02",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-09-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E03",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-09-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E04",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-09-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E05",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-09-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-09-E06",
+      "chapter": 9,
+      "anchor": "exercise-cft-09-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-09-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E01",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-10-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E02",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-10-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E03",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-10-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E04",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-10-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E05",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-10-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-10-E06",
+      "chapter": 10,
+      "anchor": "exercise-cft-10-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-10-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E01",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-11-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E02",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-11-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E03",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-11-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E04",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-11-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E05",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-11-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-11-E06",
+      "chapter": 11,
+      "anchor": "exercise-cft-11-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-11-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E01",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-12-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E02",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e02",
+      "kind": "calculation",
+      "difficulty": "core",
+      "skills": [
+        "CFT-12-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E03",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e03",
+      "kind": "written-proof",
+      "difficulty": "core",
+      "skills": [
+        "CFT-12-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E04",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e04",
+      "kind": "written-proof",
+      "difficulty": "stretch",
+      "skills": [
+        "CFT-12-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E05",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-12-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-12-E06",
+      "chapter": 12,
+      "anchor": "exercise-cft-12-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-12-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E01",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-13-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E02",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-13-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E03",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-13-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E04",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-13-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E05",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-13-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-13-E06",
+      "chapter": 13,
+      "anchor": "exercise-cft-13-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-13-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E01",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-14-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E02",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-14-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E03",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-14-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E04",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-14-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E05",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-14-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-14-E06",
+      "chapter": 14,
+      "anchor": "exercise-cft-14-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-14-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E01",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-15-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E02",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-15-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E03",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-15-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E04",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-15-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E05",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-15-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-15-E06",
+      "chapter": 15,
+      "anchor": "exercise-cft-15-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-15-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E01",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-16-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E02",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-16-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E03",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-16-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E04",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-16-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E05",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-16-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-16-E06",
+      "chapter": 16,
+      "anchor": "exercise-cft-16-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-16-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E01",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-17-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E02",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-17-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E03",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-17-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E04",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-17-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E05",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-17-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-17-E06",
+      "chapter": 17,
+      "anchor": "exercise-cft-17-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-17-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E01",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-18-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E02",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-18-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E03",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-18-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E04",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-18-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E05",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-18-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-18-E06",
+      "chapter": 18,
+      "anchor": "exercise-cft-18-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-18-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E01",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-19-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E02",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-19-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E03",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-19-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E04",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-19-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E05",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-19-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-19-E06",
+      "chapter": 19,
+      "anchor": "exercise-cft-19-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-19-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E01",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-20-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E02",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-20-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E03",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-20-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E04",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-20-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E05",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-20-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-20-E06",
+      "chapter": 20,
+      "anchor": "exercise-cft-20-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-20-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E01",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-21-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E02",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-21-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E03",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-21-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E04",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-21-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E05",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-21-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-21-E06",
+      "chapter": 21,
+      "anchor": "exercise-cft-21-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-21-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E01",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-22-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E02",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-22-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E03",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-22-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E04",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-22-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E05",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-22-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-22-E06",
+      "chapter": 22,
+      "anchor": "exercise-cft-22-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-22-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E01",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-23-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E02",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-23-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E03",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-23-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E04",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-23-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E05",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-23-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-23-E06",
+      "chapter": 23,
+      "anchor": "exercise-cft-23-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-23-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E01",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-24-001"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E02",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-24-002"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E03",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-24-003"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E04",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-24-004"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E05",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-24-005"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-24-E06",
+      "chapter": 24,
+      "anchor": "exercise-cft-24-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-24-006"
+      ],
+      "starter": null,
+      "lean_solution": null
+    },
+    {
+      "exercise_id": "CFT-25-E01",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-25-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 122,
+        "column": 9,
+        "type_sha256": "ee6bd57fe174d7239540f948a6a03855a9a066eda912a472dad2534fc28e890b",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-25-E02",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-25-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 136,
+        "column": 9,
+        "type_sha256": "c7a7cb6d472ecdae80c1536ce80998d0a8f0357ef6736888c94d3734b1c1fe0a",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-25-E03",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-25-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 204,
+        "column": 9,
+        "type_sha256": "a98e82a390fe2b59c39f83f0fb2347b59f1c2dbd20a41d098256a00edbaf3a88",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-25-E04",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-25-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 219,
+        "column": 9,
+        "type_sha256": "257db097066a44c31c2934e6dadb37742f14c665296df8d49441c382c2533884",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-25-E05",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-25-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 243,
+        "column": 9,
+        "type_sha256": "8ae57520a57476a45463626e2493efd5cf74e168730249e50887e59438fff1db",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-25-E06",
+      "chapter": 25,
+      "anchor": "exercise-cft-25-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-25-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean",
+        "line": 282,
+        "column": 9,
+        "type_sha256": "9a64eacc8aaba37cbac9d770626aac85e112e005a0fd27a38cee7b3ea047fcf8",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E01",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-26-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 75,
+        "column": 9,
+        "type_sha256": "ad9414c12426fa0b86b5d53d95b51c8cc4ab9fa8704f994c534390026b9680cb",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E02",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-26-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 88,
+        "column": 9,
+        "type_sha256": "fa517c6187ce2ab93447446f63434b8d3eedaa99135d5b021040e843996e63f0",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E03",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-26-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 129,
+        "column": 9,
+        "type_sha256": "a249c97397a895cd7686c23e9d18b972a390f48e7ebe52ee6751d3cfd4140baf",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E04",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-26-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 142,
+        "column": 9,
+        "type_sha256": "1213c8d0db5a5822300d7344cc97899f0843943f1b0d97310ed8cdaf69452b27",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E05",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-26-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 159,
+        "column": 9,
+        "type_sha256": "d80cfa6b4f3279d04d4d2122d027233a345d27ffb43c4177ebdb91cf0a3a0997",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-26-E06",
+      "chapter": 26,
+      "anchor": "exercise-cft-26-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-26-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter26.lean",
+        "line": 177,
+        "column": 9,
+        "type_sha256": "ab76766d5649e5bfb7842181fabf6b97389fbb4aa81464c960e16964bcd0a7b8",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E01",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-27-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 80,
+        "column": 9,
+        "type_sha256": "68c6d3b9d3a4994f12a30480fb4fe7a1dd0ad1a6a1bf27b50f896042bff2c944",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E02",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-27-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 96,
+        "column": 9,
+        "type_sha256": "e1f3ec1cd602af53c5ff34a3a8a4f02706beff01c46434ba4d0dfa9dc7262563",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E03",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-27-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 104,
+        "column": 9,
+        "type_sha256": "bb00d3ff964d18a29c0d722841b2b2763d9a964178d9076cc48ef9ac1c1a4495",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E04",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-27-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 122,
+        "column": 9,
+        "type_sha256": "caf6285507ebf86498b027f7cccb42d4576f2d599e2ffcef1e9ff53b0172efa0",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E05",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-27-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 132,
+        "column": 9,
+        "type_sha256": "3f90e0243253841699e7da931dc016840f9c032b405a9582eac70c4b3ca73173",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-27-E06",
+      "chapter": 27,
+      "anchor": "exercise-cft-27-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-27-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter27.lean",
+        "line": 140,
+        "column": 9,
+        "type_sha256": "988d32168cdb145b0cdb418258040fd63fa105628f3b46203623f494df97e0ff",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E01",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-28-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 152,
+        "column": 9,
+        "type_sha256": "d60e7a320e248d34ac0bc0538f91b9e73f70c4a13a0dfed2b08b86e5b614b87b",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E02",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-28-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 170,
+        "column": 9,
+        "type_sha256": "a9aef25e6854b94c3da4a46b2804a3c1f3571142ad88dac47781881686084661",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E03",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-28-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 178,
+        "column": 9,
+        "type_sha256": "de80e6e778a5dd402323a69c8ec31582f63fd1794ca2f38e67d19b9f25a5d638",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E04",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-28-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 201,
+        "column": 9,
+        "type_sha256": "c52cb4db0682cde318061df6e401cc47f4703d9785021336732f05802bd8c8b4",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E05",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-28-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 215,
+        "column": 9,
+        "type_sha256": "cf9f1ed4ba7cbe2b2f52a5ce61b9b0e88bbc7e945c9e30e72ee66da7cb7d9c03",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-28-E06",
+      "chapter": 28,
+      "anchor": "exercise-cft-28-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-28-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part05/Chapter28.lean",
+        "line": 234,
+        "column": 9,
+        "type_sha256": "8c621531e36aa52df03ccb1d9abbbf215e78182b93e1343e41ae3d90535c6f6a",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"],
+        "verification_target": "CrouzeixTextbook"
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E01",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-29-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 248,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "59abc989d682ad792f815cc3f84b92a875570b7d614a033fccc0d24c802b8243",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E02",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-29-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 261,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "64a8b2319f6c1e152076bd4f21e3b0167a9dbf76750f2d7f0c2c21d73e6263a2",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E03",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-29-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 269,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "7ca04c82d187719bf4d59e6f362243bbd28dd2834029784f084e7badfce7c7d7",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E04",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-29-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 277,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "bf32bd17a48dc481b4abd5b148867806166d84f562a7ff39a886cdaa6a1198c6",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E05",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-29-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 301,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "a36d04bd9b6b78a573e387ebaff761eaf2150bf9897ba440cd132c4c47ceeb84",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-29-E06",
+      "chapter": 29,
+      "anchor": "exercise-cft-29-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-29-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter29.lean",
+        "line": 330,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "36aa075421a8b7e36ef9b0d1c88dab50dbfc73bdf9dec8d1372278ef2001f6fd",
+        "axioms": ["Classical.choice", "Quot.sound", "propext"]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E01",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-30-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 56,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "249ddb5c966ffa05475fc1e478518a0194ae75b2155ef8eff09760ae1d14a9c2",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E02",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-30-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 68,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "ce47f71b9993678788e5f3b2299e5e3a9a16d3a6d795b5d4913a4121f16808bd",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E03",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-30-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 82,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "2b0b04fab6614fba42e02d7fc839152e0fdeca4d24b3c8f183f16e7c2c0d921d",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E04",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-30-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 104,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "ef17f5f4d24d53f5538ccab1cd8aab49b614e601ba59f4543d24f3f034042cdc",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E05",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e05",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-30-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 126,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "d04e1234825f28fc3998446fd40433b74883432f3adcaacafe8417421d0ef360",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-30-E06",
+      "chapter": 30,
+      "anchor": "exercise-cft-30-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-30-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean",
+        "line": 169,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "88f2e41bd74682b6c0942b6f8e704db2eb46f6aa917492b190d57b7e9fbfd75a",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E01",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-31-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 65,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "64b96abd85a9467c74a0d3aff069e23774b430733d4d5e4c85e9972dd3f03817",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E02",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-31-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 94,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "7767c0b8052e9f3eba012fa0395e6f36a9f5afd9428f0c3ca34f5ea9493a78fb",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E03",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-31-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 116,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "a09cda81aa510b1c2fb269854a6dfb2fe344174842df5d9138176e294e54996a",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E04",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-31-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 156,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "e22d16794803059c7fb8cf43656f4d8c27ef8d6bf842f7a9948b873b28371fe5",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E05",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-31-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 209,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "9e0fca39d9e8cd8c1407387734afffcbd36c158cf03c2b112dc223aaa82184a2",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-31-E06",
+      "chapter": 31,
+      "anchor": "exercise-cft-31-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-31-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean",
+        "line": 225,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "bc639eb0067a971962f923866c6a2756a5dab8320de7ccd6ea39499a0b832e88",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E01",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-32-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 56,
+        "column": 9,
+        "type_sha256": "af5c3313fb3ed2f225d6344eafbe907d84dd830820db7597a9a9c0ad42e9cde3",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E02",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-32-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 75,
+        "column": 9,
+        "type_sha256": "65145e3bd8fda071bfe8c0a2234762df706f1558c9ec0702fc24f8e27f7d513e",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E03",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-32-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 189,
+        "column": 9,
+        "type_sha256": "ab17d9fc4bd8353478f9e3d906d021759201e24f7da71eb8a659f487ebbf8f2c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E04",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-32-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 199,
+        "column": 9,
+        "type_sha256": "b2ac3bc43428c64e7327529ee27721a1db532d600d49c7a6051512642931d244",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E05",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-32-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 354,
+        "column": 9,
+        "type_sha256": "87a8868091a68317416b4569a7ac259100adf55d0d199d289197156947decc69",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-32-E06",
+      "chapter": 32,
+      "anchor": "exercise-cft-32-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-32-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean",
+        "line": 395,
+        "column": 9,
+        "type_sha256": "09b3357800ae2ae2873fc08b99331347db90b39418f994f45e52563b4c6cb712",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E01",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-33-001"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 82,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 83,
+        "column": 9,
+        "type_sha256": "19bf70d60d694bdc94bc1c7c86b28075b96157a35006bed74fc958f0b3d89a9c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E02",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-33-002"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 95,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 96,
+        "column": 9,
+        "type_sha256": "e04f6c807864c88c2c8cdcb2a4aed4a58135bbaa0efe59e92a672b745ca9980f",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E03",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-33-003"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 103,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 105,
+        "column": 9,
+        "type_sha256": "5dff70645a37f76f6d11a4fc3d33ab9457ecac473765d61f60772b4fdd2fe736",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E04",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-33-004"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 117,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 119,
+        "column": 9,
+        "type_sha256": "9f496c7d5a22e792008c61c6f53c6191cca2373e96b43bab5892bb6399b3f99c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E05",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-33-005"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 131,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 133,
+        "column": 9,
+        "type_sha256": "71c430c3b0eae949f33b2e2f7b324dd83046d9e27f39348a2b4fd336e18ae3da",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-33-E06",
+      "chapter": 33,
+      "anchor": "exercise-cft-33-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-33-006"
+      ],
+      "starter": {
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 154,
+        "column": 1
+      },
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean",
+        "line": 157,
+        "column": 9,
+        "type_sha256": "6d8a70779a3993e87edea9466272c8742e362b2ecf9b72431465fd03ea7361c9",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E01",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-34-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 30,
+        "column": 9,
+        "type_sha256": "753cce1e54cadc7157f3f66fa425d0db3c53bbb2b7122291659f72ee9b46a4e2",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E02",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-34-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 38,
+        "column": 9,
+        "type_sha256": "7bb43df815f450a28993129b412f57183d1e79d87e8e2dfef2ff7e7551fabcbe",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E03",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-34-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 160,
+        "column": 9,
+        "type_sha256": "76f4a4e504f0fcf2ef49c9dc4fd5b407904d698e407e01d9b103849adaf72c8f",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E04",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-34-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 192,
+        "column": 9,
+        "type_sha256": "51681236d59868126e8c021ca57f255e2f3fc5fc36d6c48810d332a657a9308c",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E05",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-34-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 207,
+        "column": 9,
+        "type_sha256": "3a48557c92ad6fbc3143c184346c90ab47a189e0f62207a0ae31d06ab0d64f30",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-34-E06",
+      "chapter": 34,
+      "anchor": "exercise-cft-34-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-34-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean",
+        "line": 222,
+        "column": 9,
+        "type_sha256": "20ab40086adab31213e3adb0ad72e2912e1a9301373f3c2a7e1fe9c996a6b992",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E01",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-35-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 35,
+        "column": 9,
+        "type_sha256": "fa6192e91ba075de59d54b56939088015448d45ffca20538750d74eeec09acc0",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E02",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-35-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 41,
+        "column": 9,
+        "type_sha256": "d4f53d2f56895a7d7ea5fd383b2a2beb56d87a9bc32833ff8be272b015e58ca3",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E03",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-35-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 46,
+        "column": 9,
+        "type_sha256": "b2d2f068fe54808f15b51e1fb893a73d548b00c58cda6338350afb3262bcfe96",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E04",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-35-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 53,
+        "column": 9,
+        "type_sha256": "14a4eb4cca259753f3f8d025e69fc3c176b5639f305ae361a00630482525a847",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E05",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-35-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 62,
+        "column": 9,
+        "type_sha256": "bc28757a0755dbb1c831f00eac266609ccf270b59cd7baed981b1962f1fff01d",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-35-E06",
+      "chapter": 35,
+      "anchor": "exercise-cft-35-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-35-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean",
+        "line": 71,
+        "column": 9,
+        "type_sha256": "a6b5302087094c1fd6c8378f297d6ff79a995904d3e4a6be961a7fe5f3d8cdb7",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    }
+  ]
+}

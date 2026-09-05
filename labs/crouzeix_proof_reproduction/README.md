@@ -101,9 +101,9 @@ cargo run -q -p harp -- sources verify
 
 Equivalent installed CLI form: `harp sources verify`.
 
-The six-row local bundle is
+The original six-row local bundle is retained at
 `evidence/crouzeix_conjecture/local_formalization/manifest.tsv` with SHA-256
-`efc8469255219938b958d687d4a62506df937918bd659df18e47eaeb85a71de7`.
+`626b5fb28f7f02a73f85aa43cb04fcb97f709b1e67335d08ec8ad0068f93dcaa`.
 Its rows bind the terminal declarations
 `CrouzeixConjecture.crouzeixConjecture`,
 `CrouzeixConjecture.loristSchwenningerMainTheorem`, and
@@ -115,6 +115,33 @@ and
 `CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet`.
 The Lorist-Schwenninger closed-range row uses `source_node_id` `-`, so the
 bundle certifies that consequence without attributing it to a named route node.
+
+### Refreshing local build evidence
+
+After an approved source or build-configuration change, use the pinned warm
+Lean environment and run:
+
+```sh
+. scripts/harp_xdg_env.sh
+export ELAN_HOME="$HARP_ELAN_HOME"
+export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"
+python3 labs/crouzeix_proof_reproduction/proof_evidence.py refresh-local
+cargo run -q -p harp -- sources verify
+```
+
+Refresh executes the aggregate build and six declaration audits again. It
+creates an immutable bundle under `local_formalization_generations/` and selects
+it through `local_formalization.current.json`. It never rewrites the original
+bundle or existing route receipts and reviews. Validators check historical
+bundles for byte integrity and check the selected bundle against current inputs.
+Without a selector they retain the original legacy behavior. An invalid selector
+is an error, not permission to fall back to older evidence.
+
+`published-selected` means publication and selection succeeded; still run source
+verification and the full repository gate. `committed-recovery-required` means
+the reported immutable bundle exists but publication needs recovery. Preserve
+that evidence and investigate the reported path before retrying. Refresh never
+hydrates dependencies and does not establish peer review or new theorem claims.
 
 The approved experiment contract is
 `docs/superpowers/specs/2026-08-14-crouzeix-proof-reproduction-design.md`.

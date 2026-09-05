@@ -625,10 +625,15 @@ def _validate_local_bundle(repository_root: Path) -> tuple[str, ...]:
         ) from error
     if getattr(result, "status", None) != "passed":
         raise ValueError("local formalization bundle is required")
-    manifest = (
-        Path(repository_root)
-        / "evidence/crouzeix_conjecture/local_formalization/manifest.tsv"
-    )
+    manifest = getattr(result, "manifest_path", None)
+    if manifest is None:
+        selector = Path(repository_root) / "evidence/crouzeix_conjecture/local_formalization.current.json"
+        if selector.exists() or selector.is_symlink():
+            raise ValueError("local formalization validator omitted the selected manifest")
+        manifest = (
+            Path(repository_root)
+            / "evidence/crouzeix_conjecture/local_formalization/manifest.tsv"
+        )
     return (_display_path(repository_root, manifest),)
 
 

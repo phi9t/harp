@@ -24,6 +24,128 @@ fn repo_root() -> &'static Path {
         .expect("workspace root")
 }
 
+fn copy_tree(source: &Path, destination: &Path) {
+    fs::create_dir_all(destination).expect("create copied fixture directory");
+    let mut entries = fs::read_dir(source)
+        .expect("read fixture directory")
+        .collect::<Result<Vec<_>, _>>()
+        .expect("read fixture entries");
+    entries.sort_by_key(|entry| entry.file_name());
+    for entry in entries {
+        let target = destination.join(entry.file_name());
+        if entry.file_type().expect("fixture entry type").is_dir() {
+            copy_tree(&entry.path(), &target);
+        } else {
+            fs::copy(entry.path(), target).expect("copy fixture file");
+        }
+    }
+}
+
+fn crouzeix_textbook_cli_fixture() -> (TempDir, std::path::PathBuf) {
+    let fixture = TempDir::new().expect("Crouzeix textbook CLI fixture");
+    copy_tree(
+        &repo_root().join("crates/harp/tests/fixtures/crouzeix_textbook/valid"),
+        fixture.path(),
+    );
+    let coverage_path = fixture
+        .path()
+        .join("content/crouzeix_textbook/coverage.json");
+    let mut coverage: Value =
+        serde_json::from_slice(&fs::read(&coverage_path).expect("read CLI coverage"))
+            .expect("parse CLI coverage");
+    coverage["items"][0]["lean_declaration"]["type_sha256"] =
+        serde_json::json!("8e917e8c0326f9985c85b913d540c30ce433ac36fa15725f05cdd3825c2fc07f");
+    coverage["items"][1]["lean_declaration"]["type_sha256"] =
+        serde_json::json!("52415f3ef8b73cccc791e79afde418919b624b9796b613de131c714d6f7a02cb");
+    let mut coverage_bytes = serde_json::to_vec_pretty(&coverage).expect("serialize CLI coverage");
+    coverage_bytes.push(b'\n');
+    fs::write(&coverage_path, coverage_bytes).expect("write CLI coverage");
+    let exercises_path = fixture
+        .path()
+        .join("content/crouzeix_textbook/exercises.json");
+    let mut exercises: Value =
+        serde_json::from_slice(&fs::read(&exercises_path).expect("read CLI exercises"))
+            .expect("parse CLI exercises");
+    exercises["exercises"][0]["lean_solution"]["type_sha256"] =
+        serde_json::json!("13712c12307882f3f478550a66e7eeda393744d7bb4738034daf59194d9fd922");
+    exercises["exercises"][1]["lean_solution"]["type_sha256"] =
+        serde_json::json!("d80e6b0b5921f33484bff16e37d0dce7cd069eded835cef1c2e4c0f030311fc1");
+    let mut exercise_bytes =
+        serde_json::to_vec_pretty(&exercises).expect("serialize CLI exercises");
+    exercise_bytes.push(b'\n');
+    fs::write(&exercises_path, exercise_bytes).expect("write CLI exercises");
+    let compile = fixture.path().join("fixture/Compile.lean");
+    for relative in [
+        "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+        "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+    ] {
+        let target = fixture.path().join(relative);
+        fs::create_dir_all(target.parent().expect("Lean source parent"))
+            .expect("create Lean source directory");
+        fs::copy(&compile, target).expect("copy maintained Lean source");
+    }
+    let mut declarations = vec![
+        serde_json::json!({
+            "name": "CrouzeixTextbook.Part01.matrix_column_is_basis_image",
+            "kind": "theorem",
+            "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+            "line": 10,
+            "column": 1,
+            "normalized_type": "theorem fixture type",
+            "type_sha256": "8e917e8c0326f9985c85b913d540c30ce433ac36fa15725f05cdd3825c2fc07f",
+            "direct_dependencies": [],
+            "axioms": []
+        }),
+        serde_json::json!({
+            "name": "CrouzeixTextbook.Part01.LinearTransformation",
+            "kind": "definition",
+            "source_path": "formalization/lean/CrouzeixTextbook/Part01/ObjectsAndRepresentations.lean",
+            "line": 4,
+            "column": 1,
+            "normalized_type": "definition fixture type",
+            "type_sha256": "52415f3ef8b73cccc791e79afde418919b624b9796b613de131c714d6f7a02cb",
+            "direct_dependencies": [],
+            "axioms": []
+        }),
+        serde_json::json!({
+            "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution",
+            "kind": "theorem",
+            "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+            "line": 12,
+            "column": 1,
+            "normalized_type": "exercise one fixture type",
+            "type_sha256": "13712c12307882f3f478550a66e7eeda393744d7bb4738034daf59194d9fd922",
+            "direct_dependencies": [],
+            "axioms": ["propext"]
+        }),
+        serde_json::json!({
+            "name": "CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution",
+            "kind": "theorem",
+            "source_path": "formalization/lean/CrouzeixTextbook/Part01/Exercises/Chapter01.lean",
+            "line": 20,
+            "column": 1,
+            "normalized_type": "exercise two fixture type",
+            "type_sha256": "d80e6b0b5921f33484bff16e37d0dce7cd069eded835cef1c2e4c0f030311fc1",
+            "direct_dependencies": [],
+            "axioms": ["Classical.choice", "Quot.sound", "propext"]
+        }),
+    ];
+    declarations.sort_by(|left, right| left["name"].as_str().cmp(&right["name"].as_str()));
+    let receipt = fixture.path().join("lean-receipt.json");
+    fs::write(
+        &receipt,
+        serde_json::to_vec(&serde_json::json!({
+            "schema_version": "crouzeix-textbook-lean-receipt/v1",
+            "toolchain": "leanprover/lean4:v4.32.1",
+            "target": "CrouzeixTextbook",
+            "declarations": declarations
+        }))
+        .expect("serialize CLI receipt"),
+    )
+    .expect("write CLI receipt");
+    (fixture, receipt)
+}
+
 #[cfg(feature = "test-cli-fixture")]
 fn fake_cli_bin() -> std::path::PathBuf {
     assert_cmd::cargo::cargo_bin("harp_rlm_fake_cli")
@@ -159,7 +281,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 76,
             "coverage_entries": 76,
-            "canonical_documents": 139,
+            "canonical_documents": 183,
             "systems": 17,
             "weng_sections": 9,
             "diagnostic_fields": 28,
@@ -197,6 +319,74 @@ fn build_rejects_outputs_outside_the_generated_directory() {
         .stderr(predicate::str::contains(
             "output must stay beneath atlas/src/content/generated",
         ));
+}
+
+#[test]
+fn crouzeix_textbook_publish_then_check_uses_the_required_receipt() {
+    let (fixture, receipt) = crouzeix_textbook_cli_fixture();
+
+    harp()
+        .current_dir(fixture.path())
+        .args([
+            "crouzeix-textbook",
+            "check",
+            "--receipt",
+            receipt.to_str().expect("UTF-8 receipt path"),
+        ])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("does not match canonical inputs"));
+
+    let output = harp()
+        .current_dir(fixture.path())
+        .args([
+            "--format",
+            "json",
+            "crouzeix-textbook",
+            "publish",
+            "--receipt",
+            receipt.to_str().expect("UTF-8 receipt path"),
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+    let envelope: Value = serde_json::from_slice(&output).expect("publication JSON envelope");
+    assert_eq!(envelope["command"], "crouzeix-textbook.publish");
+    assert_eq!(envelope["data"]["theorem_count"], 9);
+    assert_eq!(envelope["data"]["exercise_count"], 2);
+    assert_eq!(envelope["data"]["exact_theorem_correspondence_count"], 2);
+    assert_eq!(envelope["data"]["checked_exercise_solution_count"], 2);
+    assert!(envelope["data"].get("exact_correspondence_count").is_none());
+    assert_eq!(envelope["data"]["outputs"].as_array().unwrap().len(), 6);
+    assert_eq!(envelope["data"]["matched"], false);
+
+    harp()
+        .current_dir(fixture.path())
+        .args([
+            "crouzeix-textbook",
+            "check",
+            "--receipt",
+            receipt.to_str().expect("UTF-8 receipt path"),
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("matches canonical inputs"));
+}
+
+#[test]
+fn crouzeix_textbook_cli_requires_the_receipt_argument() {
+    harp()
+        .args(["crouzeix-textbook", "check"])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("--receipt <RECEIPT>"));
+    harp()
+        .args(["crouzeix-textbook", "publish"])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("--receipt <RECEIPT>"));
 }
 
 #[test]

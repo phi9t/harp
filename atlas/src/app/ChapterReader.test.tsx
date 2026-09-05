@@ -14,6 +14,29 @@ if (!baseDocument) {
 }
 
 describe("canonical document view", () => {
+  it("keeps exact theorem source locations usable on the hosted reader", () => {
+    render(<CanonicalDocumentView document={{ ...baseDocument,
+      canonical_markdown_path: "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",
+      html: '<h1>Boundary proof</h1><h2>Statement</h2><a href="../../formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L14">Exact Lean theorem</a>',
+    }} />);
+    expect(screen.queryByRole("link", { name: "Exact Lean theorem" })).toHaveAttribute(
+      "href", "https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part05/Chapter25.lean#L14");
+  });
+  it("offers textbook chapter and proof references without hiding the argument", async () => {
+    const chapter = canonicalCorpus.documents.find((document) =>
+      document.concept_id === "cft-chapter-01-objects-and-representations");
+    if (!chapter) throw new Error("Missing textbook fixture");
+    render(<CanonicalDocumentView document={chapter} />);
+    expect(screen.queryByRole("navigation", { name: "Textbook chapters" })).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByText("Proof references"));
+    expect(screen.queryByRole("link", { name: "Lean chapter module" })).toHaveAttribute(
+      "href", "https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean");
+    expect(screen.queryByRole("link", { name: "Next: Chapter 2: Vector spaces and subspaces" })).toHaveAttribute(
+      "href", "#documents/cft-chapter-02-vector-spaces-and-subspaces");
+    expect(screen.queryByRole("heading", { name: "Opening problem" })).toBeVisible();
+    expect(screen.queryByRole("link", { name: "Correspondence and limits" })).toHaveAttribute(
+      "href", "#documents/cft-lean-coverage-ledger");
+  });
   it("navigates repeated section titles by their own identities", async () => {
     const user = userEvent.setup();
     render(<CanonicalDocumentView document={{

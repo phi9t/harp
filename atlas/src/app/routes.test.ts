@@ -112,6 +112,23 @@ describe("Atlas routes", () => {
     );
   });
 
+  it("canonicalizes every legacy textbook document hash", () => {
+    expect(canonicalCorpus.document_aliases).toHaveLength(44);
+    for (const alias of canonicalCorpus.document_aliases) {
+      expect(parseRoute(`#documents/${alias.alias_id}`)).toEqual({
+        kind: "document",
+        documentId: alias.canonical_document_id,
+        sectionId: null,
+      });
+    }
+    expect(parseRoute("#documents/crouzeix-textbook-chapter-01?section=cft-01-001")).toEqual({
+      kind: "document",
+      documentId: "cft-chapter-01-objects-and-representations",
+      sectionId: "cft-01-001",
+    });
+    expect(parseRoute("#documents/absent-document")).toEqual({ kind: "home" });
+  });
+
   it("keeps malformed document sections at the document root", () => {
     for (const section of ["Context%20Pipeline", "context%252Dpipeline"]) {
       expect(

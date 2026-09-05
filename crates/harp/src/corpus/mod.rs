@@ -18,6 +18,24 @@ use contracts::ValidatedRsiInputs;
 #[cfg(test)]
 use contracts::{SYSTEM_READINGS_PATH, WENG_MAP_PATH};
 
+pub(crate) fn canonical_frontmatter_identity(
+    markdown: &str,
+    path: &str,
+) -> Result<String, AppError> {
+    contracts::canonical_frontmatter_identity(markdown, path)
+}
+
+pub(crate) fn canonical_markdown_body<'a>(
+    markdown: &'a str,
+    path: &str,
+) -> Result<&'a str, AppError> {
+    render::markdown_body(markdown, path)
+}
+
+pub(crate) fn canonical_heading_ids(markdown: &str, path: &str) -> Result<Vec<String>, AppError> {
+    render::validated_heading_ids(markdown, path)
+}
+
 pub(super) const COVERAGE_PATH: &str = "content/coverage-map.tsv";
 pub(super) const COVERAGE_HEADER: &str =
     "concept_id\tcoverage_depth\tcanonical_markdown_path\tsection_id\tparent_concept_id";
@@ -75,7 +93,7 @@ pub(crate) fn resolve_wiki_links(
         .collect()
 }
 
-pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
+pub(super) const READER_ROUTES: [(&str, &str, &str); 17] = [
     (
         "thesis",
         "Thesis",
@@ -141,6 +159,11 @@ pub(super) const READER_ROUTES: [(&str, &str, &str); 16] = [
         "crouzeix-conjecture",
         "Crouzeix",
         "knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md",
+    ),
+    (
+        "crouzeix-textbook",
+        "Crouzeix textbook",
+        "knowledge/crouzeix_textbook/crouzeix_textbook_index.md",
     ),
     (
         "mathematical-foundations",
@@ -570,6 +593,12 @@ pub(super) struct ReaderRoute {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub(super) struct DocumentAlias {
+    pub(super) alias_id: String,
+    pub(super) canonical_document_id: String,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub(super) struct WengSectionProjection {
     pub(super) order: u8,
     pub(super) section_id: String,
@@ -635,6 +664,7 @@ pub(super) struct RsiCorpus {
     pub(super) retained_concepts: Vec<RetainedConcept>,
     pub(super) coverage: Vec<CoverageEntry>,
     pub(super) reader_routes: Vec<ReaderRoute>,
+    pub(super) document_aliases: Vec<DocumentAlias>,
     pub(super) documents: Vec<CanonicalDocument>,
     pub(super) systems: Vec<SystemProjection>,
     pub(super) weng_sections: Vec<WengSectionProjection>,
@@ -649,6 +679,8 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         coverage,
         registered_sources: _registered_sources,
         canonical_sources,
+        registered_document_ids,
+        registered_document_aliases,
         weng_map,
         system_registry,
     } = contracts::load(&repository)?;
@@ -662,11 +694,11 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
     let lesson_manifest = validated_lessons.manifest;
     let mut all_sources = canonical_sources;
     all_sources.extend(validated_lessons.sources);
-    let route_targets = render::route_targets(&coverage, &all_sources);
+    let route_targets = render::route_targets(&coverage, &all_sources, &registered_document_ids);
     let mut documents = all_sources
         .values()
         .map(|source| {
-            render::compile_document(source, &route_targets)
+            render::compile_document(source, &route_targets, &registered_document_ids)
                 .map(|document| (source.path.clone(), document))
         })
         .collect::<Result<BTreeMap<_, _>, AppError>>()?;
@@ -712,6 +744,12 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
             })
         })
         .collect::<Result<Vec<_>, AppError>>()?;
+    validate_document_namespace(
+        &documents,
+        &coverage,
+        &registered_document_ids,
+        &registered_document_aliases,
+    )?;
     let systems = system_registry
         .map(|registry| {
             registry
@@ -784,10 +822,17 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         .unwrap_or_default();
 
     Ok(RsiCorpus {
-        schema_version: "rsi-technical-atlas/v5",
+        schema_version: "rsi-technical-atlas/v6",
         retained_concepts,
         coverage,
         reader_routes,
+        document_aliases: registered_document_aliases
+            .into_iter()
+            .map(|(alias_id, canonical_document_id)| DocumentAlias {
+                alias_id,
+                canonical_document_id,
+            })
+            .collect(),
         documents: documents.into_values().collect(),
         systems,
         weng_sections,
@@ -818,9 +863,107 @@ fn optional_cell(value: &str) -> Option<String> {
 
 fn valid_id(value: &str) -> bool {
     !value.is_empty()
-        && value
-            .bytes()
-            .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'-')
+        && value.split('-').all(|group| {
+            !group.is_empty()
+                && group
+                    .bytes()
+                    .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit())
+        })
+}
+
+fn validate_document_namespace(
+    documents: &BTreeMap<String, CanonicalDocument>,
+    coverage: &[CoverageEntry],
+    registered_document_ids: &BTreeMap<String, String>,
+    registered_document_aliases: &BTreeMap<String, String>,
+) -> Result<(), AppError> {
+    let mut canonical_paths = BTreeMap::<&str, &str>::new();
+    for (path, document) in documents {
+        if !valid_id(&document.concept_id) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!(
+                    "{path} has invalid canonical document ID {}",
+                    document.concept_id
+                ),
+            ));
+        }
+        if let Some(previous_path) = canonical_paths.insert(&document.concept_id, path) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!(
+                    "canonical document ID {} is shared by {previous_path} and {path}",
+                    document.concept_id
+                ),
+            ));
+        }
+    }
+
+    for (path, registered_id) in registered_document_ids {
+        let document = documents.get(path).ok_or_else(|| {
+            invalid(
+                "knowledge.rsi.document_identity",
+                format!("registered document {registered_id} has no compiled source at {path}"),
+            )
+        })?;
+        if document.concept_id != *registered_id {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!(
+                    "registered document {registered_id} resolved as {} at {path}",
+                    document.concept_id
+                ),
+            ));
+        }
+    }
+
+    for (alias, canonical_id) in registered_document_aliases {
+        if !valid_id(alias) || !valid_id(canonical_id) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!("document alias {alias} -> {canonical_id} is not a canonical ID pair"),
+            ));
+        }
+        if !canonical_paths.contains_key(canonical_id.as_str()) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!("document alias {alias} has unknown canonical target {canonical_id}"),
+            ));
+        }
+        if alias != canonical_id && canonical_paths.contains_key(alias.as_str()) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!("document alias {alias} collides with a canonical document"),
+            ));
+        }
+        let canonical_path = canonical_paths
+            .get(canonical_id.as_str())
+            .expect("canonical alias target was validated above");
+        if let Some(entry) = coverage.iter().find(|entry| {
+            entry.concept_id == *alias
+                && (alias != canonical_id || entry.canonical_markdown_path != **canonical_path)
+        }) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!(
+                    "document alias {alias} collides with coverage identity at {}",
+                    entry.canonical_markdown_path
+                ),
+            ));
+        }
+        if let Some(entry) = coverage.iter().find(|entry| {
+            entry.concept_id == *canonical_id && entry.canonical_markdown_path != **canonical_path
+        }) {
+            return Err(invalid(
+                "knowledge.rsi.document_identity",
+                format!(
+                    "canonical document ID {canonical_id} collides with coverage identity at {}",
+                    entry.canonical_markdown_path
+                ),
+            ));
+        }
+    }
+    Ok(())
 }
 
 fn sha256(bytes: &[u8]) -> String {

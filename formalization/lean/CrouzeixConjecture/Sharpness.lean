@@ -1,6 +1,6 @@
 module
 
-public import CrouzeixConjecture.FinalTheorems
+public import CrouzeixConjecture.HolomorphicConsequences
 
 public import CrouzeixConjecture.QSharpness
 
@@ -25,8 +25,9 @@ theorem maxPolynomialModulusOnNumericalRange_X_jordanNilpotentTwo :
         maxPolynomialModulusOnScaledQNumericalRange,
         scaledQNumericalRange_one]
     _ = qKappa 1 / 2 := by
-      exact maxPolynomialModulusOnScaledQNumericalRange_X_jordanNilpotentTwo
-        (r := 1) (by norm_num) (by norm_num)
+      simpa only [Complex.ofReal_one] using
+        maxPolynomialModulusOnScaledQNumericalRange_X_jordanNilpotentTwo
+          (r := 1) (by norm_num) (by norm_num)
     _ = 1 / 2 := by norm_num [qKappa, qTau]
 
 /-- The Jordan block and the identity polynomial attain the factor `2`. -/
@@ -49,7 +50,7 @@ theorem crouzeixConstantTwo_isLeast_finTwo :
     IsLeast {K : ℝ | RationalCrouzeixBoundOnFinTwo K} 2 := by
   refine ⟨?_, ?_⟩
   · intro A f hfree
-    exact crouzeixRationalBound A f hfree
+    exact holomorphicCrouzeixRationalBound A f hfree
   · intro K hK
     let x : RatFunc ℂ :=
       algebraMap (Polynomial ℂ) (RatFunc ℂ) Polynomial.X
@@ -70,7 +71,7 @@ theorem crouzeixConstantTwo_isLeast_finTwo :
                 maxRationalModulusOnScaledQNumericalRange,
                 scaledQNumericalRange_one]
         _ = qKappa 1 / 2 := by
-          simpa only [x] using
+          simpa only [x, Complex.ofReal_one] using
             maxRationalModulusOnScaledQNumericalRange_X_jordanNilpotentTwo
               (r := 1) (by norm_num) (by norm_num)
         _ = 1 / 2 := by norm_num [qKappa, qTau]

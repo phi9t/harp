@@ -39,7 +39,9 @@ change its behavior.
 
 ## Stable interfaces
 
-- Atlas corpus schema: `rsi-technical-atlas/v5`.
+- Atlas corpus schema: `rsi-technical-atlas/v6`. Version 6 requires the
+  bounded `document_aliases` projection; stable v5 inputs are rejected rather
+  than reinterpreted with missing aliases.
 - Diagnosis export schema: `rsi-diagnosis/v2`.
 - Conservative previous-format migration: `rsi-diagnosis/v1`.
 - CLI JSON envelope schema: version `1`, with `command`, `status`, `warnings`,

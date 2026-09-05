@@ -37,6 +37,7 @@ export type ReaderRouteId =
   | "verified-coevolution"
   | "agentic-engineering"
   | "crouzeix-conjecture"
+  | "crouzeix-textbook"
   | "mathematical-foundations"
   | "autodiff-geometry"
   | "knowledge";
@@ -56,6 +57,7 @@ export const readerRouteIds: readonly ReaderRouteId[] = [
   "verified-coevolution",
   "agentic-engineering",
   "crouzeix-conjecture",
+  "crouzeix-textbook",
   "mathematical-foundations",
   "autodiff-geometry",
   "knowledge",
@@ -78,6 +80,11 @@ export type ReaderRoute = {
   route_id: ReaderRouteId;
   label: string;
   canonical_markdown_path: string;
+};
+
+export type DocumentAlias = {
+  alias_id: DocumentId;
+  canonical_document_id: DocumentId;
 };
 
 export type CanonicalDocument = {
@@ -274,10 +281,11 @@ export type Lesson = {
 };
 
 export type CanonicalCorpus = {
-  schema_version: "rsi-technical-atlas/v5";
+  schema_version: "rsi-technical-atlas/v6";
   retained_concepts: RetainedConcept[];
   coverage: CoverageEntry[];
   reader_routes: ReaderRoute[];
+  document_aliases: DocumentAlias[];
   documents: CanonicalDocument[];
   systems: SystemReading[];
   weng_sections: WengSection[];

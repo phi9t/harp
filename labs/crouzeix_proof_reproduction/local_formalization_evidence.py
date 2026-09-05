@@ -10,6 +10,7 @@ import platform
 import re
 import stat
 import tempfile
+import uuid
 from contextvars import ContextVar
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -64,6 +65,12 @@ MAX_ATTEMPTS = 256
 TIMEOUT_SECONDS = 3600
 STAGE_PREFIX = ".local-formalization-stage-"
 DESTINATION_NAME = "local_formalization"
+GENERATIONS_NAME = "local_formalization_generations"
+SELECTION_NAME = "local_formalization.current.json"
+SELECTION_SCHEMA = "crouzeix-local-formalization-selection/v1"
+MAX_SELECTION_BYTES = 64 * 1024
+MAX_GENERATIONS = 128
+GENERATION_ID = re.compile(r"[0-9a-f]{32}\Z")
 MANIFEST_NAME = "manifest.tsv"
 EVIDENCE_ROOT_NAME = "crouzeix_conjecture"
 DARWIN_RENAME_EXCL = 0x00000004
@@ -237,6 +244,184 @@ Executor = Callable[
 ]
 
 
+@dataclass(frozen=True)
+class _SelectionState:
+    raw: bytes | None
+    identity: tuple[int, ...] | None
+    active: str
+    catalog: tuple[tuple[str, str], ...]
+
+
+def _bundle_digest(members: Mapping[str, bytes]) -> str:
+    records = []
+    for path, data in sorted(members.items()):
+        if any(character in path for character in "\t\r\n"):
+            raise protocol.ValidationError("local evidence bundle path contains a separator")
+        records.append(f"{path}\t{protocol.sha256_bytes(data)}\n")
+    return protocol.sha256_bytes("".join(records).encode("utf-8"))
+
+
+def _strict_selection_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise protocol.ValidationError("duplicate local evidence selection key")
+        result[key] = value
+    return result
+
+
+def _parse_selection(raw: bytes) -> tuple[str, tuple[tuple[str, str], ...]]:
+    try:
+        value = json.loads(raw.decode("utf-8"), object_pairs_hook=_strict_selection_object)
+    except (ValueError, UnicodeError, RecursionError) as error:
+        raise protocol.ValidationError("invalid local evidence selection JSON") from error
+    if not isinstance(value, dict) or set(value) != {"schema_version", "active_generation", "generations"}:
+        raise protocol.ValidationError("invalid local evidence selection fields")
+    if value["schema_version"] != SELECTION_SCHEMA:
+        raise protocol.ValidationError("invalid local evidence selection schema")
+    entries = value["generations"]
+    if not isinstance(entries, list) or not 1 <= len(entries) <= MAX_GENERATIONS:
+        raise protocol.ValidationError("invalid local evidence generation catalog size")
+    catalog: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {"id", "bundle_sha256"}:
+            raise protocol.ValidationError("invalid local evidence generation fields")
+        identity, digest = entry["id"], entry["bundle_sha256"]
+        if not isinstance(identity, str) or (identity != "legacy" and not GENERATION_ID.fullmatch(identity)):
+            raise protocol.ValidationError("invalid local evidence generation ID")
+        if identity in seen:
+            raise protocol.ValidationError("duplicate local evidence generation ID")
+        if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise protocol.ValidationError("invalid local evidence bundle digest")
+        seen.add(identity)
+        catalog.append((identity, digest))
+    active = value["active_generation"]
+    if "legacy" not in seen or not isinstance(active, str) or active not in seen:
+        raise protocol.ValidationError("invalid active local evidence generation")
+    return active, tuple(catalog)
+
+
+def _read_selection(
+    parent: ls_receipts._PinnedDirectory, *, extra_generation: str | None = None
+) -> _SelectionState:
+    ls_receipts._require_pinned_directory(parent, "local evidence selection parent")
+    try:
+        metadata = os.stat(SELECTION_NAME, dir_fd=parent.descriptor, follow_symlinks=False)
+    except FileNotFoundError:
+        raw, identity = None, None
+        active, catalog = "legacy", ()
+    else:
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+            raise protocol.ValidationError("local evidence selection must be a regular single-link file")
+        raw = ls_receipts._read_safe_file_at(parent.descriptor, SELECTION_NAME, "local evidence selection", MAX_SELECTION_BYTES)
+        identity = ls_receipts._metadata_tuple(metadata)
+        if ls_receipts._metadata_tuple(os.stat(SELECTION_NAME, dir_fd=parent.descriptor, follow_symlinks=False)) != identity:
+            raise protocol.ValidationError("local evidence selection changed during read")
+        active, catalog = _parse_selection(raw)
+    generations: ls_receipts._PinnedDirectory | None = None
+    try:
+        try:
+            os.stat(GENERATIONS_NAME, dir_fd=parent.descriptor, follow_symlinks=False)
+        except FileNotFoundError:
+            names: set[str] = set()
+        else:
+            generations = ls_receipts._pin_directory_at(parent, GENERATIONS_NAME, parent.path / GENERATIONS_NAME, "local evidence generations")
+            names = {entry.name for entry in _bounded_sorted_scandir_at(generations.descriptor, MAX_GENERATIONS, "local evidence generations")}
+        expected = {key for key, _ in catalog if key != "legacy"}
+        if extra_generation is not None:
+            expected.add(extra_generation)
+        if names != expected:
+            raise protocol.ValidationError("unregistered or missing local evidence generation")
+        observed = []
+        for key, expected_digest in catalog or (("legacy", None),):
+            bundle_parent = parent if key == "legacy" else generations
+            assert bundle_parent is not None
+            name = DESTINATION_NAME if key == "legacy" else key
+            bundle = ls_receipts._pin_directory_at(bundle_parent, name, bundle_parent.path / name, "local evidence bundle")
+            try:
+                digest = _bundle_digest(_bundle_member_snapshots(bundle.descriptor))
+                ls_receipts._require_pinned_directory(bundle, "local evidence bundle")
+            finally:
+                ls_receipts._close_pinned_directory(bundle)
+            if expected_digest is not None and digest != expected_digest:
+                raise protocol.ValidationError(f"local evidence bundle digest mismatch: {key}")
+            observed.append((key, digest))
+        if generations is not None:
+            ls_receipts._require_pinned_directory(generations, "local evidence generations")
+            final_names = {entry.name for entry in _bounded_sorted_scandir_at(generations.descriptor, MAX_GENERATIONS, "local evidence generations")}
+            if final_names != names:
+                raise protocol.ValidationError("local evidence generation roster changed during read")
+        else:
+            try:
+                os.stat(GENERATIONS_NAME, dir_fd=parent.descriptor, follow_symlinks=False)
+            except FileNotFoundError:
+                pass
+            else:
+                raise protocol.ValidationError("local evidence generation roster changed during read")
+        ls_receipts._require_pinned_directory(parent, "local evidence selection parent")
+        try:
+            final_metadata = os.stat(SELECTION_NAME, dir_fd=parent.descriptor, follow_symlinks=False)
+        except FileNotFoundError:
+            if raw is not None:
+                raise protocol.ValidationError("local evidence selection disappeared during read")
+        else:
+            if identity != ls_receipts._metadata_tuple(final_metadata):
+                raise protocol.ValidationError("local evidence selection changed during read")
+        return _SelectionState(raw, identity, active, tuple(observed))
+    finally:
+        if generations is not None:
+            ls_receipts._close_pinned_directory(generations)
+
+
+def selected_local_formalization_root(repository_root: Path) -> Path:
+    """Validate the selection and historical byte catalog; return the live bundle."""
+    root = _absolute_normalized(repository_root) / "evidence" / EVIDENCE_ROOT_NAME
+    parent = ls_receipts._pin_directory(root, "local evidence selection parent")
+    try:
+        state = _read_selection(parent)
+        return root / (DESTINATION_NAME if state.active == "legacy" else f"{GENERATIONS_NAME}/{state.active}")
+    finally:
+        ls_receipts._close_pinned_directory(parent)
+
+
+def _select_generation(
+    parent: ls_receipts._PinnedDirectory, previous: _SelectionState,
+    generation: str, members: Mapping[str, bytes]
+) -> None:
+    if _read_selection(parent, extra_generation=generation) != previous:
+        raise protocol.ValidationError("local evidence selection changed before activation")
+    catalog = (*previous.catalog, (generation, _bundle_digest(members)))
+    raw = _canonical_json_bytes({
+        "schema_version": SELECTION_SCHEMA, "active_generation": generation,
+        "generations": [{"id": key, "bundle_sha256": digest} for key, digest in catalog],
+    })
+    if len(raw) > MAX_SELECTION_BYTES:
+        raise protocol.ValidationError("local evidence selection exceeds byte bound")
+    temporary = f".local-formalization-selection-{uuid.uuid4().hex}"
+    try:
+        _write_bytes_create_only_at(parent.descriptor, temporary, raw, "local evidence selection candidate")
+        descriptor = os.open(temporary, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=parent.descriptor)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        if _read_selection(parent, extra_generation=generation) != previous:
+            raise protocol.ValidationError("local evidence selection changed before activation")
+        if ls_receipts._read_safe_file_at(parent.descriptor, temporary, "local evidence selection candidate", MAX_SELECTION_BYTES) != raw:
+            raise protocol.ValidationError("local evidence selection candidate changed")
+        os.replace(temporary, SELECTION_NAME, src_dir_fd=parent.descriptor, dst_dir_fd=parent.descriptor)
+        _fsync_pinned_directory(parent, "local evidence selection parent")
+        selected = _read_selection(parent)
+        if selected.raw != raw:
+            raise protocol.ValidationError("local evidence selection changed after activation")
+    finally:
+        try:
+            os.unlink(temporary, dir_fd=parent.descriptor)
+        except FileNotFoundError:
+            pass
+
+
 def publish_local_formalization_evidence(
     repository_root: Path,
     *,
@@ -244,11 +429,30 @@ def publish_local_formalization_evidence(
 ) -> Publication:
     """Build and create the exact six-row local evidence bundle once."""
 
+    return _publish_local_evidence(repository_root, executor=executor, refresh=False)
+
+
+def refresh_local_formalization_evidence(
+    repository_root: Path,
+    *,
+    executor: Executor | None = None,
+) -> Publication:
+    """Capture a new immutable bundle and atomically select it, preserving history."""
+
+    return _publish_local_evidence(repository_root, executor=executor, refresh=True)
+
+
+def _publish_local_evidence(
+    repository_root: Path, *, executor: Executor | None, refresh: bool
+) -> Publication:
+
     repository = _absolute_normalized(repository_root)
     _ensure_directory(repository, "repository root")
     evidence_root = repository / "evidence" / EVIDENCE_ROOT_NAME
     _ensure_directory(evidence_root, "Crouzeix evidence root")
-    destination = evidence_root / DESTINATION_NAME
+    destination_name = uuid.uuid4().hex if refresh else DESTINATION_NAME
+    published_root = f"{GENERATIONS_NAME}/{destination_name}" if refresh else DESTINATION_NAME
+    destination = evidence_root / published_root
     _require_absent(destination, "local formalization evidence bundle")
 
     publication_lock = ls_receipts._acquire_publication_lock(evidence_root)
@@ -257,6 +461,9 @@ def publish_local_formalization_evidence(
     repository_directory: ls_receipts._PinnedDirectory | None = None
     source_parent: ls_receipts._PinnedDirectory | None = None
     destination_parent: ls_receipts._PinnedDirectory | None = None
+    selection_parent: ls_receipts._PinnedDirectory | None = None
+    selection_state: _SelectionState | None = None
+    created_generation_parent: ls_receipts._PinnedDirectory | None = None
     staged_bundle: ls_receipts._PinnedDirectory | None = None
     publication: Publication | None = None
     committed = False
@@ -266,6 +473,23 @@ def publish_local_formalization_evidence(
         destination_parent = ls_receipts._pin_directory(
             evidence_root, "local formalization publication parent"
         )
+        if refresh:
+            selection_parent = destination_parent
+            selection_state = _read_selection(selection_parent)
+            if len(selection_state.catalog) >= MAX_GENERATIONS:
+                raise protocol.ValidationError("local evidence generation catalog is full")
+            try:
+                os.mkdir(GENERATIONS_NAME, mode=0o700, dir_fd=selection_parent.descriptor)
+            except FileExistsError:
+                created = False
+            else:
+                created = True
+            destination_parent = ls_receipts._pin_directory_at(
+                selection_parent, GENERATIONS_NAME, evidence_root / GENERATIONS_NAME,
+                "local evidence generation parent"
+            )
+            if created:
+                created_generation_parent = destination_parent
         repository_directory = ls_receipts._pin_directory(
             repository, "local formalization repository root"
         )
@@ -336,8 +560,8 @@ def publish_local_formalization_evidence(
             staged_bundle, "routes", "staged local formalization route directory"
         )
 
-        stdout_path = _published_path("build/stdout.log")
-        stderr_path = _published_path("build/stderr.log")
+        stdout_path = _published_path("build/stdout.log", published_root)
+        stderr_path = _published_path("build/stderr.log", published_root)
         command = {
             "schema_version": BUILD_SCHEMA_VERSION,
             "argv": list(AGGREGATE_ARGV),
@@ -379,6 +603,7 @@ def publish_local_formalization_evidence(
             members[f"routes/{route_id}.receipt.json"] = route.receipt.data
             members[f"routes/{route_id}.review.json"] = route.review.data
         members[MANIFEST_NAME] = _manifest_bytes(
+            published_root=published_root,
             members=members,
             modules=modules,
             routes=routes,
@@ -417,7 +642,7 @@ def publish_local_formalization_evidence(
         _require_route_evidence(repository, routes)
         _require_staged_bundle(staged_bundle, members)
         _require_entry_absent(
-            destination_parent, DESTINATION_NAME, "local formalization evidence bundle"
+            destination_parent, destination_name, "local formalization evidence bundle"
         )
 
         _fsync_tree(staged_bundle)
@@ -433,15 +658,18 @@ def publish_local_formalization_evidence(
         _require_route_evidence(repository, routes)
         _require_staged_bundle(staged_bundle, members)
         _require_entry_absent(
-            destination_parent, DESTINATION_NAME, "local formalization evidence bundle"
+            destination_parent, destination_name, "local formalization evidence bundle"
         )
+        if selection_parent is not None:
+            if _read_selection(selection_parent) != selection_state:
+                raise protocol.ValidationError("local evidence selection changed during build")
         published = _rename_directory_no_replace(
-            source_parent, staged_bundle, destination_parent, DESTINATION_NAME
+            source_parent, staged_bundle, destination_parent, destination_name
         )
         committed = True
         publication = Publication(
-            evidence_root / DESTINATION_NAME,
-            evidence_root / DESTINATION_NAME / MANIFEST_NAME,
+            destination,
+            destination / MANIFEST_NAME,
         )
 
         post_commit_errors: list[BaseException] = []
@@ -470,6 +698,13 @@ def publish_local_formalization_evidence(
             raise PublicationCommittedError(
                 publication, publication.artifact_root, tuple(post_commit_errors)
             )
+        if selection_parent is not None and selection_state is not None:
+            try:
+                _select_generation(selection_parent, selection_state, destination_name, members)
+            except BaseException as error:
+                raise PublicationCommittedError(
+                    publication, publication.artifact_root, (error,)
+                ) from error
         return publication
     except BaseException as error:
         primary_error = error
@@ -490,11 +725,26 @@ def publish_local_formalization_evidence(
                     _remove_stage(stage, stage_root)
             except BaseException as error:
                 cleanup_errors.append(error)
+            if created_generation_parent is not None and selection_parent is not None:
+                try:
+                    ls_receipts._require_pinned_directory(selection_parent, "local evidence selection parent")
+                    ls_receipts._require_pinned_directory(created_generation_parent, "invocation-created generation parent")
+                    # rmdir is deliberately non-recursive: never remove visible evidence.
+                    try:
+                        os.rmdir(GENERATIONS_NAME, dir_fd=selection_parent.descriptor)
+                    except OSError as error:
+                        if error.errno not in (errno.ENOTEMPTY, errno.EEXIST):
+                            raise
+                    else:
+                        _fsync_pinned_directory(selection_parent, "local evidence selection parent")
+                except BaseException as error:
+                    cleanup_errors.append(error)
         descriptors: set[int] = set()
         for pinned in (
             staged_bundle,
             source_parent,
             destination_parent,
+            selection_parent,
             repository_directory,
         ):
             if pinned is None or pinned.descriptor in descriptors:
@@ -1011,6 +1261,7 @@ def _require_route_evidence(
 
 def _manifest_bytes(
     *,
+    published_root: str = DESTINATION_NAME,
     members: Mapping[str, bytes],
     modules: Mapping[str, str],
     routes: Mapping[str, _RouteEvidence],
@@ -1040,23 +1291,23 @@ def _manifest_bytes(
                 spec.declaration_name,
                 spec.module_path,
                 modules[spec.formalization_id],
-                _published_path(route_manifest),
+                _published_path(route_manifest, published_root),
                 protocol.sha256_bytes(members[route_manifest]),
-                _published_path(route_receipt),
+                _published_path(route_receipt, published_root),
                 protocol.sha256_bytes(members[route_receipt]),
-                _published_path(route_review),
+                _published_path(route_review, published_root),
                 protocol.sha256_bytes(members[route_review]),
-                _published_path(command),
+                _published_path(command, published_root),
                 protocol.sha256_bytes(members[command]),
-                _published_path(stdout),
+                _published_path(stdout, published_root),
                 protocol.sha256_bytes(members[stdout]),
-                _published_path(stderr),
+                _published_path(stderr, published_root),
                 protocol.sha256_bytes(members[stderr]),
-                _published_path(audit),
+                _published_path(audit, published_root),
                 protocol.sha256_bytes(members[audit]),
                 ",".join(ALLOWED_AXIOMS),
                 ",".join(observed) if observed else "-",
-                _published_path(provider),
+                _published_path(provider, published_root),
                 protocol.sha256_bytes(members[provider]),
                 lean_toolchain,
                 toolchain_sha256,
@@ -1068,12 +1319,12 @@ def _manifest_bytes(
     return text.encode("utf-8")
 
 
-def _published_path(relative_path: str) -> str:
+def _published_path(relative_path: str, published_root: str = DESTINATION_NAME) -> str:
     path = PurePosixPath(relative_path)
     if path.is_absolute() or ".." in path.parts or not path.parts:
         raise protocol.ValidationError("local evidence artifact path is unsafe")
     return (
-        PurePosixPath("evidence") / EVIDENCE_ROOT_NAME / DESTINATION_NAME / path
+        PurePosixPath("evidence") / EVIDENCE_ROOT_NAME / published_root / path
     ).as_posix()
 
 
@@ -1516,7 +1767,7 @@ def _rename_directory_no_replace(
     ls_receipts._safe_entry_name(destination_name, "local evidence destination")
     if not source.entry_name.startswith(STAGE_PREFIX):
         raise protocol.ValidationError("local evidence stage name is unsafe")
-    if destination_name != DESTINATION_NAME:
+    if destination_name != DESTINATION_NAME and not GENERATION_ID.fullmatch(destination_name):
         raise protocol.ValidationError("local evidence destination name is unsafe")
     ls_receipts._require_pinned_directory(
         source_parent, "local formalization staging parent"

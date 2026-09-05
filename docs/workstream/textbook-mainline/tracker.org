@@ -1,0 +1,151 @@
+#+TITLE: Textbook mainline landing party
+#+TODO: TODO READY IMPLEMENTING REVIEW BLOCKED | DONE
+
+* Intent and coordination
+Kata azr7 is the landing issue. aj4g tracks PDF production. 00zs tracks whole-book completion and is not closed by landing a draft. Read design.md first. source-inventory.tsv is a candidate input inventory, not an overwrite list.
+
+Planning branch: codex/textbook-landing-plan
+Planning worktree: .worktrees/textbook-landing-plan
+Proposed implementation branch: codex/textbook-mainline
+Proposed implementation worktree: .worktrees/textbook-mainline
+Implementation branch codex/textbook-mainline now exists at the proposed path. Both reading editions and the approved evidence-refresh extension are implemented and independently reviewed. Post-repair generation 0bb8c67c821f4e56b6a6b60e0e8bfe12 is captured; the original evidence and first capture remain unchanged. This is a pre-landing candidate record; final gate, commit and remote SHA evidence belongs to Kata azr7. Whole-book issue 00zs stays open.
+
+Dependency order: LP-01 then LP-02/LP-03/LP-04 investigation in parallel, serial shared-file integration, then LP-05, LP-06, LP-07. LP-06 includes a separate design approval before new website implementation. Workers must not share a writable Git index or regenerate outputs concurrently.
+
+* DONE Preparation and independent discovery
+:PROPERTIES:
+:ID: LP-00
+:OWNER: Integration lead
+:BRANCH: codex/textbook-landing-plan
+:WORKTREE: .worktrees/textbook-landing-plan
+:END:
+Read-only agents landing_history, landing_proofs, landing_pdf reviewed independent domains. Their findings are captured in design.md. Mainline and GitHub were read at 35bfda85. Source is afe523a2. No fresh mathematical validation is claimed.
+
+* DONE Freeze candidate and classify every dependency
+:PROPERTIES:
+:ID: LP-01
+:OWNER: Integration lead
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Owned files
+docs/workstream/textbook-mainline/design.md, tracker.org, source-inventory.tsv. Create classification.tsv beside them with status, path, action, rationale, source revision, and owner columns.
+** Steps
+- [ ] Confirm recommended Wave 4 baseline plus PDF commit and both-format requirement with the owner.
+- [ ] Read git status --porcelain=v1 in both existing checkouts. Capture statuses and content hashes for dirty files without modifying them.
+- [ ] Run git ls-remote --symref origin HEAD refs/heads/master and git rev-parse master. Reconcile any changed baseline before creating the candidate worktree with git worktree add -b codex/textbook-mainline .worktrees/textbook-mainline master from the primary checkout.
+- [ ] Inspect git diff --name-status 8723d1c01bb6aae1e6eab133a3614c3056cdd002 0424501af92bc799e766650ee8c13d6ed09b4b48 and git show --stat afe523a2. Classify every inventory row as take, adapt, regenerate, or exclude. Record every imported Lean and linked source dependency, including paths outside textbook directories.
+- [ ] Exclude unrelated context-control changes unless demonstrated necessary. Keep Wave 5 contract and implementation deferred as described in design.md.
+** Acceptance and verification
+Every inventory row has one owner and a concrete disposition. No unmatched dependency, source-working-tree copy, or implicit whole-tree replacement is permitted. git diff --check passes for the planning documents. Independent history reviewer checks the classification before implementation.
+
+* REVIEW Integrate the committed mathematical/publication baseline
+:PROPERTIES:
+:ID: LP-02
+:OWNER: Proof/publication worker
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Owned files
+Classified paths under knowledge/crouzeix_textbook/, content/crouzeix_textbook/, formalization/lean/CrouzeixTextbook*, the four Crouzeix/Harp modules and CrouzeixConjecture/Sharpness.lean, crates/harp/src/crouzeix_textbook/, secure filesystem helpers, fixtures, and textbook tests. The lead serializes Cargo, corpus and CLI changes shared with LP-03.
+** Steps
+- [ ] Apply only classified committed blobs or reviewed hunks from the selected baseline. Preserve mainline changes in existing files.
+- [ ] Preserve exact/reexport/checkpoint status, 35-chapter order and separate Jin/LS routes. Resolve every Lean import, provider and source link.
+- [ ] Integrate Rust registration, dependencies, CLI commands and secure publication boundaries. Never copy old Cargo.lock wholesale over mainline dependencies.
+- [ ] Run cargo test -p harp --test crouzeix_textbook -- --test-threads=1 and cargo test -p harp corpus::tests --lib -- --test-threads=1 after LP-03 environment readiness. Confirm actual nonzero test counts.
+** Acceptance and verification
+Canonical statements, hypothesis maps, exercise solutions and provider declarations agree with the selected baseline. Status continues to disclose incomplete foundations/analysis. Fixtures never mutate canonical inputs. Missing dependencies are explicit blockers, not downgraded proof claims.
+
+* REVIEW Preserve mainline environment, evidence and reader behavior
+:PROPERTIES:
+:ID: LP-03
+:OWNER: Mainline compatibility worker with serial integration lead
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Owned files
+mise.toml, scripts/check_lean_library.sh, scripts/test_lean_task_graph.sh, crates/harp/tests/lean_library.rs, crates/harp/tests/cli.rs, classified labs/crouzeix_proof_reproduction changes, atlas/src/content/contracts.ts and types.ts, atlas/src/app/routes.ts and related tests. Preserve scripts/harp_xdg_env.sh behavior.
+** Steps
+- [ ] Add textbook target and receipt support to the current wrapper. Adapt new tasks to the mainline XDG environment. Test fake-tool failure, source isolation, receipt and cache-policy cases before real proof work.
+- [ ] Inspect toolchain pin, primary cache ancestry and required artifacts without invoking Lake. Validate whole-root .lake symlink and mise trust in the candidate. Stop for missing cache; never hydrate it automatically.
+- [ ] Integrate textbook routes into current Atlas reading paths, preserving navigation, accessibility, existing pages and strict JSON boundaries.
+- [ ] Run cargo test -p harp --test lean_library -- --test-threads=1 and cargo test -p harp --test cli -- --test-threads=1.
+- [ ] Run python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests and, from atlas/, corepack pnpm run test. Investigate any failure without disabling unrelated mainline checks.
+** Acceptance and verification
+No temporary Lean paths reintroduced. Current six-route evidence policy, Pages, releases and Atlas redesign remain intact. Existing and textbook tests pass. Any claimed hermetic proof execution must use the existing reviewed Seatbelt path; ordinary builds are labeled local compilation.
+
+* REVIEW Make the PDF exporter clean-checkout safe
+:PROPERTIES:
+:ID: LP-04
+:OWNER: PDF worker
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Owned files
+tools/textbook_pdf/ and its three .gitignore rules. Shared verification task wiring goes through the lead.
+** Steps
+- [ ] Apply the PDF commit only after its source dependencies are available.
+- [ ] The lead stages explicit reviewed candidate source paths before tracked-input validation, records index blob IDs and working-file hashes, and confirms they match. Staging is not committing. Release input checks use the frozen index until the verified commit exists; only after successful gates may LP-05 commit. Workers must not stage shared paths independently.
+- [ ] Write regression tests for truthful clean-checkout edition notes, staged canonical chapter discovery, missing/wrong-count inputs, symlinked inputs and path escape. Make each regression fail before repairing it.
+- [ ] Separate pure rendering tests from import-time whole-book loading. Discover validated files, retain exact source hashes, and reject fallback/unresolved references for release mode.
+- [ ] Make Chapter 1 and Chapter 13 notes depend on actual provenance. Do not retain claims about private uncommitted additions.
+- [ ] Pin/document the installation, browser and fonts. Use installed packages during iteration; request any new dependency provisioning separately when needed. Record actual versions, not assumed system defaults.
+- [ ] Run node --test tools/textbook_pdf/build.test.cjs. Build both PDFs with CHROMIUM_EXECUTABLE pointing to a verified local browser, then run python3 tools/textbook_pdf/check_pdf.py using the documented dependencies.
+** Acceptance and verification
+All candidate sources are inside the repository, tracked, complete and hash-matched. No source fallback or unresolved link. No claims of byte-identical builds. Generated PDFs remain ignored. The node tests can run before committing new textbook input, so the verify-before-commit policy is not circular.
+
+* REVIEW Publish, review and freeze the integration candidate
+:PROPERTIES:
+:ID: LP-05
+:OWNER: Integration lead and independent Standards/Spec reviewers
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Owned files
+Generated textbook ledgers and correspondence outputs, atlas/src/content/generated/corpus.json, atlas/dist/harp-atlas.html and receipt, docs/import-receipt.md. Only this task writes shared generated output.
+** Steps
+- [ ] Stop concurrent canonical edits and record candidate tree/content hashes.
+- [ ] Run mise run lean-crouzeix-textbook and affected provider targets lean-crouzeix-jin, lean-crouzeix-ls, lean-crouzeix-harp after preflight. Run mise run crouzeix-textbook-publication for a fresh compiled receipt and publish/check cycle.
+- [ ] Regenerate Atlas corpus and HTML together with the integrated verify-atlas task. Run all focused Rust, Python and Atlas checks again.
+- [ ] Independent reviewers inspect the exact candidate diff against pinned mainline, including semantic mainline preservation and proof-status boundaries. Resolve blocking findings and recheck affected behavior.
+- [ ] Run mise run verify with successful aggregate exit status. If the import receipt is stale, take the actual digest from harp repository verify, update docs/import-receipt.md last, and rerun repository verification plus the full gate.
+- [ ] Reconcile the previously staged candidate with regenerated outputs using explicit path groups. Confirm the staged bytes equal the bytes verified, then commit only after required checks pass. Record final commit and content hashes. Recheck on the final commit; no stale receipt from an earlier payload counts.
+** Acceptance and verification
+Full gate passes on the final candidate. No stale generated outputs. Reviews have no blocking findings. No proof guarantee beyond the gates actually run. Candidate clean except ignored build output.
+
+* REVIEW Review the PDF and website reading experiences
+:PROPERTIES:
+:ID: LP-06
+:OWNER: Editorial design worker and independent visual/accessibility reviewer
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Scope and design gate
+Owner approved the shared editorial direction and execution. reading-editions-spec.md records the design. Keep canonical mathematical content shared and use the existing Atlas reader as the base. Visual and accessibility review must pass before landing.
+** Owned files
+PDF presentation files; atlas/src/app/ChapterReader.tsx and tests, relevant textbook routes/components, atlas/src/styles/research.css and shared tokens only where approved. No independent copy of chapter prose.
+** Acceptance and verification
+- [ ] Both editions show the same chapter/theorem identifiers, equations, Lean declarations, source hashes and honest status.
+- [ ] PDF review covers cover, contents, chapter openings, square-bracket matrices, long proofs, tables, Lean notes, widow/orphan control and hyperlinks. Rebuild from the frozen candidate, not the dirty-source artifact bundle.
+- [ ] Website review covers 390px, 768px and 1440px widths, keyboard navigation, visible focus, 200% zoom, readable math, anchors and browser back/forward. No document-level horizontal overflow. Wide equations may scroll inside labeled containers.
+- [ ] Normal text meets 4.5:1 contrast. Proof and Lean status never rely on color alone. Reduced motion is respected. Essential statements and hypotheses are always visible.
+- [ ] Every formal theorem has a useful Lean source link. Compiled evidence details can be disclosed separately; motivation/history/ML analogies stay clearly labeled.
+- [ ] PDF downloads appear only when a matching, verified, licensed artifact bundle exists. Do not add dead or stale download links.
+- [ ] Any LP-06 implementation changes return through LP-05 before landing. Candidate commit after visual repairs receives fresh full checks.
+
+* TODO Fast-forward mainline and push the verified commit
+:PROPERTIES:
+:ID: LP-07
+:OWNER: Integration lead
+:BRANCH: codex/textbook-mainline
+:WORKTREE: .worktrees/textbook-mainline
+:END:
+** Steps
+- [ ] Confirm LP-01 through LP-06 acceptance, review the exact commit set, and verify push authority still applies to this scope.
+- [ ] Recheck git ls-remote origin refs/heads/master, local master and primary dirty-file hashes. If mainline moved, integrate and rerun affected/full gates before proceeding.
+- [ ] From the primary checkout on master, git merge --ff-only codex/textbook-mainline. Stop rather than stash or overwrite unrelated work if Git cannot advance safely.
+- [ ] Use PATH including the existing /opt/homebrew/bin/git-lfs, then git push origin master:master. Do not install hooks or bypass branch protection. No force option.
+- [ ] Read git ls-remote origin refs/heads/master back and compare its SHA to local master and the verified candidate.
+- [ ] Update azr7 with commit, full gate evidence and remote SHA. Preserve the dirty source worktree and branch. Report preserved primary edits. Do not close 00zs or claim chapter completion.
+** Acceptance and verification
+Local master and GitHub master equal the verified candidate. No unrelated dirty files changed. PDF binaries are not uploaded under this code-only push. If a protected-branch PR is required, stop and request that workflow rather than bypassing policy.

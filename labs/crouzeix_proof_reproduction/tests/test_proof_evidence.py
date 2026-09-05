@@ -37,6 +37,7 @@ EXPECTED_DEFAULT_TARGETS = (
     "NNG4Intro",
     "AutodiffGeometry",
     "Crouzeix",
+    "CrouzeixTextbook",
 )
 EXPECTED_LEAN_LIBS = (
     "TrainingDynamics",
@@ -44,6 +45,7 @@ EXPECTED_LEAN_LIBS = (
     "NNG4Intro",
     "AutodiffGeometry",
     "Crouzeix",
+    "CrouzeixTextbook",
     "CrouzeixJin",
     "CrouzeixLoristSchwenninger",
     "CrouzeixHarp",
@@ -1356,6 +1358,40 @@ class ProofEvidencePreflightTests(unittest.TestCase):
         self.assertNotIn("\x00", reason)
         self.assertNotIn("\n", reason)
 
+    def test_refresh_local_reports_selected_generation(self) -> None:
+        import contextlib
+        import io
+
+        publication = proof_evidence.local_formalization_evidence.Publication(
+            REPO / "evidence/crouzeix_conjecture/local_formalization_generations" / ("a" * 32),
+            REPO / "evidence/crouzeix_conjecture/local_formalization_generations" / ("a" * 32) / "manifest.tsv",
+        )
+        output = io.StringIO()
+        with mock.patch.object(
+            proof_evidence.local_formalization_evidence,
+            "refresh_local_formalization_evidence", return_value=publication,
+        ) as refresh, contextlib.redirect_stdout(output):
+            result = proof_evidence.main(["refresh-local"])
+        self.assertEqual(result, 0)
+        self.assertEqual(json.loads(output.getvalue())["status"], "published-selected")
+        self.assertEqual(json.loads(output.getvalue())["manifest_path"], str(publication.manifest_path))
+        refresh.assert_called_once()
+
+    def test_refresh_local_reports_validation_failure_without_success(self) -> None:
+        import contextlib
+        import io
+
+        output = io.StringIO()
+        with mock.patch.object(
+            proof_evidence.local_formalization_evidence,
+            "refresh_local_formalization_evidence",
+            side_effect=protocol.ValidationError("invalid active generation"),
+        ), contextlib.redirect_stdout(output):
+            result = proof_evidence.main(["refresh-local"])
+        self.assertEqual(result, 1)
+        self.assertEqual(json.loads(output.getvalue())["status"], "blocked")
+        self.assertIn("invalid active generation", json.loads(output.getvalue())["reason"])
+
     def test_publish_local_invokes_closed_canonical_publication(self) -> None:
         fixture = self.build_fixture()
         publication = mock.Mock()
@@ -1575,7 +1611,7 @@ class ProofEvidencePreflightTests(unittest.TestCase):
 
     def test_lakefile_exact_contract_rejects_missing_duplicate_and_extra_entries(self) -> None:
         fixture = self.build_fixture()
-        fixture.write_lakefile(fixture.valid_lakefile().replace('  "Crouzeix"\n', ""))
+        fixture.write_lakefile(fixture.valid_lakefile().replace('  "CrouzeixTextbook"\n', ""))
         payload = fixture.blocked_json("jin")
         self.assertIn("lakefile.toml defaultTargets are invalid", payload["reason"])
 

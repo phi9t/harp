@@ -1,5 +1,6 @@
 pub mod context_control;
 mod corpus;
+pub mod crouzeix_textbook;
 mod error;
 mod fs;
 mod json;
@@ -14,6 +15,9 @@ use std::path::{Path, PathBuf};
 use serde::Serialize;
 use serde_json::Value;
 
+pub use crouzeix_textbook::{
+    publish_crouzeix_textbook, TextbookPublishMode, TextbookPublishResult,
+};
 pub use error::AppError;
 
 const DEFAULT_CORPUS_OUTPUT: &str = "atlas/src/content/generated/corpus.json";
@@ -123,6 +127,7 @@ pub fn build_corpus(
             &bytes,
             expected.as_ref(),
             "Harp generated corpus",
+            MAX_GENERATED_BYTES,
         )?;
     }
     Ok(BuildResult {

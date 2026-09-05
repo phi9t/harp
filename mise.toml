@@ -47,6 +47,7 @@ sh scripts/test_harp_xdg_env.sh
 sh scripts/test_lean_task_graph.sh
 python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
 python3 -m unittest discover -s scripts/tests -p test_prepare_pages.py -v
+python3 -m unittest discover -s scripts/tests -p test_textbook_publication_task.py -v
 """
 
 [tasks.fmt]
@@ -91,6 +92,7 @@ python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
 
 [tasks.verify-atlas]
 description = "Run Atlas lint, types, tests, production build, and decoded export test"
+depends = ["crouzeix-textbook-publication"]
 run = """
 set -euo pipefail
 config_root="{{config_root}}"
@@ -179,6 +181,33 @@ description = "Build the Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
 run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh Crouzeix'''
 
+[tasks.lean-crouzeix-textbook]
+description = "Build the Crouzeix textbook Lean library from the shared Lake root"
+depends = ["lean-env"]
+run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh CrouzeixTextbook'''
+
+[tasks.crouzeix-textbook-publication]
+description = "Compile a fresh textbook receipt, then publish and check the Rust-owned ledgers"
+depends = ["lean-env", "build"]
+run = """
+set -euo pipefail
+textbook_harp_binary="$HARP_TARGET_DIR/size/harp"
+. scripts/harp_xdg_env.sh
+export ELAN_HOME="$HARP_ELAN_HOME"
+export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"
+umask 077
+receipt_dir=$(mktemp -d "${TMPDIR:-/tmp}/harp-crouzeix-textbook-receipt.XXXXXX")
+receipt_path="$receipt_dir/receipt.json"
+cleanup() {
+  rm -f -- "$receipt_path"
+  rmdir -- "$receipt_dir"
+}
+trap cleanup EXIT
+scripts/check_lean_library.sh CrouzeixTextbook --receipt-output "$receipt_path"
+"$textbook_harp_binary" crouzeix-textbook publish --receipt "$receipt_path"
+"$textbook_harp_binary" crouzeix-textbook check --receipt "$receipt_path"
+"""
+
 [tasks.lean-crouzeix-jin]
 description = "Build the route-isolated Jin Crouzeix Lean library from the shared Lake root"
 depends = ["lean-env"]
@@ -209,6 +238,7 @@ mise run lean-foundations
 mise run lean-nng4
 mise run lean-autodiff
 mise run lean-crouzeix
+mise run lean-crouzeix-textbook
 """
 
 [tasks.verify-lean]

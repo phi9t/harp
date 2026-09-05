@@ -18,6 +18,7 @@ import { parseDiagnostics } from "../diagnostics/contracts";
 
 const digestPattern = /^[a-f0-9]{64}$/;
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const maxDocumentAliases = 256;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -302,6 +303,7 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
       "retained_concepts",
       "coverage",
       "reader_routes",
+      "document_aliases",
       "documents",
       "systems",
       "weng_sections",
@@ -310,13 +312,14 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
     ],
     "Canonical RSI corpus",
   );
-  if (corpus.schema_version !== "rsi-technical-atlas/v5") {
+  if (corpus.schema_version !== "rsi-technical-atlas/v6") {
     throw new Error("Canonical RSI corpus has an unsupported schema");
   }
   if (
     !Array.isArray(corpus.retained_concepts)
     || !Array.isArray(corpus.coverage)
     || !Array.isArray(corpus.reader_routes)
+    || !Array.isArray(corpus.document_aliases)
     || !Array.isArray(corpus.documents)
     || !Array.isArray(corpus.systems)
     || !Array.isArray(corpus.weng_sections)
@@ -443,6 +446,25 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
       html_sha256: htmlDigest,
       html: opaqueText(document.html, `Document ${index} HTML`),
       metadata,
+    };
+  });
+  if (corpus.document_aliases.length > maxDocumentAliases) {
+    throw new Error(
+      `Canonical RSI corpus exceeds ${maxDocumentAliases} document aliases`,
+    );
+  }
+  const documentAliases = corpus.document_aliases.map((value, index) => {
+    const alias = exactObject(
+      value,
+      ["alias_id", "canonical_document_id"],
+      `Document alias ${index}`,
+    );
+    return {
+      alias_id: documentId(alias.alias_id, `Document alias ${index} ID`),
+      canonical_document_id: documentId(
+        alias.canonical_document_id,
+        `Document alias ${index} canonical document`,
+      ),
     };
   });
 
@@ -658,6 +680,29 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
     documents.map((document) => document.canonical_markdown_path),
     "Document paths",
   );
+  unique(
+    documentAliases.map((alias) => alias.alias_id),
+    "Document alias IDs",
+  );
+  for (const alias of documentAliases) {
+    if (
+      !documents.some(
+        (document) => document.concept_id === alias.canonical_document_id,
+      )
+    ) {
+      throw new Error(
+        `Document alias ${alias.alias_id} has unknown canonical document`,
+      );
+    }
+    if (
+      alias.alias_id !== alias.canonical_document_id
+      && documents.some((document) => document.concept_id === alias.alias_id)
+    ) {
+      throw new Error(
+        `Document alias ${alias.alias_id} collides with a canonical document`,
+      );
+    }
+  }
   for (const path of chapterPaths) {
     if (!documents.some((document) => document.canonical_markdown_path === path)) {
       throw new Error("Canonical RSI corpus references a missing chapter");
@@ -761,6 +806,7 @@ export function parseCorpus(value: unknown): CanonicalCorpus {
     retained_concepts: retainedConcepts,
     coverage,
     reader_routes: readerRoutes,
+    document_aliases: documentAliases,
     documents,
     systems,
     weng_sections: wengSections,

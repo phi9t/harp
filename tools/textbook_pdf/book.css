@@ -1,0 +1,72 @@
+@page { size: 7.5in 10in; margin: .72in .72in .78in; }
+* { box-sizing: border-box; }
+html { color: #292c2c; background: #fff; }
+body { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.48; }
+a { color: #3c6370; text-decoration: none; }
+p { margin: 0 0 .62em; orphans: 3; widows: 3; overflow-wrap: anywhere; }
+strong { font-weight: 700; }
+h1,h2,h3,h4,h5 { font-family: Georgia, serif; color: #293b40; line-height: 1.2; break-after: avoid; }
+h1 { font-size: 27pt; font-weight: 400; margin: .3in 0 .35in; letter-spacing: -.7px; }
+h2 { font-size: 16pt; font-weight: 400; margin: 1.5em 0 .65em; }
+h3 { font-size: 12.5pt; margin: 1.2em 0 .5em; }
+h4 { font: italic 10.5pt/1.3 Georgia,serif; margin: 1em 0 .4em; color: #536364; }
+h5 { font-size: 10.5pt; }
+ul,ol { margin: .45em 0 .9em; padding-left: 1.45em; }
+li { margin: .18em 0; overflow-wrap: anywhere; }
+li p { margin-bottom: .3em; }
+code { font: .76em/1.4 'Menlo','DejaVu Sans Mono',monospace; overflow-wrap: anywhere; color: #304653; }
+pre { background: #f4f6f5; border-top: .5pt solid #cbd5d4; padding: 10pt 12pt; margin: 1em 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.45; break-inside: avoid; }
+p:has(+ pre), p:has(+ .math-block) { break-after: avoid; }
+pre code { font-size: 8.1pt; }
+pre:has(> code.language-text) { background: none; border: 0; padding: 3pt 0 3pt 16pt; margin: .85em 0; }
+pre:has(> code.language-text) code { font-size: 8.7pt; line-height: 1.65; color: #34474b; }
+pre:has(> code.language-lean)::before { content: 'LEAN 4'; display: block; font: 7pt Arial,sans-serif; letter-spacing: 1.2px; color: #648080; margin-bottom: 7pt; }
+blockquote { border-left: 2pt solid #95abb8; margin: 1em 0; padding: .2em 0 .2em 1em; color: #425660; }
+table { width: 100%; border-collapse: collapse; font-size: 8.6pt; line-height: 1.38; margin: 1em 0; table-layout: auto; }
+thead { display: table-header-group; }
+th { text-align: left; font: 700 8pt/1.35 Arial,sans-serif; color: #3b5057; background: none; border-top: 1pt solid #8faaa9; border-bottom: .5pt solid #bfcfcd; }
+th,td { padding: 6pt 6pt; vertical-align: top; overflow-wrap: anywhere; }
+td { border-bottom: .4pt solid #dce3e7; }
+tr { break-inside: avoid; }
+table code { font-size: 7.1pt; }
+.katex { font-size: 1.02em; color: #1f2930; }
+.katex-display { margin: .85em 0; padding: 2pt 0; break-inside: avoid; }
+.katex-display > .katex { max-width: 100%; }
+.math-block { break-inside: avoid; break-after: avoid; }
+.cover { height: 8.3in; break-after: page; position: relative; padding: .5in .12in 0; }
+.eyebrow { font: 700 8.5pt/1.3 Arial,sans-serif; letter-spacing: 2.3px; text-transform: uppercase; color: #547284; }
+.cover h1 { font-size: 44pt; line-height: 1.04; letter-spacing: -1.8px; margin-top: .72in; margin-bottom: .32in; }
+.cover .subtitle { font-size: 18pt; line-height: 1.35; max-width: 4.9in; color: #526776; }
+.cover .rule { width: .7in; height: 3pt; background: #b09a6d; margin: .42in 0; }
+.cover .audience { font-size: 11pt; color: #526776; max-width: 4.4in; }
+.cover .cover-math { margin-top: .65in; font-size: 17pt; text-align: left; padding: 18pt 0; border-top: .5pt solid #d4d7cc; border-bottom: .5pt solid #d4d7cc; }
+.cover .edition { position: absolute; bottom: .15in; font: 9pt/1.6 Arial,sans-serif; color: #60717c; }
+.frontmatter { break-before: page; }
+.frontmatter h1 { margin-top: .15in; }
+.edition-note { font-size: 10pt; line-height: 1.5; }
+.status-note { border-left: 2pt solid #b09a6d; background: #f7f5f0; padding: 12pt 14pt; margin: 1.2em 0; }
+.contents { columns: 1; }
+.toc-part { margin: 1em 0 .35em; font: 700 8.2pt/1.4 Arial,sans-serif; color: #547284; letter-spacing: 1px; text-transform: uppercase; break-after: avoid; }
+.toc-entry { display: flex; gap: 12pt; align-items: baseline; margin: .35em 0; line-height: 1.35; font-size: 10.6pt; break-inside: avoid; }
+.toc-number { flex: 0 0 20pt; color: #8198a6; font: 10pt Arial,sans-serif; }
+.toc-entry a { color: #263f50; flex: 1; }
+.toc-page { flex: 0 0 25pt; text-align: right; color: #607d8e; font: 9pt Arial,sans-serif; }
+.chapter { break-before: page; }
+.chapter-head { margin-top: .25in; margin-bottom: .34in; break-inside: avoid; }
+.chapter-head .chapter-number { font: 9pt Arial,sans-serif; letter-spacing: 1.5px; color: #7a877c; margin-top: .32in; }
+.chapter-head .chapter-number::before { content: 'CHAPTER '; }
+.chapter-head h1 { font-size: 28pt; margin: .13in 0 .12in; }
+.chapter-head .chapter-rule { height: 1.5pt; background: #b19c76; width: .55in; margin-top: .22in; }
+.chapter-source { font: 8pt/1.4 Arial,sans-serif; color: #627785; }
+.appendix { break-before: page; }
+.print-note { font: 8.5pt/1.45 Arial,sans-serif; color: #5c6e79; }
+.proof-lead { color: #244d65; }
+.source-list { font-size: 8pt; }
+.receipt { font: 7.7pt/1.5 Arial,sans-serif; color: #596d79; border-left: 1pt solid #c6d3d9; padding-left: 8pt; margin: 1em 0; }
+.evidence-note { font: 9pt/1.5 Arial,sans-serif; color: #566971; border-left: 1pt solid #ced8d6; padding: 3pt 0 3pt 10pt; margin: 1.05em 0; }
+.evidence-note code { font-size: 8pt; }
+.statement { border-left: 1.5pt solid #b6a17b; padding-left: 11pt; margin: .9em 0; }
+.statement strong { color: #2d454b; }
+.theorem-id { display: block; font: 7.5pt/1.4 Arial,sans-serif; letter-spacing: 1px; color: #718884; margin-bottom: 4pt; }
+hr { border: 0; border-top: .5pt solid #ccd7dd; margin: 1.2em 0; }
+@media screen { body { max-width: 6.06in; margin: 30px auto; } }

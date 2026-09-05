@@ -1,6 +1,6 @@
 module
 
-public import CrouzeixConjecture.FinalTheorems
+public import CrouzeixConjecture.HolomorphicConsequences
 public import Mathlib.Analysis.Convex.Basic
 public import Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional
 

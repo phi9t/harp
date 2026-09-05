@@ -1,0 +1,30 @@
+{
+  "schema_version": "crouzeix-textbook-compatibility-routes/v1",
+  "routes": [
+    {
+      "canonical_id": "cft-chapter-01-objects-and-representations",
+      "legacy_concept_id": "crouzeix-textbook-chapter-01",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md"
+    },
+    {
+      "canonical_id": "cft-chapter-02-vector-spaces-and-subspaces",
+      "legacy_concept_id": "crouzeix-textbook-chapter-02",
+      "canonical_path": "knowledge/crouzeix_textbook/part_01_linear_structure/02_vector_spaces_and_subspaces.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-reading-guide",
+      "legacy_concept_id": "crouzeix-textbook-reading-guide",
+      "canonical_path": "knowledge/crouzeix_textbook/reading_guide.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-source-registry",
+      "legacy_concept_id": "crouzeix-textbook-source-registry",
+      "canonical_path": "knowledge/crouzeix_textbook/source_registry.md"
+    },
+    {
+      "canonical_id": "crouzeix-textbook-claim-evidence-ledger",
+      "legacy_concept_id": "crouzeix-textbook-claim-evidence-ledger",
+      "canonical_path": "knowledge/crouzeix_textbook/claim_evidence_ledger.md"
+    }
+  ]
+}
