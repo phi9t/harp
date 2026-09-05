@@ -7,6 +7,7 @@
 | Guide | What it covers |
 | --- | --- |
 | [Getting started](getting-started.md) | Clone, read the offline Atlas, open the Obsidian vault, build the CLI, and search |
+| [Atlas publication](publishing-atlas.md) | Read the hosted Atlas and maintain its GitHub Pages deployment |
 | [Agent workflows](agent-workflows.md) | Run Codex or Trae CLI, inspect records, and recover durable task graphs |
 | [Native release candidates](releasing.md) | Build a verified host-native archive and install it locally |
 

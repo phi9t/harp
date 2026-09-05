@@ -2,8 +2,9 @@
 
 [Documentation](README.md) / Getting started
 
-Choose the shortest path for what you want to do. Reading the checked-in Atlas
-needs only a browser. Building the CLI needs the toolchain below. Running the
+Open the [Harp Atlas](https://phi9t.github.io/harp/) to start reading in your
+browser. No clone or build is needed. To read offline or use the CLI, follow the
+setup below. Running the
 full contributor gate also needs the pinned Lean toolchain and a warm
 dependency cache.
 
@@ -22,7 +23,8 @@ do prevent opening the affected evidence files and passing full verification.
 
 ## Read the Atlas
 
-Open `atlas/dist/harp-atlas.html` from the cloned checkout in your browser.
+Use the [hosted reader](https://phi9t.github.io/harp/), or open
+`atlas/dist/harp-atlas.html` from the cloned checkout in your browser.
 On macOS:
 
 ```sh
@@ -32,6 +34,9 @@ open atlas/dist/harp-atlas.html
 The single file contains the compiled corpus, scripts, and styles. It does not
 need a development server. External source links still need a network
 connection; the export does not bundle every file under `evidence/`.
+The hosted reader also excludes those files. For repository-relative evidence
+locators, use a local checkout or browse the
+[source repository](https://github.com/phi9t/harp).
 
 Start with the RSI orientation and system comparisons, then follow a claim to
 its ledger entry and source. Workstreams shows the checked-in reference

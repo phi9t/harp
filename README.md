@@ -6,6 +6,7 @@ Harp brings research notes, captured sources, and runnable experiments into one
 repository. Use it to compare self-improving systems, trace claims to evidence,
 or run restartable agent tasks with recorded results.
 
+[Open the Atlas](https://phi9t.github.io/harp/) ·
 [Get started](docs/getting-started.md) ·
 [Agent workflows](docs/agent-workflows.md) ·
 [Documentation](docs/README.md) ·
@@ -13,10 +14,15 @@ or run restartable agent tasks with recorded results.
 
 ## Start reading
 
-The offline Atlas is already built. After cloning the repository, open
+Read the [Harp Atlas online](https://phi9t.github.io/harp/). No installation or
+model account is needed. GitHub Pages serves the checked-in export from
+`master`; see [Atlas publication](docs/publishing-atlas.md) for how updates
+reach the site.
+
+For offline reading, clone the repository and open
 [`atlas/dist/harp-atlas.html`](atlas/dist/harp-atlas.html) from your local
 filesystem in a browser. It includes the compiled research corpus, JavaScript,
-and styles. No server, build tools, or model account is needed to read it.
+and styles. No server or build tools are needed to read it.
 GitHub displays the HTML source; it does not run the reader.
 
 Prefer Markdown? Start with the

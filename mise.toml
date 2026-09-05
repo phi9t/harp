@@ -46,6 +46,7 @@ scripts/test_check_no_dwarf.sh
 sh scripts/test_harp_xdg_env.sh
 sh scripts/test_lean_task_graph.sh
 python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
+python3 -m unittest discover -s scripts/tests -p test_prepare_pages.py -v
 """
 
 [tasks.fmt]
