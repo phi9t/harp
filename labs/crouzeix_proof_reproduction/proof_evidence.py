@@ -21,6 +21,7 @@ if __package__:
         protocol,
         route_publication,
         route_validation,
+        theorem_graph,
     )
 else:  # pragma: no cover - direct script execution path
     import goal_validation
@@ -31,6 +32,7 @@ else:  # pragma: no cover - direct script execution path
     import protocol
     import route_publication
     import route_validation
+    import theorem_graph
 
 
 PINNED_TOOLCHAIN = "leanprover/lean4:v4.32.1"
@@ -1100,9 +1102,24 @@ def main(argv: list[str]) -> int:
         "--goal-plan",
         default=str(goal_validation.FIXED_PLAN_PATH),
     )
+    subparsers.add_parser("theorem-graph")
     args = parser.parse_args(argv)
 
     repository_root = canonical_repository_root()
+    if args.command == "theorem-graph":
+        try:
+            payload = theorem_graph.build_theorem_graph_json(repository_root)
+            theorem_graph.validate_theorem_graph(payload)
+        except theorem_graph.TheoremGraphError as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": theorem_graph.GRAPH_SCHEMA_VERSION,
+                "status": "invalid",
+                "reason": str(error),
+            }))
+            return 1
+        sys.stdout.write(canonical_json(payload))
+        return 0
+
     if args.command == "validate-goal":
         fixed_goal = repository_root / goal_validation.FIXED_PLAN_PATH
         requested_goal = Path(args.goal_plan)
