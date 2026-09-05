@@ -1,14 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import { canonicalChapters } from "../content/canonical";
 import type { CanonicalDocument } from "../content/types";
 import { renderCanonicalMath } from "./math";
 
-function secondLevelHeadings(html: string): string[] {
+function secondLevelHeadings(html: string): { id: string; title: string }[] {
   const parsed = new DOMParser().parseFromString(html, "text/html");
   return Array.from(parsed.querySelectorAll("h2"))
-    .map((heading) => heading.textContent?.trim() ?? "")
-    .filter((heading) => heading.length > 0);
+    .map((heading) => ({ id: heading.id, title: heading.textContent?.trim() ?? "" }))
+    .filter((heading) => heading.title.length > 0);
+}
+
+function addressableHtml(html: string): string {
+  const parsed = new DOMParser().parseFromString(html, "text/html");
+  const used = new Set(Array.from(parsed.querySelectorAll("[id]")).map((node) => node.id));
+  for (const heading of parsed.querySelectorAll("h2, h3")) {
+    if (heading.id) continue;
+    const base = (heading.textContent ?? "").toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+    let id = base;
+    let suffix = 2;
+    while (used.has(id)) id = `${base}-${suffix++}`;
+    heading.id = id;
+    used.add(id);
+  }
+  return parsed.body.innerHTML;
 }
 
 export function CanonicalDocumentView({
@@ -21,10 +37,8 @@ export function CanonicalDocumentView({
   sectionId?: string | null;
 }) {
   const articleRef = useRef<HTMLElement>(null);
-  const sections =
-    sectionNavigationLabel === undefined
-      ? []
-      : secondLevelHeadings(document.html);
+  const html = useMemo(() => addressableHtml(document.html), [document.html]);
+  const sections = secondLevelHeadings(html);
 
   useEffect(() => {
     const article = articleRef.current;
@@ -46,10 +60,10 @@ export function CanonicalDocumentView({
     heading.scrollIntoView?.({ block: "start" });
   }, [document.html_sha256, sectionId]);
 
-  const scrollToSection = (section: string): void => {
+  const scrollToSection = (id: string): void => {
     const article = articleRef.current;
     const heading = Array.from(article?.querySelectorAll("h2") ?? [])
-      .find((candidate) => candidate.textContent?.trim() === section);
+      .find((candidate) => candidate.id === id);
     if (!(heading instanceof HTMLElement)) {
       return;
     }
@@ -60,23 +74,24 @@ export function CanonicalDocumentView({
 
   return (
     <div className={sections.length > 0 ? "technical-document" : undefined}>
-      {sections.length > 0 && sectionNavigationLabel !== undefined ? (
-        <nav
-          aria-label={sectionNavigationLabel}
-          className="technical-section-nav"
-        >
-          <p className="eyebrow">In this reading</p>
+      {sections.length > 0 ? (
+        <aside className="technical-section-nav">
+          <details open={sectionNavigationLabel !== undefined}>
+          <summary>In this reading</summary>
+          <nav aria-label={sectionNavigationLabel ?? "Article sections"}>
           <ol>
             {sections.map((section, index) => (
-              <li key={section}>
-                <button type="button" onClick={() => scrollToSection(section)}>
+              <li key={section.id}>
+                <button type="button" onClick={() => scrollToSection(section.id)}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  {section}
+                  {section.title}
                 </button>
               </li>
             ))}
           </ol>
-        </nav>
+          </nav>
+          </details>
+        </aside>
       ) : null}
       <article
         ref={articleRef}
@@ -85,7 +100,10 @@ export function CanonicalDocumentView({
         data-html-sha256={document.html_sha256}
         data-markdown-sha256={document.markdown_sha256}
       >
-        <dl className="document-metadata" aria-label="Document metadata">
+        <details className="article-provenance">
+          <summary>About this reading and its provenance</summary>
+          <p>Document metadata describes this reading, not an independent proof or benchmark verdict.</p>
+          <dl className="document-metadata" aria-label="Document metadata">
           <div>
             <dt>Status</dt>
             <dd>{document.metadata.status}</dd>
@@ -104,17 +122,21 @@ export function CanonicalDocumentView({
               <dd>{document.metadata.tags.join(", ")}</dd>
             </div>
           ) : null}
-        </dl>
+          </dl>
+        </details>
         <div
           className="canonical-markdown"
-          dangerouslySetInnerHTML={{ __html: document.html }}
+          dangerouslySetInnerHTML={{ __html: html }}
         />
-        <footer className="canonical-receipt">
+        <details className="article-provenance">
+          <summary>Canonical Markdown and checksum</summary>
+          <footer className="canonical-receipt">
           <span>Canonical Markdown</span>
           <code>{document.canonical_markdown_path}</code>
           <span>SHA-256</span>
           <code>{document.markdown_sha256}</code>
-        </footer>
+          </footer>
+        </details>
       </article>
     </div>
   );

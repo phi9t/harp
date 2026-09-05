@@ -38,9 +38,18 @@ The hosted reader also excludes those files. For repository-relative evidence
 locators, use a local checkout or browse the
 [source repository](https://github.com/phi9t/harp).
 
-Start with the RSI orientation and system comparisons, then follow a claim to
-its ledger entry and source. Workstreams shows the checked-in reference
-snapshot of research and proof work, not current process status.
+The home page offers four reading paths: RSI research, durable execution,
+mathematics and Lean, and evaluation and evidence. Use Library to search
+compiled titles and topic tags. More contains system comparisons, the Weng
+reader, lessons, diagnosis tools, and Workstreams.
+
+Within an article, open In this reading to jump to a section. Provenance and
+checksums remain available in expandable panels; source folds stay closed
+until opened. Wide code blocks, schematics, tables, and equations scroll
+within the reading column on small screens.
+
+Workstreams shows the checked-in reference snapshot of research and proof
+work, not current process status.
 
 ### Use Obsidian instead
 

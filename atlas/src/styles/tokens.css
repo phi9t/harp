@@ -1,29 +1,30 @@
 :root {
-  --blueprint: #F2F5FF;
-  --navy: #171B33;
-  --cobalt: #2447D8;
-  --orange: #EF5B2A;
-  --orange-dark: #84280D;
-  --mint: #8ED7C6;
-  --violet: #7768AE;
+  --blueprint: #F5F7FA;
+  --navy: #202B38;
+  --cobalt: #285EA8;
+  --orange: #285EA8;
+  --orange-dark: #586575;
+  --mint: #dceae2;
+  --violet: #586575;
   --paper: #ffffff;
-  --paper-blue: #e9eeff;
-  --line: #cbd3eb;
-  --line-strong: #99a7d0;
-  --muted: #5b6482;
-  --quiet: #7a84a2;
-  --danger-soft: #fff0e9;
-  --mint-soft: #e0f4ee;
-  --violet-soft: #eeeafd;
-  --cobalt-soft: #e0e7ff;
-  --font-display: "Futura", "Century Gothic", Arial, sans-serif;
+  --paper-blue: #F5F7FA;
+  --line: #dde2e8;
+  --line-strong: #a6b1bd;
+  --muted: #586575;
+  --quiet: #586575;
+  --danger-soft: #F5F7FA;
+  --mint-soft: #f0f5f2;
+  --violet-soft: #F5F7FA;
+  --cobalt-soft: #edf2f8;
+  --evidence: #376B59;
+  --font-display: "Avenir Next", "Segoe UI", Arial, sans-serif;
   --font-reading: "Charter", "Iowan Old Style", Georgia, serif;
   --font-utility: "SFMono-Regular", "Cascadia Code", "Roboto Mono", monospace;
-  --shadow-paper: 0 14px 36px rgb(23 27 51 / 0.07);
-  --shadow-focus: 0 0 0 3px rgb(36 71 216 / 0.22);
+  --shadow-paper: none;
+  --shadow-focus: 0 0 0 3px rgb(40 94 168 / 0.15);
   font-family: var(--font-reading);
   color: var(--navy);
-  background: var(--blueprint);
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -34,18 +35,14 @@
 
 html {
   min-width: 320px;
-  background: var(--blueprint);
+  background: var(--paper);
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    linear-gradient(rgb(36 71 216 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(36 71 216 / 0.035) 1px, transparent 1px),
-    var(--blueprint);
-  background-size: 32px 32px;
+  background: var(--paper);
 }
 
 button,

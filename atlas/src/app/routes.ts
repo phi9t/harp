@@ -7,7 +7,12 @@ import type {
   WengSectionId,
 } from "../content/types";
 
+export const researchAreas = ["research", "execution", "mathematics", "evidence"] as const;
+export type ResearchArea = (typeof researchAreas)[number];
+
 export type AtlasRoute =
+  | { kind: "home" }
+  | { kind: "area"; area: ResearchArea }
   | { kind: "weng"; sectionId: WengSectionId }
   | { kind: "workstreams" }
   | { kind: "systems" }
@@ -23,11 +28,10 @@ export type AtlasRoute =
   | { kind: "diagnose"; caseId: string | null }
   | { kind: "sources" };
 
-const firstWengSection = canonicalCorpus.weng_sections[0];
 const sectionIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function defaultRoute(): AtlasRoute {
-  return { kind: "weng", sectionId: firstWengSection.section_id };
+  return { kind: "home" };
 }
 
 function decoded(value: string): string | null {
@@ -62,6 +66,14 @@ export function parseRoute(hash: string): AtlasRoute {
   const [path, query = ""] = raw.split("?", 2);
   const [family, encodedId = ""] = path.split("/", 2);
   const id = decoded(encodedId);
+
+  if (path === "home") {
+    return { kind: "home" };
+  }
+  if (family === "explore") {
+    const area = researchAreas.find((candidate) => candidate === id);
+    return area ? { kind: "area", area } : defaultRoute();
+  }
 
   if (family === "weng" && encodedId !== "" && id !== null) {
     const section = canonicalCorpus.weng_sections.find(
@@ -144,6 +156,10 @@ export function parseRoute(hash: string): AtlasRoute {
 
 export function formatRoute(route: AtlasRoute): string {
   switch (route.kind) {
+    case "home":
+      return "#home";
+    case "area":
+      return `#explore/${route.area}`;
     case "weng":
       return `#weng/${encodeURIComponent(route.sectionId)}`;
     case "workstreams":

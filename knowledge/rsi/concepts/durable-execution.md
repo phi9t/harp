@@ -40,6 +40,41 @@ Otherwise do not reassign ownership while an effect remains ambiguous.
 
 A checkpoint records enough control and experiment state to resume from a known boundary. It names completed steps, pending work, artifact identities, budgets, and the workflow schema that interprets the record. A useful checkpoint is written before relinquishing execution and verified before later code trusts it.
 
+## Harp's executor and scheduler
+
+Harp's implementation uses one durable executor. Dynamic Workflow is an
+authored Rust representation that compiles into `TaskGraph`; it is not a second
+scheduler. Sequence creates dependency chains, parallel branches share their
+incoming dependencies, and pipelines give each item its own stage chain.
+
+```text
+Authored workflow
+       |
+       v
+Compile and validate TaskGraph
+       |
+       v
+Engine: schedule dependency-ready activities
+       |                         ^
+       v                         |
+Provider activity ------> recorded result and state
+                                 |
+                                 v
+                         resume or reduce
+```
+
+The engine records state before effects, validates result envelopes, publishes
+artifacts, and resumes incomplete runs. Recovery, budget accounting, retries,
+and accepted-result accounting belong to this layer. Context Control selects
+provider-backed workflows above it; it does not add another durable scheduler.
+
+These are implementation boundaries, not a guarantee of exactly-once external
+effects or mathematical correctness. The durable graph currently supports
+Codex; its Trae adapter is not implemented. The separate provider wrapper
+supports both Codex and Trae CLI. See the
+[workflow compilation decision](https://github.com/phi9t/harp/blob/master/docs/adr/0002-dynamic-workflow-compiles-to-durable-task-graph.md)
+and [agent workflow guide](https://github.com/phi9t/harp/blob/master/docs/agent-workflows.md) for the contract and commands.
+
 <details>
 <summary>Original sources for this mechanism</summary>
 

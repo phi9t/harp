@@ -4,9 +4,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { AtlasApp } from "./AtlasApp";
 
-describe("Weng-first reader", () => {
+describe("Weng source reader", () => {
   beforeEach(() => {
-    window.location.hash = "";
+    window.location.hash = "#weng/system-being-improved";
   });
 
   it("opens on the first source-bound Weng companion", () => {

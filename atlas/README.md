@@ -1,7 +1,8 @@
 # Harp Atlas
 
-Harp Atlas is the Weng-first technical reader for canonical chapters, concepts,
-system readings, and comparison lessons under `knowledge/rsi/`. Interaction
+Harp Atlas is a research-first reader for RSI, durable execution, mathematics
+and Lean, and evaluation and evidence. Canonical chapters, topic packets,
+system readings, and comparison lessons live under `knowledge/`. Interaction
 code supplies navigation, prediction/reveal state, deterministic diagnosis,
 and local exports. It does not contain a second technical explanation.
 
@@ -20,7 +21,12 @@ entry point imports only this validated corpus.
 
 Open `#workstreams` for the Harp Workstreams console. It renders a validated, repository-owned reference snapshot and keeps submitted command text in a bounded tab-local queue. The browser does not execute commands or read live agent services.
 
-- Weng is the default route and follows the original article in order.
+- Home is the default route. Four reading paths introduce the main areas
+  before opening detailed articles.
+- Library searches compiled document titles and topic tags locally.
+- More contains the Weng reader, system comparisons, chapters, lessons,
+  diagnosis tools, source registry, and Workstreams snapshot.
+- Weng follows the original article in order and retains its existing links.
 - Weng's context-engineering section opens a navigable deep dive through ACE,
   MCE, Meta-Harness, the runtime context pipeline, state continuity, causal
   ablations, and the claim ceiling.
@@ -40,7 +46,9 @@ Open `#workstreams` for the Harp Workstreams console. It renders a validated, re
   hash routes over canonical Markdown documents.
 - The Loop route includes an interactive outcome, integrity, and authority gate
   that blocks the child candidate when any gate is closed.
-- Each route renders one canonical Markdown chapter with its content digest.
+- Articles render canonical Markdown with optional contents navigation and
+  expandable document metadata and checksums. Home and topic introductions
+  come from `knowledge/harp_knowledge_home.md`.
 - Native source and reference folds stay closed until the reader opens them.
 - Hash routes are stable, for example `#weng/context-engineering`,
   `#systems/aflow`, `#lessons/adas-vs-aflow`, and `#diagnose/aflow`.

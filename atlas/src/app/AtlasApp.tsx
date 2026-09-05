@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   canonicalChapters,
@@ -14,6 +14,8 @@ import type {
 import "../styles/tokens.css";
 import "../styles/layout.css";
 import "../styles/components.css";
+import "../styles/research.css";
+import { ResearchHome, areaLabels } from "./ResearchHome";
 import { CanonicalDocumentView, ChapterReader } from "./ChapterReader";
 import { DiagnosticWorkbench } from "./DiagnosticWorkbench";
 import {
@@ -89,6 +91,10 @@ function navigate(route: AtlasRoute): void {
 
 function currentLabel(route: AtlasRoute): string {
   switch (route.kind) {
+    case "home":
+      return "Home";
+    case "area":
+      return areaLabels[route.area];
     case "weng":
       return "Weng";
     case "workstreams":
@@ -121,6 +127,7 @@ function currentLabel(route: AtlasRoute): string {
 }
 
 export function AtlasApp() {
+  const menuRef = useRef<HTMLDetailsElement>(null);
   const [route, setRoute] = useState<AtlasRoute>(() =>
     parseRoute(window.location.hash));
 
@@ -128,7 +135,13 @@ export function AtlasApp() {
     if (!window.location.hash) {
       window.location.hash = formatRoute(parseRoute(""));
     }
-    const readHash = () => setRoute(parseRoute(window.location.hash));
+    const readHash = () => {
+      // The skip link is a native focus target, not an application route.
+      if (window.location.hash === "#main-content") return;
+      if (menuRef.current) menuRef.current.open = false;
+      setRoute(parseRoute(window.location.hash));
+      window.scrollTo?.({ top: 0 });
+    };
     window.addEventListener("hashchange", readHash);
     return () => window.removeEventListener("hashchange", readHash);
   }, []);
@@ -150,177 +163,51 @@ export function AtlasApp() {
   if (!sourceRoute) {
     throw new Error("Validated source route disappeared");
   }
-  const crouzeixRoute = canonicalReaderRoutes.find(
-    (candidate) => candidate.route.route_id === "crouzeix-conjecture",
-  );
-  if (!crouzeixRoute) {
-    throw new Error("Validated Crouzeix route disappeared");
-  }
-  const mathematicalFoundationsRoute = canonicalReaderRoutes.find(
-    (candidate) => candidate.route.route_id === "mathematical-foundations",
-  );
-  if (!mathematicalFoundationsRoute) {
-    throw new Error("Validated mathematical foundations route disappeared");
-  }
-  const verifiedCoevolutionRoute = canonicalReaderRoutes.find(
-    (candidate) => candidate.route.route_id === "verified-coevolution",
-  );
-  if (!verifiedCoevolutionRoute) {
-    throw new Error("Validated verified coevolution route disappeared");
-  }
-  const knowledgeRoute = canonicalReaderRoutes.find(
-    (candidate) => candidate.route.route_id === "knowledge",
-  );
-
   return (
     <div className="atlas-shell">
-      <a className="skip-link" href="#main-content">Skip to content</a>
+      <a className="skip-link" href="#main-content" onClick={(event) => {
+        event.preventDefault();
+        document.getElementById("main-content")?.focus();
+      }}>Skip to content</a>
       <header className="site-header reader-header">
-        <div className="brand-lockup">
-          <div className="brand-mark" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div>
-            <strong>RSI / ATLAS</strong>
-            <span>Weng reader + workbench</span>
-          </div>
-        </div>
+        <a className="harp-wordmark" href="#home" aria-label="Harp home">harp<span>research atlas</span></a>
         <nav className="top-nav" aria-label="Atlas routes">
-          <button
-            className={route.kind === "weng" ? "nav-button active" : "nav-button"}
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "weng",
-                sectionId: canonicalCorpus.weng_sections[0].section_id,
-              })}
-          >
-            Weng
-          </button>
-          <button
-            className={
-              route.kind === "systems" || route.kind === "system"
-                ? "nav-button active"
-                : "nav-button"
-            }
-            type="button"
-            onClick={() => navigate({ kind: "systems" })}
-          >
-            Systems
-          </button>
-          <button
-            className={route.kind === "lesson" ? "nav-button active" : "nav-button"}
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "lesson",
-                lessonId: canonicalCorpus.lessons[0].lesson_id,
-              })}
-          >
-            Lessons
-          </button>
-          <button
-            className={route.kind === "diagnose" ? "nav-button active" : "nav-button"}
-            type="button"
-            onClick={() => navigate({ kind: "diagnose", caseId: null })}
-          >
-            Diagnose
-          </button>
-          <button
-            className={route.kind === "chapter" ? "nav-button active" : "nav-button"}
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "chapter",
-                conceptId: chapterConceptId(canonicalChapters[0]),
-              })}
-          >
-            Chapters
-          </button>
-          <button
-            className={route.kind === "sources" ? "nav-button active" : "nav-button"}
-            type="button"
-            onClick={() => navigate({ kind: "sources" })}
-          >
-            Sources
-          </button>
-          <button
-            className={
-              route.kind === "legacy"
-                && route.routeId === crouzeixRoute.route.route_id
-                ? "nav-button active"
-                : "nav-button"
-            }
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "legacy",
-                routeId: crouzeixRoute.route.route_id,
-              })}
-          >
-            {crouzeixRoute.route.label}
-          </button>
-          <button
-            className={
-              route.kind === "legacy"
-                && route.routeId === mathematicalFoundationsRoute.route.route_id
-                ? "nav-button active"
-                : "nav-button"
-            }
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "legacy",
-                routeId: mathematicalFoundationsRoute.route.route_id,
-              })}
-          >
-            {mathematicalFoundationsRoute.route.label}
-          </button>
-          <button
-            className="nav-button"
-            type="button"
-            aria-label="Open Console / Workstreams"
-            onClick={() => navigate({ kind: "workstreams" })}
-          >
-            Console / Workstreams
-          </button>
-          <button
-            className={
-              route.kind === "legacy"
-                && route.routeId === verifiedCoevolutionRoute.route.route_id
-                ? "nav-button active"
-                : "nav-button"
-            }
-            type="button"
-            onClick={() =>
-              navigate({
-                kind: "legacy",
-                routeId: verifiedCoevolutionRoute.route.route_id,
-              })}
-          >
-            {verifiedCoevolutionRoute.route.label}
-          </button>
-          {knowledgeRoute ? (
-            <button
-              className={
-                route.kind === "legacy" && route.routeId === "knowledge"
-                  ? "nav-button active"
-                  : "nav-button"
-              }
-              type="button"
-              onClick={() => navigate({ kind: "legacy", routeId: "knowledge" })}
-            >
-              {knowledgeRoute.route.label}
-            </button>
-          ) : null}
+          {Object.entries(areaLabels).map(([area, label]) => (
+            <a className="nav-button" key={area} href={`#explore/${area}`}
+              aria-current={route.kind === "area" && route.area === area ? "page" : undefined}>
+              {label}
+            </a>
+          ))}
+          <a className="nav-button" href="#knowledge"
+            aria-current={route.kind === "legacy" && route.routeId === "knowledge" ? "page" : undefined}>
+            Library
+          </a>
         </nav>
-        <div className="header-route" role="status" aria-label="Current route">
-          <strong>{currentLabel(route)}</strong>
-        </div>
+        <details className="reader-menu" ref={menuRef} onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.currentTarget.open = false;
+            event.currentTarget.querySelector("summary")?.focus();
+          }
+        }}>
+          <summary>More</summary>
+          <nav aria-label="Reader tools">
+            <button type="button" onClick={() => navigate({ kind: "weng", sectionId: canonicalCorpus.weng_sections[0].section_id })}>Weng</button>
+            <button type="button" onClick={() => navigate({ kind: "systems" })}>Systems</button>
+            <button type="button" onClick={() => navigate({ kind: "chapter", conceptId: chapterConceptId(canonicalChapters[0]) })}>Chapters</button>
+            <button type="button" onClick={() => navigate({ kind: "lesson", lessonId: canonicalCorpus.lessons[0].lesson_id })}>Lessons</button>
+            <button type="button" onClick={() => navigate({ kind: "diagnose", caseId: null })}>Diagnose</button>
+            <button type="button" onClick={() => navigate({ kind: "sources" })}>Sources</button>
+            {canonicalReaderRoutes.filter((candidate) => ["crouzeix-conjecture", "mathematical-foundations", "verified-coevolution"].includes(candidate.route.route_id)).map(({ route: entry }) => (
+              <button key={entry.route_id} type="button" onClick={() => navigate({ kind: "legacy", routeId: entry.route_id })}>{entry.label}</button>
+            ))}
+            <button type="button" aria-label="Open Console / Workstreams" onClick={() => navigate({ kind: "workstreams" })}>Console / Workstreams</button>
+          </nav>
+        </details>
       </header>
+      <div className="reader-location" role="status" aria-label="Current route">{currentLabel(route)}</div>
       <main id="main-content" tabIndex={-1}>
+        {route.kind === "home" ? <ResearchHome /> : null}
+        {route.kind === "area" ? <ResearchHome area={route.area} /> : null}
         {route.kind === "weng" ? (
           <WengReader
             sectionId={route.sectionId}

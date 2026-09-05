@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { canonicalCorpus } from "../content/canonical";
 import type { CanonicalCorpus } from "../content/types";
 import { formatRoute } from "./routes";
@@ -45,6 +46,9 @@ function groupDocuments(corpus: CanonicalCorpus): KnowledgeGroup[] {
     { title: "Reader routes", documents: reader },
     { title: "Deep dives", documents: deepDives },
     { title: "Claim and evidence", documents: evidence },
+    { title: "Concepts and supporting readings", documents: corpus.documents.filter(
+      (document) => !assigned.has(document.concept_id) && !deepDives.includes(document),
+    ) },
   ].filter((group) => group.documents.length > 0);
 }
 
@@ -53,18 +57,36 @@ export function KnowledgeHome({
 }: {
   corpus?: CanonicalCorpus;
 }) {
+  const [query, setQuery] = useState("");
+  const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const matches = corpus.documents.filter((document) => {
+    const text = [document.title, ...document.metadata.tags].join(" ").toLowerCase();
+    return terms.every((term) => text.includes(term));
+  });
+  const groups = terms.length > 0
+    ? [{ title: "Search results", documents: matches }]
+    : groupDocuments(corpus);
   return (
     <section className="knowledge-home" aria-labelledby="knowledge-home-title">
       <header>
         <p className="eyebrow">Knowledge atlas</p>
-        <h1 id="knowledge-home-title">Harp knowledge</h1>
+        <h1 id="knowledge-home-title">Library</h1>
         <p>
-          Evidence-aware technical reading, derived from the validated corpus.
+          Browse the compiled readings or search by title and topic.
         </p>
       </header>
-      {groupDocuments(corpus).map((group) => (
-        <section key={group.title} aria-labelledby={`knowledge-${group.title}`}>
-          <h2 id={`knowledge-${group.title}`}>{group.title}</h2>
+      <label className="library-search">
+        Search readings
+        <input type="search" value={query} onChange={(event) => setQuery(event.target.value)}
+          placeholder="Try Crouzeix, harness, or evaluation" />
+      </label>
+      <p className="library-search-status" role="status">
+        {matches.length === 0 ? "No readings found. Try a broader title or topic." : `${matches.length} readings`}
+      </p>
+      {query ? <button className="filter-button" type="button" onClick={() => setQuery("")}>Clear search</button> : null}
+      {groups.filter((group) => group.documents.length > 0).map((group) => (
+        <section key={group.title} aria-labelledby={`knowledge-${group.title.toLowerCase().replaceAll(" ", "-")}`}>
+          <h2 id={`knowledge-${group.title.toLowerCase().replaceAll(" ", "-")}`}>{group.title}</h2>
           <div className="knowledge-card-grid">
             {group.documents.map((document) => (
               <a
@@ -76,10 +98,7 @@ export function KnowledgeHome({
                 })}
                 key={document.concept_id}
               >
-                <span className="knowledge-card-kind">{document.metadata.kind}</span>
                 <strong>{document.title}</strong>
-                <span>{document.metadata.status}</span>
-                <span>Confidence: {document.metadata.confidence}</span>
                 {document.metadata.tags.length > 0 ? (
                   <small>{document.metadata.tags.join(" · ")}</small>
                 ) : null}

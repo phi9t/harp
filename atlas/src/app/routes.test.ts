@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import { canonicalCorpus } from "../content/canonical";
 import { formatRoute, parseRoute } from "./routes";
 
-const firstSectionId = canonicalCorpus.weng_sections[0].section_id;
 const aflowId = canonicalCorpus.systems.find(
   (system) => system.system_id === "aflow",
 )?.system_id;
@@ -19,11 +18,14 @@ if (!aflowId || !contextDocumentId || !verifiedCoevolutionRoute) {
 }
 
 describe("Atlas routes", () => {
-  it("defaults to the first Weng section", () => {
-    expect(parseRoute("")).toEqual({
-      kind: "weng",
-      sectionId: firstSectionId,
-    });
+  it("opens the research home and round trips the four reading areas", () => {
+    expect(parseRoute("")).toEqual({ kind: "home" });
+    expect(parseRoute("#home")).toEqual({ kind: "home" });
+    for (const area of ["research", "execution", "mathematics", "evidence"]) {
+      expect(parseRoute(`#explore/${area}`)).toEqual({ kind: "area", area });
+      expect(formatRoute(parseRoute(`#explore/${area}`))).toBe(`#explore/${area}`);
+    }
+    expect(parseRoute("#explore/absent")).toEqual({ kind: "home" });
   });
 
   it("parses and formats the first-class Crouzeix route", () => {
@@ -125,13 +127,7 @@ describe("Atlas routes", () => {
   });
 
   it("falls back when a route references an unknown identity", () => {
-    expect(parseRoute("#systems/absent")).toEqual({
-      kind: "weng",
-      sectionId: firstSectionId,
-    });
-    expect(parseRoute("#diagnose/absent")).toEqual({
-      kind: "weng",
-      sectionId: firstSectionId,
-    });
+    expect(parseRoute("#systems/absent")).toEqual({ kind: "home" });
+    expect(parseRoute("#diagnose/absent")).toEqual({ kind: "home" });
   });
 });

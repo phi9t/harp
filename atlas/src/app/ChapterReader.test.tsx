@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 
 import { canonicalCorpus } from "../content/canonical";
 import { CanonicalDocumentView } from "./ChapterReader";
@@ -13,6 +14,24 @@ if (!baseDocument) {
 }
 
 describe("canonical document view", () => {
+  it("navigates repeated section titles by their own identities", async () => {
+    const user = userEvent.setup();
+    render(<CanonicalDocumentView document={{
+      ...baseDocument,
+      html: "<h1>Proof routes</h1><h2>Assumptions</h2><p>First route</p><h2>Assumptions</h2><p>Second route</p>",
+    }} sectionNavigationLabel="Proof sections" />);
+    await user.click(screen.getAllByRole("button", { name: /Assumptions/ })[1]);
+    expect(screen.getAllByRole("heading", { name: "Assumptions" })[1]).toHaveFocus();
+  });
+  it("makes plain Markdown sections addressable without altering code whitespace", () => {
+    const document = {
+      ...baseDocument,
+      html: '<h1>Executor</h1><h2>Harp\'s executor and scheduler</h2><pre><code>A  --&gt;  B\n         |\n         C</code></pre>',
+    };
+    render(<CanonicalDocumentView document={document} sectionId="harp-s-executor-and-scheduler" />);
+    expect(screen.getByRole("heading", { name: "Harp's executor and scheduler" })).toHaveFocus();
+    expect(screen.getByText(/A.*B/).textContent).toBe("A  -->  B\n         |\n         C");
+  });
   it("exposes document metadata and accessible Obsidian fallbacks", () => {
     const documentWithObsidianSyntax = {
       ...baseDocument,
