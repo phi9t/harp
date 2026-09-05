@@ -14,6 +14,23 @@ if (!baseDocument) {
 }
 
 describe("canonical document view", () => {
+  it("includes the Harp chapter with rendered mathematics and exact source links", async () => {
+    const chapter = canonicalCorpus.documents.find((document) =>
+      document.concept_id === "cft-chapter-36-harp-finite-horizon-proof");
+    if (!chapter) throw new Error("Missing Harp chapter");
+    const { container } = render(<CanonicalDocumentView document={chapter} sectionId="cft-36-003" />);
+    expect(screen.getByText("Browse the 36 chapters")).toBeInTheDocument();
+    expect(container.querySelector("#cft-36-003")).toHaveFocus();
+    expect(container.querySelector(".math-display math")).not.toBeNull();
+    expect(container.querySelector(".math-error")).toBeNull();
+    expect(screen.getByRole("link", { name: "Previous: Chapter 35: Comparison, verification, and boundaries" }))
+      .toHaveAttribute("href", "#documents/cft-chapter-35-comparison-verification-and-boundaries");
+    await userEvent.setup().click(screen.getByText("Proof references"));
+    expect(screen.getByRole("link", { name: "Lean chapter module" })).toHaveAttribute(
+      "href", "https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean");
+    expect(screen.getByRole("link", { name: "harp_finite_recurrence" })).toHaveAttribute(
+      "href", "https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean#L47");
+  });
   it("keeps exact theorem source locations usable on the hosted reader", () => {
     render(<CanonicalDocumentView document={{ ...baseDocument,
       canonical_markdown_path: "knowledge/crouzeix_textbook/part_05_crouzeix_machinery/25_convex_boundaries_and_cauchy_layers.md",

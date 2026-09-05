@@ -14,7 +14,7 @@ output = root / "output/pdf"
 manifest = json.loads((output / "build-manifest.json").read_text())
 assert manifest["schema_version"] == 2
 assert manifest["release_validation"] is True
-assert len(manifest["sources"]) == 37
+assert len(manifest["sources"]) == 38
 assert all(source["origin"] == "filesystem-candidate" for source in manifest["sources"])
 candidate = sorted(({"path": s["path"], "sha256": s["sha256"]} for s in manifest["linked_sources"]), key=lambda s: s["path"])
 assert hashlib.sha256(json.dumps(candidate, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest() == manifest["candidate_sha256"]

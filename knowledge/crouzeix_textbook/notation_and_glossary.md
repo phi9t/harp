@@ -4,7 +4,7 @@ title: Notation and glossary
 type: glossary
 status: active
 created: 2026-08-23
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [crouzeix-textbook, notation, glossary, mathematics]
 confidence: high
 canonical: notation_and_glossary.md
@@ -60,6 +60,26 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 - **Nonnormal matrix:** over $\mathbb C$, a matrix $A$ for which
   $A^*A\ne AA^*$. Nonnormality permits geometric behavior not determined by
   eigenvalues alone.
+
+## Finite-horizon proof vocabulary
+
+The [[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof|Harp proof chapter]]
+uses the following conventions. These are notation guides, not additional theorem claims.
+
+- **Adjoint and inner product:** $T^*$ denotes the Hilbert-space adjoint;
+  $\langle x,y\rangle$ is conjugate-linear in $x$ and linear in $y$.
+- **Positive cubature:** finitely many nodes with strictly positive scalar
+  weights reproduce a specified finite family of integrals exactly. This is
+  an existence statement, not a floating-point error estimate.
+- **Matrix mass:** $D_j$ are positive semidefinite matrix weights satisfying
+  $\sum_j D_j=2I$. They are distinct from the scalar cubature weights.
+- **Finite-horizon dilation:** for each natural number $N$, an isometric
+  embedding $V_N$ and contraction $Q_N$ reproduce the required moments through
+  order $N+1$. Their ambient space may depend on $N$.
+- **Fixed core:** $T$, the commuting companion operators $E_k$, and their
+  common bound remain fixed as $N$ varies. In particular, the scalar sequence
+  $m_k=\operatorname{Re}\langle x,E_kT^kx\rangle$ is independent of the
+  chosen horizon; the displacement $b_N$ need not be.
 
 ## Lean notation
 

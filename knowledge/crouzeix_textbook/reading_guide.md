@@ -32,6 +32,20 @@ The recurring chapter rhythm is deliberate:
 7. exercises test recall, calculation, proof, boundaries, and formalization;
 8. the synthesis records what later chapters may use.
 
+## Reading the Harp route
+
+[[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof|Chapter 36]]
+builds a finite atomic dilation at each requested horizon. Start with its
+prerequisite recap, then follow the six numbered arguments in order. Chapters
+26 and 28 supply the boundary moments; Chapters 33 and 34 explain the shared
+recurrence and dilation tools. The Jin terminal proof is not a prerequisite.
+
+Keep two lists while reading: quantities fixed for the whole argument, and
+quantities that may change with the horizon. The target operator, companion
+family, and recurrence scalars belong to the first list. Cubature nodes,
+dilation spaces, and squared displacements belong to the second. The proof's
+uniform estimate is what lets the finite certificates imply a single bound.
+
 ## Fast-recall route
 
 Readers with strong prior linear algebra may first read the opening problem,

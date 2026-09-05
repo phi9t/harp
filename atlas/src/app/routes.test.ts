@@ -113,7 +113,7 @@ describe("Atlas routes", () => {
   });
 
   it("canonicalizes every legacy textbook document hash", () => {
-    expect(canonicalCorpus.document_aliases).toHaveLength(44);
+    expect(canonicalCorpus.document_aliases).toHaveLength(45);
     for (const alias of canonicalCorpus.document_aliases) {
       expect(parseRoute(`#documents/${alias.alias_id}`)).toEqual({
         kind: "document",

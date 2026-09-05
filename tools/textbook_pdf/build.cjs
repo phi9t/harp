@@ -9,6 +9,7 @@ const { pathToFileURL } = require('node:url');
 const crypto = require('node:crypto');
 
 const { bookRoot, sourcePath, readSource, discoverChapters, candidateHash, chapterModule } = require('./inputs.cjs');
+const { readingEditions } = require('./editions.cjs');
 const root = path.resolve(__dirname, '../..');
 const out = path.join(root, 'output/pdf');
 const requireAtlas = createRequire(path.join(root, 'atlas/package.json'));
@@ -175,16 +176,15 @@ const katexCSS=fs.readFileSync(katexCSSPath,'utf8').replace(/url\(([^)]+)\)/g, (
   return `url(data:font/${p.endsWith('.woff2')?'woff2':p.endsWith('.woff')?'woff':'ttf'};base64,${fs.readFileSync(p).toString('base64')})`;
 });
 const css=fs.readFileSync(path.join(__dirname,'book.css'),'utf8');
-function documentHTML(list, full) {
+function documentHTML(edition) {
+  const {list,full,title,coverTitle,subtitle}=edition;
   unavailable=[];headingCounts.clear();
   selectedDocs=new Set([...list,glossary,...(full?[sources]:[])].map(d=>d.relative));
-  const title=full?'Crouzeix<br>Foundations':'Objects &amp;<br>Representations';
-  const subtitle=full?'From linear algebra to operator theory':'Chapter 1 · A coordinate workshop';
-  const cover=`<section class="cover"><div class="eyebrow">Harp mathematical library</div><h1>${title}</h1><p class="subtitle">${subtitle}</p><div class="rule"></div><p class="audience">A proof-oriented textbook for<br>machine-learning researchers</p><div class="cover-math">${math('[T(v)]_C=[T]_{C\\leftarrow B}[v]_B',false)}</div><div class="edition">READING EDITION · ${date}<br>${full?'35 chapters · Six parts':'Expanded exposition · Lean source references'}<br>Working draft</div></section>`;
+  const cover=`<section class="cover"><div class="eyebrow">Harp mathematical library</div><h1>${coverTitle}</h1><p class="subtitle">${escape(subtitle)}</p><div class="rule"></div><p class="audience">A proof-oriented textbook for<br>machine-learning researchers</p><div class="cover-math">${math('[T(v)]_C=[T]_{C\\leftarrow B}[v]_B',false)}</div><div class="edition">READING EDITION · ${date}<br>${full?`${list.length} chapters · Six parts`:'Expanded exposition · Lean source references'}<br>Working draft</div></section>`;
   const main=list.map(chapter).join('\n');
   const reference=`<section class="appendix" id="${glossary.id}"><div class="eyebrow">Reference</div><h1>Notation and glossary</h1>${body(glossary)}</section>${full?`<section class="appendix" id="${sources.id}"><div class="eyebrow">Reference</div><h1>Sources and attribution</h1>${body(sources)}</section>`:''}`;
   const missing=unavailable.length?`<section class="appendix source-list"><h1>Unresolved source references</h1><p>These references appear in the canonical draft, but their targets are not available in this snapshot. They are retained here rather than replaced by a different source.</p>${unavailable.map(x=>`<p id="${x.id}"><strong>${escape(x.target)}</strong><br>From ${escape(x.source)}</p>`).join('')}</section>`:'';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${full?'Crouzeix Foundations':'Objects and Representations'}</title><style>${katexCSS}\n${css}</style></head><body>${cover}${editionNote(full)}${contents(list,full)}${main}${reference}${missing}</body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(title)}</title><style>${katexCSS}\n${css}</style></head><body>${cover}${editionNote(full)}${contents(list,full)}${main}${reference}${missing}</body></html>`;
 }
 
 async function main() {
@@ -196,8 +196,9 @@ async function main() {
   const browser=await chromium.launch({headless:true,executablePath});
   manifest.generator.browser=await browser.version();
   try {
-    for(const [name,list,full] of [['crouzeix-foundations',chapters,true],['chapter-01-objects-and-representations',[chapters[0]],false]]) {
-      const html=documentHTML(list,full);
+    for(const edition of readingEditions(chapters)) {
+      const {name,list,full,title}=edition;
+      const html=documentHTML(edition);
       const htmlPath=path.join(out,name+'.html');
       writeOutput(htmlPath,html);
       const page=await browser.newPage({viewport:{width:582,height:900}});
@@ -282,7 +283,7 @@ async function main() {
           if(value.startsWith(sourcePrefix)){action.set(PDFName.of('URI'),PDFString.of(value.slice(sourcePrefix.length)));portableSourceLinks++;}
         }
       }
-      pdf.setTitle(full?'Crouzeix Foundations':'Objects and Representations');
+      pdf.setTitle(title);
       pdf.setSubject('Working-draft mathematical reading edition with Lean source references');
       writeOutput(pdfPath,await pdf.save());
       manifest.outputs.push({file:name+'.pdf',pages:pdf.getPageCount(),contents_pages:tocPageMap,portable_source_links:portableSourceLinks,bytes:fs.statSync(pdfPath).size,sha256:crypto.createHash('sha256').update(fs.readFileSync(pdfPath)).digest('hex'),scaled_displays:adjustments,unresolved_references:[...unavailable]});
@@ -306,4 +307,4 @@ async function main() {
   writeOutput(path.join(out,'build-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 }
 if(require.main===module)main().catch(error=>{console.error(error);process.exitCode=1;});
-module.exports={safeTarget,editionNote, renderForTest(text){selectedDocs=new Set();headingCounts.clear();const prior=release;release=false;try{return body({relative:'knowledge/crouzeix_textbook/fixture.md',id:'fixture',text});}finally{release=prior;}}};
+module.exports={safeTarget,editionNote, renderForTest(text,relative='knowledge/crouzeix_textbook/fixture.md'){selectedDocs=new Set();headingCounts.clear();const prior=release;release=false;try{return body({relative,id:'fixture',text});}finally{release=prior;}}};

@@ -281,7 +281,7 @@ fn check_reports_the_standalone_corpus_contract_as_json() {
         serde_json::json!({
             "retained_concepts": 76,
             "coverage_entries": 76,
-            "canonical_documents": 183,
+            "canonical_documents": 184,
             "systems": 17,
             "weng_sections": 9,
             "diagnostic_fields": 28,

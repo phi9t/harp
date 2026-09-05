@@ -19,18 +19,18 @@ lean_exact_correspondences: 6
 Book: [[knowledge/crouzeix_textbook/crouzeix_textbook_index|Crouzeix foundations textbook]]
 Part: [[knowledge/crouzeix_textbook/crouzeix_textbook_index#part-vi-constant-two-routes|Part VI — Constant-two routes]]
 Previous: [[knowledge/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization|Chapter 34 — The Lorist–Schwenninger realization]]
-Next: End of the proof route; return to the book index.
+Next: [[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof|Chapter 36 — The Harp finite-horizon proof]].
 
 ## Contract snapshot
 
 | Metric | Count |
 | --- | ---: |
-| theorem rows | 210 |
+| theorem rows | 216 |
 | summary prose rows | 143 |
-| reconstructible prose rows | 65 |
-| exact correspondence rows | 66 |
+| reconstructible prose rows | 71 |
+| exact correspondence rows | 72 |
 | unmapped correspondence rows | 95 |
-| solved exercises | 72 |
+| solved exercises | 78 |
 | unresolved exercises | 138 |
 
 ## Opening problem
@@ -49,6 +49,10 @@ Lorist–Schwenninger realizes the whole family as a boundary dilation and uses
 a bounded recurrence. Harp replaces the exact infinite realization by finite
 atomic data at every horizon and then proves a uniform finite-horizon bound.
 The final inequality agrees; the proof objects do not.
+
+[[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof|Chapter 36]]
+develops Harp's construction and recurrence in full. This chapter's comparison
+is a reading map, not a substitute for that proof.
 
 ## Formal development
 

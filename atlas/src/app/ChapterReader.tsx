@@ -21,7 +21,7 @@ function TextbookNavigation({ document }: { document: CanonicalDocument }) {
       <p className="eyebrow"><a href="#crouzeix-textbook">Crouzeix foundations</a> / Chapter {chapterPath[2]}</p>
       <nav aria-label="Textbook chapters">
         <details>
-          <summary>Browse the 35 chapters</summary>
+          <summary>Browse the {textbookChapters.length} chapters</summary>
           <ol>{textbookChapters.map((chapter) => (
             <li key={chapter.concept_id}>
               <a href={`#documents/${chapter.concept_id}`} aria-current={chapter.concept_id === document.concept_id ? "page" : undefined}>

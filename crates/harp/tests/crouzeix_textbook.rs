@@ -17,6 +17,77 @@ use serde_json::{json, Map, Value};
 use sha2::{Digest, Sha256};
 
 const V2_FIXTURE: &str = "tests/fixtures/crouzeix_textbook/valid";
+
+#[test]
+fn harp_chapter_has_six_exact_records_and_distinct_solutions() {
+    check(&workspace_root()).expect("the integrated Harp chapter validates");
+    let coverage = read_json(&contracts_root().join("coverage.json"));
+    let exercises = read_json(&contracts_root().join("exercises.json"));
+    let rows = coverage["items"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|row| row["chapter"] == 36)
+        .collect::<Vec<_>>();
+    assert_eq!(rows.len(), 6);
+    for (index, row) in rows.iter().enumerate() {
+        assert_eq!(row["item_id"], format!("CFT-36-{:03}", index + 1));
+        assert_eq!(row["lean_correspondence_status"], "exact");
+        assert_eq!(row["prose_proof_status"], "reconstructible");
+        assert_eq!(
+            row["formal_mode"],
+            if index == 1 {
+                "proved-here"
+            } else {
+                "reexported-proof"
+            }
+        );
+    }
+    let solutions = exercises["exercises"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|row| row["chapter"] == 36)
+        .map(|row| row["lean_solution"]["declaration"].as_str().unwrap())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(solutions.len(), 6);
+    for index in 1..=6 {
+        assert!(solutions.contains(
+            format!("CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_{index:02}_solution")
+                .as_str()
+        ));
+    }
+}
+
+#[test]
+fn harp_chapter_receipt_retains_local_providers_and_scalar_exercise_dependencies() {
+    let receipt = fresh_textbook_receipt();
+    let rows = receipt["declarations"].as_array().unwrap();
+    let row = |name: &str| {
+        rows.iter()
+            .find(|row| row["name"] == name)
+            .expect("Harp receipt row")
+    };
+    let terminal = row("CrouzeixTextbook.Part06.harp_polynomial_constant_two");
+    assert_eq!(
+        terminal["direct_dependencies"],
+        json!(["CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem"])
+    );
+    for index in 1..=6 {
+        let solution = row(&format!(
+            "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_{index:02}_solution"
+        ));
+        assert_eq!(solution["kind"], "theorem");
+        for dependency in solution["direct_dependencies"].as_array().unwrap() {
+            let name = dependency.as_str().unwrap();
+            assert!(
+                !name.contains("MainTheorem") && !name.contains("jinFinalCrouzeixConjecture"),
+                "exercise calls terminal provider {name}"
+            );
+        }
+    }
+}
+
 type JsonMutation = fn(&mut Value);
 type MarkdownMutation = fn(String) -> String;
 
@@ -2048,14 +2119,14 @@ fn canonical_identity_maps_all_current_documents_and_legacy_mismatches() {
         "crouzeix-textbook-compatibility-routes/v1"
     );
     let routes = array(&mapping, "routes", "compatibility routes");
-    assert_eq!(routes.len(), 44);
+    assert_eq!(routes.len(), 45);
     let mismatches = routes
         .iter()
         .filter(|route| {
             string(route, "canonical_id", "route") != string(route, "legacy_concept_id", "route")
         })
         .count();
-    assert_eq!(mismatches, 38);
+    assert_eq!(mismatches, 39);
     assert!(routes.iter().any(|route| {
         string(route, "canonical_id", "route") == "cft-chapter-01-objects-and-representations"
             && string(route, "legacy_concept_id", "route")
@@ -4161,12 +4232,13 @@ fn canonical_pedagogical_graph_matches_the_reviewed_roster_and_policy() {
         (33, BTreeSet::from([9, 23, 27, 29])),
         (34, BTreeSet::from([22, 23, 28, 33])),
         (35, BTreeSet::from([17, 20, 21, 29, 32, 34])),
+        (36, BTreeSet::from([21, 26, 28, 29, 33, 34])),
     ]);
     assert_eq!(chapter_policy, reviewed_chapter_policy);
     assert_eq!(
         format!("{:x}", Sha256::digest(serialized_roster.as_bytes())),
-        "9dba9f3d21befc38c64a1c99cc96ca8566e4aa9870f99640734f0abe570ad8a1",
-        "the reviewed 210-row prerequisite roster changed"
+        "f3102fdcea356e8c8db0fe65a5a21107c90a02d9724d101fb9c2d175c464cc6b",
+        "the reviewed 216-row prerequisite roster changed"
     );
 
     let prerequisites = |item_id: &str| {
@@ -4259,7 +4331,7 @@ fn canonical_pedagogical_graph_matches_the_reviewed_roster_and_policy() {
 }
 
 #[test]
-fn canonical_theorem_rows_have_210_unique_resolving_targets() {
+fn canonical_theorem_rows_have_216_unique_resolving_targets() {
     let coverage = read_json(&contracts_root().join("coverage.json"));
     let mut targets = BTreeSet::new();
     for row in array(&coverage, "items", "coverage") {
@@ -4273,7 +4345,7 @@ fn canonical_theorem_rows_have_210_unique_resolving_targets() {
             "duplicate target {target:?}"
         );
     }
-    assert_eq!(targets.len(), 210);
+    assert_eq!(targets.len(), 216);
     check(&workspace_root()).expect("all unique theorem targets must resolve");
 }
 
@@ -4289,7 +4361,7 @@ const SUPPORT_DOCUMENTS: [&str; 9] = [
     "status_and_scope.md",
 ];
 
-const CHAPTERS: [&str; 35] = [
+const CHAPTERS: [&str; 36] = [
     "part_01_linear_structure/01_objects_and_representations.md",
     "part_01_linear_structure/02_vector_spaces_and_subspaces.md",
     "part_01_linear_structure/03_linear_maps_and_exact_structure.md",
@@ -4325,6 +4397,7 @@ const CHAPTERS: [&str; 35] = [
     "part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md",
     "part_06_constant_two_routes/34_lorist_schwenninger_realization.md",
     "part_06_constant_two_routes/35_comparison_verification_and_boundaries.md",
+    "part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
 ];
 
 const REQUIRED_HEADINGS: [&str; 8] = [
@@ -4443,7 +4516,7 @@ fn textbook_packet_has_exact_support_and_chapter_roster() {
         .collect::<Vec<_>>();
     assert_eq!(
         present, CHAPTERS,
-        "the active packet has exactly 35 chapters"
+        "the active packet has exactly 36 chapters"
     );
     for chapter_number in 1..=CHAPTERS.len() {
         let coverage_count = array(&coverage, "items", "coverage")
@@ -4529,10 +4602,10 @@ fn textbook_contracts_are_strict_and_cross_referenced() {
 
     let contracts = check(&workspace_root())
         .unwrap_or_else(|diagnostics| panic!("canonical v2 contracts failed: {diagnostics:#?}"));
-    assert_eq!(contracts.theorems().len(), 210);
-    assert_eq!(contracts.exercises().len(), 210);
+    assert_eq!(contracts.theorems().len(), 216);
+    assert_eq!(contracts.exercises().len(), 216);
 
-    let expected_theorems = (1..=35)
+    let expected_theorems = (1..=36)
         .flat_map(|chapter| (1..=6).map(move |index| format!("CFT-{chapter:02}-{index:03}")))
         .collect::<BTreeSet<_>>();
     let actual_theorems = contracts
@@ -4542,7 +4615,7 @@ fn textbook_contracts_are_strict_and_cross_referenced() {
         .collect::<BTreeSet<_>>();
     assert_eq!(actual_theorems, expected_theorems);
 
-    let expected_exercises = (1..=35)
+    let expected_exercises = (1..=36)
         .flat_map(|chapter| (1..=6).map(move |index| format!("CFT-{chapter:02}-E{index:02}")))
         .collect::<BTreeSet<_>>();
     let actual_exercises = contracts
@@ -4610,7 +4683,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             }
             counts
         });
-    assert_eq!(mode_counts, [53, 104, 47, 6]);
+    assert_eq!(mode_counts, [54, 109, 47, 6]);
     assert!(contracts
         .theorems()
         .iter()
@@ -4637,7 +4710,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.lean_correspondence_status() == LeanCorrespondenceStatus::Exact)
             .count(),
-        66
+        72
     );
     assert_eq!(
         contracts
@@ -4728,6 +4801,12 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         "CFT-35-E04".to_owned(),
         "CFT-35-E05".to_owned(),
         "CFT-35-E06".to_owned(),
+        "CFT-36-E01".to_owned(),
+        "CFT-36-E02".to_owned(),
+        "CFT-36-E03".to_owned(),
+        "CFT-36-E04".to_owned(),
+        "CFT-36-E05".to_owned(),
+        "CFT-36-E06".to_owned(),
     ]);
     assert_eq!(solved, expected_solved);
 
@@ -4738,10 +4817,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "Proof-exposition status: 65 coverage rows are now `reconstructible`; 143 remain `summary` and two other definition rows are `not-applicable`.",
-        "Coverage rows: 210, comprising 53 `proved-here`, 104 `reexported-proof`, 47 `checkpoint`, and 6 `definition` rows.",
-        "Exact-correspondence rows: 66.",
-        "Distinct checked exercise solutions: six each in Chapters 1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, and 35. The other 138 exercise rows",
+        "Proof-exposition status: 71 coverage rows are now `reconstructible`; 143 remain `summary` and two other definition rows are `not-applicable`.",
+        "Coverage rows: 216, comprising 54 `proved-here`, 109 `reexported-proof`, 47 `checkpoint`, and 6 `definition` rows.",
+        "Exact-correspondence rows: 72.",
+        "Distinct checked exercise solutions: six each in Chapters 1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 138 exercise rows",
     ] {
         assert!(
             maintained_status.contains(expected),
@@ -4756,10 +4835,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "210 theorem rows: 53 are `proved-here`, 104 are `reexported-proof`, 47 are `checkpoint`, and six are `definition`.",
-        "A fresh 383-row Lean receipt",
-        "The contract has 72 distinct exercise solutions; 138 exercises remain correspondence-incomplete.",
-        "correspondence axis records 66 exact rows, 49 checkpoints, and 95 unmapped rows.",
+        "216 theorem rows: 54 are `proved-here`, 109 are `reexported-proof`, 47 are `checkpoint`, and six are `definition`.",
+        "A fresh 400-row Lean receipt",
+        "The contract has 78 distinct exercise solutions; 138 exercises remain correspondence-incomplete.",
+        "correspondence axis records 72 exact rows, 49 checkpoints, and 95 unmapped rows.",
     ] {
         assert!(
             claim_ledger.contains(expected),
@@ -11390,7 +11469,7 @@ fn jin_route_lean_map_matches_coverage_and_a_fresh_compiler_receipt() {
     assert_eq!(receipt["target"], "CrouzeixTextbook");
     assert_eq!(
         coverage_rows.len(),
-        210,
+        216,
         "coverage fixture must remain complete"
     );
     let mapping_errors = jin_lean_mapping_errors(&coverage, &receipt, phase);

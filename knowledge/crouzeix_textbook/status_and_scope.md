@@ -16,17 +16,17 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 
 ## Current state
 
-- Publication status: all 35 chapters are `active`.
-- Proof-exposition status: 65 coverage rows are now `reconstructible`; 143 remain `summary` and two other
+- Publication status: all 36 chapters are `active`.
+- Proof-exposition status: 71 coverage rows are now `reconstructible`; 143 remain `summary` and two other
   definition rows are `not-applicable`.
 - Whole-book exact Lean correspondence: `incomplete`.
-- Coverage rows: 210, comprising 53 `proved-here`, 104
+- Coverage rows: 216, comprising 54 `proved-here`, 109
   `reexported-proof`, 47 `checkpoint`, and 6 `definition` rows.
-- Exact-correspondence rows: 66. The other rows remain `checkpoint` or
+- Exact-correspondence rows: 72. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
-- Indexed exercises: 210.
+- Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 25, 26, 27, 28,
-  29, 30, 31, 32, 33, 34, and 35. The other 138 exercise rows have no claimed
+  29, 30, 31, 32, 33, 34, 35, and 36. The other 138 exercise rows have no claimed
   formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
@@ -34,12 +34,12 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 
 | Metric | Count |
 | --- | ---: |
-| theorem rows | 210 |
+| theorem rows | 216 |
 | summary prose rows | 143 |
-| reconstructible prose rows | 65 |
-| exact correspondence rows | 66 |
+| reconstructible prose rows | 71 |
+| exact correspondence rows | 72 |
 | unmapped correspondence rows | 95 |
-| solved exercises | 72 |
+| solved exercises | 78 |
 | unresolved exercises | 138 |
 
 ## What the current route provides
@@ -106,12 +106,12 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `a7bd7e504743c4fc7936d5a0b1d618f37581f249fd52afb428ff77b4c2e7e5a3`
-- Compiler receipt bytes: `438575`
-- Compiler receipt declarations: `383`
+  `36d86c0836ebe86d8e1c62ce14da0fbe034dc098f4dc99bc603dc16a368b67b9`
+- Compiler receipt bytes: `466620`
+- Compiler receipt declarations: `400`
 
-Those 383 unique declarations comprise 210 public coverage declarations,
-72 distinct exercise solutions, and the 101 additional underlying proof
+Those 400 unique declarations comprise 216 public coverage declarations,
+78 distinct exercise solutions, and the 106 additional underlying proof
 providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
 exact serialized output accepted by the Rust validator. It is not the
 six-ledger publication generation: that separate digest hashes the rendered

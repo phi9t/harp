@@ -32,7 +32,8 @@ GIT_POLL_INTERVAL_SECONDS = 0.01
 PLAN_BYTES_CAP = 1024 * 1024
 LEDGER_BYTES_CAP = 256 * 1024
 ARTIFACT_BYTES_CAP = 1024 * 1024
-READER_ARTIFACT_BYTES_CAP = 4 * 1024 * 1024
+# The 36-chapter single-file reader exceeds 4 MiB; retain a fixed upper bound.
+READER_ARTIFACT_BYTES_CAP = 8 * 1024 * 1024
 FOOTER_ORDER = (
     "goal_status",
     "jin",

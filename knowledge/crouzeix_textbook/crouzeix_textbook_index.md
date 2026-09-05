@@ -12,8 +12,9 @@ canonical: crouzeix_textbook_index.md
 
 # Crouzeix foundations textbook
 
-This is a proof-oriented route from structural linear algebra to the two
-constant-two Crouzeix proof programs. It assumes undergraduate mathematical
+This is a proof-oriented route from structural linear algebra to the Jin and
+Lorist–Schwenninger proof programs and Harp's finite-horizon reconstruction.
+It assumes undergraduate mathematical
 maturity and the habits of a machine-learning researcher, but it does not
 assume recent coursework in linear algebra, complex analysis, or operator
 theory. Definitions are rebuilt before they carry weight.
@@ -105,14 +106,15 @@ two sharp routes diverge.
 33. [[knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma|The Lorist--Schwenninger perturbation lemma]]
 34. [[knowledge/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization|The Lorist--Schwenninger realization]]
 35. [[knowledge/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries|Comparison, verification, and boundaries]]
+36. [[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof|The Harp finite-horizon proof]]
 
-Part VI is active. Both terminal finite-matrix providers and their neutral
-rational and Hilbert-space consequences are represented by compiled Lean
-declarations.
+Part VI presents three terminal routes and their rational and Hilbert-space
+consequences. Chapter 36 develops the finite atomic construction behind Harp's
+route and makes its reuse of lower-level Lorist–Schwenninger results explicit.
 
 ## Completion contract
 
-All 35 chapters and 210 exercises are active. The structured ledgers map 210
+All 36 chapters and 216 exercises are active. The structured ledgers map 216
 numbered mathematical items to the public Lean inventory. “Complete” refers
 to this repository contract and its verification gates; it is not a claim of
 independent peer review for the recent source proofs.

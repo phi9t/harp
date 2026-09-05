@@ -1021,7 +1021,7 @@ class GoalValidationTests(unittest.TestCase):
             html = self.write_bytes(
                 root,
                 "atlas/dist/harp-atlas.html",
-                b"h" * (2 * goal_validation.ARTIFACT_BYTES_CAP + 1),
+                b"h" * (4 * goal_validation.ARTIFACT_BYTES_CAP + 1),
             )
             self.write_text(
                 root,
@@ -1271,7 +1271,7 @@ class GoalValidationTests(unittest.TestCase):
             self.write_bytes(
                 root,
                 "atlas/src/content/generated/corpus.json",
-                b"a" * (4 * 1024 * 1024 + 1),
+                b"a" * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1),
             )
             self.write_text(root, "atlas/dist/harp-atlas.html", "<html></html>\n")
             self.write_text(

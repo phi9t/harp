@@ -3325,6 +3325,150 @@
           "propext"
         ]
       }
+    },
+    {
+      "exercise_id": "CFT-36-E01",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e01",
+      "kind": "retrieval",
+      "difficulty": "warmup",
+      "skills": [
+        "CFT-36-001"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 77,
+        "column": 9,
+        "type_sha256": "5fb16016977ca7664194e7557367f56d3af8c7b5c7ad53506024f58d4444936a",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-36-E02",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e02",
+      "kind": "calculation",
+      "difficulty": "routine",
+      "skills": [
+        "CFT-36-002"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 89,
+        "column": 9,
+        "type_sha256": "78666b69b33454d276a3b15c0071a0368993e7bfcb082ec6e9cec705506d1c3f",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-36-E03",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e03",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-36-003"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 105,
+        "column": 9,
+        "type_sha256": "580b06948f8a37394992d2da61cb6631ca2e7f8ad05c126a45f82237aefd2bc4",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-36-E04",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e04",
+      "kind": "written-proof",
+      "difficulty": "proof",
+      "skills": [
+        "CFT-36-004"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 118,
+        "column": 9,
+        "type_sha256": "709ab54b239d385e96cccc5bf252ce8993880127d2f1a16b10327090b6d85d8e",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-36-E05",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e05",
+      "kind": "boundary",
+      "difficulty": "boundary",
+      "skills": [
+        "CFT-36-005"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 126,
+        "column": 9,
+        "type_sha256": "d1461938bb22109833b772e83df8b8b061cb6475693a61cf5f057005a6cda108",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "exercise_id": "CFT-36-E06",
+      "chapter": 36,
+      "anchor": "exercise-cft-36-e06",
+      "kind": "lean-proof",
+      "difficulty": "lean",
+      "skills": [
+        "CFT-36-006"
+      ],
+      "starter": null,
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 132,
+        "column": 9,
+        "type_sha256": "6742d193e0265b12e953dcd5b2b9e684f6863594b24714d3a855acd3f092eca2",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     }
   ]
 }

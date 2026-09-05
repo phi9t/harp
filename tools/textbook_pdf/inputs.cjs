@@ -30,15 +30,15 @@ function discoverChapters(root) {
     }
   }
   chapters.sort((a,b)=>Number(path.basename(a).slice(0,2))-Number(path.basename(b).slice(0,2)));
-  if(chapters.length!==35)throw new Error(`Expected 35 canonical chapter paths, found ${chapters.length}`);
-  if(chapters.some((p,i)=>Number(path.basename(p).slice(0,2))!==i+1))throw new Error('Invalid chapter sequence: expected chapters 01 through 35 exactly once');
+  if(chapters.length!==36)throw new Error(`Expected 36 canonical chapter paths, found ${chapters.length}`);
+  if(chapters.some((p,i)=>Number(path.basename(p).slice(0,2))!==i+1))throw new Error('Invalid chapter sequence: expected chapters 01 through 36 exactly once');
   return chapters;
 }
 function candidateHash(sources) {
   return crypto.createHash('sha256').update(JSON.stringify([...sources].map(({path,sha256})=>({path,sha256})).sort((a,b)=>a.path<b.path?-1:a.path>b.path?1:0))).digest('hex');
 }
 function chapterModule(root,chapter) {
-  if(!Number.isInteger(chapter)||chapter<1||chapter>35)throw new Error(`Invalid chapter number: ${chapter}`);
+  if(!Number.isInteger(chapter)||chapter<1||chapter>36)throw new Error(`Invalid chapter number: ${chapter}`);
   const base='formalization/lean/CrouzeixTextbook';
   const filename=`Chapter${String(chapter).padStart(2,'0')}.lean`;
   const matches=[];

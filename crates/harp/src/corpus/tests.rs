@@ -1536,7 +1536,7 @@ fn compiles_the_crouzeix_textbook_route_and_current_packet() {
     )
     .unwrap();
     let routes = routes["routes"].as_array().unwrap();
-    assert_eq!(routes.len(), 44);
+    assert_eq!(routes.len(), 45);
     let documents = corpus
         .documents
         .iter()
@@ -1547,7 +1547,7 @@ fn compiles_the_crouzeix_textbook_route_and_current_packet() {
         })
         .map(|document| (document.canonical_markdown_path.as_str(), document))
         .collect::<BTreeMap<_, _>>();
-    assert_eq!(documents.len(), 44);
+    assert_eq!(documents.len(), 45);
 
     let mut canonical_ids = BTreeSet::new();
     let mut legacy_ids = BTreeSet::new();
@@ -1561,7 +1561,7 @@ fn compiles_the_crouzeix_textbook_route_and_current_packet() {
             )
         })
         .collect::<BTreeMap<_, _>>();
-    assert_eq!(aliases.len(), 44);
+    assert_eq!(aliases.len(), 45);
     for route in routes {
         let canonical_id = route["canonical_id"].as_str().unwrap();
         let legacy_id = route["legacy_concept_id"].as_str().unwrap();

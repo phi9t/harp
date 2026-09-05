@@ -7951,6 +7951,234 @@
           "propext"
         ]
       }
+    },
+    {
+      "item_id": "CFT-36-001",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-001",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-26-006",
+        "CFT-28-001"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "reexported-proof",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_positive_moment_cubature",
+        "underlying_declaration": "CrouzeixConjecture.Harp.exists_positive_matrix_moment_cubature",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 25,
+        "column": 5,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "9198894a538a8eaff67d0b937c86d11390b457b66daad0f2c088ab26ed6335eb",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "item_id": "CFT-36-002",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-002",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-34-001",
+        "CFT-36-001"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "proved-here",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_finite_dilation_exists",
+        "underlying_declaration": null,
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 29,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "fbf2f1978aa983a09d41220cd92d9e6709de76601bd3d74ce9c6244a4fc632d2",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "item_id": "CFT-36-003",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-003",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-33-002",
+        "CFT-36-002"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "reexported-proof",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_finite_recurrence",
+        "underlying_declaration": "CrouzeixConjecture.Harp.FiniteHorizonDilationData.equation_three_finite_lower_bound",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 47,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "5f4b34c72a5f5174b53290ed1fb451052e8d54f303e88a63f9c902dd812dd8c0",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "item_id": "CFT-36-004",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-004",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-33-005",
+        "CFT-36-003"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "reexported-proof",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_normalized_norm_two",
+        "underlying_declaration": "CrouzeixConjecture.Harp.norm_target_le_two_of_finiteHorizonDilationData",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 58,
+        "column": 5,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "97f4303ff377d37ef70067d255f56194b4fa066d60fe2ae047e9e0a6a89656dc",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "item_id": "CFT-36-005",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-005",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-29-003",
+        "CFT-36-004"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "reexported-proof",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_polynomial_constant_two",
+        "underlying_declaration": "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 63,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "617b7cea0b100bb54c2c259dbd4f37936a13fa6c52495664642714320ffc57c4",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
+    },
+    {
+      "item_id": "CFT-36-006",
+      "chapter": 36,
+      "kind": "theorem",
+      "prose_path": "knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_horizon_proof.md",
+      "anchor": "cft-36-006",
+      "source_ids": [
+        "CROUZEIX-PACKET",
+        "MATHLIB-4.32.1"
+      ],
+      "pedagogical_prerequisites": [
+        "CFT-21-005",
+        "CFT-36-005"
+      ],
+      "publication_status": "active",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
+      "review_status": {
+        "source_id": "CROUZEIX-PACKET",
+        "status": "registered-for-content-wave-review"
+      },
+      "formal_mode": "reexported-proof",
+      "lean_declaration": {
+        "name": "CrouzeixTextbook.Part06.harp_two_spectral_set",
+        "underlying_declaration": "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean",
+        "line": 68,
+        "column": 9,
+        "verification_target": "CrouzeixTextbook",
+        "type_sha256": "d12d0a2f2deb6ce66f803a1ca394b125f2c16d3756570d5b63ab701e933dad77",
+        "assumptions": [],
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     }
   ]
 }

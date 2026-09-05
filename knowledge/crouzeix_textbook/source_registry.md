@@ -70,6 +70,13 @@ exercises. The entries below fix topic lineage and claim ceilings.
   and publication-status boundaries for Parts V--VI.
 - Boundary: a locally compiled theorem is not peer review, and the packet's
   comparison language is not automatically terminology of an upstream author.
+- Chapter 36 provenance: the local Harp construction in
+  [[formalization/lean/Crouzeix/Harp/MainTheorem.lean|Harp MainTheorem.lean]]
+  and its finite cubature, atomic dilation, and finite-horizon recurrence
+  modules. This is a derived local route sharing lower-level
+  Lorist–Schwenninger machinery, not a third source manuscript or a priority
+  claim. Its chapter statements and exercises are exposed in
+  [[formalization/lean/CrouzeixTextbook/Part06/Chapter36.lean|Chapter36.lean]].
 
 ## JIN-V4-AUDITED
 

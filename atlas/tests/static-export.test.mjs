@@ -453,7 +453,10 @@ test("exports an offline single-file Harp atlas", () => {
     [...decodedModule.matchAll(/id="(cft-[0-9]{2}-[0-9]{3})"/g)]
       .map((match) => match[1]),
   );
-  assert.equal(cftAnchors.size, 210);
+  assert.equal(cftAnchors.size, 216);
+  for (let index = 1; index <= 6; index += 1) {
+    assert.ok(cftAnchors.has(`cft-36-${String(index).padStart(3, "0")}`));
+  }
   assert.match(decodedModule, /href="#documents\/cft-lean-coverage-ledger"/);
   assert.match(decodedModule, /crouzeix-textbook-chapter-01/);
   assert.match(decodedModule, /cft-chapter-01-objects-and-representations/);

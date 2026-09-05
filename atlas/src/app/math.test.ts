@@ -109,7 +109,7 @@ describe("canonical math", () => {
     let inlineCount = 0;
     let displayCount = 0;
 
-    expect(documents).toHaveLength(44);
+    expect(documents).toHaveLength(45);
     for (const document of documents) {
       const root = window.document.createElement("div");
       root.innerHTML = document.html;

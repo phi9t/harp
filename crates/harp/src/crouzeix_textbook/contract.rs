@@ -560,12 +560,12 @@ fn validate_chapter_identity(
     path: PathBuf,
     diagnostics: &mut Vec<TextbookDiagnostic>,
 ) {
-    if !(1..=35).contains(&chapter) {
+    if !(1..=36).contains(&chapter) {
         diagnostics.push(TextbookDiagnostic::new(
             COMBINATION_CODE,
             Some(identity.to_owned()),
             "chapter",
-            "integer from 1 through 35",
+            "integer from 1 through 36",
             chapter.to_string(),
             path.clone(),
         ));
@@ -806,5 +806,40 @@ fn declaration_label(shape: DeclarationShape) -> &'static str {
         DeclarationShape::Local => "declaration data",
         DeclarationShape::Reexport => "declaration with substantive underlying proof",
         DeclarationShape::InvalidUnderlying => "invalid underlying declaration",
+    }
+}
+
+#[cfg(test)]
+mod chapter_roster_tests {
+    use super::*;
+
+    #[test]
+    fn harp_chapter_accepts_theorems_and_exercises() {
+        for (identity, exercise) in [("CFT-36-001", false), ("CFT-36-E01", true)] {
+            let mut diagnostics = Vec::new();
+            validate_chapter_identity(
+                identity,
+                36,
+                exercise,
+                COVERAGE_PATH.into(),
+                &mut diagnostics,
+            );
+            assert!(diagnostics.is_empty(), "{diagnostics:?}");
+        }
+    }
+
+    #[test]
+    fn chapter_roster_rejects_out_of_range_and_mismatched_identity() {
+        for (identity, chapter) in [("CFT-37-001", 37), ("CFT-00-001", 0), ("CFT-35-001", 36)] {
+            let mut diagnostics = Vec::new();
+            validate_chapter_identity(
+                identity,
+                chapter,
+                false,
+                COVERAGE_PATH.into(),
+                &mut diagnostics,
+            );
+            assert!(!diagnostics.is_empty());
+        }
     }
 }
