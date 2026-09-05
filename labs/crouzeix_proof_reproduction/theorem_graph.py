@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Mapping
@@ -14,6 +15,10 @@ except ImportError:  # pragma: no cover - direct script import path
 
 
 GRAPH_SCHEMA_VERSION = "crouzeix-theorem-graph/v1"
+READBACK_SCHEMA_VERSION = "crouzeix-theorem-readbacks/v1"
+READBACK_PATH = Path(
+    "labs/crouzeix_proof_reproduction/formal_targets/theorem-readbacks.json"
+)
 GRAPH_ROUTE_IDS = ("jin", "lorist-schwenninger", "harp")
 ROUTE_ORDER = {route_id: index for index, route_id in enumerate(GRAPH_ROUTE_IDS)}
 PROOF_STATUSES = ("blocked", "deprecated", "open", "passed-external", "passed-local")
@@ -137,6 +142,16 @@ class _NodePart:
         return (self.declaration, self.statement_sha256)
 
 
+@dataclass(frozen=True)
+class _Readback:
+    node_id: str
+    lean_name: str
+    statement_sha256: str
+    statement_text_paths: tuple[str, ...]
+    readback_status: str
+    natural_language_statement: str | None
+
+
 def build_theorem_graph(repository_root: Path) -> TheoremGraph:
     root = Path(repository_root)
     routes: list[GraphRoute] = []
@@ -196,6 +211,7 @@ def build_theorem_graph(repository_root: Path) -> TheoremGraph:
         for key, grouped_parts in _group_parts(parts).items()
     )
     nodes = _topological_order(nodes)
+    nodes = _apply_readbacks(nodes, _load_readbacks(root))
     _validate_graph(nodes)
     return TheoremGraph(
         schema_version=GRAPH_SCHEMA_VERSION,
@@ -329,6 +345,116 @@ def _collapse_node(
     )
 
 
+def _load_readbacks(repository_root: Path) -> dict[str, _Readback]:
+    path = repository_root / READBACK_PATH
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise TheoremGraphError(f"cannot read theorem readbacks: {error}") from error
+    if not isinstance(payload, dict):
+        raise TheoremGraphError("theorem readbacks must be an object")
+    _exact_fields(payload, {"schema_version", "readbacks"}, "theorem readbacks")
+    if payload["schema_version"] != READBACK_SCHEMA_VERSION:
+        raise TheoremGraphError("invalid theorem readback schema version")
+    raw_readbacks = payload["readbacks"]
+    if not isinstance(raw_readbacks, list):
+        raise TheoremGraphError("theorem readbacks must be an array")
+    readbacks: dict[str, _Readback] = {}
+    for raw in raw_readbacks:
+        readback = _parse_readback(raw)
+        if readback.node_id in readbacks:
+            raise TheoremGraphError(f"duplicate theorem readback: {readback.node_id}")
+        readbacks[readback.node_id] = readback
+    return readbacks
+
+
+def _parse_readback(value: object) -> _Readback:
+    if not isinstance(value, dict):
+        raise TheoremGraphError("theorem readback must be an object")
+    _exact_fields(
+        value,
+        {
+            "node_id",
+            "lean_name",
+            "statement_sha256",
+            "statement_text_paths",
+            "readback_status",
+            "natural_language_statement",
+        },
+        "theorem readback",
+    )
+    natural = value["natural_language_statement"]
+    if natural is not None:
+        natural = _text(natural, "natural language statement")
+    readback = _Readback(
+        node_id=_text(value["node_id"], "readback node id"),
+        lean_name=_text(value["lean_name"], "readback Lean name"),
+        statement_sha256=_digest(value["statement_sha256"], "readback statement sha256"),
+        statement_text_paths=_string_tuple(
+            value["statement_text_paths"], "readback statement text path"
+        ),
+        readback_status=_text(value["readback_status"], "readback status"),
+        natural_language_statement=natural,
+    )
+    if route_validation.NODE_ID_RE.fullmatch(readback.node_id) is None:
+        raise TheoremGraphError(f"invalid readback node id: {readback.node_id}")
+    if readback.readback_status not in READBACK_STATUSES:
+        raise TheoremGraphError(f"invalid readback status: {readback.readback_status}")
+    if readback.readback_status == "current" and readback.natural_language_statement is None:
+        raise TheoremGraphError(f"current readback lacks natural statement: {readback.node_id}")
+    return readback
+
+
+def _apply_readbacks(
+    nodes: tuple[GraphNode, ...],
+    readbacks: Mapping[str, _Readback],
+) -> tuple[GraphNode, ...]:
+    if not readbacks:
+        return nodes
+    by_id = {node.node_id: node for node in nodes}
+    unknown = sorted(set(readbacks) - set(by_id))
+    if unknown:
+        raise TheoremGraphError(f"readback references unknown node: {unknown[0]}")
+    updated: list[GraphNode] = []
+    for node in nodes:
+        readback = readbacks.get(node.node_id)
+        if readback is None:
+            updated.append(node)
+            continue
+        _validate_readback_binding(node, readback)
+        updated.append(
+            GraphNode(
+                node_id=node.node_id,
+                route_ids=node.route_ids,
+                route_node_ids=node.route_node_ids,
+                roles=node.roles,
+                lean_name=node.lean_name,
+                statement_sha256=node.statement_sha256,
+                statement_text_paths=node.statement_text_paths,
+                natural_language_statement=readback.natural_language_statement,
+                source_locators=node.source_locators,
+                dependency_ids=node.dependency_ids,
+                proof_status=node.proof_status,
+                proof_receipt_paths=node.proof_receipt_paths,
+                allowed_axioms=node.allowed_axioms,
+                readback_status=readback.readback_status,
+                claim_ceiling=node.claim_ceiling,
+            )
+        )
+    return tuple(updated)
+
+
+def _validate_readback_binding(node: GraphNode, readback: _Readback) -> None:
+    if readback.lean_name != node.lean_name:
+        raise TheoremGraphError(f"readback Lean name mismatch: {node.node_id}")
+    if readback.statement_sha256 != node.statement_sha256:
+        raise TheoremGraphError(f"readback statement hash mismatch: {node.node_id}")
+    if readback.statement_text_paths != node.statement_text_paths:
+        raise TheoremGraphError(f"readback statement path mismatch: {node.node_id}")
+
+
 def _combined_proof_status(statuses: set[str]) -> str:
     for status in ("passed-local", "passed-external", "blocked", "open", "deprecated"):
         if status in statuses:
@@ -396,6 +522,8 @@ def _validate_node(node: GraphNode) -> None:
         raise TheoremGraphError(f"invalid proof status: {node.proof_status}")
     if node.readback_status not in READBACK_STATUSES:
         raise TheoremGraphError(f"invalid readback status: {node.readback_status}")
+    if node.readback_status == "current" and node.natural_language_statement is None:
+        raise TheoremGraphError(f"current graph node lacks readback statement: {node.node_id}")
     if node.claim_ceiling not in CLAIM_CEILINGS:
         raise TheoremGraphError(f"invalid claim ceiling: {node.claim_ceiling}")
     if node.proof_status in {"passed-local", "passed-external"} and not node.proof_receipt_paths:

@@ -1,0 +1,386 @@
+{
+  "schema_version": "crouzeix-theorem-readbacks/v1",
+  "readbacks": [
+    {
+      "node_id": "harp-reuse-companion-algebra",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.parametricBoundaryCompanion_commute_of_mem_generatedAlgebra",
+      "statement_sha256": "3a39a5bafe0fc87ad21cb539ec64b2c4ffd1b97389f998c4825b9b9efa2156be",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-companion-algebra.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger companion algebra lemma states that the parametric boundary companion associated to Gamma, mu, B, and h commutes with every T in the generated algebra of B, under the displayed compactness, measurability, finiteness, numerical-range, and generated-algebra hypotheses."
+    },
+    {
+      "node_id": "harp-reuse-polynomial-power-cauchy",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.parametricPolynomialPowerCauchy",
+      "statement_sha256": "09b8b1ea3de03da22375f845612e88abba0ba3eafb4f22ece0b637dd60f4b32a",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-polynomial-power-cauchy.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger polynomial Cauchy moment lemma states that the boundary integral of the kth power of the parametric polynomial boundary function times the first boundary part equals the kth power of the polynomial evaluation q(B), under the displayed Cauchy-formula hypotheses."
+    },
+    {
+      "node_id": "harp-reuse-dilation",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.compressedAdjointPower",
+      "statement_sha256": "1c700deb798923a6fc1f6252a6e33279dc5ed6599ad8de37d91d0e011bdc736f",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-dilation.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger dilation card records the definition-level Lean statement for compressedAdjointPower: given Hilbert spaces E and K, a continuous linear map V, an operator Q, and n, it returns a continuous linear operator on E."
+    },
+    {
+      "node_id": "harp-reuse-boundary-square-root",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.boundarySquareRoot",
+      "statement_sha256": "a3f437af73c10f667c1062a96b70e4223d1defa111b8c34718004a6c7ff8014f",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-boundary-square-root.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger boundarySquareRoot card records the Lean statement that a positive boundary density D and point z produce a square matrix of the finite index type n."
+    },
+    {
+      "node_id": "harp-reuse-boundary-embedding",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding",
+      "statement_sha256": "038a86f45f545c1fee3df784d8d7ca8c714c48a496a10e4676435ea37d48eb66",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-boundary-embedding.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger boundaryEmbedding card records the Lean statement that a positive boundary density D gives a linear isometry from Euclidean vectors into the L2 space over mu."
+    },
+    {
+      "node_id": "harp-reuse-boundary-multiplier",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.bcfMulL",
+      "statement_sha256": "3e3a12238f46c2707507f70a5132a099fdf7058bfb56460c45a6169e9e4bb0d0",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-boundary-multiplier.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger bounded-continuous-function multiplier card records the Lean statement that h induces a continuous linear operator on vector-valued L2 over mu."
+    },
+    {
+      "node_id": "harp-reuse-compression-moments",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding",
+      "statement_sha256": "546da900f06921852947e2b0d8bf73d45e7b3ce6346bf41508e91417b32e78f1",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-compression-moments.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger compression moments lemma states that adjoint boundaryEmbedding, followed by kth power of the L2 multiplier, followed by boundaryEmbedding, equals the Euclidean operator induced by boundaryPhiCLM applied to h to the kth power."
+    },
+    {
+      "node_id": "harp-reuse-recurrence",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.recurrence_finite_iteration_of_constant_error",
+      "statement_sha256": "2e65f6eb47cc688ace82f875c87965bf65473b5d02ac83d5dab43f07f686d5e6",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-recurrence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger recurrence lemma states that if r_n is bounded above by kappa times m_n minus m_{n+1}, and a constant c is bounded above by r_n for n at least one, then the finite weighted recurrence inequality holds for every N."
+    },
+    {
+      "node_id": "harp-reuse-norm-attainment",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.exists_unit_norm_attaining_and_adjoint_apply",
+      "statement_sha256": "1e240fd8b645cd4311aa923e54ed5ac53d53ee74f797b8c6e979943bde6147cc",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-norm-attainment.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger norm-attainment lemma states that every finite-dimensional nontrivial complex Hilbert-space operator T has a unit vector x attaining the operator norm and satisfying the adjoint eigenvector equation adjoint(T)(T x) = ||T||^2 x."
+    },
+    {
+      "node_id": "harp-reuse-completed-square",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.pre_square_lower_bound",
+      "statement_sha256": "c91756bda30c8916722fc1e91d23dae3fbd01bba84abfdecc10f6f53741da3a4",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-completed-square.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The reused Lorist-Schwenninger completed-square lemma states that, for a positive real coefficient a and a real expression lhs equal to a squared norm minus the real part of an inner product, lhs is bounded below by -||y||^2/(4a)."
+    },
+    {
+      "node_id": "ls-scalar-contradiction",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
+      "statement_sha256": "2e326c41a32e17f57e6faefba0ede84da2ebbcd2d51cee289aedc43a62a36950",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-scalar.txt",
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-scalar-contradiction.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger scalar endpoint lemma states that, from nonnegativity of b, positivity of kappa, positivity of (kappa - 1)^2, and the displayed lower and upper scalar inequalities, one concludes kappa <= 2."
+    },
+    {
+      "node_id": "harp-terminal-theorem",
+      "lean_name": "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
+      "statement_sha256": "d2a15e37b9f4b0b2dca077aa6b55e71e5819eb7b81fc7aa7ae39f0b18a04c927",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-terminal-theorem.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Harp terminal theorem states that every finite nonempty matrix index type satisfies MainTheoremStatement for the finite-horizon Harp route."
+    },
+    {
+      "node_id": "harp-closed-range-consequence",
+      "lean_name": "CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet",
+      "statement_sha256": "e5aa4d8b786419e13a22b35e48da2cb03f4b3d8eaf43377151c74f19bdaa0e62",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-closed-range-consequence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Harp closed-range consequence states that every operator on a nontrivial complex Hilbert space satisfies ClosedOperatorNumericalRangeIsTwoSpectralSet."
+    },
+    {
+      "node_id": "jin-completion-algebra-cancellation",
+      "lean_name": "CrouzeixConjecture.completion_mulVec_add_eq_zero",
+      "statement_sha256": "f344d2569a6711950f74b3f901b4a1eb33b748a18f568d83da7a1bbf1bb3a200",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-completion-algebra-cancellation.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin completion algebra cancellation lemma states that, for square matrices G and P and vector u, if G is a unit, then G multiplied by completionV(G,P,u) plus P multiplied by u is zero."
+    },
+    {
+      "node_id": "jin-completion-eigenvector-endpoint",
+      "lean_name": "CrouzeixConjecture.norm_le_two_of_gramian_inequality",
+      "statement_sha256": "c237f05ea8988eb92adcf6e73ea3ac2f4da9c8d63999aeaab99dfa6a056da11d",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-completion-eigenvector-endpoint.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin completion eigenvector endpoint lemma states that a square matrix C has norm at most 2 when its powers are uniformly bounded by a nonnegative M and the displayed Gramian expression is positive semidefinite."
+    },
+    {
+      "node_id": "jin-completion-gramian-bridge",
+      "lean_name": "CrouzeixConjecture.completion_gramian_expression_posSemidef_of_source",
+      "statement_sha256": "a80bc0de463d79b6a41b73ce2f3405124f8a87ed91df3bc3f297eac76d0490a5",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-completion-gramian-bridge.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin completion Gramian bridge lemma states that source positive-semidefiniteness of the completion X/P expression transfers through completionSquareRootData to positive-semidefiniteness of the corresponding Gramian expression for the completion similarity matrix."
+    },
+    {
+      "node_id": "jin-completion-sampling",
+      "lean_name": "CrouzeixConjecture.completion_X_inequality_of_sampling",
+      "statement_sha256": "9c5f132841bcdf9433c0846811f2602839c2818f0346f18683b4bc74a794367f",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-completion-sampling.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin completion sampling lemma states that, if the sampled coefficient quadratic form is nonnegative for every vector u, then the completion X/P expression is positive semidefinite."
+    },
+    {
+      "node_id": "jin-completion-kernel-cancellation",
+      "lean_name": "CrouzeixConjecture.completion_X_inequality_of_positiveKernel",
+      "statement_sha256": "78a3e7d913400e17b5d2a4efca67909eec85297d12d5bdcb34763a89c7fbde07",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-completion-kernel-cancellation.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin completion kernel cancellation lemma states that a positive Herglotz kernel model on the open unit disk implies positive-semidefiniteness of the completion X/P expression."
+    },
+    {
+      "node_id": "jin-positive-real-completion",
+      "lean_name": "CrouzeixConjecture.norm_completionDiagonalizableMatrix_le_two_of_positiveKernelModel",
+      "statement_sha256": "d92151b90e424fa2592d92cfc80d6ffdb14be90afd60275867550aa159901a4f",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-positive-real-completion.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin positive-real completion theorem states that, for a unit diagonalizing matrix S, eigenvalue data lambda in the unit disk, and a positive kernel model, the norm of the completion diagonalizable matrix is at most 2."
+    },
+    {
+      "node_id": "jin-positive-real-completion-statement",
+      "lean_name": "CrouzeixConjecture.positiveRealCompletionStatement",
+      "statement_sha256": "8800294a4d5f033d60fb2c3e32cda83ddc95cdc64a24bc9089104cdeb1f996e4",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-positive-real-completion-statement.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin positive-real completion statement card records that every finite nonempty index type satisfies PositiveRealCompletionStatement."
+    },
+    {
+      "node_id": "jin-double-layer-realization",
+      "lean_name": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.norm_functionEval_le_two_of_holomorphic_of_simpleDiagonalization",
+      "statement_sha256": "204b5ca9ec8d7184e0e099776f6d20208ebc91fd6db4e6308e45c2dfc200438d",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-double-layer-realization.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin double-layer realization theorem states that the oriented radial convex boundary model bounds the norm of hB.functionEval f by 2 under the displayed holomorphic, closure, boundary, simple-diagonalization, and numerical-range hypotheses."
+    },
+    {
+      "node_id": "jin-function-maximum-convergence",
+      "lean_name": "CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation",
+      "statement_sha256": "b99b6914fa68305691be308349e893d49060f2b456b91e45c922621374df18e4",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-function-maximum-convergence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin maximum-convergence lemma states that maxima of a continuous function over compact outer approximations s(k) converge to the maximum over K when s(k) stays inside C, contains K, and approaches K with radius tending to zero."
+    },
+    {
+      "node_id": "jin-numerical-range-convexity",
+      "lean_name": "CrouzeixConjecture.numericalRange_convex",
+      "statement_sha256": "b7e6ece49cd088cf16a0ffcbad77af0c7432d5bf775083a04f91dadb1684f340",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-numerical-range-convexity.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin numerical-range convexity lemma states that the numerical range of a finite square matrix A is convex over the reals."
+    },
+    {
+      "node_id": "jin-simple-spectrum-approximation",
+      "lean_name": "CrouzeixConjecture.tendsto_simpleSpectrumApproximation",
+      "statement_sha256": "6776ee9dc77f443e34fb02e5161e3fe38ec827a67c03bace7aac9900e4d38d68",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-simple-spectrum-approximation.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin simple-spectrum approximation lemma states that the simpleSpectrumApproximation sequence of a finite square matrix A tends to A."
+    },
+    {
+      "node_id": "jin-fixed-outer-domain-convergence",
+      "lean_name": "CrouzeixConjecture.holomorphicCrouzeixBound",
+      "statement_sha256": "4f222c1e27899be06a052ee72109a2cc7c738ef1b6944c853579207c3c40a81c",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-fixed-outer-domain-convergence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin fixed outer-domain convergence theorem states that holomorphicMatrixEval(A,f) is bounded by twice the maximum modulus of f on the numerical range of A when f is differentiable on an open set containing that numerical range."
+    },
+    {
+      "node_id": "jin-holomorphic-rational-bridge",
+      "lean_name": "CrouzeixConjecture.jinHolomorphicCrouzeixRationalBound",
+      "statement_sha256": "49593579fbcbd8070798f4423eddb7371daab44f426d9dc44ae8df4511c3e136",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-holomorphic-rational-bridge.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin holomorphic-rational bridge theorem states that rationalMatrixEval(r,A) is bounded by twice the maximum rational modulus on the numerical range when r has no pole on that numerical range."
+    },
+    {
+      "node_id": "jin-finite-rational-consequence",
+      "lean_name": "CrouzeixConjecture.crouzeixRationalBound",
+      "statement_sha256": "b5c29e61526af2b2b44e4f54aa9a8b52a42a20c7b5edf624e717beead61350bd",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-finite-rational-consequence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin finite rational consequence states the same rational Crouzeix bound for finite matrices: rationalMatrixEval(r,A) is bounded by twice the maximum rational modulus on the numerical range when r is pole-free there."
+    },
+    {
+      "node_id": "jin-hilbert-polynomial-core",
+      "lean_name": "CrouzeixConjecture.hilbertSpacePolynomialCrouzeix_of_mainTheorem",
+      "statement_sha256": "9004ee029a177dfa48e6f4f7aa2c575db742f0a8ba60fb6084d5274cb687cf3e",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-hilbert-polynomial-core.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin Hilbert polynomial core theorem states that the finite-matrix main theorem implies the polynomial Crouzeix bound for bounded operators on a nontrivial complex Hilbert space."
+    },
+    {
+      "node_id": "jin-terminal-crouzeix",
+      "lean_name": "CrouzeixConjecture.crouzeixConjecture",
+      "statement_sha256": "b428e6ec103477b19ec18c08171b96d10249484c4c7975437e38c0a48c8359cf",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-terminal-crouzeix.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin terminal theorem states the finite-dimensional polynomial Crouzeix bound: ||p(A)|| is at most twice the maximum polynomial modulus on the numerical range of A."
+    },
+    {
+      "node_id": "jin-hilbert-polynomial-consequence",
+      "lean_name": "CrouzeixConjecture.hilbertSpacePolynomialCrouzeix",
+      "statement_sha256": "1312bf9aef4aac9feead7aa3ea81b0f6da31f53760a3b7eedff5346376df8690",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-hilbert-polynomial-consequence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin Hilbert polynomial consequence states the polynomial Crouzeix bound for bounded operators on a nontrivial complex Hilbert space."
+    },
+    {
+      "node_id": "jin-hilbert-spectral-set-core",
+      "lean_name": "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet_of_mainTheorem",
+      "statement_sha256": "0c116bf0cbc25e1684916515fbe6c7699da0409a994cd32fdc902bb93901f01e",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-hilbert-spectral-set-core.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin Hilbert spectral-set core theorem states that the finite-matrix main theorem implies the closed operator numerical range is a two-spectral set for a bounded operator A."
+    },
+    {
+      "node_id": "jin-hilbert-spectral-set-consequence",
+      "lean_name": "CrouzeixConjecture.closedOperatorNumericalRange_isTwoSpectralSet",
+      "statement_sha256": "536d54fa35a7524bc6547b69c21180bc4ac79571a15a3bfee0664f92dc4d3fac",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-hilbert-spectral-set-consequence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin Hilbert spectral-set consequence states that the closed operator numerical range is a two-spectral set for every bounded operator A on a nontrivial complex Hilbert space."
+    },
+    {
+      "node_id": "jin-polynomial-bound",
+      "lean_name": "CrouzeixConjecture.PolynomialCrouzeixBound",
+      "statement_sha256": "e7cabcc9b71888e6e1f7886c073d0d82bc05f0e5ff1cbc05b2a1a6ef3ef276dc",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/jin-polynomial-bound.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Jin polynomial-bound card records the Lean proposition PolynomialCrouzeixBound(A,p) for finite square matrices and complex polynomials."
+    },
+    {
+      "node_id": "ls-equation-one-terminal-bound",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.DilationData.perturbation_mul_target_power_norm_le",
+      "statement_sha256": "3105d4f26806b762105e96f04e5c5cf60122da105c98a8f62ffd7a99f64deb77",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-equation-one-terminal-bound.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger equation-one terminal bound states that the norm of data.perturbation(n) times data.T^n is bounded by data.bound times (2 + data.bound) for each natural n."
+    },
+    {
+      "node_id": "ls-power-recurrence",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.DilationData.equation_three_lower_bound",
+      "statement_sha256": "630a76c99530e4d27abd1efbde2833005b3b30d51bb1e6e4983c0149b96dadc2",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-power-recurrence.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger power recurrence lemma states that, under kappa > 1, a unit vector hypothesis, and the adjoint singular-vector equation, the displayed lower bound holds for the real part of the first perturbation inner product."
+    },
+    {
+      "node_id": "ls-perturbation-lemma",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.DilationData.norm_target_le_two",
+      "statement_sha256": "3597dfdf5d456327e91bc2a0b958a88f1f70d683e940dd1b72aea567bcd8a6d2",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-perturbation-lemma.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger perturbation lemma states that the target operator T in DilationData has norm at most 2."
+    },
+    {
+      "node_id": "ls-double-layer-realization",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.norm_euclideanOperator_polynomialEval_le_two_of_parametricBoundary",
+      "statement_sha256": "edad4a3c2bc5952d480ff5b01ffbf8aee0049c20030bfd91cb362be769125f9b",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-double-layer-realization.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger double-layer realization theorem states that, under the parametric boundary Cauchy formula and polynomial bound on the closure of Omega, the Euclidean operator norm of polynomialEval(q,B) is at most 2."
+    },
+    {
+      "node_id": "ls-terminal-crouzeix",
+      "lean_name": "CrouzeixConjecture.loristSchwenningerMainTheorem",
+      "statement_sha256": "3913b16a52e942e39af8ad2c523f8ffb9967e226fb2c5bf723809605ea50d4e9",
+      "statement_text_paths": [
+        "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/ls-terminal-crouzeix.txt"
+      ],
+      "readback_status": "current",
+      "natural_language_statement": "The Lorist-Schwenninger terminal theorem states that every finite nonempty matrix index type satisfies MainTheoremStatement."
+    }
+  ]
+}

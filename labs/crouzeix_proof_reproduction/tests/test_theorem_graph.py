@@ -25,8 +25,14 @@ class TheoremGraphTests(unittest.TestCase):
         self.assertEqual(payload["frontier"]["blocked_nodes"], [])
         self.assertIn("ls-perturbation-lemma", payload["frontier"]["external_candidates"])
         self.assertIn("harp-terminal-theorem", payload["frontier"]["external_candidates"])
-        self.assertIn("ls-terminal-crouzeix", payload["frontier"]["missing_readbacks"])
-        self.assertIn("harp-closed-range-consequence", payload["frontier"]["missing_readbacks"])
+        self.assertEqual(payload["frontier"]["missing_readbacks"], [])
+        by_id = {node["node_id"]: node for node in payload["nodes"]}
+        self.assertEqual(by_id["ls-terminal-crouzeix"]["readback_status"], "current")
+        self.assertIn(
+            "Lorist-Schwenninger",
+            by_id["ls-terminal-crouzeix"]["natural_language_statement"],
+        )
+        self.assertEqual(by_id["harp-closed-range-consequence"]["readback_status"], "current")
 
     def test_validate_accepts_builder_output(self) -> None:
         payload = theorem_graph.build_theorem_graph_json(REPO)
@@ -72,6 +78,31 @@ class TheoremGraphTests(unittest.TestCase):
 
         with self.assertRaisesRegex(theorem_graph.TheoremGraphError, "cycle"):
             theorem_graph.validate_theorem_graph(payload)
+
+    def test_validation_rejects_current_node_without_readback_statement(self) -> None:
+        payload = theorem_graph.build_theorem_graph_json(REPO)
+        node = next(
+            item for item in payload["nodes"] if item["node_id"] == "harp-terminal-theorem"
+        )
+        node["natural_language_statement"] = None
+
+        with self.assertRaisesRegex(theorem_graph.TheoremGraphError, "current graph node"):
+            theorem_graph.validate_theorem_graph(payload)
+
+    def test_readback_binding_rejects_statement_hash_drift(self) -> None:
+        graph = theorem_graph.build_theorem_graph(REPO)
+        node = next(item for item in graph.nodes if item.node_id == "harp-terminal-theorem")
+        readback = theorem_graph._Readback(
+            node_id=node.node_id,
+            lean_name=node.lean_name,
+            statement_sha256="0" * 64,
+            statement_text_paths=node.statement_text_paths,
+            readback_status="current",
+            natural_language_statement="A stale readback should not bind.",
+        )
+
+        with self.assertRaisesRegex(theorem_graph.TheoremGraphError, "statement hash"):
+            theorem_graph._apply_readbacks((node,), {node.node_id: readback})
 
 
 if __name__ == "__main__":

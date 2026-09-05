@@ -27,6 +27,14 @@ The route manifests are the first executable source because they already bind
 node IDs, declaration names, module paths, statement hashes, source locators,
 route dependencies, allowed axioms, reviews, and receipts.
 
+Current human read-backs are attached through a separate ledger:
+
+- `labs/crouzeix_proof_reproduction/formal_targets/theorem-readbacks.json`
+
+The read-back ledger is not proof authority. It may make a theorem card easier
+to inspect only when it binds the same graph `node_id`, Lean declaration name,
+statement hash, and declaration-type path set as the graph node.
+
 ## Output
 
 `crouzeix-theorem-graph/v1` is a generated JSON object with:
@@ -71,7 +79,9 @@ The graph builder must reject:
 4. reused-route nodes without proof-bearing upstream route dependency evidence;
 5. proof-bearing nodes without receipt paths and allowed axioms;
 6. source-backed nodes without source locators;
-7. incompatible declarations collapsed into one node.
+7. incompatible declarations collapsed into one node;
+8. read-back entries whose node ID, Lean name, statement hash, or
+   declaration-type path set no longer matches the graph node.
 
 The builder must keep route reuse visible. A Harp node reusing
 Lorist-Schwenninger evidence may be `passed-local`, but it cannot become
