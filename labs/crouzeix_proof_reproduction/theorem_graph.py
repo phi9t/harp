@@ -15,14 +15,30 @@ except ImportError:  # pragma: no cover - direct script import path
 
 
 GRAPH_SCHEMA_VERSION = "crouzeix-theorem-graph/v1"
+OBLIGATION_GRAPH_SCHEMA_VERSION = "crouzeix-proof-obligation-graph/v1"
+OBLIGATION_LEDGER_SCHEMA_VERSION = "crouzeix-proof-obligation-ledger/v1"
+PROVE2ME_EXPORT_SCHEMA_VERSION = "crouzeix-prove2me-export/v1"
 READBACK_SCHEMA_VERSION = "crouzeix-theorem-readbacks/v1"
 READBACK_PATH = Path(
     "labs/crouzeix_proof_reproduction/formal_targets/theorem-readbacks.json"
+)
+OBLIGATION_LEDGER_PATH = Path(
+    "labs/crouzeix_proof_reproduction/formal_targets/proof-obligations.json"
+)
+PLANNED_OBLIGATION_STATEMENTS_PATH = Path(
+    "labs/crouzeix_proof_reproduction/formal_targets/harp/planned-obligation-statements"
 )
 GRAPH_ROUTE_IDS = ("jin", "lorist-schwenninger", "harp")
 ROUTE_ORDER = {route_id: index for index, route_id in enumerate(GRAPH_ROUTE_IDS)}
 PROOF_STATUSES = ("blocked", "deprecated", "open", "passed-external", "passed-local")
 READBACK_STATUSES = ("current", "flagged", "missing", "stale")
+OBLIGATION_KINDS = (
+    "derived-obligation",
+    "planned-obligation",
+    "reused-obligation",
+    "shared-obligation",
+)
+OBLIGATION_ROLES = ("intermediate", "parent-completion", "terminal")
 CLAIM_CEILINGS = (
     "external-candidate",
     "harp-derived-local-certification",
@@ -119,6 +135,82 @@ class TheoremGraph:
                 key: list(value)
                 for key, value in sorted(self.frontier.items())
             },
+        }
+
+
+@dataclass(frozen=True)
+class ProofObligationNode:
+    node_id: str
+    parent_node_id: str
+    route_ids: tuple[str, ...]
+    kind: str
+    role: str
+    route_node_id: str | None
+    lean_name: str | None
+    statement_sha256: str
+    statement_text_paths: tuple[str, ...]
+    dependency_ids: tuple[str, ...]
+    proof_status: str
+    proof_receipt_paths: tuple[str, ...]
+    allowed_axioms: tuple[str, ...]
+    readback_status: str
+    natural_language_statement: str | None
+    prove2me_candidate: bool
+    claim_ceiling: str
+    source_locators: tuple[str, ...]
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            "node_id": self.node_id,
+            "parent_node_id": self.parent_node_id,
+            "route_ids": list(self.route_ids),
+            "kind": self.kind,
+            "role": self.role,
+            "route_node_id": self.route_node_id,
+            "lean_name": self.lean_name,
+            "statement_sha256": self.statement_sha256,
+            "statement_text_paths": list(self.statement_text_paths),
+            "dependency_ids": list(self.dependency_ids),
+            "proof_status": self.proof_status,
+            "proof_receipt_paths": list(self.proof_receipt_paths),
+            "allowed_axioms": list(self.allowed_axioms),
+            "readback_status": self.readback_status,
+            "natural_language_statement": self.natural_language_statement,
+            "prove2me_candidate": self.prove2me_candidate,
+            "claim_ceiling": self.claim_ceiling,
+            "source_locators": list(self.source_locators),
+        }
+
+
+@dataclass(frozen=True)
+class ProofObligationParent:
+    parent_node_id: str
+    child_ids: tuple[str, ...]
+    obligation_status: str
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            "parent_node_id": self.parent_node_id,
+            "child_ids": list(self.child_ids),
+            "obligation_status": self.obligation_status,
+        }
+
+
+@dataclass(frozen=True)
+class ProofObligationGraph:
+    schema_version: str
+    route_node_ids: tuple[str, ...]
+    parents: tuple[ProofObligationParent, ...]
+    nodes: tuple[ProofObligationNode, ...]
+    frontier: dict[str, tuple[str, ...]]
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            "schema_version": self.schema_version,
+            "route_node_ids": list(self.route_node_ids),
+            "parents": [parent.to_json() for parent in self.parents],
+            "nodes": [node.to_json() for node in self.nodes],
+            "frontier": {key: list(value) for key, value in sorted(self.frontier.items())},
         }
 
 
@@ -257,6 +349,553 @@ def validate_theorem_graph(value: Mapping[str, object]) -> TheoremGraph:
 
 def build_theorem_graph_json(repository_root: Path) -> dict[str, object]:
     return build_theorem_graph(repository_root).to_json()
+
+
+def build_proof_obligation_graph(repository_root: Path) -> ProofObligationGraph:
+    root = Path(repository_root)
+    route_graph = build_theorem_graph(root)
+    route_nodes = {node.node_id: node for node in route_graph.nodes}
+    payload = _read_json(root, OBLIGATION_LEDGER_PATH, "proof-obligation ledger")
+    _exact_fields(payload, {"schema_version", "obligations"}, "proof-obligation ledger")
+    if payload["schema_version"] != OBLIGATION_LEDGER_SCHEMA_VERSION:
+        raise TheoremGraphError("invalid proof-obligation ledger schema version")
+    raw_nodes = payload["obligations"]
+    if not isinstance(raw_nodes, list) or not raw_nodes:
+        raise TheoremGraphError("proof obligations must be a nonempty array")
+    nodes = _bind_obligation_metadata(
+        tuple(_parse_obligation_node(value) for value in raw_nodes), route_nodes
+    )
+    _validate_obligation_graph(root, route_nodes, nodes)
+    nodes = _topological_order_obligations(nodes, set(route_nodes))
+    parents = _obligation_parents(nodes)
+    frontier = _obligation_frontier(route_graph.nodes, parents, nodes)
+    return ProofObligationGraph(
+        schema_version=OBLIGATION_GRAPH_SCHEMA_VERSION,
+        route_node_ids=tuple(node.node_id for node in route_graph.nodes),
+        parents=parents,
+        nodes=nodes,
+        frontier=frontier,
+    )
+
+
+def build_proof_obligation_graph_json(repository_root: Path) -> dict[str, object]:
+    return build_proof_obligation_graph(repository_root).to_json()
+
+
+def validate_proof_obligation_graph(
+    value: Mapping[str, object], repository_root: Path
+) -> ProofObligationGraph:
+    _exact_fields(
+        value,
+        {"schema_version", "route_node_ids", "parents", "nodes", "frontier"},
+        "proof-obligation graph",
+    )
+    if value["schema_version"] != OBLIGATION_GRAPH_SCHEMA_VERSION:
+        raise TheoremGraphError("invalid proof-obligation graph schema version")
+    route_graph = build_theorem_graph(repository_root)
+    route_nodes = {node.node_id: node for node in route_graph.nodes}
+    route_node_ids = _string_tuple(value["route_node_ids"], "route graph node id")
+    expected_route_ids = tuple(route_nodes)
+    if route_node_ids != expected_route_ids:
+        raise TheoremGraphError("proof-obligation route node roster is stale")
+    raw_nodes = value["nodes"]
+    if not isinstance(raw_nodes, list) or not raw_nodes:
+        raise TheoremGraphError("proof-obligation nodes must be a nonempty array")
+    nodes = tuple(
+        _parse_serialized_obligation_node(item, route_nodes) for item in raw_nodes
+    )
+    _validate_obligation_graph(Path(repository_root), route_nodes, nodes)
+    ordered = _topological_order_obligations(nodes, set(route_nodes))
+    if nodes != ordered:
+        raise TheoremGraphError("proof-obligation nodes are not in canonical order")
+    parents = _parse_obligation_parents(value["parents"])
+    observed_parents = _obligation_parents(nodes)
+    if parents != observed_parents:
+        raise TheoremGraphError("proof-obligation parent summaries do not match nodes")
+    frontier = _parse_obligation_frontier(value["frontier"])
+    observed_frontier = _obligation_frontier(route_graph.nodes, parents, nodes)
+    if frontier != observed_frontier:
+        raise TheoremGraphError("proof-obligation frontier does not match graph nodes")
+    return ProofObligationGraph(
+        schema_version=OBLIGATION_GRAPH_SCHEMA_VERSION,
+        route_node_ids=route_node_ids,
+        parents=parents,
+        nodes=nodes,
+        frontier=frontier,
+    )
+
+
+def build_prove2me_export(repository_root: Path) -> dict[str, object]:
+    graph = build_proof_obligation_graph(repository_root)
+    candidates = set(graph.frontier["prove2me_candidates"])
+    cards = []
+    for node in graph.nodes:
+        if node.node_id not in candidates:
+            continue
+        cards.append(
+            {
+                "theorem_id": node.node_id,
+                "parent_theorem_id": node.parent_node_id,
+                "lean_name": node.lean_name,
+                "statement_sha256": node.statement_sha256,
+                "statement_text_paths": list(node.statement_text_paths),
+                "dependencies": list(node.dependency_ids),
+                "natural_language_readback": node.natural_language_statement,
+                "claim_ceiling": node.claim_ceiling,
+                "local_proof_status": node.proof_status,
+                "allowed_axioms": list(node.allowed_axioms),
+                "source_locators": list(node.source_locators),
+                "authorship_status": (
+                    "reused-route"
+                    if node.kind == "reused-obligation"
+                    else "harp-authored"
+                ),
+            }
+        )
+    return {
+        "schema_version": PROVE2ME_EXPORT_SCHEMA_VERSION,
+        "dry_run": True,
+        "network_access": False,
+        "theorem_cards": cards,
+    }
+
+
+def _parse_obligation_node(value: object) -> ProofObligationNode:
+    if not isinstance(value, dict):
+        raise TheoremGraphError("proof obligation must be an object")
+    _exact_fields(
+        value,
+        {
+            "node_id",
+            "parent_node_id",
+            "route_ids",
+            "kind",
+            "role",
+            "route_node_id",
+            "lean_name",
+            "statement_sha256",
+            "statement_text_paths",
+            "dependency_ids",
+            "proof_status",
+            "proof_receipt_paths",
+            "allowed_axioms",
+            "readback_status",
+            "natural_language_statement",
+            "prove2me_candidate",
+        },
+        "proof obligation",
+    )
+    route_node_id = value["route_node_id"]
+    if route_node_id is not None:
+        route_node_id = _text(route_node_id, "obligation route node id")
+    lean_name = value["lean_name"]
+    if lean_name is not None:
+        lean_name = _text(lean_name, "obligation Lean name")
+    natural = value["natural_language_statement"]
+    if natural is not None:
+        natural = _text(natural, "obligation natural language statement")
+    candidate = value["prove2me_candidate"]
+    if not isinstance(candidate, bool):
+        raise TheoremGraphError("obligation Prove2Me candidate must be a boolean")
+    kind = _text(value["kind"], "obligation kind")
+    if kind not in OBLIGATION_KINDS:
+        raise TheoremGraphError(f"invalid obligation kind: {kind}")
+    role = _text(value["role"], "obligation role")
+    if role not in OBLIGATION_ROLES:
+        raise TheoremGraphError(f"invalid obligation role: {role}")
+    route_ids = _string_tuple(value["route_ids"], "obligation route id")
+    unknown_routes = set(route_ids) - set(GRAPH_ROUTE_IDS)
+    if unknown_routes:
+        raise TheoremGraphError(f"unknown obligation route: {sorted(unknown_routes)[0]}")
+    if tuple(sorted(route_ids, key=ROUTE_ORDER.__getitem__)) != route_ids:
+        raise TheoremGraphError("obligation routes are not in canonical order")
+    return ProofObligationNode(
+        node_id=_text(value["node_id"], "obligation node id"),
+        parent_node_id=_text(value["parent_node_id"], "obligation parent node id"),
+        route_ids=route_ids,
+        kind=kind,
+        role=role,
+        route_node_id=route_node_id,
+        lean_name=lean_name,
+        statement_sha256=_digest(value["statement_sha256"], "obligation statement sha256"),
+        statement_text_paths=_string_tuple(
+            value["statement_text_paths"], "obligation statement text path"
+        ),
+        dependency_ids=_string_tuple(
+            value["dependency_ids"], "obligation dependency id", allow_empty=True
+        ),
+        proof_status=_text(value["proof_status"], "obligation proof status"),
+        proof_receipt_paths=_string_tuple(
+            value["proof_receipt_paths"], "obligation proof receipt path", allow_empty=True
+        ),
+        allowed_axioms=_string_tuple(
+            value["allowed_axioms"], "obligation allowed axiom", allow_empty=True
+        ),
+        readback_status=_text(value["readback_status"], "obligation readback status"),
+        natural_language_statement=natural,
+        prove2me_candidate=candidate,
+        claim_ceiling=(
+            "reused-route-local-certification"
+            if kind == "reused-obligation"
+            else "harp-derived-local-certification"
+        ),
+        source_locators=(),
+    )
+
+
+def _parse_serialized_obligation_node(
+    value: object, route_nodes: Mapping[str, GraphNode]
+) -> ProofObligationNode:
+    if not isinstance(value, dict):
+        raise TheoremGraphError("proof-obligation graph node must be an object")
+    derived_fields = {"claim_ceiling", "source_locators"}
+    raw = dict(value)
+    if not derived_fields.issubset(raw):
+        raise TheoremGraphError("proof-obligation graph node lacks derived fields")
+    claim_ceiling = raw.pop("claim_ceiling")
+    source_locators = raw.pop("source_locators")
+    node = _bind_obligation_metadata((_parse_obligation_node(raw),), route_nodes)[0]
+    if claim_ceiling != node.claim_ceiling:
+        raise TheoremGraphError(f"obligation claim ceiling mismatch: {node.node_id}")
+    if _string_tuple(source_locators, "obligation source locator", allow_empty=True) != node.source_locators:
+        raise TheoremGraphError(f"obligation source locator mismatch: {node.node_id}")
+    return node
+
+
+def _bind_obligation_metadata(
+    nodes: tuple[ProofObligationNode, ...],
+    route_nodes: Mapping[str, GraphNode],
+) -> tuple[ProofObligationNode, ...]:
+    bound = []
+    for node in nodes:
+        route_node = route_nodes.get(node.route_node_id) if node.route_node_id else None
+        bound.append(
+            ProofObligationNode(
+                node_id=node.node_id,
+                parent_node_id=node.parent_node_id,
+                route_ids=node.route_ids,
+                kind=node.kind,
+                role=node.role,
+                route_node_id=node.route_node_id,
+                lean_name=node.lean_name,
+                statement_sha256=node.statement_sha256,
+                statement_text_paths=node.statement_text_paths,
+                dependency_ids=node.dependency_ids,
+                proof_status=node.proof_status,
+                proof_receipt_paths=node.proof_receipt_paths,
+                allowed_axioms=node.allowed_axioms,
+                readback_status=node.readback_status,
+                natural_language_statement=node.natural_language_statement,
+                prove2me_candidate=node.prove2me_candidate,
+                claim_ceiling=(
+                    route_node.claim_ceiling if route_node is not None else node.claim_ceiling
+                ),
+                source_locators=(
+                    route_node.source_locators if route_node is not None else ()
+                ),
+            )
+        )
+    return tuple(bound)
+
+
+def _parse_obligation_parents(value: object) -> tuple[ProofObligationParent, ...]:
+    if not isinstance(value, list) or not value:
+        raise TheoremGraphError("proof-obligation parents must be a nonempty array")
+    parents: list[ProofObligationParent] = []
+    for raw in value:
+        if not isinstance(raw, dict):
+            raise TheoremGraphError("proof-obligation parent must be an object")
+        _exact_fields(raw, {"parent_node_id", "child_ids", "obligation_status"}, "proof-obligation parent")
+        parents.append(
+            ProofObligationParent(
+                parent_node_id=_text(raw["parent_node_id"], "parent node id"),
+                child_ids=_string_tuple(raw["child_ids"], "parent child id"),
+                obligation_status=_text(raw["obligation_status"], "parent obligation status"),
+            )
+        )
+    return tuple(parents)
+
+
+def _parse_obligation_frontier(value: object) -> dict[str, tuple[str, ...]]:
+    if not isinstance(value, dict):
+        raise TheoremGraphError("proof-obligation frontier must be an object")
+    fields = {
+        "blocked_obligations",
+        "missing_obligation_readbacks",
+        "open_obligations",
+        "oversized_parent_nodes",
+        "prove2me_candidates",
+    }
+    _exact_fields(value, fields, "proof-obligation frontier")
+    return {
+        key: _string_tuple(value[key], "proof-obligation frontier node id", allow_empty=True)
+        for key in sorted(fields)
+    }
+
+
+def _validate_obligation_graph(
+    repository_root: Path,
+    route_nodes: Mapping[str, GraphNode],
+    nodes: tuple[ProofObligationNode, ...],
+) -> None:
+    ids = [node.node_id for node in nodes]
+    if len(ids) != len(set(ids)):
+        raise TheoremGraphError("duplicate proof-obligation node id")
+    obligation_ids = set(ids)
+    route_ids = set(route_nodes)
+    for node in nodes:
+        if route_validation.NODE_ID_RE.fullmatch(node.node_id) is None:
+            raise TheoremGraphError(f"invalid proof-obligation node id: {node.node_id}")
+        if node.parent_node_id not in route_ids:
+            raise TheoremGraphError(f"unknown obligation parent: {node.parent_node_id}")
+        if node.kind not in OBLIGATION_KINDS:
+            raise TheoremGraphError(f"invalid obligation kind: {node.kind}")
+        if node.role not in OBLIGATION_ROLES:
+            raise TheoremGraphError(f"invalid obligation role: {node.role}")
+        unknown_routes = set(node.route_ids) - set(GRAPH_ROUTE_IDS)
+        if unknown_routes:
+            raise TheoremGraphError(f"unknown obligation route: {sorted(unknown_routes)[0]}")
+        if tuple(sorted(node.route_ids, key=ROUTE_ORDER.__getitem__)) != node.route_ids:
+            raise TheoremGraphError(f"obligation routes are not canonical: {node.node_id}")
+        if not set(node.route_ids).issubset(route_nodes[node.parent_node_id].route_ids):
+            raise TheoremGraphError(f"obligation route does not match parent: {node.node_id}")
+        if node.proof_status not in PROOF_STATUSES:
+            raise TheoremGraphError(f"invalid obligation proof status: {node.proof_status}")
+        if node.readback_status not in READBACK_STATUSES:
+            raise TheoremGraphError(f"invalid obligation readback status: {node.readback_status}")
+        if node.readback_status == "stale":
+            raise TheoremGraphError(f"stale obligation readback: {node.node_id}")
+        if node.readback_status == "current" and node.natural_language_statement is None:
+            raise TheoremGraphError(f"current obligation lacks readback statement: {node.node_id}")
+        if node.proof_status in {"passed-local", "passed-external"}:
+            if node.lean_name is None:
+                raise TheoremGraphError(f"passed obligation lacks Lean statement: {node.node_id}")
+            if not node.proof_receipt_paths:
+                raise TheoremGraphError(f"passed obligation lacks receipt: {node.node_id}")
+        if node.readback_status == "current" and node.lean_name is None:
+            raise TheoremGraphError(f"unbound current readback: {node.node_id}")
+        if node.proof_status == "passed-local" and not node.allowed_axioms:
+            raise TheoremGraphError(f"passed local obligation lacks axiom policy: {node.node_id}")
+        if node.lean_name is None and node.proof_status != "open":
+            raise TheoremGraphError(f"unbound obligation must remain open: {node.node_id}")
+        if node.kind == "planned-obligation":
+            expected_path = (PLANNED_OBLIGATION_STATEMENTS_PATH / f"{node.node_id}.txt").as_posix()
+            if node.statement_text_paths != (expected_path,):
+                raise TheoremGraphError(f"invalid planned statement path: {node.node_id}")
+            if (
+                node.route_node_id is not None
+                or node.lean_name is not None
+                or node.proof_status != "open"
+                or node.proof_receipt_paths
+                or node.allowed_axioms
+                or node.prove2me_candidate
+            ):
+                raise TheoremGraphError(f"invalid planned obligation state: {node.node_id}")
+        elif node.route_node_id is None:
+            raise TheoremGraphError(f"proof-bearing obligation lacks route node: {node.node_id}")
+        if node.prove2me_candidate and (
+            node.lean_name is None
+            or node.proof_status != "passed-local"
+            or node.readback_status != "current"
+            or (node.kind == "reused-obligation" and not node.source_locators)
+        ):
+            raise TheoremGraphError(f"invalid Prove2Me candidate: {node.node_id}")
+        statement_parts = [
+            _read_obligation_text(repository_root, path, node.node_id)
+            for path in node.statement_text_paths
+        ]
+        statement_text = "\n".join(statement_parts)
+        if route_validation.normalized_type_sha256(statement_text) != node.statement_sha256:
+            raise TheoremGraphError(f"obligation statement hash mismatch: {node.node_id}")
+        if node.route_node_id is not None:
+            route_node = route_nodes.get(node.route_node_id)
+            if route_node is None:
+                raise TheoremGraphError(f"unknown bound route node: {node.route_node_id}")
+            _validate_route_node_binding(node, route_node)
+        if node.proof_status == "passed-local":
+            _validate_receipt_binding(repository_root, node)
+        for dependency in node.dependency_ids:
+            if dependency not in route_ids and dependency not in obligation_ids:
+                raise TheoremGraphError(f"dangling obligation dependency: {dependency}")
+            if dependency == node.node_id:
+                raise TheoremGraphError(f"self obligation dependency: {node.node_id}")
+            dependent = next((item for item in nodes if item.node_id == dependency), None)
+            route_dependency = route_nodes.get(dependency)
+            if (
+                node.proof_status in {"passed-local", "passed-external"}
+                and (
+                    dependent is not None
+                    and (
+                        dependent.proof_status not in {"passed-local", "passed-external"}
+                        or dependent.readback_status != "current"
+                    )
+                    or route_dependency is not None
+                    and route_dependency.proof_status
+                    not in {"passed-local", "passed-external"}
+                )
+            ):
+                raise TheoremGraphError(
+                    f"unproved obligation dependency: {dependency}"
+                )
+            if dependent is not None and dependent.parent_node_id != node.parent_node_id:
+                if dependent.lean_name is None:
+                    raise TheoremGraphError(
+                        f"cross-parent dependency lacks Lean statement: {dependency}"
+                    )
+    _topological_order_obligations(nodes, route_ids)
+
+
+def _validate_route_node_binding(
+    obligation: ProofObligationNode, route_node: GraphNode
+) -> None:
+    if obligation.lean_name != route_node.lean_name:
+        raise TheoremGraphError(f"obligation Lean name mismatch: {obligation.node_id}")
+    if obligation.statement_sha256 != route_node.statement_sha256:
+        raise TheoremGraphError(f"obligation statement hash mismatch: {obligation.node_id}")
+    if not set(obligation.statement_text_paths).issubset(route_node.statement_text_paths):
+        raise TheoremGraphError(f"obligation statement path mismatch: {obligation.node_id}")
+    if not set(obligation.proof_receipt_paths).issubset(route_node.proof_receipt_paths):
+        raise TheoremGraphError(f"obligation receipt mismatch: {obligation.node_id}")
+    if not set(obligation.allowed_axioms).issubset(route_node.allowed_axioms):
+        raise TheoremGraphError(f"obligation axiom policy mismatch: {obligation.node_id}")
+    if obligation.claim_ceiling != route_node.claim_ceiling:
+        raise TheoremGraphError(f"obligation claim ceiling mismatch: {obligation.node_id}")
+    if obligation.source_locators != route_node.source_locators:
+        raise TheoremGraphError(f"obligation source locator mismatch: {obligation.node_id}")
+
+
+def _validate_receipt_binding(
+    repository_root: Path, obligation: ProofObligationNode
+) -> None:
+    for receipt_path in obligation.proof_receipt_paths:
+        receipt = _read_json(
+            repository_root,
+            Path(receipt_path),
+            f"proof receipt for {obligation.node_id}",
+        )
+        raw_results = receipt.get("axiom_results")
+        if not isinstance(raw_results, list):
+            raise TheoremGraphError(
+                f"proof receipt lacks axiom results: {obligation.node_id}"
+            )
+        matching = [
+            result
+            for result in raw_results
+            if isinstance(result, dict)
+            and result.get("declaration") == obligation.lean_name
+        ]
+        if not matching:
+            raise TheoremGraphError(
+                f"proof receipt lacks declaration: {obligation.node_id}"
+            )
+        if any(result.get("axioms") != list(obligation.allowed_axioms) for result in matching):
+            raise TheoremGraphError(
+                f"proof receipt axiom mismatch: {obligation.node_id}"
+            )
+
+
+def _read_obligation_text(repository_root: Path, value: str, node_id: str) -> str:
+    try:
+        data = route_validation._read_bytes(
+            repository_root, value, f"obligation artifact for {node_id}"
+        )
+        return data.decode("utf-8")
+    except (route_validation.RouteValidationError, UnicodeDecodeError) as error:
+        raise TheoremGraphError(f"cannot read obligation artifact: {node_id}: {error}") from error
+
+
+def _topological_order_obligations(
+    nodes: tuple[ProofObligationNode, ...], route_node_ids: set[str]
+) -> tuple[ProofObligationNode, ...]:
+    by_id = {node.node_id: node for node in nodes}
+    ordered: list[ProofObligationNode] = []
+    temporary: set[str] = set()
+    permanent: set[str] = set()
+
+    def visit(node_id: str) -> None:
+        if node_id in permanent:
+            return
+        if node_id in temporary:
+            raise TheoremGraphError(f"obligation cycle detected at {node_id}")
+        temporary.add(node_id)
+        for dependency in sorted(by_id[node_id].dependency_ids):
+            if dependency not in route_node_ids:
+                visit(dependency)
+        temporary.remove(node_id)
+        permanent.add(node_id)
+        ordered.append(by_id[node_id])
+
+    for node_id in sorted(by_id):
+        visit(node_id)
+    return tuple(ordered)
+
+
+def _obligation_parents(
+    nodes: tuple[ProofObligationNode, ...],
+) -> tuple[ProofObligationParent, ...]:
+    grouped: dict[str, list[ProofObligationNode]] = {}
+    for node in nodes:
+        grouped.setdefault(node.parent_node_id, []).append(node)
+    parents = []
+    for parent_id, children in sorted(grouped.items()):
+        current = all(
+            child.proof_status in {"passed-local", "passed-external"}
+            and child.readback_status == "current"
+            for child in children
+        )
+        parents.append(
+            ProofObligationParent(
+                parent_node_id=parent_id,
+                child_ids=tuple(sorted(child.node_id for child in children)),
+                obligation_status="expanded-current" if current else "expanded-incomplete",
+            )
+        )
+    return tuple(parents)
+
+
+def _obligation_frontier(
+    route_nodes: tuple[GraphNode, ...],
+    parents: tuple[ProofObligationParent, ...],
+    nodes: tuple[ProofObligationNode, ...],
+) -> dict[str, tuple[str, ...]]:
+    expanded = {parent.parent_node_id for parent in parents}
+    route_by_id = {node.node_id: node for node in route_nodes}
+    oversized = tuple(
+        node.node_id
+        for node in route_nodes
+        if node.node_id not in expanded
+        and len(node.dependency_ids) >= 4
+    )
+    missing_readbacks = tuple(
+        node.node_id
+        for node in nodes
+        if node.readback_status != "current"
+        and (
+            node.proof_status in {"passed-local", "passed-external"}
+            or node.prove2me_candidate
+            or node.kind == "reused-obligation"
+            or node.role == "terminal"
+            or node.source_locators
+            or "terminal" in route_by_id[node.parent_node_id].roles
+        )
+    )
+    return {
+        "blocked_obligations": tuple(node.node_id for node in nodes if node.proof_status == "blocked"),
+        "missing_obligation_readbacks": missing_readbacks,
+        "open_obligations": tuple(node.node_id for node in nodes if node.proof_status == "open"),
+        "oversized_parent_nodes": oversized,
+        "prove2me_candidates": tuple(node.node_id for node in nodes if node.prove2me_candidate),
+    }
+
+
+def _read_json(
+    repository_root: Path, relative_path: Path, label: str
+) -> dict[str, object]:
+    try:
+        value = route_validation._read_json(repository_root, relative_path, label)
+    except route_validation.RouteValidationError as error:
+        raise TheoremGraphError(f"cannot read {label}: {error}") from error
+    return value
 
 
 def _proof_status(manifest: route_validation.RouteManifest) -> str:
@@ -518,6 +1157,11 @@ def _validate_graph(nodes: tuple[GraphNode, ...]) -> None:
 
 
 def _validate_node(node: GraphNode) -> None:
+    unknown_routes = set(node.route_ids) - set(GRAPH_ROUTE_IDS)
+    if unknown_routes:
+        raise TheoremGraphError(f"unknown graph node route: {sorted(unknown_routes)[0]}")
+    if tuple(sorted(node.route_ids)) != node.route_ids:
+        raise TheoremGraphError(f"graph node routes are not canonical: {node.node_id}")
     if node.proof_status not in PROOF_STATUSES:
         raise TheoremGraphError(f"invalid proof status: {node.proof_status}")
     if node.readback_status not in READBACK_STATUSES:

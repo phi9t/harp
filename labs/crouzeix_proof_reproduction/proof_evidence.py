@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import re
 import subprocess
 import sys
@@ -1103,6 +1102,9 @@ def main(argv: list[str]) -> int:
         default=str(goal_validation.FIXED_PLAN_PATH),
     )
     subparsers.add_parser("theorem-graph")
+    subparsers.add_parser("proof-obligation-graph")
+    prove2me_export = subparsers.add_parser("prove2me-export")
+    prove2me_export.add_argument("--dry-run", action="store_true", required=True)
     args = parser.parse_args(argv)
 
     repository_root = canonical_repository_root()
@@ -1113,6 +1115,35 @@ def main(argv: list[str]) -> int:
         except theorem_graph.TheoremGraphError as error:
             sys.stdout.write(canonical_json({
                 "schema_version": theorem_graph.GRAPH_SCHEMA_VERSION,
+                "status": "invalid",
+                "reason": str(error),
+            }))
+            return 1
+        sys.stdout.write(canonical_json(payload))
+        return 0
+
+    if args.command == "proof-obligation-graph":
+        try:
+            payload = theorem_graph.build_proof_obligation_graph_json(repository_root)
+            theorem_graph.validate_proof_obligation_graph(payload, repository_root)
+        except theorem_graph.TheoremGraphError as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": theorem_graph.OBLIGATION_GRAPH_SCHEMA_VERSION,
+                "status": "invalid",
+                "reason": str(error),
+            }))
+            return 1
+        sys.stdout.write(canonical_json(payload))
+        return 0
+
+    if args.command == "prove2me-export":
+        try:
+            payload = theorem_graph.build_prove2me_export(repository_root)
+        except theorem_graph.TheoremGraphError as error:
+            sys.stdout.write(canonical_json({
+                "schema_version": theorem_graph.PROVE2ME_EXPORT_SCHEMA_VERSION,
+                "dry_run": True,
+                "network_access": False,
                 "status": "invalid",
                 "reason": str(error),
             }))
