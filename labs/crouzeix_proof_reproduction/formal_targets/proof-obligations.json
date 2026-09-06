@@ -1,5 +1,5 @@
 {
-  "schema_version": "crouzeix-proof-obligation-ledger/v1",
+  "schema_version": "crouzeix-proof-obligation-ledger/v2",
   "obligations": [
     {
       "node_id": "harp-l2-witness-cubature-input",
@@ -17,7 +17,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Finite positive cubature packages all matrix moments needed through the requested horizon.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-l2-witness-companion-commutation",
@@ -35,7 +38,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "The parametric boundary companion commutes with every operator in the generated algebra of the matrix.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-l2-witness-power-cauchy-moments",
@@ -53,7 +59,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Polynomial boundary powers satisfy the Cauchy moment identities used by the finite atomic model.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-l2-witness-boundary-embedding-data",
@@ -71,7 +80,13 @@
       "allowed_axioms": [],
       "readback_status": "missing",
       "natural_language_statement": "Assemble the finite atomic boundary density, square root, embedding, and multiplier into the L2 witness data.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": "CrouzeixConjecture.Harp.finiteAtomicBoundaryEmbeddingData",
+      "extraction_source": {
+        "module_path": "formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean",
+        "declaration": "CrouzeixConjecture.Harp.finiteAtomicL2DilationWitness"
+      }
     },
     {
       "node_id": "harp-l2-witness-compression-moments",
@@ -83,13 +98,16 @@
       "lean_name": "CrouzeixConjecture.LoristSchwenninger.boundaryEmbedding_adjoint_comp_bcfMulL_pow_comp_boundaryEmbedding",
       "statement_sha256": "546da900f06921852947e2b0d8bf73d45e7b3ce6346bf41508e91417b32e78f1",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-compression-moments.txt"],
-      "dependency_ids": ["harp-reuse-boundary-embedding", "harp-reuse-boundary-multiplier", "harp-l2-witness-power-cauchy-moments"],
+      "dependency_ids": ["harp-reuse-boundary-embedding", "harp-reuse-boundary-multiplier"],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Compressing powers of the L2 multiplier through the boundary embedding recovers the required finite matrix moments.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-l2-witness-dimension-count",
@@ -107,7 +125,13 @@
       "allowed_axioms": [],
       "readback_status": "missing",
       "natural_language_statement": "Combine the cubature node bound with finite dimensionality and the exact finrank of the counting-measure L2 model.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": "CrouzeixConjecture.Harp.finiteAtomicL2DimensionCount",
+      "extraction_source": {
+        "module_path": "formalization/lean/Crouzeix/Harp/FiniteAtomicL2Dilation.lean",
+        "declaration": "CrouzeixConjecture.Harp.finiteAtomicL2DilationWitness"
+      }
     },
     {
       "node_id": "harp-l2-witness-package",
@@ -119,17 +143,20 @@
       "lean_name": "CrouzeixConjecture.Harp.finiteAtomicL2DilationWitness",
       "statement_sha256": "4698c872791b3360c8df4332156c411fa59fd47eab774204be1756c034a13af0",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-counting-l2-witness-dimension-bound.txt"],
-      "dependency_ids": ["harp-double-layer-application", "harp-finite-atomic-matrix-moments", "harp-finite-horizon-dilation-interface", "harp-reuse-boundary-embedding", "harp-reuse-boundary-multiplier", "harp-reuse-boundary-square-root", "harp-reuse-compression-moments", "harp-reuse-polynomial-power-cauchy"],
+      "dependency_ids": ["harp-l2-witness-cubature-input", "harp-l2-witness-companion-commutation", "harp-l2-witness-power-cauchy-moments", "harp-l2-witness-boundary-embedding-data", "harp-l2-witness-compression-moments", "harp-l2-witness-dimension-count"],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Finite atomic cubature and counting-measure L2 data produce the finite-horizon dilation witness.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": true,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-recurrence-finite-scalar-bound",
-      "parent_node_id": "harp-operator-recurrence",
+      "parent_node_id": "harp-perturbation-endpoint",
       "route_ids": ["harp"],
       "kind": "derived-obligation",
       "role": "intermediate",
@@ -143,7 +170,31 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Finite weighted recurrence inequalities imply the scalar lower bound needed at the limit.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
+    },
+    {
+      "node_id": "harp-recurrence-finite-iteration-input",
+      "parent_node_id": "harp-operator-recurrence",
+      "route_ids": ["harp"],
+      "kind": "reused-obligation",
+      "role": "intermediate",
+      "route_node_id": "harp-reuse-recurrence",
+      "lean_name": "CrouzeixConjecture.LoristSchwenninger.recurrence_finite_iteration_of_constant_error",
+      "statement_sha256": "2e65f6eb47cc688ace82f875c87965bf65473b5d02ac83d5dab43f07f686d5e6",
+      "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-recurrence.txt"],
+      "dependency_ids": [],
+      "proof_status": "passed-local",
+      "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
+      "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
+      "readback_status": "current",
+      "natural_language_statement": "The finite recurrence iterator converts stepwise lower bounds into the weighted horizon inequality used by equation three.",
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-recurrence-completed-square-input",
@@ -161,7 +212,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "The completed-square estimate supplies the lower bound used in the finite-horizon operator recurrence.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-recurrence-operator-lower-bound",
@@ -173,13 +227,16 @@
       "lean_name": "CrouzeixConjecture.Harp.FiniteHorizonDilationData.equation_three_finite_lower_bound",
       "statement_sha256": "9ab9db0458c79f2edeb37043a9022a162aff3ef81d776fb19201642511badae8",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-operator-recurrence.txt"],
-      "dependency_ids": ["harp-recurrence-completed-square-input", "harp-recurrence-finite-scalar-bound"],
+      "dependency_ids": ["harp-recurrence-completed-square-input", "harp-recurrence-finite-iteration-input"],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "The finite-horizon dilation data satisfy the equation-three operator lower bound.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": true,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-endpoint-norm-attainment",
@@ -197,7 +254,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "A finite-dimensional operator has a unit norm-attaining vector satisfying the adjoint eigenvector equation.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-endpoint-scalar-contradiction",
@@ -209,13 +269,16 @@
       "lean_name": "CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two",
       "statement_sha256": "2e326c41a32e17f57e6faefba0ede84da2ebbcd2d51cee289aedc43a62a36950",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-reuse-scalar.txt"],
-      "dependency_ids": ["harp-recurrence-operator-lower-bound"],
+      "dependency_ids": [],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "The recurrence lower bound and scalar inequalities force the endpoint norm parameter to be at most two.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-endpoint-target-norm",
@@ -227,13 +290,16 @@
       "lean_name": "CrouzeixConjecture.Harp.norm_target_le_two_of_finiteHorizonDilationData",
       "statement_sha256": "7d46ab11823e5df28094c9b6ba93dbc91bbc629c30f822cfac4242bdd2fbcf0c",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-perturbation-endpoint.txt"],
-      "dependency_ids": ["harp-endpoint-norm-attainment", "harp-endpoint-scalar-contradiction"],
+      "dependency_ids": ["harp-endpoint-norm-attainment", "harp-endpoint-scalar-contradiction", "harp-recurrence-finite-scalar-bound", "harp-recurrence-operator-lower-bound"],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Finite-horizon dilation data imply that the Harp target operator has norm at most two.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": true,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-terminal-witness-to-finite-bound",
@@ -251,7 +317,13 @@
       "allowed_axioms": [],
       "readback_status": "missing",
       "natural_language_statement": "Convert finite atomic L2 witnesses at every horizon and the perturbation endpoint into the normalized fixed-domain finite bound.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": false,
+      "proposed_lean_name": "CrouzeixConjecture.Harp.normalizedFiniteHorizonBound",
+      "extraction_source": {
+        "module_path": "formalization/lean/Crouzeix/Harp/MainTheorem.lean",
+        "declaration": "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem"
+      }
     },
     {
       "node_id": "harp-terminal-inner-limit-transfer",
@@ -269,7 +341,10 @@
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "The fixed-domain bound transfers through the simple-spectrum approximation limit.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-terminal-outer-limit-transfer",
@@ -281,13 +356,16 @@
       "lean_name": "CrouzeixConjecture.tendsto_maxPolynomialModulusOnSet_of_outerApproximation",
       "statement_sha256": "1e38634c643bb2ef35d9ce99bb44d22b44f3938678692841896add8209bada58",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-outer-limit.txt"],
-      "dependency_ids": ["harp-terminal-inner-limit-transfer"],
+      "dependency_ids": [],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Maximum polynomial modulus bounds transfer through the canonical outer-domain approximation limit.",
-      "prove2me_candidate": true
+      "prove2me_candidate": true,
+      "covers_parent": false,
+      "proposed_lean_name": null,
+      "extraction_source": null
     },
     {
       "node_id": "harp-terminal-main-theorem",
@@ -299,13 +377,16 @@
       "lean_name": "CrouzeixConjecture.Harp.harpFiniteHorizonMainTheorem",
       "statement_sha256": "d2a15e37b9f4b0b2dca077aa6b55e71e5819eb7b81fc7aa7ae39f0b18a04c927",
       "statement_text_paths": ["labs/crouzeix_proof_reproduction/formal_targets/harp/declaration-types/harp-terminal-theorem.txt"],
-      "dependency_ids": ["harp-counting-l2-witness-dimension-bound", "harp-inner-limit", "harp-outer-limit", "harp-perturbation-endpoint"],
+      "dependency_ids": ["harp-terminal-witness-to-finite-bound", "harp-terminal-inner-limit-transfer", "harp-terminal-outer-limit-transfer"],
       "proof_status": "passed-local",
       "proof_receipt_paths": ["evidence/crouzeix_conjecture/routes/harp/receipt.json"],
       "allowed_axioms": ["Classical.choice", "Quot.sound", "propext"],
       "readback_status": "current",
       "natural_language_statement": "Every finite nonempty matrix index type satisfies the Harp finite-horizon Crouzeix theorem.",
-      "prove2me_candidate": false
+      "prove2me_candidate": false,
+      "covers_parent": true,
+      "proposed_lean_name": null,
+      "extraction_source": null
     }
   ]
 }
