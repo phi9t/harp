@@ -819,6 +819,35 @@ fn workflow_run_executes_dynamic_workflow_through_the_durable_engine() {
     assert_eq!(status_envelope["command"], "workflow.status");
     assert_eq!(status_envelope["data"]["state"], "completed");
     assert_eq!(status_envelope["data"]["accepted_results"], 4);
+    let state_path = repo.path().join(".harp/workflow/state.sqlite");
+    let before = fs::read(&state_path).unwrap();
+    for command in ["inspect", "explain"] {
+        let mut inspection = harp();
+        inspection
+            .current_dir(repo.path())
+            .args(["--format", "json", "workflow", command, run_id]);
+        if command == "explain" {
+            inspection.args(["--task", "research-workflow-reduce"]);
+        }
+        let output = inspection.assert().success().get_output().stdout.clone();
+        let report: Value = serde_json::from_slice(&output).unwrap();
+        assert_eq!(report["data"]["schema_version"], 1);
+        assert_eq!(report["data"]["state"], "completed");
+        let tasks = report["data"]["tasks"].as_array().unwrap();
+        assert_eq!(tasks.len(), if command == "inspect" { 4 } else { 1 });
+        assert!(tasks.iter().all(|task| task["action"] == "none"));
+    }
+    harp()
+        .current_dir(repo.path())
+        .args(["workflow", "explain", run_id, "--task", "absent"])
+        .assert()
+        .failure();
+    harp()
+        .current_dir(repo.path())
+        .args(["workflow", "inspect", run_id, "--limit", "0"])
+        .assert()
+        .failure();
+    assert_eq!(before, fs::read(&state_path).unwrap());
 }
 
 #[cfg(feature = "test-cli-fixture")]
@@ -935,4 +964,16 @@ fn workflow_run_uses_authored_model_for_generated_reducer() {
         )
         .unwrap();
     assert!(max_tokens >= 160_000);
+}
+
+#[test]
+fn workflow_inspection_does_not_create_missing_state() {
+    let repo = TempDir::new().unwrap();
+    let run_id = "00000000-0000-7000-8000-000000000001";
+    harp()
+        .current_dir(repo.path())
+        .args(["workflow", "inspect", run_id])
+        .assert()
+        .failure();
+    assert!(!repo.path().join(".harp").exists());
 }

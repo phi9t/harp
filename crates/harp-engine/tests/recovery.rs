@@ -997,6 +997,22 @@ async fn terminal_incomplete_turn_continues_once_from_matching_checkpoint() {
             .continuation_count,
         1
     );
+    let report = harp_engine::explain_run(
+        reopened
+            .inspect_run(&run_id, None, None, 100)
+            .unwrap()
+            .unwrap(),
+        None,
+    );
+    assert_eq!(
+        report
+            .attempts
+            .iter()
+            .find(|attempt| attempt.attempt_id == alpha.attempt_id)
+            .unwrap()
+            .continuation_count,
+        1
+    );
     assert_eq!(alpha.observed_tokens, 13);
     assert_eq!(
         reopened

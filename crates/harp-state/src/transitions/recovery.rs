@@ -59,6 +59,16 @@ impl StateStore {
         after_sequence: Option<i64>,
         limit: usize,
     ) -> StateResult<EventPage> {
+        self.events_page_for_task(run_id, None, after_sequence, limit)
+    }
+
+    pub(crate) fn events_page_for_task(
+        &mut self,
+        run_id: &RunId,
+        task_id: Option<&TaskId>,
+        after_sequence: Option<i64>,
+        limit: usize,
+    ) -> StateResult<EventPage> {
         if !(1..=MAX_EVENT_PAGE_LIMIT).contains(&limit) {
             return Err(StateError::invalid(
                 "event page limit must be between 1 and 1000",
@@ -78,13 +88,19 @@ impl StateStore {
                  FROM events
                  WHERE run_id = ?1
                    AND sequence > ?2
+                   AND (?4 IS NULL OR task_id = ?4)
                  ORDER BY sequence
                  LIMIT ?3",
             )
             .map_err(|source| StateError::sqlite("prepare run events", source))?;
         let rows = statement
             .query_map(
-                params![run_id.to_string(), after_sequence.unwrap_or(0), query_limit],
+                params![
+                    run_id.to_string(),
+                    after_sequence.unwrap_or(0),
+                    query_limit,
+                    task_id.map(ToString::to_string)
+                ],
                 |row| {
                     Ok((
                         row.get::<_, i64>(0)?,

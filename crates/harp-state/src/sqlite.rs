@@ -47,7 +47,7 @@ pub(crate) fn open_with_hook<F>(path: &Path, hook: F) -> StateResult<Connection>
 where
     F: FnOnce() -> StateResult<()>,
 {
-    let prepared = prepare_path(path)?;
+    let prepared = prepare_path(path, true)?;
     hook()?;
 
     let flags = OpenFlags::SQLITE_OPEN_READ_WRITE
@@ -68,7 +68,28 @@ where
     Ok(connection)
 }
 
-fn prepare_path(path: &Path) -> StateResult<PreparedPath> {
+/// Open existing state without creation, migration, or durability pragma writes.
+pub(crate) fn open_read_only(path: &Path) -> StateResult<Connection> {
+    let prepared = prepare_path(path, false)?;
+    let connection = Connection::open_with_flags(
+        path,
+        OpenFlags::SQLITE_OPEN_READ_ONLY
+            | OpenFlags::SQLITE_OPEN_NO_MUTEX
+            | OpenFlags::SQLITE_OPEN_NOFOLLOW,
+    )
+    .map_err(|source| StateError::sqlite("open read-only database", source))?;
+    connection
+        .busy_timeout(Duration::from_secs(5))
+        .map_err(|source| StateError::sqlite("set inspection busy timeout", source))?;
+    verify_has_not_moved(&connection)?;
+    verify_path_identity(path, &prepared)?;
+    verify_database_integrity(&connection)?;
+    verify_has_not_moved(&connection)?;
+    verify_path_identity(path, &prepared)?;
+    Ok(connection)
+}
+
+fn prepare_path(path: &Path, create: bool) -> StateResult<PreparedPath> {
     if path.file_name().is_none() {
         return Err(StateError::invalid("database path must name a file"));
     }
@@ -98,7 +119,7 @@ fn prepare_path(path: &Path) -> StateResult<PreparedPath> {
             validate_file(&stat)?;
             stat
         }
-        Err(error) if error.kind() == io::ErrorKind::NotFound => {
+        Err(error) if create && error.kind() == io::ErrorKind::NotFound => {
             let raw = retry_fd(|| unsafe {
                 libc::openat(
                     parent.as_raw_fd(),

@@ -216,6 +216,28 @@ enum WorkflowCommand {
         #[arg(long, default_value = ".harp/workflow")]
         state_dir: PathBuf,
     },
+    /// Inspect persisted evidence without starting a runtime or resuming work.
+    Inspect {
+        run_id: String,
+        #[arg(long, default_value = ".harp/workflow")]
+        state_dir: PathBuf,
+        #[arg(long)]
+        after_sequence: Option<i64>,
+        #[arg(long, default_value_t = 50)]
+        limit: usize,
+    },
+    /// Explain one task using persisted failures, dependencies and result references.
+    Explain {
+        run_id: String,
+        #[arg(long)]
+        task: String,
+        #[arg(long, default_value = ".harp/workflow")]
+        state_dir: PathBuf,
+        #[arg(long)]
+        after_sequence: Option<i64>,
+        #[arg(long, default_value_t = 50)]
+        limit: usize,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, ValueEnum)]
@@ -911,6 +933,19 @@ fn run_workflow(
                     }),
                 ))
             }
+            WorkflowCommand::Inspect {
+                run_id,
+                state_dir,
+                after_sequence,
+                limit,
+            } => inspect_workflow(root, run_id, state_dir, None, *after_sequence, *limit),
+            WorkflowCommand::Explain {
+                run_id,
+                state_dir,
+                task,
+                after_sequence,
+                limit,
+            } => inspect_workflow(root, run_id, state_dir, Some(task), *after_sequence, *limit),
             WorkflowCommand::Status { run_id, state_dir } => {
                 let mut env = RlmEnvironment::open(root, state_dir)?;
                 let run_id = parse_run_id(run_id)?;
@@ -1173,6 +1208,40 @@ fn compiled_graph_sha256(graph: &TaskGraph) -> Result<String, AppError> {
         )
     })?;
     Ok(format!("{:x}", sha2::Sha256::digest(bytes)))
+}
+
+fn inspect_workflow(
+    root: &Path,
+    run_id: &str,
+    state_dir: &Path,
+    task: Option<&String>,
+    after_sequence: Option<i64>,
+    limit: usize,
+) -> Result<(&'static str, String, Value), AppError> {
+    let run_id = parse_run_id(run_id)?;
+    let task_id = task
+        .map(|id| harp_contracts::TaskId::from_str(id))
+        .transpose()
+        .map_err(|error| AppError::invalid_input("workflow.task_id", error.to_string()))?;
+    let path = root.join(state_dir).join("state.sqlite");
+    let mut state = StateStore::open_read_only(&path).map_err(app_state_error)?;
+    let snapshot = state
+        .inspect_run(&run_id, task_id.as_ref(), after_sequence, limit)
+        .map_err(app_state_error)?
+        .ok_or_else(|| AppError::invalid_input("workflow.run_missing", "run does not exist"))?;
+    let report = harp_engine::explain_run(snapshot, task_id.as_ref());
+    let text = report.render_text();
+    let value = serde_json::to_value(report)
+        .map_err(|error| AppError::external("workflow.inspection_json", error.to_string()))?;
+    Ok((
+        if task.is_some() {
+            "workflow.explain"
+        } else {
+            "workflow.inspect"
+        },
+        text,
+        value,
+    ))
 }
 
 fn workflow_status_value(env: &mut RlmEnvironment, run_id: &RunId) -> Result<Value, AppError> {

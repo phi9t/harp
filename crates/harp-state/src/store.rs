@@ -79,6 +79,25 @@ impl StateStore {
         }
     }
 
+    /// Open existing state for inspection. No schema migration or creation occurs.
+    pub fn open_read_only(path: &Path) -> StateResult<Self> {
+        #[cfg(not(unix))]
+        {
+            let _ = path;
+            Err(StateError::Unsupported {
+                context: "secure SQLite inspection is unavailable on non-Unix platforms".to_owned(),
+            })
+        }
+        #[cfg(unix)]
+        {
+            Ok(Self {
+                connection: crate::sqlite::open_read_only(path)?,
+                path: path.to_path_buf(),
+                lease_clock: crate::default_lease_clock(),
+            })
+        }
+    }
+
     pub fn open_with_lease_clock(
         path: &Path,
         lease_clock: Arc<dyn crate::LeaseClock>,

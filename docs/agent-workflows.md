@@ -10,7 +10,7 @@ recovery.
 | Command | Purpose | Implemented live adapters |
 | --- | --- | --- |
 | `harp run` | Run a task with an immutable context release and record provider output | Codex CLI and Trae CLI |
-| `harp rlm` | Execute a task graph with durable state and recovery | Codex CLI |
+| `harp rlm` | Execute a task graph with durable state and recovery | Codex CLI and TraeCLI |
 
 These are opt-in live runs. Install and authenticate the provider separately.
 A run may contact its service, incur charges, and change files within the
@@ -138,9 +138,39 @@ or starting new work.
 
 The engine records process fingerprints and escalates cancellation through
 SIGINT, SIGTERM, then SIGKILL when needed. The runtime options include `fake`
-for deterministic tests. `traecli` is reserved but not implemented and fails
-before semantic work starts. This is separate from the working Trae adapter
-for `harp run`.
+for deterministic tests. `traecli` uses the supervised process runtime too;
+select it with `--runtime traecli` and optionally `--runtime-executable`.
+The provider wrapper for `harp run` remains a separate execution path.
+
+### Inspecting failures without resuming
+
+Dynamic workflows expose persisted evidence through two read-only commands:
+
+```sh
+harp workflow inspect RUN_ID
+harp --format json workflow explain RUN_ID --task TASK_ID
+harp workflow inspect RUN_ID --after-sequence 50 --limit 50
+```
+
+These commands default to `.harp/workflow`. Pass `--state-dir .harp/rlm` to
+inspect a raw task-graph run. They open only an existing, current-schema state
+database, without initializing directories, migrating state, starting a provider,
+or changing execution state. A missing database is an error.
+
+JSON reports have `schema_version: 1`. They include task states, direct unfinished
+dependencies, accepted attempt IDs, semantic and CLI failure classes when
+recorded, token/wall observations, result and checkpoint hashes, and durable
+events. `explain` filters task and event evidence to the named task. Event pages
+accept a limit of 1–1000; use the returned `next_after_sequence` as the next
+cursor. Each invocation reads one consistent snapshot; later pages may include
+newly recorded events. Hash references are not verification of artifact bytes.
+
+Next actions are `none`, `wait`, `resume`, or `review_failure`, with stable
+reason codes. A live lease produces `wait`, including when another task owns
+it. Expiry only permits asking resume to reconcile. Resume still revalidates
+pinned authorities, ownership, budgets and process state. A terminal run is not
+automatically reopened, and an accepted result does not establish code quality.
+Unrecorded failure classes remain explicit rather than inferred from logs.
 
 For the design rationale, read
 [ADR 0002: dynamic workflows compile to durable task graphs](adr/0002-dynamic-workflow-compiles-to-durable-task-graph.md).

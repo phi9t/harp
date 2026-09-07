@@ -1000,3 +1000,90 @@ fn schema_fingerprint(connection: &rusqlite::Connection) -> String {
     }
     format!("{:x}", digest.finalize())
 }
+
+#[test]
+fn inspection_is_read_only_bounded_and_releases_snapshot_after_errors() {
+    let directory = private_directory();
+    let path = state_path(&directory);
+    let mut writer = open_state(&path).unwrap();
+    let run = writer
+        .create_run(
+            &TaskGraph {
+                schema_version: 1,
+                nodes: vec![task("alpha")],
+            },
+            &serde_json::json!({}),
+            &RunBudget::new(1_000, 10_000, 3_600).unwrap(),
+            1,
+        )
+        .unwrap();
+    let claim = writer
+        .claim_ready_task(&run.run_id, "worker", 2, 100)
+        .unwrap()
+        .unwrap();
+    writer
+        .fail_terminal_semantic(&claim.lease(), "result.invalid_schema", 3)
+        .unwrap();
+    drop(writer);
+    let before = fs::read(&path).unwrap();
+    let mut reader = StateStore::open_read_only(&path).unwrap();
+    let snapshot = reader
+        .inspect_run(&run.run_id, None, None, 1)
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        snapshot.attempts[0]
+            .attempt
+            .semantic_failure_class
+            .as_deref(),
+        Some("result.invalid_schema")
+    );
+    assert_eq!(snapshot.events.events.len(), 1);
+    let cursor = snapshot.events.next_after_sequence.unwrap();
+    let next = reader
+        .inspect_run(&run.run_id, None, Some(cursor), 1000)
+        .unwrap()
+        .unwrap();
+    assert!(next
+        .events
+        .events
+        .iter()
+        .all(|event| event.sequence > cursor as u64));
+    assert!(next
+        .events
+        .events
+        .iter()
+        .any(|event| event.event_type == "terminal_semantic_failure"));
+    assert!(reader.inspect_run(&run.run_id, None, None, 0).is_err());
+    let alpha = TaskId::from_str("alpha").unwrap();
+    let filtered = reader
+        .inspect_run(&run.run_id, Some(&alpha), None, 1000)
+        .unwrap()
+        .unwrap();
+    assert!(filtered
+        .events
+        .events
+        .iter()
+        .all(|event| event.task_id.as_ref() == Some(&alpha)));
+    assert!(reader.rebuild_ready_tasks(&run.run_id, 4).is_err());
+    drop(reader);
+    assert_eq!(before, fs::read(&path).unwrap());
+}
+
+#[test]
+fn read_only_open_rejects_missing_symlinked_and_old_state_without_mutation() {
+    let directory = private_directory();
+    let path = state_path(&directory);
+    assert!(StateStore::open_read_only(&path).is_err());
+    assert!(!path.exists());
+    drop(open_state(&path).unwrap());
+    let link = directory.path().join("link.sqlite");
+    std::os::unix::fs::symlink(&path, &link).unwrap();
+    assert!(StateStore::open_read_only(&link).is_err());
+    let connection = rusqlite::Connection::open(&path).unwrap();
+    connection.pragma_update(None, "user_version", 4).unwrap();
+    drop(connection);
+    let before = fs::read(&path).unwrap();
+    assert!(StateStore::open_read_only(&path).is_err());
+    assert_eq!(before, fs::read(&path).unwrap());
+}

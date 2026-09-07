@@ -1,3 +1,4 @@
+mod inspection;
 mod model;
 #[cfg(unix)]
 mod sqlite;
@@ -9,6 +10,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+pub use inspection::{AttemptInspection, RunInspection};
 pub use model::{
     AcceptResult, AcceptedResultRecord, ActivityPreparation, ActivityRecoveryRecord, AttemptRecord,
     AttemptState, CliActivityKind, CliActivityRecord, CliActivityState, CliAttemptRecord,

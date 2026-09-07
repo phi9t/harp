@@ -70,8 +70,8 @@ provider-backed workflows above it; it does not add another durable scheduler.
 
 These are implementation boundaries, not a guarantee of exactly-once external
 effects or mathematical correctness. The durable graph currently supports
-Codex; its Trae adapter is not implemented. The separate provider wrapper
-supports both Codex and Trae CLI. See the
+Codex and TraeCLI through supervised CLI activities. The separate provider
+wrapper also supports both Codex and Trae CLI. See the
 [workflow compilation decision](https://github.com/phi9t/harp/blob/master/docs/adr/0002-dynamic-workflow-compiles-to-durable-task-graph.md)
 and [agent workflow guide](https://github.com/phi9t/harp/blob/master/docs/agent-workflows.md) for the contract and commands.
 
