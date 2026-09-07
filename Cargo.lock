@@ -626,6 +626,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "harp-session-index"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "thiserror",
+ "uuid",
+]
+
+[[package]]
 name = "harp-state"
 version = "0.1.0"
 dependencies = [

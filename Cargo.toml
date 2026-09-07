@@ -7,6 +7,7 @@ members = [
     "crates/harp-contracts",
     "crates/harp-engine",
     "crates/harp-runtime",
+    "crates/harp-session-index",
     "crates/harp-state",
     "labs/sicp-evaluator",
 ]

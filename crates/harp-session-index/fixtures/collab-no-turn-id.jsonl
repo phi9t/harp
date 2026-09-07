@@ -1,0 +1,4 @@
+{"timestamp":"2026-01-01T00:00:00.000Z","type":"session_meta","payload":{"id":"018f22e2-7c3b-7def-8123-456789abc006","cwd":"/tmp/harp-fixture","originator":"codex-tui","cli_version":"0.0.0-test","source":"cli","model_provider":"trae","history_mode":"legacy"}}
+{"timestamp":"2026-01-01T00:00:00.001Z","type":"history_mutation","payload":{"version":1,"commit_id":"c1","operation":"append","items":[{"type":"function_call","name":"collaboration__spawn_agent","call_id":"call_COLLAB1","arguments":"{}"}]}}
+{"timestamp":"2026-01-01T00:00:00.002Z","type":"event_msg","payload":{"type":"collab_agent_spawn_end","call_id":"spawn-1","completed_at_ms":1,"sender_thread_id":"01fixture00000000000000000006","new_thread_id":"01child0000000000000000000001","new_agent_role":"worker","model":"test","status":"ok","prompt":"do work"}}
+{"timestamp":"2026-01-01T00:00:00.003Z","type":"event_msg","payload":{"type":"user_message","message":"spawn","images":[],"local_images":[],"text_elements":[]}}

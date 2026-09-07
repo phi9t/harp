@@ -1,0 +1,4 @@
+{"timestamp":"2026-01-01T00:00:00.000Z","type":"session_meta","payload":{"id":"018f22e2-7c3b-7def-8123-456789abc003","cwd":"/tmp/harp-fixture","originator":"codex-tui","cli_version":"0.0.0-test","source":"cli","model_provider":"trae","harness_metadata":{"family":"codex_derived","variant":"test"},"history_mode":"legacy"}}
+{"timestamp":"2026-01-01T00:00:00.001Z","type":"history_mutation","payload":{"version":1,"commit_id":"commit-replace-1","operation":"replace","items":[{"type":"message","role":"user","content":[{"type":"input_text","text":"kept"}]}],"reference_context_item":{"turn_id":"01turn0000000000000000000002","cwd":"/tmp","model":"test"}}}
+{"timestamp":"2026-01-01T00:00:00.002Z","type":"event_msg","payload":{"type":"context_compacted"}}
+{"timestamp":"2026-01-01T00:00:00.003Z","type":"event_msg","payload":{"type":"user_message","message":"kept","images":[],"local_images":[],"text_elements":[]}}

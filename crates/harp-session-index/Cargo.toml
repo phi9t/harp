@@ -1,0 +1,20 @@
+[package]
+name = "harp-session-index"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "harp-session-index"
+path = "src/bin/harp-session-index.rs"
+
+[dependencies]
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+tempfile.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
