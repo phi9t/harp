@@ -6,7 +6,7 @@ use harp_contracts::{
 };
 use serde_json::Value;
 
-use crate::ProjectionPolicy;
+use crate::{role_name, workspace_mode_name, GraphPolicy, ProjectionPolicy};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DynamicWorkflowCompileOptions {
@@ -24,8 +24,8 @@ pub struct DynamicWorkflowCompileOptions {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CompiledDynamicWorkflow {
     pub graph: TaskGraph,
+    pub graph_policy: GraphPolicy,
     pub projection_policy: ProjectionPolicy,
-    pub options: DynamicWorkflowCompileOptions,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -46,6 +46,8 @@ pub enum DynamicWorkflowCompileError {
         #[source]
         source: serde_json::Error,
     },
+    #[error("dynamic workflow {field} budget overflowed")]
+    BudgetOverflow { field: &'static str },
 }
 
 pub fn compile_dynamic_workflow(
@@ -112,10 +114,64 @@ pub fn compile_dynamic_workflow(
         max_bytes: 1024 * 1024,
         scratch_paths: builder.scratch_paths,
     };
+    let graph_policy = graph_policy(&graph)?;
     Ok(CompiledDynamicWorkflow {
         graph,
+        graph_policy,
         projection_policy,
-        options: options.clone(),
+    })
+}
+
+fn graph_policy(graph: &TaskGraph) -> Result<GraphPolicy, DynamicWorkflowCompileError> {
+    let mut total_tokens = 0u64;
+    let mut total_storage = 0u64;
+    let mut total_timeout = 0u64;
+    let mut max_node_tokens = 0u64;
+    let mut max_node_storage_bytes = 0u64;
+    let mut max_node_timeout_seconds = 0u64;
+    let mut allowed_roles = BTreeSet::new();
+    let mut allowed_output_schemas = BTreeSet::new();
+    let mut allowed_model_policies = BTreeSet::new();
+    let mut allowed_permission_profiles = BTreeSet::new();
+    let mut allowed_workspace_modes = BTreeSet::new();
+
+    for node in &graph.nodes {
+        total_tokens = total_tokens
+            .checked_add(node.budget.max_tokens)
+            .ok_or(DynamicWorkflowCompileError::BudgetOverflow { field: "token" })?;
+        total_storage = total_storage
+            .checked_add(node.budget.max_storage_bytes)
+            .ok_or(DynamicWorkflowCompileError::BudgetOverflow { field: "storage" })?;
+        total_timeout = total_timeout
+            .checked_add(node.budget.timeout_seconds)
+            .ok_or(DynamicWorkflowCompileError::BudgetOverflow { field: "timeout" })?;
+        max_node_tokens = max_node_tokens.max(node.budget.max_tokens);
+        max_node_storage_bytes = max_node_storage_bytes.max(node.budget.max_storage_bytes);
+        max_node_timeout_seconds = max_node_timeout_seconds.max(node.budget.timeout_seconds);
+        allowed_roles.insert(role_name(node.role).to_owned());
+        allowed_output_schemas.insert(node.output_schema.clone());
+        allowed_model_policies.insert(node.model_policy.clone());
+        allowed_permission_profiles.insert(node.permission_profile.clone());
+        allowed_workspace_modes.insert(workspace_mode_name(node.workspace_mode).to_owned());
+    }
+
+    Ok(GraphPolicy {
+        max_nodes: graph.nodes.len().max(1),
+        max_concurrency: graph.nodes.len().clamp(1, 4),
+        max_total_tokens: total_tokens.max(max_node_tokens),
+        max_total_storage_bytes: total_storage.max(max_node_storage_bytes),
+        max_total_timeout_seconds: total_timeout.max(max_node_timeout_seconds),
+        max_node_tokens,
+        max_node_storage_bytes,
+        max_node_timeout_seconds,
+        max_projected_prompt_bytes: 1024 * 1024,
+        max_recursion_depth: 1,
+        allowed_roles,
+        allowed_output_schemas,
+        allowed_model_policies,
+        allowed_permission_profiles,
+        allowed_workspace_modes,
+        approved_artifacts: BTreeMap::new(),
     })
 }
 

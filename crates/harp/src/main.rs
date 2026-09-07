@@ -20,8 +20,8 @@ use harp_cli_process::{CliProcessRuntime, ProcessRuntimeConfig};
 use harp_contracts::{DynamicWorkflow, RunId, TaskGraph, WorkspaceMode};
 use harp_engine::{
     compile_dynamic_workflow, role_name, validate_graph, workspace_mode_name,
-    DynamicWorkflowCompileOptions, Engine, EngineConfig, GraphPolicy, ProjectionPolicy,
-    RunExecutionSpec, RunSummary,
+    DynamicWorkflowCompileOptions, Engine, EngineConfig, ExecutionPlan, GraphPolicy,
+    ProjectionPolicy, RunExecutionSpec, RunSummary,
 };
 use harp_runtime::fake::{FakeCodexRuntime, FakeStep};
 use harp_runtime::ActivityRuntime;
@@ -823,18 +823,17 @@ fn run_workflow(
                         format!("dynamic workflow compilation failed: {error}"),
                     )
                 })?;
-                let (graph_policy, projection_policy) = default_policies(&compiled.graph, &env)?;
+                let graph_sha256 = compiled_graph_sha256(&compiled.graph)?;
                 let mut runtime =
                     build_activity_runtime(*runtime, runtime_executable.as_deref(), &env).await?;
                 let provenance = runtime.provenance().map_err(app_runtime_error)?;
-                let validated =
-                    validate_graph(compiled.graph.clone(), &graph_policy, &projection_policy)
-                        .map_err(|error| {
-                            AppError::invalid_input(
-                                "workflow.graph",
-                                format!("compiled workflow graph validation failed: {error}"),
-                            )
-                        })?;
+                let validated_plan = ExecutionPlan::from(compiled).validate().map_err(|error| {
+                    AppError::invalid_input(
+                        "workflow.graph",
+                        format!("compiled workflow graph validation failed: {error}"),
+                    )
+                })?;
+                let (validated, graph_policy, projection_policy) = validated_plan.into_parts();
                 let spec = RunExecutionSpec::new(
                     validated,
                     graph_policy,
@@ -850,8 +849,7 @@ fn run_workflow(
                     .map_err(app_engine_error)?;
                 let mut value = run_summary_value(&summary);
                 value["workflow_name"] = serde_json::json!(workflow.name);
-                value["compiled_graph_sha256"] =
-                    serde_json::json!(compiled_graph_sha256(&compiled.graph)?);
+                value["compiled_graph_sha256"] = serde_json::json!(graph_sha256);
                 Ok((
                     "workflow.run",
                     format!("workflow run {} completed", summary.run_id),

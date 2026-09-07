@@ -1,6 +1,7 @@
 mod cancel;
 mod diagnostic;
 mod dynamic_workflow;
+mod execution_plan;
 mod output;
 mod policy;
 mod projection;
@@ -14,6 +15,7 @@ pub use dynamic_workflow::{
     compile_dynamic_workflow, CompiledDynamicWorkflow, DynamicWorkflowCompileError,
     DynamicWorkflowCompileOptions,
 };
+pub use execution_plan::{ExecutionPlan, ValidatedExecutionPlan};
 pub use output::decode_result_envelope;
 pub use policy::{ApprovedArtifact, GraphPolicy};
 pub use projection::{

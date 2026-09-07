@@ -1,12 +1,10 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 use harp_contracts::{
     Budget, DynamicAgentCall, DynamicPipelineItem, DynamicWorkflow, DynamicWorkflowStep, NodeKind,
     RetryPolicy, TaskId, WorkspaceMode,
 };
-use harp_engine::{
-    compile_dynamic_workflow, validate_graph, DynamicWorkflowCompileOptions, GraphPolicy,
-};
+use harp_engine::{compile_dynamic_workflow, DynamicWorkflowCompileOptions, ExecutionPlan};
 use serde_json::json;
 
 fn agent(call_id: &str) -> DynamicAgentCall {
@@ -33,23 +31,23 @@ fn workflow(root: DynamicWorkflowStep) -> DynamicWorkflow {
 }
 
 fn compile(root: DynamicWorkflowStep) -> harp_engine::CompiledDynamicWorkflow {
-    compile_dynamic_workflow(
-        &workflow(root),
-        &DynamicWorkflowCompileOptions {
-            reducer_model_policy: "test-model".to_owned(),
-            reducer_permission_profile: "read-only".to_owned(),
-            reducer_workspace_mode: WorkspaceMode::Scratch,
-            reducer_budget: Budget::new(100, 10, 1_000),
-            reducer_output_schema: r#"{"type":"object"}"#.to_owned(),
-            reducer_retry_policy: RetryPolicy {
-                max_transient_attempts: 1,
-            },
-            scratch_root: "/private/tmp/harp-dynamic".to_owned(),
-            base_instructions: "Follow the workflow.".to_owned(),
-            checkpoint_instructions: "Checkpoint only for durable recovery.".to_owned(),
+    compile_dynamic_workflow(&workflow(root), &compile_options()).expect("workflow compiles")
+}
+
+fn compile_options() -> DynamicWorkflowCompileOptions {
+    DynamicWorkflowCompileOptions {
+        reducer_model_policy: "test-model".to_owned(),
+        reducer_permission_profile: "read-only".to_owned(),
+        reducer_workspace_mode: WorkspaceMode::Scratch,
+        reducer_budget: Budget::new(100, 10, 1_000),
+        reducer_output_schema: r#"{"type":"object"}"#.to_owned(),
+        reducer_retry_policy: RetryPolicy {
+            max_transient_attempts: 1,
         },
-    )
-    .expect("workflow compiles")
+        scratch_root: "/private/tmp/harp-dynamic".to_owned(),
+        base_instructions: "Follow the workflow.".to_owned(),
+        checkpoint_instructions: "Checkpoint only for durable recovery.".to_owned(),
+    }
 }
 
 fn dependencies(compiled: &harp_engine::CompiledDynamicWorkflow) -> BTreeMap<String, Vec<String>> {
@@ -67,42 +65,6 @@ fn dependencies(compiled: &harp_engine::CompiledDynamicWorkflow) -> BTreeMap<Str
             )
         })
         .collect()
-}
-
-fn graph_policy() -> GraphPolicy {
-    GraphPolicy {
-        max_nodes: 64,
-        max_concurrency: 8,
-        max_total_tokens: 10_000,
-        max_total_storage_bytes: 10_000_000,
-        max_total_timeout_seconds: 1_000,
-        max_node_tokens: 1_000,
-        max_node_storage_bytes: 1_000_000,
-        max_node_timeout_seconds: 100,
-        max_projected_prompt_bytes: 1024 * 1024,
-        max_recursion_depth: 1,
-        allowed_roles: ["explore", "reduce"]
-            .into_iter()
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>(),
-        allowed_output_schemas: [r#"{"type":"object"}"#]
-            .into_iter()
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>(),
-        allowed_model_policies: ["test-model"]
-            .into_iter()
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>(),
-        allowed_permission_profiles: ["read-only"]
-            .into_iter()
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>(),
-        allowed_workspace_modes: ["scratch"]
-            .into_iter()
-            .map(str::to_owned)
-            .collect::<BTreeSet<_>>(),
-        approved_artifacts: BTreeMap::new(),
-    }
 }
 
 #[test]
@@ -213,14 +175,53 @@ fn compiled_dynamic_workflow_passes_existing_graph_validation() {
         ],
     });
 
-    let validated = validate_graph(
-        compiled.graph.clone(),
-        &graph_policy(),
-        &compiled.projection_policy,
-    )
-    .expect("compiled graph validates");
-    assert_eq!(validated.reducer().to_string(), "research-workflow-reduce");
-    assert_eq!(validated.topological_order().len(), 4);
+    assert_eq!(
+        compiled.graph_policy.allowed_model_policies,
+        ["test-model"].into_iter().map(str::to_owned).collect()
+    );
+    assert_eq!(
+        compiled.graph_policy.allowed_roles,
+        ["explore", "reduce"]
+            .into_iter()
+            .map(str::to_owned)
+            .collect()
+    );
+    assert_eq!(
+        compiled.projection_policy.base_instructions,
+        "Follow the workflow."
+    );
+    let validated = ExecutionPlan::from(compiled)
+        .validate()
+        .expect("compiled graph validates");
+    assert_eq!(
+        validated.graph().reducer().to_string(),
+        "research-workflow-reduce"
+    );
+    assert_eq!(validated.graph().topological_order().len(), 4);
+}
+
+#[test]
+fn execution_plan_rejects_a_graph_policy_mismatch() {
+    let compiled = compile(DynamicWorkflowStep::Sequence {
+        steps: vec![
+            DynamicWorkflowStep::Agent(agent("discover")),
+            DynamicWorkflowStep::Agent(agent("synthesize")),
+        ],
+    });
+    let mut wrong_policy = compiled.graph_policy.clone();
+    wrong_policy.allowed_model_policies.clear();
+    wrong_policy
+        .allowed_model_policies
+        .insert("another-model".to_owned());
+
+    let error = ExecutionPlan::new(compiled.graph, wrong_policy, compiled.projection_policy)
+        .validate()
+        .expect_err("model policy mismatch is rejected");
+
+    assert!(error
+        .diagnostics()
+        .iter()
+        .any(|diagnostic| diagnostic.code == "policy.model"));
 }
 
 #[test]
@@ -230,11 +231,7 @@ fn rejects_invalid_workflow_and_duplicate_compiled_task_ids() {
         name: "bad".to_owned(),
         root: DynamicWorkflowStep::Agent(agent("only")),
     };
-    assert!(compile_dynamic_workflow(
-        &invalid,
-        &compile(DynamicWorkflowStep::Agent(agent("seed"))).options
-    )
-    .is_err());
+    assert!(compile_dynamic_workflow(&invalid, &compile_options()).is_err());
 
     let duplicate = workflow(DynamicWorkflowStep::Pipeline {
         items: vec![
@@ -249,10 +246,7 @@ fn rejects_invalid_workflow_and_duplicate_compiled_task_ids() {
         ],
         stages: vec![agent("b"), agent("a-b")],
     });
-    let error = compile_dynamic_workflow(
-        &duplicate,
-        &compile(DynamicWorkflowStep::Agent(agent("seed"))).options,
-    )
-    .expect_err("compiled task IDs collide");
+    let error = compile_dynamic_workflow(&duplicate, &compile_options())
+        .expect_err("compiled task IDs collide");
     assert!(error.to_string().contains("duplicate task id"));
 }
