@@ -122,6 +122,7 @@ fn validate_no_content_markdown(repository: &HeldDirectory) -> Result<(), AppErr
 }
 
 pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, AppError> {
+    let registration = super::registration::static_registration()?;
     validate_no_content_markdown(repository)?;
     let retained_concepts = load_retained_concepts(repository)?;
     let coverage = load_coverage(repository)?;
@@ -141,9 +142,9 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
         .into_iter()
         .map(|document| (document.canonical_path.clone(), document))
         .collect::<BTreeMap<_, _>>();
-    let mut registered_document_ids = AUXILIARY_DOCUMENTS
-        .iter()
-        .map(|(document_id, path)| ((*path).to_owned(), (*document_id).to_owned()))
+    let mut registered_document_ids = registration
+        .auxiliary_documents()
+        .map(|document| (document.path.clone(), document.id.clone()))
         .collect::<BTreeMap<_, _>>();
     registered_document_ids.extend(
         textbook_documents
@@ -158,11 +159,11 @@ pub(super) fn load(repository: &HeldDirectory) -> Result<ValidatedRsiInputs, App
             .or_default()
             .push(entry.clone());
     }
-    for (_, _, path) in READER_ROUTES {
-        entries_by_path.entry(path.to_owned()).or_default();
+    for document in registration.reader_routes() {
+        entries_by_path.entry(document.path.clone()).or_default();
     }
-    for (_, path) in AUXILIARY_DOCUMENTS {
-        entries_by_path.entry(path.to_owned()).or_default();
+    for document in registration.auxiliary_documents() {
+        entries_by_path.entry(document.path.clone()).or_default();
     }
     for path in textbook_documents.keys() {
         entries_by_path.entry(path.clone()).or_default();
@@ -282,10 +283,10 @@ fn document_metadata_with_frontmatter_mode(
         .or_else(|| entries.first())
         .map(|entry| entry.concept_id.clone())
         .unwrap_or_else(|| {
-            AUXILIARY_DOCUMENTS
-                .iter()
-                .find(|(_, document_path)| *document_path == path)
-                .map(|(document_id, _)| (*document_id).to_owned())
+            super::registration::static_registration()
+                .expect("static knowledge registration must be valid")
+                .document_id_by_path(path)
+                .map(str::to_owned)
                 .unwrap_or_else(|| {
                     Path::new(path)
                         .file_stem()

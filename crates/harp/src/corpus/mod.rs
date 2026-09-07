@@ -11,6 +11,7 @@ use crate::knowledge::WikiLinkResolution;
 mod contracts;
 mod lessons;
 mod obsidian;
+mod registration;
 mod render;
 mod rules;
 
@@ -674,6 +675,7 @@ pub(super) struct RsiCorpus {
 
 pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
     let repository = HeldDirectory::open(repo_root, "RSI repository")?;
+    let registration = registration::static_registration()?;
     let ValidatedRsiInputs {
         retained_concepts,
         coverage,
@@ -714,7 +716,17 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         document.concept_id = format!("lesson-{}", lesson.lesson_id);
     }
 
-    let mut registered_routes = READER_ROUTES.to_vec();
+    let mut registered_routes = registration
+        .reader_routes()
+        .map(|document| {
+            let reader = document.reader.as_ref().expect("reader registration");
+            (
+                reader.route_id.clone(),
+                reader.label.clone(),
+                document.path.clone(),
+            )
+        })
+        .collect::<Vec<_>>();
     if repository
         .read_optional_regular_file_bounded(
             Path::new(KNOWLEDGE_HOME.2),
@@ -723,24 +735,28 @@ pub(super) fn compile(repo_root: &Path) -> Result<RsiCorpus, AppError> {
         )?
         .is_some()
     {
-        registered_routes.push(KNOWLEDGE_HOME);
+        registered_routes.push((
+            KNOWLEDGE_HOME.0.to_owned(),
+            KNOWLEDGE_HOME.1.to_owned(),
+            KNOWLEDGE_HOME.2.to_owned(),
+        ));
     }
     let reader_routes = registered_routes
         .into_iter()
         .map(|(route_id, label, path)| {
-            let document = documents.get_mut(path).ok_or_else(|| {
+            let document = documents.get_mut(&path).ok_or_else(|| {
                 invalid(
                     "knowledge.rsi.canonical_missing",
                     format!("reader route source is missing: {path}"),
                 )
             })?;
             if document.concept_id.is_empty() {
-                document.concept_id = route_id.to_owned();
+                document.concept_id = route_id.clone();
             }
             Ok(ReaderRoute {
-                route_id: route_id.to_owned(),
-                label: label.to_owned(),
-                canonical_markdown_path: path.to_owned(),
+                route_id,
+                label,
+                canonical_markdown_path: path,
             })
         })
         .collect::<Result<Vec<_>, AppError>>()?;

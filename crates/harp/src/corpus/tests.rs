@@ -5,11 +5,41 @@ use tempfile::TempDir;
 use super::contracts::{
     normalize_link_path, parse_coverage_row, validate_evidence_graph, validate_local_links,
 };
+use super::registration::{KnowledgeRegistration, RegisteredDocument};
 use super::render::{offline_link_destination, render_markdown};
 use super::rules::PrimaryClassification;
 use super::*;
 
 const TEST_WENG_DIGEST: &str = "76f3fdeddb0505f2080eff1497dd6fe2856e300ae8c17356a753e5d4da4e1fef";
+
+#[test]
+fn registration_derives_reader_and_auxiliary_views() {
+    let registration = super::registration::static_registration().unwrap();
+
+    assert_eq!(registration.reader_routes().count(), 17);
+    assert_eq!(registration.auxiliary_documents().count(), 82);
+}
+
+#[test]
+fn registration_rejects_duplicate_id_path_and_reader_label() {
+    let duplicate_id = vec![
+        RegisteredDocument::auxiliary("same", "knowledge/a.md"),
+        RegisteredDocument::auxiliary("same", "knowledge/b.md"),
+    ];
+    assert!(KnowledgeRegistration::new(duplicate_id).is_err());
+
+    let duplicate_path = vec![
+        RegisteredDocument::auxiliary("a", "knowledge/same.md"),
+        RegisteredDocument::auxiliary("b", "knowledge/same.md"),
+    ];
+    assert!(KnowledgeRegistration::new(duplicate_path).is_err());
+
+    let duplicate_label = vec![
+        RegisteredDocument::reader("a", "Same", "knowledge/a.md"),
+        RegisteredDocument::reader("b", "Same", "knowledge/b.md"),
+    ];
+    assert!(KnowledgeRegistration::new(duplicate_label).is_err());
+}
 
 fn workspace_root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -2341,7 +2371,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
     assert_eq!(
         targets.get("knowledge/rsi/source_registry.md"),
         Some(&render::RouteTarget::Reader {
-            route_id: "sources",
+            route_id: "sources".to_owned(),
         })
     );
 
@@ -2376,7 +2406,7 @@ fn reader_route_targets_precede_document_routes_and_fragments_survive() {
     let reader_target = BTreeMap::from([(
         "knowledge/rsi/source_registry.md".to_owned(),
         render::RouteTarget::Reader {
-            route_id: "sources",
+            route_id: "sources".to_owned(),
         },
     )]);
     assert_eq!(

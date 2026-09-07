@@ -9,7 +9,7 @@ use super::*;
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) enum RouteTarget {
     Reader {
-        route_id: &'static str,
+        route_id: String,
     },
     Chapter {
         concept_id: String,
@@ -227,8 +227,16 @@ pub(super) fn route_targets(
             document_target(source_document_id(source, registered_document_ids), source)
         });
     }
-    for (route_id, _, path) in READER_ROUTES {
-        targets.insert(path.to_owned(), RouteTarget::Reader { route_id });
+    let registration = super::registration::static_registration()
+        .expect("static knowledge registration must be valid");
+    for document in registration.reader_routes() {
+        let reader = document.reader.as_ref().expect("reader registration");
+        targets.insert(
+            document.path.clone(),
+            RouteTarget::Reader {
+                route_id: reader.route_id.clone(),
+            },
+        );
     }
     targets
 }
