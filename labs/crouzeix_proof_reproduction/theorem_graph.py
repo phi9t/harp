@@ -8,8 +8,9 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 try:
-    from . import route_validation
+    from . import graph_kernel, route_validation
 except ImportError:  # pragma: no cover - direct script import path
+    import graph_kernel
     import route_validation
 
 
@@ -510,28 +511,25 @@ def _dependency_closure(
     obligation_by_id: Mapping[str, ProofObligationNode],
     route_by_id: Mapping[str, GraphNode],
 ) -> tuple[str, ...]:
-    ordered: list[str] = []
-    visited: set[str] = set()
-
-    def visit(theorem_id: str) -> None:
-        if theorem_id in visited:
-            return
-        visited.add(theorem_id)
-        node = obligation_by_id.get(theorem_id) or route_by_id.get(theorem_id)
-        if node is None:
-            raise TheoremGraphError(
-                f"unresolved Prove2Me export dependency: {theorem_id}"
-            )
-        for dependency in sorted(node.dependency_ids):
-            visit(dependency)
-        if theorem_id not in excluded:
-            ordered.append(theorem_id)
-
-    for root in roots:
-        node = obligation_by_id[root]
-        for dependency in sorted(node.dependency_ids):
-            visit(dependency)
-    return tuple(ordered)
+    dependencies = {
+        node_id: node.dependency_ids
+        for node_id, node in {**route_by_id, **obligation_by_id}.items()
+    }
+    prerequisite_roots = tuple(
+        dependency
+        for root in roots
+        for dependency in sorted(obligation_by_id[root].dependency_ids)
+    )
+    try:
+        return graph_kernel.dependency_closure(
+            prerequisite_roots, dependencies, excluded=excluded
+        )
+    except graph_kernel.GraphKernelError as error:
+        detail = str(error)
+        if detail.startswith(("unknown dependency: ", "unknown root: ")):
+            theorem_id = detail.partition(": ")[2]
+            detail = f"unresolved Prove2Me export dependency: {theorem_id}"
+        raise TheoremGraphError(detail) from error
 
 
 def _prerequisite_record(
@@ -1041,26 +1039,14 @@ def _topological_order_obligations(
     nodes: tuple[ProofObligationNode, ...], route_node_ids: set[str]
 ) -> tuple[ProofObligationNode, ...]:
     by_id = {node.node_id: node for node in nodes}
-    ordered: list[ProofObligationNode] = []
-    temporary: set[str] = set()
-    permanent: set[str] = set()
-
-    def visit(node_id: str) -> None:
-        if node_id in permanent:
-            return
-        if node_id in temporary:
-            raise TheoremGraphError(f"obligation cycle detected at {node_id}")
-        temporary.add(node_id)
-        for dependency in sorted(by_id[node_id].dependency_ids):
-            if dependency not in route_node_ids:
-                visit(dependency)
-        temporary.remove(node_id)
-        permanent.add(node_id)
-        ordered.append(by_id[node_id])
-
-    for node_id in sorted(by_id):
-        visit(node_id)
-    return tuple(ordered)
+    dependencies = {node_id: node.dependency_ids for node_id, node in by_id.items()}
+    try:
+        ordered = graph_kernel.topological_order(
+            dependencies, external_ids=route_node_ids, cycle_label="obligation"
+        )
+    except graph_kernel.GraphKernelError as error:
+        raise TheoremGraphError(str(error)) from error
+    return tuple(by_id[node_id] for node_id in ordered)
 
 
 def _obligation_parents(
@@ -1411,46 +1397,21 @@ def _validate_node(node: GraphNode) -> None:
 
 
 def _assert_acyclic(nodes: tuple[GraphNode, ...]) -> None:
-    by_id = {node.node_id: node for node in nodes}
-    temporary: set[str] = set()
-    permanent: set[str] = set()
-
-    def visit(node_id: str) -> None:
-        if node_id in permanent:
-            return
-        if node_id in temporary:
-            raise TheoremGraphError(f"cycle detected at {node_id}")
-        temporary.add(node_id)
-        for dependency in by_id[node_id].dependency_ids:
-            visit(dependency)
-        temporary.remove(node_id)
-        permanent.add(node_id)
-
-    for node in nodes:
-        visit(node.node_id)
+    dependencies = {node.node_id: node.dependency_ids for node in nodes}
+    try:
+        graph_kernel.topological_order(dependencies)
+    except graph_kernel.GraphKernelError as error:
+        raise TheoremGraphError(str(error)) from error
 
 
 def _topological_order(nodes: tuple[GraphNode, ...]) -> tuple[GraphNode, ...]:
     by_id = {node.node_id: node for node in nodes}
-    ordered: list[GraphNode] = []
-    temporary: set[str] = set()
-    permanent: set[str] = set()
-
-    def visit(node_id: str) -> None:
-        if node_id in permanent:
-            return
-        if node_id in temporary:
-            raise TheoremGraphError(f"cycle detected at {node_id}")
-        temporary.add(node_id)
-        for dependency in sorted(by_id[node_id].dependency_ids):
-            visit(dependency)
-        temporary.remove(node_id)
-        permanent.add(node_id)
-        ordered.append(by_id[node_id])
-
-    for node_id in sorted(by_id):
-        visit(node_id)
-    return tuple(ordered)
+    dependencies = {node_id: node.dependency_ids for node_id, node in by_id.items()}
+    try:
+        ordered = graph_kernel.topological_order(dependencies)
+    except graph_kernel.GraphKernelError as error:
+        raise TheoremGraphError(str(error)) from error
+    return tuple(by_id[node_id] for node_id in ordered)
 
 
 def _group_parts(parts: Iterable[_NodePart]) -> dict[tuple[str, str], tuple[_NodePart, ...]]:
