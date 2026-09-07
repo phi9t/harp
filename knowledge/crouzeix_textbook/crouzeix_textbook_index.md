@@ -35,6 +35,8 @@ candidate proof has completed independent review.
 - [[knowledge/crouzeix_textbook/exercise_index|Exercise index]]
 - [[knowledge/crouzeix_textbook/source_registry|Source registry]]
 - [[knowledge/crouzeix_textbook/claim_evidence_ledger|Claim-evidence ledger]]
+- [[knowledge/crouzeix_textbook/harp_mathematical_audit|Harp mathematical audit]]
+- [[knowledge/crouzeix_textbook/harp_finite_horizon_remainder|Finite-horizon remainder supplement]]
 
 ## Part I -- Linear structure
 

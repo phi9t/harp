@@ -274,7 +274,7 @@ const validV6Fixture: unknown = {
 };
 
 describe("canonical corpus boundary", () => {
-  it("exports the complete forty-five-document Crouzeix textbook packet", () => {
+  it("exports the complete forty-seven-document Crouzeix textbook packet", () => {
     const corpus = parseCorpusForTest(corpusData);
     expect(corpus.reader_routes).toContainEqual({
       route_id: "crouzeix-textbook",
@@ -287,7 +287,7 @@ describe("canonical corpus boundary", () => {
           "knowledge/crouzeix_textbook/",
         ),
       ),
-    ).toHaveLength(45);
+    ).toHaveLength(47);
   });
 
   it("exports canonical textbook identities, theorem anchors, and Lean routes", () => {

@@ -2119,7 +2119,7 @@ fn canonical_identity_maps_all_current_documents_and_legacy_mismatches() {
         "crouzeix-textbook-compatibility-routes/v1"
     );
     let routes = array(&mapping, "routes", "compatibility routes");
-    assert_eq!(routes.len(), 45);
+    assert_eq!(routes.len(), 47);
     let mismatches = routes
         .iter()
         .filter(|route| {
@@ -4349,7 +4349,9 @@ fn canonical_theorem_rows_have_216_unique_resolving_targets() {
     check(&workspace_root()).expect("all unique theorem targets must resolve");
 }
 
-const SUPPORT_DOCUMENTS: [&str; 9] = [
+const SUPPORT_DOCUMENTS: [&str; 11] = [
+    "harp_mathematical_audit.md",
+    "harp_finite_horizon_remainder.md",
     "crouzeix_textbook_index.md",
     "reading_guide.md",
     "notation_and_glossary.md",
