@@ -1,0 +1,563 @@
+#+TITLE: Harp Architecture Deepening Workstream Tracker
+#+TODO: BACKLOG TODO IMPLEMENTING REVIEW BLOCKED | DONE CANCELED
+#+TAGS: docs code tests architecture crouzeix workflow corpus session risk
+
+* Current Situation
+
+The 2026-09-06 architecture survey identified six deepening directions. Four
+exist on current =master=; two exist only as uncommitted work in the isolated
+=feat/harp-session-index= worktree. [[file:design.md][design.md]] is the stable target.
+
+* Gap Map
+
+| Direction | Current interface | Target interface | Wave 1 |
+|-----------+-------------------+------------------+--------|
+| Trace dialect | enum plus leaked interpretation | codec entry point | materiality and codec extraction |
+| Session store | unchecked path join | validated Session identity | reject unsafe ids |
+| Crouzeix graph | builders plus private helper test surface | builders backed by pure kernel | extract traversals |
+| Durable execution | duplicated CLI orchestration | =ExecutionPlan= | validate workflow plan |
+| Dynamic Workflow | graph plus ignored policy plus copied options | Engine-ready compiled semantics | return/use graph policy |
+| Knowledge registration | two tuple registries | typed registration authority | typed derived views |
+
+* Work Items
+
+** DONE Specify All Six Deepening Directions :docs:architecture:
+:PROPERTIES:
+:ID: ARCH-001
+:DESIGN_SECTION: Entire document
+:BRANCH: feat/architecture-deepening-wave-1
+:WORKTREE: .worktrees/architecture-deepening-wave-1
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Record target modules, interfaces, invariants, tests, dependency order, waves,
+ownership split, and deletion points for all six directions.
+
+*** Non-goals
+
+- No production change in this item.
+- No merge between the Session branch and master-based branch.
+
+*** Owned Files
+
+- =docs/workstream/architecture-deepening/design.md=
+- =docs/workstream/architecture-deepening/tracker.org=
+- =docs/workstream/architecture-deepening/plan.md=
+
+*** Acceptance Criteria
+
+- Every direction has a concrete target interface and staged migration.
+- Every work item names exact files and commands.
+- First-wave behavior changes and non-goals are explicit.
+
+*** Verification Plan
+
+- =rg -n 'TBD|TODO|implement later|fill in' docs/workstream/architecture-deepening=
+- =git diff --check -- docs/workstream/architecture-deepening=
+
+*** Verification Evidence
+
+- Pre-implementation Session worktree snapshot: =git status --short= plus SHA-256
+  digests of =CONTEXT.md=, workspace manifests, crate sources/tests, and ADR 0003
+  were captured on 2026-09-06 before Wave 1 edits.
+- Independent plan review found eight specification defects; all eight were
+  repaired before production implementation.
+- Placeholder scan and =git diff --check= pass.
+
+*** Review Notes
+
+*** Follow-ups
+
+** DONE Extract The Crouzeix Graph Kernel :code:tests:crouzeix:
+:PROPERTIES:
+:ID: ARCH-002
+:DESIGN_SECTION: Direction 3
+:BRANCH: feat/architecture-deepening-wave-1
+:WORKTREE: .worktrees/architecture-deepening-wave-1
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Introduce one pure graph kernel and replace the four duplicated traversals in
+=theorem_graph.py=.
+
+*** Non-goals
+
+- No graph schema, node, proof status, or proof-authority change.
+- No repository-reader extraction.
+
+*** Owned Files
+
+- =labs/crouzeix_proof_reproduction/graph_kernel.py=
+- =labs/crouzeix_proof_reproduction/theorem_graph.py=
+- =labs/crouzeix_proof_reproduction/tests/test_graph_kernel.py=
+- =labs/crouzeix_proof_reproduction/tests/test_theorem_graph.py=
+
+*** Acceptance Criteria
+
+- Stable topological order and dependency closure use one implementation.
+- Cycles and dangling dependencies are typed at the Crouzeix interface.
+- Existing JSON output remains equal to a pre-refactor captured value.
+
+*** Implementation Steps
+
+1. Add failing kernel tests for shuffled order, external ids, dangling ids, and cycles.
+2. Run =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_graph_kernel=.
+3. Implement the minimal pure kernel.
+4. Run the kernel tests green.
+5. Capture current graph/export JSON, migrate traversals, and compare bytes.
+6. Run both graph test modules.
+
+*** Verification Plan
+
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_graph_kernel=
+- =python3 -m unittest labs.crouzeix_proof_reproduction.tests.test_theorem_graph=
+
+*** Verification Evidence
+
+- Kernel and theorem-graph suites: 41 tests passed.
+- Theorem graph SHA-256 remained
+  =60f9bb391e7eb08a5a094888a92a5a4f678a66afa65b9d054875c38a05ad7640=.
+- Obligation graph SHA-256 remained
+  =54d47bcfc4ed0c9f1e839fd1e6613f5976157823704cdc789d24b90b72d36259=.
+- Prove2Me export SHA-256 remained
+  =65b177030da9bfe14187ef5bd65345b1cc03ce0f3b618c55629c24de97f9d969=.
+
+*** Review Notes
+
+*** Follow-ups
+
+** DONE Compile Engine-Ready Dynamic Workflow Semantics :code:tests:workflow:
+:PROPERTIES:
+:ID: ARCH-003
+:DESIGN_SECTION: Directions 4 and 5
+:BRANCH: feat/architecture-deepening-wave-1
+:WORKTREE: .worktrees/architecture-deepening-wave-1
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Add =ExecutionPlan=, derive exact graph policy in the Dynamic Workflow compiler,
+remove copied compile options, and make production consume compiled policies.
+
+*** Non-goals
+
+- Do not migrate raw RLM orchestration in Wave 1.
+- Do not change authored workflow JSON or Engine scheduling.
+
+*** Owned Files
+
+- =crates/harp-engine/src/execution_plan.rs=
+- =crates/harp-engine/src/dynamic_workflow.rs=
+- =crates/harp-engine/src/lib.rs=
+- =crates/harp-engine/tests/dynamic_workflow.rs=
+- =crates/harp/src/main.rs=
+- =crates/harp/tests/cli.rs=
+
+*** Acceptance Criteria
+
+- =CompiledDynamicWorkflow= returns graph, graph policy, and projection policy only.
+- Production passes both compiled policies to validation.
+- One public plan interface validates the three values together.
+- Existing workflow output and reducer topology remain stable.
+
+*** Implementation Steps
+
+1. Add failing compiler tests for exact allowlists and plan validation.
+2. Run =cargo test -p harp-engine --test dynamic_workflow=.
+3. Implement graph-policy derivation and =ExecutionPlan=.
+4. Run compiler tests green.
+5. Add a failing CLI regression with distinctive projection instructions.
+6. Change =run_workflow= to consume compiled policies and run the CLI test green.
+
+*** Verification Plan
+
+- =cargo test -p harp-engine --test dynamic_workflow=
+- =cargo test -p harp --features test-cli-fixture --test cli workflow_run -- --test-threads=1=
+
+*** Verification Evidence
+
+- Dynamic Workflow engine tests: 5 passed.
+- Feature-enabled workflow CLI tests: 3 passed.
+- The full repository gate exercised Rust formatting, clippy, engine, CLI,
+  recovery, and repository contract tests successfully.
+
+*** Review Notes
+
+*** Follow-ups
+
+** DONE Introduce Typed Knowledge Registration :code:tests:
+:PROPERTIES:
+:ID: ARCH-004
+:DESIGN_SECTION: Direction 6
+:BRANCH: feat/architecture-deepening-wave-1
+:WORKTREE: .worktrees/architecture-deepening-wave-1
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Replace consumer-visible tuple registries with typed registrations and derived
+reader/auxiliary views without changing corpus JSON.
+
+*** Non-goals
+
+- No Atlas schema change.
+- No packet addition, deletion, or reorder.
+
+*** Owned Files
+
+- =crates/harp/src/corpus/registration.rs=
+- =crates/harp/src/corpus/mod.rs=
+- =crates/harp/src/corpus/contracts.rs=
+- =crates/harp/src/corpus/render.rs=
+- =crates/harp/src/corpus/tests.rs=
+
+*** Acceptance Criteria
+
+- Registration rejects duplicate ids and paths.
+- Reader routes derive from registered documents.
+- Pre/post generated corpus bytes are identical.
+
+*** Implementation Steps
+
+1. Add failing registration tests for collisions and derived views.
+2. Implement typed registration around the current static data.
+3. Migrate one consumer at a time, keeping corpus tests green.
+4. Compare generated corpus bytes before and after.
+
+*** Verification Plan
+
+- =cargo test -p harp corpus::tests --lib -- --test-threads=1=
+- =cd atlas && corepack pnpm run test=
+
+*** Verification Evidence
+
+- Corpus tests: 70 passed.
+- Atlas tests: 133 passed.
+- Generated corpus SHA-256 remained
+  =7feef4d9c86245d916aa0107198fa703e11bbbca6adf799ec981804bccb8e359=.
+
+*** Review Notes
+
+*** Follow-ups
+
+** DONE Correct Trace Dialect Materiality And Codec Locality :code:tests:session:
+:PROPERTIES:
+:ID: ARCH-005
+:DESIGN_SECTION: Direction 1
+:BRANCH: feat/harp-session-index
+:WORKTREE: .worktrees/harp-session-index
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Implement the specified percentage materiality rule and move record
+interpretation behind the dialect module's crate-internal interface.
+
+*** Non-goals
+
+- No second supported dialect.
+- No semantic change to history/runtime ownership.
+
+*** Owned Files
+
+- =crates/harp-session-index/src/detect.rs=
+- =crates/harp-session-index/src/dialect.rs=
+- =crates/harp-session-index/src/index.rs=
+- =crates/harp-session-index/src/lib.rs=
+- =crates/harp-session-index/tests/detect_fixtures.rs=
+- =crates/harp-session-index/tests/index_fixtures.rs=
+
+*** Acceptance Criteria
+
+- Detection matches the dialect specification exactly.
+- =index.rs= no longer contains TraeCLI record-shape interpretation.
+- Existing summary fixtures remain stable.
+
+*** Implementation Steps
+
+1. Add generated 1% acceptance and below-1% rejection tests.
+2. Run the detection tests red.
+3. Implement checked materiality and run green.
+4. Add a public-index characterization test, move interpretation, run green.
+
+*** Verification Plan
+
+- =cargo test -p harp-session-index --test detect_fixtures=
+- =cargo test -p harp-session-index --test index_fixtures=
+
+*** Verification Evidence
+
+- Exact 1% acceptance and below-1% rejection were observed red before the
+  checked materiality implementation and pass afterward.
+- The complete Session crate suite passes: 17 tests.
+
+*** Review Notes
+
+*** Follow-ups
+
+** DONE Validate Session Identity At The Store Seam :code:tests:session:risk:
+:PROPERTIES:
+:ID: ARCH-006
+:DESIGN_SECTION: Direction 2
+:BRANCH: feat/harp-session-index
+:WORKTREE: .worktrees/harp-session-index
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Reject unsafe or malformed Session identities before forming store paths.
+
+*** Non-goals
+
+- No atomic publication or streaming-spill rewrite yet.
+
+*** Owned Files
+
+- =crates/harp-session-index/src/store.rs=
+- =crates/harp-session-index/src/index.rs=
+- =crates/harp-session-index/src/error.rs=
+- =crates/harp-session-index/src/verify.rs=
+- =crates/harp-session-index/src/bin/harp-session-index.rs=
+- =crates/harp-session-index/Cargo.toml=
+- =Cargo.lock=
+- =crates/harp-session-index/tests/index_fixtures.rs=
+- =crates/harp-session-index/fixtures/*.jsonl= session identities only
+
+*** Acceptance Criteria
+
+- Only canonical UUID text is accepted.
+- Unsafe ids cannot escape the Session index root.
+- Existing valid fixtures continue to index.
+
+*** Implementation Steps
+
+1. Add failing unsafe-id tests through =index_rollout=.
+2. Run the index tests red.
+3. Add typed validation and a fallible =session_dir=.
+4. Migrate callers and run green.
+
+*** Verification Plan
+
+- =cargo test -p harp-session-index=
+
+*** Verification Evidence
+
+- Direct =validate_session_id= and =session_dir= tests reject noncanonical,
+  uppercase, path-like, and control-containing identities.
+- Independent review identified missing standalone validation, fail-open
+  oversize JSON parsing, and untyped repo-owned errors. Red tests reproduced
+  each material boundary gap; all were repaired.
+- Malformed oversize JSON now returns typed =InvalidJsonl= without creating an
+  index root. Missing identity, invalid stored summary, verification identity
+  mismatch, and serialization failures have dedicated error variants.
+- The complete Session crate suite passes: 17 tests.
+
+*** Review Notes
+
+- Streaming, atomic publication, and independent semantic verification remain
+  explicitly deferred to ARCH-007 and ARCH-008.
+
+*** Follow-ups
+
+** BACKLOG Stream Oversize Lines Into Atomic Publication :code:tests:session:risk:
+:PROPERTIES:
+:ID: ARCH-007
+:DESIGN_SECTION: Direction 2
+:BRANCH: feat/harp-session-index
+:WORKTREE: .worktrees/harp-session-index
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:END:
+
+*** Scope
+
+Single-pass hash, spill without long-lived line copies, staging-tree write, and
+atomic complete-tree publication.
+
+*** Acceptance Criteria
+
+- The 157 MiB observed line class does not require a second retained copy.
+- Interrupted writes expose no partial Session index.
+
+*** Verification Plan
+
+- Generated oversize stress test.
+- Publication fault-injection tests.
+
+** BACKLOG Add Independent Session Invariant Verification :code:tests:session:risk:
+:PROPERTIES:
+:ID: ARCH-008
+:DESIGN_SECTION: Direction 2
+:BRANCH: feat/harp-session-index
+:WORKTREE: .worktrees/harp-session-index
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:END:
+
+*** Scope
+
+Replace same-implementation field comparison with independent schema-level
+recounts while retaining deterministic reparse as an additional check.
+
+*** Verification Plan
+
+- Mutated stored-summary tests for every trusted recount invariant.
+
+** BACKLOG Migrate Raw RLM Through Durable Execution :code:tests:workflow:
+:PROPERTIES:
+:ID: ARCH-009
+:DESIGN_SECTION: Direction 4
+:BRANCH: feat/architecture-deepening-wave-2
+:WORKTREE: .worktrees/architecture-deepening-wave-2
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:END:
+
+*** Scope
+
+Route raw TaskGraph run/resume/status through the application module and delete
+duplicated CLI orchestration.
+
+*** Verification Plan
+
+- Engine recovery suite and focused CLI compatibility suite.
+
+** BACKLOG Complete Knowledge Registration Consumer Migration :code:tests:
+:PROPERTIES:
+:ID: ARCH-010
+:DESIGN_SECTION: Direction 6
+:BRANCH: feat/architecture-deepening-wave-2
+:WORKTREE: .worktrees/architecture-deepening-wave-2
+:OWNER:
+:AGENT_RUN:
+:MODEL:
+:STARTED:
+:END:
+
+*** Scope
+
+Migrate all Rust consumers to typed registration, delete tuple-array access,
+then assess TypeScript restrictions as generated-schema checks or UI policy.
+
+*** Verification Plan
+
+- Corpus, Atlas, generated-output, and repository verification.
+
+** DONE Repeat Architecture Review :docs:architecture:
+:PROPERTIES:
+:ID: ARCH-011
+:DESIGN_SECTION: First-wave acceptance
+:BRANCH: feat/architecture-deepening-wave-1
+:WORKTREE: .worktrees/architecture-deepening-wave-1
+:OWNER: primary
+:AGENT_RUN: current
+:MODEL: inherited default
+:STARTED: 2026-09-06
+:END: 2026-09-06
+
+*** Scope
+
+Repeat the same deletion-test survey after Wave 1 and publish a fresh temporary
+HTML report comparing the remaining friction.
+
+*** Acceptance Criteria
+
+- Report distinguishes master-based and Session-branch state.
+- Implemented candidates are rescored from current code, not copied forward.
+- No HTML report is committed.
+
+*** Verification Plan
+
+- Open the generated report from the OS temporary directory.
+
+*** Verification Evidence
+
+- Fresh deletion-test survey classified the six directions as two deep, three
+  transitional, and one unchanged.
+- Deep: Crouzeix graph kernel and Dynamic Workflow compiler ownership.
+- Transitional: Trace dialect, Session store/verification, and knowledge
+  registration.
+- Unchanged: shared durable-execution application orchestration.
+- Temporary report generated at
+  =/tmp/architecture-review-20260906-wave1.html= and opened successfully in the
+  named =harp-architecture-wave1= browser session.
+
+* Agent Dispatch Log
+
+- 2026-09-06: read-only Explore pass produced the six initial candidates.
+- 2026-09-06: independent specification and repository-standards reviews
+  completed; their material Session findings were repaired and retested.
+
+* Decisions
+
+- Preserve two-worktree ownership; do not transplant uncommitted Session work.
+- Wave 1 establishes one proven seam per direction and fixes policy/identity gaps.
+- Later waves migrate remaining callers before deleting legacy paths.
+
+* Risks And Blockers
+
+- The Session branch is based on an older history and contains uncommitted work.
+  It must not be rebased, reset, or merged during this program without explicit
+  owner direction.
+- Full Session streaming may require OS-specific secure publication primitives;
+  it is explicitly outside Wave 1.
+- The Session worktree is an uncommitted ownership domain. Before edits, record
+  exact status and source/test digests. Tasks ARCH-005 then ARCH-006 run serially
+  with one writer. Do not reset, rebase, clean, stash, or stage unrelated paths;
+  any later staging must name explicit files.
+
+* Deferred Work
+
+- Second supported Trace dialect.
+- Independent Session semantic verifier.
+- Raw RLM orchestration migration.
+- Full corpus consumer and TypeScript duplication cleanup.
+- Crouzeix repository-reader seam and private-test removal.
+
+* Completion Criteria
+
+- All Wave 1 items are reviewed and have fresh verification evidence.
+- The master-based worktree passes =mise run verify=.
+- The Session branch passes =cargo test -p harp-session-index=.
+- A fresh architecture report is opened and its remaining candidates are stated.
+
+* Wave 1 Gate Evidence
+
+- Master-based worktree: =mise run verify= passed, ending with
+  =repository verified: 521 import rows=.
+- Session worktree: =cargo fmt --all -- --check= and
+  =cargo test -p harp-session-index -- --test-threads=1= passed.
+- Compatibility byte checks for theorem graph, obligation graph, Prove2Me, and
+  generated corpus all matched the pre-Wave-1 snapshots exactly.
