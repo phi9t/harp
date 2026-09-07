@@ -282,6 +282,25 @@ pub(crate) fn extract_call_id(name: &str) -> Option<String> {
     None
 }
 
+fn digest_summary(summary: &SessionSummary) -> String {
+    // Digest excludes index_digest itself and absolute paths.
+    let mut for_hash = summary.clone();
+    for_hash.index_digest.clear();
+    let bytes = serde_json::to_vec(&for_hash).expect("summary serializable");
+    format!("sha256:{}", hex_sha256(&bytes))
+}
+
+fn hex_sha256(bytes: &[u8]) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    let out = hasher.finalize();
+    let mut s = String::with_capacity(out.len() * 2);
+    for b in out {
+        s.push_str(&format!("{b:02x}"));
+    }
+    s
+}
+
 #[cfg(test)]
 mod extract_call_id_tests {
     use super::extract_call_id;
@@ -302,23 +321,4 @@ mod extract_call_id_tests {
             Some("call_ARTIFACTBRIDGE1")
         );
     }
-}
-
-fn digest_summary(summary: &SessionSummary) -> String {
-    // Digest excludes index_digest itself and absolute paths.
-    let mut for_hash = summary.clone();
-    for_hash.index_digest.clear();
-    let bytes = serde_json::to_vec(&for_hash).expect("summary serializable");
-    format!("sha256:{}", hex_sha256(&bytes))
-}
-
-fn hex_sha256(bytes: &[u8]) -> String {
-    let mut hasher = Sha256::new();
-    hasher.update(bytes);
-    let out = hasher.finalize();
-    let mut s = String::with_capacity(out.len() * 2);
-    for b in out {
-        s.push_str(&format!("{b:02x}"));
-    }
-    s
 }

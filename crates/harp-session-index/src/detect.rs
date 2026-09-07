@@ -35,10 +35,9 @@ pub fn detect_dialect(path: &Path) -> SessionIndexResult<DialectId> {
     let mut history_mutation = 0u64;
     let mut response_item = 0u64;
     let mut nonblank = 0u64;
-    let mut line_no = 0u64;
 
-    for line in reader.lines() {
-        line_no += 1;
+    for (line_index, line) in reader.lines().enumerate() {
+        let line_no = (line_index as u64) + 1;
         let line = line.map_err(|source| SessionIndexError::Io {
             context: format!("read {}", path.display()),
             source,
