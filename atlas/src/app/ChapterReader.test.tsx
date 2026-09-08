@@ -14,6 +14,33 @@ if (!baseDocument) {
 }
 
 describe("canonical document view", () => {
+  for (const [number, slug] of [
+    ["01", "objects-and-representations"],
+    ["02", "vector-spaces-and-subspaces"],
+    ["03", "linear-maps-and-exact-structure"],
+    ["04", "coordinates-and-duality"],
+  ]) {
+    it(`renders foundations Chapter ${number} with retained anchors and formal solutions`, () => {
+      const chapter = canonicalCorpus.documents.find((document) =>
+        document.concept_id === `cft-chapter-${number}-${slug}`);
+      if (!chapter) throw new Error(`Missing foundations Chapter ${number}`);
+      const { container } = render(<CanonicalDocumentView document={chapter} />);
+      const article = container.querySelector("article.textbook-reading");
+      if (!article) throw new Error("Missing textbook reading article");
+      expect(article.querySelector("math")).not.toBeNull();
+      expect(article.querySelector(".math-error, .katex-error")).toBeNull();
+      for (let index = 1; index <= 6; index++) {
+        const card = `cft-${number}-${String(index).padStart(3, "0")}`;
+        const exercise = `exercise-cft-${number}-e${String(index).padStart(2, "0")}`;
+        expect(article.querySelectorAll(`[id="${card}"]`)).toHaveLength(1);
+        expect(article.querySelectorAll(`[id="${exercise}"]`)).toHaveLength(1);
+        expect(article).toHaveTextContent(`exercise_${String(index).padStart(2, "0")}_solution`);
+      }
+      expect(article.querySelector(
+        `a[href^="https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part01/Chapter${number}.lean"]`,
+      )).not.toBeNull();
+    });
+  }
   it("includes the Harp chapter with rendered mathematics and exact source links", async () => {
     const chapter = canonicalCorpus.documents.find((document) =>
       document.concept_id === "cft-chapter-36-harp-finite-horizon-proof");
@@ -50,7 +77,9 @@ describe("canonical document view", () => {
       "href", "https://github.com/phi9t/harp/blob/master/formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean");
     expect(screen.queryByRole("link", { name: "Next: Chapter 2: Vector spaces and subspaces" })).toHaveAttribute(
       "href", "#documents/cft-chapter-02-vector-spaces-and-subspaces");
-    expect(screen.queryByRole("heading", { name: "Opening problem" })).toBeVisible();
+    // Scope this plain heading directly: jsdom cannot compute styles for the
+    // MathML descendants of other, formula-bearing chapter headings.
+    expect(screen.getByText("Opening problem", { selector: "h2" })).toBeVisible();
     expect(screen.queryByRole("link", { name: "Correspondence and limits" })).toHaveAttribute(
       "href", "#documents/cft-lean-coverage-ledger");
   });

@@ -19,6 +19,92 @@ use sha2::{Digest, Sha256};
 const V2_FIXTURE: &str = "tests/fixtures/crouzeix_textbook/valid";
 
 #[test]
+fn duality_core_does_not_depend_on_its_scalar_invariant_previews() {
+    let coverage = read_json(&contracts_root().join("coverage.json"));
+    let cards = coverage["items"].as_array().unwrap();
+    let dependencies = cards
+        .iter()
+        .map(|row| {
+            (
+                row["item_id"].as_str().unwrap(),
+                row["pedagogical_prerequisites"].as_array().unwrap(),
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+    for core in ["CFT-04-001", "CFT-04-002", "CFT-04-003"] {
+        let mut pending = vec![core];
+        let mut visited = BTreeSet::new();
+        while let Some(id) = pending.pop() {
+            assert!(
+                !["CFT-04-004", "CFT-04-005", "CFT-04-006"].contains(&id),
+                "{core} depends on the forward reference {id}"
+            );
+            if visited.insert(id) {
+                pending.extend(dependencies[id].iter().map(|value| value.as_str().unwrap()));
+            }
+        }
+    }
+}
+
+#[test]
+fn foundations_02_04_publish_distinct_compiled_solutions_and_honest_previews() {
+    let contracts = read_json(&contracts_root().join("coverage.json"));
+    let exercises = read_json(&contracts_root().join("exercises.json"));
+    let cards = contracts["items"].as_array().unwrap();
+    let exercise_rows = exercises["exercises"].as_array().unwrap();
+    for chapter in 2..=4 {
+        for index in 1..=6 {
+            let id = format!("CFT-{chapter:02}-E{index:02}");
+            let row = exercise_rows
+                .iter()
+                .find(|row| row["exercise_id"] == id)
+                .unwrap();
+            assert!(
+                row["lean_solution"].is_object(),
+                "{id} needs a distinct solution"
+            );
+        }
+    }
+    let receipt = fresh_textbook_receipt();
+    let declarations = receipt["declarations"].as_array().unwrap();
+    let card_hashes = cards
+        .iter()
+        .map(|row| row["lean_declaration"]["type_sha256"].clone())
+        .collect::<Vec<_>>();
+    let mut solution_hashes = BTreeSet::new();
+    for chapter in 2..=4 {
+        for index in 1..=6 {
+            let id = format!("CFT-{chapter:02}-E{index:02}");
+            let row = exercise_rows
+                .iter()
+                .find(|row| row["exercise_id"] == id)
+                .unwrap();
+            let name = format!("CrouzeixTextbook.Part01.Exercises.Chapter{chapter:02}.exercise_{index:02}_solution");
+            assert_eq!(row["lean_solution"]["declaration"], name);
+            let compiled = declarations.iter().find(|row| row["name"] == name).unwrap();
+            assert_eq!(compiled["kind"], "theorem", "{id} must not be an alias");
+            assert_eq!(compiled["type_sha256"], row["lean_solution"]["type_sha256"]);
+            assert!(
+                !card_hashes.contains(&compiled["type_sha256"]),
+                "{id} repeats a card"
+            );
+            assert!(solution_hashes.insert(compiled["type_sha256"].as_str().unwrap()));
+            let card_id = format!("CFT-{chapter:02}-{index:03}");
+            let card = cards.iter().find(|row| row["item_id"] == card_id).unwrap();
+            assert_eq!(card["lean_correspondence_status"], "exact");
+            let expected_proof = if chapter == 4 && index >= 4 {
+                "summary"
+            } else if chapter == 3 && index == 5 {
+                "not-applicable"
+            } else {
+                "reconstructible"
+            };
+            assert_eq!(card["prose_proof_status"], expected_proof, "{card_id}");
+        }
+    }
+}
+
+#[test]
 fn harp_chapter_has_six_exact_records_and_distinct_solutions() {
     check(&workspace_root()).expect("the integrated Harp chapter validates");
     let coverage = read_json(&contracts_root().join("coverage.json"));
@@ -4685,7 +4771,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             }
             counts
         });
-    assert_eq!(mode_counts, [54, 109, 47, 6]);
+    assert_eq!(mode_counts, [56, 109, 45, 6]);
     assert!(contracts
         .theorems()
         .iter()
@@ -4696,7 +4782,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.prose_proof_status() == ProseProofStatus::Summary)
             .count(),
-        143
+        125
     );
     assert_eq!(
         contracts
@@ -4712,7 +4798,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.lean_correspondence_status() == LeanCorrespondenceStatus::Exact)
             .count(),
-        72
+        96
     );
     assert_eq!(
         contracts
@@ -4722,7 +4808,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
                 row.lean_correspondence_status() == LeanCorrespondenceStatus::Checkpoint
             })
             .count(),
-        49
+        45
     );
 
     let solved = array(&exercises, "exercises", "exercises")
@@ -4733,8 +4819,8 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         })
         .map(|row| string(row, "exercise_id", "exercise").to_owned())
         .collect::<BTreeSet<_>>();
-    let mut expected_solved = (1..=6)
-        .map(|index| format!("CFT-01-E{index:02}"))
+    let mut expected_solved = (1..=4)
+        .flat_map(|chapter| (1..=6).map(move |index| format!("CFT-{chapter:02}-E{index:02}")))
         .collect::<BTreeSet<_>>();
     expected_solved.extend([
         "CFT-25-E01".to_owned(),
@@ -4819,10 +4905,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "Proof-exposition status: 71 coverage rows are now `reconstructible`; 143 remain `summary` and two other definition rows are `not-applicable`.",
-        "Coverage rows: 216, comprising 54 `proved-here`, 109 `reexported-proof`, 47 `checkpoint`, and 6 `definition` rows.",
-        "Exact-correspondence rows: 72.",
-        "Distinct checked exercise solutions: six each in Chapters 1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 138 exercise rows",
+        "Proof-exposition status: 89 coverage rows are now `reconstructible`; 125 remain `summary` and two other definition rows are `not-applicable`.",
+        "Coverage rows: 216, comprising 56 `proved-here`, 109 `reexported-proof`, 45 `checkpoint`, and 6 `definition` rows.",
+        "Exact-correspondence rows: 96.",
+        "Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 120 exercise rows",
     ] {
         assert!(
             maintained_status.contains(expected),
@@ -4837,10 +4923,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "216 theorem rows: 54 are `proved-here`, 109 are `reexported-proof`, 47 are `checkpoint`, and six are `definition`.",
-        "A fresh 400-row Lean receipt",
-        "The contract has 78 distinct exercise solutions; 138 exercises remain correspondence-incomplete.",
-        "correspondence axis records 72 exact rows, 49 checkpoints, and 95 unmapped rows.",
+        "216 theorem rows: 56 are `proved-here`, 109 are `reexported-proof`, 45 are `checkpoint`, and six are `definition`.",
+        "A fresh 419-row Lean receipt",
+        "The contract has 96 distinct exercise solutions; 120 exercises remain correspondence-incomplete.",
+        "correspondence axis records 96 exact rows, 45 checkpoints, and 75 unmapped rows.",
     ] {
         assert!(
             claim_ledger.contains(expected),
@@ -4853,7 +4939,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| string(row, "lean_correspondence_status", "coverage row") == "unmapped")
             .count(),
-        95
+        75
     );
 }
 

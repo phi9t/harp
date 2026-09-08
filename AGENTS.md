@@ -56,6 +56,13 @@ handling.
 - Rebuilding Harp-owned modules against the warm cache is expected. Run the
   narrow route target while iterating; run `lean-all` and the full repository
   gate only after the candidate is frozen.
+- The shared `.lake/build` also contains Harp-owned artifacts. Serialize
+  writes from different worktrees through receipt extraction; another
+  worktree can otherwise replace the candidate's `.olean` files. Concurrent
+  narrow iteration may use direct pinned Lean with a private temporary
+  Harp-output prefix and the existing dependency artifacts. Keep the canonical
+  `.lake` symlink unchanged, and reserve shared-output gates for a frozen,
+  coordinated candidate.
 - Before an expensive gate, verify the pinned toolchain, cache link, required
   dependency artifacts, worktree-local mise trust, and exact target without
   invoking Lake.

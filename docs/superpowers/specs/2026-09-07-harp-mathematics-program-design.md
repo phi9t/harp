@@ -4,10 +4,13 @@ Status: approved for implementation by the user on 2026-09-07.
 External review requests, merge, push, and deployment remain unauthorized.
 
 Execution disposition: theorem assurance and the finite-horizon remainder
-passed local acceptance. Foundations Chapters 2–4 remain unimplemented pending
-the existing 8mq3/m4qy prerequisite acceptance and any authorized repairs.
-This is not whole-program or whole-book completion. Detailed evidence is in
-docs/workstream/harp-mathematics/.
+passed local acceptance. The user subsequently authorized autonomous completion
+including scoped prerequisite repairs. The local contract and Chapters 1–4
+have passed separate source reviews, coordinated publication, presentation
+checks and the full repository gate. All three scoped workstreams are accepted
+locally. The older 8mq3/m4qy whole-wave obligations remain distinct
+from this core acceptance. This is not whole-program or whole-book completion.
+Detailed evidence is in docs/workstream/harp-mathematics/.
 
 Baseline: `2e5d57da339d83b90bb631e0b1939958bd7369a6`.
 Draft branch: `codex/harp-mathematics-spec`.
@@ -59,7 +62,7 @@ not-applicable exposition rows. There are 78 formally solved exercises out of
 to write this specification.
 
 Chapters 2 through 4 contribute 18 coverage rows: 17 theorems and one definition.
-They currently have no exact correspondence rows and no formal exercise
+At that baseline they had no exact correspondence rows and no formal exercise
 solutions. Chapter 4 contains three forward references to scalar invariants;
 their statement correspondence and their proof exposition need different
 completion criteria.
