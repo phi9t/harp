@@ -133,6 +133,18 @@ def checkedExerciseTheoremNames : Array Name := #[
   `CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_04_solution,
   `CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_05_solution,
   `CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_06_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_01_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_02_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_03_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_04_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_05_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_06_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_01_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_02_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_03_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_04_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_05_solution,
+  `CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_06_solution,
   `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_01_solution,
   `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_02_solution,
   `CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_03_solution,
@@ -198,7 +210,13 @@ def checkedExerciseTheoremNames : Array Name := #[
   `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_03_solution,
   `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_04_solution,
   `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_05_solution,
-  `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution
+  `CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_01_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_02_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_03_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_04_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_05_solution,
+  `CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_06_solution
 ]
 
 run_cmd do
