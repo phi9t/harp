@@ -899,18 +899,18 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_multiplicative",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 7,
+        "line": 10,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "6058f95a69e86f0a4518bc0b39f4ff3ddaa06cf8ff67a926c4f8a3c886442782",
@@ -936,18 +936,18 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_diagonal",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 13,
+        "line": 16,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ee2baf8276199aa04bec9cea371cbcb2343ee4f983a2f77e201b923cf481e4f2",
@@ -974,18 +974,18 @@
         "CFT-05-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.determinant_similarity",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 19,
+        "line": 22,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "8f4039999c8fc7903a56597fc3a4cdda6a0bdb5755c0da4b1451a4204de9a90e",
@@ -1011,18 +1011,18 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_cyclic",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 25,
+        "line": 28,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "c3d1bc2a506659b801d7c329cc9d56d8529acfaccc291173b6694c8f4bfddf3a",
@@ -1049,18 +1049,18 @@
         "CFT-05-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_similarity",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 31,
+        "line": 34,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ccef9b2fae93ef9af27dd30643f456b6367678e611ec1c76e7a9ebb03216ba48",
@@ -1086,18 +1086,18 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.trace_diagonal",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 37,
+        "line": 40,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "fb2ec6e7d988dd7cb5834345df5a80c0277f73d076641aee41eefb22a5038bf9",
@@ -1122,18 +1122,18 @@
         "CFT-05-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.polynomial_action_diagonal",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.polynomialEval_diagonal",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 14,
+        "line": 21,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "dfcc53f3cc4c5ab4aca77e970febdc0b1af98060701e86aa068261b1bd7a1165",
@@ -1160,18 +1160,18 @@
         "CFT-06-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.diagonalizable_polynomial_calculus",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 17,
+        "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ebe0d26364d826b8a8723b02dc436958af6088652cbcdc2e6426399608aa6e09",
@@ -1197,18 +1197,18 @@
         "CFT-06-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.diagonalization_eigenvalue_mem_spectrum",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 20,
+        "line": 27,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "96ce27bf5d69f1c555d9d7cc335b4f8bd7387bdb1655803938784c473bef47d4",
@@ -1234,18 +1234,18 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.polynomial_action_mem_generated_algebra",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.polynomialEval_mem_generatedAlgebra",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 23,
+        "line": 30,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "fa427c1e3d1bfa2133f7c00dce4a1f4b3abe1c5ad4213411d4cec123b558cc2c",
@@ -1272,18 +1272,18 @@
         "CFT-06-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.generated_algebra_polynomial_representation",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 26,
+        "line": 33,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ad1201dc6333d171d459afaf61f310f67d6c4d3d081064aa6bd5d957a002378a",
@@ -1310,18 +1310,18 @@
         "CFT-06-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-algebra-core-2026-09-08"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.simple_spectrum_dense",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 29,
+        "line": 36,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ee87df812a3d534537010509168e95f9a0a87bd0322a3e4ee2671b1e1d53aa2e",
