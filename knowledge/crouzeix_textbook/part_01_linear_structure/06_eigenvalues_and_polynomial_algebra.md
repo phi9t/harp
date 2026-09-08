@@ -109,9 +109,10 @@ proved here for the exercises.
 
 ### CFT-06-002: transport through a supplied diagonalization {#cft-06-002}
 
-**Statement.** Let $B$ carry explicit simple-diagonalization data: a family of
-eigenvalues $\lambda$, a change-of-basis unit $S$, and the identity
-$B=S\operatorname{diag}(\lambda)S^{-1}$. Then for every polynomial $p$,
+**Statement.** Let $B$ carry explicit *simple*-diagonalization data: a family
+of eigenvalues $\lambda$ that is injective, a change-of-basis unit $S$, and the
+identity $B=S\operatorname{diag}(\lambda)S^{-1}$. Then for every polynomial
+$p$,
 $$
 p(B)=S\,\operatorname{diag}\bigl(i\mapsto p(\lambda_i)\bigr)\,S^{-1}.
 $$
@@ -125,9 +126,11 @@ replaces the diagonal by its entrywise evaluations.
 
 **Boundary and Lean provider.** The diagonalization is *supplied as data*, not
 asserted to exist; the theorem says nothing about matrices for which no such
-data is available. No separation hypothesis is imposed on the resulting
-diagonal entries, so repeated values of $p$ on distinct $\lambda_i$ are
-allowed.
+data is available. Injectivity of $\lambda$ is part of that supplied data and
+is what the word *simple* records; the proof above does not use it, so the
+identity also holds for a diagonalization with repeated eigenvalues. No
+separation hypothesis is imposed on the *resulting* diagonal entries, so
+repeated values of $p$ on distinct $\lambda_i$ are allowed.
 [`diagonalizable_polynomial_calculus`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L24)
 re-exports
 `CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal`.
@@ -140,8 +143,10 @@ and
 
 ### CFT-06-003: supplied eigenvalues lie in the spectrum {#cft-06-003}
 
-**Statement.** With the same diagonalization data for $B$, every $\lambda_i$
-belongs to the spectrum of $B$.
+**Statement.** With the same simple-diagonalization data for $B$ — injective
+eigenvalues $\lambda$, change-of-basis unit $S$, and
+$B=S\operatorname{diag}(\lambda)S^{-1}$ — every $\lambda_i$ belongs to the
+spectrum of $B$.
 
 **Proof.** Similar matrices have the same characteristic polynomial: from
 $B=SDS^{-1}$ we get $tI-B=S(tI-D)S^{-1}$ in the polynomial matrix ring, and
@@ -153,7 +158,8 @@ polynomial, each $\lambda_i$ is in the spectrum of $B$.
 
 **Boundary and Lean provider.** The equivalence between spectrum membership
 and characteristic roots needs a field; the maintained statement is over
-$\mathbb C$.
+$\mathbb C$. Injectivity of $\lambda$ again travels with the data and is not
+consumed by this proof.
 [`diagonalization_eigenvalue_mem_spectrum`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L27)
 re-exports
 `CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum`. The
