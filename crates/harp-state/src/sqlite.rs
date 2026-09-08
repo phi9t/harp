@@ -16,6 +16,16 @@ const MIGRATION_V2: &str = include_str!("../migrations/0002_execution_authority.
 const MIGRATION_V3: &str = include_str!("../migrations/0003_scratch_wall_lease.sql");
 const MIGRATION_V4: &str = include_str!("../migrations/0004_failure_clock.sql");
 const MIGRATION_V5: &str = include_str!("../migrations/0005_cli_activities.sql");
+const MIGRATION_V6: &str = include_str!("../migrations/0006_workflow_jobs.sql");
+const WORKFLOW_SCHEMA_VERSION: i64 = 6;
+const WORKFLOW_OBJECTS: &[(&str, &str)] = &[
+    ("table", "workflow_admissions"),
+    ("table", "workflow_jobs"),
+    ("table", "workflow_environments"),
+    ("table", "workflow_decisions"),
+    ("table", "workflow_events"),
+    ("index", "workflow_events_run_idx"),
+];
 const BASE_SCHEMA_VERSION: i64 = 4;
 const SCHEMA_VERSION: i64 = 5;
 const CLI_EXTENSION_OBJECTS: &[(&str, &str)] = &[
@@ -254,6 +264,39 @@ fn configure(connection: &Connection) -> StateResult<()> {
 
 fn migrate(connection: &Connection) -> StateResult<()> {
     let version: i64 = connection
+        .pragma_query_value(None, "user_version", |r| r.get(0))
+        .map_err(|e| StateError::sqlite("read workflow schema version", e))?;
+    if version == WORKFLOW_SCHEMA_VERSION {
+        return Ok(());
+    }
+    if version != SCHEMA_VERSION {
+        migrate_legacy(connection)?;
+    }
+    let transaction =
+        rusqlite::Transaction::new_unchecked(connection, rusqlite::TransactionBehavior::Immediate)
+            .map_err(|e| StateError::sqlite("begin workflow migration", e))?;
+    let version: i64 = transaction
+        .pragma_query_value(None, "user_version", |r| r.get(0))
+        .map_err(|e| StateError::sqlite("recheck workflow schema version", e))?;
+    if version == WORKFLOW_SCHEMA_VERSION {
+        return transaction
+            .commit()
+            .map_err(|e| StateError::sqlite("finish concurrent migration", e));
+    }
+    verify_legacy_integrity(&transaction, SCHEMA_VERSION)?;
+    transaction
+        .execute_batch(MIGRATION_V6)
+        .map_err(|e| StateError::sqlite("migrate workflow schema", e))?;
+    transaction
+        .pragma_update(None, "user_version", WORKFLOW_SCHEMA_VERSION)
+        .map_err(|e| StateError::sqlite("record workflow schema version", e))?;
+    transaction
+        .commit()
+        .map_err(|e| StateError::sqlite("commit workflow migration", e))
+}
+
+fn migrate_legacy(connection: &Connection) -> StateResult<()> {
+    let version: i64 = connection
         .pragma_query_value(None, "user_version", |row| row.get(0))
         .map_err(|source| StateError::sqlite("read schema version", source))?;
     match version {
@@ -397,6 +440,7 @@ fn schema_fingerprint(connection: &Connection) -> StateResult<String> {
 fn base_schema_fingerprint(connection: &Connection) -> StateResult<String> {
     filtered_schema_fingerprint(connection, |object_type, name| {
         !is_cli_extension_object(object_type, name)
+            && !WORKFLOW_OBJECTS.contains(&(object_type, name))
     })
 }
 
@@ -474,12 +518,30 @@ fn expected_cli_extension_schema_fingerprint() -> StateResult<String> {
 }
 
 fn verify_database_integrity(connection: &Connection) -> StateResult<()> {
+    verify_legacy_integrity(connection, WORKFLOW_SCHEMA_VERSION)?;
+    let expected = Connection::open_in_memory()
+        .map_err(|e| StateError::sqlite("open workflow schema template", e))?;
+    expected
+        .execute_batch(MIGRATION_V6)
+        .map_err(|e| StateError::sqlite("prepare workflow schema template", e))?;
+    let select = |kind: &str, name: &str| WORKFLOW_OBJECTS.contains(&(kind, name));
+    if filtered_schema_fingerprint(connection, select)?
+        != filtered_schema_fingerprint(&expected, select)?
+    {
+        return Err(StateError::integrity(
+            "workflow schema fingerprint mismatch",
+        ));
+    }
+    Ok(())
+}
+
+fn verify_legacy_integrity(connection: &Connection, expected_version: i64) -> StateResult<()> {
     let version: i64 = connection
         .pragma_query_value(None, "user_version", |row| row.get(0))
         .map_err(|source| StateError::sqlite("verify schema version", source))?;
-    if version != SCHEMA_VERSION {
+    if version != expected_version {
         return Err(StateError::integrity(format!(
-            "database schema version {version} does not equal {SCHEMA_VERSION}"
+            "database schema version {version} does not equal {expected_version}"
         )));
     }
 

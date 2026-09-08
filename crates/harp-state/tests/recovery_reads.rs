@@ -526,7 +526,7 @@ fn opens_and_upgrades_an_actual_v1_database_without_losing_rows() {
 
     let mut upgraded = open_state(&path).expect("upgrade v1 database");
 
-    assert_eq!(upgraded.schema_version().unwrap(), 5);
+    assert_eq!(upgraded.schema_version().unwrap(), 6);
     assert_eq!(
         upgraded
             .tasks(
@@ -600,7 +600,7 @@ fn opens_and_upgrades_an_actual_v2_database_without_losing_rows() {
 
     let mut upgraded = open_state(&path).expect("upgrade v2 database");
 
-    assert_eq!(upgraded.schema_version().unwrap(), 5);
+    assert_eq!(upgraded.schema_version().unwrap(), 6);
     assert_eq!(
         upgraded
             .tasks(
@@ -724,7 +724,7 @@ fn opens_and_upgrades_an_actual_v3_database_without_losing_rows() {
 
     let mut upgraded = open_state(&path).expect("upgrade v3 database");
 
-    assert_eq!(upgraded.schema_version().unwrap(), 5);
+    assert_eq!(upgraded.schema_version().unwrap(), 6);
     assert_eq!(
         upgraded
             .tasks(
@@ -876,7 +876,7 @@ fn populated_v4_upgrade_preserves_every_base_object_and_row() {
     fs::set_permissions(&path, fs::Permissions::from_mode(0o600)).unwrap();
 
     let upgraded = open_state(&path).expect("upgrade populated v4 database");
-    assert_eq!(upgraded.schema_version().unwrap(), 5);
+    assert_eq!(upgraded.schema_version().unwrap(), 6);
     drop(upgraded);
 
     let connection = rusqlite::Connection::open(&path).unwrap();

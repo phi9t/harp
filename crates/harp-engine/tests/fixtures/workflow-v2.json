@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "name": "cpu-research",
+  "limits": {
+    "agentTokens": 0,
+    "cpuSeconds": 60,
+    "gpuSeconds": 0,
+    "wallSeconds": 60,
+    "storageBytes": 1048576,
+    "maxConcurrency": 1
+  },
+  "failurePolicy": "failFast",
+  "tasks": [
+    {
+      "taskId": "train",
+      "role": "verify",
+      "dependencies": [],
+      "inputs": [],
+      "backend": {
+        "kind": "localCommand",
+        "version": "1",
+        "configSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "environmentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "action": {
+        "kind": "command",
+        "executable": "/usr/bin/true",
+        "executableSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "arguments": [],
+        "cwd": ".",
+        "env": {}
+      },
+      "outputs": [
+        {
+          "name": "metrics",
+          "path": "metrics.json",
+          "schema": "research.metrics.v1",
+          "maxBytes": 4096
+        }
+      ],
+      "limits": {
+        "agentTokens": 0,
+        "cpuSeconds": 60,
+        "gpuSeconds": 0,
+        "wallSeconds": 60,
+        "storageBytes": 1048576
+      },
+      "maxRetries": 0
+    }
+  ],
+  "outputs": [
+    {
+      "taskId": "train",
+      "output": "metrics"
+    }
+  ]
+}

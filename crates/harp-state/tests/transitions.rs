@@ -342,7 +342,7 @@ fn open_creates_private_database_and_applies_required_pragmas() {
 
     assert_eq!(store.path(), path);
     assert_eq!(fs::metadata(&path).unwrap().mode() & 0o777, 0o600);
-    assert_eq!(store.schema_version().unwrap(), 5);
+    assert_eq!(store.schema_version().unwrap(), 6);
     assert!(store.foreign_keys_enabled().unwrap());
     assert_eq!(store.journal_mode().unwrap(), "delete");
     assert_eq!(store.synchronous_mode().unwrap(), 2);
@@ -403,7 +403,7 @@ fn open_rejects_newer_schema_versions() {
         let _store = open_state(&path).unwrap();
     }
     let connection = rusqlite::Connection::open(&path).unwrap();
-    connection.pragma_update(None, "user_version", 6).unwrap();
+    connection.pragma_update(None, "user_version", 7).unwrap();
     drop(connection);
 
     assert!(matches!(

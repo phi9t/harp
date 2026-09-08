@@ -4,8 +4,11 @@ mod dynamic_workflow;
 mod evaluation;
 mod graph;
 mod id;
+mod job;
 mod result;
 mod runtime;
+mod strict_json;
+mod workflow_v2;
 
 pub use artifact::ArtifactRef;
 pub use checkpoint::Checkpoint;
@@ -24,6 +27,14 @@ pub use runtime::{
     ThreadStartedEvent, ThreadStatus, TokenUsage, TokenUsageEvent, TurnCompletedEvent, TurnHandle,
     TurnSnapshot, TurnSpec, TurnStartedEvent, TurnStatus,
 };
+
+pub use workflow_v2::{
+    BackendIdentity, CommandArgument, DependencyCondition, InputSource, TaskAction, TaskDependency,
+    TaskOutputRef, TaskResources, WorkflowFailurePolicy, WorkflowInput, WorkflowLimits,
+    WorkflowOutput, WorkflowTask, WorkflowV2,
+};
+
+pub use strict_json::decode_strict_json;
 
 pub type ContractResult<T> = Result<T, ContractError>;
 
@@ -68,3 +79,5 @@ fn validate_bounded_string(
     }
     Ok(())
 }
+
+pub use job::{TaskOutcomeRecord, WorkloadOutcome};
