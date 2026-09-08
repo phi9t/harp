@@ -508,7 +508,52 @@ fn validate_theorems(
         if theorem.prose_proof_status() != ProseProofStatus::Reconstructible {
             continue;
         }
-        let subsection_counts = theorem_card_subsection_counts(document, &theorem.anchor);
+        let anchors = theorems
+            .iter()
+            .filter(|row| row.prose_path == theorem.prose_path)
+            .map(|row| row.anchor.as_str())
+            .collect::<BTreeSet<_>>();
+        let body = theorem_card_body(document, &theorem.anchor, &anchors);
+        let subsection_counts = theorem_card_subsection_counts(body);
+        if subsection_counts.is_empty() {
+            let fields = narrative_fields(body);
+            if !fields.is_empty() {
+                let invalid = ["Statement", "Proof", "Boundary", "Formal correspondence"]
+                    .into_iter()
+                    .filter_map(|label| {
+                        let matches = fields
+                            .iter()
+                            .filter(|field| field.labels.contains(&label))
+                            .collect::<Vec<_>>();
+                        let valid = matches.len() == 1
+                            && matches[0].has_content
+                            && (label != "Formal correspondence" || matches[0].has_provider);
+                        (!valid).then(|| {
+                            format!(
+                                "{label}: expected one nonempty field{}; found {}",
+                                if label == "Formal correspondence" {
+                                    " naming a Lean provider"
+                                } else {
+                                    ""
+                                },
+                                matches.len()
+                            )
+                        })
+                    })
+                    .collect::<Vec<_>>();
+                if !invalid.is_empty() {
+                    diagnostics.push(diagnostic(
+                        THEOREM_CARD_CODE,
+                        Some(theorem.item_id.clone()),
+                        "subsections",
+                        "narrative Statement, Proof, Boundary, and Formal correspondence with a named Lean provider",
+                        invalid.join(", "),
+                        theorem.prose_path.clone(),
+                    ));
+                }
+                continue;
+            }
+        }
         let invalid = REQUIRED_THEOREM_SUBSECTIONS
             .iter()
             .filter_map(|heading| {
@@ -532,45 +577,199 @@ fn validate_theorems(
     }
 }
 
-fn theorem_card_subsection_counts(document: &Document, target: &str) -> BTreeMap<String, usize> {
-    let options = Options::ENABLE_TABLES
+// Reuse the canonical heading identities, including generated slugs. A nested
+// registered card ends the narrative just as a sibling heading does.
+fn theorem_card_body<'a>(
+    document: &'a Document,
+    target: &str,
+    anchors: &BTreeSet<&str>,
+) -> &'a str {
+    let mut ids = document.heading_ids.iter();
+    let mut card = None;
+    let mut pending_level = None;
+    let mut quote_depth = 0;
+    for (event, range) in
+        Parser::new_ext(&document.body, theorem_markdown_options()).into_offset_iter()
+    {
+        match event {
+            Event::Start(Tag::BlockQuote(_)) => quote_depth += 1,
+            Event::End(TagEnd::BlockQuote(_)) => quote_depth -= 1,
+            Event::Start(Tag::Heading { level, .. }) => {
+                let id = match level {
+                    HeadingLevel::H2 | HeadingLevel::H3 => ids.next().map(String::as_str),
+                    _ => None,
+                };
+                let level = heading_level_number(level);
+                if quote_depth == 0 {
+                    if let Some((card_level, start)) = card {
+                        if level <= card_level || id.is_some_and(|id| anchors.contains(id)) {
+                            return &document.body[start..range.start];
+                        }
+                    }
+                    if id == Some(target) {
+                        pending_level = Some(level);
+                    }
+                }
+            }
+            Event::End(TagEnd::Heading(_)) => {
+                if let Some(level) = pending_level.take() {
+                    card = Some((level, range.end));
+                }
+            }
+            _ => {}
+        }
+    }
+    card.map_or("", |(_, start)| &document.body[start..])
+}
+
+struct NarrativeField {
+    labels: &'static [&'static str],
+    has_content: bool,
+    has_provider: bool,
+}
+
+fn narrative_label(text: &str) -> Option<&'static [&'static str]> {
+    match text.trim().trim_end_matches(['.', ':']) {
+        "Statement" => Some(&["Statement"]),
+        "Proof" => Some(&["Proof"]),
+        "Boundary" | "Boundary case" => Some(&["Boundary"]),
+        "Formal correspondence" | "Lean correspondence" => Some(&["Formal correspondence"]),
+        "Boundary and Lean provider" | "Boundary and Lean providers" => {
+            Some(&["Boundary", "Formal correspondence"])
+        }
+        _ => None,
+    }
+}
+
+fn named_lean_identifier(text: &str) -> bool {
+    text.contains(['.', '_'])
+        && text.chars().any(char::is_alphabetic)
+        && text.split('.').all(|component| {
+            let mut characters = component.chars();
+            characters
+                .next()
+                .is_some_and(|first| first.is_alphabetic() || first == '_')
+                && characters.all(|ch| ch.is_alphanumeric() || matches!(ch, '_' | '\''))
+        })
+}
+
+fn narrative_fields(body: &str) -> Vec<NarrativeField> {
+    let mut fields = Vec::<NarrativeField>::new();
+    let mut active = None::<usize>;
+    let mut depth = 0;
+    let mut paragraph = false;
+    let mut prefix = false;
+    let mut label = None::<String>;
+    for event in Parser::new_ext(body, theorem_markdown_options()) {
+        if let Some(text) = &mut label {
+            if !matches!(&event, Event::Text(_) | Event::End(TagEnd::Strong)) {
+                // Labels are plain bold text. Do not synthesize a label by
+                // dropping breaks, HTML, or nested inline formatting.
+                text.push('\0');
+            }
+        }
+        match event {
+            Event::Start(tag) => {
+                match &tag {
+                    Tag::Paragraph if depth == 0 => {
+                        paragraph = true;
+                        prefix = true;
+                    }
+                    Tag::Strong if paragraph && depth == 1 && prefix => {
+                        // Any leading bold label ends the previous field; unrelated
+                        // labels cannot fill an empty Statement or Proof.
+                        active = None;
+                        label = Some(String::new());
+                    }
+                    Tag::Link { dest_url, .. } if paragraph && label.is_none() => {
+                        if let Some(index) = active {
+                            fields[index].has_provider |= dest_url
+                                .split(['#', '?'])
+                                .next()
+                                .is_some_and(|path| path.ends_with(".lean"));
+                        }
+                    }
+                    _ => {}
+                }
+                depth += 1;
+            }
+            Event::End(tag) => {
+                depth -= 1;
+                if tag == TagEnd::Strong && depth == 1 {
+                    if let Some(text) = label.take() {
+                        if let Some(labels) = narrative_label(&text) {
+                            active = Some(fields.len());
+                            fields.push(NarrativeField {
+                                labels,
+                                has_content: false,
+                                has_provider: false,
+                            });
+                        }
+                    }
+                }
+                if tag == TagEnd::Paragraph && depth == 0 {
+                    paragraph = false;
+                }
+            }
+            Event::Text(text) if label.is_some() => {
+                label.as_mut().expect("label is present").push_str(&text);
+            }
+            Event::Code(text) if paragraph && label.is_none() => {
+                prefix = false;
+                if let Some(index) = active {
+                    fields[index].has_content |= text.chars().any(char::is_alphanumeric);
+                    fields[index].has_provider |= named_lean_identifier(&text);
+                }
+            }
+            Event::Text(text) | Event::InlineMath(text) if paragraph && label.is_none() => {
+                if !text.trim().is_empty() {
+                    prefix = false;
+                }
+                if let Some(index) = active {
+                    fields[index].has_content |= text.chars().any(char::is_alphanumeric);
+                }
+            }
+            Event::DisplayMath(text) if depth == 0 => {
+                if let Some(index) = active {
+                    fields[index].has_content |= text.chars().any(char::is_alphanumeric);
+                }
+            }
+            _ => {}
+        }
+    }
+    fields
+}
+
+fn theorem_markdown_options() -> Options {
+    Options::ENABLE_TABLES
         | Options::ENABLE_STRIKETHROUGH
         | Options::ENABLE_TASKLISTS
         | Options::ENABLE_FOOTNOTES
         | Options::ENABLE_DEFINITION_LIST
         | Options::ENABLE_HEADING_ATTRIBUTES
-        | Options::ENABLE_MATH;
-    let mut addressable_ids = document.heading_ids.iter();
-    let mut current = None::<(HeadingLevel, String)>;
-    let mut target_level = None;
+        | Options::ENABLE_MATH
+}
+
+fn theorem_card_subsection_counts(body: &str) -> BTreeMap<String, usize> {
+    let mut current = None::<String>;
     let mut subsection_counts = BTreeMap::new();
-    for event in Parser::new_ext(&document.body, options) {
+    let mut quote_depth = 0;
+    for event in Parser::new_ext(body, theorem_markdown_options()) {
         match event {
-            Event::Start(Tag::Heading { level, .. }) => {
-                current = Some((level, String::new()));
+            Event::Start(Tag::BlockQuote(_)) => quote_depth += 1,
+            Event::End(TagEnd::BlockQuote(_)) => quote_depth -= 1,
+            Event::Start(Tag::Heading { .. }) if quote_depth == 0 => {
+                current = Some(String::new());
             }
             Event::Text(text) | Event::Code(text) | Event::InlineMath(text) => {
-                if let Some((_, heading)) = &mut current {
+                if let Some(heading) = &mut current {
                     heading.push_str(&text);
                 }
             }
             Event::End(TagEnd::Heading(_)) => {
-                if let Some((level, heading)) = current.take() {
-                    let id = match level {
-                        HeadingLevel::H2 | HeadingLevel::H3 => {
-                            addressable_ids.next().map(String::as_str)
-                        }
-                        _ => None,
-                    };
-                    let level = heading_level_number(level);
-                    if id == Some(target) {
-                        target_level = Some(level);
-                    } else if let Some(anchor_level) = target_level {
-                        if level <= anchor_level {
-                            target_level = None;
-                        } else if REQUIRED_THEOREM_SUBSECTIONS.contains(&heading.as_str()) {
-                            *subsection_counts.entry(heading).or_insert(0) += 1;
-                        }
+                if let Some(heading) = current.take() {
+                    if REQUIRED_THEOREM_SUBSECTIONS.contains(&heading.as_str()) {
+                        *subsection_counts.entry(heading).or_insert(0) += 1;
                     }
                 }
             }

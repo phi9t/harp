@@ -1,15 +1,15 @@
 'use strict';
 
-function readingEditions(chapters) {
+function readingEditions(chapters,supplements=[]) {
   if(chapters.length!==36)throw new Error('Reading editions require 36 chapters');
   return [
-    {name:'crouzeix-foundations',list:chapters,full:true,
+    {name:'crouzeix-foundations',list:chapters,full:true,supplements,
       title:'Crouzeix Foundations',coverTitle:'Crouzeix<br>Foundations',
       subtitle:'From linear algebra to operator theory'},
-    {name:'chapter-01-objects-and-representations',list:[chapters[0]],full:false,
+    {name:'chapter-01-objects-and-representations',list:[chapters[0]],full:false,supplements:[],
       title:'Objects and Representations',coverTitle:'Objects &amp;<br>Representations',
       subtitle:'Chapter 1 · A coordinate workshop'},
-    {name:'chapter-36-harp-finite-horizon-proof',list:[chapters[35]],full:false,
+    {name:'chapter-36-harp-finite-horizon-proof',list:[chapters[35]],full:false,supplements,
       title:'The Harp finite-horizon proof',coverTitle:'The Harp<br>finite-horizon proof',
       subtitle:'Chapter 36 · Exact finite certificates and the constant two'},
   ];

@@ -14,7 +14,22 @@ output = root / "output/pdf"
 manifest = json.loads((output / "build-manifest.json").read_text())
 assert manifest["schema_version"] == 2
 assert manifest["release_validation"] is True
-assert len(manifest["sources"]) == 38
+book = root / "knowledge/crouzeix_textbook"
+expected_sources = {
+    path.relative_to(root).as_posix()
+    for path in book.glob("part_*/*.md")
+    if path.name[:2].isdigit() and path.name[2:3] == "_"
+}
+assert len(expected_sources) == 36
+expected_sources.update(
+    f"knowledge/crouzeix_textbook/{name}.md"
+    for name in (
+        "notation_and_glossary", "source_registry",
+        "harp_mathematical_audit", "harp_finite_horizon_remainder",
+    )
+)
+assert len(manifest["sources"]) == len(expected_sources) == 40
+assert {source["path"] for source in manifest["sources"]} == expected_sources
 assert all(source["origin"] == "filesystem-candidate" for source in manifest["sources"])
 candidate = sorted(({"path": s["path"], "sha256": s["sha256"]} for s in manifest["linked_sources"]), key=lambda s: s["path"])
 assert hashlib.sha256(json.dumps(candidate, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest() == manifest["candidate_sha256"]

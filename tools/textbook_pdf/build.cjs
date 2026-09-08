@@ -29,7 +29,7 @@ const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8'
 let commit, branch, date;
 let release = true;
 let manifest = { math_count: 0, sources: [] };
-let chapters, glossary, sources;
+let chapters, glossary, sources, supplements;
 const parts = ['Linear structure', 'Geometry and calculus', 'Analysis and complex functions', 'Finite-dimensional operator theory', 'Crouzeix machinery', 'Constant-two routes'];
 function initialize() {
   for(const [name,expected] of Object.entries(require('./package.json').dependencies)) {
@@ -41,6 +41,7 @@ function initialize() {
   docs.clear();sourceCopies.clear();
   chapters=discoverChapters(root).map(load);
   glossary=load(bookRoot+'/notation_and_glossary.md');sources=load(bookRoot+'/source_registry.md');
+  supplements=['harp_mathematical_audit','harp_finite_horizon_remainder'].map(name=>load(`${bookRoot}/${name}.md`));
 }
 const docs = new Map();
 function load(relative) {
@@ -156,7 +157,7 @@ function chapter(doc) {
 function editionNote(full) {
   return `<section class="frontmatter edition-note" id="edition"><div class="eyebrow">About this edition</div><h1>A book in progress</h1><p>This reading edition brings the maintained textbook into a quiet, print-oriented format. The mathematical exposition, exercises, motivation, historical context, and Lean references come from the canonical chapter sources.</p><div class="status-note"><p><strong>Working draft · ${date}.</strong> Typesetting is not a new proof certification. Chapter depth and formal correspondence vary. The text marks the boundaries between written arguments, exact Lean statements, and numerical examples.</p><p>This edition uses the source files present in the candidate checkout. Their exact hashes are recorded in the build manifest. No missing chapter is replaced from Git history. Formal verification status is described by the canonical sources; generating this PDF performs no proof compilation.</p></div><p>Square-bracket matrix displays follow the adopted house style. The typesetter adjusts matrix delimiters and breaks a few long displays across lines; it does not alter the canonical mathematical statements.</p><p>Blue links navigate within this PDF or open source references. Local source links point to the accompanying source snapshot. They require a PDF reader that permits local file links. The source files and their exact hashes are listed in <code>build-manifest.json</code>.</p><p class="print-note">Source branch: ${escape(branch)}<br>Checkout HEAD (not a claim of clean source state): ${commit}<br>Text set in Georgia; mathematics set with KaTeX. Generated from repository-owned Markdown.</p></section>`;
 }
-function contents(list, full) {
+function contents(list, full, supplementDocs) {
   let prior=0;
   const entry=(doc,title,number='')=>`<div class="toc-entry">${number?`<span class="toc-number">${number}</span>`:''}<a href="#${doc.id}">${escape(title)}</a><span class="toc-page" data-target="${doc.id}"></span></div>`;
   const rows=list.map(doc=>{
@@ -166,7 +167,7 @@ function contents(list, full) {
     prior=part;
     return label+entry(doc,doc.title,String(n).padStart(2,'0'));
   }).join('');
-  return `<section class="frontmatter contents"><div class="eyebrow">Reader's map</div><h1>Contents</h1>${rows}<div class="toc-part">Reference</div>${entry(glossary,'Notation and glossary')}${full?entry(sources,'Sources and attribution'):''}</section>`;
+  return `<section class="frontmatter contents"><div class="eyebrow">Reader's map</div><h1>Contents</h1>${rows}${supplementDocs.length?'<div class="toc-part">Harp supplements</div>'+supplementDocs.map(doc=>entry(doc,doc.title)).join(''):''}<div class="toc-part">Reference</div>${entry(glossary,'Notation and glossary')}${full?entry(sources,'Sources and attribution'):''}</section>`;
 }
 let katexCSSPath;
 try { katexCSSPath=require.resolve('katex/dist/katex.min.css'); }
@@ -177,14 +178,15 @@ const katexCSS=fs.readFileSync(katexCSSPath,'utf8').replace(/url\(([^)]+)\)/g, (
 });
 const css=fs.readFileSync(path.join(__dirname,'book.css'),'utf8');
 function documentHTML(edition) {
-  const {list,full,title,coverTitle,subtitle}=edition;
+  const {list,full,title,coverTitle,subtitle,supplements:supplementDocs}=edition;
   unavailable=[];headingCounts.clear();
-  selectedDocs=new Set([...list,glossary,...(full?[sources]:[])].map(d=>d.relative));
+  selectedDocs=new Set([...list,...supplementDocs,glossary,...(full?[sources]:[])].map(d=>d.relative));
   const cover=`<section class="cover"><div class="eyebrow">Harp mathematical library</div><h1>${coverTitle}</h1><p class="subtitle">${escape(subtitle)}</p><div class="rule"></div><p class="audience">A proof-oriented textbook for<br>machine-learning researchers</p><div class="cover-math">${math('[T(v)]_C=[T]_{C\\leftarrow B}[v]_B',false)}</div><div class="edition">READING EDITION · ${date}<br>${full?`${list.length} chapters · Six parts`:'Expanded exposition · Lean source references'}<br>Working draft</div></section>`;
   const main=list.map(chapter).join('\n');
+  const supplementHTML=supplementDocs.map(doc=>`<section class="appendix" id="${doc.id}"><div class="eyebrow">Harp supplement</div><h1>${escape(doc.title)}</h1>${body(doc)}</section>`).join('\n');
   const reference=`<section class="appendix" id="${glossary.id}"><div class="eyebrow">Reference</div><h1>Notation and glossary</h1>${body(glossary)}</section>${full?`<section class="appendix" id="${sources.id}"><div class="eyebrow">Reference</div><h1>Sources and attribution</h1>${body(sources)}</section>`:''}`;
   const missing=unavailable.length?`<section class="appendix source-list"><h1>Unresolved source references</h1><p>These references appear in the canonical draft, but their targets are not available in this snapshot. They are retained here rather than replaced by a different source.</p>${unavailable.map(x=>`<p id="${x.id}"><strong>${escape(x.target)}</strong><br>From ${escape(x.source)}</p>`).join('')}</section>`:'';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(title)}</title><style>${katexCSS}\n${css}</style></head><body>${cover}${editionNote(full)}${contents(list,full)}${main}${reference}${missing}</body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escape(title)}</title><style>${katexCSS}\n${css}</style></head><body>${cover}${editionNote(full)}${contents(list,full,supplementDocs)}${main}${supplementHTML}${reference}${missing}</body></html>`;
 }
 
 async function main() {
@@ -196,7 +198,7 @@ async function main() {
   const browser=await chromium.launch({headless:true,executablePath});
   manifest.generator.browser=await browser.version();
   try {
-    for(const edition of readingEditions(chapters)) {
+    for(const edition of readingEditions(chapters,supplements)) {
       const {name,list,full,title}=edition;
       const html=documentHTML(edition);
       const htmlPath=path.join(out,name+'.html');
@@ -253,7 +255,7 @@ async function main() {
       }
       writeOutput(htmlPath,(await page.content()).split(pathToFileURL(out+path.sep).href).join(''));
       const runningFont=await pdf.embedFont(StandardFonts.Helvetica);
-      const starts=[...list,glossary,...(full?[sources]:[])].map(doc=>({page:tocPageMap[doc.id],title:doc.title})).sort((a,b)=>a.page-b.page);
+      const starts=[...list,...edition.supplements,glossary,...(full?[sources]:[])].map(doc=>({page:tocPageMap[doc.id],title:doc.title})).sort((a,b)=>a.page-b.page);
       for(const [index,pdfPage] of pdf.getPages().entries()) {
         if(index===0)continue;
         pdfPage.pushOperators(beginMarkedContent('Artifact'));

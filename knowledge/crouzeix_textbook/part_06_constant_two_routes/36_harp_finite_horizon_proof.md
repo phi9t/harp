@@ -15,6 +15,12 @@ lean_exact_correspondences: 6
 
 # Chapter 36: The Harp finite-horizon proof
 
+Companion supplements:
+[[knowledge/crouzeix_textbook/harp_mathematical_audit|mathematical audit]] and
+[[knowledge/crouzeix_textbook/harp_finite_horizon_remainder|finite-horizon remainder]].
+They are unindexed additions; their stated review status does not change this
+chapter's six registered theorem or exercise identities.
+
 Book: [[knowledge/crouzeix_textbook/crouzeix_textbook_index|Crouzeix foundations textbook]]
 Part: [[knowledge/crouzeix_textbook/crouzeix_textbook_index#part-vi-constant-two-routes|Part VI: Constant-two routes]]
 Previous: [[knowledge/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries|Chapter 35: Comparison, verification, and boundaries]]

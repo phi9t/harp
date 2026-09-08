@@ -4,7 +4,7 @@ title: Crouzeix foundations textbook claim-evidence ledger
 type: claim-ledger
 status: active
 created: 2026-08-23
-updated: 2026-08-28
+updated: 2026-09-07
 tags: [crouzeix-textbook, claims, evidence, provenance]
 confidence: high
 canonical: claim_evidence_ledger.md
@@ -22,12 +22,12 @@ ledger records material source, verification, and publication claims.
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 143 |
-| reconstructible prose rows | 71 |
-| exact correspondence rows | 72 |
-| unmapped correspondence rows | 95 |
-| solved exercises | 78 |
-| unresolved exercises | 138 |
+| summary prose rows | 125 |
+| reconstructible prose rows | 89 |
+| exact correspondence rows | 96 |
+| unmapped correspondence rows | 75 |
+| solved exercises | 96 |
+| unresolved exercises | 120 |
 
 ## CFT-CL-001: Matrices represent linear maps after bases are chosen {#cft-cl-001}
 
@@ -50,12 +50,12 @@ ledger records material source, verification, and publication claims.
 ## CFT-CL-002: The truthful contract has a bounded compiled Lean receipt {#cft-cl-002}
 
 - Class: `EVIDENCE`
-- Statement: The version-two contract has 216 theorem rows: 54 are
-  `proved-here`, 109 are `reexported-proof`, 47 are `checkpoint`, and six are
-  `definition`. A fresh 400-row Lean receipt checks the declarations required
-  by that contract under Lean 4.32.1. The contract has 78 distinct exercise
-  solutions; 138 exercises remain correspondence-incomplete. The theorem
-  correspondence axis records 72 exact rows, 49 checkpoints, and 95 unmapped
+- Statement: The version-two contract has 216 theorem rows: 56 are
+  `proved-here`, 109 are `reexported-proof`, 45 are `checkpoint`, and six are
+  `definition`. A fresh 419-row Lean receipt checks the declarations required
+  by that contract under Lean 4.32.1. The contract has 96 distinct exercise
+  solutions; 120 exercises remain correspondence-incomplete. The theorem
+  correspondence axis records 96 exact rows, 45 checkpoints, and 75 unmapped
   rows.
 - Source: [[knowledge/crouzeix_textbook/source_registry#mathlib-4-32-1|MATHLIB-4.32.1]]
 - Locator: `formalization/lean/CrouzeixTextbook/Correspondence.lean`.

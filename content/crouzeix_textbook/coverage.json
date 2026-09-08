@@ -14,17 +14,17 @@
       "pedagogical_prerequisites": [],
       "publication_status": "active",
       "prose_proof_status": "not-applicable",
-      "lean_correspondence_status": "checkpoint",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.LinearTransformation",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 10,
+        "line": 11,
         "column": 8,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "748783dd3091afda274be1bc7f0691bac65eeaafcceaa7420de2ebd49e5f1162",
@@ -46,21 +46,21 @@
         "CFT-01-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
-        "name": "CrouzeixTextbook.Part01.matrix_column_is_basis_image",
+        "name": "CrouzeixTextbook.Part01.basis_image_columns",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 22,
+        "line": 43,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "42699003375401ae5874610f205851f40274245fa30511010e2964927ce882e5",
+        "type_sha256": "980b92a8c4fe4058330c795e4d236423cbd642ddb781cd757f58fc57d06b4062",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -84,23 +84,24 @@
         "CFT-01-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
-        "name": "CrouzeixTextbook.Part01.coordinate_action_eq_mulVec",
+        "name": "CrouzeixTextbook.Part01.basis_coordinate_action",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 35,
+        "line": 53,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "8b14e992456e97c40dfdd9a4f51add0e36de1ba1bfdca83e3d8b8e6b8cd15a6c",
+        "type_sha256": "0af79e0d8ca7ad9c06d504474834b8772b84b86b111c736498711c5e923c082c",
         "assumptions": [],
         "axioms": [
+          "Classical.choice",
           "Quot.sound",
           "propext"
         ]
@@ -120,21 +121,21 @@
         "CFT-01-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
-        "name": "CrouzeixTextbook.Part01.change_basis_action",
+        "name": "CrouzeixTextbook.Part01.basis_change_conjugacy",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 42,
+        "line": 80,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "d9baff62f10d68242f297125e9dafd0739e70d35b510040f15290f8a03eb1edf",
+        "type_sha256": "5b07ffd35e0b8ca46c86a38c6d109c12bd990012531c98938d3bf767e5756c81",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -158,17 +159,17 @@
       ],
       "publication_status": "active",
       "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_charpoly",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 53,
+        "line": 102,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "7d5821dcf645a4ca29c46f8437f55b12bf14dd08902bca04c34fdad7a1b2589b",
@@ -195,21 +196,21 @@
         "CFT-01-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
-        "name": "CrouzeixTextbook.Part01.nonunitary_similarity_changes_output_length_sq",
+        "name": "CrouzeixTextbook.Part01.nonunitary_similarity_norm_counterexample",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean",
-        "line": 85,
+        "line": 143,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "bed871b73e73c0ad10396a72b785c0f172b1959f9051226e17dbb1f8ff1b009f",
+        "type_sha256": "26bb0719e5575a5080a7cb8c83a68ec54e8616d3faad0bd589f5265e8f348b1f",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -230,18 +231,18 @@
       ],
       "pedagogical_prerequisites": [],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.span_minimality",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 8,
+        "line": 9,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "a57e9d4103aec85f9b82568ff66a3d7b0c5b7537b506c580a3316d8c5c2a136d",
@@ -264,18 +265,18 @@
       ],
       "pedagogical_prerequisites": [],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_subspace_intersection_iff",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 14,
+        "line": 15,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "0d2cb3e4beab4960783624719bdd2039e2706ca638c7b48fe4b300a0063d7090",
@@ -300,18 +301,18 @@
         "CFT-02-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.basis_coordinates_unique",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 20,
+        "line": 25,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "b0c86637ea87dc7f12b5994814eaf4d2fdfd4adff2e70808fbe56b0bc2d032e6",
@@ -337,18 +338,18 @@
         "CFT-02-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dimension_invariant_under_linear_equiv",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 26,
+        "line": 31,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "9cca1869b521f2732023a954c6c1a661a2e5254d7ff79c883cf7dc5abe761828",
@@ -375,18 +376,18 @@
         "CFT-02-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.direct_sum_coordinates_unique",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 33,
+        "line": 38,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "f4004e1d1d8795e5a649ed795ccff3d3d122fbdbd23730e125ac05d2f9870529",
@@ -411,18 +412,18 @@
         "CFT-02-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.quotient_projection_surjective",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean",
-        "line": 53,
+        "line": 58,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "c847d305bfa4c9bc0f6077ec5d0f1d2bad10648319ac62cfa5a4083977763abf",
@@ -449,18 +450,18 @@
         "CFT-02-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_kernel_iff",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 7,
+        "line": 9,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "a09521f48793e3a5ec425f7104c93740bfb50c9650ee2792cfcc6b136436fed8",
@@ -486,18 +487,18 @@
         "CFT-02-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.mem_range_iff",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 13,
+        "line": 15,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "14692e99bcb64cc54076ca73037ab68122fb0ce1878441977b6126b931c0dc3d",
@@ -525,18 +526,18 @@
         "CFT-03-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.rank_nullity",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 19,
+        "line": 21,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "73a0ce1d7f07e1c908dd655ee264eb140489034cda8ee5eff9a011b994368bf6",
@@ -562,18 +563,18 @@
         "CFT-03-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.injective_iff_kernel_bottom",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 26,
+        "line": 28,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "2af50dfb9275fabeba251d4a6317358314a43cfd6fc4f9c779b16dd3aefaa9fd",
@@ -601,17 +602,17 @@
       ],
       "publication_status": "active",
       "prose_proof_status": "not-applicable",
-      "lean_correspondence_status": "checkpoint",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.invariantRestriction",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 32,
+        "line": 44,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "8456fd6974853c53fd875f36cfb1e416747d373017adaf8d0b926605c3fb988d",
@@ -636,18 +637,18 @@
         "CFT-03-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.composition_range_le",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter03.lean",
-        "line": 40,
+        "line": 52,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "7e4ce099727e1ba2304f80094c83d8346e5f5362abbc1ddfbda31e34296ef289",
@@ -674,18 +675,18 @@
         "CFT-02-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dual_map_apply",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 8,
+        "line": 11,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "f23b64f50493fa227b542d90e17f6da70d36a9038b360bde379f70f11781084a",
@@ -711,18 +712,18 @@
         "CFT-04-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.dual_map_composition",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 15,
+        "line": 18,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "57db3329985ff28b169c3e7f4337d33b6c387cfa4488a7f2037df50ce755042a",
@@ -749,18 +750,18 @@
         "CFT-02-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.coordinate_change_conjugacy",
         "underlying_declaration": "CrouzeixTextbook.Part01.change_basis_action",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 22,
+        "line": 26,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "d9baff62f10d68242f297125e9dafd0739e70d35b510040f15290f8a03eb1edf",
@@ -788,17 +789,17 @@
       ],
       "publication_status": "active",
       "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.duality_similarity_preserves_charpoly",
         "underlying_declaration": "CrouzeixTextbook.Part01.similarity_preserves_charpoly",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 25,
+        "line": 30,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "7d5821dcf645a4ca29c46f8437f55b12bf14dd08902bca04c34fdad7a1b2589b",
@@ -825,17 +826,17 @@
       ],
       "publication_status": "active",
       "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_determinant",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 28,
+        "line": 33,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "8f4039999c8fc7903a56597fc3a4cdda6a0bdb5755c0da4b1451a4204de9a90e",
@@ -862,17 +863,17 @@
       ],
       "publication_status": "active",
       "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "LAX-2007",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-foundations-core-2026-09-07"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part01.similarity_preserves_trace",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean",
-        "line": 34,
+        "line": 39,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ccef9b2fae93ef9af27dd30643f456b6367678e611ec1c76e7a9ebb03216ba48",

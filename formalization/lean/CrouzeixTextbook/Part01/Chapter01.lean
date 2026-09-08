@@ -1,4 +1,5 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
+import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Tactic
 
 open BigOperators Matrix
@@ -37,6 +38,54 @@ theorem coordinate_action_eq_mulVec
     (A : Matrix n n 𝕜) (x : n → 𝕜) :
     coordinateAction A x = A *ᵥ x := by
   rfl
+
+/-- CFT-01-002: the representing matrix in arbitrary finite bases records basis images. -/
+theorem basis_image_columns
+    {𝕜 V W n m : Type*} [Field 𝕜]
+    [AddCommGroup V] [AddCommGroup W] [Module 𝕜 V] [Module 𝕜 W]
+    [Fintype n] [Fintype m] [DecidableEq n]
+    (B : Module.Basis n 𝕜 V) (C : Module.Basis m 𝕜 W) (T : V →ₗ[𝕜] W)
+    (i : m) (j : n) :
+    LinearMap.toMatrix B C T i j = C.repr (T (B j)) i := by
+  exact LinearMap.toMatrix_apply B C T i j
+
+/-- CFT-01-003: derive coordinate action from the unique basis expansion. -/
+theorem basis_coordinate_action
+    {𝕜 V W n m : Type*} [Field 𝕜]
+    [AddCommGroup V] [AddCommGroup W] [Module 𝕜 V] [Module 𝕜 W]
+    [Fintype n] [Fintype m] [DecidableEq n]
+    (B : Module.Basis n 𝕜 V) (C : Module.Basis m 𝕜 W) (T : V →ₗ[𝕜] W)
+    (x : V) :
+    (C.repr (T x) : m → 𝕜) = LinearMap.toMatrix B C T *ᵥ B.repr x := by
+  have hTx : T x = ∑ j, B.repr x j • T (B j) := by
+    conv_lhs => rw [← B.sum_repr x]
+    simp only [map_sum, map_smul]
+  ext i
+  rw [hTx]
+  simp [Matrix.mulVec, dotProduct, LinearMap.toMatrix_apply, mul_comm]
+
+/-- CFT-01-004: the matrices of the identity in opposite basis directions conjugate `T`. -/
+theorem basis_change_inverse
+    {𝕜 V n : Type*} [Field 𝕜] [AddCommGroup V] [Module 𝕜 V]
+    [Fintype n] [DecidableEq n] (B B' : Module.Basis n 𝕜 V) :
+    LinearMap.toMatrix B B' LinearMap.id * LinearMap.toMatrix B' B LinearMap.id = 1 ∧
+      LinearMap.toMatrix B' B LinearMap.id * LinearMap.toMatrix B B' LinearMap.id = 1 := by
+  constructor
+  · rw [← LinearMap.toMatrix_comp B' B B']
+    simp
+  · rw [← LinearMap.toMatrix_comp B B' B]
+    simp
+
+/-- CFT-01-004: the matrices of the identity in opposite basis directions conjugate `T`. -/
+theorem basis_change_conjugacy
+    {𝕜 V n : Type*} [Field 𝕜] [AddCommGroup V] [Module 𝕜 V]
+    [Fintype n] [DecidableEq n]
+    (B B' : Module.Basis n 𝕜 V) (T : V →ₗ[𝕜] V) :
+    LinearMap.toMatrix B' B' T =
+      LinearMap.toMatrix B B' LinearMap.id * LinearMap.toMatrix B B T *
+        LinearMap.toMatrix B' B LinearMap.id := by
+  rw [← LinearMap.toMatrix_comp B B B', ← LinearMap.toMatrix_comp B' B B']
+  simp
 
 /-- CFT-01-004: an invertible coordinate change conjugates the representing matrix. -/
 theorem change_basis_action
@@ -88,6 +137,54 @@ theorem nonunitary_similarity_changes_output_length_sq :
   constructor <;>
     norm_num [nonnormalExample, diagonalExample, secondCoordinateVector,
       Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+
+/-- CFT-01-006: explicit inverse, similarity, sharp squared Euclidean gain bounds,
+and a unit input attaining the two different bounds. -/
+theorem nonunitary_similarity_norm_counterexample :
+    coordinateChangeExample * coordinateChangeInverseExample = 1 ∧
+      coordinateChangeInverseExample * coordinateChangeExample = 1 ∧
+      coordinateChangeExample * diagonalExample * coordinateChangeInverseExample =
+        nonnormalExample ∧
+      (∀ x : Fin 2 → ℝ, (∑ i, (diagonalExample *ᵥ x) i ^ 2) ≤ ∑ i, x i ^ 2) ∧
+      (∀ x : Fin 2 → ℝ, (∑ i, (nonnormalExample *ᵥ x) i ^ 2) ≤ 2 * ∑ i, x i ^ 2) ∧
+      (∑ i, secondCoordinateVector i ^ 2) = 1 ∧
+      (∑ i, (diagonalExample *ᵥ secondCoordinateVector) i ^ 2) = 1 ∧
+      (∑ i, (nonnormalExample *ᵥ secondCoordinateVector) i ^ 2) = 2 := by
+  refine ⟨?_, ?_, nonnormalExample_similarity, ?_, ?_, ?_,
+    nonunitary_similarity_changes_output_length_sq.2,
+    nonunitary_similarity_changes_output_length_sq.1⟩
+  · ext i j
+    fin_cases i <;> fin_cases j <;>
+      norm_num [coordinateChangeExample, coordinateChangeInverseExample,
+        Matrix.mul_apply, Fin.sum_univ_two]
+  · ext i j
+    fin_cases i <;> fin_cases j <;>
+      norm_num [coordinateChangeExample, coordinateChangeInverseExample,
+        Matrix.mul_apply, Fin.sum_univ_two]
+  · intro x
+    norm_num [diagonalExample, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+    nlinarith [sq_nonneg (x 0)]
+  · intro x
+    norm_num [nonnormalExample, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+    nlinarith [sq_nonneg (x 0)]
+  · norm_num [secondCoordinateVector, Fin.sum_univ_two]
+
+/-- Unindexed running-family helper; no spectral assertion is needed. -/
+def runningFamily (lam α : ℝ) : Matrix (Fin 2) (Fin 2) ℝ := !![lam, α; 0, lam]
+
+/-- Old-to-new coordinates `diag(s,1)` multiply the off-diagonal parameter by `s`. -/
+theorem runningFamily_change_basis (lam α s : ℝ) (hs : s ≠ 0) :
+    (!![s, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ) * runningFamily lam α *
+      !![s⁻¹, 0; 0, 1] = runningFamily lam (s * α) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [runningFamily, Matrix.mul_apply, Fin.sum_univ_two]
+  field_simp
+
+/-- Squared coordinate length for the running family on the second unit vector. -/
+theorem runningFamily_output_length_sq (lam α : ℝ) :
+    (∑ i, (runningFamily lam α *ᵥ secondCoordinateVector) i ^ 2) = α ^ 2 + lam ^ 2 := by
+  simp [runningFamily, secondCoordinateVector, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
 
 namespace Exercises.Chapter01
 

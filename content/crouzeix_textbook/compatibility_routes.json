@@ -2,6 +2,16 @@
   "schema_version": "crouzeix-textbook-compatibility-routes/v1",
   "routes": [
     {
+      "canonical_id": "cft-harp-mathematical-audit",
+      "legacy_concept_id": "cft-harp-mathematical-audit",
+      "canonical_path": "knowledge/crouzeix_textbook/harp_mathematical_audit.md"
+    },
+    {
+      "canonical_id": "cft-harp-finite-horizon-remainder",
+      "legacy_concept_id": "cft-harp-finite-horizon-remainder",
+      "canonical_path": "knowledge/crouzeix_textbook/harp_finite_horizon_remainder.md"
+    },
+    {
       "canonical_id": "crouzeix-textbook-claim-evidence-ledger",
       "legacy_concept_id": "crouzeix-textbook-claim-evidence-ledger",
       "canonical_path": "knowledge/crouzeix_textbook/claim_evidence_ledger.md"

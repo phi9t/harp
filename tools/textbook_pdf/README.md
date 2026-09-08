@@ -2,11 +2,15 @@
 
 Build three working-draft reading artifacts from canonical Crouzeix Markdown:
 
-- `output/pdf/crouzeix-foundations.pdf`: all 36 chapters, glossary and sources.
+- `output/pdf/crouzeix-foundations.pdf`: all 36 chapters, both Harp supplements, glossary and sources.
 - `output/pdf/chapter-01-objects-and-representations.pdf`: Chapter 1 and glossary.
-- `output/pdf/chapter-36-harp-finite-horizon-proof.pdf`: Chapter 36 and glossary.
+- `output/pdf/chapter-36-harp-finite-horizon-proof.pdf`: Chapter 36, both Harp supplements and glossary.
 
 The book uses a 7.5 × 10 inch page, Georgia text, KaTeX mathematics, quiet chapter openings, clickable contents and PDF bookmarks. Calculations are unboxed; Lean panels and correspondence notes remain distinct from mathematical statements. Running headers and folios are decorative PDF artifacts. Canonical Markdown is never rewritten.
+
+The mathematical audit and finite-horizon remainder are unnumbered supplements,
+with their own contents entries and bookmarks. They do not add chapters or
+indexed proof coverage. Their canonical status labels remain visible in print.
 
 Each chapter header links to its accompanying Lean chapter module. Discovery requires exactly one `ChapterNN.lean` beneath `formalization/lean/CrouzeixTextbook/PartXX/`, independently of prose part numbering. Missing, ambiguous or symlinked modules fail. These source links provide access to the module; they do not assert compilation or certification.
 
