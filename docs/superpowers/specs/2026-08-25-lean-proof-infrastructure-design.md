@@ -138,6 +138,69 @@ auto-generate that decision.
 Transcripts, dashboards, and reader pages are projections from these records.
 They are not authority stores.
 
+### Authoritative named-claim state
+
+Content addressing permits several human decision artifacts to exist; it does
+not decide which one is current. Harp State therefore owns a durable claim
+ledger and one generation-checked current-state row per `ClaimId`:
+
+```rust
+pub struct ClaimDecisionEntryV0 {
+    pub claim_id: ClaimId,
+    pub decision: PromotionDecisionRefV0,
+    pub evidence_bundle: EvidenceBundleRefV0,
+    pub action: ClaimDecisionActionV0,
+    pub idempotency_key: EffectId,
+}
+
+pub enum ClaimDecisionActionV0 {
+    PromoteFirst { expected_generation: u64 },
+    Supersede {
+        expected_generation: u64,
+        predecessor_decision: PromotionDecisionRefV0,
+    },
+    Withdraw {
+        expected_generation: u64,
+        predecessor_decision: PromotionDecisionRefV0,
+    },
+    RejectCandidate { observed_generation: u64 },
+}
+
+pub struct CurrentClaimStateV0 {
+    pub claim_id: ClaimId,
+    pub generation: u64,
+    pub status: CurrentClaimStatusV0,
+    pub decision: Option<PromotionDecisionRefV0>,
+    pub evidence_bundle: Option<EvidenceBundleRefV0>,
+}
+```
+
+Generation zero has status `Unpromoted` and both optional references are
+`None`. First promotion, supersession, and withdrawal are current-state
+transitions: they compare the encoded expected generation, supersession and
+withdrawal name the exact current decision, and a successful transition
+increments the generation. Two such transitions from the same generation
+conflict, so only one can become current. Rejection appends a non-current
+decision entry about one exact candidate bundle; its observed generation is
+diagnostic, and it neither consumes nor advances the current generation nor
+changes an existing promotion. Replaying the same idempotency key and bytes is
+inert; reusing it with different bytes fails.
+
+Promotion is an intent-before-effect protocol. Before either create-only object
+write, Harp validates the expected bundle and human-decision bytes and durably
+records a `ClaimDecisionOperationIntentV0` containing their exact digests, the
+action, claim, generation/predecessor data, and idempotency key. Separate effect
+records then publish the bundle and decision objects. One Harp-State transaction
+checks those objects against the intent, appends the decision-ledger entry,
+performs the generation compare-and-swap only for a current-state action, and
+records the terminal transition receipt. A crash after intent but before or
+between object writes leaves a reconcilable operation and possibly
+non-authoritative orphan objects. An ambiguous transaction is reconciled by
+idempotency key and the current generation before retry. Reader projections
+resolve only the current-state row and revalidate its complete ledger chain and
+immutable referents; they never select by timestamp, filesystem order, or the
+newest decision object.
+
 ## Candidate contract sketch
 
 The public candidate contracts live in `harp-contracts::proof`. They use strict
@@ -146,12 +209,16 @@ and content references at every boundary.
 
 ```rust
 pub struct ProofProgramCandidateV0 {
-    pub schema_version: u8,
+    pub schema_version: ProofProgramSchemaV0,
     pub program_id: ProofProgramId,
     pub environment: EnvironmentRefV0,
     pub source_graph: ArtifactRef,
     pub correction_lineage: Vec<ArtifactRef>,
+    pub lowering_policy: ProofLoweringPolicyRefV0,
+    pub outcome_normalization_policy: OutcomeNormalizationPolicyRefV0,
+    pub program_budget: ProofProgramBudgetV0,
     pub tasks: Vec<ProofTaskV0>,
+    pub macro_steps: Vec<ProofMacroStepV0>,
 }
 
 pub struct ProofTaskV0 {
@@ -162,6 +229,29 @@ pub struct ProofTaskV0 {
     pub declared_dependency_boundary: ArtifactRef,
     pub certification_policy: CertificationPolicyRefV0,
     pub artifact_channel: ProofArtifactChannelV0,
+}
+
+pub struct ProofMacroStepV0 {
+    pub step_id: TaskId,
+    pub dependencies: Vec<TaskId>,
+    pub activity: ProofMacroActivityV0,
+    pub budget: ActivityBudgetV0,
+    pub retry_policy: RetryPolicyRefV0,
+}
+
+pub enum ProofMacroActivityV0 {
+    Agent {
+        proof_task_id: Option<ProofTaskId>,
+        candidate: AgentActivityCandidateV1,
+    },
+    LeanInteractive {
+        proof_task_id: ProofTaskId,
+        candidate: LeanInteractiveCandidateV0,
+    },
+    LeanCertify {
+        proof_task_id: ProofTaskId,
+        candidate: LeanCertifyCandidateV0,
+    },
 }
 
 pub struct EnvironmentSpecV0 {
@@ -175,13 +265,16 @@ pub struct EnvironmentSpecV0 {
     pub trust_policy: TrustPolicyRefV0,
     pub checker_policy: CheckerPolicyRefV0,
     pub cache_policy: CachePolicyRefV0,
+    pub build_output_policy: BuildOutputPolicyRefV0,
 }
 
 pub struct EnvironmentBlockV0 {
     pub spec: EnvironmentRefV0,
     pub resolved_executables: Vec<ArtifactRef>,
     pub observed_inputs: Vec<ArtifactRef>,
-    pub cache_snapshot_before: ArtifactRef,
+    pub dependency_cache_mount: ReadOnlyCacheMountReceiptV0,
+    pub dependency_cache_snapshot_before: ArtifactRef,
+    pub build_output_lease: JobOutputLeaseRefV0,
     pub network_policy: NetworkPolicyV0,
     pub status: EnvironmentStatusV0,
 }
@@ -191,6 +284,24 @@ pub struct EnvironmentBlockV0 {
 resolved, observed environment used by one run. A successful process exit such
 as `elan which` is not environment identity.
 
+The dependency cache and compilation outputs are different resources. The
+adapter exposes dependency sources and compiled dependency artifacts through a
+read-only mount or an equivalently enforced deny-write sandbox. It creates a
+fresh job-scoped Lake/output root for Harp-owned compilation and acquires one
+exclusive Engine lease for that root before process start. The job root may
+reference the sealed dependency mount, but it may not symlink the whole shared
+`.lake` tree as a writable build root. Output paths are operational metadata;
+the portable result binds the canonical content closure published from them.
+
+The proof task table owns mathematical identity. The macro-step table owns the
+bounded execution graph. Every executable step therefore names its direct
+dependencies, activity lane, budget, and retry policy in authored bytes. The
+program budget caps their aggregate wall time, process count, tokens where
+applicable, and artifact/storage usage. Omitted limits, inferred dependencies,
+or implementation-selected retries are invalid rather than defaults.
+Every Lean interaction and certification step names exactly one proof task;
+only a non-Lean agent step may be program-level rather than proof-task-specific.
+
 The minimum result-side set is:
 
 ```text
@@ -198,6 +309,7 @@ ProofObservationV0
 ProofCandidateRefV0
 DependencyAuditRefV0
 CertificationPolicyRefV0
+OutcomeNormalizationPolicyRefV0
 CertificationRequestV0
 CertificationOutcomeV0
 CertificationRunReceiptV0
@@ -207,9 +319,22 @@ PromotionDecisionRefV0
 ```
 
 `CertificationOutcomeV0` contains deterministic facts suitable for replay
-comparison. `CertificationRunReceiptV0` contains operational facts such as
-attempt identity, worker provenance, timestamps, and normalized logs. Replay
-compares outcome digests, not timestamps, local paths, or worker metadata.
+comparison. Its canonical bytes contain the outcome schema and normalization
+policy IDs; proof-task, theorem-contract, candidate, environment, toolchain,
+checker-policy, and certification-policy identities; exact target and terminal
+classification; declaration/type results; sorted allowed axioms; the canonical
+semantic-dependency result; and normalized diagnostic codes with
+repository-relative source spans. `CertificationRunReceiptV0` contains
+operational facts such as attempt identity, worker provenance, timestamps,
+absolute local paths, process IDs, resource usage, cache snapshots, elapsed
+time, output-root identity, and bounded logs. Those operational fields and raw
+message wording are explicitly excluded from the normalized outcome digest.
+
+`OutcomeNormalizationPolicyRefV0` is a content-addressed contract that pins the
+included field set, path and line-ending normalization, diagnostic ordering,
+Lean-name ordering, schema revision, and canonical serialization algorithm.
+Replay compares canonical outcome bytes produced under the same policy; it
+never drops fields ad hoc to make two runs agree.
 
 A proof-task identity binds the exact theorem contract, declaration and type,
 artifact channel, source/route graph, declared dependency boundary, correction
@@ -223,9 +348,24 @@ dependency audit is receipt evidence and must equal the declared boundary.
 `harp-engine::execution_plan` owns a versioned internal representation:
 
 ```rust
-pub struct ExecutionPlan {
-    pub source_contract: ArtifactRef,
+pub struct ExecutionPlanV0 {
+    pub schema_version: ExecutionPlanSchemaV0,
+    pub source: ExecutionPlanSourceV0,
     pub tasks: Vec<ExecutionTask>,
+}
+
+pub enum ExecutionPlanSourceV0 {
+    AgentGraphV1 {
+        execution_contract: TaskGraphExecutionContractRefV1,
+        run_budget: RunBudgetV1,
+        result_policy: LegacyAgentResultPolicyV1,
+    },
+    ProofProgramV0 {
+        source_contract: ArtifactRef,
+        lowering_policy: ProofLoweringPolicyRefV0,
+        outcome_normalization_policy: OutcomeNormalizationPolicyRefV0,
+        program_budget: ProofProgramBudgetV0,
+    },
 }
 
 pub struct ExecutionTask {
@@ -243,10 +383,56 @@ pub enum ActivityPlan {
 }
 ```
 
+Proof lowering is a canonical one-to-one transformation, not a planner. After
+validating task references and aggregate bounds, lowering emits exactly one
+`ExecutionTask` for each authored macro step with the same ID, direct
+dependencies, typed activity, budget, and retry policy. It may canonicalize
+serialization and reject invalid input, but it may not add work, infer an edge,
+choose a lane, or supply a default. `ProofLoweringPolicyRefV0` binds the exact
+input schema, lowering algorithm revision, canonical ordering rules, and
+expected output schema. The candidate digest, lowering-policy digest, and
+canonical `ExecutionPlanV0` digest are all persisted before execution.
+
 The current `TaskGraph` schema and validation behavior remain unchanged. Its
-lowering must preserve graph identity and all current agent semantics. A later
-wire version may expose the backend-neutral form only after the candidate
-fixtures stabilize.
+tagged source contract seals the exact `TaskGraphV1`, `GraphPolicy`,
+`ProjectionPolicy`, artifact-store identity, and runtime provenance already
+captured by `RunExecutionSpec`. The built-in `AgentGraphV1` lowerer emits one
+`ExecutionTask` per `TaskNode`, preserving ID and dependency order, every node
+input and agent field, workspace/model/permission/output policy, budget, retry
+policy, and graph-level concurrency and aggregate ceilings. `run_budget` is the
+exact checked derivation from `GraphPolicy` used today.
+
+`LegacyAgentResultPolicyV1` is a closed discriminator for the current accepted
+result, context-projection, and terminal-state behavior; it is not populated
+from a proof normalizer. Any change to that behavior requires a new legacy
+result-policy discriminator and fixture. Thus `TaskGraphV1` lowering invents no
+proof policy or new default, and plan-to-current-execution compatibility is
+byte-pinned by a golden fixture. A later wire version may expose the
+backend-neutral form only after the candidate fixtures stabilize.
+
+### Version and replay invariants
+
+`V0` means experimental and subject to additive replacement, not unversioned.
+Every persisted candidate, execution plan, request, outcome, and receipt carries
+an exact schema discriminator. A run also persists the content digests of its
+lowering policy and outcome-normalization policy. Resume dispatches to those
+exact implementations; an unavailable or unsupported implementation is a typed
+replay block. Harp never interprets old bytes under a newer algorithm or
+rewrites an old plan in place.
+
+Golden fixtures pin both transformations:
+
+1. canonical proof-candidate bytes plus a lowering-policy digest produce exact
+   `ExecutionPlanV0` bytes and digest;
+2. a sealed `TaskGraphExecutionContractV1` plus its closed legacy result-policy
+   discriminator produces exact compatibility-plan bytes and digest; and
+3. a raw worker-result fixture plus a normalization-policy digest produces
+   exact `CertificationOutcomeV0` bytes and digest.
+
+The compatibility fixture covers the existing agent graph. CPFR-088 adds the
+six Crouzeix proof rows and shared positive/negative mutation fixtures. Schema,
+lowerer, or normalizer evolution creates a new discriminator and a new fixture;
+it cannot silently change equality for a persisted run.
 
 ### Driver registry
 
@@ -313,10 +499,17 @@ substrate unless crash testing proves a missing primitive.
 - Resolve only sealed source, toolchain, dependency, option, policy, and
   candidate references.
 - Disable network access and dependency hydration.
-- Treat the cache as an optional accelerator and compare before/after cache
-  snapshots.
+- Mount the dependency cache read-only, take a dependency-cache snapshot before
+  execution, and reject any attempted or externally observed mutation.
+- Create a fresh job-scoped writable output root under an exclusive Engine
+  lease. Permit writes only to that root and the attempt's bounded evidence
+  staging area.
 - Build the exact target, check declaration types and axioms, derive semantic
-  dependencies, and emit deterministic outcomes plus operational receipts.
+  dependencies, and emit deterministic outcome data plus bounded raw process
+  evidence. The Engine constructs and publishes the operational receipt.
+- Snapshot the dependency cache again, validate the exact allowed output
+  roster, and publish a distinct content-addressed output-closure receipt. A
+  cache snapshot can never stand in for that output receipt.
 - Fail closed on missing bodies, opaque frontiers, out-of-closure project
   references, unexpected axioms, environment drift, cache mutation, or
   incomplete evidence.
@@ -397,13 +590,24 @@ contracts. It does not rewrite or republish them.
 
 - Interactive output cannot satisfy a certification or promotion input.
 - Certification cannot reuse a mutable interactive worker.
+- Certification cannot write the dependency cache; concurrent jobs have
+  disjoint output leases, and only validated job-output closure enters a
+  receipt.
 - Engine technical acceptance cannot produce a promotion decision.
 - Promotion names one exact complete evidence bundle and explicit review set.
 
 ### Recovery
 
 - Crash tests cover intent-before-effect, ambiguous worker start, candidate
-  publication, certification receipt publication, cancellation, and restart.
+  publication, certification receipt publication, create-only evidence-bundle
+  and decision publication, the claim-transition transaction, cancellation,
+  and restart.
+- Claim-transition fixtures cover crash before object publication, after
+  durable intent but before either object, after bundle publication, after
+  decision publication, and after an ambiguous state commit. They prove one
+  current generation, explicit conflict for competing current-state decisions,
+  non-mutating rejection, inert same-byte replay, and no projection from orphan
+  objects.
 - Reconciliation produces zero duplicate accepted effects and zero lost
   terminal receipts.
 - Re-running completed validation is idempotent.
@@ -415,20 +619,50 @@ contracts. It does not rewrite or republish them.
 - Type-only references do not create proof edges.
 - Missing, extra, forged, opaque, or out-of-closure dependencies block.
 - Sealed replay produces the same normalized certification outcome digest.
+- Persisted-plan replay proves exact candidate-to-plan and raw-result-to-outcome
+  fixture bytes under the recorded lowerer and normalizer versions; unsupported
+  versions block without reinterpretation.
 
 ### Efficiency calibration
 
-The initial measurement targets are provisional, not release promises:
+No threshold is a gate until a reviewed `BenchmarkManifestV0` binds the exact
+fixture roster and digests; source tree, route closure, and checked job count;
+environment, toolchain, checker, lowerer, and normalizer identities; hardware,
+OS, runtime, and concurrency; dependency-cache snapshot and policy; warm/cold
+definition; repetitions and timeout; and percentile algorithm. Each report
+publishes the manifest, every raw sample, sample count, and failure/timeout
+count as immutable artifacts.
+
+For interaction, `warm` means the same non-authoritative worker after one
+declared priming operation. Certification always uses a fresh worker; its
+`warm` label may describe only an already-present read-only dependency cache.
+Latency percentiles use nearest-rank order over successful attempts and are
+always labeled `successful-attempt latency`. Failures and timeouts are not
+coerced into numeric durations: they remain in the full scheduled-attempt
+denominator for a separately gated success rate. A latency target is
+unevaluable with zero successes and cannot pass when its manifest success-rate
+target fails. Replay agreement likewise uses the full compatible-attempt
+denominator and preserves every disagreement for investigation. Measurements
+run with the manifest's declared concurrency and must report competing system
+load rather than silently filtering samples.
+
+Subject to that protocol, the initial targets are provisional calibration
+values, not release promises:
 
 - sealed preflight at or below 2 seconds;
 - warm interaction p50 at or below 2 seconds and p95 at or below 10 seconds;
 - affected-route certification p50 at or below 30 seconds and p95 at or below
   60 seconds;
+- 100 percent success on valid sealed-preflight and certification fixtures and
+  at least 99 percent success on valid interactive fixtures;
 - at least 99 percent normalized replay agreement before investigating every
   disagreement.
 
-CPFR-088 measurements freeze or revise these targets. Cache hits may improve
-latency but cannot change authoritative output.
+CPFR-088 freezes the proof fixture roster and records baseline observations; it
+does not freeze infrastructure-lane targets that do not yet exist. The first
+implemented infrastructure acceptance run reviews and freezes the complete
+benchmark manifest and either adopts or revises these provisional targets.
+Cache hits may improve latency but cannot change authoritative output.
 
 ## Frozen decisions
 
@@ -445,7 +679,9 @@ latency but cannot change authoritative output.
 
 ## Evidence-gated decisions
 
-- Stable proof wire version 1 waits for CPFR-088 fixtures and recovery acceptance.
+- The explicit experimental `V0` schemas above may be persisted only with their
+  lowerer/normalizer identities. Stable proof wire version 1 waits for CPFR-088
+  fixture coverage and recovery acceptance.
 - Promotion schema waits for the actual CPFR-089/090 review and owner-decision
   boundary.
 - Checker-policy lifecycle waits for an explicit assessment of Lean 4.33.1
