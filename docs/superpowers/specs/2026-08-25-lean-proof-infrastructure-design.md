@@ -212,7 +212,7 @@ pub struct ProofProgramCandidateV0 {
     pub schema_version: ProofProgramSchemaV0,
     pub program_id: ProofProgramId,
     pub environment: EnvironmentRefV0,
-    pub source_graph: ArtifactRef,
+    pub source_module_graph: ArtifactRef,
     pub correction_lineage: Vec<ArtifactRef>,
     pub lowering_policy: ProofLoweringPolicyRefV0,
     pub outcome_normalization_policy: OutcomeNormalizationPolicyRefV0,
