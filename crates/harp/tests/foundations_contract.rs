@@ -72,11 +72,11 @@ fn chapters_01_through_12_preserve_72_card_and_exercise_identities() {
 }
 
 #[test]
-fn chapters_01_through_04_publish_exact_cards_with_explicit_proof_boundaries() {
+fn chapters_01_through_06_publish_exact_cards_with_explicit_proof_boundaries() {
     let coverage = contract("coverage.json");
     for row in foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 4)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 6)
     {
         let id = row["item_id"].as_str().unwrap();
         assert_eq!(row["publication_status"], "active", "{id}");
@@ -84,8 +84,10 @@ fn chapters_01_through_04_publish_exact_cards_with_explicit_proof_boundaries() {
         let expected = match id {
             "CFT-01-001" | "CFT-03-005" => "not-applicable",
             "CFT-04-004" | "CFT-04-005" | "CFT-04-006" => "summary",
-            // Chapter 1 may preview characteristic polynomials until their owning
-            // foundations chapter supplies a prerequisite-safe proof.
+            // Chapters 1 and 4 keep four labeled forward references. Chapters 5 and 6
+            // own their full derivations; importing those proofs backwards would make
+            // the teaching order circular, so the previews stay outside the
+            // completed-proof count and link forward instead.
             "CFT-01-005" if row["prose_proof_status"] == "summary" => "summary",
             _ => "reconstructible",
         };
@@ -122,7 +124,7 @@ fn chapters_01_through_04_publish_exact_cards_with_explicit_proof_boundaries() {
 }
 
 #[test]
-fn chapters_01_through_04_have_24_distinct_solutions_not_public_card_aliases() {
+fn chapters_01_through_06_have_36_distinct_solutions_not_public_card_aliases() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let card_types = coverage["items"]
@@ -132,7 +134,7 @@ fn chapters_01_through_04_have_24_distinct_solutions_not_public_card_aliases() {
         .map(|row| row["lean_declaration"]["type_sha256"].as_str().unwrap())
         .collect::<BTreeSet<_>>();
     let mut solution_types = BTreeSet::new();
-    for chapter in 1..=4 {
+    for chapter in 1..=6 {
         for index in 1..=6 {
             let id = format!("CFT-{chapter:02}-E{index:02}");
             let row = exercises["exercises"]
@@ -160,23 +162,23 @@ fn chapters_01_through_04_have_24_distinct_solutions_not_public_card_aliases() {
             );
         }
     }
-    assert_eq!(solution_types.len(), 24);
+    assert_eq!(solution_types.len(), 36);
 }
 
 #[test]
-fn chapters_05_through_12_remain_pending_in_this_scoped_acceptance() {
+fn chapters_07_through_12_remain_pending_in_this_scoped_acceptance() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let pending_cards = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 5)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 7)
         .collect::<Vec<_>>();
     let pending_exercises = foundations_rows(&exercises, "exercises")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 5)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 7)
         .collect::<Vec<_>>();
-    assert_eq!(pending_cards.len(), 48);
-    assert_eq!(pending_exercises.len(), 48);
+    assert_eq!(pending_cards.len(), 36);
+    assert_eq!(pending_exercises.len(), 36);
     for row in pending_cards {
         assert_ne!(
             row["lean_correspondence_status"], "exact",
@@ -195,11 +197,11 @@ fn chapters_05_through_12_remain_pending_in_this_scoped_acceptance() {
 }
 
 #[test]
-fn chapters_01_through_04_meet_the_labeled_editorial_contract() {
+fn chapters_01_through_06_meet_the_labeled_editorial_contract() {
     let coverage = contract("coverage.json");
     let paths = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 4)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 6)
         .map(|row| workspace_root().join(row["prose_path"].as_str().unwrap()))
         .collect::<BTreeSet<_>>();
     let references = paths.iter().map(PathBuf::as_path).collect::<Vec<_>>();
