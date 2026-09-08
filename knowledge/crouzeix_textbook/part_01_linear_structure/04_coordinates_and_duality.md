@@ -214,8 +214,11 @@ eigenvalues, with their algebraic multiplicities.
 **Proof summary — forward reference.** Rewrite
 $tI-SAS^{-1}=S(tI-A)S^{-1}$ in the polynomial matrix ring. Determinant
 multiplicativity and cancellation of the outside unit determinants give the
-identity. Chapter 5 owns the determinant machinery and Chapter 6 the
-polynomial-operator development; neither is a prerequisite of the duality core.
+identity. That multiplicativity is
+[[knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra#cft-05-001|CFT-05-001]],
+and the same calculation is carried out in the proof of
+[[knowledge/crouzeix_textbook/part_01_linear_structure/06_eigenvalues_and_polynomial_algebra#cft-06-003|CFT-06-003]];
+neither is a prerequisite of the duality core.
 
 **Boundary and Lean provider.**
 [`duality_similarity_preserves_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean#L30)
@@ -232,7 +235,9 @@ $\det(SAS^{-1})=\det A$.
 
 **Proof summary — forward reference.** Multiplicativity gives
 $\det S\det A\det(S^{-1})=\det A$, since the outside factors multiply to
-one. Chapter 5 supplies the determinant construction and multiplicativity.
+one. The full derivation is
+[[knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra#cft-05-003|CFT-05-003]],
+built on the determinant construction and multiplicativity of Chapter 5.
 Over $\mathbb R$, determinant measures oriented volume scaling; over a
 field it vanishes exactly for singular matrices. These meanings are developed
 there, rather than used to prove the preceding duality results.
@@ -250,7 +255,11 @@ $\operatorname{tr}A=\sum_i A_{ii}$ is the sum of diagonal entries.
 
 **Proof summary — forward reference.** Cyclicity gives
 $\operatorname{tr}(SAS^{-1})=\operatorname{tr}(AS^{-1}S)=\operatorname{tr}A$.
-Chapter 5 proves cyclicity by expanding finite sums. Trace is therefore a
+The full derivation is
+[[knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra#cft-05-005|CFT-05-005]],
+resting on the cyclicity that
+[[knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra#cft-05-004|CFT-05-004]]
+proves by expanding finite sums. Trace is therefore a
 scalar attached to the operator despite being computed from one basis's
 diagonal entries.
 

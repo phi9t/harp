@@ -263,8 +263,11 @@ $$
 $$
 
 **Proof.** This is a forward-reference proof using determinant
-multiplicativity, whose development belongs to Chapter 5. Regard $S$ and $A$
-as constant matrices over $\mathbb K[t]$. Since $t$ is central,
+multiplicativity, whose development belongs to
+[[knowledge/crouzeix_textbook/part_01_linear_structure/05_determinants_trace_and_exterior_algebra#cft-05-001|CFT-05-001]]
+in Chapter 5; the same calculation appears inside the proof of
+[[knowledge/crouzeix_textbook/part_01_linear_structure/06_eigenvalues_and_polynomial_algebra#cft-06-003|CFT-06-003]].
+Regard $S$ and $A$ as constant matrices over $\mathbb K[t]$. Since $t$ is central,
 
 $$
 tI-SAS^{-1}=S(tI-A)S^{-1}.
