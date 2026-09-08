@@ -61,6 +61,10 @@ The trace has a different character. It is linear rather than multiplicative,
 and it is invariant for the weaker reason that $\operatorname{tr}(AB)$ and
 $\operatorname{tr}(BA)$ are the same double sum read in two orders.
 
+Because transposing leaves the determinant unchanged, every statement about
+rows above has an identical statement about columns, and we use whichever is
+more convenient.
+
 Rectangular matrices have no determinant in this sense. The construction
 consumes exactly $n$ rows of length $n$; for an $m\times n$ array with
 $m\neq n$ there is no alternating $n$-linear form on the wrong number of
@@ -81,11 +85,12 @@ of original discovery is being made by that choice.
 **Statement.** For square matrices $A$ and $B$ over a commutative ring with a
 finite index set and decidable equality, $\det(AB)=\det A\,\det B$.
 
-**Proof.** Fix $A$ and regard $g(B)=\det(AB)$ as a function of the rows of
-$B$. Row $i$ of $AB$ is $\sum_k A_{ik}\,(\text{row }k\text{ of }B)$, which
-depends linearly on the rows of $B$, so $g$ is multilinear. If two rows of $B$
-coincide then the corresponding two rows of $AB$ are equal combinations of the
-same data, so $g$ vanishes there and $g$ is alternating. By rank-one
+**Proof.** Fix $A$ and regard $g(B)=\det(AB)$ as a function of the columns
+$b_1,\ldots,b_n$ of $B$. Column $j$ of $AB$ is $Ab_j$, so
+$g(B)=\det(Ab_1,\ldots,Ab_n)$ where $\det$ is read as a function of columns.
+Each $b_j\mapsto Ab_j$ is linear and $\det$ is multilinear in its columns, so
+$g$ is multilinear. If $b_j=b_{j'}$ for $j\neq j'$ then $Ab_j=Ab_{j'}$, so
+$AB$ has two equal columns and $g(B)=0$; hence $g$ is alternating. By rank-one
 uniqueness, $g$ is a scalar multiple of $\det$, and evaluating at $B=I$
 identifies the scalar as $g(I)=\det A$. Hence $\det(AB)=\det A\det B$ for
 every $B$. Geometrically the two sides are the volume factor of the composite
@@ -360,8 +365,13 @@ $2\times2$ matrix negates its determinant.
 
 **Solution.** Alternation is the defining hypothesis, and antisymmetry is its
 consequence: expanding on the sum of the two arguments and cancelling the two
-vanishing terms leaves a sign change. Concretely $ab-ba=0$, and the exchanged
-matrix has determinant $ab-2a-(2a-ab)$ negated as claimed.
+vanishing terms leaves a sign change. Concretely $ab-ba=0$ for the repeated
+row, while
+$$
+\det\begin{bmatrix}a&b\\1&2\end{bmatrix}=2a-b,\qquad
+\det\begin{bmatrix}1&2\\a&b\end{bmatrix}=b-2a,
+$$
+which are negatives of each other for every $a$ and $b$.
 [`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L161)
 checks both identities for all real $a$ and $b$.
 
