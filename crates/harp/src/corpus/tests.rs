@@ -88,7 +88,17 @@ fn contains_nonportable_path_reference(source: &str) -> bool {
         let starts_token = index == 0
             || matches!(
                 source.as_bytes()[index - 1],
-                b' ' | b'\n' | b'\r' | b'\t' | b'\'' | b'"' | b'(' | b'[' | b'{' | b'='
+                b' ' | b'\n'
+                    | b'\r'
+                    | b'\t'
+                    | b'\''
+                    | b'"'
+                    | b'('
+                    | b'['
+                    | b'{'
+                    | b'='
+                    | b'`'
+                    | b'<'
             );
         let starts_component = source
             .as_bytes()
@@ -99,12 +109,48 @@ fn contains_nonportable_path_reference(source: &str) -> bool {
     }) || source.contains("~/")
         || source.contains("~\\")
         || source.contains("file://")
-        || source.as_bytes().windows(3).any(|window| {
-            window[0].is_ascii_alphabetic()
-                && window[1] == b':'
-                && matches!(window[2], b'\\' | b'/')
+        || source
+            .as_bytes()
+            .windows(3)
+            .enumerate()
+            .any(|(index, window)| {
+                let starts_token = index == 0
+                    || matches!(
+                        source.as_bytes()[index - 1],
+                        b' ' | b'\n'
+                            | b'\r'
+                            | b'\t'
+                            | b'\''
+                            | b'"'
+                            | b'('
+                            | b'['
+                            | b'{'
+                            | b'='
+                            | b'`'
+                            | b'<'
+                    );
+                starts_token
+                    && window[0].is_ascii_alphabetic()
+                    && window[1] == b':'
+                    && matches!(window[2], b'\\' | b'/')
+            })
+        || source.match_indices("\\\\").any(|(index, _)| {
+            index == 0
+                || matches!(
+                    source.as_bytes()[index - 1],
+                    b' ' | b'\n'
+                        | b'\r'
+                        | b'\t'
+                        | b'\''
+                        | b'"'
+                        | b'('
+                        | b'['
+                        | b'{'
+                        | b'='
+                        | b'`'
+                        | b'<'
+                )
         })
-        || source.contains("\\\\")
         || source.starts_with("//")
 }
 
@@ -120,7 +166,14 @@ fn detects_nonportable_path_references_without_rejecting_math_syntax() {
         "~\\input",
         "file:///tmp/input",
         "C:\\input",
+        "See C:/input",
+        "[input](C:/input)",
+        "`C:/input`",
+        "<C:/input>",
+        "`/opt/harp/input`",
+        "</opt/harp/input>",
         "\\\\server\\share",
+        "See \\\\server\\share",
     ] {
         assert!(
             contains_nonportable_path_reference(path),
@@ -133,6 +186,9 @@ fn detects_nonportable_path_references_without_rejecting_math_syntax() {
         "Corollary/application",
         "/- Lean doc comment -/",
         "x ~ y",
+        "https://www.dpmms.cam.ac.uk/~wtg10/csineq.html",
+        "[source](http://example.org/notes)",
+        r"$(s,t)\begin{pmatrix}A&C\\C&B\end{pmatrix}(s,t)^T$",
     ] {
         assert!(
             !contains_nonportable_path_reference(source),
