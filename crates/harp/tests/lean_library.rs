@@ -126,6 +126,7 @@ fn write_fake_all_mathlib_artifacts(root: &Path) {
             "Mathlib.Algebra.BigOperators.Fin",
             "Mathlib.Algebra.BigOperators.Ring.Finset",
             "Mathlib.Algebra.Module.Submodule.Ker",
+            "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
             "Mathlib.Algebra.Polynomial.AlgebraMap",
             "Mathlib.Algebra.Polynomial.Eval.Defs",
             "Mathlib.Analysis.Calculus.Deriv.Mul",
