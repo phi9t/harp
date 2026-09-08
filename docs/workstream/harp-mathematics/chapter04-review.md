@@ -5,6 +5,16 @@ specification and quality review and coordinated publication verification.
 This is a bounded local record, not whole-chapter acceptance or a compiler
 publication receipt. CFT-04-004 through CFT-04-006 remain summary previews.
 
+Final disposition (2026-09-07): the independent specification and quality
+reviews recorded below both passed, and the duality core was accepted locally
+as part of the approved foundations core; see
+[foundations-review.md](foundations-review.md) for the coordinated
+publication, presentation and full-gate evidence. The implementer status
+above records the state at freeze time and is kept unchanged. Kata `q8h9`
+remains open until the CFT-04-004 through CFT-04-006 exposition obligations
+are completed in Chapters 5 and 6; the six statement correspondences are
+already exact.
+
 ## Ownership and source identity
 
 Worktree: `codex/harp-mathematics-spec`, based on

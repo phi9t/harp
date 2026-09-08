@@ -4,6 +4,13 @@ Date: 2026-09-07. Implementer status: DONE_WITH_CONCERNS pending independent
 specification and quality review and coordinated publication verification.
 This record is not whole-wave acceptance or a compiler publication receipt.
 
+Final disposition (2026-09-07): the independent reviews recorded below both
+passed, and the chapter was accepted locally as part of the approved
+foundations core; see [foundations-review.md](foundations-review.md) for the
+coordinated publication, presentation and full-gate evidence. The implementer
+status above records the state at freeze time and is kept unchanged. Kata
+`6bsx` is closed.
+
 ## Independent acceptance
 
 The specification review found one omission: the power-zero and higher-power

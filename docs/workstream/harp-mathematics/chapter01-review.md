@@ -4,6 +4,14 @@ Date: 2026-09-07. Implementer status: DONE_WITH_CONCERNS.
 This record covers the bounded Chapter 1 prerequisite repair, not whole-wave
 acceptance, publication acceptance, or external mathematical peer review.
 
+Final disposition (2026-09-07): both independent reviews passed and this
+repair was accepted locally as part of the approved foundations core; see
+[foundations-review.md](foundations-review.md) for the coordinated
+publication, presentation and full-gate evidence. The implementer status
+above records the state at freeze time and is kept unchanged. Kata `m4qy`
+remains open because the characteristic-polynomial statement is an explicit
+preview, not a completed whole-chapter exposition.
+
 ## Source and ownership
 
 Base revision: `4a72888fd9b09d86e958da35074e86c08615a257` on

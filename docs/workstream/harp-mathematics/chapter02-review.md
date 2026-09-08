@@ -5,6 +5,14 @@ specification/quality review and coordinated publication verification.
 This record is not whole-wave acceptance, a compiler receipt, or external
 mathematical peer review.
 
+Final disposition (2026-09-07): the independent specification and quality
+reviews recorded below both passed, and the chapter was accepted locally as
+part of the approved foundations core; see
+[foundations-review.md](foundations-review.md) for the coordinated
+publication, presentation and full-gate evidence. The implementer status
+above records the state at freeze time and is kept unchanged. Kata `x5fp`
+is closed.
+
 ## Ownership and frozen candidate
 
 Base revision: `4a72888fd9b09d86e958da35074e86c08615a257`, with the accepted
