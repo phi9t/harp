@@ -166,6 +166,11 @@ description = "Build the Mathematical Foundations Lean library from the shared L
 depends = ["lean-env"]
 run = '''. scripts/harp_xdg_env.sh; export ELAN_HOME="$HARP_ELAN_HOME"; export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"; scripts/check_lean_library.sh MathematicalFoundations'''
 
+[tasks.lean-cauchy-audit]
+description = "Run trusted Cauchy-Schwarz dependency-policy regression fixtures"
+depends = ["lean-foundations"]
+run = "sh scripts/check_cauchy_schwarz_audit.sh"
+
 [tasks.lean-nng4]
 description = "Build the NNG4 introductory Lean library from the shared Lake root"
 depends = ["lean-env"]
@@ -268,7 +273,7 @@ mise run build
 
 [tasks.verify]
 description = "Provider-neutral Harp release gate"
-run = "mise run verify-atlas && mise run verify-rust && mise run lean-all && mise run verify-repository"
+run = "mise run verify-atlas && mise run verify-rust && mise run lean-all && sh scripts/check_cauchy_schwarz_audit.sh && mise run verify-repository"
 
 [tasks.release-candidate]
 description = "Verify, package, and smoke-test a clean native release candidate"
