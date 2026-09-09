@@ -4771,7 +4771,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             }
             counts
         });
-    assert_eq!(mode_counts, [56, 115, 39, 6]);
+    assert_eq!(mode_counts, [59, 115, 36, 6]);
     assert!(contracts
         .theorems()
         .iter()
@@ -4782,7 +4782,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.prose_proof_status() == ProseProofStatus::Summary)
             .count(),
-        113
+        107
     );
     assert_eq!(
         contracts
@@ -4798,7 +4798,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.lean_correspondence_status() == LeanCorrespondenceStatus::Exact)
             .count(),
-        108
+        114
     );
     assert_eq!(
         contracts
@@ -4808,7 +4808,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
                 row.lean_correspondence_status() == LeanCorrespondenceStatus::Checkpoint
             })
             .count(),
-        39
+        36
     );
 
     let solved = array(&exercises, "exercises", "exercises")
@@ -4819,7 +4819,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         })
         .map(|row| string(row, "exercise_id", "exercise").to_owned())
         .collect::<BTreeSet<_>>();
-    let mut expected_solved = (1..=6)
+    let mut expected_solved = (1..=7)
         .flat_map(|chapter| (1..=6).map(move |index| format!("CFT-{chapter:02}-E{index:02}")))
         .collect::<BTreeSet<_>>();
     expected_solved.extend([
@@ -4905,10 +4905,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "Proof-exposition status: 101 coverage rows are now `reconstructible`; 113 remain `summary` and two other definition rows are `not-applicable`.",
-        "Coverage rows: 216, comprising 56 `proved-here`, 115 `reexported-proof`, 39 `checkpoint`, and 6 `definition` rows.",
-        "Exact-correspondence rows: 108.",
-        "Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 108 exercise rows",
+        "Proof-exposition status: 107 coverage rows are now `reconstructible`; 107 remain `summary` and two other definition rows are `not-applicable`.",
+        "Coverage rows: 216, comprising 59 `proved-here`, 115 `reexported-proof`, 36 `checkpoint`, and 6 `definition` rows.",
+        "Exact-correspondence rows: 114.",
+        "Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 102 exercise rows",
     ] {
         assert!(
             maintained_status.contains(expected),
@@ -4923,10 +4923,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "216 theorem rows: 56 are `proved-here`, 115 are `reexported-proof`, 39 are `checkpoint`, and six are `definition`.",
-        "A fresh 435-row Lean receipt",
-        "The contract has 108 distinct exercise solutions; 108 exercises remain correspondence-incomplete.",
-        "correspondence axis records 108 exact rows, 39 checkpoints, and 69 unmapped rows.",
+        "216 theorem rows: 59 are `proved-here`, 115 are `reexported-proof`, 36 are `checkpoint`, and six are `definition`.",
+        "A fresh 441-row Lean receipt",
+        "The contract has 114 distinct exercise solutions; 102 exercises remain correspondence-incomplete.",
+        "correspondence axis records 114 exact rows, 36 checkpoints, and 66 unmapped rows.",
     ] {
         assert!(
             claim_ledger.contains(expected),
@@ -4939,7 +4939,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| string(row, "lean_correspondence_status", "coverage row") == "unmapped")
             .count(),
-        69
+        66
     );
 }
 

@@ -72,11 +72,11 @@ fn chapters_01_through_12_preserve_72_card_and_exercise_identities() {
 }
 
 #[test]
-fn chapters_01_through_06_publish_exact_cards_with_explicit_proof_boundaries() {
+fn chapters_01_through_07_publish_exact_cards_with_explicit_proof_boundaries() {
     let coverage = contract("coverage.json");
     for row in foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 6)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 7)
     {
         let id = row["item_id"].as_str().unwrap();
         assert_eq!(row["publication_status"], "active", "{id}");
@@ -124,7 +124,7 @@ fn chapters_01_through_06_publish_exact_cards_with_explicit_proof_boundaries() {
 }
 
 #[test]
-fn chapters_01_through_06_have_36_distinct_solutions_not_public_card_aliases() {
+fn chapters_01_through_07_have_42_distinct_solutions_not_public_card_aliases() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let card_types = coverage["items"]
@@ -134,7 +134,7 @@ fn chapters_01_through_06_have_36_distinct_solutions_not_public_card_aliases() {
         .map(|row| row["lean_declaration"]["type_sha256"].as_str().unwrap())
         .collect::<BTreeSet<_>>();
     let mut solution_types = BTreeSet::new();
-    for chapter in 1..=6 {
+    for chapter in 1..=7 {
         for index in 1..=6 {
             let id = format!("CFT-{chapter:02}-E{index:02}");
             let row = exercises["exercises"]
@@ -144,7 +144,11 @@ fn chapters_01_through_06_have_36_distinct_solutions_not_public_card_aliases() {
                 .find(|row| row["exercise_id"] == id)
                 .unwrap();
             let solution = &row["lean_solution"];
-            let expected = format!("CrouzeixTextbook.Part01.Exercises.Chapter{chapter:02}.exercise_{index:02}_solution");
+            // Chapters 1-6 are Part I; Chapter 7 opens Part II.
+            let part = if chapter <= 6 { "Part01" } else { "Part02" };
+            let expected = format!(
+                "CrouzeixTextbook.{part}.Exercises.Chapter{chapter:02}.exercise_{index:02}_solution"
+            );
             assert_eq!(
                 solution["declaration"], expected,
                 "{id}: needs its own local solution"
@@ -162,23 +166,23 @@ fn chapters_01_through_06_have_36_distinct_solutions_not_public_card_aliases() {
             );
         }
     }
-    assert_eq!(solution_types.len(), 36);
+    assert_eq!(solution_types.len(), 42);
 }
 
 #[test]
-fn chapters_07_through_12_remain_pending_in_this_scoped_acceptance() {
+fn chapters_08_through_12_remain_pending_in_this_scoped_acceptance() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let pending_cards = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 7)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 8)
         .collect::<Vec<_>>();
     let pending_exercises = foundations_rows(&exercises, "exercises")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 7)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 8)
         .collect::<Vec<_>>();
-    assert_eq!(pending_cards.len(), 36);
-    assert_eq!(pending_exercises.len(), 36);
+    assert_eq!(pending_cards.len(), 30);
+    assert_eq!(pending_exercises.len(), 30);
     for row in pending_cards {
         assert_ne!(
             row["lean_correspondence_status"], "exact",
@@ -197,11 +201,11 @@ fn chapters_07_through_12_remain_pending_in_this_scoped_acceptance() {
 }
 
 #[test]
-fn chapters_01_through_06_meet_the_labeled_editorial_contract() {
+fn chapters_01_through_07_meet_the_labeled_editorial_contract() {
     let coverage = contract("coverage.json");
     let paths = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 6)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 7)
         .map(|row| workspace_root().join(row["prose_path"].as_str().unwrap()))
         .collect::<BTreeSet<_>>();
     let references = paths.iter().map(PathBuf::as_path).collect::<Vec<_>>();
