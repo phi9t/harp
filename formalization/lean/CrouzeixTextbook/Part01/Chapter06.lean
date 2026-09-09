@@ -198,16 +198,23 @@ theorem exercise_01_solution :
 
 /-- CFT-06-E02. -/
 theorem exercise_02_solution :
-    (jordanBlock ^ 3) = !![8, 12; 0, 8] := by
-  simp [jordanBlock, pow_succ]
-  norm_num
+    Polynomial.aeval jordanBlock ((Polynomial.X : Polynomial ℝ) ^ 3) = !![8, 12; 0, 8] ∧
+      jordanBlock ^ 3 = !![8, 12; 0, 8] := by
+  have hpow : jordanBlock ^ 3 = !![8, 12; 0, 8] := by
+    simp [jordanBlock, pow_succ]
+    norm_num
+  refine ⟨?_, hpow⟩
+  rw [map_pow, Polynomial.aeval_X, hpow]
 
 /-- CFT-06-E03. -/
 theorem exercise_03_solution {K m : Type*} [Field K] [Fintype m] [DecidableEq m]
     {A : Matrix m m K} {v : m → K} {c : K} (h : A *ᵥ v = c • v) (p : Polynomial K) :
     (Polynomial.aeval A p) *ᵥ v = (p.eval c) • v ∧
-      ∀ k : ℕ, (A ^ k) *ᵥ v = c ^ k • v :=
-  ⟨aeval_mulVec_eigenvector h p, pow_mulVec_eigenvector h⟩
+      (∀ k : ℕ, (A ^ k) *ᵥ v = c ^ k • v) ∧
+      (p.eval c = 0 → (Polynomial.aeval A p) *ᵥ v = 0) := by
+  refine ⟨aeval_mulVec_eigenvector h p, pow_mulVec_eigenvector h, ?_⟩
+  intro hroot
+  rw [aeval_mulVec_eigenvector h p, hroot, zero_smul]
 
 /-- CFT-06-E04. -/
 theorem exercise_04_solution {K m : Type*} [Field K] [Fintype m] [DecidableEq m]
@@ -221,10 +228,16 @@ theorem exercise_05_solution :
     Polynomial.eval (2 : ℝ) Polynomial.X = Polynomial.eval (2 : ℝ) (Polynomial.C 2) ∧
       Polynomial.aeval jordanBlock (Polynomial.X : Polynomial ℝ) ≠
         Polynomial.aeval jordanBlock (Polynomial.C 2 : Polynomial ℝ) ∧
-      ∀ c : ℝ, ∀ v : Fin 2 → ℝ, jordanBlock *ᵥ v = c • v → v 1 = 0 :=
-  ⟨jordanBlock_action_needs_more_than_values.1,
-    jordanBlock_action_needs_more_than_values.2,
+      Polynomial.aeval jordanBlock
+          ((Polynomial.X : Polynomial ℝ) - Polynomial.C 2) = !![0, 1; 0, 0] ∧
+      ∀ c : ℝ, ∀ v : Fin 2 → ℝ, jordanBlock *ᵥ v = c • v → v 1 = 0 := by
+  refine ⟨jordanBlock_action_needs_more_than_values.1,
+    jordanBlock_action_needs_more_than_values.2, ?_,
     fun c v h => jordanBlock_eigenvectors_lie_on_one_line c v h⟩
+  rw [map_sub, Polynomial.aeval_X, Polynomial.aeval_C]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [jordanBlock, Matrix.algebraMap_matrix_apply]
 
 /-- CFT-06-E06. -/
 theorem exercise_06_solution (A : SquareMatrix (Fin 2)) {ε : ℝ} (hε : 0 < ε) :

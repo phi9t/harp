@@ -109,6 +109,33 @@ theorem alternating_form_scaled_by_determinant (e : Module.Basis ι A M)
     _ = LinearMap.det T * (f e • e.det) v := by simp; ring
     _ = LinearMap.det T * f v := by rw [← h]
 
+/-- The book's own proof of CFT-05-001, run through the rank-one characterization
+instead of the Leibniz sum. Reading the columns of `B` as a family of vectors,
+`det` is the basis alternating form, composing with `A` rescales it by
+`LinearMap.det (Matrix.toLin' A)`, and that scalar is `A.det`. -/
+theorem determinant_multiplicative_via_alternating {𝕜 : Type*} {ι : Type*} [CommRing 𝕜]
+    [Fintype ι] [DecidableEq ι] (X Y : Matrix ι ι 𝕜) :
+    (X * Y).det = X.det * Y.det := by
+  classical
+  set e : Module.Basis ι 𝕜 (ι → 𝕜) := Pi.basisFun 𝕜 ι with he
+  have hto : ∀ Z : Matrix ι ι 𝕜, e.toMatrix (fun j => fun i => Z i j) = Z := by
+    intro Z
+    ext i j
+    simp [he, Module.Basis.toMatrix_apply]
+  have hcomp : (fun j => fun i => (X * Y) i j)
+      = (Matrix.toLin' X) ∘ (fun j => fun i => Y i j) := by
+    funext j
+    ext i
+    simp [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply]
+  calc (X * Y).det
+      = e.det (fun j => fun i => (X * Y) i j) := by
+        rw [Module.Basis.det_apply, hto]
+    _ = e.det ((Matrix.toLin' X) ∘ (fun j => fun i => Y i j)) := by rw [hcomp]
+    _ = LinearMap.det (Matrix.toLin' X) * e.det (fun j => fun i => Y i j) :=
+        e.det_comp (Matrix.toLin' X) _
+    _ = X.det * Y.det := by
+        rw [LinearMap.det_toLin', Module.Basis.det_apply, hto]
+
 end ExteriorAction
 
 section TraceSupport
