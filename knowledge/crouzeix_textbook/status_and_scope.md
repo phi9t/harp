@@ -26,8 +26,8 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 90 exercise rows have
-  no claimed formal solution yet.
+  25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 90 exercise rows have no
+  claimed formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
 ## Contract snapshot
