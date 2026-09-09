@@ -68,9 +68,30 @@ Every chapter packet must deliver all of the following before it is marked compl
 5. Square-bracket matrices using `bmatrix`, explicit column-vector convention, dimensions, scalar field, and a consistent complex-inner-product convention.
 6. For every mathematical claim associated with Lean: public declaration, substantive provider, source link, exact hypotheses, specialization map, proof mode, and compiler-derived metadata. Support lemmas link to compiled sources even when unindexed.
 7. Distinct exercise statements and genuine solutions. Reusing Mathlib is allowed and labeled; reusing the exercise's checkpoint as its solution is not acceptance.
-8. Independent mathematical and correspondence review, recorded findings and repairs, narrow compilation, and presentation checks.
+8. **Provider-proof fidelity.** Every displayed proof must narrate a derivation that is actually checked, and the prose must name which declaration checks it. Read the provider's proof term before writing the paragraph. Three cases, each with a required disclosure:
+   - The provider runs the argument the book wants to teach. Say so, and name the library results it composes.
+   - The provider runs a *different* argument. Either compile the book's argument locally and cite that declaration, or narrate the provider's argument instead. Do not describe one proof and cite another.
+   - The provider is `rfl`, a single instantiation, or one library application. Say that plainly. An instantiation dressed up as an argument is the failure this obligation exists to catch.
+   A displayed step that no declaration checks must be labeled uncompiled. A locally compiled restatement that leans on the very result it re-derives is a reformulation, not an independent proof, and must say so.
+9. Independent mathematical and correspondence review, recorded findings and repairs, narrow compilation, and presentation checks. See *Review authority* below: this obligation is not satisfiable by the implementer alone.
 
 Do not seek 100% Lean coverage by pretending a motivation paragraph or historical claim is a theorem. Every formalizable mathematical obligation must be represented or explicitly remain open. Definitions need an exact formal counterpart, not a fake theorem proof.
+
+### Review authority
+
+Obligation 9 requires a reviewer who is not the implementer. An implementer working without delegation authority cannot discharge it, and must not claim to.
+
+When delegation is unavailable, the implementer performs an author self-review, records it as such under `docs/workstream/harp-mathematics/chapterNN-review.md`, and leaves the chapter's Kata issue **open** with the reason stated. Do not close a chapter issue on self-review. Do not silently downgrade the criterion.
+
+The deferred reviews are then a single explicit obligation of the package they belong to, discharged in one pass over the chapters that accumulated. A package is not complete while any of its chapters carries a deferred review, and the count of deferred reviews is part of the package's exit report.
+
+### Known structural walls
+
+These are correct behaviors of the verification machinery, not defects. Each has cost a build cycle when discovered late; check for them before writing a card.
+
+- **Unmaintained namespaces.** The receipt exporter treats only the `CrouzeixTextbook.`, `CrouzeixConjecture.`, `Crouzeix.Jin.`, `CrouzeixJin.`, `Crouzeix.LoristSchwenninger.`, `CrouzeixLoristSchwenninger.`, `Crouzeix.Harp.` and `CrouzeixHarp.` prefixes as maintained. A card aliasing into any other namespace — `MathematicalFoundations.` in particular — cannot name its provider as an underlying declaration, so the validator cannot check the alias target and the row can only ever be a checkpoint. Such cards must be proved locally. Hit in Chapters 7, 8 and 9.
+- **Eta-alias rejection.** A `proved-here` card whose body elaborates to an exact eta alias of another constant is classified `direct-alias` by the receipt and rejected. This is the protection that stops a renamed import from claiming to be a local proof. Give the declaration a genuine derivation — a named intermediate step, or the argument the prose displays. Hit twice while reproving cards that had been aliases.
+- **Frozen duplicate providers.** Two indexed cards may re-export the same provider and therefore carry identical type fingerprints. Card identities are frozen, so the roster is not adjusted; the later card's boundary paragraph must disclose the duplication and give the reason the identity is indexed again. Recorded instance: `CFT-09-001` and `CFT-07-005`.
 
 ## Package 0: reconcile inventory and ownership
 
@@ -204,11 +225,12 @@ Reuse `2026-09-07-textbook-verifier-contracts.md` and the existing formalization
 ## Per-packet execution and checks
 
 1. Inspect current branch, ownership, canonical contracts, and exact provider signatures. Freeze statements and dependencies before proofs.
-2. Add failing behavioral/correspondence/rendering tests that expose the actual missing obligation. Do not add tautological source-string tests as mathematical assurance.
+2. Establish the red signal before implementing. For a chapter packet this is *not* an added failing test: the contract tests pin counts, so writing the new count first is bookkeeping, not a behavioral signal. The genuine fail-closed check is `harp crouzeix-textbook check` against a fresh receipt, which rejects every unregistered card, every unproved exercise, every stale locator and every mode/status combination the contract forbids. Run it, read what it refuses, and let that list drive the work. Add a genuinely new behavioral, correspondence or rendering test only where the obligation is not already covered by that validator. Do not add tautological source-string tests as mathematical assurance.
 3. Implement the chapter's prose, Lean targets, and distinct exercise proofs together.
 4. Compile the narrow target after checking the pinned toolchain and warm-cache state without Lake. Use private Harp output overlays for concurrent iteration; serialize shared-output builds through receipt extraction.
 5. Review mathematical correctness and prose-to-Lean correspondence separately; repair and recheck findings before dependent work.
 6. Regenerate official metadata and reader projections. Run focused Rust tests, Atlas tests, and PDF tests applicable to the slice.
+   The contract counts are **derived data and must be generated, not hand-edited.** They currently appear by hand in `status_and_scope.md`, `claim_evidence_ledger.md`, chapters 33 and 35, the backlog inventory, and as pinned literals in `crouzeix_textbook.rs` and `foundations_contract.rs` — roughly twenty-five edit sites per chapter, every one of them computable from `coverage.json`, `exercises.json` and the compiled receipt. Until a generator exists this is the largest mechanical cost per chapter and the likeliest source of silent drift. Building it is a prerequisite of the next package, not an optional cleanup. Tests that *compute* the expected counts are preferable to tests that pin them; a pinned literal detects drift but also has to be edited every time, which is the cost being removed.
 7. Freeze, run `mise run verify`, inspect the diff, update records, and stage explicit path groups for a coherent commit. Preserve unrelated work.
 
 Existing focused commands include:
@@ -223,6 +245,20 @@ mise run verify
 ```
 
 Run commands from their documented working directories with the required existing runtimes. The foundations-only suites do not prove coverage of later chapters; extend the maintained chapter contracts in the same accepted slice. Discover PDF dependencies through the supported runtime tool before building. No dependency hydration, daemon setup, or shared-cache race is an incidental implementation step.
+
+## Execution notes
+
+Recorded from implementing Package 0 and Chapters 5 through 9 against this plan. These are observations about the plan, not about the mathematics.
+
+**The obligation that found the most defects was missing.** Acceptance obligation 8 above was added after the fact. Statement-level correspondence review — does the prose state the Lean type — passed on work whose *proofs* described arguments the providers do not run. Reading provider proof terms found a card describing a discriminant argument where the proof uses a resultant, a card whose displayed proof had nothing checking it at all, and a card crediting the wrong provider. All three had already passed statement review. Assume the same is true of chapters not yet audited this way, including ones already marked complete.
+
+**Mechanical cost dominates mathematical cost.** A chapter's mathematics took a fraction of the wall-clock; refreshing derived counts, receipt identities, pinned digests and generated projections took the rest, spread over about twenty-five hand edits in seven files. The full gate then costs roughly twenty-five minutes per attempt, so each mistake in that bookkeeping is expensive. This is why the generator in step 6 is a prerequisite rather than a nicety.
+
+**Deferred reviews accumulate.** Five chapters are implemented and gate-verified with their Kata issues open, each carrying a recorded author self-review and an explicit statement that independent review was not performed. That is the honest state under the current authority, and it is now an explicit obligation of the package rather than an oversight. The count will keep growing until a review pass is authorized.
+
+**Two defects found in already-accepted work.** Package 0's inventory surfaced five prerequisite edges in Chapters 28 and 34 that point forward or sideways, violating acceptance obligation 1. They belong to Package 5 and remain unaddressed. Chapter 9 surfaced the frozen duplicate-provider case described above. Neither was introduced by this program; both were found only because the inventory and the fidelity audit looked.
+
+**Environment trap.** Run `mise run verify` from a shell that has not sourced `scripts/harp_xdg_env.sh`. Every Lean task sources it internally, but exporting `HARP_ELAN_HOME` into the parent shell defeats the task-scoped-ELAN tests in `autodiff_geometry_lean.rs` and produces two failures unrelated to the change under test.
 
 ## Program boundaries and recommended order
 
