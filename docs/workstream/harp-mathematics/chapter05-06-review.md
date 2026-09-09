@@ -103,6 +103,19 @@ term its provider actually uses produced five more repairs.
    `Matrix.det_mul`, so the compiled version is a reformulation and not a
    logically independent second proof. Claiming otherwise would have been the
    more serious error.
+
+   That caveat is not an inference from reading the library source. A
+   transitive constant-closure scan over the compiled environment, of the same
+   shape the Cauchy-Schwarz auditor uses, reports:
+
+   ```
+   Module.Basis.det_comp:            direct uses det_mul = true,  transitive = true
+   AlternatingMap.eq_smul_basis_det: direct uses det_mul = false, transitive = false
+   ```
+
+   So the uniqueness half of the argument is independent of multiplicativity
+   and the transformation half is not. A genuinely independent formalization of
+   CFT-05-001 would have to replace `Module.Basis.det_comp`.
 7. **Three more cards displayed arguments their providers do not run.**
    `Matrix.det_units_conj` commutes factors under the determinant with
    `det_mul_right_comm` instead of forming three scalars; `Matrix.trace_mul_comm`
