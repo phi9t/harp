@@ -602,7 +602,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_01_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 161,
+        "line": 188,
         "column": 9,
         "type_sha256": "2858a5fd3633cc8694ec5e8f5990b5a08e803d138480967c019ba1ce24290657",
         "verification_target": "CrouzeixTextbook",
@@ -626,7 +626,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_02_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 172,
+        "line": 199,
         "column": 9,
         "type_sha256": "5410ae8d8656996a8abd1554b433199e58eec15f2a9d7e1591e67972cfa0f56c",
         "verification_target": "CrouzeixTextbook",
@@ -650,7 +650,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_03_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 181,
+        "line": 208,
         "column": 9,
         "type_sha256": "f14c0a0b601c900de9461a9f6bae3eb1d16bfa9ecc6be4d53f067205952a8721",
         "verification_target": "CrouzeixTextbook",
@@ -674,7 +674,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_04_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 193,
+        "line": 220,
         "column": 9,
         "type_sha256": "e72b837efaa234abdf13e611038e5aadaf92df152a2c278009b4f076ec1c81db",
         "verification_target": "CrouzeixTextbook",
@@ -698,7 +698,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_05_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 207,
+        "line": 234,
         "column": 9,
         "type_sha256": "43c62223221ec4edc2b45ab8c4d1c23f387d34145093ca69b254c701b650203f",
         "verification_target": "CrouzeixTextbook",
@@ -722,7 +722,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_06_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean",
-        "line": 219,
+        "line": 246,
         "column": 9,
         "type_sha256": "b30fd470dbe7bbd6e1d11476d61a41cf6742830adf222a266a0fdd272e7634c6",
         "verification_target": "CrouzeixTextbook",
@@ -772,7 +772,7 @@
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
         "line": 200,
         "column": 9,
-        "type_sha256": "25825c6ff63102361bdadd7b4599fa71b5a8d1025e5239348698e952927edda6",
+        "type_sha256": "3cdbd24afffbab8bab7ce70c7cca842e52641b88903365dd56b826dfe4d07a8f",
         "verification_target": "CrouzeixTextbook",
         "axioms": [
           "Classical.choice",
@@ -794,9 +794,9 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_03_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 206,
+        "line": 210,
         "column": 9,
-        "type_sha256": "9939b298586c08de8ba153cbd14e4fe456f2dc51fd634a73b914201ebf4bb197",
+        "type_sha256": "21b2cc4932d98b1ce8631d54c31b65cf2949a419156f7512069fef1128c66c28",
         "verification_target": "CrouzeixTextbook",
         "axioms": [
           "Classical.choice",
@@ -818,7 +818,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_04_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 213,
+        "line": 220,
         "column": 9,
         "type_sha256": "483607f29c2259ace2bdbdab1de02920bccb622b202a86f80c6eb6588f3d5bf2",
         "verification_target": "CrouzeixTextbook",
@@ -842,9 +842,9 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_05_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 220,
+        "line": 227,
         "column": 9,
-        "type_sha256": "a6cc93b5bc305349b6634382189ec733042b95c0986e315cd2e2f8d6202f65e2",
+        "type_sha256": "928b5ca4b92f0c8e7c780ba0bcd88a987c3106e419faba003cbf977d96ea68cc",
         "verification_target": "CrouzeixTextbook",
         "axioms": [
           "Classical.choice",
@@ -866,7 +866,7 @@
       "lean_solution": {
         "declaration": "CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_06_solution",
         "source_path": "formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean",
-        "line": 230,
+        "line": 243,
         "column": 9,
         "type_sha256": "41328eb3491c4b4fbad91791d6342c8f4e02b071572e4bc0918e391f610beb00",
         "verification_target": "CrouzeixTextbook",

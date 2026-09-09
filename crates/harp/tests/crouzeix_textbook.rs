@@ -4323,7 +4323,7 @@ fn canonical_pedagogical_graph_matches_the_reviewed_roster_and_policy() {
     assert_eq!(chapter_policy, reviewed_chapter_policy);
     assert_eq!(
         format!("{:x}", Sha256::digest(serialized_roster.as_bytes())),
-        "f3102fdcea356e8c8db0fe65a5a21107c90a02d9724d101fb9c2d175c464cc6b",
+        "ca0976de245d13c7b5763e365e3668e0eacee051572076b8094c40f9b6e668c3",
         "the reviewed 216-row prerequisite roster changed"
     );
 
