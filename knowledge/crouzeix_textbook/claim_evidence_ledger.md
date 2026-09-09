@@ -22,12 +22,12 @@ ledger records material source, verification, and publication claims.
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 107 |
-| reconstructible prose rows | 107 |
-| exact correspondence rows | 114 |
-| unmapped correspondence rows | 66 |
-| solved exercises | 114 |
-| unresolved exercises | 102 |
+| summary prose rows | 101 |
+| reconstructible prose rows | 113 |
+| exact correspondence rows | 120 |
+| unmapped correspondence rows | 61 |
+| solved exercises | 120 |
+| unresolved exercises | 96 |
 
 ## CFT-CL-001: Matrices represent linear maps after bases are chosen {#cft-cl-001}
 
@@ -50,12 +50,12 @@ ledger records material source, verification, and publication claims.
 ## CFT-CL-002: The truthful contract has a bounded compiled Lean receipt {#cft-cl-002}
 
 - Class: `EVIDENCE`
-- Statement: The version-two contract has 216 theorem rows: 59 are
-  `proved-here`, 115 are `reexported-proof`, 36 are `checkpoint`, and six are
-  `definition`. A fresh 441-row Lean receipt checks the declarations required
-  by that contract under Lean 4.32.1. The contract has 114 distinct exercise
-  solutions; 102 exercises remain correspondence-incomplete. The theorem
-  correspondence axis records 114 exact rows, 36 checkpoints, and 66 unmapped
+- Statement: The version-two contract has 216 theorem rows: 60 are
+  `proved-here`, 115 are `reexported-proof`, 35 are `checkpoint`, and six are
+  `definition`. A fresh 447-row Lean receipt checks the declarations required
+  by that contract under Lean 4.32.1. The contract has 120 distinct exercise
+  solutions; 96 exercises remain correspondence-incomplete. The theorem
+  correspondence axis records 120 exact rows, 35 checkpoints, and 61 unmapped
   rows.
 - Source: [[knowledge/crouzeix_textbook/source_registry#mathlib-4-32-1|MATHLIB-4.32.1]]
 - Locator: `formalization/lean/CrouzeixTextbook/Correspondence.lean`.

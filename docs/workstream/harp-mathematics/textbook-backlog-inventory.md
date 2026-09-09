@@ -3,7 +3,7 @@
 Package 0 of [the remaining-work plan](../../superpowers/plans/2026-09-08-textbook-remaining-work.md).
 Recomputed from `content/crouzeix_textbook/coverage.json` and
 `content/crouzeix_textbook/exercises.json`, most recently on 2026-09-09 after
-Chapter 7 landed. Every number below is derived from those two contracts,
+Chapters 7 and 8 landed. Every number below is derived from those two contracts,
 not copied from a status page.
 
 ## Reconciliation against the plan's baseline
@@ -13,18 +13,18 @@ reconstructible proofs, 96 solved exercises, and 216 indexed cards. That
 snapshot was reproduced exactly from the contracts before this package began,
 so no drift existed between the status surface and the structured records.
 
-After Chapters 5, 6 and 7:
+After Chapters 5 through 8:
 
 | Metric | Plan baseline | Now | Remaining |
 | --- | ---: | ---: | ---: |
 | Indexed cards | 216 | 216 | identities preserved |
-| Exact correspondence | 96 | 114 | 102 |
-| Reconstructible proofs | 89 | 107 | 107 summaries |
+| Exact correspondence | 96 | 120 | 96 |
+| Reconstructible proofs | 89 | 113 | 101 summaries |
 | Proof not applicable | 2 | 2 | definitions, no obligation |
-| Distinct solved exercises | 96 | 114 | 102 |
-| Compiler receipt declarations | 419 | 441 | — |
+| Distinct solved exercises | 96 | 120 | 96 |
+| Compiler receipt declarations | 419 | 447 | — |
 
-The 441 receipt rows are 216 public card declarations, 114 distinct exercise
+The 447 receipt rows are 216 public card declarations, 120 distinct exercise
 solutions, and 111 underlying providers named by `reexported-proof` rows.
 
 ## Two axes that are not the same
@@ -50,14 +50,13 @@ so the previews stay labeled forward references and stay outside the
 completed-proof count. `chapters_01_through_06_publish_exact_cards_with_explicit_proof_boundaries`
 pins that decision in the test suite.
 
-The remaining 103 summary rows in Chapters 8–24 are unfinished work, not
+The remaining 97 summary rows in Chapters 9–24 are unfinished work, not
 previews.
 
-## Chapters 8–24: the exact remaining backlog
+## Chapters 9–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 8 | `tdga` | 1 | 5 | 6 | 6 | 6 |
 | 9 | `wstr` | 1 | 5 | 6 | 6 | 6 |
 | 10 | `0wc6` | 2 | 4 | 6 | 6 | 6 |
 | 11 | `raf4` | 5 | 1 | 6 | 6 | 6 |
@@ -74,18 +73,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **8–24** | | **36** | **66** | **103** | **102** | **102** |
+| **9–24** | | **35** | **61** | **97** | **96** | **96** |
 
-### Per-identity backlog, Chapters 8–24
+### Per-identity backlog, Chapters 9–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-08-001 | checkpoint | summary | checkpoint | `Part02.positive_definite_quadratic_positive` | CFT-08-E01 unsolved |
-| CFT-08-002 | unmapped | summary | reexported-proof | `Part02.gram_matrix_positive` | CFT-08-E02 unsolved |
-| CFT-08-003 | unmapped | summary | reexported-proof | `Part02.invertible_gram_matrix_invertible` | CFT-08-E03 unsolved |
-| CFT-08-004 | unmapped | summary | reexported-proof | `Part02.invertible_gram_matrix_positive_definite` | CFT-08-E04 unsolved |
-| CFT-08-005 | unmapped | summary | reexported-proof | `Part02.positivity_preserved_by_congruence` | CFT-08-E05 unsolved |
-| CFT-08-006 | unmapped | summary | reexported-proof | `Part02.positive_square_root_data` | CFT-08-E06 unsolved |
 | CFT-09-001 | unmapped | summary | reexported-proof | `Part02.induced_matrix_norm_identity` | CFT-09-E01 unsolved |
 | CFT-09-002 | unmapped | summary | reexported-proof | `Part02.polar_factor_is_unitary` | CFT-09-E02 unsolved |
 | CFT-09-003 | unmapped | summary | reexported-proof | `Part02.polar_similarity_norm_transfer` | CFT-09-E03 unsolved |
@@ -188,7 +181,7 @@ previews.
 Every remaining chapter already has a Kata issue in the
 `crouzeix-textbook-completion` program, listed in the table above. The
 whole-book issue `00zs` stays open. `1t51` (Part I checkpoint) is unblocked,
-and `3ya3` (Chapter 7) carries the Part II opening. `8mq3`, `m4qy`, and `q8h9` remain open against their whole-chapter
+`3ya3` (Chapter 7) and `tdga` (Chapter 8) carry the Part II opening. `8mq3`, `m4qy`, and `q8h9` remain open against their whole-chapter
 scope; their accepted core work is recorded in their own comments and Chapters
 2 and 3 are not reopened.
 
