@@ -1571,21 +1571,21 @@
         "CFT-07-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positive_definite_quadratic_positive",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 9,
-        "column": 5,
+        "line": 19,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "0a5eebe55968030be4aef78894753535fa33bda8aa0bb19ddd432165f8e6d1a8",
+        "type_sha256": "a7589d3dcb36e395b83d2a0b50ebdfba9d4857a46f370fad245dfea58afc60c5",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -1609,18 +1609,18 @@
         "CFT-07-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.gram_matrix_positive",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_posSemidef",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 11,
+        "line": 67,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "7952cd8e1b63e224f91d730a5103f6298c5166178c0bc1f4924de6279aee18cc",
@@ -1647,18 +1647,18 @@
         "CFT-08-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.invertible_gram_matrix_invertible",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_isUnit",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 13,
+        "line": 70,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ab788d6b52af707c3a009e308fa8701d8a907c186b1a4f9c2bc91c13ab1c2d53",
@@ -1685,18 +1685,18 @@
         "CFT-08-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.invertible_gram_matrix_positive_definite",
         "underlying_declaration": "CrouzeixConjecture.completionGramMatrix_posDef",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 15,
+        "line": 73,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "bf98de4e69b0950c16e43477189fe48d0b310ee417acbf3ac00391213793d94f",
@@ -1723,18 +1723,18 @@
         "CFT-08-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positivity_preserved_by_congruence",
         "underlying_declaration": "CrouzeixConjecture.posSemidef_congruence",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 17,
+        "line": 76,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "a7d58aff5d88206d56ddca960f2c81f8ac8b9d181d0629d7d4b990d25cf31325",
@@ -1761,18 +1761,18 @@
         "CFT-08-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-gram-positivity-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.positive_square_root_data",
         "underlying_declaration": "CrouzeixConjecture.completionSquareRootData_of_isUnit",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean",
-        "line": 19,
+        "line": 79,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "9f97a741793790cad47d369140ee2c699f1b5bc2109275ece38f1c94a4d0009d",
