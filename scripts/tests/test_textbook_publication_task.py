@@ -1,4 +1,9 @@
-"""Run the publication task with distinct built and XDG-cache executables."""
+"""Run the publication task with distinct built and XDG-cache executables.
+
+Also pins that the derived-count drift check runs inside this task, against the
+same fresh receipt, and after the publish and check steps. The counts are
+derived data; if that step can be dropped without a test failing, drift returns.
+"""
 
 import os
 from pathlib import Path
@@ -62,6 +67,15 @@ class TextbookPublicationTaskTests(unittest.TestCase):
                 'printf "%s\\n" receipt > "$3"\n'
             )
             wrapper.chmod(0o755)
+            (scripts / "sync_textbook_counts.py").write_text(
+                "import os\n"
+                "import sys\n"
+                "assert sys.argv[1] == '--receipt', sys.argv\n"
+                "assert sys.argv[3] == '--check', sys.argv\n"
+                "assert os.path.getsize(sys.argv[2]) > 0, 'needs the fresh receipt'\n"
+                "with open(os.environ['TASK_CALLS'], 'a') as handle:\n"
+                "    handle.write('counts check\\n')\n"
+            )
             environment = os.environ.copy()
             environment.update(
                 HARP_TARGET_DIR=str(built),
@@ -80,7 +94,10 @@ class TextbookPublicationTaskTests(unittest.TestCase):
                 timeout=15,
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            self.assertEqual(log.read_text().splitlines(), ["built publish", "built check"])
+            self.assertEqual(
+                log.read_text().splitlines(),
+                ["built publish", "built check", "counts check"],
+            )
             self.assertEqual(list(temporary.iterdir()), [], "Receipt cleanup did not run")
 
 

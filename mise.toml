@@ -48,6 +48,7 @@ sh scripts/test_lean_task_graph.sh
 python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
 python3 -m unittest discover -s scripts/tests -p test_prepare_pages.py -v
 python3 -m unittest discover -s scripts/tests -p test_textbook_publication_task.py -v
+python3 -m unittest discover -s scripts/tests -p test_sync_textbook_counts.py -v
 """
 
 [tasks.fmt]
@@ -211,6 +212,27 @@ trap cleanup EXIT
 scripts/check_lean_library.sh CrouzeixTextbook --receipt-output "$receipt_path"
 "$textbook_harp_binary" crouzeix-textbook publish --receipt "$receipt_path"
 "$textbook_harp_binary" crouzeix-textbook check --receipt "$receipt_path"
+python3 scripts/sync_textbook_counts.py --receipt "$receipt_path" --check
+"""
+
+[tasks.textbook-counts]
+description = "Reproject the derived textbook counts and receipt identity from the contracts"
+depends = ["lean-env", "build"]
+run = """
+set -euo pipefail
+. scripts/harp_xdg_env.sh
+export ELAN_HOME="$HARP_ELAN_HOME"
+export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"
+umask 077
+receipt_dir=$(mktemp -d "${TMPDIR:-/tmp}/harp-textbook-counts.XXXXXX")
+receipt_path="$receipt_dir/receipt.json"
+cleanup() {
+  rm -f -- "$receipt_path"
+  rmdir -- "$receipt_dir"
+}
+trap cleanup EXIT
+scripts/check_lean_library.sh CrouzeixTextbook --receipt-output "$receipt_path"
+python3 scripts/sync_textbook_counts.py --receipt "$receipt_path"
 """
 
 [tasks.lean-crouzeix-jin]
