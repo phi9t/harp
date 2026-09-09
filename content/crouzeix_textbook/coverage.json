@@ -1798,18 +1798,18 @@
         "CFT-07-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.induced_matrix_norm_identity",
         "underlying_declaration": "CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 8,
+        "line": 14,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "2977bd41a75af6c254977308abe7dfd1308be597004c2f485347af22a72c42cf",
@@ -1836,18 +1836,18 @@
         "CFT-08-006"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_factor_is_unitary",
         "underlying_declaration": "CrouzeixConjecture.completionPolarUnitary_mem_unitaryGroup",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 10,
+        "line": 17,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "bf10a4403958719a297550533e35ac7875c21ae779190da4fbb5cdf3fdb3b699",
@@ -1874,18 +1874,18 @@
         "CFT-09-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_similarity_norm_transfer",
         "underlying_declaration": "CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 12,
+        "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "7fa603e2b217c8774cc50551e61a501fb1b0e3227eaef4ba42931599eb67e828",
@@ -1912,18 +1912,18 @@
         "CFT-09-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.polar_operator_norm_transfer",
         "underlying_declaration": "CrouzeixConjecture.completionDiagonalizableMatrix_euclideanOperator_norm_eq",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 14,
+        "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "6638986e7dc8478164fa52d2625d1ce680eabaedbb37578fc763e14f94a003c8",
@@ -1950,18 +1950,18 @@
         "CFT-09-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.quadratic_bound_implies_norm_two",
         "underlying_declaration": "CrouzeixConjecture.matrix_norm_le_two_of_four_sub_conjTranspose_mul_self_posSemidef",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 16,
+        "line": 28,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "bb01404d812870b988dd96e508a8ed2f8c49896503e83a20d9ad4ab7fe76f47b",
@@ -1987,18 +1987,18 @@
         "CFT-07-006"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-operator-norm-core-2026-09-09"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.norm_triangle_kernel",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean",
-        "line": 18,
+        "line": 32,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "9f278ef171204406f241877d598f1d5d1982b6fef857a29dcf85a86db5b8b608",
