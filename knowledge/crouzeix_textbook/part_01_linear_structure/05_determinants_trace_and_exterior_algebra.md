@@ -96,11 +96,31 @@ identifies the scalar as $g(I)=\det A$. Hence $\det(AB)=\det A\det B$ for
 every $B$. Geometrically the two sides are the volume factor of the composite
 and the product of the two separate factors.
 
+The displayed argument is itself checked.
+[`determinant_multiplicative_via_alternating`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L116)
+reads the columns of $B$ as a family of vectors, rewrites $\det$ as the basis
+alternating form through `Module.Basis.det_apply`, applies the composition rule
+`Module.Basis.det_comp` — which is the rank-one uniqueness step above — and
+identifies the resulting scalar with $\det A$ through `LinearMap.det_toLin'`.
+
+One dependency caveat belongs with that declaration. `Module.Basis.det_comp` is
+itself proved in the library from `LinearMap.det_toMatrix` and `Matrix.det_mul`,
+so the compiled version of the uniqueness argument rests on the same
+multiplicativity it re-derives. It is an honest reformulation and a check that
+the displayed steps compose, not a logically independent second proof of
+CFT-05-001. A genuinely independent formalization would have to build the
+alternating characterization without consuming `Matrix.det_mul`, which this
+chapter does not do.
+
 **Boundary and Lean provider.** No field, inverse, or spectral hypothesis is
 used; a commutative ring suffices.
 [`determinant_multiplicative`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L10)
-is the public declaration, supplied by Mathlib's `Matrix.det_mul`. The
-alternating and normalization inputs quoted above are recorded separately by
+is the public declaration, supplied by Mathlib's `Matrix.det_mul`. That
+provider does not take the route above: it expands both sides into Leibniz
+sums, restricts the sum over all index functions to the bijective ones, and
+reindexes by a permutation. Both proofs are available, and the displayed one is
+the book's; the local declaration named above is its check. The alternating and
+normalization inputs quoted in the argument are recorded separately by
 [`determinant_row_additive`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L64),
 [`determinant_row_homogeneous`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L69),
 [`determinant_repeated_row`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L54),
@@ -121,7 +141,10 @@ survives, with sign $1$ and product $\prod_i d_i$.
 decidable equality so that `Matrix.diagonal` is defined; no invertibility is
 assumed, and a zero entry correctly produces determinant zero.
 [`determinant_diagonal`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L16)
-uses `Matrix.det_diagonal`. The Leibniz expansion the proof reads is
+uses `Matrix.det_diagonal`, whose proof is exactly the displayed computation:
+rewrite by the Leibniz expansion, isolate the identity permutation with
+`Finset.sum_eq_single`, and kill every other term by exhibiting one moved index
+whose factor is zero. The Leibniz expansion the argument reads is
 [`determinant_leibniz`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L74).
 
 ### CFT-05-003: similarity invariance {#cft-05-003}
@@ -137,12 +160,19 @@ factors can be brought together and cancelled, leaving $\det A$. The
 determinant is therefore an invariant of the operator, and the vanishing of
 that single scalar detects singularity independently of the coordinates.
 
+The displayed argument is checked by
+[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L208),
+which runs exactly these steps — multiplicativity twice, multiplicativity on
+the inverse identity, then cancellation — under the weaker hypothesis $RS=I$.
+
 **Boundary and Lean provider.** The hypothesis is that $S$ is a unit of the
 matrix ring, not merely a matrix with nonzero determinant over an arbitrary
 ring; over a field the two conditions agree.
 [`determinant_similarity`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L22)
-uses `Matrix.det_units_conj`. The separate one-sided form with an explicit
-left inverse is proved as E03. This card supplies the derivation that
+uses `Matrix.det_units_conj`, which takes a shortcut the prose does not: it
+commutes the last two factors under the determinant with `det_mul_right_comm`
+and cancels $SS^{-1}$ before any determinant is expanded, so it never forms the
+three separate scalars. This card supplies the derivation that
 [[knowledge/crouzeix_textbook/part_01_linear_structure/04_coordinates_and_duality#cft-04-005|CFT-04-005]]
 previewed.
 
@@ -189,12 +219,20 @@ first expression into the second. Nothing beyond finiteness of both index sets
 and commutativity of scalar multiplication is used, and in particular $AB$ and
 $BA$ need not have the same size.
 
+The displayed argument is checked by
+[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L220),
+whose three conjuncts are the two expansions and the equality they force, so
+the interchange step is visible in a checked statement rather than hidden.
+
 **Boundary and Lean provider.** The hypotheses are additive commutativity and
 a commutative multiplication on the scalars, with both index sets finite; no
 ring inverse, determinant, or square shape is required.
 [`trace_cyclic`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L28)
-uses `Matrix.trace_mul_comm`. The explicit double sums displayed here are the
-content of E04.
+uses `Matrix.trace_mul_comm`, which reaches the same conclusion by a different
+route: it rewrites each trace as the trace of a transpose and uses
+$(AB)^{\mathsf T}=B^{\mathsf T}A^{\mathsf T}$, never writing the double sum
+down. The displayed sum interchange is the book's argument, and E04 is its
+check.
 
 ### CFT-05-005: similarity invariance of the trace {#cft-05-005}
 
@@ -210,12 +248,19 @@ Only cyclicity is used, never a claim that $\operatorname{tr}(XY)$ equals
 $\operatorname{tr}(YX)$ for a rearrangement of three or more factors in
 arbitrary order. That stronger claim is false, as E05 exhibits.
 
+The displayed argument is checked by
+[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L246),
+which performs the same three steps under the weaker hypothesis $RS=I$:
+cyclicity, reassociation, then collapse of the inverse pair.
+
 **Boundary and Lean provider.** A commutative semiring suffices, which is
 weaker than the commutative ring needed for the determinant card, because no
 subtraction or sign enters.
 [`trace_similarity`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L34)
-uses `Matrix.trace_units_conj`. E06 reproduces the same conclusion from an
-explicit left inverse. This card supplies the derivation that
+uses `Matrix.trace_units_conj`, which applies the three-factor rotation
+`trace_mul_cycle` once and then cancels $S^{-1}S$; the displayed proof reaches
+the same place using only the two-factor cyclicity of CFT-05-004. This card
+supplies the derivation that
 [[knowledge/crouzeix_textbook/part_01_linear_structure/04_coordinates_and_duality#cft-04-006|CFT-04-006]]
 previewed.
 
@@ -232,7 +277,8 @@ $\sum_i d_i$ term by term.
 finite index with decidable equality are needed; no multiplication is used at
 all, which is why this card has the weakest hypotheses in the chapter.
 [`trace_diagonal`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L40)
-uses `Matrix.trace_diagonal`. Combined with CFT-05-002, a diagonalizable
+uses `Matrix.trace_diagonal`, whose proof is the displayed term-by-term reading
+of the defining sum. Combined with CFT-05-002, a diagonalizable
 operator has determinant the product and trace the sum of its diagonal
 entries; Chapter 6 supplies the diagonalization and the eigenvalue reading,
 and this chapter does not assume that every matrix admits one.
@@ -246,9 +292,11 @@ and let $T$ be a linear operator on $M$. Then for every family $v$ of inputs
 $$
 f(T\circ v)=\det(T)\cdot f(v).
 $$
-The proof is short once uniqueness is available: writing $f=f(e)\cdot e^{\det}$
-for the basis determinant form $e^{\det}$ reduces the claim to the single case
-$f=e^{\det}$, where it is the definition of the operator determinant. This is
+The proof is short once uniqueness is available, and the compiled version
+follows it exactly: substitute $f=f(e)\cdot e^{\det}$ for the basis
+determinant form $e^{\det}$, which is `AlternatingMap.eq_smul_basis_det`; that
+reduces the claim to the single case $f=e^{\det}$, which is
+`Module.Basis.det_comp`; then undo the substitution. This is
 [`alternating_form_scaled_by_determinant`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L102).
 Reading $\bigwedge^{n}M$ as the target of the universal alternating form, the
 identity says that $T$ acts on the top exterior power by the scalar $\det T$.
@@ -276,10 +324,14 @@ $$
 \det(I+tA)=1+t\operatorname{tr}A+t^{2}\det A,
 $$
 which is
-[`determinant_one_add_smul_fin_two`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L130).
+[`determinant_one_add_smul_fin_two`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L157).
 The coefficient of $t$ is the trace, which is the precise sense in which trace
-is the derivative of volume at the identity. In dimension $n$ the same
-expansion has $n+1$ terms and the linear coefficient is still the trace.
+is the derivative of volume at the identity. Its checked proof is a direct
+expansion of the two-by-two determinant and trace formulas followed by ring
+normalization, so what is verified is exactly the displayed dimension-two
+identity. In dimension $n$ the same expansion has $n+1$ terms and the linear
+coefficient is still the trace; that general statement is not compiled in this
+chapter.
 
 The cumulative family acts over $\mathbb R$ by
 $$
@@ -289,12 +341,12 @@ A_{\lambda,\alpha}=\begin{bmatrix}\lambda&\alpha\\0&\lambda\end{bmatrix},
 \operatorname{tr}A_{\lambda,\alpha}=2\lambda .
 $$
 These are
-[`runningFamily_det`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L140)
+[`runningFamily_det`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L167)
 and
-[`runningFamily_trace`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L145).
+[`runningFamily_trace`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L172).
 Neither scalar mentions $\alpha$, so the whole family shares one determinant
 and one trace, recorded as
-[`runningFamily_scalars_ignore_shear`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L150).
+[`runningFamily_scalars_ignore_shear`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L177).
 Chapter 1 showed that a diagonal change of basis rescales $\alpha$ freely,
 so this blindness is exactly what invariance predicts. It is also a warning:
 Chapter 9 will show that $\|A_{\lambda,\alpha}\|$ grows with $\alpha$, so the
@@ -372,7 +424,7 @@ $$
 \det\begin{bmatrix}1&2\\a&b\end{bmatrix}=b-2a,
 $$
 which are negatives of each other for every $a$ and $b$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L161)
+[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L188)
 checks both identities for all real $a$ and $b$.
 
 ### CFT-05-E02 -- calculation {#exercise-cft-05-e02}
@@ -385,10 +437,13 @@ $$
 **Solution.** Only the identity permutation contributes a nonzero product to
 the Leibniz sum for a triangular matrix, so $\det T=2\cdot3\cdot(-2)=-12$, and
 the trace is $2+3-2=3$.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L172)
-states both numbers for that explicit matrix. Triangular matrices behave like
-diagonal ones for these two scalars, which is why CFT-05-002 and CFT-05-006
-already predict the answers.
+[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L199)
+states both numbers for that explicit matrix. Its checked proof does not run the
+permutation argument: it expands the explicit three-by-three determinant
+formula, where the three zeros below the diagonal annihilate every term except
+the diagonal product, and then evaluates. The permutation sentence above is the
+reason that expansion has the shape it does, and the general triangular
+statement is not compiled here.
 
 ### CFT-05-E03 -- written-proof {#exercise-cft-05-e03}
 
@@ -399,7 +454,7 @@ that $S$ is a unit of the matrix ring.
 **Solution.** Multiplicativity gives $\det(SAR)=\det S\,\det A\,\det R$, and
 applying it to the hypothesis gives $\det R\,\det S=\det I=1$. Commutativity
 of the scalars lets the two outside determinants be collected and cancelled.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L181)
+[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L208)
 records the general statement. The exercise is strictly weaker in hypothesis
 than CFT-05-003 and shows that a left inverse already suffices.
 
@@ -413,7 +468,7 @@ entries and derive cyclicity by interchanging the two finite sums.
 and expanding the diagonal of $BA$ gives $\sum_j\sum_i B_{ji}A_{ij}$.
 Interchanging the order of the two finite sums and commuting each product
 identifies them.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L193)
+[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L220)
 states the two expansions and the resulting equality as three conjuncts, so
 the interchange step is visible in the checked statement rather than hidden
 inside a library lemma.
@@ -433,7 +488,7 @@ Y=\begin{bmatrix}0&1\\0&0\end{bmatrix},\quad
 Z=\begin{bmatrix}0&0\\1&0\end{bmatrix}.
 $$
 Then $XYZ=X$ has trace $1$ while $XZY=0$ has trace $0$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L207)
+[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L234)
 proves the two rotations for arbitrary square matrices and supplies that
 counterexample, so cyclicity and full permutation invariance are separated in
 one checked statement.
@@ -445,7 +500,7 @@ assuming only $RS=I$ rather than that $S$ is a unit.
 
 **Solution.** Cyclicity moves $R$ to the front of $S A R$, associativity
 regroups the product as $(RS)A$, and the hypothesis collapses it to $A$.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L219)
+[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L246)
 is that three-step calculation. Comparing it with E03 shows the same
 one-sided hypothesis serving two different invariants, one multiplicative and
 one additive.

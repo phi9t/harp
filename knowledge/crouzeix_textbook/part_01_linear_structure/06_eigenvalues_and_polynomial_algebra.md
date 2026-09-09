@@ -102,8 +102,12 @@ equality; the scalars are the complex numbers because the maintained
 formalization fixes that field. Nothing about distinctness of the $d_i$ is
 assumed.
 [`polynomial_action_diagonal`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L21)
-re-exports `CrouzeixConjecture.polynomialEval_diagonal`. The same statement
-over an arbitrary field is
+re-exports `CrouzeixConjecture.polynomialEval_diagonal`, whose proof is the
+displayed argument in exactly this form: it applies
+`Polynomial.aeval_algHom_apply` to the diagonal algebra homomorphism
+`Matrix.diagonalAlgHom`, which is the "two homomorphisms agreeing on the
+variable" step, and then evaluates the family coordinatewise. The same
+statement over an arbitrary field is
 [`aeval_diagonal`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L117),
 proved here for the exercises.
 
@@ -134,7 +138,10 @@ repeated values of $p$ on distinct $\lambda_i$ are allowed.
 [`diagonalizable_polynomial_calculus`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L24)
 re-exports
 `CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal`.
-The general one-sided-inverse form is
+Its proof is the displayed argument step for step: rewrite $B$ by the supplied
+conjugation identity, move the polynomial through the conjugation algebra
+automorphism `innerConjugation` with `Polynomial.aeval_algHom_apply`, and
+finish with CFT-06-001. The general one-sided-inverse form is
 [`conjugate_aeval`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L106),
 built on
 [`conjugate_pow`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L93)
@@ -148,13 +155,25 @@ eigenvalues $\lambda$, change-of-basis unit $S$, and
 $B=S\operatorname{diag}(\lambda)S^{-1}$ — every $\lambda_i$ belongs to the
 spectrum of $B$.
 
-**Proof.** Similar matrices have the same characteristic polynomial: from
-$B=SDS^{-1}$ we get $tI-B=S(tI-D)S^{-1}$ in the polynomial matrix ring, and
-Chapter 5's determinant similarity invariance gives $\chi_B=\chi_D$. For a
-diagonal $D$, Chapter 5's diagonal determinant makes
-$\chi_D(t)=\prod_j(t-\lambda_j)$, which vanishes at each $\lambda_i$. Since
-membership in the spectrum is equivalent to being a root of the characteristic
-polynomial, each $\lambda_i$ is in the spectrum of $B$.
+**Proof.** Write $D=\operatorname{diag}(\lambda)$. The argument has three
+steps, and each one is a named library result rather than a fresh computation.
+
+First, similar matrices have the same characteristic polynomial. Rewriting $B$
+by the supplied conjugation identity and applying characteristic-polynomial
+similarity invariance — the result Chapter 1 previews as
+[[knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations#cft-01-005|CFT-01-005]]
+and Chapter 5 derives from CFT-05-001 — gives $\chi_B=\chi_D$. The one
+bookkeeping step is that the supplied inverse is recognized as the matrix
+inverse, so the unit-conjugation form applies.
+
+Second, the characteristic polynomial of a diagonal matrix factors completely:
+$\chi_D(t)=\prod_j\,(t-\lambda_j)$. This is the polynomial-ring counterpart
+of CFT-05-002.
+
+Third, a product of linear factors vanishes exactly where one factor does, so
+$\chi_B(\lambda_i)=0$ for each $i$; and membership in the spectrum is
+equivalent to being a root of the characteristic polynomial. Combining the
+three gives $\lambda_i\in\sigma(B)$.
 
 **Boundary and Lean provider.** The equivalence between spectrum membership
 and characteristic roots needs a field; the maintained statement is over
@@ -162,9 +181,11 @@ $\mathbb C$. Injectivity of $\lambda$ again travels with the data and is not
 consumed by this proof.
 [`diagonalization_eigenvalue_mem_spectrum`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L27)
 re-exports
-`CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum`. The
-general root test over any field is
-[`spectrum_iff_charpoly_root`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L43).
+`CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum`. Its
+proof runs the three displayed steps with `Matrix.charpoly_units_conj`,
+`Matrix.charpoly_diagonal`, and `Polynomial.isRoot_prod`, closing through
+`Matrix.mem_spectrum_iff_isRoot_charpoly`. The general root test over any field
+is [`spectrum_iff_charpoly_root`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L43).
 The converse inclusion — that the spectrum contains nothing else — uses the
 degree count and is not claimed by this card.
 
@@ -216,15 +237,35 @@ which rewrites $p(A)$ as $(p\bmod\chi_A)(A)$.
 every tolerance $\varepsilon>0$ there is a matrix $B$ whose characteristic
 roots are pairwise distinct with $\|B-A\|<\varepsilon$.
 
-**Proof.** Fix a diagonal matrix $\Delta$ with pairwise distinct entries and
-follow the segment $A_\eta=A+\eta(\Delta-A)$. The discriminant of
-$\chi_{A_\eta}$ is a polynomial function of $\eta$, and it is not identically
-zero because at $\eta=1$ the matrix is $\Delta$, whose characteristic roots are
-distinct. A nonzero polynomial in one variable has finitely many roots, so all
-but finitely many small $\eta$ give a matrix with distinct characteristic
-roots. Choosing $\eta$ small enough that
-$|\eta|\,\|\Delta-A\|<\varepsilon$ and avoiding that finite bad set produces
-the required $B$.
+**Proof.** Let $\Delta$ be the fixed diagonal matrix whose $i$th entry is the
+integer position of $i$ under a chosen enumeration of the index set, so its
+diagonal entries are $0,1,\ldots,n-1$ and are pairwise distinct. Follow the
+affine segment $A_\eta=A+\eta(\Delta-A)$, which is $A$ at $\eta=0$ and
+$\Delta$ at $\eta=1$.
+
+The separation test used is the resultant of the characteristic polynomial and
+its derivative. Over $\mathbb C$ a monic polynomial has pairwise distinct roots
+exactly when it is separable, separability is coprimality with its derivative,
+and coprimality of a monic polynomial with another is exactly invertibility of
+their resultant. So define the *bad-parameter polynomial* $q(\eta)$ to be that
+resultant computed along the segment; it is a genuine polynomial in $\eta$
+because the segment's characteristic polynomial has coefficients polynomial in
+$\eta$ and the resultant is a determinant of those coefficients.
+
+$q$ is not the zero polynomial: evaluating at $\eta=1$ gives the resultant for
+$\Delta$, whose distinct diagonal entries make $\chi_\Delta$ separable and the
+resultant nonzero. A nonzero polynomial in one variable has finitely many
+roots, while the real interval $(0,\delta)$ contributes infinitely many
+candidate parameters, so some $\eta$ with $0<|\eta|<\delta$ avoids all of
+them. At such an $\eta$ the resultant is nonzero, hence $\chi_{A_\eta}$ is
+coprime with its derivative, hence separable, hence its roots are pairwise
+distinct.
+
+Finally the norm. $A_\eta-A=\eta(\Delta-A)$, so
+$\|A_\eta-A\|=|\eta|\,\|\Delta-A\|$. Running the previous paragraph with
+$\delta=\varepsilon/d$ for $d=\|\Delta-A\|+1$ — the $+1$ keeps $d$ positive
+when $A=\Delta$ — gives $\|A_\eta-A\|<\varepsilon$, and $B=A_\eta$ is the
+required matrix.
 
 **Boundary and Lean provider.** Nonemptiness of the index set and
 positivity of $\varepsilon$ are both required; the argument also uses that
@@ -234,7 +275,17 @@ statement about the matrix entries; it does not claim that eigenvectors,
 eigenbases, or their condition numbers vary continuously, and in fact they do
 not.
 [`simple_spectrum_dense`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L36)
-re-exports `CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt`.
+re-exports `CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt`. The
+three displayed stages are three maintained declarations:
+`CrouzeixConjecture.simpleSpectrumBadPolynomial_ne_zero` for the nonvanishing
+at $\eta=1$, `CrouzeixConjecture.exists_small_simpleSpectrumParameter` for the
+choice of a small parameter avoiding the finitely many roots, and
+`CrouzeixConjecture.hasDistinctEigenvalues_of_badPolynomial_eval_ne_zero` for
+the passage from a nonzero resultant back to distinct characteristic roots.
+`HasDistinctEigenvalues` is defined as nodup-ness of the characteristic roots,
+which is why separability is the right intermediate notion. Note that the
+argument bounds the distance in the induced Euclidean operator norm only; it
+says nothing about how far the eigenvectors move.
 
 ### Annihilating polynomials and eigenvector transport
 
@@ -243,8 +294,11 @@ book. Every matrix annihilates its own characteristic polynomial, recorded as
 [`charpoly_annihilates`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L48);
 and the minimal polynomial divides it, recorded as
 [`minimal_polynomial_dvd_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L53).
-Together with division with remainder these give the degree reduction quoted
-in CFT-06-005 and bound $\dim\langle A\rangle$ by $\deg m_A$.
+The compiled reduction divides by $\chi_A$ rather than by $m_A$, so what it
+delivers directly is $\dim\langle A\rangle\le n$. The sharper bound
+$\dim\langle A\rangle\le\deg m_A$ follows from the same division argument
+applied to $m_A$, using that $m_A$ annihilates $A$; that sharper form is stated
+here for the reader and is not separately compiled in this chapter.
 
 The scalar reduction promised in the opening problem is exact on a single
 eigenvector and only there. If $Av=cv$ then $A^kv=c^kv$ by induction, which is
@@ -257,9 +311,10 @@ when they do not, they leave the rest of $p(A)$ undetermined.
 Distinct nodes make the scalar data unconstrained: for any prescribed values
 there is a polynomial achieving them, which is
 [`exists_polynomial_with_prescribed_values`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L130),
-supplied by Mathlib's Lagrange interpolation. So a simple-spectrum
-diagonalization identifies $\langle A\rangle$ with all diagonal matrices in the
-same eigenbasis.
+supplied by Mathlib's Lagrange interpolation. Combining it with CFT-06-002
+identifies $\langle A\rangle$ with all diagonal matrices in the same
+eigenbasis when the spectrum is simple. That combination is a narrative
+consequence of the two compiled results, not a third compiled statement.
 
 ### Two boundary examples
 
@@ -391,30 +446,39 @@ eigenspace.
 
 ### CFT-06-E02 -- calculation {#exercise-cft-06-e02}
 
-Compute $p(J)$ for the Jordan block $J$ above and $p(z)=z^3$.
+Compute $p(J)$ for the Jordan block $J$ above and $p(z)=z^3$, both as a
+polynomial action and as a matrix power, and check the two agree.
 
 **Solution.** Writing $J=2I+N$ with $N^2=0$ and expanding gives
 $8I+12N$, so
 $$
 J^{3}=\begin{bmatrix}8&12\\0&8\end{bmatrix}.
 $$
+The polynomial action reduces to that power because substituting a matrix for
+the variable is a ring homomorphism, so it carries $X^3$ to the cube.
 [`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L200)
-states that explicit matrix identity. The off-diagonal entry $12=p'(2)$ is the
-derivative data that scalar evaluation alone discards.
+states both forms as two conjuncts and derives the first from the second
+exactly as described, through `map_pow` and `Polynomial.aeval_X`. The
+off-diagonal entry $12=p'(2)$ is the derivative data that scalar evaluation
+alone discards.
 
 ### CFT-06-E03 -- written-proof {#exercise-cft-06-e03}
 
 Over an arbitrary field, prove that a polynomial action preserves an
-eigenvector: if $Av=cv$ then $p(A)v=p(c)v$ for every polynomial $p$. Include
-the power case as a separate conclusion.
+eigenvector: if $Av=cv$ then $p(A)v=p(c)v$ for every polynomial $p$. State the
+power case separately, and deduce that an eigenvector is annihilated by $p(A)$
+whenever $p$ vanishes at its eigenvalue.
 
 **Solution.** Induct on the exponent for $A^kv=c^kv$, using
 $A^{k+1}v=A^k(Av)=A^k(cv)=c\,A^kv$. Then induct over the monomial
 decomposition of $p$: sums are handled by additivity of $v\mapsto Mv$ in $M$,
-and the monomial $aX^k$ contributes $a\,A^kv=ac^kv$.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L206)
-records both conclusions for any field, any finite index type, any matrix, any
-vector, and any scalar.
+and the monomial $aX^k$ contributes $a\,A^kv=ac^kv$. For the last conclusion,
+substitute $p(c)=0$ into $p(A)v=p(c)v$ and use $0\cdot v=0$.
+[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L210)
+records all three conclusions for any field, any finite index type, any matrix,
+any vector, and any scalar. The third is the fact the density argument of
+CFT-06-006 ultimately needs: a polynomial that kills every eigenvalue kills
+every eigenvector.
 
 ### CFT-06-E04 -- written-proof {#exercise-cft-06-e04}
 
@@ -428,24 +492,27 @@ so $(SXR)^k=SX^kR$ by induction, the inner $RS$ collapsing at each step. Sums
 and scalars pass through because $X\mapsto SXR$ is linear, so
 $p(SXR)=Sp(X)R$ for every polynomial. Applying the diagonal evaluation of
 CFT-06-001 to $p(\operatorname{diag} d)$ finishes the calculation.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L213)
+[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L220)
 states the field-level identity. Compared with CFT-06-002 it drops the unit
 hypothesis and the complex scalars.
 
 ### CFT-06-E05 -- boundary {#exercise-cft-06-e05}
 
 Give a repeated-eigenvalue example whose polynomial action is not determined
-by the values of the polynomial on the spectrum, and prove that its
-eigenvectors cannot span.
+by the values of the polynomial on the spectrum, identify the residual data
+explicitly, and show that its eigenvectors are confined to one line.
 
 **Solution.** Take the Jordan block $J$. Its only eigenvalue is $2$, and the
 polynomials $X$ and the constant $2$ agree there; but $J\neq2I$, since the
-entry in position $(1,2)$ is $1$ on the left and $0$ on the right. Every
+entry in position $(1,2)$ is $1$ on the left and $0$ on the right. The residual
+data is the difference: $(X-2)(J)=J-2I=N$, the nilpotent part. Every
 eigenvector has vanishing second coordinate, so the eigenvectors span a line
-rather than the plane.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L220)
-states the agreement on the spectrum, the inequality of the two actions, and
-the confinement of the eigenvectors as three conjuncts.
+rather than the plane and no eigenbasis exists.
+[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L227)
+states the agreement on the spectrum, the inequality of the two actions, the
+explicit identification of $(X-2)(J)$ with the nilpotent matrix unit, and the
+confinement of the eigenvectors as four conjuncts. The third is checked
+entrywise, so no step of it is left to the reader.
 
 ### CFT-06-E06 -- lean-proof {#exercise-cft-06-e06}
 
@@ -456,7 +523,7 @@ the hypotheses that must be discharged to do so.
 a nonempty index, and a strictly positive tolerance. All three are available
 for `Fin 2` by instance search and by the assumed $\varepsilon>0$, so the
 specialization is immediate.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L230)
+[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L243)
 is that instantiation. Reading its statement next to CFT-06-006 shows exactly
 which hypotheses were discharged by instances and which one remains an
 explicit argument.
