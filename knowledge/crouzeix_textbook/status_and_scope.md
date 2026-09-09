@@ -117,8 +117,8 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `c4395c130a4e3d812c842d0bba1b9ea9315b463a11853538b8aace7b64c26172`
-- Compiler receipt bytes: `512174`
+  `c367dd6e9f56f9b9205b2302e80259029b614e71a267cf18027f7f0b717a57a0`
+- Compiler receipt bytes: `513498`
 - Compiler receipt declarations: `435`
 
 Those 435 unique declarations comprise 216 public coverage declarations,

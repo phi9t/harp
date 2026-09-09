@@ -1304,8 +1304,8 @@ The durable compiler receipt recorded in the tracked
 [[knowledge/crouzeix_textbook/status_and_scope|status and scope]] surface has:
 
 - Compiler receipt SHA-256:
-  `c4395c130a4e3d812c842d0bba1b9ea9315b463a11853538b8aace7b64c26172`;
-- serialized bytes: `512174`; and
+  `c367dd6e9f56f9b9205b2302e80259029b614e71a267cf18027f7f0b717a57a0`;
+- serialized bytes: `513498`; and
 - declaration count: `435`.
 
 The compiler receipt and the six-ledger publication generation are distinct

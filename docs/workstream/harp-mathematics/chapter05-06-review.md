@@ -53,25 +53,82 @@ previous `checkpoint` mode left the alias target unexamined by the validator.
   `mise run crouzeix-textbook-publication` publishes and re-checks six ledgers.
 - `cargo test -p harp --test crouzeix_textbook --test foundations_contract
   --test foundations_narrative`: 296 + 9 + 14 passing, 0 failing.
-- Receipt identity is now `c4395c13…`, 512174 bytes, 435 declarations: 216
+- Receipt identity is now `c367dd6e…`, 513498 bytes, 435 declarations: 216
   public cards, 108 distinct solutions, 111 underlying providers.
 
-## Defects the author found and fixed
+## Defects found and fixed
 
-Three, all in prose, none in the compiled statements:
+### First pass: statement correspondence
 
 1. The Chapter 5 multiplicativity proof asserted alternation on the *rows* of
    `B`. That is false as stated: equal rows of `B` do not give equal rows of
    `AB`. The argument was rerun on columns, where column `j` of `AB` is `A`
-   applied to column `j` of `B`, and the transpose duality was moved into the
-   conceptual model so the column form is available before it is used.
+   applied to column `j` of `B`.
 2. The Chapter 5 E01 solution mis-stated the two two-by-two determinants.
-3. The Chapter 6 CFT-06-002 and CFT-06-003 statements listed the eigenvalue
-   family, the change-of-basis unit, and the conjugation identity, but omitted
-   that `SimpleDiagonalization` also carries injectivity of the eigenvalues.
-   That understated the hypothesis while claiming exact correspondence. Both
-   statements now name it, and both record that neither the displayed
-   derivation nor the maintained provider consumes it.
+3. CFT-06-002 and CFT-06-003 omitted that `SimpleDiagonalization` carries
+   injectivity of the eigenvalues, understating the hypothesis while claiming
+   exact correspondence.
+
+### Second pass: prose proofs against the actual Lean proofs
+
+The requirement is that every displayed proof narrates a checked derivation
+and that the reader is told which one. Auditing each card against the proof
+term its provider actually uses produced five more repairs.
+
+4. **CFT-06-006 described the wrong argument.** The prose said the
+   *discriminant* of the characteristic polynomial along the perturbation
+   segment is a nonzero polynomial in the parameter. The maintained proof uses
+   the **resultant** of the characteristic polynomial and its derivative, and
+   passes through separability and coprimality rather than a discriminant. It
+   also uses one specific perturbation target — the diagonal matrix with
+   entries `0, 1, …, n-1` — not an arbitrary distinct diagonal, and it takes
+   `δ = ε / (‖Δ - A‖ + 1)` where the `+1` is what keeps the bound usable when
+   `A = Δ`. The proof was rewritten to those three stages and now names
+   `simpleSpectrumBadPolynomial_ne_zero`,
+   `exists_small_simpleSpectrumParameter`, and
+   `hasDistinctEigenvalues_of_badPolynomial_eval_ne_zero`.
+5. **CFT-06-003 attributed the wrong step.** The prose derived
+   `χ_B = χ_D` from Chapter 5's determinant similarity invariance. The provider
+   uses `Matrix.charpoly_units_conj` directly, which is CFT-01-005's provider.
+   The proof was rewritten as the provider's three named steps, and
+   CFT-06-003's pedagogical prerequisites were corrected from `[CFT-06-002]` to
+   `[CFT-01-005, CFT-06-002]`. That change moves the pinned 216-row roster
+   digest, which was repinned.
+6. **CFT-05-001's displayed proof had no compiled counterpart.** The book
+   proves multiplicativity from the rank-one characterization; the provider
+   `Matrix.det_mul` expands Leibniz sums instead, so nothing checked the
+   displayed argument. `determinant_multiplicative_via_alternating` was added
+   to check it. It carries a caveat that is now stated in the chapter: the
+   library lemma it leans on, `Module.Basis.det_comp`, is itself proved from
+   `Matrix.det_mul`, so the compiled version is a reformulation and not a
+   logically independent second proof. Claiming otherwise would have been the
+   more serious error.
+7. **Three more cards displayed arguments their providers do not run.**
+   `Matrix.det_units_conj` commutes factors under the determinant with
+   `det_mul_right_comm` instead of forming three scalars; `Matrix.trace_mul_comm`
+   goes through transposes instead of the double sum; `Matrix.trace_units_conj`
+   uses the three-factor `trace_mul_cycle`. Each card now points at the local
+   declaration that does check the displayed argument — E03, E04, E06
+   respectively — and states the provider's different route.
+8. **Two generalizations were stated as though checked.** The `n`-dimensional
+   form of `det(I + tA) = 1 + t·tr A + …` and the bound
+   `dim⟨A⟩ ≤ deg m_A` are both true and neither is compiled here; the compiled
+   statements are the dimension-two identity and the bound by `deg χ_A`. Both
+   are now labeled. The Chapter 5 E02 solution also narrated a permutation
+   argument its checked proof does not run, and now says what the proof does.
+
+### Second pass: exercise strength
+
+9. Chapter 6 E02 asked for the polynomial action `p(J)` but checked only the
+   matrix power `J³`. It now states both and derives the first from the second
+   through `map_pow`.
+10. Chapter 6 E03 and E05 were pure repackagings of same-file support lemmas.
+    E03 now also derives that an eigenvector is annihilated when the polynomial
+    vanishes at its eigenvalue; E05 now also identifies the residual data
+    explicitly as `(X - 2)(J) = N`, checked entrywise.
+
+Every Lean line link in Part I was checked mechanically against the
+declaration it names; all resolve.
 
 ## Statement-by-statement correspondence check
 
