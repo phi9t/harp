@@ -22,6 +22,9 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 - Whole-book exact Lean correspondence: `incomplete`.
 - Coverage rows: 216, comprising 63 `proved-here`, 115
   `reexported-proof`, 32 `checkpoint`, and 6 `definition` rows.
+- Distinct proofs behind those rows: 208. 8 cards restate
+  a theorem another card already indexes; they share its provider. Run
+  `mise run textbook-counts` with `--audit` to list them.
 - Exact-correspondence rows: 132. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
@@ -44,9 +47,8 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 
 ## What the current route provides
 
-Chapters 1–9 now provide a reviewed Part I core plus the first three chapters of
-Part II, with 54 exact statement correspondences and 54 distinct Lean exercise
-solutions. The Chapter 1
+Chapters 1–10 now provide a reviewed core, with 60 exact statement
+correspondences and 60 distinct Lean exercise solutions. The Chapter 1
 characteristic-polynomial preview and Chapter 4's three scalar-invariant
 previews deliberately retain summary proofs and are now labelled forward
 references to their owning derivations in Chapters 5 and 6; keeping them as
