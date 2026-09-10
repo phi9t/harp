@@ -125,9 +125,8 @@ def matrix_norm_is_operator_norm := @matrix_norm_eq_euclidean_operator_norm
 
 /-- CFT-07-006: norms are nonnegative. -/
 theorem norm_is_nonnegative {E : Type*} [SeminormedAddGroup E] (x : E) : 0 ≤ ‖x‖ := by
-  have h : 0 ≤ ‖x‖ + ‖x‖ := by
-    calc (0 : ℝ) = ‖x - x‖ := by simp
-      _ ≤ ‖x‖ + ‖x‖ := by simp
+  have h : ‖x - x‖ ≤ ‖x‖ + ‖x‖ := norm_sub_le x x
+  rw [sub_self, norm_zero] at h
   linarith
 
 /-- Over the complex numbers the transpose and the conjugate transpose differ, so

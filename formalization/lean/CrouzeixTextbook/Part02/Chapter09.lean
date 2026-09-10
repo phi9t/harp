@@ -91,6 +91,21 @@ theorem shear_det_zero (α : ℂ) :
     (!![0, α; 0, 0] : Matrix (Fin 2) (Fin 2) ℂ).det = 0 := by
   simp [Matrix.det_fin_two_of]
 
+/-- The characteristic polynomial of the shear is `X ^ 2`. Zero is therefore its
+only characteristic root, which is the compiled content of the "every eigenvalue
+vanishes" step in this chapter's central counterexample. -/
+theorem shear_charpoly (α : ℂ) :
+    (!![0, α; 0, 0] : Matrix (Fin 2) (Fin 2) ℂ).charpoly = Polynomial.X ^ 2 := by
+  rw [Matrix.charpoly_fin_two, Matrix.trace_fin_two_of, Matrix.det_fin_two_of]
+  simp
+
+/-- Zero is the only eigenvalue of the shear, so its spectral radius is zero while
+its norm is `‖α‖`. -/
+theorem shear_spectrum_eq_zero (α μ : ℂ) :
+    μ ∈ spectrum ℂ (!![0, α; 0, 0] : Matrix (Fin 2) (Fin 2) ℂ) ↔ μ = 0 := by
+  rw [Matrix.mem_spectrum_iff_isRoot_charpoly, shear_charpoly]
+  simp [Polynomial.IsRoot]
+
 /-- The Gram matrix of the shear is diagonal with a single nonzero entry. -/
 theorem shear_conjTranspose_mul_self (α : ℂ) :
     (!![0, α; 0, 0] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ *
