@@ -120,7 +120,7 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `17d2adad0c68de5a8d237abcd23fd0813185e4cda399b16d8b8c6e2584e4a8e7`
+  `df00f929c60c56388170d925bbec58ea90d3185697c5d415bcadcf3ec7474e22`
 - Compiler receipt bytes: `541909`
 - Compiler receipt declarations: `459`
 
