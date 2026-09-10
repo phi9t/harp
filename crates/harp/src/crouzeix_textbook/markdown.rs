@@ -23,7 +23,10 @@ const MAX_COMPATIBILITY_BYTES: usize = 128 * 1024;
 const MAX_PACKET_DEPTH: usize = 8;
 const MAX_PACKET_ENTRIES: usize = 256;
 const MAX_PACKET_MARKDOWN_FILES: usize = 64;
-const MAX_PACKET_MARKDOWN_BYTES: usize = 1024 * 1024;
+// The 36-chapter book cannot fit in 1 MiB: the structured card format used from
+// Chapter 11 on runs 40-75 KiB per chapter, so the finished tree is ~1.8 MiB.
+// This stays a bounded defensive read limit, raised to leave headroom.
+const MAX_PACKET_MARKDOWN_BYTES: usize = 4 * 1024 * 1024;
 const INPUT_CODE: &str = "crouzeix-textbook.markdown.input";
 const ENCODING_CODE: &str = "crouzeix-textbook.markdown.encoding";
 const FRONTMATTER_CODE: &str = "crouzeix-textbook.markdown.frontmatter";

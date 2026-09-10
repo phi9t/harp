@@ -170,19 +170,19 @@ fn chapters_01_through_10_have_60_distinct_solutions_not_public_card_aliases() {
 }
 
 #[test]
-fn chapters_11_and_12_remain_pending_in_this_scoped_acceptance() {
+fn chapter_12_remains_pending_in_this_scoped_acceptance() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let pending_cards = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 11)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 12)
         .collect::<Vec<_>>();
     let pending_exercises = foundations_rows(&exercises, "exercises")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 11)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 12)
         .collect::<Vec<_>>();
-    assert_eq!(pending_cards.len(), 12);
-    assert_eq!(pending_exercises.len(), 12);
+    assert_eq!(pending_cards.len(), 6);
+    assert_eq!(pending_exercises.len(), 6);
     for row in pending_cards {
         assert_ne!(
             row["lean_correspondence_status"], "exact",
