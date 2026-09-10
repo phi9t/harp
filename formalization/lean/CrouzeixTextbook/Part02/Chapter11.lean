@@ -101,15 +101,18 @@ theorem linear_approximation_chain_kernel {R : Type*} [Semiring R]
     (v : Fin n → R) : B *ᵥ (A *ᵥ v) = (B * A) *ᵥ v :=
   Matrix.mulVec_mulVec v B A
 
-/-- The chain rule in coordinates is matrix multiplication: the Fréchet composite of
-two matrix actions has derivative the action of the product. This is the theorem the
-chapter exists to state. -/
+/-- Composing the two coordinate actions as bounded maps is the action of the matrix
+product. This is the bridge lemma the chain-rule theorem below rewrites with; it is
+an equality of bounded maps and mentions no derivative. -/
 theorem jacobianAction_comp (A : Matrix (Fin m) (Fin n) ℝ)
     (B : Matrix (Fin p) (Fin m) ℝ) :
     (jacobianAction B).comp (jacobianAction A) = jacobianAction (B * A) := by
   ext v i
   simp [Matrix.mulVec_mulVec]
 
+/-- The chain rule in coordinates is matrix multiplication: the Fréchet composite of
+two matrix actions has derivative the action of the product. This is the theorem the
+chapter exists to state. -/
 theorem chain_rule_in_coordinates_is_matrix_product
     (A : Matrix (Fin m) (Fin n) ℝ) (B : Matrix (Fin p) (Fin m) ℝ) (x : Fin n → ℝ) :
     HasFDerivAt ((fun w : Fin m → ℝ => B *ᵥ w) ∘ (fun w : Fin n → ℝ => A *ᵥ w))
@@ -123,10 +126,6 @@ section Hessian
 
 variable {n : ℕ}
 
-/-- The quadratic form attached to a matrix, in coordinates. -/
-noncomputable def quadraticForm (H : Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ) : ℝ :=
-  (H *ᵥ x) ⬝ᵥ x
-
 /-- For a symmetric `H` the two cross terms of the quadratic form's expansion agree,
 so the first-order term is `2 ⟪Hx, w⟫`. Symmetry is exactly what collapses them. -/
 theorem symmetric_cross_terms (H : Matrix (Fin n) (Fin n) ℝ)
@@ -136,9 +135,11 @@ theorem symmetric_cross_terms (H : Matrix (Fin n) (Fin n) ℝ)
     rw [bilinear_pairing_duality, hH, dotProduct_comm]
   rw [h]; ring
 
-/-- CFT-11-004: for a symmetric `H` the gradient of the quadratic form is `2Hx`, and
-the derivative of that gradient sends a direction `v` to `2Hv`. The Hessian-vector
-product is a matrix action, which is why it costs one linear solve and not `n`. -/
+/-- CFT-11-004: for a symmetric `H` the two cross terms of a quadratic expansion
+collapse to `(2Hx) ⬝ᵥ w`, the map `z ↦ 2Hz` is its own derivative, and that
+derivative sends `v` to `2Hv`. Read as curvature this says a Hessian-vector product
+is one matrix-vector product rather than `n` of them, but no quadratic form and no
+second derivative appear in the statement below. -/
 theorem hessian_vector_action (H : Matrix (Fin n) (Fin n) ℝ)
     (hH : H.transpose = H) (x v : Fin n → ℝ) :
     (∀ w : Fin n → ℝ,
