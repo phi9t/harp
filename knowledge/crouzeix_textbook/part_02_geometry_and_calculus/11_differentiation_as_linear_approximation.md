@@ -32,16 +32,18 @@ The device is worth stating carefully because two different things are usually
 called "the derivative". One is the linear map itself, an object with a domain
 and a codomain. The other is a rectangle of numbers, its matrix in coordinates.
 The chapter keeps them apart, because the two automatic-differentiation modes
-that Part II hands to the rest of the book differ precisely in which one they
-touch: forward mode applies the linear map, reverse mode applies its adjoint,
-and neither forms the rectangle.
+that Part II hands to the rest of the book both work with the linear map and
+neither forms the rectangle: forward mode applies the map to a tangent, reverse
+mode applies its adjoint to a cotangent. What separates the two modes is which
+side of the pairing they contract first; what separates both from naive
+differentiation is that the rectangle is never built.
 
 ## Conceptual model
 
 Fix normed spaces `E` and `F`. A map `f : E → F` is differentiable at `x` when
 there is a *bounded* linear `Df(x) : E →L F` with
 $$
-f(x+h)=f(x)+Df(x)h+r(h),\qquad \frac{\lVert r(h)\rVert}{\lVert h\rVert}\to0 .
+f(x+h)=f(x)+Df(x)h+r(h),\qquad \frac{\lVert r(h)\rVert}{\lVert h\rVert}\to0\ \text{ as } h\to0 .
 $$
 Three consequences organise the chapter. The map is unique, so "the" derivative
 is well defined. A bounded linear map is its own derivative, which is the base
@@ -75,8 +77,9 @@ of the duality card below.
 ## A note on the previous formalization
 
 Before this chapter was written the six items were re-exports of declarations in
-the `AutodiffGeometry` namespace. That namespace is not one the receipt exporter
-treats as maintained, so none of the six could carry a checked provider. The
+the `AutodiffGeometry` namespace — five of the six items; `linear_approximation_chain_kernel`
+was already a local theorem. That namespace is not one the receipt exporter
+treats as maintained, so none of the five could carry a checked provider. The
 deeper problem was mathematical: four of those five re-exported statements were
 proved by `rfl`. `AutodiffGeometry` *defines* `jvp` to be `matVec`, `vjp` to be
 `matVec` of the transpose, and `hvp` to be `matVec`, so the theorems asserting
@@ -166,7 +169,7 @@ Mathematical object: the `i`th coordinate of a covector, read as a directional d
 ML counterpart: the `i`th entry of a parameter gradient buffer.
 Exact transfer: the entry equals the derivative of the loss along the `i`th coordinate direction.
 Non-transfer: it does not say the buffer was produced by a differentiable computation, nor that coordinatewise finite differences approximate it at any given step size.
-Diagnostic: an entry that disagrees with a directional probe indicates a non-differentiable path, not a bookkeeping error.
+Diagnostic: an entry that disagrees with a directional probe means one of three things — a bug, truncation or rounding error at the chosen step size, or a genuinely non-differentiable path. The card does not distinguish them, and the non-transfer above is why it cannot.
 
 #### Pedagogical prerequisites
 
@@ -264,7 +267,7 @@ Review status: derivative clause and unfolding clause reviewed separately.
 Mathematical object: the derivative of a linear layer, applied to a tangent.
 ML counterpart: one forward-mode JVP through a dense layer.
 Exact transfer: the tangent propagates by the same matrix action the layer applies.
-Non-transfer: nothing here covers a nonlinear activation, a fused kernel, or the cost model that makes forward mode attractive only when inputs outnumber outputs.
+Non-transfer: nothing here covers a nonlinear activation, a fused kernel, or the cost model that decides between the modes. That model runs on pass counts: for an `m × n` Jacobian, forward mode costs one pass per input direction and reverse mode one pass per output, so forward mode is the cheaper of the two exactly when outputs outnumber inputs.
 Diagnostic: a JVP that varies with the base point signals that the layer was not linear.
 
 #### Pedagogical prerequisites
@@ -356,7 +359,7 @@ Mathematical object: the transpose action on a covector.
 ML counterpart: the backward pass of a dense layer.
 Exact transfer: the cotangent propagates by the transposed matrix.
 Non-transfer: nothing here covers checkpointing, accumulation order, or the numerical effect of doing the backward pass in reduced precision.
-Diagnostic: a backward pass disagreeing with the transpose indicates a wrong convention, most often a conjugation.
+Diagnostic: over the reals of this card, a backward pass disagreeing with the transpose is an index or shape error; conjugation only becomes a candidate once the parameters are complex, which is the boundary case above.
 
 #### Pedagogical prerequisites
 
@@ -387,9 +390,11 @@ card does not carry.
 
 #### Purpose
 
-Second-order methods need `Hv`, not `H`. This card derives the Hessian-vector
-product for a quadratic form and shows it is again a matrix action, so it costs
-one product rather than `n` of them.
+Second-order methods need `Hv`, not `H`. This card supplies the algebra behind
+the Hessian-vector product of a quadratic form and shows the product is a matrix
+action, so it costs one matrix-vector product rather than `n` of them. Read the
+Statement carefully: what is compiled is a pairing identity and a derivative of
+the *gradient map*, not a derivative of the quadratic form itself.
 
 #### Definitions and notation
 
@@ -398,14 +403,21 @@ For symmetric `H` write the quadratic form `q(x) = (Hx) ⬝ᵥ x`. Symmetry mean
 
 #### Statement
 
-For symmetric `H`, the first-order expansion of `q` at `x` has cross terms
-summing to `(2Hx) ⬝ᵥ w` for every `w`; the gradient map `z ↦ 2Hz` has Fréchet
-derivative `jacobianAction (2H)` at `x`; and that derivative sends `v` to `2Hv`.
+For symmetric `H`: first, `(Hx) ⬝ᵥ w + (Hw) ⬝ᵥ x = (2Hx) ⬝ᵥ w` for every `w`;
+second, the map `z ↦ 2Hz` has Fréchet derivative `jacobianAction (2H)` at `x`;
+third, that derivative sends `v` to `2Hv`.
+
+The Lean statement is exactly these three, in the coordinate pairing. It does not
+mention `q`, an expansion of `q`, or a derivative of `q`. The reading of the
+first clause as "the cross terms of `q`'s expansion" and of the second as "the
+derivative of `q`'s gradient map" is supplied by the Proof below and is not
+compiled; see the disclosure there.
 
 #### Hypothesis ledger
 
 Symmetry is used, and only in the first clause. Without it the two cross terms
-`(Hx) ⬝ᵥ w` and `(Hw) ⬝ᵥ x` are different numbers and the gradient is
+`(Hx) ⬝ᵥ w` and `(Hw) ⬝ᵥ x` need not agree — they still do for `x = w`, and for
+any pair killed by the antisymmetric part — and the gradient is
 `(H + H^{\mathsf T})x`, not `2Hx`. The second and third clauses hold for any `H`;
 they are stated at `2H` because that is the gradient the first clause produced.
 
@@ -423,28 +435,42 @@ lemma `symmetric_cross_terms` shows the two cross terms are equal: by
 `(Hw) ⬝ᵥ x = w ⬝ᵥ (H^{\mathsf T}x)`, which symmetry turns into `w ⬝ᵥ (Hx)` and
 commutativity of the pairing into `(Hx) ⬝ᵥ w`. Their sum is therefore
 `2\,(Hx) ⬝ᵥ w`, and pulling the scalar into the left argument writes it as
-`(2Hx) ⬝ᵥ w`. So the gradient of `q` at `x` is `2Hx`.
+`(2Hx) ⬝ᵥ w`. That collapse is the whole of the first compiled clause.
 
-The gradient map `z ↦ 2Hz` is linear, so it is its own derivative by the same
-base case as CFT-11-002 — and `2Hz = (2H)z` by `Matrix.smul_mulVec`, which is the
-rewriting the checked proof performs before applying it. The Hessian is therefore
-the matrix `2H`, and the Hessian-vector product is `2Hv`, one matrix action.
+**Uncompiled steps.** Three links in the paragraph above are read off rather than
+checked. The expansion of `q(x+w) - q(x)` into two cross terms plus
+`(Hw) ⬝ᵥ w` is not a compiled statement; that the remainder `(Hw) ⬝ᵥ w` is
+`o(\lVert w\rVert)` is not compiled; and the conclusion "the gradient of `q` at
+`x` is `2Hx`" is not compiled. No declaration in this chapter mentions `q` at
+all. The definition `quadraticForm` exists in the Lean source but no theorem uses
+it, so it carries no content; it is scheduled for removal.
 
-The chapter compiles this for a quadratic form only. That a general twice
-differentiable `f` has a symmetric second derivative is Clairaut's theorem and is
-not compiled here.
+What *is* compiled after the first clause is a statement about the map
+`z ↦ 2Hz` on its own terms: it is linear, so it is its own derivative by the same
+base case as CFT-11-002, and `2Hz = (2H)z` by `Matrix.smul_mulVec`, the rewriting
+the checked proof performs before applying it. Calling that map "the gradient of
+`q`" is the uncompiled reading; calling `2H` "the Hessian" is a further one, since
+no second-derivative statement is compiled anywhere in this chapter. What the
+third clause records is that evaluating the derivative is a matrix action — and
+its checked proof is `jacobianAction_apply`, which is `rfl`, followed by
+`Matrix.smul_mulVec`. That clause is an unfolding, like CFT-11-002's second.
+
+That a general twice differentiable `f` has a symmetric second derivative is
+Clairaut's theorem and is likewise not compiled here.
 
 #### Worked instance
 
 For `H = I` the form is `q(x) = x ⬝ᵥ x`, the gradient is `2x`, and the
-Hessian-vector product is `2v` at every point. Exercise E02 checks the cross-term
-collapse in this instance.
+Hessian-vector product is `2v` at every point — the first of those three read off
+the compiled clause, the other two through the uncompiled steps named above.
+Exercise E02 checks the cross-term collapse in this instance, and nothing more.
 
 #### Boundary case
 
 Drop symmetry and the first clause fails: for
-`H = \begin{bmatrix}0&1\\0&0\end{bmatrix}`, `x = e_0` and `w = e_1`, the cross
-terms are `1` and `0`, whose sum is not `2·1`. The quadratic form of a
+`H = \begin{bmatrix}0&1\\0&0\end{bmatrix}`, `x = e_1` and `w = e_0`, the cross
+terms `(Hx) ⬝ᵥ w` and `(Hw) ⬝ᵥ x` are `1` and `0`, so their sum is `1` while the
+clause demands `2·1 = 2`. The quadratic form of a
 non-symmetric `H` sees only its symmetric part.
 
 #### Historical context
@@ -472,7 +498,7 @@ Chapter 10's coordinate duality, matrix symmetry, and the linear base case above
 
 Public declaration: `CrouzeixTextbook.Part02.hessian_vector_action`.
 Formal mode: `proved-here`.
-Substantive provider: `CrouzeixTextbook.Part02.symmetric_cross_terms`, which itself rests on CFT-10-001; the derivative clauses use Mathlib's `ContinuousLinearMap.hasFDerivAt` after `Matrix.smul_mulVec`.
+Substantive provider: `CrouzeixTextbook.Part02.symmetric_cross_terms`, which itself rests on CFT-10-001, for the first clause; Mathlib's `ContinuousLinearMap.hasFDerivAt` after `Matrix.smul_mulVec` for the second. The third clause has no substantive provider: its checked proof is `jacobianAction_apply`, which is `rfl`, followed by `Matrix.smul_mulVec`.
 Readable type map: `H` is the symmetric matrix, `x` the base point, `v` the probe direction, and `w` the test direction of the cross-term clause.
 Code: [Lean proof](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean#L142).
 Compiler receipt: fresh canonical compiler output, not copied source metadata.
@@ -512,7 +538,7 @@ second, if some `B` satisfies `(Av) ⬝ᵥ y = v ⬝ᵥ (By)` for all `v` and `y
 
 None beyond finite index types. Uniqueness needs the identity for *all* `v` and
 `y`; a `B` agreeing on a proper subset of directions need not be the transpose,
-which is why the quantifier order matters.
+which is why the strength of the quantifier matters. It is not that a proper subset never suffices — the standard basis is a proper subset and the proof below uses exactly it — but that agreement must be assumed on all of `v` and `y` for the argument to have those instances available.
 
 #### Proof roadmap
 
@@ -540,7 +566,7 @@ duality, and finish by `simp` over the indicator sums.
 
 #### Worked instance
 
-For `A_{\lambda,\alpha}` the only backward matrix consistent with the forward
+For `A_{\lambda,\alpha}` with `\alpha \neq 0` the only backward matrix consistent with the forward
 action is the lower-triangular `A_{\lambda,\alpha}^{\mathsf T}`. Replacing it by
 `A_{\lambda,\alpha}` itself fails already at `v=e_1`, `y=e_0`, where the two
 sides read `\alpha` and `0`.
@@ -548,8 +574,10 @@ sides read `\alpha` and `0`.
 #### Boundary case
 
 Uniqueness is a statement about matrices over the real coordinate pairing.
-Change the pairing to a nondegenerate `G` and the adjoint becomes
-`G^{-1}A^{\mathsf T}G`; the transpose is distinguished by the choice of pairing,
+Change the pairings and the adjoint changes with them: with a nondegenerate `G`
+on the domain and `K` on the codomain, the adjoint of `A` is
+`G^{-1}A^{\mathsf T}K`, which collapses to the familiar `G^{-1}A^{\mathsf T}G`
+only for a square `A` paired the same way on both sides; the transpose is distinguished by the choice of pairing,
 not by the matrix.
 
 #### Historical context
@@ -566,7 +594,7 @@ Mathematical object: uniqueness of the adjoint with respect to a fixed pairing.
 ML counterpart: the assertion that a hand-written backward pass is correct if and only if it matches the transpose on all inputs.
 Exact transfer: agreement on every tangent-cotangent pair forces equality with the transpose, so a full pairing test is a complete check.
 Non-transfer: agreement on sampled directions does not force equality, so a passing spot-check of a custom gradient is not a proof.
-Diagnostic: a backward pass that matches on random probes but fails a basis-vector sweep has an entry-level error.
+Diagnostic: the residual `v ⬝ᵥ ((A^T - B) y)` is bilinear, so a genuinely random probe pair detects any error with probability one; what passes and should not is a small set of *hand-chosen* probes, such as all-ones vectors, which cancel sign-symmetric errors. A basis sweep is the cheap complete test.
 
 #### Pedagogical prerequisites
 
@@ -629,7 +657,9 @@ order of summation. This card does not run that argument — it names the librar
 result that does.
 
 The companion `chain_rule_in_coordinates_is_matrix_product` is where the two
-halves meet. It composes the two derivative statements of CFT-11-002 through the
+halves meet. It rewrites the goal by `jacobianAction_comp` and then composes the
+two linear base cases — taken straight from `ContinuousLinearMap.hasFDerivAt`,
+not by invoking CFT-11-002 — through the
 Fréchet chain rule and rewrites the resulting composite bounded map by
 `jacobianAction_comp`, the lemma that
 `jacobianAction B ∘L jacobianAction A = jacobianAction (BA)`. The conclusion is
@@ -640,14 +670,18 @@ That statement — not this card alone — is what the chapter exists to prove.
 
 Taking `B = A = A_{\lambda,\alpha}` gives
 `A_{\lambda,\alpha}^2 = A_{\lambda^2,\,2\lambda\alpha}`, so composing the
-layer with itself doubles the shear and squares the eigenvalue, exactly as
-Chapter 6's polynomial calculus predicted.
+layer with itself squares the eigenvalue and scales the shear by `2\lambda` —
+a doubling only in the unit-eigenvalue case `\lambda = 1`. This is exactly what
+Chapter 6's polynomial calculus predicts from `p(z) = z^2`, since
+`p'(\lambda) = 2\lambda`.
 
 #### Boundary case
 
 Matrix multiplication does not commute, and neither does composition: `BA` and
-`AB` are different derivatives of different composites, and for non-square shapes
-only one of them typechecks. The type discipline is doing real work here.
+`AB` are different derivatives of different composites. With `A` of shape
+`m × n` and `B` of shape `p × m`, `AB` typechecks only when `n = p`; when it
+does — take `A` of shape `2 × 3` and `B` of shape `3 × 2` — both products exist
+and are different sizes. The type discipline is doing real work here.
 
 #### Historical context
 
@@ -696,7 +730,9 @@ conclusion, which is the pairing the rest of Part II uses.
 **The squared length.** For `q(x) = x ⬝ᵥ x` on `\mathbb R^n`, expanding
 `q(x+w)` gives `x ⬝ᵥ x + 2(x ⬝ᵥ w) + w ⬝ᵥ w`. The linear term is `2(x ⬝ᵥ w)`, so
 the gradient is `2x`, and the quadratic remainder `w ⬝ᵥ w` is `O(\lVert w\rVert^2)`
-and therefore `o(\lVert w\rVert)`. This is CFT-11-004 at `H = I`, and the
+and therefore `o(\lVert w\rVert)`. CFT-11-004 at `H = I` supplies only the
+cross-term collapse; this remainder estimate is not compiled anywhere, here or
+there. The
 cross-term collapse is exercise E02.
 
 **A composite through the running family.** Let `f(w) = A_{\lambda,\alpha}w` and
@@ -715,7 +751,10 @@ Then `c(tv) = t\,c(v)` for every real `t` and every `v`, so along every line
 through the origin `c` is exactly linear and every directional derivative exists,
 with value `c(v)`. But `c(1,1) = 1/2` while `c(1,0) + c(0,1) = 1 + 0 = 1`. The
 directional derivative is not additive, so it is not a linear map, so `c` has no
-Fréchet derivative at the origin. Exercise E05 compiles all three steps.
+Fréchet derivative at the origin. Exercise E05 compiles homogeneity,
+non-additivity and non-differentiability; the existence of every directional
+derivative is compiled separately as `coneCusp_hasDerivAt_along` and is not one
+of the exercise's conjuncts.
 
 ## ML bridge
 
@@ -743,7 +782,8 @@ to Mathlib's `HasFDerivAt.unique`, `ContinuousLinearMap.hasFDerivAt` and
 pairing, and `jacobianAction` is the bridge, defined through
 `LinearMap.toContinuousLinearMap`, which is where finite-dimensionality is used.
 
-Two cards re-use Chapter 10 rather than reproving it: CFT-11-003 cites CFT-10-002
+Three cards re-use Chapter 10 rather than reproving it: CFT-11-004's
+`symmetric_cross_terms` rests on CFT-10-001, CFT-11-003 cites CFT-10-002
 and CFT-11-005 cites CFT-10-001. Their boundary paragraphs say so. The genuinely
 new coordinate content of the chapter is the uniqueness clause of CFT-11-005, the
 symmetric cross-term collapse behind CFT-11-004, the composite theorem
@@ -824,7 +864,10 @@ linearity, so `\lVert (f'-g')v\rVert = \lVert r_g(tv)-r_f(tv)\rVert/|t| \to 0`.
 The left side does not depend on `t`, so it is zero, and `v` was arbitrary, so
 `f' = g'`. The checked solution states both the equality of the bounded maps and
 their pointwise agreement, and obtains the first from Mathlib's
-`HasFDerivAt.unique` — which runs exactly the argument above — and the second by
+`HasFDerivAt.unique`. That library proof reaches the same conclusion through
+tangent-cone machinery rather than through the scaling argument displayed above,
+so the displayed argument is the reason the statement is true and not the proof
+that is checked. The second clause follows by
 rewriting with it.
 
 #### Lean correspondence
@@ -845,11 +888,14 @@ product, and record the underlying algebraic identity.
 
 #### Complete written solution
 
-By CFT-11-002 each of `w ↦ Aw` and `w ↦ Bw` is its own derivative. The Fréchet
+Each of `w ↦ Aw` and `w ↦ Bw` is its own derivative, by the linear base case
+CFT-11-002 states — though the checked solution reaches it through
+`ContinuousLinearMap.hasFDerivAt` directly rather than by citing that card. The Fréchet
 chain rule composes them, giving the composite derivative
 `jacobianAction B ∘L jacobianAction A`. That composite bounded map is
 `jacobianAction (BA)`: applying both sides to `v` gives `B(Av)` and `(BA)v`,
-equal by the chain kernel, and two bounded maps agreeing everywhere are equal.
+equal by `Matrix.mulVec_mulVec`, the library result CFT-11-006 names, and two
+bounded maps agreeing everywhere are equal.
 The checked solution states the derivative conclusion and the algebraic identity
 as two conjuncts, citing `chain_rule_in_coordinates_is_matrix_product` and
 CFT-11-006 respectively. The remainder-estimate argument for the chain rule
@@ -886,14 +932,19 @@ Second, `c` is not additive on directions: `c(1,1) = 1/(1+1) = 1/2`, while
 `c(1,0) = 1` and `c(0,1) = 0`, so `c(1,1) \neq c(1,0)+c(0,1)`.
 
 Third, suppose `c` had a Fréchet derivative `L` at the origin. Composing `L` with
-the line `t ↦ tv` shows `t ↦ c(tv)` has derivative `Lv` at `0`; by the second
+the line `t ↦ tv` shows `t ↦ c(tv)` has derivative `Lv` at `0`; by the first
 step it also has derivative `c(v)`; uniqueness of the derivative gives
 `Lv = c(v)` for every `v`. But `L` is linear and `c` is not additive, and
 evaluating `L` at `(1,1) = (1,0)+(0,1)` contradicts the previous paragraph. So no
 such `L` exists.
 
-The checked solution states all three conclusions as conjuncts. The third is
-compiled: `coneCusp_not_frechet_differentiable` runs exactly the argument above,
+The checked solution states homogeneity, non-additivity and non-differentiability
+as its three conjuncts. The existence of every directional derivative, which the
+first displayed step concludes, is compiled separately as
+`coneCusp_hasDerivAt_along` and is used inside the third conjunct's proof rather
+than restated by the exercise. The individual values `1/2`, `1` and `0` are read
+off the definition; what is compiled is the inequation between them. The third
+conjunct is compiled: `coneCusp_not_frechet_differentiable` runs exactly the argument above,
 composing through `ContinuousLinearMap.smulRight` for the line, using
 `HasFDerivAt.unique` for the uniqueness step, and finishing with `map_add`.
 
