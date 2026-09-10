@@ -131,7 +131,7 @@ term at `j = i` is `g_i·1`, so the sum is `g_i`; in Lean this is `simp` with
 
 For the second clause, homogeneity of the pairing in its right argument gives
 $$
-g ⬝ᵥ (t e_i) = t\,(g ⬝ᵥ e_i) = t\,g_i ,
+g\cdot(t\,e_i) = t\,(g\cdot e_i) = t\,g_i ,
 $$
 using `dotProduct_smul` and then the first clause. So the function of `t` is
 literally `t ↦ t·g_i`, whose derivative at `0` is `g_i` by the product rule for a
@@ -530,7 +530,7 @@ and instantiate at `v = e_i`, `y = e_j`. The left side is `(Ae_i) ⬝ᵥ e_j`, w
 selects the `(j,i)` entry of `A`. Rewriting the left side by the first clause
 turns the hypothesis into
 $$
-e_i ⬝ᵥ (A^{\mathsf T}e_j) = e_i ⬝ᵥ (Be_j),
+e_i\cdot(A^{\mathsf T}e_j) = e_i\cdot(Be_j),
 $$
 and pairing with `e_i` selects the `i`th slot of each side: `A^{\mathsf T}_{ij}`
 on the left and `B_{ij}` on the right. Since `i` and `j` were arbitrary,
@@ -919,7 +919,7 @@ Forward mode produces `Av` from a tangent `v`; reverse mode produces `A^{\mathsf
 from a cotangent `y`. Pairing either result against the other argument gives the
 same number:
 $$
-(Av) ⬝ᵥ y = v ⬝ᵥ (A^{\mathsf T}y).
+(Av)\cdot y = v\cdot(A^{\mathsf T}y).
 $$
 So the two modes are two ways to evaluate one bilinear quantity, and which mode is
 cheaper depends only on which side is contracted first — the whole cost argument
