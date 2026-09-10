@@ -47,6 +47,28 @@ def load(root: Path):
     return coverage["items"], exercises["exercises"]
 
 
+def provider(card):
+    """The declaration whose proof a card actually rests on.
+
+    This is the identity key for a card's mathematical content. The type
+    fingerprint is not: it hashes a pretty-printed type, so two aliases of one
+    theorem differ whenever their universe metavariables are named differently,
+    and two genuinely independent proofs of the same statement collide. Both
+    failure modes are present in this roster.
+    """
+    declaration = card["lean_declaration"]
+    return declaration.get("underlying_declaration") or declaration["name"]
+
+
+def shared_providers(cards):
+    """Cards grouped by provider, keeping only the providers backing several."""
+    grouped = collections.defaultdict(list)
+    for card in cards:
+        if card.get("lean_declaration"):
+            grouped[provider(card)].append(card["item_id"])
+    return {name: ids for name, ids in grouped.items() if len(ids) > 1}
+
+
 def tally(cards, problems):
     lean = collections.Counter(row["lean_correspondence_status"] for row in cards)
     prose = collections.Counter(row["prose_proof_status"] for row in cards)
@@ -70,9 +92,23 @@ def tally(cards, problems):
         "solved_chapters": solved,
     }
     counts["unsolved"] = len(problems) - counts["solved"]
+    declared = [row for row in cards if row.get("lean_declaration")]
+    counts["distinct_proofs"] = len({provider(row) for row in declared})
+    counts["restating_cards"] = len(declared) - counts["distinct_proofs"]
     # The first chapter with no checked solutions is the pending boundary.
     pending = [c for c in range(1, CHAPTERS + 1) if c not in solved]
     counts["first_pending"] = pending[0] if pending else CHAPTERS + 1
+    # The completed prefix is every chapter before the pending boundary.
+    prefix = range(1, counts["first_pending"])
+    counts["prefix_last"] = counts["first_pending"] - 1
+    counts["prefix_exact"] = sum(
+        1
+        for row in cards
+        if row["chapter"] in prefix and row["lean_correspondence_status"] == "exact"
+    )
+    counts["prefix_solved"] = sum(
+        1 for row in problems if row["chapter"] in prefix and row.get("lean_solution")
+    )
     return counts
 
 
@@ -158,11 +194,33 @@ def render_status(text: str, counts, identity) -> str:
     )
     text = substitute(
         text,
+        r"- Distinct proofs behind those rows: \d+\. [^\n]*\n  [^\n]*\n  [^\n]*",
+        lambda _m: (
+            f"- Distinct proofs behind those rows: {counts['distinct_proofs']}. "
+            f"{counts['restating_cards']} cards restate\n"
+            "  a theorem another card already indexes; they share its provider. Run\n"
+            "  `mise run textbook-counts` with `--audit` to list them."
+        ),
+        "status_and_scope distinct-proof line",
+    )
+    text = substitute(
+        text,
         # The wrap point moves as chapters are added, so match the whole bullet
         # rather than a fixed line break. Non-greedy to the first terminator.
         r"- Distinct checked exercise solutions:[\s\S]*?solution yet\.",
         lambda _m: solved_chapters_bullet(counts),
         "status_and_scope solved-chapters line",
+    )
+    text = substitute(
+        text,
+        r"Chapters 1–\d+ now provide a reviewed core, with \d+ exact statement\n"
+        r"correspondences and \d+ distinct Lean exercise solutions\.",
+        lambda _m: (
+            f"Chapters 1–{counts['prefix_last']} now provide a reviewed core, with "
+            f"{counts['prefix_exact']} exact statement\ncorrespondences and "
+            f"{counts['prefix_solved']} distinct Lean exercise solutions."
+        ),
+        "status_and_scope completed-prefix sentence",
     )
     text = substitute(
         text,
@@ -349,6 +407,11 @@ def main(argv=None) -> int:
     parser.add_argument("--root", default=".", type=Path)
     parser.add_argument("--receipt", required=True, type=Path)
     parser.add_argument("--check", action="store_true", help="report drift without writing")
+    parser.add_argument(
+        "--audit",
+        action="store_true",
+        help="list the cards that restate a theorem another card already indexes",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -356,6 +419,23 @@ def main(argv=None) -> int:
     except SurfaceError as error:
         print(f"textbook count projection failed: {error}", file=sys.stderr)
         return 2
+
+    if args.audit:
+        cards, _ = load(args.root.resolve())
+        by_id = {row["item_id"]: row for row in cards}
+        shared = shared_providers(cards)
+        print(
+            f"{counts['cards']} indexed cards rest on {counts['distinct_proofs']} distinct "
+            f"proofs; {counts['restating_cards']} cards restate another."
+        )
+        print(
+            "Keyed on the provider, not the type fingerprint: independent proofs of "
+            "the same\nstatement share a fingerprint and must not be reported here."
+        )
+        for name, ids in sorted(shared.items(), key=lambda item: item[1][0]):
+            chapters = ", ".join(f"{i} (ch{by_id[i]['chapter']})" for i in ids)
+            print(f"  {name.split('.')[-1]}: {chapters}")
+        return 0
 
     stale = [path for path, text in rendered.items() if path.read_text() != text]
     if args.check:

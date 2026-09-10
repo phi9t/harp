@@ -31,7 +31,11 @@ def card(chapter, index, *, lean, prose, mode, declared=True):
         "formal_mode": mode,
     }
     if declared:
-        row["lean_declaration"] = {"name": f"CrouzeixTextbook.card_{chapter}_{index}"}
+        row["lean_declaration"] = {
+            "name": f"CrouzeixTextbook.card_{chapter}_{index}",
+            "underlying_declaration": None,
+            "type_sha256": f"{chapter:02}{index:02}" + "0" * 60,
+        }
     return row
 
 
@@ -83,6 +87,55 @@ class InventoryTotalsTests(unittest.TestCase):
         # summary column: six from chapter 10, and NOT chapter 28's row.
         self.assertIn("**6**", totals[0])
         self.assertNotIn("**7**", totals[0])
+
+
+class ProviderIdentityTests(unittest.TestCase):
+    """The identity key is the provider, and the type fingerprint is not.
+
+    Both failure modes below are present in the real roster, so keying on the
+    fingerprint would be wrong in both directions at once.
+    """
+
+    def test_two_aliases_of_one_theorem_count_once_despite_differing_fingerprints(self):
+        # A pretty-printed type carries universe metavariable names, so two
+        # aliases of the same theorem hash differently. They are still one proof.
+        alias_a = card(6, 1, lean="exact", prose="reconstructible", mode="reexported-proof")
+        alias_a["lean_declaration"]["underlying_declaration"] = "Lib.theorem_x"
+        alias_a["lean_declaration"]["type_sha256"] = "a" * 64
+        alias_b = card(19, 6, lean="unmapped", prose="summary", mode="reexported-proof")
+        alias_b["lean_declaration"]["underlying_declaration"] = "Lib.theorem_x"
+        alias_b["lean_declaration"]["type_sha256"] = "b" * 64
+        counts = sync.tally([alias_a, alias_b], [])
+        self.assertEqual(counts["distinct_proofs"], 1)
+        self.assertEqual(counts["restating_cards"], 1)
+        self.assertEqual(list(sync.shared_providers([alias_a, alias_b])), ["Lib.theorem_x"])
+
+    def test_independent_proofs_of_one_statement_count_separately(self):
+        # Two routes reaching the same theorem share a type. Reporting them as
+        # duplication would invert the book's independence claim.
+        route_a = card(35, 5, lean="exact", prose="reconstructible", mode="proved-here")
+        route_b = card(36, 6, lean="exact", prose="reconstructible", mode="proved-here")
+        for row, fingerprint in ((route_a, "c" * 64), (route_b, "c" * 64)):
+            row["lean_declaration"]["type_sha256"] = fingerprint
+            row["lean_declaration"]["underlying_declaration"] = None
+        counts = sync.tally([route_a, route_b], [])
+        self.assertEqual(counts["distinct_proofs"], 2)
+        self.assertEqual(counts["restating_cards"], 0)
+        self.assertEqual(sync.shared_providers([route_a, route_b]), {})
+
+
+class CompletedPrefixTests(unittest.TestCase):
+    def test_prefix_stops_at_the_pending_boundary(self):
+        cards = [card(1, 1, lean="exact", prose="reconstructible", mode="proved-here")]
+        cards += [card(3, 1, lean="exact", prose="reconstructible", mode="proved-here")]
+        problems = [problem(1, 1, solved=True), problem(3, 1, solved=True)]
+        counts = sync.tally(cards, problems)
+        # Chapter 2 has no solutions, so the completed prefix is Chapter 1 alone
+        # and Chapter 3's exact row must not be counted into it.
+        self.assertEqual(counts["first_pending"], 2)
+        self.assertEqual(counts["prefix_last"], 1)
+        self.assertEqual(counts["prefix_exact"], 1)
+        self.assertEqual(counts["prefix_solved"], 1)
 
 
 class SubstitutionTests(unittest.TestCase):
