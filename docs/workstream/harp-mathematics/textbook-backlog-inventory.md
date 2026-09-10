@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 11–24: the exact remaining backlog
+## Chapters 12–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 11 | `raf4` | 5 | 1 | 6 | 6 | 6 |
 | 12 | `r60f` | 1 | 5 | 6 | 6 | 6 |
 | 13 | `fx6b` | 1 | 5 | 6 | 6 | 6 |
 | 14 | `2700` | 2 | 4 | 6 | 6 | 6 |
@@ -76,18 +75,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **11–24** | | **32** | **52** | **84** | **84** | **84** |
+| **12–24** | | **27** | **51** | **78** | **78** | **78** |
 
-### Per-identity backlog, Chapters 11–24
+### Per-identity backlog, Chapters 12–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-11-001 | checkpoint | summary | checkpoint | `Part02.gradient_component_contract` | CFT-11-E01 unsolved |
-| CFT-11-002 | checkpoint | summary | checkpoint | `Part02.derivative_action_is_jvp` | CFT-11-E02 unsolved |
-| CFT-11-003 | checkpoint | summary | checkpoint | `Part02.derivative_pullback_is_vjp` | CFT-11-E03 unsolved |
-| CFT-11-004 | checkpoint | summary | checkpoint | `Part02.hessian_vector_action` | CFT-11-E04 unsolved |
-| CFT-11-005 | checkpoint | summary | checkpoint | `Part02.jvp_vjp_duality` | CFT-11-E05 unsolved |
-| CFT-11-006 | unmapped | summary | proved-here | `Part02.linear_approximation_chain_kernel` | CFT-11-E06 unsolved |
 | CFT-12-001 | checkpoint | summary | checkpoint | `Part02.real_inner_complex_coordinates` | CFT-12-E01 unsolved |
 | CFT-12-002 | unmapped | summary | reexported-proof | `Part02.area_form_quarter_turn` | CFT-12-E02 unsolved |
 | CFT-12-003 | unmapped | summary | reexported-proof | `Part02.oriented_radial_tangent_positive` | CFT-12-E03 unsolved |
