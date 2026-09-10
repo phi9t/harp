@@ -85,6 +85,15 @@ When delegation is unavailable, the implementer performs an author self-review, 
 
 The deferred reviews are then a single explicit obligation of the package they belong to, discharged in one pass over the chapters that accumulated. A package is not complete while any of its chapters carries a deferred review, and the count of deferred reviews is part of the package's exit report.
 
+**Obligation 8 is not self-applicable.** The Chapters 5–10 independent pass, recorded in [the Chapters 5–10 independent review](../../workstream/harp-mathematics/chapters05-10-independent-review.md), found five blocking defects and about thirty smaller ones in six chapters whose author self-reviews had passed. Every correspondence finding in that pass was an obligation 8 violation — a displayed argument cited to a provider that runs a different one — found by a reviewer and missed by the author who had applied obligation 8 to the same chapters days earlier. The failure mode is structural, not incidental: a self-review re-checks the author's claims against the author's own reading of the providers, so a misreading survives both passes. Two of the defects the reviewers themselves missed were found only by a third reading against a different question (a forward reference to a chapter that does not exist, and an opening claim contradicted by an earlier card).
+
+Two consequences for the remaining chapters:
+
+- Do not report a chapter as meeting obligation 8 on the strength of a self-review. Report it as *self-reviewed, obligation 8 unverified*, and say so in the chapter's exit line.
+- Run the independent pass over a package while its chapters are still cheap to change. Four of the five blocking defects above had already been committed and pushed, and one was a false mathematical claim in reader-facing prose. The cost of the delay was not rework; it was the interval during which the book asserted something untrue.
+
+Reviewers must be barred from Lean builds — the shared Lake cache corrupts under concurrent builds — and from `docs/workstream/harp-mathematics/`, so they cannot anchor on the self-reviews they are meant to check.
+
 ### Known structural walls
 
 These are correct behaviors of the verification machinery, not defects. Each has cost a build cycle when discovered late; check for them before writing a card.
