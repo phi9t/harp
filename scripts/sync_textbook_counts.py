@@ -158,7 +158,9 @@ def render_status(text: str, counts, identity) -> str:
     )
     text = substitute(
         text,
-        r"- Distinct checked exercise solutions: six each in Chapters [^.]*\. The other \d+ exercise rows have\n?\s*no\n?\s*claimed formal solution yet\.",
+        # The wrap point moves as chapters are added, so match the whole bullet
+        # rather than a fixed line break. Non-greedy to the first terminator.
+        r"- Distinct checked exercise solutions:[\s\S]*?solution yet\.",
         lambda _m: solved_chapters_bullet(counts),
         "status_and_scope solved-chapters line",
     )

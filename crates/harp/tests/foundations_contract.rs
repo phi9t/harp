@@ -72,11 +72,11 @@ fn chapters_01_through_12_preserve_72_card_and_exercise_identities() {
 }
 
 #[test]
-fn chapters_01_through_09_publish_exact_cards_with_explicit_proof_boundaries() {
+fn chapters_01_through_10_publish_exact_cards_with_explicit_proof_boundaries() {
     let coverage = contract("coverage.json");
     for row in foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 9)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 10)
     {
         let id = row["item_id"].as_str().unwrap();
         assert_eq!(row["publication_status"], "active", "{id}");
@@ -124,7 +124,7 @@ fn chapters_01_through_09_publish_exact_cards_with_explicit_proof_boundaries() {
 }
 
 #[test]
-fn chapters_01_through_09_have_54_distinct_solutions_not_public_card_aliases() {
+fn chapters_01_through_10_have_60_distinct_solutions_not_public_card_aliases() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let card_types = coverage["items"]
@@ -134,7 +134,7 @@ fn chapters_01_through_09_have_54_distinct_solutions_not_public_card_aliases() {
         .map(|row| row["lean_declaration"]["type_sha256"].as_str().unwrap())
         .collect::<BTreeSet<_>>();
     let mut solution_types = BTreeSet::new();
-    for chapter in 1..=9 {
+    for chapter in 1..=10 {
         for index in 1..=6 {
             let id = format!("CFT-{chapter:02}-E{index:02}");
             let row = exercises["exercises"]
@@ -166,23 +166,23 @@ fn chapters_01_through_09_have_54_distinct_solutions_not_public_card_aliases() {
             );
         }
     }
-    assert_eq!(solution_types.len(), 54);
+    assert_eq!(solution_types.len(), 60);
 }
 
 #[test]
-fn chapters_10_through_12_remain_pending_in_this_scoped_acceptance() {
+fn chapters_11_and_12_remain_pending_in_this_scoped_acceptance() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
     let pending_cards = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 10)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 11)
         .collect::<Vec<_>>();
     let pending_exercises = foundations_rows(&exercises, "exercises")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 10)
+        .filter(|row| row["chapter"].as_u64().unwrap() >= 11)
         .collect::<Vec<_>>();
-    assert_eq!(pending_cards.len(), 18);
-    assert_eq!(pending_exercises.len(), 18);
+    assert_eq!(pending_cards.len(), 12);
+    assert_eq!(pending_exercises.len(), 12);
     for row in pending_cards {
         assert_ne!(
             row["lean_correspondence_status"], "exact",
@@ -201,11 +201,11 @@ fn chapters_10_through_12_remain_pending_in_this_scoped_acceptance() {
 }
 
 #[test]
-fn chapters_01_through_09_meet_the_labeled_editorial_contract() {
+fn chapters_01_through_10_meet_the_labeled_editorial_contract() {
     let coverage = contract("coverage.json");
     let paths = foundations_rows(&coverage, "items")
         .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() <= 9)
+        .filter(|row| row["chapter"].as_u64().unwrap() <= 10)
         .map(|row| workspace_root().join(row["prose_path"].as_str().unwrap()))
         .collect::<BTreeSet<_>>();
     let references = paths.iter().map(PathBuf::as_path).collect::<Vec<_>>();

@@ -2025,21 +2025,21 @@
         "CFT-07-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.bilinear_pairing_duality",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 7,
-        "column": 5,
+        "line": 17,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "325fadd7f4e6fd7c6d88d850c43709bdf01fca68d1e4d08a970b2ee9b2ec178e",
+        "type_sha256": "6884726676e4a14f6b34357291607cf7794d21aa587dee7cf73f59cffbd2834e",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2063,21 +2063,21 @@
         "CFT-10-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.transpose_coordinate_action",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 9,
-        "column": 5,
+        "line": 26,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "7528fa69e6eea3e93c32de0b00658edd6e567f8ad2b15b412ec5db8441677c72",
+        "type_sha256": "60b4313253a8f6683bca27f1c2e488225e143e717b862af1e0b7007e28a43597",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2101,18 +2101,18 @@
         "CFT-10-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.determinant_top_degree_multiplicative",
         "underlying_declaration": "CrouzeixTextbook.Part01.determinant_multiplicative",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 11,
+        "line": 33,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "6058f95a69e86f0a4518bc0b39f4ff3ddaa06cf8ff67a926c4f8a3c886442782",
@@ -2139,18 +2139,18 @@
         "CFT-10-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.alternating_diagonal_volume",
         "underlying_declaration": "CrouzeixTextbook.Part01.determinant_diagonal",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 13,
+        "line": 36,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "ee2baf8276199aa04bec9cea371cbcb2343ee4f983a2f77e201b923cf481e4f2",
@@ -2177,18 +2177,18 @@
         "CFT-10-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.contraction_trace_cyclic",
         "underlying_declaration": "CrouzeixTextbook.Part01.trace_cyclic",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 15,
+        "line": 39,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "c3d1bc2a506659b801d7c329cc9d56d8529acfaccc291173b6694c8f4bfddf3a",
@@ -2214,18 +2214,18 @@
         "CFT-10-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-multilinear-core-2026-09-09"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.wedge_sign_kernel",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean",
-        "line": 17,
+        "line": 42,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "3afadc52a70e2271ecae7c75c045a9e13623ef5ad1f46a8ca1a2a059b97814aa",

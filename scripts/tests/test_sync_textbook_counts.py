@@ -98,6 +98,24 @@ class SubstitutionTests(unittest.TestCase):
             sync.substitute(text, r"- Exact-correspondence rows: \d+\.", "x", "demo")
 
 
+class BulletIdempotenceTests(unittest.TestCase):
+    """The projection must be able to re-read what it just wrote."""
+
+    def test_the_bullet_pattern_survives_every_wrap_point(self):
+        # The wrap point moves as chapters are added, so a pattern pinned to a
+        # particular line break matches its own output only by luck.
+        pattern = r"- Distinct checked exercise solutions:[\s\S]*?solution yet\."
+        for counts in (
+            {"solved_chapters": [1], "unsolved": 210},
+            {"solved_chapters": list(range(1, 12)), "unsolved": 150},
+            {"solved_chapters": list(range(1, 31)), "unsolved": 36},
+        ):
+            bullet = sync.solved_chapters_bullet(counts)
+            document = f"- Indexed exercises: 216.\n{bullet}\n- Active Lean target: `x`.\n"
+            rewritten = sync.substitute(document, pattern, lambda _m: bullet, "bullet")
+            self.assertEqual(rewritten, document)
+
+
 class ReceiptIdentityTests(unittest.TestCase):
     def test_identity_is_the_digest_of_the_exact_bytes(self):
         with TemporaryDirectory() as tmp:
