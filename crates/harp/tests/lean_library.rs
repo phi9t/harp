@@ -170,6 +170,7 @@ fn write_fake_all_mathlib_artifacts(root: &Path) {
             "Mathlib.LinearAlgebra.Matrix.ToLin",
             "Mathlib.LinearAlgebra.Matrix.Trace",
             "Mathlib.LinearAlgebra.Quotient.Basic",
+            "Mathlib.LinearAlgebra.TensorProduct.Basic",
             "Mathlib.Lean.CoreM",
             "Mathlib.MeasureTheory.Function.Holder",
             "Mathlib.MeasureTheory.Function.L2Space",
