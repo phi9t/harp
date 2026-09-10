@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 10–24: the exact remaining backlog
+## Chapters 11–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 10 | `0wc6` | 2 | 4 | 6 | 6 | 6 |
 | 11 | `raf4` | 5 | 1 | 6 | 6 | 6 |
 | 12 | `r60f` | 1 | 5 | 6 | 6 | 6 |
 | 13 | `fx6b` | 1 | 5 | 6 | 6 | 6 |
@@ -77,18 +76,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **10–24** | | **34** | **56** | **90** | **90** | **90** |
+| **11–24** | | **32** | **52** | **84** | **84** | **84** |
 
-### Per-identity backlog, Chapters 10–24
+### Per-identity backlog, Chapters 11–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-10-001 | checkpoint | summary | checkpoint | `Part02.bilinear_pairing_duality` | CFT-10-E01 unsolved |
-| CFT-10-002 | checkpoint | summary | checkpoint | `Part02.transpose_coordinate_action` | CFT-10-E02 unsolved |
-| CFT-10-003 | unmapped | summary | reexported-proof | `Part02.determinant_top_degree_multiplicative` | CFT-10-E03 unsolved |
-| CFT-10-004 | unmapped | summary | reexported-proof | `Part02.alternating_diagonal_volume` | CFT-10-E04 unsolved |
-| CFT-10-005 | unmapped | summary | reexported-proof | `Part02.contraction_trace_cyclic` | CFT-10-E05 unsolved |
-| CFT-10-006 | unmapped | summary | proved-here | `Part02.wedge_sign_kernel` | CFT-10-E06 unsolved |
 | CFT-11-001 | checkpoint | summary | checkpoint | `Part02.gradient_component_contract` | CFT-11-E01 unsolved |
 | CFT-11-002 | checkpoint | summary | checkpoint | `Part02.derivative_action_is_jvp` | CFT-11-E02 unsolved |
 | CFT-11-003 | checkpoint | summary | checkpoint | `Part02.derivative_pullback_is_vjp` | CFT-11-E03 unsolved |

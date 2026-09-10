@@ -26,12 +26,12 @@ Next: [[knowledge/crouzeix_textbook/part_06_constant_two_routes/36_harp_finite_h
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 95 |
-| reconstructible prose rows | 119 |
-| exact correspondence rows | 126 |
-| unmapped correspondence rows | 56 |
-| solved exercises | 126 |
-| unresolved exercises | 90 |
+| summary prose rows | 89 |
+| reconstructible prose rows | 125 |
+| exact correspondence rows | 132 |
+| unmapped correspondence rows | 52 |
+| solved exercises | 132 |
+| unresolved exercises | 84 |
 
 ## Opening problem
 

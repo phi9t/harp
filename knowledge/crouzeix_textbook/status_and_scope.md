@@ -17,17 +17,17 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 ## Current state
 
 - Publication status: all 36 chapters are `active`.
-- Proof-exposition status: 119 coverage rows are now `reconstructible`; 95 remain `summary` and two other
+- Proof-exposition status: 125 coverage rows are now `reconstructible`; 89 remain `summary` and two other
   definition rows are `not-applicable`.
 - Whole-book exact Lean correspondence: `incomplete`.
-- Coverage rows: 216, comprising 61 `proved-here`, 115
-  `reexported-proof`, 34 `checkpoint`, and 6 `definition` rows.
-- Exact-correspondence rows: 126. The other rows remain `checkpoint` or
+- Coverage rows: 216, comprising 63 `proved-here`, 115
+  `reexported-proof`, 32 `checkpoint`, and 6 `definition` rows.
+- Exact-correspondence rows: 132. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 90 exercise rows have no
-  claimed formal solution yet.
+  10, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 84 exercise rows
+  have no claimed formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
 ## Contract snapshot
@@ -35,12 +35,12 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 95 |
-| reconstructible prose rows | 119 |
-| exact correspondence rows | 126 |
-| unmapped correspondence rows | 56 |
-| solved exercises | 126 |
-| unresolved exercises | 90 |
+| summary prose rows | 89 |
+| reconstructible prose rows | 125 |
+| exact correspondence rows | 132 |
+| unmapped correspondence rows | 52 |
+| solved exercises | 132 |
+| unresolved exercises | 84 |
 
 ## What the current route provides
 
@@ -53,7 +53,7 @@ references to their owning derivations in Chapters 5 and 6; keeping them as
 previews is what keeps the teaching order acyclic, and they stay outside the
 completed-proof count. The two definition cards have no theorem-proof
 obligation. This acceptance does not complete the foundations wave or the book:
-Chapters 10–24 still hold 90 unsolved exercises and 90 rows whose
+Chapters 11–24 still hold 84 unsolved exercises and 84 rows whose
 correspondence is `checkpoint` or `unmapped`.
 
 Parts I--III rebuild structural linear algebra, Euclidean geometry, analysis,
@@ -118,12 +118,12 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `79814d2ee86fef2fee2863084ca22cd7ab2443bfc73d795218d401cd8d359f4b`
-- Compiler receipt bytes: `535652`
-- Compiler receipt declarations: `453`
+  `17d2adad0c68de5a8d237abcd23fd0813185e4cda399b16d8b8c6e2584e4a8e7`
+- Compiler receipt bytes: `541909`
+- Compiler receipt declarations: `459`
 
-Those 453 unique declarations comprise 216 public coverage declarations,
-126 distinct exercise solutions, and the 111 additional underlying proof
+Those 459 unique declarations comprise 216 public coverage declarations,
+132 distinct exercise solutions, and the 111 additional underlying proof
 providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
 exact serialized output accepted by the Rust validator. It is not the
 six-ledger publication generation: that separate digest hashes the rendered
