@@ -23,18 +23,22 @@ Next: [[knowledge/crouzeix_textbook/part_02_geometry_and_calculus/08_positive_op
 
 ## Opening problem
 
-Part I never measured anything. A linear map was compared with another linear
+Part I measured almost nothing. A linear map was compared with another linear
 map, a subspace with another subspace, but no vector had a length and no two
-vectors had an angle. Chapter 6 closed with a warning that depends on exactly
+vectors had an angle; the single exception was CFT-06-006, which stated a
+density result in a norm it borrowed from this chapter. Chapter 6 closed with a warning that depends on exactly
 that gap: the spectrum of $A_{\lambda,\alpha}$ is blind to $\alpha$, yet the
 matrix visibly stretches. To say *how much* it stretches we need a pairing.
 
 **Motivation.** One extra piece of structure — a pairing that is linear,
 symmetric in the appropriate sense, and positive on nonzero vectors — buys
 lengths, angles, orthogonal projection, a best-approximation principle, and a
-canonical vector representative for each covector. It also introduces the first
-place in the book where the real and complex cases genuinely differ, and where
-Chapter 4's transpose stops being the right notion.
+canonical vector representative for each covector. It is also where Chapter 4's
+transpose stops being the right notion: over $\mathbb C$ the pairing needs a
+conjugate, and the adjoint parts company with the transpose. Chapter 6 already
+met a place where the two fields differ — `planeRotation` has no real
+eigenvector but diagonalizes over $\mathbb C$ — so what is new here is not that
+they differ but that the difference reaches the pairing itself.
 
 ## Conceptual model
 
@@ -83,8 +87,9 @@ fact about the abelian group structure and not about the projection formula.
 **Boundary and Lean provider.** No nonvanishing hypothesis appears, which is
 what makes this card weaker than the next one and safe to state first.
 [`projection_residual_decomposition`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L42)
-is the public declaration, and its checked proof is the single tactic `abel`,
-which is exactly the abelian-group cancellation the paragraph describes. The
+is the public declaration; its checked proof discharges
+$P_ux+(x-P_ux)=x$ by `abel` and then applies `.symm`, `abel` being exactly the
+abelian-group cancellation the paragraph describes. The
 same statement is available in the maintained foundations library as
 `MathematicalFoundations.Orthogonality.line_projection_residual_decomposition`;
 this chapter reproves it locally so that Part II owns its own development.
@@ -119,8 +124,8 @@ and
 
 ### Pythagoras, best approximation, and the zero line
 
-Two consequences follow from CFT-07-002 alone, and both are used later in the
-book.
+Two consequences follow from CFT-07-002 together with the splitting CFT-07-001,
+and both are used later in the book.
 
 Splitting $x$ by CFT-07-001 and expanding the pairing of the sum with itself,
 the two cross terms are $P_ux\cdot(x-P_ux)$ and its mirror image. Writing
@@ -148,9 +153,12 @@ approximation would degenerate to a statement about the single point $0$.
 
 ### Cauchy–Schwarz and its equality case
 
-Best approximation is Cauchy–Schwarz in disguise. Discarding the nonnegative
-projection term in Pythagoras gives $(x\cdot u)^2\le(x\cdot x)(u\cdot u)$, with
-equality exactly when the residual vanishes, that is when $x$ lies on the line.
+Best approximation is Cauchy–Schwarz in disguise. Pythagoras reads
+$x\cdot x=P_ux\cdot P_ux+r\cdot r$ with $P_ux\cdot P_ux=(x\cdot u)^2/(u\cdot u)$.
+Discarding the nonnegative *residual* term $r\cdot r$ leaves
+$(x\cdot u)^2/(u\cdot u)\le x\cdot x$, which is
+$(x\cdot u)^2\le(x\cdot x)(u\cdot u)$, with equality exactly when the residual
+vanishes, that is when $x$ lies on the line.
 
 This book does not reprove that inequality here. The maintained foundations
 laboratory proves it by four independent routes with a compiled dependency
@@ -215,7 +223,7 @@ Two conventions must be kept apart here. Chapter 4's pullback of a covector
 uses no metric and introduces no conjugation; the adjoint of this chapter uses
 the Hermitian metric and does. Over $\mathbb R$ they coincide, which is why the
 distinction is invisible until complex scalars appear.
-[`transpose_ne_conjTranspose_complex`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L135)
+[`transpose_ne_conjTranspose_complex`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L134)
 settles it with one matrix: for $\operatorname{diag}(i,0)$ the transpose has
 $i$ in the corner and the conjugate transpose has $-i$, and $i\neq-i$.
 
@@ -242,17 +250,21 @@ would make the later inequalities false or trivial.
 
 **Statement.** In any seminormed additive group, $0\le\|x\|$.
 
-**Proof.** Nonnegativity is part of the seminorm interface. From the triangle
-inequality and $\|{-x}\|=\|x\|$ one gets
-$0=\|x-x\|\le\|x\|+\|x\|$, hence $0\le\|x\|$; the library packages that
-derivation once and exposes the conclusion.
+**Proof.** From the triangle inequality in the form
+$\|x-y\|\le\|x\|+\|y\|$, taken at $y=x$, one gets
+$0=\|x-x\|\le\|x\|+\|x\|$, hence $0\le\|x\|$.
 
 **Boundary and Lean provider.** The hypothesis is a seminormed additive group,
 which is weaker than the normed spaces of the rest of the chapter: it allows
 nonzero vectors of zero length.
 [`norm_is_nonnegative`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L127)
-is supplied by `norm_nonneg`. This is the weakest card in the chapter and is
-stated because every later norm inequality silently assumes it.
+runs exactly that argument: it applies `norm_sub_le` at $y=x$, rewrites
+$\|x-x\|$ to $0$ with `sub_self` and `norm_zero`, and closes with `linarith`.
+It is proved locally rather than re-exported, deliberately: Mathlib's
+`norm_nonneg` is the same conclusion and is a `simp` lemma, so a proof that
+invoked `simp` here would have been a restatement of the card rather than a
+derivation of it. This is the weakest card in the chapter and is stated because
+every later norm inequality silently assumes it.
 
 ## Worked examples
 
@@ -286,8 +298,11 @@ every pairwise pairing of a finite family, and a kernel method is a computation
 that touches the data only through such a matrix. Least squares is the
 projection of this chapter applied to the column space of a design matrix.
 
-**Exact transfer.** CFT-07-002 is the normal equation: the residual of the
-fitted value is orthogonal to every direction the model can produce. The best
+**Exact transfer.** CFT-07-002 is the one-dimensional case of the normal
+equation: the residual of the fitted value is orthogonal to the single direction
+projected onto. The full normal equation, orthogonality to every direction the
+model can produce, needs projection onto a subspace, which is the restriction
+recorded at the end of this section. The best
 approximation statement is why the least-squares solution is the minimizer, not
 merely a stationary point, and Cauchy–Schwarz with its equality case is exactly
 the statement that a correlation coefficient lies in $[-1,1]$ and reaches an
@@ -300,7 +315,8 @@ that a normalized similarity is a metric, or that a floating-point Gram matrix
 is positive semidefinite — rounding routinely produces small negative
 eigenvalues, and no statement here bounds that. The projection formula also
 assumes a single direction; projecting onto a subspace of dimension greater than
-one requires the orthogonalization that Chapter 9 supplies.
+one requires an orthogonalization that this book does not develop, in this
+chapter or any later one.
 
 **Calculation.** With $v_1=(1,0)$ and $v_2=(3,4)$ the Gram matrix is
 $\begin{bmatrix}1&3\\3&25\end{bmatrix}$, whose determinant $25-9=16$ is exactly
@@ -336,7 +352,7 @@ compute the projection of $(3,4)$ onto the direction $(1,0)$.
 **Solution.** The splitting is the abelian-group identity of CFT-07-001 and
 needs no hypothesis. The computation gives $x\cdot u=3$, $u\cdot u=1$, hence
 $P_ux=3\,(1,0)=(3,0)$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L149)
+[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L148)
 states the general splitting for that direction and the explicit projected
 vector; its checked proof is `abel` for the first conjunct and a coordinatewise
 expansion of the definition for the second.
@@ -348,7 +364,7 @@ squared length $x\cdot x$.
 
 **Solution.** The residual is $(0,4)$, so its pairing with $(1,0)$ is $0$, and
 $x\cdot x=9+16=25$.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L158)
+[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L157)
 states both numbers; its checked proof expands the two-term sums and evaluates,
 which is the arithmetic displayed here rather than an appeal to CFT-07-002.
 
@@ -361,7 +377,7 @@ residual, and the Pythagoras identity.
 **Solution.** Cauchy–Schwarz is the reused laboratory result; orthogonality is
 CFT-07-002 with $u=y$; Pythagoras is the cancellation of the two cross terms
 described above.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L167)
+[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L166)
 states the three conclusions together for every dimension, every $x$ and every
 nonzero $y$, so the shared hypothesis is visible in one statement.
 
@@ -375,7 +391,7 @@ equality holds exactly when $x=0$ or $y=tx$ for some scalar $t$. For the
 converse direction one does not need it: substituting $y=t\,x$ and pulling the
 scalar out of both sides gives $t^2(x\cdot x)^2$ on the left and
 $t^2(x\cdot x)(x\cdot x)$ on the right.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L176)
+[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L175)
 states the characterization and that direct verification as two conjuncts; the
 second is proved by pulling scalars through the pairing and normalizing, not by
 citing the first.
@@ -389,7 +405,7 @@ $\mathbb C$ the transpose is not the adjoint.
 direction is zero. For the second, $\operatorname{diag}(i,0)$ equals its own
 transpose but its conjugate transpose is $\operatorname{diag}(-i,0)$, and
 $i\neq-i$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L184)
+[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L183)
 states both. Together they mark the two hypotheses this chapter cannot drop:
 the direction must be nonzero, and the scalars determine which transpose is the
 metric one.
@@ -399,9 +415,10 @@ metric one.
 For an arbitrary complex square matrix, state that its norm is nonnegative and
 that it agrees with the operator norm of the induced Euclidean map.
 
-**Solution.** Nonnegativity is CFT-07-006 applied to the matrix; the agreement
-is CFT-07-005, which holds definitionally.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L191)
+**Solution.** Nonnegativity is the same statement as CFT-07-006, though the
+checked solution discharges it with Mathlib's `norm_nonneg` rather than by
+citing the card; the agreement is CFT-07-005, which holds definitionally.
+[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter07.lean#L190)
 states both for every finite index type. Reading it beside the two cards shows
 which norm every later bound in this book is about.
 

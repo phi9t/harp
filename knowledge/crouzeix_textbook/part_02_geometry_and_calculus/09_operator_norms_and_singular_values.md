@@ -56,14 +56,22 @@ the C\*-identity
 $$
 \|A^{\mathsf H}A\|=\|A\|^{2},
 $$
-which says that $\|A\|$ is the largest singular value. Rank deficiency is the
-statement that the smallest singular value is zero, equivalently that $A$ kills
-a nonzero vector.
+**Uncompiled vocabulary.** Singular values are orientation vocabulary here, not
+compiled content. Identifying $\|A\|$ with $\sigma_{\max}(A)$ requires the norm
+of a positive semidefinite matrix to equal its spectral radius, and this book has
+not built that: no declaration in `CrouzeixTextbook.Part02.Chapter09` mentions a
+singular value. Every compiled result below is stated in the norm alone, and the
+singular-value readings that accompany them are glosses. The C\*-identity is the
+step that would drive the identification once the missing ingredient is
+available, which is why it is recorded now. Read the same way, rank deficiency
+says the smallest singular value is zero; what is compiled is that $A$ kills a
+nonzero vector.
 
 Two measurements must be kept apart. The *spectral radius* is the largest
-modulus of an eigenvalue; the norm is the largest singular value. They agree
-for normal matrices and can differ arbitrarily otherwise. The chapter proves
-the extreme case: a nonzero nilpotent matrix has spectral radius $0$ and norm
+modulus of an eigenvalue; the norm is the largest singular value. They agree for
+normal matrices and can differ arbitrarily otherwise. The chapter proves the
+extreme case in compiled form: the shear $N_\alpha$ has characteristic
+polynomial $t^{2}$, so zero is its only eigenvalue, while its norm is exactly
 $|\alpha|$.
 
 **Historical context.** Naming $\|A\|$ the "induced" norm reflects that it is
@@ -159,7 +167,10 @@ is unitary by CFT-09-002. Multiplying by a unitary on either side leaves the
 induced norm unchanged, so both factors can be discarded in turn.
 
 **Boundary and Lean provider.** The statement is an equality of norms, not of
-matrices: the two matrices are genuinely different unless $U=I$.
+matrices: in general the two matrices differ, and the card says nothing about
+which matrix is which. They coincide when $U$ commutes with the conjugated
+factor — at $U=I$, and for the scalar family, among others — so the equality of
+norms is the only conclusion available.
 [`polar_similarity_norm_transfer`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L20)
 re-exports
 `CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm`,
@@ -229,9 +240,11 @@ Two boundary facts complete the chapter.
 
 A singular matrix kills a nonzero vector:
 [`singular_has_null_vector`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L72)
-turns $\det A=0$ into an explicit $x\neq0$ with $Ax=0$, via the library
-equivalence `Matrix.exists_mulVec_eq_zero_iff`. In singular-value language the
-smallest singular value is then zero, and $A$ has no bounded inverse.
+turns $\det A=0$ into the existence of some $x\neq0$ with $Ax=0$, via the library
+equivalence `Matrix.exists_mulVec_eq_zero_iff`. The statement is existential, not
+constructive: no witness is produced. In singular-value language the smallest
+singular value is then zero, and $A$ has no inverse — a gloss, by the disclosure
+above.
 
 The spectrum does not control the norm. Take the running family at eigenvalue
 zero,
@@ -239,9 +252,14 @@ $$
 N_\alpha=\begin{bmatrix}0&\alpha\\0&0\end{bmatrix}.
 $$
 It is nilpotent — $N_\alpha^2=0$, checked as
-[`shear_nilpotent`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L82)
-— so every eigenvalue is zero and the spectral radius is $0$; its determinant
-vanishes too, checked as
+[`shear_nilpotent`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L82).
+Its characteristic polynomial is $t^{2}$, checked as
+[`shear_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L97),
+so zero is its only eigenvalue and the spectral radius is $0$; that spectrum
+computation is
+[`shear_spectrum_eq_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
+which reads the characteristic polynomial through Chapter 6's root test. Its
+determinant vanishes too, checked as
 [`shear_det_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L90).
 Yet its norm is exactly $|\alpha|$. The computation is the C\*-identity applied
 to a Gram matrix that happens to be diagonal:
@@ -249,13 +267,16 @@ $$
 N_\alpha^{\mathsf H}N_\alpha=\operatorname{diag}\bigl(0,\ \overline{\alpha}\alpha\bigr),
 $$
 checked as
-[`shear_conjTranspose_mul_self`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L95).
-The induced norm of a diagonal matrix is the largest modulus of its entries,
-here $|\alpha|^2$, recorded as
-[`shear_diagonal_family_norm`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104);
+[`shear_conjTranspose_mul_self`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L110).
+The induced norm of a diagonal matrix is the largest modulus of its entries; that
+step is Mathlib's `Matrix.l2_opNorm_diagonal`, applied inside
+[`shear_norm_eq`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
+What
+[`shear_diagonal_family_norm`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L119)
+contributes is the supremum norm of the entry family itself, $|\alpha|^2$;
 so $\|N_\alpha\|^2=|\alpha|^2$ and, both sides being nonnegative,
 $\|N_\alpha\|=|\alpha|$. That is
-[`shear_norm_eq`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L119).
+[`shear_norm_eq`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134).
 
 The gap between spectral radius $0$ and norm $|\alpha|$ is therefore unbounded.
 This single example is why the rest of the book cannot bound $\|p(A)\|$ by the
@@ -304,10 +325,17 @@ squared norm.
 compiled example above is the reason: a layer whose eigenvalues all vanish can
 still amplify by an arbitrary factor. A composition bound built from spectral
 radii is therefore not a bound at all. Nothing here covers nonlinear layers,
-where the per-layer Lipschitz product is usually a large overestimate, nor does
-it say that a numerically computed largest singular value is accurate for a
-near-defective matrix — the running family is precisely the case where it is
-not.
+where the per-layer Lipschitz product is usually a large overestimate. Nor does
+the chapter say anything about *computing* these quantities, a separate subject
+whose stability profile runs opposite to the naive expectation. Singular values
+are perfectly conditioned: Weyl's inequality gives
+$|\sigma_k(A+E)-\sigma_k(A)|\le\|E\|$ for every $k$, so $\sigma_{\max}$ is
+computed accurately even for the near-defective $A_{1,\alpha}$, whose singular
+values $\tfrac12(\sqrt{\alpha^{2}+4}\pm\alpha)$ are far apart yet individually
+stable. It is the *eigenvalues* of a defective matrix that are ill-conditioned,
+splitting like $\varepsilon^{1/m}$ under an $\varepsilon$-perturbation of a
+Jordan block of size $m$. Defectiveness destroys eigenvalue conditioning, not
+singular-value conditioning.
 
 **Calculation.** For $A_{1,\alpha}$ with $\alpha=10$ the spectral radius is $1$,
 so a spectral-radius argument would predict $\|A^k\|\le1$ for all $k$. The truth
@@ -344,7 +372,7 @@ that convention buys.
 
 **Solution.** The matrix norm is the induced operator norm of the Euclidean
 map, and it dominates every stretching: $\|Ax\|\le\|A\|\|x\|$.
-[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L134)
+[`exercise_01_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L149)
 states both for every finite index type, every matrix and every vector, so the
 convention and the inequality it licenses appear in one checked statement.
 
@@ -354,9 +382,11 @@ Record the two multiplicative facts every later estimate uses:
 submultiplicativity and the C\*-identity.
 
 **Solution.** $\|AB\|\le\|A\|\|B\|$ comes from the normed-algebra structure;
-$\|A^{\mathsf H}A\|=\|A\|\|A\|$ is the C\*-identity, and it is what identifies
-$\|A\|$ as the largest singular value.
-[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L140)
+$\|A^{\mathsf H}A\|=\|A\|\|A\|$ is the C\*-identity, the step that would identify
+$\|A\|$ as the largest singular value once the norm of a positive semidefinite
+matrix is known to be its spectral radius — an ingredient this book has not
+built.
+[`exercise_02_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L155)
 states both. Neither is proved here from scratch; both are named library facts
 about the C\*-algebra of matrices, and the exercise records which ones.
 
@@ -369,7 +399,7 @@ similarity leaves the norm unchanged.
 collapsing it with the square-root data. The norm equality is CFT-09-003,
 proved by writing the left matrix as a unitary conjugate of the right and
 stripping the unitary factors.
-[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L146)
+[`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L161)
 states both for every scalar family, which is the form the Part VI balancing
 argument consumes.
 
@@ -382,7 +412,7 @@ that unitary conjugation does too.
 C\*-algebra. For the conjugation, apply the right-hand invariance with
 $U^{\mathsf H}$ — which is unitary because the unitary group is closed under
 the star — and then the left-hand invariance with $U$.
-[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L156)
+[`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L171)
 states all three conjuncts and derives the third from the first two exactly as
 described, rather than citing CFT-09-003.
 
@@ -391,10 +421,14 @@ described, rather than citing CFT-09-003.
 Exhibit a matrix whose spectral radius is zero and whose norm is as large as
 desired.
 
-**Solution.** Take $N_\alpha$. It is nilpotent and singular, so every
-eigenvalue is zero; and its norm is exactly $|\alpha|$, by the C\*-identity
-applied to the diagonal Gram matrix $\operatorname{diag}(0,|\alpha|^2)$.
-[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L164)
+**Solution.** Take $N_\alpha$. Its characteristic polynomial is $t^{2}$, so zero
+is its only eigenvalue and the spectral radius the task asks about is $0$; that
+is
+[`shear_spectrum_eq_zero`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L104),
+which the exercise theorem itself does not restate. Its norm is exactly
+$|\alpha|$, by the C\*-identity applied to the diagonal Gram matrix
+$\operatorname{diag}(0,|\alpha|^2)$.
+[`exercise_05_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L179)
 states the vanishing determinant, the nilpotency and the exact norm as three
 conjuncts. The exact value matters: a lower bound would show the spectrum is
 not an upper bound for the norm, but the equality shows the gap is exactly the
@@ -408,18 +442,21 @@ term to a correction.
 
 **Solution.** The first is CFT-09-005 applied to the supplied certificate; the
 second is CFT-09-006.
-[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L172)
+[`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter09.lean#L187)
 states them together, which is the exact pair of ingredients the Part VI
 perturbation arguments combine.
 
 ## Synthesis and forward dependencies
 
 The induced norm is the least bound on stretching, it is submultiplicative, it
-is unchanged by unitary factors, and by the C\*-identity it is the largest
-singular value. Those four facts are the entire interface the rest of the book
-uses. Against them the chapter sets one compiled counterexample: a nilpotent
-matrix with spectral radius zero and norm $|\alpha|$, which rules out any bound
-on $\|p(A)\|$ in terms of $p$ on the spectrum.
+is unchanged by unitary factors, and it satisfies the C\*-identity
+$\|A^{\mathsf H}A\|=\|A\|^2$. Those four facts are the entire interface the rest
+of the book uses, and all four are compiled. The further reading of the
+C\*-identity as "$\|A\|$ is the largest singular value" is not compiled and is
+not part of that interface. Against the four the chapter sets one compiled
+counterexample: a nilpotent matrix whose characteristic polynomial is $t^2$, so
+of spectral radius zero, and whose norm is $|\alpha|$ — which rules out any
+bound on $\|p(A)\|$ in terms of $p$ on the spectrum.
 
 Chapter 10 leaves the metric aside and returns to algebra with multilinear maps
 and tensors. The polar-similarity transfer proved here reappears in Part VI as

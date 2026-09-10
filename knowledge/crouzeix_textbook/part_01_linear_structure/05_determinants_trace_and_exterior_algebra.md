@@ -157,13 +157,15 @@ $\det(SAS^{-1})=\det S\,\det A\,\det(S^{-1})$. Applying it once more to
 $SS^{-1}=I$ together with the normalization $\det I=1$ gives
 $\det S\,\det(S^{-1})=1$. Since the ring is commutative the two outside
 factors can be brought together and cancelled, leaving $\det A$. The
-determinant is therefore an invariant of the operator, and the vanishing of
-that single scalar detects singularity independently of the coordinates.
+determinant is therefore an invariant of the operator. Over a field the
+vanishing of that single scalar detects singularity independently of the
+coordinates; over a general commutative ring the correct criterion is that
+$\det A$ be a *unit*, as the next card records.
 
 The displayed argument is checked by
 [`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L208),
 which runs exactly these steps — multiplicativity twice, multiplicativity on
-the inverse identity, then cancellation — under the weaker hypothesis $RS=I$.
+the inverse identity, then cancellation — from the hypothesis $RS=I$ instead.
 
 **Boundary and Lean provider.** The hypothesis is that $S$ is a unit of the
 matrix ring, not merely a matrix with nonzero determinant over an arbitrary
@@ -250,7 +252,7 @@ arbitrary order. That stronger claim is false, as E05 exhibits.
 
 The displayed argument is checked by
 [`exercise_06_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L246),
-which performs the same three steps under the weaker hypothesis $RS=I$:
+which performs the same three steps from the hypothesis $RS=I$ instead:
 cyclicity, reassociation, then collapse of the inverse pair.
 
 **Boundary and Lean provider.** A commutative semiring suffices, which is
@@ -455,8 +457,13 @@ that $S$ is a unit of the matrix ring.
 applying it to the hypothesis gives $\det R\,\det S=\det I=1$. Commutativity
 of the scalars lets the two outside determinants be collected and cancelled.
 [`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter05.lean#L208)
-records the general statement. The exercise is strictly weaker in hypothesis
-than CFT-05-003 and shows that a left inverse already suffices.
+records the general statement. The exercise assumes only $RS=I$ rather than
+that $S$ is a unit of the matrix ring. For square matrices over a commutative
+ring these hypotheses are equivalent — $RS=I$ forces $\det R\det S=1$, so
+$\det S$ is a unit and $S$ is invertible by the unit criterion above, with
+$R=S^{-1}$ — so the exercise is a differently phrased hypothesis, not a
+logically weaker one. What it shows is that a left inverse already suffices to
+state the invariance.
 
 ### CFT-05-E04 -- written-proof {#exercise-cft-05-e04}
 

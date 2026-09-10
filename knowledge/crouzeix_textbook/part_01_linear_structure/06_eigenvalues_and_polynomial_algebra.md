@@ -204,7 +204,12 @@ A polynomial action is exactly such a finite combination.
 spectral hypothesis is used, and the index set need only be finite with
 decidable equality.
 [`polynomial_action_mem_generated_algebra`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L30)
-re-exports `CrouzeixConjecture.polynomialEval_mem_generatedAlgebra`. That the
+re-exports `CrouzeixConjecture.polynomialEval_mem_generatedAlgebra`. That
+provider does not take the route above: it is one application of Mathlib's
+`Polynomial.aeval_mem_adjoin_singleton`, which itself goes through
+`adjoin_singleton_eq_range_aeval` rather than through powers and submodule
+closure. The displayed argument is the reason the statement is true, not the
+proof that is checked. That the
 resulting collection is commutative is
 [`polynomial_actions_commute`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L63).
 
@@ -226,7 +231,10 @@ the same matrix.
 generator; for two non-commuting generators the analogous description needs
 noncommutative words, not polynomials.
 [`generated_algebra_polynomial_representation`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L33)
-re-exports `CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial`.
+re-exports `CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial`,
+whose forward direction is discharged by `Algebra.adjoin_mem_exists_aeval`
+rewriting through `Algebra.adjoin_singleton_eq_range_aeval`, not by the
+subalgebra argument displayed above.
 The degree reduction that makes the algebra finite-dimensional is
 [`polynomial_action_reduces`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L58),
 which rewrites $p(A)$ as $(p\bmod\chi_A)(A)$.
@@ -235,7 +243,10 @@ which rewrites $p(A)$ as $(p\bmod\chi_A)(A)$.
 
 **Statement.** For every complex matrix $A$ on a nonempty finite index set and
 every tolerance $\varepsilon>0$ there is a matrix $B$ whose characteristic
-roots are pairwise distinct with $\|B-A\|<\varepsilon$.
+roots are pairwise distinct with $\|B-A\|<\varepsilon$. This card is the one
+place in Part I that measures: $\|\cdot\|$ is the induced Euclidean operator
+norm, which Chapter 7 defines and pins down as CFT-07-005. Only the fact that
+it is a norm is used here.
 
 **Proof.** Let $\Delta$ be the fixed diagonal matrix whose $i$th entry is the
 integer position of $i$ under a chosen enumeration of the index set, so its
@@ -267,8 +278,13 @@ $\delta=\varepsilon/d$ for $d=\|\Delta-A\|+1$ — the $+1$ keeps $d$ positive
 when $A=\Delta$ — gives $\|A_\eta-A\|<\varepsilon$, and $B=A_\eta$ is the
 required matrix.
 
-**Boundary and Lean provider.** Nonemptiness of the index set and
-positivity of $\varepsilon$ are both required; the argument also uses that
+**Boundary and Lean provider.** Positivity of $\varepsilon$ is required.
+Nonemptiness of the index set is a hypothesis of the formalization rather than
+a mathematical necessity: over an empty index type the unique matrix has empty,
+hence duplicate-free, root multiset and satisfies $\|A-A\|=0<\varepsilon$, so
+$B=A$ already works. The Lean statement carries `[Nonempty n]` because the
+degree bookkeeping for $\chi_A'$ is stated with $\operatorname{card}n-1$. The
+argument also uses that
 $\mathbb C$ is algebraically closed, so the characteristic polynomial splits
 and the root count matches the dimension. The conclusion is a density
 statement about the matrix entries; it does not claim that eigenvectors,
@@ -294,8 +310,10 @@ book. Every matrix annihilates its own characteristic polynomial, recorded as
 [`charpoly_annihilates`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L48);
 and the minimal polynomial divides it, recorded as
 [`minimal_polynomial_dvd_charpoly`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L53).
-The compiled reduction divides by $\chi_A$ rather than by $m_A$, so what it
-delivers directly is $\dim\langle A\rangle\le n$. The sharper bound
+The compiled reduction divides by $\chi_A$ rather than by $m_A$; it states the
+rewriting $p(A)=(p\bmod\chi_A)(A)$ and nothing about dimension, so the
+consequence $\dim\langle A\rangle\le n$ is read off here rather than checked.
+The sharper bound
 $\dim\langle A\rangle\le\deg m_A$ follows from the same division argument
 applied to $m_A$, using that $m_A$ annihilates $A$; that sharper form is stated
 here for the reader and is not separately compiled in this chapter.
@@ -326,8 +344,9 @@ has no real eigenvector at all. If $J_{\text{rot}}v=cv$ then $-v_2=cv_1$ and
 $v_1=cv_2$; substituting gives $(1+c^2)v_2=0$, and $1+c^2>0$ over $\mathbb R$,
 so $v_2=0$ and then $v_1=0$. This is
 [`planeRotation_has_no_real_eigenvector`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L146).
-Over $\mathbb C$ the same matrix is diagonalizable with eigenvalues $\pm i$;
-the obstruction was the field, not the operator.
+Over $\mathbb C$ the same matrix is diagonalizable with eigenvalues $\pm i$, so
+the obstruction was the field, not the operator; that complex statement is not
+compiled in this chapter, which checks only the real non-existence.
 
 The Jordan block
 $$
@@ -343,7 +362,8 @@ Consequently the values of $p$ on the spectrum do not determine $p(J)$: the
 polynomials $X$ and the constant $2$ agree at the only eigenvalue, yet
 $J\neq 2I$. That separation is
 [`jordanBlock_action_needs_more_than_values`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L172).
-The correct formula keeps the derivative data: $p(J)=p(2)I+p'(2)N$.
+The correct formula keeps the derivative data: $p(J)=p(2)I+p'(2)N$. That
+formula is stated here for orientation and is not compiled in this chapter.
 
 ## Worked examples
 
@@ -360,7 +380,10 @@ $$
 A_{\lambda,\alpha}=\begin{bmatrix}\lambda&\alpha\\0&\lambda\end{bmatrix}
 =\lambda I+\alpha N .
 $$
-Its characteristic polynomial is $(t-\lambda)^2$ for every $\alpha$, so the
+The characteristic-polynomial and minimal-polynomial claims that follow are
+stated for orientation and are not compiled in this chapter, which checks only
+the concrete $J$ above. Its characteristic polynomial is $(t-\lambda)^2$ for
+every $\alpha$, so the
 whole family shares one spectrum, in agreement with the two invariants
 computed in Chapter 5. For $\alpha\neq0$ the minimal polynomial is
 $(t-\lambda)^2$ as well and the matrix is not diagonalizable; for $\alpha=0$
@@ -476,9 +499,10 @@ and the monomial $aX^k$ contributes $a\,A^kv=ac^kv$. For the last conclusion,
 substitute $p(c)=0$ into $p(A)v=p(c)v$ and use $0\cdot v=0$.
 [`exercise_03_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L210)
 records all three conclusions for any field, any finite index type, any matrix,
-any vector, and any scalar. The third is the fact the density argument of
-CFT-06-006 ultimately needs: a polynomial that kills every eigenvalue kills
-every eigenvector.
+any vector, and any scalar. The third — a polynomial that kills an eigenvalue
+kills its eigenvectors — is the fact Part IV's functional calculus rests on. It
+is not what CFT-06-006 uses: that density argument runs entirely through the
+resultant of $\chi_A$ with $\chi_A'$ and never mentions an eigenvector.
 
 ### CFT-06-E04 -- written-proof {#exercise-cft-06-e04}
 
@@ -493,8 +517,10 @@ and scalars pass through because $X\mapsto SXR$ is linear, so
 $p(SXR)=Sp(X)R$ for every polynomial. Applying the diagonal evaluation of
 CFT-06-001 to $p(\operatorname{diag} d)$ finishes the calculation.
 [`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part01/Chapter06.lean#L220)
-states the field-level identity. Compared with CFT-06-002 it drops the unit
-hypothesis and the complex scalars.
+states the field-level identity. Compared with CFT-06-002 it works over an
+arbitrary field rather than the complex scalars, and phrases invertibility as
+the pair $SR=RS=I$ rather than as membership in the units of the matrix ring —
+an equivalent condition, not a weaker one.
 
 ### CFT-06-E05 -- boundary {#exercise-cft-06-e05}
 

@@ -128,7 +128,9 @@ agree. It is what makes CFT-10-001 readable as "the pairing moves $A$ across",
 and it is the reverse-mode rule of Chapter 4 in coordinates.
 [`transpose_coordinate_action`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L26)
 is proved here, by rewriting with `Matrix.vecMul_transpose` and cancelling the
-double transpose. Its previous provider was also in the unmaintained
+double transpose. The component computation displayed above is not what the
+checked proof runs: it is the reason the rewrite is available, and no
+declaration in this chapter carries out the index-by-index argument. Its previous provider was also in the unmaintained
 `AutodiffGeometry` namespace.
 
 ### CFT-10-003: multiplicativity of the top-degree form {#cft-10-003}
@@ -200,23 +202,38 @@ computes on pure tensors:
 $$
 \widetilde f(x\otimes y)=f(x,y).
 $$
-This is
+Of that statement, the computation rule is what is compiled here:
 [`bilinear_factors_through_tensor`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L49),
-supplied by Mathlib's `TensorProduct.lift.tmul`. The statement holds over any
-commutative ring and any three modules, with no basis and no finiteness.
+supplied by Mathlib's `TensorProduct.lift.tmul`, takes $f$ already in curried
+linear form and states $\widetilde f(x\otimes y)=f(x)(y)$. Neither the existence
+of the factorization nor its uniqueness is stated by that declaration or by any
+other in this chapter; both hold, and both are Mathlib results
+(`TensorProduct.lift` and `TensorProduct.ext`), but the chapter does not check
+them. The compiled rule holds over any commutative ring and any three modules,
+with no basis and no finiteness.
 
 Reshaping is something else entirely. It is the relabeling
 $\iota\times\kappa\simeq\{1,\dots,mn\}$ and nothing more, recorded as
 [`reshape_is_index_relabeling`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L58).
 A bijection of index sets carries no algebra with it.
 
-The sharpest way to see that the two notions differ is that most elements of a
-tensor product are not pure tensors. The identity matrix is an array of the
-product shape, and there are no vectors $x,y$ with $I_{ij}=x_iy_j$: any such
-array has vanishing two-by-two determinant, since
-$x_0y_0\,x_1y_1-x_0y_1\,x_1y_0=0$, while $\det I=1$. That is
+The sharpest way to see that the two notions differ is that an array of the
+product shape need not be a product of vectors. The identity matrix is such an
+array, and there are no vectors $x,y$ with $I_{ij}=x_iy_j$: any such array has
+vanishing two-by-two determinant, since $x_0y_0\,x_1y_1-x_0y_1\,x_1y_0=0$, while
+$\det I=1$. That is
 [`identity_is_not_a_pure_tensor`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L65),
-and its proof uses Chapter 5's determinant to detect rank.
+whose proof detects rank with `Matrix.det_fin_two` and `Matrix.det_one` from the
+library rather than with any Chapter 5 declaration.
+
+Read as a statement about $\mathbb R^2\otimes\mathbb R^2$, this says most
+elements of a tensor product are not pure tensors — but that reading is a gloss
+in two ways the compiled statement does not cover. `TensorProduct` does not
+occur in the declaration, which quantifies over $2\times2$ real arrays, so the
+bridge to the tensor product runs through the standard identification of
+$\mathbb R^2\otimes\mathbb R^2$ with those arrays, which this chapter does not
+compile. And "most" is a generalization from one witness; the compiled content
+is the single counterexample.
 
 ### Contraction, shape-checked
 
@@ -227,8 +244,9 @@ takes a three-index array and sums the middle axis, and no other reading of it
 typechecks. Contracting the outer product of two matrices over their shared axis
 recovers matrix multiplication exactly, which is
 [`contract_middle_eq_mul`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L88);
-contraction is linear in the array, which is
-[`contract_middle_add`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L94).
+contraction is additive in the array, which is
+[`contract_middle_add`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L94);
+scalar homogeneity, the other half of linearity, is not compiled here.
 
 ### Basis dependence: congruence, not similarity
 
@@ -244,8 +262,9 @@ This is exactly the transformation whose positivity Chapter 8 proved stable
 under.
 
 Congruence is not similarity. Operators transform by $S^{-1}AS$ and forms by
-$S^{\mathsf T}GS$, and these agree only when $S^{\mathsf T}=S^{-1}$, that is
-when $S$ is orthogonal. The running shear is not:
+$S^{\mathsf T}GS$. These agree for *every* matrix exactly when
+$S^{\mathsf T}=S^{-1}$, that is when $S$ is orthogonal; for a particular matrix
+they may coincide without it, as at $G=0$. The running shear is not:
 $S^{\mathsf T}S\neq I$ for $S=\begin{bmatrix}1&1\\0&1\end{bmatrix}$, recorded as
 [`congruence_is_not_similarity`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter10.lean#L122)
 with the transpose written out in
@@ -277,7 +296,9 @@ S^{\mathsf T}GS=S^{\mathsf T}S
 =\begin{bmatrix}1&\alpha\\ \alpha&\alpha^{2}+1\end{bmatrix},
 $$
 the Gram matrix of Chapter 8. Its determinant is $\alpha^2+1-\alpha^2=1$, in
-agreement with $\det(S^{\mathsf T}GS)=(\det S)^2\det G$ from CFT-10-003. The
+agreement with $\det(S^{\mathsf T}GS)=(\det S)^2\det G$, which combines
+CFT-10-003 with $\det S^{\mathsf T}=\det S$ — the latter being Chapter 5's
+`determinant_transpose`, not part of CFT-10-003. The
 same $S$ transports an operator to $S^{-1}AS$, which for $\alpha\neq0$ is a
 different matrix; that difference is the content of the boundary result above.
 

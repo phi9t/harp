@@ -168,18 +168,23 @@ follows from that of $A$ by the same anti-automorphism used in CFT-08-003.
 **Boundary and Lean provider.** Note what is *not* claimed: congruence
 preserves semidefiniteness for every $S$, but preserves definiteness only when
 $S$ is invertible, since a singular $S$ sends some nonzero $x$ to $0$.
-Congruence is also not similarity — $S^{\mathsf H}AS$ and $S^{-1}AS$ differ
-unless $S$ is unitary, so the spectrum is not preserved here even though
-positivity is.
+Congruence is also not similarity: $S^{\mathsf H}AS$ and $S^{-1}AS$ agree for
+*every* $A$ exactly when $S^{\mathsf H}=S^{-1}$, that is when $S$ is unitary.
+For a particular $A$ they can of course coincide without that — at $A=0$ both
+are $0$ — so what fails in general is the preservation of the spectrum, which
+congruence does not give even though it preserves positivity.
 [`positivity_preserved_by_congruence`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L76)
 re-exports `CrouzeixConjecture.posSemidef_congruence`, whose checked proof is
 the single library application `PosSemidef.conjTranspose_mul_mul_same`.
 
 ### CFT-08-006: the positive square root {#cft-08-006}
 
-**Statement.** For an invertible $S$ there exist matrices $H$ and $H^{-1}$ with
-$H^{\mathsf H}=H$, $(H^{-1})^{\mathsf H}=H^{-1}$, $HH=G$, and
-$HH^{-1}=H^{-1}H=I$, where $G=S^{\mathsf H}S$.
+**Statement.** For an invertible $S$, write $G=S^{\mathsf H}S$. Then the
+specific matrices $H=G^{1/2}$ and $H^{-1}$, produced by the continuous
+functional calculus, satisfy $H^{\mathsf H}=H$, $(H^{-1})^{\mathsf H}=H^{-1}$,
+$HH=G$, and $HH^{-1}=H^{-1}H=I$. The Lean statement is this stronger, named
+form rather than a bare existential: it names `completionPositiveSquareRoot S`
+and its inverse and asserts the five properties of them.
 
 **Proof.** $G$ is positive definite by CFT-08-004, so it is nonnegative in the
 matrix order and invertible. Continuous functional calculus applied to the
@@ -203,7 +208,9 @@ The three conclusions this book uses most are also exposed separately as
 and
 [`completion_square_root_inverse`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L101).
 Uniqueness of the nonnegative square root is true and is not claimed here; the
-card supplies existence with the listed properties.
+card supplies the named square root with the listed properties. The continuous
+functional calculus it rests on is library machinery, used here ahead of the
+functional-calculus development in Part III.
 
 ### Three meanings of "positive", separated
 
@@ -280,9 +287,14 @@ invertibility in exact arithmetic says nothing about the conditioning.
 $G=\begin{bmatrix}1&3\\3&25\end{bmatrix}$ the eigenvalues are
 $13\pm\sqrt{153}$, both positive, and the smaller is about $0.63$ while the
 larger is about $25.4$. So $G$ is positive definite with condition number about
-$40$: exact positivity and numerical comfort are different questions, and this
-matrix is on the good side of both only because the two vectors are far from
-parallel.
+$40$: exact positivity and numerical comfort are different questions. Here the
+$40$ comes mostly from the lengths, not the angle. The two vectors have norms
+$1$ and $5$ and make an angle of about $53^\circ$; rescaling them to equal
+length, which leaves the angle untouched, gives
+$\begin{bmatrix}1&0.6\\0.6&1\end{bmatrix}$ with eigenvalues $1.6$ and $0.4$
+and condition number $4$. A disparity in scale inflates the conditioning of a
+Gram matrix just as near-parallelism does, and this example is dominated by the
+former.
 
 ## Lean translation
 
@@ -350,9 +362,13 @@ invertibility assumption and which does not.
 Show that positivity survives a congruence and then survives a second one, so
 that congruence by a composite is no stronger than congruence twice.
 
-**Solution.** Apply CFT-08-005 to $S$, then observe that congruence by $ST$ is
-a single application of the same card with the matrix $ST$; associativity of
-the conjugate transpose across a product is what makes the two readings agree.
+**Solution.** Apply CFT-08-005 to $S$, then apply the same card once more with
+the matrix $ST$. The checked solution states exactly these two conclusions,
+$(S^{\mathsf H}AS)$ and $((ST)^{\mathsf H}A(ST))$ semidefinite, each by one
+application. It does *not* state the iterated form
+$T^{\mathsf H}(S^{\mathsf H}AS)T$, and no `conjTranspose_mul` step appears in
+it, so the identification of the composite reading with the twice-iterated one
+is left to the reader rather than checked.
 [`exercise_04_solution`](../../../formalization/lean/CrouzeixTextbook/Part02/Chapter08.lean#L136)
 states both conclusions for arbitrary $S$ and $T$ with no invertibility
 assumption, which is the point: definiteness would need one and
