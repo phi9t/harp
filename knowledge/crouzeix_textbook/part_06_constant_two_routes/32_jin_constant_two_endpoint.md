@@ -855,6 +855,19 @@ Public alias: [[formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean|Chapte
 Provider: [[formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean|HolomorphicConsequences.lean]].
 Exercise E06 checks the two rewrite identities directly.
 
+Duplication disclosure. This card and
+[[knowledge/crouzeix_textbook/part_06_constant_two_routes/32_jin_constant_two_endpoint#cft-32-002|CFT-32-002]]
+rest on the same provider,
+`CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound`, and
+therefore index one theorem under two identities. No second proof is claimed.
+The two are indexed separately because they are consumed at different points of
+the route: CFT-32-002 applies the completion endpoint to a normalized
+polynomial, while this card recovers the polynomial statement after the
+holomorphic limit has already run. Card identities are frozen, so the roster is
+not adjusted. The whole-roster figure is on the
+[[knowledge/crouzeix_textbook/status_and_scope|status and scope]] page, and
+`mise run textbook-counts` with `--audit` lists every such pair.
+
 Receipt audit: {public-declaration=CrouzeixTextbook.Part06.polynomial_from_holomorphic; public-file=formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean; provider-declaration=CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound; provider-file=formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean; type-sha256=0c2cdfce0642e8d4ab88dc860b6a60e85be855897e5f63fd51babbf67c87fc5d; axioms=Classical.choice,Quot.sound,propext; verification-target=CrouzeixTextbook}
 
 #### Historical context
