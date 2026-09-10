@@ -9,6 +9,13 @@ implemented on local `master` on top of `5b870460`.
 independent specification and content-quality reviews its acceptance criteria
 require.
 
+**Superseded 2026-09-09:** an independent review of Chapters 5-10 has since
+run and is recorded in
+[the Chapters 5-10 independent review](chapters05-10-independent-review.md).
+It found defects this self-review missed, including blocking ones; read the two
+records together. The Kata issue named above is closed by that record.
+
+
 ## What landed
 
 Six cards moved from `checkpoint` or `unmapped` to `exact` correspondence with

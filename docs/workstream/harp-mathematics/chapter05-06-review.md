@@ -10,6 +10,13 @@ package, and no delegation was authorized for it. Kata `a2ry` and `9hxf`
 therefore stay open. Everything below records what the author checked and what
 the machine checked; nothing here is a second opinion.
 
+**Superseded 2026-09-09:** an independent review of Chapters 5-10 has since
+run and is recorded in
+[the Chapters 5-10 independent review](chapters05-10-independent-review.md).
+It found defects this self-review missed, including blocking ones; read the two
+records together. The Kata issue named above is closed by that record.
+
+
 ## What landed
 
 Twelve cards moved from `unmapped` or `checkpoint` to `exact` correspondence

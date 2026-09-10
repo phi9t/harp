@@ -9,6 +9,13 @@ on top of the Chapter 8 landing.
 and [Chapter 8](chapter08-review.md). Kata `wstr` stays open for the
 independent specification and content-quality reviews.
 
+**Superseded 2026-09-09:** an independent review of Chapters 5-10 has since
+run and is recorded in
+[the Chapters 5-10 independent review](chapters05-10-independent-review.md).
+It found defects this self-review missed, including blocking ones; read the two
+records together. The Kata issue named above is closed by that record.
+
+
 ## What landed
 
 Six cards moved to `exact` correspondence with `reconstructible` exposition and

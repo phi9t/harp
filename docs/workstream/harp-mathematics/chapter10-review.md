@@ -7,6 +7,13 @@ and the first landed under the amended plan's obligation 8.
 **Review status: author self-review only.** Kata `0wc6` stays open for the
 independent reviews, per the plan's *Review authority* section.
 
+**Superseded 2026-09-09:** an independent review of Chapters 5-10 has since
+run and is recorded in
+[the Chapters 5-10 independent review](chapters05-10-independent-review.md).
+It found defects this self-review missed, including blocking ones; read the two
+records together. The Kata issue named above is closed by that record.
+
+
 ## The roster finding
 
 **Half of this chapter's indexed cards are renamed Chapter 5 cards.** CFT-10-003,
