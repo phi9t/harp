@@ -2250,23 +2250,27 @@
         "CFT-07-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.gradient_component_contract",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 8,
-        "column": 5,
+        "line": 55,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "a6acfc329659bec3bd0c9ac09b815704f6c4d4a1aa8b6049913643391d8e1b4e",
+        "type_sha256": "20ac241c2f63421a13d2427b679ebd777a14742cf991360c84cc76ea4423f65e",
         "assumptions": [],
-        "axioms": []
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
       }
     },
     {
@@ -2283,21 +2287,21 @@
         "CFT-01-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.derivative_action_is_jvp",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 10,
-        "column": 5,
+        "line": 70,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "967aa788df7d36967f9a7e8345f3f1703cf098c95624e2a9e9eeb1c01bafdd46",
+        "type_sha256": "f20c0b639553eef4c9670e3e49f7ccaca9c0a0f8545b9c27738b139a2a8f8582",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2321,21 +2325,21 @@
         "CFT-11-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.derivative_pullback_is_vjp",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 12,
-        "column": 5,
+        "line": 77,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "7528fa69e6eea3e93c32de0b00658edd6e567f8ad2b15b412ec5db8441677c72",
+        "type_sha256": "f53fc7922b6aad49ef87d9a3ccb4b3f4a99f42775d53f2163273301f532632f2",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2359,21 +2363,21 @@
         "CFT-11-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.hessian_vector_action",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 14,
-        "column": 5,
+        "line": 142,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "8747a9c03de05a7d0775e2ca98436fb115a3c88d8883949ce2e52a8fc6451660",
+        "type_sha256": "9aabb42cdfaa07edac465d7824a08c6b075fe9e3f5a570a557dc6d1dcaab297d",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2398,21 +2402,21 @@
         "CFT-11-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.jvp_vjp_duality",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 16,
-        "column": 5,
+        "line": 84,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "325fadd7f4e6fd7c6d88d850c43709bdf01fca68d1e4d08a970b2ee9b2ec178e",
+        "type_sha256": "d2008dc98e51c53e78654d3f872153da3a6baf9d240d818ff62ad8ccbeab6306",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2436,18 +2440,18 @@
         "CFT-11-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-differentiation-core-2026-09-10"
       },
       "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.linear_approximation_chain_kernel",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter11.lean",
-        "line": 18,
+        "line": 99,
         "column": 9,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "e8eacf71deee4ea839cea592352011dd5f1b14a2dc680e8af935e814e416fa02",
