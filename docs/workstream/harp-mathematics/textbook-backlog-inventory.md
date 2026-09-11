@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 13–24: the exact remaining backlog
+## Chapters 14–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 13 | `fx6b` | 1 | 5 | 6 | 6 | 6 |
 | 14 | `2700` | 2 | 4 | 6 | 6 | 6 |
 | 15 | `hg37` | 4 | 2 | 6 | 6 | 6 |
 | 16 | `92zd` | 1 | 5 | 6 | 6 | 6 |
@@ -74,18 +73,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **13–24** | | **26** | **46** | **72** | **72** | **72** |
+| **14–24** | | **25** | **41** | **66** | **66** | **66** |
 
-### Per-identity backlog, Chapters 13–24
+### Per-identity backlog, Chapters 14–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-13-001 | checkpoint | summary | checkpoint | `Part03.max_modulus_on_compact_set` | CFT-13-E01 unsolved |
-| CFT-13-002 | unmapped | summary | reexported-proof | `Part03.compact_maximum_exists` | CFT-13-E02 unsolved |
-| CFT-13-003 | unmapped | summary | reexported-proof | `Part03.pointwise_norm_le_maximum` | CFT-13-E03 unsolved |
-| CFT-13-004 | unmapped | summary | reexported-proof | `Part03.compact_maximum_nonnegative` | CFT-13-E04 unsolved |
-| CFT-13-005 | unmapped | summary | reexported-proof | `Part03.compact_maximum_monotone` | CFT-13-E05 unsolved |
-| CFT-13-006 | unmapped | summary | reexported-proof | `Part03.outer_maxima_converge` | CFT-13-E06 unsolved |
 | CFT-14-001 | checkpoint | summary | checkpoint | `Part03.matrix_power_series` | CFT-14-E01 unsolved |
 | CFT-14-002 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_coefficient` | CFT-14-E02 unsolved |
 | CFT-14-003 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_radius` | CFT-14-E03 unsolved |
