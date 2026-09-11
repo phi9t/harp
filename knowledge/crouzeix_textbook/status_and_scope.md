@@ -17,19 +17,19 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 ## Current state
 
 - Publication status: all 36 chapters are `active`.
-- Proof-exposition status: 143 coverage rows are now `reconstructible`; 71 remain `summary` and two other
+- Proof-exposition status: 149 coverage rows are now `reconstructible`; 65 remain `summary` and two other
   definition rows are `not-applicable`.
 - Whole-book exact Lean correspondence: `incomplete`.
 - Coverage rows: 216, comprising 69 `proved-here`, 115
-  `reexported-proof`, 25 `checkpoint`, and 7 `definition` rows.
+  `reexported-proof`, 23 `checkpoint`, and 9 `definition` rows.
 - Distinct proofs behind those rows: 208. 8 cards restate
   a theorem another card already indexes; they share its provider. Run
   `mise run textbook-counts` with `--audit` to list them.
-- Exact-correspondence rows: 150. The other rows remain `checkpoint` or
+- Exact-correspondence rows: 156. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  10, 11, 12, 13, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 66
+  10, 11, 12, 13, 14, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 60
   exercise rows have no claimed formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
@@ -38,24 +38,24 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 71 |
-| reconstructible prose rows | 143 |
-| exact correspondence rows | 150 |
-| unmapped correspondence rows | 41 |
-| solved exercises | 150 |
-| unresolved exercises | 66 |
+| summary prose rows | 65 |
+| reconstructible prose rows | 149 |
+| exact correspondence rows | 156 |
+| unmapped correspondence rows | 37 |
+| solved exercises | 156 |
+| unresolved exercises | 60 |
 
 ## What the current route provides
 
-Chapters 1–13 now provide a reviewed core, with 78 exact statement
-correspondences and 78 distinct Lean exercise solutions. The Chapter 1
+Chapters 1–14 now provide a reviewed core, with 84 exact statement
+correspondences and 84 distinct Lean exercise solutions. The Chapter 1
 characteristic-polynomial preview and Chapter 4's three scalar-invariant
 previews deliberately retain summary proofs and are now labelled forward
 references to their owning derivations in Chapters 5 and 6; keeping them as
 previews is what keeps the teaching order acyclic, and they stay outside the
 completed-proof count. The two definition cards have no theorem-proof
 obligation. This acceptance does not complete the foundations wave or the book:
-Chapters 14–24 still hold 66 unsolved exercises and 66 rows whose
+Chapters 15–24 still hold 60 unsolved exercises and 60 rows whose
 correspondence is `checkpoint` or `unmapped`.
 
 Parts I--III rebuild structural linear algebra, Euclidean geometry, analysis,
@@ -120,12 +120,12 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `1a71971959123acb2bdf93499618bf688c56465d8a671ee4c1131accf43244a3`
-- Compiler receipt bytes: `559710`
-- Compiler receipt declarations: `478`
+  `8c9f1cbf84b38c15d0392d43393f4646d70e52c5dca99e91a7d8ee7582bc44e1`
+- Compiler receipt bytes: `566979`
+- Compiler receipt declarations: `486`
 
-Those 478 unique declarations comprise 216 public coverage declarations,
-150 distinct exercise solutions, and the 112 additional underlying proof
+Those 486 unique declarations comprise 216 public coverage declarations,
+156 distinct exercise solutions, and the 114 additional underlying proof
 providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
 exact serialized output accepted by the Rust validator. It is not the
 six-ledger publication generation: that separate digest hashes the rendered

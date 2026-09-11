@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 14–24: the exact remaining backlog
+## Chapters 15–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 14 | `2700` | 2 | 4 | 6 | 6 | 6 |
 | 15 | `hg37` | 4 | 2 | 6 | 6 | 6 |
 | 16 | `92zd` | 1 | 5 | 6 | 6 | 6 |
 | 17 | `q81q` | 4 | 2 | 6 | 6 | 6 |
@@ -73,18 +72,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **14–24** | | **25** | **41** | **66** | **66** | **66** |
+| **15–24** | | **23** | **37** | **60** | **60** | **60** |
 
-### Per-identity backlog, Chapters 14–24
+### Per-identity backlog, Chapters 15–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-14-001 | checkpoint | summary | checkpoint | `Part03.matrix_power_series` | CFT-14-E01 unsolved |
-| CFT-14-002 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_coefficient` | CFT-14-E02 unsolved |
-| CFT-14-003 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_radius` | CFT-14-E03 unsolved |
-| CFT-14-004 | checkpoint | summary | checkpoint | `Part03.matrix_power_series_sum` | CFT-14-E04 unsolved |
-| CFT-14-005 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_analytic` | CFT-14-E05 unsolved |
-| CFT-14-006 | unmapped | summary | reexported-proof | `Part03.matrix_power_series_converges` | CFT-14-E06 unsolved |
 | CFT-15-001 | checkpoint | summary | checkpoint | `Part03.parametric_boundary_integral` | CFT-15-E01 unsolved |
 | CFT-15-002 | unmapped | summary | reexported-proof | `Part03.boundary_integral_continuous` | CFT-15-E02 unsolved |
 | CFT-15-003 | checkpoint | summary | checkpoint | `Part03.boundary_integral_is_function_eval` | CFT-15-E03 unsolved |
