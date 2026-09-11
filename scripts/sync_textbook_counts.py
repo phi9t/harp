@@ -259,11 +259,12 @@ def render_claim_ledger(text: str, counts, identity) -> str:
     text = render_snapshot(text, counts, "claim_evidence_ledger contract snapshot")
     return substitute(
         text,
-        r"- Statement: The version-two contract has \d+ theorem rows: \d+ are\n  `proved-here`, \d+ are `reexported-proof`, \d+ are `checkpoint`, and six are\n  `definition`\. A fresh \d+-row Lean receipt checks the declarations required\n  by that contract under Lean 4\.32\.1\. The contract has \d+ distinct exercise\n  solutions; \d+ exercises remain correspondence-incomplete\. The theorem\n  correspondence axis records \d+ exact rows, \d+ checkpoints, and \d+ unmapped\n  rows\.",
+        r"- Statement: The version-two contract has \d+ theorem rows: \d+ are\n  `proved-here`, \d+ are `reexported-proof`, \d+ are `checkpoint`, and (?:six|\d+) are\n  `definition`\. A fresh \d+-row Lean receipt checks the declarations required\n  by that contract under Lean 4\.32\.1\. The contract has \d+ distinct exercise\n  solutions; \d+ exercises remain correspondence-incomplete\. The theorem\n  correspondence axis records \d+ exact rows, \d+ checkpoints, and \d+ unmapped\n  rows\.",
         lambda _m: (
             f"- Statement: The version-two contract has {counts['cards']} theorem rows: "
             f"{counts['proved_here']} are\n  `proved-here`, {counts['reexported']} are "
-            f"`reexported-proof`, {counts['mode_checkpoint']} are `checkpoint`, and six are\n"
+            f"`reexported-proof`, {counts['mode_checkpoint']} are `checkpoint`, and "
+            f"{counts['definition']} are\n"
             f"  `definition`. A fresh {identity['declarations']}-row Lean receipt checks the "
             f"declarations required\n  by that contract under Lean 4.32.1. The contract has "
             f"{counts['solved']} distinct exercise\n  solutions; {counts['unsolved']} exercises "

@@ -10,6 +10,7 @@ import hashlib
 import importlib.util
 import json
 import textwrap
+import re
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -67,6 +68,71 @@ class TallyTests(unittest.TestCase):
         self.assertEqual(counts["unmapped"], 1)
         self.assertEqual(counts["summary"], 2)
         self.assertEqual(counts["reconstructible"], 1)
+
+
+class ModePartitionTests(unittest.TestCase):
+    """The four formal modes partition the roster, so the ledger sentence must add up.
+
+    The definition count was a hardcoded word in the projector's replacement for
+    as long as it happened to be six. When a seventh definition row landed, the
+    published ledger kept claiming six and its four parts summed to 215 of 216
+    rows, silently, because nothing compared the parts against the total.
+    """
+
+    def test_the_rendered_ledger_names_the_actual_definition_count(self):
+        """This is the test that would have caught it: render, then read back."""
+        cards = [card(1, 1, lean="exact", prose="reconstructible", mode="proved-here")]
+        cards += [
+            card(1, i, lean="exact", prose="reconstructible", mode="definition")
+            for i in range(2, 11)
+        ]
+        counts = sync.tally(cards, [])
+        text = (
+            "| theorem rows | 216 |\n"
+            "| summary prose rows | 65 |\n"
+            "| reconstructible prose rows | 149 |\n"
+            "| exact correspondence rows | 156 |\n"
+            "| unmapped correspondence rows | 37 |\n"
+            "| solved exercises | 156 |\n"
+            "| unresolved exercises | 60 |\n"
+            "\n"
+            "- Statement: The version-two contract has 216 theorem rows: 69 are\n"
+            "  `proved-here`, 115 are `reexported-proof`, 23 are `checkpoint`, and six are\n"
+            "  `definition`. A fresh 486-row Lean receipt checks the declarations required\n"
+            "  by that contract under Lean 4.32.1. The contract has 156 distinct exercise\n"
+            "  solutions; 60 exercises remain correspondence-incomplete. The theorem\n"
+            "  correspondence axis records 156 exact rows, 23 checkpoints, and 37 unmapped\n"
+            "  rows.\n"
+        )
+        identity = {"sha256": "0" * 64, "bytes": 1, "declarations": 486}
+        rendered = sync.render_claim_ledger(text, counts, identity)
+        self.assertIn("and 9 are\n  `definition`.", rendered)
+        self.assertNotIn("and six are", rendered)
+        parts = re.search(
+            r"has (\d+) theorem rows: (\d+) are\n  `proved-here`, (\d+) are "
+            r"`reexported-proof`, (\d+) are `checkpoint`, and (\d+) are",
+            rendered,
+        )
+        total, *modes = (int(g) for g in parts.groups())
+        self.assertEqual(sum(modes), total)
+
+    def test_the_four_modes_sum_to_the_card_count(self):
+        cards = [
+            card(1, 1, lean="exact", prose="reconstructible", mode="proved-here"),
+            card(1, 2, lean="exact", prose="reconstructible", mode="reexported-proof"),
+            card(1, 3, lean="checkpoint", prose="summary", mode="checkpoint"),
+            card(1, 4, lean="exact", prose="reconstructible", mode="definition"),
+            card(1, 5, lean="exact", prose="reconstructible", mode="definition"),
+        ]
+        counts = sync.tally(cards, [])
+        parts = (
+            counts["proved_here"]
+            + counts["reexported"]
+            + counts["mode_checkpoint"]
+            + counts["definition"]
+        )
+        self.assertEqual(parts, counts["cards"])
+        self.assertEqual(counts["definition"], 2)
 
 
 class InventoryTotalsTests(unittest.TestCase):
