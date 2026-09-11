@@ -2477,21 +2477,21 @@
         "CFT-07-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "proved-here",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.real_inner_complex_coordinates",
         "underlying_declaration": null,
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 8,
-        "column": 5,
+        "line": 14,
+        "column": 9,
         "verification_target": "CrouzeixTextbook",
-        "type_sha256": "8b12bcbd8f96190a8ac2a953a92cefb2de7942b4a4db6584133212be908d8294",
+        "type_sha256": "bcd9dc783e3441cb9fd4bb908dc62253885b9ab13d3cb5729b2a9ff75fa29be0",
         "assumptions": [],
         "axioms": [
           "Classical.choice",
@@ -2515,18 +2515,18 @@
         "CFT-12-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.area_form_quarter_turn",
         "underlying_declaration": "CrouzeixConjecture.complexAreaForm_I_mul_right",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 10,
+        "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "d352bcd37e0f0cd0d277be348b019272c42954c4f73c766861824e6876d27fa0",
@@ -2553,18 +2553,18 @@
         "CFT-12-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.oriented_radial_tangent_positive",
         "underlying_declaration": "CrouzeixConjecture.complexAreaForm_radialTangent_pos",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 12,
+        "line": 22,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "73f2f5bbf40269700259b1e09984c373263f89264e1f45f3f8885a2a1e4cf0fc",
@@ -2591,18 +2591,18 @@
         "CFT-12-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.oriented_tangent_formula",
         "underlying_declaration": "CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 14,
+        "line": 24,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "71497b4822c51a78398ff46b4e6c77996da483dd69639fb9aa7d14dde5e60464",
@@ -2629,18 +2629,18 @@
         "CFT-12-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.boundary_parameter_is_smooth",
         "underlying_declaration": "CrouzeixConjecture.contDiff_one_parallelRadialParameterPoint",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 16,
+        "line": 26,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "9e899523fc6feffedc4882e54856a4773afe294163cce87075ca13315a7f1c6b",
@@ -2667,18 +2667,18 @@
         "CFT-12-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-oriented-boundary-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part02.boundary_slice_derivative",
         "underlying_declaration": "CrouzeixConjecture.parallelRadialParameterPoint_slice_hasDerivAt",
         "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
-        "line": 18,
+        "line": 28,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "b8d15a11ffebc20213434306ff59b3beb264f4cec85b501a95d6fb796936b71c",

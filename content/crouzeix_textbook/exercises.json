@@ -1603,10 +1603,22 @@
       "kind": "retrieval",
       "difficulty": "warmup",
       "skills": [
-        "CFT-12-001"
+        "CFT-12-002"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 33,
+        "column": 9,
+        "type_sha256": "33b530e5fbc458ac294e0f4c71181ce037fe3751bfcb3f8e17aa812f468176e1",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-12-E02",
@@ -1615,10 +1627,23 @@
       "kind": "calculation",
       "difficulty": "core",
       "skills": [
+        "CFT-12-001",
         "CFT-12-002"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 39,
+        "column": 9,
+        "type_sha256": "8243fdaa203d38f69967282df6f2d3943bf2d99a5ce6e57e2df7e981259ebf5f",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-12-E03",
@@ -1627,10 +1652,23 @@
       "kind": "written-proof",
       "difficulty": "core",
       "skills": [
-        "CFT-12-003"
+        "CFT-12-005",
+        "CFT-12-006"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 47,
+        "column": 9,
+        "type_sha256": "78b3aef3508f9e70399ffc67b3127dd1db31d702af4d9863d0e3e143df9f5488",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-12-E04",
@@ -1639,10 +1677,22 @@
       "kind": "written-proof",
       "difficulty": "stretch",
       "skills": [
-        "CFT-12-004"
+        "CFT-12-002"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 54,
+        "column": 9,
+        "type_sha256": "2c8fce124ad489938bc316f6ec2034d8f1ebfafa2415fea7f262b99c1917a2a8",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-12-E05",
@@ -1651,10 +1701,22 @@
       "kind": "boundary",
       "difficulty": "boundary",
       "skills": [
-        "CFT-12-005"
+        "CFT-12-002"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 61,
+        "column": 9,
+        "type_sha256": "015c0aef452189bda8269965f9d36dde2a8709d8732df73cfe122ef6289a4163",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-12-E06",
@@ -1663,10 +1725,23 @@
       "kind": "lean-proof",
       "difficulty": "lean",
       "skills": [
-        "CFT-12-006"
+        "CFT-12-003",
+        "CFT-12-004"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part02/Chapter12.lean",
+        "line": 69,
+        "column": 9,
+        "type_sha256": "d5d1528110dc44d2d2b2a679fc62b2da737fdbc2660c9c745f85e62674dc2228",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-13-E01",
