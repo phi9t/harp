@@ -2931,18 +2931,18 @@
         "CFT-09-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 9,
+        "line": 10,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "f150f77a56b65c2b094d4fbe041a0778dd019cd1d9d711145efee98be6ab4bf2",
@@ -2968,18 +2968,18 @@
         "CFT-14-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_coefficient",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries_apply",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 11,
+        "line": 12,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "399f5d4543254160f695c0d3eb518b77e0e445221ca737e581c737a2299671bf",
@@ -3002,22 +3002,22 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
-        "CFT-09-006",
+        "CFT-09-001",
         "CFT-14-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_radius",
         "underlying_declaration": "CrouzeixConjecture.one_le_matrixPowerSeries_radius",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 13,
+        "line": 14,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "129deb76798151c789bda54a5f52b915a9987b221523bfcbcbd7aee4953675a7",
@@ -3041,21 +3041,21 @@
       ],
       "pedagogical_prerequisites": [
         "CFT-14-001",
-        "CFT-14-003"
+        "CFT-14-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_sum",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.matrixPowerSeriesSum",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 15,
+        "line": 16,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "344122eb5432b9afc54c26b78cddb716569cf2a0def94923e3239066935c9a46",
@@ -3079,21 +3079,22 @@
       ],
       "pedagogical_prerequisites": [
         "CFT-11-002",
+        "CFT-14-003",
         "CFT-14-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_analytic",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 17,
+        "line": 18,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "1d79c9dee1884eee18821311bdb92ce794fb7052bb1309615802488f23fa15d5",
@@ -3116,22 +3117,23 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
+        "CFT-14-002",
         "CFT-14-003",
         "CFT-14-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-matrix-power-series-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.matrix_power_series_converges",
         "underlying_declaration": "CrouzeixConjecture.matrixPowerSeries_hasSum",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter14.lean",
-        "line": 19,
+        "line": 20,
         "column": 5,
         "verification_target": "CrouzeixTextbook",
         "type_sha256": "68ba8eb2341b7082a7ba51f7586b5ce73c76785f9e26ea77ac1a78ee72451fc2",
