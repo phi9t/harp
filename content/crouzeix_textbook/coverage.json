@@ -2704,16 +2704,16 @@
         "CFT-07-006"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.max_modulus_on_compact_set",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.maxFunctionModulusOnSet",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter13.lean",
         "line": 9,
         "column": 5,
@@ -2741,11 +2741,11 @@
         "CFT-13-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -2775,15 +2775,14 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
-        "CFT-13-001",
-        "CFT-13-002"
+        "CFT-13-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -2805,7 +2804,7 @@
     {
       "item_id": "CFT-13-004",
       "chapter": 13,
-      "kind": "definition",
+      "kind": "theorem",
       "prose_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/13_metric_and_normed_spaces.md",
       "anchor": "cft-13-004",
       "source_ids": [
@@ -2813,14 +2812,15 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
-        "CFT-13-003"
+        "CFT-13-002",
+        "CFT-07-006"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -2850,15 +2850,15 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
-        "CFT-13-001",
+        "CFT-13-002",
         "CFT-13-003"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -2889,14 +2889,15 @@
       ],
       "pedagogical_prerequisites": [
         "CFT-13-002",
+        "CFT-13-003",
         "CFT-13-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-compact-maximum-core-2026-09-10"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
