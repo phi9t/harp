@@ -92,6 +92,45 @@ Two consequences for the remaining chapters:
 - Do not report a chapter as meeting obligation 8 on the strength of a self-review. Report it as *self-reviewed, obligation 8 unverified*, and say so in the chapter's exit line.
 - Run the independent pass over a package while its chapters are still cheap to change. Four of the five blocking defects above had already been committed and pushed, and one was a false mathematical claim in reader-facing prose. The cost of the delay was not rework; it was the interval during which the book asserted something untrue.
 
+### Two defect classes the reviews keep finding, and the checks that catch them
+
+Five independent passes have now run: Chapters 5–10, then 11, 12, 13, 14, with
+five, five, three, six and one blocking defect respectively. Two root causes
+recur often enough to be worth naming and checking mechanically, because both are
+invisible to the author and cheap for anyone else to spot.
+
+**Stale self-reference.** The most common root cause by a wide margin. The
+implementer changes a declaration, a mode, a count or a registry row, and leaves
+prose or metadata describing the previous state. Chapter 11 said "the six items
+were re-exports" when five were; Chapter 12 said all six cards were
+`reexported-proof` in three separate sentences after one had been changed to
+`proved-here`; Chapter 14 shipped `skills` and `pedagogical_prerequisites` rows
+byte-identical to the withdrawn sketch while the prose was written fresh; and the
+count projector published a four-part sum of 213 out of 216 rows because the word
+"six" was hardcoded where a derived count belonged.
+
+*The check.* Before dispatching reviewers, diff every file the chapter touches
+against the commit the chapter started from, and for each changed contract row or
+declaration, re-read every prose sentence that describes it. Registry rows are
+the highest-risk item because nothing in the prose forces them to move: verify
+explicitly that this chapter's `pedagogical_prerequisites` and `skills` rows were
+edited in the same change as the prose, or that they were deliberately left alone.
+
+**Asserted library semantics.** The second class: stating what a Mathlib
+declaration says, or how it is proved, from its name rather than its source.
+`AnalyticOnNhd` was described as stronger than pointwise analyticity when it is
+*defined* as pointwise analyticity; `le_radius_of_bound` was described twice
+without the geometric factor its statement carries; "a supremum bounds its set
+unconditionally" ignored that Mathlib returns a junk value on an unbounded set,
+which made a card false rather than merely imprecise; and `HasFDerivAt.unique`
+was claimed to run an argument it does not.
+
+*The check.* Do not describe a library declaration's statement, hypotheses or
+proof without opening its source. A cited name is not evidence; the file is.
+
+Neither check requires a reviewer. Both are mechanical, and both would have
+removed roughly half the blocking findings of the last three passes.
+
 Reviewers must be barred from Lean builds — the shared Lake cache corrupts under concurrent builds — and from `docs/workstream/harp-mathematics/`, so they cannot anchor on the self-reviews they are meant to check.
 
 ### Known structural walls
