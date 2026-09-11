@@ -17,20 +17,20 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 ## Current state
 
 - Publication status: all 36 chapters are `active`.
-- Proof-exposition status: 131 coverage rows are now `reconstructible`; 83 remain `summary` and two other
+- Proof-exposition status: 137 coverage rows are now `reconstructible`; 77 remain `summary` and two other
   definition rows are `not-applicable`.
 - Whole-book exact Lean correspondence: `incomplete`.
-- Coverage rows: 216, comprising 68 `proved-here`, 115
-  `reexported-proof`, 27 `checkpoint`, and 6 `definition` rows.
+- Coverage rows: 216, comprising 69 `proved-here`, 115
+  `reexported-proof`, 26 `checkpoint`, and 6 `definition` rows.
 - Distinct proofs behind those rows: 208. 8 cards restate
   a theorem another card already indexes; they share its provider. Run
   `mise run textbook-counts` with `--audit` to list them.
-- Exact-correspondence rows: 138. The other rows remain `checkpoint` or
+- Exact-correspondence rows: 144. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  10, 11, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 78 exercise rows
-  have no claimed formal solution yet.
+  10, 11, 12, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 72 exercise
+  rows have no claimed formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
 ## Contract snapshot
@@ -38,24 +38,24 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 83 |
-| reconstructible prose rows | 131 |
-| exact correspondence rows | 138 |
-| unmapped correspondence rows | 51 |
-| solved exercises | 138 |
-| unresolved exercises | 78 |
+| summary prose rows | 77 |
+| reconstructible prose rows | 137 |
+| exact correspondence rows | 144 |
+| unmapped correspondence rows | 46 |
+| solved exercises | 144 |
+| unresolved exercises | 72 |
 
 ## What the current route provides
 
-Chapters 1–11 now provide a reviewed core, with 66 exact statement
-correspondences and 66 distinct Lean exercise solutions. The Chapter 1
+Chapters 1–12 now provide a reviewed core, with 72 exact statement
+correspondences and 72 distinct Lean exercise solutions. The Chapter 1
 characteristic-polynomial preview and Chapter 4's three scalar-invariant
 previews deliberately retain summary proofs and are now labelled forward
 references to their owning derivations in Chapters 5 and 6; keeping them as
 previews is what keeps the teaching order acyclic, and they stay outside the
 completed-proof count. The two definition cards have no theorem-proof
 obligation. This acceptance does not complete the foundations wave or the book:
-Chapters 12–24 still hold 78 unsolved exercises and 78 rows whose
+Chapters 13–24 still hold 72 unsolved exercises and 72 rows whose
 correspondence is `checkpoint` or `unmapped`.
 
 Parts I--III rebuild structural linear algebra, Euclidean geometry, analysis,
@@ -120,12 +120,12 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `775f30a6ba9122b03f830acdd8a8e4841ad53d8ad22d248d3061169e28dade2a`
-- Compiler receipt bytes: `549103`
-- Compiler receipt declarations: `465`
+  `791944dcd605e67c6da8b10ed916d926284ca06ab2ac3e9745532b1ef699a86d`
+- Compiler receipt bytes: `554528`
+- Compiler receipt declarations: `471`
 
-Those 465 unique declarations comprise 216 public coverage declarations,
-138 distinct exercise solutions, and the 111 additional underlying proof
+Those 471 unique declarations comprise 216 public coverage declarations,
+144 distinct exercise solutions, and the 111 additional underlying proof
 providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
 exact serialized output accepted by the Rust validator. It is not the
 six-ledger publication generation: that separate digest hashes the rendered

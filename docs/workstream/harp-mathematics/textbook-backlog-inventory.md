@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 12–24: the exact remaining backlog
+## Chapters 13–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 12 | `r60f` | 1 | 5 | 6 | 6 | 6 |
 | 13 | `fx6b` | 1 | 5 | 6 | 6 | 6 |
 | 14 | `2700` | 2 | 4 | 6 | 6 | 6 |
 | 15 | `hg37` | 4 | 2 | 6 | 6 | 6 |
@@ -75,18 +74,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **12–24** | | **27** | **51** | **78** | **78** | **78** |
+| **13–24** | | **26** | **46** | **72** | **72** | **72** |
 
-### Per-identity backlog, Chapters 12–24
+### Per-identity backlog, Chapters 13–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-12-001 | checkpoint | summary | checkpoint | `Part02.real_inner_complex_coordinates` | CFT-12-E01 unsolved |
-| CFT-12-002 | unmapped | summary | reexported-proof | `Part02.area_form_quarter_turn` | CFT-12-E02 unsolved |
-| CFT-12-003 | unmapped | summary | reexported-proof | `Part02.oriented_radial_tangent_positive` | CFT-12-E03 unsolved |
-| CFT-12-004 | unmapped | summary | reexported-proof | `Part02.oriented_tangent_formula` | CFT-12-E04 unsolved |
-| CFT-12-005 | unmapped | summary | reexported-proof | `Part02.boundary_parameter_is_smooth` | CFT-12-E05 unsolved |
-| CFT-12-006 | unmapped | summary | reexported-proof | `Part02.boundary_slice_derivative` | CFT-12-E06 unsolved |
 | CFT-13-001 | checkpoint | summary | checkpoint | `Part03.max_modulus_on_compact_set` | CFT-13-E01 unsolved |
 | CFT-13-002 | unmapped | summary | reexported-proof | `Part03.compact_maximum_exists` | CFT-13-E02 unsolved |
 | CFT-13-003 | unmapped | summary | reexported-proof | `Part03.pointwise_norm_le_maximum` | CFT-13-E03 unsolved |

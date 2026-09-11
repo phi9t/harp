@@ -170,31 +170,53 @@ fn chapters_01_through_10_have_60_distinct_solutions_not_public_card_aliases() {
 }
 
 #[test]
-fn chapter_12_remains_pending_in_this_scoped_acceptance() {
+fn foundations_chapters_01_through_12_are_complete() {
     let coverage = contract("coverage.json");
     let exercises = contract("exercises.json");
-    let pending_cards = foundations_rows(&coverage, "items")
-        .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 12)
-        .collect::<Vec<_>>();
-    let pending_exercises = foundations_rows(&exercises, "exercises")
-        .into_iter()
-        .filter(|row| row["chapter"].as_u64().unwrap() >= 12)
-        .collect::<Vec<_>>();
-    assert_eq!(pending_cards.len(), 6);
-    assert_eq!(pending_exercises.len(), 6);
-    for row in pending_cards {
-        assert_ne!(
+    let cards = foundations_rows(&coverage, "items");
+    let exercise_rows = foundations_rows(&exercises, "exercises");
+    assert_eq!(cards.len(), 72);
+    assert_eq!(exercise_rows.len(), 72);
+
+    for row in &cards {
+        assert_eq!(
             row["lean_correspondence_status"], "exact",
-            "{}: a later approved wave must revise this scoped contract",
+            "{}: the foundations wave admits no non-exact row",
             row["item_id"]
         );
-        assert_eq!(row["prose_proof_status"], "summary", "{}", row["item_id"]);
     }
-    for row in pending_exercises {
+
+    // Prose is reconstructible everywhere except the four deliberate forward
+    // references, which stay previews so the teaching order remains acyclic, and
+    // the two definition rows, which carry no theorem-proof obligation.
+    let previews = cards
+        .iter()
+        .filter(|row| row["prose_proof_status"] == "summary")
+        .map(|row| row["item_id"].as_str().unwrap().to_owned())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        previews,
+        BTreeSet::from([
+            "CFT-01-005".to_owned(),
+            "CFT-04-004".to_owned(),
+            "CFT-04-005".to_owned(),
+            "CFT-04-006".to_owned(),
+        ])
+    );
+    let definitions = cards
+        .iter()
+        .filter(|row| row["prose_proof_status"] == "not-applicable")
+        .map(|row| row["item_id"].as_str().unwrap().to_owned())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        definitions,
+        BTreeSet::from(["CFT-01-001".to_owned(), "CFT-03-005".to_owned()])
+    );
+
+    for row in &exercise_rows {
         assert!(
-            row["lean_solution"].is_null(),
-            "{}: do not claim completion of the pending roster",
+            !row["lean_solution"].is_null(),
+            "{}: every foundations exercise carries a checked solution",
             row["exercise_id"]
         );
     }
