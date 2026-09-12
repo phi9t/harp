@@ -49,6 +49,7 @@ python3 -m unittest discover -s scripts/tests -p test_release_candidate.py -v
 python3 -m unittest discover -s scripts/tests -p test_prepare_pages.py -v
 python3 -m unittest discover -s scripts/tests -p test_textbook_publication_task.py -v
 python3 -m unittest discover -s scripts/tests -p test_sync_textbook_counts.py -v
+python3 -m unittest discover -s scripts/tests -p test_refresh_import_receipt.py -v
 """
 
 [tasks.fmt]
