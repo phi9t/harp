@@ -4323,7 +4323,7 @@ fn canonical_pedagogical_graph_matches_the_reviewed_roster_and_policy() {
     assert_eq!(chapter_policy, reviewed_chapter_policy);
     assert_eq!(
         format!("{:x}", Sha256::digest(serialized_roster.as_bytes())),
-        "caae3954838da12bdea29550def9d635b3dc6784491dc81ae50b1ac40cda001a",
+        "99d8dc09ad2235bf511879954386065c673c70090c87f1998e32723e64387cd8",
         "the reviewed 216-row prerequisite roster changed"
     );
 
@@ -4771,7 +4771,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             }
             counts
         });
-    assert_eq!(mode_counts, [69, 117, 19, 11]);
+    assert_eq!(mode_counts, [69, 117, 18, 12]);
     assert!(contracts
         .theorems()
         .iter()
@@ -4782,7 +4782,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.prose_proof_status() == ProseProofStatus::Summary)
             .count(),
-        59
+        53
     );
     assert_eq!(
         contracts
@@ -4798,7 +4798,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| row.lean_correspondence_status() == LeanCorrespondenceStatus::Exact)
             .count(),
-        162
+        168
     );
     assert_eq!(
         contracts
@@ -4808,7 +4808,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
                 row.lean_correspondence_status() == LeanCorrespondenceStatus::Checkpoint
             })
             .count(),
-        19
+        18
     );
 
     let solved = array(&exercises, "exercises", "exercises")
@@ -4819,7 +4819,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         })
         .map(|row| string(row, "exercise_id", "exercise").to_owned())
         .collect::<BTreeSet<_>>();
-    let mut expected_solved = (1..=15)
+    let mut expected_solved = (1..=16)
         .flat_map(|chapter| (1..=6).map(move |index| format!("CFT-{chapter:02}-E{index:02}")))
         .collect::<BTreeSet<_>>();
     expected_solved.extend([
@@ -4905,10 +4905,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "Proof-exposition status: 155 coverage rows are now `reconstructible`; 59 remain `summary` and two other definition rows are `not-applicable`.",
-        "Coverage rows: 216, comprising 69 `proved-here`, 117 `reexported-proof`, 19 `checkpoint`, and 11 `definition` rows.",
-        "Exact-correspondence rows: 162.",
-        "Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 54 exercise rows",
+        "Proof-exposition status: 161 coverage rows are now `reconstructible`; 53 remain `summary` and two other definition rows are `not-applicable`.",
+        "Coverage rows: 216, comprising 69 `proved-here`, 117 `reexported-proof`, 18 `checkpoint`, and 12 `definition` rows.",
+        "Exact-correspondence rows: 168.",
+        "Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other 48 exercise rows",
     ] {
         assert!(
             maintained_status.contains(expected),
@@ -4923,10 +4923,10 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
         .collect::<Vec<_>>()
         .join(" ");
     for expected in [
-        "216 theorem rows: 69 are `proved-here`, 117 are `reexported-proof`, 19 are `checkpoint`, and 11 are `definition`.",
-        "A fresh 496-row Lean receipt",
-        "The contract has 162 distinct exercise solutions; 54 exercises remain correspondence-incomplete.",
-        "correspondence axis records 162 exact rows, 19 checkpoints, and 35 unmapped rows.",
+        "216 theorem rows: 69 are `proved-here`, 117 are `reexported-proof`, 18 are `checkpoint`, and 12 are `definition`.",
+        "A fresh 503-row Lean receipt",
+        "The contract has 168 distinct exercise solutions; 48 exercises remain correspondence-incomplete.",
+        "correspondence axis records 168 exact rows, 18 checkpoints, and 30 unmapped rows.",
     ] {
         assert!(
             claim_ledger.contains(expected),
@@ -4939,7 +4939,7 @@ fn truthful_v2_active_state_remains_explicitly_correspondence_incomplete() {
             .iter()
             .filter(|row| string(row, "lean_correspondence_status", "coverage row") == "unmapped")
             .count(),
-        35
+        30
     );
 }
 

@@ -17,20 +17,20 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 ## Current state
 
 - Publication status: all 36 chapters are `active`.
-- Proof-exposition status: 155 coverage rows are now `reconstructible`; 59 remain `summary` and two other
+- Proof-exposition status: 161 coverage rows are now `reconstructible`; 53 remain `summary` and two other
   definition rows are `not-applicable`.
 - Whole-book exact Lean correspondence: `incomplete`.
 - Coverage rows: 216, comprising 69 `proved-here`, 117
-  `reexported-proof`, 19 `checkpoint`, and 11 `definition` rows.
+  `reexported-proof`, 18 `checkpoint`, and 12 `definition` rows.
 - Distinct proofs behind those rows: 208. 8 cards restate
   a theorem another card already indexes; they share its provider. Run
   `mise run textbook-counts` with `--audit` to list them.
-- Exact-correspondence rows: 162. The other rows remain `checkpoint` or
+- Exact-correspondence rows: 168. The other rows remain `checkpoint` or
   `unmapped` until prose and Lean are reviewed together.
 - Indexed exercises: 216.
 - Distinct checked exercise solutions: six each in Chapters 1, 2, 3, 4, 5, 6, 7, 8, 9,
-  10, 11, 12, 13, 14, 15, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The other
-  54 exercise rows have no claimed formal solution yet.
+  10, 11, 12, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, and 36. The
+  other 48 exercise rows have no claimed formal solution yet.
 - Active Lean target: `CrouzeixTextbook`.
 
 ## Contract snapshot
@@ -38,24 +38,24 @@ Back to the [[knowledge/crouzeix_textbook/crouzeix_textbook_index|book index]].
 | Metric | Count |
 | --- | ---: |
 | theorem rows | 216 |
-| summary prose rows | 59 |
-| reconstructible prose rows | 155 |
-| exact correspondence rows | 162 |
-| unmapped correspondence rows | 35 |
-| solved exercises | 162 |
-| unresolved exercises | 54 |
+| summary prose rows | 53 |
+| reconstructible prose rows | 161 |
+| exact correspondence rows | 168 |
+| unmapped correspondence rows | 30 |
+| solved exercises | 168 |
+| unresolved exercises | 48 |
 
 ## What the current route provides
 
-Chapters 1–15 now provide a reviewed core, with 90 exact statement
-correspondences and 90 distinct Lean exercise solutions. The Chapter 1
+Chapters 1–16 now provide a reviewed core, with 96 exact statement
+correspondences and 96 distinct Lean exercise solutions. The Chapter 1
 characteristic-polynomial preview and Chapter 4's three scalar-invariant
 previews deliberately retain summary proofs and are now labelled forward
 references to their owning derivations in Chapters 5 and 6; keeping them as
 previews is what keeps the teaching order acyclic, and they stay outside the
 completed-proof count. The two definition cards have no theorem-proof
 obligation. This acceptance does not complete the foundations wave or the book:
-Chapters 16–24 still hold 54 unsolved exercises and 54 rows whose
+Chapters 17–24 still hold 48 unsolved exercises and 48 rows whose
 correspondence is `checkpoint` or `unmapped`.
 
 Parts I--III rebuild structural linear algebra, Euclidean geometry, analysis,
@@ -120,12 +120,12 @@ compiled receipt. The migration metadata was validated against this durable
 compiler receipt identity:
 
 - Compiler receipt SHA-256:
-  `191c3ff74c897d6f90580f4916020e1cc12a6ccbd6248a5a68e46e99381957fb`
-- Compiler receipt bytes: `584089`
-- Compiler receipt declarations: `496`
+  `dfddd057cd1ffffeb01c7dfe850c2abc53798df8634e3dc73a2b98e3e33f390b`
+- Compiler receipt bytes: `592422`
+- Compiler receipt declarations: `503`
 
-Those 496 unique declarations comprise 216 public coverage declarations,
-162 distinct exercise solutions, and the 118 additional underlying proof
+Those 503 unique declarations comprise 216 public coverage declarations,
+168 distinct exercise solutions, and the 119 additional underlying proof
 providers needed by `reexported-proof` rows. The receipt SHA-256 hashes the
 exact serialized output accepted by the Rust validator. It is not the
 six-ledger publication generation: that separate digest hashes the rendered
