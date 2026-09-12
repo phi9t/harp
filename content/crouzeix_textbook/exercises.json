@@ -2192,7 +2192,19 @@
         "CFT-16-001"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_01_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 29,
+        "column": 9,
+        "type_sha256": "948547b6d9e71d06745aef600230ced14166651197532babcec5c1609d1ab9a4",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-16-E02",
@@ -2201,10 +2213,22 @@
       "kind": "calculation",
       "difficulty": "routine",
       "skills": [
-        "CFT-16-002"
+        "CFT-16-003"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_02_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 34,
+        "column": 9,
+        "type_sha256": "0282d0805d73680dea5da3fa6738a51693ec184a61224008c1daa9a9de812ffe",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-16-E03",
@@ -2213,10 +2237,22 @@
       "kind": "written-proof",
       "difficulty": "proof",
       "skills": [
-        "CFT-16-003"
+        "CFT-16-002"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_03_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 40,
+        "column": 9,
+        "type_sha256": "fb3142adbf592bfce648a49b04de3760e47c602e62ee787fe508fed14bfca4e4",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-16-E04",
@@ -2228,7 +2264,19 @@
         "CFT-16-004"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_04_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 57,
+        "column": 9,
+        "type_sha256": "270bbdba76559035aeb765f2a372eb8804874031cd1cb11af00359e17e3dbeb8",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-16-E05",
@@ -2240,7 +2288,19 @@
         "CFT-16-005"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_05_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 66,
+        "column": 9,
+        "type_sha256": "f04b6e686d38cd3abf759b72bd1825cc1a0f852515c04d88e91a33f08bbe9be1",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-16-E06",
@@ -2252,7 +2312,19 @@
         "CFT-16-006"
       ],
       "starter": null,
-      "lean_solution": null
+      "lean_solution": {
+        "declaration": "CrouzeixTextbook.Part03.Exercises.Chapter16.exercise_06_solution",
+        "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter16.lean",
+        "line": 76,
+        "column": 9,
+        "type_sha256": "ff5f460028cae4619402e6d56bcfe25585979bf6f4d029150c043f751c4f299d",
+        "verification_target": "CrouzeixTextbook",
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ]
+      }
     },
     {
       "exercise_id": "CFT-17-E01",
