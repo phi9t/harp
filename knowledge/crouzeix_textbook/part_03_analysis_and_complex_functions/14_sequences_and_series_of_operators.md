@@ -946,8 +946,9 @@ Receipt identity: `CrouzeixTextbook:02e273182f4d94f929bd17c63517f2ba981c6526b117
 The chapter contributes a matrix-valued power series, a sufficient condition for
 it to converge on the open unit disk, and the analyticity of its sum there.
 
-Chapter 15 turns to complex differentiability proper, where analyticity stops
-being imported from a series and becomes the object of study. The cards here are
+Chapter 15 turns to the holomorphic functional calculus: despite its title it
+develops no complex differentiability, and instead builds `f(A)` for an arbitrary
+matrix from a boundary integral. The cards here are
 consumed in Part VI, where both constant-two routes build a matrix-valued function
 on the disk from a bounded coefficient sequence and need exactly this package:
 radius, analyticity, and the identification of the sum with the limit of its
