@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 15–24: the exact remaining backlog
+## Chapters 16–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 15 | `hg37` | 4 | 2 | 6 | 6 | 6 |
 | 16 | `92zd` | 1 | 5 | 6 | 6 | 6 |
 | 17 | `q81q` | 4 | 2 | 6 | 6 | 6 |
 | 18 | `dvm6` | 5 | 1 | 6 | 6 | 6 |
@@ -72,18 +71,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **15–24** | | **23** | **37** | **60** | **60** | **60** |
+| **16–24** | | **19** | **35** | **54** | **54** | **54** |
 
-### Per-identity backlog, Chapters 15–24
+### Per-identity backlog, Chapters 16–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-15-001 | checkpoint | summary | checkpoint | `Part03.parametric_boundary_integral` | CFT-15-E01 unsolved |
-| CFT-15-002 | unmapped | summary | reexported-proof | `Part03.boundary_integral_continuous` | CFT-15-E02 unsolved |
-| CFT-15-003 | checkpoint | summary | checkpoint | `Part03.boundary_integral_is_function_eval` | CFT-15-E03 unsolved |
-| CFT-15-004 | checkpoint | summary | checkpoint | `Part03.simple_spectrum_holomorphic_eval` | CFT-15-E04 unsolved |
-| CFT-15-005 | unmapped | summary | reexported-proof | `Part03.simple_spectrum_boundary_limit` | CFT-15-E05 unsolved |
-| CFT-15-006 | checkpoint | summary | checkpoint | `Part03.simple_spectrum_eval_limit` | CFT-15-E06 unsolved |
 | CFT-16-001 | checkpoint | summary | checkpoint | `Part03.holomorphic_matrix_eval` | CFT-16-E01 unsolved |
 | CFT-16-002 | unmapped | summary | reexported-proof | `Part03.contour_eval_agrees` | CFT-16-E02 unsolved |
 | CFT-16-003 | unmapped | summary | reexported-proof | `Part03.polynomial_compatibility` | CFT-16-E03 unsolved |

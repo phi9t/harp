@@ -128,8 +128,33 @@ was claimed to run an argument it does not.
 *The check.* Do not describe a library declaration's statement, hypotheses or
 proof without opening its source. A cited name is not evidence; the file is.
 
+**Unresolved cross-references** are a cheap third case, and have now occurred
+twice: Chapter 12 forward-referenced orthogonalization to a chapter that does not
+develop it, and Chapter 15 was written with a `Next:` link to a filename that does
+not exist. `harp build` catches a broken wikilink target, but only after the prose
+is otherwise complete, and it says nothing about a link that resolves to the wrong
+chapter. Resolve every `[[...]]` target and every "Chapter N does X" claim against
+the index before dispatching reviewers.
+
 Neither check requires a reviewer. Both are mechanical, and both would have
 removed roughly half the blocking findings of the last three passes.
+
+**Run `python3 scripts/check_chapter_prose.py NN` before dispatching reviewers.**
+Writing these down as prose was not enough: Chapter 15 then shipped a `Next:` link
+to a filename that does not exist and a forward-dependency claim, asserted three
+times, that named the wrong Part — both instances of checks recorded in this very
+section and not applied. The script makes the mechanical half mechanical. It fails
+on unresolved cross-references, lists registry rows left untouched while the prose
+was rewritten, and prints every sentence naming a formal mode beside the registry's
+actual tally.
+
+What it deliberately does not do is judge. A first version compared "Chapter NN
+does X" claims against the index title by word overlap and produced sixteen false
+positives on Chapter 15 while catching none of its real defects; a second tried to
+parse quantities out of mode sentences and missed the exact phrasing that was
+Chapter 12's blocking defect. Both were removed. A check that cries wolf trains its
+reader to skip it, which is worse than no check, and the same failure as a
+regression test written adjacent to a bug rather than on it.
 
 Reviewers must be barred from Lean builds — the shared Lake cache corrupts under concurrent builds — and from `docs/workstream/harp-mathematics/`, so they cannot anchor on the self-reviews they are meant to check.
 
