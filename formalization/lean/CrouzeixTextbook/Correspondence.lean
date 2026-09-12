@@ -105,1395 +105,1425 @@ noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0021 :=
 #check CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two
 noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0022 :=
   @CrouzeixConjecture.LoristSchwenninger.scalar_endpoint_le_two
-#check CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval
+#check CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval
 noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0023 :=
-  @CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval
-#check CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum
+  @CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval
+#check CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval
 noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0024 :=
+  @CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_holomorphicMatrixEval
+#check CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0025 :=
+  @CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval
+#check CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0026 :=
   @CrouzeixConjecture.SimpleDiagonalization.eigenvalue_mem_matrixSpectrum
 #check CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0025 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0027 :=
   @CrouzeixConjecture.SimpleDiagonalization.polynomialEval_eq_innerConjugation_diagonal
 #check CrouzeixConjecture.boundaryPhi_norm_le
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0026 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0028 :=
   @CrouzeixConjecture.boundaryPhi_norm_le
 #check CrouzeixConjecture.boundaryPhi_one
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0027 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0029 :=
   @CrouzeixConjecture.boundaryPhi_one
 #check CrouzeixConjecture.boundaryPhi_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0028 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0030 :=
   @CrouzeixConjecture.boundaryPhi_posSemidef
 #check CrouzeixConjecture.boundaryPhi_star
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0029 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0031 :=
   @CrouzeixConjecture.boundaryPhi_star
 #check CrouzeixConjecture.canonicalParallelOrientedRadialBoundaryStatement
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0030 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0032 :=
   @CrouzeixConjecture.canonicalParallelOrientedRadialBoundaryStatement
 #check CrouzeixConjecture.closedOperatorNumericalRange_isCompact
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0031 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0033 :=
   @CrouzeixConjecture.closedOperatorNumericalRange_isCompact
 #check CrouzeixConjecture.closedOperatorNumericalRange_nonempty
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0032 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0034 :=
   @CrouzeixConjecture.closedOperatorNumericalRange_nonempty
 #check CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0033 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0035 :=
   @CrouzeixConjecture.completionCorrectionKernel_sampling_eq_zero
 #check CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0034 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0036 :=
   @CrouzeixConjecture.completionCorrectionKernel_sampling_quadratic_eq
 #check CrouzeixConjecture.completionDiagonalizableMatrix_euclideanOperator_norm_eq
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0035 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0037 :=
   @CrouzeixConjecture.completionDiagonalizableMatrix_euclideanOperator_norm_eq
 #check CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0036 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0038 :=
   @CrouzeixConjecture.completionDiagonalizableMatrix_norm_eq_completionSimilarity_norm
 #check CrouzeixConjecture.completionGramMatrix_isUnit
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0037 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0039 :=
   @CrouzeixConjecture.completionGramMatrix_isUnit
 #check CrouzeixConjecture.completionGramMatrix_posDef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0038 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0040 :=
   @CrouzeixConjecture.completionGramMatrix_posDef
 #check CrouzeixConjecture.completionGramMatrix_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0039 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0041 :=
   @CrouzeixConjecture.completionGramMatrix_posSemidef
 #check CrouzeixConjecture.completionKernelModel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0040 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0042 :=
   @CrouzeixConjecture.completionKernelModel
 #check CrouzeixConjecture.completionP_congruence_eq_gramian_four
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0041 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0043 :=
   @CrouzeixConjecture.completionP_congruence_eq_gramian_four
 #check CrouzeixConjecture.completionPolarUnitary_mem_unitaryGroup
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0042 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0044 :=
   @CrouzeixConjecture.completionPolarUnitary_mem_unitaryGroup
 #check CrouzeixConjecture.completionR_congruence_eq_gramian_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0043 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0045 :=
   @CrouzeixConjecture.completionR_congruence_eq_gramian_two
 #check CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0044 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0046 :=
   @CrouzeixConjecture.completionResolventKernel_sampling_quadratic_eq
 #check CrouzeixConjecture.completionSquareRootData_of_isUnit
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0045 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0047 :=
   @CrouzeixConjecture.completionSquareRootData_of_isUnit
 #check CrouzeixConjecture.completionX_congruence_eq_gramian_difference
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0046 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0048 :=
   @CrouzeixConjecture.completionX_congruence_eq_gramian_difference
 #check CrouzeixConjecture.completion_X_inequality_of_positiveKernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0047 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0049 :=
   @CrouzeixConjecture.completion_X_inequality_of_positiveKernel
 #check CrouzeixConjecture.complexAreaForm_I_mul_right
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0048 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0050 :=
   @CrouzeixConjecture.complexAreaForm_I_mul_right
 #check CrouzeixConjecture.complexAreaForm_radialTangent_pos
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0049 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0051 :=
   @CrouzeixConjecture.complexAreaForm_radialTangent_pos
 #check CrouzeixConjecture.contDiff_one_parallelRadialParameterPoint
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0050 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0052 :=
   @CrouzeixConjecture.contDiff_one_parallelRadialParameterPoint
 #check CrouzeixConjecture.continuousOn_parametricBoundaryIntegral
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0051 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0053 :=
   @CrouzeixConjecture.continuousOn_parametricBoundaryIntegral
 #check CrouzeixConjecture.convexProjection_variational
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0052 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0054 :=
   @CrouzeixConjecture.convexProjection_variational
 #check CrouzeixConjecture.doubleLayerResolvent
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0053 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0055 :=
   @CrouzeixConjecture.doubleLayerResolvent
 #check CrouzeixConjecture.doubleLayerResolvent_congruence_density
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0054 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0056 :=
   @CrouzeixConjecture.doubleLayerResolvent_congruence_density
 #check CrouzeixConjecture.doubleLayerSupportMatrix_posSemidef_of_outwardBoundarySupport
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0055 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0057 :=
   @CrouzeixConjecture.doubleLayerSupportMatrix_posSemidef_of_outwardBoundarySupport
 #check CrouzeixConjecture.euclideanOperator_conjTranspose
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0056 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0058 :=
   @CrouzeixConjecture.euclideanOperator_conjTranspose
 #check CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0057 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0059 :=
   @CrouzeixConjecture.exists_hasDistinctEigenvalues_norm_sub_lt
 #check CrouzeixConjecture.exists_maxFunctionModulusOnSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0058 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0060 :=
   @CrouzeixConjecture.exists_maxFunctionModulusOnSet
 #check CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0059 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0061 :=
   @CrouzeixConjecture.generatedAlgebra_mem_iff_exists_polynomial
 #check CrouzeixConjecture.gramianTerm_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0060 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0062 :=
   @CrouzeixConjecture.gramianTerm_posSemidef
 #check CrouzeixConjecture.gramian_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0061 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0063 :=
   @CrouzeixConjecture.gramian_posSemidef
 #check CrouzeixConjecture.gramian_two_sub_gramian_four_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0062 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0064 :=
   @CrouzeixConjecture.gramian_two_sub_gramian_four_posSemidef
 #check CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0063 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0065 :=
   @CrouzeixConjecture.harpFiniteHorizonClosedOperatorNumericalRange_isTwoSpectralSet
 #check CrouzeixConjecture.holomorphicCrouzeixBound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0064 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0066 :=
   @CrouzeixConjecture.holomorphicCrouzeixBound
 #check CrouzeixConjecture.holomorphicCrouzeixRationalBound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0065 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0067 :=
   @CrouzeixConjecture.holomorphicCrouzeixRationalBound
 #check CrouzeixConjecture.holomorphicMatrixEval_add
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0066 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0068 :=
   @CrouzeixConjecture.holomorphicMatrixEval_add
 #check CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0067 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0069 :=
   @CrouzeixConjecture.holomorphicMatrixEval_congr_on_neighborhood
 #check CrouzeixConjecture.holomorphicMatrixEval_mul
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0068 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0070 :=
   @CrouzeixConjecture.holomorphicMatrixEval_mul
 #check CrouzeixConjecture.holomorphicMatrixEval_polynomial
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0069 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0071 :=
   @CrouzeixConjecture.holomorphicMatrixEval_polynomial
 #check CrouzeixConjecture.inner_euclideanOperator_eq_star_dotProduct
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0070 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0072 :=
   @CrouzeixConjecture.inner_euclideanOperator_eq_star_dotProduct
 #check CrouzeixConjecture.isCompact_numericalRange
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0071 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0073 :=
   @CrouzeixConjecture.isCompact_numericalRange
 #check CrouzeixConjecture.isOpen_compl_rationalPoleSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0072 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0074 :=
   @CrouzeixConjecture.isOpen_compl_rationalPoleSet
 #check CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0073 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0075 :=
   @CrouzeixConjecture.loristSchwenningerClosedOperatorNumericalRange_isTwoSpectralSet
 #check CrouzeixConjecture.loristSchwenningerFiniteMatrixMainTheorem
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0074 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0076 :=
   @CrouzeixConjecture.loristSchwenningerFiniteMatrixMainTheorem
 #check CrouzeixConjecture.loristSchwenningerHilbertSpacePolynomialCrouzeix
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0075 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0077 :=
   @CrouzeixConjecture.loristSchwenningerHilbertSpacePolynomialCrouzeix
 #check CrouzeixConjecture.loristSchwenningerMainTheorem
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0076 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0078 :=
   @CrouzeixConjecture.loristSchwenningerMainTheorem
 #check CrouzeixConjecture.loristSchwenningerRationalSpectralSetCorollary
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0077 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0079 :=
   @CrouzeixConjecture.loristSchwenningerRationalSpectralSetCorollary
 #check CrouzeixConjecture.matrixHerglotzKernel_isPositiveMatrixKernelOn
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0078 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0080 :=
   @CrouzeixConjecture.matrixHerglotzKernel_isPositiveMatrixKernelOn
 #check CrouzeixConjecture.matrixPowerSeries
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0079 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0081 :=
   @CrouzeixConjecture.matrixPowerSeries
 #check CrouzeixConjecture.matrixPowerSeriesSum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0080 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0082 :=
   @CrouzeixConjecture.matrixPowerSeriesSum
 #check CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0081 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0083 :=
   @CrouzeixConjecture.matrixPowerSeriesSum_analyticOnNhd_unitDisk
 #check CrouzeixConjecture.matrixPowerSeries_apply
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0082 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0084 :=
   @CrouzeixConjecture.matrixPowerSeries_apply
 #check CrouzeixConjecture.matrixPowerSeries_hasSum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0083 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0085 :=
   @CrouzeixConjecture.matrixPowerSeries_hasSum
 #check CrouzeixConjecture.matrixSpectrum_subset_numericalRange
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0084 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0086 :=
   @CrouzeixConjecture.matrixSpectrum_subset_numericalRange
 #check CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0085 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0087 :=
   @CrouzeixConjecture.matrix_norm_eq_euclidean_operator_norm
 #check CrouzeixConjecture.matrix_norm_le_two_of_four_sub_conjTranspose_mul_self_posSemidef
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0086 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0088 :=
   @CrouzeixConjecture.matrix_norm_le_two_of_four_sub_conjTranspose_mul_self_posSemidef
 #check CrouzeixConjecture.maxFunctionModulusOnSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0087 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0089 :=
   @CrouzeixConjecture.maxFunctionModulusOnSet
 #check CrouzeixConjecture.maxFunctionModulusOnSet_mono
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0088 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0090 :=
   @CrouzeixConjecture.maxFunctionModulusOnSet_mono
 #check CrouzeixConjecture.maxFunctionModulusOnSet_nonneg
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0089 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0091 :=
   @CrouzeixConjecture.maxFunctionModulusOnSet_nonneg
 #check CrouzeixConjecture.norm_convexProjection_sub_le
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0090 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0092 :=
   @CrouzeixConjecture.norm_convexProjection_sub_le
 #check CrouzeixConjecture.norm_function_le_maxFunctionModulusOnSet
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0091 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0093 :=
   @CrouzeixConjecture.norm_function_le_maxFunctionModulusOnSet
 #check CrouzeixConjecture.norm_simpleSpectrumApproximation_sub_lt
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0092 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0094 :=
   @CrouzeixConjecture.norm_simpleSpectrumApproximation_sub_lt
 #check CrouzeixConjecture.numericalRange_convex
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0093 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0095 :=
   @CrouzeixConjecture.numericalRange_convex
 #check CrouzeixConjecture.numericalRange_eq_image_sphere
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0094 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0096 :=
   @CrouzeixConjecture.numericalRange_eq_image_sphere
 #check CrouzeixConjecture.numericalRange_nonempty
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0095 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0097 :=
   @CrouzeixConjecture.numericalRange_nonempty
 #check CrouzeixConjecture.numericalRange_perturbation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0096 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0098 :=
   @CrouzeixConjecture.numericalRange_perturbation
 #check CrouzeixConjecture.one_le_matrixPowerSeries_radius
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0097 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0099 :=
   @CrouzeixConjecture.one_le_matrixPowerSeries_radius
 #check CrouzeixConjecture.operatorNumericalRange_convex
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0098 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0100 :=
   @CrouzeixConjecture.operatorNumericalRange_convex
 #check CrouzeixConjecture.parallelRadialParameterPoint_slice_hasDerivAt
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0099 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0101 :=
   @CrouzeixConjecture.parallelRadialParameterPoint_slice_hasDerivAt
+#check CrouzeixConjecture.parametricBoundaryIntegral
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0102 :=
+  @CrouzeixConjecture.parametricBoundaryIntegral
 #check CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0100 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0103 :=
   @CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound
 #check CrouzeixConjecture.polynomialEval_diagonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0101 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0104 :=
   @CrouzeixConjecture.polynomialEval_diagonal
 #check CrouzeixConjecture.polynomialEval_mem_generatedAlgebra
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0102 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0105 :=
   @CrouzeixConjecture.polynomialEval_mem_generatedAlgebra
 #check CrouzeixConjecture.posSemidef_congruence
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0103 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0106 :=
   @CrouzeixConjecture.posSemidef_congruence
 #check CrouzeixConjecture.positiveRealCompletionStatement
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0104 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0107 :=
   @CrouzeixConjecture.positiveRealCompletionStatement
 #check CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0105 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0108 :=
   @CrouzeixConjecture.radialTangent_eq_I_mul_normal_mul_norm
 #check CrouzeixConjecture.rationalPoleSet_finite
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0106 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0109 :=
   @CrouzeixConjecture.rationalPoleSet_finite
 #check CrouzeixConjecture.scalar_sub_matrix_isUnit_of_outwardBoundarySupport
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0107 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0110 :=
   @CrouzeixConjecture.scalar_sub_matrix_isUnit_of_outwardBoundarySupport
 #check CrouzeixConjecture.simpleSpectrumApproximation_hasDistinctEigenvalues
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0108 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0111 :=
   @CrouzeixConjecture.simpleSpectrumApproximation_hasDistinctEigenvalues
+#check CrouzeixConjecture.simpleSpectrumHolomorphicEval
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0112 :=
+  @CrouzeixConjecture.simpleSpectrumHolomorphicEval
 #check CrouzeixConjecture.summable_gramianTerm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0109 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0113 :=
   @CrouzeixConjecture.summable_gramianTerm
 #check CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0110 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0114 :=
   @CrouzeixConjecture.tendsto_maxFunctionModulusOnSet_of_outerApproximation
 #check CrouzeixConjecture.tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0111 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0115 :=
   @CrouzeixConjecture.tendsto_parametricBoundaryIntegral_simpleSpectrumApproximation
 #check CrouzeixConjecture.tendsto_simpleSpectrumApproximation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0112 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0116 :=
   @CrouzeixConjecture.tendsto_simpleSpectrumApproximation
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0113 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0117 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0114 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0118 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0115 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0119 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0116 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0120 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0117 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0121 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0118 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0122 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter01.exercise_06_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0119 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0123 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0120 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0124 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0121 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0125 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0122 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0126 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0123 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0127 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0124 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0128 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter02.exercise_06_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0125 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0129 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0126 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0130 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0127 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0131 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0128 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0132 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0129 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0133 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0130 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0134 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter03.exercise_06_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0131 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0135 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0132 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0136 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0133 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0137 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0134 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0138 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0135 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0139 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0136 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0140 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter04.exercise_06_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0137 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0141 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0138 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0142 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0139 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0143 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0140 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0144 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0141 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0145 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0142 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0146 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter05.exercise_06_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0143 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0147 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_01_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0144 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0148 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_02_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0145 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0149 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_03_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0146 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0150 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_04_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0147 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0151 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_05_solution
 #check CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0148 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0152 :=
   @CrouzeixTextbook.Part01.Exercises.Chapter06.exercise_06_solution
 #check CrouzeixTextbook.Part01.LinearTransformation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0149 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0153 :=
   @CrouzeixTextbook.Part01.LinearTransformation
 #check CrouzeixTextbook.Part01.basis_change_conjugacy
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0150 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0154 :=
   @CrouzeixTextbook.Part01.basis_change_conjugacy
 #check CrouzeixTextbook.Part01.basis_coordinate_action
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0151 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0155 :=
   @CrouzeixTextbook.Part01.basis_coordinate_action
 #check CrouzeixTextbook.Part01.basis_coordinates_unique
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0152 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0156 :=
   @CrouzeixTextbook.Part01.basis_coordinates_unique
 #check CrouzeixTextbook.Part01.basis_image_columns
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0153 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0157 :=
   @CrouzeixTextbook.Part01.basis_image_columns
 #check CrouzeixTextbook.Part01.change_basis_action
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0154 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0158 :=
   @CrouzeixTextbook.Part01.change_basis_action
 #check CrouzeixTextbook.Part01.composition_range_le
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0155 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0159 :=
   @CrouzeixTextbook.Part01.composition_range_le
 #check CrouzeixTextbook.Part01.coordinate_change_conjugacy
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0156 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0160 :=
   @CrouzeixTextbook.Part01.coordinate_change_conjugacy
 #check CrouzeixTextbook.Part01.determinant_diagonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0157 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0161 :=
   @CrouzeixTextbook.Part01.determinant_diagonal
 #check CrouzeixTextbook.Part01.determinant_multiplicative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0158 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0162 :=
   @CrouzeixTextbook.Part01.determinant_multiplicative
 #check CrouzeixTextbook.Part01.determinant_similarity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0159 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0163 :=
   @CrouzeixTextbook.Part01.determinant_similarity
 #check CrouzeixTextbook.Part01.diagonalizable_polynomial_calculus
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0160 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0164 :=
   @CrouzeixTextbook.Part01.diagonalizable_polynomial_calculus
 #check CrouzeixTextbook.Part01.diagonalization_eigenvalue_mem_spectrum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0161 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0165 :=
   @CrouzeixTextbook.Part01.diagonalization_eigenvalue_mem_spectrum
 #check CrouzeixTextbook.Part01.dimension_invariant_under_linear_equiv
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0162 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0166 :=
   @CrouzeixTextbook.Part01.dimension_invariant_under_linear_equiv
 #check CrouzeixTextbook.Part01.direct_sum_coordinates_unique
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0163 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0167 :=
   @CrouzeixTextbook.Part01.direct_sum_coordinates_unique
 #check CrouzeixTextbook.Part01.dual_map_apply
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0164 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0168 :=
   @CrouzeixTextbook.Part01.dual_map_apply
 #check CrouzeixTextbook.Part01.dual_map_composition
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0165 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0169 :=
   @CrouzeixTextbook.Part01.dual_map_composition
 #check CrouzeixTextbook.Part01.duality_similarity_preserves_charpoly
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0166 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0170 :=
   @CrouzeixTextbook.Part01.duality_similarity_preserves_charpoly
 #check CrouzeixTextbook.Part01.generated_algebra_polynomial_representation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0167 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0171 :=
   @CrouzeixTextbook.Part01.generated_algebra_polynomial_representation
 #check CrouzeixTextbook.Part01.injective_iff_kernel_bottom
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0168 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0172 :=
   @CrouzeixTextbook.Part01.injective_iff_kernel_bottom
 #check CrouzeixTextbook.Part01.invariantRestriction
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0169 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0173 :=
   @CrouzeixTextbook.Part01.invariantRestriction
 #check CrouzeixTextbook.Part01.mem_kernel_iff
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0170 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0174 :=
   @CrouzeixTextbook.Part01.mem_kernel_iff
 #check CrouzeixTextbook.Part01.mem_range_iff
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0171 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0175 :=
   @CrouzeixTextbook.Part01.mem_range_iff
 #check CrouzeixTextbook.Part01.mem_subspace_intersection_iff
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0172 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0176 :=
   @CrouzeixTextbook.Part01.mem_subspace_intersection_iff
 #check CrouzeixTextbook.Part01.nonunitary_similarity_norm_counterexample
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0173 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0177 :=
   @CrouzeixTextbook.Part01.nonunitary_similarity_norm_counterexample
 #check CrouzeixTextbook.Part01.polynomial_action_diagonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0174 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0178 :=
   @CrouzeixTextbook.Part01.polynomial_action_diagonal
 #check CrouzeixTextbook.Part01.polynomial_action_mem_generated_algebra
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0175 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0179 :=
   @CrouzeixTextbook.Part01.polynomial_action_mem_generated_algebra
 #check CrouzeixTextbook.Part01.quotient_projection_surjective
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0176 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0180 :=
   @CrouzeixTextbook.Part01.quotient_projection_surjective
 #check CrouzeixTextbook.Part01.rank_nullity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0177 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0181 :=
   @CrouzeixTextbook.Part01.rank_nullity
 #check CrouzeixTextbook.Part01.similarity_preserves_charpoly
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0178 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0182 :=
   @CrouzeixTextbook.Part01.similarity_preserves_charpoly
 #check CrouzeixTextbook.Part01.similarity_preserves_determinant
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0179 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0183 :=
   @CrouzeixTextbook.Part01.similarity_preserves_determinant
 #check CrouzeixTextbook.Part01.similarity_preserves_trace
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0180 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0184 :=
   @CrouzeixTextbook.Part01.similarity_preserves_trace
 #check CrouzeixTextbook.Part01.simple_spectrum_dense
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0181 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0185 :=
   @CrouzeixTextbook.Part01.simple_spectrum_dense
 #check CrouzeixTextbook.Part01.span_minimality
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0182 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0186 :=
   @CrouzeixTextbook.Part01.span_minimality
 #check CrouzeixTextbook.Part01.trace_cyclic
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0183 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0187 :=
   @CrouzeixTextbook.Part01.trace_cyclic
 #check CrouzeixTextbook.Part01.trace_diagonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0184 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0188 :=
   @CrouzeixTextbook.Part01.trace_diagonal
 #check CrouzeixTextbook.Part01.trace_similarity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0185 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0189 :=
   @CrouzeixTextbook.Part01.trace_similarity
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0186 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0190 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0187 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0191 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0188 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0192 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0189 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0193 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0190 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0194 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0191 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0195 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter07.exercise_06_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0192 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0196 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0193 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0197 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0194 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0198 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0195 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0199 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0196 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0200 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0197 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0201 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter08.exercise_06_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0198 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0202 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0199 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0203 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0200 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0204 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0201 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0205 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0202 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0206 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0203 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0207 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter09.exercise_06_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0204 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0208 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0205 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0209 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0206 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0210 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0207 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0211 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0208 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0212 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0209 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0213 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter10.exercise_06_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0210 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0214 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0211 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0215 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0212 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0216 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0213 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0217 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0214 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0218 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0215 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0219 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter11.exercise_06_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0216 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0220 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_01_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0217 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0221 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_02_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0218 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0222 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_03_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0219 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0223 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_04_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0220 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0224 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_05_solution
 #check CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0221 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0225 :=
   @CrouzeixTextbook.Part02.Exercises.Chapter12.exercise_06_solution
 #check CrouzeixTextbook.Part02.adjoint_coordinate_identity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0222 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0226 :=
   @CrouzeixTextbook.Part02.adjoint_coordinate_identity
 #check CrouzeixTextbook.Part02.adjoint_matrix_is_conjugate_transpose
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0223 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0227 :=
   @CrouzeixTextbook.Part02.adjoint_matrix_is_conjugate_transpose
 #check CrouzeixTextbook.Part02.alternating_diagonal_volume
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0224 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0228 :=
   @CrouzeixTextbook.Part02.alternating_diagonal_volume
 #check CrouzeixTextbook.Part02.area_form_quarter_turn
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0225 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0229 :=
   @CrouzeixTextbook.Part02.area_form_quarter_turn
 #check CrouzeixTextbook.Part02.bilinear_pairing_duality
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0226 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0230 :=
   @CrouzeixTextbook.Part02.bilinear_pairing_duality
 #check CrouzeixTextbook.Part02.boundary_parameter_is_smooth
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0227 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0231 :=
   @CrouzeixTextbook.Part02.boundary_parameter_is_smooth
 #check CrouzeixTextbook.Part02.boundary_slice_derivative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0228 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0232 :=
   @CrouzeixTextbook.Part02.boundary_slice_derivative
 #check CrouzeixTextbook.Part02.contraction_trace_cyclic
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0229 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0233 :=
   @CrouzeixTextbook.Part02.contraction_trace_cyclic
 #check CrouzeixTextbook.Part02.derivative_action_is_jvp
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0230 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0234 :=
   @CrouzeixTextbook.Part02.derivative_action_is_jvp
 #check CrouzeixTextbook.Part02.derivative_pullback_is_vjp
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0231 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0235 :=
   @CrouzeixTextbook.Part02.derivative_pullback_is_vjp
 #check CrouzeixTextbook.Part02.determinant_top_degree_multiplicative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0232 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0236 :=
   @CrouzeixTextbook.Part02.determinant_top_degree_multiplicative
 #check CrouzeixTextbook.Part02.gradient_component_contract
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0233 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0237 :=
   @CrouzeixTextbook.Part02.gradient_component_contract
 #check CrouzeixTextbook.Part02.gram_matrix_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0234 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0238 :=
   @CrouzeixTextbook.Part02.gram_matrix_positive
 #check CrouzeixTextbook.Part02.hessian_vector_action
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0235 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0239 :=
   @CrouzeixTextbook.Part02.hessian_vector_action
 #check CrouzeixTextbook.Part02.induced_matrix_norm_identity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0236 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0240 :=
   @CrouzeixTextbook.Part02.induced_matrix_norm_identity
 #check CrouzeixTextbook.Part02.invertible_gram_matrix_invertible
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0237 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0241 :=
   @CrouzeixTextbook.Part02.invertible_gram_matrix_invertible
 #check CrouzeixTextbook.Part02.invertible_gram_matrix_positive_definite
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0238 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0242 :=
   @CrouzeixTextbook.Part02.invertible_gram_matrix_positive_definite
 #check CrouzeixTextbook.Part02.jvp_vjp_duality
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0239 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0243 :=
   @CrouzeixTextbook.Part02.jvp_vjp_duality
 #check CrouzeixTextbook.Part02.linear_approximation_chain_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0240 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0244 :=
   @CrouzeixTextbook.Part02.linear_approximation_chain_kernel
 #check CrouzeixTextbook.Part02.matrix_norm_is_operator_norm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0241 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0245 :=
   @CrouzeixTextbook.Part02.matrix_norm_is_operator_norm
 #check CrouzeixTextbook.Part02.norm_is_nonnegative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0242 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0246 :=
   @CrouzeixTextbook.Part02.norm_is_nonnegative
 #check CrouzeixTextbook.Part02.norm_triangle_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0243 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0247 :=
   @CrouzeixTextbook.Part02.norm_triangle_kernel
 #check CrouzeixTextbook.Part02.oriented_radial_tangent_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0244 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0248 :=
   @CrouzeixTextbook.Part02.oriented_radial_tangent_positive
 #check CrouzeixTextbook.Part02.oriented_tangent_formula
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0245 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0249 :=
   @CrouzeixTextbook.Part02.oriented_tangent_formula
 #check CrouzeixTextbook.Part02.polar_factor_is_unitary
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0246 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0250 :=
   @CrouzeixTextbook.Part02.polar_factor_is_unitary
 #check CrouzeixTextbook.Part02.polar_operator_norm_transfer
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0247 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0251 :=
   @CrouzeixTextbook.Part02.polar_operator_norm_transfer
 #check CrouzeixTextbook.Part02.polar_similarity_norm_transfer
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0248 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0252 :=
   @CrouzeixTextbook.Part02.polar_similarity_norm_transfer
 #check CrouzeixTextbook.Part02.positive_definite_quadratic_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0249 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0253 :=
   @CrouzeixTextbook.Part02.positive_definite_quadratic_positive
 #check CrouzeixTextbook.Part02.positive_square_root_data
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0250 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0254 :=
   @CrouzeixTextbook.Part02.positive_square_root_data
 #check CrouzeixTextbook.Part02.positivity_preserved_by_congruence
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0251 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0255 :=
   @CrouzeixTextbook.Part02.positivity_preserved_by_congruence
 #check CrouzeixTextbook.Part02.projection_residual_decomposition
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0252 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0256 :=
   @CrouzeixTextbook.Part02.projection_residual_decomposition
 #check CrouzeixTextbook.Part02.projection_residual_orthogonal
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0253 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0257 :=
   @CrouzeixTextbook.Part02.projection_residual_orthogonal
 #check CrouzeixTextbook.Part02.quadratic_bound_implies_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0254 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0258 :=
   @CrouzeixTextbook.Part02.quadratic_bound_implies_norm_two
 #check CrouzeixTextbook.Part02.real_inner_complex_coordinates
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0255 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0259 :=
   @CrouzeixTextbook.Part02.real_inner_complex_coordinates
 #check CrouzeixTextbook.Part02.transpose_coordinate_action
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0256 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0260 :=
   @CrouzeixTextbook.Part02.transpose_coordinate_action
 #check CrouzeixTextbook.Part02.wedge_sign_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0257 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0261 :=
   @CrouzeixTextbook.Part02.wedge_sign_kernel
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0258 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0262 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_01_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0259 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0263 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_02_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0260 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0264 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_03_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0261 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0265 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_04_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0262 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0266 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_05_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0263 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0267 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter13.exercise_06_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0264 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0268 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_01_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0265 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0269 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_02_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0266 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0270 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_03_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0267 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0271 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_04_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0268 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0272 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_05_solution
 #check CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0269 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0273 :=
   @CrouzeixTextbook.Part03.Exercises.Chapter14.exercise_06_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_01_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0274 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_01_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_02_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0275 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_02_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_03_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0276 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_03_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_04_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0277 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_04_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_05_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0278 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_05_solution
+#check CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_06_solution
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0279 :=
+  @CrouzeixTextbook.Part03.Exercises.Chapter15.exercise_06_solution
 #check CrouzeixTextbook.Part03.boundary_integral_continuous
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0270 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0280 :=
   @CrouzeixTextbook.Part03.boundary_integral_continuous
 #check CrouzeixTextbook.Part03.boundary_integral_is_function_eval
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0271 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0281 :=
   @CrouzeixTextbook.Part03.boundary_integral_is_function_eval
 #check CrouzeixTextbook.Part03.compact_maximum_exists
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0272 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0282 :=
   @CrouzeixTextbook.Part03.compact_maximum_exists
 #check CrouzeixTextbook.Part03.compact_maximum_monotone
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0273 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0283 :=
   @CrouzeixTextbook.Part03.compact_maximum_monotone
 #check CrouzeixTextbook.Part03.compact_maximum_nonnegative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0274 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0284 :=
   @CrouzeixTextbook.Part03.compact_maximum_nonnegative
 #check CrouzeixTextbook.Part03.contour_eval_agrees
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0275 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0285 :=
   @CrouzeixTextbook.Part03.contour_eval_agrees
 #check CrouzeixTextbook.Part03.functional_calculus_additive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0276 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0286 :=
   @CrouzeixTextbook.Part03.functional_calculus_additive
 #check CrouzeixTextbook.Part03.functional_calculus_multiplicative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0277 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0287 :=
   @CrouzeixTextbook.Part03.functional_calculus_multiplicative
 #check CrouzeixTextbook.Part03.holomorphic_matrix_eval
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0278 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0288 :=
   @CrouzeixTextbook.Part03.holomorphic_matrix_eval
 #check CrouzeixTextbook.Part03.locality_on_neighborhood
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0279 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0289 :=
   @CrouzeixTextbook.Part03.locality_on_neighborhood
 #check CrouzeixTextbook.Part03.matrix_herglotz_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0280 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0290 :=
   @CrouzeixTextbook.Part03.matrix_herglotz_kernel
 #check CrouzeixTextbook.Part03.matrix_herglotz_kernel_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0281 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0291 :=
   @CrouzeixTextbook.Part03.matrix_herglotz_kernel_positive
 #check CrouzeixTextbook.Part03.matrix_power_series
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0282 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0292 :=
   @CrouzeixTextbook.Part03.matrix_power_series
 #check CrouzeixTextbook.Part03.matrix_power_series_analytic
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0283 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0293 :=
   @CrouzeixTextbook.Part03.matrix_power_series_analytic
 #check CrouzeixTextbook.Part03.matrix_power_series_coefficient
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0284 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0294 :=
   @CrouzeixTextbook.Part03.matrix_power_series_coefficient
 #check CrouzeixTextbook.Part03.matrix_power_series_converges
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0285 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0295 :=
   @CrouzeixTextbook.Part03.matrix_power_series_converges
 #check CrouzeixTextbook.Part03.matrix_power_series_radius
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0286 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0296 :=
   @CrouzeixTextbook.Part03.matrix_power_series_radius
 #check CrouzeixTextbook.Part03.matrix_power_series_sum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0287 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0297 :=
   @CrouzeixTextbook.Part03.matrix_power_series_sum
 #check CrouzeixTextbook.Part03.max_modulus_on_compact_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0288 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0298 :=
   @CrouzeixTextbook.Part03.max_modulus_on_compact_set
 #check CrouzeixTextbook.Part03.open_unit_disk
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0289 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0299 :=
   @CrouzeixTextbook.Part03.open_unit_disk
 #check CrouzeixTextbook.Part03.outer_maxima_converge
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0290 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0300 :=
   @CrouzeixTextbook.Part03.outer_maxima_converge
 #check CrouzeixTextbook.Part03.parametric_boundary_integral
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0291 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0301 :=
   @CrouzeixTextbook.Part03.parametric_boundary_integral
 #check CrouzeixTextbook.Part03.pointwise_norm_le_maximum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0292 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0302 :=
   @CrouzeixTextbook.Part03.pointwise_norm_le_maximum
 #check CrouzeixTextbook.Part03.pole_complement_open
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0293 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0303 :=
   @CrouzeixTextbook.Part03.pole_complement_open
 #check CrouzeixTextbook.Part03.polynomial_compatibility
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0294 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0304 :=
   @CrouzeixTextbook.Part03.polynomial_compatibility
 #check CrouzeixTextbook.Part03.positive_matrix_kernel_on
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0295 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0305 :=
   @CrouzeixTextbook.Part03.positive_matrix_kernel_on
 #check CrouzeixTextbook.Part03.rational_matrix_eval
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0296 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0306 :=
   @CrouzeixTextbook.Part03.rational_matrix_eval
 #check CrouzeixTextbook.Part03.rational_pole_free_on
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0297 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0307 :=
   @CrouzeixTextbook.Part03.rational_pole_free_on
 #check CrouzeixTextbook.Part03.rational_pole_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0298 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0308 :=
   @CrouzeixTextbook.Part03.rational_pole_set
 #check CrouzeixTextbook.Part03.rational_poles_finite
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0299 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0309 :=
   @CrouzeixTextbook.Part03.rational_poles_finite
 #check CrouzeixTextbook.Part03.rational_scalar_eval
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0300 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0310 :=
   @CrouzeixTextbook.Part03.rational_scalar_eval
 #check CrouzeixTextbook.Part03.sampled_kernel_matrix
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0301 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0311 :=
   @CrouzeixTextbook.Part03.sampled_kernel_matrix
 #check CrouzeixTextbook.Part03.simple_spectrum_boundary_limit
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0302 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0312 :=
   @CrouzeixTextbook.Part03.simple_spectrum_boundary_limit
 #check CrouzeixTextbook.Part03.simple_spectrum_eval_limit
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0303 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0313 :=
   @CrouzeixTextbook.Part03.simple_spectrum_eval_limit
 #check CrouzeixTextbook.Part03.simple_spectrum_holomorphic_eval
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0304 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0314 :=
   @CrouzeixTextbook.Part03.simple_spectrum_holomorphic_eval
 #check CrouzeixTextbook.Part03.unit_circle
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0305 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0315 :=
   @CrouzeixTextbook.Part03.unit_circle
 #check CrouzeixTextbook.Part04.adjacent_power_defect_factorization
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0306 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0316 :=
   @CrouzeixTextbook.Part04.adjacent_power_defect_factorization
 #check CrouzeixTextbook.Part04.boundary_positive_linear_map
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0307 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0317 :=
   @CrouzeixTextbook.Part04.boundary_positive_linear_map
 #check CrouzeixTextbook.Part04.boundary_positive_map
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0308 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0318 :=
   @CrouzeixTextbook.Part04.boundary_positive_map
 #check CrouzeixTextbook.Part04.boundary_positive_map_norm
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0309 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0319 :=
   @CrouzeixTextbook.Part04.boundary_positive_map_norm
 #check CrouzeixTextbook.Part04.boundary_positive_map_preserves_psd
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0310 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0320 :=
   @CrouzeixTextbook.Part04.boundary_positive_map_preserves_psd
 #check CrouzeixTextbook.Part04.boundary_positive_map_star
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0311 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0321 :=
   @CrouzeixTextbook.Part04.boundary_positive_map_star
 #check CrouzeixTextbook.Part04.boundary_positive_map_unital
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0312 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0322 :=
   @CrouzeixTextbook.Part04.boundary_positive_map_unital
 #check CrouzeixTextbook.Part04.closed_numerical_range_two_spectral_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0313 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0323 :=
   @CrouzeixTextbook.Part04.closed_numerical_range_two_spectral_set
 #check CrouzeixTextbook.Part04.closed_operator_numerical_range
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0314 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0324 :=
   @CrouzeixTextbook.Part04.closed_operator_numerical_range
 #check CrouzeixTextbook.Part04.closed_operator_numerical_range_compact
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0315 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0325 :=
   @CrouzeixTextbook.Part04.closed_operator_numerical_range_compact
 #check CrouzeixTextbook.Part04.closed_operator_numerical_range_nonempty
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0316 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0326 :=
   @CrouzeixTextbook.Part04.closed_operator_numerical_range_nonempty
 #check CrouzeixTextbook.Part04.compressed_adjoint_power
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0317 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0327 :=
   @CrouzeixTextbook.Part04.compressed_adjoint_power
 #check CrouzeixTextbook.Part04.compressed_adjoint_power_contractive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0318 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0328 :=
   @CrouzeixTextbook.Part04.compressed_adjoint_power_contractive
 #check CrouzeixTextbook.Part04.diagonal_polynomial_action
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0319 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0329 :=
   @CrouzeixTextbook.Part04.diagonal_polynomial_action
 #check CrouzeixTextbook.Part04.distinct_spectrum_dense
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0320 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0330 :=
   @CrouzeixTextbook.Part04.distinct_spectrum_dense
 #check CrouzeixTextbook.Part04.doubled_compression_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0321 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0331 :=
   @CrouzeixTextbook.Part04.doubled_compression_norm_two
 #check CrouzeixTextbook.Part04.gramian_difference_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0322 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0332 :=
   @CrouzeixTextbook.Part04.gramian_difference_positive
 #check CrouzeixTextbook.Part04.gramian_term
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0323 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0333 :=
   @CrouzeixTextbook.Part04.gramian_term
 #check CrouzeixTextbook.Part04.gramian_term_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0324 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0334 :=
   @CrouzeixTextbook.Part04.gramian_term_positive
 #check CrouzeixTextbook.Part04.gramian_terms_summable
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0325 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0335 :=
   @CrouzeixTextbook.Part04.gramian_terms_summable
 #check CrouzeixTextbook.Part04.hilbert_rational_spectral_set_statement
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0326 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0336 :=
   @CrouzeixTextbook.Part04.hilbert_rational_spectral_set_statement
 #check CrouzeixTextbook.Part04.numerical_range_as_sphere_image
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0327 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0337 :=
   @CrouzeixTextbook.Part04.numerical_range_as_sphere_image
 #check CrouzeixTextbook.Part04.numerical_range_compact
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0328 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0338 :=
   @CrouzeixTextbook.Part04.numerical_range_compact
 #check CrouzeixTextbook.Part04.numerical_range_convex
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0329 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0339 :=
   @CrouzeixTextbook.Part04.numerical_range_convex
 #check CrouzeixTextbook.Part04.numerical_range_nonempty
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0330 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0340 :=
   @CrouzeixTextbook.Part04.numerical_range_nonempty
 #check CrouzeixTextbook.Part04.numerical_range_perturbation_bound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0331 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0341 :=
   @CrouzeixTextbook.Part04.numerical_range_perturbation_bound
 #check CrouzeixTextbook.Part04.operator_numerical_range_convex
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0332 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0342 :=
   @CrouzeixTextbook.Part04.operator_numerical_range_convex
 #check CrouzeixTextbook.Part04.perturbation_commutes
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0333 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0343 :=
   @CrouzeixTextbook.Part04.perturbation_commutes
 #check CrouzeixTextbook.Part04.simple_spectrum_approximation
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0334 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0344 :=
   @CrouzeixTextbook.Part04.simple_spectrum_approximation
 #check CrouzeixTextbook.Part04.simple_spectrum_approximation_close
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0335 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0345 :=
   @CrouzeixTextbook.Part04.simple_spectrum_approximation_close
 #check CrouzeixTextbook.Part04.simple_spectrum_approximation_converges
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0336 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0346 :=
   @CrouzeixTextbook.Part04.simple_spectrum_approximation_converges
 #check CrouzeixTextbook.Part04.simple_spectrum_approximation_distinct
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0337 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0347 :=
   @CrouzeixTextbook.Part04.simple_spectrum_approximation_distinct
 #check CrouzeixTextbook.Part04.spectrum_lies_in_numerical_range
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0338 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0348 :=
   @CrouzeixTextbook.Part04.spectrum_lies_in_numerical_range
 #check CrouzeixTextbook.Part04.target_power_bound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0339 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0349 :=
   @CrouzeixTextbook.Part04.target_power_bound
 #check CrouzeixTextbook.Part04.weighted_gramian
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0340 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0350 :=
   @CrouzeixTextbook.Part04.weighted_gramian
 #check CrouzeixTextbook.Part04.weighted_gramian_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0341 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0351 :=
   @CrouzeixTextbook.Part04.weighted_gramian_positive
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0342 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0352 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_01_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0343 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0353 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_02_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0344 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0354 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_03_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0345 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0355 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_04_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0346 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0356 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_05_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0347 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0357 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter25.exercise_06_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0348 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0358 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_01_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0349 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0359 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_02_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0350 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0360 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_03_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0351 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0361 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_04_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0352 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0362 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_05_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0353 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0363 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter26.exercise_06_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0354 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0364 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_01_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0355 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0365 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_02_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0356 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0366 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_03_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0357 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0367 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_04_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0358 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0368 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_05_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0359 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0369 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter27.exercise_06_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0360 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0370 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_01_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0361 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0371 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_02_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0362 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0372 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_03_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0363 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0373 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_04_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0364 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0374 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_05_solution
 #check CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0365 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0375 :=
   @CrouzeixTextbook.Part05.Exercises.Chapter28.exercise_06_solution
 #check CrouzeixTextbook.Part05.contractive_boundary_function
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0366 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0376 :=
   @CrouzeixTextbook.Part05.contractive_boundary_function
 #check CrouzeixTextbook.Part05.convex_projection
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0367 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0377 :=
   @CrouzeixTextbook.Part05.convex_projection
 #check CrouzeixTextbook.Part05.convex_projection_nonexpansive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0368 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0378 :=
   @CrouzeixTextbook.Part05.convex_projection_nonexpansive
 #check CrouzeixTextbook.Part05.convex_projection_variational
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0369 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0379 :=
   @CrouzeixTextbook.Part05.convex_projection_variational
 #check CrouzeixTextbook.Part05.double_layer_congruence
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0370 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0380 :=
   @CrouzeixTextbook.Part05.double_layer_congruence
 #check CrouzeixTextbook.Part05.double_layer_density_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0371 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0381 :=
   @CrouzeixTextbook.Part05.double_layer_density_positive
 #check CrouzeixTextbook.Part05.double_layer_resolvent
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0372 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0382 :=
   @CrouzeixTextbook.Part05.double_layer_resolvent
 #check CrouzeixTextbook.Part05.double_layer_support_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0373 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0383 :=
   @CrouzeixTextbook.Part05.double_layer_support_positive
 #check CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0374 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0384 :=
   @CrouzeixTextbook.Part05.one_plus_sqrt_two_barrier
 #check CrouzeixTextbook.Part05.one_plus_sqrt_two_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0375 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0385 :=
   @CrouzeixTextbook.Part05.one_plus_sqrt_two_positive
 #check CrouzeixTextbook.Part05.outer_approximation_radius
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0376 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0386 :=
   @CrouzeixTextbook.Part05.outer_approximation_radius
 #check CrouzeixTextbook.Part05.outer_radius_tends_to_zero
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0377 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0387 :=
   @CrouzeixTextbook.Part05.outer_radius_tends_to_zero
 #check CrouzeixTextbook.Part05.parallel_outer_domain_data
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0378 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0388 :=
   @CrouzeixTextbook.Part05.parallel_outer_domain_data
 #check CrouzeixTextbook.Part05.positive_completion_from_power_family
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0379 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0389 :=
   @CrouzeixTextbook.Part05.positive_completion_from_power_family
 #check CrouzeixTextbook.Part05.positive_map_norm_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0380 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0390 :=
   @CrouzeixTextbook.Part05.positive_map_norm_kernel
 #check CrouzeixTextbook.Part05.power_cauchy_formula
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0381 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0391 :=
   @CrouzeixTextbook.Part05.power_cauchy_formula
 #check CrouzeixTextbook.Part05.power_cauchy_mass_one
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0382 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0392 :=
   @CrouzeixTextbook.Part05.power_cauchy_mass_one
 #check CrouzeixTextbook.Part05.power_cayley_companion
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0383 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0393 :=
   @CrouzeixTextbook.Part05.power_cayley_companion
 #check CrouzeixTextbook.Part05.power_family_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0384 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0394 :=
   @CrouzeixTextbook.Part05.power_family_norm_two
 #check CrouzeixTextbook.Part05.sqrt_two_nonnegative
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0385 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0395 :=
   @CrouzeixTextbook.Part05.sqrt_two_nonnegative
 #check CrouzeixTextbook.Part05.sqrt_two_squared
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0386 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0396 :=
   @CrouzeixTextbook.Part05.sqrt_two_squared
 #check CrouzeixTextbook.Part05.support_point_outside_numerical_range
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0387 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0397 :=
   @CrouzeixTextbook.Part05.support_point_outside_numerical_range
 #check CrouzeixTextbook.Part05.support_resolvent_invertible
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0388 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0398 :=
   @CrouzeixTextbook.Part05.support_resolvent_invertible
 #check CrouzeixTextbook.Part05.triangle_barrier_kernel
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0389 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0399 :=
   @CrouzeixTextbook.Part05.triangle_barrier_kernel
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0390 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0400 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0391 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0401 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0392 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0402 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0393 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0403 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0394 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0404 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0395 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0405 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter29.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0396 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0406 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0397 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0407 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0398 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0408 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0399 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0409 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0400 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0410 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0401 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0411 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter30.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0402 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0412 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0403 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0413 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0404 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0414 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0405 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0415 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0406 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0416 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0407 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0417 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter31.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0408 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0418 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0409 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0419 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0410 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0420 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0411 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0421 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0412 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0422 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0413 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0423 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter32.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0414 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0424 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0415 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0425 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0416 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0426 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0417 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0427 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0418 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0428 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0419 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0429 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter33.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0420 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0430 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0421 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0431 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0422 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0432 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0423 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0433 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0424 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0434 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0425 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0435 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter34.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0426 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0436 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0427 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0437 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0428 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0438 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0429 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0439 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0430 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0440 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0431 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0441 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter35.exercise_06_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_01_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0432 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0442 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_01_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_02_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0433 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0443 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_02_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_03_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0434 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0444 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_03_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_04_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0435 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0445 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_04_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_05_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0436 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0446 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_05_solution
 #check CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_06_solution
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0437 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0447 :=
   @CrouzeixTextbook.Part06.Exercises.Chapter36.exercise_06_solution
 #check CrouzeixTextbook.Part06.boundary_compression_first_moment
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0438 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0448 :=
   @CrouzeixTextbook.Part06.boundary_compression_first_moment
 #check CrouzeixTextbook.Part06.boundary_compression_power_moments
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0439 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0449 :=
   @CrouzeixTextbook.Part06.boundary_compression_power_moments
 #check CrouzeixTextbook.Part06.boundary_dilation_data
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0440 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0450 :=
   @CrouzeixTextbook.Part06.boundary_dilation_data
 #check CrouzeixTextbook.Part06.boundary_multiplier_contractive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0441 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0451 :=
   @CrouzeixTextbook.Part06.boundary_multiplier_contractive
 #check CrouzeixTextbook.Part06.boundary_multiplier_powers
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0442 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0452 :=
   @CrouzeixTextbook.Part06.boundary_multiplier_powers
 #check CrouzeixTextbook.Part06.completion_gramian_difference
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0443 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0453 :=
   @CrouzeixTextbook.Part06.completion_gramian_difference
 #check CrouzeixTextbook.Part06.completion_gramian_four
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0444 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0454 :=
   @CrouzeixTextbook.Part06.completion_gramian_four
 #check CrouzeixTextbook.Part06.completion_gramian_source_positive
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0445 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0455 :=
   @CrouzeixTextbook.Part06.completion_gramian_source_positive
 #check CrouzeixTextbook.Part06.completion_gramian_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0446 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0456 :=
   @CrouzeixTextbook.Part06.completion_gramian_two
 #check CrouzeixTextbook.Part06.completion_implies_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0447 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0457 :=
   @CrouzeixTextbook.Part06.completion_implies_norm_two
 #check CrouzeixTextbook.Part06.completion_kernel_model
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0448 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0458 :=
   @CrouzeixTextbook.Part06.completion_kernel_model
 #check CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0449 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0459 :=
   @CrouzeixTextbook.Part06.completion_kernel_normalization_forces_correction_zero
 #check CrouzeixTextbook.Part06.constant_two_is_least
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0450 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0460 :=
   @CrouzeixTextbook.Part06.constant_two_is_least
 #check CrouzeixTextbook.Part06.correction_sampling_cancels
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0451 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0461 :=
   @CrouzeixTextbook.Part06.correction_sampling_cancels
 #check CrouzeixTextbook.Part06.correction_sampling_identity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0452 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0462 :=
   @CrouzeixTextbook.Part06.correction_sampling_identity
 #check CrouzeixTextbook.Part06.equation_three_lower_bound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0453 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0463 :=
   @CrouzeixTextbook.Part06.equation_three_lower_bound
 #check CrouzeixTextbook.Part06.harp_finite_dilation_exists
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0454 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0464 :=
   @CrouzeixTextbook.Part06.harp_finite_dilation_exists
 #check CrouzeixTextbook.Part06.harp_finite_recurrence
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0455 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0465 :=
   @CrouzeixTextbook.Part06.harp_finite_recurrence
 #check CrouzeixTextbook.Part06.harp_normalized_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0456 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0466 :=
   @CrouzeixTextbook.Part06.harp_normalized_norm_two
 #check CrouzeixTextbook.Part06.harp_polynomial_constant_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0457 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0467 :=
   @CrouzeixTextbook.Part06.harp_polynomial_constant_two
 #check CrouzeixTextbook.Part06.harp_positive_moment_cubature
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0458 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0468 :=
   @CrouzeixTextbook.Part06.harp_positive_moment_cubature
 #check CrouzeixTextbook.Part06.harp_two_spectral_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0459 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0469 :=
   @CrouzeixTextbook.Part06.harp_two_spectral_set
 #check CrouzeixTextbook.Part06.holomorphic_constant_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0460 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0470 :=
   @CrouzeixTextbook.Part06.holomorphic_constant_two
 #check CrouzeixTextbook.Part06.jin_polynomial_constant_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0461 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0471 :=
   @CrouzeixTextbook.Part06.jin_polynomial_constant_two
 #check CrouzeixTextbook.Part06.jin_rational_constant_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0462 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0472 :=
   @CrouzeixTextbook.Part06.jin_rational_constant_two
 #check CrouzeixTextbook.Part06.jin_rational_spectral_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0463 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0473 :=
   @CrouzeixTextbook.Part06.jin_rational_spectral_set
 #check CrouzeixTextbook.Part06.jin_rational_spectral_set_provider
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0464 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0474 :=
   @CrouzeixTextbook.Part06.jin_rational_spectral_set_provider
 #check CrouzeixTextbook.Part06.jordan_two_attains_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0465 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0475 :=
   @CrouzeixTextbook.Part06.jordan_two_attains_two
 #check CrouzeixTextbook.Part06.jordan_two_maximum
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0466 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0476 :=
   @CrouzeixTextbook.Part06.jordan_two_maximum
 #check CrouzeixTextbook.Part06.kernel_positivity_implies_X
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0467 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0477 :=
   @CrouzeixTextbook.Part06.kernel_positivity_implies_X
 #check CrouzeixTextbook.Part06.lorist_schwenninger_finite_matrix
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0468 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0478 :=
   @CrouzeixTextbook.Part06.lorist_schwenninger_finite_matrix
 #check CrouzeixTextbook.Part06.lorist_schwenninger_hilbert
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0469 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0479 :=
   @CrouzeixTextbook.Part06.lorist_schwenninger_hilbert
 #check CrouzeixTextbook.Part06.lorist_schwenninger_main
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0470 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0480 :=
   @CrouzeixTextbook.Part06.lorist_schwenninger_main
 #check CrouzeixTextbook.Part06.lorist_schwenninger_rational
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0471 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0481 :=
   @CrouzeixTextbook.Part06.lorist_schwenninger_rational
 #check CrouzeixTextbook.Part06.lorist_schwenninger_two_spectral_set
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0472 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0482 :=
   @CrouzeixTextbook.Part06.lorist_schwenninger_two_spectral_set
 #check CrouzeixTextbook.Part06.main_theorem_statement
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0473 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0483 :=
   @CrouzeixTextbook.Part06.main_theorem_statement
 #check CrouzeixTextbook.Part06.max_polynomial_modulus
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0474 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0484 :=
   @CrouzeixTextbook.Part06.max_polynomial_modulus
 #check CrouzeixTextbook.Part06.perturbation_lemma
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0475 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0485 :=
   @CrouzeixTextbook.Part06.perturbation_lemma
 #check CrouzeixTextbook.Part06.polynomial_crouzeix_bound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0476 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0486 :=
   @CrouzeixTextbook.Part06.polynomial_crouzeix_bound
 #check CrouzeixTextbook.Part06.polynomial_from_holomorphic
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0477 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0487 :=
   @CrouzeixTextbook.Part06.polynomial_from_holomorphic
 #check CrouzeixTextbook.Part06.positive_real_completion
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0478 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0488 :=
   @CrouzeixTextbook.Part06.positive_real_completion
 #check CrouzeixTextbook.Part06.positive_real_completion_statement
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0479 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0489 :=
   @CrouzeixTextbook.Part06.positive_real_completion_statement
 #check CrouzeixTextbook.Part06.realization_norm_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0480 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0490 :=
   @CrouzeixTextbook.Part06.realization_norm_two
 #check CrouzeixTextbook.Part06.recurrence_difference_identity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0481 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0491 :=
   @CrouzeixTextbook.Part06.recurrence_difference_identity
 #check CrouzeixTextbook.Part06.recurrence_difference_lower_bound
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0482 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0492 :=
   @CrouzeixTextbook.Part06.recurrence_difference_lower_bound
 #check CrouzeixTextbook.Part06.sample_origin_quadratic_identity
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0483 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0493 :=
   @CrouzeixTextbook.Part06.sample_origin_quadratic_identity
 #check CrouzeixTextbook.Part06.scalar_combined_inequality
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0484 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0494 :=
   @CrouzeixTextbook.Part06.scalar_combined_inequality
 #check CrouzeixTextbook.Part06.scalar_endpoint_two
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0485 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0495 :=
   @CrouzeixTextbook.Part06.scalar_endpoint_two
 #check CrouzeixTextbook.Part06.three_route_terminal_bundle
-noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0486 :=
+noncomputable def CrouzeixTextbook.ReceiptMarker.declaration0496 :=
   @CrouzeixTextbook.Part06.three_route_terminal_bundle

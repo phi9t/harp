@@ -3160,16 +3160,16 @@
         "CFT-14-006"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.parametric_boundary_integral",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.parametricBoundaryIntegral",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 9,
         "column": 5,
@@ -3197,11 +3197,11 @@
         "CFT-15-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -3234,16 +3234,16 @@
         "CFT-15-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.boundary_integral_is_function_eval",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.parametricBoundaryIntegral_eq_functionEval",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 13,
         "column": 5,
@@ -3272,16 +3272,16 @@
         "CFT-15-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.simple_spectrum_holomorphic_eval",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.simpleSpectrumHolomorphicEval",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 15,
         "column": 5,
@@ -3311,11 +3311,11 @@
         "CFT-15-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -3349,16 +3349,16 @@
         "CFT-15-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-holomorphic-calculus-core-2026-09-11"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "reexported-proof",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.simple_spectrum_eval_limit",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.PositivePeriodicRadialData.OrientedRadialConvexBoundary.tendsto_simpleSpectrumHolomorphicEval",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter15.lean",
         "line": 19,
         "column": 5,
