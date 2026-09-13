@@ -58,11 +58,10 @@ pins that decision in the test suite.
 The remaining 91 summary rows in Chapters 10–24 are unfinished work, not
 previews.
 
-## Chapters 17–24: the exact remaining backlog
+## Chapters 18–24: the exact remaining backlog
 
 | Ch | Kata | cards `checkpoint` | cards `unmapped` | summary proofs | unsolved exercises | declared providers already named |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| 17 | `q81q` | 4 | 2 | 6 | 6 | 6 |
 | 18 | `dvm6` | 5 | 1 | 6 | 6 | 6 |
 | 19 | `1r2p` | 1 | 5 | 6 | 6 | 6 |
 | 20 | `efcd` | 0 | 6 | 6 | 6 | 6 |
@@ -70,18 +69,12 @@ previews.
 | 22 | `17d3` | 2 | 4 | 6 | 6 | 6 |
 | 23 | `0f59` | 1 | 5 | 6 | 6 | 6 |
 | 24 | `nz6f` | 2 | 4 | 6 | 6 | 6 |
-| **17–24** | | **18** | **30** | **48** | **48** | **48** |
+| **18–24** | | **14** | **28** | **42** | **42** | **42** |
 
-### Per-identity backlog, Chapters 17–24
+### Per-identity backlog, Chapters 18–24
 
 | ID | correspondence | proof | formal mode | named declaration | exercise |
 | --- | --- | --- | --- | --- | --- |
-| CFT-17-001 | checkpoint | summary | checkpoint | `Part03.rational_pole_set` | CFT-17-E01 unsolved |
-| CFT-17-002 | unmapped | summary | reexported-proof | `Part03.rational_poles_finite` | CFT-17-E02 unsolved |
-| CFT-17-003 | unmapped | summary | reexported-proof | `Part03.pole_complement_open` | CFT-17-E03 unsolved |
-| CFT-17-004 | checkpoint | summary | checkpoint | `Part03.rational_pole_free_on` | CFT-17-E04 unsolved |
-| CFT-17-005 | checkpoint | summary | checkpoint | `Part03.rational_scalar_eval` | CFT-17-E05 unsolved |
-| CFT-17-006 | checkpoint | summary | checkpoint | `Part03.rational_matrix_eval` | CFT-17-E06 unsolved |
 | CFT-18-001 | checkpoint | summary | checkpoint | `Part03.open_unit_disk` | CFT-18-E01 unsolved |
 | CFT-18-002 | checkpoint | summary | checkpoint | `Part03.unit_circle` | CFT-18-E02 unsolved |
 | CFT-18-003 | checkpoint | summary | checkpoint | `Part03.sampled_kernel_matrix` | CFT-18-E03 unsolved |

@@ -3612,16 +3612,16 @@
       ],
       "pedagogical_prerequisites": [],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_pole_set",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.rationalPoleSet",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 9,
         "column": 5,
@@ -3649,11 +3649,11 @@
         "CFT-17-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -3687,11 +3687,11 @@
         "CFT-17-002"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "unmapped",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
       "formal_mode": "reexported-proof",
       "lean_declaration": {
@@ -3721,20 +3721,19 @@
         "CROUZEIX-PACKET"
       ],
       "pedagogical_prerequisites": [
-        "CFT-13-001",
         "CFT-17-001"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_pole_free_on",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.RationalPoleFreeOn",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 15,
         "column": 5,
@@ -3751,7 +3750,7 @@
     {
       "item_id": "CFT-17-005",
       "chapter": 17,
-      "kind": "theorem",
+      "kind": "definition",
       "prose_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/17_functions_of_matrices_and_operators.md",
       "anchor": "cft-17-005",
       "source_ids": [
@@ -3763,16 +3762,16 @@
         "CFT-17-004"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_scalar_eval",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.rationalScalarEval",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 17,
         "column": 5,
@@ -3789,7 +3788,7 @@
     {
       "item_id": "CFT-17-006",
       "chapter": 17,
-      "kind": "theorem",
+      "kind": "definition",
       "prose_path": "knowledge/crouzeix_textbook/part_03_analysis_and_complex_functions/17_functions_of_matrices_and_operators.md",
       "anchor": "cft-17-006",
       "source_ids": [
@@ -3798,20 +3797,19 @@
       ],
       "pedagogical_prerequisites": [
         "CFT-06-004",
-        "CFT-16-001",
         "CFT-17-005"
       ],
       "publication_status": "active",
-      "prose_proof_status": "summary",
-      "lean_correspondence_status": "checkpoint",
+      "prose_proof_status": "reconstructible",
+      "lean_correspondence_status": "exact",
       "review_status": {
         "source_id": "MATHLIB-4.32.1",
-        "status": "registered-for-content-wave-review"
+        "status": "reviewed-rational-functional-calculus-2026-09-12"
       },
-      "formal_mode": "checkpoint",
+      "formal_mode": "definition",
       "lean_declaration": {
         "name": "CrouzeixTextbook.Part03.rational_matrix_eval",
-        "underlying_declaration": null,
+        "underlying_declaration": "CrouzeixConjecture.rationalMatrixEval",
         "source_path": "formalization/lean/CrouzeixTextbook/Part03/Chapter17.lean",
         "line": 19,
         "column": 5,

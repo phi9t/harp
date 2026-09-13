@@ -71,11 +71,14 @@ gives the algebraic laws; the laws make `f \mapsto f(A)` a homomorphism on a
 neighborhood of the numerical range.
 
 Where that interface is consumed is worth stating precisely, because the obvious guess
-is wrong. Chapter 17 does not take it as given: it never names this chapter, does not
-import its module, defines `f(A)` by the contour integral rather than the limit, and
-re-derives additivity and multiplicativity from nested contours and the resolvent
-identity. The two chapters present the same calculus through different architectures,
-and reconciling them is outstanding work rather than something this chapter can claim.
+is wrong. Chapter 17 does not build on it: the rational calculus there is defined
+algebraically, as `p(A)\,q(A)^{-1}` through polynomial evaluation, and never unfolds this
+chapter's limit. What connects the two is one maintained theorem,
+`holomorphicMatrixEval_rational`: for a rational function with no pole on `W(A)`, the
+holomorphic value of the scalar function equals the rational matrix value. Its proof is
+where this chapter's laws are actually spent — polynomial compatibility for the
+denominator, locality on the open pole complement to turn `q \cdot q^{-1}` into `1`, and
+multiplicativity to split the product — and Chapter 17 narrates it.
 
 ## What this chapter compiles, and what it does not
 
@@ -759,8 +762,10 @@ matrix.
 As in CFT-16-005, and with the additional caution that nothing here extends to
 functions with poles. The product `f \cdot g` must itself be differentiable on `U`,
 which it is, but the card gives no route to `1/f` even where `f` is nonvanishing on
-`U`; that is the rational calculus, and it is Chapter 17's subject — developed there from the
-contour integral rather than from this chapter's laws.
+`U`; that is the rational calculus, Chapter 17's subject, defined there algebraically; the
+theorem identifying the two calculi on pole-free rational functions,
+`holomorphicMatrixEval_rational`, is narrated in Chapter 17 and is proved from this
+chapter's cards.
 
 #### Pedagogical prerequisites
 
@@ -1121,12 +1126,13 @@ and the locality statement, neither of which touches the contour machinery; what
 unprovable by this route is the additive and multiplicative pair.
 
 The forward edges are narrower than the construction suggests. Of the six cards, two
-are cited outside this chapter: CFT-16-001 by CFT-17-006 and CFT-32-005, and CFT-16-003
-by CFT-28-001, CFT-28-003, CFT-29-002 and CFT-32-006. The locality statement and the two
-algebraic laws are not cited by any later card — they are here because they are what
-makes the definition a calculus, not because a later chapter names them.
+are cited outside this chapter: CFT-16-001 by CFT-32-005, and CFT-16-003 by CFT-28-001,
+CFT-28-003, CFT-29-002 and CFT-32-006. The locality statement and the two algebraic laws
+are not cited by any later card, but they are consumed: `holomorphicMatrixEval_rational`,
+the theorem identifying this calculus with Chapter 17's rational one on pole-free
+functions, is proved from CFT-16-003, CFT-16-004 and CFT-16-006.
 
 CFT-16-003 is the load-bearing one. CFT-32-006 is `polynomial_from_holomorphic`, the step
 taking a holomorphic Crouzeix bound to the polynomial statement, and polynomial
-compatibility is what licenses it. Chapter 17 builds the rational calculus on CFT-16-001,
-though by its own contour-first route rather than by consuming this chapter's laws.
+compatibility is what licenses it. Chapter 17 defines its rational calculus without this
+chapter's limit and then meets it through that theorem.
