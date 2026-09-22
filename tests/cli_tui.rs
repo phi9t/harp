@@ -1,0 +1,513 @@
+use std::fs;
+use std::io::{BufRead, Write};
+use std::net::TcpListener;
+use std::os::unix::fs::PermissionsExt;
+use std::path::Path;
+use std::thread;
+
+use assert_cmd::Command;
+use corenius::core::{RuntimeEvent, ToolCall};
+use corenius::tui::{TuiState, render_rows};
+use predicates::str::contains;
+use serde_json::json;
+use tempfile::tempdir;
+
+fn marker(root: &std::path::Path) {
+    fs::create_dir_all(root.join("usr/bin")).unwrap();
+    fs::write(root.join("usr/bin/node"), "").unwrap();
+    fs::write(
+        root.join(".corenius-insula-rootfs.json"),
+        r#"{"schema_version":1,"owner":"corenius-insula","digest":"abc","node_path":"/usr/bin/node"}"#,
+    )
+    .unwrap();
+}
+
+fn fake_traecli(path: &Path, session_id: &str, response: &str) {
+    fs::write(
+        path,
+        format!(
+            r#"#!/usr/bin/env python3
+import json, sys
+response = {response:?}
+session_id = {session_id:?}
+if sys.argv[1:3] != ["acp", "serve"]:
+    raise SystemExit(2)
+for line in sys.stdin:
+    msg = json.loads(line)
+    if msg.get("method") == "initialize":
+        print(json.dumps({{"jsonrpc":"2.0","id":msg["id"],"result":{{"protocolVersion":1}}}}), flush=True)
+    elif msg.get("method") == "session/new":
+        print(json.dumps({{"jsonrpc":"2.0","id":msg["id"],"result":{{"sessionId":session_id}}}}), flush=True)
+    elif msg.get("method") == "session/prompt":
+        print(json.dumps({{"jsonrpc":"2.0","method":"session/update","params":{{"sessionId":session_id,"update":{{"sessionUpdate":"agent_message_chunk","content":{{"type":"text","text":response}}}}}}}}), flush=True)
+        print(json.dumps({{"jsonrpc":"2.0","id":msg["id"],"result":{{"stopReason":"end_turn","usage":{{"inputTokens":1,"outputTokens":1}}}}}}), flush=True)
+"#,
+        ),
+    )
+    .unwrap();
+    let mut permissions = fs::metadata(path).unwrap().permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(path, permissions).unwrap();
+}
+
+#[test]
+fn insula_select_and_doctor_dry_run_work_from_cli() {
+    let temp = tempdir().unwrap();
+    let store = temp.path().join("store");
+    let rootfs = store.join("rootfs");
+    let workspace = temp.path().join("workspace");
+    fs::create_dir_all(&workspace).unwrap();
+    fs::create_dir_all(&rootfs).unwrap();
+    marker(&rootfs);
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "insula",
+            "select",
+            "--workspace",
+            workspace.to_str().unwrap(),
+            "--rootfs",
+            rootfs.to_str().unwrap(),
+            "--store-root",
+            store.to_str().unwrap(),
+        ])
+        .assert()
+        .success()
+        .stdout(contains("selected"));
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "insula",
+            "doctor",
+            "--workspace",
+            workspace.to_str().unwrap(),
+            "--dry-run",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("bwrap plan:"));
+}
+
+#[test]
+fn tui_state_renders_streaming_approval_and_tool_result() {
+    let mut state = TuiState::default();
+    state.apply(RuntimeEvent::turn_started("t1", "hello"));
+    state.apply(RuntimeEvent::assistant_delta("t1", "hi"));
+    state.apply(RuntimeEvent::ApprovalRequested {
+        turn_id: "t1".to_string(),
+        request: corenius::core::ApprovalRequest {
+            id: "a1".to_string(),
+            tool_call: ToolCall::new("c1", "fake", "shell", json!({})),
+            risk_summary: "Requires approval for shell command execution.".to_string(),
+        },
+        timestamp: "now".to_string(),
+    });
+    state.apply(RuntimeEvent::ToolResult {
+        turn_id: "t1".to_string(),
+        tool_call: ToolCall::new("c1", "fake", "shell", json!({})),
+        result: json!({"exit_code": 2, "stderr": "failed"}),
+        timestamp: "now".to_string(),
+    });
+    let rows = render_rows(&state);
+    assert!(rows.contains(&"you: hello".to_string()));
+    assert!(rows.contains(&"assistant: hi".to_string()));
+    assert!(rows.iter().any(|row| row.contains("tool completed: shell")));
+    assert!(rows.iter().any(|row| row.contains("exit 2 - failed")));
+}
+
+#[test]
+fn provider_smoke_traecli_uses_acp_child() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli");
+    fake_traecli(&server, "cli-smoke", "ok");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "provider",
+            "smoke",
+            "traecli",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--prompt",
+            "hello",
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("provider: traecli-acp"))
+        .stdout(contains("session_id: cli-smoke"))
+        .stdout(contains("text: ok"));
+}
+
+#[test]
+fn eval_aime_sanity_runs_tracked_dataset_and_writes_artifacts() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-eval");
+    let run_dir = temp.path().join("run");
+    fake_traecli(&server, "cli-eval", "The answer is small.\nFINAL: 70\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2025-I:I-1",
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"))
+        .stdout(contains("\"correct\": 1"));
+
+    let summary: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("summary.json")).unwrap()).unwrap();
+    assert_eq!(summary["total"], 1);
+    assert_eq!(summary["correct"], 1);
+    assert_eq!(summary["dataset"], "evals/aime_sanity.jsonl");
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    let sample: serde_json::Value = serde_json::from_str(samples.lines().next().unwrap()).unwrap();
+    assert_eq!(sample["id"], "2025-I:I-1");
+    assert_eq!(sample["expected_answer"], "70");
+    assert_eq!(sample["extracted_answer"], "70");
+    assert_eq!(sample["passed"], true);
+    assert!(
+        sample["prompt"]
+            .as_str()
+            .unwrap()
+            .contains("FINAL: <integer>")
+    );
+}
+
+#[test]
+fn eval_aime_sanity_skips_timeout_probes_by_default() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-eval-skip-probe");
+    let run_dir = temp.path().join("run");
+    fake_traecli(&server, "cli-eval", "FINAL: 0\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 5"));
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("2025-II:II-2"));
+    assert!(!samples.contains("2025-I:I-15"));
+}
+
+#[test]
+fn eval_aime_runs_cached_full_dataset_and_writes_triage() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-aime");
+    let run_dir = temp.path().join("run");
+    let data_dir = temp.path().join(".scratch/aime-benchmark/data");
+    fs::create_dir_all(&data_dir).unwrap();
+    write_aime_fixture(&data_dir.join("2024.jsonl"), "2024", "60");
+    write_aime_fixture(&data_dir.join("2025-I.jsonl"), "2025-I", "I-1");
+    write_aime_fixture(&data_dir.join("2025-II.jsonl"), "2025-II", "II-1");
+    fake_traecli(&server, "cli-aime", "reasoning\nFINAL: 42\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 60"))
+        .stdout(contains("\"correct\": 60"));
+
+    let summary: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("summary.json")).unwrap()).unwrap();
+    assert_eq!(summary["total"], 60);
+    assert_eq!(summary["years"], json!(["2024", "2025-I", "2025-II"]));
+    assert_eq!(summary["dataset"], "gair");
+    assert_eq!(summary["by_year"]["2025-II"]["total"], 15);
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert_eq!(samples.lines().count(), 60);
+    let sample: serde_json::Value = serde_json::from_str(samples.lines().next().unwrap()).unwrap();
+    assert_eq!(sample["source"], "gair");
+    assert_eq!(sample["id"], "2024:60");
+    assert_eq!(sample["return_status"], "end_turn");
+    assert_eq!(sample["usage"]["input_tokens"], 1);
+
+    let triage = fs::read_to_string(run_dir.join("triage.md")).unwrap();
+    assert!(triage.contains("| 2024 | 30 | 30 | 1.000 |"));
+    assert!(triage.contains("| 2024:60 | 2024 | 42 | 42 | pass |"));
+}
+
+#[test]
+fn eval_aime_rejects_truncated_default_cache() {
+    let temp = tempdir().unwrap();
+    let data_dir = temp.path().join(".scratch/aime-benchmark/data");
+    fs::create_dir_all(&data_dir).unwrap();
+    write_aime_fixture(&data_dir.join("2024.jsonl"), "2024", "60");
+    write_aime_fixture(&data_dir.join("2025-I.jsonl"), "2025-I", "I-1");
+    fs::write(
+        data_dir.join("2025-II.jsonl"),
+        r#"{"id":"II-1","problem":"Problem","answer":"42"}"#,
+    )
+    .unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "eval",
+            "aime",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .failure()
+        .stderr(contains("expected 15 AIME cases for 2025-II, found 1"));
+}
+
+#[test]
+fn eval_aime_supports_year_limit_offset_filter_and_refresh_fetch() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-aime-fetch");
+    let run_dir = temp.path().join("run");
+    let http = serve_fixture_once("/test2025-I.jsonl", make_aime_fixture("2025-I", "I-1"));
+    fake_traecli(&server, "cli-aime-fetch", "FINAL: 42\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .env("CORENIUS_AIME_BASE_URL", http)
+        .args([
+            "eval",
+            "aime",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--years",
+            "2025-I",
+            "--offset",
+            "2",
+            "--limit",
+            "1",
+            "--filter-id",
+            "2025-I:I-3",
+            "--refresh-data",
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"));
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("2025-I:I-3"));
+    assert!(!samples.contains("2025-I:I-2"));
+    assert!(
+        temp.path()
+            .join(".scratch/aime-benchmark/data/2025-I.jsonl")
+            .exists()
+    );
+}
+
+#[test]
+fn provider_smoke_traecli_can_print_streamed_chunks() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-stream");
+    fs::write(
+        &server,
+        r#"#!/usr/bin/env python3
+import json, sys
+if sys.argv[1:3] != ["acp", "serve"]:
+    raise SystemExit(2)
+for line in sys.stdin:
+    msg = json.loads(line)
+    if msg.get("method") == "initialize":
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"protocolVersion":1}}), flush=True)
+    elif msg.get("method") == "session/new":
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"sessionId":"cli-stream"}}), flush=True)
+    elif msg.get("method") == "session/prompt":
+        print(json.dumps({"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"cli-stream","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"o"}}}}), flush=True)
+        print(json.dumps({"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"cli-stream","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"k"}}}}), flush=True)
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"stopReason":"end_turn","usage":{"inputTokens":1,"outputTokens":2}}}), flush=True)
+"#,
+    )
+    .unwrap();
+    let mut permissions = fs::metadata(&server).unwrap().permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&server, permissions).unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "provider",
+            "smoke",
+            "traecli",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--prompt",
+            "hello",
+            "--timeout-ms",
+            "5000",
+            "--stream",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("delta: o"))
+        .stdout(contains("delta: k"))
+        .stdout(contains("text: ok"));
+}
+
+#[test]
+fn provider_supervise_traecli_reports_current_process_tree() {
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "provider",
+            "supervise",
+            "traecli",
+            "--pid",
+            &std::process::id().to_string(),
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"root_pid\""))
+        .stdout(contains("\"healthy\""))
+        .stdout(contains("\"processes\""));
+}
+
+#[test]
+fn provider_smoke_traecli_can_emit_supervisor_snapshots() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-supervised");
+    fs::write(
+        &server,
+        r#"#!/usr/bin/env python3
+import json, sys
+if sys.argv[1:3] != ["acp", "serve"]:
+    raise SystemExit(2)
+for line in sys.stdin:
+    msg = json.loads(line)
+    if msg.get("method") == "initialize":
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"protocolVersion":1}}), flush=True)
+    elif msg.get("method") == "session/new":
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"sessionId":"cli-supervised"}}), flush=True)
+    elif msg.get("method") == "session/prompt":
+        print(json.dumps({"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"cli-supervised","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"ok"}}}}), flush=True)
+        print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"result":{"stopReason":"end_turn","usage":{"inputTokens":1,"outputTokens":1}}}), flush=True)
+"#,
+    )
+    .unwrap();
+    let mut permissions = fs::metadata(&server).unwrap().permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&server, permissions).unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "provider",
+            "smoke",
+            "traecli",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--prompt",
+            "hello",
+            "--timeout-ms",
+            "5000",
+            "--supervise",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("supervisor: {\"root_pid\""))
+        .stdout(contains("\"healthy\":true"))
+        .stdout(contains("provider: traecli-acp"))
+        .stdout(contains("text: ok"));
+}
+
+fn write_aime_fixture(path: &Path, year: &str, first_id: &str) {
+    fs::write(path, make_aime_fixture(year, first_id)).unwrap();
+}
+
+fn make_aime_fixture(year: &str, first_id: &str) -> String {
+    let mut rows = Vec::new();
+    for index in 0..expected_fixture_count(year) {
+        let id = if index == 0 {
+            first_id.to_string()
+        } else if year == "2024" {
+            (60 + index).to_string()
+        } else if year == "2025-I" {
+            format!("I-{}", index + 1)
+        } else {
+            format!("II-{}", index + 1)
+        };
+        rows.push(format!(
+            r#"{{"id":{id:?},"problem":"Problem {year} {id}","answer":"42"}}"#
+        ));
+    }
+    rows.join("\n") + "\n"
+}
+
+fn expected_fixture_count(year: &str) -> usize {
+    match year {
+        "2024" => 30,
+        "2025-I" | "2025-II" => 15,
+        _ => panic!("unexpected fixture year {year}"),
+    }
+}
+
+fn serve_fixture_once(expected_path: &'static str, body: String) -> String {
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let addr = listener.local_addr().unwrap();
+    thread::spawn(move || {
+        let (mut stream, _) = listener.accept().unwrap();
+        let mut request_line = String::new();
+        std::io::BufReader::new(stream.try_clone().unwrap())
+            .read_line(&mut request_line)
+            .unwrap();
+        assert!(request_line.contains(expected_path), "{request_line}");
+        let response = format!(
+            "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+            body.len(),
+            body
+        );
+        stream.write_all(response.as_bytes()).unwrap();
+    });
+    format!("http://{addr}")
+}
