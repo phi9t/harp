@@ -13,12 +13,15 @@ use crate::provider::acp::{
     AcpOptions, TraeCliAcpProvider, run_acp_prompt, run_acp_prompt_streaming,
 };
 
-const PROMPT_TEMPLATE: &str = r#"Solve this AIME problem. Return the final answer as a single integer in [0, 999].
+const PROMPT_TEMPLATE: &str = r#"You are running in an automated AIME benchmark. Solve only the math problem below.
+
+Do not open tools, inspect files, invoke skills, describe workflow rules, or mention benchmark machinery.
+Return concise mathematical reasoning followed by a final line exactly of the form FINAL: <integer>.
+The final answer must be a single integer in [0, 999].
 
 Problem:
 {problem}
-
-Important: End your response with a line exactly of the form FINAL: <integer>."#;
+"#;
 
 const DEFAULT_AIME_YEARS: &[&str] = &["2024", "2025-I", "2025-II"];
 const GAIR_AIME_BASE_URL: &str =
@@ -659,6 +662,15 @@ mod tests {
             "999"
         );
         assert_eq!(extract_answer("out of range 1000"), "");
+    }
+
+    #[test]
+    fn prompt_keeps_aime_runs_math_only() {
+        let prompt = prompt_for(&aime_case("2025-I", "I-12", "510"));
+
+        assert!(prompt.contains("Solve only the math problem below."));
+        assert!(prompt.contains("Do not open tools, inspect files, invoke skills"));
+        assert!(prompt.contains("FINAL: <integer>"));
     }
 
     #[test]
