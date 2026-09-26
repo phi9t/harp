@@ -219,6 +219,42 @@ pub struct AimeYearSummary {
     pub accuracy: f64,
 }
 
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct AimeRunMetrics {
+    pub schema_version: u8,
+    pub sample_count: usize,
+    pub execution_mode: AimeExecutionMode,
+    pub timeout_ms: u64,
+    pub samples: Vec<AimeRunMetricSample>,
+    pub aggregate: AimeRunMetricAggregate,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct AimeRunMetricSample {
+    pub id: String,
+    pub elapsed_seconds: f64,
+    pub passed: bool,
+    pub failure_kind: Option<AimeFailureKind>,
+    pub return_status: Option<String>,
+    pub had_error: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage: Option<UsageRecord>,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq)]
+pub struct AimeRunMetricAggregate {
+    pub total_elapsed_seconds: f64,
+    pub min_elapsed_seconds: Option<f64>,
+    pub p50_elapsed_seconds: Option<f64>,
+    pub p95_elapsed_seconds: Option<f64>,
+    pub max_elapsed_seconds: Option<f64>,
+    pub timeout_count: usize,
+    pub provider_error_count: usize,
+    pub no_final_count: usize,
+    pub wrong_final_count: usize,
+    pub prompt_contamination_count: usize,
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct AimeRunManifest {
     pub schema_version: u8,
@@ -401,6 +437,12 @@ pub async fn run_aime_regrade(options: AimeRegradeOptions) -> anyhow::Result<Aim
     let mut summary = summarize_samples(&regraded_samples, &eval_options);
     summary.dataset = loaded.source.clone();
     write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
+    let metrics = build_run_metrics(
+        &regraded_samples,
+        eval_options.execution_mode,
+        eval_options.timeout_ms,
+    );
+    write_pretty_json(&options.run_dir.join("run_metrics.json"), &metrics).await?;
     tokio::fs::write(
         options.run_dir.join("triage.md"),
         render_triage_markdown(&summary, &regraded_samples, Some(&derived_context)),
@@ -515,6 +557,8 @@ async fn run_aime_cases(
 
     let summary = summarize_samples(&samples, &options);
     write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
+    let metrics = build_run_metrics(&samples, options.execution_mode, options.timeout_ms);
+    write_pretty_json(&options.run_dir.join("run_metrics.json"), &metrics).await?;
     tokio::fs::write(
         options.run_dir.join("triage.md"),
         render_triage_markdown(&summary, &samples, derived_context.as_ref()),
@@ -1206,6 +1250,65 @@ fn failure_kind_name(kind: &AimeFailureKind) -> &'static str {
     }
 }
 
+fn build_run_metrics(
+    samples: &[AimeSample],
+    execution_mode: AimeExecutionMode,
+    timeout_ms: u64,
+) -> AimeRunMetrics {
+    let mut elapsed = samples
+        .iter()
+        .map(|sample| sample.elapsed_seconds)
+        .collect::<Vec<_>>();
+    elapsed.sort_by(|left, right| left.total_cmp(right));
+
+    let count_kind = |kind: AimeFailureKind| {
+        samples
+            .iter()
+            .filter(|sample| sample.failure_kind.as_ref() == Some(&kind))
+            .count()
+    };
+
+    AimeRunMetrics {
+        schema_version: 1,
+        sample_count: samples.len(),
+        execution_mode,
+        timeout_ms,
+        samples: samples
+            .iter()
+            .map(|sample| AimeRunMetricSample {
+                id: sample.id.clone(),
+                elapsed_seconds: sample.elapsed_seconds,
+                passed: sample.passed,
+                failure_kind: sample.failure_kind.clone(),
+                return_status: sample.return_status.clone(),
+                had_error: sample.error.is_some(),
+                usage: sample.usage.clone(),
+            })
+            .collect(),
+        aggregate: AimeRunMetricAggregate {
+            total_elapsed_seconds: samples.iter().map(|sample| sample.elapsed_seconds).sum(),
+            min_elapsed_seconds: elapsed.first().copied(),
+            p50_elapsed_seconds: percentile_nearest_rank(&elapsed, 0.50),
+            p95_elapsed_seconds: percentile_nearest_rank(&elapsed, 0.95),
+            max_elapsed_seconds: elapsed.last().copied(),
+            timeout_count: count_kind(AimeFailureKind::TimeoutNoResponse),
+            provider_error_count: count_kind(AimeFailureKind::ProviderError),
+            no_final_count: count_kind(AimeFailureKind::NoFinal),
+            wrong_final_count: count_kind(AimeFailureKind::WrongFinal),
+            prompt_contamination_count: count_kind(AimeFailureKind::PromptContamination),
+        },
+    }
+}
+
+fn percentile_nearest_rank(sorted_values: &[f64], percentile: f64) -> Option<f64> {
+    if sorted_values.is_empty() {
+        return None;
+    }
+    let rank = (percentile * sorted_values.len() as f64).ceil() as usize;
+    let index = rank.saturating_sub(1).min(sorted_values.len() - 1);
+    Some(sorted_values[index])
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1559,6 +1662,56 @@ mod tests {
             ),
             usage: None,
         }
+    }
+
+    #[test]
+    fn run_metrics_preserve_order_and_compute_percentiles() {
+        let mut first = sample("2025-I:I-1", "2025-I", true, None);
+        first.elapsed_seconds = 1.0;
+        let mut second = sample("2025-I:I-2", "2025-I", false, None);
+        second.elapsed_seconds = 3.0;
+        second.failure_kind = Some(AimeFailureKind::WrongFinal);
+        let mut third =
+            sample("2025-I:I-3", "2025-I", false, Some("ACP prompt timed out"));
+        third.elapsed_seconds = 2.0;
+        third.failure_kind = Some(AimeFailureKind::TimeoutNoResponse);
+
+        let metrics = build_run_metrics(
+            &[first, second, third],
+            AimeExecutionMode::FreshProviderPerSample,
+            5000,
+        );
+
+        assert_eq!(metrics.schema_version, 1);
+        assert_eq!(metrics.sample_count, 3);
+        assert_eq!(
+            metrics.execution_mode,
+            AimeExecutionMode::FreshProviderPerSample
+        );
+        assert_eq!(metrics.timeout_ms, 5000);
+        assert_eq!(
+            metrics.samples.iter().map(|row| row.id.as_str()).collect::<Vec<_>>(),
+            vec!["2025-I:I-1", "2025-I:I-2", "2025-I:I-3"]
+        );
+        assert_eq!(metrics.aggregate.min_elapsed_seconds, Some(1.0));
+        assert_eq!(metrics.aggregate.p50_elapsed_seconds, Some(2.0));
+        assert_eq!(metrics.aggregate.p95_elapsed_seconds, Some(3.0));
+        assert_eq!(metrics.aggregate.max_elapsed_seconds, Some(3.0));
+        assert_eq!(metrics.aggregate.timeout_count, 1);
+        assert_eq!(metrics.aggregate.provider_error_count, 0);
+        assert_eq!(metrics.aggregate.wrong_final_count, 1);
+    }
+
+    #[test]
+    fn run_metrics_handle_empty_samples() {
+        let metrics = build_run_metrics(&[], AimeExecutionMode::SharedProvider, 1);
+
+        assert_eq!(metrics.sample_count, 0);
+        assert_eq!(metrics.aggregate.total_elapsed_seconds, 0.0);
+        assert_eq!(metrics.aggregate.min_elapsed_seconds, None);
+        assert_eq!(metrics.aggregate.p50_elapsed_seconds, None);
+        assert_eq!(metrics.aggregate.p95_elapsed_seconds, None);
+        assert_eq!(metrics.aggregate.max_elapsed_seconds, None);
     }
 
     #[tokio::test]

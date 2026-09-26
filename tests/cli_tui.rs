@@ -211,6 +211,17 @@ fn eval_aime_sanity_runs_tracked_dataset_and_writes_artifacts() {
             .len()
             == 64
     );
+
+    let metrics: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("run_metrics.json")).unwrap())
+            .unwrap();
+    assert_eq!(metrics["schema_version"], 1);
+    assert_eq!(metrics["sample_count"], 1);
+    assert_eq!(metrics["execution_mode"], "shared_provider");
+    assert_eq!(metrics["timeout_ms"], 5000);
+    assert_eq!(metrics["samples"][0]["id"], "2025-I:I-1");
+    assert_eq!(metrics["samples"][0]["passed"], true);
+    assert_eq!(metrics["aggregate"]["provider_error_count"], 0);
 }
 
 #[test]
