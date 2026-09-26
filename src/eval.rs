@@ -1,12 +1,15 @@
 use std::collections::{BTreeMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::pin::Pin;
+use std::process::Command;
 use std::sync::Arc;
 use std::time::Instant;
 
 use anyhow::{Context, bail, ensure};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use sha2::{Digest, Sha256};
+use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
 use crate::core::{ProviderEvent, ProviderEventSink, UsageRecord};
 use crate::provider::acp::{
@@ -51,6 +54,18 @@ pub struct AimeEvalOptions {
 }
 
 #[derive(Clone, Debug)]
+pub struct AimeReplayOptions {
+    pub workspace: PathBuf,
+    pub from_run: PathBuf,
+    pub run_dir: PathBuf,
+    pub model: Option<String>,
+    pub timeout_ms: u64,
+    pub stream: bool,
+    pub failed_only: bool,
+    pub filter_id: Vec<String>,
+}
+
+#[derive(Clone, Debug)]
 pub enum AimeDatasetSource {
     TrackedJsonl {
         path: PathBuf,
@@ -59,6 +74,9 @@ pub enum AimeDatasetSource {
         years: Vec<String>,
         data_dir: PathBuf,
         refresh_data: bool,
+    },
+    Replay {
+        from_run: PathBuf,
     },
 }
 
@@ -106,7 +124,7 @@ pub struct AimeCase {
     pub tags: Vec<String>,
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AimeSample {
     pub id: String,
     pub year: String,
@@ -122,7 +140,19 @@ pub struct AimeSample {
     pub prompt: String,
     pub response: String,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub failure_kind: Option<AimeFailureKind>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub usage: Option<UsageRecord>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AimeFailureKind {
+    TimeoutNoResponse,
+    ProviderError,
+    NoFinal,
+    WrongFinal,
+    PromptContamination,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -147,6 +177,41 @@ pub struct AimeYearSummary {
     pub accuracy: f64,
 }
 
+#[derive(Clone, Debug, Serialize)]
+pub struct AimeRunManifest {
+    pub schema_version: u8,
+    pub command_argv: Vec<String>,
+    pub workspace: String,
+    pub run_dir: String,
+    pub dataset: String,
+    pub years: Vec<String>,
+    pub model: Option<String>,
+    pub timeout_ms: u64,
+    pub stream: bool,
+    pub started_at_utc: String,
+    pub corenius_version: String,
+    pub git_commit: Option<String>,
+    pub git_status_short: Vec<String>,
+    pub dataset_cache_files: Vec<AimeDatasetCacheFile>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source_run_dir: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub replayed_from_sample_count: Option<usize>,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub struct AimeDatasetCacheFile {
+    pub path: String,
+    pub byte_length: u64,
+    pub sha256: String,
+}
+
+#[derive(Clone, Debug)]
+struct AimeReplayContext {
+    source_run_dir: PathBuf,
+    replayed_from_sample_count: usize,
+}
+
 pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeSummary> {
     let eval_options = AimeEvalOptions {
         workspace: options.workspace,
@@ -167,21 +232,82 @@ pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeS
 
 pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSummary> {
     let loaded = load_dataset(&options).await?;
-    let selected = select_cases(loaded.cases, &options.selection)?;
+    let selected = select_cases(loaded.cases.clone(), &options.selection)?;
     if selected.is_empty() {
         bail!("AIME selection is empty");
     }
+    let eval_cases = selected
+        .into_iter()
+        .map(AimeRunCase::from_case)
+        .collect::<Vec<_>>();
+    run_aime_cases(options, loaded, eval_cases, None).await
+}
+
+pub async fn run_aime_replay(options: AimeReplayOptions) -> anyhow::Result<AimeSummary> {
+    let replay_samples = load_replay_samples(&options.from_run)?;
+    let selected = select_replay_samples(replay_samples, options.failed_only, &options.filter_id)?;
+    if selected.is_empty() {
+        bail!("AIME replay selection is empty");
+    }
+    let cases = selected
+        .iter()
+        .map(AimeRunCase::from_sample)
+        .collect::<Vec<_>>();
+    let years = years_from_cases(&cases);
+    let loaded = LoadedDataset {
+        source: format!("replay:{}", options.from_run.display()),
+        cases: Vec::new(),
+        cache_files: vec![dataset_cache_file(&options.from_run.join("samples.jsonl"))?],
+    };
+    let replay_context = AimeReplayContext {
+        source_run_dir: options.from_run.clone(),
+        replayed_from_sample_count: cases.len(),
+    };
+    let eval_options = AimeEvalOptions {
+        workspace: options.workspace,
+        source: AimeDatasetSource::Replay {
+            from_run: options.from_run,
+        },
+        run_dir: options.run_dir,
+        model: options.model,
+        timeout_ms: options.timeout_ms,
+        stream: options.stream,
+        selection: AimeSelection {
+            years,
+            offset: 0,
+            limit: None,
+            filter_id: options.filter_id,
+            include_timeout_probe: true,
+        },
+    };
+    run_aime_cases(eval_options, loaded, cases, Some(replay_context)).await
+}
+
+async fn run_aime_cases(
+    options: AimeEvalOptions,
+    loaded: LoadedDataset,
+    cases: Vec<AimeRunCase>,
+    replay_context: Option<AimeReplayContext>,
+) -> anyhow::Result<AimeSummary> {
     tokio::fs::create_dir_all(&options.run_dir)
         .await
         .with_context(|| format!("create run dir {}", options.run_dir.display()))?;
     let samples_path = options.run_dir.join("samples.jsonl");
     let _ = tokio::fs::remove_file(&samples_path).await;
+    let manifest = build_manifest(
+        &options,
+        &loaded,
+        replay_context.clone(),
+        started_at_utc(),
+        std::env::args().collect(),
+    );
+    write_pretty_json(&options.run_dir.join("manifest.json"), &manifest).await?;
 
     let provider = TraeCliAcpProvider::new(options.workspace.clone(), options.model.clone());
     let mut samples = Vec::new();
-    for case in selected {
-        let prompt = prompt_for(&case);
-        eprintln!("RUN id={} expected={}", case_key(&case), case.answer);
+    for case in cases {
+        let prompt = case.prompt.clone();
+        eprintln!("RUN id={} expected={}", case.id, case.answer);
         let started = Instant::now();
         let result = if options.stream {
             let sink: ProviderEventSink = Arc::new(|event| {
@@ -222,10 +348,11 @@ pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSumma
             Err(error) => (String::new(), None, None, Some(error.to_string())),
         };
         let expected = normalize_answer(&case.answer);
-        let extracted = extract_answer(&response);
+        let extracted = extract_final_answer(&response).unwrap_or_default();
         let passed = error.is_none() && extracted == expected;
+        let failure_kind = classify_failure(passed, &response, error.as_deref());
         let sample = AimeSample {
-            id: case_key(&case),
+            id: case.id,
             year: case.year,
             tags: case.tags,
             source: loaded.source.clone(),
@@ -238,6 +365,7 @@ pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSumma
             error,
             prompt,
             response,
+            failure_kind,
             usage,
         };
         append_jsonl(&samples_path, &sample).await?;
@@ -253,15 +381,10 @@ pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSumma
     }
 
     let summary = summarize_samples(&samples, &options);
-    let summary_json = serde_json::to_string_pretty(&summary)?;
-    tokio::fs::write(
-        options.run_dir.join("summary.json"),
-        format!("{summary_json}\n"),
-    )
-    .await?;
+    write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
     tokio::fs::write(
         options.run_dir.join("triage.md"),
-        render_triage_markdown(&summary, &samples),
+        render_triage_markdown(&summary, &samples, replay_context.as_ref()),
     )
     .await?;
     Ok(summary)
@@ -270,6 +393,40 @@ pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSumma
 struct LoadedDataset {
     source: String,
     cases: Vec<AimeCase>,
+    cache_files: Vec<AimeDatasetCacheFile>,
+}
+
+#[derive(Clone, Debug)]
+struct AimeRunCase {
+    id: String,
+    year: String,
+    answer: String,
+    prompt: String,
+    tags: Vec<String>,
+}
+
+impl AimeRunCase {
+    fn from_case(case: AimeCase) -> Self {
+        let id = case_key(&case);
+        let prompt = prompt_for(&case);
+        Self {
+            id,
+            year: case.year,
+            answer: case.answer,
+            prompt,
+            tags: case.tags,
+        }
+    }
+
+    fn from_sample(sample: &AimeSample) -> Self {
+        Self {
+            id: sample.id.clone(),
+            year: sample.year.clone(),
+            answer: sample.expected_answer.clone(),
+            prompt: sample.prompt.clone(),
+            tags: sample.tags.clone(),
+        }
+    }
 }
 
 async fn load_dataset(options: &AimeEvalOptions) -> anyhow::Result<LoadedDataset> {
@@ -279,6 +436,10 @@ async fn load_dataset(options: &AimeEvalOptions) -> anyhow::Result<LoadedDataset
             Ok(LoadedDataset {
                 source: display_dataset(path),
                 cases: load_cases(&dataset_path)?,
+                cache_files: vec![dataset_cache_file_with_display(
+                    &dataset_path,
+                    &display_dataset(path),
+                )?],
             })
         }
         AimeDatasetSource::Gair {
@@ -287,17 +448,25 @@ async fn load_dataset(options: &AimeEvalOptions) -> anyhow::Result<LoadedDataset
             refresh_data,
         } => {
             let mut cases = Vec::new();
+            let mut cache_files = Vec::new();
             for year in years {
                 let path = ensure_gair_year(year, data_dir, *refresh_data).await?;
                 let year_cases = load_gair_cases(year, &path)?;
                 validate_gair_year_count(year, &path, year_cases.len())?;
                 cases.extend(year_cases);
+                cache_files.push(dataset_cache_file(&path)?);
             }
             Ok(LoadedDataset {
                 source: "gair".to_string(),
                 cases,
+                cache_files,
             })
         }
+        AimeDatasetSource::Replay { from_run } => Ok(LoadedDataset {
+            source: format!("replay:{}", from_run.display()),
+            cases: Vec::new(),
+            cache_files: vec![dataset_cache_file(&from_run.join("samples.jsonl"))?],
+        }),
     }
 }
 
@@ -460,15 +629,9 @@ fn normalize_answer(answer: &str) -> String {
         .unwrap_or_else(|_| answer.trim().to_string())
 }
 
+#[cfg(test)]
 fn extract_answer(text: &str) -> String {
-    let mut final_answer = None;
-    for line in text.lines() {
-        let lower = line.to_ascii_lowercase();
-        if let Some(offset) = lower.find("final:") {
-            final_answer = first_int(&line[offset + "final:".len()..]);
-        }
-    }
-    final_answer
+    extract_final_answer(text)
         .or_else(|| {
             let mut last = None;
             for token in numeric_tokens(text) {
@@ -477,6 +640,17 @@ fn extract_answer(text: &str) -> String {
             last
         })
         .unwrap_or_default()
+}
+
+fn extract_final_answer(text: &str) -> Option<String> {
+    let mut final_answer = None;
+    for line in text.lines() {
+        let lower = line.to_ascii_lowercase();
+        if let Some(offset) = lower.find("final:") {
+            final_answer = first_int(&line[offset + "final:".len()..]);
+        }
+    }
+    final_answer
 }
 
 fn first_int(text: &str) -> Option<String> {
@@ -516,6 +690,169 @@ fn display_dataset(path: &Path) -> String {
     path.to_string_lossy().to_string()
 }
 
+fn load_replay_samples(from_run: &Path) -> anyhow::Result<Vec<AimeSample>> {
+    let path = from_run.join("samples.jsonl");
+    let text = std::fs::read_to_string(&path)
+        .with_context(|| format!("read replay samples {}", path.display()))?;
+    let mut samples = Vec::new();
+    for (index, line) in text.lines().enumerate() {
+        if line.trim().is_empty() {
+            continue;
+        }
+        let sample: AimeSample = serde_json::from_str(line)
+            .with_context(|| format!("parse {} line {}", path.display(), index + 1))?;
+        samples.push(sample);
+    }
+    Ok(samples)
+}
+
+fn select_replay_samples(
+    samples: Vec<AimeSample>,
+    failed_only: bool,
+    filter_id: &[String],
+) -> anyhow::Result<Vec<AimeSample>> {
+    let filters = filter_id.iter().cloned().collect::<HashSet<_>>();
+    let selected = samples
+        .into_iter()
+        .filter(|sample| !failed_only || !sample.passed)
+        .filter(|sample| filters.is_empty() || filters.contains(&sample.id))
+        .collect::<Vec<_>>();
+    if !filters.is_empty() && selected.len() != filters.len() {
+        bail!(
+            "selected {} replay samples for {} requested filters",
+            selected.len(),
+            filters.len()
+        );
+    }
+    Ok(selected)
+}
+
+fn years_from_cases(cases: &[AimeRunCase]) -> Vec<String> {
+    let mut years = Vec::new();
+    for case in cases {
+        if !years.contains(&case.year) {
+            years.push(case.year.clone());
+        }
+    }
+    years
+}
+
+fn classify_failure(passed: bool, response: &str, error: Option<&str>) -> Option<AimeFailureKind> {
+    if passed {
+        return None;
+    }
+    if let Some(error) = error {
+        let lower = error.to_ascii_lowercase();
+        if lower.contains("timed out") || lower.contains("timeout") {
+            return Some(AimeFailureKind::TimeoutNoResponse);
+        }
+        return Some(AimeFailureKind::ProviderError);
+    }
+    if extract_final_answer(response).is_none() {
+        return Some(AimeFailureKind::NoFinal);
+    }
+    if response_has_prompt_contamination(response) {
+        return Some(AimeFailureKind::PromptContamination);
+    }
+    Some(AimeFailureKind::WrongFinal)
+}
+
+fn response_has_prompt_contamination(response: &str) -> bool {
+    let lower = response.to_ascii_lowercase();
+    [
+        "using-superpowers",
+        "invoke skills",
+        "open files",
+        "inspect files",
+        "workflow rules",
+        "benchmark machinery",
+    ]
+    .iter()
+    .any(|needle| lower.contains(needle))
+}
+
+fn dataset_cache_file(path: &Path) -> anyhow::Result<AimeDatasetCacheFile> {
+    dataset_cache_file_with_display(path, &path.display().to_string())
+}
+
+fn dataset_cache_file_with_display(
+    path: &Path,
+    display_path: &str,
+) -> anyhow::Result<AimeDatasetCacheFile> {
+    let bytes = std::fs::read(path).with_context(|| format!("read dataset {}", path.display()))?;
+    let mut hasher = Sha256::new();
+    hasher.update(&bytes);
+    Ok(AimeDatasetCacheFile {
+        path: display_path.to_string(),
+        byte_length: bytes.len() as u64,
+        sha256: format!("{:x}", hasher.finalize()),
+    })
+}
+
+fn started_at_utc() -> String {
+    OffsetDateTime::now_utc()
+        .format(&Rfc3339)
+        .unwrap_or_else(|_| "1970-01-01T00:00:00Z".to_string())
+}
+
+fn build_manifest(
+    options: &AimeEvalOptions,
+    loaded: &LoadedDataset,
+    replay_context: Option<AimeReplayContext>,
+    started_at_utc: String,
+    command_argv: Vec<String>,
+) -> AimeRunManifest {
+    AimeRunManifest {
+        schema_version: 1,
+        command_argv,
+        workspace: options.workspace.display().to_string(),
+        run_dir: options.run_dir.display().to_string(),
+        dataset: loaded.source.clone(),
+        years: if options.selection.years.is_empty() {
+            years_from_loaded(loaded)
+        } else {
+            options.selection.years.clone()
+        },
+        model: options.model.clone(),
+        timeout_ms: options.timeout_ms,
+        stream: options.stream,
+        started_at_utc,
+        corenius_version: crate::VERSION.to_string(),
+        git_commit: git_output(&options.workspace, &["rev-parse", "HEAD"]).ok(),
+        git_status_short: git_output(&options.workspace, &["status", "--short"])
+            .map(|output| output.lines().map(str::to_string).collect())
+            .unwrap_or_default(),
+        dataset_cache_files: loaded.cache_files.clone(),
+        source_run_dir: replay_context
+            .as_ref()
+            .map(|context| context.source_run_dir.display().to_string()),
+        replayed_from_sample_count: replay_context
+            .map(|context| context.replayed_from_sample_count),
+    }
+}
+
+fn git_output(cwd: &Path, args: &[&str]) -> anyhow::Result<String> {
+    let output = Command::new("git")
+        .args(args)
+        .current_dir(cwd)
+        .output()
+        .with_context(|| format!("run git {}", args.join(" ")))?;
+    ensure!(
+        output.status.success(),
+        "git {} failed with status {}",
+        args.join(" "),
+        output.status
+    );
+    Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
+}
+
+async fn write_pretty_json<T: Serialize>(path: &Path, value: &T) -> anyhow::Result<()> {
+    let json = serde_json::to_string_pretty(value)?;
+    tokio::fs::write(path, format!("{json}\n"))
+        .await
+        .with_context(|| format!("write {}", path.display()))
+}
+
 fn summarize_samples(samples: &[AimeSample], options: &AimeEvalOptions) -> AimeSummary {
     let correct = samples.iter().filter(|sample| sample.passed).count();
     let mut by_year = BTreeMap::<String, AimeYearSummary>::new();
@@ -546,13 +883,14 @@ fn summarize_samples(samples: &[AimeSample], options: &AimeEvalOptions) -> AimeS
         dataset: match &options.source {
             AimeDatasetSource::TrackedJsonl { path } => display_dataset(path),
             AimeDatasetSource::Gair { .. } => "gair".to_string(),
+            AimeDatasetSource::Replay { from_run } => format!("replay:{}", from_run.display()),
         },
         run_dir: options.run_dir.display().to_string(),
         timeout_ms: options.timeout_ms,
         by_year,
         included_timeout_probe: match &options.source {
             AimeDatasetSource::TrackedJsonl { .. } => Some(options.selection.include_timeout_probe),
-            AimeDatasetSource::Gair { .. } => None,
+            AimeDatasetSource::Gair { .. } | AimeDatasetSource::Replay { .. } => None,
         },
     }
 }
@@ -565,13 +903,34 @@ fn accuracy(correct: usize, total: usize) -> f64 {
     }
 }
 
-fn render_triage_markdown(summary: &AimeSummary, samples: &[AimeSample]) -> String {
+fn years_from_loaded(loaded: &LoadedDataset) -> Vec<String> {
+    let mut years = Vec::new();
+    for case in &loaded.cases {
+        if !years.contains(&case.year) {
+            years.push(case.year.clone());
+        }
+    }
+    years
+}
+
+fn render_triage_markdown(
+    summary: &AimeSummary,
+    samples: &[AimeSample],
+    replay_context: Option<&AimeReplayContext>,
+) -> String {
     let mut output = String::new();
     output.push_str("# AIME benchmark triage\n\n");
     output.push_str(&format!(
         "- total: {}\n- correct: {}\n- accuracy: {:.3}\n- dataset: {}\n- timeout_ms: {}\n\n",
         summary.total, summary.correct, summary.accuracy, summary.dataset, summary.timeout_ms
     ));
+    if let Some(context) = replay_context {
+        output.push_str(&format!(
+            "- source_run_dir: {}\n- replayed_from_sample_count: {}\n\n",
+            context.source_run_dir.display(),
+            context.replayed_from_sample_count
+        ));
+    }
     output.push_str("## By year\n\n");
     output.push_str("| year | total | correct | accuracy |\n");
     output.push_str("| --- | ---: | ---: | ---: |\n");
@@ -581,19 +940,33 @@ fn render_triage_markdown(summary: &AimeSummary, samples: &[AimeSample]) -> Stri
             year, row.total, row.correct, row.accuracy
         ));
     }
+    output.push_str("\n## Failure counts\n\n");
+    output.push_str("| failure_kind | count |\n");
+    output.push_str("| --- | ---: |\n");
+    for (kind, count) in failure_counts(samples) {
+        output.push_str(&format!("| {} | {} |\n", failure_kind_name(kind), count));
+    }
     output.push_str("\n## Problems\n\n");
-    output.push_str("| id | year | expected | extracted | status | elapsed_seconds | note |\n");
-    output.push_str("| --- | --- | ---: | ---: | --- | ---: | --- |\n");
+    output.push_str(
+        "| id | year | expected | extracted | status | failure_kind | elapsed_seconds | note |\n",
+    );
+    output.push_str("| --- | --- | ---: | ---: | --- | --- | ---: | --- |\n");
     for sample in samples {
         let status = if sample.passed { "pass" } else { "fail" };
         let note = sample.error.as_deref().unwrap_or_default();
+        let failure_kind = sample
+            .failure_kind
+            .as_ref()
+            .map(failure_kind_name)
+            .unwrap_or_default();
         output.push_str(&format!(
-            "| {} | {} | {} | {} | {} | {:.3} | {} |\n",
+            "| {} | {} | {} | {} | {} | {} | {:.3} | {} |\n",
             escape_md_cell(&sample.id),
             escape_md_cell(&sample.year),
             escape_md_cell(&sample.expected_answer),
             escape_md_cell(&sample.extracted_answer),
             status,
+            failure_kind,
             sample.elapsed_seconds,
             escape_md_cell(note)
         ));
@@ -603,6 +976,26 @@ fn render_triage_markdown(summary: &AimeSummary, samples: &[AimeSample]) -> Stri
 
 fn escape_md_cell(text: &str) -> String {
     text.replace('|', "\\|").replace('\n', " ")
+}
+
+fn failure_counts(samples: &[AimeSample]) -> BTreeMap<&AimeFailureKind, usize> {
+    let mut counts = BTreeMap::new();
+    for sample in samples {
+        if let Some(kind) = &sample.failure_kind {
+            *counts.entry(kind).or_insert(0) += 1;
+        }
+    }
+    counts
+}
+
+fn failure_kind_name(kind: &AimeFailureKind) -> &'static str {
+    match kind {
+        AimeFailureKind::TimeoutNoResponse => "timeout_no_response",
+        AimeFailureKind::ProviderError => "provider_error",
+        AimeFailureKind::NoFinal => "no_final",
+        AimeFailureKind::WrongFinal => "wrong_final",
+        AimeFailureKind::PromptContamination => "prompt_contamination",
+    }
 }
 
 #[cfg(test)]
@@ -735,13 +1128,124 @@ mod tests {
                 selection: AimeSelection::default_for_full(),
             },
         );
-        let triage = render_triage_markdown(&summary, &samples);
+        let triage = render_triage_markdown(&summary, &samples, None);
 
         assert!(triage.contains("| year | total | correct | accuracy |"));
         assert!(triage.contains("| 2024 | 2 | 1 | 0.500 |"));
-        assert!(triage.contains("| 2024:60 | 2024 | 7 | 7 | pass |"));
-        assert!(triage.contains("| 2024:61 | 2024 | 7 | 8 | fail |"));
+        assert!(triage.contains("## Failure counts"));
+        assert!(triage.contains("| failure_kind | count |"));
+        assert!(triage.contains("| timeout_no_response | 1 |"));
+        assert!(triage.contains("| wrong_final | 1 |"));
+        assert!(triage.contains(
+            "| id | year | expected | extracted | status | failure_kind | elapsed_seconds | note |"
+        ));
+        assert!(triage.contains("| 2024:60 | 2024 | 7 | 7 | pass |  |"));
+        assert!(triage.contains("| 2024:61 | 2024 | 7 | 8 | fail | wrong_final |"));
         assert!(triage.contains("ACP prompt timed out"));
+    }
+
+    #[test]
+    fn classifies_failure_kinds_in_priority_order() {
+        assert_eq!(
+            classify_failure(false, "", Some("ACP prompt timed out after 10ms")),
+            Some(AimeFailureKind::TimeoutNoResponse)
+        );
+        assert_eq!(
+            classify_failure(false, "", Some("json-rpc error from provider")),
+            Some(AimeFailureKind::ProviderError)
+        );
+        assert_eq!(
+            classify_failure(false, "", None),
+            Some(AimeFailureKind::NoFinal)
+        );
+        assert_eq!(
+            classify_failure(
+                false,
+                "I need to invoke skills and open files.\nFINAL: 8",
+                None
+            ),
+            Some(AimeFailureKind::PromptContamination)
+        );
+        assert_eq!(
+            classify_failure(false, "ordinary reasoning\nFINAL: 8", None),
+            Some(AimeFailureKind::WrongFinal)
+        );
+        assert_eq!(
+            classify_failure(true, "using-superpowers\nFINAL: 7", None),
+            None
+        );
+    }
+
+    #[test]
+    fn no_final_with_matching_number_is_not_a_pass() {
+        assert_eq!(extract_answer("The answer is 7."), "7");
+        assert_eq!(extract_final_answer("The answer is 7."), None);
+        assert_eq!(
+            classify_failure(false, "The answer is 7.", None),
+            Some(AimeFailureKind::NoFinal)
+        );
+    }
+
+    #[test]
+    fn builds_manifest_with_dataset_digest() {
+        let temp = tempfile::tempdir().unwrap();
+        let dataset = temp.path().join("tracked.jsonl");
+        std::fs::write(&dataset, "{\"id\":\"1\"}\n").unwrap();
+        let loaded = LoadedDataset {
+            source: "tracked".to_string(),
+            cases: vec![],
+            cache_files: vec![dataset_cache_file(&dataset).unwrap()],
+        };
+        let options = AimeEvalOptions {
+            workspace: temp.path().join("workspace"),
+            source: AimeDatasetSource::TrackedJsonl {
+                path: dataset.clone(),
+            },
+            run_dir: temp.path().join("run"),
+            model: Some("model-a".to_string()),
+            timeout_ms: 123,
+            stream: true,
+            selection: AimeSelection {
+                years: vec!["2025-I".to_string()],
+                offset: 0,
+                limit: Some(1),
+                filter_id: vec!["2025-I:I-1".to_string()],
+                include_timeout_probe: true,
+            },
+        };
+        let manifest = build_manifest(
+            &options,
+            &loaded,
+            Some(AimeReplayContext {
+                source_run_dir: PathBuf::from("old-run"),
+                replayed_from_sample_count: 2,
+            }),
+            "2026-09-23T00:00:00Z".to_string(),
+            vec![
+                "corenius".to_string(),
+                "eval".to_string(),
+                "aime-replay".to_string(),
+            ],
+        );
+
+        assert_eq!(manifest.schema_version, 1);
+        assert_eq!(
+            manifest.command_argv,
+            vec!["corenius", "eval", "aime-replay"]
+        );
+        assert_eq!(manifest.dataset, "tracked");
+        assert_eq!(manifest.years, vec!["2025-I"]);
+        assert_eq!(manifest.model.as_deref(), Some("model-a"));
+        assert_eq!(manifest.timeout_ms, 123);
+        assert!(manifest.stream);
+        assert_eq!(manifest.source_run_dir.as_deref(), Some("old-run"));
+        assert_eq!(manifest.replayed_from_sample_count, Some(2));
+        assert_eq!(manifest.dataset_cache_files.len(), 1);
+        assert_eq!(manifest.dataset_cache_files[0].byte_length, 11);
+        assert_eq!(
+            manifest.dataset_cache_files[0].sha256,
+            "e81e0aa57be1f0ad8b210b3e6348740e38a380365692b6d6129c53a84264ac1d"
+        );
     }
 
     fn aime_case(year: &str, id: &str, answer: &str) -> AimeCase {
@@ -772,7 +1276,16 @@ mod tests {
             },
             error: error.map(str::to_string),
             prompt: "prompt".to_string(),
-            response: "response".to_string(),
+            response: if passed {
+                "FINAL: 7".to_string()
+            } else {
+                "FINAL: 8".to_string()
+            },
+            failure_kind: classify_failure(
+                passed,
+                if passed { "FINAL: 7" } else { "FINAL: 8" },
+                error,
+            ),
             usage: None,
         }
     }

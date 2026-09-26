@@ -23,8 +23,8 @@ use crate::core::{
     ProviderEvent, ProviderEventSink, SandboxResult, TranscriptStore,
 };
 use crate::eval::{
-    AimeDatasetSource, AimeEvalOptions, AimeSanityOptions, AimeSelection, run_aime_eval,
-    run_aime_sanity,
+    AimeDatasetSource, AimeEvalOptions, AimeReplayOptions, AimeSanityOptions, AimeSelection,
+    run_aime_eval, run_aime_replay, run_aime_sanity,
 };
 use crate::insula::InsulaSandbox;
 use crate::provider::acp::{
@@ -115,6 +115,24 @@ enum EvalCommand {
         stream: bool,
         #[arg(long)]
         include_timeout_probe: bool,
+        #[arg(long)]
+        filter_id: Vec<String>,
+    },
+    AimeReplay {
+        #[arg(long)]
+        from_run: PathBuf,
+        #[arg(long)]
+        workspace: Option<PathBuf>,
+        #[arg(long)]
+        run_dir: Option<PathBuf>,
+        #[arg(long)]
+        model: Option<String>,
+        #[arg(long, default_value_t = 300_000)]
+        timeout_ms: u64,
+        #[arg(long)]
+        stream: bool,
+        #[arg(long, default_value_t = true)]
+        failed_only: bool,
         #[arg(long)]
         filter_id: Vec<String>,
     },
@@ -251,6 +269,32 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     timeout_ms,
                     stream,
                     include_timeout_probe,
+                    filter_id,
+                })
+                .await?;
+                println!("{}", serde_json::to_string_pretty(&summary)?);
+                Ok(())
+            }
+            EvalCommand::AimeReplay {
+                from_run,
+                workspace,
+                run_dir,
+                model,
+                timeout_ms,
+                stream,
+                failed_only,
+                filter_id,
+            } => {
+                let workspace = workspace_or_current(workspace)?;
+                let run_dir = run_dir.unwrap_or_else(|| default_aime_replay_run_dir(&workspace));
+                let summary = run_aime_replay(AimeReplayOptions {
+                    workspace,
+                    from_run,
+                    run_dir,
+                    model,
+                    timeout_ms,
+                    stream,
+                    failed_only,
                     filter_id,
                 })
                 .await?;
@@ -401,6 +445,15 @@ fn default_aime_run_dir(workspace: &std::path::Path) -> PathBuf {
         ))
         .expect("format UTC timestamp");
     workspace.join(format!(".scratch/aime-benchmark/run-{timestamp}"))
+}
+
+fn default_aime_replay_run_dir(workspace: &std::path::Path) -> PathBuf {
+    let timestamp = time::OffsetDateTime::now_utc()
+        .format(time::macros::format_description!(
+            "[year][month][day]T[hour][minute][second][subsecond digits:3]Z"
+        ))
+        .expect("format UTC timestamp");
+    workspace.join(format!(".scratch/aime-benchmark/replay-{timestamp}"))
 }
 
 struct InsulaShellRunner {

@@ -185,11 +185,31 @@ fn eval_aime_sanity_runs_tracked_dataset_and_writes_artifacts() {
     assert_eq!(sample["expected_answer"], "70");
     assert_eq!(sample["extracted_answer"], "70");
     assert_eq!(sample["passed"], true);
+    assert_eq!(sample.get("failure_kind"), None);
     assert!(
         sample["prompt"]
             .as_str()
             .unwrap()
             .contains("FINAL: <integer>")
+    );
+    assert!(run_dir.join("manifest.json").exists());
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(manifest["schema_version"], 1);
+    assert_eq!(manifest["dataset"], "evals/aime_sanity.jsonl");
+    assert_eq!(manifest["timeout_ms"], 5000);
+    assert_eq!(manifest["stream"], false);
+    assert_eq!(manifest["dataset_cache_files"].as_array().unwrap().len(), 1);
+    assert_eq!(
+        manifest["dataset_cache_files"][0]["path"],
+        "evals/aime_sanity.jsonl"
+    );
+    assert!(
+        manifest["dataset_cache_files"][0]["sha256"]
+            .as_str()
+            .unwrap()
+            .len()
+            == 64
     );
 }
 
@@ -269,7 +289,227 @@ fn eval_aime_runs_cached_full_dataset_and_writes_triage() {
 
     let triage = fs::read_to_string(run_dir.join("triage.md")).unwrap();
     assert!(triage.contains("| 2024 | 30 | 30 | 1.000 |"));
-    assert!(triage.contains("| 2024:60 | 2024 | 42 | 42 | pass |"));
+    assert!(triage.contains("| failure_kind | count |"));
+    assert!(triage.contains("| 2024:60 | 2024 | 42 | 42 | pass |  |"));
+}
+
+#[test]
+fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
+    let temp = tempdir().unwrap();
+    let wrong_server = temp.path().join("fake-traecli-wrong");
+    let wrong_run_dir = temp.path().join("wrong-run");
+    fake_traecli(
+        &wrong_server,
+        "cli-wrong",
+        "ordinary reasoning\nFINAL: 71\n",
+    );
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &wrong_server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2025-I:I-1",
+            "--run-dir",
+            wrong_run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"correct\": 0"));
+
+    let wrong_samples = fs::read_to_string(wrong_run_dir.join("samples.jsonl")).unwrap();
+    let wrong_sample: serde_json::Value =
+        serde_json::from_str(wrong_samples.lines().next().unwrap()).unwrap();
+    assert_eq!(wrong_sample["failure_kind"], "wrong_final");
+    assert_eq!(wrong_sample["passed"], false);
+
+    let contaminated_server = temp.path().join("fake-traecli-contaminated");
+    let contaminated_run_dir = temp.path().join("contaminated-run");
+    fake_traecli(
+        &contaminated_server,
+        "cli-contaminated",
+        "I need to invoke skills and open files before answering.\nFINAL: 71\n",
+    );
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &contaminated_server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2025-I:I-1",
+            "--run-dir",
+            contaminated_run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"correct\": 0"));
+
+    let contaminated_samples =
+        fs::read_to_string(contaminated_run_dir.join("samples.jsonl")).unwrap();
+    let contaminated_sample: serde_json::Value =
+        serde_json::from_str(contaminated_samples.lines().next().unwrap()).unwrap();
+    assert_eq!(contaminated_sample["failure_kind"], "prompt_contamination");
+}
+
+#[test]
+fn eval_aime_replay_replays_failed_samples_by_default() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-replay");
+    let from_run = temp.path().join("from-run");
+    let replay_run = temp.path().join("replay-run");
+    fs::create_dir_all(&from_run).unwrap();
+    fake_traecli(&server, "cli-replay", "replayed\nFINAL: 70\n");
+    fs::write(
+        from_run.join("samples.jsonl"),
+        [
+            prior_sample_json("2025-I:I-1", "2025-I", "70", true),
+            prior_sample_json("2025-II:II-2", "2025-II", "49", false),
+        ]
+        .join("\n")
+            + "\n",
+    )
+    .unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-replay",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            replay_run.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"));
+
+    let replay_samples = fs::read_to_string(replay_run.join("samples.jsonl")).unwrap();
+    assert_eq!(replay_samples.lines().count(), 1);
+    assert!(replay_samples.contains("2025-II:II-2"));
+    assert!(!replay_samples.contains("2025-I:I-1"));
+    assert!(from_run.join("samples.jsonl").exists());
+
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(replay_run.join("manifest.json")).unwrap())
+            .unwrap();
+    assert_eq!(manifest["source_run_dir"], from_run.display().to_string());
+    assert_eq!(manifest["replayed_from_sample_count"], 1);
+
+    let triage = fs::read_to_string(replay_run.join("triage.md")).unwrap();
+    assert!(triage.contains("source_run_dir"));
+    assert!(triage.contains("replayed_from_sample_count"));
+}
+
+#[test]
+fn eval_aime_replay_filter_id_selects_failed_sample() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-replay-filter");
+    let from_run = temp.path().join("from-run");
+    let replay_run = temp.path().join("replay-run");
+    fs::create_dir_all(&from_run).unwrap();
+    fake_traecli(&server, "cli-replay-filter", "replayed\nFINAL: 49\n");
+    fs::write(
+        from_run.join("samples.jsonl"),
+        [
+            prior_sample_json("2025-I:I-1", "2025-I", "70", false),
+            prior_sample_json("2025-II:II-2", "2025-II", "49", false),
+        ]
+        .join("\n")
+            + "\n",
+    )
+    .unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-replay",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            replay_run.to_str().unwrap(),
+            "--filter-id",
+            "2025-II:II-2",
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"))
+        .stdout(contains("\"correct\": 1"));
+
+    let replay_samples = fs::read_to_string(replay_run.join("samples.jsonl")).unwrap();
+    assert!(replay_samples.contains("2025-II:II-2"));
+    assert!(!replay_samples.contains("2025-I:I-1"));
+}
+
+#[test]
+fn eval_aime_replay_fails_for_missing_or_empty_selection() {
+    let temp = tempdir().unwrap();
+    let from_run = temp.path().join("from-run");
+    fs::create_dir_all(&from_run).unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "eval",
+            "aime-replay",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .failure()
+        .stderr(contains("samples.jsonl"));
+
+    fs::write(
+        from_run.join("samples.jsonl"),
+        prior_sample_json("2025-I:I-1", "2025-I", "70", true) + "\n",
+    )
+    .unwrap();
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "eval",
+            "aime-replay",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .failure()
+        .stderr(contains("AIME replay selection is empty"));
 }
 
 #[test]
@@ -490,6 +730,25 @@ fn expected_fixture_count(year: &str) -> usize {
         "2025-I" | "2025-II" => 15,
         _ => panic!("unexpected fixture year {year}"),
     }
+}
+
+fn prior_sample_json(id: &str, year: &str, answer: &str, passed: bool) -> String {
+    json!({
+        "id": id,
+        "year": year,
+        "tags": [year],
+        "source": "prior-run",
+        "expected_answer": answer,
+        "extracted_answer": if passed { answer } else { "999" },
+        "passed": passed,
+        "score": if passed { 1 } else { 0 },
+        "elapsed_seconds": 0.5,
+        "return_status": "end_turn",
+        "prompt": format!("Prompt for {id}\nFINAL: <integer>"),
+        "response": if passed { format!("FINAL: {answer}") } else { "FINAL: 999".to_string() },
+        "failure_kind": if passed { serde_json::Value::Null } else { json!("wrong_final") },
+    })
+    .to_string()
 }
 
 fn serve_fixture_once(expected_path: &'static str, body: String) -> String {
