@@ -155,6 +155,25 @@ pub enum AimeFailureKind {
     PromptContamination,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct AimeScoredFields {
+    extracted_answer: String,
+    passed: bool,
+    score: u8,
+    failure_kind: Option<AimeFailureKind>,
+}
+
+#[derive(Clone, Debug, Serialize, PartialEq, Eq)]
+struct AimeScorerDelta {
+    id: String,
+    old_extracted_answer: String,
+    new_extracted_answer: String,
+    old_passed: bool,
+    new_passed: bool,
+    old_failure_kind: Option<AimeFailureKind>,
+    new_failure_kind: Option<AimeFailureKind>,
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct AimeSummary {
     pub total: usize,
@@ -347,25 +366,22 @@ async fn run_aime_cases(
             Ok(output) => (output.text, output.stop_reason, output.usage, None),
             Err(error) => (String::new(), None, None, Some(error.to_string())),
         };
-        let expected = normalize_answer(&case.answer);
-        let extracted = extract_final_answer(&response).unwrap_or_default();
-        let passed = error.is_none() && extracted == expected;
-        let failure_kind = classify_failure(passed, &response, error.as_deref());
+        let scored = score_aime_response(&case.answer, &response, error.as_deref());
         let sample = AimeSample {
             id: case.id,
             year: case.year,
             tags: case.tags,
             source: loaded.source.clone(),
-            expected_answer: expected,
-            extracted_answer: extracted,
-            passed,
-            score: u8::from(passed),
+            expected_answer: normalize_answer(&case.answer),
+            extracted_answer: scored.extracted_answer,
+            passed: scored.passed,
+            score: scored.score,
             elapsed_seconds,
             return_status,
             error,
             prompt,
             response,
-            failure_kind,
+            failure_kind: scored.failure_kind,
             usage,
         };
         append_jsonl(&samples_path, &sample).await?;
@@ -755,6 +771,54 @@ fn classify_failure(passed: bool, response: &str, error: Option<&str>) -> Option
         return Some(AimeFailureKind::PromptContamination);
     }
     Some(AimeFailureKind::WrongFinal)
+}
+
+fn score_aime_response(
+    expected_answer: &str,
+    response: &str,
+    error: Option<&str>,
+) -> AimeScoredFields {
+    let expected = normalize_answer(expected_answer);
+    let extracted = extract_final_answer(response).unwrap_or_default();
+    let passed = error.is_none() && extracted == expected;
+    AimeScoredFields {
+        extracted_answer: extracted,
+        passed,
+        score: u8::from(passed),
+        failure_kind: classify_failure(passed, response, error),
+    }
+}
+
+fn regrade_sample(sample: &AimeSample) -> AimeSample {
+    let scored = score_aime_response(
+        &sample.expected_answer,
+        &sample.response,
+        sample.error.as_deref(),
+    );
+    let mut regraded = sample.clone();
+    regraded.extracted_answer = scored.extracted_answer;
+    regraded.passed = scored.passed;
+    regraded.score = scored.score;
+    regraded.failure_kind = scored.failure_kind;
+    regraded
+}
+
+fn scorer_delta(before: &AimeSample, after: &AimeSample) -> Option<AimeScorerDelta> {
+    if before.extracted_answer == after.extracted_answer
+        && before.passed == after.passed
+        && before.failure_kind == after.failure_kind
+    {
+        return None;
+    }
+    Some(AimeScorerDelta {
+        id: before.id.clone(),
+        old_extracted_answer: before.extracted_answer.clone(),
+        new_extracted_answer: after.extracted_answer.clone(),
+        old_passed: before.passed,
+        new_passed: after.passed,
+        old_failure_kind: before.failure_kind.clone(),
+        new_failure_kind: after.failure_kind.clone(),
+    })
 }
 
 fn response_has_prompt_contamination(response: &str) -> bool {
@@ -1184,6 +1248,64 @@ mod tests {
             classify_failure(false, "The answer is 7.", None),
             Some(AimeFailureKind::NoFinal)
         );
+    }
+
+    #[test]
+    fn score_aime_response_requires_final_marker() {
+        let scored = score_aime_response("70", "The answer is 70.", None);
+
+        assert_eq!(scored.extracted_answer, "");
+        assert!(!scored.passed);
+        assert_eq!(scored.score, 0);
+        assert_eq!(scored.failure_kind, Some(AimeFailureKind::NoFinal));
+    }
+
+    #[test]
+    fn regrade_sample_updates_only_derived_fields() {
+        let mut old = sample("2025-I:I-1", "2025-I", false, None);
+        old.expected_answer = "70".to_string();
+        old.extracted_answer = "999".to_string();
+        old.response = "updated reasoning\nFINAL: 70\n".to_string();
+        old.failure_kind = Some(AimeFailureKind::WrongFinal);
+
+        let new = regrade_sample(&old);
+
+        assert_eq!(new.id, old.id);
+        assert_eq!(new.year, old.year);
+        assert_eq!(new.tags, old.tags);
+        assert_eq!(new.source, old.source);
+        assert_eq!(new.expected_answer, old.expected_answer);
+        assert_eq!(new.elapsed_seconds, old.elapsed_seconds);
+        assert_eq!(new.return_status, old.return_status);
+        assert_eq!(new.error, old.error);
+        assert_eq!(new.prompt, old.prompt);
+        assert_eq!(new.response, old.response);
+        assert_eq!(new.usage, old.usage);
+        assert_eq!(new.extracted_answer, "70");
+        assert!(new.passed);
+        assert_eq!(new.score, 1);
+        assert_eq!(new.failure_kind, None);
+    }
+
+    #[test]
+    fn scorer_delta_reports_changed_and_skips_unchanged_samples() {
+        let mut old = sample("2025-I:I-1", "2025-I", false, None);
+        old.expected_answer = "70".to_string();
+        old.extracted_answer = "999".to_string();
+        old.response = "FINAL: 70\n".to_string();
+        old.failure_kind = Some(AimeFailureKind::WrongFinal);
+        let new = regrade_sample(&old);
+
+        let delta = scorer_delta(&old, &new).unwrap();
+        assert_eq!(delta.id, "2025-I:I-1");
+        assert_eq!(delta.old_extracted_answer, "999");
+        assert_eq!(delta.new_extracted_answer, "70");
+        assert!(!delta.old_passed);
+        assert!(delta.new_passed);
+        assert_eq!(delta.old_failure_kind, Some(AimeFailureKind::WrongFinal));
+        assert_eq!(delta.new_failure_kind, None);
+
+        assert_eq!(scorer_delta(&new, &new), None);
     }
 
     #[test]
