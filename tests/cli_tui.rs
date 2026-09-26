@@ -342,6 +342,48 @@ fn eval_aime_runs_cached_full_dataset_and_writes_triage() {
 }
 
 #[test]
+fn eval_aime_records_fresh_provider_per_sample_mode() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-aime-fresh");
+    let run_dir = temp.path().join("run");
+    let data_dir = temp.path().join(".scratch/aime-benchmark/data");
+    fs::create_dir_all(&data_dir).unwrap();
+    write_aime_fixture(&data_dir.join("2025-I.jsonl"), "2025-I", "I-1");
+    fake_traecli(&server, "cli-aime-fresh", "reasoning\nFINAL: 42\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--years",
+            "2025-I",
+            "--limit",
+            "1",
+            "--timeout-ms",
+            "5000",
+            "--fresh-provider-per-sample",
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"))
+        .stdout(contains("\"correct\": 1"));
+
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(manifest["execution_mode"], "fresh_provider_per_sample");
+    let metrics: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("run_metrics.json")).unwrap())
+            .unwrap();
+    assert_eq!(metrics["execution_mode"], "fresh_provider_per_sample");
+}
+
+#[test]
 fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
     let temp = tempdir().unwrap();
     let wrong_server = temp.path().join("fake-traecli-wrong");
