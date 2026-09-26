@@ -225,6 +225,43 @@ fn eval_aime_sanity_runs_tracked_dataset_and_writes_artifacts() {
 }
 
 #[test]
+fn eval_aime_sanity_records_fresh_provider_per_sample_mode() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("fake-traecli-fresh");
+    let run_dir = temp.path().join("run");
+    fake_traecli(&server, "cli-fresh", "FINAL: 70\n");
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2025-I:I-1",
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+            "--fresh-provider-per-sample",
+        ])
+        .assert()
+        .success();
+
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(manifest["execution_mode"], "fresh_provider_per_sample");
+    let metrics: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("run_metrics.json")).unwrap())
+            .unwrap();
+    assert_eq!(metrics["execution_mode"], "fresh_provider_per_sample");
+}
+
+#[test]
 fn eval_aime_sanity_skips_timeout_probes_by_default() {
     let temp = tempdir().unwrap();
     let server = temp.path().join("fake-traecli-eval-skip-probe");

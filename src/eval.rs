@@ -40,6 +40,7 @@ pub struct AimeSanityOptions {
     pub stream: bool,
     pub include_timeout_probe: bool,
     pub filter_id: Vec<String>,
+    pub execution_mode: AimeExecutionMode,
 }
 
 #[derive(Clone, Debug)]
@@ -314,9 +315,43 @@ pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeS
             options.filter_id,
             options.include_timeout_probe,
         ),
-        execution_mode: AimeExecutionMode::SharedProvider,
+        execution_mode: options.execution_mode,
     };
     run_aime_eval(eval_options).await
+}
+
+async fn run_aime_provider_prompt(
+    options: &AimeEvalOptions,
+    provider: &TraeCliAcpProvider,
+    prompt: String,
+) -> anyhow::Result<crate::provider::acp::AcpOutput> {
+    let provider = match options.execution_mode {
+        AimeExecutionMode::SharedProvider => provider.clone(),
+        AimeExecutionMode::FreshProviderPerSample => {
+            TraeCliAcpProvider::new(options.workspace.clone(), options.model.clone())
+        }
+    };
+    let acp_options = AcpOptions {
+        command: provider.command.clone(),
+        args: provider.args(),
+        cwd: options.workspace.clone(),
+        model: provider.model.clone(),
+        prompt,
+        timeout_ms: options.timeout_ms,
+    };
+    if options.stream {
+        let sink: ProviderEventSink = Arc::new(|event| {
+            Box::pin(async move {
+                if let ProviderEvent::AssistantDelta { delta } = event {
+                    print!("delta: {delta}");
+                }
+                Ok(())
+            }) as Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send>>
+        });
+        run_acp_prompt_streaming(acp_options, Some(sink)).await
+    } else {
+        run_acp_prompt(acp_options).await
+    }
 }
 
 pub async fn run_aime_eval(options: AimeEvalOptions) -> anyhow::Result<AimeSummary> {
@@ -487,39 +522,7 @@ async fn run_aime_cases(
         let prompt = case.prompt.clone();
         eprintln!("RUN id={} expected={}", case.id, case.answer);
         let started = Instant::now();
-        let result = if options.stream {
-            let sink: ProviderEventSink = Arc::new(|event| {
-                Box::pin(async move {
-                    if let ProviderEvent::AssistantDelta { delta } = event {
-                        print!("delta: {delta}");
-                    }
-                    Ok(())
-                })
-                    as Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send>>
-            });
-            run_acp_prompt_streaming(
-                AcpOptions {
-                    command: provider.command.clone(),
-                    args: provider.args(),
-                    cwd: options.workspace.clone(),
-                    model: provider.model.clone(),
-                    prompt: prompt.clone(),
-                    timeout_ms: options.timeout_ms,
-                },
-                Some(sink),
-            )
-            .await
-        } else {
-            run_acp_prompt(AcpOptions {
-                command: provider.command.clone(),
-                args: provider.args(),
-                cwd: options.workspace.clone(),
-                model: provider.model.clone(),
-                prompt: prompt.clone(),
-                timeout_ms: options.timeout_ms,
-            })
-            .await
-        };
+        let result = run_aime_provider_prompt(&options, &provider, prompt.clone()).await;
         let elapsed_seconds = started.elapsed().as_secs_f64();
         let (response, return_status, usage, error) = match result {
             Ok(output) => (output.text, output.stop_reason, output.usage, None),
@@ -1614,6 +1617,7 @@ mod tests {
         assert_eq!(manifest.source_run_dir.as_deref(), Some("old-run"));
         assert_eq!(manifest.replayed_from_sample_count, Some(2));
         assert_eq!(manifest.regraded_from_sample_count, None);
+        assert_eq!(manifest.execution_mode, AimeExecutionMode::SharedProvider);
         assert_eq!(manifest.dataset_cache_files.len(), 1);
         assert_eq!(manifest.dataset_cache_files[0].byte_length, 11);
         assert_eq!(

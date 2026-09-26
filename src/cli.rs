@@ -100,6 +100,8 @@ enum EvalCommand {
         stream: bool,
         #[arg(long)]
         refresh_data: bool,
+        #[arg(long)]
+        fresh_provider_per_sample: bool,
     },
     AimeSanity {
         #[arg(long)]
@@ -118,6 +120,8 @@ enum EvalCommand {
         include_timeout_probe: bool,
         #[arg(long)]
         filter_id: Vec<String>,
+        #[arg(long)]
+        fresh_provider_per_sample: bool,
     },
     AimeReplay {
         #[arg(long)]
@@ -231,6 +235,7 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                 timeout_ms,
                 stream,
                 refresh_data,
+                fresh_provider_per_sample,
             } => {
                 let workspace = workspace_or_current(workspace)?;
                 let run_dir = run_dir.unwrap_or_else(|| default_aime_run_dir(&workspace));
@@ -252,7 +257,11 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                         filter_id,
                         include_timeout_probe: true,
                     },
-                    execution_mode: AimeExecutionMode::SharedProvider,
+                    execution_mode: if fresh_provider_per_sample {
+                        AimeExecutionMode::FreshProviderPerSample
+                    } else {
+                        AimeExecutionMode::SharedProvider
+                    },
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -267,6 +276,7 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                 stream,
                 include_timeout_probe,
                 filter_id,
+                fresh_provider_per_sample,
             } => {
                 let workspace = workspace_or_current(workspace)?;
                 let run_dir =
@@ -280,6 +290,11 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     stream,
                     include_timeout_probe,
                     filter_id,
+                    execution_mode: if fresh_provider_per_sample {
+                        AimeExecutionMode::FreshProviderPerSample
+                    } else {
+                        AimeExecutionMode::SharedProvider
+                    },
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
