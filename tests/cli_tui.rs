@@ -546,6 +546,20 @@ fn eval_aime_regrade_writes_independent_artifacts() {
     assert!(regrade_run.join("summary.json").exists());
     assert!(regrade_run.join("triage.md").exists());
     assert!(regrade_run.join("scorer-delta.json").exists());
+
+    let summary: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(regrade_run.join("summary.json")).unwrap())
+            .unwrap();
+    assert_eq!(
+        summary["dataset"],
+        format!("regrade:{}", from_run.display())
+    );
+
+    let triage = fs::read_to_string(regrade_run.join("triage.md")).unwrap();
+    assert!(triage.contains(&format!(
+        "- dataset: regrade:{}",
+        from_run.display()
+    )));
 }
 
 #[test]

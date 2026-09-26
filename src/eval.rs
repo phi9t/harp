@@ -398,7 +398,8 @@ pub async fn run_aime_regrade(options: AimeRegradeOptions) -> anyhow::Result<Aim
         regraded_samples.push(new);
     }
 
-    let summary = summarize_samples(&regraded_samples, &eval_options);
+    let mut summary = summarize_samples(&regraded_samples, &eval_options);
+    summary.dataset = loaded.source.clone();
     write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
     tokio::fs::write(
         options.run_dir.join("triage.md"),
@@ -1588,6 +1589,7 @@ mod tests {
 
         assert_eq!(summary.total, 1);
         assert_eq!(summary.correct, 1);
+        assert_eq!(summary.dataset, format!("regrade:{}", from_run.display()));
         let original = std::fs::read_to_string(from_run.join("samples.jsonl")).unwrap();
         assert!(original.contains("\"extracted_answer\":\"999\""));
 
@@ -1610,6 +1612,9 @@ mod tests {
         assert_eq!(manifest["dataset"], format!("regrade:{}", from_run.display()));
         assert_eq!(manifest["source_run_dir"], from_run.display().to_string());
         assert_eq!(manifest["regraded_from_sample_count"], 1);
+
+        let triage = std::fs::read_to_string(regrade_run.join("triage.md")).unwrap();
+        assert!(triage.contains(&format!("- dataset: regrade:{}", from_run.display())));
     }
 
     #[tokio::test]
