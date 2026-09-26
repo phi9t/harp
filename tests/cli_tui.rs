@@ -388,12 +388,6 @@ fn eval_aime_records_fresh_provider_per_sample_mode() {
 }
 
 #[test]
-fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
-    // Covered by eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error and
-    // eval_aime_scripted_acp_covers_contamination_and_timeout.
-}
-
-#[test]
 fn eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error() {
     let temp = tempdir().unwrap();
     let server = temp.path().join("scripted-traecli");
@@ -505,6 +499,39 @@ fn eval_aime_scripted_acp_covers_contamination_and_timeout() {
         .success();
     let timeout_samples = fs::read_to_string(timeout_run.join("samples.jsonl")).unwrap();
     assert!(timeout_samples.contains("\"failure_kind\":\"timeout_no_response\""));
+    assert_script_consumed(&timeout_server);
+}
+
+#[test]
+fn scripted_acp_can_emit_malformed_json_line() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-malformed");
+    let run_dir = temp.path().join("run");
+    scripted_acp(&server, &[ScriptedAcpStep::MalformedLine]);
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2024:67",
+            "--run-dir",
+            run_dir.to_str().unwrap(),
+            "--timeout-ms",
+            "5000",
+        ])
+        .assert()
+        .success();
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("\"failure_kind\":\"provider_error\""));
+    assert_script_consumed(&server);
 }
 
 #[test]

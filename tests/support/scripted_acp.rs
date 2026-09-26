@@ -8,6 +8,7 @@ pub enum ScriptedAcpStep {
     Success { text: &'static str },
     ProviderError { message: &'static str },
     Stall,
+    MalformedLine,
 }
 
 pub fn scripted_acp(path: &Path, steps: &[ScriptedAcpStep]) {
@@ -24,6 +25,7 @@ pub fn scripted_acp(path: &Path, steps: &[ScriptedAcpStep]) {
                 json!({"kind": "provider_error", "message": message})
             }
             ScriptedAcpStep::Stall => json!({"kind": "stall"}),
+            ScriptedAcpStep::MalformedLine => json!({"kind": "malformed_line"}),
         })
         .collect::<Vec<_>>();
     fs::write(
@@ -83,7 +85,11 @@ for line in sys.stdin:
             advance()
             print(json.dumps({"jsonrpc":"2.0","id":msg["id"],"error":{"code":-32000,"message":step["message"]}}), flush=True)
         elif kind == "stall":
+            advance()
             time.sleep(60)
+        elif kind == "malformed_line":
+            advance()
+            print("{not-json", flush=True)
         else:
             raise SystemExit("unknown script kind " + kind)
 "##;
