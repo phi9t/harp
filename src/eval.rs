@@ -51,6 +51,7 @@ pub struct AimeEvalOptions {
     pub timeout_ms: u64,
     pub stream: bool,
     pub selection: AimeSelection,
+    pub execution_mode: AimeExecutionMode,
 }
 
 #[derive(Clone, Debug)]
@@ -63,6 +64,20 @@ pub struct AimeReplayOptions {
     pub stream: bool,
     pub failed_only: bool,
     pub filter_id: Vec<String>,
+}
+
+#[derive(Clone, Debug)]
+pub struct AimeRegradeOptions {
+    pub workspace: PathBuf,
+    pub from_run: PathBuf,
+    pub run_dir: PathBuf,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AimeExecutionMode {
+    SharedProvider,
+    FreshProviderPerSample,
 }
 
 #[derive(Clone, Debug)]
@@ -174,6 +189,14 @@ struct AimeScorerDelta {
     new_failure_kind: Option<AimeFailureKind>,
 }
 
+#[derive(Clone, Debug, Serialize, PartialEq, Eq)]
+struct AimeScorerDeltaReport {
+    schema_version: u8,
+    source_run_dir: String,
+    changed_sample_count: usize,
+    changes: Vec<AimeScorerDelta>,
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct AimeSummary {
     pub total: usize,
@@ -216,6 +239,9 @@ pub struct AimeRunManifest {
     pub source_run_dir: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replayed_from_sample_count: Option<usize>,
+    pub execution_mode: AimeExecutionMode,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub regraded_from_sample_count: Option<usize>,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -226,9 +252,16 @@ pub struct AimeDatasetCacheFile {
 }
 
 #[derive(Clone, Debug)]
-struct AimeReplayContext {
+enum AimeDerivedRunKind {
+    Replay,
+    Regrade,
+}
+
+#[derive(Clone, Debug)]
+struct AimeDerivedRunContext {
+    kind: AimeDerivedRunKind,
     source_run_dir: PathBuf,
-    replayed_from_sample_count: usize,
+    source_sample_count: usize,
 }
 
 pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeSummary> {
@@ -245,6 +278,7 @@ pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeS
             options.filter_id,
             options.include_timeout_probe,
         ),
+        execution_mode: AimeExecutionMode::SharedProvider,
     };
     run_aime_eval(eval_options).await
 }
@@ -278,9 +312,10 @@ pub async fn run_aime_replay(options: AimeReplayOptions) -> anyhow::Result<AimeS
         cases: Vec::new(),
         cache_files: vec![dataset_cache_file(&options.from_run.join("samples.jsonl"))?],
     };
-    let replay_context = AimeReplayContext {
+    let derived_context = AimeDerivedRunContext {
+        kind: AimeDerivedRunKind::Replay,
         source_run_dir: options.from_run.clone(),
-        replayed_from_sample_count: cases.len(),
+        source_sample_count: cases.len(),
     };
     let eval_options = AimeEvalOptions {
         workspace: options.workspace,
@@ -298,15 +333,96 @@ pub async fn run_aime_replay(options: AimeReplayOptions) -> anyhow::Result<AimeS
             filter_id: options.filter_id,
             include_timeout_probe: true,
         },
+        execution_mode: AimeExecutionMode::SharedProvider,
     };
-    run_aime_cases(eval_options, loaded, cases, Some(replay_context)).await
+    run_aime_cases(eval_options, loaded, cases, Some(derived_context)).await
+}
+
+pub async fn run_aime_regrade(options: AimeRegradeOptions) -> anyhow::Result<AimeSummary> {
+    let original_samples = load_replay_samples(&options.from_run)?;
+    if original_samples.is_empty() {
+        bail!("AIME regrade selection is empty");
+    }
+
+    tokio::fs::create_dir_all(&options.run_dir)
+        .await
+        .with_context(|| format!("create run dir {}", options.run_dir.display()))?;
+    let samples_path = options.run_dir.join("samples.jsonl");
+    let _ = tokio::fs::remove_file(&samples_path).await;
+
+    let loaded = LoadedDataset {
+        source: format!("regrade:{}", options.from_run.display()),
+        cases: Vec::new(),
+        cache_files: vec![dataset_cache_file(&options.from_run.join("samples.jsonl"))?],
+    };
+    let eval_options = AimeEvalOptions {
+        workspace: options.workspace,
+        source: AimeDatasetSource::Replay {
+            from_run: options.from_run.clone(),
+        },
+        run_dir: options.run_dir.clone(),
+        model: None,
+        timeout_ms: 0,
+        stream: false,
+        selection: AimeSelection {
+            years: years_from_samples(&original_samples),
+            offset: 0,
+            limit: None,
+            filter_id: Vec::new(),
+            include_timeout_probe: true,
+        },
+        execution_mode: AimeExecutionMode::SharedProvider,
+    };
+    let derived_context = AimeDerivedRunContext {
+        kind: AimeDerivedRunKind::Regrade,
+        source_run_dir: options.from_run.clone(),
+        source_sample_count: original_samples.len(),
+    };
+    let manifest = build_manifest(
+        &eval_options,
+        &loaded,
+        Some(derived_context.clone()),
+        started_at_utc(),
+        std::env::args().collect(),
+    );
+    write_pretty_json(&options.run_dir.join("manifest.json"), &manifest).await?;
+
+    let mut regraded_samples = Vec::new();
+    let mut changes = Vec::new();
+    for old in original_samples {
+        let new = regrade_sample(&old);
+        if let Some(delta) = scorer_delta(&old, &new) {
+            changes.push(delta);
+        }
+        append_jsonl(&samples_path, &new).await?;
+        regraded_samples.push(new);
+    }
+
+    let summary = summarize_samples(&regraded_samples, &eval_options);
+    write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
+    tokio::fs::write(
+        options.run_dir.join("triage.md"),
+        render_triage_markdown(&summary, &regraded_samples, Some(&derived_context)),
+    )
+    .await?;
+    write_pretty_json(
+        &options.run_dir.join("scorer-delta.json"),
+        &AimeScorerDeltaReport {
+            schema_version: 1,
+            source_run_dir: options.from_run.display().to_string(),
+            changed_sample_count: changes.len(),
+            changes,
+        },
+    )
+    .await?;
+    Ok(summary)
 }
 
 async fn run_aime_cases(
     options: AimeEvalOptions,
     loaded: LoadedDataset,
     cases: Vec<AimeRunCase>,
-    replay_context: Option<AimeReplayContext>,
+    derived_context: Option<AimeDerivedRunContext>,
 ) -> anyhow::Result<AimeSummary> {
     tokio::fs::create_dir_all(&options.run_dir)
         .await
@@ -316,7 +432,7 @@ async fn run_aime_cases(
     let manifest = build_manifest(
         &options,
         &loaded,
-        replay_context.clone(),
+        derived_context.clone(),
         started_at_utc(),
         std::env::args().collect(),
     );
@@ -400,7 +516,7 @@ async fn run_aime_cases(
     write_pretty_json(&options.run_dir.join("summary.json"), &summary).await?;
     tokio::fs::write(
         options.run_dir.join("triage.md"),
-        render_triage_markdown(&summary, &samples, replay_context.as_ref()),
+        render_triage_markdown(&summary, &samples, derived_context.as_ref()),
     )
     .await?;
     Ok(summary)
@@ -753,6 +869,16 @@ fn years_from_cases(cases: &[AimeRunCase]) -> Vec<String> {
     years
 }
 
+fn years_from_samples(samples: &[AimeSample]) -> Vec<String> {
+    let mut years = Vec::new();
+    for sample in samples {
+        if !years.contains(&sample.year) {
+            years.push(sample.year.clone());
+        }
+    }
+    years
+}
+
 fn classify_failure(passed: bool, response: &str, error: Option<&str>) -> Option<AimeFailureKind> {
     if passed {
         return None;
@@ -862,7 +988,7 @@ fn started_at_utc() -> String {
 fn build_manifest(
     options: &AimeEvalOptions,
     loaded: &LoadedDataset,
-    replay_context: Option<AimeReplayContext>,
+    derived_context: Option<AimeDerivedRunContext>,
     started_at_utc: String,
     command_argv: Vec<String>,
 ) -> AimeRunManifest {
@@ -887,11 +1013,18 @@ fn build_manifest(
             .map(|output| output.lines().map(str::to_string).collect())
             .unwrap_or_default(),
         dataset_cache_files: loaded.cache_files.clone(),
-        source_run_dir: replay_context
+        source_run_dir: derived_context
             .as_ref()
             .map(|context| context.source_run_dir.display().to_string()),
-        replayed_from_sample_count: replay_context
-            .map(|context| context.replayed_from_sample_count),
+        replayed_from_sample_count: derived_context.as_ref().and_then(|context| match context.kind {
+            AimeDerivedRunKind::Replay => Some(context.source_sample_count),
+            AimeDerivedRunKind::Regrade => None,
+        }),
+        execution_mode: options.execution_mode,
+        regraded_from_sample_count: derived_context.as_ref().and_then(|context| match context.kind {
+            AimeDerivedRunKind::Replay => None,
+            AimeDerivedRunKind::Regrade => Some(context.source_sample_count),
+        }),
     }
 }
 
@@ -980,7 +1113,7 @@ fn years_from_loaded(loaded: &LoadedDataset) -> Vec<String> {
 fn render_triage_markdown(
     summary: &AimeSummary,
     samples: &[AimeSample],
-    replay_context: Option<&AimeReplayContext>,
+    derived_context: Option<&AimeDerivedRunContext>,
 ) -> String {
     let mut output = String::new();
     output.push_str("# AIME benchmark triage\n\n");
@@ -988,12 +1121,22 @@ fn render_triage_markdown(
         "- total: {}\n- correct: {}\n- accuracy: {:.3}\n- dataset: {}\n- timeout_ms: {}\n\n",
         summary.total, summary.correct, summary.accuracy, summary.dataset, summary.timeout_ms
     ));
-    if let Some(context) = replay_context {
-        output.push_str(&format!(
-            "- source_run_dir: {}\n- replayed_from_sample_count: {}\n\n",
-            context.source_run_dir.display(),
-            context.replayed_from_sample_count
-        ));
+    if let Some(context) = derived_context {
+        output.push_str(&format!("- source_run_dir: {}\n", context.source_run_dir.display()));
+        match context.kind {
+            AimeDerivedRunKind::Replay => {
+                output.push_str(&format!(
+                    "- replayed_from_sample_count: {}\n\n",
+                    context.source_sample_count
+                ));
+            }
+            AimeDerivedRunKind::Regrade => {
+                output.push_str(&format!(
+                    "- regraded_from_sample_count: {}\n\n",
+                    context.source_sample_count
+                ));
+            }
+        }
     }
     output.push_str("## By year\n\n");
     output.push_str("| year | total | correct | accuracy |\n");
@@ -1158,6 +1301,7 @@ mod tests {
                     filter_id: Vec::new(),
                     include_timeout_probe: true,
                 },
+                execution_mode: AimeExecutionMode::SharedProvider,
             },
         );
 
@@ -1190,6 +1334,7 @@ mod tests {
                 timeout_ms: 1,
                 stream: false,
                 selection: AimeSelection::default_for_full(),
+                execution_mode: AimeExecutionMode::SharedProvider,
             },
         );
         let triage = render_triage_markdown(&summary, &samples, None);
@@ -1334,13 +1479,15 @@ mod tests {
                 filter_id: vec!["2025-I:I-1".to_string()],
                 include_timeout_probe: true,
             },
+            execution_mode: AimeExecutionMode::SharedProvider,
         };
         let manifest = build_manifest(
             &options,
             &loaded,
-            Some(AimeReplayContext {
+            Some(AimeDerivedRunContext {
+                kind: AimeDerivedRunKind::Replay,
                 source_run_dir: PathBuf::from("old-run"),
-                replayed_from_sample_count: 2,
+                source_sample_count: 2,
             }),
             "2026-09-23T00:00:00Z".to_string(),
             vec![
@@ -1362,6 +1509,7 @@ mod tests {
         assert!(manifest.stream);
         assert_eq!(manifest.source_run_dir.as_deref(), Some("old-run"));
         assert_eq!(manifest.replayed_from_sample_count, Some(2));
+        assert_eq!(manifest.regraded_from_sample_count, None);
         assert_eq!(manifest.dataset_cache_files.len(), 1);
         assert_eq!(manifest.dataset_cache_files[0].byte_length, 11);
         assert_eq!(
@@ -1410,5 +1558,102 @@ mod tests {
             ),
             usage: None,
         }
+    }
+
+    #[tokio::test]
+    async fn run_aime_regrade_writes_regraded_samples_and_delta() {
+        let temp = tempfile::tempdir().unwrap();
+        let from_run = temp.path().join("from-run");
+        let regrade_run = temp.path().join("regrade-run");
+        std::fs::create_dir_all(&from_run).unwrap();
+
+        let mut old = sample("2025-I:I-1", "2025-I", false, None);
+        old.expected_answer = "70".to_string();
+        old.extracted_answer = "999".to_string();
+        old.response = "new scorer sees final\nFINAL: 70\n".to_string();
+        old.failure_kind = Some(AimeFailureKind::WrongFinal);
+        std::fs::write(
+            from_run.join("samples.jsonl"),
+            format!("{}\n", serde_json::to_string(&old).unwrap()),
+        )
+        .unwrap();
+
+        let summary = run_aime_regrade(AimeRegradeOptions {
+            workspace: temp.path().to_path_buf(),
+            from_run: from_run.clone(),
+            run_dir: regrade_run.clone(),
+        })
+        .await
+        .unwrap();
+
+        assert_eq!(summary.total, 1);
+        assert_eq!(summary.correct, 1);
+        let original = std::fs::read_to_string(from_run.join("samples.jsonl")).unwrap();
+        assert!(original.contains("\"extracted_answer\":\"999\""));
+
+        let regraded = std::fs::read_to_string(regrade_run.join("samples.jsonl")).unwrap();
+        assert!(regraded.contains("\"extracted_answer\":\"70\""));
+        assert!(regraded.contains("\"passed\":true"));
+
+        let delta: serde_json::Value = serde_json::from_str(
+            &std::fs::read_to_string(regrade_run.join("scorer-delta.json")).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(delta["schema_version"], 1);
+        assert_eq!(delta["changed_sample_count"], 1);
+        assert_eq!(delta["changes"][0]["id"], "2025-I:I-1");
+
+        let manifest: serde_json::Value = serde_json::from_str(
+            &std::fs::read_to_string(regrade_run.join("manifest.json")).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(manifest["dataset"], format!("regrade:{}", from_run.display()));
+        assert_eq!(manifest["source_run_dir"], from_run.display().to_string());
+        assert_eq!(manifest["regraded_from_sample_count"], 1);
+    }
+
+    #[tokio::test]
+    async fn run_aime_regrade_fails_for_empty_samples() {
+        let temp = tempfile::tempdir().unwrap();
+        let from_run = temp.path().join("from-run");
+        std::fs::create_dir_all(&from_run).unwrap();
+        std::fs::write(from_run.join("samples.jsonl"), "").unwrap();
+
+        let error = run_aime_regrade(AimeRegradeOptions {
+            workspace: temp.path().to_path_buf(),
+            from_run,
+            run_dir: temp.path().join("regrade-run"),
+        })
+        .await
+        .unwrap_err();
+
+        assert!(error.to_string().contains("AIME regrade selection is empty"));
+    }
+
+    #[tokio::test]
+    async fn run_aime_regrade_reports_malformed_sample_line() {
+        let temp = tempfile::tempdir().unwrap();
+        let from_run = temp.path().join("from-run");
+        std::fs::create_dir_all(&from_run).unwrap();
+        std::fs::write(
+            from_run.join("samples.jsonl"),
+            format!(
+                "{}\nnot-json\n",
+                serde_json::to_string(&sample("2025-I:I-1", "2025-I", false, None)).unwrap()
+            ),
+        )
+        .unwrap();
+
+        let error = run_aime_regrade(AimeRegradeOptions {
+            workspace: temp.path().to_path_buf(),
+            from_run,
+            run_dir: temp.path().join("regrade-run"),
+        })
+        .await
+        .unwrap_err();
+
+        let message = format!("{error:#}");
+        assert!(message.contains("samples.jsonl"));
+        assert!(message.contains("line 2"));
     }
 }

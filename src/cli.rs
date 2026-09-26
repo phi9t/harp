@@ -1,5 +1,5 @@
 use std::io;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::pin::Pin;
 use std::sync::Arc;
 use std::time::Duration;
@@ -23,8 +23,9 @@ use crate::core::{
     ProviderEvent, ProviderEventSink, SandboxResult, TranscriptStore,
 };
 use crate::eval::{
-    AimeDatasetSource, AimeEvalOptions, AimeReplayOptions, AimeSanityOptions, AimeSelection,
-    run_aime_eval, run_aime_replay, run_aime_sanity,
+    AimeDatasetSource, AimeEvalOptions, AimeExecutionMode, AimeRegradeOptions, AimeReplayOptions,
+    AimeSanityOptions, AimeSelection, run_aime_eval, run_aime_regrade, run_aime_replay,
+    run_aime_sanity,
 };
 use crate::insula::InsulaSandbox;
 use crate::provider::acp::{
@@ -136,6 +137,14 @@ enum EvalCommand {
         #[arg(long)]
         filter_id: Vec<String>,
     },
+    AimeRegrade {
+        #[arg(long)]
+        from_run: PathBuf,
+        #[arg(long)]
+        workspace: Option<PathBuf>,
+        #[arg(long)]
+        run_dir: Option<PathBuf>,
+    },
 }
 
 #[derive(Subcommand, Debug)]
@@ -243,6 +252,7 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                         filter_id,
                         include_timeout_probe: true,
                     },
+                    execution_mode: AimeExecutionMode::SharedProvider,
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -296,6 +306,22 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     stream,
                     failed_only,
                     filter_id,
+                })
+                .await?;
+                println!("{}", serde_json::to_string_pretty(&summary)?);
+                Ok(())
+            }
+            EvalCommand::AimeRegrade {
+                from_run,
+                workspace,
+                run_dir,
+            } => {
+                let workspace = workspace_or_current(workspace)?;
+                let run_dir = run_dir.unwrap_or_else(|| default_aime_regrade_run_dir(&workspace));
+                let summary = run_aime_regrade(AimeRegradeOptions {
+                    workspace,
+                    from_run,
+                    run_dir,
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -454,6 +480,15 @@ fn default_aime_replay_run_dir(workspace: &std::path::Path) -> PathBuf {
         ))
         .expect("format UTC timestamp");
     workspace.join(format!(".scratch/aime-benchmark/replay-{timestamp}"))
+}
+
+fn default_aime_regrade_run_dir(workspace: &Path) -> PathBuf {
+    let timestamp = time::OffsetDateTime::now_utc()
+        .format(time::macros::format_description!(
+            "[year][month][day]T[hour][minute][second][subsecond digits:3]Z"
+        ))
+        .expect("format UTC timestamp");
+    workspace.join(format!(".scratch/aime-benchmark/regrade-{timestamp}"))
 }
 
 struct InsulaShellRunner {

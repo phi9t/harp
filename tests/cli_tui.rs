@@ -513,6 +513,63 @@ fn eval_aime_replay_fails_for_missing_or_empty_selection() {
 }
 
 #[test]
+fn eval_aime_regrade_writes_independent_artifacts() {
+    let temp = tempdir().unwrap();
+    let from_run = temp.path().join("from-run");
+    let regrade_run = temp.path().join("regrade-run");
+    fs::create_dir_all(&from_run).unwrap();
+    fs::write(
+        from_run.join("samples.jsonl"),
+        prior_sample_json("2025-I:I-1", "2025-I", "70", false) + "\n",
+    )
+    .unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "eval",
+            "aime-regrade",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--run-dir",
+            regrade_run.to_str().unwrap(),
+        ])
+        .assert()
+        .success()
+        .stdout(contains("\"total\": 1"));
+
+    assert!(from_run.join("samples.jsonl").exists());
+    assert!(regrade_run.join("manifest.json").exists());
+    assert!(regrade_run.join("samples.jsonl").exists());
+    assert!(regrade_run.join("summary.json").exists());
+    assert!(regrade_run.join("triage.md").exists());
+    assert!(regrade_run.join("scorer-delta.json").exists());
+}
+
+#[test]
+fn eval_aime_regrade_fails_for_missing_samples() {
+    let temp = tempdir().unwrap();
+    let from_run = temp.path().join("from-run");
+    fs::create_dir_all(&from_run).unwrap();
+
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .args([
+            "eval",
+            "aime-regrade",
+            "--from-run",
+            from_run.to_str().unwrap(),
+            "--workspace",
+            temp.path().to_str().unwrap(),
+        ])
+        .assert()
+        .failure()
+        .stderr(contains("samples.jsonl"));
+}
+
+#[test]
 fn eval_aime_rejects_truncated_default_cache() {
     let temp = tempdir().unwrap();
     let data_dir = temp.path().join(".scratch/aime-benchmark/data");
