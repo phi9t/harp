@@ -1064,14 +1064,18 @@ fn build_manifest(
         source_run_dir: derived_context
             .as_ref()
             .map(|context| context.source_run_dir.display().to_string()),
-        replayed_from_sample_count: derived_context.as_ref().and_then(|context| match context.kind {
-            AimeDerivedRunKind::Replay => Some(context.source_sample_count),
-            AimeDerivedRunKind::Regrade => None,
+        replayed_from_sample_count: derived_context.as_ref().and_then(|context| {
+            match context.kind {
+                AimeDerivedRunKind::Replay => Some(context.source_sample_count),
+                AimeDerivedRunKind::Regrade => None,
+            }
         }),
         execution_mode: options.execution_mode,
-        regraded_from_sample_count: derived_context.as_ref().and_then(|context| match context.kind {
-            AimeDerivedRunKind::Replay => None,
-            AimeDerivedRunKind::Regrade => Some(context.source_sample_count),
+        regraded_from_sample_count: derived_context.as_ref().and_then(|context| {
+            match context.kind {
+                AimeDerivedRunKind::Replay => None,
+                AimeDerivedRunKind::Regrade => Some(context.source_sample_count),
+            }
         }),
     }
 }
@@ -1170,7 +1174,10 @@ fn render_triage_markdown(
         summary.total, summary.correct, summary.accuracy, summary.dataset, summary.timeout_ms
     ));
     if let Some(context) = derived_context {
-        output.push_str(&format!("- source_run_dir: {}\n", context.source_run_dir.display()));
+        output.push_str(&format!(
+            "- source_run_dir: {}\n",
+            context.source_run_dir.display()
+        ));
         match context.kind {
             AimeDerivedRunKind::Replay => {
                 output.push_str(&format!(
@@ -1675,8 +1682,7 @@ mod tests {
         let mut second = sample("2025-I:I-2", "2025-I", false, None);
         second.elapsed_seconds = 3.0;
         second.failure_kind = Some(AimeFailureKind::WrongFinal);
-        let mut third =
-            sample("2025-I:I-3", "2025-I", false, Some("ACP prompt timed out"));
+        let mut third = sample("2025-I:I-3", "2025-I", false, Some("ACP prompt timed out"));
         third.elapsed_seconds = 2.0;
         third.failure_kind = Some(AimeFailureKind::TimeoutNoResponse);
 
@@ -1694,7 +1700,11 @@ mod tests {
         );
         assert_eq!(metrics.timeout_ms, 5000);
         assert_eq!(
-            metrics.samples.iter().map(|row| row.id.as_str()).collect::<Vec<_>>(),
+            metrics
+                .samples
+                .iter()
+                .map(|row| row.id.as_str())
+                .collect::<Vec<_>>(),
             vec!["2025-I:I-1", "2025-I:I-2", "2025-I:I-3"]
         );
         assert_eq!(metrics.aggregate.min_elapsed_seconds, Some(1.0));
@@ -1766,7 +1776,10 @@ mod tests {
             &std::fs::read_to_string(regrade_run.join("manifest.json")).unwrap(),
         )
         .unwrap();
-        assert_eq!(manifest["dataset"], format!("regrade:{}", from_run.display()));
+        assert_eq!(
+            manifest["dataset"],
+            format!("regrade:{}", from_run.display())
+        );
         assert_eq!(manifest["source_run_dir"], from_run.display().to_string());
         assert_eq!(manifest["regraded_from_sample_count"], 1);
 
@@ -1789,7 +1802,11 @@ mod tests {
         .await
         .unwrap_err();
 
-        assert!(error.to_string().contains("AIME regrade selection is empty"));
+        assert!(
+            error
+                .to_string()
+                .contains("AIME regrade selection is empty")
+        );
     }
 
     #[tokio::test]

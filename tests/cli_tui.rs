@@ -1,6 +1,6 @@
 mod support;
 
-use support::scripted_acp::{assert_script_consumed, scripted_acp, ScriptedAcpStep};
+use support::scripted_acp::{ScriptedAcpStep, assert_script_consumed, scripted_acp};
 
 use std::fs;
 use std::io::{BufRead, Write};
@@ -395,12 +395,18 @@ fn eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error() {
     scripted_acp(
         &server,
         &[
-            ScriptedAcpStep::Success { text: "FINAL: 25\n" },
-            ScriptedAcpStep::Success { text: "FINAL: 999\n" },
+            ScriptedAcpStep::Success {
+                text: "FINAL: 25\n",
+            },
+            ScriptedAcpStep::Success {
+                text: "FINAL: 999\n",
+            },
             ScriptedAcpStep::Success {
                 text: "No final marker here.",
             },
-            ScriptedAcpStep::ProviderError { message: "scripted 503" },
+            ScriptedAcpStep::ProviderError {
+                message: "scripted 503",
+            },
         ],
     );
 
@@ -541,7 +547,9 @@ fn scripted_acp_assert_consumed_fails_on_unconsumed_script() {
     let server = temp.path().join("scripted-unconsumed");
     scripted_acp(
         &server,
-        &[ScriptedAcpStep::Success { text: "FINAL: 70\n" }],
+        &[ScriptedAcpStep::Success {
+            text: "FINAL: 70\n",
+        }],
     );
 
     assert_script_consumed(&server);
@@ -736,10 +744,7 @@ fn eval_aime_regrade_writes_independent_artifacts() {
     );
 
     let triage = fs::read_to_string(regrade_run.join("triage.md")).unwrap();
-    assert!(triage.contains(&format!(
-        "- dataset: regrade:{}",
-        from_run.display()
-    )));
+    assert!(triage.contains(&format!("- dataset: regrade:{}", from_run.display())));
 }
 
 #[test]

@@ -119,4 +119,3 @@ pub fn assert_script_consumed(path: &Path) {
         "scripted ACP fixture was not fully consumed"
     );
 }
-
