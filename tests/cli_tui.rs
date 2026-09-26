@@ -1,3 +1,7 @@
+mod support;
+
+use support::scripted_acp::{assert_script_consumed, scripted_acp, ScriptedAcpStep};
+
 use std::fs;
 use std::io::{BufRead, Write};
 use std::net::TcpListener;
@@ -385,18 +389,30 @@ fn eval_aime_records_fresh_provider_per_sample_mode() {
 
 #[test]
 fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
+    // Covered by eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error and
+    // eval_aime_scripted_acp_covers_contamination_and_timeout.
+}
+
+#[test]
+fn eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error() {
     let temp = tempdir().unwrap();
-    let wrong_server = temp.path().join("fake-traecli-wrong");
-    let wrong_run_dir = temp.path().join("wrong-run");
-    fake_traecli(
-        &wrong_server,
-        "cli-wrong",
-        "ordinary reasoning\nFINAL: 71\n",
+    let server = temp.path().join("scripted-traecli");
+    let run_dir = temp.path().join("run");
+    scripted_acp(
+        &server,
+        &[
+            ScriptedAcpStep::Success { text: "FINAL: 25\n" },
+            ScriptedAcpStep::Success { text: "FINAL: 999\n" },
+            ScriptedAcpStep::Success {
+                text: "No final marker here.",
+            },
+            ScriptedAcpStep::ProviderError { message: "scripted 503" },
+        ],
     );
 
     Command::cargo_bin("corenius")
         .unwrap()
-        .env("TRAECLI_PATH", &wrong_server)
+        .env("TRAECLI_PATH", &server)
         .args([
             "eval",
             "aime-sanity",
@@ -405,28 +421,40 @@ fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
             "--dataset",
             "evals/aime_sanity.jsonl",
             "--filter-id",
+            "2024:67",
+            "--filter-id",
             "2025-I:I-1",
+            "--filter-id",
+            "2025-II:II-2",
+            "--filter-id",
+            "2025-II:II-15",
             "--run-dir",
-            wrong_run_dir.to_str().unwrap(),
+            run_dir.to_str().unwrap(),
             "--timeout-ms",
             "5000",
         ])
         .assert()
         .success()
-        .stdout(contains("\"correct\": 0"));
+        .stdout(contains("\"total\": 4"))
+        .stdout(contains("\"correct\": 1"));
 
-    let wrong_samples = fs::read_to_string(wrong_run_dir.join("samples.jsonl")).unwrap();
-    let wrong_sample: serde_json::Value =
-        serde_json::from_str(wrong_samples.lines().next().unwrap()).unwrap();
-    assert_eq!(wrong_sample["failure_kind"], "wrong_final");
-    assert_eq!(wrong_sample["passed"], false);
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("\"failure_kind\":\"wrong_final\""));
+    assert!(samples.contains("\"failure_kind\":\"no_final\""));
+    assert!(samples.contains("\"failure_kind\":\"provider_error\""));
+    assert_script_consumed(&server);
+}
 
-    let contaminated_server = temp.path().join("fake-traecli-contaminated");
-    let contaminated_run_dir = temp.path().join("contaminated-run");
-    fake_traecli(
+#[test]
+fn eval_aime_scripted_acp_covers_contamination_and_timeout() {
+    let temp = tempdir().unwrap();
+    let contaminated_server = temp.path().join("scripted-contaminated");
+    let contaminated_run = temp.path().join("contaminated-run");
+    scripted_acp(
         &contaminated_server,
-        "cli-contaminated",
-        "I need to invoke skills and open files before answering.\nFINAL: 71\n",
+        &[ScriptedAcpStep::Success {
+            text: "I will invoke skills and open files.\nFINAL: 999\n",
+        }],
     );
 
     Command::cargo_bin("corenius")
@@ -440,21 +468,56 @@ fn eval_aime_records_wrong_and_contaminated_failure_kinds() {
             "--dataset",
             "evals/aime_sanity.jsonl",
             "--filter-id",
-            "2025-I:I-1",
+            "2024:67",
             "--run-dir",
-            contaminated_run_dir.to_str().unwrap(),
+            contaminated_run.to_str().unwrap(),
             "--timeout-ms",
             "5000",
         ])
         .assert()
-        .success()
-        .stdout(contains("\"correct\": 0"));
+        .success();
+    let samples = fs::read_to_string(contaminated_run.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("\"failure_kind\":\"prompt_contamination\""));
+    assert_script_consumed(&contaminated_server);
 
-    let contaminated_samples =
-        fs::read_to_string(contaminated_run_dir.join("samples.jsonl")).unwrap();
-    let contaminated_sample: serde_json::Value =
-        serde_json::from_str(contaminated_samples.lines().next().unwrap()).unwrap();
-    assert_eq!(contaminated_sample["failure_kind"], "prompt_contamination");
+    let timeout_server = temp.path().join("scripted-timeout");
+    let timeout_run = temp.path().join("timeout-run");
+    scripted_acp(&timeout_server, &[ScriptedAcpStep::Stall]);
+    Command::cargo_bin("corenius")
+        .unwrap()
+        .env("TRAECLI_PATH", &timeout_server)
+        .args([
+            "eval",
+            "aime-sanity",
+            "--workspace",
+            temp.path().to_str().unwrap(),
+            "--dataset",
+            "evals/aime_sanity.jsonl",
+            "--filter-id",
+            "2025-I:I-15",
+            "--include-timeout-probe",
+            "--run-dir",
+            timeout_run.to_str().unwrap(),
+            "--timeout-ms",
+            "200",
+        ])
+        .assert()
+        .success();
+    let timeout_samples = fs::read_to_string(timeout_run.join("samples.jsonl")).unwrap();
+    assert!(timeout_samples.contains("\"failure_kind\":\"timeout_no_response\""));
+}
+
+#[test]
+#[should_panic(expected = "scripted ACP fixture was not fully consumed")]
+fn scripted_acp_assert_consumed_fails_on_unconsumed_script() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-unconsumed");
+    scripted_acp(
+        &server,
+        &[ScriptedAcpStep::Success { text: "FINAL: 70\n" }],
+    );
+
+    assert_script_consumed(&server);
 }
 
 #[test]
