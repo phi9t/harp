@@ -1,0 +1,8 @@
+[
+  {"code": "queued", "label": "Queued", "retry_delay_ms": 1000, "terminal": false},
+  {"code": "running", "label": "Running", "retry_delay_ms": 0, "terminal": false},
+  {"code": "throttled", "label": "Throttled", "retry_delay_ms": 30000, "terminal": false},
+  {"code": "succeeded", "label": "Succeeded", "retry_delay_ms": 0, "terminal": true},
+  {"code": "failed", "label": "Failed", "retry_delay_ms": 0, "terminal": true},
+  {"code": "cancelled", "label": "Cancelled", "retry_delay_ms": 0, "terminal": true}
+]

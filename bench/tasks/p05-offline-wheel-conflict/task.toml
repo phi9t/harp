@@ -1,0 +1,26 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/p05-offline-wheel-conflict"
+description = "Resolve incompatible local wheel pins without network access"
+
+[metadata]
+track = "P"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "uv run --offline --locked python -m unittest discover -s tests"
+timeout_sec = 300
+
+[verifier.env]
+UV_CACHE_DIR = "/workspace/.uvcache"
+UV_PYTHON_DOWNLOADS = "never"
+
+[agent]
+timeout_sec = 900

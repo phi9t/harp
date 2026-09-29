@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/r03-trait-format"
+description = "Keep Display and serializer formatting consistent"
+
+[metadata]
+track = "R"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cargo test --offline"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

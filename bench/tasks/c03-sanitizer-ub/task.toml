@@ -1,0 +1,26 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/c03-sanitizer-ub"
+description = "Sanitizer build catches a vector read past the end"
+
+[metadata]
+track = "C"
+level = "M"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cmake -S . -B build -G Ninja -DENABLE_ASAN=ON && cmake --build build && ctest --test-dir build --output-on-failure"
+timeout_sec = 300
+
+[verifier.env]
+ASAN_OPTIONS = "halt_on_error=1:detect_leaks=0"
+UBSAN_OPTIONS = "halt_on_error=1"
+
+[agent]
+timeout_sec = 900
