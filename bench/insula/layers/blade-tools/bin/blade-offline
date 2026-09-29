@@ -1,0 +1,8 @@
+#!/bin/sh
+# Run real blade with no network: pre-seed the pip-check markers so blade does not try the internal PyPI mirror.
+set -e
+mkdir -p "$HOME/.blade/blade_status"
+size=$(stat --printf='%s' /opt/tiger/typhoon-blade/executor)
+: > "$HOME/.blade/blade_status/pip_checking.$size"
+: > "$HOME/.blade/blade_status/pip3_checking.$size"
+exec /opt/tiger/ss_bin/blade "$@"
