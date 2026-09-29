@@ -1,0 +1,38 @@
+# AGENTS.md
+
+Corenius is a standalone Rust terminal agent prototype (turn-scoped runtime,
+Codex and TraeCLI ACP providers, permissioned tools, an `insula` bubblewrap
+boundary) and the owner of agentic-engineering practice for the workspace.
+
+## Where things are
+
+- `README.md`: commands and the AIME eval harness.
+- `docs/agents/`: the canonical agentic-engineering policy that sibling repos
+  copy (`agentic-engineering.md`, `skill-orchestration.md`, the manifest
+  `agentic-workflow-repos.json`). `tools/sync_agentic_workflow.py --check` reports
+  drift; `--apply` repairs it. Edit policy here, never in a sibling copy.
+- `docs/practice/`: charter, imports of milano, vaso and observatory practice,
+  and the open decisions.
+- `docs/reference/`: what each sibling repo is for and how it is designed, plus
+  `agentic-inventory/` (policy, skills, products, and the rules agents follow).
+- `docs/spikes/collab/` and `experiments/collab/`: the multi-agent collaboration
+  design space and the simulator that measures it.
+
+## Rules for working here
+
+- One writer per working tree. Do your work in your own git worktree; do not
+  edit, stage or move files in a checkout another agent is using.
+- Land by fast-forward only; never rebase, force-push or delete a shared branch.
+- Policy changes bump the version header in the edited file and the manifest
+  version together, and `tools/test_sync_agentic_workflow.py` must pass.
+- Reference and inventory documents state a commit read and mark inference; keep
+  that discipline when editing them.
+
+<!-- ultron-agentic-workflow:start -->
+## Agentic engineering workflow
+
+**Mandatory:** Read and follow `CONSTITUTION.md` before acting. Before planning,
+building, fixing, or changing code, read and follow
+`docs/agents/agentic-engineering.md`. Direct user instructions and more specific
+repository guidance take precedence.
+<!-- ultron-agentic-workflow:end -->
