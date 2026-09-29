@@ -1,0 +1,5 @@
+cc_test_config(
+    gtest_libs=[],
+    gtest_main_libs=[],
+    heap_check="",
+)
