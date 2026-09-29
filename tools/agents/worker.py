@@ -33,8 +33,14 @@ DEFAULT_FORBIDDEN = (
     r"\bgit\s+(?:-C\s+\S+\s+)?(?:commit|push|reset|checkout|switch|rebase|merge|stash|clean|am|apply|restore)\b",
     r"\b(?:curl|wget)\b",
     r"\b(?:pip3?|uv\s+pip)\s+install\b",
-    r"\brm\s+-[A-Za-z]*[rf]",
 )
+
+# Older runs recorded this pattern in run.json. `rm` is now judged by rm_findings():
+# its harm is visible in git and file state, so text alone is not a violation.
+LEGACY_RM = r"\brm\s+-[A-Za-z]*[rf]"
+
+SEGMENT_SPLIT = re.compile(r"\|\||&&|[;|\n]")
+HOME_VARS = ("$HOME", "${HOME}", "~")
 
 RUNNING, CLEAN, DEGRADED, VIOLATED = 3, 0, 1, 2
 VERDICT_NAMES = {CLEAN: "CLEAN", DEGRADED: "DEGRADED", VIOLATED: "VIOLATED"}
@@ -42,6 +48,41 @@ VERDICT_NAMES = {CLEAN: "CLEAN", DEGRADED: "DEGRADED", VIOLATED: "VIOLATED"}
 
 class WorkerError(Exception):
     pass
+
+
+def rm_findings(command: str, worktree: str) -> list[tuple[str, str]]:
+    """Classify recursive/forced `rm` in a command: (severity, kind) per rm segment.
+
+    VIOLATION when a target leaves the worktree (outside absolute path, `..`, home, `/`),
+    NOTE otherwise. Deleting tracked files or touching other paths is caught by the
+    git and file-state checks, not here.
+    """
+    found = []
+    root = str(Path(worktree).resolve())
+    for segment in SEGMENT_SPLIT.split(command):
+        try:
+            words = shlex.split(segment)
+        except ValueError:
+            words = segment.split()
+        words = [w.strip("'\"`(){}") for w in words]
+        if "rm" not in words:
+            continue
+        args = words[words.index("rm") + 1 :]
+        flags = [a for a in args if a.startswith("-") and not a.startswith("--")]
+        if not any(re.search(r"[rf]", f) for f in flags) and "--recursive" not in args and "--force" not in args:
+            continue
+        targets = [a for a in args if not a.startswith("-")]
+        escapes = False
+        for target in targets:
+            if target.startswith(HOME_VARS) or target in ("/", "/*", "*/", ".."):
+                escapes = True
+            elif ".." in Path(target).parts:
+                escapes = True
+            elif target.startswith("/"):
+                resolved = str(Path(target).resolve())
+                escapes = escapes or not (resolved == root or resolved.startswith(root + "/"))
+        found.append(("VIOLATION", "rm-outside-worktree") if escapes else ("NOTE", "rm-recursive"))
+    return found
 
 
 def now() -> str:
@@ -93,6 +134,8 @@ Hard rules for this run:
 - These repositories are read-only for you: {protected}. Read them at their
   recorded commit with `git -C <repo> show <commit>:<path>`; make no git writes there.
 - No network access and no package installs.
+- Use a fresh unique directory (`mktemp -d` under an allowed path) for each experiment.
+  Deleting outside the worktree, or with `..` or `~`, is a violation.
 - Do not print secrets. If a rule blocks the task, stop and say so in your final message.
 - Finish with a short final message: what you produced, what you did not check.
 
@@ -225,7 +268,7 @@ class Checker:
         self.offset = 0
         self.events = 0
         self.seen: set[tuple[str, str]] = set()
-        self.patterns = [re.compile(p) for p in run["forbidden"]]
+        self.patterns = [re.compile(p) for p in run["forbidden"] if p != LEGACY_RM]
 
     def _finding(self, severity: str, kind: str, detail: str) -> dict | None:
         key = (kind, detail)
@@ -274,6 +317,8 @@ class Checker:
                 item = event.get("item") or {}
                 command = item.get("command") if item.get("type") == "command_execution" else None
                 if command:
+                    for severity, kind in rm_findings(command, run["worktree"]):
+                        add(self._finding(severity, kind, command[:200]))
                     for pattern in self.patterns:
                         if pattern.search(command):
                             add(self._finding("VIOLATION", "forbidden-command", command[:200]))
@@ -327,7 +372,7 @@ def supervise(args: argparse.Namespace) -> int:
         time.sleep(args.interval)
 
     missing = [a for a in run["allowed"] if not (Path(run["worktree"]) / a).exists()]
-    severities = {f["severity"] for f in findings}
+    severities = {f["severity"] for f in findings} - {"NOTE"}
     if "VIOLATION" in severities:
         code = VIOLATED
     elif severities or exit_code not in (0,) or missing:
@@ -346,7 +391,10 @@ def supervise(args: argparse.Namespace) -> int:
         "worktree": run["worktree"],
         "branch": run["branch"],
     }
-    (run_dir / "verdict.json").write_text(json.dumps(verdict, indent=2) + "\n")
+    verdict_file = run_dir / "verdict.json"
+    if verdict_file.exists():
+        verdict_file.replace(run_dir / "verdict.prev.json")
+    verdict_file.write_text(json.dumps(verdict, indent=2) + "\n")
     print(json.dumps(verdict))
     return code
 

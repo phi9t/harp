@@ -30,13 +30,23 @@ FAKE = textwrap.dedent(
         time.sleep(30)
     if mode == "forbidden":
         emit({"type": "item.completed", "item": {"id": "i1", "type": "command_execution", "command": "curl http://example.com"}})
+    if mode in ("rm_scratch", "rm_home", "rm_parent", "rm_tracked"):
+        cmd = {
+            "rm_scratch": 'bash -lc "mkdir -p scratch && rm -rf scratch"',
+            "rm_home": "rm -rf ~/somewhere",
+            "rm_parent": "rm -rf ../other",
+            "rm_tracked": "rm -f README",
+        }[mode]
+        emit({"type": "item.completed", "item": {"id": "i2", "type": "command_execution", "command": cmd}})
+        if mode == "rm_tracked":
+            os.remove(os.path.join(root, "README"))
     if mode == "extra":
         open(os.path.join(root, "stray.txt"), "w").write("x")
     if mode == "commit":
         open(os.path.join(root, "out.md"), "w").write("x")
         subprocess.run(["git", "-C", root, "add", "out.md"], check=True)
         subprocess.run(["git", "-C", root, "-c", "user.email=a@b", "-c", "user.name=a", "commit", "-qm", "x"], check=True)
-    if mode == "clean":
+    if mode in ("clean", "rm_scratch", "rm_home", "rm_parent", "rm_tracked"):
         open(os.path.join(root, "out.md"), "w").write("result\\n")
     if mode == "fail":
         sys.exit(3)
@@ -130,6 +140,38 @@ class WorkerTest(unittest.TestCase):
         verdict = self.supervise(self.launch("forbidden"))
         self.assertEqual(verdict["verdict"], "VIOLATED")
         self.assertIn("curl", json.dumps(verdict["findings"]))
+
+    def test_rm_inside_worktree_is_a_note_not_a_violation(self):
+        verdict = self.supervise(self.launch("rm_scratch"))
+        self.assertEqual(verdict["verdict"], "CLEAN", verdict)
+        self.assertEqual([f["kind"] for f in verdict["findings"]], ["rm-recursive"])
+        self.assertEqual(verdict["findings"][0]["severity"], "NOTE")
+
+    def test_rm_of_home_or_parent_is_a_violation(self):
+        for mode in ("rm_home", "rm_parent"):
+            verdict = self.supervise(self.launch(mode))
+            self.assertEqual(verdict["verdict"], "VIOLATED", (mode, verdict))
+            self.assertIn("rm-outside-worktree", json.dumps(verdict["findings"]))
+
+    def test_rm_of_tracked_file_is_caught_by_the_diff(self):
+        verdict = self.supervise(self.launch("rm_tracked"))
+        self.assertEqual(verdict["verdict"], "VIOLATED")
+        self.assertIn("unexpected-change", json.dumps(verdict["findings"]))
+
+    def test_old_run_with_recorded_rm_regex_is_rejudged(self):
+        launched = self.launch("rm_scratch")
+        run_json = Path(launched["run_dir"]) / "run.json"
+        run = json.loads(run_json.read_text())
+        run["forbidden"].append(worker.LEGACY_RM)
+        run_json.write_text(json.dumps(run))
+        verdict = self.supervise(launched)
+        self.assertEqual(verdict["verdict"], "CLEAN", verdict)
+
+    def test_rerun_keeps_the_previous_verdict(self):
+        launched = self.launch("clean")
+        self.supervise(launched)
+        self.supervise(launched)
+        self.assertTrue((Path(launched["run_dir"]) / "verdict.prev.json").exists())
 
     def test_read_only_git_is_allowed(self):
         verdict = self.supervise(self.launch("clean"))
