@@ -1,0 +1,26 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/m03-same-file-append"
+description = "Two tickets append new functions to the same file"
+
+[metadata]
+track = "P"
+level = "M"
+tags = ["multi"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[multi]
+expected_conflicts = 1
+expected_landing = "the second ticket to land conflicts at end of file; after redo the result passes"
+
+[verifier]
+command = "python3 -m unittest discover -s tests"
+timeout_sec = 120
+
+[agent]
+timeout_sec = 900

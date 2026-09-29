@@ -191,7 +191,7 @@ def build_tree_layer(layer: dict, root: Path) -> str:
             shutil.rmtree(staging, ignore_errors=True)
 
 
-def normalize(request: dict) -> list[dict]:
+def normalize(request: dict, base_dir: Path | None = None) -> list[dict]:
     layers = []
     names = set()
     for index, raw in enumerate(request.get("layers", [])):
@@ -211,6 +211,9 @@ def normalize(request: dict) -> list[dict]:
         names.add(layer["name"])
         if kind == "tree":
             layer["at"] = f"/cap/tree/{layer['name']}"
+            if "source" in layer:
+                source = Path(expand(layer["source"]))
+                layer["source"] = str(source if source.is_absolute() or base_dir is None else (base_dir / source).resolve())
         if kind == "host-ro":
             layer["paths"] = [expand(p) for p in layer["paths"]]
             for p in layer["paths"]:
@@ -280,7 +283,7 @@ def layer_env(layers: list[dict]) -> tuple[list[str], dict]:
 def build(request_path: str) -> dict:
     root = store_root()
     request = json.loads(Path(request_path).read_text())
-    layers = normalize(request)
+    layers = normalize(request, Path(request_path).resolve().parent)
     check_shadowing(layers)
     policy = {"net": "none", "gpu": False, "proxy": False, **request.get("policy", {})}
     if policy["net"] not in ("none", "host"):

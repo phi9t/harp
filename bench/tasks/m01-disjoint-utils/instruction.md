@@ -1,0 +1,1 @@
+The small library has two independent bugs: `title_case` in strings_util.py and `clamp` in numbers_util.py. Fix both so the tests pass. Tickets: t1 fixes strings_util.py, t2 fixes numbers_util.py; they are independent.

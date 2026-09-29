@@ -1,0 +1,1 @@
+pricing.py needs two new functions. Ticket t1 appends `discount(amount, percent)` and ticket t2 appends `with_tax(amount, rate)`, both at the end of pricing.py. They touch the same place in the same file, so the second one to land conflicts.

@@ -17,6 +17,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import fleet  # noqa: E402
 import tasklib  # noqa: E402
 
 
@@ -68,6 +69,28 @@ def check_task(task: tasklib.Task, record: dict) -> dict:
 
         empty = fresh("empty")
         checks["empty-patch-fails"] = {"ok": not tasklib.verify(task, empty, record)["passed"]}
+    if "multi" in task.tags:
+        checks.update(check_multi(task, record))
+    return checks
+
+
+def check_multi(task: tasklib.Task, record: dict) -> dict:
+    """Every ticket is necessary, and every landing order ends in a pass with the declared conflict count."""
+    expected = task.cfg.get("multi", {}).get("expected_conflicts")
+    ids = [t.id for t in fleet.load_tickets(task)]
+    checks = {}
+    necessary = {}
+    for skip in ids:
+        run = fleet.run_fleet(task, fleet.reference_agent, record, include=[i for i in ids if i != skip])
+        necessary[skip] = not run["passed"]
+    checks["tickets-necessary"] = {"ok": all(necessary.values()) and len(ids) > 1, "detail": necessary}
+    bad = []
+    for order in fleet.all_orders(task):
+        run = fleet.run_fleet(task, fleet.reference_agent, record, order=order)
+        if not run["passed"] or run["contamination"] or (expected is not None and run["conflicts"] != expected):
+            bad.append({"order": order, "passed": run["passed"], "conflicts": run["conflicts"],
+                        "contamination": run["contamination"]})
+    checks["orders-land"] = {"ok": not bad, "orders": len(fleet.all_orders(task)), "bad": bad}
     return checks
 
 

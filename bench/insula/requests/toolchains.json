@@ -6,7 +6,7 @@
     {"kind": "host-ro", "name": "rust", "paths": ["~/.cargo", "~/.rustup"], "probe": ["~/.cargo/bin/cargo --version", "~/.cargo/bin/rustc --version"],
      "path": ["~/.cargo/bin"], "env": {"CARGO_HOME": "~/.cargo", "RUSTUP_HOME": "~/.rustup"}},
     {"kind": "host-ro", "name": "blade", "paths": ["/opt/tiger/typhoon-blade", "/opt/tiger/ss_bin"], "probe": ["/opt/tiger/ss_bin/blade --version 2>/dev/null; stat -c %s /opt/tiger/typhoon-blade/executor"]},
-    {"kind": "tree", "name": "blade-tools", "source": "bench/insula/layers/blade-tools", "path": ["bin"]},
+    {"kind": "tree", "name": "blade-tools", "source": "../layers/blade-tools", "path": ["bin"]},
     {"kind": "host-ro", "name": "cuda", "paths": ["/usr/local/cuda"], "probe": ["/usr/local/cuda/bin/nvcc --version | tail -1"], "path": ["/usr/local/cuda/bin"]}
   ],
   "policy": {"net": "none", "gpu": false}
