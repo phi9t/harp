@@ -67,6 +67,18 @@ def check_task(task: tasklib.Task, record: dict) -> dict:
         r = tasklib.verify(task, stubbed, record)
         checks["cheat-stub-tests"] = {"ok": not r["passed"]}
 
+        extra = [r for r in task.protected if r != "tests"]
+        if extra:
+            tampered = fresh("tampered")
+            tasklib.apply_solution(task, tampered, record)
+            for rel in extra:
+                target = tampered / rel
+                for path in (target.rglob("*") if target.is_dir() else [target]):
+                    if path.is_file():
+                        path.write_text("// tampered\n")
+            r = tasklib.verify(task, tampered, record)
+            checks["tamper-protected-restored"] = {"ok": r["passed"], "paths": extra, "tail": "" if r["passed"] else r["tail"]}
+
         empty = fresh("empty")
         checks["empty-patch-fails"] = {"ok": not tasklib.verify(task, empty, record)["passed"]}
     if "multi" in task.tags:

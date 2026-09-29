@@ -1,0 +1,1 @@
+The CUDA library uses a real `cu_library` kernel and the binary should run on the B200 capsule. Fix the Blade configuration so `blade-offline build //:cuda_app` succeeds and the binary prints a `BLADE_CUDA_RESULT` line with `answer=42` and `sm=100`. Do not replace the kernel with a host-only shortcut.

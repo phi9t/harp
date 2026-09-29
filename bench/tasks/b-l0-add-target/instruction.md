@@ -1,0 +1,1 @@
+The sources under `app/` are complete, but the Blade package does not define the targets. Add a `cc_library` for the greeting implementation and a `cc_binary` named `main` so `blade-offline build //app:main` succeeds. The built binary must print `BLADE_L0_ADD_TARGET ok`.

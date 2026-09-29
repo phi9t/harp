@@ -64,6 +64,8 @@ def restore_protected(task: Task, ws: Path) -> None:
         elif target.is_dir():
             shutil.rmtree(target)
         source = task.path / rel
+        if not source.exists():
+            source = task.path / "environment" / rel  # protected source files come from the starting workspace
         if source.is_dir():
             shutil.copytree(source, target, symlinks=False)
             for path in target.rglob("*"):

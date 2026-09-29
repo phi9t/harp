@@ -79,6 +79,23 @@ class ValidateTest(unittest.TestCase):
         self.assertEqual((ws / "tests/test.sh").read_text(), "grep -q fixed value.txt\n")
         self.assertFalse((ws / "tests/extra").exists())
 
+    def test_protected_source_files_are_restored_from_the_environment(self):
+        task = self.make(protected=["tests", "value.txt"])
+        # value.txt is part of the fix, so protecting it makes the task unsolvable: the check must flag that
+        result = self.checks(task)
+        self.assertFalse(result["solution-passes"]["ok"])
+        ws = self.root / "ws2"
+        tasklib.materialize(task, ws)
+        (ws / "value.txt").write_text("hacked\n")
+        tasklib.restore_protected(task, ws)
+        self.assertEqual((ws / "value.txt").read_text(), "broken\n")
+
+    def test_tamper_check_passes_when_protected_sources_are_untouched_by_the_fix(self):
+        task = self.make(test="grep -q fixed value.txt && grep -q keep helper.txt", protected=["tests", "helper.txt"])
+        (task.path / "environment/helper.txt").write_text("keep\n")
+        result = self.checks(task)
+        self.assertTrue(result["tamper-protected-restored"]["ok"], result)
+
     def test_protected_path_cannot_escape(self):
         task = self.make(protected=["../etc"])
         with self.assertRaises(ValueError):

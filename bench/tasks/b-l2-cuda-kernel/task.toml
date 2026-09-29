@@ -1,0 +1,25 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l2-cuda-kernel"
+description = "Fix a Blade CUDA binary dependency so a kernel runs on B200"
+
+[metadata]
+track = "B"
+level = "M"
+tags = ["single", "blade-L2"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = true
+
+[verifier]
+command = "bash tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "kernel.cu", "kernel.h", "main.cc"]
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900
