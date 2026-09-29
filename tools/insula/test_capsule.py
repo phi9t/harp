@@ -228,6 +228,16 @@ class CapsuleTest(unittest.TestCase):
         code, out = self.sh(record, "echo $A$B")
         self.assertEqual(out.strip(), "12")
 
+    def test_real_toolchains_request_does_not_expose_the_cargo_home_or_other_agents_config(self):
+        request = Path(capsule.__file__).resolve().parents[2] / "bench/insula/requests/agent.json"
+        if not request.exists():
+            self.skipTest("no agent request")
+        record = capsule.build(str(request))
+        code, out = self.sh(record, "ls -A ~/.cargo 2>&1; ls -A /home/bench/.cargo 2>&1; ls -A " +
+                            str(Path.home() / ".cargo") + " 2>&1")
+        for hidden in (".codex", ".trae", ".agents", ".git", "registry", "credentials.toml"):
+            self.assertNotIn(hidden, out.split(), out)
+
     def test_cli_round_trip(self):
         out = subprocess.run([sys.executable, str(Path(capsule.__file__)), "build", self.request()],
                              capture_output=True, text=True, env={**os.environ})

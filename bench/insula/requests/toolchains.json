@@ -22,7 +22,7 @@
       "kind": "host-ro",
       "name": "rust",
       "paths": [
-        "~/.cargo",
+        "~/.cargo/bin",
         "~/.rustup"
       ],
       "probe": [
@@ -33,7 +33,7 @@
         "~/.cargo/bin"
       ],
       "env": {
-        "CARGO_HOME": "~/.cargo",
+        "CARGO_HOME": "/home/bench/.cargo",
         "RUSTUP_HOME": "~/.rustup"
       }
     },
