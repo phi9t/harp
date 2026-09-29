@@ -1,6 +1,31 @@
 # State: agentic-engineering
 
 <!-- effort:machine:start -->
+```json
+{
+  "base_branch": "main",
+  "base_commit": "03368f42253dd344c6230d8381fc855f4b7af698",
+  "dehydrated": "2026-09-29T16:39:31Z",
+  "effort": "agentic-engineering",
+  "runs": [],
+  "worktrees": [
+    {
+      "branch": "claude/durable-efforts",
+      "dirty": [],
+      "head": "83ff6ae434004e1eeff86e506c6708039254cd0c",
+      "path": "/data02/home/philip.yang/workspace/corenius-efforts",
+      "pushed": false
+    },
+    {
+      "branch": "claude/worker-mechanism",
+      "dirty": [],
+      "head": "03368f42253dd344c6230d8381fc855f4b7af698",
+      "path": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+      "pushed": false
+    }
+  ]
+}
+```
 <!-- effort:machine:end -->
 
 ## Where we are
