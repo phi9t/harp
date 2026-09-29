@@ -1,6 +1,65 @@
 # State: multi-agent-bench
 
 <!-- effort:machine:start -->
+```json
+{
+  "base_branch": "main",
+  "base_commit": "949df30510ff0e118823a41c43ce2395c7b882b0",
+  "dehydrated": "2026-09-29T23:42:10Z",
+  "effort": "multi-agent-bench",
+  "runs": [
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-c-20260929T232224Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-pr-20260929T232224Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-t-20260929T232224Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/blade-author-1-20260929T232855Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/research-blade-20260929T222010Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/research-blade-cuda-20260929T230245Z",
+      "verdict": "DEGRADED"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/research-insula-20260929T222011Z",
+      "verdict": "DEGRADED"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/research-tasks-20260929T222011Z",
+      "verdict": "DEGRADED"
+    }
+  ],
+  "worktrees": [
+    {
+      "branch": "effort/multi-agent-bench",
+      "dirty": [],
+      "head": "9003e2e35e714eb72cc281cd315c270280658693",
+      "path": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+      "pushed": false
+    }
+  ]
+}
+```
 <!-- effort:machine:end -->
 
 ## Where we are
