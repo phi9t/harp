@@ -23,31 +23,43 @@ repo adopts the corenius version and the snapshot is removed.
 | `imported/vaso/relay.py`, `test_agent_relay.py` | `vaso/scripts/agents/`, `vaso/tests/` | vaso `03f93d9` | landing-branch relay, manifest, watch |
 | `imported/robust-training-observatory/terminology.md` | observatory `AGENTS.md` | rto `584d9b8` | shared vocabulary (Insula, capsule, hermetic, ...) |
 
-## Deliberately not imported
+## Absorbed from Ultron (decision 2026-09-29)
 
-- **Ultron-managed policy** (`CONSTITUTION.md`, `docs/agents/agentic-engineering.md`,
-  `skill-orchestration.md`). Ultron declares itself the canonical source and
-  distributes these to sibling repos through
-  `ultron/docs/agents/agentic-workflow-repos.json`. Copying them here would
-  create a second, drifting source. Whether corenius replaces Ultron as that
-  source is an open decision, listed below.
-- **Product code** (`torch_accel`, Bazel/Spack graphs). Only the collaboration
-  and engineering-process artifacts belong here.
-- **Evidence and receipts** (`milano` cache). These stay with the repo that
-  produced them.
+The owner decided that Ultron does not own agentic-engineering policy;
+corenius does. The canonical files now live here, at the paths sibling repos
+expect: `CONSTITUTION.md`, `docs/agents/` (`agentic-engineering.md`,
+`skill-orchestration.md`, the manifest `agentic-workflow-repos.json`, and the
+tracker templates), plus `tools/sync_agentic_workflow.py` and its test
+(21 pass). The managed docs now name corenius as the canonical source, and the
+manifest registers corenius as a managed repo. Cross-repository efforts start
+in corenius `.scratch/<effort>/`.
+
+Not done yet, deliberately, because each touches other repos:
+
+1. **Ultron still has its copies.** They are now stale relative to corenius.
+   Ultron should become a consumer, and its copies removed once the sync has run.
+2. **`sync --apply` has not been run.** Run `--check` first from the landed
+   corenius checkout (the tool locates its source at `<workspace>/corenius`).
+   Applying rewrites the managed block and policy files in about ten repos.
+3. **Names still say Ultron.** The `ultron-agentic-workflow:start` marker in
+   every repo's `AGENTS.md`, and the `ultron/mainline` branch pointer, are
+   kept for compatibility. Renaming needs a migration in the tool.
+4. **`CONSTITUTION.md`** is upstream (`kenn-io/constitution`), copied as is.
+
+## Not imported
+
+- **Product code** (`torch_accel`, Bazel/Spack graphs) and Ultron's knowledge
+  and research content. Only engineering-process artifacts belong here.
+- **Evidence and receipts** (`milano` cache) stay with the repo that produced them.
 
 ## Open decisions
 
-1. **Ultron versus corenius as the canonical policy source.** Ultron currently
-   owns the managed files and the distribution manifest. Options: keep Ultron
-   for policy and make corenius the home for *mechanisms* (recommended for
-   now); or move the manifest and policy to corenius and have Ultron consume it.
-2. **How the mechanism reaches the repos.** Vendor a copy per repo, depend on
+1. **How the mechanism reaches the repos.** Vendor a copy per repo, depend on
    a corenius binary (`coord`), or a thin per-repo adapter. The design-space
    document recommends the runtime approach once the interception question
    (`spikes/collab/design-space.md`) is answered.
-3. **Merge authority.** Vaso and the Ultron constitution keep merge with the
-   human; milano lets an agent integrate to its mainline after gates. A shared
+2. **Merge authority.** Vaso and the constitution keep merge with the human;
+   milano lets an agent integrate to its mainline after gates. A shared
    mechanism needs one configurable rule.
 
 ## Where the work is
