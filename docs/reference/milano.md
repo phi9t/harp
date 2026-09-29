@@ -1,5 +1,14 @@
 # Milano: reference for corenius
 
+> **Verification (2026-09-29):** independently checked by a separate agent against `ed218ae`
+> (`milano-verification.md`, 59 claims: 53 confirmed, 3 wrong, 1 stale, 2 not verifiable from source).
+> Corrected here: the extracted candidate tree is a writable tmpfs, not read-only, so trust rests on the
+> candidate digest, not immutability of `/workspace/milano`; the inside-rootfs `run-candidate` checks
+> absolute paths, `..` and special files but not symlink/hardlink targets (host-side `candidate.py` does);
+> the release test venv also installs unpinned `pytest`, `setuptools`, `ninja`. Stale: the rootfs still
+> ships a Bazel binary on `PATH`. Unverified claims about receipts and GPU state need a run.
+
+
 | | |
 |---|---|
 | Repo | `/data02/home/philip.yang/workspace/milano` (origin `git@code.byted.org:philip.yang/milano.git`) |
@@ -157,7 +166,7 @@ repo; the definition below is assembled from `milano/rootfs.py` and `AGENTS.md:1
  ┌─ INSULA ─────────────────────────────────────────────────────────────┐
  │ /                     rootfs (ro): NVIDIA image + g++13/clang18/uv/py  │
  │ /run/milano/candidate.tar (ro) ─► run-candidate: re-hash, reject unsafe │
- │        members, extract to /workspace/milano (candidate, ro by intent)  │
+ │        members, extract to /workspace/milano (writable tmpfs; NOT enforced ro)  │
  │ /cache/milano (rw)    spack, venvs, builds, wheels, artifacts, evidence │
  │ /run/milano/driver    10 allowlisted host libcuda/NVML libs             │
  │ /dev/nvidia*, /usr/bin/nvidia-smi, /etc/{resolv.conf,hosts}             │
@@ -404,7 +413,7 @@ check, isolation probe); 04 `accel-runtime` (packaged-runtime probe, isolation p
 world size 2 (collectives + DDP); 06 `b200-release` world size 8 (health, probe, collectives, DDP, five topologies).
 Source: `verify_release.sh:118-167`.
 
-The tested runtime is a fresh venv built only from the bundle wheels plus pinned pure-Python constraints, with
+The tested runtime is a fresh venv built from the bundle wheels plus pinned pure-Python constraints, plus unpinned test tooling (`pytest setuptools ninja`, `verify_release.sh:75-78`), with
 `PYTHONPATH` unset and `-P` so nothing imports from the build venv (`verify_release.sh:64-84, 137-139`).
 
 ### 5.4 What a receipt proves, and what it does not

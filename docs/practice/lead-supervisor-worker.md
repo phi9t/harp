@@ -82,8 +82,29 @@ worker, commits and lands, and only where the repo profile permits.
 
 ## Trial log
 
-- Trial 1: worker verifies `docs/reference/milano.md` against milano at
-  `ed218ae` (read-only), writing `docs/reference/milano-verification.md`.
-  Started 2026-09-29. At about 8 minutes the worker was alive, its event stream
-  had 192 events (about 513 KB) and stderr was empty, and it had only read
-  files; the supervisor had not yet reported. Outcome: to be recorded.
+- Trial 1: worker verified `docs/reference/milano.md` against milano at `ed218ae`
+  (read-only), writing `docs/reference/milano-verification.md`. Ran 2026-09-29.
+  - **Worker.** `traecli exec -m GPT-5.5`, xhigh reasoning, `workspace-write`
+    sandbox. About 16 minutes wall clock, 293 events, empty stderr, exit 0, the
+    one allowed file (274 lines) plus a last-message file. No boundary
+    violations: the worktree held only that file and milano stayed at `ed218ae`
+    (lead's own checks). Token and dollar cost were not measured.
+  - **Result.** 59 claims: 53 confirmed, 3 wrong, 1 stale, 2 not verifiable from
+    source. The lead checked all 3 wrong verdicts against the source and 3 of the
+    confirmed ones; all held. The other 50 confirmed claims are unchecked. The
+    wrong claims were real errors in the reference and in milano's own
+    `AGENTS.md` (the extracted candidate is not read-only); the reference is now
+    corrected, milano's `AGENTS.md` is not.
+  - **Supervisor.** The Haiku subagent returned eight times, seven of them
+    interim, because it delegated to its own background loops and never blocked.
+    Its boundary observations matched the lead's, and its final verdict (CLEAN)
+    was right. Its timings were not: it reported completion at 07:25:50 while the
+    process was still running, and its last reports put the exit at about 07:20
+    after 9.5 minutes, while the process exited about 07:26 after roughly 16
+    minutes. It inferred completion from the output file instead of the process.
+  - **Lessons.** A worker on a bounded read-only task with a fixed output path
+    works well. A supervisor needs a blocking contract (wait on the PID, send one
+    final report) and should read process state, not artifacts. The lead should
+    keep its own PID watch and boundary checks; the supervisor's timings cannot
+    be trusted without them. A deterministic supervisor (a script) would do the
+    same checks without the drift and the token cost.
