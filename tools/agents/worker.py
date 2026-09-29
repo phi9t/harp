@@ -297,7 +297,13 @@ class Checker:
             current_head = git(protected["path"], "rev-parse", "HEAD", check=False).strip()
             current_dirty = git(protected["path"], "status", "--porcelain", "--untracked-files=no", check=False)
             if current_head != protected["head"]:
-                add(self._finding("VIOLATION", "protected-head-moved", f"{protected['path']} {current_head[:12]}"))
+                # The lead lands into these repos by fast-forward while workers run; only a rewrite is a violation.
+                advanced = subprocess.run(["git", "-C", protected["path"], "merge-base", "--is-ancestor",
+                                           protected["head"], current_head], capture_output=True).returncode == 0
+                if advanced:
+                    add(self._finding("NOTE", "protected-head-advanced", f"{protected['path']} {current_head[:12]}"))
+                else:
+                    add(self._finding("VIOLATION", "protected-head-moved", f"{protected['path']} {current_head[:12]}"))
             if current_dirty != protected["dirty"]:
                 add(self._finding("VIOLATION", "protected-dirty-changed", protected["path"]))
 

@@ -192,6 +192,35 @@ class WorkerTest(unittest.TestCase):
         self.assertEqual(verdict["verdict"], "VIOLATED")
         self.assertIn("protected-dirty-changed", json.dumps(verdict["findings"]))
 
+    def make_other(self):
+        other = Path(self.tmp.name) / "other"
+        other.mkdir()
+        run(other, "init", "-q", "-b", "main")
+        run(other, "config", "user.email", "a@b")
+        run(other, "config", "user.name", "a")
+        (other / "f").write_text("1\n")
+        run(other, "add", "f")
+        run(other, "commit", "-qm", "1")
+        return other
+
+    def test_protected_head_fast_forward_is_a_note(self):
+        other = self.make_other()
+        launched = self.launch("clean", "--protect", str(other))
+        (other / "g").write_text("2\n")
+        run(other, "add", "g")
+        run(other, "commit", "-qm", "2")  # the lead landing while the worker runs
+        verdict = self.supervise(launched)
+        self.assertEqual(verdict["verdict"], "CLEAN", verdict)
+        self.assertIn("protected-head-advanced", json.dumps(verdict["findings"]))
+
+    def test_protected_head_rewrite_is_a_violation(self):
+        other = self.make_other()
+        launched = self.launch("clean", "--protect", str(other))
+        run(other, "commit", "-q", "--amend", "-m", "rewritten")
+        verdict = self.supervise(launched)
+        self.assertEqual(verdict["verdict"], "VIOLATED")
+        self.assertIn("protected-head-moved", json.dumps(verdict["findings"]))
+
     def test_nonzero_exit_is_degraded(self):
         verdict = self.supervise(self.launch("fail"))
         self.assertEqual(verdict["verdict"], "DEGRADED")
