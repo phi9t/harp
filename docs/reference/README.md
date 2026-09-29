@@ -11,7 +11,17 @@ inferred. These are snapshots. Re-read the repo before relying on a detail.
 | [torchetta](torchetta.md) | Builds the ByteDance libtorch forks and native CUDA consumers in an Insula rootfs, records release evidence | `9322aa1` |
 | [ultron](ultron.md) | Knowledge, research-journal and claim-tracking repo, plus a fixture-only recovery-policy model | `5061e89` |
 | [ndtl](ndtl.md) | Experimental append-only per-rank JSONL observation of training runs, plus the `synd` sidecar | `8bc8ba7` |
+| [robust-training-observatory](robust-training-observatory.md) | Source-backed walkthrough of how Arnold observes and acts on training failures; `lab/` builds the Insula/capsule design | master `584d9b8`, film `a7a2f4c` |
 | [arnold](arnold.md) | Product monorepo for the GPU training platform: Eurus collectors, Housekeeper failover, ETTR and traces | `756a165` |
+
+## Agentic-engineering inventory
+
+What exists across the whole workspace, in [agentic-inventory/](agentic-inventory/):
+[policy and efforts](agentic-inventory/policy-and-efforts.md) (policy copies, drift, cross-repo efforts),
+[skills and commands](agentic-inventory/skills-and-commands.md),
+[agent products](agentic-inventory/agent-products.md) (roborev, harbor, bytedcli, jj, ...),
+[guidance and workflows](agentic-inventory/guidance-and-workflows.md) (the rules agents are told, with 20 conflicts).
+See [agentic-inventory/README.md](agentic-inventory/README.md) for the prioritized absorption list.
 
 ## Cross-cutting findings
 
@@ -21,6 +31,10 @@ Stated by the reference authors from their reading; verify before acting.
   and nothing references ndtl or ultron's controller. The couplings are
   vocabulary, data schemas and human process. Any coordination mechanism
   corenius builds must supply the missing contract, not assume one.
+- **The observatory's own checks are thinner than they read.** All 161 anchors
+  cite Arnold, so the producer and experimental namespaces pass vacuously, and
+  the capsule digest covers three harness files, not the launcher or build
+  scripts.
 - **Evidence claims are weaker than they look, in more than one repo.**
   Milano receipts copied some fields from the target file and recorded a wrong
   NCCL version (finding N2, since fixed); torchetta's validator hashes the
