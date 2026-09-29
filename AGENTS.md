@@ -18,6 +18,8 @@ boundary) and the owner of agentic-engineering practice for the workspace.
 - `docs/efforts/`: durable efforts (charter, decisions, state). Session start:
   `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
   Working detail goes in gitignored `.scratch/<effort>/`.
+- `bench/` and `tools/insula/`: the multi-agent benchmark (validated tasks, harness, results) and the layered
+  capsule builder every step runs in. Start at `bench/README.md`; validate with `python3 bench/harness/validate.py`.
 - `docs/spikes/collab/` and `experiments/collab/`: the multi-agent collaboration
   design space and the simulator that measures it.
 
