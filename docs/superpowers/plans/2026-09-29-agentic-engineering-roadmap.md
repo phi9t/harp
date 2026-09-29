@@ -9,6 +9,16 @@ Status as of 2026-09-29. Inputs: `docs/practice/README.md`,
 `docs/spikes/collab/design-space.md`, `experiments/collab/RESULTS.md`,
 `docs/reference/`, `docs/reference/agentic-inventory/`.
 
+## Re-cut (2026-09-29, owner direction)
+
+Two milestones now lead the plan. **Milestone A** is a concrete set of
+agentic-engineering features: `docs/superpowers/specs/2026-09-29-agentic-engineering-features.md`
+(F1-F23, each with an interface and acceptance checks). **Milestone B**
+implements and verifies them in this repository, in the order given there,
+behind one gate command. Phases 3 to 6 below are the longer horizon these
+features serve: F5-F6 and F11-F15 carry phase 3 and 4's `coord` core,
+F7-F10 carry the tracker and evidence work of phases 4 and 6.
+
 ## Baseline (done)
 
 | Item | State | Evidence |
