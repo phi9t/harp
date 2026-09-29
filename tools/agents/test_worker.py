@@ -87,6 +87,7 @@ class WorkerTest(unittest.TestCase):
         os.environ.pop("CORENIUS_TRAECLI", None)
         os.environ.pop("CORENIUS_RUNS", None)
         os.environ.pop("FAKE_MODE", None)
+        os.environ.pop("CORENIUS_CAPSULES", None)
         self.tmp.cleanup()
 
     def launch(self, mode, *extra):
@@ -220,6 +221,39 @@ class WorkerTest(unittest.TestCase):
         verdict = self.supervise(launched)
         self.assertEqual(verdict["verdict"], "VIOLATED")
         self.assertIn("protected-head-moved", json.dumps(verdict["findings"]))
+
+    def capsule_request(self, mode="clean"):
+        # The capsule clears the environment, so the fake's mode is baked into the script.
+        tool = Path(self.tmp.name) / "fake-tool"
+        (tool / "bin").mkdir(parents=True, exist_ok=True)
+        (tool / "bin" / "traecli").write_text(self.fake.read_text().replace(
+            'os.environ.get("FAKE_MODE", "clean")', repr(mode)))
+        (tool / "bin" / "traecli").chmod(0o755)
+        req = Path(self.tmp.name) / "capsule.json"
+        req.write_text(json.dumps({"name": "w", "layers": [{"kind": "base"},
+                                   {"kind": "tree", "name": "fake", "source": str(tool), "path": ["bin"]}],
+                                   "policy": {"net": "host"}}))
+        os.environ["CORENIUS_CAPSULES"] = str(Path(self.tmp.name) / "capsules")
+        os.environ["CORENIUS_TRAECLI"] = "traecli"
+        return str(req)
+
+    def test_worker_runs_inside_a_capsule(self):
+        launched = self.launch("clean", "--capsule", self.capsule_request())
+        verdict = self.supervise(launched)
+        self.assertEqual(verdict["verdict"], "CLEAN", verdict)
+        run_dir = Path(launched["run_dir"])
+        self.assertEqual((Path(launched["worktree"]) / "out.md").read_text(), "result\n")
+        prompt = (run_dir / "prompt.md").read_text()
+        self.assertIn("/workspace", prompt)
+        self.assertNotIn(launched["worktree"], prompt)
+        record = json.loads((run_dir / "capsule-run.json").read_text())
+        self.assertEqual((record["net"], record["exit_code"]), ("host", 0))
+        self.assertEqual(json.loads((run_dir / "run.json").read_text())["sandbox"], "danger-full-access (capsule)")
+
+    def test_capsule_worker_boundary_violation_is_still_detected(self):
+        verdict = self.supervise(self.launch("extra", "--capsule", self.capsule_request("extra")))
+        self.assertEqual(verdict["verdict"], "VIOLATED")
+        self.assertIn("stray.txt", json.dumps(verdict["findings"]))
 
     def test_nonzero_exit_is_degraded(self):
         verdict = self.supervise(self.launch("fail"))

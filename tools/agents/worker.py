@@ -131,8 +131,7 @@ Hard rules for this run:
 - You may create or edit only these paths, relative to the worktree: {allowed}.
   Any other change is a violation.
 - Do not commit, push, merge, reset, stash or switch branches. The lead commits.
-- These repositories are read-only for you: {protected}. Read them at their
-  recorded commit with `git -C <repo> show <commit>:<path>`; make no git writes there.
+{protected_rule}
 - No network access and no package installs.
 - Use a fresh unique directory (`mktemp -d` under an allowed path) for each experiment.
   Deleting outside the worktree, or with `..` or `~`, is a violation.
@@ -173,26 +172,50 @@ def launch(args: argparse.Namespace) -> int:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     run_dir = runs_root() / "workers" / f"{name}-{stamp}"
     run_dir.mkdir(parents=True)
+    capsule_ref = getattr(args, "capsule", None)
+    if capsule_ref:
+        # Inside a capsule only the worktree is mounted (at /workspace); other repos and git metadata are not visible.
+        shown_tree, shown_branch = "/workspace", "(not visible in the capsule)"
+        protected_rule = "- Only /workspace is visible to you; other repositories and git metadata are not mounted."
+    else:
+        shown_tree, shown_branch = str(worktree), branch
+        protected_rule = (
+            f"- These repositories are read-only for you: {', '.join(p['path'] for p in protected)}. Read them at their\n"
+            "  recorded commit with `git -C <repo> show <commit>:<path>`; make no git writes there."
+        )
     prompt = HEADER.format(
-        worktree=worktree,
-        branch=branch,
+        worktree=shown_tree,
+        branch=shown_branch,
         allowed=", ".join(args.allow) or "(none: read-only run)",
-        protected=", ".join(p["path"] for p in protected),
+        protected_rule=protected_rule,
     ) + task
     (run_dir / "prompt.md").write_text(prompt)
 
     traecli = os.environ.get("CORENIUS_TRAECLI", "traecli")
-    worker_cmd = [
-        traecli, "exec",
-        "-m", args.model,
-        "-c", f"model_reasoning_effort={args.effort}",
-        "-c", "model_reasoning_summary=detailed",
-        "--json", "-s", args.sandbox,
-        "-C", str(worktree),
-        "-o", str(run_dir / "last-message.md"),
-        "--shell-tool-timeout", "120s",
-        "-",
-    ]
+    if capsule_ref:
+        # The capsule is the boundary, so traecli's own sandbox is switched off (documented for externally sandboxed runs).
+        inner = [traecli, "exec", "-m", args.model, "-c", f"model_reasoning_effort={args.effort}",
+                 "-c", "model_reasoning_summary=detailed", "--json", "-s", "danger-full-access",
+                 "-C", "/workspace", "-o", "/tmp/run/last-message.md", "--shell-tool-timeout", "120s", "-"]
+        capsule_tool = Path(__file__).resolve().parents[1] / "insula" / "capsule.py"
+        worker_cmd = [
+            sys.executable, str(capsule_tool), "run", capsule_ref, "--workspace", str(worktree), "--net", "host",
+            "--rw", f"{run_dir}:/tmp/run", "--env", "TRAE_HOME=/home/bench/.trae",
+            "--env", "TRAECLI_HOME=/home/bench/.trae/cli", "--record", str(run_dir / "capsule-run.json"),
+            "--", *inner,
+        ]
+    else:
+        worker_cmd = [
+            traecli, "exec",
+            "-m", args.model,
+            "-c", f"model_reasoning_effort={args.effort}",
+            "-c", "model_reasoning_summary=detailed",
+            "--json", "-s", args.sandbox,
+            "-C", str(worktree),
+            "-o", str(run_dir / "last-message.md"),
+            "--shell-tool-timeout", "120s",
+            "-",
+        ]
     script = (
         f"timeout {int(args.cap)} {shlex.join(worker_cmd)} "
         f"< {shlex.quote(str(run_dir / 'prompt.md'))} "
@@ -221,7 +244,8 @@ def launch(args: argparse.Namespace) -> int:
         "forbidden": list(DEFAULT_FORBIDDEN) + list(args.forbid or []),
         "model": args.model,
         "effort": args.effort,
-        "sandbox": args.sandbox,
+        "sandbox": "danger-full-access (capsule)" if capsule_ref else args.sandbox,
+        "capsule": capsule_ref,
         "cap_seconds": int(args.cap),
         "stall_seconds": int(args.stall),
         "pid": process.pid,
@@ -427,6 +451,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--name", required=True)
     p.add_argument("--allow", action="append", default=[], help="path (relative to the worktree) the worker may write; repeatable")
     p.add_argument("--protect", action="append", default=[], help="extra repo that must stay unchanged; repeatable")
+    p.add_argument("--capsule", help="capsule digest prefix or request file: run the worker inside it (net on, worktree only)")
     p.add_argument("--forbid", action="append", default=[], help="extra regex forbidden in worker commands")
     p.add_argument("--repo", default=".")
     p.add_argument("--base", default="main")

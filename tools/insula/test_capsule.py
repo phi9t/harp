@@ -196,6 +196,38 @@ class CapsuleTest(unittest.TestCase):
         code, out = self.sh(record, f"cat {link}/marker")
         self.assertEqual((code, out), (0, "m\n"))
 
+    def test_home_file_binds_are_read_only_and_never_hashed_by_content(self):
+        secret = self.root / "cfg.toml"
+        secret.write_text("token = 'not-a-real-secret'\n")
+        layers = [{"kind": "base"}, {"kind": "host-ro", "name": "cfg",
+                                     "binds": [{"src": str(secret), "dest": "/home/bench/.app/cfg.toml"}]}]
+        record = capsule.build(self.request(layers=layers))
+        code, out = self.sh(record, "cat /home/bench/.app/cfg.toml; echo x > /home/bench/.app/cfg.toml 2>&1; ls /home/bench")
+        self.assertIn("not-a-real-secret", out)
+        self.assertIn("Read-only", out)
+        self.assertNotIn("not-a-real-secret", json.dumps(record))  # digest is stat based, record holds no contents
+        secret.write_text("token = 'changed-and-longer'\n")
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.verify_host_layers(record)  # a changed credential file makes the capsule stale
+
+    def test_bind_dest_outside_home_is_refused(self):
+        layers = [{"kind": "base"}, {"kind": "host-ro", "name": "x", "binds": [{"src": "/etc/hostname", "dest": "/usr/x"}]}]
+        with self.assertRaises(capsule.CapsuleError):
+            capsule.build(self.request(layers=layers))
+
+    def test_extends_merges_layers_policy_and_env(self):
+        parent = self.root / "parent.json"
+        parent.write_text(json.dumps({"name": "p", "layers": [{"kind": "base"}], "policy": {"net": "none"}, "env": {"A": "1"}}))
+        child = self.root / "child.json"
+        child.write_text(json.dumps({"name": "c", "extends": "parent.json",
+                                     "layers": [{"kind": "host-ro", "name": "h", "paths": [str(self.hostdir)]}],
+                                     "policy": {"net": "host"}, "env": {"B": "2"}}))
+        record = capsule.build(str(child))
+        self.assertEqual([l["name"] for l in record["layers"]], ["base", "h"])
+        self.assertEqual((record["policy"]["net"], record["env"]), ("host", {"A": "1", "B": "2"}))
+        code, out = self.sh(record, "echo $A$B")
+        self.assertEqual(out.strip(), "12")
+
     def test_cli_round_trip(self):
         out = subprocess.run([sys.executable, str(Path(capsule.__file__)), "build", self.request()],
                              capture_output=True, text=True, env={**os.environ})

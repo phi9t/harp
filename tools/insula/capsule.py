@@ -130,6 +130,15 @@ def path_fingerprint(path: str) -> dict:
     return {"path": path, "real": real, "size": info.st_size, "head": sha(head)}
 
 
+def stat_fingerprint(src: str, dest: str) -> dict:
+    """Existence, type, size and mtime only: bound credential files are never read for digesting."""
+    try:
+        info = os.stat(src)
+    except OSError:
+        return {"src": src, "dest": dest, "missing": True}
+    return {"src": src, "dest": dest, "dir": stat.S_ISDIR(info.st_mode), "size": info.st_size, "mtime": info.st_mtime_ns}
+
+
 def host_digest(layer: dict) -> str:
     if layer["kind"] == "base":
         release = Path("/usr/lib/os-release")
@@ -143,6 +152,7 @@ def host_digest(layer: dict) -> str:
         return sha(canonical(parts))
     parts = {
         "paths": [path_fingerprint(p) for p in layer["paths"]],
+        "binds": [stat_fingerprint(b["src"], b["dest"]) for b in layer.get("binds", [])],
         "probe": [probe_output(c) for c in layer.get("probe", [])],
     }
     return sha(canonical(parts))
@@ -215,7 +225,13 @@ def normalize(request: dict, base_dir: Path | None = None) -> list[dict]:
                 source = Path(expand(layer["source"]))
                 layer["source"] = str(source if source.is_absolute() or base_dir is None else (base_dir / source).resolve())
         if kind == "host-ro":
-            layer["paths"] = [expand(p) for p in layer["paths"]]
+            layer["paths"] = [expand(p) for p in layer.get("paths", [])]
+            layer["binds"] = [{"src": expand(b["src"]), "dest": b["dest"]} for b in layer.get("binds", [])]
+            for b in layer["binds"]:
+                if not (b["dest"].startswith(HOME + "/") and ".." not in Path(b["dest"]).parts):
+                    raise CapsuleError(f"layer {layer['name']}: bind dest {b['dest']} must be under {HOME}/")
+                if not b["src"].startswith("/"):
+                    raise CapsuleError(f"layer {layer['name']}: bind src {b['src']} must be absolute")
             for p in layer["paths"]:
                 if not p.startswith("/"):
                     raise CapsuleError(f"layer {layer['name']}: {p} must be absolute")
@@ -253,6 +269,10 @@ def mount_points(layers: list[dict]) -> list[tuple[str, str]]:
     return points
 
 
+def home_binds(layers: list[dict]) -> list[tuple[str, str]]:
+    return [(b["src"], b["dest"]) for layer in layers if layer["kind"] == "host-ro" for b in layer.get("binds", [])]
+
+
 def check_shadowing(layers: list[dict]) -> None:
     points = mount_points(layers)
     reserved = ["/usr", "/bin", "/lib", "/lib64", "/sbin", "/etc", "/proc", "/dev", "/tmp", "/run", "/home", HOME,
@@ -283,7 +303,15 @@ def layer_env(layers: list[dict]) -> tuple[list[str], dict]:
 def build(request_path: str) -> dict:
     root = store_root()
     request = json.loads(Path(request_path).read_text())
-    layers = normalize(request, Path(request_path).resolve().parent)
+    base_dir = Path(request_path).resolve().parent
+    if "extends" in request:
+        parent = json.loads((base_dir / request["extends"]).read_text())
+        if "extends" in parent:
+            raise CapsuleError("extends may be used one level deep")
+        request = {**parent, **request, "layers": parent["layers"] + request.get("layers", []),
+                   "policy": {**parent.get("policy", {}), **request.get("policy", {})},
+                   "env": {**parent.get("env", {}), **request.get("env", {})}}
+    layers = normalize(request, base_dir)
     check_shadowing(layers)
     policy = {"net": "none", "gpu": False, "proxy": False, **request.get("policy", {})}
     if policy["net"] not in ("none", "host"):
@@ -377,6 +405,8 @@ def run_argv(record: dict, workspace: str, rw: list[tuple[str, str]], extra_env:
                     argv += ["--ro-bind", src, dest]
                     if dest != p and not p.startswith("/usr/"):
                         argv += ["--symlink", dest, p]
+    for src, dest in home_binds(record["layers"]):
+        argv += ["--ro-bind", src, dest]
     argv += ["--ro-bind" if ro_workspace else "--bind", workspace, "/workspace"]
     for flag, pairs in (("--bind", rw), ("--ro-bind", ro or [])):
         for host, dest in pairs:
