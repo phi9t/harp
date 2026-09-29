@@ -1,4 +1,4 @@
-<!-- Skill Orchestration Crosswalk v2026.09.29.2. Canonical source: corenius/docs/agents/skill-orchestration.md. Sibling copies are managed by Corenius. -->
+<!-- Skill Orchestration Crosswalk v2026.09.29.3. Canonical source: corenius/docs/agents/skill-orchestration.md. Sibling copies are managed by Corenius. -->
 # Matt–Superpowers Skill Orchestration
 
 This policy applies whenever skills from both suites cover the same work. Load

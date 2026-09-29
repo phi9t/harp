@@ -15,6 +15,9 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   and the open decisions.
 - `docs/reference/`: what each sibling repo is for and how it is designed, plus
   `agentic-inventory/` (policy, skills, products, and the rules agents follow).
+- `docs/efforts/`: durable efforts (charter, decisions, state). Session start:
+  `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
+  Working detail goes in gitignored `.scratch/<effort>/`.
 - `docs/spikes/collab/` and `experiments/collab/`: the multi-agent collaboration
   design space and the simulator that measures it.
 

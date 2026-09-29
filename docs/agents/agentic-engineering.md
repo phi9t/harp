@@ -1,4 +1,4 @@
-<!-- Agentic Engineering Workflow v2026.09.29.2. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
+<!-- Agentic Engineering Workflow v2026.09.29.3. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
 # Agentic Engineering Workflow
 
 > Scale agent execution, not agent authority.
@@ -37,9 +37,9 @@ Inspect the working tree and applicable repository guidance, then use
 in the configured tracker:
 
 - Single-repository work uses that repository's tracker.
-- Cross-repository work starts in Corenius at `.scratch/<effort>/`. Create linked
-  child tickets in every affected repository and point each child back to the
-  Corenius map.
+- Cross-repository work starts in Corenius at `docs/efforts/<effort>/` (tracked;
+  see "Efforts" below). Create linked child tickets in every affected repository
+  and point each child back to the Corenius effort.
 
 Every managed repository carries an Ultron-scoped mainline pointer,
 `ultron/mainline`, so cross-repo policy and landing work has one stable branch
@@ -125,6 +125,29 @@ Complete these gates in order:
     durable truth alongside tracker specs and tickets; session-local
     micro-plans, execution checklists, and review traces are non-authoritative
     context.
+
+## Efforts: durable record and scratch
+
+An effort's decisions and state live in the repository; its execution detail
+lives in `.scratch/<effort>/` (gitignored). One test decides which: if it can be
+regenerated and nobody would miss the reasoning, it is scratch; otherwise it is
+durable. A decision, a claim of done, or a number others rely on is never only
+in scratch.
+
+- Durable, `docs/efforts/<effort>/`: `EFFORT.md` (intent, scope, milestones),
+  `decisions/` (one file each, append-only; supersede, never edit), `tickets/`,
+  `evidence/`, and `STATE.md`, the dehydrated snapshot.
+- Scratch: worktree build output, worker run logs, drafts, probes, kata notes.
+- **Dehydrate** at every session end and handoff: `tools/agents/effort.py
+  dehydrate <effort>` refreshes the machine block of `STATE.md` (base commit,
+  worktrees with branch and head, worker verdicts) and commits it. It refuses
+  when a worktree has uncommitted changes or the human sections are empty, so
+  nothing lives only on disk.
+- **Rehydrate** at every session start: `effort.py rehydrate <effort>` verifies
+  every pointer, restores missing worktrees, prints a briefing and a drift
+  report, and exits non-zero on drift it cannot repair. Do not proceed on a
+  stale state; resolve the drift first.
+- Land effort records like any change: by fast-forward from a worktree.
 
 ## Operating boundaries
 

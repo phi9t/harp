@@ -95,7 +95,8 @@ beside it). Anything that has to live inside the agent runtime is Rust under
 - **Acceptance.** Tests on throwaway repos including the finish-from-inside case;
   `status` on the real repo lists every current worktree.
 - **State.** New. Port the design of `milano.scm` new, status and finish, with its
-  known fix for finish-from-inside.
+  known fix for finish-from-inside. The effort-scoped part, `tools/agents/effort.py`
+  (`new`, `decide`, `dehydrate`, `rehydrate`, `status`), is implemented and tested.
 
 ### F6 Landing with gates
 
@@ -124,8 +125,8 @@ beside it). Anything that has to live inside the agent runtime is Rust under
   blocked; claims carry an expiry; `lint` checks schema and blocker ids.
 - **Acceptance.** Tests for each transition and each lint error; the current
   roadmap milestones are represented as tickets and `list` shows the frontier.
-- **State.** New. `.scratch/` is gitignored here; decide whether efforts that
-  must survive a fresh clone live in `docs/efforts/` (see decisions).
+- **State.** New. Tickets live under `docs/efforts/<effort>/tickets/` (tracked),
+  not `.scratch/`, so they survive a fresh clone.
 
 ### F8 Messages and handoffs
 
@@ -317,9 +318,10 @@ recorded the result in the feature's row below.
 
 ## Decisions needed
 
-1. Where efforts that must survive a fresh clone live (`.scratch/` is
-   gitignored): keep `.scratch/` for working notes and add `docs/efforts/` for
-   durable ones, or track `.scratch/`.
+1. ~~Where durable efforts live~~ Resolved: tracked `docs/efforts/<slug>/`
+   (durable) plus gitignored `.scratch/<slug>/` (execution), with
+   `tools/agents/effort.py dehydrate|rehydrate`. See
+   `docs/efforts/agentic-engineering/decisions/`.
 2. Whether the corenius main checkout, which carries uncommitted AIME work, gets
    that work committed or moved to its own branch. F13 and the gate command
    depend on it.

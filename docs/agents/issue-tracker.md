@@ -1,6 +1,6 @@
 # Issue tracker: Local Markdown
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+Issues and specs for this repo live as markdown files. Durable efforts are tracked in `docs/efforts/<effort>/` (see `agentic-engineering.md`, "Efforts"); `.scratch/` holds working detail only. Where the conventions below say `.scratch/<feature-slug>/` or `.scratch/<effort>/`, read `docs/efforts/<slug>/` for anything that must survive a fresh clone.
 
 ## Conventions
 
