@@ -1,0 +1,5 @@
+{"service": "api", "status": "ok", "amount": 7}
+{"service": "worker", "status": "ok", "amount": 100}
+{"service": "api", "status": "error", "amount": 50}
+{"service": "api", "status": "ok", "amount": 8}
+{"service": "billing", "status": "ok", "amount": 3}
