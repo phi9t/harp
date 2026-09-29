@@ -1,4 +1,4 @@
-<!-- Agentic Engineering Workflow v2026.09.29.1. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
+<!-- Agentic Engineering Workflow v2026.09.29.2. Canonical source: corenius/docs/agents/agentic-engineering.md. Sibling copies are managed by Corenius. -->
 # Agentic Engineering Workflow
 
 > Scale agent execution, not agent authority.
@@ -19,6 +19,13 @@ owner is not model-invocable, do not skip its phase and do not claim to have
 invoked it. Apply the route and combined completion criteria in the crosswalk
 directly, using every available supporting skill, and record that fallback in
 the durable ticket.
+
+Default to clean-context subagent execution for discrete implementation, audit,
+and verification tasks. The primary context owns intent, sequencing, integration,
+and authority boundaries; each subagent receives a detailed prompt with the
+specific files, constraints, prohibited actions, expected evidence, and handoff
+format. Keep work local only when the task is trivial, inseparable from the
+current context, or when tool support cannot provide an isolated subagent.
 
 ## 1. Establish intent and choose the path
 
@@ -56,6 +63,10 @@ Keep the primary context. Define the behavior, implement red-green slices, run
 focused tests, perform the standard two-axis code review, and inspect the final
 diff. Completion requires fresh verification evidence and human-owned merge.
 
+Use a clean-context subagent for any separable code edit, review, or verification
+slice even on the short path; the primary context may perform small glue edits
+and final integration checks.
+
 ## 3. Bug path
 
 Before broad investigation, Matt's diagnosis loop must establish a fast command
@@ -87,8 +98,9 @@ Complete these gates in order:
    evidence. The tracker spec and tickets are canonical; exact file-and-code
    micro-plans remain session-local. Do not duplicate them under
    `docs/superpowers/specs` or `docs/superpowers/plans`.
-5. **Isolated execution:** Implement each ticket in its own worktree. Parallel
-   agents receive non-overlapping tickets and never share a mutable checkout.
+5. **Isolated execution:** Implement each ticket in its own worktree through a
+   clean-context subagent with a detailed prompt. Parallel agents receive
+   non-overlapping tickets and never share a mutable checkout.
 6. **Behavioral proof:** Approve the public test seam once during design or
    specification, then drive every behavior slice with visible red-green
    evidence. Only behavior-preserving cleanup follows green. Run focused tests
@@ -128,3 +140,6 @@ Complete these gates in order:
   require explicit authorization for the specific action.
 - Preserve existing work and repository-specific rules. Direct user
   instructions and more specific repository guidance take precedence.
+- Repeated audit or launch-boundary checks stop when a clean-context verifier
+  confirms the same blocker and no state has changed; report the authority or
+  state change needed instead of dispatching more equivalent audits.
