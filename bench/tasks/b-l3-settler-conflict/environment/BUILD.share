@@ -1,0 +1,2 @@
+def settle_defaults():
+    native["library_settler"](prefer_static=["lib:chooser"])

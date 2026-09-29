@@ -72,8 +72,9 @@ class Agent:
             prompt.write_text(PROMPT_HEADER + instruction)
             ro = [(str(prompt), "/tmp/task/prompt.md")]
             command = (f"traecli exec -m {model} -c model_reasoning_effort=xhigh -c model_reasoning_summary=detailed "
-                       f"--json -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /tmp/task/prompt.md")
-            return tasklib.run_in_capsule(record, ws, command, {}, "host", timeout, ro=ro)
+                       f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /tmp/task/prompt.md")
+            return tasklib.run_in_capsule(record, ws, command, {}, "host", timeout, ro=ro,
+                                          gpu=bool(task.bench.get("gpu", False)))
 
 
 def run_id(task_id: str, condition: str, agent: str, index: int) -> str:
@@ -103,6 +104,7 @@ def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int) -> dict:
     instruction = (task.path / "instruction.md").read_text()
     result = agent.run(instruction, ws, agent_record, None, task)
     agent_seconds = time.time() - started
+    (rundir / "agent-tail.txt").write_text(str(result.get("tail", "")))
     verdict = tasklib.verify(task, ws, verify_record)
     rec = base_record(task, "solo", agent, verify_record, rid)
     rec["outcome"] = {"passed": verdict["passed"], "reward": 1.0 if verdict["passed"] else 0.0,

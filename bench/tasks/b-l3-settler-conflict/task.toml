@@ -1,0 +1,23 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l3-settler-conflict"
+description = "Repair a conflicting Blade library_settler configuration"
+
+[metadata]
+track = "B"
+level = "M"
+tags = ["single", "blade-L3"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "sh tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "lib/chooser.cc", "lib/chooser.h", "lib/dynamic_only.cc", "main.cc"]
+
+[agent]
+timeout_sec = 900

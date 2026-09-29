@@ -1,0 +1,23 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/b-l3-env-matrix"
+description = "Repair an environment-driven BUILD.share dependency matrix"
+
+[metadata]
+track = "B"
+level = "M"
+tags = ["single", "blade-L3"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "sh tests/verify.sh"
+timeout_sec = 300
+protected = ["tests", "main.cc", "matrix_api.h", "variants/compact/variant.cc", "variants/wide/variant.cc"]
+
+[agent]
+timeout_sec = 900

@@ -1,0 +1,12 @@
+cc_binary(
+    name="dashboard",
+    srcs=["main.cc"],
+    deps=[
+        "//feature/p0:part0",
+        "//feature/p1:part1",
+        "//feature/p2:part2",
+        "//feature/p3:part3",
+        "//feature/p4:part4",
+        "//feature/p5:part5",
+    ],
+)

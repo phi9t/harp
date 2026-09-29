@@ -1,0 +1,13 @@
+def wrapped_cc_library(name, srcs, deps=None, needs_config=False, export_incs=None):
+    deps = [] if deps is None else list(deps)
+    export_incs = [] if export_incs is None else list(export_incs)
+
+    if False and needs_config:
+        deps = deps + ["//config:config"]
+
+    native["cc_library"](
+        name=name,
+        srcs=srcs,
+        deps=deps,
+        export_incs=export_incs,
+    )
