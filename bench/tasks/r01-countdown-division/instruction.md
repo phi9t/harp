@@ -1,0 +1,1 @@
+`apply_div(lhs, rhs)` in `src/lib.rs` is used by a Countdown-style solver. It must return `Some(lhs / rhs)` only when both operands are positive and the division is exact, and `None` otherwise (including division by zero and non-exact division). Fix it. The crate has no dependencies and is built with `cargo test --offline`.

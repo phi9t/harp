@@ -1,0 +1,1 @@
+`mean_window(xs, start, end)` must return the mean of `xs[start..=end]`, both ends inclusive, so `mean_window({2,4,6,8}, 1, 3)` is 6 and `mean_window(xs, 0, 0)` is 2. It is off by one today. Fix `src/window.cpp`. The project builds with CMake and Ninja.

@@ -1,0 +1,24 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/r01-countdown-division"
+description = "Exact positive division for a puzzle solver"
+
+[metadata]
+track = "R"
+level = "S"
+tags = ["single"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[verifier]
+command = "cargo test --offline"
+timeout_sec = 300
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

@@ -337,7 +337,8 @@ def gpu_devices() -> list[str]:
 
 
 def run_argv(record: dict, workspace: str, rw: list[tuple[str, str]], extra_env: dict, ro_workspace: bool,
-             net: str | None = None, gpu: bool | None = None, cwd: str = "/workspace") -> list[str]:
+             net: str | None = None, gpu: bool | None = None, cwd: str = "/workspace",
+             ro: list[tuple[str, str]] | None = None) -> list[str]:
     policy = record["policy"]
     net = net or policy["net"]
     gpu = policy["gpu"] if gpu is None else gpu
@@ -374,10 +375,11 @@ def run_argv(record: dict, workspace: str, rw: list[tuple[str, str]], extra_env:
                     if dest != p and not p.startswith("/usr/"):
                         argv += ["--symlink", dest, p]
     argv += ["--ro-bind" if ro_workspace else "--bind", workspace, "/workspace"]
-    for host, dest in rw:
-        if not (dest.startswith("/workspace/") or dest.startswith(HOME + "/") or dest.startswith("/tmp/")):
-            raise CapsuleError(f"rw destination {dest} must be under /workspace, {HOME} or /tmp")
-        argv += ["--bind", host, dest]
+    for flag, pairs in (("--bind", rw), ("--ro-bind", ro or [])):
+        for host, dest in pairs:
+            if not (dest.startswith("/workspace/") or dest.startswith(HOME + "/") or dest.startswith("/tmp/")):
+                raise CapsuleError(f"bind destination {dest} must be under /workspace, {HOME} or /tmp")
+            argv += [flag, host, dest]
     path, layer_envs = layer_env(record["layers"])
     env = {"HOME": HOME, "TMPDIR": "/tmp", "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8",
            "PATH": ":".join(path + DEFAULT_PATH), "CORENIUS_IN_INSULA": "1",
@@ -406,14 +408,16 @@ def verify_host_layers(record: dict) -> None:
 
 
 def run(record: dict, command: list[str], workspace: str, rw: list[tuple[str, str]], env: dict, net: str | None,
-        gpu: bool | None, ro_workspace: bool, timeout: float | None, cwd: str, record_path: str | None) -> int:
+        gpu: bool | None, ro_workspace: bool, timeout: float | None, cwd: str, record_path: str | None,
+        ro: list[tuple[str, str]] | None = None, stdout=None, stderr=None) -> int:
     verify_host_layers(record)
     workspace = str(Path(workspace).resolve())
     if not Path(workspace).is_dir():
         raise CapsuleError(f"workspace {workspace} is not a directory")
-    argv = run_argv(record, workspace, rw, env, ro_workspace, net, gpu, cwd)
+    argv = run_argv(record, workspace, rw, env, ro_workspace, net, gpu, cwd, ro)
     started = time.time()
-    proc = subprocess.Popen(argv + ["--"] + command, env={"PATH": "/usr/bin:/bin"}, start_new_session=True)
+    proc = subprocess.Popen(argv + ["--"] + command, env={"PATH": "/usr/bin:/bin"}, start_new_session=True,
+                            stdout=stdout, stderr=stderr)
     timed_out = False
     try:
         code = proc.wait(timeout=timeout)
@@ -532,6 +536,7 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--workspace", default=".")
     r.add_argument("--ro-workspace", action="store_true")
     r.add_argument("--rw", action="append", default=[])
+    r.add_argument("--ro", action="append", default=[])
     r.add_argument("--env", action="append", default=[])
     r.add_argument("--net", choices=["none", "host"])
     r.add_argument("--gpu", action="store_true", default=None)
@@ -558,7 +563,7 @@ def main(argv: list[str] | None = None) -> int:
                 raise CapsuleError("run needs a command after --")
             env = dict(item.partition("=")[::2] for item in args.env)
             return run(load_capsule(args.capsule), command, args.workspace, parse_rw(args.rw), env, args.net,
-                       args.gpu, args.ro_workspace, args.timeout, args.cwd, args.record)
+                       args.gpu, args.ro_workspace, args.timeout, args.cwd, args.record, parse_rw(args.ro))
     except CapsuleError as exc:
         print(f"capsule: {exc}", file=sys.stderr)
         return 64

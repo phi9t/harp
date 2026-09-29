@@ -1,7 +1,8 @@
-target/
+bench/results/
 .corenius/
-.superpowers/
-.scratch/
 *.log
 __pycache__/
 .pytest_cache/
+.scratch/
+.superpowers/
+target/
