@@ -70,5 +70,6 @@ Not done yet, deliberately, because each touches other repos:
 
 ## Where the work is
 
+- `guideline-map.md`: what the guideline set must delineate, per topic, with state, conflicts and decisions needed.
 - `docs/spikes/collab/design-space.md`: mechanism survey and recommended design.
 - `experiments/collab/`: the simulator that measures the candidates.
