@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Versioned hook (git config core.hooksPath .githooks): cheap host-side checks
+# on what is being committed. The Insula gates remain the real verification.
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+git diff --cached --check
+python3 "$root/scripts/audit_forbidden_content.py" --working-tree

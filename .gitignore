@@ -3,3 +3,5 @@ target/
 .superpowers/
 .scratch/
 *.log
+__pycache__/
+.pytest_cache/

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Versioned hook: diziet/mainline only moves by fast-forward, without merge
+# commits, and is never deleted (milano/scm.py check_push).
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+PYTHONPATH="$root" exec python3 -m milano.scm --repo "$root" pre-push-hook
