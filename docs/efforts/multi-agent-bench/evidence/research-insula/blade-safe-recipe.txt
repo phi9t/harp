@@ -1,0 +1,4 @@
+S="$PWD/docs/efforts/multi-agent-bench/evidence/research-insula/blade-scratch"; mkdir -p "$S/home"
+bwrap --ro-bind / / --dev-bind /dev /dev --bind "$S" "$S" --tmpfs /home --tmpfs /tmp --unshare-net --clearenv \
+  --setenv HOME "$S/home" --setenv PATH /opt/tiger/ss_bin:/usr/local/bin:/usr/bin:/bin --setenv USER bench --chdir "<project dir under $S>" \
+  /opt/tiger/ss_bin/blade build "<target>"

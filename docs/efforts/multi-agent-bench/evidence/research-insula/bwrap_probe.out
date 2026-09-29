@@ -1,0 +1,61 @@
+
+### root_tmpfs_basic
+sh=/usr/bin/sh
+Python 3.11.2
+jq-ok
+cap_layer=nested-layer-ok
+workspace_write=workspace-ok
+usr_write=blocked:touch: cannot touch '/usr/bin/insula-write-test': Read-only file system
+home_entries=bench,
+host_home_visible=no
+route_lines=0
+ps_count=5
+    PID    PPID COMMAND
+      1       0 bwrap
+      2       1 sh
+     19       2 ps
+     20       2 sed
+exit=0
+
+### exact_env
+BENCH_ENV=allow
+HOME=/home/bench
+LC_ALL=C
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/workspace
+exit=0
+
+### nested_mount_under_ro_usr
+nested-layer-ok
+nested_write=blocked
+exit=0
+
+### file_bind_loader
+loader_file_bind=ok
+exit=0
+
+### net_loopback_only
+route_lines=0
+loopback_ipv4=True
+loopback_ipv6=True
+non_loopback=blocked:OSError
+exit=0
+
+### dev_bind_nvidia
+exit=0
+
+### new_session
+pid=59 sid=59 same=True
+exit=0
+
+### cap_drop
+CapEff:	0000000000000000
+exit=0
+
+### seccomp_allow_all
+seccomp=allow_all_ok
+exit=0
+
+### add_seccomp_allow_all
+add_seccomp=allow_all_ok
+exit=0

@@ -1,0 +1,66 @@
+traecli 0.207.1(internal edition)
+Run TraeCode CLI non-interactively
+
+Usage: traecli exec [OPTIONS] [PROMPT]
+       traecli exec [OPTIONS] <COMMAND> [ARGS]
+
+Commands:
+  resume  Resume a previous session by id or pick the most recent with --last
+  fork    Fork a previous session by id into a new session
+  review  Run a code review against the current repository
+  help    Print this message or the help of the given subcommand(s)
+
+Arguments:
+  [PROMPT]
+          Initial instructions for the agent. If not provided as an argument (or if `-` is used),
+          instructions are read from stdin. If stdin is piped and a prompt is also provided, stdin
+          is appended as a `<stdin>` block. Prefix with `/name` to invoke an enabled skill or custom
+          command
+
+Options:
+  -c, --config <key=value>
+          Override a configuration value that would otherwise be loaded from `~/.trae/traecli.toml`.
+          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed
+          as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+          
+          Examples: - `-c model="o3"` - `-c 'sandbox_permissions=["disk-full-read-access"]'` - `-c
+          shell_environment_policy.inherit=all`
+
+      --enable <FEATURE>
+          Enable a feature (repeatable). Equivalent to `-c features.<name>=true`
+
+      --disable <FEATURE>
+          Disable a feature (repeatable). Equivalent to `-c features.<name>=false`
+
+  -i, --image <FILE>...
+          Optional image(s) to attach to the initial prompt
+
+  -m, --model <MODEL>
+          Model the agent should use
+
+      --oss
+          Use open-source provider
+
+      --local-provider <OSS_PROVIDER>
+          Specify which local provider to use (lmstudio or ollama). If not specified with --oss,
+          will use config default or show selection
+
+  -p, --profile <CONFIG_PROFILE>
+          Layer $TRAE_HOME/<name>.traecli.toml on top of the base user config
+
+      --permission-mode <MODE>
+          Select the permission mode preset to use
+
+          Possible values:
+          - default:            TraeCode CLI can read and edit files in the current workspace, and
+            run commands. Approval is required to access the internet or edit other files.
+            (Identical to Agent mode)
+          - bypass_permissions: TraeCode CLI can edit files outside this workspace and access the
+            internet without asking for approval. Exercise caution when using
+          - auto:               Same workspace-write permissions as Workspace Edit, but eligible
+            on-request approvals are routed through the auto-reviewer subagent
+home_tree
+/home/bench/.trae
+/home/bench/.trae/cli
+/home/bench/.trae/cli/tmp
+exit=0
