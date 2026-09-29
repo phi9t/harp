@@ -39,6 +39,7 @@ class Operation:
     expected: bytes
     managed_mode: int | None = None
     default_mode: int = 0o644
+    install_once: bool = False
 
 
 @dataclass(frozen=True)
@@ -310,10 +311,10 @@ def _build_operations(
                 )
             )
 
-        managed_files = list(policy_files)
+        managed_files = [(value, False) for value in policy_files]
         if entry["install_local_tracker"]:
-            managed_files.extend(tracker_files)
-        for relative_value in managed_files:
+            managed_files.extend((value, True) for value in tracker_files)
+        for relative_value, install_once in managed_files:
             relative = _relative_path(relative_value, f"{name} managed file")
             destination = _within(repository, relative, f"{name} managed file")
             _reject_symlinked_path(repository, destination, f"{name} managed path")
@@ -328,6 +329,7 @@ def _build_operations(
                     destination=destination,
                     expected=content,
                     managed_mode=managed_mode,
+                    install_once=install_once,
                 )
             )
 
@@ -432,6 +434,9 @@ def run(
     drift: list[Operation] = []
     for operation in operations:
         destination_exists = operation.destination.exists()
+        if operation.install_once and destination_exists:
+            # Local tracker files are repo-owned once they exist.
+            continue
         current = (
             operation.destination.read_bytes() if destination_exists else None
         )

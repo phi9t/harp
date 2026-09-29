@@ -34,6 +34,12 @@ tracker templates), plus `tools/sync_agentic_workflow.py` and its test
 manifest registers corenius as a managed repo. Cross-repository efforts start
 in corenius `.scratch/<effort>/`.
 
+Sync semantics: managed policy files and the managed AGENTS block are enforced
+(DRIFT, repaired by `--apply`). The local tracker files (`issue-tracker.md`,
+`triage-labels.md`, `domain.md`) are install-once: created from the template
+when missing (reported as MISSING), and never reported as drift or overwritten
+once they exist, so repos keep their own tracker text.
+
 Not done yet, deliberately, because each touches other repos:
 
 1. **Ultron still has its copies.** They are now stale relative to corenius.

@@ -183,6 +183,55 @@ class SyncAgenticWorkflowTest(unittest.TestCase):
         self.assertEqual(workflow.stat().st_mode & 0o777, 0o644)
         self.assertEqual(self.invoke("check")[0], 0)
 
+    def test_missing_tracker_file_is_reported_and_created_once(self):
+        tracker = self.peer / "docs/agents/issue-tracker.md"
+
+        status, output = self.invoke("check")
+        self.assertEqual(status, 1)
+        self.assertIn("MISSING peer/docs/agents/issue-tracker.md", output)
+
+        status, output = self.invoke("apply")
+        self.assertEqual(status, 0, output)
+        self.assertEqual(tracker.read_text(), "tracker\n")
+        self.assertEqual(self.invoke("check")[0], 0)
+
+    def test_existing_local_tracker_edits_are_not_drift_or_overwritten(self):
+        self.assertEqual(self.invoke("apply")[0], 0)
+        edited = {}
+        for relative_path in self.tracker_files:
+            path = self.peer / relative_path
+            path.write_text("repo-specific text\n")
+            path.chmod(0o600)
+            edited[path] = path.stat().st_mode & 0o777
+
+        status, output = self.invoke("check")
+        self.assertEqual(status, 0, output)
+        self.assertNotIn("DRIFT", output)
+
+        status, output = self.invoke("apply")
+        self.assertEqual(status, 0, output)
+        self.assertIn("APPLY OK: 0 path(s) updated", output)
+        for path, mode in edited.items():
+            self.assertEqual(path.read_text(), "repo-specific text\n")
+            self.assertEqual(path.stat().st_mode & 0o777, mode)
+
+    def test_managed_files_still_drift_when_trackers_are_local(self):
+        self.assertEqual(self.invoke("apply")[0], 0)
+        (self.peer / "docs/agents/domain.md").write_text("local domain\n")
+        workflow = self.peer / "docs/agents/agentic-engineering.md"
+        workflow.write_text("locally edited\n")
+
+        status, output = self.invoke("check")
+        self.assertEqual(status, 1)
+        self.assertIn("DRIFT peer/docs/agents/agentic-engineering.md", output)
+        self.assertNotIn("domain.md", output)
+
+        self.assertEqual(self.invoke("apply")[0], 0)
+        self.assertEqual(workflow.read_text(), "workflow\n")
+        self.assertEqual(
+            (self.peer / "docs/agents/domain.md").read_text(), "local domain\n"
+        )
+
     def test_refuses_repository_outside_workspace(self):
         manifest = json.loads(self.manifest_path.read_text())
         manifest["repositories"][1]["name"] = "../outside"
