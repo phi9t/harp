@@ -179,6 +179,11 @@ class WorkerTest(unittest.TestCase):
         self._main(["launch", "--task", str(self.task), "--name", "t1", "--repo", str(self.repo)])
         self.assertEqual(self.last_code, 64)
 
+    def test_missing_task_file_is_a_clean_error(self):
+        self._main(["launch", "--task", str(self.task) + ".nope", "--name", "x", "--repo", str(self.repo)])
+        self.assertEqual(self.last_code, 64)
+        self.assertFalse((self.repo.parent / "corenius-worker-x").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

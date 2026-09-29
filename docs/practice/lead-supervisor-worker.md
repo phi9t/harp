@@ -108,3 +108,25 @@ worker, commits and lands, and only where the repo profile permits.
     keep its own PID watch and boundary checks; the supervisor's timings cannot
     be trusted without them. A deterministic supervisor (a script) would do the
     same checks without the drift and the token cost.
+
+### Trial 2 (2026-09-29): real `traecli`, deterministic supervisor, Haiku relay
+
+Task: summarize `tools/agents/effort.py` in `docs/practice/trial-2-effort-summary.md`
+(one allowed output). Launched with `worker.py launch` (GPT-5.5, xhigh,
+`workspace-write`), supervised by `worker.py supervise` run by the lead in the
+background and, in parallel, by a Haiku subagent following
+`.claude/agents/worker-supervisor.md`.
+
+- **Worker:** exit 0 after 139 s, 43 events, verdict CLEAN, no findings, one
+  output written and nothing else changed. The lead read the summary against the
+  source: function names, exit codes (0, 1, 2, and 64 for `WorkerError`) and the
+  test list match. The output was not landed; it was a trial artifact.
+- **Haiku supervisor:** made one tool call, blocked for 114 s on the command, and
+  relayed exit code and JSON verbatim with no interim reports and no timing
+  claims. The trial 1 failures (no blocking, early completion claims) did not
+  recur once the checks moved into the script.
+- **Defect found:** two supervisors on one run both write `verdict.json`; the
+  later write wins (finish time differed by 2 s between the two copies). Run one
+  supervisor per run, or make the write idempotent.
+- **Defect fixed:** a missing task file was a traceback; it is now a clean
+  error (exit 64) that creates no worktree.

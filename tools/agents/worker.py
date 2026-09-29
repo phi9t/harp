@@ -102,6 +102,8 @@ TASK
 
 def launch(args: argparse.Namespace) -> int:
     repo = main_worktree(args.repo)
+    if not Path(args.task).is_file():
+        raise WorkerError(f"task file {args.task} not found")
     task = Path(args.task).read_text()
     name = re.sub(r"[^a-z0-9-]", "-", args.name.lower()).strip("-")
     if not name:
