@@ -183,7 +183,7 @@ def run_fleet(task: tasklib.Task, agent, record: dict, order: list[str] | None =
         contamination = sorted({p for r in runs.values() for p in r["contamination"]})
         return {
             "task": task.id, "order": order, "landings": landings, "conflicts": conflicts, "redos": redos,
-            "contamination": contamination, "passed": verdict["passed"], "verify_seconds": verdict["seconds"],
+            "contamination": contamination, "passed": verdict["passed"], "verify_seconds": verdict["seconds"], "verify_tail": verdict.get("tail", ""),
             "wall_seconds": round(time.time() - started, 3),
             "ticket_seconds": {tid: r["seconds"] for tid, r in runs.items()},
         }

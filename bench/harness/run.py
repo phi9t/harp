@@ -194,6 +194,7 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
     observer("agents")
     run = fleet.run_fleet(task, ticket_agent, verify_record, workers=n, log=log, observer=observer)
     observer("done", passed=run["passed"], conflicts=run["conflicts"], redos=run["redos"])
+    (out / rid / "verify-tail.txt").write_text(str(run.get("verify_tail", "")))
     rec = base_record(task, f"fleet:{n}", agent, verify_record, rid)
     rec["outcome"] = {"passed": run["passed"], "reward": 1.0 if run["passed"] else 0.0, "verifier_rc": 0 if run["passed"] else 1,
                       "timed_out": False, "agent_rc": None}

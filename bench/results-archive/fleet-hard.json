@@ -1,0 +1,133 @@
+{
+ "experiment": "fleet-hard",
+ "runs": 18,
+ "rows": [
+  {
+   "task": "mh1-py-inventory",
+   "condition": "fleet:5",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 385.13,
+   "wall_stdev": 22.12,
+   "tokens_out_median": 80955,
+   "redos": 3,
+   "conflicts": 3,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh1-py-inventory",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 469.02,
+   "wall_stdev": 25.21,
+   "tokens_out_median": 29559,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh2-rs-scheduler",
+   "condition": "fleet:5",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 293.0,
+   "wall_stdev": 7.1,
+   "tokens_out_median": 47098,
+   "redos": 3,
+   "conflicts": 3,
+   "contamination": 3,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh2-rs-scheduler",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 263.82,
+   "wall_stdev": 87.28,
+   "tokens_out_median": 40038,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh3-cxx-engine",
+   "condition": "fleet:5",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 0,
+   "pass_rate": 0.0,
+   "ci95": [
+    0.0,
+    0.562
+   ],
+   "wall_median": 274.59,
+   "wall_stdev": 101.48,
+   "tokens_out_median": 60733,
+   "redos": 1,
+   "conflicts": 1,
+   "contamination": 1,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh3-cxx-engine",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 1,
+   "pass_rate": 0.333,
+   "ci95": [
+    0.061,
+    0.792
+   ],
+   "wall_median": 389.23,
+   "wall_stdev": 82.71,
+   "tokens_out_median": 34618,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  }
+ ],
+ "note": "final (18 of 18 runs); raw run directories are not committed; fleet runs of this experiment did not save verifier output"
+}

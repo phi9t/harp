@@ -142,6 +142,13 @@ class RunTest(unittest.TestCase):
         self.assertEqual(events[-1], "done")
         self.assertIn("landing", events)
 
+    def test_fleet_run_saves_the_verifier_tail(self):
+        task = tasklib.load_tasks(only=["m01-disjoint-utils"])[0]
+        rec = run.run_fleet_condition(task, run.Agent("noop"), self.out, 0, 2)  # nobody fixes anything: the verifier fails
+        self.assertFalse(rec["outcome"]["passed"])
+        tail = (self.out / rec["run_id"] / "verify-tail.txt").read_text()
+        self.assertIn("FAIL", tail)
+
     def test_persist_writes_a_validated_record(self):
         rec = self.solo("t01-log-window", "reference")
         path = run.persist(rec, self.out / "p")
