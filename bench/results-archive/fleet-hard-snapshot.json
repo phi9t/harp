@@ -1,0 +1,91 @@
+{
+ "experiment": "fleet-hard",
+ "runs": 4,
+ "rows": [
+  {
+   "task": "mh1-py-inventory",
+   "condition": "fleet:5",
+   "agent": "traecli",
+   "n": 1,
+   "passed": 1,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "wall_median": 423.04,
+   "wall_stdev": 0.0,
+   "tokens_out_median": 80955,
+   "redos": 1,
+   "conflicts": 1,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh1-py-inventory",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 1,
+   "passed": 1,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "wall_median": 496.24,
+   "wall_stdev": 0.0,
+   "tokens_out_median": 34213,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh2-rs-scheduler",
+   "condition": "fleet:5",
+   "agent": "traecli",
+   "n": 1,
+   "passed": 1,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "wall_median": 293.0,
+   "wall_stdev": 0.0,
+   "tokens_out_median": 44293,
+   "redos": 1,
+   "conflicts": 1,
+   "contamination": 1,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "mh2-rs-scheduler",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 1,
+   "passed": 1,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "wall_median": 263.82,
+   "wall_stdev": 0.0,
+   "tokens_out_median": 40038,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  }
+ ],
+ "note": "snapshot; raw run directories are not committed (bench/results is gitignored)"
+}

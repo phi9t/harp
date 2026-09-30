@@ -1,0 +1,721 @@
+{
+ "experiment": "pilot-1",
+ "runs": 102,
+ "rows": [
+  {
+   "task": "b-l0-add-target",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 87.04,
+   "wall_stdev": 3.68,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l0-incs-srcs",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 89.62,
+   "wall_stdev": 23.73,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l1-misspelled-dep",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 92.96,
+   "wall_stdev": 9.9,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l1-pinned-version-bump",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 69.02,
+   "wall_stdev": 1.01,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l2-cuda-kernel",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 137.95,
+   "wall_stdev": 15.11,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l2-shared-macro",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 64.06,
+   "wall_stdev": 4.23,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l3-env-matrix",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 186.35,
+   "wall_stdev": 87.79,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l3-settler-conflict",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 85.06,
+   "wall_stdev": 3.38,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l4-proto-codegen",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 94.85,
+   "wall_stdev": 62.57,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l4-wrapper-macro",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 405.42,
+   "wall_stdev": 28.18,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "c01-window-mean",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 45.98,
+   "wall_stdev": 12.55,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "c02-link-order",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 59.84,
+   "wall_stdev": 4.69,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "c03-sanitizer-ub",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 64.42,
+   "wall_stdev": 8.33,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "c04-header-refactor",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 69.36,
+   "wall_stdev": 4.14,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "c05-generated-table",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 82.59,
+   "wall_stdev": 3.01,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p01-slugger",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 84.3,
+   "wall_stdev": 4.44,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p02-invoice-cents",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 52.78,
+   "wall_stdev": 17.49,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p03-cli-subcommand",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 75.11,
+   "wall_stdev": 10.37,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p04-cache-key-normalization",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 80.25,
+   "wall_stdev": 3.93,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p05-offline-wheel-conflict",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 96.91,
+   "wall_stdev": 10.51,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "p06-typing-contract",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 63.61,
+   "wall_stdev": 11.14,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "r01-countdown-division",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 36.23,
+   "wall_stdev": 1.07,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "r02-borrowed-index",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 47.84,
+   "wall_stdev": 6.32,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "r03-trait-format",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 56.3,
+   "wall_stdev": 7.15,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "r04-workspace-feature",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 46.83,
+   "wall_stdev": 8.2,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "r05-channel-shutdown",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 46.82,
+   "wall_stdev": 35.39,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t01-log-window",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 48.4,
+   "wall_stdev": 12.47,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t02-quoting-archive",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 61.18,
+   "wall_stdev": 7.85,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t03-jsonl-rollup",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 50.46,
+   "wall_stdev": 9.06,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t04-permission-repair",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 67.71,
+   "wall_stdev": 14.85,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t05-git-conflict-marker-cleanup",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 46.12,
+   "wall_stdev": 2.32,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t06-process-lock",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 90.13,
+   "wall_stdev": 18.29,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t07-csv-join-pipeline",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 53.08,
+   "wall_stdev": 13.74,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "t08-log-rotation-recovery",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 3,
+   "passed": 3,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.438,
+    1.0
+   ],
+   "wall_median": 93.95,
+   "wall_stdev": 19.83,
+   "tokens_out_median": null,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  }
+ ],
+ "note": "snapshot; raw run directories are not committed (bench/results is gitignored)"
+}

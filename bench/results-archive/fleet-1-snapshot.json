@@ -1,0 +1,175 @@
+{
+ "experiment": "fleet-1",
+ "runs": 40,
+ "rows": [
+  {
+   "task": "b-l5-fused-op",
+   "condition": "fleet:3",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 273.85,
+   "wall_stdev": 25.31,
+   "tokens_out_median": 28240,
+   "redos": 5,
+   "conflicts": 5,
+   "contamination": 115,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "b-l5-fused-op",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 140.36,
+   "wall_stdev": 28.59,
+   "tokens_out_median": 5162,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m01-disjoint-utils",
+   "condition": "fleet:2",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 58.24,
+   "wall_stdev": 21.76,
+   "tokens_out_median": 2696,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m01-disjoint-utils",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 73.17,
+   "wall_stdev": 9.71,
+   "tokens_out_median": 2717,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m02-shared-interface",
+   "condition": "fleet:2",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 77.63,
+   "wall_stdev": 9.25,
+   "tokens_out_median": 5239,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 3,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m02-shared-interface",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 72.92,
+   "wall_stdev": 9.65,
+   "tokens_out_median": 3610,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m03-same-file-append",
+   "condition": "fleet:2",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 5,
+   "pass_rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "wall_median": 69.98,
+   "wall_stdev": 4.2,
+   "tokens_out_median": 2526,
+   "redos": 5,
+   "conflicts": 5,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  },
+  {
+   "task": "m03-same-file-append",
+   "condition": "solo",
+   "agent": "traecli",
+   "n": 5,
+   "passed": 4,
+   "pass_rate": 0.8,
+   "ci95": [
+    0.376,
+    0.964
+   ],
+   "wall_median": 46.06,
+   "wall_stdev": 12.84,
+   "tokens_out_median": 2326,
+   "redos": 0,
+   "conflicts": 0,
+   "contamination": 0,
+   "capsules": [
+    "29de90a4f872"
+   ]
+  }
+ ],
+ "note": "snapshot; raw run directories are not committed (bench/results is gitignored)"
+}
