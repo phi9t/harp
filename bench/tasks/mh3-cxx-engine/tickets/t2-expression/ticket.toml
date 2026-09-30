@@ -1,0 +1,2 @@
+allow = ["src/expression.cpp"]
+depends = ["t1-tokenizer"]

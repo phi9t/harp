@@ -1,0 +1,2 @@
+allow = ["src/driver.cpp", "include/rules_engine.hpp"]
+depends = ["t3-rule-store", "t4-loader"]

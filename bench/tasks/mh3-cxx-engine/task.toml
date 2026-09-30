@@ -1,0 +1,29 @@
+schema_version = "1.1"
+
+[task]
+name = "bench/mh3-cxx-engine"
+description = "Multi-ticket C++17 rules-engine library with parser, store, loader, and driver"
+
+[metadata]
+track = "C"
+level = "M"
+tags = ["multi"]
+
+[bench]
+capsule = "toolchains"
+net = "none"
+gpu = false
+
+[multi]
+expected_conflicts = 1
+expected_landing = "t3-rule-store and t5-driver both rewrite the facade feature manifest from the same base; the second one conflicts, then redo composes the manifest"
+
+[verifier]
+command = "cmake -S . -B build -G Ninja && cmake --build build && ctest --test-dir build --output-on-failure"
+timeout_sec = 300
+protected = ["tests", "README.md"]
+
+[verifier.env]
+
+[agent]
+timeout_sec = 900

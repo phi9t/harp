@@ -1,0 +1,2 @@
+allow = ["src/loader.cpp"]
+depends = ["t2-expression", "t3-rule-store"]
