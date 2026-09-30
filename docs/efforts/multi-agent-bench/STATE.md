@@ -4,14 +4,29 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "949df30510ff0e118823a41c43ce2395c7b882b0",
-  "dehydrated": "2026-09-29T23:42:10Z",
+  "base_commit": "1dd171d11a2f9eb84a69d9238a1003aed19a7c62",
+  "dehydrated": "2026-09-30T01:30:15Z",
   "effort": "multi-agent-bench",
   "runs": [
     {
       "exit_code": 0,
       "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-c-20260929T232224Z",
       "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-mh1-py-inventory-20260930T002234Z",
+      "verdict": "DEGRADED"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-mh2-rs-scheduler-20260930T002234Z",
+      "verdict": "DEGRADED"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/author-mh3-cxx-engine-20260930T002234Z",
+      "verdict": "DEGRADED"
     },
     {
       "exit_code": 0,
@@ -26,6 +41,21 @@
     {
       "exit_code": 0,
       "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/blade-author-1-20260929T232855Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/blade-author-2-20260929T232855Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/blade-author-3-20260929T234740Z",
+      "verdict": "DEGRADED"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/capsule-smoke-20260930T000005Z",
       "verdict": "CLEAN"
     },
     {
@@ -53,7 +83,7 @@
     {
       "branch": "effort/multi-agent-bench",
       "dirty": [],
-      "head": "9003e2e35e714eb72cc281cd315c270280658693",
+      "head": "d0512102500deb98411b219e0734d33279203b41",
       "path": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
       "pushed": false
     }
