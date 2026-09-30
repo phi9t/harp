@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import itertools
 import shutil
+import threading
+from concurrent.futures import ThreadPoolExecutor
 import subprocess
 import tempfile
 import time
@@ -83,13 +85,22 @@ def reference_agent(ticket: Ticket, ws: Path, record: dict) -> dict:
     return tasklib.run_in_capsule(record, ws, command, {}, "none", 120.0, ro=[(str(ticket.path), "/tmp/ticket")])
 
 
+GIT_LOCK = threading.Lock()
+
+
 def run_ticket(repo: Path, ticket: Ticket, base: str, agent, record: dict, tag: str = "") -> dict:
     wt = repo.parent / f"wt-{ticket.id}{tag}"
     branch = f"ticket/{ticket.id}{tag}"
-    git(repo, "worktree", "add", "-q", "-b", branch, str(wt), base)
+    with GIT_LOCK:
+        git(repo, "worktree", "add", "-q", "-b", branch, str(wt), base)
     started = time.time()
-    result = agent(ticket, wt, record)
+    result = agent(ticket, wt, record)  # agents for different tickets may run concurrently
     seconds = round(time.time() - started, 3)
+    with GIT_LOCK:
+        return finish_ticket(ticket, wt, branch, result, seconds)
+
+
+def finish_ticket(ticket: Ticket, wt: Path, branch: str, result: dict, seconds: float) -> dict:
     changed = changed_paths(wt)
     contamination = sorted(p for p in changed if not allowed(p, ticket.allow))
     inside = [p for p in changed if allowed(p, ticket.allow)]
@@ -127,7 +138,7 @@ def verify_repo(task: tasklib.Task, repo: Path, record: dict) -> dict:
 
 
 def run_fleet(task: tasklib.Task, agent, record: dict, order: list[str] | None = None, redo=True,
-              include: list[str] | None = None) -> dict:
+              include: list[str] | None = None, workers: int = 1) -> dict:
     """All tickets start from the same base (parallel workers), then land one by one in `order`."""
     tickets = {t.id: t for t in load_tickets(task) if include is None or t.id in include}
     order = [t for t in (order or list(tickets)) if t in tickets]
@@ -135,7 +146,9 @@ def run_fleet(task: tasklib.Task, agent, record: dict, order: list[str] | None =
     with tempfile.TemporaryDirectory(prefix=f"fleet-{task.id}-", dir=str(tasklib.ROOT / ".scratch")) as tmp:
         repo = Path(tmp) / "repo"
         base = init_repo(task, repo)
-        runs = {tid: run_ticket(repo, tickets[tid], base, agent, record) for tid in tickets}
+        with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+            futures = {tid: pool.submit(run_ticket, repo, tickets[tid], base, agent, record) for tid in tickets}
+            runs = {tid: f.result() for tid, f in futures.items()}
         landings, conflicts, redos = [], 0, 0
         for tid in order:
             outcome = land(repo, runs[tid])

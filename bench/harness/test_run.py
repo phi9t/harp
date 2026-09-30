@@ -93,6 +93,13 @@ class RunTest(unittest.TestCase):
         self.assertTrue(0 < lo < 1 and hi == 1.0)
         self.assertIn("t01-log-window", results.table(list(rows.values())))
 
+    def test_parse_usage_sums_turns_and_ignores_noise(self):
+        text = "\n".join(['{"type":"item.completed"}', "garbage",
+                           '{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":3}}',
+                           '{"type":"turn.completed","usage":{"input_tokens":5,"output_tokens":2}}'])
+        self.assertEqual(run.parse_usage(text), {"input_tokens": 15, "output_tokens": 5})
+        self.assertIsNone(run.parse_usage("no events here"))
+
     def test_wilson_edge_cases(self):
         self.assertEqual(results.wilson(0, 0), (0.0, 1.0))
         lo, hi = results.wilson(0, 5)

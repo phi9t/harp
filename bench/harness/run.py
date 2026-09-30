@@ -77,6 +77,22 @@ class Agent:
                                           gpu=bool(task.bench.get("gpu", False)))
 
 
+def parse_usage(text: str) -> dict | None:
+    """Token counts from the traecli event stream (turn.completed events); None when the stream has none."""
+    total, seen = {"input_tokens": 0, "output_tokens": 0}, False
+    for line in text.splitlines():
+        if '"turn.completed"' not in line:
+            continue
+        try:
+            usage = json.loads(line).get("usage") or {}
+        except ValueError:
+            continue
+        seen = True
+        total["input_tokens"] += int(usage.get("input_tokens", 0))
+        total["output_tokens"] += int(usage.get("output_tokens", 0))
+    return total if seen else None
+
+
 def run_id(task_id: str, condition: str, agent: str, index: int) -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return f"{stamp}-{condition.replace(':', '')}-{task_id}-{re.sub(r'[^a-z0-9]+', '', agent.lower())}-{index:03d}"
@@ -112,6 +128,10 @@ def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int) -> dict:
     rec["timing"] = {"wall_seconds": round(time.time() - started, 3), "agent_seconds": round(agent_seconds, 3),
                      "verify_seconds": verdict["seconds"]}
     rec["coordination"] = {"conflicts": 0, "redos": 0, "contamination": 0, "tickets": 1, "tickets_landed": 1}
+    usage = parse_usage(str(result.get("tail", "")))
+    if usage:
+        rec["cost"].update(usage)
+        rec["provenance"]["cost"] = "tokens measured from the agent event stream; usd unmeasured"
     (rundir / "verify-tail.txt").write_text(verdict["tail"])
     shutil.rmtree(ws, ignore_errors=True) if not agent.spec.startswith(("cmd", "traecli")) else None
     return rec
@@ -125,10 +145,16 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
     rid = run_id(task.id, f"fleet:{n}", agent.spec, index)
     (out / rid).mkdir(parents=True, exist_ok=True)
 
-    def ticket_agent(ticket, ws, _record):
-        return agent.run(ticket.instruction, ws, agent_record, ticket.path, task)
+    usages: list[dict] = []
 
-    run = fleet.run_fleet(task, ticket_agent, verify_record)
+    def ticket_agent(ticket, ws, _record):
+        out = agent.run(ticket.instruction, ws, agent_record, ticket.path, task)
+        usage = parse_usage(str(out.get("tail", "")))
+        if usage:
+            usages.append(usage)
+        return out
+
+    run = fleet.run_fleet(task, ticket_agent, verify_record, workers=n)
     rec = base_record(task, f"fleet:{n}", agent, verify_record, rid)
     rec["outcome"] = {"passed": run["passed"], "reward": 1.0 if run["passed"] else 0.0, "verifier_rc": 0 if run["passed"] else 1,
                       "timed_out": False, "agent_rc": None}
@@ -137,6 +163,9 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
     rec["coordination"] = {"conflicts": run["conflicts"], "redos": run["redos"], "contamination": len(run["contamination"]),
                            "tickets": len(run["order"]), "tickets_landed": sum(1 for l in run["landings"] if l["landed"]),
                            "landing_order": run["order"]}
+    if usages:
+        rec["cost"].update({k: sum(u[k] for u in usages) for k in ("input_tokens", "output_tokens")})
+        rec["provenance"]["cost"] = "tokens measured from the agent event stream; usd unmeasured"
     return rec
 
 

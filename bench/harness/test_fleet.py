@@ -54,6 +54,20 @@ class FleetTest(unittest.TestCase):
         self.assertFalse(run["landings"][1]["landed"])
         self.assertFalse(run["passed"])
 
+    def test_workers_run_tickets_concurrently(self):
+        import time
+
+        def slow(ticket, ws, record):
+            time.sleep(1.5)
+            return fleet.reference_agent(ticket, ws, record)
+
+        task = load("m01-disjoint-utils")
+        seq = fleet.run_fleet(task, slow, self.record, workers=1)
+        par = fleet.run_fleet(task, slow, self.record, workers=2)
+        self.assertTrue(seq["passed"] and par["passed"])
+        self.assertGreater(seq["wall_seconds"], 2.9)
+        self.assertLess(par["wall_seconds"], seq["wall_seconds"] - 1.0)
+
     def test_noop_agent_fails_the_task(self):
         run = fleet.run_fleet(load("m01-disjoint-utils"), lambda t, ws, rec: {"rc": 0}, self.record)
         self.assertFalse(run["passed"])

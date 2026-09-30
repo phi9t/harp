@@ -77,6 +77,9 @@ def summarize(records: list[dict]) -> list[dict]:
             "pass_rate": round(passed / len(rs), 3), "ci95": [round(lo, 3), round(hi, 3)],
             "wall_median": round(statistics.median(walls), 2),
             "wall_stdev": round(statistics.pstdev(walls), 2) if len(walls) > 1 else 0.0,
+            "tokens_out_median": (statistics.median([r["cost"]["output_tokens"] for r in rs if r["cost"]["output_tokens"] is not None])
+                                  if any(r["cost"]["output_tokens"] is not None for r in rs) else None),
+            "redos": sum(r["coordination"]["redos"] for r in rs),
             "conflicts": sum(r["coordination"]["conflicts"] for r in rs),
             "contamination": sum(r["coordination"]["contamination"] for r in rs),
             "capsules": sorted({r["capsule"]["digest"][:12] for r in rs}),
@@ -85,9 +88,11 @@ def summarize(records: list[dict]) -> list[dict]:
 
 
 def table(rows: list[dict]) -> str:
-    head = f"{'task':30s} {'condition':8s} {'agent':16s} {'n':>3s} {'pass':>6s} {'ci95':>13s} {'wall':>7s} {'confl':>5s} {'contam':>6s}"
+    head = (f"{'task':30s} {'condition':8s} {'agent':16s} {'n':>3s} {'pass':>6s} {'ci95':>13s} {'wall':>7s} {'confl':>5s} "
+            f"{'redo':>4s} {'contam':>6s} {'tok_out':>8s}")
     lines = [head, "-" * len(head)]
     for r in rows:
         lines.append(f"{r['task']:30s} {r['condition']:8s} {r['agent'][:16]:16s} {r['n']:3d} {r['pass_rate']:6.2f} "
-                     f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['contamination']:6d}")
+                     f"[{r['ci95'][0]:.2f},{r['ci95'][1]:.2f}] {r['wall_median']:7.1f} {r['conflicts']:5d} {r['redos']:4d} "
+                     f"{r['contamination']:6d} {'-' if r['tokens_out_median'] is None else int(r['tokens_out_median']):>8}")
     return "\n".join(lines)
