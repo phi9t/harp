@@ -4,16 +4,59 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "03368f42253dd344c6230d8381fc855f4b7af698",
-  "dehydrated": "2026-09-29T16:39:31Z",
+  "base_commit": "a76603d9d59c5cfef29b69b31747eb5abf85a314",
+  "dehydrated": "2026-09-30T08:28:50Z",
   "effort": "agentic-engineering",
-  "runs": [],
+  "runs": [
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-claims-20260930T081121Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-evidence-2-20260930T082134Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-evidence-20260930T081121Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-land-20260930T081120Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-msg-20260930T081121Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-tracker-20260930T081121Z",
+      "verdict": "CLEAN"
+    },
+    {
+      "exit_code": 0,
+      "run_dir": "/data02/home/philip.yang/.cache/corenius/workers/mb-wt-core-20260930T081120Z",
+      "verdict": "CLEAN"
+    }
+  ],
   "worktrees": [
     {
       "branch": "claude/durable-efforts",
       "dirty": [],
-      "head": "83ff6ae434004e1eeff86e506c6708039254cd0c",
+      "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
       "path": "/data02/home/philip.yang/workspace/corenius-efforts",
+      "pushed": false
+    },
+    {
+      "branch": "claude/milestone-b",
+      "dirty": [],
+      "head": "90135138e78ef11b2a7b876d0715909106dee579",
+      "path": "/data02/home/philip.yang/workspace/corenius-mb",
       "pushed": false
     },
     {
