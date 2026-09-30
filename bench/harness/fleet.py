@@ -141,8 +141,10 @@ def verify_repo(task: tasklib.Task, repo: Path, record: dict) -> dict:
 
 
 def run_fleet(task: tasklib.Task, agent, record: dict, order: list[str] | None = None, redo=True,
-              include: list[str] | None = None, workers: int = 1) -> dict:
+              include: list[str] | None = None, workers: int = 1, log=None, observer=None) -> dict:
     """All tickets start from the same base (parallel workers), then land one by one in `order`."""
+    log = log or (lambda message: None)
+    observer = observer or (lambda event, **fields: None)
     tickets = {t.id: t for t in load_tickets(task) if include is None or t.id in include}
     order = [t for t in (order or list(tickets)) if t in tickets]
     started = time.time()
@@ -153,20 +155,31 @@ def run_fleet(task: tasklib.Task, agent, record: dict, order: list[str] | None =
             futures = {tid: pool.submit(run_ticket, repo, tickets[tid], base, agent, record) for tid in tickets}
             runs = {tid: f.result() for tid, f in futures.items()}
         landings, conflicts, redos = [], 0, 0
+        observer("landing")
         for tid in order:
+            log(f"landing {tid} ({runs[tid]['seconds']}s of agent time, changed {runs[tid]['changed']})")
             outcome = land(repo, runs[tid])
             if outcome["conflict"]:
                 conflicts += 1
+                log(f"CONFLICT landing {tid} in {outcome['files']}" + ("; redoing the ticket on the new main" if redo else ""))
+                observer("landing", conflicts=conflicts, redos=redos)
                 if redo:
                     redos += 1
                     head = git(repo, "rev-parse", "main").stdout.strip()
                     rerun = run_ticket(repo, tickets[tid], head, agent, record, tag="-redo")
                     runs[tid + "-redo"] = rerun
                     outcome = {**land(repo, rerun), "first_conflict_files": outcome["files"]}
+                    log(f"redo {tid}: landed={outcome['landed']}")
                 else:
                     outcome["first_conflict_files"] = outcome["files"]
+            else:
+                log(f"landed {tid}: {outcome['landed']}")
             landings.append({"ticket": tid, **outcome})
+            observer("landing", conflicts=conflicts, redos=redos)
+        observer("verify", conflicts=conflicts, redos=redos)
+        log("verifying the landed tree with the pristine tests")
         verdict = verify_repo(task, repo, record)
+        log(f"verifier: {'PASS' if verdict['passed'] else 'FAIL'} in {verdict['seconds']}s")
         contamination = sorted({p for r in runs.values() for p in r["contamination"]})
         return {
             "task": task.id, "order": order, "landings": landings, "conflicts": conflicts, "redos": redos,

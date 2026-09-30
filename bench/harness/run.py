@@ -19,6 +19,7 @@ import shutil
 import sys
 import tempfile
 import time
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,6 +37,22 @@ TASK
 """
 
 
+@dataclass
+class Plan:
+    """Everything needed to execute one agent unit in a capsule (also serialized as a tmux pane job)."""
+    command: str
+    env: dict
+    net: str
+    gpu: bool
+    ro: list  # [[host, dest], ...]
+    timeout: float
+    capsule: str  # capsule request file
+
+    def to_json(self) -> dict:
+        return {"command": self.command, "env": self.env, "net": self.net, "gpu": self.gpu, "ro": self.ro,
+                "timeout": self.timeout, "capsule": self.capsule}
+
+
 class Agent:
     def __init__(self, spec: str, authorized: bool = False, timeout: float | None = None):
         self.spec, self.authorized, self.timeout = spec, authorized, timeout
@@ -46,35 +63,49 @@ class Agent:
             raise SystemExit("agent traecli spends model budget; pass --authorize-model-spend to run it")
         self.arg = spec.split(":", 1)[1] if ":" in spec else ""
 
-    def capsule_record(self, task: tasklib.Task) -> dict:
+    def capsule_request(self, task: tasklib.Task) -> Path:
         if self.kind == "traecli":
-            return tasklib.capsule.build(str(tasklib.REQUESTS / "agent.json"))
-        return tasklib.capsule_for(task)
+            return tasklib.REQUESTS / "agent.json"
+        return tasklib.REQUESTS / f"{task.bench.get('capsule', 'toolchains')}.json"
 
-    def run(self, instruction: str, ws: Path, record: dict, solution_or_ticket: Path | None, task: tasklib.Task) -> dict:
+    def capsule_record(self, task: tasklib.Task) -> dict:
+        return tasklib.capsule.build(str(self.capsule_request(task)))
+
+    def plan(self, instruction: str, task: tasklib.Task, solution_or_ticket: Path | None, workdir: Path) -> Plan:
+        """The capsule invocation for one unit. Files the agent needs (instruction, prompt) are written into `workdir`."""
         timeout = self.timeout or float(task.cfg.get("agent", {}).get("timeout_sec", 900))
+        request = str(self.capsule_request(task))
         if self.kind == "noop":
-            return {"rc": 0, "seconds": 0.0}
+            return Plan("true", {}, "none", False, [], 30.0, request)
         if self.kind == "reference":
             if solution_or_ticket is None:
-                return tasklib.apply_solution(task, ws, record)
+                return Plan("sh /tmp/solution/solve.sh", {}, "none", False, [[str(task.path / "solution"), "/tmp/solution"]],
+                            120.0, request)
             command = ("sh /tmp/ticket/apply.sh" if (solution_or_ticket / "apply.sh").exists()
                        else "cp -r /tmp/ticket/overlay/. /workspace/")
-            return tasklib.run_in_capsule(record, ws, command, {}, "none", 120.0, ro=[(str(solution_or_ticket), "/tmp/ticket")])
+            return Plan(command, {}, "none", False, [[str(solution_or_ticket), "/tmp/ticket"]], 120.0, request)
+        workdir.mkdir(parents=True, exist_ok=True)
+        (workdir / "instruction.md").write_text(instruction)
+        if self.kind == "cmd":
+            return Plan(self.arg, {"TASK_INSTRUCTION": "/tmp/task/instruction.md"}, "none", False,
+                        [[str(workdir / "instruction.md"), "/tmp/task/instruction.md"]], timeout, request)
+        model = self.arg or "GPT-5.5"
+        (workdir / "prompt.md").write_text(PROMPT_HEADER + instruction)
+        command = (f"traecli exec -m {model} -c model_reasoning_effort=xhigh -c model_reasoning_summary=detailed "
+                   f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /tmp/task/prompt.md")
+        return Plan(command, {}, "host", bool(task.bench.get("gpu", False)), [[str(workdir / "prompt.md"), "/tmp/task/prompt.md"]],
+                    timeout, request)
+
+    @staticmethod
+    def execute(plan: Plan, record: dict, ws: Path, on_line=None) -> dict:
+        return tasklib.run_in_capsule(record, ws, plan.command, plan.env, plan.net, plan.timeout,
+                                      ro=[tuple(x) for x in plan.ro], gpu=plan.gpu, on_line=on_line)
+
+    def run(self, instruction: str, ws: Path, record: dict, solution_or_ticket: Path | None, task: tasklib.Task) -> dict:
+        if self.kind == "noop":
+            return {"rc": 0, "seconds": 0.0}
         with tempfile.TemporaryDirectory(prefix="agent-", dir=str(tasklib.ROOT / ".scratch")) as tmp:
-            (Path(tmp) / "instruction.md").write_text(instruction)
-            ro = [(str(Path(tmp) / "instruction.md"), "/tmp/task/instruction.md")]
-            if self.kind == "cmd":
-                return tasklib.run_in_capsule(record, ws, self.arg, {"TASK_INSTRUCTION": "/tmp/task/instruction.md"},
-                                              "none", timeout, ro=ro)
-            model = self.arg or "GPT-5.5"
-            prompt = Path(tmp) / "prompt.md"
-            prompt.write_text(PROMPT_HEADER + instruction)
-            ro = [(str(prompt), "/tmp/task/prompt.md")]
-            command = (f"traecli exec -m {model} -c model_reasoning_effort=xhigh -c model_reasoning_summary=detailed "
-                       f"--json --skip-git-repo-check -s danger-full-access -C /workspace --shell-tool-timeout 120s - < /tmp/task/prompt.md")
-            return tasklib.run_in_capsule(record, ws, command, {}, "host", timeout, ro=ro,
-                                          gpu=bool(task.bench.get("gpu", False)))
+            return self.execute(self.plan(instruction, task, solution_or_ticket, Path(tmp)), record, ws)
 
 
 def parse_usage(text: str) -> dict | None:
@@ -109,19 +140,23 @@ def base_record(task, condition, agent, record, rid):
     }
 
 
-def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int) -> dict:
+def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int, rid: str | None = None, observer=None) -> dict:
+    observer = observer or (lambda event, **fields: None)
     verify_record = tasklib.capsule_for(task)
     agent_record = agent.capsule_record(task)
-    rid = run_id(task.id, "solo", agent.spec, index)
+    rid = rid or run_id(task.id, "solo", agent.spec, index)
     rundir = out / rid
     ws = rundir / "workspace"
     tasklib.materialize(task, ws)
     started = time.time()
     instruction = (task.path / "instruction.md").read_text()
+    observer("agents")
     result = agent.run(instruction, ws, agent_record, None, task)
     agent_seconds = time.time() - started
     (rundir / "agent-tail.txt").write_text(str(result.get("tail", "")))
+    observer("verify")
     verdict = tasklib.verify(task, ws, verify_record)
+    observer("done", passed=verdict["passed"])
     rec = base_record(task, "solo", agent, verify_record, rid)
     rec["outcome"] = {"passed": verdict["passed"], "reward": 1.0 if verdict["passed"] else 0.0,
                       "verifier_rc": verdict["rc"], "timed_out": verdict["timed_out"], "agent_rc": result.get("rc")}
@@ -137,12 +172,14 @@ def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int) -> dict:
     return rec
 
 
-def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int, n: int) -> dict:
+def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int, n: int, rid: str | None = None,
+                        observer=None, log=None) -> dict:
+    observer = observer or (lambda event, **fields: None)
     if "multi" not in task.tags:
         raise SystemExit(f"{task.id} is a single-ticket task; fleet:{n} needs a multi task")
     verify_record = tasklib.capsule_for(task)
     agent_record = agent.capsule_record(task)
-    rid = run_id(task.id, f"fleet:{n}", agent.spec, index)
+    rid = rid or run_id(task.id, f"fleet:{n}", agent.spec, index)
     (out / rid).mkdir(parents=True, exist_ok=True)
 
     usages: list[dict] = []
@@ -154,7 +191,9 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
             usages.append(usage)
         return out
 
-    run = fleet.run_fleet(task, ticket_agent, verify_record, workers=n)
+    observer("agents")
+    run = fleet.run_fleet(task, ticket_agent, verify_record, workers=n, log=log, observer=observer)
+    observer("done", passed=run["passed"], conflicts=run["conflicts"], redos=run["redos"])
     rec = base_record(task, f"fleet:{n}", agent, verify_record, rid)
     rec["outcome"] = {"passed": run["passed"], "reward": 1.0 if run["passed"] else 0.0, "verifier_rc": 0 if run["passed"] else 1,
                       "timed_out": False, "agent_rc": None}
@@ -167,6 +206,15 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
         rec["cost"].update({k: sum(u[k] for u in usages) for k in ("input_tokens", "output_tokens")})
         rec["provenance"]["cost"] = "tokens measured from the agent event stream; usd unmeasured"
     return rec
+
+
+def persist(rec: dict, out: Path) -> Path:
+    """Validate a run record and write it as out/<run_id>/result.json (shared by the direct and the tmux runners)."""
+    results.validate(rec)
+    path = out / rec["run_id"] / "result.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(rec, indent=2) + "\n")
+    return path
 
 
 def main(argv=None) -> int:
@@ -198,9 +246,7 @@ def main(argv=None) -> int:
         for i in range(args.repeat):
             rec = (run_solo(task, agent, out, i) if args.condition == "solo"
                    else run_fleet_condition(task, agent, out, i, int(args.condition.split(":")[1])))
-            results.validate(rec)
-            (out / rec["run_id"]).mkdir(parents=True, exist_ok=True)
-            (out / rec["run_id"] / "result.json").write_text(json.dumps(rec, indent=2) + "\n")
+            persist(rec, out)
             print(f"{'PASS' if rec['outcome']['passed'] else 'FAIL'} {rec['run_id']} {rec['timing']['wall_seconds']}s")
     print(results.table(results.summarize(results.load_all(out))))
     return 0

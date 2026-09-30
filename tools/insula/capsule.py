@@ -35,6 +35,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -442,15 +443,26 @@ def verify_host_layers(record: dict) -> None:
 
 def run(record: dict, command: list[str], workspace: str, rw: list[tuple[str, str]], env: dict, net: str | None,
         gpu: bool | None, ro_workspace: bool, timeout: float | None, cwd: str, record_path: str | None,
-        ro: list[tuple[str, str]] | None = None, stdout=None, stderr=None) -> int:
+        ro: list[tuple[str, str]] | None = None, stdout=None, stderr=None, on_line=None) -> int:
     verify_host_layers(record)
     workspace = str(Path(workspace).resolve())
     if not Path(workspace).is_dir():
         raise CapsuleError(f"workspace {workspace} is not a directory")
     argv = run_argv(record, workspace, rw, env, ro_workspace, net, gpu, cwd, ro)
     started = time.time()
+    reader = None
+    if on_line is not None:
+        # Stream merged stdout and stderr line by line to the callback (stdout/stderr arguments are ignored).
+        stdout, stderr = subprocess.PIPE, subprocess.STDOUT
     proc = subprocess.Popen(argv + ["--"] + command, env={"PATH": "/usr/bin:/bin"}, start_new_session=True,
                             stdout=stdout, stderr=stderr)
+    if on_line is not None:
+        def pump():
+            for raw in iter(proc.stdout.readline, b""):
+                on_line(raw.decode("utf-8", "replace").rstrip("\n"))
+
+        reader = threading.Thread(target=pump, daemon=True)
+        reader.start()
     timed_out = False
     try:
         code = proc.wait(timeout=timeout)
@@ -458,6 +470,8 @@ def run(record: dict, command: list[str], workspace: str, rw: list[tuple[str, st
         timed_out = True
         os.killpg(os.getpgid(proc.pid), 9)
         code = proc.wait()
+    if reader is not None:
+        reader.join(timeout=10)
     if record_path:
         Path(record_path).write_text(json.dumps({
             "capsule_digest": record["capsule_digest"], "plan_digest": record["plan_digest"],

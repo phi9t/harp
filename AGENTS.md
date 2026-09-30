@@ -19,7 +19,8 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
   Working detail goes in gitignored `.scratch/<effort>/`.
 - `bench/` and `tools/insula/`: the multi-agent benchmark (validated tasks, harness, results) and the layered
-  capsule builder every step runs in. Start at `bench/README.md`; validate with `python3 bench/harness/validate.py`.
+  capsule builder every step runs in. Start at `bench/README.md`; validate with `python3 bench/harness/validate.py`;
+  watch runs live with `bench/tmuxh/bench-tmux` (a tmux window per run, a pane per agent, a dashboard).
 - `docs/spikes/collab/` and `experiments/collab/`: the multi-agent collaboration
   design space and the simulator that measures it.
 

@@ -34,6 +34,21 @@ verdict is deterministic; deleted or stubbed tests do not help; an empty patch f
 undone before grading. Multi tasks add: every ticket is necessary, and every landing order ends in a pass with the declared
 number of conflicts.
 
+## Watching runs in tmux
+
+```sh
+bench/tmuxh/bench-tmux run m03-same-file-append --condition fleet:2 --agent reference --attach
+bench/tmuxh/bench-tmux run p01-slugger t01-log-window --agent traecli --authorize-model-spend --slots 4
+bench/tmuxh/bench-tmux ls | attach | down          # the dedicated tmux server (socket `corenius-bench`); your own tmux is untouched
+python3 bench/tmuxh/dashboard.py --root bench/results/tmux-<stamp> --once      # plain-text dashboard
+```
+
+One window per run and one pane per agent (a fleet run also gets a lead pane that shows landing, conflicts and redos); window 0 is a
+curses dashboard (phase, time, tokens, commands, last event, verdict; `j/k` select, `Enter` jump, `l` log tail, `x` kill pane, `q` quit).
+The scheduler is the lead and runs the same `run_solo` / `run_fleet_condition` code as `run.py`, so results are identical records;
+panes and the dashboard talk to it only through state files (`runs/*/state.json`, `units/*/state.json`). `bench/tmuxh/check.sh` runs the
+tmux tests (libtmux is installed once through the uv project in `bench/tmuxh`).
+
 ## Isolation
 
 `tools/insula/capsule.py` builds a tmpfs root with the host `/usr` read-only, tool layers at fixed paths, the workspace at

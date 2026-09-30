@@ -238,6 +238,15 @@ class CapsuleTest(unittest.TestCase):
         for hidden in (".codex", ".trae", ".agents", ".git", "registry", "credentials.toml"):
             self.assertNotIn(hidden, out.split(), out)
 
+    def test_on_line_streams_merged_output_as_it_arrives(self):
+        record = capsule.build(self.request())
+        got, stamps = [], []
+        import time as _t
+        code = capsule.run(record, ["/bin/sh", "-c", "echo one; sleep 0.6; echo two >&2; echo three"], str(self.ws), [], {},
+                           None, None, False, 20, "/workspace", None, on_line=lambda l: (got.append(l), stamps.append(_t.time())))
+        self.assertEqual((code, got), (0, ["one", "two", "three"]))
+        self.assertGreater(stamps[1] - stamps[0], 0.4)  # streamed, not delivered at exit
+
     def test_cli_round_trip(self):
         out = subprocess.run([sys.executable, str(Path(capsule.__file__)), "build", self.request()],
                              capture_output=True, text=True, env={**os.environ})

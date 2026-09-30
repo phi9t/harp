@@ -100,6 +100,57 @@ class RunTest(unittest.TestCase):
         self.assertEqual(run.parse_usage(text), {"input_tokens": 15, "output_tokens": 5})
         self.assertIsNone(run.parse_usage("no events here"))
 
+    def test_plan_is_json_serializable_and_executing_it_equals_run(self):
+        task = tasklib.load_tasks(only=["t01-log-window"])[0]
+        agent = run.Agent("reference")
+        plan = agent.plan("", task, None, self.out / "w")
+        self.assertEqual(json.loads(json.dumps(plan.to_json()))["command"], "sh /tmp/solution/solve.sh")
+        record = agent.capsule_record(task)
+        ws = self.out / "ws"
+        tasklib.materialize(task, ws)
+        self.assertEqual(run.Agent.execute(plan, record, ws)["rc"], 0)
+        self.assertTrue(tasklib.verify(task, ws, record)["passed"])
+
+    def test_plan_for_cmd_and_traecli_writes_files_into_the_workdir(self):
+        task = tasklib.load_tasks(only=["p01-slugger"])[0]
+        cmd = run.Agent("cmd:true").plan("do the thing", task, None, self.out / "c")
+        self.assertEqual((self.out / "c" / "instruction.md").read_text(), "do the thing")
+        self.assertEqual((cmd.net, cmd.gpu), ("none", False))
+        tc = run.Agent("traecli:GPT-5.5", authorized=True).plan("do the thing", task, None, self.out / "t")
+        self.assertEqual(tc.net, "host")
+        self.assertTrue(tc.capsule.endswith("agent.json"))
+        self.assertIn("do the thing", (self.out / "t" / "prompt.md").read_text())
+        self.assertIn("--skip-git-repo-check", tc.command)
+
+    def test_observer_sees_the_run_phases_in_order(self):
+        events = []
+        task = tasklib.load_tasks(only=["t01-log-window"])[0]
+        rec = run.run_solo(task, run.Agent("reference"), self.out, 0, rid="fixed-run-id",
+                           observer=lambda event, **f: events.append((event, f.get("passed"))))
+        self.assertEqual(rec["run_id"], "fixed-run-id")
+        self.assertEqual(events, [("agents", None), ("verify", None), ("done", True)])
+
+    def test_fleet_log_and_observer_hooks(self):
+        logs, events = [], []
+        task = tasklib.load_tasks(only=["m03-same-file-append"])[0]
+        rec = run.run_fleet_condition(task, run.Agent("reference"), self.out, 0, 2, rid="fleet-id", log=logs.append,
+                                      observer=lambda event, **f: events.append(event))
+        self.assertTrue(rec["outcome"]["passed"])
+        self.assertTrue(any("CONFLICT landing" in m for m in logs))
+        self.assertTrue(any("verifier: PASS" in m for m in logs))
+        self.assertEqual(events[0], "agents")
+        self.assertEqual(events[-1], "done")
+        self.assertIn("landing", events)
+
+    def test_persist_writes_a_validated_record(self):
+        rec = self.solo("t01-log-window", "reference")
+        path = run.persist(rec, self.out / "p")
+        self.assertEqual(json.loads(path.read_text())["run_id"], rec["run_id"])
+        rec2 = dict(rec)
+        rec2.pop("outcome")
+        with self.assertRaises(ValueError):
+            run.persist(rec2, self.out / "p2")
+
     def test_wilson_edge_cases(self):
         self.assertEqual(results.wilson(0, 0), (0.0, 1.0))
         lo, hi = results.wilson(0, 5)

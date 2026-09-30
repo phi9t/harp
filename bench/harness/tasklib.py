@@ -77,15 +77,20 @@ def restore_protected(task: Task, ws: Path) -> None:
 
 
 def run_in_capsule(record: dict, ws: Path, command: str, env: dict, net: str, timeout: float,
-                   ro: list[tuple[str, str]] | None = None, gpu: bool = False) -> dict:
-    with tempfile.TemporaryFile() as out:
-        started = capsule.time.time()
-        code = capsule.run(record, ["/bin/sh", "-c", command], str(ws), [], env, net, gpu, False, timeout,
-                           "/workspace", None, ro, stdout=out, stderr=capsule.subprocess.STDOUT)
-        elapsed = capsule.time.time() - started
-        out.seek(0)
-        text = out.read().decode("utf-8", "replace")
-    return {"rc": code, "timed_out": code == 124, "seconds": round(elapsed, 3), "tail": "\n".join(text.splitlines()[-25:])}
+                   ro: list[tuple[str, str]] | None = None, gpu: bool = False, on_line=None) -> dict:
+    """Run `command` in the capsule. With on_line, every output line is also passed to the callback as it arrives."""
+    lines: list[str] = []
+
+    def sink(line: str) -> None:
+        lines.append(line)
+        if on_line is not None:
+            on_line(line)
+
+    started = capsule.time.time()
+    code = capsule.run(record, ["/bin/sh", "-c", command], str(ws), [], env, net, gpu, False, timeout,
+                       "/workspace", None, ro, on_line=sink)
+    elapsed = capsule.time.time() - started
+    return {"rc": code, "timed_out": code == 124, "seconds": round(elapsed, 3), "tail": "\n".join(lines[-25:])}
 
 
 def verify(task: Task, ws: Path, record: dict) -> dict:
