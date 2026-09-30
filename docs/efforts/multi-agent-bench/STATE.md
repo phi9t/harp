@@ -103,6 +103,8 @@ Landed: M1 capsule builder, M2 harness and single-ticket tracks, M3 blade ladder
 - `worker.py launch --capsule` runs a real traecli inside a capsule (live: capsule-smoke CLEAN in 59 s).
 - Live results are in `bench/RESULTS.md` and `bench/results-archive/`: pilot 102/102 passed (too easy to discriminate); solo vs fleet on the
   small multi tasks: equal correctness, fleet not faster (startup and redo cost), about 5x tokens on b-l5-fused-op.
+- tmux harness (landed 2026-09-30): `bench/tmuxh/bench-tmux run ...` = a window per run, a pane per agent, a curses dashboard in window 0, on the dedicated
+  tmux socket `corenius-bench`; tests via `bench/tmuxh/check.sh`; design in decisions/20260930-tmux-harness.md. Live-tested with real traecli.
 - Still running when this was written: `bench/harness/fleet_exp.sh` on mh1/mh2/mh3 (results in `bench/results/fleet-hard`, gitignored;
   4 of 18 runs done). Its final table is not in RESULTS.md yet.
 
@@ -123,6 +125,11 @@ Landed: M1 capsule builder, M2 harness and single-ticket tracks, M3 blade ladder
 ## Traps
 
 Things a fresh agent would get wrong.
+
+- `.gitignore` has `*.log`: a task file ending in .log is silently not committed (t01's events.log was missed once). `bench/harness/test_tasks_tracked.py` guards it.
+- The worktree `corenius-multi-agent-bench` (branch effort/multi-agent-bench) lags main after the tmux harness landed; run `git merge --ff-only main` there before using it, and do not
+  change harness code in it while `bench/harness/fleet_exp.sh` is running from it.
+- Never point libtmux at the default tmux server; the harness uses socket `corenius-bench` only.
 
 - zsh does not word-split unquoted variables: pass bwrap/blade flag lists as arrays. This bit us four times.
 - The capsule clears the environment on purpose (spack `LIBRARY_PATH` breaks blade's bundled gcc); pass env with `--env`.
