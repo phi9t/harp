@@ -23,13 +23,13 @@ use crate::core::{
     ProviderEvent, ProviderEventSink, SandboxResult, TranscriptStore,
 };
 use crate::eval::{
-    AimeDatasetSource, AimeEvalOptions, AimeExecutionMode, AimeRegradeOptions, AimeReplayOptions,
-    AimeSanityOptions, AimeSelection, run_aime_eval, run_aime_regrade, run_aime_replay,
-    run_aime_sanity,
+    AimeDatasetSource, AimeEvalOptions, AimeExecutionMode, AimeProviderProfile, AimeRegradeOptions,
+    AimeReplayOptions, AimeSanityOptions, AimeSelection, run_aime_eval, run_aime_regrade,
+    run_aime_replay, run_aime_sanity,
 };
 use crate::insula::InsulaSandbox;
 use crate::provider::acp::{
-    AcpOptions, SupervisorSink, TraeCliAcpProvider, run_acp_prompt, run_acp_prompt_observed,
+    SupervisorSink, TraeCliAcpProvider, run_acp_prompt, run_acp_prompt_observed,
     run_acp_prompt_streaming,
 };
 use crate::provider::codex::CodexDirectProvider;
@@ -94,7 +94,7 @@ enum EvalCommand {
         offset: usize,
         #[arg(long)]
         filter_id: Vec<String>,
-        #[arg(long, default_value_t = 300_000)]
+        #[arg(long, default_value_t = 600_000)]
         timeout_ms: u64,
         #[arg(long)]
         stream: bool,
@@ -102,6 +102,16 @@ enum EvalCommand {
         refresh_data: bool,
         #[arg(long)]
         fresh_provider_per_sample: bool,
+        #[arg(long)]
+        reasoning_effort: Option<String>,
+        /// Let the ACP session inherit the user's global TraeCLI plugins, skills, memory, and tools.
+        #[arg(long)]
+        inherit_user_config: bool,
+        /// Fail a sample as stalled when no session update arrives for this long.
+        #[arg(long, default_value = "90000")]
+        idle_timeout_ms: Option<u64>,
+        #[arg(long, default_value_t = 1)]
+        stall_retries: u32,
     },
     AimeSanity {
         #[arg(long)]
@@ -122,6 +132,16 @@ enum EvalCommand {
         filter_id: Vec<String>,
         #[arg(long)]
         fresh_provider_per_sample: bool,
+        #[arg(long)]
+        reasoning_effort: Option<String>,
+        /// Let the ACP session inherit the user's global TraeCLI plugins, skills, memory, and tools.
+        #[arg(long)]
+        inherit_user_config: bool,
+        /// Fail a sample as stalled when no session update arrives for this long.
+        #[arg(long)]
+        idle_timeout_ms: Option<u64>,
+        #[arg(long, default_value_t = 1)]
+        stall_retries: u32,
     },
     AimeReplay {
         #[arg(long)]
@@ -140,6 +160,16 @@ enum EvalCommand {
         failed_only: bool,
         #[arg(long)]
         filter_id: Vec<String>,
+        #[arg(long)]
+        reasoning_effort: Option<String>,
+        /// Let the ACP session inherit the user's global TraeCLI plugins, skills, memory, and tools.
+        #[arg(long)]
+        inherit_user_config: bool,
+        /// Fail a sample as stalled when no session update arrives for this long.
+        #[arg(long)]
+        idle_timeout_ms: Option<u64>,
+        #[arg(long, default_value_t = 1)]
+        stall_retries: u32,
     },
     AimeRegrade {
         #[arg(long)]
@@ -236,6 +266,10 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                 stream,
                 refresh_data,
                 fresh_provider_per_sample,
+                reasoning_effort,
+                inherit_user_config,
+                idle_timeout_ms,
+                stall_retries,
             } => {
                 let workspace = workspace_or_current(workspace)?;
                 let run_dir = run_dir.unwrap_or_else(|| default_aime_run_dir(&workspace));
@@ -262,6 +296,12 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     } else {
                         AimeExecutionMode::SharedProvider
                     },
+                    provider: AimeProviderProfile {
+                        isolate_session: !inherit_user_config,
+                        reasoning_effort,
+                        idle_timeout_ms,
+                        stall_retries,
+                    },
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -277,6 +317,10 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                 include_timeout_probe,
                 filter_id,
                 fresh_provider_per_sample,
+                reasoning_effort,
+                inherit_user_config,
+                idle_timeout_ms,
+                stall_retries,
             } => {
                 let workspace = workspace_or_current(workspace)?;
                 let run_dir =
@@ -295,6 +339,12 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     } else {
                         AimeExecutionMode::SharedProvider
                     },
+                    provider: AimeProviderProfile {
+                        isolate_session: !inherit_user_config,
+                        reasoning_effort,
+                        idle_timeout_ms,
+                        stall_retries,
+                    },
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -309,6 +359,10 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                 stream,
                 failed_only,
                 filter_id,
+                reasoning_effort,
+                inherit_user_config,
+                idle_timeout_ms,
+                stall_retries,
             } => {
                 let workspace = workspace_or_current(workspace)?;
                 let run_dir = run_dir.unwrap_or_else(|| default_aime_replay_run_dir(&workspace));
@@ -321,6 +375,12 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     stream,
                     failed_only,
                     filter_id,
+                    provider: AimeProviderProfile {
+                        isolate_session: !inherit_user_config,
+                        reasoning_effort,
+                        idle_timeout_ms,
+                        stall_retries,
+                    },
                 })
                 .await?;
                 println!("{}", serde_json::to_string_pretty(&summary)?);
@@ -354,17 +414,9 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
                     supervise,
                 } => {
                     let workspace = workspace_or_current(workspace)?;
-                    let provider = TraeCliAcpProvider::new(workspace.clone(), model);
-                    let command = provider.command.clone();
-                    let args = provider.args();
-                    let options = AcpOptions {
-                        command,
-                        args,
-                        cwd: workspace,
-                        model: provider.model,
-                        prompt,
-                        timeout_ms,
-                    };
+                    let mut provider = TraeCliAcpProvider::new(workspace.clone(), model);
+                    provider.timeout_ms = timeout_ms;
+                    let options = provider.prompt_options(prompt);
                     let supervisor_sink: Option<SupervisorSink> = if supervise {
                         Some(Arc::new(|snapshot| {
                             println!(
@@ -466,10 +518,13 @@ async fn run_from(cli: Cli) -> anyhow::Result<()> {
 }
 
 fn workspace_or_current(workspace: Option<PathBuf>) -> anyhow::Result<PathBuf> {
-    Ok(match workspace {
+    let path = match workspace {
         Some(path) => path,
         None => std::env::current_dir()?,
-    })
+    };
+    // TraeCLI rejects a relative `cwd` in `session/new` with "Invalid params".
+    path.canonicalize()
+        .with_context(|| format!("resolve workspace {}", path.display()))
 }
 
 fn default_aime_years() -> Vec<String> {

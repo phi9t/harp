@@ -7,7 +7,9 @@ use corenius::core::{
     TranscriptStore,
 };
 use corenius::provider::acp::TraeCliAcpProvider;
-use corenius::provider::acp::{AcpOptions, run_acp_prompt, run_acp_prompt_observed};
+use corenius::provider::acp::{
+    AcpOptions, AcpSessionProfile, run_acp_prompt, run_acp_prompt_observed,
+};
 use tempfile::tempdir;
 use tokio::time::{Duration, sleep, timeout};
 
@@ -41,6 +43,7 @@ for line in sys.stdin:
         model: Some("fake-model".to_string()),
         prompt: "reply ok".to_string(),
         timeout_ms: 5_000,
+        profile: AcpSessionProfile::default(),
     })
     .await
     .unwrap();
@@ -84,6 +87,7 @@ for line in sys.stdin:
             model: None,
             prompt: "hello".to_string(),
             timeout_ms: 5_000,
+            profile: AcpSessionProfile::default(),
         },
         None,
         Some(Arc::new(move |snapshot| {
@@ -128,6 +132,7 @@ for line in sys.stdin:
         model: None,
         prompt: "hello".to_string(),
         timeout_ms: 5_000,
+        profile: AcpSessionProfile::default(),
     })
     .await
     .unwrap_err();
@@ -169,6 +174,7 @@ for line in sys.stdin:
         model: None,
         prompt: "hello".to_string(),
         timeout_ms: 100,
+        profile: AcpSessionProfile::default(),
     })
     .await
     .unwrap_err();
@@ -222,6 +228,7 @@ for line in sys.stdin:
         model: None,
         timeout_ms: 5_000,
         serve_args: Some(vec![server.to_string_lossy().into_owned()]),
+        profile: AcpSessionProfile::default(),
     };
     let coordinator = Coordinator::new(
         Arc::new(provider),

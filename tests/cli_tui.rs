@@ -1,6 +1,9 @@
 mod support;
 
-use support::scripted_acp::{ScriptedAcpStep, assert_script_consumed, scripted_acp};
+use support::scripted_acp::{
+    ScriptedAcpStep, assert_script_consumed, recorded_serve_args, recorded_session_new_params,
+    scripted_acp,
+};
 
 use std::fs;
 use std::io::{BufRead, Write};
@@ -1025,4 +1028,170 @@ fn serve_fixture_once(expected_path: &'static str, body: String) -> String {
         stream.write_all(response.as_bytes()).unwrap();
     });
     format!("http://{addr}")
+}
+
+fn aime_sanity_command(server: &Path, run_dir: &Path, workspace: &Path) -> Command {
+    aime_sanity_command_with_timeout(server, run_dir, workspace, "5000")
+}
+
+fn aime_sanity_command_with_timeout(
+    server: &Path,
+    run_dir: &Path,
+    workspace: &Path,
+    timeout_ms: &str,
+) -> Command {
+    let mut command = Command::cargo_bin("corenius").unwrap();
+    command.env("TRAECLI_PATH", server).args([
+        "eval",
+        "aime-sanity",
+        "--workspace",
+        workspace.to_str().unwrap(),
+        "--dataset",
+        "evals/aime_sanity.jsonl",
+        "--filter-id",
+        "2024:67",
+        "--run-dir",
+        run_dir.to_str().unwrap(),
+        "--timeout-ms",
+        timeout_ms,
+    ]);
+    command
+}
+
+#[test]
+fn eval_aime_sanity_isolates_acp_session_by_default() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-isolated");
+    let run_dir = temp.path().join("isolated-run");
+    scripted_acp(
+        &server,
+        &[ScriptedAcpStep::Success {
+            text: "FINAL: 25\n",
+        }],
+    );
+
+    aime_sanity_command(&server, &run_dir, temp.path())
+        .args(["--reasoning-effort", "high"])
+        .assert()
+        .success();
+
+    let args = recorded_serve_args(&server);
+    assert!(args.contains(&"model_reasoning_effort=\"high\"".to_string()));
+    assert!(args.contains(&"features.plugins=false".to_string()));
+    assert!(args.contains(&"features.memories=false".to_string()));
+    assert!(args.contains(&"project_doc_max_bytes=0".to_string()));
+    let disallowed = args
+        .windows(2)
+        .filter(|pair| pair[0] == "--disallowed-tool")
+        .map(|pair| pair[1].clone())
+        .collect::<Vec<_>>();
+    assert!(disallowed.contains(&"exec".to_string()));
+    assert!(disallowed.contains(&"web_search".to_string()));
+    assert!(disallowed.contains(&"spawn_agent".to_string()));
+
+    let session_new = recorded_session_new_params(&server);
+    assert_eq!(session_new["_meta"]["trae"]["skills"], json!([]));
+    assert_eq!(session_new["_meta"]["trae"]["mcpServers"], json!([]));
+
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(manifest["provider"]["isolate_session"], true);
+    assert_eq!(manifest["provider"]["reasoning_effort"], "high");
+    assert_eq!(manifest["provider"]["stall_retries"], 1);
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    assert!(samples.contains("\"attempts\":1"));
+    assert_script_consumed(&server);
+}
+
+#[test]
+fn eval_aime_sanity_can_inherit_user_config() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-inherit");
+    let run_dir = temp.path().join("inherit-run");
+    scripted_acp(
+        &server,
+        &[ScriptedAcpStep::Success {
+            text: "FINAL: 25\n",
+        }],
+    );
+
+    aime_sanity_command(&server, &run_dir, temp.path())
+        .arg("--inherit-user-config")
+        .assert()
+        .success();
+
+    let args = recorded_serve_args(&server);
+    assert_eq!(args, vec!["acp".to_string(), "serve".to_string()]);
+    let session_new = recorded_session_new_params(&server);
+    assert!(session_new.get("_meta").is_none());
+    let manifest: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(manifest["provider"]["isolate_session"], false);
+    assert_script_consumed(&server);
+}
+
+#[test]
+fn eval_aime_sanity_retries_stalls_and_keeps_partial_text() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-stall");
+    let run_dir = temp.path().join("stall-run");
+    scripted_acp(
+        &server,
+        &[
+            ScriptedAcpStep::PartialThenStall {
+                text: "first attempt reasoning",
+            },
+            ScriptedAcpStep::PartialThenStall {
+                text: "second attempt reasoning",
+            },
+        ],
+    );
+
+    aime_sanity_command(&server, &run_dir, temp.path())
+        .args(["--idle-timeout-ms", "300", "--stall-retries", "1"])
+        .assert()
+        .success();
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    let sample: serde_json::Value = serde_json::from_str(samples.lines().next().unwrap()).unwrap();
+    assert_eq!(sample["failure_kind"], "stall_no_progress");
+    assert_eq!(sample["attempts"], 2);
+    assert_eq!(sample["response"], "second attempt reasoning");
+    assert!(
+        sample["error"]
+            .as_str()
+            .unwrap()
+            .contains("stalled: no session update for 300ms")
+    );
+    let metrics: serde_json::Value =
+        serde_json::from_str(&fs::read_to_string(run_dir.join("run_metrics.json")).unwrap())
+            .unwrap();
+    assert_eq!(metrics["aggregate"]["stall_count"], 1);
+    assert_eq!(metrics["aggregate"]["timeout_count"], 0);
+    assert_script_consumed(&server);
+}
+
+#[test]
+fn eval_aime_sanity_keeps_partial_text_on_timeout() {
+    let temp = tempdir().unwrap();
+    let server = temp.path().join("scripted-partial-timeout");
+    let run_dir = temp.path().join("partial-timeout-run");
+    scripted_acp(
+        &server,
+        &[ScriptedAcpStep::PartialThenStall {
+            text: "partial before deadline",
+        }],
+    );
+
+    aime_sanity_command_with_timeout(&server, &run_dir, temp.path(), "400")
+        .args(["--stall-retries", "0"])
+        .assert()
+        .success();
+
+    let samples = fs::read_to_string(run_dir.join("samples.jsonl")).unwrap();
+    let sample: serde_json::Value = serde_json::from_str(samples.lines().next().unwrap()).unwrap();
+    assert_eq!(sample["failure_kind"], "timeout_no_response");
+    assert_eq!(sample["attempts"], 1);
+    assert_eq!(sample["response"], "partial before deadline");
+    assert_script_consumed(&server);
 }

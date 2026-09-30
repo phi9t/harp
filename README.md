@@ -32,6 +32,14 @@ snapshots while the ACP child is running. Use `provider supervise traecli --pid
 ## Quick Eval
 
 `eval aime` runs the full GAIR AIME benchmark through the TraeCLI ACP provider.
+Each sample runs in an isolated ACP session: the user's TraeCLI plugins, skills,
+memory, MCP servers, and tools are disabled so the model solves the problem with
+reasoning alone. Pass `--inherit-user-config` to opt out, `--reasoning-effort
+<level>` to pin the model's reasoning effort, `--idle-timeout-ms` to fail a
+sample as stalled when no session update arrives (default 90s for `eval aime`),
+and `--stall-retries` to control how often a stalled sample is retried (default
+1). Partial response text is kept on timeouts and stalls, and `attempts` is
+recorded per sample.
 By default it evaluates all 60 problems from `2024`, `2025-I`, and `2025-II`,
 fetching missing JSONL data into `.scratch/aime-benchmark/data/` and writing
 `samples.jsonl`, `summary.json`, and `triage.md` under a timestamped
@@ -48,7 +56,7 @@ representative pass cases, including three easy cases; add
 
 Useful invocations:
 
-- `TRAECLI_PATH=/data02/home/philip.yang/.local/bin/traecli cargo run -- eval aime --workspace /data02/home/philip.yang/workspace/corenius --model gpt-5.2 --years 2025-I --limit 1 --timeout-ms 120000 --stream`
+- `TRAECLI_PATH=/data02/home/philip.yang/.local/bin/traecli cargo run -- eval aime --workspace /data02/home/philip.yang/workspace/corenius --model gpt-5.2 --years 2025-I --limit 1 --timeout-ms 120000 --reasoning-effort high --stream`
 - `TRAECLI_PATH=/data02/home/philip.yang/.local/bin/traecli cargo run -- eval aime-sanity --workspace /data02/home/philip.yang/workspace/corenius --model gpt-5.2 --timeout-ms 300000 --stream`
 - `cargo run -- eval aime-sanity --workspace . --filter-id 2025-I:I-1 --run-dir .scratch/aime-sanity/one`
 

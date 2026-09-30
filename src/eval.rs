@@ -13,7 +13,8 @@ use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
 use crate::core::{ProviderEvent, ProviderEventSink, UsageRecord};
 use crate::provider::acp::{
-    AcpOptions, TraeCliAcpProvider, run_acp_prompt, run_acp_prompt_streaming,
+    AcpFailureKind, AcpOutput, AcpPromptFailure, AcpSessionProfile, TraeCliAcpProvider,
+    run_acp_prompt_detailed,
 };
 
 const PROMPT_TEMPLATE: &str = r#"You are running in an automated AIME benchmark. Solve only the math problem below.
@@ -41,6 +42,7 @@ pub struct AimeSanityOptions {
     pub include_timeout_probe: bool,
     pub filter_id: Vec<String>,
     pub execution_mode: AimeExecutionMode,
+    pub provider: AimeProviderProfile,
 }
 
 #[derive(Clone, Debug)]
@@ -53,6 +55,7 @@ pub struct AimeEvalOptions {
     pub stream: bool,
     pub selection: AimeSelection,
     pub execution_mode: AimeExecutionMode,
+    pub provider: AimeProviderProfile,
 }
 
 #[derive(Clone, Debug)]
@@ -65,6 +68,41 @@ pub struct AimeReplayOptions {
     pub stream: bool,
     pub failed_only: bool,
     pub filter_id: Vec<String>,
+    pub provider: AimeProviderProfile,
+}
+
+/// How the TraeCLI ACP session is configured for each AIME sample.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct AimeProviderProfile {
+    /// Start each session without the user's plugins, skills, memory, or tools.
+    pub isolate_session: bool,
+    /// Pin the provider's reasoning effort (for example `medium` or `high`).
+    pub reasoning_effort: Option<String>,
+    /// Fail a sample as stalled when no session update arrives for this long.
+    pub idle_timeout_ms: Option<u64>,
+    /// How many times a stalled sample is retried before it is recorded as failed.
+    pub stall_retries: u32,
+}
+
+impl Default for AimeProviderProfile {
+    fn default() -> Self {
+        Self {
+            isolate_session: true,
+            reasoning_effort: None,
+            idle_timeout_ms: None,
+            stall_retries: 1,
+        }
+    }
+}
+
+impl AimeProviderProfile {
+    fn acp_profile(&self) -> AcpSessionProfile {
+        AcpSessionProfile {
+            isolated: self.isolate_session,
+            reasoning_effort: self.reasoning_effort.clone(),
+            idle_timeout_ms: self.idle_timeout_ms,
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -159,12 +197,20 @@ pub struct AimeSample {
     pub failure_kind: Option<AimeFailureKind>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub usage: Option<UsageRecord>,
+    /// Provider attempts made for this sample, including stall retries.
+    #[serde(default = "default_attempts")]
+    pub attempts: u32,
+}
+
+fn default_attempts() -> u32 {
+    1
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AimeFailureKind {
     TimeoutNoResponse,
+    StallNoProgress,
     ProviderError,
     NoFinal,
     WrongFinal,
@@ -250,6 +296,7 @@ pub struct AimeRunMetricAggregate {
     pub p95_elapsed_seconds: Option<f64>,
     pub max_elapsed_seconds: Option<f64>,
     pub timeout_count: usize,
+    pub stall_count: usize,
     pub provider_error_count: usize,
     pub no_final_count: usize,
     pub wrong_final_count: usize,
@@ -279,6 +326,7 @@ pub struct AimeRunManifest {
     pub execution_mode: AimeExecutionMode,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub regraded_from_sample_count: Option<usize>,
+    pub provider: AimeProviderProfile,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -316,29 +364,28 @@ pub async fn run_aime_sanity(options: AimeSanityOptions) -> anyhow::Result<AimeS
             options.include_timeout_probe,
         ),
         execution_mode: options.execution_mode,
+        provider: options.provider,
     };
     run_aime_eval(eval_options).await
+}
+
+fn aime_provider(options: &AimeEvalOptions) -> TraeCliAcpProvider {
+    let mut provider = TraeCliAcpProvider::new(options.workspace.clone(), options.model.clone())
+        .with_profile(options.provider.acp_profile());
+    provider.timeout_ms = options.timeout_ms;
+    provider
 }
 
 async fn run_aime_provider_prompt(
     options: &AimeEvalOptions,
     provider: &TraeCliAcpProvider,
     prompt: String,
-) -> anyhow::Result<crate::provider::acp::AcpOutput> {
+) -> Result<AcpOutput, AcpPromptFailure> {
     let provider = match options.execution_mode {
         AimeExecutionMode::SharedProvider => provider.clone(),
-        AimeExecutionMode::FreshProviderPerSample => {
-            TraeCliAcpProvider::new(options.workspace.clone(), options.model.clone())
-        }
+        AimeExecutionMode::FreshProviderPerSample => aime_provider(options),
     };
-    let acp_options = AcpOptions {
-        command: provider.command.clone(),
-        args: provider.args(),
-        cwd: options.workspace.clone(),
-        model: provider.model.clone(),
-        prompt,
-        timeout_ms: options.timeout_ms,
-    };
+    let acp_options = provider.prompt_options(prompt);
     if options.stream {
         let sink: ProviderEventSink = Arc::new(|event| {
             Box::pin(async move {
@@ -348,9 +395,35 @@ async fn run_aime_provider_prompt(
                 Ok(())
             }) as Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send>>
         });
-        run_acp_prompt_streaming(acp_options, Some(sink)).await
+        run_acp_prompt_detailed(acp_options, Some(sink), None).await
     } else {
-        run_acp_prompt(acp_options).await
+        run_acp_prompt_detailed(acp_options, None, None).await
+    }
+}
+
+/// Runs one sample, retrying stalled prompts up to `stall_retries` times.
+async fn run_aime_sample_with_retries(
+    options: &AimeEvalOptions,
+    provider: &TraeCliAcpProvider,
+    id: &str,
+    prompt: &str,
+) -> (Result<AcpOutput, AcpPromptFailure>, u32) {
+    let mut attempts = 0;
+    loop {
+        attempts += 1;
+        let result = run_aime_provider_prompt(options, provider, prompt.to_string()).await;
+        match &result {
+            Err(failure)
+                if failure.kind == AcpFailureKind::Stall
+                    && attempts <= options.provider.stall_retries =>
+            {
+                eprintln!(
+                    "STALL id={id} attempt={attempts} retrying: {}",
+                    failure.message
+                );
+            }
+            _ => return (result, attempts),
+        }
     }
 }
 
@@ -405,6 +478,7 @@ pub async fn run_aime_replay(options: AimeReplayOptions) -> anyhow::Result<AimeS
             include_timeout_probe: true,
         },
         execution_mode: AimeExecutionMode::SharedProvider,
+        provider: options.provider,
     };
     run_aime_cases(eval_options, loaded, cases, Some(derived_context)).await
 }
@@ -443,6 +517,7 @@ pub async fn run_aime_regrade(options: AimeRegradeOptions) -> anyhow::Result<Aim
             include_timeout_probe: true,
         },
         execution_mode: AimeExecutionMode::SharedProvider,
+        provider: AimeProviderProfile::default(),
     };
     let derived_context = AimeDerivedRunContext {
         kind: AimeDerivedRunKind::Regrade,
@@ -516,17 +591,18 @@ async fn run_aime_cases(
     );
     write_pretty_json(&options.run_dir.join("manifest.json"), &manifest).await?;
 
-    let provider = TraeCliAcpProvider::new(options.workspace.clone(), options.model.clone());
+    let provider = aime_provider(&options);
     let mut samples = Vec::new();
     for case in cases {
         let prompt = case.prompt.clone();
         eprintln!("RUN id={} expected={}", case.id, case.answer);
         let started = Instant::now();
-        let result = run_aime_provider_prompt(&options, &provider, prompt.clone()).await;
+        let (result, attempts) =
+            run_aime_sample_with_retries(&options, &provider, &case.id, &prompt).await;
         let elapsed_seconds = started.elapsed().as_secs_f64();
         let (response, return_status, usage, error) = match result {
             Ok(output) => (output.text, output.stop_reason, output.usage, None),
-            Err(error) => (String::new(), None, None, Some(error.to_string())),
+            Err(failure) => (failure.partial_text, None, None, Some(failure.message)),
         };
         let scored = score_aime_response(&case.answer, &response, error.as_deref());
         let sample = AimeSample {
@@ -545,6 +621,7 @@ async fn run_aime_cases(
             response,
             failure_kind: scored.failure_kind,
             usage,
+            attempts,
         };
         append_jsonl(&samples_path, &sample).await?;
         eprintln!(
@@ -933,6 +1010,9 @@ fn classify_failure(passed: bool, response: &str, error: Option<&str>) -> Option
     }
     if let Some(error) = error {
         let lower = error.to_ascii_lowercase();
+        if lower.contains("stalled") {
+            return Some(AimeFailureKind::StallNoProgress);
+        }
         if lower.contains("timed out") || lower.contains("timeout") {
             return Some(AimeFailureKind::TimeoutNoResponse);
         }
@@ -1077,6 +1157,7 @@ fn build_manifest(
                 AimeDerivedRunKind::Regrade => Some(context.source_sample_count),
             }
         }),
+        provider: options.provider.clone(),
     }
 }
 
@@ -1253,6 +1334,7 @@ fn failure_counts(samples: &[AimeSample]) -> BTreeMap<&AimeFailureKind, usize> {
 fn failure_kind_name(kind: &AimeFailureKind) -> &'static str {
     match kind {
         AimeFailureKind::TimeoutNoResponse => "timeout_no_response",
+        AimeFailureKind::StallNoProgress => "stall_no_progress",
         AimeFailureKind::ProviderError => "provider_error",
         AimeFailureKind::NoFinal => "no_final",
         AimeFailureKind::WrongFinal => "wrong_final",
@@ -1302,6 +1384,7 @@ fn build_run_metrics(
             p95_elapsed_seconds: percentile_nearest_rank(&elapsed, 0.95),
             max_elapsed_seconds: elapsed.last().copied(),
             timeout_count: count_kind(AimeFailureKind::TimeoutNoResponse),
+            stall_count: count_kind(AimeFailureKind::StallNoProgress),
             provider_error_count: count_kind(AimeFailureKind::ProviderError),
             no_final_count: count_kind(AimeFailureKind::NoFinal),
             wrong_final_count: count_kind(AimeFailureKind::WrongFinal),
@@ -1416,6 +1499,7 @@ mod tests {
                     include_timeout_probe: true,
                 },
                 execution_mode: AimeExecutionMode::SharedProvider,
+                provider: AimeProviderProfile::default(),
             },
         );
 
@@ -1449,6 +1533,7 @@ mod tests {
                 stream: false,
                 selection: AimeSelection::default_for_full(),
                 execution_mode: AimeExecutionMode::SharedProvider,
+                provider: AimeProviderProfile::default(),
             },
         );
         let triage = render_triage_markdown(&summary, &samples, None);
@@ -1472,6 +1557,14 @@ mod tests {
         assert_eq!(
             classify_failure(false, "", Some("ACP prompt timed out after 10ms")),
             Some(AimeFailureKind::TimeoutNoResponse)
+        );
+        assert_eq!(
+            classify_failure(
+                false,
+                "partial",
+                Some("ACP prompt stalled: no session update for 10ms")
+            ),
+            Some(AimeFailureKind::StallNoProgress)
         );
         assert_eq!(
             classify_failure(false, "", Some("json-rpc error from provider")),
@@ -1594,6 +1687,7 @@ mod tests {
                 include_timeout_probe: true,
             },
             execution_mode: AimeExecutionMode::SharedProvider,
+            provider: AimeProviderProfile::default(),
         };
         let manifest = build_manifest(
             &options,
@@ -1672,6 +1766,7 @@ mod tests {
                 error,
             ),
             usage: None,
+            attempts: 1,
         }
     }
 
@@ -1713,6 +1808,7 @@ mod tests {
         assert_eq!(metrics.aggregate.max_elapsed_seconds, Some(3.0));
         assert_eq!(metrics.aggregate.timeout_count, 1);
         assert_eq!(metrics.aggregate.provider_error_count, 0);
+        assert_eq!(metrics.aggregate.stall_count, 0);
         assert_eq!(metrics.aggregate.wrong_final_count, 1);
     }
 
