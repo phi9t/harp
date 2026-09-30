@@ -22,7 +22,7 @@ one-line fix.
 **Reading:** at this model strength the single-ticket tasks do not discriminate. They are useful as regression checks for the harness
 and for weaker agents, not for separating GPT-5.5 configurations. The S/M/L labels are authors' guesses and were not calibrated.
 
-## 3. Solo versus fleet on small multi-ticket tasks (`fleet-1`, 39 of 40 runs when this was written)
+## 3. Solo versus fleet on small multi-ticket tasks (`fleet-1`, 40 of 40 runs, complete)
 
 Interleaved solo and fleet runs; fleet workers run tickets in parallel; a conflicting ticket is redone from the new main.
 
@@ -35,13 +35,13 @@ Interleaved solo and fleet runs; fleet workers run tickets in parallel; a confli
 | m02-shared-interface (2) | solo | 5 | 5/5 | 73 | 0 / 0 | 3.6k |
 | m02-shared-interface | fleet:2 | 5 | 5/5 | 78 | 0 / 0 | 5.2k |
 | m03-same-file-append (2) | solo | 5 | 4/5 | 46 | 0 / 0 | 2.3k |
-| m03-same-file-append | fleet:2 | 4 | 4/4 | 70 | 4 / 4 | 2.8k |
+| m03-same-file-append | fleet:2 | 5 | 5/5 | 70 | 5 / 5 | 2.5k |
 
-- Correctness: equal within noise (n = 4 or 5). The single solo failure (`m03`) is one run and is not evidence of a difference.
+- Correctness: equal within noise (n = 5 per cell). The single solo failure (`m03`) is one run and is not evidence of a difference.
 - Wall time: fleet was not faster except on the fully disjoint `m01` (58 s vs 73 s, one small task, not tested for significance). Per-ticket
   agent startup and reading dominate at this size, and each conflict forces a full redo of one ticket.
 - Cost: `b-l5-fused-op` fleet used about 5 times the output tokens of solo. Conflicts were exactly the designed one per run.
-- The contamination column in the raw runs is not reported: before it was fixed it counted build artifacts (blade, cmake) as contamination.
+- The contamination column in the raw runs is not reported: before it was fixed it counted build artifacts (blade, cmake) as contamination, and paths were not recorded then, so the 3 files counted on `m02` fleet cannot be attributed.
 
 ## 4. Solo versus fleet on the hard multi-ticket tasks (`fleet-hard`, 4 of 18 runs when this was written)
 
