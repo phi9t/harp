@@ -105,13 +105,11 @@ Landed: M1 capsule builder, M2 harness and single-ticket tracks, M3 blade ladder
   small multi tasks: equal correctness, fleet not faster (startup and redo cost), about 5x tokens on b-l5-fused-op.
 - tmux harness (landed 2026-09-30): `bench/tmuxh/bench-tmux run ...` = a window per run, a pane per agent, a curses dashboard in window 0, on the dedicated
   tmux socket `corenius-bench`; tests via `bench/tmuxh/check.sh`; design in decisions/20260930-tmux-harness.md. Live-tested with real traecli.
-- Still running when this was written: `bench/harness/fleet_exp.sh` on mh1/mh2/mh3 (results in `bench/results/fleet-hard`, gitignored;
-  4 of 18 runs done). Its final table is not in RESULTS.md yet.
+- The hard-task experiment finished (18/18) and is in `bench/RESULTS.md` section 4 and `bench/results-archive/fleet-hard.json`: mh1 and mh2 pass in both conditions, mh3-cxx-engine solo 1/3 and fleet 0/3.
 
 ## Next actions
 
-1. When `bench/results/fleet-hard/report.txt` exists, copy the table into `bench/RESULTS.md` section 4 and archive it with
-   `bench/results-archive/` (see how fleet-1 was archived), then commit and land by fast-forward.
+1. Find out why mh3-cxx-engine fails (fleet and mostly solo): rerun a few with the saved verifier tail (fleet runs now write `verify-tail.txt`).
 2. If everything still passes, the benchmark needs harder or larger tasks to separate correctness: more tickets, hidden cross-cutting
    invariants that fail a ticket-local reading, longer tasks. Author with workers (`author-mh*` runs are the pattern), validate with validate.py.
 3. Cost in dollars is unmeasured; only tokens are. Add it if a price source is given.
