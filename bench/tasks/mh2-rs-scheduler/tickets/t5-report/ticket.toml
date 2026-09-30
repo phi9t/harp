@@ -1,0 +1,2 @@
+allow = ["src/report.rs", "src/scheduler.rs"]
+depends = ["t1-graph", "t2-queue", "t3-retry", "t4-calendar"]
