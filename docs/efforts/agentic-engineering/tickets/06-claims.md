@@ -1,8 +1,8 @@
 # 06 claims: claim checking for lead verification (F10)
 
 Type: feature
-Status: open
-Owner:
+Status: resolved
+Owner: lead
 Blocked by:
 Claimed:
 
@@ -16,10 +16,12 @@ Verification reports look like `docs/reference/milano.md` and `docs/efforts/mult
 `claims.py summary FILE` prints sampled versus recorded outcomes.
 
 ## Acceptance
-- [ ] Test on a report in the trial-1 format (use a short fixture with the three tag kinds and both citation forms).
-- [ ] Test: sampling is deterministic, seed-sensitive, never returns more than exist, and skips nothing silently (an uncited claim is flagged).
-- [ ] Test: record writes the JSONL outcome and calls the evidence stub with the output file digest; a missing evidence module with --evidence fails with a clear message.
-- [ ] Test: the printed command for a path:line citation reproduces the cited line when run.
-- [ ] tools/agents/checks.d/60-claims.sh runs the suite and exits non-zero on failure.
+- [x] Test on a report in the trial-1 format (use a short fixture with the three tag kinds and both citation forms).
+- [x] Test: sampling is deterministic, seed-sensitive, never returns more than exist, and skips nothing silently (an uncited claim is flagged).
+- [x] Test: record writes the JSONL outcome and calls the evidence stub with the output file digest; a missing evidence module with --evidence fails with a clear message.
+- [x] Test: the printed command for a path:line citation reproduces the cited line when run.
+- [x] tools/agents/checks.d/60-claims.sh runs the suite and exits non-zero on failure.
 
 ## Comments
+- 2026-09-30T08:24:30Z lead: claimed until 2026-10-01T08:24:30Z
+- 2026-09-30T08:24:38Z lead: resolved

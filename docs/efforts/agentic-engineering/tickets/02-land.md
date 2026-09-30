@@ -1,8 +1,8 @@
 # 02 land: landing with gates (F6)
 
 Type: feature
-Status: open
-Owner:
+Status: resolved
+Owner: lead
 Blocked by:
 Claimed:
 
@@ -21,13 +21,15 @@ Algorithm, under a lock in the repository's common git dir (a second concurrent 
 Never leave the main checkout on a different branch, never leave a stranded local commit that the remote does not have.
 
 ## Acceptance
-- [ ] Test: a failing gate leaves local mainline and the remote exactly as they were.
-- [ ] Test: lost race. A gate command pushes a competing commit to the bare remote; land rebases again, re-runs the gates on the new tip, and local mainline ends at the pushed tip with no stranded commit.
-- [ ] Test: overlap with a tracked change in the main checkout is refused with exit 3 and the changed paths; untracked files do not block.
-- [ ] Test: a branch containing a merge commit is refused with exit 4; the landed history stays linear.
-- [ ] Test: push-first ordering, proven by a remote pre-receive hook that rejects the first push: local mainline must not have moved before the retry succeeds.
-- [ ] Test: no remote or --no-push fast-forwards local mainline only; the landed sha is printed.
-- [ ] Tests cover the standalone CLI and the add_parser/run plug-in interface.
-- [ ] tools/agents/checks.d/20-land.sh runs the suite and exits non-zero on failure.
+- [x] Test: a failing gate leaves local mainline and the remote exactly as they were.
+- [x] Test: lost race. A gate command pushes a competing commit to the bare remote; land rebases again, re-runs the gates on the new tip, and local mainline ends at the pushed tip with no stranded commit.
+- [x] Test: overlap with a tracked change in the main checkout is refused with exit 3 and the changed paths; untracked files do not block.
+- [x] Test: a branch containing a merge commit is refused with exit 4; the landed history stays linear.
+- [x] Test: push-first ordering, proven by a remote pre-receive hook that rejects the first push: local mainline must not have moved before the retry succeeds.
+- [x] Test: no remote or --no-push fast-forwards local mainline only; the landed sha is printed.
+- [x] Tests cover the standalone CLI and the add_parser/run plug-in interface.
+- [x] tools/agents/checks.d/20-land.sh runs the suite and exits non-zero on failure.
 
 ## Comments
+- 2026-09-30T08:24:30Z lead: claimed until 2026-10-01T08:24:30Z
+- 2026-09-30T08:24:37Z lead: resolved

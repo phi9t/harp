@@ -1,8 +1,8 @@
 # 01 wt-core: worktree lifecycle (F5)
 
 Type: feature
-Status: open
-Owner:
+Status: resolved
+Owner: lead
 Blocked by:
 Claimed:
 
@@ -19,12 +19,14 @@ One writer per tree is a rule; nothing creates, lists or removes agent worktrees
 - Usage errors exit 64; refusals exit 1 with a one-line reason.
 
 ## Acceptance
-- [ ] Tests on throwaway repos cover new (branch, directory, metadata, refusal of existing branch and directory).
-- [ ] Tests cover status: ahead/behind, dirty count, owner, age, JSON shape.
-- [ ] Test covers finish from inside the worktree it removes (run the command with that worktree as the working directory of a subprocess).
-- [ ] Tests cover finish refusing an unmerged branch and a dirty worktree.
-- [ ] Tests cover gc as a dry run by default and --apply removing only merged or abandoned trees, never a dirty one or one with commits ahead.
-- [ ] Tests cover the plugin hook: a missing land module is ignored, a land module with a broken import raises, a fake land module with add_parser/run registers a land subcommand.
-- [ ] tools/agents/checks.d/10-wt.sh runs the suite and exits non-zero on failure.
+- [x] Tests on throwaway repos cover new (branch, directory, metadata, refusal of existing branch and directory).
+- [x] Tests cover status: ahead/behind, dirty count, owner, age, JSON shape.
+- [x] Test covers finish from inside the worktree it removes (run the command with that worktree as the working directory of a subprocess).
+- [x] Tests cover finish refusing an unmerged branch and a dirty worktree.
+- [x] Tests cover gc as a dry run by default and --apply removing only merged or abandoned trees, never a dirty one or one with commits ahead.
+- [x] Tests cover the plugin hook: a missing land module is ignored, a land module with a broken import raises, a fake land module with add_parser/run registers a land subcommand.
+- [x] tools/agents/checks.d/10-wt.sh runs the suite and exits non-zero on failure.
 
 ## Comments
+- 2026-09-30T08:24:30Z lead: claimed until 2026-10-01T08:24:30Z
+- 2026-09-30T08:24:37Z lead: resolved
