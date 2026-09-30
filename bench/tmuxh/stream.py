@@ -78,3 +78,55 @@ def merge_update(state: dict, update: dict) -> dict:
         else:
             out[key] = value
     return out
+
+
+def follow(path: str, title: str = "", color: bool = True, once: bool = False, out=None, poll: float = 0.5) -> int:
+    """Print a growing events.jsonl through format_event, like `tail -F` with formatting. `once` stops at the end of the file."""
+    import os
+    import sys
+    import time
+
+    out = out or sys.stdout
+    if title:
+        print(f"{BOLD if color else ''}══ {title} ══{RESET if color else ''}", file=out, flush=True)
+    pos, buf = 0, ""
+    while True:
+        try:
+            size = os.path.getsize(path)
+        except OSError:
+            size = 0
+        if size < pos:
+            pos = 0  # truncated or replaced
+        if size > pos:
+            with open(path, "rb") as handle:
+                handle.seek(pos)
+                chunk = handle.read()
+            pos += len(chunk)
+            buf += chunk.decode("utf-8", "replace")
+            *lines, buf = buf.split("\n")
+            for line in lines:
+                text, _ = format_event(line, color=color)
+                if text is not None:
+                    print(text, file=out, flush=True)
+        elif once:
+            return 0
+        if once and size == pos:
+            return 0
+        time.sleep(poll)
+
+
+def main(argv=None) -> int:
+    import argparse
+    import sys
+
+    p = argparse.ArgumentParser(description="Follow a traecli events.jsonl with readable formatting.")
+    p.add_argument("--follow", required=True, metavar="EVENTS_JSONL")
+    p.add_argument("--title", default="")
+    p.add_argument("--once", action="store_true")
+    p.add_argument("--no-color", action="store_true")
+    args = p.parse_args(argv)
+    return follow(args.follow, args.title, color=not args.no_color and sys.stdout.isatty(), once=args.once)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

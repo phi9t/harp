@@ -4,6 +4,7 @@
   bench-tmux run TASK... [--all] --agent reference|noop|cmd:SHELL|traecli[:MODEL] [--condition solo|fleet:N] [--repeat K]
                          [--slots K] [--attach] [--down] [--authorize-model-spend]
   bench-tmux dash [--root RUN_ROOT] [--once]     dashboard for a run root (default: the latest)
+  bench-tmux watch RUN_DIR...                    a window per worker (tools/agents/worker.py run dirs), formatted event stream
   bench-tmux ls | attach | down                  inspect, attach to, or kill the dedicated tmux server
 
 Everything runs on a dedicated tmux server (socket `corenius-bench`); your own tmux sessions are never touched.
@@ -88,6 +89,32 @@ def cmd_run(args) -> int:
     return 0 if len(records) == len(work) else 1
 
 
+def cmd_watch(args) -> int:
+    """One tmux window per worker run directory, each following that worker's formatted event stream."""
+    import shlex
+
+    runs = [Path(r) for r in args.run_dir]
+    for r in runs:
+        if not (r / "run.json").exists():
+            raise SystemExit(f"{r} is not a worker run directory (no run.json)")
+    conf = Path(args.root or (RESULTS / "watch")) / "tmux.conf"
+    conf.parent.mkdir(parents=True, exist_ok=True)
+    conf.write_text(scheduler.TMUX_CONF)
+    server = libtmux.Server(socket_name=args.socket, config_file=str(conf))
+    name = args.session or "fleet-" + datetime.now(timezone.utc).strftime("%H%M%S")
+    follow = lambda r: (f"{shlex.quote(sys.executable)} {shlex.quote(str(HERE / 'stream.py'))} --follow "
+                        f"{shlex.quote(str(r / 'events.jsonl'))} --title {shlex.quote(r.name)}")
+    status = lambda r: (f"{shlex.quote(sys.executable)} {shlex.quote(str(ROOT / 'tools' / 'agents' / 'worker.py'))} status {shlex.quote(str(r))}")
+    session = server.new_session(session_name=name, window_name="overview", attach=False, x=200, y=50,
+                                 window_command="sh -c " + shlex.quote(
+                                     "while :; do clear; date; " + "; ".join(f"echo; echo {shlex.quote(r.name)}; {status(r)}" for r in runs) + "; sleep 5; done"))
+    for r in runs:
+        session.new_window(window_name=r.name.rsplit("-", 1)[0][:28], attach=False, window_shell=follow(r))
+    print(f"session {name} on tmux socket '{args.socket}': window 0 overview, then one window per worker\n"
+          f"attach: tmux -L {args.socket} attach -t {name}\nstop: {sys.argv[0]} down --socket {args.socket}")
+    return 0
+
+
 def cmd_dash(args) -> int:
     root = Path(args.root) if args.root else latest_root()
     if root is None:
@@ -142,6 +169,10 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--down", action="store_true", help="kill the tmux server when the runs finish")
     r.add_argument("--no-dashboard", action="store_true")
     r.add_argument("--authorize-model-spend", action="store_true")
+    w = sub.add_parser("watch", help="follow worker run directories (from tools/agents/worker.py) in tmux windows")
+    w.add_argument("run_dir", nargs="+")
+    w.add_argument("--session")
+    w.add_argument("--root")
     d = sub.add_parser("dash")
     d.add_argument("--root")
     d.add_argument("--once", action="store_true")
@@ -150,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
     for sp in sub.choices.values():
         sp.add_argument("--socket", default=scheduler.SOCKET)
     args = p.parse_args(argv)
-    return {"run": cmd_run, "dash": cmd_dash, "ls": cmd_ls, "attach": cmd_attach, "down": cmd_down}[args.cmd](args)
+    return {"run": cmd_run, "watch": cmd_watch, "dash": cmd_dash, "ls": cmd_ls, "attach": cmd_attach, "down": cmd_down}[args.cmd](args)
 
 
 if __name__ == "__main__":

@@ -24,3 +24,12 @@ fast-forward; nothing is pushed (owner decision, 2026-09-30).
   appended to this record.
 - After landing, F5 to F10 are used on this run (land T3-T6 through `wt.py`/`land.py`, tracker list/lint over these tickets, evidence records of the six runs, claim sampling of the
   lead's notes, handoff messages), and the feature register is updated.
+
+## Dispatch log
+
+- Round 1 (08:09Z) was a dispatch mistake of mine: the generated task preambles named `checks.d/NN-name.sh` with the ticket number (`04-msg.sh`), while the write allowlist and
+  the ticket used the checks number (`40-msg.sh`). The `msg` worker stopped after 48 s and said so instead of violating its boundary (DEGRADED, no files); the other five
+  were running with the same text. I killed all six (the first kill only reached the launcher shell; the `timeout` and capsule processes had to be killed separately),
+  confirmed every worktree was clean, removed the six empty trial worktrees and branches, fixed the preamble (the three file names are now stated as authoritative), and
+  relaunched at 08:11Z. Nothing from round 1 was kept. A worker that flagged a conflicting instruction rather than guessing is the behaviour we want.
+- `bench/tmuxh/bench-tmux watch RUN_DIR...` (new) opens one tmux window per worker following its formatted event stream (`stream.py --follow`); used for round 2.

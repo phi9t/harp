@@ -118,5 +118,38 @@ class StreamTest(unittest.TestCase):
         self.assertLessEqual(len(text), 62)
 
 
+class FollowTest(unittest.TestCase):
+    def test_follow_formats_existing_lines_and_picks_up_appended_ones(self):
+        import io
+        import threading
+        import time
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "events.jsonl"
+            path.write_text(CMD_START + "\n" + CMD_DONE + "\n")
+            out = io.StringIO()
+            stream.follow(str(path), title="w1", color=False, once=True, out=out)
+            text = out.getvalue()
+            self.assertIn("══ w1 ══", text)
+            self.assertIn("$ rg -n", text)
+            self.assertIn("rc=0", text)
+            # live: append after the follower started (a partial line must wait for its newline)
+            out2 = io.StringIO()
+            t = threading.Thread(target=lambda: stream.follow(str(path), color=False, once=True, out=out2, poll=0.05))
+            path.write_text("")
+            t.start()
+            time.sleep(0.2)
+            t.join(timeout=5)
+            with path.open("a") as h:
+                h.write(EDIT[:30])
+            out3 = io.StringIO()
+            stream.follow(str(path), color=False, once=True, out=out3)
+            self.assertEqual(out3.getvalue(), "")  # no newline yet: nothing printed, nothing crashed
+            with path.open("a") as h:
+                h.write(EDIT[30:] + "\n")
+            out4 = io.StringIO()
+            stream.follow(str(path), color=False, once=True, out=out4)
+            self.assertIn("/workspace/src/lib.rs", out4.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()
