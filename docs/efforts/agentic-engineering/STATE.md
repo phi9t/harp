@@ -4,8 +4,8 @@
 ```json
 {
   "base_branch": "main",
-  "base_commit": "a76603d9d59c5cfef29b69b31747eb5abf85a314",
-  "dehydrated": "2026-09-30T08:28:50Z",
+  "base_commit": "e5fe74461a9285c1ef70e5d8a0ffabbc6953e85d",
+  "dehydrated": "2026-09-30T22:20:03Z",
   "effort": "agentic-engineering",
   "runs": [
     {
@@ -46,6 +46,13 @@
   ],
   "worktrees": [
     {
+      "branch": "main",
+      "dirty": [],
+      "head": "e5fe74461a9285c1ef70e5d8a0ffabbc6953e85d",
+      "path": "/data02/home/philip.yang/workspace/corenius",
+      "pushed": false
+    },
+    {
       "branch": "claude/durable-efforts",
       "dirty": [],
       "head": "e0d55e2fbd196ca00365426c7fca55804d86a726",
@@ -55,7 +62,7 @@
     {
       "branch": "claude/milestone-b",
       "dirty": [],
-      "head": "90135138e78ef11b2a7b876d0715909106dee579",
+      "head": "366361b5a46045823cf6b45941c66ad8379dfebe",
       "path": "/data02/home/philip.yang/workspace/corenius-mb",
       "pushed": false
     },
