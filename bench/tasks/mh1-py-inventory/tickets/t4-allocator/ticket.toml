@@ -1,0 +1,2 @@
+allow = ["inventory/allocator.py"]
+depends = ["t1-ledger", "t2-reservations"]

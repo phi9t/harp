@@ -1,0 +1,2 @@
+allow = ["inventory/reservations.py"]
+depends = ["t1-ledger"]
