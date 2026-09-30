@@ -193,8 +193,16 @@ beside it). Anything that has to live inside the agent runtime is Rust under
   permission error, not just a supervisor violation; the escape attempts in the
   interception fixtures fail. Needs the network and credential paths the
   provider requires; document them.
-- **State.** New. Depends on what `traecli` needs inside the sandbox; the first
-  step is finding out.
+- **State.** Built 2026-09-30 as `worker.py launch --sandbox insula --capsule
+  ...`: the worktree is mounted read-only in the capsule and only the allowed
+  paths are bound writable (missing ones are pre-created and removed again if
+  untouched). What `traecli` needs inside: its binary, `~/.trae/traecli.toml`,
+  `~/.trae/cli/auth.json`, network with the proxy variables, `TRAE_HOME`; the
+  `agent` capsule request already provides them. Verified by a live GPT-5.5
+  probe in a read-only workspace: the allowed file was written, and writes to
+  `/workspace/probe.txt` and `README.md` failed with "Read-only file system"
+  (owner decision: Tier 3, but done since the spike answered the question;
+  `docs/practice/decisions/2026-09-30-policy-defaults.md`).
 
 ### F13 ACP client correctness
 
@@ -297,7 +305,7 @@ recorded the result in the feature's row below.
 | F9 | Evidence records | 1 | implemented (round 2) | 15 unit tests; round 1 rejected by the lead (untracked files missing from the diff digest); fix re-verified with edit/add/delete tamper modes | yes: records of all seven Milestone B worker runs, all verify |
 | F10 | Claim checking | 1 | implemented | 5 unit tests; deterministic on real reports; chained into evidence with the real `evidence.py` (forged sidecar line detected) | yes: sampled the lead's verification notes; it caught two wrong citations of mine |
 | F11 | Advisory path claims | 2 | new | | no |
-| F12 | Provider sandbox | 2 | new | | no |
+| F12 | Provider sandbox | 3 | built | `test_worker.py` (binds, cleanup, capsule required); live probe: escape writes fail with EROFS | no |
 | F13 | ACP client correctness | 2 | new | | no |
 | F14 | Event normalization | 2 | new | | no |
 | F15 | Budgets | 2 | new | | no |
@@ -311,8 +319,8 @@ recorded the result in the feature's row below.
 2. F5 and F6, so that every later feature lands through the repo's own
    mechanism instead of by hand.
 3. F7, F8, F9, F10 (the tracker, messages and evidence the loop reports into).
-4. Tier 2 in this order: F17, F16, F15, F14, F11, then F13 and F12; F12 still
-   needs a decision on provider sandboxing.
+4. Tier 2 in this order: F17, F16, F15, F14, F11, then F13. F12 was moved to
+   Tier 3 and built the same day (see its entry).
 5. `tools/agents/check.sh` grows with each feature and is green before each
    landing.
 
@@ -326,9 +334,12 @@ recorded the result in the feature's row below.
    that work committed or moved to its own branch.~~ Resolved 2026-09-30: the
    owner had it committed on main (`c1f458b`) after `cargo test --offline`
    passed; `check.sh` now runs cargo by default (`CHECK_CARGO=0` skips it).
-3. Whether F12 (sandboxing the provider) is required for Milestone B or a Tier 3
-   follow-up if `traecli` cannot run inside bubblewrap without extra binds.
-4. The Tier 1 boundary: agree that F1 to F10 is the Milestone B minimum.
+3. ~~Whether F12 (sandboxing the provider) is required for Milestone B or a Tier 3
+   follow-up.~~ Resolved 2026-09-30: Tier 3, not a Milestone B requirement; the
+   spike showed `traecli` runs in the capsule with two config binds, so F12 was
+   built the same day.
+4. ~~The Tier 1 boundary: agree that F1 to F10 is the Milestone B minimum.~~
+   Settled by shipping F1 to F10 as Milestone B (2026-09-30).
 
 ## Not features
 

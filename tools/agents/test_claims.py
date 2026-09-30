@@ -81,9 +81,14 @@ class ClaimsTest(unittest.TestCase):
         first = self.json_lines(self.call(["sample", str(self.report), "--n", "2", "--seed", "one"]))
         self.assertEqual(self.code, claims.OK, self.err)
         second = self.json_lines(self.call(["sample", str(self.report), "--n", "2", "--seed", "one"]))
-        third = self.json_lines(self.call(["sample", str(self.report), "--n", "2", "--seed", "two"]))
         self.assertEqual([row["id"] for row in first], [row["id"] for row in second])
-        self.assertNotEqual([row["id"] for row in first], [row["id"] for row in third])
+        # Seed sensitivity: the sampling key hashes the seed with the report digest, and the report here contains
+        # a per-run temp path, so any two seeds may order a 2-of-5 sample identically (about 1 in 10 runs). Compare
+        # the full order under several seeds instead; all of them agreeing by chance is about 1 in 120**5.
+        def order(seed):
+            return [row["id"] for row in self.json_lines(self.call(["sample", str(self.report), "--n", "99", "--seed", seed]))]
+        base = order("one")
+        self.assertTrue(any(order(seed) != base for seed in ("two", "three", "four", "five", "six")))
         all_rows = self.json_lines(self.call(["sample", str(self.report), "--n", "99", "--seed", "one"]))
         self.assertEqual(len(all_rows), 5)
         uncited = [row for row in all_rows if row["status"] == "UNCITED"]

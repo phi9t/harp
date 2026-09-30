@@ -289,6 +289,42 @@ class WorkerTest(unittest.TestCase):
         self.assertEqual(self.last_code, 64)
         self.assertFalse((self.repo.parent / "corenius-worker-x").exists())
 
+    # --- F12: --sandbox insula (read-only worktree, allowed paths bound writable) ---
+
+    def test_sandbox_insula_needs_a_capsule(self):
+        os.environ["FAKE_MODE"] = "clean"
+        self._main(["launch", "--task", str(self.task), "--name", "s1", "--allow", "out.md",
+                    "--repo", str(self.repo), "--sandbox", "insula"])
+        self.assertEqual(self.last_code, 64)
+        self.assertFalse((self.repo.parent / "corenius-worker-s1").exists())
+
+    def test_sandbox_binds_precreate_missing_allowed_paths(self):
+        tree = Path(self.tmp.name) / "tree"
+        (tree / "tools").mkdir(parents=True)
+        (tree / "README").write_text("x\n")
+        binds, created = worker.sandbox_binds(tree, ["README", "tools/agents/new.py", "scratch/"])
+        self.assertEqual([dest for _, dest in binds],
+                         ["/workspace/README", "/workspace/tools/agents/new.py", "/workspace/scratch"])
+        self.assertEqual(created, [tree / "tools" / "agents", tree / "tools" / "agents" / "new.py", tree / "scratch"])
+        self.assertTrue((tree / "tools" / "agents" / "new.py").is_file())
+        self.assertTrue((tree / "scratch").is_dir())
+        self.assertEqual((tree / "README").read_text(), "x\n")
+        with self.assertRaises(worker.WorkerError):
+            worker.sandbox_binds(tree, ["../escape"])
+        with self.assertRaises(worker.WorkerError):
+            worker.sandbox_binds(tree, ["/abs"])
+
+    def test_remove_untouched_keeps_what_the_worker_wrote(self):
+        tree = Path(self.tmp.name) / "tree2"
+        tree.mkdir()
+        _, created = worker.sandbox_binds(tree, ["a/kept.py", "b/empty.py", "c/"])
+        (tree / "a" / "kept.py").write_text("print(1)\n")
+        removed = worker.remove_untouched(created)
+        self.assertEqual(sorted(removed), sorted([str(tree / "b" / "empty.py"), str(tree / "b"), str(tree / "c")]))
+        self.assertTrue((tree / "a" / "kept.py").exists())
+        self.assertFalse((tree / "b").exists())
+        self.assertFalse((tree / "c").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

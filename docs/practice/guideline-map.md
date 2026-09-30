@@ -111,7 +111,8 @@ State: partial; milano's `scm` and vaso's relay are the two implemented
 mechanisms, the simulator compares them. Recommended default: worktree per
 task, fast-forward-only mainline, gate on the exact tip, landing through one
 mechanism (`coord`, phase 4), human promotion where the profile says so. Milano's
-retry-after-lost-race bug was found here and is fixed on a branch.
+retry-after-lost-race bug was found here and landed on `diziet/mainline`
+(`f8c0120`, 2026-09-30).
 
 ### 2.4 Work definition and tracking
 
@@ -381,6 +382,10 @@ C12 to C14 verification and review, C15 roles, C16 vocabulary, C17 boundary,
 C18 knowledge, C19 review, C20 verification).
 
 ## 5. Decisions needed before writing
+
+All seven were decided on 2026-09-30 by adopting the recommended defaults
+(repair budget: 3); see `decisions/2026-09-30-policy-defaults.md`. The list
+is kept so the guideline documents can cite what each one answers.
 
 1. Repo profiles: adopt the idea and name the initial set.
 2. Merge authority per profile (2.1, 2.3).

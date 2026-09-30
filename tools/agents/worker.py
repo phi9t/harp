@@ -142,8 +142,54 @@ TASK
 """
 
 
+def sandbox_binds(worktree: Path, allowed: list[str]) -> tuple[list[tuple[Path, str]], list[Path]]:
+    """Writable binds for `--sandbox insula`: the worktree is mounted read-only and only the allowed paths are
+    bound writable. bwrap can bind only what exists, so a missing allowed path is created first: a directory when
+    the entry ends with '/', otherwise an empty file (with its missing parents). Returns (binds, created); the
+    created paths are removed again after the run if the worker left them untouched."""
+    binds: list[tuple[Path, str]] = []
+    created: list[Path] = []
+    for entry in allowed:
+        relative = entry.rstrip("/")
+        parts = Path(relative).parts
+        if not relative or Path(relative).is_absolute() or ".." in parts:
+            raise WorkerError(f"allowed path {entry!r} must be relative and inside the worktree")
+        host = worktree / relative
+        if not host.exists():
+            for parent in reversed(host.parents):
+                if worktree in parent.parents or parent == worktree:
+                    if not parent.exists():
+                        parent.mkdir()
+                        created.append(parent)
+            if entry.endswith("/"):
+                host.mkdir()
+            else:
+                host.touch()
+            created.append(host)
+        binds.append((host, f"/workspace/{relative}"))
+    return binds, created
+
+
+def remove_untouched(created: list[str | Path]) -> list[str]:
+    """Remove pre-created empty files and empty directories (deepest first); returns what was removed."""
+    removed = []
+    for path in sorted((Path(p) for p in created), key=lambda p: len(p.parts), reverse=True):
+        try:
+            if path.is_file() and path.stat().st_size == 0:
+                path.unlink()
+                removed.append(str(path))
+            elif path.is_dir() and not any(path.iterdir()):
+                path.rmdir()
+                removed.append(str(path))
+        except OSError:
+            continue
+    return removed
+
+
 def launch(args: argparse.Namespace) -> int:
     repo = main_worktree(args.repo)
+    if args.sandbox == "insula" and not getattr(args, "capsule", None):
+        raise WorkerError("--sandbox insula needs --capsule: the capsule is what enforces the paths")
     if not Path(args.task).is_file():
         raise WorkerError(f"task file {args.task} not found")
     task = Path(args.task).read_text()
@@ -173,6 +219,14 @@ def launch(args: argparse.Namespace) -> int:
     run_dir = runs_root() / "workers" / f"{name}-{stamp}"
     run_dir.mkdir(parents=True)
     capsule_ref = getattr(args, "capsule", None)
+    enforced = args.sandbox == "insula"
+    precreated: list[Path] = []
+    rw_binds: list[tuple[Path, str]] = []
+    if enforced:
+        rw_binds, precreated = sandbox_binds(worktree, list(args.allow))
+    allowed_text = ", ".join(args.allow) or "(none: read-only run)"
+    if enforced:
+        allowed_text += " (enforced: every other path under /workspace is mounted read-only)"
     if capsule_ref:
         # Inside a capsule only the worktree is mounted (at /workspace); other repos and git metadata are not visible.
         shown_tree, shown_branch = "/workspace", "(not visible in the capsule)"
@@ -186,7 +240,7 @@ def launch(args: argparse.Namespace) -> int:
     prompt = HEADER.format(
         worktree=shown_tree,
         branch=shown_branch,
-        allowed=", ".join(args.allow) or "(none: read-only run)",
+        allowed=allowed_text,
         protected_rule=protected_rule,
     ) + task
     (run_dir / "prompt.md").write_text(prompt)
@@ -202,8 +256,14 @@ def launch(args: argparse.Namespace) -> int:
             sys.executable, str(capsule_tool), "run", capsule_ref, "--workspace", str(worktree), "--net", "host",
             "--rw", f"{run_dir}:/tmp/run", "--env", "TRAE_HOME=/home/bench/.trae",
             "--env", "TRAECLI_HOME=/home/bench/.trae/cli", "--record", str(run_dir / "capsule-run.json"),
-            "--", *inner,
         ]
+        if enforced:
+            # F12: the worktree is read-only inside the capsule; only the allowed paths are writable. A write
+            # elsewhere fails with EROFS at the kernel instead of being caught afterwards by the supervisor.
+            worker_cmd.append("--ro-workspace")
+            for host, dest in rw_binds:
+                worker_cmd += ["--rw", f"{host}:{dest}"]
+        worker_cmd += ["--", *inner]
     else:
         worker_cmd = [
             traecli, "exec",
@@ -244,8 +304,10 @@ def launch(args: argparse.Namespace) -> int:
         "forbidden": list(DEFAULT_FORBIDDEN) + list(args.forbid or []),
         "model": args.model,
         "effort": args.effort,
-        "sandbox": "danger-full-access (capsule)" if capsule_ref else args.sandbox,
+        "sandbox": ("insula (capsule, read-only worktree, allowed paths bound writable)" if enforced
+                    else "danger-full-access (capsule)" if capsule_ref else args.sandbox),
         "capsule": capsule_ref,
+        "precreated": [str(p) for p in precreated],
         "cap_seconds": int(args.cap),
         "stall_seconds": int(args.stall),
         "pid": process.pid,
@@ -392,6 +454,11 @@ def supervise(args: argparse.Namespace) -> int:
                 + "\n"
             )
         if not alive:
+            # Paths pre-created for the sandbox binds that the worker never wrote are removed first, so an empty
+            # placeholder neither hides a missing output nor shows up as the worker's change.
+            removed = remove_untouched(run.get("precreated", []))
+            if removed:
+                findings.append({"severity": "NOTE", "kind": "precreated-removed", "detail": ", ".join(removed)})
             # One more pass now that the process has exited: catch late writes.
             findings.extend(checker.cycle(False))
             break
@@ -457,7 +524,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--base", default="main")
     p.add_argument("--model", default="GPT-5.5")
     p.add_argument("--effort", default="xhigh")
-    p.add_argument("--sandbox", default="workspace-write")
+    p.add_argument("--sandbox", default="workspace-write",
+                   help="traecli sandbox mode, or `insula` (needs --capsule): worktree read-only, allowed paths bound writable")
     p.add_argument("--cap", type=int, default=2700, help="hard wall-clock cap in seconds")
     p.add_argument("--stall", type=int, default=300, help="seconds without events before STALL")
     p.set_defaults(func=launch)

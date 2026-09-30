@@ -64,9 +64,11 @@ Not done yet, deliberately, because each touches other repos:
    a corenius binary (`coord`), or a thin per-repo adapter. The design-space
    document recommends the runtime approach once the interception question
    (`spikes/collab/design-space.md`) is answered.
-2. **Merge authority.** Vaso and the constitution keep merge with the human;
-   milano lets an agent integrate to its mainline after gates. A shared
-   mechanism needs one configurable rule.
+2. ~~**Merge authority.**~~ Decided 2026-09-30: a per-repo manifest setting,
+   `human` or `agent-after-gates`, with profile defaults. See
+   `decisions/2026-09-30-policy-defaults.md`, which also settles the seven
+   guideline-map decisions, F12's tier, the corenius remote, the milano retry
+   branch and the marker rename.
 
 ## Where the work is
 
