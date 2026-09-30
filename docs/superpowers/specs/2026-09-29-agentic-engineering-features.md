@@ -208,8 +208,8 @@ beside it). Anything that has to live inside the agent runtime is Rust under
 - **Acceptance.** `cargo test --offline`: the id-collision test flips from
   documenting the bug to asserting the fix; a scripted agent's write request is
   seen and denied.
-- **State.** New. Touches the AIME work in the main checkout, so it must wait
-  for that work to be committed or move to a worktree.
+- **State.** New. The AIME work it touches landed on main (`c1f458b`), so it is
+  no longer blocked.
 
 ### F14 Provider-neutral event stream
 
@@ -311,8 +311,8 @@ recorded the result in the feature's row below.
 2. F5 and F6, so that every later feature lands through the repo's own
    mechanism instead of by hand.
 3. F7, F8, F9, F10 (the tracker, messages and evidence the loop reports into).
-4. Tier 2 in this order: F17, F16, F15, F14, F11, then F13 and F12, which
-   need the AIME work committed and a decision on provider sandboxing.
+4. Tier 2 in this order: F17, F16, F15, F14, F11, then F13 and F12; F12 still
+   needs a decision on provider sandboxing.
 5. `tools/agents/check.sh` grows with each feature and is green before each
    landing.
 
@@ -322,9 +322,10 @@ recorded the result in the feature's row below.
    (durable) plus gitignored `.scratch/<slug>/` (execution), with
    `tools/agents/effort.py dehydrate|rehydrate`. See
    `docs/efforts/agentic-engineering/decisions/`.
-2. Whether the corenius main checkout, which carries uncommitted AIME work, gets
-   that work committed or moved to its own branch. F13 and the gate command
-   depend on it.
+2. ~~Whether the corenius main checkout, which carries uncommitted AIME work, gets
+   that work committed or moved to its own branch.~~ Resolved 2026-09-30: the
+   owner had it committed on main (`c1f458b`) after `cargo test --offline`
+   passed; `check.sh` now runs cargo by default (`CHECK_CARGO=0` skips it).
 3. Whether F12 (sandboxing the provider) is required for Milestone B or a Tier 3
    follow-up if `traecli` cannot run inside bubblewrap without extra binds.
 4. The Tier 1 boundary: agree that F1 to F10 is the Milestone B minimum.

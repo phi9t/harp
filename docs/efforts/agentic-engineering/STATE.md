@@ -82,14 +82,12 @@ evidence digests and limits: `decisions/20260930-milestone-b-fleet.md`. Tier 2 (
 
 1. Land `claude/milestone-b` (if not already on main) with
    `python3 tools/agents/land.py claude/milestone-b --gate tools/agents/check.sh --no-push --repo <main checkout>`.
-2. Tier 2 in the spec's order: F17, F16, F15, F14, F11; F13 and F12 wait on the AIME decision.
+2. Tier 2 in the spec's order: F17, F16, F15, F14, F11, F13; F12 waits on the provider-sandbox decision.
 3. Fix `wt.py gc` so it skips a worktree that a live process uses (see the decision record limits).
 4. Push and merge authority per repo are still the owner's decisions; nothing has been pushed.
 
 ## Open questions
 
-- The uncommitted AIME work in the corenius main checkout: commit it or move it
-  to its own branch? F13 and the gate command depend on it.
 - Is F12 (provider sandbox) required for Milestone B?
 - Is F1-F10 the Milestone B minimum?
 - Milano: may `claude/scm-retry-after-lost-race` be integrated and pushed?

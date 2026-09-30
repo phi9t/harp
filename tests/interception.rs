@@ -12,7 +12,7 @@ use std::fs;
 use std::path::Path;
 use std::process::Stdio;
 
-use corenius::provider::acp::{AcpOptions, run_acp_prompt};
+use corenius::provider::acp::{AcpOptions, AcpSessionProfile, run_acp_prompt};
 use serde_json::{Value, json};
 use tempfile::tempdir;
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
@@ -96,6 +96,7 @@ async fn shipped_client_advertises_nothing_and_answers_nothing() {
         model: None,
         prompt: "edit".into(),
         timeout_ms: 20_000,
+        profile: AcpSessionProfile::default(),
     })
     .await
     .unwrap();
@@ -106,7 +107,10 @@ async fn shipped_client_advertises_nothing_and_answers_nothing() {
     // No reply to either agent request: corenius neither gates nor denies.
     assert_eq!(log["replies"], json!({}));
     // The direct write happened and corenius has no record of it.
-    assert_eq!(fs::read_to_string(temp.path().join("bypass.txt")).unwrap(), "direct write");
+    assert_eq!(
+        fs::read_to_string(temp.path().join("bypass.txt")).unwrap(),
+        "direct write"
+    );
     assert!(!temp.path().join("claimed.txt").exists());
 }
 
@@ -129,10 +133,14 @@ async fn agent_request_reusing_prompt_id_ends_turn_early() {
         model: None,
         prompt: "go".into(),
         timeout_ms: 20_000,
+        profile: AcpSessionProfile::default(),
     })
     .await
     .unwrap();
-    assert_eq!(out.stop_reason, None, "request misread as the prompt response");
+    assert_eq!(
+        out.stop_reason, None,
+        "request misread as the prompt response"
+    );
 }
 
 /// Minimal gating client written against the wire protocol (not corenius code):
@@ -142,7 +150,11 @@ async fn agent_request_reusing_prompt_id_ends_turn_early() {
 async fn protocol_client_can_observe_and_deny_fs_write_but_not_direct_write() {
     let temp = tempdir().unwrap();
     let agent = write_agent(temp.path());
-    let claimed = temp.path().join("claimed.txt").to_string_lossy().into_owned();
+    let claimed = temp
+        .path()
+        .join("claimed.txt")
+        .to_string_lossy()
+        .into_owned();
     let mut child = Command::new("python3")
         .arg(&agent)
         .arg(temp.path().join("log.json"))
@@ -161,9 +173,14 @@ async fn protocol_client_can_observe_and_deny_fs_write_but_not_direct_write() {
     };
     let mut observed: Vec<(String, String)> = Vec::new();
 
-    stdin.write_all(&send(json!({"jsonrpc":"2.0","id":1,"method":"initialize","params":{
+    stdin
+        .write_all(&send(
+            json!({"jsonrpc":"2.0","id":1,"method":"initialize","params":{
         "protocolVersion":1,
-        "clientCapabilities":{"fs":{"readTextFile":true,"writeTextFile":true}}}}))).await.unwrap();
+        "clientCapabilities":{"fs":{"readTextFile":true,"writeTextFile":true}}}}),
+        ))
+        .await
+        .unwrap();
     stdin.write_all(&send(json!({"jsonrpc":"2.0","id":2,"method":"session/new","params":{"cwd":temp.path(),"mcpServers":[]}}))).await.unwrap();
     stdin.write_all(&send(json!({"jsonrpc":"2.0","id":3,"method":"session/prompt","params":{"sessionId":"s1","prompt":[{"type":"text","text":"edit"}]}}))).await.unwrap();
 
@@ -204,9 +221,15 @@ async fn protocol_client_can_observe_and_deny_fs_write_but_not_direct_write() {
     assert_eq!(observed[1].0, "session/request_permission");
     let log = read_log(temp.path());
     assert_eq!(log["replies"]["900"]["error"]["code"], json!(-32000));
-    assert_eq!(log["replies"]["901"]["result"]["outcome"]["optionId"], json!("no"));
+    assert_eq!(
+        log["replies"]["901"]["result"]["outcome"]["optionId"],
+        json!("no")
+    );
     // Denied: the protocol write never landed.
     assert!(!temp.path().join("claimed.txt").exists());
     // Invisible: the agent's own write is not in `observed` and did land.
-    assert_eq!(fs::read_to_string(temp.path().join("bypass.txt")).unwrap(), "direct write");
+    assert_eq!(
+        fs::read_to_string(temp.path().join("bypass.txt")).unwrap(),
+        "direct write"
+    );
 }

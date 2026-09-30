@@ -68,6 +68,6 @@ Claim sampling (F10 used on the lead's own notes, `milestone-b/verification-note
 
 - `wt.py gc` marks merged clean worktrees as removable but cannot tell that one is in use: on the real repo it listed `effort/multi-agent-bench`, which a running experiment was using. `--apply` was not run on the real repo. A follow-up should skip worktrees with a live process.
 - Tests and acceptance for F5 to F10 ran on Linux with this machine's git; pushing paths of `land.py` were tested only against a local bare remote, never a real remote. Nothing was pushed.
-- Landing on main happens by fast-forward through `land.py` with `check.sh`; `CHECK_CARGO` stays off because the main checkout still carries uncommitted AIME work (spec Decision 2 open).
-- Tier 2 (F11 to F17) is not started. F12 and F13 still wait on the AIME decision.
+- Landing on main happens by fast-forward through `land.py` with `check.sh`; `CHECK_CARGO` stayed off because the main checkout still carried uncommitted AIME work (spec Decision 2 open). Later the same day the owner had that work committed (`c1f458b`) and cargo joined the default gate; a test committed in between (`tests/interception.rs`) needed the new `profile` field added.
+- Tier 2 (F11 to F17) is not started. F12 still waits on the provider-sandbox decision.
 - Worker output is machine-written code I read selectively; the acceptance scenarios are what was verified, not every line.
