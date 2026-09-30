@@ -64,29 +64,25 @@
 
 ## Where we are
 
-Milestones (see EFFORT.md): M1 capsule builder done; M2 harness plus T/P/R/C tracks done; M3 blade ladder half done; M4 partly done.
+Landed: M1 capsule builder, M2 harness and single-ticket tracks, M3 blade ladder L0-L5, M4 multi-ticket tasks and fleet runner, M5 live pilot.
 
-- Capsule builder `tools/insula/capsule.py` (20 tests): layered bwrap capsules from request files in `bench/insula/requests/`
-  (`toolchains.json`, `agent.json`). Real uv, cargo, cmake, ninja, gcc, real blade and CUDA all run inside it, offline; a blade-built
-  sm_100 kernel runs on the B200s with `--gpu`.
-- Task format and validator: `bench/harness/{tasklib,validate}.py`. 33 tasks under `bench/tasks/` (T 8, P 6, R 5, C 5, M 3 multi,
-  B 6 blade L0-L2), each passing 7 checks (8 with protected sources, 9 for multi tasks) inside the capsule.
-- Fleet runner `bench/harness/fleet.py` and experiment runner `bench/harness/run.py` with agents reference, noop, cmd, traecli
-  (traecli refuses to run without `--authorize-model-spend`). Result records `corenius.bench.result.v1` and aggregation in `results.py`.
-- `tools/agents/worker.py launch --capsule REF` runs a real traecli worker inside a capsule (tested with a fake traecli only).
-- Workers used so far: research-blade, research-insula, research-tasks, research-blade-cuda, author-t, author-pr, author-c,
-  blade-author-1 (all landed after lead verification); blade-author-2 (blade L3-L4 incl. proto) still running when this was written.
-
-Nothing here has been run against a real model as an agent under test. No pass-rate or solo-versus-fleet claim exists.
+- `tools/insula/capsule.py` (20 tests): layered bwrap capsules; requests in `bench/insula/requests/` (`toolchains.json`, `agent.json`).
+- 41 validated tasks under `bench/tasks/` (34 single, 7 multi: m01-m03, b-l5-fused-op, mh1-py-inventory, mh2-rs-scheduler, mh3-cxx-engine).
+  `python3 bench/harness/validate.py`: 41 ok, 0 failing (301 s).
+- Harness: `bench/harness/{tasklib,validate,fleet,run,results}.py` and `pilot.sh`, `fleet_exp.sh`; 29 tests.
+- `worker.py launch --capsule` runs a real traecli inside a capsule (live: capsule-smoke CLEAN in 59 s).
+- Live results are in `bench/RESULTS.md` and `bench/results-archive/`: pilot 102/102 passed (too easy to discriminate); solo vs fleet on the
+  small multi tasks: equal correctness, fleet not faster (startup and redo cost), about 5x tokens on b-l5-fused-op.
+- Still running when this was written: `bench/harness/fleet_exp.sh` on mh1/mh2/mh3 (results in `bench/results/fleet-hard`, gitignored;
+  4 of 18 runs done). Its final table is not in RESULTS.md yet.
 
 ## Next actions
 
-1. Collect blade-author-2 (tasks b-l3-settler-conflict, b-l3-env-matrix, b-l4-wrapper-macro, b-l4-proto-codegen): check its verdict, run
-   `python3 bench/harness/validate.py --task ...`, review the verifiers, then commit.
-2. Author the L5 composite multi-ticket blade task (proto field + CUDA kernel + python wrapper), using the vendored protobuf package
-   from b-l4-proto-codegen, with tickets/ and the multi checks.
-3. Only on the owner's request: a live pilot `python3 bench/harness/run.py --all --agent traecli --authorize-model-spend`, starting with
-   one or two tasks. Land by fast-forward; push nothing.
+1. When `bench/results/fleet-hard/report.txt` exists, copy the table into `bench/RESULTS.md` section 4 and archive it with
+   `bench/results-archive/` (see how fleet-1 was archived), then commit and land by fast-forward.
+2. If everything still passes, the benchmark needs harder or larger tasks to separate correctness: more tickets, hidden cross-cutting
+   invariants that fail a ticket-local reading, longer tasks. Author with workers (`author-mh*` runs are the pattern), validate with validate.py.
+3. Cost in dollars is unmeasured; only tokens are. Add it if a price source is given.
 
 ## Open questions
 
