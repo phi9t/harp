@@ -290,12 +290,12 @@ recorded the result in the feature's row below.
 | F2 | Deterministic supervisor | 1 | prototype | same | no |
 | F3 | Haiku supervisor wrapper | 1 | new | | no |
 | F4 | Lead skill and settings | 1 | new | | no |
-| F5 | Worktree lifecycle | 1 | new | | no |
-| F6 | Landing with gates | 1 | new | | no |
-| F7 | Tracker | 1 | new | | no |
-| F8 | Messages | 1 | new | | no |
-| F9 | Evidence records | 1 | new | | no |
-| F10 | Claim checking | 1 | new | | trial 1 by hand |
+| F5 | Worktree lifecycle | 1 | implemented | 12 unit tests; finish from inside and real-repo `status` (36 rows = `git worktree list`) re-run by the lead | yes: `land` of this fleet's branch; `gc` dry run on the real repo (10 merged trees; it cannot tell a worktree is in use, so `--apply` was not run) |
+| F6 | Landing with gates | 1 | implemented | 8 unit tests + 8 independent scenarios (failing gate, lost race, overlap, merge commit, push-first proven by a pre-receive hook, no remote) | yes: landed `a76603d` on main through `check.sh` as its gate |
+| F7 | Tracker | 1 | implemented | 9 unit tests; every transition and six planted lint errors re-run by the lead | yes: claim/resolve of the six Milestone B tickets; `lint` over the real ticket files |
+| F8 | Messages | 1 | implemented | 7 unit tests; ordering, NEEDS-ACK, ack sidecar, traversal refusal, lint re-run by the lead | yes: handoff message to the next session |
+| F9 | Evidence records | 1 | implemented (round 2) | 15 unit tests; round 1 rejected by the lead (untracked files missing from the diff digest); fix re-verified with edit/add/delete tamper modes | yes: records of all seven Milestone B worker runs, all verify |
+| F10 | Claim checking | 1 | implemented | 5 unit tests; deterministic on real reports; chained into evidence with the real `evidence.py` (forged sidecar line detected) | yes: sampled the lead's verification notes; it caught two wrong citations of mine |
 | F11 | Advisory path claims | 2 | new | | no |
 | F12 | Provider sandbox | 2 | new | | no |
 | F13 | ACP client correctness | 2 | new | | no |

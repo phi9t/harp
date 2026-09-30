@@ -15,6 +15,10 @@ boundary) and the owner of agentic-engineering practice for the workspace.
   and the open decisions.
 - `docs/reference/`: what each sibling repo is for and how it is designed, plus
   `agentic-inventory/` (policy, skills, products, and the rules agents follow).
+- `tools/agents/`: the lead/worker toolbox. `worker.py` (launch a traecli worker, `--capsule` to run it in a capsule; `supervise`), `effort.py`
+  (durable efforts), `wt.py` (new/status/finish/gc agent worktrees), `land.py` (gated landing: rebase, gate the exact tip, push first, then
+  fast-forward mainline; also `wt.py land`), `tracker.py` (tickets and claims under `docs/efforts/*/tickets/`), `msg.py` (handoff messages),
+  `evidence.py` (content-addressed run records), `claims.py` (sample and record claim checks). The repo gate is `tools/agents/check.sh`.
 - `docs/efforts/`: durable efforts (charter, decisions, state). Session start:
   `python3 tools/agents/effort.py rehydrate <effort>`; session end: `dehydrate`.
   Working detail goes in gitignored `.scratch/<effort>/`.

@@ -30,18 +30,18 @@
 
 ## Where we are
 
-Milestone A (feature set) is landed as 03368f4. Milestone B has started: the
-effort mechanism (`tools/agents/effort.py`, 11 tests) and policy 2026.09.29.3
-exist on branch `claude/durable-efforts`. `worker.py` (F1, F2) has 10 offline
-tests but has never run against the real `traecli`.
+Milestone B Tier 1 is implemented: F1-F4 earlier, and F5-F10 built by a fleet of six traecli workers (2026-09-30), each verified by the lead and used on
+that run. Tools: `tools/agents/{worker,effort,wt,land,tracker,msg,evidence,claims}.py`, gate `tools/agents/check.sh`. The feature register in
+`docs/superpowers/specs/2026-09-29-agentic-engineering-features.md` is updated. Details, per-ticket verification, the rejected evidence round, worker run
+evidence digests and limits: `decisions/20260930-milestone-b-fleet.md`. Tier 2 (F11-F17) is not started.
 
 ## Next actions
 
-1. Land `claude/durable-efforts` by fast-forward once the owner has read it.
-2. Run `worker.py launch` and `supervise` against the real `traecli`; then write
-   F3 (`.claude/agents/worker-supervisor.md`, Haiku) and F4 (run-worker skill,
-   `.claude/settings.json`); one supervised end-to-end run.
-3. F5 and F6 (worktree lifecycle, landing with gates), then F7-F10.
+1. Land `claude/milestone-b` (if not already on main) with
+   `python3 tools/agents/land.py claude/milestone-b --gate tools/agents/check.sh --no-push --repo <main checkout>`.
+2. Tier 2 in the spec's order: F17, F16, F15, F14, F11; F13 and F12 wait on the AIME decision.
+3. Fix `wt.py gc` so it skips a worktree that a live process uses (see the decision record limits).
+4. Push and merge authority per repo are still the owner's decisions; nothing has been pushed.
 
 ## Open questions
 
