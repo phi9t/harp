@@ -25,7 +25,10 @@ from pathlib import Path
 import tasklib
 
 GIT_ENV = ["-c", "user.email=bench@corenius", "-c", "user.name=bench", "-c", "commit.gpgsign=false"]
-IGNORED = (".uvcache/", "target/", "build/", "__pycache__/", ".pytest_cache/", ".blade_tools/", "build64_release/")
+# Build and tool artifacts are not contamination: they are byproducts of running the project's own build.
+IGNORED = (".uvcache/", "target/", "build/", "__pycache__/", ".pytest_cache/", ".blade_tools/", "build64_release/",
+           "blade-bin/", ".sailfish/", "sailfish_runtime_auto_conf/", "build.ninja", ".trace.log", ".test-tmp/",
+           ".venv/", "*.pyc", "*.o", "*.a", "*.so", "CMakeCache.txt", "CMakeFiles/", "Testing/", "Cargo.lock.orig")
 
 
 @dataclass

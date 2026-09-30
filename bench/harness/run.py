@@ -160,7 +160,7 @@ def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int,
                       "timed_out": False, "agent_rc": None}
     rec["timing"] = {"wall_seconds": run["wall_seconds"], "agent_seconds": round(sum(run["ticket_seconds"].values()), 3),
                      "verify_seconds": run["verify_seconds"]}
-    rec["coordination"] = {"conflicts": run["conflicts"], "redos": run["redos"], "contamination": len(run["contamination"]),
+    rec["coordination"] = {"conflicts": run["conflicts"], "redos": run["redos"], "contamination": len(run["contamination"]), "contamination_paths": run["contamination"][:50],
                            "tickets": len(run["order"]), "tickets_landed": sum(1 for l in run["landings"] if l["landed"]),
                            "landing_order": run["order"]}
     if usages:
