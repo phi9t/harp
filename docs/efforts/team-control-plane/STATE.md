@@ -111,6 +111,14 @@ found legacy YAML custom endpoints, but no version-matched TOML routing contract
 or documented hard ordinary-turn spend bound. Equivalent source searches stop
 until new primary evidence is available. This preparation grants no launch approval.
 
+## Landed baseline
+
+The owner-authorized baseline is committed and fast-forward landed to local main
+at `15a5ead8622d36d06723d8f11edfa769898e3b5c`, after independent Standards/Spec
+round1 passes and the exact committed-tip repository gate. No remote is configured.
+This includes accepted10–15/17, retained proof logs and recovered historical
+evidence; it does not include unfinished16 or complete the full goal.
+
 ## Handoff discipline
 
 This is a manual state record, not a committed `effort.py dehydrate` snapshot.
