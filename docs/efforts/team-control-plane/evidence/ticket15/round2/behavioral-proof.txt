@@ -1,0 +1,194 @@
+=== repair1-red.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.38s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 6 tests
+
+thread 'repair_symlink_ancestor_rejected_before_any_external_write' (1094788) panicked at tests/supervisor.rs:742:5:
+tracked ancestor symlink caused an external filesystem mutation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_symlink_ancestor_rejected_before_any_external_write ... FAILED
+
+thread 'repair_schema_guard_precedes_open_and_monitor_effects' (1094787) panicked at tests/supervisor.rs:831:14:
+called `Result::unwrap_err()` on an `Ok` value: Supervisor { broker: Broker { recovery_epoch: 932feb54-9c5c-4df9-9726-74fc67ba127f, .. }, root: "/data02/home/philip.yang/devx/tmp/supervisor-fixture-1d478e0e-cebf-4b2b-86c4-839d1e4675c3/must-not-create", monitor: "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane/target/debug/team-control-plane" }
+test repair_schema_guard_precedes_open_and_monitor_effects ... FAILED
+
+thread 'repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope' (1094785) panicked at tests/supervisor.rs:778:10:
+called `Result::unwrap()` on an `Err` value: Error { code: InvalidArgument }
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... FAILED
+
+thread 'repair_worker_principal_must_own_attempt_for_create_and_control' (1094789) panicked at tests/supervisor.rs:694:14:
+called `Result::unwrap_err()` on an `Ok` value: ExecutionHandle { id: ea9b69e7-a829-44fa-a18a-3e219e797b99, path: "/data02/home/philip.yang/devx/tmp/supervisor-fixture-b326441a-483c-457a-ab99-14b56c4d5adb/workspaces/ea9b69e7-a829-44fa-a18a-3e219e797b99" }
+test repair_worker_principal_must_own_attempt_for_create_and_control ... FAILED
+
+thread 'repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim' (1094786) panicked at tests/supervisor.rs:907:9:
+generation after durable controller claim must prevent launch, not cancel a newly started workload
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... FAILED
+
+thread 'repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop' (1094784) panicked at tests/supervisor.rs:953:45:
+called `Result::unwrap()` on an `Err` value: Error { code: StaleGeneration }
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... FAILED
+
+failures:
+
+failures:
+    repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop
+    repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope
+    repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim
+    repair_schema_guard_precedes_open_and_monitor_effects
+    repair_symlink_ancestor_rejected_before_any_external_write
+    repair_worker_principal_must_own_attempt_for_create_and_control
+
+test result: FAILED. 0 passed; 6 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.61s
+
+error: test failed, to rerun pass `--test supervisor`
+
+=== repair1-prep-red.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.14s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 1 test
+
+running 1 test
+
+thread 'repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds' (1162441) panicked at tests/supervisor.rs:1035:5:
+assertion `left == right` failed: un-inventoried live Git preparation must never count as stopped
+  left: Stopped
+ right: Quarantined
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... FAILED
+
+failures:
+
+failures:
+    repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 17 filtered out; finished in 0.20s
+
+error: test failed, to rerun pass `--test supervisor`
+
+=== short-command-concurrent-loop.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.19s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 1 test
+[DEBUG-short15] concurrent-round=0
+[DEBUG-short15] concurrent-round=1
+[DEBUG-short15] concurrent-round=2
+[DEBUG-short15] concurrent-round=3
+
+thread 'diagnose_concurrent_short_file_command' (1374967) panicked at tests/supervisor.rs:306:9:
+assertion `left != right` failed: expected complete namespace proof: ExecutionView { state: Quarantined, members: [ProcessIdentity { pid: 1384111, start_ticks: 26635782, boot_id: "6f48f645-3b26-40c9-93fb-db4190c7629b", namespace: "pid:[4026539938]" }], controller: Some(ProcessIdentity { pid: 1382618, start_ticks: 26635774, boot_id: "6f48f645-3b26-40c9-93fb-db4190c7629b", namespace: "pid:[4026531836]" }), launcher: Some(ProcessIdentity { pid: 1384105, start_ticks: 26635782, boot_id: "6f48f645-3b26-40c9-93fb-db4190c7629b", namespace: "pid:[4026531836]" }), quarantine_reason: Some("process 1384117 membership observation failed: No such process (os error 3)"), manifest: WorkspaceManifest { store: "/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/store", path: "/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/workspaces/6396629a-e53c-4618-b74c-c2509a4eccd5", base: "a3d8cdec50fc0bc78d6c7fc6984ecb0bdbe4b935", attempt: 2ea3e4db-78b8-47db-9714-5e9710b0aec0, task: d0fb87f2-712b-4b19-bba7-93bd150e1b12, generation: 1, recovery_epoch: bc933bfa-520a-429c-a207-7c73155771c1, spec_digest: "5e2bb5aa6b1fdc771f32083da1267aae9b0ad814ba6d685941d1e2ec371d6483", write_scope: ["src/existing", "src/missing", "new-parent/new-file", "empty.file"], scopes: [WriteScope { path: "src/existing", kind: File }, WriteScope { path: "src/missing", kind: File }, WriteScope { path: "new-parent/new-file", kind: File }, WriteScope { path: "empty.file", kind: Directory }], log_path: "/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/workspaces/.execution-logs/6396629a-e53c-4618-b74c-c2509a4eccd5.log" } }
+  left: Quarantined
+ right: Quarantined
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'diagnose_concurrent_short_file_command' (1374967) panicked at tests/supervisor.rs:1177:25:
+called `Result::unwrap()` on an `Err` value: JoinError::Panic(Id(637), "assertion `left != right` failed: expected complete namespace proof: ExecutionView { state: Quarantined, members: [ProcessIdentity { pid: 1384111, start_ticks: 26635782, boot_id: \"6f48f645-3b26-40c9-93fb-db4190c7629b\", namespace: \"pid:[4026539938]\" }], controller: Some(ProcessIdentity { pid: 1382618, start_ticks: 26635774, boot_id: \"6f48f645-3b26-40c9-93fb-db4190c7629b\", namespace: \"pid:[4026531836]\" }), launcher: Some(ProcessIdentity { pid: 1384105, start_ticks: 26635782, boot_id: \"6f48f645-3b26-40c9-93fb-db4190c7629b\", namespace: \"pid:[4026531836]\" }), quarantine_reason: Some(\"process 1384117 membership observation failed: No such process (os error 3)\"), manifest: WorkspaceManifest { store: \"/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/store\", path: \"/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/workspaces/6396629a-e53c-4618-b74c-c2509a4eccd5\", base: \"a3d8cdec50fc0bc78d6c7fc6984ecb0bdbe4b935\", attempt: 2ea3e4db-78b8-47db-9714-5e9710b0aec0, task: d0fb87f2-712b-4b19-bba7-93bd150e1b12, generation: 1, recovery_epoch: bc933bfa-520a-429c-a207-7c73155771c1, spec_digest: \"5e2bb5aa6b1fdc771f32083da1267aae9b0ad814ba6d685941d1e2ec371d6483\", write_scope: [\"src/existing\", \"src/missing\", \"new-parent/new-file\", \"empty.file\"], scopes: [WriteScope { path: \"src/existing\", kind: File }, WriteScope { path: \"src/missing\", kind: File }, WriteScope { path: \"new-parent/new-file\", kind: File }, WriteScope { path: \"empty.file\", kind: Directory }], log_path: \"/data02/home/philip.yang/devx/tmp/supervisor-fixture-7f54d29c-e6a1-49fc-a330-9b9734dc6bcd/workspaces/.execution-logs/6396629a-e53c-4618-b74c-c2509a4eccd5.log\" } }\n  left: Quarantined\n right: Quarantined", ...)
+test diagnose_concurrent_short_file_command ... FAILED
+
+failures:
+
+failures:
+    diagnose_concurrent_short_file_command
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 19 filtered out; finished in 5.38s
+
+error: test failed, to rerun pass `--test supervisor`
+
+=== short-command-regression-green.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.18s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 1 test
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 5.30s
+
+
+=== repair1-focused-final.log ===
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 19 tests
+test crash_create_helper ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test repair_symlink_ancestor_rejected_before_any_external_write ... ok
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test repair_worker_principal_must_own_attempt_for_create_and_control ... ok
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... ok
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test repair_current_owner_recovers_execution_after_recovery_epoch_rotation ... ok
+
+running 1 test
+test repair_schema_guard_precedes_open_and_monitor_effects ... ok
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... ok
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.58s
+
+
+=== repair1-clippy-final.log ===
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Checking team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.98s
+
+=== repair1-full-gate-final.log ===
+== python3 tools/agents/test_worker.py
+== python3 tools/agents/test_effort.py
+== python3 tools/test_sync_agentic_workflow.py
+== python3 tools/agents/tracker.py lint
+== sh tools/agents/checks.d/10-wt.sh
+== sh tools/agents/checks.d/20-land.sh
+== sh tools/agents/checks.d/30-tracker.sh
+== sh tools/agents/checks.d/40-msg.sh
+== sh tools/agents/checks.d/50-evidence.sh
+== sh tools/agents/checks.d/60-claims.sh
+== sh tools/agents/checks.d/70-team-control-plane.sh
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.99s
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.87s
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.33s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== cargo test --offline
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check: all green
+
+Repair 2 production classifier regression: injected identity/stat observation errors EACCES/EIO and malformed stat return Err (uncertainty), while ENOENT/ESRCH, verified identity replacement and zombie state return absence. Red exit101 retained; green and final gate pass. This is controlled-read proof through the actual classifier, not an actual kernel permission-race claim. Inventory propagates uncertainty; pidfd signal rejects uncertain liveness at each authoritative check; reconciliation observes init/prior/controller fallibly before allowing empty inventory to Stop.
+Real PG/OS strict regression initially 18pass/1failure: quarantine reason namespace membership lacks live recorded identity. Narrow diagnostic proven namespace inode reuse: old PID1 1733023 ticks26777873 pid:[4026539861] gone; newer live PID1733061 ticks26777881 has NSpid 1733061 1 under same identifier. Raw diagnostic3 retained. No cmdline/secrets collected. Monitor now pins verified namespace FD while initial workload is gated: fd device/inode checked against current namespace path, inode against immutable recorded namespace, full init identity rechecked; fd held through inventory and launcher reap. No persisted pin assertion or recovery reliance on generic controller liveness. Unpinned recovery without proven incarnation remains quarantine; never adopts/signals unrelated newer namespace.
+Final focused19pass8.45s, classifier1pass, fmt0 clippy0 fullgate0 (fullgate real supervisor19pass8.36s, check: all green). Strict32-capsule fixture unchanged. Repair2 changes only src/supervisor.rs. Repair1 package/report retained round1; initial package round0.

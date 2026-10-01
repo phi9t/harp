@@ -1,0 +1,186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkflowStartParams",
+  "type": "object",
+  "required": [
+    "idempotencyKey",
+    "threadId"
+  ],
+  "properties": {
+    "args": true,
+    "definitionOrigin": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WorkflowDefinitionOrigin"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "definitionVersion": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint64",
+      "minimum": 0.0
+    },
+    "idempotencyKey": {
+      "type": "string"
+    },
+    "limits": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/WorkflowLimits"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "script": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "threadId": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "WorkflowDefinitionOrigin": {
+      "type": "string",
+      "enum": [
+        "inline",
+        "project",
+        "plugin",
+        "bundled"
+      ]
+    },
+    "WorkflowLimits": {
+      "type": "object",
+      "required": [
+        "maxArgsBytes",
+        "maxHeapBytes",
+        "maxResultBytes",
+        "maxSourceBytes",
+        "syncSliceTimeoutMs"
+      ],
+      "properties": {
+        "maxAgentCalls": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxArgsBytes": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxAttemptsPerNode": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxConcurrency": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxCostMicros": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "maxHeapBytes": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxInputTokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "maxNodes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxOutputTokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "maxResultBytes": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxSourceBytes": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "maxTotalAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "nodeTimeoutMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "syncSliceTimeoutMs": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "totalTimeoutMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        }
+      }
+    }
+  }
+}

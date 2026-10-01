@@ -1,0 +1,10 @@
+CREATE TABLE gateway_schema_version(version integer PRIMARY KEY CHECK(version=1));
+INSERT INTO gateway_schema_version VALUES(1);
+CREATE TABLE gateway_stores(identity text PRIMARY KEY, controller uuid NOT NULL, runtime_identity jsonb NOT NULL, busy uuid, quarantined boolean NOT NULL DEFAULT false);
+CREATE TABLE gateway_bindings(id uuid PRIMARY KEY, attempt_id uuid NOT NULL REFERENCES attempts, store text NOT NULL REFERENCES gateway_stores, thread_id text, controller uuid NOT NULL, UNIQUE(id,attempt_id));
+CREATE UNIQUE INDEX gateway_physical_thread ON gateway_bindings(store,thread_id) WHERE thread_id IS NOT NULL;
+CREATE TABLE gateway_operations(id uuid PRIMARY KEY, admission_id uuid NOT NULL REFERENCES operations, attempt_id uuid NOT NULL REFERENCES attempts, binding_id uuid NOT NULL REFERENCES gateway_bindings, kind text NOT NULL CHECK(kind IN ('create','recover','start','steer','cancel')), digest text NOT NULL, request jsonb NOT NULL, generation bigint NOT NULL, recovery_epoch uuid NOT NULL, controller uuid, state text NOT NULL CHECK(state IN ('prepared','dispatching','confirmed','failed_known','outcome_unknown','quarantined')));
+CREATE UNIQUE INDEX gateway_one_create ON gateway_operations(admission_id) WHERE kind='create';
+CREATE UNIQUE INDEX gateway_one_start ON gateway_operations(admission_id) WHERE kind='start';
+CREATE TABLE gateway_evidence(id uuid PRIMARY KEY, operation_id uuid NOT NULL REFERENCES gateway_operations, sequence bigint GENERATED ALWAYS AS IDENTITY, evidence jsonb NOT NULL, recorded_at timestamptz NOT NULL DEFAULT clock_timestamp());
+CREATE TRIGGER immutable_gateway_evidence BEFORE UPDATE OR DELETE ON gateway_evidence FOR EACH ROW EXECUTE FUNCTION immutable_record();

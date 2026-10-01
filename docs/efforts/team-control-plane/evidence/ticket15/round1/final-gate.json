@@ -1,0 +1,55 @@
+{
+  "recorded_utc": "2026-10-01T10:42:38.441514+00:00",
+  "repair_round": 1,
+  "commands": {
+    "focused": "bash crates/team-control-plane/tests/run-postgres.sh --test supervisor -- --nocapture",
+    "fmt": "cargo fmt --manifest-path crates/team-control-plane/Cargo.toml --check",
+    "clippy": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --all-targets --locked -- -D warnings",
+    "gate": "bash tools/agents/check.sh"
+  },
+  "exit_codes": {
+    "focused": 0,
+    "fmt": 0,
+    "clippy": 0,
+    "gate": 0
+  },
+  "logs": {
+    "repair1-red.log": {
+      "sha256": "7c85a0b049888cebe0e4bcedaa6a677c25f84082f71dffc945630f46b8fd5496",
+      "bytes": 3222,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair1-red.log"
+    },
+    "repair1-prep-red.log": {
+      "sha256": "8bff450114448722ac04914def1adad0a6fb1f6a65cb9ab3f86d0af30a93ebeb",
+      "bytes": 1000,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair1-prep-red.log"
+    },
+    "short-command-concurrent-loop.log": {
+      "sha256": "1f95b1da1e011179dc7ed5d61269ab59e9948adbb6f26bbdaf688af53f03a0cc",
+      "bytes": 4625,
+      "retained_path": ".scratch/team-control-plane/ticket15/short-command-concurrent-loop.log"
+    },
+    "short-command-regression-green.log": {
+      "sha256": "29736b4debaba280c0b4e7e1091031c88d48fe4890b4f952778e6d407dd97125",
+      "bytes": 485,
+      "retained_path": ".scratch/team-control-plane/ticket15/short-command-regression-green.log"
+    },
+    "repair1-focused-final.log": {
+      "sha256": "467e082db2e88511d944be180640e53d38ee03e9c8788a0d7794988a776e3982",
+      "bytes": 1924,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair1-focused-final.log"
+    },
+    "repair1-clippy-final.log": {
+      "sha256": "ed57789fc23069159ea1dad02a725e7f82e8101eb285e752d5891a2b3c591073",
+      "bytes": 371,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair1-clippy-final.log"
+    },
+    "repair1-full-gate-final.log": {
+      "sha256": "91b0143eb4bfcee2ef3846c473ef3dd7afdd9b17d25b0a975f4ce5775a380efa",
+      "bytes": 17799,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair1-full-gate-final.log"
+    }
+  },
+  "baseline_relative_patch_sha256": "90b12ad8d0ac2737793b7170108f0bc1bcc77ba9fd369b28052ae18460f332d4",
+  "repair_relative_patch_sha256": "affa3b10036a52c4e7ddd5f7b8d941a4ffd2ec901fbb1d88fa3573c0dd997c20"
+}

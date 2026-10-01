@@ -1,0 +1,36 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.47s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 20 tests
+test crash_create_helper ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test repair_symlink_ancestor_rejected_before_any_external_write ... ok
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+test certified_pid1_whole_group_exit_recovers_without_namespace_inode_signals ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test repair_worker_principal_must_own_attempt_for_create_and_control ... ok
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... ok
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... ok
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test repair_current_owner_recovers_execution_after_recovery_epoch_rotation ... ok
+
+running 1 test
+test repair_schema_guard_precedes_open_and_monitor_effects ... ok
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... ok
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.14s
+

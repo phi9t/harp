@@ -1,0 +1,11 @@
+COMMAND: test -x /usr/local/cuda/bin/nvcc && /usr/local/cuda/bin/nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Mon_Mar_02_09:52:23_PM_PST_2026
+Cuda compilation tools, release 13.2, V13.2.51
+Build cuda_13.2.r13.2/compiler.37434383_0
+EXIT_NVCC: 0
+COMMAND: nvidia-smi -L
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.
+
+EXIT_NVIDIA_SMI: 9

@@ -1,0 +1,625 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "accepted_tickets": [
+    10,
+    11,
+    12,
+    13,
+    15
+  ],
+  "repair_round": 3,
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "bytes": 85457,
+      "provenance": "root joint13/15 glue independently reviewed"
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "3b114c81a24205d347988fa1afa00631c50a845ea9e34fc07e6772e97638515e",
+      "bytes": 875,
+      "provenance": "root joint13/15 glue independently reviewed"
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "e804b6458df66a4b5ad3453da15d12d1656f43c1cf3f16f0e9aae53b30b414c5",
+      "bytes": 5448,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "bytes": 1738,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "8281722bf652c59ab773800e109069f28de07f89ebb5f14fe8243b9ef67ee7e1",
+      "bytes": 16474,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c7320b3adf474bb7794d279337c57ee0252155df2ddbd5de7a67fe6c5fa637de",
+      "bytes": 36138,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "1cd05c347653454f678640facf386bd7d57b3f3f2d3260cc0e8a6e74f9d75a0c",
+      "bytes": 4516,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "bytes": 3581,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "8cd0b812092933195ed6dbd1640c188838d3ea643ada92888214690250dcb01b",
+      "bytes": 26560,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "486c2c4028f5b2ec18756de3d3b7e9561afff8ff9b471b2fc4be110d4d186af9",
+      "bytes": 2784,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "ec06891f130a3bc450df82f670f7c00b1dc78df49e41533d1d5e18028c3dbd19",
+      "bytes": 238,
+      "provenance": "root joint13/15 glue independently reviewed"
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "c19fd8284e2804a36f10efb09df5f010989665856024acdd78ebc7205f3ea902",
+      "bytes": 3045,
+      "provenance": "root joint13/15 glue independently reviewed"
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "d83c3e3e0b2aa8eb541102f79916d407c9da4fa335644889bee2075b6613589d",
+      "bytes": 15690,
+      "provenance": "root joint13/15 glue independently reviewed"
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "ee712817fba6dea4276c59bee313c278f7deef5bce989b6a465041d65b3b5c24",
+      "bytes": 61197,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "fe65253d8e3cba5418d180c59db2117c85e97c96d5602331946cda088e4ff7e9",
+      "bytes": 44812,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "sha256": "7f42857ada05bc1fa311532860f3d3a48135d1f3213c9471256e95dc9c75be35",
+      "bytes": 3960,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "bytes": 53578,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "bytes": 837,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "sha256": "b95b0116902f24597249d3b1fd2234a345988d0d90bc35132959bf153f969768",
+      "bytes": 43764,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "ce8a7a63299c062d24eadd03263f7cf9260c1239ff880cd3b4405b4e06b21f61",
+      "bytes": 41731,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/root15-glue-manifest.json",
+      "sha256": "9ba088b475c2260da451b9ca94808e2de8307662e6814f79913988414b733e4b",
+      "bytes": 929,
+      "provenance": "independently reviewed root integration glue"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/root15-glue.patch",
+      "sha256": "9f38e3076e2c71759d7ea6ab1ad16f2d00a31463fa73f50ab7d87a87f3bcfd41",
+      "bytes": 2075,
+      "provenance": "independently reviewed root integration glue"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket10-kernel-admission.md",
+      "sha256": "729a99e8ad3bf2a713eed2ace540d2adbffe89c380a83321d9e1e66a7a90d466",
+      "bytes": 12646,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket12-gateway-journal.md",
+      "sha256": "d758907c4c9af79790bb519c709d763a327a0ee93bce89e4268a17b95d733f95",
+      "bytes": 9663,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge.md",
+      "sha256": "9dbfbeea861c4f57f6b824da11a5576d859ed96532b9bbd21157b180c12cd9fb",
+      "bytes": 8162,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/activity-invocations.jsonl",
+      "sha256": "549732fe1c8e90ca05af8e8f69387a1ce90410cb10a681ade07231f6eebe5bb1",
+      "bytes": 1745,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/clippy-frozen.log",
+      "sha256": "dc14db3ec71c3012b06246e8565841abdf2e499522420ad68322c21b2f1fd1c5",
+      "bytes": 205,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/fmt-frozen.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/focused-frozen.log",
+      "sha256": "43e482d05d6dcaf203b9b2cc5aa34adc95b8538235f01cc59e5c809ae4c0e56b",
+      "bytes": 635,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/gate-frozen.log",
+      "sha256": "25e0f3ac2d4e71c17903077d8019c05e5f0bf63a9b1400d781b38a78e965dca9",
+      "bytes": 16505,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/initial-report.md",
+      "sha256": "bcd7ed936f97556a6fec7b67a9583cb37412ccfa21fa9d5bcd43e29606ab82fe",
+      "bytes": 7122,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/mission.json",
+      "sha256": "c2b58de522e88450873d95db925ba5d28c9b94ab691f3115c65d29941284cb50",
+      "bytes": 10466,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-driver.log",
+      "sha256": "7fa6f8dbe9804e238ced908783214a7d907bb914fc4756f36d69056c4b324d9d",
+      "bytes": 887,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-terminal-driver.log",
+      "sha256": "faafe8a14ad21eafb4bb156985d4035686e694481eda300ca2f325ea920765e7",
+      "bytes": 1009,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red.log",
+      "sha256": "71acf901594d00f22c2a001bb516d91b9e2a20fb8fa7c5c13f19779ace28dde5",
+      "bytes": 4836,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/activity-invocations.jsonl",
+      "sha256": "86f8657230308ca960b3cee0e0a75b3af9b9f5da0c6b874d73517df29c895cfb",
+      "bytes": 1745,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/mission.json",
+      "sha256": "332a4b9b0258c08f280350cea1f0274f91a87c98798abbdf9a21e31399e12779",
+      "bytes": 10740,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/registry-observation.json",
+      "sha256": "a695ca40b20c5b1a9aa2244bd74df31b7a249ac23962594b6760ccf76158101c",
+      "bytes": 308,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-clippy.log",
+      "sha256": "4911531841bdaeac8754604aecdc3d30c3cf379a7d6008d5a8f6d9ef9e7fd12e",
+      "bytes": 205,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-gate.log",
+      "sha256": "af3e2bf57c0866330226ad5821b0b7b4536f838693c7ea9bd9a280228e42db1d",
+      "bytes": 16775,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-green.log",
+      "sha256": "15b12a88c6a3b53ac5721e00dcc5719ca7a465b1b1aaf7af240f836cc4b903d4",
+      "bytes": 1114,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-red.log",
+      "sha256": "8915eba8172e1d877e8b6b28d7698091c4df73964b9232fc734bf1943fcfe9c5",
+      "bytes": 2271,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/run-manifest.json",
+      "sha256": "3f4a76653235519f00506e5aef717f93675f13adce97b01142728d242f4467f3",
+      "bytes": 4627,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-first.json",
+      "sha256": "fa86e4900c5aae472e64446d37c3bcd20c12f0be840588c0edc86611ff2d9055",
+      "bytes": 34370,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-terminal.json",
+      "sha256": "216b8341f634ad4375e3cdf8bed229ad3905a0ba2a257004ee2411ae0a82fa97",
+      "bytes": 22703,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/run-manifest.json",
+      "sha256": "e2e8b5b8b372cc51c3147ba5ff9553601cf510a8a2ab1e418a55aadb2ac9436c",
+      "bytes": 3952,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-first.json",
+      "sha256": "1f7f80a3fc91ff34a038fef1e324e77b34d54e826b19cbdb2bc241786eb3420c",
+      "bytes": 33808,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-terminal.json",
+      "sha256": "4c61d00569dd0893d64e1e3b7f9dfe9e6c4695cc45521b1246de3a973c1df483",
+      "bytes": 22152,
+      "provenance": "accepted13 preserved"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-acceptance.md",
+      "sha256": "e963a486d17023cca0c0366c5c88d6a02a0f8acb65e88b37745fd6f04c1006ff",
+      "bytes": 1325,
+      "provenance": "root acceptance record"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-root-clippy.log",
+      "sha256": "65a08650d2d8e3d9cfa494e50aaa1f6919b622879de2d6ba49c1c320e19afc8e",
+      "bytes": 206,
+      "provenance": "fresh root joint integration evidence"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-root-gate.log",
+      "sha256": "8bd9e06bad2a5b797e65d1af07f439c91c57dcdea28bfeb6d17274c66abc2c19",
+      "bytes": 18984,
+      "provenance": "fresh root joint integration evidence"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-supervised-environments.md",
+      "sha256": "6796301bab305d36cc8bb76563b016c21143b6d34e31510fb7439dea09cbca8b",
+      "bytes": 13158,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/baseline-relative.patch",
+      "sha256": "c97c23028ae0851deb8a2fbb579fa330f4cc1aa29c2b100c480c12ed55b618ae",
+      "bytes": 112622,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/behavioral-proof.txt",
+      "sha256": "3b7a7c083f8739d6f07ba2f8a2a77f5ac10d24d75676c51c3e925a0c1f2e28dd",
+      "bytes": 17944,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/final-gate.json",
+      "sha256": "4ebaf4cb6b72a01b493b2249eda26ff5f13ae18298542f2a1aa35be4e37f2915",
+      "bytes": 3296,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-classifier-green.log",
+      "sha256": "111a7be7861190354b56066c259fac003406c90095c30f3707542dc3e86a0559",
+      "bytes": 1967,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-clippy-final.log",
+      "sha256": "a89416d3b244a4e83094ccef99e1cea9bc7e3b5a6be947e5eaf1e0af2958a54a",
+      "bytes": 213,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-clippy.log",
+      "sha256": "f18584efe0bf4c854911451562431c9851e49d9e09e9a3d7ffb82b545cc2a4c6",
+      "bytes": 904,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-fmt-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-fmt.log",
+      "sha256": "8dadbf83d7176e49c0da3729573ffebab96938be7c8062328ccddc39cddd1514",
+      "bytes": 595,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-focused-final.log",
+      "sha256": "45c39787f32744a784b179803f6f6ff7e477df7e6dbaa794b1aec59b8b2bc8af",
+      "bytes": 1994,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-focused-first.log",
+      "sha256": "63d9fb49db3e6c8c90ecf1b98fb9a1db46698e7fe2c9eefad4ebe0829f2c9b0b",
+      "bytes": 1910,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-full-gate-final.log",
+      "sha256": "f9a4e4b1f8e833118edc53793fab5c5038a42b927ae3a9861b67cde3571c8211",
+      "bytes": 18311,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-full-gate.log",
+      "sha256": "a2b7197da5b599559242d66ad80c80902b46cfbedc6eceb2bfd557044dabf4f6",
+      "bytes": 18170,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-green-first.log",
+      "sha256": "7028930be694eaaee19e592445db006736bf4b46922d817eb84072f9dbcdd9fc",
+      "bytes": 1754,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-red.log",
+      "sha256": "5d8510484810a36a0379100c71e65694a710b565f91401212fd68c07fc4dd6e5",
+      "bytes": 1554,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair1.patch",
+      "sha256": "affa3b10036a52c4e7ddd5f7b8d941a4ffd2ec901fbb1d88fa3573c0dd997c20",
+      "bytes": 53601,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair2.patch",
+      "sha256": "7c8e2b71b96d80e8204def2489ca1a3092fc4f3b110b90b4f992ad97a5078d97",
+      "bytes": 8509,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair3.patch",
+      "sha256": "67a7db310a03edac03a4655cd1b69c6864c52e1308e227042a88876afac4e1e2",
+      "bytes": 24649,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/baseline-relative.patch",
+      "sha256": "bb8660c906106c00416617c8ea0cc25922e933cea1b51fe36842900407d562d3",
+      "bytes": 57550,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/behavioral-proof.txt",
+      "sha256": "fe2c8e4269dbb0ce30c330ed04b44e7fd9e8c1cb0c717978ec6549c7df6dcffe",
+      "bytes": 4928,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/final-gate.json",
+      "sha256": "ba80a2722e98043b5e9ad49ad98d58016d80a4945602ece7a7dcebb130482c9c",
+      "bytes": 1499,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/report.md",
+      "sha256": "2e6a97d5986847a90fc9ba335e7af411fe20ac779e6de25976293e4c1b0deccb",
+      "bytes": 6838,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/source-manifest.json",
+      "sha256": "9885ae732b7266de15be0469f3bd198e8db6036df0db7810d330e31337ad4747",
+      "bytes": 1523,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/baseline-relative.patch",
+      "sha256": "90b12ad8d0ac2737793b7170108f0bc1bcc77ba9fd369b28052ae18460f332d4",
+      "bytes": 90422,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/behavioral-proof.txt",
+      "sha256": "18b4165fd2b4ffc0e3dc02c31c4660a2edf524b08bc10e86f7878c3954c7f279",
+      "bytes": 14070,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/final-gate.json",
+      "sha256": "721cf626a0d295d9f01d2b4730c5943c37c275674fc2c01f284147c584974f18",
+      "bytes": 2408,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/repair1.patch",
+      "sha256": "affa3b10036a52c4e7ddd5f7b8d941a4ffd2ec901fbb1d88fa3573c0dd997c20",
+      "bytes": 53601,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/report.md",
+      "sha256": "9dfa5dd610b17c703cb11b6ccf39527c21b657c6b4efa4affdd32e9959318cfa",
+      "bytes": 9416,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/source-manifest.json",
+      "sha256": "5051e411f3a53a2428d414d11552c3c89f9f3bd88815d2671620333be92536b9",
+      "bytes": 1544,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/baseline-relative.patch",
+      "sha256": "f3301a4537ead025449e95b5a971c3d511f13c5e0cc7e1812b2b07f66821290c",
+      "bytes": 94597,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/behavioral-proof.txt",
+      "sha256": "012dad77a7e5367b5d1db4ae60c0222c42b9c563c3439b7f02616622d936f815",
+      "bytes": 15713,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/final-gate.json",
+      "sha256": "45a6ada474dfdcb8c09cf7273e6b75932337b5c76023c00504017896d2bbb5e3",
+      "bytes": 3494,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/repair2.patch",
+      "sha256": "7c8e2b71b96d80e8204def2489ca1a3092fc4f3b110b90b4f992ad97a5078d97",
+      "bytes": 8509,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/report.md",
+      "sha256": "6f05454d4e0a63c4315ba84ea3cbc64e3524db2f0340e0c666be4ae20510e2d5",
+      "bytes": 11114,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/source-manifest.json",
+      "sha256": "424c29750b73751a9877abb716fe6b370c4ec9c8c0332f5a20de4fadd9b6c866",
+      "bytes": 1544,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/source-manifest.json",
+      "sha256": "78971e5090475be2b3b7843f3d9ecad797c35d1df5a71b021efe1f917896af9b",
+      "bytes": 1544,
+      "provenance": "exact reviewed15 repair3/intake"
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "57bea007e3d9052eda637e955e5708cc1e21cc3813e453032cbfead21647315a",
+      "bytes": 202,
+      "provenance": "accepted13 preserved"
+    }
+  ],
+  "independent_review": {
+    "Spec": "PASS /root/design_critique",
+    "Standards": "PASS /root/gateway12",
+    "joint_glue": "PASS /root/artifacts11"
+  },
+  "root_checks": {
+    "gate": 0,
+    "fmt": 0,
+    "clippy": 0,
+    "passed_tests": 245,
+    "ignored_child_helper": 1
+  }
+}

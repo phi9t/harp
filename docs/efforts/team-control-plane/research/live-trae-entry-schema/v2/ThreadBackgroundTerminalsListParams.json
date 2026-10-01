@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ThreadBackgroundTerminalsListParams",
+  "description": "Parameters for `thread/backgroundTerminals/list`.",
+  "type": "object",
+  "required": [
+    "threadId"
+  ],
+  "properties": {
+    "threadId": {
+      "type": "string"
+    }
+  }
+}

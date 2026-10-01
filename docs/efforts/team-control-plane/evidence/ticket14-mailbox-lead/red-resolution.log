@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.57s
+     Running tests/mailbox.rs (target/debug/deps/mailbox-5acb35ef02ecf7e3)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... FAILED
+
+failures:
+
+---- mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text stdout ----
+
+thread 'mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text' (1919496) panicked at tests/mailbox.rs:330:5:
+assertion `left == right` failed: question requester explicitly resolves exact answer
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+error: test failed, to rerun pass `--test mailbox`

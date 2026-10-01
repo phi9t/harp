@@ -1,0 +1,81 @@
+{
+  "recorded_utc": "2026-10-01T11:02:12.957705+00:00",
+  "repair_round": 2,
+  "commands": {
+    "classifier": "cargo test --manifest-path crates/team-control-plane/Cargo.toml --locked observation_uncertainty -- --nocapture",
+    "focused": "bash crates/team-control-plane/tests/run-postgres.sh --test supervisor",
+    "fmt": "cargo fmt --manifest-path crates/team-control-plane/Cargo.toml --check",
+    "clippy": "cargo clippy --manifest-path crates/team-control-plane/Cargo.toml --all-targets --locked -- -D warnings",
+    "gate": "bash tools/agents/check.sh"
+  },
+  "exit_codes": {
+    "focused": 0,
+    "fmt": 0,
+    "clippy": 0,
+    "gate": 0
+  },
+  "classifier_red_exit": 101,
+  "classifier_green_exit": 0,
+  "logs": {
+    "repair2-red.log": {
+      "sha256": "27a3ecda84e153aa0b2f835fc378309fe5bfc4aa1ba75872068e1cf712ea3b81",
+      "bytes": 1034,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-red.log"
+    },
+    "repair2-green.log": {
+      "sha256": "2ccceb8c9d3f82f96089b56483a991510953d5213a3266dfd32e8b0277d20410",
+      "bytes": 1632,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-green.log"
+    },
+    "repair2-focused.log": {
+      "sha256": "4144a22c729a6579c63c4e42e941fca2117c8059a20ddf6557b9a48f835ef401",
+      "bytes": 5905,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-focused.log"
+    },
+    "repair2-diagnostic.log": {
+      "sha256": "40fd811cae69c1978036e1ea61337b61cc657ba45145d07f1919476f89fb0296",
+      "bytes": 485,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-diagnostic.log"
+    },
+    "repair2-diagnostic-1.log": {
+      "sha256": "8a0d351c60cc83d25d83083876191006fcdf398c294e887e8a8b991ad576d665",
+      "bytes": 4534,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-diagnostic-1.log"
+    },
+    "repair2-identity-diagnostic-1.log": {
+      "sha256": "c1131ce99c0c07719ac50be81763d1910c5958c843d3dac70acbec23d0a6b20c",
+      "bytes": 485,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-identity-diagnostic-1.log"
+    },
+    "repair2-identity-diagnostic-2.log": {
+      "sha256": "918a7f3b5ea8dc60842bb62829d7dea88a515c5e0bfb70c3714115361efefbe7",
+      "bytes": 344,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-identity-diagnostic-2.log"
+    },
+    "repair2-identity-diagnostic-3.log": {
+      "sha256": "1f344eb041998133dfa3372fe1a9674c7d680bb7637dce25a992cfe589dc6452",
+      "bytes": 4660,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-identity-diagnostic-3.log"
+    },
+    "repair2-focused-green.log": {
+      "sha256": "21fbf4219bbf2973b3432195613815f12e800297f5867f4061bb1ade65f8144a",
+      "bytes": 1909,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-focused-green.log"
+    },
+    "repair2-fmt.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-fmt.log"
+    },
+    "repair2-clippy.log": {
+      "sha256": "37ab8f2bac3925083d32b1fea1f1633926db77ee121e1ee04f2a720d40c6f704",
+      "bytes": 213,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-clippy.log"
+    },
+    "repair2-full-gate.log": {
+      "sha256": "a2c314689d6ceb889aaf1b98f2faa919fb3a4b67b62edb70e2d6583a618cc4ef",
+      "bytes": 17891,
+      "retained_path": ".scratch/team-control-plane/ticket15/repair2-full-gate.log"
+    }
+  }
+}

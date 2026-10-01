@@ -1,0 +1,35 @@
+{
+  "purpose": "model-free toy workflow compile/restart/Continue-As-New/offline-replay feasibility; not kernel acceptance",
+  "files": [
+    {
+      "path": "probe/Cargo.lock",
+      "sha256": "d7b8cf2b3ec919ef8e416b00d12c711b766d48a268136be54842fcd95418a514",
+      "bytes": 71580
+    },
+    {
+      "path": "probe-good.rs",
+      "sha256": "01cddc6cd2967209be861cbf19d9193de3f7da68feab795e210abd688f68ccb9",
+      "bytes": 2242
+    },
+    {
+      "path": "sdk-history-first.json",
+      "sha256": "90f3fd5ab5bd58fb1d58ce1f39645297b66bd1e0d1e69db6da504f7d01ce87ff",
+      "bytes": 6442
+    },
+    {
+      "path": "sdk-history-final.json",
+      "sha256": "08627624843ac4ca4c9efc53ee108c74e1578a0ca304cde45da76c0f6e0507cb",
+      "bytes": 6264
+    },
+    {
+      "path": "replay-sdk.log",
+      "sha256": "ad35134f9137d9eceb1ca7511fafe43a01c5b8496fea3ddc2892d7cca9545c76",
+      "bytes": 122
+    },
+    {
+      "path": "replay-negative.log",
+      "sha256": "c7bccabec770e9773f8885e3cddb9702b0aece1f724934e468e6d4fb56e64b8f",
+      "bytes": 542
+    }
+  ]
+}

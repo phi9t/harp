@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.51s
+     Running tests/mailbox.rs (target/debug/deps/mailbox-5acb35ef02ecf7e3)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... FAILED
+
+failures:
+
+---- mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text stdout ----
+
+thread 'mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text' (2671123) panicked at tests/mailbox.rs:578:5:
+assertion `left == right` failed: unchanged coalesced events cannot purchase another polling turn
+  left: 200
+ right: 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+error: test failed, to rerun pass `--test mailbox`

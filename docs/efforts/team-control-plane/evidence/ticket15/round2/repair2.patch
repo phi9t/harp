@@ -1,0 +1,224 @@
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -727,12 +727,57 @@
+         namespace: fs::read_link(p.join("ns/pid"))?.to_string_lossy().into(),
+     })
+ }
+-fn alive(p: &ProcessIdentity) -> bool {
+-    identity(p.pid).is_ok_and(|i| i == *p)
+-        && fs::read_to_string(format!("/proc/{}/stat", p.pid))
+-            .ok()
+-            .and_then(|s| s.rsplit_once(')').map(|(_, t)| t.trim().starts_with('Z')))
+-            .is_some_and(|z| !z)
++fn alive(p: &ProcessIdentity) -> std::io::Result<bool> {
++    observe_alive(p, identity, |pid| {
++        fs::read_to_string(format!("/proc/{pid}/stat"))
++    })
++}
++fn observe_alive(
++    p: &ProcessIdentity,
++    read_identity: impl FnOnce(u32) -> std::io::Result<ProcessIdentity>,
++    read_stat: impl FnOnce(u32) -> std::io::Result<String>,
++) -> std::io::Result<bool> {
++    let current = match read_identity(p.pid) {
++        Ok(current) => current,
++        Err(error) if process_disappeared(&error) => return Ok(false),
++        Err(error) => return Err(error),
++    };
++    if current != *p {
++        return Ok(false);
++    }
++    let stat = match read_stat(p.pid) {
++        Ok(stat) => stat,
++        Err(error) if process_disappeared(&error) => return Ok(false),
++        Err(error) => return Err(error),
++    };
++    let state = stat
++        .rsplit_once(')')
++        .and_then(|(_, tail)| tail.split_whitespace().next())
++        .ok_or_else(|| std::io::Error::other("malformed process state"))?;
++    if !matches!(
++        state,
++        "R" | "S" | "D" | "Z" | "T" | "t" | "X" | "x" | "K" | "W" | "P" | "I"
++    ) {
++        return Err(std::io::Error::other("unknown process state"));
++    }
++    Ok(state != "Z")
++}
++// The monitor keeps this descriptor until shutdown proof is complete. Namespace
++// inode numbers otherwise may be reused immediately after short-lived PID1 exits.
++fn pin_namespace(init: &ProcessIdentity) -> std::io::Result<fs::File> {
++    use std::os::unix::fs::MetadataExt;
++    let path = format!("/proc/{}/ns/pid", init.pid);
++    let pin = fs::File::open(&path)?;
++    let pinned = pin.metadata()?;
++    let current = fs::metadata(&path)?;
++    if pinned.dev() != current.dev()
++        || pinned.ino() != current.ino()
++        || init.namespace != format!("pid:[{}]", pinned.ino())
++        || identity(init.pid)? != *init
++    {
++        return Err(std::io::Error::other("namespace pin identity mismatch"));
++    }
++    Ok(pin)
+ }
+ fn process_disappeared(error: &std::io::Error) -> bool {
+     // /proc task reads can return ESRCH after enumeration while the inode remains.
+@@ -786,7 +831,11 @@
+         }
+ 
+         match identity(pid) {
+-            Ok(p) if p.namespace == namespace && alive(&p) => members.push(p),
++            Ok(p) if p.namespace == namespace => {
++                if alive(&p)? {
++                    members.push(p);
++                }
++            }
+             Ok(_) => {}
+             Err(e) if process_disappeared(&e) => {}
+             Err(e) => {
+@@ -800,20 +849,20 @@
+ }
+ fn signal(p: &ProcessIdentity) -> Result<()> {
+     use std::os::fd::{AsRawFd, FromRawFd};
+-    if !alive(p) {
++    if !alive(p).map_err(|_| unavailable())? {
+         return Ok(());
+     }
+     // Open then re-check: PID reuse between observation and pidfd_open cannot target a replacement.
+     let raw = unsafe { libc::syscall(libc::SYS_pidfd_open, p.pid, 0) } as i32;
+     if raw < 0 {
+-        return if !alive(p) {
++        return if !alive(p).map_err(|_| unavailable())? {
+             Ok(())
+         } else {
+             Err(unavailable())
+         };
+     }
+     let fd = unsafe { std::os::fd::OwnedFd::from_raw_fd(raw) };
+-    if !alive(p) {
++    if !alive(p).map_err(|_| unavailable())? {
+         return Ok(());
+     }
+     if unsafe {
+@@ -825,7 +874,7 @@
+             0,
+         )
+     } < 0
+-        && alive(p)
++        && alive(p).map_err(|_| unavailable())?
+     {
+         return Err(unavailable());
+     }
+@@ -852,14 +901,20 @@
+         .transpose()?;
+     let mut reason = None;
+     let (next, members) = if let Some(init) = init {
+-        let proof = alive(&init)
+-            || prior
+-                .iter()
+-                .any(|p| p.namespace == init.namespace && alive(p));
+-        match inventory(&init.namespace) {
+-            Ok(members) if members.is_empty() => ("stopped", members),
+-            Ok(members) if proof => {
+-                let controller_lost = controller.as_ref().is_none_or(|p| !alive(p));
++        let observations = (|| -> std::io::Result<_> {
++            let mut proof = alive(&init)?;
++            for member in prior.iter().filter(|p| p.namespace == init.namespace) {
++                proof |= alive(member)?;
++            }
++            let controller_lost = match controller.as_ref() {
++                Some(controller) => !alive(controller)?,
++                None => true,
++            };
++            Ok((proof, controller_lost, inventory(&init.namespace)?))
++        })();
++        match observations {
++            Ok((_, _, members)) if members.is_empty() => ("stopped", members),
++            Ok((true, controller_lost, members)) => {
+                 if cancel || controller_lost {
+                     if members.iter().any(|p| signal(p).is_err()) {
+                         reason = Some("pidfd signal of recorded membership failed".to_string());
+@@ -1051,6 +1106,15 @@
+         let _ = child.wait();
+         return Err(unavailable());
+     }
++    // Acquire and verify the incarnation pin before unblocking any workload.
++    let namespace_pin = match pin_namespace(&init) {
++        Ok(pin) => pin,
++        Err(_) => {
++            let _ = child.kill();
++            let _ = child.wait();
++            return Err(unavailable());
++        }
++    };
+     // Time can expire while bwrap prepares its blocked namespace. Recheck before eligibility.
+     let live:bool=tx.query_one("SELECT NOT desired_cancel AND deadline>clock_timestamp() FROM supervised_workspaces WHERE id=$1",&[&id]).await?.get(0);
+     if !live {
+@@ -1097,9 +1161,10 @@
+         let _ = child.try_wait();
+         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+     }
+-    // Reap launcher; kernel PID namespace shutdown handles setsid descendants.
++    // Reap launcher before releasing the verified namespace incarnation pin.
+     let _ = child.kill();
+     let _ = child.wait();
++    drop(namespace_pin);
+     fs::File::open(&manifest.log_path)
+         .and_then(|f| f.sync_all())
+         .map_err(|_| unavailable())?;
+@@ -1115,3 +1180,53 @@
+ pub async fn run_monitor_with_gate(broker: Broker, id: Uuid, gate: MonitorGate) -> Result<()> {
+     monitor(broker, id, Some(gate)).await
+ }
++
++#[cfg(test)]
++mod observation_tests {
++    use super::*;
++    #[test]
++    fn observation_uncertainty_is_never_proof_of_absence() {
++        let p = identity(std::process::id()).unwrap();
++        for errno in [libc::EACCES, libc::EIO] {
++            assert!(
++                observe_alive(
++                    &p,
++                    |_| Err(std::io::Error::from_raw_os_error(errno)),
++                    |_| unreachable!()
++                )
++                .is_err()
++            );
++            assert!(
++                observe_alive(
++                    &p,
++                    |_| Ok(p.clone()),
++                    |_| Err(std::io::Error::from_raw_os_error(errno))
++                )
++                .is_err()
++            );
++        }
++        assert!(observe_alive(&p, |_| Ok(p.clone()), |_| Ok("malformed".into())).is_err());
++        for errno in [libc::ENOENT, libc::ESRCH] {
++            assert!(
++                !observe_alive(
++                    &p,
++                    |_| Err(std::io::Error::from_raw_os_error(errno)),
++                    |_| unreachable!()
++                )
++                .unwrap()
++            );
++            assert!(
++                !observe_alive(
++                    &p,
++                    |_| Ok(p.clone()),
++                    |_| Err(std::io::Error::from_raw_os_error(errno))
++                )
++                .unwrap()
++            );
++        }
++        assert!(!observe_alive(&p, |_| Ok(p.clone()), |_| Ok("1 (zombie) Z".into())).unwrap());
++        let mut replacement = p.clone();
++        replacement.start_ticks += 1;
++        assert!(!observe_alive(&p, |_| Ok(replacement), |_| unreachable!()).unwrap());
++    }
++}

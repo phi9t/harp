@@ -1,0 +1,33 @@
+{
+  "binaries": [
+    {
+      "sha256": "81d5cd58d558504f3ce326a473460e364c002a582ddbeb36f2cd53816f84841f",
+      "version": "kata v0.14.3\n  commit:  410ee88\n  built:   2026-08-10T21:20:48Z\n  go:      go1.26.3\n  os/arch: linux/amd64\n"
+    },
+    {
+      "sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6",
+      "version": "kata gb70a430\n  commit:  b70a430\n  built:   2026-10-01T03:15:05Z\n  go:      go1.27.1\n  os/arch: linux/amd64\n"
+    }
+  ],
+  "observations": [
+    {
+      "phase": "old-created",
+      "api_schema_version": "0.10.0",
+      "issue_uid": "01M3V94G8NVXPEKGWJS9BYA3HB"
+    },
+    {
+      "phase": "new-read",
+      "api_schema_version": "0.24.0",
+      "issue_uid_retained": true,
+      "title_retained": true,
+      "claim_retained": true,
+      "retained_credential_authenticated": true,
+      "reclaim_refused": 409
+    },
+    {
+      "phase": "cleanup",
+      "all_processes_terminal": true,
+      "listener_closed": true
+    }
+  ]
+}

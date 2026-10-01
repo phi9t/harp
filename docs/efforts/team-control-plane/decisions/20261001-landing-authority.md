@@ -1,0 +1,5 @@
+# Landing authority
+
+The owner instructed: “let’s also make sure we land all the work across these many worktrees/branches.” This authorizes preparing commits and gated fast-forward landing of the work. Earlier no-commit/no-push/no-landing limitation is superseded for this requested integration. It does not waive independent review, exact-tip gates, one-writer isolation, protected branch policy, or authorize discarding worktrees, rewriting shared branches, committing private runtime configuration, or accepting unfinished16.
+
+Inventory covers all Corenius registered worktrees, distinguishing already-landed commits, duplicate files, unique unfinished contributions and obsolete candidates. Root retains inventory and disposition evidence under .scratch/team-control-plane/landing; intended accepted contributions are consolidated through the reference-design writer. Each unique remaining contribution requires review and appropriate verification before landing. No private provider config contents are read by the inventory.

@@ -1,0 +1,969 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "accepted_tickets": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "ticket14_review_round": 0,
+  "candidate_manifest_sha256": "6062da2afa6ccab06e957c8fd19fc06ba9e542b50188d5c7c5c74651d120bd78",
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "bytes": 85457
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "bytes": 876
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "2cb79ac3ea99f0e23888768418410865fd992448a312f5293eeadaf94637d0e6",
+      "bytes": 8766
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "bytes": 1738
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0006.sql",
+      "sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "bytes": 11782
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "fecaff361c82e0f2f96cc9aab19437e9d0212647de85651186b0b6459546fce6",
+      "bytes": 17171
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c26dea8bd2e83cb4df68087aad379daa09c6e36e810fae42d7e1fa66e47b3aad",
+      "bytes": 38791
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "1f386e9ad98af2ae85d28ab29ff43e79816a427bc5ec5b23edc2bcf9f97cd470",
+      "bytes": 5146
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "bytes": 3581
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "009f64f4628857d51ffd401e198fc3122b6a76a15c5e6d056931525e22f3ab5f",
+      "bytes": 32043
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "2d50a457b62ca54b18ba520e2e22328558f186bc6605d21f856b9bd42d2e97e4",
+      "bytes": 8063
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "04a947ee3fa31d18b554d5adf068cba2e53af78aa40baceb0868557bf103c5a8",
+      "bytes": 266
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "sha256": "d6e93f1376da6ef7622e7b4c3224a7410493daddc59c67768f9cc694b6292f4e",
+      "bytes": 100611
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "056d02ae4fb08c528774ae6c688c63a64fb6c92eae9c86e02ddc81a4c3a75ec1",
+      "bytes": 3532
+    },
+    {
+      "path": "crates/team-control-plane/src/mcp.rs",
+      "sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "bytes": 20937
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "176931a937074598b4e0381bab46b7f20a50b11007a6ffcba616234e0d19a27f",
+      "bytes": 15775
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "ee712817fba6dea4276c59bee313c278f7deef5bce989b6a465041d65b3b5c24",
+      "bytes": 61197
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "616444bcb65855721aac27412e99a5c7da6344e22e18a2e580028966ed9bb893",
+      "bytes": 45062
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "sha256": "7f42857ada05bc1fa311532860f3d3a48135d1f3213c9471256e95dc9c75be35",
+      "bytes": 3960
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "bytes": 53578
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/mailbox_runtime.py",
+      "sha256": "aef05ec7453ac02b910702e6e9f6463aeed42851c64d7ca1d1288aef1667ba61",
+      "bytes": 2162
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox.rs",
+      "sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "bytes": 50467
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_artifacts.rs",
+      "sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "bytes": 42045
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_delivery.rs",
+      "sha256": "714d0b8b977f9993ad0c7326791ae2bcacafe6dfaf4980b76e4ef36886164ce4",
+      "bytes": 48020
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "bytes": 837
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "sha256": "b95b0116902f24597249d3b1fd2234a345988d0d90bc35132959bf153f969768",
+      "bytes": 43764
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "f4b34f6a7eefddd30538cd42329bc0abfc06a57655c354378ec4e0d50f3b379b",
+      "bytes": 51023
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/root15-glue-manifest.json",
+      "sha256": "9ba088b475c2260da451b9ca94808e2de8307662e6814f79913988414b733e4b",
+      "bytes": 929
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/root15-glue.patch",
+      "sha256": "9f38e3076e2c71759d7ea6ab1ad16f2d00a31463fa73f50ab7d87a87f3bcfd41",
+      "bytes": 2075
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket10-kernel-admission.md",
+      "sha256": "729a99e8ad3bf2a713eed2ace540d2adbffe89c380a83321d9e1e66a7a90d466",
+      "bytes": 12646
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket12-gateway-journal.md",
+      "sha256": "d758907c4c9af79790bb519c709d763a327a0ee93bce89e4268a17b95d733f95",
+      "bytes": 9663
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge.md",
+      "sha256": "9dbfbeea861c4f57f6b824da11a5576d859ed96532b9bbd21157b180c12cd9fb",
+      "bytes": 8162
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/activity-invocations.jsonl",
+      "sha256": "549732fe1c8e90ca05af8e8f69387a1ce90410cb10a681ade07231f6eebe5bb1",
+      "bytes": 1745
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/clippy-frozen.log",
+      "sha256": "dc14db3ec71c3012b06246e8565841abdf2e499522420ad68322c21b2f1fd1c5",
+      "bytes": 205
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/fmt-frozen.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/focused-frozen.log",
+      "sha256": "43e482d05d6dcaf203b9b2cc5aa34adc95b8538235f01cc59e5c809ae4c0e56b",
+      "bytes": 635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/gate-frozen.log",
+      "sha256": "25e0f3ac2d4e71c17903077d8019c05e5f0bf63a9b1400d781b38a78e965dca9",
+      "bytes": 16505
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/initial-report.md",
+      "sha256": "bcd7ed936f97556a6fec7b67a9583cb37412ccfa21fa9d5bcd43e29606ab82fe",
+      "bytes": 7122
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/mission.json",
+      "sha256": "c2b58de522e88450873d95db925ba5d28c9b94ab691f3115c65d29941284cb50",
+      "bytes": 10466
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-driver.log",
+      "sha256": "7fa6f8dbe9804e238ced908783214a7d907bb914fc4756f36d69056c4b324d9d",
+      "bytes": 887
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-terminal-driver.log",
+      "sha256": "faafe8a14ad21eafb4bb156985d4035686e694481eda300ca2f325ea920765e7",
+      "bytes": 1009
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red.log",
+      "sha256": "71acf901594d00f22c2a001bb516d91b9e2a20fb8fa7c5c13f19779ace28dde5",
+      "bytes": 4836
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/activity-invocations.jsonl",
+      "sha256": "86f8657230308ca960b3cee0e0a75b3af9b9f5da0c6b874d73517df29c895cfb",
+      "bytes": 1745
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/mission.json",
+      "sha256": "332a4b9b0258c08f280350cea1f0274f91a87c98798abbdf9a21e31399e12779",
+      "bytes": 10740
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/registry-observation.json",
+      "sha256": "a695ca40b20c5b1a9aa2244bd74df31b7a249ac23962594b6760ccf76158101c",
+      "bytes": 308
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-clippy.log",
+      "sha256": "4911531841bdaeac8754604aecdc3d30c3cf379a7d6008d5a8f6d9ef9e7fd12e",
+      "bytes": 205
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-gate.log",
+      "sha256": "af3e2bf57c0866330226ad5821b0b7b4536f838693c7ea9bd9a280228e42db1d",
+      "bytes": 16775
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-green.log",
+      "sha256": "15b12a88c6a3b53ac5721e00dcc5719ca7a465b1b1aaf7af240f836cc4b903d4",
+      "bytes": 1114
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-red.log",
+      "sha256": "8915eba8172e1d877e8b6b28d7698091c4df73964b9232fc734bf1943fcfe9c5",
+      "bytes": 2271
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/run-manifest.json",
+      "sha256": "3f4a76653235519f00506e5aef717f93675f13adce97b01142728d242f4467f3",
+      "bytes": 4627
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-first.json",
+      "sha256": "fa86e4900c5aae472e64446d37c3bcd20c12f0be840588c0edc86611ff2d9055",
+      "bytes": 34370
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-terminal.json",
+      "sha256": "216b8341f634ad4375e3cdf8bed229ad3905a0ba2a257004ee2411ae0a82fa97",
+      "bytes": 22703
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/run-manifest.json",
+      "sha256": "e2e8b5b8b372cc51c3147ba5ff9553601cf510a8a2ab1e418a55aadb2ac9436c",
+      "bytes": 3952
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-first.json",
+      "sha256": "1f7f80a3fc91ff34a038fef1e324e77b34d54e826b19cbdb2bc241786eb3420c",
+      "bytes": 33808
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-terminal.json",
+      "sha256": "4c61d00569dd0893d64e1e3b7f9dfe9e6c4695cc45521b1246de3a973c1df483",
+      "bytes": 22152
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead.md",
+      "sha256": "c92178f777ad1fdffa90117fcddb3a73fab69fd987724eaf207ec67d1b35b0c6",
+      "bytes": 10631
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/activity-invocations.jsonl",
+      "sha256": "b81b79d6b3bd742513e0d82e88350b382910a96166785225bbfe676fa688b741",
+      "bytes": 2747
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/artifact-transport.json",
+      "sha256": "21f9000baff00632e5188426a0624abadf30931ce4b5d4f6cf80bdd7aba752b6",
+      "bytes": 1814
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/clippy-final-history.log",
+      "sha256": "a954aa8d14ee070092c65e1b74c11eb543da834536f8db3bd12550381e114fb8",
+      "bytes": 202
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/early-signal-diagnostic/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/early-signal-diagnostic/mailbox-first.json",
+      "sha256": "85d1c0cae7e058ded77416c55af17f364ed92f910c8ffabfc0a8e90904172034",
+      "bytes": 34200
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/early-signal-diagnostic/mailbox-terminal.json",
+      "sha256": "38f0f39e07e5dc8994032488ef8a851e87e9ed1e1304b0d309232a24d478700e",
+      "bytes": 9395
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/fmt-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/focused-isolation-proof.log",
+      "sha256": "03840a12fd7d632dbfbfb49b4cd0d7a122aa399f6871579f10ff747f9dd4457d",
+      "bytes": 1334
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/fullgate-final-barrier.log",
+      "sha256": "fd47671b0a78cefa180e1f8ad4f42d60d3abde1cf22b3cd526586192a0a7bc9c",
+      "bytes": 17798
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/fullgate-final-isolated.log",
+      "sha256": "e48a24b508dfbe72a323113b2d791147c73876ec0dc05e910e58bcb3a49a54f7",
+      "bytes": 20046
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/fullgate-final-verified.log",
+      "sha256": "7e5739c40a1ca6a8ef3e42a22b6bedc764b0526482ea65017fb390adc3467d20",
+      "bytes": 18228
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/fullgate-final.log",
+      "sha256": "58157f0e71e463ba13b444ecf48c4b7ae358fbf746a8a7f3801bf87a28c0c69c",
+      "bytes": 22749
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-actual-acceptance-wait.log",
+      "sha256": "75658c60e7327124bd0f51a57feaee15293999f8e0031e78bdfe101a7322f395",
+      "bytes": 498
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-answer-yield-matrix.log",
+      "sha256": "fa52dfc02f64582608688d4ed7039c36972e6a3e034b184fb42f8278c7f5c8a6",
+      "bytes": 476
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-delivery-approval-dependency.log",
+      "sha256": "d51974c03dbe14808004600af072a20a52cb28ebaa6fbedfee17be91d560315b",
+      "bytes": 567
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-delivery-decision-dependency.log",
+      "sha256": "867a555bb14ea8fcf26aa117f40e2e04169fed79c3c8fcf45ee3a9be680aedd3",
+      "bytes": 567
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-delivery-queued-close.log",
+      "sha256": "99965773e2c1a3b43adc081d0f59a4768dfd09c5f52ef1fabf0a6c58cef53ece",
+      "bytes": 567
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-peer-mcp-bytes.log",
+      "sha256": "c2bcf6a6c173de6f4a3477606f1561209cff4d1724beee990a7bf2b847b1c53c",
+      "bytes": 498
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-stale-attempt-public-fences-corrected.log",
+      "sha256": "97b15c61c2dce6670d68063b7a09233a5b3b51197a442ea89ed95faf00d20955",
+      "bytes": 631
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/green-temporal-history-barrier.log",
+      "sha256": "93081f3f8a8ebb3f7b5234fbc0f71f8c7f66b0ebee45bdfbc18a9dfa12268a96",
+      "bytes": 474
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/initial-no-hint-proof/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/initial-no-hint-proof/mailbox-first.json",
+      "sha256": "1f9cf24919a5261a46c51b4a11fcd4e39ac7ab7a185d832fcf43b6f1e02535d6",
+      "bytes": 33228
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/initial-no-hint-proof/mailbox-terminal.json",
+      "sha256": "82baf200ced614f7f5abd5da10f86b2857835a0f6d3da7136919bd8baef8c55b",
+      "bytes": 18521
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/mailbox-first.json",
+      "sha256": "511df76a523c636a60741253dcf4c1010bb329ac2e735963525c5d3ffa367f80",
+      "bytes": 33225
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/mailbox-terminal.json",
+      "sha256": "25be4f133581816fd7f61b4f890a23143df0ee855f820dc447ce0275f1076c7d",
+      "bytes": 18521
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/mission.json",
+      "sha256": "41c3c9f5430f41875e6da498330da81726953254bc727f387c2bf9201dcc1b2b",
+      "bytes": 10796
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-approvals.log",
+      "sha256": "42ddf4b17e916c26e15b438f35057e5849eb1791620a4415cd9b54483de8af06",
+      "bytes": 1074
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-artifact-http.log",
+      "sha256": "3f9d684c299e0bc53149c0643d40d708d33747a68f1d548c06a13538fa04727c",
+      "bytes": 1106
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-artifact-mcp.log",
+      "sha256": "eadbc28226c16e0e107851bbe0a70a9ca41e548b040eebf663c1f803b25c676c",
+      "bytes": 1077
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-blocked-poll.log",
+      "sha256": "5e3de04f4e8d4ec2798584eba889ce7cac5882d76ce63a62795f622e197f3342",
+      "bytes": 1045
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-bounded-input-batches-semantic.log",
+      "sha256": "0f0ca2f7887a48a03b95a1344a384f746a70787a8b96e666e7ae87094809f91d",
+      "bytes": 981
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-captured-idle-input.log",
+      "sha256": "203364f58757f3191505c08bb2a15c20e8929239c30b6b71f2f06981547c9751",
+      "bytes": 1145
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-captured-input-frontier.log",
+      "sha256": "42eed4bd5fadad06caa400224f26d149d8fdbc0cadf61bd77926c524c6cedf64",
+      "bytes": 1136
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-checkpoint-artifact.log",
+      "sha256": "abb3801d15cfad1447a04343f4be5f48a85a32695c115815c9af6646134e63eb",
+      "bytes": 1056
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-cli-artifact-registration.log",
+      "sha256": "c5288ef7be9bf86fc402476154e2d4fd42701b15264c8e458d8e7090ef2f196c",
+      "bytes": 1031
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-completed-turn-effect.log",
+      "sha256": "7152d3c6cd3d2b41fb25b98546b812cb85b0da5274310e146a49c92fdd1f6321",
+      "bytes": 1079
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-context-checkpoint.log",
+      "sha256": "8968917e9d65f35555b390fb2928d63c85d733998a8f9aa15982746646796ce8",
+      "bytes": 1018
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-delivery-presentation.log",
+      "sha256": "b7066deadf8c715bbc4373a2093236ba87f27f101243a42a921497a4ac6f5ce3",
+      "bytes": 1176
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-episode-budget.log",
+      "sha256": "cd308b08c0d0f6cff6068589c6149773e74409527187cdc91f5ef244ad1aef1b",
+      "bytes": 1061
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-episode-deadline.log",
+      "sha256": "fbe624246b422f6eb5605d2ded35267d9aea67dcce2b6fc079dc4cce8f8a783d",
+      "bytes": 1139
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-executor-permission-read-written.log",
+      "sha256": "b9a00f230774f3401e1feb4fe12eb3709ba1e884248f1936f0be9e2e67c39ab1",
+      "bytes": 1120
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-http.log",
+      "sha256": "2be376af9f780a682a9317b9795c0f74ab7c7268663c88f2782f14f7ec6e16ce",
+      "bytes": 9893
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-inherited-question-yield.log",
+      "sha256": "939b6440afdf3414dba8c662f42796840235a8ad3151d637ee642cbc6f8233c0",
+      "bytes": 1097
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-lead-replace.log",
+      "sha256": "b6be7d7cfd01991bac191dba58aebeaedcc05d0b88e080a34edc162d0f8548c8",
+      "bytes": 1034
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-lead-seat.log",
+      "sha256": "8dfe43edde76bd5640d87073516a6cb92ca4740ba74b3ea23dc8f86f0e4c1f35",
+      "bytes": 1047
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-legacy-batch-fence.log",
+      "sha256": "9d20f86c308ec38f77ef4ee51eadc9dfef47b7950c1a07ff6ca4ad392bba0024",
+      "bytes": 1012
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-live-episode-coalesce.log",
+      "sha256": "9cf857bf8ed44427c5c578cb57c90a61ebf1b704a8255768dff604091f6bd4eb",
+      "bytes": 1167
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-mcp-resource-templates.log",
+      "sha256": "b89530f05c891e2d1908257f6fb2ca7e487e5bca0221b5a2fb7989c9e78a67e4",
+      "bytes": 999
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-mcp-scoped-task-input-written.log",
+      "sha256": "690e6a5d2d3e9be1fced7fab34daffffed58537f38e876dcfc9549f582e539c5",
+      "bytes": 1066
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-message-input-context.log",
+      "sha256": "2763ff908542feaacca1364e27b87511e07c4acf2a41539391bcae8b11ab6497",
+      "bytes": 1051
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-message-origin-epoch.log",
+      "sha256": "168a336eb48cf9f7a09f8b16b171e8355a19d83725a891338a1eb3aaeaae5e62",
+      "bytes": 1143
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-no-new-event.log",
+      "sha256": "4ba7cc8d823fe952b96e39fec0a4b657ab54c1510c71bb166acb2a8136605fdb",
+      "bytes": 1058
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-owner-grant-lead-replacement.log",
+      "sha256": "7e0a477b4c6199165afd80e1cfaec5dcb5f6456078c36f23dc100d15e228b5b2",
+      "bytes": 1172
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-peer-artifact-ref.log",
+      "sha256": "daea892367492d5c54690cb8ca21700417262add0d6671323b70fe52ea1537a8",
+      "bytes": 1150
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-proposal-decision.log",
+      "sha256": "5ec0e2736a5718099dfb102441b5aa6b1633b01492b5668dab961af59b0caae6",
+      "bytes": 1051
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-receipts.log",
+      "sha256": "7dc24352ba61cd718dc31dd706fd9e9ea32e5a8b2d199170ce63df811fa8f35d",
+      "bytes": 1037
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-recipient-read.log",
+      "sha256": "f8e47fe9373435966e59d350603fdff244df97fd54d7613ac65a3d88176fe524",
+      "bytes": 1040
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-resolution.log",
+      "sha256": "3ae5ead4df5265d7ad924f8d3ea4722be6935167852a592fbb365529dcb20230",
+      "bytes": 1046
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-role-before-journal.log",
+      "sha256": "054016b4583c408a1b4c450d2480bc8356bef04892a93a0cfb69d8e08cc150f3",
+      "bytes": 1172
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-scoped-worker-event-after-rowcount-fix.log",
+      "sha256": "b340b721bfc22c276d6deffacedda17ed46a3053c1a2c0608d246b5a00a8cc61",
+      "bytes": 1150
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-stale-recipient.log",
+      "sha256": "16e1d2dc1895c7b1fbfd10c5bf2f0e13ad25a0847ecc853c4e8acc6f6c4ddb9c",
+      "bytes": 1101
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-startup-mailbox-schema.log",
+      "sha256": "c47ee2edc90f35961b0a5c5f48880ffe0f826251f885901da9b95122c1e9d943",
+      "bytes": 1021
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-temporal-wait-projection.log",
+      "sha256": "54abfe29b266131918d19316df55570dea95890cfb99931c7692181d6b2a2e80",
+      "bytes": 1057
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-uncaptured-runtime-binding.log",
+      "sha256": "2aa7d9c564053247885ef78095de044050e439884c806757a7fea261008a9228",
+      "bytes": 1160
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-unproven-turn-identity.log",
+      "sha256": "85345ff5884f21d9e5e85bdf08938bb4b354d8ddcb3037fc4c635e8007d8d5c1",
+      "bytes": 1173
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-verifier-candidate-event.log",
+      "sha256": "e45c66e6a23d245fa4b05a8acf8fe531329007d6681b49c222d6b0d286072736",
+      "bytes": 1097
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/red-yield-answer.log",
+      "sha256": "392ee601da5cd3d34a091227e2559b54583e27f336e0d5d6245d6cafa4a79a3e",
+      "bytes": 1041
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/registry-observation.json",
+      "sha256": "1a7225d67e2fae67af176b205af96d4524461a7382b622afc619b8b6ff665e28",
+      "bytes": 308
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/reply-lost.marker",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/server.log",
+      "sha256": "4c2dc0fe3d06cd4f449eaf5f45e39b09ed13ea8b074f218ea164c4fb6e085449",
+      "bytes": 130
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/task-first.json",
+      "sha256": "e4431f8d692471676bf63dfe887ee1ffbd1c555e6d0c47e31c7d06ebc74862f1",
+      "bytes": 34483
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/task-terminal.json",
+      "sha256": "f8f5efb1601a33ed3dd7c0544a275266ad7370fd669d316dd6a8b6c15ba61bbf",
+      "bytes": 22815
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-mailbox-lead/verification.json",
+      "sha256": "f54f5dc8e413e81ee3c7d36c4e9fd5a1f6285bcb746a62e06770b0ae493a7859",
+      "bytes": 1862
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-root-clippy.log",
+      "sha256": "bea389a94ad93f23538d15840dec26a4e205069979ec33aea1d13aedaaedb8f7",
+      "bytes": 206
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-root-gate.log",
+      "sha256": "8b1ec245ec601ce2fcc44bca65e9cef8fe43e9bafd20c79a2e7a20c282f0cced",
+      "bytes": 20141
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-shared-glue-review.md",
+      "sha256": "c23bdb6a4701f1eea26ad9e472ecdc98c9e45a5f85d0105a53bfc4fa0709b3bb",
+      "bytes": 833
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-spec-review-round0.md",
+      "sha256": "949daf1275031ac3cf47fcb68c1ac41af25e79b233de2d3f0ab20ac23bf00aa1",
+      "bytes": 1270
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket14-standards-review-round0.md",
+      "sha256": "f996bcf6689efa2520b4a9c4f2860795cc9cc1b634b48cb9ffb4f799fbee34c4",
+      "bytes": 1182
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-acceptance.md",
+      "sha256": "e963a486d17023cca0c0366c5c88d6a02a0f8acb65e88b37745fd6f04c1006ff",
+      "bytes": 1325
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-root-clippy.log",
+      "sha256": "65a08650d2d8e3d9cfa494e50aaa1f6919b622879de2d6ba49c1c320e19afc8e",
+      "bytes": 206
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-root-gate.log",
+      "sha256": "8bd9e06bad2a5b797e65d1af07f439c91c57dcdea28bfeb6d17274c66abc2c19",
+      "bytes": 18984
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-supervised-environments.md",
+      "sha256": "6796301bab305d36cc8bb76563b016c21143b6d34e31510fb7439dea09cbca8b",
+      "bytes": 13158
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/baseline-relative.patch",
+      "sha256": "c97c23028ae0851deb8a2fbb579fa330f4cc1aa29c2b100c480c12ed55b618ae",
+      "bytes": 112622
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/behavioral-proof.txt",
+      "sha256": "3b7a7c083f8739d6f07ba2f8a2a77f5ac10d24d75676c51c3e925a0c1f2e28dd",
+      "bytes": 17944
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/final-gate.json",
+      "sha256": "4ebaf4cb6b72a01b493b2249eda26ff5f13ae18298542f2a1aa35be4e37f2915",
+      "bytes": 3296
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-classifier-green.log",
+      "sha256": "111a7be7861190354b56066c259fac003406c90095c30f3707542dc3e86a0559",
+      "bytes": 1967
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-clippy-final.log",
+      "sha256": "a89416d3b244a4e83094ccef99e1cea9bc7e3b5a6be947e5eaf1e0af2958a54a",
+      "bytes": 213
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-clippy.log",
+      "sha256": "f18584efe0bf4c854911451562431c9851e49d9e09e9a3d7ffb82b545cc2a4c6",
+      "bytes": 904
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-fmt-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-fmt.log",
+      "sha256": "8dadbf83d7176e49c0da3729573ffebab96938be7c8062328ccddc39cddd1514",
+      "bytes": 595
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-focused-final.log",
+      "sha256": "45c39787f32744a784b179803f6f6ff7e477df7e6dbaa794b1aec59b8b2bc8af",
+      "bytes": 1994
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-focused-first.log",
+      "sha256": "63d9fb49db3e6c8c90ecf1b98fb9a1db46698e7fe2c9eefad4ebe0829f2c9b0b",
+      "bytes": 1910
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-full-gate-final.log",
+      "sha256": "f9a4e4b1f8e833118edc53793fab5c5038a42b927ae3a9861b67cde3571c8211",
+      "bytes": 18311
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-full-gate.log",
+      "sha256": "a2b7197da5b599559242d66ad80c80902b46cfbedc6eceb2bfd557044dabf4f6",
+      "bytes": 18170
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-green-first.log",
+      "sha256": "7028930be694eaaee19e592445db006736bf4b46922d817eb84072f9dbcdd9fc",
+      "bytes": 1754
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/intake-logs/repair3-red.log",
+      "sha256": "5d8510484810a36a0379100c71e65694a710b565f91401212fd68c07fc4dd6e5",
+      "bytes": 1554
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair1.patch",
+      "sha256": "affa3b10036a52c4e7ddd5f7b8d941a4ffd2ec901fbb1d88fa3573c0dd997c20",
+      "bytes": 53601
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair2.patch",
+      "sha256": "7c8e2b71b96d80e8204def2489ca1a3092fc4f3b110b90b4f992ad97a5078d97",
+      "bytes": 8509
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/repair3.patch",
+      "sha256": "67a7db310a03edac03a4655cd1b69c6864c52e1308e227042a88876afac4e1e2",
+      "bytes": 24649
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/baseline-relative.patch",
+      "sha256": "bb8660c906106c00416617c8ea0cc25922e933cea1b51fe36842900407d562d3",
+      "bytes": 57550
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/behavioral-proof.txt",
+      "sha256": "fe2c8e4269dbb0ce30c330ed04b44e7fd9e8c1cb0c717978ec6549c7df6dcffe",
+      "bytes": 4928
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/final-gate.json",
+      "sha256": "ba80a2722e98043b5e9ad49ad98d58016d80a4945602ece7a7dcebb130482c9c",
+      "bytes": 1499
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/report.md",
+      "sha256": "2e6a97d5986847a90fc9ba335e7af411fe20ac779e6de25976293e4c1b0deccb",
+      "bytes": 6838
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round0/source-manifest.json",
+      "sha256": "9885ae732b7266de15be0469f3bd198e8db6036df0db7810d330e31337ad4747",
+      "bytes": 1523
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/baseline-relative.patch",
+      "sha256": "90b12ad8d0ac2737793b7170108f0bc1bcc77ba9fd369b28052ae18460f332d4",
+      "bytes": 90422
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/behavioral-proof.txt",
+      "sha256": "18b4165fd2b4ffc0e3dc02c31c4660a2edf524b08bc10e86f7878c3954c7f279",
+      "bytes": 14070
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/final-gate.json",
+      "sha256": "721cf626a0d295d9f01d2b4730c5943c37c275674fc2c01f284147c584974f18",
+      "bytes": 2408
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/repair1.patch",
+      "sha256": "affa3b10036a52c4e7ddd5f7b8d941a4ffd2ec901fbb1d88fa3573c0dd997c20",
+      "bytes": 53601
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/report.md",
+      "sha256": "9dfa5dd610b17c703cb11b6ccf39527c21b657c6b4efa4affdd32e9959318cfa",
+      "bytes": 9416
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round1/source-manifest.json",
+      "sha256": "5051e411f3a53a2428d414d11552c3c89f9f3bd88815d2671620333be92536b9",
+      "bytes": 1544
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/baseline-relative.patch",
+      "sha256": "f3301a4537ead025449e95b5a971c3d511f13c5e0cc7e1812b2b07f66821290c",
+      "bytes": 94597
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/behavioral-proof.txt",
+      "sha256": "012dad77a7e5367b5d1db4ae60c0222c42b9c563c3439b7f02616622d936f815",
+      "bytes": 15713
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/final-gate.json",
+      "sha256": "45a6ada474dfdcb8c09cf7273e6b75932337b5c76023c00504017896d2bbb5e3",
+      "bytes": 3494
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/repair2.patch",
+      "sha256": "7c8e2b71b96d80e8204def2489ca1a3092fc4f3b110b90b4f992ad97a5078d97",
+      "bytes": 8509
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/report.md",
+      "sha256": "6f05454d4e0a63c4315ba84ea3cbc64e3524db2f0340e0c666be4ae20510e2d5",
+      "bytes": 11114
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/round2/source-manifest.json",
+      "sha256": "424c29750b73751a9877abb716fe6b370c4ec9c8c0332f5a20de4fadd9b6c866",
+      "bytes": 1544
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15/source-manifest.json",
+      "sha256": "78971e5090475be2b3b7843f3d9ecad797c35d1df5a71b021efe1f917896af9b",
+      "bytes": 1544
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "57bea007e3d9052eda637e955e5708cc1e21cc3813e453032cbfead21647315a",
+      "bytes": 202
+    }
+  ],
+  "reviews": {
+    "spec": "ticket14-spec-review-round0.md",
+    "standards": "ticket14-standards-review-round0.md",
+    "shared_glue": "ticket14-shared-glue-review.md"
+  },
+  "fresh_checks": {
+    "gate_exit": 0,
+    "rust_passed": 138,
+    "python_passed": 114,
+    "ignored_parent_exercised_helper": 1,
+    "fmt_exit": 0,
+    "clippy_all_targets_warnings_denied_exit": 0
+  },
+  "limitations": [
+    "model-free single-host kernel components",
+    "provider/Supervisor role-neutral assembly remains16",
+    "live providers and rollback restore unproven",
+    "all changes uncommitted"
+  ]
+}

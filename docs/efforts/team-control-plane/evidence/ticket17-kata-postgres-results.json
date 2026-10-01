@@ -1,0 +1,60 @@
+{
+  "binary_sha256": "8b0f05b1071f5e7a2b8173c9e5ef358d550a601cebd8c9d9cae6e45975e837f6",
+  "observations": [
+    {
+      "name": "health",
+      "status": 200,
+      "api_schema_version": "0.24.0"
+    },
+    {
+      "name": "scoped-read-outside",
+      "status": 404
+    },
+    {
+      "name": "source-edit",
+      "status": 200,
+      "original_revision": 1,
+      "resulting_revision": 1,
+      "title_changed": true
+    },
+    {
+      "name": "direct-close-with-unexecuted-command-evidence",
+      "status": 400,
+      "closed_reason": null
+    },
+    {
+      "name": "direct-close-with-unexecuted-test-evidence",
+      "status": 200,
+      "closed_reason": "done"
+    },
+    {
+      "name": "duplicate-close-replay",
+      "status": 200,
+      "has_original_event": true
+    },
+    {
+      "name": "expired-token-read",
+      "status": 403
+    },
+    {
+      "name": "claim-race",
+      "status": [
+        200,
+        409
+      ],
+      "successful_claims": 1
+    },
+    {
+      "name": "postgres-logical-restore",
+      "status": 200,
+      "closed_issue_preserved": true,
+      "winning_claim_preserved": true,
+      "expired_token_still_denied": true
+    },
+    {
+      "name": "cleanup",
+      "process_terminal": true,
+      "listener_closed": true
+    }
+  ]
+}

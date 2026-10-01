@@ -1,0 +1,154 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "accepted_tickets": [
+    10,
+    11,
+    12
+  ],
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "02e4c2a68d544ec16ee5541fba1fba188d07938353a82ee1c6e1ef1cf38af7f1",
+      "bytes": 36525
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "f9654b66d0e8d4ba01aab1eccd5a0edf1e26974ff255dff147d2811b138f8ce9",
+      "bytes": 547
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "e804b6458df66a4b5ad3453da15d12d1656f43c1cf3f16f0e9aae53b30b414c5",
+      "bytes": 5448
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "8281722bf652c59ab773800e109069f28de07f89ebb5f14fe8243b9ef67ee7e1",
+      "bytes": 16474
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c7320b3adf474bb7794d279337c57ee0252155df2ddbd5de7a67fe6c5fa637de",
+      "bytes": 36138
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "1cd05c347653454f678640facf386bd7d57b3f3f2d3260cc0e8a6e74f9d75a0c",
+      "bytes": 4516
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "bytes": 3581
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "f4e7159b6f7fec62181be4340275eb87f11a46c99e506804f5850aa5a0c05919",
+      "bytes": 25851
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "486c2c4028f5b2ec18756de3d3b7e9561afff8ff9b471b2fc4be110d4d186af9",
+      "bytes": 2784
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "dc9d66a19da0e3ef851d5c244157f9475f49f4042be1e53f5a51db32fc8dea2d",
+      "bytes": 198
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "affbe4108d1c63657c6860573c69dc720406b8265447202b92a7b7160806cf6a",
+      "bytes": 2593
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "bbfcd3ba55febccb5b1ae2bb867283e214c4465502e8d1d37d9f17c8d22b0b34",
+      "bytes": 14832
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "sha256": "7f42857ada05bc1fa311532860f3d3a48135d1f3213c9471256e95dc9c75be35",
+      "bytes": 3960
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "bytes": 53578
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "bytes": 837
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket10-kernel-admission.md",
+      "sha256": "729a99e8ad3bf2a713eed2ace540d2adbffe89c380a83321d9e1e66a7a90d466",
+      "bytes": 12646
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket12-gateway-journal.md",
+      "sha256": "d758907c4c9af79790bb519c709d763a327a0ee93bce89e4268a17b95d733f95",
+      "bytes": 9663
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "cb3fcf34ff0f078b87ce524c9e4f2d241cc4b680761dbc38cc97bc910a8413d3",
+      "bytes": 202
+    }
+  ],
+  "verification": {
+    "worker_repair_rounds": 2,
+    "integration_glue_correction": 1,
+    "standards": "pass",
+    "spec": "pass",
+    "glue_review": "pass",
+    "integration_gate_exit": 0,
+    "fmt_exit": 0,
+    "clippy_exit": 0,
+    "integration_log_sha256": "63db61ef219b61e766449ff177b4023f84ec5256b3620f85565348547ff7e217",
+    "tests": {
+      "artifact_postgres_git": 10,
+      "gateway_postgres_os_fault": 4,
+      "admission_postgres": 16,
+      "python": 114,
+      "root_rust": 71
+    }
+  },
+  "integration_glue": "Preserved accepted11 RoleVerifier/helpers/artifacts migration; added gateway export and locked gateway migration transaction after artifacts."
+}

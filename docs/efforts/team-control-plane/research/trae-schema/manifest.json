@@ -1,0 +1,60 @@
+{
+  "behavior_exercised": false,
+  "files": {
+    "v1/InitializeResponse.json": {
+      "bytes": 1285,
+      "sha256": "95714aa9647a7e44ba8daa045adac2c7abcd47243ad9f7d6b89bd7813dac086e"
+    },
+    "v2/ThreadGoalSetParams.json": {
+      "bytes": 804,
+      "sha256": "6216508b6a7ba9640be7861b2fb14e8719100468ea906fc65dd882701cb86423"
+    },
+    "v2/ThreadResumeParams.json": {
+      "bytes": 42699,
+      "sha256": "4153598dad89cea52ac27038c182642ae75e52284f488869dbd09d2587e05e89"
+    },
+    "v2/ThreadResumeResponse.json": {
+      "bytes": 86486,
+      "sha256": "01dc6c71505743dcb52f0dc24b0d9c5294c48695e36198f4a0af2a38c726e0ca"
+    },
+    "v2/ThreadStartParams.json": {
+      "bytes": 14844,
+      "sha256": "6424ea30e6cbc22e784868eeb6885844f92adf9d15de490fe3c281ab65b4f302"
+    },
+    "v2/ThreadStartResponse.json": {
+      "bytes": 81732,
+      "sha256": "aeb845c3b2be7efaccc825ee00620f41420ec7a6f323fe52ad0e153fb20d3347"
+    },
+    "v2/TurnInterruptParams.json": {
+      "bytes": 278,
+      "sha256": "49132b57b09f09dc545ed1cd373c12eede6e880e9afb54ae50add78bb42490cd"
+    },
+    "v2/TurnStartParams.json": {
+      "bytes": 26241,
+      "sha256": "0f277b70b5084dd06abe50a0590dbfe055738e5fcf608c2d825008323f811eff"
+    },
+    "v2/TurnStartResponse.json": {
+      "bytes": 57293,
+      "sha256": "076385d729657c25085562a080d4dcd4158382f95acc0f2c5cc6debb6297d7f4"
+    },
+    "v2/TurnSteerParams.json": {
+      "bytes": 5239,
+      "sha256": "b72ef9e33856ff7f1a09bda196e8919dbf0e0963288f37646f7594d58811f19c"
+    },
+    "v2/TurnSteerResponse.json": {
+      "bytes": 212,
+      "sha256": "a669b85e3b75b86468e39e6a2f760966bffe83f378b514c6898fb04b838cd78d"
+    },
+    "v2/WorkflowReviseParams.json": {
+      "bytes": 558,
+      "sha256": "0f5a5a5076e635996a823e10c681f500456eaa1918666e6b64bda97d040ed87a"
+    },
+    "v2/WorkflowStartParams.json": {
+      "bytes": 3668,
+      "sha256": "95ff0032f44fc3af2c44ce101b030f00f6e7a196fcd2e5805789653e8c51ed85"
+    }
+  },
+  "generated_with_experimental": true,
+  "kind": "selected-public-schema-snapshot",
+  "runtime_version": "traecli 0.207.1(internal edition)"
+}

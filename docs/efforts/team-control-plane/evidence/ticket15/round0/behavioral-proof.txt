@@ -1,0 +1,88 @@
+=== red-registration.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.59s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-bcc507cb8cbacb8c)
+
+running 2 tests
+
+thread 'cancel_stops_nested_setsid_children_and_fences_shared_git' (641531) panicked at tests/supervisor.rs:37:105:
+called `Result::unwrap()` on an `Err` value: Error { code: TemporarilyUnavailable }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... FAILED
+
+thread 'registered_before_create_and_unknown_gap_is_quarantined' (641532) panicked at tests/supervisor.rs:29:114:
+called `Result::unwrap()` on an `Err` value: Error { code: TemporarilyUnavailable }
+test registered_before_create_and_unknown_gap_is_quarantined ... FAILED
+
+failures:
+
+failures:
+    cancel_stops_nested_setsid_children_and_fences_shared_git
+    registered_before_create_and_unknown_gap_is_quarantined
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+error: test failed, to rerun pass `--test supervisor`
+
+=== focused-final.log ===
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.18s
+     Running tests/supervisor.rs (target/debug/deps/supervisor-5c0eee2770bd60fa)
+
+running 10 tests
+test crash_create_helper ... ok
+
+running 1 test
+
+running 1 test
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... ok
+
+running 1 test
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.18s
+
+
+=== clippy-final.log ===
+    Checking team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-supervised-environments/crates/team-control-plane)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.63s
+
+=== full-gate.log ===
+== python3 tools/agents/test_worker.py
+== python3 tools/agents/test_effort.py
+== python3 tools/test_sync_agentic_workflow.py
+== python3 tools/agents/tracker.py lint
+== sh tools/agents/checks.d/10-wt.sh
+== sh tools/agents/checks.d/20-land.sh
+== sh tools/agents/checks.d/30-tracker.sh
+== sh tools/agents/checks.d/40-msg.sh
+== sh tools/agents/checks.d/50-evidence.sh
+== sh tools/agents/checks.d/60-claims.sh
+== sh tools/agents/checks.d/70-team-control-plane.sh
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.87s
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.19s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+== cargo test --offline
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+check: all green

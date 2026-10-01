@@ -1,0 +1,47 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh l2-macro //:demo
+(22:36:21)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae631496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(warning): Read Tcc config from buildcloud failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/tcc/?service_name=inf.blade.online&config_key=basic&config_space=common (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae631496d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(warning): can't find available distribution cache and execute service from remote
+(22:36:21)Blade(warning): 当前环境下无法使用CAS分布式构建集群: not found remote service
+(22:36:21)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae63747a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(warning): Request build id failed: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/dummy_id/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae63747a50>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(warning): Failed to fetch idc meta data with api
+(22:36:21)Blade(error): Parse error in ./BUILD: 
+Traceback (most recent call last):
+  File "/opt/tiger/typhoon-blade/src/blade/core/load_build_files.py", line 218, in _load_build_file
+    exec_build_file(build_file, Target.registered, None)
+  File "/opt/tiger/typhoon-blade/src/blade/common/profile.py", line 31, in wrapper_profile
+    value = func(*args, **kwargs)
+  File "/opt/tiger/typhoon-blade/src/blade/core/load_build_files.py", line 134, in exec_build_file
+    exec(util.compile_file(build_file), _globals, _locals)
+  File "./BUILD", line 3, in <module>
+    mini_app("demo")
+  File "/data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/l2-macro/BUILD.share", line 5, in mini_app
+    native.cc_library(
+AttributeError: 'dict' object has no attribute 'cc_library'
+
+(22:36:21)Blade(error): failed to run blade
+(22:36:21)Blade(warning): Buildcloud request exception: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae64507e10>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(error): Report data server error: HTTPConnectionPool(host='buildcloudv2.byted.org', port=80): Max retries exceeded with url: /api/v2/build_info/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fae64507e10>: Failed to establish a new connection: [Errno 101] Network is unreachable',))
+(22:36:21)Blade(info): get tcc basic_conf from online failed
+(22:36:21)Blade(info): percent=0, num=33
+No required grpc dependencies, buildboard is disabled
+(22:36:21)Blade(info): InvocationID: 45736477-786d-447a-a86c-7a59bf61e699
+(22:36:21)Blade(info): TOOLCHAIN MODE: INSIDE
+(22:36:21)Blade(info): Get toolchain env file /opt/tiger/typhoon-blade/gccs/x86_64-x86_64-gcc-494/env.sh success
+(22:36:21)Blade(info): load toolchain env file done
+(22:36:21)Blade(info): get real toolchain name=x86_64-gcc494
+(22:36:21)Blade(info): get rule toolchain name=x86_64-x86_64-gcc-494
+(22:36:21)Blade(info): strategy-build-compile-priority: 
+(22:36:21)Blade(info): User Building Command: /bin/bash -lc base=docs/efforts/multi-agent-bench/evidence/research-blade if [ -f "$base/logs/build-l0-flat.log" ]; then cp "$base/logs/build-l0-flat.log" "$base/logs/bootstrap-pip-attempt.log"; fi set +e for spec in "l0-flat //:hello" "l1-vendored //app:use_math1" "l2-macro //:demo" "l3-settler //:app"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/build-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done
+(22:36:21)Blade(info): Blade version: blade-1.2.2.1469
+(22:36:21)Blade(info): Language version: 2.7.13
+(22:36:21)Blade(info): loading BUILD files...
+(22:36:21)Blade(info): pull cost time is 0.123862981796s
+(22:36:21)Blade(info): build-file-env: persisting 0 env vars to /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/home/.blade/a6d7c3f3c19705a688f9cdebc5ca0e7fa94b96d7/cache_manager/build_file_env.cache
+(22:36:21)Blade(info): basics: {"BPT-platform": "x86_64-gcc494", "build_command": "/opt/tiger/typhoon-blade/src/blade/bootstrap.py build //:demo", "env": "devbox", "ip": "invalid", "region": "us", "dc": "maliva", "device_type": "devbox", "build_toolchain_version": "gcc494", "os_version": "debian-12", "toolchain_name(GCC)": "x86_64-gcc494", "git_branch": "worker/research-blade", "build_tool_version": "blade-1.2.2.1469", "git_repo": "unknow", "user": "philip.yang"}, build_path: /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/l2-macro
+(22:36:21)Blade(help): You have entered the ninja build phase. Next time run blade fast-build instead of /bin/bash -lc base=docs/efforts/multi-agent-bench/evidence/research-blade if [ -f "$base/logs/build-l0-flat.log" ]; then cp "$base/logs/build-l0-flat.log" "$base/logs/bootstrap-pip-attempt.log"; fi set +e for spec in "l0-flat //:hello" "l1-vendored //app:use_math1" "l2-macro //:demo" "l3-settler //:app"; do   project=${spec%% *}   target=${spec#* }   log="$base/logs/build-${project}.log"   echo "COMMAND: $base/run_blade_build.sh $project $target" > "$log"   "$base/run_blade_build.sh" "$project" "$target" >> "$log" 2>&1   rc=$?   echo "EXIT: $rc" >> "$log"   echo "$project rc=$rc" done for faster iteration
+real	0m0.631s
+user	0m0.374s
+sys	0m0.280s
+EXIT: 227

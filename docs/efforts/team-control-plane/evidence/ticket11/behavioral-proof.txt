@@ -1,0 +1,115 @@
+## round1-red-verifier.log
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running tests/artifacts.rs (target/debug/deps/artifacts-81b892acf05da1a4)
+
+running 1 test
+test verifier_credential_has_no_lead_execution_authority ... FAILED
+
+failures:
+
+---- verifier_credential_has_no_lead_execution_authority stdout ----
+
+thread 'verifier_credential_has_no_lead_execution_authority' (4126764) panicked at tests/artifacts.rs:1008:5:
+assertion `left == right` failed: a verifier credential must never enter execution admission as a lead
+  left: DependencyUnmet
+ right: Unauthorized
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    verifier_credential_has_no_lead_execution_authority
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## round1-red-real-git-pg.log
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.72s
+     Running tests/artifacts.rs (target/debug/deps/artifacts-81b892acf05da1a4)
+
+running 1 test
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... FAILED
+
+failures:
+
+---- actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance stdout ----
+
+thread 'actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance' (4160113) panicked at tests/artifacts.rs:1049:5:
+assertion `left == right` failed
+  left: DependencyUnmet
+ right: Unauthorized
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.11s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## round1-red-core-migration.log
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.73s
+     Running tests/artifacts.rs (target/debug/deps/artifacts-81b892acf05da1a4)
+
+running 1 test
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... FAILED
+
+failures:
+
+---- core_migrate_installs_verifier_grants_without_artifact_constructor stdout ----
+
+thread 'core_migrate_installs_verifier_grants_without_artifact_constructor' (106069) panicked at tests/artifacts.rs:1739:5:
+public core migrate must install every schema constraint required by public core verifier grants: Err(Error { code: TemporarilyUnavailable })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    core_migrate_installs_verifier_grants_without_artifact_constructor
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `--test artifacts`
+
+## round1-green-real-git-pg.log
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
+     Running tests/artifacts.rs (target/debug/deps/artifacts-81b892acf05da1a4)
+
+running 1 test
+ticket11 real_git_pg task=1b2e7a8f-a7e1-4c7c-842b-765abac8efa4 first_commit=e33cd36d51fd1c242d3d11d50b31b26a108bedbe first_tree=d6557d9fe1b9a641b4ee252acab136ca97e6ca5d first_base=ae91219382ff33e91bb975e83020bc50f503f6db first_artifact=af80a5ea5b603b95508aa003ac035ff219379f60fb07704229811e2ded63314c first_logs=3b80ea02be4c24b77b3ee7d4beefbe9ca1f3270279bbde710751025a2e9ac51b new_commit=aeaa4698c512844652edac667fb31216d75169bc new_tree=9a28de91917846619ccb976493b56a13e5409793 new_base=1f9481332f099d86ad960760950fff5fcdda66d2 new_artifact=bd1e51016c503c59392de16d193cbfdcea4265bd9a678511a32a9296b9e76c1a new_logs=66db851ecaa6ba5912340c5bc837b75f824c0b8149be3328e3169a5b862d26ba accepted_candidate=bcc2c8cb5afcee1fa73da6363fcf42d9cbf07783bc83d2948a19341e4f25ea03 accepted_report=fb655496ad9cf6a778fad1c67bd4efb7033df0a2c3c2a559f4d965f57f4b7583
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.31s
+
+
+## round1-focused-final.log
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.08s
+     Running tests/artifacts.rs (target/debug/deps/artifacts-81b892acf05da1a4)
+
+running 10 tests
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+ticket11 integration first=8c322746e46f5ced865175e81abaf26b59fbb26a tree=b04b15949e427f8f5d1fe00f6897e6ee8583d5c6 base=9aa0c23377fb007b17f009d263f3d69e6187f0fd changed=a99d5e9207e65594bbc6e7c6bbfd53c6f5e3a9c7 tree=9a14d110bfc119b637c9682a9d28d5b2ab9659df base=d6c1df82e13dcd07210718e635b024575fecab53
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+ticket11 task=a2fa3f0a-d2d9-4601-ab13-46866677552e epoch=c0a15160-e83b-404c-90c1-39c0ce36a938 candidate=f858e0798a09b85556b0ccc9e681da74d8d4c7459bad3d6ddd2c6568d53a505c artifact=387b75ea1990ff5f32d97d80a9d6e90de0cb7012a40b9da0404987c1c9794037
+test verifier_credential_has_no_lead_execution_authority ... ok
+ticket11 verification=d2d7c68076eb3b01f405efc6e2d8d91f94e544014cb02aeff7e9e8e0289b9b03
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+ticket11 real_git_pg task=9e164fb7-eff5-4a58-917c-164be73eba09 first_commit=bbd47f0e4c6824ceb5f93bbdc75a177d3bd09e97 first_tree=d6557d9fe1b9a641b4ee252acab136ca97e6ca5d first_base=f316fcce00b98f0fce2f4760ead36c502af4f40e first_artifact=e2306496beb0d185032afa1bb8070e47e414abf35a13e273af05797876dc4d41 first_logs=3b80ea02be4c24b77b3ee7d4beefbe9ca1f3270279bbde710751025a2e9ac51b new_commit=adbdcd2c12834f3c51beed119c2a980229646a45 new_tree=9a28de91917846619ccb976493b56a13e5409793 new_base=e17d95c2469143632eaae6b43596c5ebe255d6fb new_artifact=a2508b07e839097446ff60db3c5e77697f651e8d034b8a7dcacbf7569414b6e4 new_logs=66db851ecaa6ba5912340c5bc837b75f824c0b8149be3328e3169a5b862d26ba accepted_candidate=471f420057b715392182583ea44f9ea6d87bf8320d025da742581e40d8c3e261 accepted_report=58c2a20be3c7de2dbc86f32235fec764a591fd28377032df89847ec9d66e53e8
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.13s
+
+
+## round1-clippy-final.log
+    Checking team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance/crates/team-control-plane)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.41s

@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.62s
+     Running tests/mailbox_delivery.rs (target/debug/deps/mailbox_delivery-6e61f3c526abdfc4)
+
+running 1 test
+test bounded_input_batches_advance_without_empty_polling ... FAILED
+
+failures:
+
+---- bounded_input_batches_advance_without_empty_polling stdout ----
+
+thread 'bounded_input_batches_advance_without_empty_polling' (1081865) panicked at tests/mailbox_delivery.rs:1184:31:
+called `Result::unwrap_err()` on an `Ok` value: Receipt { id: 53941801-ab6b-4401-a7c5-f6eb8c01aee6, disposition: "admitted" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    bounded_input_batches_advance_without_empty_polling
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.30s
+
+error: test failed, to rerun pass `--test mailbox_delivery`

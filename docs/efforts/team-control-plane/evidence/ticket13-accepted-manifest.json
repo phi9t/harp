@@ -1,0 +1,343 @@
+{
+  "base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "baseline": "ticket12-accepted-manifest.json",
+  "repair_round": 1,
+  "files": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "8bbb0d678d4dee3ce38984d4ec451e5379f353854c7785ab1f6c70077c925132",
+      "bytes": 85448
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "935dd52405bc8dce3cb7bdbefc37c46eaa19ac73e61c47d271d0b53889164014",
+      "bytes": 857
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "e804b6458df66a4b5ad3453da15d12d1656f43c1cf3f16f0e9aae53b30b414c5",
+      "bytes": 5448
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "8281722bf652c59ab773800e109069f28de07f89ebb5f14fe8243b9ef67ee7e1",
+      "bytes": 16474
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c7320b3adf474bb7794d279337c57ee0252155df2ddbd5de7a67fe6c5fa637de",
+      "bytes": 36138
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "1cd05c347653454f678640facf386bd7d57b3f3f2d3260cc0e8a6e74f9d75a0c",
+      "bytes": 4516
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "bytes": 3581
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "8cd0b812092933195ed6dbd1640c188838d3ea643ada92888214690250dcb01b",
+      "bytes": 26560
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "486c2c4028f5b2ec18756de3d3b7e9561afff8ff9b471b2fc4be110d4d186af9",
+      "bytes": 2784
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "f3ae92ee08ec7b0b9970ee8cd367742e417297604180e19ba34baf02c513fd91",
+      "bytes": 217
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "affbe4108d1c63657c6860573c69dc720406b8265447202b92a7b7160806cf6a",
+      "bytes": 2593
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "738a3bd601161c2ef6187ecccfb2f4493ca18416a6bb9ff10401ec144b6a5d2f",
+      "bytes": 15646
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "sha256": "7f42857ada05bc1fa311532860f3d3a48135d1f3213c9471256e95dc9c75be35",
+      "bytes": 3960
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "bytes": 53578
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "bytes": 837
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket10-kernel-admission.md",
+      "sha256": "729a99e8ad3bf2a713eed2ace540d2adbffe89c380a83321d9e1e66a7a90d466",
+      "bytes": 12646
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket12-gateway-journal.md",
+      "sha256": "d758907c4c9af79790bb519c709d763a327a0ee93bce89e4268a17b95d733f95",
+      "bytes": 9663
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "57bea007e3d9052eda637e955e5708cc1e21cc3813e453032cbfead21647315a",
+      "bytes": 202
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "fe65253d8e3cba5418d180c59db2117c85e97c96d5602331946cda088e4ff7e9",
+      "bytes": 44812
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "ce8a7a63299c062d24eadd03263f7cf9260c1239ff880cd3b4405b4e06b21f61",
+      "bytes": 41731
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/activity-invocations.jsonl",
+      "sha256": "549732fe1c8e90ca05af8e8f69387a1ce90410cb10a681ade07231f6eebe5bb1",
+      "bytes": 1745
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/clippy-frozen.log",
+      "sha256": "dc14db3ec71c3012b06246e8565841abdf2e499522420ad68322c21b2f1fd1c5",
+      "bytes": 205
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/fmt-frozen.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/focused-frozen.log",
+      "sha256": "43e482d05d6dcaf203b9b2cc5aa34adc95b8538235f01cc59e5c809ae4c0e56b",
+      "bytes": 635
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/gate-frozen.log",
+      "sha256": "25e0f3ac2d4e71c17903077d8019c05e5f0bf63a9b1400d781b38a78e965dca9",
+      "bytes": 16505
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/initial-report.md",
+      "sha256": "bcd7ed936f97556a6fec7b67a9583cb37412ccfa21fa9d5bcd43e29606ab82fe",
+      "bytes": 7122
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/mission.json",
+      "sha256": "c2b58de522e88450873d95db925ba5d28c9b94ab691f3115c65d29941284cb50",
+      "bytes": 10466
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-driver.log",
+      "sha256": "7fa6f8dbe9804e238ced908783214a7d907bb914fc4756f36d69056c4b324d9d",
+      "bytes": 887
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-terminal-driver.log",
+      "sha256": "faafe8a14ad21eafb4bb156985d4035686e694481eda300ca2f325ea920765e7",
+      "bytes": 1009
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red.log",
+      "sha256": "71acf901594d00f22c2a001bb516d91b9e2a20fb8fa7c5c13f19779ace28dde5",
+      "bytes": 4836
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/activity-invocations.jsonl",
+      "sha256": "86f8657230308ca960b3cee0e0a75b3af9b9f5da0c6b874d73517df29c895cfb",
+      "bytes": 1745
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/mission.json",
+      "sha256": "332a4b9b0258c08f280350cea1f0274f91a87c98798abbdf9a21e31399e12779",
+      "bytes": 10740
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/registry-observation.json",
+      "sha256": "a695ca40b20c5b1a9aa2244bd74df31b7a249ac23962594b6760ccf76158101c",
+      "bytes": 308
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-clippy.log",
+      "sha256": "4911531841bdaeac8754604aecdc3d30c3cf379a7d6008d5a8f6d9ef9e7fd12e",
+      "bytes": 205
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-gate.log",
+      "sha256": "af3e2bf57c0866330226ad5821b0b7b4536f838693c7ea9bd9a280228e42db1d",
+      "bytes": 16775
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-green.log",
+      "sha256": "15b12a88c6a3b53ac5721e00dcc5719ca7a465b1b1aaf7af240f836cc4b903d4",
+      "bytes": 1114
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-red.log",
+      "sha256": "8915eba8172e1d877e8b6b28d7698091c4df73964b9232fc734bf1943fcfe9c5",
+      "bytes": 2271
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/run-manifest.json",
+      "sha256": "3f4a76653235519f00506e5aef717f93675f13adce97b01142728d242f4467f3",
+      "bytes": 4627
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-first.json",
+      "sha256": "fa86e4900c5aae472e64446d37c3bcd20c12f0be840588c0edc86611ff2d9055",
+      "bytes": 34370
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-terminal.json",
+      "sha256": "216b8341f634ad4375e3cdf8bed229ad3905a0ba2a257004ee2411ae0a82fa97",
+      "bytes": 22703
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/run-manifest.json",
+      "sha256": "e2e8b5b8b372cc51c3147ba5ff9553601cf510a8a2ab1e418a55aadb2ac9436c",
+      "bytes": 3952
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-first.json",
+      "sha256": "1f7f80a3fc91ff34a038fef1e324e77b34d54e826b19cbdb2bc241786eb3420c",
+      "bytes": 33808
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-terminal.json",
+      "sha256": "4c61d00569dd0893d64e1e3b7f9dfe9e6c4695cc45521b1246de3a973c1df483",
+      "bytes": 22152
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge.md",
+      "sha256": "9dbfbeea861c4f57f6b824da11a5576d859ed96532b9bbd21157b180c12cd9fb",
+      "bytes": 8162
+    }
+  ],
+  "changed_paths": [
+    "crates/team-control-plane/Cargo.lock",
+    "crates/team-control-plane/Cargo.toml",
+    "crates/team-control-plane/src/lib.rs",
+    "crates/team-control-plane/src/storage.rs",
+    "crates/team-control-plane/src/gateway.rs",
+    "crates/team-control-plane/src/temporal.rs",
+    "crates/team-control-plane/migrations/0004.sql",
+    "crates/team-control-plane/tests/temporal.rs",
+    "crates/team-control-plane/tests/run-temporal.sh",
+    "tools/agents/checks.d/70-team-control-plane.sh",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/activity-invocations.jsonl",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/cleanup.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/clippy-frozen.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/fmt-frozen.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/focused-frozen.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/gate-frozen.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/initial-report.md",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/mission.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-driver.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red-terminal-driver.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/red.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/activity-invocations.jsonl",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/cleanup.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/mission.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/registry-observation.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-clippy.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-fmt.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-gate.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-green.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/repair1-red.log",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/run-manifest.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-first.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/repair1/task-terminal.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/run-manifest.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-first.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge/task-terminal.json",
+    "docs/efforts/team-control-plane/evidence/ticket13-temporal-bridge.md"
+  ],
+  "accepted_tickets": [
+    10,
+    11,
+    12,
+    13
+  ],
+  "independent_review": {
+    "Spec": "PASS /root/design_critique repair1",
+    "Standards": "PASS /root/artifacts11 repair1"
+  },
+  "root_checks": {
+    "full_gate": 0,
+    "fmt": 0,
+    "clippy": 0,
+    "passed_tests": 221,
+    "ignored_child_helper": 1
+  }
+}

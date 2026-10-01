@@ -1,0 +1,3 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_binary_with_loader.sh /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /data02/home/philip.yang/workspace/corenius-worker-research-blade/docs/efforts/multi-agent-bench/evidence/research-blade/projects/l0-flat/build64_release/hello
+bwrap: Can't create file at /ld-linux-x86-64.so.2: Read-only file system
+EXIT: 1

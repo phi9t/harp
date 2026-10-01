@@ -1,0 +1,25 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.13s
+     Running tests/mailbox_delivery.rs (target/debug/deps/mailbox_delivery-6e61f3c526abdfc4)
+
+running 2 tests
+test physical_fault_runtime_repeats_are_not_deduplicated_by_operation_id ... ok
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... FAILED
+
+failures:
+
+---- delivery_uses_durable_exact_episode_and_physical_conditional_turn stdout ----
+
+thread 'delivery_uses_durable_exact_episode_and_physical_conditional_turn' (251011) panicked at tests/mailbox_delivery.rs:475:9:
+assertion `left == right` failed: controller cannot replace authoritative confirmed Start turn identity with an arbitrary handle
+  left: 200
+ right: 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    delivery_uses_durable_exact_episode_and_physical_conditional_turn
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+error: test failed, to rerun pass `--test mailbox_delivery`

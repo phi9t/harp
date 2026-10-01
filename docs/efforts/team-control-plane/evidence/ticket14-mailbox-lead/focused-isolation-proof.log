@@ -1,0 +1,27 @@
+    Blocking waiting for file lock on artifact directory
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.02s
+     Running tests/mailbox.rs (target/debug/deps/mailbox-90d5eb232ebe5f42)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s
+
+     Running tests/mailbox_artifacts.rs (target/debug/deps/mailbox_artifacts-55ee2a30a7aadd8c)
+
+running 2 tests
+test executable_serve_registers_configured_artifact_http_and_mcp_seam ... ok
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+
+     Running tests/mailbox_delivery.rs (target/debug/deps/mailbox_delivery-6e61f3c526abdfc4)
+
+running 3 tests
+test physical_fault_runtime_repeats_are_not_deduplicated_by_operation_id ... ok
+test bounded_input_batches_advance_without_empty_polling ... ok
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.38s
+

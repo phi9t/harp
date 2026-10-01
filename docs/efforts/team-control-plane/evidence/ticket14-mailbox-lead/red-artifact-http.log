@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.62s
+     Running tests/mailbox_artifacts.rs (target/debug/deps/mailbox_artifacts-9d3807f5dcb716ec)
+
+running 1 test
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... FAILED
+
+failures:
+
+---- actual_git_submission_and_independent_verification_share_http_mcp_authority stdout ----
+
+thread 'actual_git_submission_and_independent_verification_share_http_mcp_authority' (2789922) panicked at tests/mailbox_artifacts.rs:295:5:
+assertion `left == right` failed: artifact transport authenticates before processing a submission
+  left: 404
+ right: 401
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    actual_git_submission_and_independent_verification_share_http_mcp_authority
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+error: test failed, to rerun pass `--test mailbox_artifacts`

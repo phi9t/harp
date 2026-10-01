@@ -1,0 +1,136 @@
+COMMAND: docs/efforts/multi-agent-bench/evidence/research-blade/run_blade_build.sh l0-flat //:hello
+test command: /usr/bin/python2.7 -m pip show --files six 2>&1
+test command: /usr/bin/python2.7 -m pip show --files requests 2>&1
+test command: /usr/bin/python2.7 -m pip show --files futures 2>&1
+WARNING: Package(s) not found: futures
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f79ed8cf910>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/futures/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f79ed8cfed0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/futures/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f79ed8f61d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/futures/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f79ed8f63d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/futures/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f79ed8f65d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/futures/
+ERROR: Could not find a version that satisfies the requirement futures (from versions: none)
+ERROR: No matching distribution found for futures
+skip error
+test command: /usr/bin/python2.7 -m pip show --files enum34 2>&1
+WARNING: Package(s) not found: enum34==1.1.10
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+Requirement already satisfied: enum34==1.1.10 in /usr/local/lib/python2.7/dist-packages (1.1.10)
+test command: /usr/bin/python2.7 -m pip show --files urllib3 2>&1
+WARNING: Package(s) not found: urllib3==1.23
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fb4bea8fe10>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/urllib3/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fb4beab0050>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/urllib3/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fb4beab0250>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/urllib3/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fb4beab0450>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/urllib3/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fb4beab0650>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/urllib3/
+ERROR: Could not find a version that satisfies the requirement urllib3==1.23 (from versions: none)
+ERROR: No matching distribution found for urllib3==1.23
+skip error
+test command: /usr/bin/python2.7 -m pip show --files pytz 2>&1
+WARNING: Package(s) not found: pytz
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f3d3144f910>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pytz/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f3d3144fed0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pytz/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f3d314761d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pytz/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f3d314763d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pytz/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f3d314765d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pytz/
+ERROR: Could not find a version that satisfies the requirement pytz (from versions: none)
+ERROR: No matching distribution found for pytz
+skip error
+test command: /usr/bin/python2.7 -m pip show --files funcsigs 2>&1
+WARNING: Package(s) not found: funcsigs
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f6aaeacf910>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/funcsigs/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f6aaeacfed0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/funcsigs/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f6aaeaf61d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/funcsigs/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f6aaeaf63d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/funcsigs/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f6aaeaf65d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/funcsigs/
+ERROR: Could not find a version that satisfies the requirement funcsigs (from versions: none)
+ERROR: No matching distribution found for funcsigs
+skip error
+test command: /usr/bin/python2.7 -m pip show --files apscheduler 2>&1
+WARNING: Package(s) not found: apscheduler
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f58ad7cfc50>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/apscheduler/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f58ad7f6110>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/apscheduler/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f58ad7f6390>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/apscheduler/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f58ad7f6610>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/apscheduler/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f58ad7f6890>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/apscheduler/
+ERROR: Could not find a version that satisfies the requirement apscheduler (from versions: none)
+ERROR: No matching distribution found for apscheduler
+skip error
+test command: /usr/bin/python2.7 -m pip show --files tzlocal 2>&1
+WARNING: Package(s) not found: tzlocal
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f89008cf910>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/tzlocal/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f89008cfed0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/tzlocal/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f89008f61d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/tzlocal/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f89008f63d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/tzlocal/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f89008f65d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/tzlocal/
+ERROR: Could not find a version that satisfies the requirement tzlocal (from versions: none)
+ERROR: No matching distribution found for tzlocal
+skip error
+test command: /usr/bin/python2.7 -m pip show --files thrift 2>&1
+WARNING: Package(s) not found: thrift
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff5bdb4f910>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/thrift/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff5bdb4fed0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/thrift/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff5bdb761d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/thrift/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff5bdb763d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/thrift/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff5bdb765d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/thrift/
+ERROR: Could not find a version that satisfies the requirement thrift (from versions: none)
+ERROR: No matching distribution found for thrift
+skip error
+test command: /usr/bin/python2.7 -m pip show --files bytedance.metrics 2>&1
+WARNING: Package(s) not found: bytedance.metrics==0.5.0
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f77aed4ff10>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/bytedance-metrics/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f77aed6e1d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/bytedance-metrics/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f77aed6e450>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/bytedance-metrics/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f77aed6e6d0>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/bytedance-metrics/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f77aed6e950>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/bytedance-metrics/
+ERROR: Could not find a version that satisfies the requirement bytedance.metrics==0.5.0 (from versions: none)
+ERROR: No matching distribution found for bytedance.metrics==0.5.0
+skip error
+test command: /usr/bin/python2.7 -m pip show --files pyyaml 2>&1
+WARNING: Package(s) not found: pyyaml==5.1.1
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fce9a0cfe10>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pyyaml/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fce9a0f0050>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pyyaml/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fce9a0f0250>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pyyaml/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fce9a0f0450>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pyyaml/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7fce9a0f0650>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/pyyaml/
+ERROR: Could not find a version that satisfies the requirement pyyaml==5.1.1 (from versions: none)
+ERROR: No matching distribution found for pyyaml==5.1.1
+skip error
+test command: /usr/bin/python2.7 -m pip show --files psutil 2>&1
+WARNING: Package(s) not found: psutil==5.9.0
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff45f30fe10>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/psutil/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff45f330050>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/psutil/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff45f330250>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/psutil/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff45f330450>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/psutil/
+WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7ff45f330650>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/psutil/
+ERROR: Could not find a version that satisfies the requirement psutil==5.9.0 (from versions: none)
+ERROR: No matching distribution found for psutil==5.9.0
+skip error
+test command: /usr/bin/python2.7 -m pip show --files msgpack-python 2>&1
+WARNING: Package(s) not found: msgpack-python
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support pip 21.0 will remove support for this functionality.
+Looking in indexes: http://bytedpypi.byted.org/simple
+WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f5199c8fc50>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/msgpack-python/
+WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f5199cb8110>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/msgpack-python/
+WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f5199cb8390>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/msgpack-python/
+WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.HTTPConnection object at 0x7f5199cb8610>: Failed to establish a new connection: [Errno 101] Network is unreachable',)': /simple/msgpack-python/

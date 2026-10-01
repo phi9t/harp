@@ -1,0 +1,11 @@
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.71s
+     Running tests/temporal.rs (target/debug/deps/temporal-8210ec28f7bc216c)
+
+running 3 tests
+test temporal_worker_process ... ignored, child worker process; parent fixture owns lifetime
+test public_migration_installs_transactional_workflow_registry ... ok
+test real_temporal_recovers_lost_hints_rollover_and_retained_replay ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 10.14s
+

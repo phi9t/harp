@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ThreadBackgroundTerminalsListResponse",
+  "description": "Response for `thread/backgroundTerminals/list`.",
+  "type": "object",
+  "required": [
+    "processIds"
+  ],
+  "properties": {
+    "processIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

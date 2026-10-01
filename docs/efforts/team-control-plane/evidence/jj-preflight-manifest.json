@@ -1,0 +1,32 @@
+{
+  "corenius_base": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "jj_source_pin": "af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "jj_binary_sha256": "15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4",
+  "checks": {
+    "change_id_guard_expected_red_exit": 1,
+    "exact_identity_fixture_exit": 0,
+    "python_compile_exit": 0
+  },
+  "files": [
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_identity_probe.py",
+      "sha256": "e944cbc311f86275d11a02a58d81a4eaac4bfe4a97f150dd41c96f707c8f7eef",
+      "bytes": 7997
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-executable-preflight.md",
+      "sha256": "0a5021439f2b5a08270bc20369b6d923491189a8e83fd90b9cc934b5bb464d9f",
+      "bytes": 5568
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj-preflight-red.json",
+      "sha256": "6b2524c4f5fdeddfa3fcc925c04f9d3ad859d0180f84b52a06f9ce722c04b839",
+      "bytes": 6416
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj-preflight-results.json",
+      "sha256": "262c9392e379033ab5e3a8f3ee6ffa29843d3c356f3a989dba09d03003632f7d",
+      "bytes": 13571
+    }
+  ]
+}

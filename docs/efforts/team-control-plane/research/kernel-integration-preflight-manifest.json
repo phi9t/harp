@@ -1,0 +1,184 @@
+{
+  "recorded_utc": "2026-10-01T12:08:44.286469+00:00",
+  "read_commit": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "content_baseline": "docs/efforts/team-control-plane/evidence/ticket15-accepted-manifest.json",
+  "content_baseline_sha256": "6c8da94d405ab72a36b8b1b03cf5394e0fae4f7ce396ecce4b3b762f0027993f",
+  "baseline_files_hash_verified": 100,
+  "status": "read_only_preflight_ticket16_blocked14",
+  "source_inputs": [
+    {
+      "path": "CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "bytes": 3484
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "bytes": 3080
+    },
+    {
+      "path": "docs/agents/domain.md",
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99",
+      "bytes": 2045
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "bytes": 9722
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "bytes": 9818
+    },
+    {
+      "path": "docs/agents/issue-tracker.md",
+      "sha256": "9d7300ea195b3c876228c9fc66f2223a09c5d2b793e2b483b236311d85f57be8",
+      "bytes": 2166
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040",
+      "bytes": 31371
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/16-kernel-proof.md",
+      "sha256": "e7cca4a21b7ac27b92875ed65311f8295d7ae4528710e4faf6db5b0929de322f",
+      "bytes": 2358
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/14-mailbox-lead.md",
+      "sha256": "21119a13d3ea2aa850eccfd3cc97250d6b9186884207a2edcc5644724a76fda5",
+      "bytes": 3059
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/mailbox-integration-preflight.md",
+      "sha256": "783ea01661d40fdfddd566dec3c61efa005664382200798a1c0ab6d1ecadc61a",
+      "bytes": 3615
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/ticket15-accepted-manifest.json",
+      "sha256": "6c8da94d405ab72a36b8b1b03cf5394e0fae4f7ce396ecce4b3b762f0027993f",
+      "bytes": 25746
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "c2de920c9d93a99f1996c7002a0bf9f9343fe7aa998ceda66bd822cae48e3bf5",
+      "bytes": 3581
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "1cd05c347653454f678640facf386bd7d57b3f3f2d3260cc0e8a6e74f9d75a0c",
+      "bytes": 4516
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "d83c3e3e0b2aa8eb541102f79916d407c9da4fa335644889bee2075b6613589d",
+      "bytes": 15690
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "8281722bf652c59ab773800e109069f28de07f89ebb5f14fe8243b9ef67ee7e1",
+      "bytes": 16474
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "486c2c4028f5b2ec18756de3d3b7e9561afff8ff9b471b2fc4be110d4d186af9",
+      "bytes": 2784
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "c7320b3adf474bb7794d279337c57ee0252155df2ddbd5de7a67fe6c5fa637de",
+      "bytes": 36138
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "8cd0b812092933195ed6dbd1640c188838d3ea643ada92888214690250dcb01b",
+      "bytes": 26560
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "fe65253d8e3cba5418d180c59db2117c85e97c96d5602331946cda088e4ff7e9",
+      "bytes": 44812
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "ee712817fba6dea4276c59bee313c278f7deef5bce989b6a465041d65b3b5c24",
+      "bytes": 61197
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "c19fd8284e2804a36f10efb09df5f010989665856024acdd78ebc7205f3ea902",
+      "bytes": 3045
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "bytes": 1738
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "ce8a7a63299c062d24eadd03263f7cf9260c1239ff880cd3b4405b4e06b21f61",
+      "bytes": 41731
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4fee2401a0001a49e3082821d59205d6354f13ab94b122f5e8310247a3440bf9",
+      "bytes": 53578
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "sha256": "b95b0116902f24597249d3b1fd2234a345988d0d90bc35132959bf153f969768",
+      "bytes": 43764
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "dc105acad613094b0484777008537f32ab8b19e838315db17f9bab89552fd411",
+      "bytes": 837
+    },
+    {
+      "path": "tools/agents/checks.d/70-team-control-plane.sh",
+      "sha256": "57bea007e3d9052eda637e955e5708cc1e21cc3813e453032cbfead21647315a",
+      "bytes": 202
+    }
+  ],
+  "note": {
+    "path": "docs/efforts/team-control-plane/research/kernel-integration-preflight.md",
+    "sha256": "005b45ebc993a30438b584b9798fdae0d7a1fc78a3e5d1a088d123ecdb63f83b"
+  },
+  "limits": [
+    "No source edits/tests/services/providers/models/commits/tracker changes",
+    "Pending14 contracts are inference, mutable14 source not read",
+    "Source snippets/interfaces and manifest hashes reviewed; no new behavioral proof"
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-01",
+  "commit_read": "963f58b31e518a8162dfe719e386ef9d9843321f",
+  "binary": "/data02/home/philip.yang/.local/bin/traecli",
+  "binary_sha256": "9f5531a1599cd7d81df35a9b6a7568f6652fbf58141d33da9853a62046caf8c2",
+  "version": "traecli 0.207.1(internal edition)",
+  "schema_command": [
+    "/data02/home/philip.yang/.local/bin/traecli",
+    "app-server",
+    "generate-json-schema",
+    "--experimental",
+    "--out",
+    ".scratch/team-control-plane/live-trae-entry/schema"
+  ],
+  "schema_exit": 0,
+  "server_provider_model_launches": 0,
+  "credential_files_read": 0,
+  "schemas": [
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v1/InitializeParams.json",
+      "sha256": "c2a1b9974d35f587eb0993ef18b4ac16861bdccd45a25aafac8ae0686483dbde"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v1/InitializeResponse.json",
+      "sha256": "95714aa9647a7e44ba8daa045adac2c7abcd47243ad9f7d6b89bd7813dac086e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadReadParams.json",
+      "sha256": "db97080f82facc3259dbb9404e9f0df81e360619f4cd73983a9d99d25f5089ee"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadReadResponse.json",
+      "sha256": "a638169fd40544a2c361b771c74f71e455a3dae19bad87d49be510d22f616287"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadListParams.json",
+      "sha256": "142d0e9442647e76581558a6354d3bff3abb08578999cef6a43bf8958c334fa7"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadListResponse.json",
+      "sha256": "acec2a8464091214e9d8e2c39269fc0c1e3f33491c89af453d6a7fa8d95fdf53"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadLoadedListParams.json",
+      "sha256": "f1c2e4944f64ea6361dc4681f948d0c6fe2e79304ae2eb36ddac06a3258d3885"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadLoadedListResponse.json",
+      "sha256": "681bacf8a22e64427f2de8b67a2d3dba925e68f35ca5556a96a4c9fbc8eca85c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadTurnsListParams.json",
+      "sha256": "54bef8781f18d0f77eb3edae484d10e8f0d147d297269dfe23af4a4f33d8c90a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadTurnsListResponse.json",
+      "sha256": "7ef06e353e5114281ca357844881cf5681f82e3f77f337d9adc663781a5bd913"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadItemsListParams.json",
+      "sha256": "d4e66547987050b568356b9dee560a7febcf34162adfae9e1c2d8b760eb04ea7"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadItemsListResponse.json",
+      "sha256": "023c39dd4680637107c8e17dff54baf2092a17735a2dd56bf48c091ccdba124e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsListParams.json",
+      "sha256": "1a9cca4ea2430704c8a620a481915800b12484c6353ac449aba932f5d10f8421"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsListResponse.json",
+      "sha256": "109cb78f746fb8f19d8615b6d07f845829a91322b7cc21319cd203e2c12a89ae"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsStopParams.json",
+      "sha256": "30edd782353623541dfd2be8dffab65e893d74ef5baba973fb955587a202a523"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsStopResponse.json",
+      "sha256": "a629d0b6c753d6e7b7ad7c77d5e78194ccd9b51b9f0fdb3f76168ddde55ffcb4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsCleanParams.json",
+      "sha256": "5475f5cbe6dd3876cb723617f2524a0036bb4d8f372ed69c304b83d45c3d26ed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ThreadBackgroundTerminalsCleanResponse.json",
+      "sha256": "a594a65b4eb1ddf4613e868e382d7cda24daaa09b86de919fbece99e75b55478"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ConfigReadParams.json",
+      "sha256": "9a51989dc089ac297037c6f1fdc65a73f9c8105837e93a998f173a80c7880172"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/live-trae-entry-schema/v2/ConfigReadResponse.json",
+      "sha256": "748beee9dbaedefab21bc96363756fe584e29d8bfd7233309494e68145427b08"
+    }
+  ],
+  "unverified": [
+    "actual TRAE_HOME private store/config loading",
+    "synthetic provider custom endpoint routing",
+    "hard ordinary-turn token/money ceiling",
+    "global-context exclusion and feature flags at app-server runtime"
+  ]
+}

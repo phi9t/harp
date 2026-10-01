@@ -1,0 +1,1365 @@
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -20,11 +20,34 @@
+     None,
+     AfterRegister,
+     AfterCreate,
++    DuringGit,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(rename_all = "snake_case")]
++pub enum ScopeKind {
++    File,
++    Directory,
++}
++#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
++pub struct WriteScope {
++    pub path: String,
++    pub kind: ScopeKind,
++}
++#[derive(Clone, Copy, Debug)]
++pub enum StartFault {
++    None,
++    BeforeMonitor,
++}
++#[derive(Clone)]
++pub struct MonitorGate {
++    pub claimed: std::sync::Arc<tokio::sync::Notify>,
++    pub resume: std::sync::Arc<tokio::sync::Notify>,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+ #[serde(rename_all = "snake_case")]
+ pub enum ExecutionState {
+     Registered,
++    Preparing,
+     Ready,
+     Starting,
+     Running,
+@@ -57,6 +80,7 @@
+     pub recovery_epoch: Uuid,
+     pub spec_digest: String,
+     pub write_scope: Vec<String>,
++    pub scopes: Vec<WriteScope>,
+     pub log_path: PathBuf,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize)]
+@@ -65,6 +89,7 @@
+     pub members: Vec<ProcessIdentity>,
+     pub controller: Option<ProcessIdentity>,
+     pub launcher: Option<ProcessIdentity>,
++    pub quarantine_reason: Option<String>,
+     pub manifest: WorkspaceManifest,
+ }
+ #[derive(Clone, Debug)]
+@@ -85,6 +110,19 @@
+         tx.batch_execute(include_str!("../migrations/0005.sql"))
+             .await?;
+     }
++    schema(tx).await
++}
++async fn schema(tx: &Transaction<'_>) -> Result<()> {
++    let exists: bool = tx
++        .query_one(
++            "SELECT to_regclass('supervisor_schema_version') IS NOT NULL",
++            &[],
++        )
++        .await?
++        .get(0);
++    if !exists {
++        return Err(crate::domain::err(ErrorCode::IncompatibleSchema));
++    }
+     let rows = tx
+         .query("SELECT version FROM supervisor_schema_version", &[])
+         .await?;
+@@ -106,19 +144,26 @@
+     id: Uuid,
+     mutation: bool,
+ ) -> Result<ExecutionView> {
++    schema(tx).await?;
+     storage::active(tx, broker.epoch).await?;
+     let actor = auth::authenticate(tx, token, broker.epoch).await?;
+     storage::validate_actor_generation(tx, &actor).await?;
+-    let row=tx.query_opt("SELECT w.state,w.members,w.controller,w.manifest,t.mission_id,a.generation,a.recovery_epoch,t.generation,w.launcher FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
++    let row=tx.query_opt("SELECT w.state,w.members,w.controller,w.manifest,t.mission_id,a.generation,a.recovery_epoch,t.generation,w.launcher,a.worker_id,w.quarantine_reason FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
+     let manifest: WorkspaceManifest = decode(row.get(3))?;
+     actor.scope(row.get(4), Some(manifest.task))?;
++    if actor.role == Role::Worker && actor.principal != row.get::<_, Uuid>(9) {
++        return Err(crate::domain::err(ErrorCode::Unauthorized));
++    }
+     if mutation && actor.role == Role::Verifier {
+         return Err(crate::domain::err(ErrorCode::Unauthorized));
+     }
+-    if row.get::<_, i64>(5) != row.get::<_, i64>(7) || row.get::<_, Uuid>(6) != broker.epoch {
++    if actor.role != Role::Owner
++        && (row.get::<_, i64>(5) != row.get::<_, i64>(7) || row.get::<_, Uuid>(6) != broker.epoch)
++    {
+         return Err(crate::domain::err(ErrorCode::StaleGeneration));
+     }
+     Ok(ExecutionView {
++        quarantine_reason: row.get(10),
+         state: decode(serde_json::Value::String(row.get(0)))?,
+         members: decode(row.get(1))?,
+         launcher: row
+@@ -137,12 +182,13 @@
+         if !root.is_absolute() || !Path::new(monitor).is_absolute() {
+             return Err(invalid());
+         }
++        let mut c = storage::client(&broker.dsn).await?;
++        let tx = c.transaction().await?;
++        schema(&tx).await?;
++        tx.commit().await?;
+         fs::create_dir_all(root).map_err(|_| unavailable())?;
+         let root = fs::canonicalize(root).map_err(|_| unavailable())?;
+         fs::create_dir_all(root.join(".execution-logs")).map_err(|_| unavailable())?;
+-        let c = storage::client(&broker.dsn).await?;
+-        c.query_one("SELECT version FROM supervisor_schema_version", &[])
+-            .await?;
+         Ok(Self {
+             broker,
+             root,
+@@ -155,18 +201,33 @@
+         attempt: Uuid,
+         fault: CreateFault,
+     ) -> Result<ExecutionHandle> {
++        self.create_attempt_with_scopes(token, attempt, Vec::new(), fault)
++            .await
++    }
++    /// Missing admitted paths require an explicit kind. Existing types come from exact Git bytes.
++    pub async fn create_attempt_with_scopes(
++        &self,
++        token: &str,
++        attempt: Uuid,
++        requested: Vec<WriteScope>,
++        fault: CreateFault,
++    ) -> Result<ExecutionHandle> {
+         let mut c = storage::client(&self.broker.dsn).await?;
+         let tx = c.transaction().await?;
+         storage::lock(&tx).await?;
++        schema(&tx).await?;
+         storage::active(&tx, self.broker.epoch).await?;
+         let actor = auth::authenticate(&tx, token, self.broker.epoch).await?;
+         storage::validate_actor_generation(&tx, &actor).await?;
+         if !matches!(actor.role, Role::Owner | Role::Lead | Role::Worker) {
+             return Err(crate::domain::err(ErrorCode::Unauthorized));
+         }
+-        let r=tx.query_opt("SELECT a.task_id,a.generation,a.recovery_epoch,a.spec_digest,t.mission_id,t.generation,s.git_repository,s.git_commit,s.write_scope FROM attempts a JOIN tasks t ON t.id=a.task_id JOIN task_specs s ON s.task_id=a.task_id AND s.digest=a.spec_digest JOIN reservations z ON z.attempt_id=a.id WHERE a.id=$1 AND z.state='reserved'",&[&attempt]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
++        let r=tx.query_opt("SELECT a.task_id,a.generation,a.recovery_epoch,a.spec_digest,t.mission_id,t.generation,s.git_repository,s.git_commit,s.write_scope,a.worker_id FROM attempts a JOIN tasks t ON t.id=a.task_id JOIN task_specs s ON s.task_id=a.task_id AND s.digest=a.spec_digest JOIN reservations z ON z.attempt_id=a.id WHERE a.id=$1 AND z.state='reserved'",&[&attempt]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
+         let task = r.get(0);
+         actor.scope(r.get(4), Some(task))?;
++        if actor.role == Role::Worker && actor.principal != r.get::<_, Uuid>(9) {
++            return Err(crate::domain::err(ErrorCode::Unauthorized));
++        }
+         if r.get::<_, i64>(1) != r.get::<_, i64>(5) || r.get::<_, Uuid>(2) != self.broker.epoch {
+             return Err(crate::domain::err(ErrorCode::StaleGeneration));
+         }
+@@ -190,16 +251,19 @@
+         {
+             return Err(invalid());
+         }
++        let base: String = r.get(7);
++        let scopes = resolve_scopes(&store, &base, &write_scope, requested)?;
+         let manifest = WorkspaceManifest {
+             store,
+             path: path.clone(),
+-            base: r.get(7),
++            base,
+             attempt,
+             task,
+             generation: r.get(1),
+             recovery_epoch: self.broker.epoch,
+             spec_digest: r.get(3),
+             write_scope,
++            scopes,
+             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
+         };
+         tx.execute("INSERT INTO supervised_workspaces(id,attempt_id,manifest,state) VALUES($1,$2,$3,'registered')",&[&id,&attempt,&json(&manifest)?]).await?;
+@@ -214,16 +278,30 @@
+         if v.state != ExecutionState::Registered {
+             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+         }
+-        if git(&[
+-            "clone",
+-            "--no-hardlinks",
+-            "--no-local",
+-            "--quiet",
+-            manifest.store.to_str().ok_or_else(invalid)?,
+-            path.to_str().ok_or_else(invalid)?,
+-        ])
+-        .is_err()
+-            || git_at(&path, &["checkout", "--quiet", "--detach", &manifest.base]).is_err()
++        tx.execute(
++            "UPDATE supervised_workspaces SET state='preparing' WHERE id=$1",
++            &[&id],
++        )
++        .await?;
++        tx.commit().await?;
++        // Git is an external preparation workload. Its durable unknown state precedes spawn.
++        let prepared = clone_workspace(&manifest, fault).and_then(|_| {
++            git_at(&path, &["checkout", "--quiet", "--detach", &manifest.base]).map(|_| ())
++        });
++        let tx = c.transaction().await?;
++        storage::lock(&tx).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        let current = tx
++            .query_one(
++                "SELECT generation FROM tasks WHERE id=$1",
++                &[&manifest.task],
++            )
++            .await?
++            .get::<_, i64>(0);
++        if prepared.is_err()
++            || v.state != ExecutionState::Preparing
++            || manifest.generation != current
++            || manifest.recovery_epoch != self.broker.epoch
+         {
+             tx.execute(
+                 "UPDATE supervised_workspaces SET state='quarantined' WHERE id=$1",
+@@ -233,19 +311,22 @@
+             tx.commit().await?;
+             return Err(unavailable());
+         }
+-        for scope in &manifest.write_scope {
+-            let p = path.join(scope);
+-            if !p.exists() {
+-                fs::create_dir_all(&p).map_err(|_| unavailable())?;
+-            }
+-            if fs::canonicalize(&p).map_err(|_| unavailable())? != p || !p.is_dir() {
+-                return Err(invalid());
+-            }
++        // Validate every existing component before creating any missing scope.
++        for scope in &manifest.scopes {
++            scope_path(&path, scope, false, true)?;
++        }
++        for scope in &manifest.scopes {
++            scope_path(&path, scope, true, false)?;
+         }
+         fs::File::open(&self.root)
+             .and_then(|f| f.sync_all())
+             .map_err(|_| unavailable())?;
+         if matches!(fault, CreateFault::AfterCreate) {
++            tx.execute(
++                "UPDATE supervised_workspaces SET state='registered' WHERE id=$1",
++                &[&id],
++            )
++            .await?;
+             tx.commit().await?;
+             return Ok(ExecutionHandle { id, path });
+         }
+@@ -271,6 +352,17 @@
+         argv: Vec<String>,
+         seconds: u64,
+     ) -> Result<()> {
++        self.start_with_fault(token, id, argv, seconds, StartFault::None)
++            .await
++    }
++    pub async fn start_with_fault(
++        &self,
++        token: &str,
++        id: Uuid,
++        argv: Vec<String>,
++        seconds: u64,
++        fault: StartFault,
++    ) -> Result<()> {
+         if argv.is_empty()
+             || argv.iter().any(|s| s.contains('\0'))
+             || seconds == 0
+@@ -282,6 +374,16 @@
+         let tx = c.transaction().await?;
+         storage::lock(&tx).await?;
+         let v = authorize(&tx, &self.broker, token, id, true).await?;
++        let current = tx
++            .query_one(
++                "SELECT generation FROM tasks WHERE id=$1",
++                &[&v.manifest.task],
++            )
++            .await?
++            .get::<_, i64>(0);
++        if v.manifest.generation != current || v.manifest.recovery_epoch != self.broker.epoch {
++            return Err(crate::domain::err(ErrorCode::StaleGeneration));
++        }
+         if v.state != ExecutionState::Ready {
+             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+         }
+@@ -289,6 +391,9 @@
+         let seconds = i64::try_from(seconds).map_err(|_| invalid())?.min(limit);
+         tx.execute("UPDATE supervised_workspaces SET state='starting',argv=$2,deadline=clock_timestamp()+$3::bigint*interval '1 second' WHERE id=$1",&[&id,&json(&argv)?,&seconds]).await?;
+         tx.commit().await?;
++        if matches!(fault, StartFault::BeforeMonitor) {
++            return Ok(());
++        }
+         use std::os::unix::process::CommandExt;
+         let mut command = Command::new(&self.monitor);
+         command
+@@ -350,6 +455,7 @@
+                 members: decode(r.get(1))?,
+                 controller: v.controller.clone(),
+                 launcher: v.launcher.clone(),
++                quarantine_reason: v.quarantine_reason.clone(),
+                 manifest: v.manifest.clone(),
+             });
+         }
+@@ -394,14 +500,198 @@
+ }
+ fn safe_relative(p: &str) -> bool {
+     !p.is_empty()
+-        && Path::new(p)
+-            .components()
+-            .all(|c| matches!(c, std::path::Component::Normal(_)))
++        && !p.contains('\0')
++        && p.split('/').all(|c| !c.is_empty() && c != "." && c != "..")
++}
++fn resolve_scopes(
++    store: &Path,
++    base: &str,
++    paths: &[String],
++    requested: Vec<WriteScope>,
++) -> Result<Vec<WriteScope>> {
++    let mut explicit = std::collections::HashMap::new();
++    for scope in requested {
++        if !paths.contains(&scope.path) || explicit.insert(scope.path, scope.kind).is_some() {
++            return Err(invalid());
++        }
++    }
++    let mut result = Vec::new();
++    for path in paths {
++        let mut prefix = String::new();
++        let parts: Vec<_> = path.split('/').collect();
++        let mut existing = None;
++        for (i, part) in parts.iter().enumerate() {
++            if i > 0 {
++                prefix.push('/');
++            }
++            prefix.push_str(part);
++            let entry = git_at(store, &["ls-tree", "-z", base, "--", &prefix])?;
++            let mode = entry.split_whitespace().next();
++            let kind = match mode {
++                Some("040000") => Some(ScopeKind::Directory),
++                Some("100644" | "100755") => Some(ScopeKind::File),
++                None => None,
++                _ => return Err(invalid()),
++            };
++            if i + 1 < parts.len() && kind == Some(ScopeKind::File) {
++                return Err(invalid());
++            }
++            if i + 1 == parts.len() {
++                existing = kind;
++            }
++        }
++        let declared = explicit.remove(path);
++        let kind = match (existing, declared) {
++            (Some(actual), Some(declared)) if actual != declared => return Err(invalid()),
++            (Some(actual), _) => actual,
++            (None, Some(declared)) => declared,
++            (None, None) => return Err(invalid()),
++        };
++        result.push(WriteScope {
++            path: path.clone(),
++            kind,
++        });
++    }
++    Ok(result)
++}
++/// Descriptor-relative traversal: neither validation nor creation follows symlinks.
++/// Missing parent directories are prepared by the trusted supervisor, never mounted writable.
++fn scope_path(root: &Path, scope: &WriteScope, create: bool, allow_missing: bool) -> Result<()> {
++    use std::{
++        ffi::CString,
++        os::{
++            fd::{AsRawFd, FromRawFd},
++            unix::fs::OpenOptionsExt,
++        },
++    };
++    if !safe_relative(&scope.path) {
++        return Err(invalid());
++    }
++    let mut directory = fs::OpenOptions::new()
++        .read(true)
++        .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW)
++        .open(root)
++        .map_err(|_| invalid())?;
++    let parts: Vec<_> = scope.path.split('/').collect();
++    for (i, part) in parts.iter().enumerate() {
++        let name = CString::new(*part).map_err(|_| invalid())?;
++        let final_path = i + 1 == parts.len();
++        let is_directory = !final_path || scope.kind == ScopeKind::Directory;
++        let flags = libc::O_RDONLY
++            | libc::O_CLOEXEC
++            | libc::O_NOFOLLOW
++            | if is_directory { libc::O_DIRECTORY } else { 0 };
++        // directory is an owned, open directory descriptor; name has no slash or NUL.
++        let mut fd = unsafe { libc::openat(directory.as_raw_fd(), name.as_ptr(), flags) };
++        if fd < 0 {
++            let error = std::io::Error::last_os_error();
++            if error.kind() != std::io::ErrorKind::NotFound {
++                return Err(invalid());
++            }
++            if allow_missing {
++                return Ok(());
++            }
++            if !create {
++                return Err(invalid());
++            }
++            if is_directory {
++                // Creation remains relative to the validated parent descriptor.
++                if unsafe { libc::mkdirat(directory.as_raw_fd(), name.as_ptr(), 0o700) } < 0 {
++                    return Err(invalid());
++                }
++                fd = unsafe { libc::openat(directory.as_raw_fd(), name.as_ptr(), flags) };
++            } else {
++                fd = unsafe {
++                    libc::openat(
++                        directory.as_raw_fd(),
++                        name.as_ptr(),
++                        libc::O_WRONLY
++                            | libc::O_CREAT
++                            | libc::O_EXCL
++                            | libc::O_NOFOLLOW
++                            | libc::O_CLOEXEC,
++                        0o600,
++                    )
++                };
++            }
++            if fd < 0 {
++                return Err(invalid());
++            }
++            directory.sync_all().map_err(|_| unavailable())?;
++        }
++        // fd is fresh and nonnegative; this File exclusively owns and closes it.
++        let file = unsafe { fs::File::from_raw_fd(fd) };
++        let metadata = file.metadata().map_err(|_| invalid())?;
++        if is_directory && !metadata.is_dir() || !is_directory && !metadata.is_file() {
++            return Err(invalid());
++        }
++        if final_path && create {
++            file.sync_all().map_err(|_| unavailable())?;
++        }
++        directory = file;
++    }
++    Ok(())
++}
++fn clone_workspace(manifest: &WorkspaceManifest, fault: CreateFault) -> Result<()> {
++    let mut command = Command::new("/usr/bin/git");
++    command
++        .env_clear()
++        .env("PATH", "/usr/bin:/bin")
++        .env("GIT_CONFIG_NOSYSTEM", "1")
++        .args(["clone", "--no-hardlinks", "--no-local", "--quiet"])
++        .arg(&manifest.store)
++        .arg(&manifest.path);
++    if matches!(fault, CreateFault::DuringGit) {
++        use std::os::unix::ffi::OsStrExt;
++        let trace = manifest.log_path.with_extension("prepare-trace");
++        let name = std::ffi::CString::new(trace.as_os_str().as_bytes()).map_err(|_| invalid())?;
++        // A real Git process blocks opening its trace FIFO before any pack/helper work.
++        if unsafe { libc::mkfifo(name.as_ptr(), 0o600) } < 0 {
++            return Err(unavailable());
++        }
++        command
++            .env("GIT_TRACE2_EVENT", trace)
++            .stdout(std::process::Stdio::null())
++            .stderr(std::process::Stdio::null());
++        let mut child = command.spawn().map_err(|_| unavailable())?;
++        let marker = manifest.log_path.with_extension("prepare-identity");
++        let record = json(&(
++            ExecutionHandle {
++                id: Uuid::parse_str(
++                    manifest
++                        .path
++                        .file_name()
++                        .and_then(|s| s.to_str())
++                        .ok_or_else(invalid)?,
++                )
++                .map_err(|_| invalid())?,
++                path: manifest.path.clone(),
++            },
++            identity(child.id()).map_err(|_| unavailable())?,
++        ))?;
++        let file = fs::File::create(marker).map_err(|_| unavailable())?;
++        serde_json::to_writer(&file, &record).map_err(|_| unavailable())?;
++        file.sync_all().map_err(|_| unavailable())?;
++        if !child.wait().map_err(|_| unavailable())?.success() {
++            return Err(unavailable());
++        }
++        return Ok(());
++    }
++    if !command
++        .output()
++        .map_err(|_| unavailable())?
++        .status
++        .success()
++    {
++        return Err(unavailable());
++    }
++    Ok(())
+ }
+ fn git(args: &[&str]) -> Result<String> {
+     let o = Command::new("/usr/bin/git")
+         .env_clear()
+         .env("PATH", "/usr/bin:/bin")
++        .env("GIT_CONFIG_NOSYSTEM", "1")
+         .args(args)
+         .output()
+         .map_err(|_| unavailable())?;
+@@ -444,11 +734,16 @@
+             .and_then(|s| s.rsplit_once(')').map(|(_, t)| t.trim().starts_with('Z')))
+             .is_some_and(|z| !z)
+ }
+-fn inventory(namespace: &str) -> Result<Vec<ProcessIdentity>> {
++fn process_disappeared(error: &std::io::Error) -> bool {
++    // /proc task reads can return ESRCH after enumeration while the inode remains.
++    // Both errors prove disappearance at that read, unlike permission or other failures.
++    error.kind() == std::io::ErrorKind::NotFound || error.raw_os_error() == Some(libc::ESRCH)
++}
++fn inventory(namespace: &str) -> std::io::Result<Vec<ProcessIdentity>> {
+     use std::os::unix::fs::MetadataExt;
+     let mut members = vec![];
+-    for entry in fs::read_dir("/proc").map_err(|_| unavailable())? {
+-        let entry = entry.map_err(|_| unavailable())?;
++    for entry in fs::read_dir("/proc")? {
++        let entry = entry?;
+         let Some(pid) = entry
+             .file_name()
+             .to_str()
+@@ -458,8 +753,12 @@
+         };
+         let meta = match entry.metadata() {
+             Ok(m) => m,
+-            Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
+-            Err(_) => return Err(unavailable()),
++            Err(e) if process_disappeared(&e) => continue,
++            Err(e) => {
++                return Err(std::io::Error::other(format!(
++                    "process {pid} membership observation failed: {e}"
++                )));
++            }
+         };
+         // All descendants retain this host uid: user namespace is fixed and caps dropped.
+         if meta.uid() != unsafe { libc::geteuid() } {
+@@ -469,22 +768,32 @@
+         // process is outside every child PID namespace, even if ptrace hides ns links.
+         let status = match fs::read_to_string(entry.path().join("status")) {
+             Ok(s) => s,
+-            Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
+-            Err(_) => return Err(unavailable()),
++            Err(e) if process_disappeared(&e) => continue,
++            Err(e) => {
++                return Err(std::io::Error::other(format!(
++                    "process {pid} membership observation failed: {e}"
++                )));
++            }
+         };
+         let nspid = status.lines().find_map(|l| l.strip_prefix("NSpid:"));
+         if nspid.is_some_and(|n| n.split_whitespace().count() == 1) {
+             continue;
+         }
+         if nspid.is_none() {
+-            return Err(unavailable());
++            return Err(std::io::Error::other(format!(
++                "process {pid} lacks readable NSpid"
++            )));
+         }
+ 
+         match identity(pid) {
+             Ok(p) if p.namespace == namespace && alive(&p) => members.push(p),
+             Ok(_) => {}
+-            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+-            Err(_) => return Err(unavailable()),
++            Err(e) if process_disappeared(&e) => {}
++            Err(e) => {
++                return Err(std::io::Error::other(format!(
++                    "process {pid} membership observation failed: {e}"
++                )));
++            }
+         }
+     }
+     Ok(members)
+@@ -541,6 +850,7 @@
+         .get::<_, Option<serde_json::Value>>(4)
+         .map(decode::<ProcessIdentity>)
+         .transpose()?;
++    let mut reason = None;
+     let (next, members) = if let Some(init) = init {
+         let proof = alive(&init)
+             || prior
+@@ -552,6 +862,7 @@
+                 let controller_lost = controller.as_ref().is_none_or(|p| !alive(p));
+                 if cancel || controller_lost {
+                     if members.iter().any(|p| signal(p).is_err()) {
++                        reason = Some("pidfd signal of recorded membership failed".to_string());
+                         ("quarantined", members)
+                     } else {
+                         ("cancelling", members)
+@@ -560,7 +871,14 @@
+                     ("running", members)
+                 }
+             }
+-            _ => ("quarantined", prior),
++            Ok(_) => {
++                reason = Some("namespace membership lacks live recorded identity".into());
++                ("quarantined", prior)
++            }
++            Err(error) => {
++                reason = Some(error.to_string());
++                ("quarantined", prior)
++            }
+         }
+     } else if state == "registered" || state == "ready" {
+         if cancel || state == "registered" {
+@@ -569,17 +887,25 @@
+             ("ready", vec![])
+         }
+     } else {
++        reason = Some(
++            if state == "preparing" {
++                "Git preparation completion and full membership are unknown"
++            } else {
++                "launch identity and full membership are unknown"
++            }
++            .into(),
++        );
+         ("quarantined", prior)
+     };
+     if next != state || json(&members)? != r.get::<_, serde_json::Value>(3) {
+         tx.execute("INSERT INTO supervised_observations(id,execution_id,state,members) VALUES($1,$2,$3,$4)",&[&Uuid::new_v4(),&id,&next,&json(&members)?]).await?;
+     }
+-    tx.execute("UPDATE supervised_workspaces SET state=$2,members=$3,desired_cancel=desired_cancel OR $4 WHERE id=$1",&[&id,&next,&json(&members)?,&cancel]).await?;
++    tx.execute("UPDATE supervised_workspaces SET state=$2,members=$3,desired_cancel=desired_cancel OR $4,quarantine_reason=$5 WHERE id=$1",&[&id,&next,&json(&members)?,&cancel,&reason]).await?;
+     Ok(())
+ }
+ /// Trusted local operator entry point. DSN comes from the environment, never argv/logs.
+ /// Workload launch is held by a pipe until its complete namespace identity is durable.
+-pub async fn run_monitor(broker: Broker, id: Uuid) -> Result<()> {
++async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<()> {
+     use std::{
+         io::Write,
+         os::fd::AsRawFd,
+@@ -589,6 +915,7 @@
+     let mut c = storage::client(&broker.dsn).await?;
+     let tx = c.transaction().await?;
+     storage::lock(&tx).await?;
++    schema(&tx).await?;
+     storage::active(&tx, broker.epoch).await?;
+     let r=tx.query_one("SELECT w.state,w.manifest,w.argv,w.desired_cancel,w.controller,a.generation,t.generation,a.recovery_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
+     if r.get::<_, String>(0) != "starting"
+@@ -608,16 +935,22 @@
+     )
+     .await?;
+     tx.commit().await?;
++    if let Some(gate) = gate {
++        gate.claimed.notify_one();
++        gate.resume.notified().await;
++    }
+     // Durable controller claim precedes bwrap spawn. A repeated monitor cannot relaunch.
+     let tx = c.transaction().await?;
+     storage::lock(&tx).await?;
+-    let row = tx
+-        .query_one(
+-            "SELECT state,desired_cancel FROM supervised_workspaces WHERE id=$1 FOR UPDATE",
+-            &[&id],
+-        )
+-        .await?;
+-    if row.get::<_, String>(0) != "starting" || row.get::<_, bool>(1) {
++    schema(&tx).await?;
++    storage::active(&tx, broker.epoch).await?;
++    let row=tx.query_one("SELECT w.state,w.desired_cancel,w.deadline>clock_timestamp(),a.generation,t.generation,a.recovery_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
++    if row.get::<_, String>(0) != "starting"
++        || row.get::<_, bool>(1)
++        || !row.get::<_, Option<bool>>(2).unwrap_or(false)
++        || row.get::<_, i64>(3) != row.get::<_, i64>(4)
++        || row.get::<_, Uuid>(5) != broker.epoch
++    {
+         return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+     }
+     let info_path = manifest.log_path.with_extension("info");
+@@ -675,15 +1008,12 @@
+         ])
+         .arg(&manifest.path)
+         .arg("/workspace");
+-    for scope in &manifest.write_scope {
+-        let p = manifest.path.join(scope);
+-        if fs::canonicalize(&p).map_err(|_| unavailable())? != p || !p.is_dir() {
+-            return Err(invalid());
+-        }
++    for scope in &manifest.scopes {
++        scope_path(&manifest.path, scope, false, false)?;
+         command
+             .arg("--bind")
+-            .arg(p)
+-            .arg(format!("/workspace/{scope}"));
++            .arg(manifest.path.join(&scope.path))
++            .arg(format!("/workspace/{}", scope.path));
+     }
+     command
+         .args(["--chdir", "/workspace", "--block-fd", "0", "--info-fd"])
+@@ -720,6 +1050,13 @@
+         let _ = child.kill();
+         let _ = child.wait();
+         return Err(unavailable());
++    }
++    // Time can expire while bwrap prepares its blocked namespace. Recheck before eligibility.
++    let live:bool=tx.query_one("SELECT NOT desired_cancel AND deadline>clock_timestamp() FROM supervised_workspaces WHERE id=$1",&[&id]).await?.get(0);
++    if !live {
++        let _ = child.kill();
++        let _ = child.wait();
++        return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+     }
+     tx.execute(
+         "UPDATE supervised_workspaces SET init_process=$2,members=$3,launcher=$4,state='running' WHERE id=$1",
+@@ -771,3 +1108,10 @@
+         .map_err(|_| unavailable())?;
+     Ok(())
+ }
++
++pub async fn run_monitor(broker: Broker, id: Uuid) -> Result<()> {
++    monitor(broker, id, None).await
++}
++pub async fn run_monitor_with_gate(broker: Broker, id: Uuid, gate: MonitorGate) -> Result<()> {
++    monitor(broker, id, Some(gate)).await
++}
+diff --git a/crates/team-control-plane/migrations/0005.sql b/crates/team-control-plane/migrations/0005.sql
+--- a/crates/team-control-plane/migrations/0005.sql
++++ b/crates/team-control-plane/migrations/0005.sql
+@@ -4,7 +4,8 @@
+  id uuid PRIMARY KEY,
+  attempt_id uuid NOT NULL UNIQUE REFERENCES attempts,
+  manifest jsonb NOT NULL,
+- state text NOT NULL CHECK(state IN ('registered','ready','starting','running','cancelling','stopped','quarantined','deleting','released')),
++ state text NOT NULL CHECK(state IN ('registered','preparing','ready','starting','running','cancelling','stopped','quarantined','deleting','released')),
++ quarantine_reason text,
+  desired_cancel boolean NOT NULL DEFAULT false,
+  deadline timestamptz,
+  argv jsonb,
+diff --git a/crates/team-control-plane/tests/supervisor.rs b/crates/team-control-plane/tests/supervisor.rs
+--- a/crates/team-control-plane/tests/supervisor.rs
++++ b/crates/team-control-plane/tests/supervisor.rs
+@@ -24,6 +24,9 @@
+     epoch: Uuid,
+ }
+ async fn fixture() -> Fixture {
++    fixture_with_scope(&["src"], None).await
++}
++async fn fixture_with_scope(scopes: &[&str], link: Option<&std::path::Path>) -> Fixture {
+     let dsn =
+         std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").expect("real PostgreSQL runner required");
+     let schema = format!("supervisor_{}", Uuid::new_v4().simple());
+@@ -42,6 +45,11 @@
+     let root = std::env::temp_dir().join(format!("supervisor-fixture-{}", Uuid::new_v4()));
+     std::fs::create_dir_all(root.join("store/src")).unwrap();
+     std::fs::write(root.join("store/src/input"), "base").unwrap();
++    std::fs::write(root.join("store/src/existing"), "existing").unwrap();
++    if let Some(target) = link {
++        std::fs::remove_dir_all(root.join("store/src")).unwrap();
++        std::os::unix::fs::symlink(target, root.join("store/src")).unwrap();
++    }
+     git(&root.join("store"), &["init", "-q"]);
+     git(&root.join("store"), &["add", "."]);
+     git(
+@@ -109,7 +117,7 @@
+                         input,
+                         acceptance: vec!["stop descendants".into()],
+                         deliverables: vec!["output".into()],
+-                        write_scope: vec!["src".into()],
++                        write_scope: scopes.iter().map(|s| s.to_string()).collect(),
+                         dependencies: vec![],
+                     },
+                 },
+@@ -286,6 +294,11 @@
+ }
+ async fn wait_stopped(f: &Fixture, id: Uuid) -> ExecutionView {
+     for _ in 0..150 {
++        let observed = f.service.inspect(&f.owner, id).await.unwrap();
++        if observed.state == ExecutionState::Starting {
++            tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++            continue;
++        }
+         let v = f.service.reconcile(&f.owner, id).await.unwrap();
+         if v.state == ExecutionState::Stopped {
+             return v;
+@@ -293,7 +306,7 @@
+         assert_ne!(
+             v.state,
+             ExecutionState::Quarantined,
+-            "expected complete namespace proof"
++            "expected complete namespace proof: {v:?}"
+         );
+         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+     }
+@@ -406,6 +419,12 @@
+         )
+         .await
+         .unwrap();
++        if mode == "git" {
++            let _ = service
++                .create_attempt(&owner, attempt, CreateFault::DuringGit)
++                .await;
++            panic!("blocked Git unexpectedly returned");
++        }
+         let h = service
+             .create_attempt(
+                 &owner,
+@@ -565,27 +584,15 @@
+             .code,
+         ErrorCode::StaleGeneration
+     );
+-    // Independent monitor reads current durable generation even after caller access is fenced.
+-    let mut stopped = false;
+-    for _ in 0..100 {
+-        let state: String = c
+-            .query_one(
+-                "SELECT state FROM supervised_workspaces WHERE id=$1",
+-                &[&h.id],
+-            )
+-            .await
+-            .unwrap()
+-            .get(0);
+-        if state == "stopped" {
+-            stopped = true;
+-            break;
+-        }
+-        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+-    }
+-    assert!(stopped);
++    // Current Owner performs recovery through public APIs; stale Worker remains fenced.
++    f.service.inspect(&f.owner, h.id).await.unwrap();
++    f.service.cancel(&f.owner, h.id).await.unwrap();
++    let stopped = wait_stopped(&f, h.id).await;
++    assert!(stopped.members.is_empty());
+     for p in running.members {
+         assert!(!std::path::Path::new(&format!("/proc/{}/ns/pid", p.pid)).exists());
+     }
++    f.service.release(&f.owner, h.id).await.unwrap();
+     assert!(!f.root.join("store/src/ready").exists());
+     std::fs::remove_dir_all(f.root).unwrap();
+ }
+@@ -641,3 +648,530 @@
+     f.service.release(&f.owner, h.id).await.unwrap();
+     std::fs::remove_dir_all(f.root).unwrap();
+ }
++#[tokio::test]
++async fn repair_worker_principal_must_own_attempt_for_create_and_control() {
++    let f = fixture().await;
++    let broker = Broker::connect(&f.dsn, f.epoch).await.unwrap();
++    let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    let r = c
++        .query_one(
++            "SELECT t.id,t.mission_id FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1",
++            &[&f.attempt],
++        )
++        .await
++        .unwrap();
++    broker
++        .execute(
++            &f.owner,
++            CommandEnvelope {
++                schema_version: 1,
++                key: "wrong-worker".into(),
++                expected_revision: 0,
++                expected_generation: None,
++                recovery_epoch: f.epoch,
++                command: Command::GrantCredential {
++                    credential_id: Uuid::new_v4(),
++                    principal_id: Uuid::new_v4(),
++                    role: Role::Worker,
++                    mission_id: Some(r.get(1)),
++                    task_id: Some(r.get(0)),
++                    generation: Some(1),
++                    token_hash: token_hash("wrong-worker"),
++                    expires_in_seconds: 600,
++                },
++            },
++        )
++        .await
++        .unwrap();
++    assert_eq!(
++        f.service
++            .create_attempt("wrong-worker", f.attempt, CreateFault::None)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    let h = f
++        .service
++        .create_attempt("fixture-worker", f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    for result in [
++        f.service.start("wrong-worker", h.id, nested(), 1).await,
++        f.service.cancel("wrong-worker", h.id).await,
++        f.service.release("wrong-worker", h.id).await,
++    ] {
++        assert_eq!(result.unwrap_err().code, ErrorCode::Unauthorized);
++    }
++    assert_eq!(
++        f.service
++            .inspect("wrong-worker", h.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    f.service.cancel(&f.owner, h.id).await.unwrap();
++    f.service.release(&f.owner, h.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn repair_symlink_ancestor_rejected_before_any_external_write() {
++    let outside = std::env::temp_dir().join(format!("supervisor-sentinel-{}", Uuid::new_v4()));
++    std::fs::create_dir_all(&outside).unwrap();
++    std::fs::write(outside.join("sentinel"), "unchanged").unwrap();
++    let f = fixture_with_scope(&["src/newdir"], Some(&outside)).await;
++    assert!(
++        f.service
++            .create_attempt_with_scopes(
++                &f.owner,
++                f.attempt,
++                vec![WriteScope {
++                    path: "src/newdir".into(),
++                    kind: ScopeKind::Directory
++                }],
++                CreateFault::None
++            )
++            .await
++            .is_err()
++    );
++    assert!(
++        !outside.join("newdir").exists(),
++        "tracked ancestor symlink caused an external filesystem mutation"
++    );
++    assert_eq!(
++        std::fs::read(outside.join("sentinel")).unwrap(),
++        b"unchanged"
++    );
++    std::fs::remove_dir_all(f.root).unwrap();
++    std::fs::remove_dir_all(outside).unwrap();
++}
++#[tokio::test]
++async fn repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope() {
++    file_scope_probe().await
++}
++async fn file_scope_probe() {
++    let f = fixture_with_scope(
++        &[
++            "src/existing",
++            "src/missing",
++            "new-parent/new-file",
++            "empty.file",
++        ],
++        None,
++    )
++    .await;
++    let scopes = vec![
++        WriteScope {
++            path: "src/existing".into(),
++            kind: ScopeKind::File,
++        },
++        WriteScope {
++            path: "src/missing".into(),
++            kind: ScopeKind::File,
++        },
++        WriteScope {
++            path: "new-parent/new-file".into(),
++            kind: ScopeKind::File,
++        },
++        WriteScope {
++            path: "empty.file".into(),
++            kind: ScopeKind::Directory,
++        },
++    ];
++    assert_eq!(
++        f.service
++            .create_attempt(&f.owner, f.attempt, CreateFault::None)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::InvalidArgument
++    );
++    assert_eq!(
++        f.service
++            .create_attempt_with_scopes(
++                &f.owner,
++                f.attempt,
++                vec![WriteScope {
++                    path: "src".into(),
++                    kind: ScopeKind::Directory
++                }],
++                CreateFault::None
++            )
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::InvalidArgument
++    );
++    assert_eq!(
++        f.service
++            .create_attempt_with_scopes(
++                &f.owner,
++                f.attempt,
++                vec![WriteScope {
++                    path: "src/existing".into(),
++                    kind: ScopeKind::Directory
++                }],
++                CreateFault::None
++            )
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::InvalidArgument
++    );
++    let h = f
++        .service
++        .create_attempt_with_scopes(&f.owner, f.attempt, scopes, CreateFault::None)
++        .await
++        .unwrap();
++    assert!(h.path.join("src/missing").is_file());
++    assert!(h.path.join("new-parent/new-file").is_file());
++    f.service.start(&f.owner,h.id,vec!["/bin/sh".into(),"-c".into(),"echo allowed > src/existing; echo allowed > src/missing; echo allowed > new-parent/new-file; echo allowed > empty.file/output; if touch src/input new-parent/neighbor 2>/dev/null; then exit 99; fi; echo file-proof".into()],5).await.unwrap();
++    assert!(wait_stopped(&f, h.id).await.members.is_empty());
++    for path in ["src/existing", "src/missing", "new-parent/new-file"] {
++        assert_eq!(
++            std::fs::read_to_string(h.path.join(path)).unwrap(),
++            "allowed\n"
++        );
++    }
++    assert_eq!(
++        std::fs::read_to_string(h.path.join("src/input")).unwrap(),
++        "base"
++    );
++    assert!(!h.path.join("new-parent/neighbor").exists());
++    assert_eq!(
++        std::fs::read_to_string(h.path.join("empty.file/output")).unwrap(),
++        "allowed\n"
++    );
++    assert!(
++        String::from_utf8(f.service.logs(&f.owner, h.id).await.unwrap())
++            .unwrap()
++            .contains("file-proof")
++    );
++    f.service.release(&f.owner, h.id).await.unwrap();
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn repair_schema_guard_precedes_open_and_monitor_effects() {
++    for missing in [false, true] {
++        let f = fixture().await;
++        let h = f
++            .service
++            .create_attempt(&f.owner, f.attempt, CreateFault::None)
++            .await
++            .unwrap();
++        let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++            .await
++            .unwrap();
++        tokio::spawn(async move { conn.await.unwrap() });
++        if missing {
++            c.batch_execute("DROP TABLE supervisor_schema_version")
++                .await
++                .unwrap();
++        } else {
++            c.batch_execute("ALTER TABLE supervisor_schema_version DROP CONSTRAINT supervisor_schema_version_version_check; UPDATE supervisor_schema_version SET version=2").await.unwrap();
++        }
++        let newroot = f.root.join("must-not-create");
++        let broker = Broker::connect(&f.dsn, f.epoch).await.unwrap();
++        assert_eq!(
++            Supervisor::open(
++                broker.clone(),
++                &newroot,
++                env!("CARGO_BIN_EXE_team-control-plane")
++            )
++            .await
++            .unwrap_err()
++            .code,
++            ErrorCode::IncompatibleSchema
++        );
++        assert!(!newroot.exists());
++        c.execute("UPDATE supervised_workspaces SET state='starting',argv=$2,deadline=clock_timestamp()+interval '10 seconds' WHERE id=$1",&[&h.id,&serde_json::json!(["/bin/sh","-c","touch /workspace/src/ready"])]).await.unwrap();
++        assert_eq!(
++            run_monitor(broker, h.id).await.unwrap_err().code,
++            ErrorCode::IncompatibleSchema
++        );
++        assert!(!h.path.join("src/ready").exists());
++        assert_eq!(
++            std::fs::read_dir(f.root.join("workspaces/.execution-logs"))
++                .unwrap()
++                .count(),
++            0
++        );
++        std::fs::remove_dir_all(f.root).unwrap();
++    }
++}
++#[tokio::test]
++async fn repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim() {
++    for change in ["generation", "epoch", "deadline", "cancel"] {
++        let f = fixture().await;
++        let h = f
++            .service
++            .create_attempt(&f.owner, f.attempt, CreateFault::None)
++            .await
++            .unwrap();
++        f.service
++            .start_with_fault(
++                &f.owner,
++                h.id,
++                vec![
++                    "/bin/sh".into(),
++                    "-c".into(),
++                    "touch /workspace/src/ready".into(),
++                ],
++                if change == "deadline" { 1 } else { 20 },
++                StartFault::BeforeMonitor,
++            )
++            .await
++            .unwrap();
++        let claimed = std::sync::Arc::new(tokio::sync::Notify::new());
++        let resume = std::sync::Arc::new(tokio::sync::Notify::new());
++        let broker = Broker::connect(&f.dsn, f.epoch).await.unwrap();
++        let gate = MonitorGate {
++            claimed: claimed.clone(),
++            resume: resume.clone(),
++        };
++        let monitor = tokio::spawn(run_monitor_with_gate(broker.clone(), h.id, gate));
++        tokio::time::timeout(std::time::Duration::from_secs(3), claimed.notified())
++            .await
++            .unwrap();
++        match change {
++            "generation" => {
++                let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++                    .await
++                    .unwrap();
++                tokio::spawn(async move { conn.await.unwrap() });
++                c.execute("UPDATE tasks SET generation=generation+1", &[])
++                    .await
++                    .unwrap();
++            }
++            "epoch" => {
++                broker.rotate_epoch(&f.owner, Uuid::new_v4()).await.unwrap();
++            }
++            "deadline" => {
++                tokio::time::sleep(std::time::Duration::from_millis(1200)).await;
++            }
++            "cancel" => {
++                f.service.cancel(&f.owner, h.id).await.unwrap();
++            }
++            _ => unreachable!(),
++        }
++        resume.notify_one();
++        assert!(
++            monitor.await.unwrap().is_err(),
++            "{change} after durable controller claim must prevent launch, not cancel a newly started workload"
++        );
++        assert!(
++            !h.path.join("src/ready").exists(),
++            "{change} produced external workload effect"
++        );
++        assert_eq!(
++            std::fs::read_dir(f.root.join("workspaces/.execution-logs"))
++                .unwrap()
++                .count(),
++            0,
++            "{change} produced launch filesystem effects"
++        );
++        std::fs::remove_dir_all(f.root).unwrap();
++    }
++}
++#[tokio::test]
++async fn repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    f.service
++        .start("fixture-worker", h.id, nested(), 30)
++        .await
++        .unwrap();
++    wait_members(&f, h.id).await;
++    let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    c.execute("UPDATE tasks SET generation=generation+1", &[])
++        .await
++        .unwrap();
++    assert_eq!(
++        f.service
++            .inspect("fixture-worker", h.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    f.service.inspect(&f.owner, h.id).await.unwrap();
++    f.service.cancel(&f.owner, h.id).await.unwrap();
++    assert!(wait_stopped(&f, h.id).await.members.is_empty());
++    assert!(f.service.start(&f.owner, h.id, nested(), 5).await.is_err());
++    f.service.release(&f.owner, h.id).await.unwrap();
++    assert!(!h.path.exists());
++    assert_eq!(
++        f.service.inspect(&f.owner, h.id).await.unwrap().state,
++        ExecutionState::Released
++    );
++    assert_eq!(
++        c.query_one("SELECT used_capacity FROM missions", &[])
++            .await
++            .unwrap()
++            .get::<_, i64>(0),
++        0
++    );
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds() {
++    use std::os::unix::process::ExitStatusExt;
++    let f = fixture().await;
++    let mut helper = OsCommand::new(std::env::current_exe().unwrap())
++        .args(["--exact", "crash_create_helper", "--nocapture"])
++        .env("SUPERVISOR_CRASH_MODE", "git")
++        .env("SUPERVISOR_FIXTURE_DSN", &f.dsn)
++        .env("SUPERVISOR_FIXTURE_EPOCH", f.epoch.to_string())
++        .env("SUPERVISOR_FIXTURE_ATTEMPT", f.attempt.to_string())
++        .env("SUPERVISOR_FIXTURE_ROOT", &f.root)
++        .env("SUPERVISOR_FIXTURE_OWNER", &f.owner)
++        .spawn()
++        .unwrap();
++    let mut record = None;
++    for _ in 0..100 {
++        for entry in std::fs::read_dir(f.root.join("workspaces/.execution-logs")).unwrap() {
++            let p = entry.unwrap().path();
++            if p.extension().is_some_and(|x| x == "prepare-identity")
++                && let Ok(bytes) = std::fs::read(p)
++                && let Ok(pair) =
++                    serde_json::from_slice::<(ExecutionHandle, ProcessIdentity)>(&bytes)
++            {
++                record = Some(pair);
++            }
++        }
++        if record.is_some() {
++            break;
++        }
++        assert!(
++            helper.try_wait().unwrap().is_none(),
++            "unexpected preparation helper exit"
++        );
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    let (h, git_process) = record.expect("actual Git spawn marker required");
++    assert_eq!(
++        std::fs::read_link(format!("/proc/{}/exe", git_process.pid)).unwrap(),
++        std::path::Path::new("/usr/bin/git")
++    );
++    helper.kill().unwrap();
++    assert_eq!(helper.wait().unwrap().signal(), Some(libc::SIGKILL));
++    assert!(
++        std::path::Path::new(&format!("/proc/{}/exe", git_process.pid)).exists(),
++        "Git did not actually survive initiating agent death"
++    );
++    let recovery = f.service.reconcile(&f.owner, h.id).await.unwrap();
++    // Cleanup the deliberately owned blocked real Git process before any assertion can fail.
++    assert!(
++        OsCommand::new("kill")
++            .args(["-KILL", &git_process.pid.to_string()])
++            .status()
++            .unwrap()
++            .success()
++    );
++    for _ in 0..100 {
++        if !std::path::Path::new(&format!("/proc/{}/exe", git_process.pid)).exists() {
++            break;
++        }
++        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
++    }
++    assert!(!std::path::Path::new(&format!("/proc/{}/exe", git_process.pid)).exists());
++    assert!(
++        recovery
++            .quarantine_reason
++            .as_ref()
++            .unwrap()
++            .contains("Git preparation")
++    );
++    assert_eq!(
++        recovery.state,
++        ExecutionState::Quarantined,
++        "un-inventoried live Git preparation must never count as stopped"
++    );
++    assert!(f.service.release(&f.owner, h.id).await.is_err());
++    assert!(f.service.start(&f.owner, h.id, nested(), 5).await.is_err());
++    let (c, conn) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { conn.await.unwrap() });
++    assert_eq!(
++        c.query_one("SELECT used_capacity FROM missions", &[])
++            .await
++            .unwrap()
++            .get::<_, i64>(0),
++        1
++    );
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++#[tokio::test]
++async fn repair_current_owner_recovers_execution_after_recovery_epoch_rotation() {
++    let f = fixture().await;
++    let h = f
++        .service
++        .create_attempt(&f.owner, f.attempt, CreateFault::None)
++        .await
++        .unwrap();
++    f.service
++        .start("fixture-worker", h.id, nested(), 30)
++        .await
++        .unwrap();
++    wait_members(&f, h.id).await;
++    let broker = Broker::connect(&f.dsn, f.epoch).await.unwrap();
++    let newepoch = Uuid::new_v4();
++    let owner = broker.rotate_epoch(&f.owner, newepoch).await.unwrap();
++    let service = Supervisor::open(
++        Broker::connect(&f.dsn, newepoch).await.unwrap(),
++        &f.root.join("workspaces"),
++        env!("CARGO_BIN_EXE_team-control-plane"),
++    )
++    .await
++    .unwrap();
++    assert_eq!(
++        service
++            .inspect("fixture-worker", h.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    service.inspect(&owner, h.id).await.unwrap();
++    service.cancel(&owner, h.id).await.unwrap();
++    let mut stopped = false;
++    for _ in 0..150 {
++        let v = service.reconcile(&owner, h.id).await.unwrap();
++        if v.state == ExecutionState::Stopped {
++            stopped = true;
++            break;
++        }
++        assert_ne!(v.state, ExecutionState::Quarantined);
++        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
++    }
++    assert!(stopped);
++    assert!(service.start(&owner, h.id, nested(), 5).await.is_err());
++    service.release(&owner, h.id).await.unwrap();
++    assert!(!h.path.exists());
++    std::fs::remove_dir_all(f.root).unwrap();
++}
++
++#[tokio::test]
++async fn concurrent_short_commands_treat_disappeared_proc_tasks_as_exited() {
++    for _ in 0..4 {
++        let mut probes = vec![];
++        for _ in 0..8 {
++            probes.push(tokio::spawn(file_scope_probe()));
++        }
++        for probe in probes {
++            probe.await.unwrap();
++        }
++    }
++}
