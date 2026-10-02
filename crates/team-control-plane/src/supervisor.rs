@@ -277,13 +277,104 @@ pub(crate) async fn execution_dispatch_current(
 // AssignAttempt already reserved the first imported Worker episode. Additional
 // episodes charge independently and cannot spend that reservation while an
 // earlier task-bound native operation has unobserved usage.
-async fn physical_usage_known(tx: &Transaction<'_>, id: Uuid) -> Result<()> {
+async fn physical_usage_known(
+    tx: &Transaction<'_>,
+    id: Uuid,
+    first_argv: Option<&[String]>,
+) -> Result<()> {
     if let Some(row) = tx.query_opt("SELECT x.attempt_id,e.owned_capacity FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1", &[&id]).await?
         && row.get::<_, bool>(1)
             && let Some(attempt) = row.get::<_, Option<Uuid>>(0)
                 && crate::kernel::legacy_usage_unknown(tx, attempt).await? {
                     return Err(crate::domain::err(ErrorCode::DependencyUnmet));
                 }
+    let attempt: Option<Uuid> = tx.query_one(
+        "SELECT coalesce(x.attempt_id,w.attempt_id) FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id WHERE w.id=$1", &[&id],
+    ).await?.get(0);
+    let uncertain = tx.query(
+        "SELECT o.id,o.execution_id,o.state,o.request,o.controller,o.recovery_epoch FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE (o.execution_id=$2 OR ($1::uuid IS NOT NULL AND x.attempt_id=$1)) AND (o.state IN ('dispatching','outcome_unknown','quarantined') OR (o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero'))", &[&attempt, &id],
+    ).await?;
+    for operation in uncertain {
+        if operation.get::<_, Uuid>(1) != id {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let operation_id: Uuid = operation.get(0);
+        let prepared: crate::episode_runtime::PreparedStart = decode(operation.get(3))?;
+        let controller: Uuid = operation.get(4);
+        let epoch: Uuid = operation.get(5);
+        storage::active(tx, epoch).await?;
+        let row = tx
+            .query_one(
+                "SELECT manifest,argv,state FROM supervised_workspaces WHERE id=$1",
+                &[&id],
+            )
+            .await?;
+        let manifest: WorkspaceManifest = decode(row.get(0))?;
+        let input = manifest
+            .input
+            .as_ref()
+            .ok_or_else(|| crate::domain::err(ErrorCode::DependencyUnmet))?;
+        if prepared.start.execution != id
+            || manifest.episode != Some(prepared.start.episode)
+            || input.id != prepared.input_packet
+            || input.digest != prepared.input_digest
+            || manifest.recovery_epoch != epoch
+        {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let transport = crate::model_free_runtime::transport(tx, controller).await?;
+        use std::os::unix::fs::MetadataExt;
+        if manifest.path.parent() != Some(transport.workspace_root.as_path()) {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        for (root, pinned) in [
+            (&transport.native_root, &transport.native_directory),
+            (&transport.workspace_root, &transport.workspace_directory),
+        ] {
+            let directory = crate::model_free_runtime::open_directory(root)?;
+            let metadata = directory.metadata().map_err(|_| unavailable())?;
+            if metadata.dev() != pinned.device
+                || metadata.ino() != pinned.inode
+                || metadata.uid() != pinned.owner
+            {
+                return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+            }
+        }
+        let current_store: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_stores WHERE identity=$1 AND controller=$2 AND runtime_identity=$3)", &[&transport.store,&controller,&json(&prepared.start.runtime)?]).await?.get(0);
+        if transport.epoch != epoch
+            || transport.identity != prepared.start.runtime
+            || !current_store
+        {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let argv: Vec<String> = if let Some(argv) = first_argv {
+            argv.to_vec()
+        } else {
+            decode(row.get(1))?
+        };
+        if argv != prepared.start.argv {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let certificate = serde_json::json!({"kind":"original_launch_admitted","request":prepared,"controller":controller,"recovery_epoch":epoch,"execution":id,"argv":argv,"registered_process":transport.process});
+        if first_argv.is_some() {
+            if operation.get::<_, String>(2) != "dispatching"
+                || row.get::<_, String>(2) != "ready"
+                || local_process_identity().map_err(|_| unavailable())? != transport.process
+            {
+                return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+            }
+            tx.execute(
+                "INSERT INTO episode_runtime_evidence(id,operation_id,evidence) VALUES($1,$2,$3)",
+                &[&Uuid::new_v4(), &operation_id, &certificate],
+            )
+            .await?;
+        } else {
+            let admitted: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_evidence WHERE operation_id=$1 AND evidence=$2)", &[&operation_id,&certificate]).await?.get(0);
+            if row.get::<_, String>(2) != "starting" || !admitted {
+                return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+            }
+        }
+    }
     Ok(())
 }
 impl Supervisor {
@@ -779,7 +870,7 @@ impl Supervisor {
         if !execution_dispatch_current(&tx, id, self.broker.epoch).await? {
             return Err(crate::domain::err(ErrorCode::StaleGeneration));
         }
-        physical_usage_known(&tx, id).await?;
+        physical_usage_known(&tx, id, Some(&argv)).await?;
         let mission: Uuid = tx
             .query_one(
                 "SELECT coalesce($1,(SELECT mission_id FROM tasks WHERE id=$2))",
@@ -1750,7 +1841,7 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
     {
         return Err(crate::domain::err(ErrorCode::DependencyUnmet));
     }
-    physical_usage_known(&tx, id).await?;
+    physical_usage_known(&tx, id, None).await?;
     let mission: Uuid = tx
         .query_one(
             "SELECT coalesce($1,(SELECT mission_id FROM tasks WHERE id=$2))",
@@ -2102,6 +2193,18 @@ pub(crate) async fn reconcile_attempt_cancel(
     .await?;
     if disposition == "cancelled" {
         tx.execute("UPDATE mailbox_episodes SET state='cancelled' WHERE attempt_id=$1 AND state='cancellation_requested'", &[&attempt]).await?;
+    }
+    if disposition == "cancelled" {
+        // No allocation means there is no execution handle to release. Establish
+        // the stronger no-effects fact under the same admission lock; never
+        // refund admitted attempts/episodes or guess usage from a null binding.
+        let unused: bool = tx.query_one(
+            "SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM episode_executions WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state<>'prepared') AND NOT EXISTS(SELECT 1 FROM operations WHERE attempt_id=$1 AND (kind<>'prepare_attempt' OR state<>'prepared'))",
+            &[&attempt],
+        ).await?.get(0);
+        if unused {
+            tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND execution_id IS NULL AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)", &[&attempt]).await?;
+        }
     }
     Ok(disposition.into())
 }

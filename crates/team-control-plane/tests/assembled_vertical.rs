@@ -4275,7 +4275,29 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     mailbox.execute("assembled-verifier",mail(f.epoch,"negative-control-input",serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.verifier],"message_kind":"notice","text":"Execute nonzero negative control despite misleading success stdout","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
     let failed_pending = if scenario == EngineeringScenario::FailedGateDispatch {
         supervisor.release(&f.owner, execution.id).await.unwrap();
-        Some(preallocate_failed_gate_worker(f.clone(), supervisor.clone(), artifacts.clone()).await)
+        let (pending_episode, pending, packet) =
+            preallocate_failed_gate_worker(f.clone(), supervisor.clone(), artifacts.clone()).await;
+        let operation = Uuid::new_v4();
+        let mut unavailable = episode_identity.clone();
+        unavailable.endpoint = "preallocated-unavailable-runtime-binding".into();
+        episode_runtime::EpisodeGateway::new(f.broker.clone())
+            .prepare(
+                "assembled-worker",
+                episode_runtime::StartRequest {
+                    id: operation,
+                    episode: pending_episode,
+                    execution: pending.id,
+                    runtime: unavailable,
+                    argv: vec![
+                        "/bin/sh".into(),
+                        "-c".into(),
+                        "printf forbidden > src/uncharged".into(),
+                    ],
+                },
+            )
+            .await
+            .unwrap();
+        Some((pending_episode, pending, packet, operation))
     } else {
         None
     };
@@ -4438,7 +4460,17 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             .data["status"],
         "accepted"
     );
-    if let Some((pending_episode, pending, packet)) = failed_pending {
+    if let Some((pending_episode, pending, packet, operation)) = failed_pending {
+        retain_bytes(&evidence_directory("failed-gate-native-sdk").join("accepted-failed-report.json"),&serde_json::to_vec(&serde_json::json!({"report":failed,"task":f.broker.snapshot(&f.owner,SnapshotQuery::Task(f.task)).await.unwrap()})).unwrap());
+        let completed = native_failed_gate_sdk_progress(
+            client.clone(),
+            bridge.clone(),
+            r.clone(),
+            f.owner.clone(),
+            operation,
+            evidence_directory("failed-gate-native-sdk"),
+        )
+        .await;
         failed_gate_worker_phase(
             f.clone(),
             supervisor.clone(),
@@ -4457,6 +4489,10 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             .unwrap_or_else(|_| panic!("failed gate phase retained fixture"))
             .finish()
             .await;
+        assert!(
+            completed,
+            "failed gate must preserve new native fenced SDK Activity progress"
+        );
         return;
     }
     let accepted_pending = if scenario == EngineeringScenario::AcceptedTerminal {
@@ -4826,8 +4862,7 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .await;
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn episode_native_lost_reply_holds_physical_capacity() {
+async fn owned_episode_native_lost_reply_holds_physical_capacity() {
     let f = Fixture::new().await;
     let episode = f.worker_episode("native-lost-reply").await;
     let supervisor = f.supervisor().await;
@@ -4873,6 +4908,7 @@ async fn episode_native_lost_reply_holds_physical_capacity() {
         lose_reply: true,
         hold_reply: false,
     };
+    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
     assert_eq!(
         gateway
             .dispatch(&f.owner, id, &mut runtime)
@@ -4881,6 +4917,17 @@ async fn episode_native_lost_reply_holds_physical_capacity() {
             .state,
         OperationState::OutcomeUnknown
     );
+    // The physical model-free effect is genuine; this explicit provider fault
+    // makes its retained receipt unmeasured before any recovery observation.
+    for entry in std::fs::read_dir(&runtime.root).unwrap() {
+        let path = entry.unwrap().path();
+        if path.extension().is_some_and(|s| s == "effect") {
+            let mut receipt: serde_json::Value =
+                serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+            receipt["usage"] = serde_json::json!({"profile":"provider-usage-unreported"});
+            std::fs::write(path, serde_json::to_vec(&receipt).unwrap()).unwrap();
+        }
+    }
     let deadline = std::time::Instant::now() + Duration::from_secs(8);
     loop {
         if supervisor
@@ -5002,7 +5049,7 @@ async fn episode_native_lost_reply_holds_physical_capacity() {
     assert_eq!(
         gateway.inspect(&f.owner, id).await.unwrap().operation.usage,
         episode_runtime::UsageObservation::Unknown,
-        "unregistered direct observation confirms an effect, never measured usage"
+        "unreported provider usage confirms an effect without measuring spend"
     );
     assert_eq!(
         supervisor
@@ -5309,8 +5356,7 @@ async fn public_all_episode_roles_exhaust_the_approved_finite_budget_without_dou
     }
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion() {
+async fn owned_legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion() {
     for legacy_first in [true, false] {
         let f = Fixture::new().await;
         let episode = f.worker_episode("shared-store").await;
@@ -5327,7 +5373,7 @@ async fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclus
         let root = f.root.join("shared-native-store");
         std::fs::create_dir(&root).unwrap();
         let identity = RuntimeIdentity {
-            runtime_kind: "kernel16-owned-os".into(),
+            runtime_kind: "kernel16-inprocess-native".into(),
             runtime_version: "1".into(),
             deployment: f.epoch.to_string(),
             thread_store: root.to_str().unwrap().into(),
@@ -5352,13 +5398,15 @@ async fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclus
             )
             .await
             .unwrap();
-        let mut native = episode_native::NativeOsRuntime {
-            root: root.clone(),
-            identity: identity.clone(),
-            supervisor: supervisor.clone(),
-            service: f.owner.clone(),
-            lose_reply: false,
-            hold_reply: false,
+        let mut native = UnmeasuredNativeReply {
+            native: episode_native::NativeOsRuntime {
+                root: root.clone(),
+                identity: identity.clone(),
+                supervisor: supervisor.clone(),
+                service: f.owner.clone(),
+                lose_reply: false,
+                hold_reply: false,
+            },
         };
         let mut old = SupervisedRuntime {
             root: root.clone(),
@@ -5414,6 +5462,7 @@ async fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclus
                 .await
                 .unwrap();
         } else {
+            episodes.register_runtime(&f.owner, &native).await.unwrap();
             let kernel = kernel::Kernel::new(f.broker.clone());
             kernel
                 .pause(
@@ -5542,7 +5591,7 @@ async fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclus
                 .unwrap_err()
                 .code,
             ErrorCode::DependencyUnmet,
-            "the actual unregistered controller retains unknown-usage capacity"
+            "the actual controller retains unobserved-usage capacity"
         );
         assert_eq!(
             f.broker
@@ -5917,8 +5966,7 @@ impl episode_runtime::EpisodeRuntime for UnmeasuredNativeReply {
         episode_runtime::EpisodeRuntime::observe(&mut self.native, request)
     }
 }
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn confirmed_native_effect_without_usage_observation_retains_reservation() {
+async fn owned_confirmed_native_effect_without_usage_observation_retains_reservation() {
     let f = Fixture::new().await;
     let episode = f.worker_episode("unmeasured-native-effect").await;
     let supervisor = f.supervisor().await;
@@ -5966,6 +6014,7 @@ async fn confirmed_native_effect_without_usage_observation_retains_reservation()
             hold_reply: false,
         },
     };
+    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
     assert_eq!(
         gateway
             .dispatch(&f.owner, operation, &mut runtime)
@@ -6748,8 +6797,7 @@ async fn fresh_same_candidate_verifier(context: FreshVerifierContext) -> artifac
     }).await.expect("fresh independent same-candidate Verifier phase failed")
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel() {
+async fn sdk_prepared_revocation_case(cancelled: bool) {
     use base64::Engine;
     use temporalio_client::{
         Client, ClientOptions, Connection, WorkflowExecutionInfo, WorkflowFetchHistoryOptions,
@@ -6907,6 +6955,24 @@ async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_can
         assert!(std::time::Instant::now() < deadline);
         tokio::time::sleep(Duration::from_millis(20)).await;
     }
+    if cancelled {
+        f.broker
+            .execute(
+                &f.owner,
+                envelope(
+                    f.epoch,
+                    "sdk-cancel-prepared-native",
+                    3,
+                    Command::CancelAttempt {
+                        task_id: f.task,
+                        attempt_id: f.attempt,
+                        reason: "cancel execution while keeping Workflow current".into(),
+                    },
+                ),
+            )
+            .await
+            .unwrap();
+    }
     let (conn, options) =
         ClientOptions::load_from_config(LoadClientConfigProfileOptions::default()).unwrap();
     let client = Client::new(Connection::connect(conn).await.unwrap(), options).unwrap();
@@ -6920,7 +6986,7 @@ async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_can
         .await
         .unwrap();
     let deadline = std::time::Instant::now() + Duration::from_secs(20);
-    loop {
+    let completed = loop {
         let progress = bridge.progress(&f.owner, &reference).await.unwrap();
         let run = progress.observed.unwrap().run_id;
         let history = WorkflowExecutionInfo::builder()
@@ -6971,14 +7037,39 @@ async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_can
                 &out.join("paused-completed-activity-history.json"),
                 &history,
             );
-            break;
+            break true;
         }
-        assert!(
-            std::time::Instant::now() < deadline,
-            "actual SDK paused typed waits did not complete guarded Activity"
-        );
+        if std::time::Instant::now() >= deadline {
+            retain_bytes(&out.join("cancel-timeout-history.json"), &history);
+            break false;
+        }
         tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    if cancelled {
+        let no_effect = std::fs::read_dir(&native_root).unwrap().next().is_none()
+            && !execution.path.join("src/live").exists();
+        child.0.kill().unwrap();
+        let terminal = child.0.wait().unwrap();
+        retain_bytes(&out.join("cancel-sdk-terminal.json"),&serde_json::to_vec(&serde_json::json!({"pid":child.0.id(),"waited":true,"terminal":terminal.to_string(),"completed_fenced_activity":completed,"no_effect":no_effect})).unwrap());
+        retain_bytes(
+            &out.join("cancel-sdk.log"),
+            &std::fs::read(f.root.join("sdk-collision.log")).unwrap(),
+        );
+        supervisor.cancel(&f.owner, execution.id).await.unwrap();
+        supervisor.release(&f.owner, execution.id).await.unwrap();
+        drop(db);
+        f.finish().await;
+        assert!(
+            completed,
+            "current Workflow must complete native fenced Activity after cancellation"
+        );
+        assert!(no_effect);
+        return;
     }
+    assert!(
+        completed,
+        "paused current Workflow must complete its guarded Activity"
+    );
     assert!(std::fs::read_dir(&native_root).unwrap().next().is_none());
     assert!(!execution.path.join("src/live").exists());
     kernel::Kernel::new(f.broker.clone())
@@ -7132,4 +7223,746 @@ async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_can
     );
     drop(db);
     f.finish().await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel() {
+    sdk_prepared_revocation_case(false).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn real_sdk_cancelled_native_prepared_wait_retains_current_workflow() {
+    sdk_prepared_revocation_case(true).await;
+}
+async fn unknown_episode_usage_case(with_monitor: bool) {
+    let f = Fixture::new().await;
+    let episode = f.worker_episode("unmeasured-native-effect").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let pending_verifier = {
+        let service = artifacts::ArtifactService::open(f.broker.clone(), &f.root.join("artifacts"))
+            .await
+            .unwrap();
+        let command = vec![
+            "/bin/sh".into(),
+            "-c".into(),
+            "printf 'unexpected-verifier-workload\\n'".into(),
+        ];
+        let envelope = |key: &str, revision, command| artifacts::ArtifactEnvelope {
+            key: key.into(),
+            task: f.task,
+            expected_revision: revision,
+            generation: 1,
+            recovery_epoch: f.epoch,
+            command,
+        };
+        let revision = f
+            .broker
+            .snapshot(&f.owner, SnapshotQuery::Task(f.task))
+            .await
+            .unwrap()
+            .revision;
+        let configured = service
+            .execute(
+                &f.owner,
+                envelope(
+                    "race-configure",
+                    revision,
+                    artifacts::ArtifactCommand::Configure {
+                        verifier: f.verifier,
+                        lead_acceptance: false,
+                        base: f.base.clone(),
+                        suite: artifacts::sha256(
+                            &serde_json::to_vec(&vec![command.clone()]).unwrap(),
+                        ),
+                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                        mandatory_commands: vec![command.clone()],
+                    },
+                ),
+                artifacts::ReferenceFault::None,
+            )
+            .await
+            .unwrap();
+        std::fs::write(
+            execution.path.join("src/result"),
+            b"real immutable pre-admitted candidate\n",
+        )
+        .unwrap();
+        git(&execution.path, &["add", "src/result"]);
+        git(
+            &execution.path,
+            &[
+                "-c",
+                "user.name=Fixture",
+                "-c",
+                "user.email=fixture@example.invalid",
+                "commit",
+                "-qm",
+                "race candidate",
+            ],
+        );
+        let bundle = f.root.join("race-candidate.bundle");
+        git(
+            &execution.path,
+            &["bundle", "create", bundle.to_str().unwrap(), "HEAD"],
+        );
+        let bytes = std::fs::read(bundle).unwrap();
+        let digest = artifacts::sha256(&bytes);
+        service
+            .publish_evidence("assembled-worker", f.task, &digest, &bytes)
+            .await
+            .unwrap();
+        let candidate = artifacts::Candidate {
+            commit: git(&execution.path, &["rev-parse", "HEAD"]),
+            tree: git(&execution.path, &["rev-parse", "HEAD^{tree}"]),
+            base: f.base.clone(),
+            spec_digest: f.spec.clone(),
+            spec_revision: 2,
+            generation: 1,
+            artifact: digest,
+            deliverables: vec!["src/result".into()],
+            risks: vec![],
+        };
+        service
+            .execute(
+                "assembled-worker",
+                envelope(
+                    "race-submit",
+                    configured.revision,
+                    artifacts::ArtifactCommand::Submit { candidate },
+                ),
+                artifacts::ReferenceFault::None,
+            )
+            .await
+            .unwrap();
+        let mailbox = mailbox::MailboxService::new(f.broker.clone());
+        let input = Uuid::new_v4();
+        let verifier = Uuid::new_v4();
+        mailbox.execute("assembled-verifier",mail(f.epoch,"race-capture",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"verification","limit":4}))).await.unwrap();
+        let packet = mailbox
+            .record("assembled-verifier", mailbox::RecordKind::Input, input)
+            .await
+            .unwrap();
+        mailbox.execute("assembled-verifier",mail(f.epoch,"race-admit",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":verifier,"attempt":f.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+        let handle = supervisor
+            .create_episode_from_candidate(
+                "assembled-verifier",
+                verifier,
+                &service,
+                supervisor::CreateFault::None,
+            )
+            .await
+            .unwrap();
+        Some((handle, command))
+    };
+    let held_monitor = if with_monitor {
+        let (pending, command) = pending_verifier.as_ref().unwrap();
+        supervisor
+            .start_with_fault(
+                "assembled-verifier",
+                pending.id,
+                command.clone(),
+                30,
+                supervisor::StartFault::BeforeMonitor,
+            )
+            .await
+            .unwrap();
+        let claimed = std::sync::Arc::new(tokio::sync::Notify::new());
+        let resume = std::sync::Arc::new(tokio::sync::Notify::new());
+        let monitor = tokio::spawn(supervisor::run_monitor_with_gate(
+            f.broker.clone(),
+            pending.id,
+            supervisor::MonitorGate {
+                claimed: claimed.clone(),
+                resume: resume.clone(),
+            },
+        ));
+        tokio::time::timeout(Duration::from_secs(8), claimed.notified())
+            .await
+            .expect("actual monitor claimed before sibling unknown usage");
+        Some((resume, monitor))
+    } else {
+        None
+    };
+    let root = f.root.join("unmeasured-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = RuntimeIdentity {
+        runtime_kind: "kernel16-inprocess-native".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "owned-async-os".into(),
+        environment: "bwrap-private-git".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            "assembled-worker",
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec!["/bin/true".into()],
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = UnmeasuredNativeReply {
+        native: episode_native::NativeOsRuntime {
+            root: root.clone(),
+            identity,
+            supervisor: supervisor.clone(),
+            service: f.owner.clone(),
+            lose_reply: false,
+            hold_reply: false,
+        },
+    };
+    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
+    assert_eq!(
+        gateway
+            .dispatch(&f.owner, operation, &mut runtime)
+            .await
+            .unwrap()
+            .state,
+        OperationState::Confirmed
+    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(8);
+    let result = loop {
+        if let Some(result) = supervisor
+            .result("assembled-worker", execution.id)
+            .await
+            .unwrap()
+        {
+            break result;
+        }
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    assert_eq!(result.exit_code, Some(0));
+    assert!(result.namespace_stopped);
+    let journal = gateway.inspect(&f.owner, operation).await.unwrap();
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let (pending, command) = pending_verifier.unwrap();
+    let launched = if let Some((resume, monitor)) = held_monitor {
+        resume.notify_one();
+        tokio::time::timeout(Duration::from_secs(8), monitor)
+            .await
+            .unwrap()
+            .unwrap()
+    } else {
+        supervisor
+            .start("assembled-verifier", pending.id, command, 30)
+            .await
+    };
+    if launched.is_ok() {
+        let deadline = std::time::Instant::now() + Duration::from_secs(8);
+        while supervisor
+            .result("assembled-verifier", pending.id)
+            .await
+            .unwrap()
+            .is_none()
+        {
+            assert!(std::time::Instant::now() < deadline);
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+    let actual = supervisor
+        .result("assembled-verifier", pending.id)
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let out = evidence_directory(if with_monitor {
+        "unknown-episode-monitor-claim"
+    } else {
+        "unknown-episode-physical-claim"
+    });
+    retain_bytes(&out.join("claim.json"),&serde_json::to_vec(&serde_json::json!({"launch":launched.as_ref().map_err(|e|&e.code),"result":actual,"worker_result":result,"journal":journal,"before":before,"after":after})).unwrap());
+    f.finish().await;
+    assert_eq!(
+        launched.unwrap_err().code,
+        ErrorCode::DependencyUnmet,
+        "preallocation must not bypass unknown episode usage"
+    );
+    assert!(actual.is_none());
+    assert_eq!(before.data["used_capacity"], after.data["used_capacity"]);
+    assert_eq!(
+        before.data["admitted_episodes"],
+        after.data["admitted_episodes"]
+    );
+    assert_eq!(
+        journal.operation.usage,
+        episode_runtime::UsageObservation::Unknown
+    );
+}
+fn run_owned_episode_usage_case(mode: &str) {
+    let out = evidence_directory(&format!("owned-episode-usage-{mode}"));
+    let mut child = Process::new(std::env::current_exe().unwrap());
+    child
+        .args([
+            "--exact",
+            "owned_episode_usage_worker",
+            "--ignored",
+            "--nocapture",
+        ])
+        .env_clear()
+        .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TEAM_CONTROL_PLANE_TEST_DSN",
+            std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),
+        )
+        .env(
+            "TEMPORAL_ADDRESS",
+            std::env::var("TEMPORAL_ADDRESS").unwrap(),
+        )
+        .env(
+            "TEMPORAL_FIXTURE_EVIDENCE",
+            std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap(),
+        )
+        .env("OWNED_EPISODE_USAGE_CASE", mode)
+        .process_group(0);
+    let output = child.output().unwrap();
+    retain_bytes(&out.join("stdout.log"), &output.stdout);
+    retain_bytes(&out.join("stderr.log"), &output.stderr);
+    retain_bytes(
+        &out.join("terminal.json"),
+        &serde_json::to_vec(
+            &serde_json::json!({"waited":true,"terminal":output.status.to_string()}),
+        )
+        .unwrap(),
+    );
+    assert!(
+        output.status.success(),
+        "owned usage fixture failed: {}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "owned physical-runtime subprocess; parent fixture controls lifetime"]
+async fn owned_episode_usage_worker() {
+    match std::env::var("OWNED_EPISODE_USAGE_CASE").unwrap().as_str() {
+        "physical" => unknown_episode_usage_case(false).await,
+        "monitor" => unknown_episode_usage_case(true).await,
+        "confirmed-native" => {
+            owned_confirmed_native_effect_without_usage_observation_retains_reservation().await
+        }
+        "lost-reply" => owned_episode_native_lost_reply_holds_physical_capacity().await,
+        "store-exclusion" => {
+            owned_legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion().await
+        }
+        mode @ ("original" | "lead-original" | "argv" | "origin" | "stored-argv") => {
+            original_launch_case(mode).await
+        }
+        mode => panic!("unknown fixture case {mode}"),
+    }
+}
+#[test]
+fn unknown_episode_blocks_preallocated_verifier_launch() {
+    run_owned_episode_usage_case("physical");
+}
+#[test]
+fn unknown_episode_blocks_monitor_after_controller_claim() {
+    run_owned_episode_usage_case("monitor");
+}
+
+struct DeferredOriginalLaunch {
+    native: episode_native::NativeOsRuntime,
+    mode: String,
+    dsn: String,
+}
+impl episode_runtime::EpisodeRuntime for DeferredOriginalLaunch {
+    fn identity(&self) -> RuntimeIdentity {
+        episode_runtime::EpisodeRuntime::identity(&self.native)
+    }
+    fn capabilities(&self) -> CapabilityProfile {
+        episode_runtime::EpisodeRuntime::capabilities(&self.native)
+    }
+    fn closed_world_os(&self) -> Option<episode_runtime::ClosedWorldOs> {
+        episode_runtime::EpisodeRuntime::closed_world_os(&self.native)
+    }
+    fn start<'a>(
+        &'a mut self,
+        p: &'a episode_runtime::PreparedStart,
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = episode_runtime::EpisodeReply> + Send + 'a>,
+    > {
+        Box::pin(async move {
+            let argv = if self.mode == "argv" {
+                vec!["/bin/false".into()]
+            } else {
+                p.start.argv.clone()
+            };
+            let result = if self.mode == "origin" {
+                let output = Process::new(env!("CARGO_BIN_EXE_team-control-plane"))
+                    .args([
+                        "start-execution",
+                        &p.start.execution.to_string(),
+                        "30",
+                        &serde_json::to_string(&argv).unwrap(),
+                    ])
+                    .env_clear()
+                    .env("PATH", "/usr/bin:/bin")
+                    .env("TEAM_CONTROL_PLANE_DSN", &self.dsn)
+                    .env(
+                        "TEAM_CONTROL_PLANE_RECOVERY_EPOCH",
+                        self.native.identity.deployment.clone(),
+                    )
+                    .env("TEAM_CONTROL_PLANE_TOKEN", &self.native.service)
+                    .env(
+                        "TEAM_CONTROL_PLANE_WORKSPACE_ROOT",
+                        self.native.root.parent().unwrap().join("workspaces"),
+                    )
+                    .output()
+                    .unwrap();
+                serde_json::json!({"status":output.status.to_string(),"stderr":String::from_utf8_lossy(&output.stderr)})
+            } else {
+                let result = self
+                    .native
+                    .supervisor
+                    .start_with_fault(
+                        &self.native.service,
+                        p.start.execution,
+                        argv,
+                        30,
+                        supervisor::StartFault::BeforeMonitor,
+                    )
+                    .await;
+                serde_json::json!({"start":result.as_ref().map_err(|e|&e.code)})
+            };
+            retain_bytes(
+                &self.native.root.join("launch-call.json"),
+                &serde_json::to_vec(&result).unwrap(),
+            );
+            episode_runtime::EpisodeReply::Unknown(
+                "original dispatch reply lost before monitor".into(),
+            )
+        })
+    }
+    fn observe<'a>(
+        &'a mut self,
+        _: &'a episode_runtime::PreparedStart,
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = episode_runtime::EpisodeObservation> + Send + 'a>,
+    > {
+        Box::pin(async {
+            episode_runtime::EpisodeObservation::Inconclusive(
+                "fixture retains unknown usage".into(),
+            )
+        })
+    }
+}
+async fn original_launch_case(mode: &str) {
+    let f = Fixture::new().await;
+    let supervisor = f.supervisor().await;
+    let lead = mode == "lead-original";
+    let token = if lead {
+        "assembled-lead"
+    } else {
+        "assembled-worker"
+    };
+    let episode = if lead {
+        f.lead_episode("original-launch").await
+    } else {
+        f.worker_episode("original-launch").await
+    };
+    let execution = supervisor
+        .create_episode(token, episode, vec![], supervisor::CreateFault::None)
+        .await
+        .unwrap();
+    let root = f.root.join("original-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = RuntimeIdentity {
+        runtime_kind: "kernel16-inprocess-native".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "registered-deferred-original".into(),
+        environment: "bwrap-private-git".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            token,
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: if lead {
+                    vec!["/bin/sh".into(), "-c".into(), "printf once".into()]
+                } else {
+                    vec![
+                        "/bin/sh".into(),
+                        "-c".into(),
+                        "printf once >> src/result".into(),
+                    ]
+                },
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = DeferredOriginalLaunch {
+        native: episode_native::NativeOsRuntime {
+            root: root.clone(),
+            identity,
+            supervisor: supervisor.clone(),
+            service: f.owner.clone(),
+            lose_reply: false,
+            hold_reply: false,
+        },
+        mode: mode.into(),
+        dsn: f.dsn.clone(),
+    };
+    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
+    let dispatched = gateway
+        .dispatch(&f.owner, operation, &mut runtime)
+        .await
+        .unwrap();
+    assert_eq!(dispatched.state, OperationState::OutcomeUnknown);
+    let before = supervisor.inspect(&f.owner, execution.id).await.unwrap();
+    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
+        .await
+        .unwrap();
+    tokio::spawn(async move { connection.await.unwrap() });
+    let cert_count:i64=db.query_one("SELECT count(*) FROM episode_runtime_evidence WHERE operation_id=$1 AND evidence->>'kind'='original_launch_admitted'", &[&operation]).await.unwrap().get(0);
+    let out = evidence_directory(&format!("original-launch-{mode}"));
+    let mut monitored = None;
+    if matches!(mode, "original" | "lead-original" | "stored-argv") {
+        assert_eq!(before.state, supervisor::ExecutionState::Starting);
+        assert_eq!(cert_count, 1);
+        if mode == "stored-argv" {
+            db.execute(
+                "UPDATE supervised_workspaces SET argv=$2 WHERE id=$1",
+                &[&execution.id, &serde_json::json!(["/bin/false"])],
+            )
+            .await
+            .unwrap();
+        }
+        monitored = Some(supervisor::run_monitor(f.broker.clone(), execution.id).await);
+    }
+    let result = supervisor.result(&f.owner, execution.id).await.unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let journal = gateway.inspect(&f.owner, operation).await.unwrap();
+    let release = supervisor.release(&f.owner, execution.id).await;
+    retain_bytes(&out.join("launch-proof.json"),&serde_json::to_vec(&serde_json::json!({"before":before,"certificate_count":cert_count,"monitor":monitored.as_ref().map(|r|r.as_ref().map_err(|e|&e.code)),"result":result,"journal":journal,"mission":after,"release":release.as_ref().map_err(|e|&e.code)})).unwrap());
+    retain_bytes(
+        &out.join("launch-call.json"),
+        &std::fs::read(root.join("launch-call.json")).unwrap(),
+    );
+    let bytes = std::fs::read(if lead {
+        before.manifest.log_path.clone()
+    } else {
+        execution.path.join("src/result")
+    })
+    .unwrap_or_default();
+    if matches!(mode, "original" | "lead-original") {
+        retain_bytes(&out.join("original-output.bin"), &bytes);
+        let replay_start = supervisor
+            .start(token, execution.id, journal.prepared.start.argv.clone(), 30)
+            .await;
+        let replay_monitor = supervisor::run_monitor(f.broker.clone(), execution.id).await;
+        let replay_mission = f
+            .broker
+            .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+            .await
+            .unwrap();
+        let replay_journal = gateway.inspect(&f.owner, operation).await.unwrap();
+        let replay_result = supervisor.result(&f.owner, execution.id).await.unwrap();
+        let replay_view = supervisor.inspect(&f.owner, execution.id).await.unwrap();
+        let replay_cert_count: i64 = db.query_one("SELECT count(*) FROM episode_runtime_evidence WHERE operation_id=$1 AND evidence->>'kind'='original_launch_admitted'", &[&operation]).await.unwrap().get(0);
+        let replay_bytes = std::fs::read(if lead {
+            before.manifest.log_path.clone()
+        } else {
+            execution.path.join("src/result")
+        })
+        .unwrap();
+        let replay_release = supervisor.release(&f.owner, execution.id).await;
+        retain_bytes(&out.join("replay-proof.json"), &serde_json::to_vec(&serde_json::json!({"start":replay_start.as_ref().map_err(|e|&e.code),"monitor":replay_monitor.as_ref().map_err(|e|&e.code),"before_mission":after,"after_mission":replay_mission,"certificate_count_before":cert_count,"certificate_count_after":replay_cert_count,"journal":replay_journal,"original_result":result,"after_result":replay_result,"view":replay_view,"output_sha256":artifacts::sha256(&replay_bytes),"release":replay_release.as_ref().map_err(|e|&e.code)})).unwrap());
+        assert_eq!(replay_start.unwrap_err().code, ErrorCode::DependencyUnmet);
+        assert_eq!(replay_monitor.unwrap_err().code, ErrorCode::DependencyUnmet);
+        assert_eq!(cert_count, 1);
+        assert_eq!(replay_cert_count, 1);
+        assert_eq!(
+            after.data, replay_mission.data,
+            "rejected replays cannot change any Mission admission or physical budget"
+        );
+        assert_eq!(
+            replay_journal.operation.usage,
+            episode_runtime::UsageObservation::Unknown
+        );
+        assert_eq!(replay_view.state, supervisor::ExecutionState::Stopped);
+        assert_eq!(
+            replay_result.as_ref().unwrap().logs,
+            result.as_ref().unwrap().logs
+        );
+        assert_eq!(
+            replay_bytes, bytes,
+            "replay creates no second workload effect"
+        );
+        assert_eq!(replay_release.unwrap_err().code, ErrorCode::DependencyUnmet);
+    }
+    f.finish().await;
+    if matches!(mode, "original" | "lead-original") {
+        assert!(monitored.unwrap().is_ok());
+        assert_eq!(result.unwrap().exit_code, Some(0));
+        assert_eq!(bytes, b"once");
+    } else {
+        assert!(result.is_none());
+        assert!(bytes.is_empty());
+        if mode == "stored-argv" {
+            assert_eq!(
+                monitored.unwrap().unwrap_err().code,
+                ErrorCode::DependencyUnmet
+            );
+        } else {
+            assert_eq!(before.state, supervisor::ExecutionState::Ready);
+            assert_eq!(cert_count, 0);
+        }
+    }
+    assert_eq!(after.data["used_capacity"], if lead { 2 } else { 1 });
+    if lead {
+        assert!(before.manifest.attempt.is_none());
+        assert!(before.manifest.task.is_none());
+    }
+    assert_eq!(release.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(
+        journal.operation.usage,
+        episode_runtime::UsageObservation::Unknown
+    );
+}
+#[test]
+fn original_registered_launch_survives_own_unknown_before_monitor() {
+    run_owned_episode_usage_case("original");
+}
+#[test]
+fn registered_launch_rejects_wrong_argv_and_foreign_origin_and_stored_argv() {
+    for mode in ["argv", "origin", "stored-argv"] {
+        run_owned_episode_usage_case(mode);
+    }
+}
+
+async fn native_failed_gate_sdk_progress(
+    client: temporalio_client::Client,
+    bridge: Bridge,
+    reference: WorkflowRef,
+    owner: String,
+    pending: Uuid,
+    out: PathBuf,
+) -> bool {
+    use base64::Engine;
+    use temporalio_client::{WorkflowExecutionInfo, WorkflowFetchHistoryOptions};
+    let progress = bridge.progress(&owner, &reference).await.unwrap();
+    let run = progress.observed.unwrap().run_id;
+    let fetch = || {
+        WorkflowExecutionInfo::builder()
+            .namespace("default")
+            .workflow_id(&reference.workflow_id)
+            .run_id(&run)
+            .build()
+            .bind_untyped(client.clone())
+    };
+    let first = fetch()
+        .fetch_history(WorkflowFetchHistoryOptions::default())
+        .to_json()
+        .await
+        .unwrap();
+    let first_value: serde_json::Value = serde_json::from_slice(&first).unwrap();
+    let boundary = first_value["events"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|e| e["event_id"].as_i64().unwrap())
+        .max()
+        .unwrap();
+    retain_bytes(&out.join("post-failed-report-boundary.json"), &first);
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
+    loop {
+        let history = fetch()
+            .fetch_history(WorkflowFetchHistoryOptions::default())
+            .to_json()
+            .await
+            .unwrap();
+        let value: serde_json::Value = serde_json::from_slice(&history).unwrap();
+        let completed = value["events"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|e| e["event_id"].as_i64().unwrap() > boundary && e["event_type"] == 12)
+            .any(|e| {
+                e["attributes"]["ActivityTaskCompletedEventAttributes"]["result"]["payloads"]
+                    .as_array()
+                    .is_some_and(|payloads| {
+                        payloads.iter().any(|p| {
+                            p["data"]
+                                .as_str()
+                                .and_then(|data| {
+                                    base64::engine::general_purpose::STANDARD.decode(data).ok()
+                                })
+                                .and_then(|bytes| {
+                                    serde_json::from_slice::<serde_json::Value>(&bytes).ok()
+                                })
+                                .is_some_and(|p| {
+                                    p["operations"].as_array().is_some_and(|operations| {
+                                        operations.iter().any(|o| {
+                                            o["limitation"] == "episode_dispatch_fenced"
+                                                && o["journals"].as_array().is_some_and(
+                                                    |journals| {
+                                                        journals.iter().any(|j| {
+                                                            j[0] == pending.to_string()
+                                                                && j[1] == "prepared"
+                                                        })
+                                                    },
+                                                )
+                                        })
+                                    })
+                                })
+                        })
+                    })
+            });
+        if completed || std::time::Instant::now() >= deadline {
+            retain_bytes(&out.join("native-fenced-activity-history.json"), &history);
+            return completed;
+        }
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}
+
+#[test]
+fn confirmed_native_effect_without_usage_observation_retains_reservation() {
+    run_owned_episode_usage_case("confirmed-native");
+}
+
+#[test]
+fn episode_native_lost_reply_holds_physical_capacity() {
+    run_owned_episode_usage_case("lost-reply");
+}
+
+#[test]
+fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion() {
+    run_owned_episode_usage_case("store-exclusion");
+}
+
+#[test]
+fn task_free_lead_registered_original_unknown_before_monitor_launches_once() {
+    run_owned_episode_usage_case("lead-original");
 }

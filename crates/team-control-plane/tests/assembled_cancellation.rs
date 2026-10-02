@@ -409,8 +409,7 @@ async fn lost_pause_response_fresh_status_exposes_control_revision_and_db_time()
     f.finish().await;
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-async fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
+async fn owned_nested_cancel_case() {
     use std::time::{Duration, Instant};
     for mode in ["known-physical", "unknown-usage", "unknown-effect"] {
         let f = Fixture::new().await;
@@ -433,7 +432,7 @@ async fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
         let native_root = f.root.join("cancel-native");
         std::fs::create_dir(&native_root).unwrap();
         let identity = gateway::RuntimeIdentity {
-            runtime_kind: "kernel16-owned-os".into(),
+            runtime_kind: "kernel16-inprocess-native".into(),
             runtime_version: "1".into(),
             deployment: f.epoch.to_string(),
             thread_store: native_root.to_str().unwrap().into(),
@@ -461,14 +460,15 @@ async fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
                 )
                 .await
                 .unwrap();
-            let mut runtime = episode_native::NativeOsRuntime {
+            let mut runtime = UnmeasuredCancellationNative(episode_native::NativeOsRuntime {
                 root: native_root.clone(),
                 identity,
                 supervisor: supervisor.clone(),
                 service: f.owner.clone(),
                 lose_reply: mode == "unknown-effect",
                 hold_reply: false,
-            };
+            });
+            gateway.register_runtime(&f.owner, &runtime).await.unwrap();
             let dispatched = gateway
                 .dispatch(&f.owner, operation, &mut runtime)
                 .await
@@ -580,7 +580,7 @@ async fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
             .snapshot(&f.owner, SnapshotQuery::Task(f.task))
             .await
             .unwrap();
-        if mode != "known-physical" {
+        if mode == "unknown-effect" {
             assert_eq!(disposition, "quarantined");
             assert_eq!(snapshot.data["status"], "running");
         } else {
@@ -2126,4 +2126,700 @@ async fn foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait() {
     supervisor.release(&f.owner, execution.id).await.unwrap();
     drop(driver);
     f.finish().await;
+}
+
+#[tokio::test]
+async fn cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once() {
+    let f = Fixture::new().await;
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "unbound-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "no allocation or native dispatch exists".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let done = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "unbound-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    assert_eq!(done.disposition, "cancelled");
+    let again = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "unbound-reconcile-again",
+                done.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(
+        out.join("unbound-cancellation-refund.json"),
+        serde_json::to_vec(
+            &serde_json::json!({"before":before,"after":after,"first":done,"repeat":again}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    f.finish().await;
+    assert_eq!(
+        after.data["used_capacity"],
+        serde_json::json!(0),
+        "known-unused cancelled admission must release its concurrent slot"
+    );
+    assert_eq!(
+        before.data["admitted_attempts"],
+        after.data["admitted_attempts"]
+    );
+    assert_eq!(
+        before.data["admitted_episodes"],
+        after.data["admitted_episodes"]
+    );
+}
+#[tokio::test]
+async fn cancelled_prepared_episode_retains_current_workflow_progress() {
+    use temporal::OperationDriver;
+    let f = Fixture::new().await;
+    let episode = f.worker_episode("cancelled-episode").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let root = f.root.join("cancelled-episode-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "kernel16-inprocess-native".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "owned-local-subprocess".into(),
+        environment: "bwrap-private-git".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            "assembled-worker",
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec!["/bin/true".into()],
+            },
+        )
+        .await
+        .unwrap();
+    let runtime = episode_native::NativeOsRuntime {
+        root: root.clone(),
+        identity,
+        supervisor: supervisor.clone(),
+        service: f.owner.clone(),
+        lose_reply: false,
+        hold_reply: false,
+    };
+    let driver = episode_runtime::EpisodeOperationDriver::new(
+        gateway,
+        f.owner.clone(),
+        Box::new(runtime),
+        None,
+    );
+    let bridge = temporal::Bridge::new(f.broker.clone());
+    let reference = bridge
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "cancel-prepared-native",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "execution revoked, workflow remains current".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let progress = driver
+        .drive(&reference, temporal::WaitRef::episode(episode))
+        .await;
+    assert!(std::fs::read_dir(&root).unwrap().next().is_none());
+
+    let missing = temporal::WaitRef::episode(Uuid::new_v4());
+    assert_eq!(
+        driver
+            .drive(&reference, missing)
+            .await
+            .unwrap()
+            .limitation
+            .as_deref(),
+        Some("episode_journal_missing")
+    );
+    bridge.close(&f.owner, &reference).await.unwrap();
+    assert_eq!(
+        driver
+            .drive(&reference, temporal::WaitRef::episode(episode))
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::StaleGeneration
+    );
+    assert_eq!(
+        driver.drive(&reference, missing).await.unwrap_err().code,
+        ErrorCode::StaleGeneration
+    );
+    let successor = bridge
+        .register(
+            &f.owner,
+            temporal::AggregateKind::Task,
+            f.task,
+            reference.generation,
+        )
+        .await
+        .unwrap();
+    assert_eq!(successor.generation, reference.generation + 1);
+    assert_eq!(
+        driver
+            .drive(&reference, temporal::WaitRef::episode(episode))
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::StaleGeneration
+    );
+    supervisor.cancel(&f.owner, execution.id).await.unwrap();
+    supervisor.release(&f.owner, execution.id).await.unwrap();
+    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(
+        evidence.join("cancelled-episode-driver.json"),
+        serde_json::to_vec(&serde_json::json!({"progress":progress.as_ref().map_err(|e|&e.code)}))
+            .unwrap(),
+    )
+    .unwrap();
+    f.finish().await;
+    let progress=progress.expect("temporarily fenced Prepared episode must remain workflow progress, not nonretryable Activity failure");
+    assert_eq!(
+        progress.journals,
+        vec![(operation, gateway::OperationState::Prepared)]
+    );
+    assert_eq!(
+        progress.limitation.as_deref(),
+        Some("episode_dispatch_fenced")
+    );
+}
+
+#[tokio::test]
+async fn ready_unknown_episode_cannot_authorize_an_unrelated_physical_launch() {
+    let f = Fixture::new().await;
+    let episode = f.worker_episode("unregistered-episode-effect").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let root = f.root.join("unregistered-episode-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "unregistered-external-effect".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "actual-child-process".into(),
+        environment: "model-free".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            "assembled-worker",
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec!["/bin/true".into()],
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = UnregisteredEpisodeEffect(
+        gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
+        None,
+    );
+    let journal = gateway
+        .dispatch(&f.owner, operation, &mut runtime)
+        .await
+        .unwrap();
+    assert_eq!(journal.state, gateway::OperationState::Confirmed);
+    assert_eq!(journal.usage, episode_runtime::UsageObservation::Unknown);
+    assert_eq!(runtime.0.effect_count().unwrap(), 1);
+    assert!(runtime.1.as_mut().unwrap().try_wait().unwrap().is_none());
+    let native_pid = runtime.1.as_ref().unwrap().id();
+    assert!(
+        runtime.1.as_mut().unwrap().try_wait().unwrap().is_none(),
+        "independent native effect is actually live"
+    );
+    let launched = supervisor
+        .start(
+            "assembled-worker",
+            execution.id,
+            vec!["/bin/true".into()],
+            30,
+        )
+        .await;
+    if launched.is_ok() {
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(8);
+        while supervisor
+            .result(&f.owner, execution.id)
+            .await
+            .unwrap()
+            .is_none()
+        {
+            assert!(std::time::Instant::now() < deadline);
+            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+        }
+    }
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("ready-own-unknown.json"),serde_json::to_vec(&serde_json::json!({"journal":journal,"launch":launched.as_ref().map_err(|e|&e.code),"workspace":supervisor.inspect(&f.owner,execution.id).await.unwrap(),"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap()).unwrap();
+    let mut child = runtime.1.take().unwrap();
+    child.kill().unwrap();
+    let terminal = child.wait().unwrap();
+    std::fs::write(
+        out.join("ready-own-native-child-terminal.json"),
+        serde_json::to_vec(
+            &serde_json::json!({"pid":native_pid,"waited":true,"terminal":terminal.to_string()}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    drop(runtime);
+    f.finish().await;
+    assert_eq!(
+        launched.unwrap_err().code,
+        ErrorCode::DependencyUnmet,
+        "Ready own unknown operation without launch certificate cannot grant new physical work"
+    );
+}
+
+async fn ready_capacity_task(f: &Fixture, key: &str) -> Uuid {
+    let task = Uuid::new_v4();
+    let worker = Uuid::new_v4();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                &format!("{key}-create"),
+                0,
+                Command::CreateTask {
+                    id: task,
+                    mission_id: f.mission,
+                    spec: TaskSpec {
+                        dependencies: vec![],
+                        objective: "bounded replacement admission".into(),
+                        input: GitInput {
+                            repository: f.root.join("store").to_str().unwrap().into(),
+                            commit: f.base.clone(),
+                            path: "SPEC.md".into(),
+                            digest: artifacts::sha256(b"produce exact src/result"),
+                        },
+                        acceptance: vec!["unchanged cumulative budgets".into()],
+                        deliverables: vec!["src/result".into()],
+                        write_scope: vec!["src".into()],
+                    },
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let spec = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Task(task))
+        .await
+        .unwrap()
+        .data["spec_digest"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                &format!("{key}-admit"),
+                1,
+                Command::AdmitTask {
+                    task_id: task,
+                    spec_digest: spec,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                &format!("{key}-credential"),
+                0,
+                Command::GrantCredential {
+                    credential_id: Uuid::new_v4(),
+                    principal_id: worker,
+                    role: Role::Worker,
+                    mission_id: Some(f.mission),
+                    task_id: Some(task),
+                    generation: Some(1),
+                    token_hash: token_hash(&format!("{key}-worker")),
+                    expires_in_seconds: 300,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    task
+}
+async fn assign_capacity_task(f: &Fixture, task: Uuid, key: &str) -> Result<CommandResult> {
+    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
+        .await
+        .unwrap();
+    tokio::spawn(async move { connection.await.unwrap() });
+    let worker: Uuid = db
+        .query_one(
+            "SELECT principal_id FROM credentials WHERE task_id=$1 AND role='worker'",
+            &[&task],
+        )
+        .await
+        .unwrap()
+        .get(0);
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                key,
+                2,
+                Command::AssignAttempt {
+                    task_id: task,
+                    worker_id: worker,
+                },
+            ),
+        )
+        .await
+}
+#[tokio::test]
+async fn unbound_refund_allows_capacity_one_replacement_without_budget_refund() {
+    let f = Fixture::with_limits(1, 2, 2).await;
+    let second = ready_capacity_task(&f, "capacity-second").await;
+    let third = ready_capacity_task(&f, "capacity-third").await;
+    assert_eq!(
+        assign_capacity_task(&f, second, "blocked-capacity")
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::CapacityExhausted
+    );
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "capacity-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "known-unused capacity one slot".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let reconcile = envelope(
+        f.epoch,
+        "capacity-release",
+        cancel.revision,
+        Command::ReconcileAttempt {
+            task_id: f.task,
+            attempt_id: f.attempt,
+        },
+    );
+    f.broker.execute(&f.owner, reconcile.clone()).await.unwrap();
+    f.broker.execute(&f.owner, reconcile).await.unwrap();
+    let assigned = assign_capacity_task(&f, second, "replacement-admission")
+        .await
+        .unwrap();
+    let cancelled = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "replacement-cancel",
+                assigned.revision,
+                Command::CancelAttempt {
+                    task_id: second,
+                    attempt_id: assigned.attempt_id.unwrap(),
+                    reason: "known unused replacement".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "replacement-release",
+                cancelled.revision,
+                Command::ReconcileAttempt {
+                    task_id: second,
+                    attempt_id: assigned.attempt_id.unwrap(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let final_state = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let denied = assign_capacity_task(&f, third, "cumulative-budget-no-refund").await;
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("capacity-one-replacement.json"),serde_json::to_vec(&serde_json::json!({"mission":final_state,"replacement":assigned,"third":denied.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
+    f.finish().await;
+    assert_eq!(final_state.data["used_capacity"], 0);
+    assert_eq!(final_state.data["admitted_attempts"], 2);
+    assert_eq!(final_state.data["admitted_episodes"], 2);
+    assert_eq!(denied.unwrap_err().code, ErrorCode::BudgetExhausted);
+}
+
+struct UnmeasuredCancellationNative(episode_native::NativeOsRuntime);
+impl episode_runtime::EpisodeRuntime for UnmeasuredCancellationNative {
+    fn identity(&self) -> gateway::RuntimeIdentity {
+        episode_runtime::EpisodeRuntime::identity(&self.0)
+    }
+    fn capabilities(&self) -> gateway::CapabilityProfile {
+        episode_runtime::EpisodeRuntime::capabilities(&self.0)
+    }
+    fn closed_world_os(&self) -> Option<episode_runtime::ClosedWorldOs> {
+        episode_runtime::EpisodeRuntime::closed_world_os(&self.0)
+    }
+    fn start<'a>(
+        &'a mut self,
+        p: &'a episode_runtime::PreparedStart,
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = episode_runtime::EpisodeReply> + Send + 'a>,
+    > {
+        Box::pin(async move {
+            match episode_runtime::EpisodeRuntime::start(&mut self.0, p).await {
+                episode_runtime::EpisodeReply::ConfirmedMeasured(turn, _) => {
+                    episode_runtime::EpisodeReply::Confirmed(turn)
+                }
+                reply => reply,
+            }
+        })
+    }
+    fn observe<'a>(
+        &'a mut self,
+        p: &'a episode_runtime::PreparedStart,
+    ) -> std::pin::Pin<
+        Box<dyn std::future::Future<Output = episode_runtime::EpisodeObservation> + Send + 'a>,
+    > {
+        episode_runtime::EpisodeRuntime::observe(&mut self.0, p)
+    }
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "owned native runtime process; parent controls lifetime"]
+async fn owned_nested_cancel_worker() {
+    owned_nested_cancel_case().await;
+}
+#[test]
+fn public_cancel_stops_actual_nested_writers_and_never_refunds_unknown() {
+    use std::os::unix::process::CommandExt;
+    let output = std::process::Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "owned_nested_cancel_worker",
+            "--ignored",
+            "--nocapture",
+        ])
+        .env_clear()
+        .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TEAM_CONTROL_PLANE_TEST_DSN",
+            std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),
+        )
+        .env(
+            "TEMPORAL_FIXTURE_EVIDENCE",
+            std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap(),
+        )
+        .process_group(0)
+        .output()
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("nested-worker-stdout.log"), &output.stdout).unwrap();
+    std::fs::write(out.join("nested-worker-stderr.log"), &output.stderr).unwrap();
+    std::fs::write(
+        out.join("nested-worker-terminal.json"),
+        serde_json::to_vec(
+            &serde_json::json!({"waited":true,"terminal":output.status.to_string()}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    assert!(
+        output.status.success(),
+        "owned nested cancellation failed: {}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+}
+#[tokio::test]
+async fn task_free_lead_unknown_episode_cannot_authorize_new_physical_work() {
+    let f = Fixture::new().await;
+    let episode = f.lead_episode("unregistered-episode-effect").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-lead",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let root = f.root.join("unregistered-episode-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "unregistered-external-effect".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "actual-child-process".into(),
+        environment: "model-free".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            "assembled-lead",
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec!["/bin/true".into()],
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = UnregisteredEpisodeEffect(
+        gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
+        None,
+    );
+    let journal = gateway
+        .dispatch(&f.owner, operation, &mut runtime)
+        .await
+        .unwrap();
+    assert_eq!(journal.state, gateway::OperationState::Confirmed);
+    assert_eq!(journal.usage, episode_runtime::UsageObservation::Unknown);
+    assert_eq!(runtime.0.effect_count().unwrap(), 1);
+    assert!(runtime.1.as_mut().unwrap().try_wait().unwrap().is_none());
+    let native_pid = runtime.1.as_ref().unwrap().id();
+    assert!(
+        runtime.1.as_mut().unwrap().try_wait().unwrap().is_none(),
+        "independent native effect is actually live"
+    );
+    let launched = supervisor
+        .start("assembled-lead", execution.id, vec!["/bin/true".into()], 30)
+        .await;
+    if launched.is_ok() {
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(8);
+        while supervisor
+            .result(&f.owner, execution.id)
+            .await
+            .unwrap()
+            .is_none()
+        {
+            assert!(std::time::Instant::now() < deadline);
+            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+        }
+    }
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("ready-lead-own-unknown.json"),serde_json::to_vec(&serde_json::json!({"journal":journal,"launch":launched.as_ref().map_err(|e|&e.code),"workspace":supervisor.inspect(&f.owner,execution.id).await.unwrap(),"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap()).unwrap();
+    let mut child = runtime.1.take().unwrap();
+    child.kill().unwrap();
+    let terminal = child.wait().unwrap();
+    std::fs::write(
+        out.join("ready-lead-native-child-terminal.json"),
+        serde_json::to_vec(
+            &serde_json::json!({"pid":native_pid,"waited":true,"terminal":terminal.to_string()}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    drop(runtime);
+    f.finish().await;
+    assert_eq!(
+        launched.unwrap_err().code,
+        ErrorCode::DependencyUnmet,
+        "Ready own unknown operation without launch certificate cannot grant new physical work"
+    );
 }

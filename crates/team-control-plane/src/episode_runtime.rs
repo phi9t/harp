@@ -711,7 +711,15 @@ impl crate::temporal::OperationDriver for EpisodeOperationDriver {
                 .await
             {
                 Ok(operation) => operation,
-                Err(error) if error.code == ErrorCode::DependencyUnmet => {
+                Err(error)
+                    if matches!(
+                        error.code,
+                        ErrorCode::DependencyUnmet | ErrorCode::StaleGeneration
+                    ) =>
+                {
+                    // Execution revocation is separate from Workflow authority.
+                    // Re-reading authenticates the current scoped WorkflowRef;
+                    // superseded/closed/foreign references still fail here.
                     let current = self
                         .gateway
                         .journal(&self.service_bearer, workflow, episode)

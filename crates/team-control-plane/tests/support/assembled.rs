@@ -62,7 +62,18 @@ impl Fixture {
     pub async fn without_requirement() -> Self {
         Self::with_requirement(false).await
     }
+    pub async fn with_limits(capacity: i64, max_attempts: i64, max_episodes: i64) -> Self {
+        Self::with_policy_requirement(true, capacity, max_attempts, max_episodes).await
+    }
     async fn with_requirement(requirement: bool) -> Self {
+        Self::with_policy_requirement(requirement, 2, 8, 8).await
+    }
+    async fn with_policy_requirement(
+        requirement: bool,
+        capacity: i64,
+        max_attempts: i64,
+        max_episodes: i64,
+    ) -> Self {
         let base_dsn =
             std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").expect("real PostgreSQL required");
         let (admin, connection) = tokio_postgres::connect(&base_dsn, tokio_postgres::NoTls)
@@ -122,9 +133,9 @@ impl Fixture {
                         objective: "complete durable kernel proof".into(),
                         input: input.clone(),
                         policy: Policy {
-                            capacity: 2,
-                            max_attempts: 8,
-                            max_episodes: 8,
+                            capacity,
+                            max_attempts,
+                            max_episodes,
                             max_repairs: 3,
                             episode_deadline_seconds: 30,
                         },
@@ -268,6 +279,18 @@ impl Fixture {
             .await
             .unwrap();
         mailbox.execute("assembled-worker",mail(self.epoch,&format!("{key}-admit"),serde_json::json!({"kind":"admit_episode","mission":self.mission,"id":episode,"attempt":self.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+        episode
+    }
+    pub async fn lead_episode(&self, key: &str) -> Uuid {
+        let mailbox = mailbox::MailboxService::new(self.broker.clone());
+        let input = Uuid::new_v4();
+        let episode = Uuid::new_v4();
+        mailbox.execute("assembled-lead",mail(self.epoch,&format!("{key}-capture"),serde_json::json!({"kind":"capture_input","mission":self.mission,"id":input,"attempt":null,"purpose":"planning","limit":4}))).await.unwrap();
+        let packet = mailbox
+            .record("assembled-lead", mailbox::RecordKind::Input, input)
+            .await
+            .unwrap();
+        mailbox.execute("assembled-lead",mail(self.epoch,&format!("{key}-admit"),serde_json::json!({"kind":"admit_episode","mission":self.mission,"id":episode,"attempt":null,"purpose":"planning","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
         episode
     }
     pub async fn supervisor(&self) -> supervisor::Supervisor {
