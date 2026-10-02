@@ -2823,3 +2823,771 @@ async fn task_free_lead_unknown_episode_cannot_authorize_new_physical_work() {
         "Ready own unknown operation without launch certificate cannot grant new physical work"
     );
 }
+
+#[tokio::test]
+async fn review571_cancelled_unallocated_worker_continuation_releases_separate_capacity_once() {
+    review571_continuation_cancel(false, false).await;
+}
+#[tokio::test]
+async fn review571_old_public_yield_then_cancel_must_not_refund_twice() {
+    review571_continuation_cancel(true, false).await;
+}
+#[tokio::test]
+#[ignore = "requires exact pre-repair baseline server binary"]
+async fn review571_persisted_old_public_yield_claim_survives_repaired_cancel() {
+    review571_continuation_cancel(true, true).await;
+}
+struct Review571Server(std::process::Child);
+impl Drop for Review571Server {
+    fn drop(&mut self) {
+        let _ = self.0.kill();
+        let _ = self.0.wait();
+    }
+}
+async fn review571_continuation_cancel(prior_yield: bool, baseline_http: bool) {
+    let f = Fixture::with_limits(2, 2, 3).await;
+    temporal::Bridge::new(f.broker.clone())
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    let first = f.worker_episode("review571-first").await;
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    mailbox.execute("assembled-worker", mail(f.epoch, "review571-yield", serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"no execution allocated","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+    mailbox.execute("assembled-worker", mail(f.epoch, "review571-notice", serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"Resume approved work","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+    let continuation = f.worker_episode("review571-continuation").await;
+    if prior_yield {
+        let command = mail(
+            f.epoch,
+            "review571-continuation-yield",
+            serde_json::json!({"kind":"yield_episode","episode":continuation,"checkpoint":{"id":Uuid::new_v4(),"summary":"old public atomic unused refund","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}),
+        );
+        if baseline_http {
+            let binary =
+                std::env::var("REVIEW571_BASELINE_BINARY").expect("exact baseline binary required");
+            let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+            let address = listener.local_addr().unwrap();
+            drop(listener);
+            let server = Review571Server(
+                std::process::Command::new(&binary)
+                    .args(["serve", &address.to_string()])
+                    .env_clear()
+                    .env("PATH", "/usr/bin:/bin")
+                    .env("TEAM_CONTROL_PLANE_DSN", &f.dsn)
+                    .env("TEAM_CONTROL_PLANE_RECOVERY_EPOCH", f.epoch.to_string())
+                    .stdout(std::process::Stdio::null())
+                    .stderr(std::process::Stdio::null())
+                    .spawn()
+                    .unwrap(),
+            );
+            let client = reqwest::Client::new();
+            let mut ready = false;
+            for _ in 0..100 {
+                if client
+                    .get(format!("http://{address}/v1/kernel/status"))
+                    .bearer_auth(&f.owner)
+                    .send()
+                    .await
+                    .is_ok()
+                {
+                    ready = true;
+                    break;
+                }
+                tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+            }
+            assert!(ready, "baseline public server must become ready");
+            let response = client
+                .post(format!("http://{address}/v1/mailbox/commands"))
+                .bearer_auth("assembled-worker")
+                .json(&command)
+                .send()
+                .await
+                .unwrap();
+            let status = response.status();
+            let bytes = response.bytes().await.unwrap();
+            drop(server);
+            let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+            std::fs::write(out.join("old-binary-yield-response.json"), bytes).unwrap();
+            std::fs::write(
+                out.join("old-binary-sha256.txt"),
+                artifacts::sha256(&std::fs::read(binary).unwrap()),
+            )
+            .unwrap();
+            assert!(
+                status.is_success(),
+                "exact baseline public Yield must succeed"
+            );
+        } else {
+            mailbox.execute("assembled-worker", command).await.unwrap();
+        }
+    }
+    let prior_record = mailbox
+        .record(&f.owner, mailbox::RecordKind::Episode, continuation)
+        .await
+        .unwrap();
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "cancel unused continuation".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let done = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let again = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-reconcile-again",
+                done.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let record = mailbox
+        .record(&f.owner, mailbox::RecordKind::Episode, continuation)
+        .await
+        .unwrap();
+    let replacement = ready_capacity_task(&f, "review571-replacement").await;
+    let reused = assign_capacity_task(&f, replacement, "review571-reuse-released-capacity").await;
+    let third = ready_capacity_task(&f, "review571-budget-third").await;
+    let exhausted =
+        assign_capacity_task(&f, third, "review571-cumulative-budget-stays-charged").await;
+    let final_budget = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join(if baseline_http {"review571-persisted-old-yield.json"} else if prior_yield {"review571-old-yield.json"} else {"review571-unallocated-continuation.json"}),serde_json::to_vec(&serde_json::json!({"old_binary":baseline_http,"prior_episode":prior_record,"before":before,"after":after,"episode":record,"cancel":cancel,"first":done,"repeat":again,"replacement":reused.as_ref().map_err(|e|&e.code),"budget_exhausted":exhausted.as_ref().map_err(|e|&e.code),"final_budget":final_budget})).unwrap()).unwrap();
+    f.finish().await;
+    if baseline_http {
+        assert_eq!(
+            prior_record["owned_capacity"], true,
+            "baseline old Yield really leaves already refunded claim set"
+        );
+        assert_eq!(
+            record["owned_capacity"], false,
+            "repair clears prior refunded claim"
+        );
+    }
+    assert!(
+        reused.is_ok(),
+        "released episode capacity permits replacement admission"
+    );
+    assert_eq!(exhausted.unwrap_err().code, ErrorCode::BudgetExhausted);
+    assert_eq!(final_budget.data["admitted_attempts"], 2);
+    assert_eq!(final_budget.data["admitted_episodes"], 3);
+    assert_eq!(
+        after.data["used_capacity"], 0,
+        "cancelled unused continuation must release its separately admitted slot"
+    );
+    assert_eq!(
+        before.data["admitted_attempts"],
+        after.data["admitted_attempts"]
+    );
+    assert_eq!(
+        before.data["admitted_episodes"],
+        after.data["admitted_episodes"]
+    );
+}
+
+#[tokio::test]
+async fn review571_cancelled_unallocated_verifier_releases_capacity_once() {
+    review571_verifier_cancel(false).await;
+}
+#[tokio::test]
+async fn review571_uncertain_allocated_sibling_retains_capacity() {
+    review571_verifier_cancel(true).await;
+}
+async fn review571_verifier_cancel(uncertain_sibling: bool) {
+    let f = Fixture::new().await;
+    let pending = if uncertain_sibling {
+        let worker = f.worker_episode("review571-uncertain-worker").await;
+        let supervisor = f.supervisor().await;
+        let execution = supervisor
+            .create_episode(
+                "assembled-worker",
+                worker,
+                vec![],
+                supervisor::CreateFault::None,
+            )
+            .await
+            .unwrap();
+        supervisor
+            .start_with_fault(
+                "assembled-worker",
+                execution.id,
+                vec!["/bin/true".into()],
+                30,
+                supervisor::StartFault::BeforeMonitor,
+            )
+            .await
+            .unwrap();
+        Some((supervisor, execution))
+    } else {
+        None
+    };
+    let service = artifacts::ArtifactService::open(f.broker.clone(), &f.root.join("artifacts"))
+        .await
+        .unwrap();
+    let env = |key: &str, revision, command| artifacts::ArtifactEnvelope {
+        key: key.into(),
+        task: f.task,
+        expected_revision: revision,
+        generation: 1,
+        recovery_epoch: f.epoch,
+        command,
+    };
+    let configured = service
+        .execute(
+            &f.owner,
+            env(
+                "review571-configure",
+                3,
+                artifacts::ArtifactCommand::Configure {
+                    verifier: f.verifier,
+                    lead_acceptance: false,
+                    base: f.base.clone(),
+                    suite: artifacts::sha256(b"suite"),
+                    environment: artifacts::sha256(b"environment"),
+                    mandatory_commands: vec![vec!["/bin/true".into()]],
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+    let store = f.root.join("store");
+    std::fs::write(store.join("src/result"), b"immutable candidate").unwrap();
+    git(&store, &["add", "src/result"]);
+    git(
+        &store,
+        &[
+            "-c",
+            "user.name=Fixture",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "commit",
+            "-qm",
+            "candidate",
+        ],
+    );
+    let bundle = f.root.join("candidate.bundle");
+    git(
+        &store,
+        &["bundle", "create", bundle.to_str().unwrap(), "HEAD"],
+    );
+    let bytes = std::fs::read(bundle).unwrap();
+    let digest = artifacts::sha256(&bytes);
+    service
+        .publish_evidence("assembled-worker", f.task, &digest, &bytes)
+        .await
+        .unwrap();
+    let submitted = service
+        .execute(
+            "assembled-worker",
+            env(
+                "review571-submit",
+                configured.revision,
+                artifacts::ArtifactCommand::Submit {
+                    candidate: artifacts::Candidate {
+                        commit: git(&store, &["rev-parse", "HEAD"]),
+                        tree: git(&store, &["rev-parse", "HEAD^{tree}"]),
+                        base: f.base.clone(),
+                        spec_digest: f.spec.clone(),
+                        spec_revision: 2,
+                        generation: 1,
+                        artifact: digest,
+                        deliverables: vec!["src/result".into()],
+                        risks: vec![],
+                    },
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    let input = Uuid::new_v4();
+    let episode = Uuid::new_v4();
+    mailbox.execute("assembled-verifier",mail(f.epoch,"review571-verifier-input",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"verification","limit":4}))).await.unwrap();
+    let packet = mailbox
+        .record("assembled-verifier", mailbox::RecordKind::Input, input)
+        .await
+        .unwrap();
+    mailbox.execute("assembled-verifier",mail(f.epoch,"review571-verifier-admit",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-verifier-cancel",
+                submitted.revision,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "unused verifier".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let first = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-verifier-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let repeat = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-verifier-repeat",
+                first.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(
+        out.join(if uncertain_sibling {
+            "review571-uncertain-sibling.json"
+        } else {
+            "review571-unallocated-verifier.json"
+        }),
+        serde_json::to_vec(
+            &serde_json::json!({"before":before,"after":after,"first":first,"repeat":repeat}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let allocated = if let Some((supervisor, execution)) = pending {
+        Some(supervisor.inspect(&f.owner, execution.id).await.unwrap())
+    } else {
+        None
+    };
+    std::fs::write(
+        out.join(if uncertain_sibling {
+            "review571-uncertain-allocation.json"
+        } else {
+            "review571-no-allocation.json"
+        }),
+        serde_json::to_vec(&allocated).unwrap(),
+    )
+    .unwrap();
+    f.finish().await;
+    if uncertain_sibling {
+        assert_eq!(first.disposition, "quarantined");
+        assert_eq!(
+            after.data["used_capacity"], before.data["used_capacity"],
+            "uncertain allocated siblings cannot refund capacity"
+        );
+    } else {
+        assert_eq!(after.data["used_capacity"], 0);
+    }
+    assert_eq!(
+        before.data["admitted_attempts"],
+        after.data["admitted_attempts"]
+    );
+    assert_eq!(
+        before.data["admitted_episodes"],
+        after.data["admitted_episodes"]
+    );
+}
+
+struct Review571NativeCancel {
+    runtime: gateway_fault::FaultRuntime,
+    child: Option<std::process::Child>,
+    cancels: usize,
+}
+impl Drop for Review571NativeCancel {
+    fn drop(&mut self) {
+        if let Some(child) = self.child.as_mut() {
+            let _ = child.kill();
+            let _ = child.wait();
+        }
+    }
+}
+impl gateway::RuntimeAdapter for Review571NativeCancel {
+    fn identity(&self) -> gateway::RuntimeIdentity {
+        self.runtime.identity.clone()
+    }
+    fn inspect(&self) -> gateway::CapabilityProfile {
+        gateway::RuntimeAdapter::inspect(&self.runtime)
+    }
+    fn execute(&mut self, intent: &gateway::Intent, thread: Option<&str>) -> gateway::RuntimeReply {
+        match intent.kind {
+            gateway::OperationKind::Start => {
+                self.child = Some(
+                    std::process::Command::new("/bin/sleep")
+                        .arg("30")
+                        .stdout(std::process::Stdio::null())
+                        .spawn()
+                        .unwrap(),
+                );
+            }
+            gateway::OperationKind::Cancel => {
+                self.cancels += 1;
+                let child = self.child.as_mut().expect("Cancel targets bound workload");
+                child.kill().unwrap();
+                child.wait().unwrap();
+            }
+            _ => {}
+        }
+        gateway::RuntimeAdapter::execute(&mut self.runtime, intent, thread)
+    }
+    fn observe(&mut self, intent: &gateway::Intent, thread: Option<&str>) -> gateway::Observation {
+        gateway::RuntimeAdapter::observe(&mut self.runtime, intent, thread)
+    }
+}
+#[tokio::test]
+async fn review571_native_cancel_cleans_bound_work_after_work_revocation() {
+    for prepare_before in [true, false] {
+        let f = Fixture::new().await;
+        let root = f.root.join("review571-native");
+        std::fs::create_dir(&root).unwrap();
+        let identity = gateway::RuntimeIdentity {
+            runtime_kind: "review571-native-owned-os".into(),
+            runtime_version: "1".into(),
+            deployment: f.epoch.to_string(),
+            thread_store: root.to_str().unwrap().into(),
+            endpoint: "owned-process".into(),
+            environment: "fixture".into(),
+        };
+        let gateway = gateway::Gateway::new(f.broker.clone());
+        let binding = Uuid::new_v4();
+        gateway
+            .bind(&f.owner, binding, f.admission, &identity, None, 1)
+            .await
+            .unwrap();
+        let mut runtime = Review571NativeCancel {
+            runtime: gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
+            child: None,
+            cancels: 0,
+        };
+        let intent = |kind| gateway::Intent {
+            id: Uuid::new_v4(),
+            admission_id: f.admission,
+            binding_id: binding,
+            generation: 1,
+            kind,
+            arguments: serde_json::json!({"exact_binding":binding}),
+        };
+        for kind in [
+            gateway::OperationKind::Create,
+            gateway::OperationKind::Start,
+        ] {
+            let op = intent(kind);
+            gateway.prepare(&f.owner, op.clone()).await.unwrap();
+            gateway
+                .dispatch(&f.owner, op.id, &mut runtime)
+                .await
+                .unwrap();
+        }
+        let cleanup = intent(gateway::OperationKind::Cancel);
+        if prepare_before {
+            gateway.prepare(&f.owner, cleanup.clone()).await.unwrap();
+        }
+        let revoked = f
+            .broker
+            .execute(
+                &f.owner,
+                envelope(
+                    f.epoch,
+                    "review571-native-revoke",
+                    3,
+                    Command::CancelAttempt {
+                        task_id: f.task,
+                        attempt_id: f.attempt,
+                        reason: "stop bound workload".into(),
+                    },
+                ),
+            )
+            .await
+            .unwrap();
+        let mut controls = Vec::new();
+        for kind in [
+            gateway::OperationKind::Create,
+            gateway::OperationKind::Start,
+            gateway::OperationKind::Steer,
+        ] {
+            let denied = gateway
+                .prepare(&f.owner, intent(kind))
+                .await
+                .unwrap_err()
+                .code;
+            controls.push(serde_json::json!({"kind":kind,"denied":denied}));
+            assert_eq!(
+                denied,
+                ErrorCode::DependencyUnmet,
+                "revocation must still fence work operations"
+            );
+        }
+        for token in ["wrong-token", "assembled-verifier"] {
+            assert!(gateway.prepare(token, cleanup.clone()).await.is_err());
+        }
+        let mut stale = intent(gateway::OperationKind::Cancel);
+        stale.generation = 2;
+        assert!(gateway.prepare(&f.owner, stale).await.is_err());
+        let foreign_intent = intent(gateway::OperationKind::Cancel);
+        gateway
+            .prepare(&f.owner, foreign_intent.clone())
+            .await
+            .unwrap();
+        let foreign = gateway::Gateway::new(f.broker.clone());
+        assert_eq!(
+            foreign
+                .dispatch(&f.owner, foreign_intent.id, &mut runtime)
+                .await
+                .unwrap()
+                .state,
+            gateway::OperationState::Quarantined,
+            "foreign controller cannot dispatch exact cleanup"
+        );
+        let prepared = if prepare_before {
+            Ok(())
+        } else {
+            gateway.prepare(&f.owner, cleanup.clone()).await.map(|_| ())
+        };
+        let result = match prepared {
+            Ok(()) => gateway
+                .dispatch(&f.owner, cleanup.id, &mut runtime)
+                .await
+                .map(Some),
+            Err(error) => Err(error),
+        };
+        let replay = if result.is_ok() {
+            gateway
+                .dispatch(&f.owner, cleanup.id, &mut runtime)
+                .await
+                .map(Some)
+        } else {
+            Ok(None)
+        };
+        if result.is_ok() {
+            assert_eq!(
+                gateway
+                    .reconcile_usage(&f.owner, cleanup.id)
+                    .await
+                    .unwrap()
+                    .usage,
+                episode_runtime::UsageObservation::Unknown,
+                "Cancel acknowledgment cannot certify zero usage"
+            );
+        }
+        let invocations = runtime.runtime.invocation_count().unwrap();
+        let cancels = runtime.cancels;
+        let child_live = runtime
+            .child
+            .as_mut()
+            .unwrap()
+            .try_wait()
+            .unwrap()
+            .is_none();
+        let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+        std::fs::write(out.join(format!("review571-native-cancel-{prepare_before}.json")),serde_json::to_vec(&serde_json::json!({"controls":controls,"revoked":revoked,"result":result.as_ref().map_err(|e|&e.code),"replay":replay.as_ref().map_err(|e|&e.code),"invocations":invocations,"cancel_invocations":cancels,"child_live":child_live})).unwrap()).unwrap();
+        drop(runtime);
+        f.finish().await;
+        assert!(
+            result.is_ok(),
+            "authenticated exact Cancel must clean existing workload after revocation: {result:?}"
+        );
+        assert_eq!(cancels, 1);
+        assert!(!child_live);
+        assert_eq!(invocations, 3);
+    }
+}
+
+#[tokio::test]
+async fn review571_unresolved_yield_execution_requires_explicit_quarantine() {
+    review571_unresolved_yield(false).await;
+}
+#[tokio::test]
+async fn review571_imported_worker_unresolved_yield_requires_quarantine() {
+    review571_unresolved_yield(true).await;
+}
+async fn review571_unresolved_yield(imported: bool) {
+    let f = Fixture::new().await;
+    temporal::Bridge::new(f.broker.clone())
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    let first = f.worker_episode("review571-unresolved-first").await;
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    let episode = if imported {
+        first
+    } else {
+        mailbox.execute("assembled-worker",mail(f.epoch,"review571-unresolved-first-yield",serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"first unused episode","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+        mailbox.execute("assembled-worker",mail(f.epoch,"review571-unresolved-notice",serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"retain independently owned job handle","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+        f.worker_episode("review571-unresolved-continuation").await
+    };
+    let mut child = Review571Server(
+        std::process::Command::new("/bin/sleep")
+            .arg("30")
+            .spawn()
+            .unwrap(),
+    );
+    let process = child.0.id();
+    let handle = Uuid::new_v4();
+    mailbox.execute("assembled-worker",mail(f.epoch,"review571-unresolved-yield",serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"retain actual owned OS job, physical binding unresolved","artifacts":[]},"questions":[],"dependencies":[],"executions":[{"id":handle,"supervisor":format!("owned-os-process-{process}"),"attempt":f.attempt,"generation":1,"recovery_epoch":f.epoch,"provenance":"unresolved"}]}))).await.unwrap();
+    let episode_record = mailbox
+        .record(&f.owner, mailbox::RecordKind::Episode, episode)
+        .await
+        .unwrap();
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-unresolved-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "cleanup declared unresolved job".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let first = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-unresolved-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let repeat = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review571-unresolved-repeat",
+                first.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap();
+    let task = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Task(f.task))
+        .await
+        .unwrap();
+    let live = child.0.try_wait().unwrap().is_none();
+    child.0.kill().unwrap();
+    let terminal = child.0.wait().unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join(if imported {"review571-imported-unresolved-yield.json"}else{"review571-unresolved-yield.json"}),serde_json::to_vec(&serde_json::json!({"episode":episode_record,"imported":imported,"before":before,"after":after,"task":task,"first":first,"repeat":repeat,"owned_job":{"handle":handle,"process":process,"live_at_reconciliation":live,"cleanup_terminal":terminal.to_string()}})).unwrap()).unwrap();
+    f.finish().await;
+    assert!(
+        live,
+        "no stop observation exists for the declared actual job"
+    );
+    assert_eq!(
+        first.disposition, "quarantined",
+        "nonempty unresolved execution checkpoint must expose uncertainty"
+    );
+    assert_eq!(repeat.disposition, "quarantined");
+    assert_eq!(task.data["attempts"][0]["status"], "quarantined");
+    assert_eq!(after.data["used_capacity"], before.data["used_capacity"]);
+    assert_eq!(
+        after.data["admitted_attempts"],
+        before.data["admitted_attempts"]
+    );
+    assert_eq!(
+        after.data["admitted_episodes"],
+        before.data["admitted_episodes"]
+    );
+}

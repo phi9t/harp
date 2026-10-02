@@ -392,7 +392,9 @@ impl Gateway {
         let attempt = self
             .authorize(&tx, bearer, intent.admission_id, intent.generation, true)
             .await?;
-        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        if intent.kind != OperationKind::Cancel {
+            crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        }
         if let Some(row) = tx
             .query_opt(
                 "SELECT digest FROM gateway_operations WHERE id=$1",
@@ -526,7 +528,9 @@ impl Gateway {
             tx.commit().await?;
             return Ok(op);
         }
-        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        if op.intent.kind != OperationKind::Cancel {
+            crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        }
         if matches!(
             op.intent.kind,
             OperationKind::Create | OperationKind::Start | OperationKind::Steer

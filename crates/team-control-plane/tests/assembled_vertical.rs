@@ -2242,8 +2242,16 @@ async fn genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch
     assembled_engineering_fixture(EngineeringScenario::AcceptedTerminal).await;
 }
 
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review571_completed_verifier_provenance_survives_producer_expiry() {
+    assembled_engineering_fixture(EngineeringScenario::ExpiredProducerBeforeAccept).await;
+    assembled_engineering_fixture(EngineeringScenario::ExpiredProducerAcceptReplay).await;
+}
+
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum EngineeringScenario {
+    ExpiredProducerBeforeAccept,
+    ExpiredProducerAcceptReplay,
     Complete,
     CancelMeasuredCandidate,
     AcceptedTerminal,
@@ -3747,6 +3755,90 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     )
     .await
     .unwrap();
+    if matches!(
+        scenario,
+        EngineeringScenario::ExpiredProducerBeforeAccept
+            | EngineeringScenario::ExpiredProducerAcceptReplay
+    ) {
+        let command = artifact_command(
+            "review571-owner-accept",
+            verified.revision,
+            artifacts::ArtifactCommand::Accept {
+                candidate_id: verified.candidate_id.clone().unwrap(),
+                report_id: verified.report_id.clone().unwrap(),
+            },
+        );
+        let before = if scenario == EngineeringScenario::ExpiredProducerAcceptReplay {
+            Some(
+                artifact_fixture_call(
+                    artifacts.clone(),
+                    f.owner.clone(),
+                    command.clone(),
+                    artifacts::ReferenceFault::None,
+                )
+                .await
+                .unwrap(),
+            )
+        } else {
+            None
+        };
+        let live_producer = artifacts
+            .snapshot("assembled-verifier", f.task)
+            .await
+            .unwrap();
+        let expired=db.execute("UPDATE credentials SET expires_at=clock_timestamp()-interval '1 second' WHERE id=(SELECT credential_id FROM episode_executions WHERE execution_id=$1)", &[&verifier_execution.id]).await.unwrap();
+        assert_eq!(
+            expired, 1,
+            "expire only the exact completed producing execution credential"
+        );
+        let accepted = artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.clone(),
+            command.clone(),
+            artifacts::ReferenceFault::None,
+        )
+        .await;
+        let replay = artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.clone(),
+            command.clone(),
+            artifacts::ReferenceFault::None,
+        )
+        .await;
+        let expired_caller = artifacts.snapshot("assembled-verifier", f.task).await;
+        let out = evidence_directory(if before.is_some() {
+            "review571-expired-producer-replay"
+        } else {
+            "review571-expired-producer-accept"
+        });
+        retain_bytes(&out.join("accept-expiry.json"),&serde_json::to_vec(&serde_json::json!({"live_producer":live_producer,"before":before,"accepted":accepted.as_ref().map_err(|e|&e.code),"replay":replay.as_ref().map_err(|e|&e.code),"expired_caller":expired_caller.as_ref().map_err(|e|&e.code),"trusted_result":trusted_result})).unwrap());
+        child.kill();
+        for id in [
+            execution.id,
+            continuation_execution.id,
+            verifier_execution.id,
+        ] {
+            if supervisor.inspect(&f.owner, id).await.unwrap().state
+                == supervisor::ExecutionState::Stopped
+            {
+                supervisor.release(&f.owner, id).await.unwrap();
+            }
+        }
+        std::sync::Arc::try_unwrap(f)
+            .unwrap_or_else(|_| panic!("expiry task retained fixture"))
+            .finish()
+            .await;
+        assert!(
+            accepted.is_ok(),
+            "live Owner must accept retained completed evidence after producer expiry: {accepted:?}"
+        );
+        assert_eq!(
+            serde_json::to_value(accepted.unwrap()).unwrap(),
+            serde_json::to_value(replay.unwrap()).unwrap()
+        );
+        assert_eq!(expired_caller.unwrap_err().code, ErrorCode::Unauthorized);
+        return;
+    }
     if scenario == EngineeringScenario::CancelMeasuredCandidate {
         let fenced_steer = Uuid::new_v4();
         gateway.prepare(&f.owner, Intent {

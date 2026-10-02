@@ -1111,6 +1111,11 @@ impl MailboxService {
                     .get::<_, bool>(0)
             {
                 tx.execute("UPDATE missions SET used_capacity=used_capacity-1,revision=revision+1 WHERE id=$1",&[&mission]).await?;
+                tx.execute(
+                    "UPDATE mailbox_episodes SET owned_capacity=false WHERE id=$1",
+                    &[&episode],
+                )
+                .await?;
             }
             wake(tx, &workflow).await?;
             let result = Receipt {

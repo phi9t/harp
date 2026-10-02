@@ -2179,7 +2179,11 @@ pub(crate) async fn reconcile_attempt_cancel(
     // not establish that correspondence or permit borrowing its Stop proof.
     let unbound_native:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations o WHERE o.attempt_id=$1 AND o.kind='start' AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id WHERE w.id::text=o.request->'arguments'->>'execution' AND (w.attempt_id=o.attempt_id OR x.attempt_id=o.attempt_id) AND EXISTS(SELECT 1 FROM kernel_gateway_usage_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='legacy_native_usage_observed' AND e.evidence->'intent'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'usage'=o.usage AND e.evidence->'usage'->>'kind'='measured_zero')))", &[&attempt]).await?.get(0);
     let unbound_episode: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id JOIN supervised_workspaces w ON w.id=x.execution_id WHERE x.attempt_id=$1 AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM episode_runtime_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='registered_native_execution_bound' AND e.evidence->'request'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'init_process'=w.init_process AND e.evidence->'turn'->>'thread'=o.thread_id AND e.evidence->'turn'->>'turn'=o.turn_id AND e.evidence->'turn'->>'effect'=o.effect_id))", &[&attempt]).await?.get(0);
-    let disposition = if uncertain || unbound_native || unbound_episode {
+    // An unallocated Yield may retain unresolved external execution references.
+    // Only an exact empty checkpoint proves a prior refund; conflicting or
+    // malformed checkpoint evidence must expose uncertainty as well as hold it.
+    let uncertain_checkpoint: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes e JOIN mailbox_checkpoints c ON c.episode_id=e.id WHERE e.attempt_id=$1 AND e.start_operation IS NULL AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND (c.principal_id<>e.principal_id OR c.executions<>'[]'::jsonb))", &[&attempt]).await?.get(0);
+    let disposition = if uncertain || unbound_native || unbound_episode || uncertain_checkpoint {
         "quarantined"
     } else if stopped {
         "cancelled"
@@ -2193,6 +2197,15 @@ pub(crate) async fn reconcile_attempt_cancel(
     .await?;
     if disposition == "cancelled" {
         tx.execute("UPDATE mailbox_episodes SET state='cancelled' WHERE attempt_id=$1 AND state='cancellation_requested'", &[&attempt]).await?;
+    }
+    if disposition == "cancelled" {
+        // Old public Yield atomically refunded unused capacity but left its claim
+        // set. The immutable exact-principal checkpoint proves that refund; a
+        // cancelled state alone cannot distinguish it from an outstanding claim.
+        tx.execute("UPDATE mailbox_episodes e SET owned_capacity=false WHERE e.attempt_id=$1 AND e.owned_capacity AND e.start_operation IS NULL AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND EXISTS(SELECT 1 FROM mailbox_checkpoints c WHERE c.episode_id=e.id AND c.principal_id=e.principal_id AND c.executions='[]'::jsonb) AND NOT EXISTS(SELECT 1 FROM mailbox_checkpoints c WHERE c.episode_id=e.id AND (c.principal_id<>e.principal_id OR c.executions<>'[]'::jsonb))", &[&attempt]).await?;
+        // Refund only unallocated claims with no conflicting checkpoint or start.
+        // Allocated siblings retain their separate execution release contract.
+        tx.execute("WITH released AS (UPDATE mailbox_episodes e SET owned_capacity=false WHERE e.attempt_id=$1 AND e.owned_capacity AND e.state='cancelled' AND e.start_operation IS NULL AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND NOT EXISTS(SELECT 1 FROM mailbox_checkpoints c WHERE c.episode_id=e.id) RETURNING mission_id) UPDATE missions m SET used_capacity=m.used_capacity-r.n FROM (SELECT mission_id,count(*) AS n FROM released GROUP BY mission_id) r WHERE m.id=r.mission_id", &[&attempt]).await?;
     }
     if disposition == "cancelled" {
         // No allocation means there is no execution handle to release. Establish
