@@ -402,12 +402,12 @@ async fn public_migration_installs_transactional_workflow_registry() {
         f.owner.clone(),
         Box::new(runtime),
     );
-    let observed = driver.drive(&next, admission).await.unwrap();
+    let observed = driver.drive(&next, admission.into()).await.unwrap();
     assert_eq!(
         observed.journals[0],
         (intent.id, OperationState::OutcomeUnknown)
     );
-    let again = driver.drive(&next, admission).await.unwrap();
+    let again = driver.drive(&next, admission.into()).await.unwrap();
     assert_eq!(again.journals[0], observed.journals[0]);
     let invocations = std::fs::read_dir(&directory)
         .unwrap()
@@ -510,7 +510,11 @@ async fn public_migration_installs_transactional_workflow_registry() {
     );
     f.bridge.close(&f.owner, &next).await.unwrap();
     assert_eq!(
-        driver.drive(&next, admission).await.unwrap_err().code,
+        driver
+            .drive(&next, admission.into())
+            .await
+            .unwrap_err()
+            .code,
         ErrorCode::StaleGeneration,
         "terminal driver cannot execute prepared operations"
     );
@@ -758,7 +762,8 @@ async fn queued_old_generation_driver_cannot_dispatch_after_close_and_replacemen
     ));
     let childdriver = driver.clone();
     let reference = r.clone();
-    let pending = tokio::spawn(async move { childdriver.drive(&reference, admission).await });
+    let pending =
+        tokio::spawn(async move { childdriver.drive(&reference, admission.into()).await });
     for _ in 0..100 {
         if driver.queued() == 1 {
             break;

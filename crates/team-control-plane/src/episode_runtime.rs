@@ -288,7 +288,7 @@ impl EpisodeGateway {
         service_bearer: &str,
         workflow: &crate::temporal::WorkflowRef,
         episode: Uuid,
-    ) -> Result<Option<Uuid>> {
+    ) -> Result<Option<EpisodeOperation>> {
         let mut c = storage::client(&self.broker.dsn).await?;
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
@@ -296,15 +296,32 @@ impl EpisodeGateway {
         storage::active(&tx, self.broker.epoch).await?;
         let service = auth::authenticate(&tx, service_bearer, self.broker.epoch).await?;
         service.owner()?;
+        crate::temporal::workflow_dispatch_guard(&tx, self.broker.epoch, workflow).await?;
+        match workflow.kind {
+            crate::temporal::AggregateKind::Mission => {
+                service.scope(workflow.aggregate_id, None)?
+            }
+            crate::temporal::AggregateKind::Task => {
+                let mission: Uuid = tx
+                    .query_one(
+                        "SELECT mission_id FROM tasks WHERE id=$1",
+                        &[&workflow.aggregate_id],
+                    )
+                    .await?
+                    .get(0);
+                service.scope(mission, Some(workflow.aggregate_id))?;
+            }
+        }
+
         let Some(row)=tx.query_opt("SELECT o.id,x.mission_id,x.task_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE o.episode_id=$1", &[&episode]).await? else {tx.commit().await?;return Ok(None);};
         let mission: Uuid = row.get(1);
         let task: Option<Uuid> = row.get(2);
         service.scope(mission, task)?;
         crate::temporal::episode_dispatch_guard(&tx, self.broker.epoch, workflow, mission, task)
             .await?;
-        let id = row.get(0);
+        let operation = load(&tx, row.get(0)).await?;
         tx.commit().await?;
-        Ok(Some(id))
+        Ok(Some(operation))
     }
     /// Immutable current packet and physical binding are committed before any RPC.
     pub async fn prepare(&self, bearer: &str, request: StartRequest) -> Result<EpisodeOperation> {
@@ -568,6 +585,8 @@ impl EpisodeGateway {
                     .all(|s| !s.is_empty() && s.len() <= 1024) =>
             {
                 if confirm_native(&tx, prepared, store, &turn, self.broker.epoch).await? {
+                    record_effect_binding(&tx, prepared, &turn, self.controller, self.broker.epoch)
+                        .await?;
                     record_usage(&tx, prepared, &usage, self.broker.epoch).await?;
                     (
                         "confirmed",
@@ -646,7 +665,7 @@ impl crate::temporal::OperationDriver for EpisodeOperationDriver {
     fn drive<'a>(
         &'a self,
         workflow: &'a crate::temporal::WorkflowRef,
-        wait: Uuid,
+        wait: crate::temporal::WaitRef,
     ) -> std::pin::Pin<
         Box<
             dyn std::future::Future<Output = Result<crate::temporal::OperationProgress>>
@@ -655,33 +674,63 @@ impl crate::temporal::OperationDriver for EpisodeOperationDriver {
         >,
     > {
         Box::pin(async move {
+            let Some(episode) = wait.episode_id() else {
+                return if let Some(fallback) = &self.fallback {
+                    fallback.drive(workflow, wait).await
+                } else {
+                    Ok(crate::temporal::OperationProgress {
+                        admission_id: wait.admission_id(),
+                        episode_id: None,
+                        journals: vec![],
+                        limitation: Some("legacy_operation_driver_unconfigured".into()),
+                    })
+                };
+            };
             let mut runtime = self.runtime.lock().await;
-            if let Some(id) = self
+            let Some(journal) = self
                 .gateway
-                .journal(&self.service_bearer, workflow, wait)
+                .journal(&self.service_bearer, workflow, episode)
                 .await?
-            {
-                let operation = self
-                    .gateway
-                    .dispatch_guarded(&self.service_bearer, id, runtime.as_mut(), Some(workflow))
-                    .await?;
-                Ok(crate::temporal::OperationProgress {
+            else {
+                return Ok(crate::temporal::OperationProgress {
                     admission_id: None,
-                    episode_id: Some(wait),
-                    journals: vec![(id, operation.state)],
-                    limitation: None,
-                })
-            } else if let Some(fallback) = &self.fallback {
-                drop(runtime);
-                fallback.drive(workflow, wait).await
-            } else {
-                Ok(crate::temporal::OperationProgress {
-                    admission_id: Some(wait),
-                    episode_id: None,
+                    episode_id: Some(episode),
                     journals: vec![],
-                    limitation: Some("legacy_operation_driver_unconfigured".into()),
-                })
-            }
+                    limitation: Some("episode_journal_missing".into()),
+                });
+            };
+            let mut limitation = None;
+            let operation = match self
+                .gateway
+                .dispatch_guarded(
+                    &self.service_bearer,
+                    journal.id,
+                    runtime.as_mut(),
+                    Some(workflow),
+                )
+                .await
+            {
+                Ok(operation) => operation,
+                Err(error) if error.code == ErrorCode::DependencyUnmet => {
+                    let current = self
+                        .gateway
+                        .journal(&self.service_bearer, workflow, episode)
+                        .await?
+                        .ok_or_else(|| err(ErrorCode::NotFound))?;
+                    if current.state != OperationState::Prepared {
+                        return Err(error);
+                    }
+                    limitation = Some("episode_dispatch_fenced".into());
+                    current
+                }
+                Err(error) => return Err(error),
+            };
+            Ok(crate::temporal::OperationProgress {
+                admission_id: None,
+                episode_id: Some(episode),
+                journals: vec![(operation.id, operation.state)],
+                limitation,
+            })
         })
     }
 }
@@ -699,6 +748,76 @@ async fn load(tx: &tokio_postgres::Transaction<'_>, id: Uuid) -> Result<EpisodeO
         usage: serde_json::from_value(row.get(7))
             .map_err(|_| err(ErrorCode::IncompatibleSchema))?,
     })
+}
+
+/// Effect correspondence is independent of usage certainty. A generic reply
+/// cannot borrow a workspace Stop; only registered pinned native evidence can.
+pub(crate) async fn record_effect_binding(
+    tx: &tokio_postgres::Transaction<'_>,
+    prepared: &PreparedStart,
+    turn: &NativeTurn,
+    controller: Uuid,
+    epoch: Uuid,
+) -> Result<()> {
+    use std::os::unix::fs::MetadataExt;
+    if !tx
+        .query_one(
+            "SELECT EXISTS(SELECT 1 FROM kernel_transports WHERE controller=$1)",
+            &[&controller],
+        )
+        .await?
+        .get::<_, bool>(0)
+    {
+        return Ok(());
+    }
+    let transport = crate::model_free_runtime::transport(tx, controller).await?;
+    if transport.epoch != epoch || transport.identity != prepared.start.runtime {
+        return Ok(());
+    }
+    let directory = crate::model_free_runtime::open_directory(&transport.native_root)?;
+    let metadata = directory
+        .metadata()
+        .map_err(|_| err(ErrorCode::DependencyUnmet))?;
+    if metadata.dev() != transport.native_directory.device
+        || metadata.ino() != transport.native_directory.inode
+        || metadata.uid() != transport.native_directory.owner
+    {
+        return Ok(());
+    }
+    let observed = match crate::model_free_runtime::observe_directory(
+        &directory,
+        &transport.identity,
+        prepared,
+    ) {
+        EpisodeObservation::Effect(native) | EpisodeObservation::EffectMeasured(native, _) => {
+            native
+        }
+        EpisodeObservation::Inconclusive(_) => return Ok(()),
+    };
+    if observed.thread != turn.thread
+        || observed.turn != turn.turn
+        || observed.effect != turn.effect
+    {
+        return Ok(());
+    }
+    let row = tx
+        .query_one(
+            "SELECT init_process,manifest FROM supervised_workspaces WHERE id=$1",
+            &[&prepared.start.execution],
+        )
+        .await?;
+    let init: Option<serde_json::Value> = row.get(0);
+    let manifest: crate::supervisor::WorkspaceManifest =
+        serde_json::from_value(row.get(1)).map_err(|_| err(ErrorCode::IncompatibleSchema))?;
+    if init.is_none()
+        || manifest.episode != Some(prepared.start.episode)
+        || manifest.recovery_epoch != epoch
+        || manifest.path.parent() != Some(transport.workspace_root.as_path())
+    {
+        return Ok(());
+    }
+    tx.execute("INSERT INTO episode_runtime_evidence(id,operation_id,evidence) VALUES($1,$2,$3)", &[&Uuid::new_v4(),&prepared.start.id,&serde_json::json!({"kind":"registered_native_execution_bound","request":prepared,"controller":controller,"recovery_epoch":epoch,"turn":turn,"init_process":init})]).await?;
+    Ok(())
 }
 
 pub(crate) async fn record_usage(

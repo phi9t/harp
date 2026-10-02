@@ -2095,11 +2095,13 @@ async fn repeated_failed_report_hash_requires_each_exact_charged_verification_cy
         .await
         .unwrap();
     assert_eq!(status["missions"][0]["consumed_repairs"], 3);
-    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
-    std::fs::write(
-        evidence.join("identical-report-cycles.json"),
-        serde_json::to_vec(&serde_json::json!({"report_id":report_id,"status":status})).unwrap(),
-    )
-    .unwrap();
+    if let Ok(evidence) = std::env::var("TEMPORAL_FIXTURE_EVIDENCE") {
+        std::fs::write(
+            std::path::Path::new(&evidence).join("identical-report-cycles.json"),
+            serde_json::to_vec(&serde_json::json!({"report_id":report_id,"status":status}))
+                .unwrap(),
+        )
+        .unwrap();
+    }
     std::fs::remove_dir_all(root).unwrap();
 }

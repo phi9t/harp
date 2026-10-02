@@ -39,6 +39,45 @@ impl AggregateKind {
         }
     }
 }
+/// Historical v1 raw waits are admission-only and retain their original JSON
+/// shape on replay. V2 references carry an explicit protocol discriminator.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(untagged)]
+pub enum WaitRef {
+    LegacyAdmission(Uuid),
+    V2(TypedWait),
+}
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "protocol", content = "id", rename_all = "snake_case")]
+pub enum TypedWait {
+    Admission(Uuid),
+    Episode(Uuid),
+}
+impl WaitRef {
+    pub fn admission(id: Uuid) -> Self {
+        Self::V2(TypedWait::Admission(id))
+    }
+    pub fn episode(id: Uuid) -> Self {
+        Self::V2(TypedWait::Episode(id))
+    }
+    pub fn admission_id(self) -> Option<Uuid> {
+        match self {
+            Self::LegacyAdmission(id) | Self::V2(TypedWait::Admission(id)) => Some(id),
+            _ => None,
+        }
+    }
+    pub fn episode_id(self) -> Option<Uuid> {
+        match self {
+            Self::V2(TypedWait::Episode(id)) => Some(id),
+            _ => None,
+        }
+    }
+}
+impl From<Uuid> for WaitRef {
+    fn from(id: Uuid) -> Self {
+        Self::LegacyAdmission(id)
+    }
+}
 /// Workflow generation differs from an attempt generation. No bearer is serialized.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct WorkflowRef {
@@ -52,7 +91,7 @@ pub struct WorkflowRef {
 pub struct WorkflowInput {
     pub reference: WorkflowRef,
     pub cursor: i64,
-    pub waits: Vec<Uuid>,
+    pub waits: Vec<WaitRef>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -77,7 +116,7 @@ pub struct Progress {
     pub cursor: i64,
     pub closed: bool,
     pub canonical_revision: i64,
-    pub waits: Vec<Uuid>,
+    pub waits: Vec<WaitRef>,
     pub operations: Vec<OperationProgress>,
     #[serde(default)]
     pub mailbox_attention: Vec<crate::mailbox::WaitAttention>,
@@ -404,7 +443,7 @@ impl Bridge {
                 .await?
                 .get(0),
         };
-        let mut waits:Vec<Uuid>=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|v.get(0)).collect()};
+        let mut waits:Vec<WaitRef>=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|WaitRef::admission(v.get(0))).collect()};
         crate::kernel::schema(&tx).await?;
         // A canonical Mission owns planning; a genuine Task owns its Worker and
         // Verifier episodes. Unknown journals stay observable, never fresh RPC candidates.
@@ -412,7 +451,7 @@ impl Bridge {
             AggregateKind::Mission=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.mission_id=$1 AND x.task_id IS NULL ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
             AggregateKind::Task=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.task_id=$1 ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
         };
-        waits.extend(episodes.into_iter().map(|row| row.get::<_, Uuid>(0)));
+        waits.extend(episodes.into_iter().map(|row| WaitRef::episode(row.get(0))));
         let p = Progress {
             cursor: row.get(0),
             closed: row.get(1),
@@ -622,8 +661,8 @@ mod workflows {
                 }
                 let observed = if progress.closed {
                     OperationProgress {
-                        admission_id: Some(*admission),
-                        episode_id: None,
+                        admission_id: admission.admission_id(),
+                        episode_id: admission.episode_id(),
                         journals: Vec::new(),
                         limitation: Some("workflow_closed".into()),
                     }
@@ -634,8 +673,8 @@ mod workflows {
                             .await
                             .map_err(activity_error)?,
                         None => OperationProgress {
-                            admission_id: Some(*admission),
-                            episode_id: None,
+                            admission_id: admission.admission_id(),
+                            episode_id: admission.episode_id(),
                             journals: Vec::new(),
                             limitation: Some("operation_driver_unconfigured".into()),
                         },
@@ -810,7 +849,7 @@ pub trait OperationDriver: Send + Sync {
     fn drive<'a>(
         &'a self,
         reference: &'a WorkflowRef,
-        admission_id: Uuid,
+        admission_id: WaitRef,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<OperationProgress>> + Send + 'a>>;
 }
 impl Bridge {
@@ -914,10 +953,13 @@ impl OperationDriver for GatewayOperationDriver {
     fn drive<'a>(
         &'a self,
         r: &'a WorkflowRef,
-        admission: Uuid,
+        wait: WaitRef,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<OperationProgress>> + Send + 'a>>
     {
         Box::pin(async move {
+            let admission = wait
+                .admission_id()
+                .ok_or_else(|| err(ErrorCode::InvalidArgument))?;
             let mut runtime = {
                 self.queued
                     .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
@@ -1002,7 +1044,11 @@ pub(crate) async fn episode_dispatch_guard(
     }
     Ok(())
 }
-async fn workflow_dispatch_guard(tx: &Transaction<'_>, epoch: Uuid, r: &WorkflowRef) -> Result<()> {
+pub(crate) async fn workflow_dispatch_guard(
+    tx: &Transaction<'_>,
+    epoch: Uuid,
+    r: &WorkflowRef,
+) -> Result<()> {
     storage::active(tx, epoch).await?;
     if r.recovery_epoch != epoch
         || r.workflow_id != workflow_id(&r.kind, r.aggregate_id, r.generation, epoch)
@@ -1138,5 +1184,39 @@ impl Bridge {
             incarnation,
             lifecycle,
         })
+    }
+}
+
+#[cfg(test)]
+mod wait_wire_tests {
+    use super::*;
+    #[test]
+    fn v1_admission_wait_roundtrips_without_changing_wire_shape() {
+        let id = Uuid::new_v4();
+        let bytes = serde_json::to_vec(&vec![id]).unwrap();
+        let waits: Vec<WaitRef> = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(waits[0].admission_id(), Some(id));
+        assert_eq!(waits[0].episode_id(), None);
+        assert_eq!(serde_json::to_vec(&waits).unwrap(), bytes);
+    }
+    #[test]
+    fn typed_same_uuid_preserves_both_protocols_through_rollover_payload() {
+        let id = Uuid::new_v4();
+        let input = WorkflowInput {
+            reference: WorkflowRef {
+                kind: AggregateKind::Task,
+                aggregate_id: Uuid::new_v4(),
+                generation: 1,
+                recovery_epoch: Uuid::new_v4(),
+                workflow_id: "wire-control".into(),
+            },
+            cursor: 7,
+            waits: vec![WaitRef::admission(id), WaitRef::episode(id)],
+        };
+        let bytes = serde_json::to_vec(&input).unwrap();
+        let restored: WorkflowInput = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(restored, input);
+        assert_ne!(restored.waits[0], restored.waits[1]);
+        assert_eq!(serde_json::to_vec(&restored).unwrap(), bytes);
     }
 }

@@ -834,7 +834,8 @@ async fn delivery_case(scenario: &'static str) {
         ));
         let queued_driver = driver.clone();
         let reference = _workflow.clone();
-        let pending = tokio::spawn(async move { queued_driver.drive(&reference, admission).await });
+        let pending =
+            tokio::spawn(async move { queued_driver.drive(&reference, admission.into()).await });
         let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
         while driver.queued() != 1 {
             assert!(std::time::Instant::now() < deadline);

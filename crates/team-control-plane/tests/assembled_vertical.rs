@@ -362,7 +362,9 @@ async fn canonical_mission_progress_drives_planning_episode_journals() {
         .unwrap();
     f.finish().await;
     assert!(
-        progress.waits.contains(&episode),
+        progress
+            .waits
+            .contains(&temporal::WaitRef::episode(episode)),
         "canonical Mission workflow must expose its real planning episode journal to registered OperationDriver"
     );
 }
@@ -2155,7 +2157,11 @@ async fn assembled_sdk_worker() {
     let driver = std::sync::Arc::new(episode_runtime::EpisodeOperationDriver::new(
         episode_gateway,
         bearer.clone(),
-        Box::new(native),
+        if std::env::var("ASSEMBLED_DROP_USAGE").ok().as_deref() == Some("1") {
+            Box::new(UnmeasuredNativeReply { native })
+        } else {
+            Box::new(native)
+        },
         Some(fallback),
     ));
     let activities =
@@ -6740,4 +6746,390 @@ async fn fresh_same_candidate_verifier(context: FreshVerifierContext) -> artifac
         supervisor.release("assembled-verifier",execution.id).await.unwrap();
         verified
     }).await.expect("fresh independent same-candidate Verifier phase failed")
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel() {
+    use base64::Engine;
+    use temporalio_client::{
+        Client, ClientOptions, Connection, WorkflowExecutionInfo, WorkflowFetchHistoryOptions,
+        envconfig::LoadClientConfigProfileOptions,
+    };
+    let f = Fixture::new().await;
+    let out = evidence_directory("sdk-paused-collision");
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    let input = Uuid::new_v4();
+    let episode = f.admission;
+    mailbox.execute("assembled-worker",mail(f.epoch,"sdk-collision-capture",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"implementation","limit":4}))).await.unwrap();
+    let packet = mailbox
+        .record("assembled-worker", mailbox::RecordKind::Input, input)
+        .await
+        .unwrap();
+    mailbox.execute("assembled-worker",mail(f.epoch,"sdk-collision-admit",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let legacy_root = f.root.join("sdk-collision-legacy");
+    let native_root = f.root.join("sdk-collision-episode");
+    std::fs::create_dir(&legacy_root).unwrap();
+    std::fs::create_dir(&native_root).unwrap();
+    let identity = RuntimeIdentity {
+        runtime_kind: "kernel16-owned-os".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: legacy_root.to_str().unwrap().into(),
+        endpoint: "owned-local-subprocess".into(),
+        environment: "bwrap-private-git".into(),
+    };
+    let mut episode_identity = identity.clone();
+    episode_identity.runtime_kind = "kernel16-inprocess-native".into();
+    episode_identity.thread_store = native_root.to_str().unwrap().into();
+    let episode_gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let episode_operation = Uuid::new_v4();
+    episode_gateway
+        .prepare(
+            "assembled-worker",
+            episode_runtime::StartRequest {
+                id: episode_operation,
+                episode,
+                execution: execution.id,
+                runtime: episode_identity.clone(),
+                argv: vec![
+                    "/bin/sh".into(),
+                    "-c".into(),
+                    "printf actual-resumed > src/live; while :; do sleep 0.02; done".into(),
+                ],
+            },
+        )
+        .await
+        .unwrap();
+    let binding = Uuid::new_v4();
+    let legacy_operation = Uuid::new_v4();
+    let create = Intent {
+        id: legacy_operation,
+        admission_id: f.admission,
+        binding_id: binding,
+        generation: 1,
+        kind: OperationKind::Create,
+        arguments: serde_json::json!({}),
+    };
+    let bridge = Bridge::new(f.broker.clone());
+    let reference = bridge
+        .register(&f.owner, AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    kernel::Kernel::new(f.broker.clone())
+        .pause(
+            &f.owner,
+            f.mission,
+            "sdk-collision-pause",
+            0,
+            true,
+            "observe durable paused Prepared progress",
+        )
+        .await
+        .unwrap();
+    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
+        .await
+        .unwrap();
+    tokio::spawn(async move { connection.await.unwrap() });
+    let principal: Uuid = db
+        .query_one(
+            "SELECT principal_id FROM credentials WHERE token_hash=$1",
+            &[&token_hash(&f.owner)],
+        )
+        .await
+        .unwrap()
+        .get(0);
+    let queue = format!("sdk-collision-{}", f.epoch);
+    let log = std::fs::File::create(f.root.join("sdk-collision.log")).unwrap();
+    let process = Process::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "assembled_sdk_worker",
+            "--ignored",
+            "--nocapture",
+        ])
+        .env_clear()
+        .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TEMPORAL_ADDRESS",
+            std::env::var("TEMPORAL_ADDRESS").unwrap(),
+        )
+        .env("ASSEMBLED_DSN", &f.dsn)
+        .env("ASSEMBLED_EPOCH", f.epoch.to_string())
+        .env("ASSEMBLED_BEARER", &f.owner)
+        .env("ASSEMBLED_PRINCIPAL", principal.to_string())
+        .env("ASSEMBLED_QUEUE", &queue)
+        .env("ASSEMBLED_RUNTIME_ROOT", &legacy_root)
+        .env(
+            "ASSEMBLED_IDENTITY",
+            serde_json::to_string(&identity).unwrap(),
+        )
+        .env(
+            "ASSEMBLED_PREPARE",
+            serde_json::json!({"admission":f.admission,"binding":binding,"create":create})
+                .to_string(),
+        )
+        .env("ASSEMBLED_WORKSPACES", f.root.join("workspaces"))
+        .env("ASSEMBLED_EPISODE_RUNTIME_ROOT", &native_root)
+        .env(
+            "ASSEMBLED_EPISODE_IDENTITY",
+            serde_json::to_string(&episode_identity).unwrap(),
+        )
+        .env("ASSEMBLED_DROP_USAGE", "1")
+        .stdin(Stdio::null())
+        .stdout(Stdio::from(log.try_clone().unwrap()))
+        .stderr(Stdio::from(log))
+        .process_group(0)
+        .spawn()
+        .unwrap();
+    let mut child = OwnedWorker(process);
+    let deadline = std::time::Instant::now() + Duration::from_secs(8);
+    while db
+        .query_one(
+            "SELECT count(*) FROM kernel_transports WHERE process_identity->>'pid'=$1",
+            &[&child.0.id().to_string()],
+        )
+        .await
+        .unwrap()
+        .get::<_, i64>(0)
+        < 2
+    {
+        assert!(child.0.try_wait().unwrap().is_none());
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    let (conn, options) =
+        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default()).unwrap();
+    let client = Client::new(Connection::connect(conn).await.unwrap(), options).unwrap();
+    let wake = bridge
+        .pending_wakeups(&f.owner, &reference)
+        .await
+        .unwrap()
+        .remove(0);
+    bridge
+        .deliver(&f.owner, &client, &queue, &wake)
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
+    loop {
+        let progress = bridge.progress(&f.owner, &reference).await.unwrap();
+        let run = progress.observed.unwrap().run_id;
+        let history = WorkflowExecutionInfo::builder()
+            .namespace("default")
+            .workflow_id(&reference.workflow_id)
+            .run_id(&run)
+            .build()
+            .bind_untyped(client.clone())
+            .fetch_history(WorkflowFetchHistoryOptions::default())
+            .to_json()
+            .await
+            .unwrap();
+        let value: serde_json::Value = serde_json::from_slice(&history).unwrap();
+        let complete = value["events"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|event| event["event_type"] == 12)
+            .any(|event| {
+                event["attributes"]["ActivityTaskCompletedEventAttributes"]["result"]["payloads"]
+                    .as_array()
+                    .is_some_and(|payloads| {
+                        payloads.iter().any(|payload| {
+                            let Some(data) = payload["data"].as_str() else {
+                                return false;
+                            };
+                            let Ok(bytes) = base64::engine::general_purpose::STANDARD.decode(data)
+                            else {
+                                return false;
+                            };
+                            let Ok(p) = serde_json::from_slice::<serde_json::Value>(&bytes) else {
+                                return false;
+                            };
+                            p["operations"].as_array().is_some_and(|operations| {
+                                operations.iter().any(|o| {
+                                    o["episode_id"] == episode.to_string()
+                                        && o["limitation"] == "episode_dispatch_fenced"
+                                }) && operations.iter().any(|o| {
+                                    o["admission_id"] == f.admission.to_string()
+                                        && o["limitation"] == "gateway_dispatch_fenced"
+                                })
+                            })
+                        })
+                    })
+            });
+        if complete {
+            retain_bytes(
+                &out.join("paused-completed-activity-history.json"),
+                &history,
+            );
+            break;
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "actual SDK paused typed waits did not complete guarded Activity"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+    assert!(std::fs::read_dir(&native_root).unwrap().next().is_none());
+    assert!(!execution.path.join("src/live").exists());
+    kernel::Kernel::new(f.broker.clone())
+        .pause(
+            &f.owner,
+            f.mission,
+            "sdk-collision-resume",
+            1,
+            false,
+            "resume same durable workflow",
+        )
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(15);
+    loop {
+        let row = db
+            .query_one(
+                "SELECT state,usage FROM episode_runtime_operations WHERE id=$1",
+                &[&episode_operation],
+            )
+            .await
+            .unwrap();
+        if row.get::<_, String>(0) == "confirmed" && execution.path.join("src/live").exists() {
+            assert_eq!(
+                row.get::<_, serde_json::Value>(1),
+                serde_json::json!({"kind":"unknown"})
+            );
+            break;
+        }
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    assert_eq!(
+        Gateway::new(f.broker.clone())
+            .read(&f.owner, legacy_operation)
+            .await
+            .unwrap()
+            .state,
+        OperationState::Confirmed
+    );
+    let binding_rows = db
+        .query(
+            "SELECT evidence FROM episode_runtime_evidence WHERE operation_id=$1 ORDER BY id",
+            &[&episode_operation],
+        )
+        .await
+        .unwrap()
+        .iter()
+        .map(|r| r.get::<_, serde_json::Value>(0))
+        .collect::<Vec<_>>();
+    let workspace = db
+        .query_one(
+            "SELECT state,init_process,manifest FROM supervised_workspaces WHERE id=$1",
+            &[&execution.id],
+        )
+        .await
+        .unwrap();
+    retain_bytes(&out.join("binding-before-cancel.json"),&serde_json::to_vec(&serde_json::json!({"evidence":binding_rows,"state":workspace.get::<_,String>(0),"init":workspace.get::<_,Option<serde_json::Value>>(1),"manifest":workspace.get::<_,serde_json::Value>(2)})).unwrap());
+    retain_native(&native_root, &out, "binding-diagnostic");
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "sdk-collision-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason:
+                        "registered native effect is independently bound; usage remains unknown"
+                            .into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(8);
+    let mut cancel_revision = cancel.revision;
+    let reconciled = loop {
+        let result = f
+            .broker
+            .execute(
+                &f.owner,
+                envelope(
+                    f.epoch,
+                    &format!("sdk-collision-reconcile-{}", Uuid::new_v4()),
+                    cancel_revision,
+                    Command::ReconcileAttempt {
+                        task_id: f.task,
+                        attempt_id: f.attempt,
+                    },
+                ),
+            )
+            .await
+            .unwrap();
+        cancel_revision = result.revision;
+        if result.disposition == "cancelled" {
+            break result;
+        }
+        if std::time::Instant::now() >= deadline {
+            retain_bytes(&out.join("binding-failed-cancel.json"),&serde_json::to_vec(&serde_json::json!({"reconcile":result,"workspace":supervisor.inspect(&f.owner,execution.id).await.unwrap(),"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap());
+            panic!("registered bound Stop must complete cancel without claiming known usage");
+        }
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    assert_eq!(
+        supervisor
+            .release(&f.owner, execution.id)
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::DependencyUnmet
+    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(8);
+    while supervisor
+        .result(&f.owner, execution.id)
+        .await
+        .unwrap()
+        .is_none()
+    {
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    let status = kernel::Kernel::new(f.broker.clone())
+        .status(&f.owner)
+        .await
+        .unwrap();
+    assert_eq!(
+        f.broker
+            .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+            .await
+            .unwrap()
+            .data["used_capacity"],
+        1
+    );
+    retain_bytes(&out.join("registered-unknown-usage-cancel.json"),&serde_json::to_vec(&serde_json::json!({"cancel":reconciled,"status":status,"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap());
+    child.0.kill().unwrap();
+    let terminal = child.0.wait().unwrap();
+    retain_bytes(
+        &out.join("sdk-terminal.json"),
+        &serde_json::to_vec(
+            &serde_json::json!({"pid":child.0.id(),"waited":true,"terminal":terminal.to_string()}),
+        )
+        .unwrap(),
+    );
+    retain_bytes(
+        &out.join("sdk.log"),
+        &std::fs::read(f.root.join("sdk-collision.log")).unwrap(),
+    );
+    drop(db);
+    f.finish().await;
 }

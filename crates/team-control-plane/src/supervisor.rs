@@ -2042,6 +2042,44 @@ pub(crate) async fn reconcile_attempt_cancel(
     for row in &ids {
         reconcile_locked(tx, row.get(0)).await?;
     }
+    // Native confirmation can precede monitor launch publication. Re-observe the
+    // registered pinned receipt only after reconciliation has inspected physical
+    // state; no waiting under this lock and no native mutation/retry occurs.
+    let native=tx.query("SELECT o.request,o.controller,o.recovery_epoch FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM episode_runtime_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='registered_native_execution_bound')", &[&attempt]).await?;
+    for row in native {
+        let prepared: crate::episode_runtime::PreparedStart = serde_json::from_value(row.get(0))
+            .map_err(|_| crate::domain::err(ErrorCode::IncompatibleSchema))?;
+        let operation = tx
+            .query_one(
+                "SELECT thread_id,turn_id,effect_id FROM episode_runtime_operations WHERE id=$1",
+                &[&prepared.start.id],
+            )
+            .await?;
+        let turn = crate::episode_runtime::NativeTurn {
+            thread: operation
+                .get::<_, Option<String>>(0)
+                .ok_or_else(unavailable)?,
+            turn: operation
+                .get::<_, Option<String>>(1)
+                .ok_or_else(unavailable)?,
+            effect: operation
+                .get::<_, Option<String>>(2)
+                .ok_or_else(unavailable)?,
+        };
+        match crate::episode_runtime::record_effect_binding(
+            tx,
+            &prepared,
+            &turn,
+            row.get(1),
+            row.get(2),
+        )
+        .await
+        {
+            Ok(()) => {}
+            Err(error) if error.code == ErrorCode::DependencyUnmet => {}
+            Err(error) => return Err(error),
+        }
+    }
     let uncertain:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state='quarantined') OR EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state IN ('dispatching','outcome_unknown','quarantined')) OR EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state IN ('dispatching','outcome_unknown','quarantined'))", &[&attempt]).await?.get(0);
     let stopped:bool=tx.query_one("SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state NOT IN ('stopped','released'))", &[&attempt]).await?.get(0);
     // A confirmed RPC proves its native effect exists, not that it is stopped.
@@ -2049,7 +2087,8 @@ pub(crate) async fn reconcile_attempt_cancel(
     // original operation/effect to this execution. Caller arguments alone do
     // not establish that correspondence or permit borrowing its Stop proof.
     let unbound_native:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations o WHERE o.attempt_id=$1 AND o.kind='start' AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id WHERE w.id::text=o.request->'arguments'->>'execution' AND (w.attempt_id=o.attempt_id OR x.attempt_id=o.attempt_id) AND EXISTS(SELECT 1 FROM kernel_gateway_usage_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='legacy_native_usage_observed' AND e.evidence->'intent'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'usage'=o.usage AND e.evidence->'usage'->>'kind'='measured_zero')))", &[&attempt]).await?.get(0);
-    let disposition = if uncertain || unbound_native {
+    let unbound_episode: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id JOIN supervised_workspaces w ON w.id=x.execution_id WHERE x.attempt_id=$1 AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM episode_runtime_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='registered_native_execution_bound' AND e.evidence->'request'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'init_process'=w.init_process AND e.evidence->'turn'->>'thread'=o.thread_id AND e.evidence->'turn'->>'turn'=o.turn_id AND e.evidence->'turn'->>'effect'=o.effect_id))", &[&attempt]).await?.get(0);
+    let disposition = if uncertain || unbound_native || unbound_episode {
         "quarantined"
     } else if stopped {
         "cancelled"
