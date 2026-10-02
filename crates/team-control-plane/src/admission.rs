@@ -205,6 +205,52 @@ pub(crate) async fn apply(
             .await?;
             Some(task.mission)
         }
+        Command::CancelAttempt {
+            task_id,
+            attempt_id,
+            ..
+        }
+        | Command::ReconcileAttempt {
+            task_id,
+            attempt_id,
+        } => {
+            let task = load_task(tx, *task_id).await?;
+            revision(envelope, task.revision)?;
+            generation(envelope, task.generation)?;
+            if task.status == "accepted" {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let attempt = tx
+                .query_opt(
+                    "SELECT task_id,desired_cancel FROM attempts WHERE id=$1 FOR UPDATE",
+                    &[attempt_id],
+                )
+                .await?
+                .ok_or_else(|| err(ErrorCode::NotFound))?;
+            if attempt.get::<_, Uuid>(0) != *task_id {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if matches!(&envelope.command, Command::CancelAttempt { .. }) {
+                if attempt.get::<_, bool>(1) {
+                    return Err(err(ErrorCode::DependencyUnmet));
+                }
+                tx.execute("UPDATE attempts SET desired_cancel=true,status='cancellation_requested' WHERE id=$1", &[attempt_id]).await?;
+                tx.execute("UPDATE supervised_workspaces w SET desired_cancel=true,state=CASE WHEN state IN ('running','starting') THEN 'cancelling' ELSE state END WHERE w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)", &[attempt_id]).await?;
+                tx.execute("UPDATE mailbox_episodes SET state='cancellation_requested' WHERE attempt_id=$1 AND state IN ('admitted','active','yielded')", &[attempt_id]).await?;
+                result.disposition = "cancellation_requested".into();
+            } else {
+                if !attempt.get::<_, bool>(1) {
+                    return Err(err(ErrorCode::DependencyUnmet));
+                }
+                result.disposition =
+                    crate::supervisor::reconcile_attempt_cancel(tx, *attempt_id).await?;
+            }
+            result.revision = task.revision + 1;
+            result.generation = task.generation;
+            result.attempt_id = Some(*attempt_id);
+            tx.execute("UPDATE tasks SET revision=$2,status=CASE WHEN $3='cancelled' THEN 'cancelled' ELSE status END WHERE id=$1", &[task_id,&result.revision,&result.disposition]).await?;
+            Some(task.mission)
+        }
         Command::AssignAttempt { task_id, worker_id } => {
             let task = load_task(tx, *task_id).await?;
             actor.scope(task.mission, Some(*task_id))?;

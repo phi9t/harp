@@ -450,6 +450,38 @@ impl MailboxService {
         let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
         storage::validate_actor_generation(&tx, &actor).await?;
         authorize_current_command(&tx, &actor, self.broker.epoch, &e.command).await?;
+        if let MailboxCommand::AdmitEpisode {
+            attempt: Some(attempt),
+            ..
+        }
+        | MailboxCommand::CaptureInput {
+            attempt: Some(attempt),
+            ..
+        } = &e.command
+        {
+            crate::kernel::attempt_dispatch_enabled(&tx, *attempt).await?;
+        }
+        // Task-scoped credentials remain valid for historical reads; they do
+        // not authorize further mailbox mutations once the Task is terminal.
+        if let Some(task) = actor.task
+            && tx
+                .query_one(
+                    "SELECT status IN ('accepted','cancelled') FROM tasks WHERE id=$1",
+                    &[&task],
+                )
+                .await?
+                .get::<_, bool>(0)
+        {
+            return Err(err(ErrorCode::DependencyUnmet));
+        }
+        if let MailboxCommand::PrepareDelivery { episode, .. }
+        | MailboxCommand::BindRuntimeTurn { episode, .. } = &e.command
+        {
+            let terminal:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id WHERE e.id=$1 AND t.status IN ('accepted','cancelled'))", &[episode]).await?.get(0);
+            if terminal {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+        }
         let (family, mission) = match &e.command {
             MailboxCommand::CaptureInput { mission, .. } => ("episode.input_capture", *mission),
             MailboxCommand::PrepareDelivery { episode, .. } => {
@@ -1061,6 +1093,13 @@ impl MailboxService {
             if row.get::<_, bool>(8)
                 && row.get::<_, Option<Uuid>>(9).is_none()
                 && executions.is_empty()
+                && !tx
+                    .query_one(
+                        "SELECT EXISTS(SELECT 1 FROM episode_executions WHERE episode_id=$1)",
+                        &[&episode],
+                    )
+                    .await?
+                    .get::<_, bool>(0)
             {
                 tx.execute("UPDATE missions SET used_capacity=used_capacity-1,revision=revision+1 WHERE id=$1",&[&mission]).await?;
             }
@@ -1242,6 +1281,16 @@ impl MailboxService {
             } else if actor.role != Role::Lead {
                 return Err(err(ErrorCode::Unauthorized));
             }
+            crate::kernel::schema(tx).await?;
+            if let Some(attempt) = attempt
+                && crate::kernel::legacy_usage_unknown(tx, attempt).await?
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let unresolved:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state IN ('dispatching','outcome_unknown','quarantined')) OR EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.mission_id=$2 AND (x.attempt_id=$1 OR x.principal_id=$3) AND (o.state IN ('dispatching','outcome_unknown','quarantined') OR (o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero')))", &[&attempt,&mission,&actor.principal]).await?.get(0);
+            if unresolved {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
             if tx.query_opt("SELECT id FROM mailbox_episodes WHERE principal_id=$1 AND state IN ('admitted','active','outcome_unknown','quarantined')", &[&actor.principal]).await?.is_some() {
                 return Err(err(ErrorCode::DependencyUnmet));
             }
@@ -1290,7 +1339,9 @@ impl MailboxService {
             if tx.query_opt("SELECT id FROM mailbox_episodes WHERE mission_id=$1 AND principal_id=$2 AND recovery_epoch=$3 AND event_digest=$4", &[&mission, &actor.principal, &self.broker.epoch, &event_digest]).await?.is_some() {
                 return Err(err(ErrorCode::DependencyUnmet));
             }
-            let owned_capacity = actor.role != Role::Worker;
+            // Assignment reserves only the imported first Worker episode. Every
+            // independently admitted continuation reserves its own physical slot.
+            let owned_capacity = !imported;
             let budget=tx.query_one("SELECT capacity,used_capacity,max_episodes,admitted_episodes,deadline_seconds FROM missions WHERE id=$1 FOR UPDATE",&[&mission]).await?;
             if !imported && budget.get::<_, i64>(3) >= budget.get::<_, i64>(2) {
                 return Err(err(ErrorCode::BudgetExhausted));

@@ -17,7 +17,7 @@ pub struct RuntimeIdentity {
     pub environment: String,
 }
 impl RuntimeIdentity {
-    fn key(&self) -> Result<String> {
+    pub(crate) fn key(&self) -> Result<String> {
         if [
             &self.runtime_kind,
             &self.runtime_version,
@@ -115,6 +115,13 @@ pub struct Operation {
     pub thread_id: Option<String>,
     pub evidence: Vec<Evidence>,
 }
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct UsageView {
+    pub operation: Operation,
+    pub usage: crate::episode_runtime::UsageObservation,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum Evidence {
@@ -186,6 +193,11 @@ pub enum Observation {
 pub trait RuntimeAdapter: Send {
     fn identity(&self) -> RuntimeIdentity;
     fn inspect(&self) -> CapabilityProfile;
+    /// Only the trusted closed-world OS adapter exposes its owned roots. This
+    /// declaration alone cannot attest usage; broker observation verifies receipts.
+    fn closed_world_os(&self) -> Option<crate::episode_runtime::ClosedWorldOs> {
+        None
+    }
     fn execute(&mut self, intent: &Intent, thread: Option<&str>) -> RuntimeReply;
     fn observe(&mut self, intent: &Intent, thread: Option<&str>) -> Observation;
     /// Return a proven native turn identity from this confirmed Start reply.
@@ -228,6 +240,64 @@ impl Gateway {
     pub fn controller(&self) -> Uuid {
         self.controller
     }
+    /// Independently observe usage of an existing confirmed legacy operation.
+    /// Current Owner authority does not acquire its controller or issue an RPC.
+    pub async fn reconcile_usage(&self, bearer: &str, id: Uuid) -> Result<UsageView> {
+        let mut client = storage::client(&self.broker.dsn).await?;
+        let tx = client.transaction().await?;
+        storage::lock(&tx).await?;
+        crate::kernel::schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        actor.owner()?;
+        let op = load(&tx, id).await?;
+        let row=tx.query_one("SELECT t.mission_id,t.id FROM gateway_operations o JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE o.id=$1", &[&id]).await?;
+        actor.scope(row.get(0), Some(row.get(1)))?;
+        if op.state == OperationState::Confirmed {
+            crate::kernel_usage::observe_legacy(&tx, &op, self.broker.epoch).await?;
+        }
+        let usage = serde_json::from_value(
+            tx.query_one("SELECT usage FROM gateway_operations WHERE id=$1", &[&id])
+                .await?
+                .get(0),
+        )
+        .map_err(|_| err(ErrorCode::IncompatibleSchema))?;
+        tx.commit().await?;
+        Ok(UsageView {
+            operation: op,
+            usage,
+        })
+    }
+
+    pub async fn register_runtime(&self, bearer: &str, runtime: &dyn RuntimeAdapter) -> Result<()> {
+        let mut client = storage::client(&self.broker.dsn).await?;
+        let tx = client.transaction().await?;
+        storage::lock(&tx).await?;
+        crate::kernel::schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        auth::authenticate(&tx, bearer, self.broker.epoch)
+            .await?
+            .owner()?;
+        if !runtime.inspect().authoritative_effect_inventory {
+            return Err(err(ErrorCode::DependencyUnmet));
+        }
+        let roots = runtime
+            .closed_world_os()
+            .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+        crate::model_free_runtime::register_transport(
+            &tx,
+            self.controller,
+            self.broker.epoch,
+            runtime.identity(),
+            roots,
+            "legacy-supervisor-os-v1",
+        )
+        .await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
     async fn authorize(
         &self,
         tx: &Transaction<'_>,
@@ -279,6 +349,7 @@ impl Gateway {
         let attempt = self
             .authorize(&tx, bearer, admission, generation, true)
             .await?;
+        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
         tx.execute(
             "INSERT INTO gateway_stores(identity,controller,runtime_identity) VALUES($1,$2,$3) ON CONFLICT DO NOTHING",
             &[&store, &self.controller, &serde_json::json!(identity)],
@@ -321,6 +392,7 @@ impl Gateway {
         let attempt = self
             .authorize(&tx, bearer, intent.admission_id, intent.generation, true)
             .await?;
+        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
         if let Some(row) = tx
             .query_opt(
                 "SELECT digest FROM gateway_operations WHERE id=$1",
@@ -415,14 +487,16 @@ impl Gateway {
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
         let op = load(&tx, id).await?;
-        self.authorize(
-            &tx,
-            bearer,
-            op.intent.admission_id,
-            op.intent.generation,
-            true,
-        )
-        .await?;
+        let attempt = self
+            .authorize(
+                &tx,
+                bearer,
+                op.intent.admission_id,
+                op.intent.generation,
+                true,
+            )
+            .await?;
+        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
         if let Some(reference) = guard {
             crate::temporal::dispatch_guard(
                 &tx,
@@ -435,6 +509,13 @@ impl Gateway {
         if op.state != OperationState::Prepared {
             tx.commit().await?;
             return Ok(op);
+        }
+        if matches!(
+            op.intent.kind,
+            OperationKind::Create | OperationKind::Start | OperationKind::Steer
+        ) {
+            let mission:Uuid=tx.query_one("SELECT t.mission_id FROM operations o JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE o.id=$1",&[&op.intent.admission_id]).await?.get(0);
+            crate::kernel::dispatch_enabled(&tx, mission).await?;
         }
         let mailbox_permit =
             crate::mailbox::dispatch_permit(&tx, self.broker.epoch, bearer, &op.intent).await?;
@@ -603,6 +684,10 @@ impl Gateway {
                             .await?
                         }
                     }
+                }
+                let confirmed = load(&tx, id).await?;
+                if confirmed.state == OperationState::Confirmed {
+                    crate::kernel_usage::observe_legacy(&tx, &confirmed, self.broker.epoch).await?;
                 }
             }
             RuntimeReply::FailedKnown(reason) => {

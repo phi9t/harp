@@ -1363,19 +1363,42 @@ async fn real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint()
     );
     // Intentionally never deliver the new mailbox wakeup: retained timer recovers it.
     child = f.child(&queue);
-    let mut advanced = false;
-    for _ in 0..100 {
-        let p = f.bridge.progress(&f.owner, &r).await.unwrap();
-        if p.observed.as_ref().is_some_and(|o| o.run_id != first_run) {
-            advanced = true;
+    // Process death may interrupt an already Started Workflow Task. Its default
+    // 10s timeout precedes recovery; the 1s sticky schedule-to-start timeout does
+    // not apply to that in-flight task. Bound observation without changing either.
+    let observation_deadline = tokio::time::Instant::now() + Duration::from_secs(30);
+    loop {
+        let progress = f.bridge.progress(&f.owner, &r).await.unwrap();
+        if progress
+            .observed
+            .as_ref()
+            .is_some_and(|o| o.run_id != first_run)
+        {
             break;
+        }
+        if tokio::time::Instant::now() >= observation_deadline {
+            let history = handle
+                .fetch_history(WorkflowFetchHistoryOptions::default())
+                .to_json()
+                .await
+                .unwrap();
+            let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+            std::fs::write(
+                out.join("mailbox-incarnation-timeout-progress.json"),
+                serde_json::to_vec_pretty(&progress).unwrap(),
+            )
+            .unwrap();
+            std::fs::write(
+                out.join("mailbox-incarnation-timeout-history.json"),
+                history,
+            )
+            .unwrap();
+            panic!(
+                "actual Continue-As-New did not advance canonical incarnation within 30s while mailbox checkpoint remains durable: {progress:?}"
+            );
         }
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
-    assert!(
-        advanced,
-        "actual Continue-As-New advances canonical incarnation while mailbox checkpoint remains durable"
-    );
     // Observed incarnation is recorded inside an Activity before Temporal records
     // that Activity completion. Wait for the actual history result rather than
     // treating the registry observation as a completed-history barrier.

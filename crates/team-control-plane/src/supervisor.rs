@@ -76,14 +76,27 @@ pub struct WorkspaceManifest {
     pub store: PathBuf,
     pub path: PathBuf,
     pub base: String,
-    pub attempt: Uuid,
-    pub task: Uuid,
+    pub attempt: Option<Uuid>,
+    pub task: Option<Uuid>,
+    #[serde(default)]
+    pub episode: Option<Uuid>,
+    #[serde(default)]
+    pub mission: Option<Uuid>,
     pub generation: i64,
     pub recovery_epoch: Uuid,
     pub spec_digest: String,
     pub write_scope: Vec<String>,
     pub scopes: Vec<WriteScope>,
     pub log_path: PathBuf,
+    #[serde(default)]
+    pub candidate: Option<crate::artifacts::Candidate>,
+    #[serde(default)]
+    pub input: Option<EpisodeInput>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EpisodeInput {
+    pub id: Uuid,
+    pub digest: String,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ExecutionView {
@@ -93,6 +106,20 @@ pub struct ExecutionView {
     pub launcher: Option<ProcessIdentity>,
     pub quarantine_reason: Option<String>,
     pub manifest: WorkspaceManifest,
+}
+/// Trusted monitor observation of the launcher wait status. Namespace shutdown
+/// and successful workload completion are separate facts.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ExecutionResult {
+    pub execution: Uuid,
+    pub argv: Vec<String>,
+    pub candidate: Option<crate::artifacts::Candidate>,
+    pub recovery_epoch: Uuid,
+    pub controller: ProcessIdentity,
+    pub exit_code: Option<i32>,
+    pub signal: Option<i32>,
+    pub namespace_stopped: bool,
+    pub logs: String,
 }
 #[derive(Clone, Debug)]
 pub struct Supervisor {
@@ -139,7 +166,7 @@ fn json<T: Serialize>(v: &T) -> Result<serde_json::Value> {
 fn decode<T: serde::de::DeserializeOwned>(v: serde_json::Value) -> Result<T> {
     serde_json::from_value(v).map_err(|_| unavailable())
 }
-async fn authorize(
+pub(crate) async fn authorize(
     tx: &Transaction<'_>,
     broker: &Broker,
     token: &str,
@@ -147,12 +174,19 @@ async fn authorize(
     mutation: bool,
 ) -> Result<ExecutionView> {
     schema(tx).await?;
+    crate::kernel::schema(tx).await?;
     storage::active(tx, broker.epoch).await?;
     let actor = auth::authenticate(tx, token, broker.epoch).await?;
     storage::validate_actor_generation(tx, &actor).await?;
+    if let Some(row)=tx.query_opt("SELECT w.state,w.members,w.controller,w.manifest,x.mission_id,x.task_id,x.principal_id,x.role,x.recovery_epoch,w.launcher,w.quarantine_reason FROM supervised_workspaces w JOIN episode_executions x ON x.execution_id=w.id WHERE w.id=$1 FOR UPDATE OF w", &[&id]).await? {
+        actor.scope(row.get(4),row.get(5))?;
+        if actor.role!=Role::Owner && (actor.principal!=row.get::<_,Uuid>(6) || serde_json::to_value(&actor.role).map_err(|_|invalid())? != row.get::<_,String>(7)) { return Err(crate::domain::err(ErrorCode::Unauthorized)); }
+        if actor.role!=Role::Owner && !execution_current(tx,id,broker.epoch).await? { return Err(crate::domain::err(ErrorCode::StaleGeneration)); }
+        return Ok(ExecutionView { state:decode(serde_json::Value::String(row.get(0)))?,members:decode(row.get(1))?,controller:row.get::<_,Option<serde_json::Value>>(2).map(decode).transpose()?,manifest:decode(row.get(3))?,launcher:row.get::<_,Option<serde_json::Value>>(9).map(decode).transpose()?,quarantine_reason:row.get(10) });
+    }
     let row=tx.query_opt("SELECT w.state,w.members,w.controller,w.manifest,t.mission_id,a.generation,a.recovery_epoch,t.generation,w.launcher,a.worker_id,w.quarantine_reason FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
     let manifest: WorkspaceManifest = decode(row.get(3))?;
-    actor.scope(row.get(4), Some(manifest.task))?;
+    actor.scope(row.get(4), manifest.task)?;
     if actor.role == Role::Worker && actor.principal != row.get::<_, Uuid>(9) {
         return Err(crate::domain::err(ErrorCode::Unauthorized));
     }
@@ -179,7 +213,85 @@ async fn authorize(
         manifest,
     })
 }
+pub(crate) async fn execution_current(tx: &Transaction<'_>, id: Uuid, epoch: Uuid) -> Result<bool> {
+    crate::kernel::schema(tx).await?;
+    let cancelled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM attempts a WHERE a.desired_cancel AND (a.id=(SELECT attempt_id FROM supervised_workspaces WHERE id=$1) OR a.id=(SELECT attempt_id FROM episode_executions WHERE execution_id=$1)))", &[&id]).await?.get(0);
+    if cancelled {
+        return Ok(false);
+    }
+    if let Some(row)=tx.query_opt("SELECT x.recovery_epoch,e.task_generation,t.generation,e.lead_generation,coalesce(l.generation,0),x.principal_id,l.principal_id,x.role FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id LEFT JOIN tasks t ON t.id=x.task_id LEFT JOIN mission_leads l ON l.mission_id=x.mission_id WHERE x.execution_id=$1", &[&id]).await? {
+        let credential_current:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x JOIN credentials c ON c.id=x.credential_id JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1 AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id IS NOT DISTINCT FROM x.task_id AND c.generation IS NOT DISTINCT FROM e.task_generation AND c.recovery_epoch=$2 AND c.expires_at>clock_timestamp() AND (c.role<>'lead' OR c.lead_generation=e.lead_generation))", &[&id,&epoch]).await?.get(0);
+        if !credential_current {return Ok(false);}
+        return Ok(row.get::<_,Uuid>(0)==epoch && row.get::<_,Option<i64>>(1)==row.get::<_,Option<i64>>(2) && row.get::<_,Option<i64>>(3).is_none_or(|g|g==row.get::<_,i64>(4)) && (row.get::<_,String>(7)!="lead" || row.get::<_,Option<Uuid>>(6).is_none_or(|p|p==row.get::<_,Uuid>(5))));
+    }
+    Ok(tx.query_one("SELECT a.generation=t.generation AND a.recovery_epoch=$2 FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1", &[&id,&epoch]).await?.get(0))
+}
+async fn bind_attempt_reservation(
+    tx: &Transaction<'_>,
+    attempt: Uuid,
+    execution: Uuid,
+) -> Result<()> {
+    let bound = tx.execute("UPDATE reservations SET execution_id=$2 WHERE attempt_id=$1 AND state='reserved' AND execution_id IS NULL", &[&attempt,&execution]).await?;
+    if bound != 1 {
+        return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+    }
+    Ok(())
+}
+async fn execution_reservation_current(tx: &Transaction<'_>, id: Uuid) -> Result<bool> {
+    // Additional episodes own a separately charged physical reservation.
+    if let Some(row) = tx
+        .query_opt(
+            "SELECT owns_capacity,capacity_released FROM episode_executions WHERE execution_id=$1",
+            &[&id],
+        )
+        .await?
+        && row.get::<_, bool>(0)
+    {
+        return Ok(!row.get::<_, bool>(1));
+    }
+    Ok(tx.query_one("SELECT EXISTS(SELECT 1 FROM reservations z WHERE z.state='reserved' AND z.execution_id=$1)", &[&id]).await?.get(0))
+}
+// Terminal tasks retain inspection/release authority but cannot dispatch work.
+pub(crate) async fn execution_dispatch_current(
+    tx: &Transaction<'_>,
+    id: Uuid,
+    epoch: Uuid,
+) -> Result<bool> {
+    if !execution_current(tx, id, epoch).await? {
+        return Ok(false);
+    }
+    let terminal: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM tasks t WHERE t.status IN ('accepted','cancelled') AND (t.id=(SELECT task_id FROM episode_executions WHERE execution_id=$1) OR t.id=(SELECT a.task_id FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1)))", &[&id]).await?.get(0);
+    Ok(!terminal && execution_reservation_current(tx, id).await?)
+}
+// AssignAttempt already reserved the first imported Worker episode. Additional
+// episodes charge independently and cannot spend that reservation while an
+// earlier task-bound native operation has unobserved usage.
+async fn physical_usage_known(tx: &Transaction<'_>, id: Uuid) -> Result<()> {
+    if let Some(row) = tx.query_opt("SELECT x.attempt_id,e.owned_capacity FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1", &[&id]).await?
+        && row.get::<_, bool>(1)
+            && let Some(attempt) = row.get::<_, Option<Uuid>>(0)
+                && crate::kernel::legacy_usage_unknown(tx, attempt).await? {
+                    return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+                }
+    Ok(())
+}
 impl Supervisor {
+    pub async fn result(&self, token: &str, id: Uuid) -> Result<Option<ExecutionResult>> {
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        authorize(&tx, &self.broker, token, id, false).await?;
+        let result = tx
+            .query_opt(
+                "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
+                &[&id],
+            )
+            .await?
+            .map(|r| decode(r.get(0)))
+            .transpose()?;
+        tx.commit().await?;
+        Ok(result)
+    }
     pub async fn open(broker: Broker, root: &Path, monitor: &str) -> Result<Self> {
         if !root.is_absolute() || !Path::new(monitor).is_absolute() {
             return Err(invalid());
@@ -187,6 +299,7 @@ impl Supervisor {
         let mut c = storage::client(&broker.dsn).await?;
         let tx = c.transaction().await?;
         schema(&tx).await?;
+        crate::kernel::schema(&tx).await?;
         tx.commit().await?;
         fs::create_dir_all(root).map_err(|_| unavailable())?;
         let root = fs::canonicalize(root).map_err(|_| unavailable())?;
@@ -196,6 +309,267 @@ impl Supervisor {
             root,
             monitor: PathBuf::from(monitor),
         })
+    }
+    /// Allocate physical ownership for a canonical episode without granting tool authority.
+    /// Planning has no fabricated Task/Attempt; verification and implementation retain genuine links.
+    pub async fn create_episode(
+        &self,
+        token: &str,
+        episode: Uuid,
+        requested: Vec<WriteScope>,
+        fault: CreateFault,
+    ) -> Result<ExecutionHandle> {
+        self.create_episode_inner(token, episode, requested, fault, None)
+            .await
+    }
+    /// Import only the currently submitted immutable candidate through scoped evidence reads.
+    pub async fn create_episode_from_candidate(
+        &self,
+        token: &str,
+        episode: Uuid,
+        artifacts: &crate::artifacts::ArtifactService,
+        fault: CreateFault,
+    ) -> Result<ExecutionHandle> {
+        let record = crate::mailbox::MailboxService::new(self.broker.clone())
+            .record(token, crate::mailbox::RecordKind::Episode, episode)
+            .await?;
+        let task: Uuid =
+            serde_json::from_value(record["task_id"].clone()).map_err(|_| invalid())?;
+        let candidate = artifacts
+            .snapshot(token, task)
+            .await?
+            .candidate
+            .ok_or_else(|| crate::domain::err(ErrorCode::DependencyUnmet))?;
+        let bytes = artifacts
+            .read_evidence(token, task, &candidate.artifact)
+            .await?;
+        self.create_episode_inner(token, episode, vec![], fault, Some((candidate, bytes)))
+            .await
+    }
+    async fn create_episode_inner(
+        &self,
+        token: &str,
+        episode: Uuid,
+        requested: Vec<WriteScope>,
+        fault: CreateFault,
+        source: Option<(crate::artifacts::Candidate, Vec<u8>)>,
+    ) -> Result<ExecutionHandle> {
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        schema(&tx).await?;
+        crate::kernel::schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, token, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        let row=tx.query_opt("SELECT e.mission_id,e.task_id,e.attempt_id,e.principal_id,e.role,e.recovery_epoch,e.input_digest,e.input_packet,e.state,e.deadline>clock_timestamp(),e.task_generation,t.generation,e.lead_generation,coalesce(l.generation,0),e.owned_capacity,coalesce(s.git_repository,m.git_repository),coalesce(s.git_commit,m.git_commit),coalesce(s.digest,m.input_digest),s.write_scope,a.worker_id FROM mailbox_episodes e JOIN missions m ON m.id=e.mission_id LEFT JOIN tasks t ON t.id=e.task_id LEFT JOIN attempts a ON a.id=e.attempt_id LEFT JOIN task_specs s ON s.task_id=t.id AND s.digest=a.spec_digest LEFT JOIN mission_leads l ON l.mission_id=e.mission_id WHERE e.id=$1 FOR UPDATE OF e", &[&episode]).await?.ok_or_else(||crate::domain::err(ErrorCode::NotFound))?;
+        let mission: Uuid = row.get(0);
+        let task: Option<Uuid> = row.get(1);
+        let attempt: Option<Uuid> = row.get(2);
+        let role: String = row.get(4);
+        actor.scope(mission, task)?;
+        if actor.principal != row.get::<_, Uuid>(3)
+            || serde_json::to_value(&actor.role).map_err(|_| invalid())? != role
+        {
+            return Err(crate::domain::err(ErrorCode::Unauthorized));
+        }
+        if let Some(attempt) = attempt {
+            crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        }
+        if row.get::<_, Uuid>(5) != self.broker.epoch
+            || row.get::<_, Option<i64>>(10) != row.get::<_, Option<i64>>(11)
+            || row
+                .get::<_, Option<i64>>(12)
+                .is_some_and(|g| g != row.get::<_, i64>(13))
+        {
+            return Err(crate::domain::err(ErrorCode::StaleGeneration));
+        }
+        if row.get::<_, Option<Uuid>>(7).is_none()
+            || !row.get::<_, bool>(9)
+            || !matches!(row.get::<_, String>(8).as_str(), "admitted" | "active")
+        {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        if row.get::<_, bool>(14)
+            && let Some(attempt) = attempt
+            && crate::kernel::legacy_usage_unknown(&tx, attempt).await?
+        {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        if role == "worker" && row.get::<_, Option<Uuid>>(19) != Some(actor.principal) {
+            return Err(crate::domain::err(ErrorCode::Unauthorized));
+        }
+        if let Some(task) = task {
+            let enabled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM kernel_verification_requirements WHERE task_id=$1 AND recovery_epoch=$2)", &[&task,&self.broker.epoch]).await?.get(0);
+            if !enabled {
+                return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+            }
+        }
+        if role == "verifier" && source.is_none() {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        if let Some((candidate, bytes)) = &source {
+            if !matches!(role.as_str(), "worker" | "verifier")
+                || candidate.generation != row.get::<_, Option<i64>>(10).ok_or_else(invalid)?
+                || candidate.spec_digest != row.get::<_, String>(17)
+                || crate::artifacts::sha256(bytes) != candidate.artifact
+            {
+                return Err(invalid());
+            }
+            let current=tx.query_opt("SELECT c.candidate,p.base FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id JOIN artifact_policies p ON p.task_id=a.task_id WHERE a.task_id=$1", &[&task]).await?.ok_or_else(||crate::domain::err(ErrorCode::DependencyUnmet))?;
+            if current.get::<_, serde_json::Value>(0) != json(candidate)?
+                || current.get::<_, String>(1) != candidate.base
+            {
+                return Err(crate::domain::err(ErrorCode::StaleGeneration));
+            }
+        }
+        if let Some(existing)=tx.query_opt("SELECT w.id,w.manifest FROM episode_executions x JOIN supervised_workspaces w ON w.id=x.execution_id WHERE x.episode_id=$1", &[&episode]).await? {
+            let existing_id: Uuid = existing.get(0);
+            if !execution_reservation_current(&tx, existing_id).await? {return Err(crate::domain::err(ErrorCode::DependencyUnmet));}
+            let manifest:WorkspaceManifest=decode(existing.get(1))?;return Ok(ExecutionHandle{id:existing_id,path:manifest.path});
+        }
+        let paused:bool=tx.query_one("SELECT coalesce((SELECT paused FROM kernel_mission_control WHERE mission_id=$1),false)",&[&mission]).await?.get(0);
+        if paused {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let id = Uuid::new_v4();
+        let path = self.root.join(id.to_string());
+        let store = fs::canonicalize(row.get::<_, String>(15)).map_err(|_| invalid())?;
+        let admitted_base: String = row.get(16);
+        // Candidate bytes bind the current Owner-authorized integration base;
+        // permitted paths still come from immutable admitted Task input.
+        let base = source.as_ref().map_or_else(
+            || admitted_base.clone(),
+            |(candidate, _)| candidate.base.clone(),
+        );
+        let write_scope: Vec<String> = if role == "worker" {
+            decode(
+                row.get::<_, Option<serde_json::Value>>(18)
+                    .ok_or_else(invalid)?,
+            )?
+        } else {
+            vec![]
+        };
+        if write_scope
+            .iter()
+            .any(|p| !safe_relative(p) || p.split('/').any(|c| c == ".git"))
+        {
+            return Err(invalid());
+        }
+        let scopes = resolve_scopes(&store, &admitted_base, &write_scope, requested)?;
+        let manifest = WorkspaceManifest {
+            store,
+            path: path.clone(),
+            base,
+            attempt,
+            task,
+            episode: Some(episode),
+            mission: Some(mission),
+            generation: row.get::<_, Option<i64>>(10).unwrap_or(0),
+            recovery_epoch: self.broker.epoch,
+            spec_digest: row.get(17),
+            write_scope,
+            scopes,
+            log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
+            candidate: source.as_ref().map(|s| s.0.clone()),
+            input: Some(EpisodeInput {
+                id: row.get::<_, Option<Uuid>>(7).ok_or_else(invalid)?,
+                digest: row.get(6),
+            }),
+        };
+        tx.execute(
+            "INSERT INTO supervised_workspaces(id,manifest,state) VALUES($1,$2,'registered')",
+            &[&id, &json(&manifest)?],
+        )
+        .await?;
+        let credential: Uuid = tx
+            .query_one(
+                "SELECT id FROM credentials WHERE token_hash=$1",
+                &[&token_hash(token)],
+            )
+            .await?
+            .get(0);
+        tx.execute("INSERT INTO episode_executions(execution_id,episode_id,mission_id,task_id,attempt_id,principal_id,role,recovery_epoch,input_digest,owns_capacity,credential_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)", &[&id,&episode,&mission,&task,&attempt,&actor.principal,&role,&self.broker.epoch,&row.get::<_,String>(6),&row.get::<_,bool>(14),&credential]).await?;
+        if !row.get::<_, bool>(14) {
+            bind_attempt_reservation(&tx, attempt.ok_or_else(invalid)?, id).await?;
+        }
+        tx.commit().await?;
+        if matches!(fault, CreateFault::AfterRegister) {
+            return Ok(ExecutionHandle { id, path });
+        }
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        let view = authorize(&tx, &self.broker, token, id, true).await?;
+        if view.state != ExecutionState::Registered {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        tx.execute(
+            "UPDATE supervised_workspaces SET state='preparing' WHERE id=$1",
+            &[&id],
+        )
+        .await?;
+        tx.commit().await?;
+        let prepared = clone_workspace(&manifest, fault).and_then(|_| {
+            if let Some((candidate, bytes)) = &source {
+                let bundle = path.join(".git/kernel-candidate.bundle");
+                let mut file = fs::OpenOptions::new()
+                    .write(true)
+                    .create_new(true)
+                    .open(&bundle)
+                    .map_err(|_| unavailable())?;
+                std::io::Write::write_all(&mut file, bytes).map_err(|_| unavailable())?;
+                file.sync_all().map_err(|_| unavailable())?;
+                fs::File::open(path.join(".git"))
+                    .and_then(|f| f.sync_all())
+                    .map_err(|_| unavailable())?;
+                let bundle = bundle.to_str().ok_or_else(invalid)?;
+                git_at(&path, &["bundle", "verify", bundle])?;
+                git_at(&path, &["fetch", "--no-tags", bundle, &candidate.commit])?;
+                if git_at(
+                    &path,
+                    &["rev-parse", &format!("{}^{{tree}}", candidate.commit)],
+                )?
+                .trim()
+                    != candidate.tree
+                    || git_at(&path, &["rev-parse", &format!("{}^1", candidate.commit)])?.trim()
+                        != candidate.base
+                    || candidate.base != manifest.base
+                {
+                    return Err(invalid());
+                }
+                git_at(
+                    &path,
+                    &["checkout", "--quiet", "--detach", &candidate.commit],
+                )
+                .map(|_| ())
+            } else {
+                git_at(&path, &["checkout", "--quiet", "--detach", &manifest.base]).map(|_| ())
+            }
+        });
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        authorize(&tx, &self.broker, token, id, true).await?;
+        if prepared.is_err() || !execution_dispatch_current(&tx, id, self.broker.epoch).await? {
+            tx.execute("UPDATE supervised_workspaces SET state='quarantined',quarantine_reason='episode Git preparation completion unknown' WHERE id=$1", &[&id]).await?;
+            tx.commit().await?;
+            return Err(unavailable());
+        }
+        for scope in &manifest.scopes {
+            scope_path(&path, scope, false, true)?;
+        }
+        for scope in &manifest.scopes {
+            scope_path(&path, scope, true, false)?;
+        }
+        fs::File::open(&self.root)
+            .and_then(|f| f.sync_all())
+            .map_err(|_| unavailable())?;
+        tx.execute(
+            "UPDATE supervised_workspaces SET state='ready' WHERE id=$1 AND state='preparing'",
+            &[&id],
+        )
+        .await?;
+        tx.commit().await?;
+        Ok(ExecutionHandle { id, path })
     }
     pub async fn create_attempt(
         &self,
@@ -233,6 +607,7 @@ impl Supervisor {
         if r.get::<_, i64>(1) != r.get::<_, i64>(5) || r.get::<_, Uuid>(2) != self.broker.epoch {
             return Err(crate::domain::err(ErrorCode::StaleGeneration));
         }
+        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
         if tx
             .query_opt(
                 "SELECT id FROM supervised_workspaces WHERE attempt_id=$1",
@@ -259,16 +634,21 @@ impl Supervisor {
             store,
             path: path.clone(),
             base,
-            attempt,
-            task,
+            attempt: Some(attempt),
+            task: Some(task),
+            episode: None,
+            mission: Some(r.get(4)),
             generation: r.get(1),
             recovery_epoch: self.broker.epoch,
             spec_digest: r.get(3),
             write_scope,
             scopes,
             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
+            candidate: None,
+            input: None,
         };
         tx.execute("INSERT INTO supervised_workspaces(id,attempt_id,manifest,state) VALUES($1,$2,$3,'registered')",&[&id,&attempt,&json(&manifest)?]).await?;
+        bind_attempt_reservation(&tx, attempt, id).await?;
         tx.commit().await?;
         if matches!(fault, CreateFault::AfterRegister) {
             return Ok(ExecutionHandle { id, path });
@@ -376,22 +756,30 @@ impl Supervisor {
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
         let v = authorize(&tx, &self.broker, token, id, true).await?;
-        let current = tx
-            .query_one(
-                "SELECT generation FROM tasks WHERE id=$1",
-                &[&v.manifest.task],
-            )
-            .await?
-            .get::<_, i64>(0);
-        if v.manifest.generation != current || v.manifest.recovery_epoch != self.broker.epoch {
+        if !execution_dispatch_current(&tx, id, self.broker.epoch).await? {
             return Err(crate::domain::err(ErrorCode::StaleGeneration));
         }
+        physical_usage_known(&tx, id).await?;
+        let mission: Uuid = tx
+            .query_one(
+                "SELECT coalesce($1,(SELECT mission_id FROM tasks WHERE id=$2))",
+                &[&v.manifest.mission, &v.manifest.task],
+            )
+            .await?
+            .get(0);
+        crate::kernel::dispatch_enabled(&tx, mission).await?;
         if v.state != ExecutionState::Ready {
             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
         }
-        let limit:i64=tx.query_one("SELECT m.deadline_seconds FROM tasks t JOIN missions m ON m.id=t.mission_id WHERE t.id=$1",&[&v.manifest.task]).await?.get(0);
+        let limit:i64=tx.query_one("SELECT m.deadline_seconds FROM missions m WHERE m.id=coalesce($1,(SELECT mission_id FROM tasks WHERE id=$2))",&[&v.manifest.mission,&v.manifest.task]).await?.get(0);
+        if let Some(episode) = v.manifest.episode {
+            let eligible:bool=tx.query_one("SELECT state IN ('admitted','active') AND deadline>clock_timestamp() FROM mailbox_episodes WHERE id=$1",&[&episode]).await?.get(0);
+            if !eligible {
+                return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+            }
+        }
         let seconds = i64::try_from(seconds).map_err(|_| invalid())?.min(limit);
-        tx.execute("UPDATE supervised_workspaces SET state='starting',argv=$2,deadline=clock_timestamp()+$3::bigint*interval '1 second' WHERE id=$1",&[&id,&json(&argv)?,&seconds]).await?;
+        tx.execute("UPDATE supervised_workspaces SET state='starting',argv=$2,deadline=least(clock_timestamp()+$3::bigint*interval '1 second',coalesce((SELECT e.deadline FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1),clock_timestamp()+$3::bigint*interval '1 second')) WHERE id=$1",&[&id,&json(&argv)?,&seconds]).await?;
         tx.commit().await?;
         if matches!(fault, StartFault::BeforeMonitor) {
             return Ok(());
@@ -472,6 +860,7 @@ impl Supervisor {
         if !matches!(v.state, ExecutionState::Stopped | ExecutionState::Deleting) {
             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
         }
+        runtime_release_known(&tx, &v.manifest).await?;
         // Deletion reservation commits before filesystem mutation; starting cannot cross it.
         tx.execute(
             "UPDATE supervised_workspaces SET state='deleting' WHERE id=$1",
@@ -488,6 +877,7 @@ impl Supervisor {
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
         authorize(&tx, &self.broker, token, id, true).await?;
+        runtime_release_known(&tx, &v.manifest).await?;
         tx.execute(
             "UPDATE supervised_workspaces SET state='released' WHERE id=$1 AND state='deleting'",
             &[&id],
@@ -495,10 +885,43 @@ impl Supervisor {
         .await?;
         // Only physically proven stop plus completed deletion refunds the concurrent slot.
         // Attempt/episode admission counters remain consumed.
-        tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)",&[&v.manifest.attempt]).await?;
+        if v.manifest.episode.is_some() {
+            tx.execute("WITH released AS (UPDATE episode_executions SET capacity_released=true WHERE execution_id=$1 AND owns_capacity AND NOT capacity_released RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)", &[&id]).await?;
+        }
+        if v.manifest.episode.is_none()
+            || !tx
+                .query_one(
+                    "SELECT owns_capacity FROM episode_executions WHERE execution_id=$1",
+                    &[&id],
+                )
+                .await?
+                .get::<_, bool>(0)
+        {
+            tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND execution_id=$2 AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)",&[&v.manifest.attempt,&id]).await?;
+        }
         tx.commit().await?;
         Ok(())
     }
+}
+async fn runtime_release_known(tx: &Transaction<'_>, manifest: &WorkspaceManifest) -> Result<()> {
+    // Namespace shutdown proves local membership only. It cannot resolve a
+    // separately dispatched provider operation whose reply/effect is unknown.
+    if let Some(attempt) = manifest.attempt {
+        if crate::kernel::legacy_usage_unknown(tx, attempt).await? {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        let unknown:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state IN ('dispatching','outcome_unknown','quarantined'))", &[&attempt]).await?.get(0);
+        if unknown {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+    }
+    if let Some(episode) = manifest.episode {
+        let unknown:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE (o.episode_id=$1 OR ($2::uuid IS NOT NULL AND x.attempt_id=$2)) AND (o.state IN ('dispatching','outcome_unknown','quarantined') OR (o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero')))", &[&episode,&manifest.attempt]).await?.get(0);
+        if unknown {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+    }
+    Ok(())
 }
 fn safe_relative(p: &str) -> bool {
     !p.is_empty()
@@ -707,9 +1130,42 @@ fn git_at(path: &Path, args: &[&str]) -> Result<String> {
     a.extend_from_slice(args);
     git(&a)
 }
+#[derive(Debug)]
+struct MembershipObservationError {
+    pid: u32,
+    operation: &'static str,
+    source: std::io::Error,
+}
+impl std::fmt::Display for MembershipObservationError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "process {} {} membership observation failed: {}",
+            self.pid, self.operation, self.source
+        )
+    }
+}
+impl std::error::Error for MembershipObservationError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(&self.source)
+    }
+}
+fn membership_error(pid: u32, operation: &'static str, source: std::io::Error) -> std::io::Error {
+    if process_disappeared(&source) {
+        return source;
+    }
+    std::io::Error::new(
+        source.kind(),
+        MembershipObservationError {
+            pid,
+            operation,
+            source,
+        },
+    )
+}
 fn identity(pid: u32) -> std::io::Result<ProcessIdentity> {
     let p = PathBuf::from(format!("/proc/{pid}"));
-    let stat = fs::read_to_string(p.join("stat"))?;
+    let stat = fs::read_to_string(p.join("stat")).map_err(|e| membership_error(pid, "stat", e))?;
     let tail = stat
         .rsplit_once(')')
         .ok_or_else(|| std::io::Error::other("malformed stat"))?
@@ -726,8 +1182,14 @@ fn identity(pid: u32) -> std::io::Result<ProcessIdentity> {
         boot_id: fs::read_to_string("/proc/sys/kernel/random/boot_id")?
             .trim()
             .into(),
-        namespace: fs::read_link(p.join("ns/pid"))?.to_string_lossy().into(),
-        namespace_pid: Some(namespace_pid(&fs::read_to_string(p.join("status"))?)?),
+        namespace: fs::read_link(p.join("ns/pid"))
+            .map_err(|e| membership_error(pid, "ns/pid", e))?
+            .to_string_lossy()
+            .into(),
+        namespace_pid: Some(namespace_pid(
+            &fs::read_to_string(p.join("status"))
+                .map_err(|e| membership_error(pid, "status", e))?,
+        )?),
     })
 }
 fn namespace_pid(status: &str) -> std::io::Result<u32> {
@@ -938,9 +1400,7 @@ fn inventory(namespace: &str) -> std::io::Result<Vec<ProcessIdentity>> {
             Ok(m) => m,
             Err(e) if process_disappeared(&e) => continue,
             Err(e) => {
-                return Err(std::io::Error::other(format!(
-                    "process {pid} membership observation failed: {e}"
-                )));
+                return Err(membership_error(pid, "metadata", e));
             }
         };
         // All descendants retain this host uid: user namespace is fixed and caps dropped.
@@ -953,9 +1413,7 @@ fn inventory(namespace: &str) -> std::io::Result<Vec<ProcessIdentity>> {
             Ok(s) => s,
             Err(e) if process_disappeared(&e) => continue,
             Err(e) => {
-                return Err(std::io::Error::other(format!(
-                    "process {pid} membership observation failed: {e}"
-                )));
+                return Err(membership_error(pid, "status", e));
             }
         };
         let nspid = status.lines().find_map(|l| l.strip_prefix("NSpid:"));
@@ -977,9 +1435,7 @@ fn inventory(namespace: &str) -> std::io::Result<Vec<ProcessIdentity>> {
             Ok(_) => {}
             Err(e) if process_disappeared(&e) => {}
             Err(e) => {
-                return Err(std::io::Error::other(format!(
-                    "process {pid} membership observation failed: {e}"
-                )));
+                return Err(e);
             }
         }
     }
@@ -1099,7 +1555,31 @@ fn decide_namespace<O: NamespaceObserver>(
     }
     // Both the owned external descriptor and borrowed monitor descriptor outlive
     // inventory and every signal; a cached identity boolean is never authority.
-    let members = observer.inventory(&init.namespace)?;
+    // An incomplete scan contributes no membership or signal authority. Keep
+    // the same verified descriptor while retrying complete scans only. The
+    // window limits starting another attempt, not synchronous syscall runtime.
+    let retry_started = std::time::Instant::now();
+    let retry_window = std::time::Duration::from_millis(20);
+    let mut scans = 0;
+    let members = loop {
+        scans += 1;
+        match observer.inventory(&init.namespace) {
+            Ok(members) => break members,
+            Err(error) => {
+                if error.kind() != std::io::ErrorKind::PermissionDenied
+                    || scans >= 3
+                    || retry_started.elapsed() >= retry_window
+                {
+                    return Err(error);
+                }
+                std::thread::sleep(std::time::Duration::from_millis(1));
+                if retry_started.elapsed() >= retry_window {
+                    return Err(error);
+                }
+                observer.frame(controller)?;
+            }
+        }
+    };
     if members.is_empty() {
         return Ok(("stopped", members));
     }
@@ -1122,7 +1602,12 @@ async fn reconcile_with_pin(
 ) -> Result<()> {
     let r=tx.query_one("SELECT state,desired_cancel OR deadline<=clock_timestamp(),init_process,members,controller FROM supervised_workspaces WHERE id=$1 FOR UPDATE",&[&id]).await?;
     let state: String = r.get(0);
-    let cancel=r.get::<_,Option<bool>>(1).unwrap_or(false)||tx.query_one("SELECT a.generation<>t.generation OR a.recovery_epoch<>d.active_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id CROSS JOIN deployment d WHERE w.id=$1",&[&id]).await?.get::<_,bool>(0);
+    let active_epoch: Uuid = tx
+        .query_one("SELECT active_epoch FROM deployment WHERE singleton", &[])
+        .await?
+        .get(0);
+    let cancel = r.get::<_, Option<bool>>(1).unwrap_or(false)
+        || !execution_dispatch_current(tx, id, active_epoch).await?;
     if matches!(
         state.as_str(),
         "released" | "deleting" | "stopped" | "quarantined"
@@ -1199,12 +1684,11 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
     storage::lock(&tx).await?;
     schema(&tx).await?;
     storage::active(&tx, broker.epoch).await?;
-    let r=tx.query_one("SELECT w.state,w.manifest,w.argv,w.desired_cancel,w.controller,a.generation,t.generation,a.recovery_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
+    let r=tx.query_one("SELECT w.state,w.manifest,w.argv,w.desired_cancel,w.controller FROM supervised_workspaces w WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
     if r.get::<_, String>(0) != "starting"
         || r.get::<_, bool>(3)
         || r.get::<_, Option<serde_json::Value>>(4).is_some()
-        || r.get::<_, i64>(5) != r.get::<_, i64>(6)
-        || r.get::<_, Uuid>(7) != broker.epoch
+        || !execution_dispatch_current(&tx, id, broker.epoch).await?
     {
         return Err(crate::domain::err(ErrorCode::DependencyUnmet));
     }
@@ -1227,15 +1711,33 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
     storage::lock(&tx).await?;
     schema(&tx).await?;
     storage::active(&tx, broker.epoch).await?;
-    let row=tx.query_one("SELECT w.state,w.desired_cancel,w.deadline>clock_timestamp(),a.generation,t.generation,a.recovery_epoch FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id JOIN tasks t ON t.id=a.task_id WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
+    let row=tx.query_one("SELECT w.state,w.desired_cancel,w.deadline>clock_timestamp() FROM supervised_workspaces w WHERE w.id=$1 FOR UPDATE OF w",&[&id]).await?;
     if row.get::<_, String>(0) != "starting"
         || row.get::<_, bool>(1)
         || !row.get::<_, Option<bool>>(2).unwrap_or(false)
-        || row.get::<_, i64>(3) != row.get::<_, i64>(4)
-        || row.get::<_, Uuid>(5) != broker.epoch
+        || !execution_dispatch_current(&tx, id, broker.epoch).await?
     {
         return Err(crate::domain::err(ErrorCode::DependencyUnmet));
     }
+    physical_usage_known(&tx, id).await?;
+    let mission: Uuid = tx
+        .query_one(
+            "SELECT coalesce($1,(SELECT mission_id FROM tasks WHERE id=$2))",
+            &[&manifest.mission, &manifest.task],
+        )
+        .await?
+        .get(0);
+    crate::kernel::dispatch_enabled(&tx, mission).await?;
+    let packet_fd = if let Some(input) = &manifest.input {
+        let packet:serde_json::Value=tx.query_opt("SELECT p.packet FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id JOIN mailbox_inputs p ON p.id=e.input_packet WHERE x.execution_id=$1 AND p.id=$2 AND e.input_digest=$3 AND x.input_digest=$3", &[&id,&input.id,&input.digest]).await?.ok_or_else(||crate::domain::err(ErrorCode::DependencyUnmet))?.get(0);
+        let bytes = serde_json::to_vec(&packet).map_err(|_| invalid())?;
+        if bytes.len() > 524288 || crate::artifacts::sha256(&bytes) != input.digest {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        Some(sealed_packet(&bytes)?)
+    } else {
+        None
+    };
     let info_path = manifest.log_path.with_extension("info");
     let info = fs::OpenOptions::new()
         .read(true)
@@ -1244,7 +1746,8 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
         .mode(0o600)
         .open(&info_path)
         .map_err(|_| unavailable())?;
-    // Only this descriptor crosses exec. File is outside all admitted writable mounts.
+    // The status descriptor and optional sealed captured-input descriptor cross
+    // exec. Neither exposes credentials or a writable parent filesystem.
     if unsafe { libc::fcntl(info.as_raw_fd(), libc::F_SETFD, 0) } < 0 {
         return Err(unavailable());
     }
@@ -1291,6 +1794,12 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
         ])
         .arg(&manifest.path)
         .arg("/workspace");
+    if let Some(packet) = &packet_fd {
+        command
+            .args(["--perms", "0400", "--ro-bind-data"])
+            .arg(packet.as_raw_fd().to_string())
+            .arg("/episode-input.json");
+    }
     for scope in &manifest.scopes {
         scope_path(&manifest.path, scope, false, false)?;
         command
@@ -1310,6 +1819,7 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
     let mut child = command.spawn().map_err(|_| unavailable())?;
     // Close descriptor in the parent; the child inherited its duplicate.
     drop(info);
+    drop(packet_fd);
     let mut init = None;
     for _ in 0..100 {
         if let Ok(bytes) = fs::read(&info_path)
@@ -1363,7 +1873,8 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
         .ok_or_else(unavailable)?
         .write_all(b"1")
         .map_err(|_| unavailable())?;
-    loop {
+    let mut observed_exit = None;
+    let final_state = loop {
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
         // Recovery epoch rotation uses the same cancellation path.
@@ -1384,14 +1895,30 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
             .get(0);
         tx.commit().await?;
         if state == "stopped" || state == "quarantined" {
-            break;
+            break state;
         }
-        let _ = child.try_wait();
+        if observed_exit.is_none() {
+            observed_exit = child.try_wait().map_err(|_| unavailable())?;
+        }
         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
-    }
+    };
     // Reap launcher before releasing the verified namespace incarnation pin.
-    let _ = child.kill();
-    let _ = child.wait();
+    // A proved empty namespace is not an exit code. Allow the trusted bwrap
+    // launcher to publish its actual wait result; forced termination remains a signal.
+    let exit_deadline = std::time::Instant::now() + std::time::Duration::from_secs(1);
+    while observed_exit.is_none()
+        && final_state == "stopped"
+        && std::time::Instant::now() < exit_deadline
+    {
+        observed_exit = child.try_wait().map_err(|_| unavailable())?;
+        if observed_exit.is_none() {
+            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+        }
+    }
+    if observed_exit.is_none() {
+        child.kill().map_err(|_| unavailable())?;
+    }
+    let exit = child.wait().map_err(|_| unavailable())?;
     drop(namespace_pin);
     fs::File::open(&manifest.log_path)
         .and_then(|f| f.sync_all())
@@ -1399,9 +1926,56 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
     fs::File::open(&manifest.path)
         .and_then(|f| f.sync_all())
         .map_err(|_| unavailable())?;
+    if manifest.episode.is_some() {
+        use std::os::unix::process::ExitStatusExt;
+        let result = ExecutionResult {
+            execution: id,
+            argv,
+            candidate: manifest.candidate.clone(),
+            recovery_epoch: broker.epoch,
+            controller,
+            exit_code: exit.code(),
+            signal: exit.signal(),
+            namespace_stopped: final_state == "stopped",
+            logs: crate::artifacts::sha256(
+                &fs::read(&manifest.log_path).map_err(|_| unavailable())?,
+            ),
+        };
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        crate::kernel::schema(&tx).await?;
+        tx.execute(
+            "INSERT INTO kernel_execution_results(execution_id,result) VALUES($1,$2)",
+            &[&id, &json(&result)?],
+        )
+        .await?;
+        tx.commit().await?;
+    }
     Ok(())
 }
 
+fn sealed_packet(bytes: &[u8]) -> Result<fs::File> {
+    use std::{
+        io::{Seek, SeekFrom, Write},
+        os::fd::{AsRawFd, FromRawFd},
+    };
+    // Read-only bind-data receives an immutable copy, closing a path/content race
+    // between final digest verification and bubblewrap's mount setup.
+    let fd =
+        unsafe { libc::memfd_create(c"corenius-episode-input".as_ptr(), libc::MFD_ALLOW_SEALING) };
+    if fd < 0 {
+        return Err(unavailable());
+    }
+    let mut file = unsafe { fs::File::from_raw_fd(fd) };
+    file.write_all(bytes)
+        .and_then(|_| file.seek(SeekFrom::Start(0)).map(|_| ()))
+        .map_err(|_| unavailable())?;
+    let seals = libc::F_SEAL_WRITE | libc::F_SEAL_GROW | libc::F_SEAL_SHRINK | libc::F_SEAL_SEAL;
+    if unsafe { libc::fcntl(file.as_raw_fd(), libc::F_ADD_SEALS, seals) } < 0 {
+        return Err(unavailable());
+    }
+    Ok(file)
+}
 pub async fn run_monitor(broker: Broker, id: Uuid) -> Result<()> {
     monitor(broker, id, None).await
 }
@@ -1409,9 +1983,278 @@ pub async fn run_monitor_with_gate(broker: Broker, id: Uuid, gate: MonitorGate) 
     monitor(broker, id, Some(gate)).await
 }
 
+// Assembly observes the service process through the same established observer
+// frame parser; this does not turn a generic process into a certified PID1.
+pub(crate) fn local_process_identity() -> std::io::Result<ProcessIdentity> {
+    let process = identity(std::process::id())?;
+    observer_frame(Some(&process))?;
+    Ok(process)
+}
+pub(crate) fn validate_process_frame(process: &ProcessIdentity) -> std::io::Result<()> {
+    observer_frame(Some(process))
+}
+impl Supervisor {
+    pub(crate) fn workspace_root(&self) -> &Path {
+        &self.root
+    }
+}
+pub(crate) fn transport_alive(process: &ProcessIdentity) -> std::io::Result<bool> {
+    alive(process)
+}
+
+/// Reconciliation observes effects; usage reservations are deliberately unchanged.
+pub(crate) async fn reconcile_attempt_cancel(
+    tx: &Transaction<'_>,
+    attempt: Uuid,
+) -> Result<String> {
+    let ids=tx.query("SELECT w.id FROM supervised_workspaces w WHERE w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1) ORDER BY w.id", &[&attempt]).await?;
+    for row in &ids {
+        reconcile_locked(tx, row.get(0)).await?;
+    }
+    let uncertain:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state='quarantined') OR EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state IN ('dispatching','outcome_unknown','quarantined')) OR EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state IN ('dispatching','outcome_unknown','quarantined'))", &[&attempt]).await?.get(0);
+    let stopped:bool=tx.query_one("SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state NOT IN ('stopped','released'))", &[&attempt]).await?.get(0);
+    // A confirmed RPC proves its native effect exists, not that it is stopped.
+    // Only an immutable registered-transport observation independently binds the
+    // original operation/effect to this execution. Caller arguments alone do
+    // not establish that correspondence or permit borrowing its Stop proof.
+    let unbound_native:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations o WHERE o.attempt_id=$1 AND o.kind='start' AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id WHERE w.id::text=o.request->'arguments'->>'execution' AND (w.attempt_id=o.attempt_id OR x.attempt_id=o.attempt_id) AND EXISTS(SELECT 1 FROM kernel_gateway_usage_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='legacy_native_usage_observed' AND e.evidence->'intent'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'usage'=o.usage AND e.evidence->'usage'->>'kind'='measured_zero')))", &[&attempt]).await?.get(0);
+    let disposition = if uncertain || unbound_native {
+        "quarantined"
+    } else if stopped {
+        "cancelled"
+    } else {
+        "cancellation_requested"
+    };
+    tx.execute(
+        "UPDATE attempts SET status=$2 WHERE id=$1 AND desired_cancel",
+        &[&attempt, &disposition],
+    )
+    .await?;
+    if disposition == "cancelled" {
+        tx.execute("UPDATE mailbox_episodes SET state='cancelled' WHERE attempt_id=$1 AND state='cancellation_requested'", &[&attempt]).await?;
+    }
+    Ok(disposition.into())
+}
+
 #[cfg(test)]
 mod observation_tests {
     use super::*;
+    #[test]
+    fn pinned_inventory_transient_permission_error_requires_fresh_complete_scan() {
+        use std::cell::Cell;
+        struct Transient {
+            scans: Cell<usize>,
+            signals: Cell<usize>,
+        }
+        impl NamespaceObserver for Transient {
+            type Pin = ();
+            fn frame(&self, _: Option<&ProcessIdentity>) -> std::io::Result<()> {
+                Ok(())
+            }
+            fn alive(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
+                Ok(true)
+            }
+            fn pin(&self, _: &ProcessIdentity) -> std::io::Result<()> {
+                Ok(())
+            }
+            fn finalized(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
+                Ok(false)
+            }
+            fn inventory(&self, _: &str) -> std::io::Result<Vec<ProcessIdentity>> {
+                let scans = self.scans.get();
+                self.scans.set(scans + 1);
+                if scans == 0 {
+                    Err(std::io::Error::from_raw_os_error(libc::EACCES))
+                } else {
+                    Ok(vec![])
+                }
+            }
+            fn signal(&self, _: &ProcessIdentity) -> std::io::Result<()> {
+                self.signals.set(self.signals.get() + 1);
+                Ok(())
+            }
+        }
+        let original = identity(std::process::id()).unwrap();
+        let observer = Transient {
+            scans: Cell::new(0),
+            signals: Cell::new(0),
+        };
+        let held_pin = ();
+        let (state, members) = decide_namespace(
+            &original,
+            std::slice::from_ref(&original),
+            None,
+            true,
+            Some(&held_pin),
+            &observer,
+        )
+        .unwrap();
+        assert_eq!(state, "stopped");
+        assert!(members.is_empty());
+        assert_eq!(observer.scans.get(), 2);
+        assert_eq!(observer.signals.get(), 0);
+    }
+    #[test]
+    fn whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority() {
+        use std::{
+            cell::{Cell, RefCell},
+            collections::VecDeque,
+            rc::Rc,
+            time::Duration,
+        };
+        struct Pin(Rc<Cell<bool>>);
+        impl Drop for Pin {
+            fn drop(&mut self) {
+                self.0.set(false);
+            }
+        }
+        struct Script {
+            held: Rc<Cell<bool>>,
+            scans: Cell<usize>,
+            signals: RefCell<Vec<ProcessIdentity>>,
+            results: RefCell<VecDeque<std::io::Result<Vec<ProcessIdentity>>>>,
+            frame_valid: bool,
+            pin_valid: bool,
+            process_alive: bool,
+            finalized: bool,
+            delay: Duration,
+        }
+        impl NamespaceObserver for Script {
+            type Pin = Pin;
+            fn frame(&self, _: Option<&ProcessIdentity>) -> std::io::Result<()> {
+                if self.frame_valid {
+                    Ok(())
+                } else {
+                    Err(std::io::Error::other("unproven observer frame"))
+                }
+            }
+            fn alive(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
+                Ok(self.process_alive)
+            }
+            fn pin(&self, _: &ProcessIdentity) -> std::io::Result<Pin> {
+                if !self.pin_valid {
+                    return Err(std::io::Error::other("missing verified pin"));
+                }
+                self.held.set(true);
+                Ok(Pin(self.held.clone()))
+            }
+            fn finalized(&self, _: &ProcessIdentity) -> std::io::Result<bool> {
+                Ok(self.finalized)
+            }
+            fn inventory(&self, _: &str) -> std::io::Result<Vec<ProcessIdentity>> {
+                assert!(
+                    self.held.get(),
+                    "every entire scan retains the verified descriptor"
+                );
+                self.scans.set(self.scans.get() + 1);
+                std::thread::sleep(self.delay);
+                self.results
+                    .borrow_mut()
+                    .pop_front()
+                    .expect("unexpected extra scan")
+            }
+            fn signal(&self, p: &ProcessIdentity) -> std::io::Result<()> {
+                assert!(self.held.get());
+                self.signals.borrow_mut().push(p.clone());
+                Ok(())
+            }
+        }
+        let original = identity(std::process::id()).unwrap();
+        let error = |errno| Err(std::io::Error::from_raw_os_error(errno));
+        let script = |results: Vec<std::io::Result<Vec<ProcessIdentity>>>| Script {
+            held: Rc::new(Cell::new(false)),
+            scans: Cell::new(0),
+            signals: RefCell::new(vec![]),
+            results: RefCell::new(results.into()),
+            frame_valid: true,
+            pin_valid: true,
+            process_alive: true,
+            finalized: false,
+            delay: Duration::ZERO,
+        };
+        let mut stale = original.clone();
+        stale.pid += 1;
+        let mut fresh = stale.clone();
+        fresh.start_ticks += 1;
+        let observer = script(vec![error(libc::EACCES), Ok(vec![fresh.clone()])]);
+        let (state, members) = decide_namespace(
+            &original,
+            std::slice::from_ref(&stale),
+            None,
+            true,
+            None,
+            &observer,
+        )
+        .unwrap();
+        assert_eq!(state, "cancelling");
+        assert_eq!(members, vec![fresh.clone()]);
+        assert_eq!(*observer.signals.borrow(), vec![fresh]);
+        assert_eq!(observer.scans.get(), 2);
+        assert!(!observer.held.get());
+        let observer = script(vec![
+            error(libc::EACCES),
+            error(libc::EACCES),
+            error(libc::EACCES),
+        ]);
+        assert_eq!(
+            decide_namespace(&original, &[], None, true, None, &observer)
+                .unwrap_err()
+                .kind(),
+            std::io::ErrorKind::PermissionDenied
+        );
+        assert_eq!(observer.scans.get(), 3);
+        assert!(observer.signals.borrow().is_empty());
+        assert!(!observer.held.get());
+        let observer = script(vec![error(libc::EIO)]);
+        assert!(decide_namespace(&original, &[], None, true, None, &observer).is_err());
+        assert_eq!(observer.scans.get(), 1);
+        assert!(observer.signals.borrow().is_empty());
+        for boundary in ["frame", "pin", "missing-pin"] {
+            let mut observer = script(vec![]);
+            match boundary {
+                "frame" => observer.frame_valid = false,
+                "pin" => observer.pin_valid = false,
+                _ => observer.process_alive = false,
+            }
+            assert!(decide_namespace(&original, &[], None, true, None, &observer).is_err());
+            assert_eq!(observer.scans.get(), 0);
+            assert!(observer.signals.borrow().is_empty());
+        }
+        let mut observer = script(vec![error(libc::EACCES)]);
+        observer.delay = Duration::from_millis(30);
+        assert!(decide_namespace(&original, &[], None, true, None, &observer).is_err());
+        assert_eq!(observer.scans.get(), 1);
+        assert!(observer.signals.borrow().is_empty());
+        let mut observer = script(vec![]);
+        observer.finalized = true;
+        assert_eq!(
+            decide_namespace(&original, &[], None, true, None, &observer).unwrap(),
+            ("stopped", vec![])
+        );
+        assert_eq!(observer.scans.get(), 0);
+    }
+    #[test]
+    fn membership_errors_retain_structured_provenance_and_disappearance_semantics() {
+        let error = membership_error(
+            123,
+            "ns/pid",
+            std::io::Error::from_raw_os_error(libc::EACCES),
+        );
+        assert_eq!(error.kind(), std::io::ErrorKind::PermissionDenied);
+        let provenance = error
+            .get_ref()
+            .unwrap()
+            .downcast_ref::<MembershipObservationError>()
+            .unwrap();
+        assert_eq!(provenance.pid, 123);
+        assert_eq!(provenance.operation, "ns/pid");
+        assert_eq!(provenance.source.raw_os_error(), Some(libc::EACCES));
+        for errno in [libc::ENOENT, libc::ESRCH] {
+            let error = membership_error(123, "stat", std::io::Error::from_raw_os_error(errno));
+            assert!(process_disappeared(&error));
+            assert_eq!(error.raw_os_error(), Some(errno));
+        }
+    }
     #[test]
     fn incarnation_replacement_between_proof_and_inventory_never_signals_new_members() {
         use std::cell::Cell;

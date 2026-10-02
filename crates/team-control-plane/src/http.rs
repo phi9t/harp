@@ -19,6 +19,8 @@ pub fn router(broker: Broker) -> Router {
             get(artifact_read),
         )
         .route("/v1/commands", post(command))
+        .route("/v1/kernel/status", get(kernel_status))
+        .route("/v1/kernel/pause", post(kernel_pause))
         .route("/v1/mailbox/commands", post(mailbox_command))
         .route(
             "/v1/mailbox/messages/{message}/artifacts/{digest}",
@@ -240,4 +242,50 @@ async fn mailbox_artifact(
         .read_mailbox_evidence(bearer(&headers)?, message, &digest)
         .await?;
     Ok(([("content-type", "application/octet-stream")], bytes).into_response())
+}
+
+async fn kernel_status(
+    State(broker): State<Arc<Broker>>,
+    headers: HeaderMap,
+) -> Result<Json<serde_json::Value>> {
+    crate::kernel::Kernel::new((*broker).clone())
+        .status(bearer(&headers)?)
+        .await
+        .map(Json)
+}
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct PauseRequest {
+    mission: Uuid,
+    key: String,
+    expected_revision: i64,
+    recovery_epoch: Uuid,
+    paused: bool,
+    rationale: String,
+}
+async fn kernel_pause(
+    State(broker): State<Arc<Broker>>,
+    headers: HeaderMap,
+    body: std::result::Result<Json<PauseRequest>, axum::extract::rejection::JsonRejection>,
+) -> Result<Json<serde_json::Value>> {
+    let token = bearer(&headers)?;
+    let Json(request) = body.map_err(|_| Error {
+        code: ErrorCode::InvalidArgument,
+    })?;
+    if request.recovery_epoch != broker.epoch {
+        return Err(Error {
+            code: ErrorCode::Unauthorized,
+        });
+    }
+    crate::kernel::Kernel::new((*broker).clone())
+        .pause(
+            token,
+            request.mission,
+            &request.key,
+            request.expected_revision,
+            request.paused,
+            &request.rationale,
+        )
+        .await
+        .map(Json)
 }

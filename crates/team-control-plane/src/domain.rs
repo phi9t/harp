@@ -99,6 +99,15 @@ pub enum Command {
         task_id: Uuid,
         worker_id: Uuid,
     },
+    CancelAttempt {
+        task_id: Uuid,
+        attempt_id: Uuid,
+        reason: String,
+    },
+    ReconcileAttempt {
+        task_id: Uuid,
+        attempt_id: Uuid,
+    },
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

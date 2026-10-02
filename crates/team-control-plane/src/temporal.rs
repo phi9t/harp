@@ -404,7 +404,15 @@ impl Bridge {
                 .await?
                 .get(0),
         };
-        let waits=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|v.get(0)).collect()};
+        let mut waits:Vec<Uuid>=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|v.get(0)).collect()};
+        crate::kernel::schema(&tx).await?;
+        // A canonical Mission owns planning; a genuine Task owns its Worker and
+        // Verifier episodes. Unknown journals stay observable, never fresh RPC candidates.
+        let episodes=match r.kind {
+            AggregateKind::Mission=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.mission_id=$1 AND x.task_id IS NULL ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
+            AggregateKind::Task=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.task_id=$1 ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
+        };
+        waits.extend(episodes.into_iter().map(|row| row.get::<_, Uuid>(0)));
         let p = Progress {
             cursor: row.get(0),
             closed: row.get(1),
@@ -614,7 +622,8 @@ mod workflows {
                 }
                 let observed = if progress.closed {
                     OperationProgress {
-                        admission_id: *admission,
+                        admission_id: Some(*admission),
+                        episode_id: None,
                         journals: Vec::new(),
                         limitation: Some("workflow_closed".into()),
                     }
@@ -625,7 +634,8 @@ mod workflows {
                             .await
                             .map_err(activity_error)?,
                         None => OperationProgress {
-                            admission_id: *admission,
+                            admission_id: Some(*admission),
+                            episode_id: None,
                             journals: Vec::new(),
                             limitation: Some("operation_driver_unconfigured".into()),
                         },
@@ -787,7 +797,10 @@ impl Bridge {
 /// Small gateway milestones only; task state remains canonical PostgreSQL state.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct OperationProgress {
-    pub admission_id: Uuid,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub admission_id: Option<Uuid>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub episode_id: Option<Uuid>,
     pub journals: Vec<(Uuid, crate::gateway::OperationState)>,
     pub limitation: Option<String>,
 }
@@ -916,7 +929,8 @@ impl OperationDriver for GatewayOperationDriver {
                 .operation_journal(&self.bearer, r, admission)
                 .await?;
             let mut progress = OperationProgress {
-                admission_id: admission,
+                admission_id: Some(admission),
+                episode_id: None,
                 journals: Vec::new(),
                 limitation: if ids.is_empty() {
                     Some("gateway_binding_or_intent_missing".into())
@@ -945,6 +959,36 @@ pub(crate) async fn dispatch_guard(
     r: &WorkflowRef,
     admission: Uuid,
 ) -> Result<()> {
+    workflow_dispatch_guard(tx, epoch, r).await?;
+    let row=tx.query_opt("SELECT a.task_id,t.mission_id FROM operations o JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE o.id=$1",&[&admission]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+    let aggregate = match r.kind {
+        AggregateKind::Task => row.get::<_, Uuid>(0),
+        AggregateKind::Mission => row.get::<_, Uuid>(1),
+    };
+    if aggregate != r.aggregate_id {
+        return Err(err(ErrorCode::Unauthorized));
+    }
+    Ok(())
+}
+pub(crate) async fn episode_dispatch_guard(
+    tx: &Transaction<'_>,
+    epoch: Uuid,
+    r: &WorkflowRef,
+    mission: Uuid,
+    task: Option<Uuid>,
+) -> Result<()> {
+    workflow_dispatch_guard(tx, epoch, r).await?;
+    let expected = match r.kind {
+        AggregateKind::Mission if task.is_none() => mission,
+        AggregateKind::Task => task.ok_or_else(|| err(ErrorCode::Unauthorized))?,
+        _ => return Err(err(ErrorCode::Unauthorized)),
+    };
+    if expected != r.aggregate_id {
+        return Err(err(ErrorCode::Unauthorized));
+    }
+    Ok(())
+}
+async fn workflow_dispatch_guard(tx: &Transaction<'_>, epoch: Uuid, r: &WorkflowRef) -> Result<()> {
     storage::active(tx, epoch).await?;
     if r.recovery_epoch != epoch
         || r.workflow_id != workflow_id(&r.kind, r.aggregate_id, r.generation, epoch)
@@ -958,14 +1002,6 @@ pub(crate) async fn dispatch_guard(
         || row.get::<_, bool>(3)
     {
         return Err(err(ErrorCode::StaleGeneration));
-    }
-    let row=tx.query_opt("SELECT a.task_id,t.mission_id FROM operations o JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE o.id=$1",&[&admission]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
-    let aggregate = match r.kind {
-        AggregateKind::Task => row.get::<_, Uuid>(0),
-        AggregateKind::Mission => row.get::<_, Uuid>(1),
-    };
-    if aggregate != r.aggregate_id {
-        return Err(err(ErrorCode::Unauthorized));
     }
     Ok(())
 }

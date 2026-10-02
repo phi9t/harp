@@ -80,6 +80,11 @@ pub(crate) fn validate(command: &Command) -> Result<()> {
         } if (!hex(token_hash, 64) || *expires_in_seconds <= 0 || *expires_in_seconds > 86400) => {
             return Err(invalid());
         }
+        Command::CancelAttempt { reason, .. }
+            if reason.trim().is_empty() || reason.len() > 4096 =>
+        {
+            return Err(invalid());
+        }
         _ => {}
     }
     Ok(())
@@ -93,6 +98,8 @@ impl Command {
             Self::AdmitTask { .. } => "task.admit",
             Self::GrantCredential { .. } => "credential.grant",
             Self::AssignAttempt { .. } => "attempt.assign",
+            Self::CancelAttempt { .. } => "attempt.cancel",
+            Self::ReconcileAttempt { .. } => "attempt.reconcile",
         }
     }
     pub(crate) fn aggregate_kind(&self) -> &'static str {
@@ -107,7 +114,9 @@ impl Command {
             Self::CreateMission { id, .. } | Self::CreateTask { id, .. } => *id,
             Self::SetDependencies { task_id, .. }
             | Self::AdmitTask { task_id, .. }
-            | Self::AssignAttempt { task_id, .. } => *task_id,
+            | Self::AssignAttempt { task_id, .. }
+            | Self::CancelAttempt { task_id, .. }
+            | Self::ReconcileAttempt { task_id, .. } => *task_id,
             Self::GrantCredential { credential_id, .. } => *credential_id,
         }
     }

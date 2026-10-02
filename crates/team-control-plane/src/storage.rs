@@ -66,6 +66,7 @@ pub async fn migrate(dsn: &str) -> Result<()> {
     crate::temporal::migrate(&tx).await?;
     crate::supervisor::migrate(&tx).await?;
     crate::mailbox::migrate(&tx).await?;
+    crate::kernel::migrate(&tx).await?;
     tx.commit().await?;
     Ok(())
 }
@@ -105,6 +106,7 @@ impl Broker {
         let tx = c.transaction().await?;
         schema(&tx).await?;
         crate::mailbox::schema(&tx).await?;
+        crate::kernel::schema(&tx).await?;
         tx.commit().await?;
         Ok(Self {
             dsn: dsn.into(),

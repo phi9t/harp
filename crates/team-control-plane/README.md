@@ -1,20 +1,10 @@
-# Team control plane
+# Durable team control plane
 
-The accepted model-free baseline covers tickets10–15: PostgreSQL admission and
-authority, immutable artifacts and independent candidate verification, journaled
-runtime dispatch, real Temporal workflows, supervised execution environments,
-and durable mailboxes with replaceable lead identities. PostgreSQL owns team
-domain state; Temporal owns durable workflow execution.
-
-The assembled operator/recovery proof in ticket16 remains incomplete. Live Trae
-recovery, independent Codex/Claude lead demonstrations, and backup/restore
-readiness remain unproven. This baseline is a local reference implementation.
-
-## Historical admission slice (ticket10)
-
-The following section describes the original admission-only slice. Statements
-about absent dispatch, acceptance and release apply to ticket10 alone, before
-the later accepted modules were added. Rust1.95; admission HTTP version1.
+Standalone Rust1.95 crate. PostgreSQL owns admitted state and evidence; Temporal
+owns durable waits and workflow execution. HTTP schemas are version1. The
+admission contract below remains the foundation for artifacts, mailbox, gateway
+and supervised execution. Ticket16 assembles these with a model-free runtime;
+its implementation and fixture results do not establish live Trae guarantees.
 
 `Broker::connect(dsn, external_recovery_epoch)` validates schema readiness;
 `migrate(dsn)` is a separate privileged operation. `bootstrap_owner()` initializes
@@ -23,7 +13,7 @@ stored. `rotate_epoch(owner_bearer, fresh_external_epoch)` explicitly invalidate
 old grants and returns a new owner bearer once. Epochs cannot be reused while
 retained epoch history exists. External control identity must remain outside the
 restored database; restore operators must supply a fresh identity and reconcile
-external effects before any later gateway dispatch. This crate performs no dispatch.
+external effects before gateway dispatch. A complete restore drill remains separate work.
 
 `execute(bearer, CommandEnvelope)` derives actor identity from credentials and
 checks database clock expiry, deployment epoch and grant generation before
@@ -48,7 +38,7 @@ Workers cannot self-assign. An owner approves specs; scoped leads may assign rea
 work. Worker grants bind mission/task/next generation and are usable only once
 that generation is current. A dependent task remains nonassignable until a later
 ticket supplies the accepted-dependency lifecycle; this admission-only crate has
-no command to claim dependency completion.
+no admission command to claim dependency completion; ArtifactService owns acceptance.
 
 Assignment reserves one cumulative attempt and one episode, capacity, an attempt
 and prepared operation, event and outbox in one transaction. Reservations remain
@@ -80,24 +70,28 @@ are not supported. Do not expose this loopback fixture server to public networks
 
 ## Verification
 
-The complete accepted baseline gate is `tools/agents/check.sh`; its control-plane
-shim runs `tests/run-temporal.sh` with real owned PostgreSQL and Temporal services.
-The admission-only PostgreSQL runner below remains available for focused tests.
-
 Docker daemon access, Rust1.95/Cargo and access to the pinned PostgreSQL image are
 required. Run `bash crates/team-control-plane/tests/run-postgres.sh` from the repo,
 or `tools/agents/check.sh` which invokes the dedicated checks.d shim. The runner
 uses a uniquely named auto-removed container, loopback ephemeral port and tmpfs;
 readiness is bounded, the container is stopped on exit, and cargo failures
-propagate. Database tests fail explicitly when no fixture DSN is supplied;
+propagate. Independent test fixtures default to two concurrent libtest cases
+because each owns several database clients and SDK workers on the shared
+100-connection PostgreSQL server; set `RUST_TEST_THREADS` explicitly to override.
+Tests retain their own concurrent physical workloads and capacity races. When
+Temporal evidence is requested, PostgreSQL logs and sampled connection counts
+are retained before container cleanup.
+Database tests fail explicitly when no fixture DSN is supplied;
 there is no ignored or in-memory fallback. Direct administrative SQL inside
 fixtures installs constraint-trigger failures; no production test callbacks exist.
 
-The original ticket10 tests prove database admission contracts, not persistent-use readiness,
-PostgreSQL backup/restore, production role separation, runtime starts, Temporal
-replay, gateway fencing, supervisor shutdown or live-provider recovery.
+`bash crates/team-control-plane/tests/run-temporal.sh --offline` additionally
+starts owned loopback Temporal and runs the complete PostgreSQL/Temporal suite,
+including actual supervisor capsules, SDK worker restart and retained-history
+replay. Persistent-use readiness, backup/restore, production role separation
+and live-provider recovery require separate evidence.
 
-## Mailbox and replaceable lead (accepted ticket14)
+## Mailbox and replaceable lead
 
 `MailboxService` is the durable command/read seam. HTTP exposes
 `POST /v1/mailbox/commands`, scoped messages/records and bounded mission context;
@@ -142,8 +136,55 @@ never accept tasks. Approval records bind normalized arguments, an executor,
 epoch/generation, expiry and one consumption; they record permission, not an
 external Git/publication effect.
 
-Ticket16 must bind actual provider/supervisor adapters and role-neutral physical
-planning/verifier execution. Execution references here are explicitly unresolved,
-not validated Supervisor handles or stopped-process/refund evidence. No bearer
-enters workflow input/history, no second scheduler is introduced, and no live
-provider, cross-host exactly-once or failover guarantee is asserted.
+## Assembled model-free execution and operators
+
+EpisodeGateway journals role-neutral planning, implementation and verification
+operations before physical dispatch. Supervisor allocates private Git workspaces,
+delivers exact captured input through a sealed descriptor and records independent
+exit, log and namespace-stop evidence. A verifier materializes the immutable
+current candidate and its authorized integration base; allowed paths still derive
+from the admitted Task input. Changing candidate/base invalidates acceptance
+evidence. An already allocated historical snapshot may execute, but its report
+cannot authorize the changed current candidate.
+
+The CLI uses `TEAM_CONTROL_PLANE_TOKEN` for `status`, `inspect-execution`,
+`cancel-execution`, `reconcile-execution`, `release-execution`,
+`inspect-episode-operation`, `reconcile-episode-operation`,
+`reconcile-gateway-usage` and `takeover-episode-store`. Execution commands also
+require `TEAM_CONTROL_PLANE_WORKSPACE_ROOT`. Summary views are bounded and signal
+overflow; authenticated exact lookups remain independent of controller ownership.
+
+Unknown native effects and unknown usage are separate conditions. Stopped local
+effects alone cannot refund unmeasured usage. Model-free zero requires the exact
+original operation and input receipt from a registered singleton transport with
+pinned native/workspace roots. Usage queries do not issue another Start or
+transfer control. There is no Owner command to silently clear unknown usage.
+
+Registered episode transport takeover requires independent complete native,
+workspace and process inventory and refuses unfinished workloads. Legacy gateway
+controller replacement remains unsupported: restart safely quarantines the
+retained store and reservation rather than launching another execution. This is
+a stopped recovery disposition, not successful legacy transfer. No bearer enters
+workflow history, and no live provider, cross-host exactly-once or production
+failover guarantee is asserted.
+
+### Canonical attempt cancellation and control recovery
+
+Public broker commands `cancel_attempt` and `reconcile_attempt` bind an exact
+Task/Attempt, revision, generation, recovery epoch and idempotency key. Only the
+Owner or that current Attempt's Worker controller may request cancellation.
+Cancellation commits `desired_cancel` and `cancellation_requested` first and
+revokes future episode admission, native/physical dispatch and result/acceptance
+mutations. Existing physical work then follows the strict supervisor stop path.
+Reconciliation records `cancelled` only after stopped effects are established;
+uncertain effects or inventory record `quarantined`. Unknown usage retains its
+reservation even when physical effects stop. Cancellation does not refund capacity
+implicitly. Workspace `cancel` is a physical stop operation; use the canonical
+Attempt command to revoke the Attempt's continuing authority.
+
+`GET /v1/kernel/status` returns a database `snapshot_time`, the recovery epoch,
+and each Mission's separate `control_revision` and `dispatch_paused` state.
+`POST /v1/kernel/pause` accepts the current control revision, recovery epoch,
+idempotency key and rationale. A fresh authenticated client can recover a lost
+pause response from status and resume using that durable control revision;
+Mission intent revisions are not control revisions.

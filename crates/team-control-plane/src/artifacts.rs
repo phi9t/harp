@@ -201,6 +201,11 @@ pub enum ArtifactCommand {
         candidate_id: String,
         report_id: String,
     },
+    Repair {
+        candidate_id: String,
+        report_id: String,
+        reason: String,
+    },
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -370,6 +375,13 @@ impl ArtifactService {
         let task = load_task(&tx, envelope.task).await?;
         actor.scope(task.mission, Some(envelope.task))?;
         authorize(&tx, &actor, &envelope.command, &task, envelope.task).await?;
+        crate::kernel::task_dispatch_enabled(&tx, envelope.task).await?;
+        // An authenticated Owner may inspect its immutable Accept receipt;
+        // cached Worker/Verifier work must not revive a terminal Task.
+        if task.status == "accepted" && !matches!(envelope.command, ArtifactCommand::Accept { .. })
+        {
+            return Err(err(ErrorCode::StaleRevision));
+        }
         let family = envelope.command.family();
         // Bind scope and concurrency preconditions, not only command payload.
         let digest = crate::validation::digest(&envelope)?;
@@ -379,6 +391,12 @@ impl ArtifactService {
    let value:serde_json::Value=row.get(2);
    if row.get::<_,String>(1)=="rejected" {return Err(serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?);}
    let result:ArtifactResult=serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?;
+   if let ArtifactCommand::Repair{candidate_id,report_id,..}=&envelope.command {
+       crate::kernel::schema(&tx).await?;
+       if envelope.generation!=task.generation {return Err(err(ErrorCode::StaleGeneration));}
+       if task.revision!=result.revision || task.status!="repair_required" {return Err(err(ErrorCode::StaleRevision));}
+       self.repair_evidence(&tx,&task,envelope.task,candidate_id,report_id).await?;
+   }
    if result.accepted { self.verify_evidence(&tx,result.candidate_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?,result.report_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?).await?; }
    tx.commit().await?; return Ok(result);
   }
@@ -441,13 +459,42 @@ impl ArtifactService {
         .await?;
         Ok(())
     }
+    async fn repair_evidence(
+        &self,
+        tx: &tokio_postgres::Transaction<'_>,
+        task: &TaskBinding,
+        id: Uuid,
+        candidate_id: &str,
+        report_id: &str,
+    ) -> Result<()> {
+        let policy = load_policy(tx, id).await?;
+        let (current_id, current_candidate, implementer) = current(tx, id).await?;
+        if current_id != candidate_id {
+            return Err(err(ErrorCode::StaleRevision));
+        }
+        let (candidate, report, verifier) =
+            self.verify_evidence(tx, candidate_id, report_id).await?;
+        if candidate != current_candidate || verifier != policy.verifier || verifier == implementer
+        {
+            return Err(err(ErrorCode::StaleRevision));
+        }
+        validate_candidate(&candidate, task, &policy)?;
+        validate_report(&report, &policy)?;
+        if report.resolved_decisions
+            && candidate.risks.is_empty()
+            && report.checks.iter().all(|c| c.exit_code == 0)
+        {
+            return Err(err(ErrorCode::DependencyUnmet));
+        }
+        Ok(())
+    }
     async fn verify_evidence(
         &self,
         tx: &tokio_postgres::Transaction<'_>,
         candidate_id: &str,
         report_id: &str,
     ) -> Result<(Candidate, Verification, Uuid)> {
-        let row=tx.query_opt("SELECT c.candidate,r.verification,r.verifier FROM artifact_candidates c JOIN artifact_reports r ON r.candidate_id=c.id WHERE c.id=$1 AND r.id=$2",&[&candidate_id,&report_id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+        let row=tx.query_opt("SELECT c.candidate,r.verification,r.verifier,c.task_id FROM artifact_candidates c JOIN artifact_reports r ON r.candidate_id=c.id WHERE c.id=$1 AND r.id=$2",&[&candidate_id,&report_id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
         let candidate: Candidate = decode(row.get(0))?;
         let report: Verification = decode(row.get(1))?;
         if candidate != report.candidate {
@@ -457,7 +504,63 @@ impl ArtifactService {
         for check in &report.checks {
             self.store.read(&check.logs)?;
         }
+        self.verify_execution_report(tx, row.get(3), row.get(2), &report)
+            .await?;
         Ok((candidate, report, row.get(2)))
+    }
+    /// Legacy unassembled tasks retain ticket11's reporting contract. An
+    /// irreversible assembled policy requires independent monitor observations.
+    async fn verify_execution_report(
+        &self,
+        tx: &tokio_postgres::Transaction<'_>,
+        task: Uuid,
+        verifier: Uuid,
+        report: &Verification,
+    ) -> Result<()> {
+        crate::kernel::schema(tx).await?;
+        let Some(requirement) = tx
+            .query_opt(
+                "SELECT recovery_epoch FROM kernel_verification_requirements WHERE task_id=$1",
+                &[&task],
+            )
+            .await?
+        else {
+            return Ok(());
+        };
+        if requirement.get::<_, Uuid>(0) != self.broker.epoch {
+            return Err(err(ErrorCode::DependencyUnmet));
+        }
+        for check in &report.checks {
+            let bytes = self.store.read(&check.logs)?;
+            let evidence: serde_json::Value =
+                serde_json::from_slice(&bytes).map_err(|_| err(ErrorCode::DependencyUnmet))?;
+            let claimed = &evidence["trusted_monitor_result"];
+            let execution: Uuid = serde_json::from_value(claimed["execution"].clone())
+                .map_err(|_| err(ErrorCode::DependencyUnmet))?;
+            let row=tx.query_opt("SELECT r.result,w.manifest FROM kernel_execution_results r JOIN supervised_workspaces w ON w.id=r.execution_id JOIN episode_executions x ON x.execution_id=w.id JOIN mailbox_episodes e ON e.id=x.episode_id JOIN credentials c ON c.id=x.credential_id JOIN tasks t ON t.id=x.task_id WHERE r.execution_id=$1 AND x.task_id=$2 AND x.principal_id=$3 AND x.role='verifier' AND x.recovery_epoch=$4 AND w.state IN ('stopped','deleting','released') AND e.task_generation=t.generation AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id=x.task_id AND c.generation=e.task_generation AND c.recovery_epoch=$4 AND c.expires_at>clock_timestamp()", &[&execution,&task,&verifier,&self.broker.epoch]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+            let stored: serde_json::Value = row.get(0);
+            if claimed != &stored {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let result: crate::supervisor::ExecutionResult = decode(stored)?;
+            let manifest: crate::supervisor::WorkspaceManifest = decode(row.get(1))?;
+            let output = evidence["output"]
+                .as_str()
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+            if result.execution != execution
+                || result.recovery_epoch != self.broker.epoch
+                || result.candidate.as_ref() != Some(&report.candidate)
+                || manifest.candidate.as_ref() != Some(&report.candidate)
+                || result.argv != check.command
+                || result.exit_code != Some(check.exit_code)
+                || result.signal.is_some()
+                || !result.namespace_stopped
+                || result.logs != sha256(output.as_bytes())
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+        }
+        Ok(())
     }
     async fn apply(
         &self,
@@ -501,7 +604,9 @@ impl ArtifactService {
                 task.status.as_str()
             }
             ArtifactCommand::Submit { candidate } => {
-                if !["running", "submitted", "verifying"].contains(&task.status.as_str()) {
+                if !["running", "submitted", "verifying", "repair_required"]
+                    .contains(&task.status.as_str())
+                {
                     return Err(err(ErrorCode::DependencyUnmet));
                 }
                 let policy = load_policy(tx, envelope.task).await?;
@@ -543,6 +648,8 @@ impl ArtifactService {
                     return Err(err(ErrorCode::StaleRevision));
                 }
                 validate_report(verification, &policy)?;
+                self.verify_execution_report(tx, envelope.task, actor.principal, verification)
+                    .await?;
                 self.store.read(&candidate.artifact)?;
                 for check in &verification.checks {
                     self.reference(tx, &check.logs, fault).await?;
@@ -558,6 +665,27 @@ impl ArtifactService {
                 result.candidate_id = Some(id);
                 result.report_id = Some(report_id);
                 "verifying"
+            }
+            ArtifactCommand::Repair {
+                candidate_id,
+                report_id,
+                reason,
+            } => {
+                crate::kernel::schema(tx).await?;
+                if reason.is_empty() || reason.len() > 8192 {
+                    return Err(err(ErrorCode::InvalidArgument));
+                }
+                self.repair_evidence(tx, task, envelope.task, candidate_id, report_id)
+                    .await?;
+                let exhausted:bool=tx.query_one("SELECT (SELECT count(*) FROM kernel_repair_charges WHERE mission_id=$1)>=max_repairs FROM missions WHERE id=$1", &[&task.mission]).await?.get(0);
+                if exhausted {
+                    return Err(err(ErrorCode::BudgetExhausted));
+                }
+                if task.status!="verifying" || tx.query_one("SELECT EXISTS(SELECT 1 FROM kernel_repair_charges WHERE candidate_id=$1 AND report_id=$2)", &[candidate_id,report_id]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::DependencyUnmet));}
+                tx.execute("INSERT INTO kernel_repair_charges(id,mission_id,task_id,candidate_id,report_id,principal_id,recovery_epoch,generation,reason) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)", &[&Uuid::new_v4(),&task.mission,&envelope.task,candidate_id,report_id,&actor.principal,&self.broker.epoch,&task.generation,reason]).await?;
+                result.candidate_id = Some(candidate_id.clone());
+                result.report_id = Some(report_id.clone());
+                "repair_required"
             }
             ArtifactCommand::Accept {
                 candidate_id,
@@ -761,7 +889,7 @@ async fn authorize(
             }
             Ok(())
         }
-        ArtifactCommand::Accept { .. } => {
+        ArtifactCommand::Accept { .. } | ArtifactCommand::Repair { .. } => {
             if actor.role == crate::Role::Owner {
                 return Ok(());
             }
@@ -830,6 +958,7 @@ impl ArtifactCommand {
             Self::Submit { .. } => "result.submit",
             Self::Verify { .. } => "verification.submit",
             Self::Accept { .. } => "task.accept",
+            Self::Repair { .. } => "task.repair",
         }
     }
 }

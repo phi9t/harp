@@ -48,7 +48,7 @@ with (root / "runtime.lock").open("a") as gate:
             effect_id = state["turn"]
         else:
             effect_id = "effect-" + effect
-        durable(root / (effect + ".effect"), {"id": effect_id, "operation": request["intent"]["id"], "turn": state["turn"]})
+        durable(root / (effect + ".effect"), {"id": effect_id, "operation": request["intent"]["id"], "turn": state["turn"], "thread": state["thread"], "intent": request["intent"], "runtime": request.get("runtime"), "usage": {"profile": "legacy-supervisor-os-v1", "model_requests": 0, "cost_microusd": 0}})
         if mode != "steer_drop_reply":
             print(json.dumps({"effect_id": effect_id, "thread_id": state["thread"]}))
     temporary = root / ("state-" + str(uuid.uuid4()))

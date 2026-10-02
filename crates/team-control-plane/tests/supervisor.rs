@@ -551,7 +551,7 @@ async fn stale_generation_fences_dispatch_and_cancels_existing_namespace() {
     let manifest = f.service.inspect(&f.owner, h.id).await.unwrap().manifest;
     assert_eq!(git(&h.path, &["rev-parse", "HEAD"]), manifest.base);
     assert_eq!(manifest.store, f.root.join("store"));
-    assert_eq!(manifest.attempt, f.attempt);
+    assert_eq!(manifest.attempt, Some(f.attempt));
     assert_eq!(manifest.write_scope, vec!["src"]);
     f.service
         .start("fixture-worker", h.id, nested(), 30)

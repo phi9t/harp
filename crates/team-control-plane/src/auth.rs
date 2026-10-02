@@ -105,6 +105,38 @@ pub(crate) async fn authorize_command(
     command: &Command,
 ) -> Result<RecordScope> {
     let task_id = match command {
+        Command::CancelAttempt {
+            task_id,
+            attempt_id,
+            ..
+        }
+        | Command::ReconcileAttempt {
+            task_id,
+            attempt_id,
+        } => {
+            let row=tx.query_opt("SELECT a.task_id,a.worker_id,a.generation,a.recovery_epoch FROM attempts a WHERE a.id=$1", &[attempt_id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+            if row.get::<_, Uuid>(0) != *task_id {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if actor.role != Role::Owner
+                && (actor.role != Role::Worker
+                    || actor.principal != row.get::<_, Uuid>(1)
+                    || actor.generation != Some(row.get::<_, i64>(2)))
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            // An Owner may reconcile historical cancellation under the current epoch.
+            if actor.role != Role::Owner
+                && row.get::<_, Uuid>(3)
+                    != tx
+                        .query_one("SELECT active_epoch FROM deployment WHERE singleton", &[])
+                        .await?
+                        .get::<_, Uuid>(0)
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            Some(*task_id)
+        }
         Command::AssignAttempt { task_id, .. } => {
             if !matches!(actor.role, Role::Owner | Role::Lead) {
                 return Err(err(ErrorCode::Unauthorized));
