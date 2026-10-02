@@ -261,6 +261,17 @@ pub(crate) async fn execution_dispatch_current(
         return Ok(false);
     }
     let terminal: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM tasks t WHERE t.status IN ('accepted','cancelled') AND (t.id=(SELECT task_id FROM episode_executions WHERE execution_id=$1) OR t.id=(SELECT a.task_id FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1)))", &[&id]).await?.get(0);
+    let task: Option<Uuid> = tx.query_one(
+        "SELECT CASE WHEN x.role='worker' THEN x.task_id WHEN x.execution_id IS NULL THEN a.task_id END FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1",
+        &[&id],
+    ).await?.get(0);
+    if let Some(task) = task {
+        match crate::artifacts::implementation_enabled(tx, task, epoch).await {
+            Ok(()) => {}
+            Err(error) if error.code == ErrorCode::DependencyUnmet => return Ok(false),
+            Err(error) => return Err(error),
+        }
+    }
     Ok(!terminal && execution_reservation_current(tx, id).await?)
 }
 // AssignAttempt already reserved the first imported Worker episode. Additional
@@ -422,6 +433,14 @@ impl Supervisor {
             {
                 return Err(crate::domain::err(ErrorCode::StaleGeneration));
             }
+        }
+        if role == "worker" {
+            crate::artifacts::implementation_enabled(
+                &tx,
+                task.ok_or_else(invalid)?,
+                self.broker.epoch,
+            )
+            .await?;
         }
         if let Some(existing)=tx.query_opt("SELECT w.id,w.manifest FROM episode_executions x JOIN supervised_workspaces w ON w.id=x.execution_id WHERE x.episode_id=$1", &[&episode]).await? {
             let existing_id: Uuid = existing.get(0);
@@ -608,6 +627,7 @@ impl Supervisor {
             return Err(crate::domain::err(ErrorCode::StaleGeneration));
         }
         crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        crate::artifacts::implementation_enabled(&tx, task, self.broker.epoch).await?;
         if tx
             .query_opt(
                 "SELECT id FROM supervised_workspaces WHERE attempt_id=$1",
@@ -858,6 +878,17 @@ impl Supervisor {
         storage::lock(&tx).await?;
         let v = authorize(&tx, &self.broker, token, id, true).await?;
         if !matches!(v.state, ExecutionState::Stopped | ExecutionState::Deleting) {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        // Namespace Stop can precede launcher reaping and immutable result
+        // persistence. A launched episode retains its workspace until both facts
+        // are durable; an allocation cancelled before launch has no result.
+        if v.manifest.episode.is_some()
+            && tx.query_one(
+                "SELECT init_process IS NOT NULL AND NOT EXISTS(SELECT 1 FROM kernel_execution_results WHERE execution_id=$1) FROM supervised_workspaces WHERE id=$1",
+                &[&id],
+            ).await?.get::<_, bool>(0)
+        {
             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
         }
         runtime_release_known(&tx, &v.manifest).await?;

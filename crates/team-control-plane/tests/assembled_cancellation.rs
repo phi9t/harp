@@ -1163,3 +1163,275 @@ async fn legacy_and_imported_episode_cannot_share_one_physical_reservation() {
         violations.len()
     );
 }
+
+#[tokio::test]
+async fn cancelled_attempt_retains_historical_gateway_progress_without_pending_effects() {
+    use temporal::OperationDriver;
+    let f = Fixture::new().await;
+    let root = f.root.join("cancel-journal-history");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "model-free-native-file-fixture".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "unsupported-closed-world".into(),
+        environment: "zero-model-child-process".into(),
+    };
+    let gateway = gateway::Gateway::new(f.broker.clone());
+    let binding = Uuid::new_v4();
+    gateway
+        .bind(&f.owner, binding, f.admission, &identity, None, 1)
+        .await
+        .unwrap();
+    let mut runtime =
+        gateway_fault::FaultRuntime::new(root.clone(), gateway_fault::Fault::None, identity);
+    let create = Uuid::new_v4();
+    let start = Uuid::new_v4();
+    for (id, kind) in [
+        (create, gateway::OperationKind::Create),
+        (start, gateway::OperationKind::Start),
+    ] {
+        gateway.prepare(&f.owner,gateway::Intent {id,admission_id:f.admission,binding_id:binding,generation:1,kind,arguments:serde_json::json!({"scope":"retained history versus fenced pending effect"})}).await.unwrap();
+        if id == create {
+            assert_eq!(
+                gateway
+                    .dispatch(&f.owner, id, &mut runtime)
+                    .await
+                    .unwrap()
+                    .state,
+                gateway::OperationState::Confirmed
+            );
+        }
+    }
+    let bridge = temporal::Bridge::new(f.broker.clone());
+    let reference = bridge
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "cancel-journal",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "revoke pending Start while preserving durable Create observation"
+                        .into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let driver = temporal::GatewayOperationDriver::new(
+        bridge.clone(),
+        gateway.clone(),
+        f.owner.clone(),
+        Box::new(runtime),
+    );
+    let progress = driver.drive(&reference, f.admission).await;
+    let historical = gateway.read(&f.owner, create).await.unwrap();
+    let pending = gateway.read(&f.owner, start).await.unwrap();
+    let count = std::fs::read_dir(&root)
+        .unwrap()
+        .map(|entry| entry.unwrap())
+        .filter(|entry| entry.path().extension().is_some_and(|v| v == "invocation"))
+        .count();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("cancel-journal-progress.json"),serde_json::to_vec(&serde_json::json!({"progress":format!("{progress:?}"),"historical":historical,"pending":pending,"invocations":count})).unwrap()).unwrap();
+    bridge.close(&f.owner, &reference).await.unwrap();
+    assert_eq!(
+        driver
+            .drive(&reference, f.admission)
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::StaleGeneration
+    );
+    let successor = bridge
+        .register(
+            &f.owner,
+            temporal::AggregateKind::Task,
+            f.task,
+            reference.generation,
+        )
+        .await
+        .unwrap();
+    assert_eq!(successor.generation, reference.generation + 1);
+    assert_eq!(
+        driver
+            .drive(&reference, f.admission)
+            .await
+            .unwrap_err()
+            .code,
+        ErrorCode::StaleGeneration
+    );
+    f.finish().await;
+    let progress = progress
+        .expect("terminal cancellation must not fail retained workflow journal observation");
+    assert!(
+        progress
+            .journals
+            .contains(&(create, gateway::OperationState::Confirmed))
+    );
+    assert!(
+        progress
+            .journals
+            .contains(&(start, gateway::OperationState::Prepared))
+    );
+    assert!(progress.limitation.is_some());
+    assert_eq!(
+        count, 1,
+        "cancelled Prepared Start cannot create a new native effect"
+    );
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn stopped_launched_episode_retains_workspace_until_monitor_result_is_durable() {
+    use std::os::fd::{AsRawFd, FromRawFd, OwnedFd};
+    struct LauncherPin(OwnedFd);
+    impl Drop for LauncherPin {
+        fn drop(&mut self) {
+            // A failed assertion cannot strand the exact stopped fixture launcher.
+            unsafe {
+                libc::syscall(
+                    libc::SYS_pidfd_send_signal,
+                    self.0.as_raw_fd(),
+                    libc::SIGCONT,
+                    std::ptr::null::<libc::siginfo_t>(),
+                    0,
+                );
+            }
+        }
+    }
+    let f = Fixture::new().await;
+    let supervisor = f.supervisor().await;
+    let episode = f.worker_episode("finalization-worker").await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    supervisor
+        .start(
+            "assembled-worker",
+            execution.id,
+            vec![
+                "/bin/sh".into(),
+                "-c".into(),
+                "while :; do printf live >> src/live; sleep 0.03; done".into(),
+            ],
+            30,
+        )
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(8);
+    let view = loop {
+        let view = supervisor.inspect(&f.owner, execution.id).await.unwrap();
+        if view.state == supervisor::ExecutionState::Running
+            && execution.path.join("src/live").exists()
+        {
+            break view;
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "actual workload did not start: {view:?}"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    };
+    let launcher = view.launcher.clone().unwrap();
+    let controller = view.controller.clone().unwrap();
+    let stat = std::fs::read_to_string(format!("/proc/{}/stat", launcher.pid)).unwrap();
+    assert_eq!(
+        stat.rsplit_once(')')
+            .unwrap()
+            .1
+            .split_whitespace()
+            .nth(19)
+            .unwrap()
+            .parse::<u64>()
+            .unwrap(),
+        launcher.start_ticks
+    );
+    let exe = std::fs::read_link(format!("/proc/{}/exe", launcher.pid)).unwrap();
+    assert_eq!(exe.file_name().unwrap(), "bwrap");
+    let raw = unsafe { libc::syscall(libc::SYS_pidfd_open, launcher.pid, 0) };
+    assert!(raw >= 0);
+    let pin = LauncherPin(unsafe { OwnedFd::from_raw_fd(raw as i32) });
+    let stat = std::fs::read_to_string(format!("/proc/{}/stat", launcher.pid)).unwrap();
+    assert_eq!(
+        stat.rsplit_once(')')
+            .unwrap()
+            .1
+            .split_whitespace()
+            .nth(19)
+            .unwrap()
+            .parse::<u64>()
+            .unwrap(),
+        launcher.start_ticks
+    );
+    assert_eq!(
+        unsafe {
+            libc::syscall(
+                libc::SYS_pidfd_send_signal,
+                pin.0.as_raw_fd(),
+                libc::SIGSTOP,
+                std::ptr::null::<libc::siginfo_t>(),
+                0,
+            )
+        },
+        0
+    );
+    supervisor.cancel(&f.owner, execution.id).await.unwrap();
+    let stopped = loop {
+        let view = supervisor.reconcile(&f.owner, execution.id).await.unwrap();
+        if view.state == supervisor::ExecutionState::Stopped {
+            break view;
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "actual namespace Stop not proven: {view:?}"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+    };
+    assert!(stopped.members.is_empty());
+    let before = supervisor.result(&f.owner, execution.id).await.unwrap();
+    let early = supervisor.release(&f.owner, execution.id).await;
+    // Keep the launcher stopped until the monitor's original bounded wait ends;
+    // its actual SIGKILL wait result must be retained, never fabricated as exit0.
+    let result_deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+    let result = loop {
+        let result = supervisor.result(&f.owner, execution.id).await.unwrap();
+        if result.is_some() || std::time::Instant::now() >= result_deadline {
+            break result;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    };
+    drop(pin);
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("stopped-result-release.json"),serde_json::to_vec(&serde_json::json!({"execution":execution.id,"launcher":launcher,"controller":controller,"launcher_exe":exe,"stopped":stopped,"result_before_release":before,"early_release":format!("{early:?}"),"result":result})).unwrap()).unwrap();
+    if early.is_err() && result.is_some() {
+        supervisor.release(&f.owner, execution.id).await.unwrap();
+    }
+    f.finish().await;
+    assert!(
+        before.is_none(),
+        "fixture must hit actual Stop-before-result boundary"
+    );
+    assert_eq!(
+        early.unwrap_err().code,
+        ErrorCode::DependencyUnmet,
+        "launched episode cannot delete workspace before final result"
+    );
+    let result = result.expect("actual monitor result must survive release race");
+    assert!(result.namespace_stopped);
+    assert_eq!(result.exit_code, None);
+    assert_eq!(result.signal, Some(libc::SIGKILL));
+}

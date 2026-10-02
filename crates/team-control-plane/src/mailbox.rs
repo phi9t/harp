@@ -596,6 +596,15 @@ impl MailboxService {
             return if row.get::<_,String>(2) == "rejected" { Err(serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?) } else { serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable)) };
         }
         tx.batch_execute("SAVEPOINT mailbox_mutation").await?;
+        if actor.role == Role::Worker
+            && matches!(
+                &e.command,
+                MailboxCommand::CaptureInput { .. } | MailboxCommand::AdmitEpisode { .. }
+            )
+            && let Some(task) = actor.task
+        {
+            crate::artifacts::implementation_enabled(&tx, task, self.broker.epoch).await?;
+        }
         let outcome = self.apply(&tx, &actor, e.clone()).await;
         if let Err(error) = &outcome {
             tx.batch_execute("ROLLBACK TO SAVEPOINT mailbox_mutation")
@@ -1258,11 +1267,13 @@ impl MailboxService {
             }
             let mut task = None;
             let mut task_generation = None;
+            let mut admitted_task_revision = None;
             let mut imported = false;
             if let Some(attempt) = attempt {
-                let row=tx.query_opt("SELECT a.task_id,a.generation,a.worker_id,a.recovery_epoch,t.mission_id,t.generation FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1",&[&attempt]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+                let row=tx.query_opt("SELECT a.task_id,a.generation,a.worker_id,a.recovery_epoch,t.mission_id,t.generation,t.revision FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1",&[&attempt]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
                 task = Some(row.get::<_, Uuid>(0));
                 task_generation = Some(row.get::<_, i64>(1));
+                admitted_task_revision = Some(row.get::<_, i64>(6));
                 actor.scope(row.get(4), task)?;
                 if row.get::<_, Uuid>(4) != mission
                     || row.get::<_, Uuid>(3) != self.broker.epoch
@@ -1303,7 +1314,7 @@ impl MailboxService {
                 }
                 if !matches!(
                     verification.get::<_, String>(2).as_str(),
-                    "submitted" | "verifying"
+                    "submitted" | "verifying" | "repair_required"
                 ) {
                     return Err(err(ErrorCode::DependencyUnmet));
                 }
@@ -1367,7 +1378,7 @@ impl MailboxService {
             let role = serde_json::to_value(&actor.role).map_err(|_| invalid())?;
             let purpose = serde_json::to_value(purpose).map_err(|_| invalid())?;
             tx.execute("UPDATE missions SET admitted_episodes=admitted_episodes+$2,used_capacity=used_capacity+$3,revision=revision+1 WHERE id=$1",&[&mission,&charge,&capacity]).await?;
-            tx.execute("INSERT INTO mailbox_episodes(id,mission_id,principal_id,role,purpose,attempt_id,task_id,task_generation,lead_generation,recovery_epoch,input_digest,deadline,state,owned_capacity,event_digest,input_packet) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,clock_timestamp()+($12::bigint*interval '1 second'),'admitted',$13,$14,$15)",&[&id,&mission,&actor.principal,&role.as_str().unwrap(),&purpose.as_str().unwrap(),&attempt,&task,&task_generation,&lead_generation,&self.broker.epoch,input_digest,&budget.get::<_,i64>(4),&owned_capacity,&event_digest,&input_packet]).await?;
+            tx.execute("INSERT INTO mailbox_episodes(id,mission_id,principal_id,role,purpose,attempt_id,task_id,task_generation,lead_generation,recovery_epoch,input_digest,deadline,state,owned_capacity,event_digest,input_packet,admitted_task_revision) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,clock_timestamp()+($12::bigint*interval '1 second'),'admitted',$13,$14,$15,$16)",&[&id,&mission,&actor.principal,&role.as_str().unwrap(),&purpose.as_str().unwrap(),&attempt,&task,&task_generation,&lead_generation,&self.broker.epoch,input_digest,&budget.get::<_,i64>(4),&owned_capacity,&event_digest,&input_packet,&admitted_task_revision]).await?;
             let result = Receipt {
                 id,
                 disposition: "admitted".into(),

@@ -87,7 +87,8 @@ CREATE TABLE kernel_repair_charges(
  candidate_id text NOT NULL REFERENCES artifact_candidates,report_id text NOT NULL REFERENCES artifact_reports,
  principal_id uuid NOT NULL,recovery_epoch uuid NOT NULL,generation bigint NOT NULL,
  reason text NOT NULL CHECK(length(reason)>0 AND length(reason)<=8192),
- UNIQUE(candidate_id,report_id)
+ verification_revision bigint NOT NULL CHECK(verification_revision>0),
+ UNIQUE(task_id,candidate_id,report_id,verification_revision,generation,recovery_epoch)
 );
 CREATE TRIGGER immutable_kernel_repair_charges BEFORE UPDATE OR DELETE ON kernel_repair_charges FOR EACH ROW EXECUTE FUNCTION immutable_record();
 
@@ -151,3 +152,11 @@ CREATE FUNCTION immutable_reservation_execution() RETURNS trigger LANGUAGE plpgs
  RETURN NEW;
 END $$;
 CREATE TRIGGER immutable_reservation_execution BEFORE UPDATE ON reservations FOR EACH ROW EXECUTE FUNCTION immutable_reservation_execution();
+
+-- Admission snapshot is immutable; completion time cannot make an old Verifier fresh.
+ALTER TABLE mailbox_episodes ADD COLUMN admitted_task_revision bigint CHECK(admitted_task_revision>0);
+CREATE FUNCTION kernel_episode_revision_immutable() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+ IF NEW.admitted_task_revision IS DISTINCT FROM OLD.admitted_task_revision THEN RAISE EXCEPTION 'immutable episode admission revision'; END IF;
+ RETURN NEW;
+END; $$;
+CREATE TRIGGER immutable_kernel_episode_revision BEFORE UPDATE ON mailbox_episodes FOR EACH ROW EXECUTE FUNCTION kernel_episode_revision_immutable();

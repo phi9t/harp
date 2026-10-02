@@ -2242,6 +2242,7 @@ enum EngineeringScenario {
     CancelMeasuredCandidate,
     AcceptedTerminal,
     RepairBudget,
+    FailedGateDispatch,
     ArtifactIntegrity,
     ChangedBase,
     PostAllocationBaseChange,
@@ -3174,25 +3175,25 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .await
         .unwrap()
         .revision;
-    let configured = artifacts
-        .execute(
-            &f.owner,
-            artifact_command(
-                "configure-exact-gate",
-                revision,
-                artifacts::ArtifactCommand::Configure {
-                    verifier: f.verifier,
-                    lead_acceptance: false,
-                    base: f.base.clone(),
-                    suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                    environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                    mandatory_commands: checks.clone(),
-                },
-            ),
-            artifacts::ReferenceFault::None,
-        )
-        .await
-        .unwrap();
+    let configured = artifact_fixture_call(
+        artifacts.clone(),
+        f.owner.to_owned(),
+        artifact_command(
+            "configure-exact-gate",
+            revision,
+            artifacts::ArtifactCommand::Configure {
+                verifier: f.verifier,
+                lead_acceptance: false,
+                base: f.base.clone(),
+                suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                mandatory_commands: checks.clone(),
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
+    .unwrap();
     git(&execution.path, &["add", "src/result"]);
     git(
         &execution.path,
@@ -3230,20 +3231,20 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         deliverables: vec!["src/result".into()],
         risks: vec![],
     };
-    let submitted = artifacts
-        .execute(
-            "assembled-worker",
-            artifact_command(
-                "submit-actual-capsule",
-                configured.revision,
-                artifacts::ArtifactCommand::Submit {
-                    candidate: candidate.clone(),
-                },
-            ),
-            artifacts::ReferenceFault::None,
-        )
-        .await
-        .unwrap();
+    let submitted = artifact_fixture_call(
+        artifacts.clone(),
+        ("assembled-worker").to_owned(),
+        artifact_command(
+            "submit-actual-capsule",
+            configured.revision,
+            artifacts::ArtifactCommand::Submit {
+                candidate: candidate.clone(),
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
+    .unwrap();
     let assertion = b"caller asserts success before any verifier allocation";
     let assertion_digest = artifacts::sha256(assertion);
     artifacts
@@ -3251,31 +3252,31 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .await
         .unwrap();
     assert_eq!(
-        artifacts
-            .execute(
-                "assembled-verifier",
-                artifact_command(
-                    "deny-preallocation-report-bypass",
-                    submitted.revision,
-                    artifacts::ArtifactCommand::Verify {
-                        verification: artifacts::Verification {
-                            candidate: candidate.clone(),
-                            suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                            environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                            checks: vec![artifacts::Check {
-                                command: checks[0].clone(),
-                                exit_code: 0,
-                                logs: assertion_digest
-                            }],
-                            resolved_decisions: true
-                        }
+        artifact_fixture_call(
+            artifacts.clone(),
+            ("assembled-verifier").to_owned(),
+            artifact_command(
+                "deny-preallocation-report-bypass",
+                submitted.revision,
+                artifacts::ArtifactCommand::Verify {
+                    verification: artifacts::Verification {
+                        candidate: candidate.clone(),
+                        suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                        checks: vec![artifacts::Check {
+                            command: checks[0].clone(),
+                            exit_code: 0,
+                            logs: assertion_digest
+                        }],
+                        resolved_decisions: true
                     }
-                ),
-                artifacts::ReferenceFault::None
-            )
-            .await
-            .unwrap_err()
-            .code,
+                }
+            ),
+            artifacts::ReferenceFault::None
+        )
+        .await
+        .unwrap_err()
+        .code,
         ErrorCode::DependencyUnmet,
         "assembled requirement must already be active before any Verifier is allocated"
     );
@@ -3408,20 +3409,20 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .snapshot("assembled-worker", f.task)
         .await
         .unwrap();
-    artifacts
-        .execute(
-            "assembled-worker",
-            artifact_command(
-                "submit-actual-resumed-deliverable",
-                current.revision,
-                artifacts::ArtifactCommand::Submit {
-                    candidate: candidate.clone(),
-                },
-            ),
-            artifacts::ReferenceFault::None,
-        )
-        .await
-        .unwrap();
+    artifact_fixture_call(
+        artifacts.clone(),
+        ("assembled-worker").to_owned(),
+        artifact_command(
+            "submit-actual-resumed-deliverable",
+            current.revision,
+            artifacts::ArtifactCommand::Submit {
+                candidate: candidate.clone(),
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
+    .unwrap();
     mailbox.execute("assembled-worker",mail(f.epoch,"yield-resumed-worker",serde_json::json!({"kind":"yield_episode","episode":continuation,"checkpoint":{"id":Uuid::new_v4(),"summary":"actual resumed capsule consumed retained candidate and new captured input","artifacts":[{"task":f.task,"digest":candidate.artifact}]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
     let usage_diagnostics = evidence_directory("assembled-pre-release-usage");
     let usage_rows: Vec<serde_json::Value> = db.query(
@@ -3568,25 +3569,25 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         );
         let base = git(&store, &["rev-parse", "HEAD"]);
         let current = artifacts.snapshot(&f.owner, f.task).await.unwrap();
-        artifacts
-            .execute(
-                &f.owner,
-                artifact_command(
-                    "postallocation-change-policy",
-                    current.revision,
-                    artifacts::ArtifactCommand::Configure {
-                        verifier: f.verifier,
-                        lead_acceptance: false,
-                        base,
-                        suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                        mandatory_commands: checks.clone(),
-                    },
-                ),
-                artifacts::ReferenceFault::None,
-            )
-            .await
-            .unwrap();
+        artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
+            artifact_command(
+                "postallocation-change-policy",
+                current.revision,
+                artifacts::ArtifactCommand::Configure {
+                    verifier: f.verifier,
+                    lead_acceptance: false,
+                    base,
+                    suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                    environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                    mandatory_commands: checks.clone(),
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
         true
     } else {
         false
@@ -3655,30 +3656,30 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .unwrap();
     if changed_after_allocation {
         let current = artifacts.snapshot(&f.owner, f.task).await.unwrap();
-        let stale = artifacts
-            .execute(
-                "assembled-verifier",
-                artifact_command(
-                    "reject-postallocation-stale-report",
-                    current.revision,
-                    artifacts::ArtifactCommand::Verify {
-                        verification: artifacts::Verification {
-                            candidate: candidate.clone(),
-                            suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                            environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                            checks: vec![artifacts::Check {
-                                command: checks[0].clone(),
-                                exit_code: 0,
-                                logs: log_digest.clone(),
-                            }],
-                            resolved_decisions: true,
-                        },
+        let stale = artifact_fixture_call(
+            artifacts.clone(),
+            ("assembled-verifier").to_owned(),
+            artifact_command(
+                "reject-postallocation-stale-report",
+                current.revision,
+                artifacts::ArtifactCommand::Verify {
+                    verification: artifacts::Verification {
+                        candidate: candidate.clone(),
+                        suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                        checks: vec![artifacts::Check {
+                            command: checks[0].clone(),
+                            exit_code: 0,
+                            logs: log_digest.clone(),
+                        }],
+                        resolved_decisions: true,
                     },
-                ),
-                artifacts::ReferenceFault::None,
-            )
-            .await
-            .unwrap_err();
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap_err();
         assert_eq!(stale.code, ErrorCode::StaleRevision);
         assert_eq!(
             artifacts.snapshot(&f.owner, f.task).await.unwrap().status,
@@ -3692,55 +3693,61 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         retain_bytes(&out.join("stale-report-refusal.json"),&serde_json::to_vec(&serde_json::json!({"code":stale.code,"candidate":candidate,"current_revision":current.revision})).unwrap());
         // Owner restores this prior base only to finish the old bootstrap; below,
         // the changed-base path builds and measures a fresh integration candidate.
-        artifacts
-            .execute(
-                &f.owner,
-                artifact_command(
-                    "restore-bootstrap-base-policy",
-                    current.revision,
-                    artifacts::ArtifactCommand::Configure {
-                        verifier: f.verifier,
-                        lead_acceptance: false,
-                        base: f.base.clone(),
-                        suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                        mandatory_commands: checks.clone(),
-                    },
-                ),
-                artifacts::ReferenceFault::None,
-            )
-            .await
-            .unwrap();
-    }
-    let snapshot = artifacts
-        .snapshot("assembled-verifier", f.task)
-        .await
-        .unwrap();
-    let verified = artifacts
-        .execute(
-            "assembled-verifier",
+        artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
             artifact_command(
-                "verify-actual-independent-gate",
-                snapshot.revision,
-                artifacts::ArtifactCommand::Verify {
-                    verification: artifacts::Verification {
-                        candidate: candidate.clone(),
-                        suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
-                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                        checks: vec![artifacts::Check {
-                            command: checks[0].clone(),
-                            exit_code: trusted_result.exit_code.unwrap(),
-                            logs: log_digest.clone(),
-                        }],
-                        resolved_decisions: true,
-                    },
+                "restore-bootstrap-base-policy",
+                current.revision,
+                artifacts::ArtifactCommand::Configure {
+                    verifier: f.verifier,
+                    lead_acceptance: false,
+                    base: f.base.clone(),
+                    suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                    environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                    mandatory_commands: checks.clone(),
                 },
             ),
             artifacts::ReferenceFault::None,
         )
         .await
         .unwrap();
+    }
+    let snapshot = artifacts
+        .snapshot("assembled-verifier", f.task)
+        .await
+        .unwrap();
+    let mut verified = artifact_fixture_call(
+        artifacts.clone(),
+        ("assembled-verifier").to_owned(),
+        artifact_command(
+            "verify-actual-independent-gate",
+            snapshot.revision,
+            artifacts::ArtifactCommand::Verify {
+                verification: artifacts::Verification {
+                    candidate: candidate.clone(),
+                    suite: artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),
+                    environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                    checks: vec![artifacts::Check {
+                        command: checks[0].clone(),
+                        exit_code: trusted_result.exit_code.unwrap(),
+                        logs: log_digest.clone(),
+                    }],
+                    resolved_decisions: true,
+                },
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
+    .unwrap();
     if scenario == EngineeringScenario::CancelMeasuredCandidate {
+        let fenced_steer = Uuid::new_v4();
+        gateway.prepare(&f.owner, Intent {
+            id: fenced_steer, admission_id: f.admission, binding_id: binding,
+            generation: 1, kind: OperationKind::Steer,
+            arguments: serde_json::json!({"message":"prepared effect must remain fenced after cancellation"}),
+        }).await.unwrap();
         let cancelled = f
             .broker
             .execute(
@@ -3803,11 +3810,15 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             ),
         ] {
             assert_eq!(
-                artifacts
-                    .execute(token, command, artifacts::ReferenceFault::None)
-                    .await
-                    .unwrap_err()
-                    .code,
+                artifact_fixture_call(
+                    artifacts.clone(),
+                    (token).to_owned(),
+                    command,
+                    artifacts::ReferenceFault::None
+                )
+                .await
+                .unwrap_err()
+                .code,
                 ErrorCode::DependencyUnmet
             );
         }
@@ -3833,25 +3844,35 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             "cancelled"
         );
         assert_eq!(
-            artifacts
-                .execute(
-                    &f.owner,
-                    artifact_command(
-                        "refuse-terminal-cancelled-accept",
-                        completed.revision,
-                        artifacts::ArtifactCommand::Accept {
-                            candidate_id: verified.candidate_id.unwrap(),
-                            report_id: verified.report_id.unwrap()
-                        }
-                    ),
-                    artifacts::ReferenceFault::None
-                )
-                .await
-                .unwrap_err()
-                .code,
+            artifact_fixture_call(
+                artifacts.clone(),
+                f.owner.to_owned(),
+                artifact_command(
+                    "refuse-terminal-cancelled-accept",
+                    completed.revision,
+                    artifacts::ArtifactCommand::Accept {
+                        candidate_id: verified.candidate_id.unwrap(),
+                        report_id: verified.report_id.unwrap()
+                    }
+                ),
+                artifacts::ReferenceFault::None
+            )
+            .await
+            .unwrap_err()
+            .code,
             ErrorCode::DependencyUnmet
         );
         let out = evidence_directory("cancelled-measured-candidate");
+        cancelled_sdk_drain_phase(
+            client.clone(),
+            bridge.clone(),
+            r.clone(),
+            gateway.clone(),
+            f.owner.clone(),
+            fenced_steer,
+            out.clone(),
+        )
+        .await;
         retain_bytes(&out.join("cancelled-report-proof.json"),&serde_json::to_vec(&serde_json::json!({"candidate":candidate,"measured_result":trusted_result,"cancel":cancelled,"completed":completed})).unwrap());
         for id in [
             execution.id,
@@ -3904,13 +3925,13 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
                         std::fs::write(&path, b"corrupt actual referenced evidence").unwrap();
                     }
                     let key = format!("integrity-{label}-{area}-{fault}");
-                    let result = artifacts
-                        .execute(
-                            &f.owner,
-                            accept(&key, verified.report_id.clone().unwrap()),
-                            artifacts::ReferenceFault::None,
-                        )
-                        .await;
+                    let result = artifact_fixture_call(
+                        artifacts.clone(),
+                        f.owner.to_owned(),
+                        accept(&key, verified.report_id.clone().unwrap()),
+                        artifacts::ReferenceFault::None,
+                    )
+                    .await;
                     std::fs::write(&path, &original).unwrap();
                     assert!(
                         result.is_err(),
@@ -3924,15 +3945,15 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             }
         }
         assert_eq!(
-            artifacts
-                .execute(
-                    &f.owner,
-                    accept("integrity-missing-report", Uuid::new_v4().to_string()),
-                    artifacts::ReferenceFault::None
-                )
-                .await
-                .unwrap_err()
-                .code,
+            artifact_fixture_call(
+                artifacts.clone(),
+                f.owner.to_owned(),
+                accept("integrity-missing-report", Uuid::new_v4().to_string()),
+                artifacts::ReferenceFault::None
+            )
+            .await
+            .unwrap_err()
+            .code,
             ErrorCode::NotFound
         );
         let report_id = verified.report_id.clone().unwrap();
@@ -4015,42 +4036,42 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             ],
         );
         let new_checks=vec![vec!["/bin/sh".into(),"-c".into(),"test \"$(cat src/base)\" = 'changed integration base' && test \"$(cat src/result)\" = 'exact result' && test \"$(cat src/resumed)\" = 'resumed-from-retained-bytes' && cat src/base src/result src/resumed".into()]];
-        let configured = artifacts
-            .execute(
-                &f.owner,
+        let configured = artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
+            artifact_command(
+                "changed-base-policy",
+                verified.revision,
+                artifacts::ArtifactCommand::Configure {
+                    verifier: f.verifier,
+                    lead_acceptance: false,
+                    base: new_base.clone(),
+                    suite: artifacts::sha256(&serde_json::to_vec(&new_checks).unwrap()),
+                    environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                    mandatory_commands: new_checks.clone(),
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+        assert_eq!(
+            artifact_fixture_call(
+                artifacts.clone(),
+                f.owner.to_owned(),
                 artifact_command(
-                    "changed-base-policy",
-                    verified.revision,
-                    artifacts::ArtifactCommand::Configure {
-                        verifier: f.verifier,
-                        lead_acceptance: false,
-                        base: new_base.clone(),
-                        suite: artifacts::sha256(&serde_json::to_vec(&new_checks).unwrap()),
-                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                        mandatory_commands: new_checks.clone(),
-                    },
+                    "reject-original-gate-after-base-change",
+                    configured.revision,
+                    artifacts::ArtifactCommand::Accept {
+                        candidate_id: verified.candidate_id.clone().unwrap(),
+                        report_id: verified.report_id.clone().unwrap()
+                    }
                 ),
-                artifacts::ReferenceFault::None,
+                artifacts::ReferenceFault::None
             )
             .await
-            .unwrap();
-        assert_eq!(
-            artifacts
-                .execute(
-                    &f.owner,
-                    artifact_command(
-                        "reject-original-gate-after-base-change",
-                        configured.revision,
-                        artifacts::ArtifactCommand::Accept {
-                            candidate_id: verified.candidate_id.clone().unwrap(),
-                            report_id: verified.report_id.clone().unwrap()
-                        }
-                    ),
-                    artifacts::ReferenceFault::None
-                )
-                .await
-                .unwrap_err()
-                .code,
+            .unwrap_err()
+            .code,
             ErrorCode::StaleRevision
         );
         let integration =
@@ -4082,37 +4103,37 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             deliverables: vec!["src/result".into(), "src/resumed".into()],
             risks: vec![],
         };
-        let submitted = artifacts
-            .execute(
-                "assembled-worker",
+        let submitted = artifact_fixture_call(
+            artifacts.clone(),
+            ("assembled-worker").to_owned(),
+            artifact_command(
+                "submit-changed-base-integration",
+                configured.revision,
+                artifacts::ArtifactCommand::Submit {
+                    candidate: new_candidate.clone(),
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+        assert_eq!(
+            artifact_fixture_call(
+                artifacts.clone(),
+                f.owner.to_owned(),
                 artifact_command(
-                    "submit-changed-base-integration",
-                    configured.revision,
-                    artifacts::ArtifactCommand::Submit {
-                        candidate: new_candidate.clone(),
-                    },
+                    "reject-old-report-for-new-candidate",
+                    submitted.revision,
+                    artifacts::ArtifactCommand::Accept {
+                        candidate_id: submitted.candidate_id.clone().unwrap(),
+                        report_id: verified.report_id.clone().unwrap()
+                    }
                 ),
-                artifacts::ReferenceFault::None,
+                artifacts::ReferenceFault::None
             )
             .await
-            .unwrap();
-        assert_eq!(
-            artifacts
-                .execute(
-                    &f.owner,
-                    artifact_command(
-                        "reject-old-report-for-new-candidate",
-                        submitted.revision,
-                        artifacts::ArtifactCommand::Accept {
-                            candidate_id: submitted.candidate_id.clone().unwrap(),
-                            report_id: verified.report_id.clone().unwrap()
-                        }
-                    ),
-                    artifacts::ReferenceFault::None
-                )
-                .await
-                .unwrap_err()
-                .code,
+            .unwrap_err()
+            .code,
             ErrorCode::DependencyUnmet
         );
         let input = Uuid::new_v4();
@@ -4185,45 +4206,45 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             .publish_evidence("assembled-verifier", f.task, &digest, &evidence)
             .await
             .unwrap();
-        let report = artifacts
-            .execute(
-                "assembled-verifier",
-                artifact_command(
-                    "changed-base-measured-report",
-                    submitted.revision,
-                    artifacts::ArtifactCommand::Verify {
-                        verification: artifacts::Verification {
-                            candidate: new_candidate,
-                            suite: artifacts::sha256(&serde_json::to_vec(&new_checks).unwrap()),
-                            environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
-                            checks: vec![artifacts::Check {
-                                command: new_checks[0].clone(),
-                                exit_code: 0,
-                                logs: digest,
-                            }],
-                            resolved_decisions: true,
-                        },
+        let report = artifact_fixture_call(
+            artifacts.clone(),
+            ("assembled-verifier").to_owned(),
+            artifact_command(
+                "changed-base-measured-report",
+                submitted.revision,
+                artifacts::ArtifactCommand::Verify {
+                    verification: artifacts::Verification {
+                        candidate: new_candidate,
+                        suite: artifacts::sha256(&serde_json::to_vec(&new_checks).unwrap()),
+                        environment: artifacts::sha256(b"actual-bwrap-private-git-v1"),
+                        checks: vec![artifacts::Check {
+                            command: new_checks[0].clone(),
+                            exit_code: 0,
+                            logs: digest,
+                        }],
+                        resolved_decisions: true,
                     },
-                ),
-                artifacts::ReferenceFault::None,
-            )
-            .await
-            .unwrap();
-        let accepted = artifacts
-            .execute(
-                &f.owner,
-                artifact_command(
-                    "accept-fresh-base-gate",
-                    report.revision,
-                    artifacts::ArtifactCommand::Accept {
-                        candidate_id: report.candidate_id.unwrap(),
-                        report_id: report.report_id.unwrap(),
-                    },
-                ),
-                artifacts::ReferenceFault::None,
-            )
-            .await
-            .unwrap();
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+        let accepted = artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
+            artifact_command(
+                "accept-fresh-base-gate",
+                report.revision,
+                artifacts::ArtifactCommand::Accept {
+                    candidate_id: report.candidate_id.unwrap(),
+                    report_id: report.report_id.unwrap(),
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
         assert!(accepted.accepted);
         retain_bytes(
             &out.join("integration.json"),
@@ -4246,6 +4267,12 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         return;
     }
     mailbox.execute("assembled-verifier",mail(f.epoch,"negative-control-input",serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.verifier],"message_kind":"notice","text":"Execute nonzero negative control despite misleading success stdout","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+    let failed_pending = if scenario == EngineeringScenario::FailedGateDispatch {
+        supervisor.release(&f.owner, execution.id).await.unwrap();
+        Some(preallocate_failed_gate_worker(f.clone(), supervisor.clone(), artifacts.clone()).await)
+    } else {
+        None
+    };
     let negative_input = Uuid::new_v4();
     let negative_episode = Uuid::new_v4();
     mailbox.execute("assembled-verifier",mail(f.epoch,"capture-negative-verification",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":negative_input,"attempt":f.attempt,"purpose":"verification","limit":4}))).await.unwrap();
@@ -4330,71 +4357,71 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     });
     let mut forged_report = failed_report.clone();
     forged_report.checks.last_mut().unwrap().exit_code = 0;
-    match artifacts
-        .execute(
-            "assembled-verifier",
-            artifact_command(
-                "forged-zero-for-measured-seventeen",
-                verified.revision,
-                artifacts::ArtifactCommand::Verify {
-                    verification: forged_report,
-                },
-            ),
-            artifacts::ReferenceFault::None,
-        )
-        .await
+    match artifact_fixture_call(
+        artifacts.clone(),
+        ("assembled-verifier").to_owned(),
+        artifact_command(
+            "forged-zero-for-measured-seventeen",
+            verified.revision,
+            artifacts::ArtifactCommand::Verify {
+                verification: forged_report,
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
     {
         Ok(forged) => assert!(
-            artifacts
-                .execute(
-                    &f.owner,
-                    artifact_command(
-                        "deny-forged-zero-acceptance",
-                        forged.revision,
-                        artifacts::ArtifactCommand::Accept {
-                            candidate_id: forged.candidate_id.unwrap(),
-                            report_id: forged.report_id.unwrap()
-                        }
-                    ),
-                    artifacts::ReferenceFault::None
-                )
-                .await
-                .is_err(),
-            "same measured failed Verifier execution cannot become Accepted by claiming exit_code zero"
-        ),
-        Err(error) => assert_eq!(error.code, ErrorCode::DependencyUnmet),
-    }
-    let mut failed = artifacts
-        .execute(
-            "assembled-verifier",
-            artifact_command(
-                "verify-measured-negative-control",
-                verified.revision,
-                artifacts::ArtifactCommand::Verify {
-                    verification: failed_report,
-                },
-            ),
-            artifacts::ReferenceFault::None,
-        )
-        .await
-        .unwrap();
-    assert_eq!(
-        artifacts
-            .execute(
-                &f.owner,
+            artifact_fixture_call(
+                artifacts.clone(),
+                f.owner.to_owned(),
                 artifact_command(
-                    "reject-nonzero-despite-stdout",
-                    failed.revision,
+                    "deny-forged-zero-acceptance",
+                    forged.revision,
                     artifacts::ArtifactCommand::Accept {
-                        candidate_id: failed.candidate_id.clone().unwrap(),
-                        report_id: failed.report_id.clone().unwrap()
+                        candidate_id: forged.candidate_id.unwrap(),
+                        report_id: forged.report_id.unwrap()
                     }
                 ),
                 artifacts::ReferenceFault::None
             )
             .await
-            .unwrap_err()
-            .code,
+            .is_err(),
+            "same measured failed Verifier execution cannot become Accepted by claiming exit_code zero"
+        ),
+        Err(error) => assert_eq!(error.code, ErrorCode::DependencyUnmet),
+    }
+    let mut failed = artifact_fixture_call(
+        artifacts.clone(),
+        ("assembled-verifier").to_owned(),
+        artifact_command(
+            "verify-measured-negative-control",
+            verified.revision,
+            artifacts::ArtifactCommand::Verify {
+                verification: failed_report,
+            },
+        ),
+        artifacts::ReferenceFault::None,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
+            artifact_command(
+                "reject-nonzero-despite-stdout",
+                failed.revision,
+                artifacts::ArtifactCommand::Accept {
+                    candidate_id: failed.candidate_id.clone().unwrap(),
+                    report_id: failed.report_id.clone().unwrap()
+                }
+            ),
+            artifacts::ReferenceFault::None
+        )
+        .await
+        .unwrap_err()
+        .code,
         ErrorCode::DependencyUnmet
     );
     assert_ne!(
@@ -4405,7 +4432,36 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             .data["status"],
         "accepted"
     );
+    if let Some((pending_episode, pending, packet)) = failed_pending {
+        failed_gate_worker_phase(
+            f.clone(),
+            supervisor.clone(),
+            artifacts.clone(),
+            pending_episode,
+            pending,
+            packet,
+        )
+        .await;
+        supervisor
+            .release(&f.owner, negative_execution.id)
+            .await
+            .unwrap();
+        child.kill();
+        std::sync::Arc::try_unwrap(f)
+            .unwrap_or_else(|_| panic!("failed gate phase retained fixture"))
+            .finish()
+            .await;
+        return;
+    }
     let accepted_pending = if scenario == EngineeringScenario::AcceptedTerminal {
+        let charged = artifact_fixture_call(artifacts.clone(), f.owner.clone(), artifact_command(
+            "authorize-terminal-fixture-pending-repair", failed.revision,
+            artifacts::ArtifactCommand::Repair {
+                candidate_id: failed.candidate_id.clone().unwrap(), report_id: failed.report_id.clone().unwrap(),
+                reason: "authorize the preallocated Worker before testing eventual acceptance revocation".into(),
+            }), artifacts::ReferenceFault::None).await.unwrap();
+        failed.revision = charged.revision;
+        supervisor.release(&f.owner, execution.id).await.unwrap();
         let fixture = f.clone();
         let supervisor = supervisor.clone();
         tokio::spawn(async move {
@@ -4468,6 +4524,17 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             .unwrap();
         let endpoint = format!("http://{address}/v1/artifacts/commands");
         let mut revision = failed.revision;
+        check_uncharged_repair_boundary(
+            std::sync::Arc::clone(&f),
+            mailbox.clone(),
+            client.clone(),
+            endpoint.clone(),
+            candidate.clone(),
+            out.clone(),
+            revision,
+        )
+        .await
+        .expect("uncharged repair boundary task failed");
         for index in 0..4 {
             let body = serde_json::json!({"key":format!("bounded-repair-{index}"),"task":f.task,"expected_revision":revision,"generation":1,"recovery_epoch":f.epoch,"command":{"kind":"repair","candidate_id":failed.candidate_id,"report_id":failed.report_id,"reason":"independent measured gate failed with exit17"}});
             let response = client
@@ -4590,21 +4657,61 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         server.abort();
         assert!(server.await.unwrap_err().is_cancelled());
     } else {
-        let accepted = artifacts
-            .execute(
-                &f.owner,
+        // An earlier successful report cannot erase the subsequently measured
+        // failed gate. The same candidate needs a fresh independent SDK gate.
+        let old_report = artifacts
+            .snapshot("assembled-verifier", f.task)
+            .await
+            .unwrap()
+            .reports
+            .into_iter()
+            .find(|report| report.checks.iter().all(|check| check.exit_code == 0))
+            .unwrap();
+        assert_eq!(
+            artifact_fixture_call(
+                artifacts.clone(),
+                "assembled-verifier".into(),
                 artifact_command(
-                    "explicit-owner-accept",
+                    "old-success-cannot-clear-current-failure",
                     failed.revision,
-                    artifacts::ArtifactCommand::Accept {
-                        candidate_id: verified.candidate_id.unwrap(),
-                        report_id: verified.report_id.unwrap(),
-                    },
+                    artifacts::ArtifactCommand::Verify {
+                        verification: old_report
+                    }
                 ),
-                artifacts::ReferenceFault::None,
+                artifacts::ReferenceFault::None
             )
             .await
-            .unwrap();
+            .unwrap_err()
+            .code,
+            ErrorCode::DependencyUnmet
+        );
+        verified = fresh_same_candidate_verifier(FreshVerifierContext {
+            fixture: f.clone(),
+            supervisor: supervisor.clone(),
+            artifacts: artifacts.clone(),
+            runtime: episode_identity.clone(),
+            candidate: candidate.clone(),
+            checks: checks.clone(),
+            negative_episode,
+            negative_execution: negative_execution.id,
+        })
+        .await;
+        failed.revision = verified.revision;
+        let accepted = artifact_fixture_call(
+            artifacts.clone(),
+            f.owner.to_owned(),
+            artifact_command(
+                "explicit-owner-accept",
+                failed.revision,
+                artifacts::ArtifactCommand::Accept {
+                    candidate_id: verified.candidate_id.unwrap(),
+                    report_id: verified.report_id.unwrap(),
+                },
+            ),
+            artifacts::ReferenceFault::None,
+        )
+        .await
+        .unwrap();
         assert!(accepted.accepted);
         if let Some((pending, handle, packet_id, packet)) = accepted_pending {
             let fixture = f.clone();
@@ -4645,7 +4752,15 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             violations
             }).await.unwrap();
             child.kill();
-            supervisor.release(&f.owner, execution.id).await.unwrap();
+            if supervisor
+                .inspect(&f.owner, execution.id)
+                .await
+                .unwrap()
+                .state
+                == supervisor::ExecutionState::Stopped
+            {
+                supervisor.release(&f.owner, execution.id).await.unwrap();
+            }
             std::sync::Arc::try_unwrap(f)
                 .unwrap_or_else(|_| panic!("retained fixture"))
                 .finish()
@@ -4666,7 +4781,14 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
             "accepted"
         );
     }
-    if !repair_budget {
+    if !repair_budget
+        && supervisor
+            .inspect(&f.owner, negative_execution.id)
+            .await
+            .unwrap()
+            .state
+            == supervisor::ExecutionState::Stopped
+    {
         supervisor
             .release("assembled-verifier", negative_execution.id)
             .await
@@ -6391,4 +6513,231 @@ async fn broker_process_restart_preserves_owned_work_and_bounded_operator_exact_
     );
     supervisor.release(&f.owner, execution.id).await.unwrap();
     f.finish().await;
+}
+
+fn check_uncharged_repair_boundary(
+    fixture: std::sync::Arc<Fixture>,
+    mailbox: mailbox::MailboxService,
+    client: reqwest::Client,
+    endpoint: String,
+    candidate: artifacts::Candidate,
+    out: std::path::PathBuf,
+    revision: i64,
+) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        let f = fixture;
+        // A failed gate requires an authorized, once-charged Repair before any
+        // alternative command key can reopen implementation or the candidate.
+        let blocked_input = mailbox
+            .execute(
+                "assembled-worker",
+                mail(
+                    f.epoch,
+                    "uncharged-failed-capture",
+                    serde_json::json!({
+                        "kind":"capture_input", "mission":f.mission,
+                        "id":Uuid::new_v4(), "attempt":f.attempt,
+                        "purpose":"implementation", "limit":4
+                    }),
+                ),
+            )
+            .await;
+        let blocked_submit = client
+            .post(&endpoint)
+            .bearer_auth("assembled-worker")
+            .json(&serde_json::json!({
+                "key":"uncharged-failed-resubmit", "task":f.task,
+                "expected_revision":revision, "generation":1,
+                "recovery_epoch":f.epoch,
+                "command":{"kind":"submit", "candidate":candidate}
+            }))
+            .send()
+            .await
+            .unwrap();
+        let submit_status = blocked_submit.status();
+        let submit_body = blocked_submit.bytes().await.unwrap();
+        retain_bytes(&out.join("uncharged-failed-resubmit.json"), &submit_body);
+        retain_bytes(
+            &out.join("uncharged-failed-capture.json"),
+            &serde_json::to_vec(&serde_json::json!({
+                "rejected":blocked_input.is_err(),
+                "code":blocked_input.as_ref().err().map(|error|format!("{:?}",error.code))
+            }))
+            .unwrap(),
+        );
+        assert!(
+            blocked_input.is_err() && !submit_status.is_success(),
+            "failed verification must fence uncharged Worker continuation and same-candidate resubmit: capture={blocked_input:?}, submit=HTTP{submit_status} {}",
+            String::from_utf8_lossy(&submit_body)
+        );
+    })
+}
+
+async fn artifact_fixture_call(
+    service: artifacts::ArtifactService,
+    bearer: String,
+    envelope: artifacts::ArtifactEnvelope,
+    fault: artifacts::ReferenceFault,
+) -> team_control_plane::Result<artifacts::ArtifactResult> {
+    tokio::spawn(async move { service.execute(&bearer, envelope, fault).await })
+        .await
+        .expect("owned artifact fixture phase failed")
+}
+
+async fn cancelled_sdk_drain_phase(
+    client: temporalio_client::Client,
+    bridge: Bridge,
+    reference: WorkflowRef,
+    gateway: Gateway,
+    owner: String,
+    pending: Uuid,
+    out: PathBuf,
+) {
+    tokio::spawn(async move {
+        use temporalio_client::{WorkflowFetchHistoryOptions,WorkflowExecutionInfo};
+        fn has_fenced_progress(value: &serde_json::Value, pending: Uuid) -> bool {
+            use base64::Engine;
+            value["events"].as_array().is_some_and(|events| events.iter().any(|event| {
+                event["event_type"] == 12 && event["attributes"]["ActivityTaskCompletedEventAttributes"]["result"]["payloads"]
+                    .as_array().is_some_and(|payloads| payloads.iter().any(|payload| {
+                        let Some(data) = payload["data"].as_str() else { return false; };
+                        let Ok(bytes) = base64::engine::general_purpose::STANDARD.decode(data) else { return false; };
+                        let Ok(progress) = serde_json::from_slice::<serde_json::Value>(&bytes) else { return false; };
+                        progress["operations"].as_array().is_some_and(|operations| operations.iter().any(|operation|
+                            operation["limitation"] == "gateway_dispatch_fenced"
+                            && operation["journals"].as_array().is_some_and(|journals| journals.iter().any(|journal|
+                                journal[0] == pending.to_string() && journal[1] == "prepared"))))
+                    }))
+            }))
+        }
+        let deadline=std::time::Instant::now()+Duration::from_secs(20);
+        loop {
+            let progress=bridge.progress(&owner,&reference).await.unwrap();
+            let run=progress.observed.unwrap().run_id;
+            let history=WorkflowExecutionInfo::builder().namespace("default").workflow_id(&reference.workflow_id).run_id(&run).build().bind_untyped(client.clone()).fetch_history(WorkflowFetchHistoryOptions::default()).to_json().await.unwrap();
+            let value:serde_json::Value=serde_json::from_slice(&history).unwrap();
+            if has_fenced_progress(&value,pending) {
+                retain_bytes(&out.join("cancelled-sdk-fenced-drain-history.json"),&history);
+                break;
+            }
+            if std::time::Instant::now()>=deadline {
+                retain_bytes(&out.join("cancelled-sdk-fenced-drain-timeout-history.json"),&history);
+                panic!("actual SDK Activity must retain journals and fenced Prepared effect after cancellation");
+            }
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        assert_eq!(gateway.read(&owner,pending).await.unwrap().state,OperationState::Prepared);
+    }).await.expect("owned actual cancelled SDK drain phase failed");
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn failed_current_gate_fences_preallocated_worker_without_charging_new_work() {
+    assembled_engineering_fixture(EngineeringScenario::FailedGateDispatch).await;
+}
+
+async fn preallocate_failed_gate_worker(
+    f: std::sync::Arc<Fixture>,
+    supervisor: supervisor::Supervisor,
+    artifacts: artifacts::ArtifactService,
+) -> (Uuid, supervisor::ExecutionHandle, serde_json::Value) {
+    tokio::spawn(async move {
+        let episode = f.worker_episode("pre-failed-gate-worker").await;
+        let handle = supervisor
+            .create_episode_from_candidate(
+                "assembled-worker",
+                episode,
+                &artifacts,
+                supervisor::CreateFault::None,
+            )
+            .await
+            .unwrap();
+        let mailbox = mailbox::MailboxService::new(f.broker.clone());
+        let record = mailbox
+            .record(&f.owner, mailbox::RecordKind::Episode, episode)
+            .await
+            .unwrap();
+        let packet = mailbox
+            .record(
+                &f.owner,
+                mailbox::RecordKind::Input,
+                serde_json::from_value(record["input_packet"].clone()).unwrap(),
+            )
+            .await
+            .unwrap();
+        (episode, handle, packet)
+    })
+    .await
+    .expect("pre-failure Worker allocation phase failed")
+}
+
+async fn failed_gate_worker_phase(
+    f: std::sync::Arc<Fixture>,
+    supervisor: supervisor::Supervisor,
+    artifacts: artifacts::ArtifactService,
+    episode: Uuid,
+    handle: supervisor::ExecutionHandle,
+    packet: serde_json::Value,
+) {
+    tokio::spawn(async move {
+        let before=kernel::Kernel::new(f.broker.clone()).status(&f.owner).await.unwrap();
+        let start=supervisor.start("assembled-worker",handle.id,vec!["/bin/sh".into(),"-c".into(),"printf uncharged > src/uncharged".into()],30).await;
+        assert_eq!(start.unwrap_err().code,ErrorCode::StaleGeneration);
+        assert_eq!(supervisor.inspect(&f.owner,handle.id).await.unwrap().state,supervisor::ExecutionState::Ready);
+        assert!(!handle.path.join("src/uncharged").exists());
+        assert!(supervisor.result(&f.owner,handle.id).await.unwrap().is_none());
+        assert_eq!(supervisor.create_episode_from_candidate("assembled-worker",episode,&artifacts,supervisor::CreateFault::None).await.unwrap_err().code,ErrorCode::DependencyUnmet);
+        let mailbox=mailbox::MailboxService::new(f.broker.clone());
+        let admit=mailbox.execute("assembled-worker",mail(f.epoch,"after-failed-prepared-admission",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":Uuid::new_v4(),"attempt":f.attempt,"purpose":"implementation","input_packet":packet["id"],"input_digest":packet["digest"]}))).await;
+        assert_eq!(admit.unwrap_err().code,ErrorCode::DependencyUnmet);
+        let after=kernel::Kernel::new(f.broker.clone()).status(&f.owner).await.unwrap();
+        assert_eq!(before["missions"],after["missions"],"refused work cannot charge capacity/episode/repair counters");
+        let out=evidence_directory("failed-gate-dispatch");
+        retain_bytes(&out.join("preallocated-worker-refused.json"),&serde_json::to_vec(&serde_json::json!({"execution":handle.id,"before":before,"after":after,"view":supervisor.inspect(&f.owner,handle.id).await.unwrap()})).unwrap());
+        supervisor.cancel(&f.owner,handle.id).await.unwrap();
+        supervisor.release(&f.owner,handle.id).await.unwrap();
+    }).await.expect("failed gate Worker refusal phase failed");
+}
+
+struct FreshVerifierContext {
+    fixture: std::sync::Arc<Fixture>,
+    supervisor: supervisor::Supervisor,
+    artifacts: artifacts::ArtifactService,
+    runtime: RuntimeIdentity,
+    candidate: artifacts::Candidate,
+    checks: Vec<Vec<String>>,
+    negative_episode: Uuid,
+    negative_execution: Uuid,
+}
+async fn fresh_same_candidate_verifier(context: FreshVerifierContext) -> artifacts::ArtifactResult {
+    tokio::spawn(async move {
+        let FreshVerifierContext {fixture:f,supervisor,artifacts,runtime,candidate,checks,negative_episode,negative_execution}=context;
+        assert_eq!(checks.len(),1,"fixture declares one mandatory actual command");
+        let mailbox=mailbox::MailboxService::new(f.broker.clone());
+        mailbox.execute("assembled-verifier",mail(f.epoch,"yield-negative-before-fresh-gate",serde_json::json!({"kind":"yield_episode","episode":negative_episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"retain failed gate; request genuinely fresh same-candidate independent verification","artifacts":[{"task":f.task,"digest":candidate.artifact}]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+        if supervisor.inspect("assembled-verifier",negative_execution).await.unwrap().state != supervisor::ExecutionState::Released {
+            supervisor.release("assembled-verifier",negative_execution).await.unwrap();
+        }
+        let input=Uuid::new_v4();let episode=Uuid::new_v4();
+        mailbox.execute("assembled-verifier",mail(f.epoch,"capture-fresh-current-failed-gate",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"verification","limit":4}))).await.unwrap();
+        let packet=mailbox.record("assembled-verifier",mailbox::RecordKind::Input,input).await.unwrap();
+        mailbox.execute("assembled-verifier",mail(f.epoch,"admit-fresh-current-failed-gate",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+        let execution=supervisor.create_episode_from_candidate("assembled-verifier",episode,&artifacts,supervisor::CreateFault::None).await.unwrap();
+        episode_runtime::EpisodeGateway::new(f.broker.clone()).prepare("assembled-verifier",episode_runtime::StartRequest {id:Uuid::new_v4(),episode,execution:execution.id,runtime,argv:checks[0].clone()}).await.unwrap();
+        let deadline=std::time::Instant::now()+Duration::from_secs(8);
+        let result=loop {
+            if let Some(result)=supervisor.result("assembled-verifier",execution.id).await.unwrap() {break result;}
+            assert!(std::time::Instant::now()<deadline,"fresh actual Verifier did not finalize");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        };
+        assert_eq!(result.exit_code,Some(0));assert!(result.namespace_stopped);
+        let view=supervisor.inspect("assembled-verifier",execution.id).await.unwrap();
+        let bytes=serde_json::to_vec(&serde_json::json!({"trusted_monitor_result":result,"output":String::from_utf8(std::fs::read(&view.manifest.log_path).unwrap()).unwrap()})).unwrap();
+        let logs=artifacts::sha256(&bytes);
+        artifacts.publish_evidence("assembled-verifier",f.task,&logs,&bytes).await.unwrap();
+        let snapshot=artifacts.snapshot("assembled-verifier",f.task).await.unwrap();
+        let verified=artifacts.execute("assembled-verifier",artifacts::ArtifactEnvelope {key:"fresh-after-current-failed-gate".into(),task:f.task,expected_revision:snapshot.revision,generation:1,recovery_epoch:f.epoch,command:artifacts::ArtifactCommand::Verify {verification:artifacts::Verification {candidate:candidate.clone(),suite:artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),environment:artifacts::sha256(b"actual-bwrap-private-git-v1"),checks:vec![artifacts::Check {command:checks[0].clone(),exit_code:result.exit_code.unwrap(),logs}],resolved_decisions:true}}},artifacts::ReferenceFault::None).await.unwrap();
+        let out=evidence_directory("fresh-after-failed-gate");retain_bytes(&out.join("actual-fresh-verifier.json"),&serde_json::to_vec(&serde_json::json!({"execution":execution.id,"result":result,"verified":verified})).unwrap());
+        supervisor.release("assembled-verifier",execution.id).await.unwrap();
+        verified
+    }).await.expect("fresh independent same-candidate Verifier phase failed")
 }

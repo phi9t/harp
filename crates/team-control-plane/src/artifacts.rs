@@ -466,7 +466,14 @@ impl ArtifactService {
         id: Uuid,
         candidate_id: &str,
         report_id: &str,
-    ) -> Result<()> {
+    ) -> Result<i64> {
+        let (current_candidate_id, current_report_id, verification_revision) =
+            current_failed_verification(tx, id)
+                .await?
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+        if current_candidate_id != candidate_id || current_report_id != report_id {
+            return Err(err(ErrorCode::StaleRevision));
+        }
         let policy = load_policy(tx, id).await?;
         let (current_id, current_candidate, implementer) = current(tx, id).await?;
         if current_id != candidate_id {
@@ -486,7 +493,7 @@ impl ArtifactService {
         {
             return Err(err(ErrorCode::DependencyUnmet));
         }
-        Ok(())
+        Ok(verification_revision)
     }
     async fn verify_evidence(
         &self,
@@ -562,6 +569,37 @@ impl ArtifactService {
         }
         Ok(())
     }
+    async fn verify_fresh_execution_report(
+        &self,
+        tx: &tokio_postgres::Transaction<'_>,
+        task: Uuid,
+        verifier: Uuid,
+        report: &Verification,
+        failed_revision: i64,
+    ) -> Result<()> {
+        if !tx
+            .query_one(
+                "SELECT EXISTS(SELECT 1 FROM kernel_verification_requirements WHERE task_id=$1)",
+                &[&task],
+            )
+            .await?
+            .get::<_, bool>(0)
+        {
+            return Ok(());
+        }
+        for check in &report.checks {
+            let evidence: serde_json::Value = decode(
+                serde_json::from_slice(&self.store.read(&check.logs)?)
+                    .map_err(|_| err(ErrorCode::DependencyUnmet))?,
+            )?;
+            let execution: Uuid = decode(evidence["trusted_monitor_result"]["execution"].clone())?;
+            let fresh: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1 AND x.task_id=$2 AND x.principal_id=$3 AND x.role='verifier' AND x.recovery_epoch=$4 AND e.admitted_task_revision>=$5)", &[&execution,&task,&verifier,&self.broker.epoch,&failed_revision]).await?.get(0);
+            if !fresh {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+        }
+        Ok(())
+    }
     async fn apply(
         &self,
         tx: &tokio_postgres::Transaction<'_>,
@@ -609,6 +647,7 @@ impl ArtifactService {
                 {
                     return Err(err(ErrorCode::DependencyUnmet));
                 }
+                implementation_enabled(tx, envelope.task, self.broker.epoch).await?;
                 let policy = load_policy(tx, envelope.task).await?;
                 validate_candidate(candidate, task, &policy)?;
                 let admitted=tx.query_opt("SELECT sequence FROM events WHERE aggregate_kind='task' AND aggregate_id=$1 AND kind='task.admit' AND payload->>'spec_digest'=$2 ORDER BY sequence DESC LIMIT 1",&[&envelope.task,&task.spec]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
@@ -635,7 +674,7 @@ impl ArtifactService {
                 "submitted"
             }
             ArtifactCommand::Verify { verification } => {
-                if !["submitted", "verifying"].contains(&task.status.as_str()) {
+                if !["submitted", "verifying", "repair_required"].contains(&task.status.as_str()) {
                     return Err(err(ErrorCode::DependencyUnmet));
                 }
                 let policy = load_policy(tx, envelope.task).await?;
@@ -650,6 +689,21 @@ impl ArtifactService {
                 validate_report(verification, &policy)?;
                 self.verify_execution_report(tx, envelope.task, actor.principal, verification)
                     .await?;
+                if verification.resolved_decisions
+                    && candidate.risks.is_empty()
+                    && verification.checks.iter().all(|check| check.exit_code == 0)
+                    && let Some((_, _, failed_revision)) =
+                        current_failed_verification(tx, envelope.task).await?
+                {
+                    self.verify_fresh_execution_report(
+                        tx,
+                        envelope.task,
+                        actor.principal,
+                        verification,
+                        failed_revision,
+                    )
+                    .await?;
+                }
                 self.store.read(&candidate.artifact)?;
                 for check in &verification.checks {
                     self.reference(tx, &check.logs, fault).await?;
@@ -664,7 +718,14 @@ impl ArtifactService {
                 }
                 result.candidate_id = Some(id);
                 result.report_id = Some(report_id);
-                "verifying"
+                if verification.resolved_decisions
+                    && candidate.risks.is_empty()
+                    && verification.checks.iter().all(|check| check.exit_code == 0)
+                {
+                    "verifying"
+                } else {
+                    "repair_required"
+                }
             }
             ArtifactCommand::Repair {
                 candidate_id,
@@ -675,14 +736,15 @@ impl ArtifactService {
                 if reason.is_empty() || reason.len() > 8192 {
                     return Err(err(ErrorCode::InvalidArgument));
                 }
-                self.repair_evidence(tx, task, envelope.task, candidate_id, report_id)
+                let verification_revision = self
+                    .repair_evidence(tx, task, envelope.task, candidate_id, report_id)
                     .await?;
                 let exhausted:bool=tx.query_one("SELECT (SELECT count(*) FROM kernel_repair_charges WHERE mission_id=$1)>=max_repairs FROM missions WHERE id=$1", &[&task.mission]).await?.get(0);
                 if exhausted {
                     return Err(err(ErrorCode::BudgetExhausted));
                 }
-                if task.status!="verifying" || tx.query_one("SELECT EXISTS(SELECT 1 FROM kernel_repair_charges WHERE candidate_id=$1 AND report_id=$2)", &[candidate_id,report_id]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::DependencyUnmet));}
-                tx.execute("INSERT INTO kernel_repair_charges(id,mission_id,task_id,candidate_id,report_id,principal_id,recovery_epoch,generation,reason) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)", &[&Uuid::new_v4(),&task.mission,&envelope.task,candidate_id,report_id,&actor.principal,&self.broker.epoch,&task.generation,reason]).await?;
+                if task.status!="repair_required" || tx.query_one("SELECT EXISTS(SELECT 1 FROM kernel_repair_charges WHERE candidate_id=$1 AND report_id=$2 AND verification_revision=$3)", &[candidate_id,report_id,&verification_revision]).await?.get::<_,bool>(0) {return Err(err(ErrorCode::DependencyUnmet));}
+                tx.execute("INSERT INTO kernel_repair_charges(id,mission_id,task_id,candidate_id,report_id,principal_id,recovery_epoch,generation,reason,verification_revision) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)", &[&Uuid::new_v4(),&task.mission,&envelope.task,candidate_id,report_id,&actor.principal,&self.broker.epoch,&task.generation,reason,&verification_revision]).await?;
                 result.candidate_id = Some(candidate_id.clone());
                 result.report_id = Some(report_id.clone());
                 "repair_required"
@@ -827,6 +889,52 @@ struct TaskBinding {
     generation: i64,
     spec: String,
     status: String,
+}
+pub(crate) async fn current_failed_verification(
+    tx: &tokio_postgres::Transaction<'_>,
+    task: Uuid,
+) -> Result<Option<(String, String, i64)>> {
+    let row = tx.query_opt(
+        "SELECT c.id,r.id,e.sequence,c.candidate,r.verification FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id JOIN events e ON e.aggregate_kind='task' AND e.aggregate_id=a.task_id AND e.kind='verification.submit' AND e.payload->'result'->>'candidate_id'=c.id JOIN artifact_reports r ON r.id=e.payload->'result'->>'report_id' AND r.candidate_id=c.id WHERE a.task_id=$1 ORDER BY e.sequence DESC LIMIT 1",
+        &[&task],
+    ).await?;
+    let Some(row) = row else {
+        return Ok(None);
+    };
+    let candidate: Candidate = decode(row.get(3))?;
+    let report: Verification = decode(row.get(4))?;
+    // Invalidating policy/spec/generation cannot erase an intrinsically failed
+    // current gate. Repair still validates exact current authorization separately.
+    if report.candidate != candidate {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    if report.resolved_decisions
+        && candidate.risks.is_empty()
+        && report.checks.iter().all(|check| check.exit_code == 0)
+    {
+        return Ok(None);
+    }
+    Ok(Some((row.get(0), row.get(1), row.get(2))))
+}
+/// A failed current gate admits implementation only through an exact, once-charged
+/// Repair recorded after that gate. A later failure cannot reuse the earlier grant.
+pub(crate) async fn implementation_enabled(
+    tx: &tokio_postgres::Transaction<'_>,
+    task: Uuid,
+    epoch: Uuid,
+) -> Result<()> {
+    let Some((candidate, report, failed_revision)) = current_failed_verification(tx, task).await?
+    else {
+        return Ok(());
+    };
+    let authorized: bool = tx.query_one(
+        "SELECT EXISTS(SELECT 1 FROM kernel_repair_charges c JOIN tasks t ON t.id=c.task_id JOIN events e ON e.aggregate_kind='task' AND e.aggregate_id=t.id AND e.kind='task.repair' AND e.payload->'result'->>'candidate_id'=c.candidate_id AND e.payload->'result'->>'report_id'=c.report_id WHERE c.task_id=$1 AND c.candidate_id=$2 AND c.report_id=$3 AND c.generation=t.generation AND c.recovery_epoch=$4 AND c.verification_revision=$5 AND e.sequence>$5 AND e.payload->>'spec_digest'=t.spec_digest)",
+        &[&task,&candidate,&report,&epoch,&failed_revision],
+    ).await?.get(0);
+    if !authorized {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    Ok(())
 }
 async fn load_task(tx: &tokio_postgres::Transaction<'_>, id: Uuid) -> Result<TaskBinding> {
     let r = tx

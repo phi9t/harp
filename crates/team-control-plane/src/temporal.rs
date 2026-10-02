@@ -939,10 +939,24 @@ impl OperationDriver for GatewayOperationDriver {
                 },
             };
             for id in ids {
-                let op = self
+                let op = match self
                     .gateway
                     .dispatch_guarded(&self.bearer, id, runtime.as_mut(), Some(r))
-                    .await?;
+                    .await
+                {
+                    Ok(op) => op,
+                    Err(error) if error.code == ErrorCode::DependencyUnmet => {
+                        // A terminal Task can revoke fresh effects while its
+                        // current workflow still observes retained journals.
+                        let op = self.gateway.read_guarded(&self.bearer, id, Some(r)).await?;
+                        if op.state != crate::gateway::OperationState::Prepared {
+                            return Err(error);
+                        }
+                        progress.limitation = Some("gateway_dispatch_fenced".into());
+                        op
+                    }
+                    Err(error) => return Err(error),
+                };
                 progress.journals.push((id, op.state));
             }
             Ok(progress)

@@ -1823,3 +1823,283 @@ async fn core_migrate_installs_verifier_grants_without_artifact_constructor() {
     // Migration is repeatable through the same authoritative public entrypoint.
     migrate(&dsn).await.unwrap();
 }
+
+#[tokio::test]
+async fn repeated_failed_report_hash_requires_each_exact_charged_verification_cycle() {
+    let (service, broker, owner, worker, verifier, task, verifier_id, candidate, root) =
+        fixture().await;
+    let epoch = broker
+        .snapshot(&owner, SnapshotQuery::Task(task))
+        .await
+        .unwrap()
+        .data["attempts"][0]["recovery_epoch"]
+        .as_str()
+        .unwrap()
+        .parse()
+        .unwrap();
+    let argv = vec![
+        "/bin/sh".to_string(),
+        "-c".to_string(),
+        "printf deterministic-failed-gate; exit 17".to_string(),
+    ];
+    service
+        .execute(
+            &owner,
+            cmd(
+                epoch,
+                task,
+                "cycle-policy",
+                3,
+                ArtifactCommand::Configure {
+                    verifier: verifier_id,
+                    lead_acceptance: false,
+                    base: candidate.base.clone(),
+                    suite: "e".repeat(64),
+                    environment: "f".repeat(64),
+                    mandatory_commands: vec![argv.clone()],
+                },
+            ),
+            ReferenceFault::None,
+        )
+        .await
+        .unwrap();
+    let mut revision = service
+        .execute(
+            &worker,
+            cmd(
+                epoch,
+                task,
+                "cycle-initial",
+                4,
+                ArtifactCommand::Submit {
+                    candidate: candidate.clone(),
+                },
+            ),
+            ReferenceFault::None,
+        )
+        .await
+        .unwrap()
+        .revision;
+    let mut report_id = None;
+    for cycle in 0..4 {
+        // This ordinary artifact-service contract fixture executes the declared
+        // command each time. Registered supervised SDK proof is a separate case.
+        let output = std::process::Command::new(&argv[0])
+            .args(&argv[1..])
+            .output()
+            .unwrap();
+        assert_eq!(output.status.code(), Some(17));
+        let logs = sha256(&output.stdout);
+        service
+            .publish_evidence(&verifier, task, &logs, &output.stdout)
+            .await
+            .unwrap();
+        let verification = Verification {
+            candidate: candidate.clone(),
+            suite: "e".repeat(64),
+            environment: "f".repeat(64),
+            checks: vec![Check {
+                command: argv.clone(),
+                exit_code: 17,
+                logs,
+            }],
+            resolved_decisions: true,
+        };
+        let verify = cmd(
+            epoch,
+            task,
+            &format!("cycle-verify-{cycle}"),
+            revision,
+            ArtifactCommand::Verify { verification },
+        );
+        let failed = service
+            .execute(&verifier, verify.clone(), ReferenceFault::None)
+            .await
+            .unwrap();
+        assert_eq!(
+            service
+                .execute(&verifier, verify, ReferenceFault::None)
+                .await
+                .unwrap(),
+            failed,
+            "exact replay creates no new verification event"
+        );
+        assert_eq!(
+            service.snapshot(&owner, task).await.unwrap().status,
+            "repair_required"
+        );
+        if let Some(prior) = &report_id {
+            assert_eq!(
+                failed.report_id.as_ref(),
+                Some(prior),
+                "identical actual gate bytes keep content hash"
+            );
+        }
+        report_id = failed.report_id.clone();
+        revision = failed.revision;
+        assert_eq!(
+            service
+                .execute(
+                    &worker,
+                    cmd(
+                        epoch,
+                        task,
+                        &format!("cycle-uncharged-{cycle}"),
+                        revision,
+                        ArtifactCommand::Submit {
+                            candidate: candidate.clone()
+                        }
+                    ),
+                    ReferenceFault::None
+                )
+                .await
+                .unwrap_err()
+                .code,
+            ErrorCode::DependencyUnmet,
+            "prior charged repair cannot authorize a later failure with same hash"
+        );
+        if cycle == 0 {
+            let policy = |suite: String| ArtifactCommand::Configure {
+                verifier: verifier_id,
+                lead_acceptance: false,
+                base: candidate.base.clone(),
+                suite,
+                environment: "f".repeat(64),
+                mandatory_commands: vec![argv.clone()],
+            };
+            revision = service
+                .execute(
+                    &owner,
+                    cmd(
+                        epoch,
+                        task,
+                        "invalidate-failed-policy",
+                        revision,
+                        policy("9".repeat(64)),
+                    ),
+                    ReferenceFault::None,
+                )
+                .await
+                .unwrap()
+                .revision;
+            assert_eq!(
+                service
+                    .execute(
+                        &worker,
+                        cmd(
+                            epoch,
+                            task,
+                            "invalid-policy-cannot-reset-repair",
+                            revision,
+                            ArtifactCommand::Submit {
+                                candidate: candidate.clone()
+                            }
+                        ),
+                        ReferenceFault::None
+                    )
+                    .await
+                    .unwrap_err()
+                    .code,
+                ErrorCode::DependencyUnmet
+            );
+            assert!(
+                service
+                    .execute(
+                        &owner,
+                        cmd(
+                            epoch,
+                            task,
+                            "invalid-policy-cannot-charge-stale-proof",
+                            revision,
+                            ArtifactCommand::Repair {
+                                candidate_id: failed.candidate_id.clone().unwrap(),
+                                report_id: failed.report_id.clone().unwrap(),
+                                reason: "stale policy proof must not authorize work".into()
+                            }
+                        ),
+                        ReferenceFault::None
+                    )
+                    .await
+                    .is_err()
+            );
+            assert_eq!(
+                kernel::Kernel::new(broker.clone())
+                    .status(&owner)
+                    .await
+                    .unwrap()["missions"][0]["consumed_repairs"],
+                0
+            );
+            revision = service
+                .execute(
+                    &owner,
+                    cmd(
+                        epoch,
+                        task,
+                        "restore-failed-policy",
+                        revision,
+                        policy("e".repeat(64)),
+                    ),
+                    ReferenceFault::None,
+                )
+                .await
+                .unwrap()
+                .revision;
+        }
+        let repair = cmd(
+            epoch,
+            task,
+            &format!("cycle-repair-{cycle}"),
+            revision,
+            ArtifactCommand::Repair {
+                candidate_id: failed.candidate_id.unwrap(),
+                report_id: failed.report_id.unwrap(),
+                reason: "authorize exactly this executed failure event".into(),
+            },
+        );
+        let result = service
+            .execute(&owner, repair.clone(), ReferenceFault::None)
+            .await;
+        if cycle == 3 {
+            assert_eq!(result.unwrap_err().code, ErrorCode::BudgetExhausted);
+            break;
+        }
+        let result = result.unwrap();
+        assert_eq!(
+            service
+                .execute(&owner, repair, ReferenceFault::None)
+                .await
+                .unwrap(),
+            result,
+            "one charge per exact command replay"
+        );
+        revision = service
+            .execute(
+                &worker,
+                cmd(
+                    epoch,
+                    task,
+                    &format!("cycle-authorized-{cycle}"),
+                    result.revision,
+                    ArtifactCommand::Submit {
+                        candidate: candidate.clone(),
+                    },
+                ),
+                ReferenceFault::None,
+            )
+            .await
+            .unwrap()
+            .revision;
+    }
+    let status = kernel::Kernel::new(broker.clone())
+        .status(&owner)
+        .await
+        .unwrap();
+    assert_eq!(status["missions"][0]["consumed_repairs"], 3);
+    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(
+        evidence.join("identical-report-cycles.json"),
+        serde_json::to_vec(&serde_json::json!({"report_id":report_id,"status":status})).unwrap(),
+    )
+    .unwrap();
+    std::fs::remove_dir_all(root).unwrap();
+}

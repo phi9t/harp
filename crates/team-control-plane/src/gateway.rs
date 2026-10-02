@@ -449,6 +449,14 @@ impl Gateway {
         Ok(op)
     }
     pub async fn read(&self, bearer: &str, id: Uuid) -> Result<Operation> {
+        self.read_guarded(bearer, id, None).await
+    }
+    pub(crate) async fn read_guarded(
+        &self,
+        bearer: &str,
+        id: Uuid,
+        guard: Option<&crate::temporal::WorkflowRef>,
+    ) -> Result<Operation> {
         let mut c = storage::client(&self.broker.dsn).await?;
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
@@ -461,6 +469,15 @@ impl Gateway {
             false,
         )
         .await?;
+        if let Some(reference) = guard {
+            crate::temporal::dispatch_guard(
+                &tx,
+                self.broker.epoch,
+                reference,
+                op.intent.admission_id,
+            )
+            .await?;
+        }
         tx.commit().await?;
         Ok(op)
     }
@@ -496,7 +513,6 @@ impl Gateway {
                 true,
             )
             .await?;
-        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
         if let Some(reference) = guard {
             crate::temporal::dispatch_guard(
                 &tx,
@@ -509,6 +525,17 @@ impl Gateway {
         if op.state != OperationState::Prepared {
             tx.commit().await?;
             return Ok(op);
+        }
+        crate::kernel::attempt_dispatch_enabled(&tx, attempt).await?;
+        if matches!(
+            op.intent.kind,
+            OperationKind::Create | OperationKind::Start | OperationKind::Steer
+        ) {
+            let task: Uuid = tx
+                .query_one("SELECT task_id FROM attempts WHERE id=$1", &[&attempt])
+                .await?
+                .get(0);
+            crate::artifacts::implementation_enabled(&tx, task, self.broker.epoch).await?;
         }
         if matches!(
             op.intent.kind,
