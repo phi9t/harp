@@ -186,5 +186,20 @@ Attempt command to revoke the Attempt's continuing authority.
 and each Mission's separate `control_revision` and `dispatch_paused` state.
 `POST /v1/kernel/pause` accepts the current control revision, recovery epoch,
 idempotency key and rationale. A fresh authenticated client can recover a lost
-pause response from status and resume using that durable control revision;
+pause response from status or an authenticated exact Mission snapshot and resume
+using that durable control revision;
 Mission intent revisions are not control revisions.
+
+Exact Mission snapshots expose `dispatch_paused` and `control_revision` even
+when the Mission falls outside the bounded 32-row status page. Execution status
+includes both episode-owned and legacy Attempt-owned workspaces. Legacy scope
+comes from the Attempt and Task, with no invented episode identity; capacity
+comes from the physical reservation or episode capacity owner.
+
+Supervised verification evidence preserves raw output with exactly one field:
+legacy `output` (a JSON string), or `output_bytes` containing
+`{"encoding":"base64","data":"..."}`. Both fields, including null values,
+are ambiguous and rejected. The decoded original bytes must match the trusted
+monitor digest; command, candidate, exit status and authority bindings still apply.
+Monitor finalization hashes every raw log byte incrementally with a fixed buffer.
+Unreadable logs or incomplete stop evidence cannot establish releasable success.

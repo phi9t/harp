@@ -279,7 +279,7 @@ impl Broker {
         let (revision, data) = match query {
             SnapshotQuery::Mission(id) => {
                 actor.scope(id, None)?;
-                let row=tx.query_opt("SELECT revision,jsonb_build_object('id',id,'objective',objective,'input_digest',input_digest,'git_repository',git_repository,'git_commit',git_commit,'git_path',git_path,'max_repairs',max_repairs,'episode_deadline_seconds',deadline_seconds,'capacity',capacity,'used_capacity',used_capacity,'admitted_attempts',admitted_attempts,'admitted_episodes',admitted_episodes,'max_attempts',max_attempts,'max_episodes',max_episodes) FROM missions WHERE id=$1",&[&id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+                let row=tx.query_opt("SELECT revision,jsonb_build_object('id',id,'objective',objective,'input_digest',input_digest,'git_repository',git_repository,'git_commit',git_commit,'git_path',git_path,'max_repairs',max_repairs,'episode_deadline_seconds',deadline_seconds,'capacity',capacity,'used_capacity',used_capacity,'admitted_attempts',admitted_attempts,'admitted_episodes',admitted_episodes,'max_attempts',max_attempts,'max_episodes',max_episodes,'dispatch_paused',coalesce((SELECT paused FROM kernel_mission_control WHERE mission_id=missions.id),false),'control_revision',coalesce((SELECT revision FROM kernel_mission_control WHERE mission_id=missions.id),0)) FROM missions WHERE id=$1",&[&id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
                 (row.get(0), row.get(1))
             }
             SnapshotQuery::Task(id) => {

@@ -51,8 +51,12 @@ async fn grant(f: &Fixture, mission: Uuid, principal: Uuid, token: &str, role: R
                 Command::GrantCredential {
                     credential_id: Uuid::new_v4(),
                     principal_id: principal,
-                    role,
-                    mission_id: Some(mission),
+                    role: role.clone(),
+                    mission_id: if role == Role::Owner {
+                        None
+                    } else {
+                        Some(mission)
+                    },
                     task_id: None,
                     generation: None,
                     token_hash: token_hash(token),
@@ -334,6 +338,23 @@ async fn thirty_three_actual_operator_records_bound_summary_and_allow_omitted_ex
         let omitted_operation=records.iter().find(|r|!operation_ids.contains(&r.operation)).unwrap();
         let omitted_execution=records.iter().find(|r|!execution_ids.contains(&r.execution)).unwrap();
         assert!(records.iter().any(|r|!mission_ids.contains(&r.mission)),"actual Mission outside bounded page must exist");
+        let omitted_mission=records.iter().find(|r|!mission_ids.contains(&r.mission)).unwrap();
+        let fresh_owner=format!("replacement-owner-{}",Uuid::new_v4());
+        grant(&f,omitted_mission.mission,Uuid::new_v4(),&fresh_owner,Role::Owner,300).await;
+        // Discard the pause reply as if the original view disappeared.
+        kernel.pause(&f.owner,omitted_mission.mission,"lost-pause",0,true,"recover omitted Mission").await.unwrap();
+        let exact_control=f.broker.snapshot(&fresh_owner,SnapshotQuery::Mission(omitted_mission.mission)).await.unwrap();
+        std::fs::write(out.join("omitted-mission-exact-control.json"),serde_json::to_vec_pretty(&exact_control).unwrap()).unwrap();
+        assert_eq!(exact_control.data["dispatch_paused"],true);
+        assert_eq!(exact_control.data["control_revision"],1);
+        assert_eq!(f.broker.snapshot("assembled-worker",SnapshotQuery::Mission(omitted_mission.mission)).await.unwrap_err().code,ErrorCode::Unauthorized);
+        assert_eq!(kernel.pause("assembled-worker",omitted_mission.mission,"foreign-resume",1,false,"denied").await.unwrap_err().code,ErrorCode::Unauthorized);
+        assert_eq!(kernel.pause(&fresh_owner,omitted_mission.mission,"stale-resume",0,false,"stale").await.unwrap_err().code,ErrorCode::StaleRevision);
+        kernel.pause(&fresh_owner,omitted_mission.mission,"fresh-resume",exact_control.data["control_revision"].as_i64().unwrap(),false,"fresh exact recovery").await.unwrap();
+        let resumed=f.broker.snapshot(&fresh_owner,SnapshotQuery::Mission(omitted_mission.mission)).await.unwrap();
+        std::fs::write(out.join("omitted-mission-resumed.json"),serde_json::to_vec_pretty(&resumed).unwrap()).unwrap();
+        assert_eq!(resumed.data["dispatch_paused"],false);
+        assert_eq!(resumed.data["control_revision"],2);
         let exact=success(cli(&f,f.epoch,&f.owner,&["inspect-episode-operation",&omitted_operation.operation.to_string()],&out,"owner-omitted-operation"));
         assert_eq!(exact["operation"]["id"],omitted_operation.operation.to_string());
         assert_eq!(exact["operation"]["state"],"prepared");
@@ -782,4 +803,313 @@ async fn failed_known_legacy_effect_with_unknown_usage_remains_discoverable() {
     )
     .unwrap();
     f.finish().await;
+}
+
+#[tokio::test]
+async fn legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only() {
+    for uncertain in [false, true] {
+        let f = Fixture::new().await;
+        let supervisor = f.supervisor().await;
+        let execution = supervisor
+            .create_attempt("assembled-worker", f.attempt, CreateFault::None)
+            .await
+            .unwrap();
+        let foreign_record = record(&f, "legacy-foreign-mission", 300).await;
+        let owner = format!("legacy-replacement-{}", Uuid::new_v4());
+        grant(&f, f.mission, Uuid::new_v4(), &owner, Role::Owner, 300).await;
+        supervisor
+            .start_with_fault(
+                "assembled-worker",
+                execution.id,
+                vec!["/bin/sh".into(), "-c".into(), "sleep 20".into()],
+                30,
+                if uncertain {
+                    supervisor::StartFault::BeforeMonitor
+                } else {
+                    supervisor::StartFault::None
+                },
+            )
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(8);
+        let observed = loop {
+            let view = if uncertain {
+                supervisor.reconcile(&owner, execution.id).await.unwrap()
+            } else {
+                supervisor.inspect(&owner, execution.id).await.unwrap()
+            };
+            if view.state
+                == if uncertain {
+                    ExecutionState::Quarantined
+                } else {
+                    ExecutionState::Running
+                }
+            {
+                break view;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "actual legacy workload must become observable"
+            );
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        };
+        let status = Kernel::new(f.broker.clone()).status(&owner).await.unwrap();
+        let worker = Kernel::new(f.broker.clone())
+            .status("assembled-worker")
+            .await
+            .unwrap();
+        let foreign = Kernel::new(f.broker.clone())
+            .status(&foreign_record.token)
+            .await
+            .unwrap();
+        let held = f
+            .broker
+            .snapshot(&owner, SnapshotQuery::Mission(f.mission))
+            .await
+            .unwrap()
+            .data["used_capacity"]
+            .clone();
+        let out = evidence(if uncertain {
+            "legacy-quarantined"
+        } else {
+            "legacy-running"
+        });
+        std::fs::write(out.join("public-status.json"),serde_json::to_vec_pretty(&serde_json::json!({"owner":status,"worker":worker,"foreign":foreign,"held_capacity":held,"observed":observed})).unwrap()).unwrap();
+        let denied = supervisor
+            .inspect(&foreign_record.token, execution.id)
+            .await
+            .unwrap_err()
+            .code;
+        if !uncertain {
+            supervisor.cancel(&owner, execution.id).await.unwrap();
+            let deadline = std::time::Instant::now() + Duration::from_secs(8);
+            loop {
+                let v = supervisor.reconcile(&owner, execution.id).await.unwrap();
+                if v.state == ExecutionState::Stopped {
+                    break;
+                }
+                assert!(std::time::Instant::now() < deadline);
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            }
+            supervisor.release(&owner, execution.id).await.unwrap();
+        } else {
+            // BeforeMonitor launched no process. Quarantine deliberately retains
+            // its reservation; fixture-owner removal does not imply a refund.
+            assert!(observed.members.is_empty());
+            assert!(observed.controller.is_none());
+            assert!(observed.launcher.is_none());
+            assert_eq!(
+                supervisor
+                    .release(&owner, execution.id)
+                    .await
+                    .unwrap_err()
+                    .code,
+                ErrorCode::DependencyUnmet
+            );
+        }
+        cleanup(&f, &[foreign_record], f.epoch, &owner, &out).await;
+        let mission = f.mission;
+        let task = f.task;
+        let attempt = f.attempt;
+        let root = f.root.clone();
+        f.finish().await;
+        std::fs::write(out.join("cleanup.json"),serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"launched":!uncertain,"released":!uncertain,"quarantine_retains_capacity":uncertain})).unwrap()).unwrap();
+        assert_eq!(held, 1);
+        assert_eq!(denied, ErrorCode::Unauthorized);
+        assert!(!ids(&foreign, "executions").contains(&execution.id));
+        for (value, count) in [(status, 2), (worker, 1)] {
+            assert_eq!(
+                value["executions"].as_array().unwrap().len(),
+                count,
+                "legacy Attempt-owned workload cannot disappear from bounded operator view"
+            );
+            let row = value["executions"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|row| row["id"] == execution.id.to_string())
+                .unwrap();
+            assert_eq!(row["id"], execution.id.to_string());
+            assert_eq!(row["mission"], mission.to_string());
+            assert_eq!(row["task"], task.to_string());
+            assert_eq!(row["attempt"], attempt.to_string());
+            assert!(row["episode"].is_null());
+            assert_eq!(row["role"], "worker");
+            assert_eq!(row["capacity_released"], false);
+            assert_eq!(row["capacity_held"], true);
+            assert_eq!(
+                row["observed_state"],
+                if uncertain { "quarantined" } else { "running" }
+            );
+            assert_eq!(value["more_executions"], false);
+        }
+    }
+}
+
+#[tokio::test]
+async fn monitor_finalizes_large_output_under_owned_measured_memory_limit() {
+    use sha2::{Digest, Sha256};
+    use std::{io::Read, os::unix::fs::PermissionsExt};
+    for (bytes, read_error) in [
+        (1024_u64 * 1024, false),
+        (128 * 1024 * 1024, false),
+        (1024 * 1024, true),
+    ] {
+        let f = Fixture::new().await;
+        let out = evidence(&format!("monitor-memory-{bytes}-read-error-{read_error}"));
+        let wrapper = f.root.join("owned-monitor.sh");
+        std::fs::write(
+            &wrapper,
+            format!(
+                "#!/bin/sh\nexport TOKIO_WORKER_THREADS=1\nexec '{}' \"$@\"\n",
+                env!("CARGO_BIN_EXE_team-control-plane")
+            ),
+        )
+        .unwrap();
+        std::fs::set_permissions(&wrapper, std::fs::Permissions::from_mode(0o700)).unwrap();
+        let supervisor = supervisor::Supervisor::open(
+            f.broker.clone(),
+            &f.root.join("workspaces"),
+            wrapper.to_str().unwrap(),
+        )
+        .await
+        .unwrap();
+        let episode = f.worker_episode("memory-finalization").await;
+        let execution = supervisor
+            .create_episode("assembled-worker", episode, vec![], CreateFault::None)
+            .await
+            .unwrap();
+        supervisor
+            .start(
+                "assembled-worker",
+                execution.id,
+                vec![
+                    "/bin/sh".into(),
+                    "-c".into(),
+                    format!("sleep 3; head -c {bytes} /dev/zero"),
+                ],
+                30,
+            )
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        let running = loop {
+            let view = supervisor.inspect(&f.owner, execution.id).await.unwrap();
+            if view.state == ExecutionState::Running {
+                break view;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "owned monitor startup"
+            );
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        };
+        let controller = running.controller.clone().unwrap();
+        let proc = PathBuf::from(format!("/proc/{}", controller.pid));
+        let baseline = std::fs::read_to_string(proc.join("status")).unwrap();
+        let vm_kib: u64 = baseline
+            .lines()
+            .find(|v| v.starts_with("VmSize:"))
+            .unwrap()
+            .split_whitespace()
+            .nth(1)
+            .unwrap()
+            .parse()
+            .unwrap();
+        let allowance = 64_u64 * 1024 * 1024;
+        let limit = vm_kib * 1024 + allowance;
+        let constrain = Process::new("/usr/bin/prlimit")
+            .args([
+                format!("--pid={}", controller.pid),
+                format!("--as={limit}:{limit}"),
+            ])
+            .output()
+            .unwrap();
+        assert!(
+            constrain.status.success(),
+            "owned monitor prlimit: {}",
+            String::from_utf8_lossy(&constrain.stderr)
+        );
+        let limits = std::fs::read_to_string(proc.join("limits")).unwrap();
+        std::fs::write(out.join("memory-constraint.json"),serde_json::to_vec_pretty(&serde_json::json!({"controller":controller,"baseline":baseline,"limits":limits,"address_space_limit_bytes":limit,"headroom_bytes":allowance,"raw_log_bytes":bytes,"constraint_applied_after_workload_spawn":true})).unwrap()).unwrap();
+        let raw_log = if read_error {
+            let retained = running.manifest.log_path.with_extension("retained");
+            std::fs::rename(&running.manifest.log_path, &retained).unwrap();
+            std::fs::create_dir(&running.manifest.log_path).unwrap();
+            retained
+        } else {
+            running.manifest.log_path.clone()
+        };
+        let result = loop {
+            let result = supervisor.result(&f.owner, execution.id).await.unwrap();
+            if result.is_some() || !proc.exists() {
+                break result;
+            }
+            if std::time::Instant::now() >= deadline {
+                break result;
+            }
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        };
+        // Hash independently through a bounded reader; never materialize the log.
+        let mut file = std::fs::File::open(&raw_log).unwrap();
+        let mut hash = Sha256::new();
+        let mut buffer = [0_u8; 32768];
+        let mut measured = 0_u64;
+        loop {
+            let n = file.read(&mut buffer).unwrap();
+            if n == 0 {
+                break;
+            }
+            measured += n as u64;
+            hash.update(&buffer[..n]);
+        }
+        let digest = format!("{:x}", hash.finalize());
+        let view = supervisor.reconcile(&f.owner, execution.id).await.unwrap();
+        let released = supervisor.release(&f.owner, execution.id).await;
+        let capacity = f
+            .broker
+            .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+            .await
+            .unwrap()
+            .data["used_capacity"]
+            .clone();
+        std::fs::write(out.join("result.json"),serde_json::to_vec_pretty(&serde_json::json!({"result":result,"observed":view,"release":released.as_ref().map_err(|e|e.code.clone()),"capacity":capacity,"measured_log_bytes":measured,"independent_raw_sha256":digest})).unwrap()).unwrap();
+        // The namespace has stopped even if old finalization failed. The monitor
+        // is independently reaped before fixture removal and final proof oracles.
+        let deadline = std::time::Instant::now() + Duration::from_secs(5);
+        while proc.exists() && std::time::Instant::now() < deadline {
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        let monitor_gone = !proc.exists();
+        let members_empty = view.members.is_empty();
+        let root = f.root.clone();
+        f.finish().await;
+        std::fs::write(out.join("cleanup.json"),serde_json::to_vec(&serde_json::json!({"monitor_gone":monitor_gone,"namespace_members_empty":members_empty,"fixture_removed":!root.exists()})).unwrap()).unwrap();
+        assert!(monitor_gone);
+        assert!(members_empty);
+        assert_eq!(view.state, ExecutionState::Stopped);
+        assert_eq!(measured, bytes);
+        assert!(limits.contains(&limit.to_string()));
+        if bytes > allowance {
+            assert!(
+                bytes > limit - vm_kib * 1024,
+                "raw log allocation exceeds measured remaining address space"
+            );
+        }
+        if read_error {
+            assert!(
+                result.is_none(),
+                "unreadable original log cannot produce trusted success"
+            );
+            assert_eq!(released.unwrap_err().code, ErrorCode::DependencyUnmet);
+            assert_eq!(capacity, 1);
+            continue;
+        }
+        let result=result.expect("bounded monitor must persist trusted result despite raw log exceeding measured memory headroom");
+        assert_eq!(result.exit_code, Some(0));
+        assert!(result.namespace_stopped);
+        assert_eq!(result.logs, digest);
+        released.unwrap();
+        assert_eq!(capacity, 0);
+    }
 }

@@ -2059,9 +2059,21 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
             exit_code: exit.code(),
             signal: exit.signal(),
             namespace_stopped: final_state == "stopped",
-            logs: crate::artifacts::sha256(
-                &fs::read(&manifest.log_path).map_err(|_| unavailable())?,
-            ),
+            logs: {
+                use sha2::{Digest, Sha256};
+                use std::io::Read;
+                let mut log = fs::File::open(&manifest.log_path).map_err(|_| unavailable())?;
+                let mut digest = Sha256::new();
+                let mut buffer = [0_u8; 64 * 1024];
+                loop {
+                    let count = log.read(&mut buffer).map_err(|_| unavailable())?;
+                    if count == 0 {
+                        break;
+                    }
+                    digest.update(&buffer[..count]);
+                }
+                format!("{:x}", digest.finalize())
+            },
         };
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;

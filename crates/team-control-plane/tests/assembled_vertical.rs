@@ -2185,6 +2185,10 @@ async fn assembled_sdk_worker() {
         .unwrap();
 }
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn successful_invalid_utf8_verifier_output_supports_verify_and_accept() {
+    assembled_engineering_fixture(EngineeringScenario::BinaryOutput).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn real_temporal_assembled_vertical() {
     assembled_engineering_fixture(EngineeringScenario::Complete).await;
 }
@@ -2253,6 +2257,7 @@ enum EngineeringScenario {
     ExpiredProducerBeforeAccept,
     ExpiredProducerAcceptReplay,
     Complete,
+    BinaryOutput,
     CancelMeasuredCandidate,
     AcceptedTerminal,
     RepairBudget,
@@ -3182,7 +3187,10 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         recovery_epoch: f.epoch,
         command,
     };
-    let checks=vec![vec!["/bin/sh".into(),"-c".into(),"test \"$(cat src/result)\" = 'exact result' && test \"$(cat src/resumed)\" = 'resumed-from-retained-bytes' && cat src/result src/resumed; status=$?; printf 'gate_exit=%s\\n' \"$status\"; exit \"$status\"".into()]];
+    let mut checks:Vec<Vec<String>>=vec![vec!["/bin/sh".into(),"-c".into(),"test \"$(cat src/result)\" = 'exact result' && test \"$(cat src/resumed)\" = 'resumed-from-retained-bytes' && cat src/result src/resumed; status=$?; printf 'gate_exit=%s\\n' \"$status\"; exit \"$status\"".into()]];
+    if scenario == EngineeringScenario::BinaryOutput {
+        checks[0][2] = checks[0][2].replace("exit \"$status\"", "printf '\\377'; exit \"$status\"");
+    }
     let revision = f
         .broker
         .snapshot(&f.owner, SnapshotQuery::Task(f.task))
@@ -3657,12 +3665,23 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     assert_eq!(trusted_result.argv, checks[0]);
     assert_eq!(trusted_result.candidate, Some(candidate.clone()));
     let output = std::fs::read(&verifier_view.manifest.log_path).unwrap();
-    assert_eq!(
-        output, b"exact result\nresumed-from-retained-bytes\ngate_exit=0\n",
-        "actual independent gate output and its shell exit result"
-    );
-    assert_eq!(trusted_result.logs, artifacts::sha256(&output));
-    let log=serde_json::to_vec(&serde_json::json!({"candidate":candidate,"measured_commit":measured_commit,"measured_tree":measured_tree,"measured_base":measured_base,"execution":verifier_execution.id,"episode":verifier_episode,"input_packet":verifier_input,"command":checks[0],"trusted_monitor_result":trusted_result,"output":String::from_utf8(output).unwrap()})).unwrap();
+    let mut expected_output = b"exact result\nresumed-from-retained-bytes\ngate_exit=0\n".to_vec();
+    if scenario == EngineeringScenario::BinaryOutput {
+        expected_output.push(255);
+    }
+    if scenario != EngineeringScenario::BinaryOutput {
+        assert_eq!(
+            output, expected_output,
+            "actual independent gate raw output"
+        );
+        assert_eq!(trusted_result.logs, artifacts::sha256(&output));
+    }
+    let log = if scenario == EngineeringScenario::BinaryOutput {
+        use base64::Engine;
+        serde_json::to_vec(&serde_json::json!({"trusted_monitor_result":trusted_result,"output_bytes":{"encoding":"base64","data":base64::engine::general_purpose::STANDARD.encode(&output)}})).unwrap()
+    } else {
+        serde_json::to_vec(&serde_json::json!({"candidate":candidate,"measured_commit":measured_commit,"measured_tree":measured_tree,"measured_base":measured_base,"execution":verifier_execution.id,"episode":verifier_episode,"input_packet":verifier_input,"command":checks[0],"trusted_monitor_result":trusted_result,"output":String::from_utf8(output.clone()).unwrap()})).unwrap()
+    };
     let log_digest = artifacts::sha256(&log);
     artifacts
         .publish_evidence("assembled-verifier", f.task, &log_digest, &log)
@@ -3731,6 +3750,55 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         .snapshot("assembled-verifier", f.task)
         .await
         .unwrap();
+    if scenario == EngineeringScenario::BinaryOutput {
+        let task = f.task;
+        let epoch = f.epoch;
+        let binary_command = |key: &str, revision, command| artifacts::ArtifactEnvelope {
+            key: key.into(),
+            task,
+            expected_revision: revision,
+            generation: 1,
+            recovery_epoch: epoch,
+            command,
+        };
+        Box::pin(async {
+        let out=evidence_directory("binary-output");
+        let report=artifacts::Verification {candidate:candidate.clone(),suite:artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),environment:artifacts::sha256(b"actual-bwrap-private-git-v1"),checks:vec![artifacts::Check {command:checks[0].clone(),exit_code:0,logs:log_digest.clone()}],resolved_decisions:true};
+        let original:serde_json::Value=serde_json::from_slice(&log).unwrap();
+        let mut controls=vec![];
+        for kind in ["tampered","ambiguous","null-ambiguous","malformed","unsupported","wrong-type"] {
+            let mut evidence=original.clone();
+            match kind {
+                "tampered"=>evidence["output_bytes"]["data"]=serde_json::json!("Y2hhbmdlZA=="),
+                "ambiguous"=>evidence["output"]=serde_json::json!("legacy"),
+                "null-ambiguous"=>evidence["output"]=serde_json::Value::Null,
+                "malformed"=>evidence["output_bytes"]["data"]=serde_json::json!("%%%"),
+                "unsupported"=>evidence["output_bytes"]["encoding"]=serde_json::json!("hex"),
+                "wrong-type"=>evidence["output_bytes"]["data"]=serde_json::json!(7),
+                _=>unreachable!(),
+            }
+            let bytes=serde_json::to_vec(&evidence).unwrap();let digest=artifacts::sha256(&bytes);
+            artifacts.publish_evidence("assembled-verifier",f.task,&digest,&bytes).await.unwrap();
+            let mut wrong=report.clone();wrong.checks[0].logs=digest;
+            let result=artifacts.execute("assembled-verifier",binary_command(&format!("binary-{kind}"),snapshot.revision,artifacts::ArtifactCommand::Verify {verification:wrong}),artifacts::ReferenceFault::None).await;
+            controls.push((kind,result.map_err(|e|e.code)));
+        }
+        let foreign=artifacts.execute("assembled-worker",binary_command("binary-foreign",snapshot.revision,artifacts::ArtifactCommand::Verify {verification:report.clone()}),artifacts::ReferenceFault::None).await;
+        let stale=artifacts.execute("assembled-verifier",binary_command("binary-stale",snapshot.revision-1,artifacts::ArtifactCommand::Verify {verification:report.clone()}),artifacts::ReferenceFault::None).await;
+        let verified=artifacts.execute("assembled-verifier",binary_command("binary-valid",snapshot.revision,artifacts::ArtifactCommand::Verify {verification:report}),artifacts::ReferenceFault::None).await;
+        let accepted=match &verified {Ok(v)=>Some(artifacts.execute(&f.owner,binary_command("binary-accept",v.revision,artifacts::ArtifactCommand::Accept {candidate_id:v.candidate_id.clone().unwrap(),report_id:v.report_id.clone().unwrap()}),artifacts::ReferenceFault::None).await),Err(_)=>None};
+        retain_bytes(&out.join("proof.json"),&serde_json::to_vec(&serde_json::json!({"raw_output":output,"evidence":original,"controls":controls,"foreign":foreign.as_ref().map_err(|e|e.code.clone()),"stale":stale.as_ref().map_err(|e|e.code.clone()),"verified":verified.as_ref().map_err(|e|e.code.clone()),"accepted":accepted.as_ref().map(|v|v.as_ref().map_err(|e|e.code.clone()))})).unwrap());
+        child.kill();
+        for id in [execution.id,verifier_execution.id] {if supervisor.inspect(&f.owner,id).await.unwrap().state!=supervisor::ExecutionState::Released {supervisor.release(&f.owner,id).await.unwrap();}}
+        let root=f.root.clone();std::sync::Arc::try_unwrap(f).unwrap_or_else(|_|panic!("binary fixture retained")).finish().await;
+        retain_bytes(&out.join("cleanup.json"),&serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"runtime_stopped":true,"executions_released":true})).unwrap());
+        assert_eq!(output,expected_output);assert!(std::str::from_utf8(&output).is_err());assert_eq!(trusted_result.logs,artifacts::sha256(&output));
+        for (kind,result) in controls {assert_eq!(result.unwrap_err(),ErrorCode::DependencyUnmet,"{kind}");}
+        assert_eq!(foreign.unwrap_err().code,ErrorCode::Unauthorized);assert_eq!(stale.unwrap_err().code,ErrorCode::StaleRevision);
+        verified.expect("successful invalid UTF8 output must Verify using exact decoded raw bytes");assert!(accepted.unwrap().unwrap().accepted);
+        }).await;
+        return;
+    }
     let mut verified = artifact_fixture_call(
         artifacts.clone(),
         ("assembled-verifier").to_owned(),

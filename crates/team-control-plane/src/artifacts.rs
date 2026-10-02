@@ -551,9 +551,28 @@ impl ArtifactService {
             }
             let result: crate::supervisor::ExecutionResult = decode(stored)?;
             let manifest: crate::supervisor::WorkspaceManifest = decode(row.get(1))?;
-            let output = evidence["output"]
-                .as_str()
-                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+            // Presence, including null, participates in the exclusive representation
+            // contract so a producer cannot supply two competing byte streams.
+            let output = match (evidence.get("output"), evidence.get("output_bytes")) {
+                (Some(text), None) => text
+                    .as_str()
+                    .ok_or_else(|| err(ErrorCode::DependencyUnmet))?
+                    .as_bytes()
+                    .to_vec(),
+                (None, Some(encoded)) => {
+                    use base64::Engine;
+                    if encoded["encoding"].as_str() != Some("base64") {
+                        return Err(err(ErrorCode::DependencyUnmet));
+                    }
+                    let data = encoded["data"]
+                        .as_str()
+                        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+                    base64::engine::general_purpose::STANDARD
+                        .decode(data)
+                        .map_err(|_| err(ErrorCode::DependencyUnmet))?
+                }
+                _ => return Err(err(ErrorCode::DependencyUnmet)),
+            };
             if result.execution != execution
                 || result.recovery_epoch != self.broker.epoch
                 || result.candidate.as_ref() != Some(&report.candidate)
@@ -562,7 +581,7 @@ impl ArtifactService {
                 || result.exit_code != Some(check.exit_code)
                 || result.signal.is_some()
                 || !result.namespace_stopped
-                || result.logs != sha256(output.as_bytes())
+                || result.logs != sha256(&output)
             {
                 return Err(err(ErrorCode::DependencyUnmet));
             }
