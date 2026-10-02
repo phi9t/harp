@@ -120,6 +120,21 @@ pub struct ExecutionResult {
     pub signal: Option<i32>,
     pub namespace_stopped: bool,
     pub logs: String,
+    #[serde(default)]
+    pub completion: CompletionProvenance,
+}
+/// Original wait status and recovered shutdown are distinct evidence.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum CompletionProvenance {
+    #[default]
+    MonitorWait,
+    RecoveredStop {
+        finalizer: ProcessIdentity,
+        recovery_epoch: Uuid,
+        stop_observation: Uuid,
+        init_process: ProcessIdentity,
+    },
 }
 #[derive(Clone, Debug)]
 pub struct Supervisor {
@@ -936,6 +951,12 @@ impl Supervisor {
         storage::lock(&tx).await?;
         authorize(&tx, &self.broker, token, id, true).await?;
         reconcile_locked(&tx, id).await?;
+        let v = authorize(&tx, &self.broker, token, id, true).await?;
+        match recover_result(&tx, &self.broker, id, &v).await {
+            Ok(()) => {}
+            Err(e) if e.code == ErrorCode::DependencyUnmet => {}
+            Err(e) => return Err(e),
+        }
         tx.commit().await?;
         self.inspect(token, id).await
     }
@@ -971,6 +992,7 @@ impl Supervisor {
         if !matches!(v.state, ExecutionState::Stopped | ExecutionState::Deleting) {
             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
         }
+        recover_result(&tx, &self.broker, id, &v).await?;
         // Namespace Stop can precede launcher reaping and immutable result
         // persistence. A launched episode retains its workspace until both facts
         // are durable; an allocation cancelled before launch has no result.
@@ -1024,6 +1046,143 @@ impl Supervisor {
         tx.commit().await?;
         Ok(())
     }
+}
+// Never overwrite an immutable winner, including a recovered unknown exit.
+async fn persist_result(tx: &Transaction<'_>, result: &ExecutionResult) -> Result<ExecutionResult> {
+    tx.execute("INSERT INTO kernel_execution_results(execution_id,result) VALUES($1,$2) ON CONFLICT(execution_id) DO NOTHING", &[&result.execution,&json(result)?]).await?;
+    decode(
+        tx.query_one(
+            "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
+            &[&result.execution],
+        )
+        .await?
+        .get(0),
+    )
+}
+fn log_digest(manifest: &WorkspaceManifest, id: Uuid) -> Result<String> {
+    use sha2::{Digest, Sha256};
+    use std::{io::Read, os::unix::fs::MetadataExt};
+    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
+    let root = manifest.path.parent().ok_or_else(rejected)?;
+    if manifest.log_path != root.join(".execution-logs").join(format!("{id}.log")) {
+        return Err(rejected());
+    }
+    let directory = crate::model_free_runtime::open_directory(&root.join(".execution-logs"))?;
+    let name = manifest.log_path.file_name().ok_or_else(rejected)?;
+    let mut file = crate::model_free_runtime::secure_file(&directory, name)?;
+    let stamp = |m: fs::Metadata| {
+        (
+            m.dev(),
+            m.ino(),
+            m.uid(),
+            m.mode(),
+            m.nlink(),
+            m.len(),
+            m.mtime(),
+            m.mtime_nsec(),
+            m.ctime(),
+            m.ctime_nsec(),
+        )
+    };
+    let before = stamp(file.metadata().map_err(|_| rejected())?);
+    let mut digest = Sha256::new();
+    let mut buffer = [0u8; 65536];
+    loop {
+        let count = file.read(&mut buffer).map_err(|_| rejected())?;
+        if count == 0 {
+            break;
+        }
+        digest.update(&buffer[..count]);
+    }
+    if before != stamp(file.metadata().map_err(|_| rejected())?)
+        || before
+            != stamp(
+                crate::model_free_runtime::secure_file(&directory, name)?
+                    .metadata()
+                    .map_err(|_| rejected())?,
+            )
+    {
+        return Err(rejected());
+    }
+    // The pathname must still denote the pinned registered directory incarnation.
+    if crate::model_free_runtime::directory_identity(&root.join(".execution-logs"))? != {
+        let m = directory.metadata().map_err(|_| rejected())?;
+        crate::model_free_runtime::DirectoryIdentity {
+            device: m.dev(),
+            inode: m.ino(),
+            owner: m.uid(),
+        }
+    } {
+        return Err(rejected());
+    }
+    Ok(format!("{:x}", digest.finalize()))
+}
+async fn recover_result(
+    tx: &Transaction<'_>,
+    broker: &Broker,
+    id: Uuid,
+    v: &ExecutionView,
+) -> Result<()> {
+    if v.manifest.episode.is_none()
+        || tx
+            .query_opt(
+                "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
+                &[&id],
+            )
+            .await?
+            .is_some()
+    {
+        return Ok(());
+    }
+    let row = tx
+        .query_one(
+            "SELECT init_process,argv FROM supervised_workspaces WHERE id=$1",
+            &[&id],
+        )
+        .await?;
+    let Some(init) = row.get::<_, Option<serde_json::Value>>(0) else {
+        return Ok(());
+    };
+    let init: ProcessIdentity = decode(init)?;
+    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
+    if v.state != ExecutionState::Stopped
+        || !v.members.is_empty()
+        || v.manifest.recovery_epoch != broker.epoch
+    {
+        return Err(rejected());
+    }
+    let controller = v.controller.clone().ok_or_else(rejected)?;
+    let launcher = v.launcher.as_ref().ok_or_else(rejected)?;
+    observer_frame(Some(&controller)).map_err(|_| rejected())?;
+    if !process_finalized(&controller).map_err(|_| rejected())?
+        || !process_finalized(launcher).map_err(|_| rejected())?
+        || !finalized(&init).map_err(|_| rejected())?
+    {
+        return Err(rejected());
+    }
+    // This append-only stop came from the complete observer for the launched
+    // immutable PID1 incarnation. A mutable stopped string is insufficient.
+    let observation=tx.query_opt("SELECT s.id FROM supervised_observations s WHERE s.execution_id=$1 AND s.state='stopped' AND s.members='[]'::jsonb AND EXISTS(SELECT 1 FROM supervised_observations r WHERE r.execution_id=s.execution_id AND r.state IN ('running','cancelling') AND r.members @> $2::jsonb AND r.observed_at<=s.observed_at) ORDER BY s.observed_at,s.id LIMIT 1", &[&id,&json(&vec![init.clone()])?]).await?.ok_or_else(rejected)?;
+    runtime_release_known(tx, &v.manifest).await?;
+    let result = ExecutionResult {
+        execution: id,
+        argv: decode(row.get(1))?,
+        candidate: v.manifest.candidate.clone(),
+        recovery_epoch: v.manifest.recovery_epoch,
+        controller,
+        exit_code: None,
+        signal: None,
+        namespace_stopped: true,
+        logs: log_digest(&v.manifest, id)?,
+        completion: CompletionProvenance::RecoveredStop {
+            finalizer: identity(std::process::id()).map_err(|_| rejected())?,
+            recovery_epoch: broker.epoch,
+            stop_observation: observation.get(0),
+            init_process: init,
+        },
+    };
+    let _winner = persist_result(tx, &result).await?;
+    Ok(())
 }
 async fn runtime_release_known(tx: &Transaction<'_>, manifest: &WorkspaceManifest) -> Result<()> {
     // Namespace shutdown proves local membership only. It cannot resolve a
@@ -1385,6 +1544,7 @@ fn observer_frame(controller: Option<&ProcessIdentity>) -> std::io::Result<()> {
 }
 // Only the certified original PID1 can establish namespace-wide finalization.
 // A missing namespace link or leader zombie state is deliberately insufficient.
+#[cfg(test)]
 fn observe_finalized(
     init: &ProcessIdentity,
     boot: std::io::Result<String>,
@@ -1394,6 +1554,14 @@ fn observe_finalized(
     if init.namespace_pid != Some(1) {
         return Ok(false);
     }
+    observe_thread_group_finalized(init, boot, read_stat, group_ready)
+}
+fn observe_thread_group_finalized(
+    init: &ProcessIdentity,
+    boot: std::io::Result<String>,
+    read_stat: impl Fn(u32) -> std::io::Result<String>,
+    group_ready: impl FnOnce(u32) -> std::io::Result<bool>,
+) -> std::io::Result<bool> {
     if boot?.trim() != init.boot_id {
         return Err(std::io::Error::other("original PID1 boot fence differs"));
     }
@@ -1421,8 +1589,14 @@ fn observe_finalized(
     Ok(ready)
 }
 fn finalized(init: &ProcessIdentity) -> std::io::Result<bool> {
+    if init.namespace_pid != Some(1) {
+        return Ok(false);
+    }
+    process_finalized(init)
+}
+fn process_finalized(init: &ProcessIdentity) -> std::io::Result<bool> {
     use std::os::fd::FromRawFd;
-    observe_finalized(
+    observe_thread_group_finalized(
         init,
         fs::read_to_string("/proc/sys/kernel/random/boot_id"),
         |pid| fs::read_to_string(format!("/proc/{pid}/stat")),
@@ -1987,6 +2161,9 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
         &[&id, &json(&init)?, &json(&vec![init.clone()])?, &json(&identity(child.id()).map_err(|_|unavailable())?)?],
     )
     .await?;
+    // Keep the exact launch incarnation attributable even if a fast workload
+    // exits before the first changed inventory observation.
+    tx.execute("INSERT INTO supervised_observations(id,execution_id,state,members) VALUES($1,$2,'running',$3)", &[&Uuid::new_v4(),&id,&json(&vec![init.clone()])?]).await?;
     tx.commit().await?;
     // The workload can only start after this commit. Pipe closure/failure cannot declare stop.
     child
@@ -2059,30 +2236,13 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
             exit_code: exit.code(),
             signal: exit.signal(),
             namespace_stopped: final_state == "stopped",
-            logs: {
-                use sha2::{Digest, Sha256};
-                use std::io::Read;
-                let mut log = fs::File::open(&manifest.log_path).map_err(|_| unavailable())?;
-                let mut digest = Sha256::new();
-                let mut buffer = [0_u8; 64 * 1024];
-                loop {
-                    let count = log.read(&mut buffer).map_err(|_| unavailable())?;
-                    if count == 0 {
-                        break;
-                    }
-                    digest.update(&buffer[..count]);
-                }
-                format!("{:x}", digest.finalize())
-            },
+            logs: log_digest(&manifest, id)?,
+            completion: CompletionProvenance::MonitorWait,
         };
         let tx = c.transaction().await?;
         storage::lock(&tx).await?;
         crate::kernel::schema(&tx).await?;
-        tx.execute(
-            "INSERT INTO kernel_execution_results(execution_id,result) VALUES($1,$2)",
-            &[&id, &json(&result)?],
-        )
-        .await?;
+        let _winner = persist_result(&tx, &result).await?;
         tx.commit().await?;
     }
     Ok(())
@@ -2220,14 +2380,16 @@ pub(crate) async fn reconcile_attempt_cancel(
         tx.execute("WITH released AS (UPDATE mailbox_episodes e SET owned_capacity=false WHERE e.attempt_id=$1 AND e.owned_capacity AND e.state='cancelled' AND e.start_operation IS NULL AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND NOT EXISTS(SELECT 1 FROM mailbox_checkpoints c WHERE c.episode_id=e.id) RETURNING mission_id) UPDATE missions m SET used_capacity=m.used_capacity-r.n FROM (SELECT mission_id,count(*) AS n FROM released GROUP BY mission_id) r WHERE m.id=r.mission_id", &[&attempt]).await?;
     }
     if disposition == "cancelled" {
-        // No allocation means there is no execution handle to release. Establish
-        // the stronger no-effects fact under the same admission lock; never
-        // refund admitted attempts/episodes or guess usage from a null binding.
+        // Independently owned continuation history is not the original claim.
+        // Require no original physical binding and stopped, known effects and
+        // usage under the admission lock; cumulative budgets remain consumed.
         let unused: bool = tx.query_one(
-            "SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM episode_executions WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state<>'prepared') AND NOT EXISTS(SELECT 1 FROM operations WHERE attempt_id=$1 AND (kind<>'prepare_attempt' OR state<>'prepared'))",
+            "SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM episode_executions WHERE attempt_id=$1 AND NOT owns_capacity) AND NOT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state<>'prepared') AND NOT EXISTS(SELECT 1 FROM operations WHERE attempt_id=$1 AND (kind<>'prepare_attempt' OR state<>'prepared'))",
             &[&attempt],
         ).await?.get(0);
-        if unused {
+        let unknown_usage = crate::kernel::legacy_usage_unknown(tx, attempt).await?
+            || tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero')", &[&attempt]).await?.get::<_, bool>(0);
+        if unused && !unknown_usage {
             tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND execution_id IS NULL AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)", &[&attempt]).await?;
         }
     }

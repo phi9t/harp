@@ -1115,6 +1115,24 @@ async fn registered_takeover_refuses_actual_running_unfinished_workload() {
     planning_sdk_fixture(true, true, Some("unfinished")).await;
 }
 
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_actual_large_retained_log_allows_authenticated_takeover() {
+    planning_sdk_fixture(true, false, Some("large-log")).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_takeover_preserves_raw_log_security_and_receipt_size_controls() {
+    for kind in [
+        "log-symlink",
+        "log-fifo",
+        "log-mode",
+        "log-hardlink",
+        "log-orphan",
+        "info-oversized",
+        "native-oversized",
+    ] {
+        planning_sdk_fixture(true, false, Some(kind)).await;
+    }
+}
 async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Option<&str>) {
     use temporalio_client::{
         Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
@@ -1155,7 +1173,8 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
         environment: "bwrap-private-git".into(),
     };
     let operation = Uuid::new_v4();
-    episode_runtime::EpisodeGateway::new(f.broker.clone()).prepare("assembled-lead",episode_runtime::StartRequest{id:operation,episode,execution:execution.id,runtime:identity.clone(),argv:vec!["/bin/sh".into(),"-c".into(),"python3 -c 'import json; p=json.load(open(\"/episode-input.json\")); assert p[\"role\"]==\"lead\" and p[\"task\"] is None and p[\"attempt\"] is None'; status=$?; if test \"$status\" != 0; then exit \"$status\"; fi; cat SPEC.md; printf '\\nactual-planning-capsule\\n'".into()]}).await.unwrap();
+    let large_log = negative == Some("large-log");
+    episode_runtime::EpisodeGateway::new(f.broker.clone()).prepare("assembled-lead",episode_runtime::StartRequest{id:operation,episode,execution:execution.id,runtime:identity.clone(),argv:vec!["/bin/sh".into(),"-c".into(),if large_log { "head -c 2097153 /dev/zero" } else { "python3 -c 'import json; p=json.load(open(\"/episode-input.json\")); assert p[\"role\"]==\"lead\" and p[\"task\"] is None and p[\"attempt\"] is None'; status=$?; if test \"$status\" != 0; then exit \"$status\"; fi; cat SPEC.md; printf '\\nactual-planning-capsule\\n'" }.into()]}).await.unwrap();
     let bridge = Bridge::new(f.broker.clone());
     let workflow = bridge
         .register(&f.owner, AggregateKind::Mission, f.mission, 0)
@@ -1547,6 +1566,14 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
         &out.join("actual-execution-result.json"),
         &serde_json::to_vec(&result).unwrap(),
     );
+    if large_log {
+        supervisor
+            .release("assembled-lead", execution.id)
+            .await
+            .unwrap();
+
+        retain_bytes(&out.join("large-log.json"),&serde_json::to_vec(&serde_json::json!({"execution":execution.id,"bytes":2_097_153,"raw_sha256":result.as_ref().unwrap().logs,"released_before_takeover":true})).unwrap());
+    }
     let mut takeover_result = None;
     let mut unfinished = None;
     if takeover {
@@ -1642,7 +1669,56 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
             serde_json::from_slice(&std::fs::read(&original_effect).unwrap()).unwrap();
         let mut injected = None;
         let mut withheld = None;
+        let mut restored_target = original_effect.clone();
         match negative {
+            Some(
+                kind
+                @ ("log-symlink" | "log-fifo" | "log-mode" | "log-hardlink" | "info-oversized"),
+            ) => {
+                use std::os::unix::{ffi::OsStrExt, fs::PermissionsExt};
+                let target = if kind == "info-oversized" {
+                    view.manifest.log_path.with_extension("info")
+                } else {
+                    view.manifest.log_path.clone()
+                };
+                let held = f.root.join("withheld-execution-file");
+                std::fs::rename(&target, &held).unwrap();
+                match kind {
+                    "log-symlink" => std::os::unix::fs::symlink(&held, &target).unwrap(),
+                    "log-fifo" => {
+                        let name = std::ffi::CString::new(target.as_os_str().as_bytes()).unwrap();
+                        assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
+                    }
+                    "log-mode" => {
+                        std::fs::write(&target, b"unsafe").unwrap();
+                        std::fs::set_permissions(&target, std::fs::Permissions::from_mode(0o666))
+                            .unwrap();
+                    }
+                    "log-hardlink" => std::fs::hard_link(&held, &target).unwrap(),
+                    "info-oversized" => std::fs::write(&target, vec![b' '; 1_048_577]).unwrap(),
+                    _ => unreachable!(),
+                }
+                injected = Some(target.clone());
+                withheld = Some(held);
+                restored_target = target;
+            }
+            Some("log-orphan") => {
+                let target = view
+                    .manifest
+                    .log_path
+                    .parent()
+                    .unwrap()
+                    .join(format!("{}.log", Uuid::new_v4()));
+                std::fs::write(&target, b"orphan").unwrap();
+                injected = Some(target);
+            }
+            Some("native-oversized") => {
+                let held = f.root.join("withheld-native-effect");
+                std::fs::rename(&original_effect, &held).unwrap();
+                std::fs::write(&original_effect, vec![b' '; 1_048_577]).unwrap();
+                injected = Some(original_effect.clone());
+                withheld = Some(held);
+            }
             Some("fifo") => {
                 use std::{ffi::CString, os::unix::ffi::OsStrExt};
                 let path = root.join(format!("{}.effect", Uuid::new_v4()));
@@ -1696,14 +1772,14 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
                 "1",
             ]);
         let (output, forced) = bounded_operator_cli(command).await;
-        if negative.is_some() {
+        if negative.is_some() && !large_log {
             let actual:Uuid=db.query_one("SELECT controller FROM gateway_stores WHERE identity=(SELECT store FROM episode_runtime_operations WHERE id=$1)", &[&Uuid::parse_str(&operation).unwrap()]).await.unwrap().get(0);
             assert_eq!(
                 actual, old_controller,
                 "rejected inventory cannot transfer control"
             );
         }
-        let first_rejected = negative.is_some();
+        let first_rejected = negative.is_some() && !large_log;
         if first_rejected {
             assert!(
                 !output.status.success(),
@@ -1742,7 +1818,7 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
                 std::fs::remove_file(path).unwrap();
             }
             if let Some(path) = withheld {
-                std::fs::rename(path, &original_effect).unwrap();
+                std::fs::rename(path, &restored_target).unwrap();
             }
             if negative == Some("changed-root") {
                 std::fs::remove_dir(&root).unwrap();
@@ -2034,17 +2110,19 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
     if let Some(workspace) = unfinished {
         supervisor.release(&f.owner, workspace.id).await.unwrap();
     }
-    supervisor
-        .release("assembled-lead", execution.id)
-        .await
-        .unwrap();
+    if !large_log {
+        supervisor
+            .release("assembled-lead", execution.id)
+            .await
+            .unwrap();
+    }
     f.finish().await;
     if let Some((output, replacement, forced)) = takeover_result {
         assert!(
             !forced,
             "public takeover must classify nonregular native files without blocking the broker transaction"
         );
-        if negative.is_some() {
+        if negative.is_some() && !large_log {
             assert!(!output.status.success());
             retain_bytes(&out.join("takeover-error-stderr.bin"), &output.stderr);
             let error: serde_json::Value = serde_json::from_slice(&output.stderr).unwrap();
@@ -2189,6 +2267,14 @@ async fn successful_invalid_utf8_verifier_output_supports_verify_and_accept() {
     assembled_engineering_fixture(EngineeringScenario::BinaryOutput).await;
 }
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_retained_monitor_result_without_completion_supports_verify_accept() {
+    assembled_engineering_fixture(EngineeringScenario::LegacyMonitorShape).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_recovered_real_verifier_cannot_verify_or_accept_exact_candidate() {
+    assembled_engineering_fixture(EngineeringScenario::RecoveredVerifier).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn real_temporal_assembled_vertical() {
     assembled_engineering_fixture(EngineeringScenario::Complete).await;
 }
@@ -2258,6 +2344,8 @@ enum EngineeringScenario {
     ExpiredProducerAcceptReplay,
     Complete,
     BinaryOutput,
+    RecoveredVerifier,
+    LegacyMonitorShape,
     CancelMeasuredCandidate,
     AcceptedTerminal,
     RepairBudget,
@@ -2272,7 +2360,14 @@ enum EngineeringScenario {
     UnknownLegacyPhysicalClaim,
     UnknownLegacyMonitorClaim,
 }
-async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+fn assembled_engineering_fixture(
+    scenario: EngineeringScenario,
+) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()>>> {
+    // Every scenario, including wrappers that run multiple scenarios, shares
+    // one heap boundary instead of embedding this large assembled future.
+    Box::pin(assembled_engineering_fixture_body(scenario))
+}
+async fn assembled_engineering_fixture_body(scenario: EngineeringScenario) {
     let repair_budget = scenario == EngineeringScenario::RepairBudget;
     let usage_query = matches!(
         scenario,
@@ -3179,12 +3274,14 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     let artifacts = artifacts::ArtifactService::open(f.broker.clone(), &f.root.join("artifacts"))
         .await
         .unwrap();
+    let artifact_task = f.task;
+    let artifact_epoch = f.epoch;
     let artifact_command = |key: &str, revision, command| artifacts::ArtifactEnvelope {
         key: key.into(),
-        task: f.task,
+        task: artifact_task,
         expected_revision: revision,
         generation: 1,
-        recovery_epoch: f.epoch,
+        recovery_epoch: artifact_epoch,
         command,
     };
     let mut checks:Vec<Vec<String>>=vec![vec!["/bin/sh".into(),"-c".into(),"test \"$(cat src/result)\" = 'exact result' && test \"$(cat src/resumed)\" = 'resumed-from-retained-bytes' && cat src/result src/resumed; status=$?; printf 'gate_exit=%s\\n' \"$status\"; exit \"$status\"".into()]];
@@ -3614,6 +3711,14 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     } else {
         false
     };
+    if scenario == EngineeringScenario::LegacyMonitorShape {
+        // Compatibility reader fixture: retain the historical additive-field
+        // shape of the actual monitor wait result, without claiming an old binary.
+        db.batch_execute("CREATE FUNCTION review580_legacy_shape() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN NEW.result=NEW.result-'completion'; RETURN NEW; END $$; CREATE TRIGGER review580_legacy_shape BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_legacy_shape()").await.unwrap();
+    }
+    if scenario == EngineeringScenario::RecoveredVerifier {
+        db.batch_execute("CREATE FUNCTION review580_verifier_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN PERFORM pg_advisory_xact_lock(580581); RETURN NEW; END $$; CREATE TRIGGER review580_verifier_gate BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_verifier_gate(); SELECT pg_advisory_lock(580581)").await.unwrap();
+    }
     episode_runtime::EpisodeGateway::new(f.broker.clone())
         .prepare(
             "assembled-verifier",
@@ -3645,6 +3750,61 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         assert!(std::time::Instant::now() < deadline);
         tokio::time::sleep(Duration::from_millis(20)).await;
     };
+    if scenario == EngineeringScenario::RecoveredVerifier {
+        loop {
+            let waiting:bool=db.query_one("SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE wait_event='advisory' AND query LIKE 'INSERT INTO kernel_execution_results%')",&[]).await.unwrap().get(0);
+            if waiting {
+                break;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "real Verifier persistence gate"
+            );
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        let controller = verifier_view.controller.as_ref().unwrap();
+        let stat = std::fs::read_to_string(format!("/proc/{}/stat", controller.pid)).unwrap();
+        let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
+            .split_whitespace()
+            .collect();
+        assert_eq!(fields[19].parse::<u64>().unwrap(), controller.start_ticks);
+        assert_eq!(
+            std::fs::read_to_string("/proc/sys/kernel/random/boot_id")
+                .unwrap()
+                .trim(),
+            controller.boot_id
+        );
+        assert_eq!(
+            unsafe { libc::kill(controller.pid as i32, libc::SIGKILL) },
+            0
+        );
+        while std::path::Path::new(&format!("/proc/{}", controller.pid)).exists() {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "owned crashed Verifier monitor collected"
+            );
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        db.batch_execute("SELECT pg_advisory_unlock(580581); DROP TRIGGER review580_verifier_gate ON kernel_execution_results; DROP FUNCTION review580_verifier_gate()").await.unwrap();
+        let observations:Vec<serde_json::Value>=db.query("SELECT jsonb_build_object('id',id,'state',state,'members',members) FROM supervised_observations WHERE execution_id=$1 ORDER BY observed_at,id",&[&verifier_execution.id]).await.unwrap().into_iter().map(|r|r.get(0)).collect();
+        let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+        let operation: Uuid = db
+            .query_one(
+                "SELECT id FROM episode_runtime_operations WHERE execution_id=$1",
+                &[&verifier_execution.id],
+            )
+            .await
+            .unwrap()
+            .get(0);
+        let inspected = gateway.inspect(&f.owner, operation).await.unwrap();
+        let measured = gateway.reconcile(&f.owner, operation).await.unwrap();
+        let out = evidence_directory("review580-recovered-verifier");
+        retain_bytes(&out.join("before-recovery.json"),&serde_json::to_vec(&serde_json::json!({"stop":verifier_view,"observations":observations,"original_operation":inspected,"measured_operation":measured})).unwrap());
+        supervisor
+            .reconcile(&f.owner, verifier_execution.id)
+            .await
+            .unwrap();
+    }
     let trusted_result = loop {
         if let Some(result) = supervisor
             .result("assembled-verifier", verifier_execution.id)
@@ -3659,7 +3819,9 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
         );
         tokio::time::sleep(Duration::from_millis(20)).await;
     };
-    assert_eq!(trusted_result.exit_code, Some(0));
+    if scenario != EngineeringScenario::RecoveredVerifier {
+        assert_eq!(trusted_result.exit_code, Some(0));
+    }
     assert_eq!(trusted_result.signal, None);
     assert!(trusted_result.namespace_stopped);
     assert_eq!(trusted_result.argv, checks[0]);
@@ -3682,11 +3844,53 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     } else {
         serde_json::to_vec(&serde_json::json!({"candidate":candidate,"measured_commit":measured_commit,"measured_tree":measured_tree,"measured_base":measured_base,"execution":verifier_execution.id,"episode":verifier_episode,"input_packet":verifier_input,"command":checks[0],"trusted_monitor_result":trusted_result,"output":String::from_utf8(output.clone()).unwrap()})).unwrap()
     };
+    let log = if scenario == EngineeringScenario::LegacyMonitorShape {
+        let mut evidence: serde_json::Value = serde_json::from_slice(&log).unwrap();
+        let original: serde_json::Value = db
+            .query_one(
+                "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
+                &[&verifier_execution.id],
+            )
+            .await
+            .unwrap()
+            .get(0);
+        assert!(original.get("completion").is_none());
+        evidence["trusted_monitor_result"] = original;
+        serde_json::to_vec(&evidence).unwrap()
+    } else {
+        log
+    };
     let log_digest = artifacts::sha256(&log);
     artifacts
         .publish_evidence("assembled-verifier", f.task, &log_digest, &log)
         .await
         .unwrap();
+    if scenario == EngineeringScenario::RecoveredVerifier {
+        Box::pin(async {
+        let snapshot=artifacts.snapshot("assembled-verifier",f.task).await.unwrap();
+        let report=artifacts::Verification {candidate:candidate.clone(),suite:artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),environment:artifacts::sha256(b"actual-bwrap-private-git-v1"),checks:vec![artifacts::Check{command:checks[0].clone(),exit_code:0,logs:log_digest}],resolved_decisions:true};
+        let verify=artifact_fixture_call(artifacts.clone(),"assembled-verifier".into(),artifact_command("review580-refuse-unknown-verifier",snapshot.revision,artifacts::ArtifactCommand::Verify {verification:report.clone()}),artifacts::ReferenceFault::None).await;
+        let accept=artifact_fixture_call(artifacts.clone(),f.owner.clone(),artifact_command("review580-refuse-unverified-candidate",snapshot.revision,artifacts::ArtifactCommand::Accept {candidate_id:artifacts::sha256(&serde_json::to_vec(&candidate).unwrap()),report_id:artifacts::sha256(&serde_json::to_vec(&report).unwrap())}),artifacts::ReferenceFault::None).await;
+        let retained=supervisor.result(&f.owner,verifier_execution.id).await.unwrap();
+        let (a,b)=tokio::join!(supervisor.reconcile(&f.owner,verifier_execution.id),supervisor.reconcile(&f.owner,verifier_execution.id));
+        a.unwrap();b.unwrap();
+        let repeated=supervisor.result(&f.owner,verifier_execution.id).await.unwrap();
+        let out=evidence_directory("review580-recovered-verifier");
+        retain_bytes(&out.join("proof.json"),&serde_json::to_vec(&serde_json::json!({"candidate":candidate,"report":report,"result":trusted_result,"raw_output_sha256":artifacts::sha256(&output),"verify":verify.as_ref().map_err(|e|&e.code),"accept":accept.as_ref().map_err(|e|&e.code),"before_repeat":retained,"after_repeat":repeated})).unwrap());
+        child.kill();
+        for id in [execution.id,continuation_execution.id,verifier_execution.id] {
+            if supervisor.inspect(&f.owner,id).await.unwrap().state==supervisor::ExecutionState::Stopped {supervisor.release(&f.owner,id).await.unwrap();}
+        }
+        let root=f.root.clone();std::sync::Arc::try_unwrap(f).unwrap_or_else(|_|panic!("recovery fixture retained")).finish().await;
+        assert!(!root.exists());
+        assert_eq!(trusted_result.exit_code,None);assert_eq!(trusted_result.signal,None);
+        assert!(matches!(trusted_result.completion,supervisor::CompletionProvenance::RecoveredStop{..}));
+        assert_eq!(verify.unwrap_err().code,ErrorCode::DependencyUnmet);
+        assert_eq!(accept.unwrap_err().code,ErrorCode::DependencyUnmet);
+        assert_eq!(serde_json::to_value(retained).unwrap(),serde_json::to_value(repeated).unwrap());
+        }).await;
+        return;
+    }
     if changed_after_allocation {
         let current = artifacts.snapshot(&f.owner, f.task).await.unwrap();
         let stale = artifact_fixture_call(
@@ -3823,6 +4027,16 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
     )
     .await
     .unwrap();
+    if scenario == EngineeringScenario::LegacyMonitorShape {
+        Box::pin(async {
+        let accepted=artifact_fixture_call(artifacts.clone(),f.owner.clone(),artifact_command("review580-accept-legacy-shape",verified.revision,artifacts::ArtifactCommand::Accept {candidate_id:verified.candidate_id.clone().unwrap(),report_id:verified.report_id.clone().unwrap()}),artifacts::ReferenceFault::None).await;
+        let out=evidence_directory("review580-legacy-monitor-shape");retain_bytes(&out.join("proof.json"),&serde_json::to_vec(&serde_json::json!({"verified":verified,"accepted":accepted.as_ref().map_err(|e|&e.code),"evidence":serde_json::from_slice::<serde_json::Value>(&log).unwrap()})).unwrap());
+        child.kill();for id in [execution.id,continuation_execution.id,verifier_execution.id] {if supervisor.inspect(&f.owner,id).await.unwrap().state==supervisor::ExecutionState::Stopped {supervisor.release(&f.owner,id).await.unwrap();}}
+        let root=f.root.clone();std::sync::Arc::try_unwrap(f).unwrap_or_else(|_|panic!("legacy shape fixture retained")).finish().await;
+        assert!(!root.exists());assert!(accepted.unwrap().accepted);
+        }).await;
+        return;
+    }
     if matches!(
         scenario,
         EngineeringScenario::ExpiredProducerBeforeAccept

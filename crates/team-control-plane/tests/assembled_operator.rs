@@ -1113,3 +1113,292 @@ async fn monitor_finalizes_large_output_under_owned_measured_memory_limit() {
         assert_eq!(capacity, 0);
     }
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result() {
+    review580_crash(false, false).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_fast_monitor_crash_retains_exact_launch_stop_certificate() {
+    review580_crash(true, false).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review580_surviving_monitor_thread_group_retains_capacity() {
+    review580_crash(true, true).await;
+}
+async fn review580_crash(fast: bool, survivor: bool) {
+    let f = Fixture::new().await;
+    let out = evidence(if survivor {
+        "review580-surviving-thread"
+    } else if fast {
+        "review580-fast-crash"
+    } else {
+        "review580-crash"
+    });
+    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
+        .await
+        .unwrap();
+    tokio::spawn(async move { connection.await.unwrap() });
+    // Gate only the real immutable persistence boundary, after real namespace Stop.
+    db.batch_execute("CREATE FUNCTION review580_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN PERFORM pg_advisory_xact_lock(580580); RETURN NEW; END $$; CREATE TRIGGER review580_gate BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_gate(); SELECT pg_advisory_lock(580580)").await.unwrap();
+    let episode = f.worker_episode("review580-crash-worker").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode("assembled-worker", episode, vec![], CreateFault::None)
+        .await
+        .unwrap();
+    supervisor
+        .start(
+            "assembled-worker",
+            execution.id,
+            vec![
+                "/bin/sh".into(),
+                "-c".into(),
+                if fast {
+                    "printf actual-crash-output"
+                } else {
+                    "sleep 1; printf actual-crash-output"
+                }
+                .into(),
+            ],
+            30,
+        )
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(15);
+    let stopped = loop {
+        let row = db.query_one("SELECT state,controller,launcher,init_process,members FROM supervised_workspaces WHERE id=$1",&[&execution.id]).await.unwrap();
+        let waiting: bool = db.query_one("SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE wait_event='advisory' AND query LIKE 'INSERT INTO kernel_execution_results%')",&[]).await.unwrap().get(0);
+        if row.get::<_, String>(0) == "stopped" && waiting {
+            break serde_json::json!({"state":row.get::<_,String>(0),"controller":row.get::<_,serde_json::Value>(1),"launcher":row.get::<_,serde_json::Value>(2),"init_process":row.get::<_,serde_json::Value>(3),"members":row.get::<_,serde_json::Value>(4)});
+        }
+        assert!(
+            std::time::Instant::now() < deadline,
+            "real monitor persistence gate must be reached"
+        );
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    };
+    let controller: supervisor::ProcessIdentity =
+        serde_json::from_value(stopped["controller"].clone()).unwrap();
+    let stat = std::fs::read_to_string(format!("/proc/{}/stat", controller.pid)).unwrap();
+    let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
+        .split_whitespace()
+        .collect();
+    assert_eq!(
+        fields[19].parse::<u64>().unwrap(),
+        controller.start_ticks,
+        "kill exact owned monitor only"
+    );
+    assert_eq!(
+        std::fs::read_to_string("/proc/sys/kernel/random/boot_id")
+            .unwrap()
+            .trim(),
+        controller.boot_id
+    );
+    assert_eq!(
+        unsafe { libc::kill(controller.pid as i32, libc::SIGKILL) },
+        0
+    );
+    let deadline = std::time::Instant::now() + Duration::from_secs(10);
+    while std::path::Path::new(&format!("/proc/{}", controller.pid)).exists() {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "owned monitor reaper must collect crashed process"
+        );
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    db.batch_execute("SELECT pg_advisory_unlock(580580); DROP TRIGGER review580_gate ON kernel_execution_results; DROP FUNCTION review580_gate()").await.unwrap();
+    let fresh_owner = format!("review580-owner-{}", Uuid::new_v4());
+    grant(
+        &f,
+        f.mission,
+        Uuid::new_v4(),
+        &fresh_owner,
+        Role::Owner,
+        300,
+    )
+    .await;
+    if survivor {
+        // Negative controller-identity fault uses a genuine owned live thread
+        // group with a zombie leader; it cannot manufacture successful Stop.
+        let mut child=Process::new("/usr/bin/python3").args(["-c","import ctypes,threading,time; threading.Thread(target=lambda:time.sleep(30)).start(); time.sleep(1); ctypes.CDLL(None).syscall(60,0)"]).env_clear().env("PATH","/usr/bin:/bin").stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null()).spawn().unwrap();
+        let pid = child.id();
+        let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
+        let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
+            .split_whitespace()
+            .collect();
+        let replacement = supervisor::ProcessIdentity {
+            pid,
+            start_ticks: fields[19].parse().unwrap(),
+            boot_id: controller.boot_id.clone(),
+            namespace: std::fs::read_link(format!("/proc/{pid}/ns/pid"))
+                .unwrap()
+                .to_string_lossy()
+                .into(),
+            namespace_pid: Some(pid),
+        };
+        db.execute(
+            "UPDATE supervised_workspaces SET controller=$2 WHERE id=$1",
+            &[&execution.id, &serde_json::to_value(&replacement).unwrap()],
+        )
+        .await
+        .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(5);
+        loop {
+            let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
+            if stat[stat.rfind(')').unwrap() + 2..]
+                .split_whitespace()
+                .next()
+                == Some("Z")
+            {
+                break;
+            }
+            assert!(std::time::Instant::now() < deadline);
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        let fd = unsafe { libc::syscall(libc::SYS_pidfd_open, pid, 0) } as i32;
+        assert!(fd >= 0);
+        let mut poll = libc::pollfd {
+            fd,
+            events: libc::POLLIN,
+            revents: 0,
+        };
+        assert_eq!(unsafe { libc::poll(&mut poll, 1, 0) }, 0);
+        unsafe { libc::close(fd) };
+        supervisor
+            .reconcile(&fresh_owner, execution.id)
+            .await
+            .unwrap();
+        let release = supervisor.release(&fresh_owner, execution.id).await;
+        let result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+        let held = f
+            .broker
+            .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
+            .await
+            .unwrap()
+            .data;
+        let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
+        assert_eq!(
+            stat[stat.rfind(')').unwrap() + 2..]
+                .split_whitespace()
+                .nth(19)
+                .unwrap()
+                .parse::<u64>()
+                .unwrap(),
+            replacement.start_ticks
+        );
+        child.kill().unwrap();
+        let terminal = child.wait().unwrap();
+        std::fs::write(out.join("survivor.json"),serde_json::to_vec_pretty(&serde_json::json!({"actual_controller_fault":replacement,"leader_zombie_but_whole_group_not_ready":true,"release":release.as_ref().map_err(|e|&e.code),"result":result,"held":held,"cleanup_terminal":terminal.to_string()})).unwrap()).unwrap();
+        let root = f.root.clone();
+        f.finish().await;
+        assert!(!root.exists());
+        assert!(
+            result.is_none(),
+            "surviving monitor threads forbid recovered result"
+        );
+        assert_eq!(release.unwrap_err().code, ErrorCode::DependencyUnmet);
+        assert_eq!(held["used_capacity"], 1);
+        return;
+    }
+    let independent_digest = artifacts::sha256(
+        &std::fs::read(
+            supervisor
+                .inspect(&fresh_owner, execution.id)
+                .await
+                .unwrap()
+                .manifest
+                .log_path,
+        )
+        .unwrap(),
+    );
+    let original_log = supervisor
+        .inspect(&fresh_owner, execution.id)
+        .await
+        .unwrap()
+        .manifest
+        .log_path;
+    let withheld = original_log.with_extension("withheld");
+    let mut controls = vec![];
+    for kind in ["symlink", "fifo", "unsafe-mode", "directory"] {
+        std::fs::rename(&original_log, &withheld).unwrap();
+        match kind {
+            "symlink" => std::os::unix::fs::symlink(&withheld, &original_log).unwrap(),
+            "fifo" => {
+                use std::os::unix::ffi::OsStrExt;
+                let name = std::ffi::CString::new(original_log.as_os_str().as_bytes()).unwrap();
+                assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
+            }
+            "unsafe-mode" => {
+                use std::os::unix::fs::PermissionsExt;
+                std::fs::write(&original_log, b"unsafe").unwrap();
+                std::fs::set_permissions(&original_log, std::fs::Permissions::from_mode(0o666))
+                    .unwrap();
+            }
+            "directory" => std::fs::create_dir(&original_log).unwrap(),
+            _ => unreachable!(),
+        }
+        supervisor
+            .reconcile(&fresh_owner, execution.id)
+            .await
+            .unwrap();
+        let denied = supervisor.release(&fresh_owner, execution.id).await;
+        let absent = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+        controls.push((kind, denied.map_err(|e| e.code), absent));
+        if kind == "directory" {
+            std::fs::remove_dir(&original_log).unwrap();
+        } else {
+            std::fs::remove_file(&original_log).unwrap();
+        }
+        std::fs::rename(&withheld, &original_log).unwrap();
+    }
+    let unauthorized = supervisor.reconcile("wrong-token", execution.id).await;
+    let missing = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+    let (a, b) = tokio::join!(
+        supervisor.reconcile(&fresh_owner, execution.id),
+        supervisor.reconcile(&fresh_owner, execution.id)
+    );
+    let view = a.unwrap();
+    b.unwrap();
+    let first = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+    let release = supervisor.release(&fresh_owner, execution.id).await;
+    let final_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+    let repeat = supervisor
+        .reconcile(&fresh_owner, execution.id)
+        .await
+        .unwrap();
+    let repeated_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
+    let capacity = f
+        .broker
+        .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap()
+        .data["used_capacity"]
+        .clone();
+    std::fs::write(out.join("crash.json"),serde_json::to_vec_pretty(&serde_json::json!({"execution":execution,"independent_raw_digest":independent_digest,"controls":controls,"unauthorized":unauthorized.as_ref().map_err(|e|&e.code),"original_stop":stopped,"before":missing,"view":view,"first":first,"release":release.as_ref().map_err(|e|&e.code),"result":final_result,"repeat":repeat,"repeated_result":repeated_result,"capacity":capacity})).unwrap()).unwrap();
+    let epoch = f.epoch;
+    let root = f.root.clone();
+    f.finish().await;
+    assert!(!root.exists(), "owned cleanup before recovery oracle");
+    for (kind, denied, absent) in controls {
+        assert_eq!(denied.unwrap_err(), ErrorCode::DependencyUnmet, "{kind}");
+        assert!(absent.is_none());
+    }
+    assert_eq!(unauthorized.unwrap_err().code, ErrorCode::Unauthorized);
+    assert!(missing.is_none(), "crash aborted actual result persistence");
+    assert!(
+        release.is_ok(),
+        "replacement Owner must release real stopped crash without guessing exit: {release:?}"
+    );
+    let result = final_result.expect("durable recovered result");
+    assert_eq!(result.exit_code, None);
+    assert_eq!(result.signal, None);
+    assert_eq!(result.controller, controller);
+    assert_eq!(result.logs, independent_digest);
+    assert_eq!(result.recovery_epoch, epoch);
+    assert_eq!(
+        serde_json::to_value(&result).unwrap(),
+        serde_json::to_value(repeated_result.unwrap()).unwrap()
+    );
+    assert_eq!(capacity, 0);
+}

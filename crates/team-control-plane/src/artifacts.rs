@@ -578,6 +578,7 @@ impl ArtifactService {
                 || result.candidate.as_ref() != Some(&report.candidate)
                 || manifest.candidate.as_ref() != Some(&report.candidate)
                 || result.argv != check.command
+                || result.completion != crate::supervisor::CompletionProvenance::MonitorWait
                 || result.exit_code != Some(check.exit_code)
                 || result.signal.is_some()
                 || !result.namespace_stopped

@@ -415,19 +415,22 @@ pub(crate) fn entries(directory: &std::fs::File) -> crate::Result<Vec<std::ffi::
     }
     Ok(entries)
 }
-pub(crate) fn native_file(
+pub(crate) fn secure_file(
     directory: &std::fs::File,
     name: &std::ffi::OsStr,
-) -> crate::Result<Vec<u8>> {
+) -> crate::Result<std::fs::File> {
     use std::{
         ffi::CString,
-        io::Read,
         os::{
             fd::{AsRawFd, FromRawFd},
             unix::{ffi::OsStrExt, fs::MetadataExt},
         },
     };
     let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
+    if name.as_bytes().contains(&b'/') || name.as_bytes().is_empty() || name == "." || name == ".."
+    {
+        return Err(rejected());
+    }
     let name = CString::new(name.as_bytes()).map_err(|_| rejected())?;
     let raw = unsafe {
         libc::openat(
@@ -445,8 +448,19 @@ pub(crate) fn native_file(
         || metadata.uid() != unsafe { libc::geteuid() }
         || metadata.nlink() != 1
         || metadata.mode() & 0o022 != 0
-        || metadata.len() > 1_048_576
     {
+        return Err(rejected());
+    }
+    Ok(file)
+}
+pub(crate) fn native_file(
+    directory: &std::fs::File,
+    name: &std::ffi::OsStr,
+) -> crate::Result<Vec<u8>> {
+    use std::io::Read;
+    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
+    let file = secure_file(directory, name)?;
+    if file.metadata().map_err(|_| rejected())?.len() > 1_048_576 {
         return Err(rejected());
     }
     let mut bytes = vec![];
@@ -628,7 +642,13 @@ pub(crate) async fn inventory(
                 {
                     return Err(rejected());
                 }
-                native_file(&logs, &log)?;
+                // Raw retained output is securely classified without materializing
+                // contents or borrowing the native JSON receipt size bound.
+                if path.extension().is_some_and(|s| s == "log") {
+                    secure_file(&logs, &log)?;
+                } else {
+                    native_file(&logs, &log)?;
+                }
             }
             continue;
         }

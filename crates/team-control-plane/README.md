@@ -203,3 +203,23 @@ are ambiguous and rejected. The decoded original bytes must match the trusted
 monitor digest; command, candidate, exit status and authority bindings still apply.
 Monitor finalization hashes every raw log byte incrementally with a fixed buffer.
 Unreadable logs or incomplete stop evidence cannot establish releasable success.
+
+An original unbound Attempt reservation and separately owned continuation slots
+reconcile independently. Stopped continuation history does not consume the
+original slot; unresolved effects, usage and execution checkpoints still hold
+capacity, and cumulative admission budgets are never refunded.
+
+Authenticated reconciliation/release can finalize a launched episode after its
+original monitor crashes. It requires an immutable exact launch/Stop observation,
+fresh certified PID1 finalization, terminated monitor and launcher thread groups,
+known effects/usage, and a stable securely opened retained log. Recovery records
+`completion.kind=recovered_stop`, the original execution/monitor/epoch, and the
+actual finalizer/current epoch/stop observation. Exit and signal remain unknown;
+this result cannot pass verification or acceptance. Historical results without
+`completion` retain original monitor-wait semantics. Result insertion is immutable
+and preserves the stored winner across repeated or concurrent finalization.
+
+Takeover securely classifies retained raw `.log` files without a size limit or
+whole-file allocation. Native JSON receipts and bootstrap `.info` metadata retain
+the 1 MiB bound; unsafe files, incomplete inventory and active work still refuse
+transfer.

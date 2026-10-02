@@ -3591,3 +3591,296 @@ async fn review571_unresolved_yield(imported: bool) {
         before.data["admitted_episodes"]
     );
 }
+
+#[tokio::test]
+async fn review580_allocated_continuation_history_does_not_hold_original_unbound_claim() {
+    let f = Fixture::with_limits(2, 2, 3).await;
+    temporal::Bridge::new(f.broker.clone())
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    let first = f.worker_episode("review580-first").await;
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    mailbox.execute("assembled-worker", mail(f.epoch, "review580-yield", serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"unused imported Worker","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+    mailbox.execute("assembled-worker", mail(f.epoch, "review580-notice", serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"Resume","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+    let continuation = f.worker_episode("review580-continuation").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            continuation,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let before = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap()
+        .data;
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "cancel separate allocation".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let done = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    supervisor.release(&f.owner, execution.id).await.unwrap();
+    let repeated = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-repeat",
+                done.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap()
+        .data;
+    let replacement = ready_capacity_task(&f, "review580-replacement").await;
+    let admitted = assign_capacity_task(&f, replacement, "review580-admit-replacement").await;
+    let third = ready_capacity_task(&f, "review580-third").await;
+    let exhausted = assign_capacity_task(&f, third, "review580-budget-stays-consumed").await;
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("review580-capacity.json"),serde_json::to_vec_pretty(&serde_json::json!({"execution":execution,"before":before,"after":after,"cancel":cancel,"done":done,"repeat":repeated,"replacement":admitted.as_ref().map_err(|e|&e.code),"third":exhausted.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
+    let root = f.root.clone();
+    f.finish().await;
+    assert!(!root.exists(), "cleanup before capacity oracle");
+    assert_eq!(before["used_capacity"], 2);
+    assert_eq!(
+        after["used_capacity"], 0,
+        "retained separately owned execution history must not hold the original unbound reservation"
+    );
+    assert_eq!(after["admitted_attempts"], 1);
+    assert_eq!(after["admitted_episodes"], 2);
+    assert!(admitted.is_ok());
+    assert_eq!(exhausted.unwrap_err().code, ErrorCode::BudgetExhausted);
+}
+
+#[test]
+fn review580_unbound_original_and_allocated_continuation_hold_unknown_usage() {
+    use std::os::unix::process::CommandExt;
+    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "review580_owned_continuation_usage_worker",
+            "--ignored",
+            "--nocapture",
+        ])
+        .env_clear()
+        .env("PATH", "/usr/bin:/bin")
+        .env(
+            "TEAM_CONTROL_PLANE_TEST_DSN",
+            std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),
+        )
+        .env(
+            "TEMPORAL_FIXTURE_EVIDENCE",
+            std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap(),
+        )
+        .env(
+            "TEMPORAL_ADDRESS",
+            std::env::var("TEMPORAL_ADDRESS").unwrap(),
+        )
+        .process_group(0)
+        .spawn()
+        .unwrap();
+    let terminal = child.wait().unwrap();
+    assert!(
+        terminal.success(),
+        "owned continuation usage fixture terminal {terminal}"
+    );
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "owned singleton native transport subprocess"]
+async fn review580_owned_continuation_usage_worker() {
+    use std::time::Duration;
+    let f = Fixture::new().await;
+    temporal::Bridge::new(f.broker.clone())
+        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+        .await
+        .unwrap();
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    let first = f.worker_episode("review580-usage-first").await;
+    mailbox.execute("assembled-worker",mail(f.epoch,"review580-usage-yield",serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"unused imported Worker","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+    mailbox.execute("assembled-worker",mail(f.epoch,"review580-usage-notice",serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"resume","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+    let episode = f.worker_episode("review580-usage-continuation").await;
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(
+            "assembled-worker",
+            episode,
+            vec![],
+            supervisor::CreateFault::None,
+        )
+        .await
+        .unwrap();
+    let root = f.root.join("review580-unknown-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "kernel16-inprocess-native".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "owned-async-os".into(),
+        environment: "bwrap-private-git".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            "assembled-worker",
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec![
+                    "/bin/sh".into(),
+                    "-c".into(),
+                    "sleep 1; printf unknown-usage".into(),
+                ],
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = UnmeasuredCancellationNative(episode_native::NativeOsRuntime {
+        root: root.clone(),
+        identity,
+        supervisor: supervisor.clone(),
+        service: f.owner.clone(),
+        lose_reply: false,
+        hold_reply: false,
+    });
+    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
+    let op = gateway
+        .dispatch(&f.owner, operation, &mut runtime)
+        .await
+        .unwrap();
+    let deadline = std::time::Instant::now() + Duration::from_secs(15);
+    while supervisor
+        .result(&f.owner, execution.id)
+        .await
+        .unwrap()
+        .is_none()
+    {
+        assert!(std::time::Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    let cancel = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-usage-cancel",
+                3,
+                Command::CancelAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                    reason: "unknown continuation usage".into(),
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let reconciled = f
+        .broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-usage-reconcile",
+                cancel.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let held_release = supervisor.release(&f.owner, execution.id).await;
+    let held = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap()
+        .data;
+    let resolved = gateway.reconcile(&f.owner, operation).await.unwrap();
+    supervisor.release(&f.owner, execution.id).await.unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                "review580-usage-known-reconcile",
+                reconciled.revision,
+                Command::ReconcileAttempt {
+                    task_id: f.task,
+                    attempt_id: f.attempt,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    let after = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
+        .await
+        .unwrap()
+        .data;
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+    std::fs::write(out.join("review580-continuation-usage.json"),serde_json::to_vec_pretty(&serde_json::json!({"operation":op,"held_release":held_release.as_ref().map_err(|e|&e.code),"held":held,"resolved":resolved,"after":after})).unwrap()).unwrap();
+    let root = f.root.clone();
+    f.finish().await;
+    assert!(!root.exists());
+    assert_eq!(op.usage, episode_runtime::UsageObservation::Unknown);
+    assert_eq!(held_release.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(
+        held["used_capacity"], 2,
+        "unknown continuation usage retains both independent claims"
+    );
+    assert_eq!(
+        after["used_capacity"], 0,
+        "real receipt resolves usage without another Start"
+    );
+}
