@@ -105,9 +105,35 @@
   },
   "full_matrix": {
     "session": 28026,
-    "status": "running",
+    "status": "failed; diagnosis pending",
     "command": "run-temporal.sh --offline --all-targets",
     "source_writes": "stopped pending checks",
-    "build_service_slot": "author retains exclusive ownership"
+    "build_service_slot": "author retains exclusive ownership",
+    "observed_failure": "genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch",
+    "observed_failures": {
+      "actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate": "DependencyUnmet vs expected StaleRevision at4438",
+      "postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate": "DependencyUnmet vs expected StaleRevision at4438",
+      "genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch": "fresh verifier phase unwrap DependencyUnmet at7145"
+    },
+    "assembled_vertical_summary": {
+      "passed": 54,
+      "failed": 3,
+      "ignored": 3
+    },
+    "terminal_exit": 101,
+    "root_source_hypotheses": [
+      "fresh verifier helper unconditionally yields negative episode even if release already terminalized it; inspect actual public state before fixture action",
+      "base-change policy also changes suite, new provenance refusal may precede established candidate-base StaleRevision contract"
+    ],
+    "diagnosis": {
+      "confirmed_by_author": "error precedence and premature predeadline retirement; not observed dispatch/capacity regression",
+      "required_followup": [
+        "preserve predeadline release\u2192yield checkpoints",
+        "recover deadline\u2192release\u2192successor",
+        "recover release\u2192deadline\u2192successor without repeated human Release",
+        "retain unknown-native-usage refusal",
+        "preserve current-policy validation precedence before provenance"
+      ]
+    }
   }
 }
