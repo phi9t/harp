@@ -1,0 +1,37 @@
+{
+  "candidate_source": "e6676bf6c6d05ab850ddde17aa71f6932be495f5",
+  "review_job": 611,
+  "status": "confirmed source-level gaps; public reproduction and repair pending",
+  "root_read_only_assessment": {
+    "verification": "supervisor Start checks only policy existence; execution report validates candidate/argv/log/completion but does not compare immutable suite/environment digests",
+    "lifecycle": "Release refunds capacity and marks workspace released without terminal mailbox episode disposition; Yield rejects deadline-expired episode while Admit blocks live admitted/active episodes for same principal"
+  },
+  "assigned_author": "/root/kernel16_review591_author",
+  "author_worktree": "/tmp/corenius-kernel16-review611-author",
+  "author_exact_base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+  "authority": "20261003-owner-authorizes-full-goal-execution.md",
+  "limits": "source inspection confirms plausibility, not public behavioral reproduction; no root source edits, builds or services",
+  "author_diagnosis": {
+    "status": "public regressions being constructed; no services launched as reported",
+    "policy_hypotheses": [
+      "missing immutable manifest policy",
+      "stale revision as alternative",
+      "candidate/output mismatch as alternative"
+    ],
+    "lifecycle_hypotheses": [
+      "released binding leaves admitted/active episode live",
+      "capacity not refunded as alternative",
+      "unchanged frontier as alternative",
+      "uncertain stop as alternative"
+    ],
+    "proposed_policy_fix": "additive optional serde-default immutable manifest policy; missing historical policy refuses verification while inspection/cleanup remain available",
+    "root_review_constraints": [
+      "capture policy inside serialized preparation transaction",
+      "suite-only and environment-only change negatives",
+      "fresh-policy execution positive",
+      "cached Verify and Accept still revalidate",
+      "terminal reconciliation preserves yielded/completed checkpoints and waits",
+      "uncertainty does not permit premature release"
+    ]
+  }
+}

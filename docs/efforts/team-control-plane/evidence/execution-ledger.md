@@ -2134,3 +2134,6 @@ Root gate11 session13545 terminal exit0; all repository checks green. Retained19
 ### Whole-branch611 rejection and authorized repair
 
 Review611 session86801 terminal exit1: High verification execution provenance omits immutable suite/environment policy digests; Medium deadline-stopped released lead episode remains live and prevents successor admission. Earlier conformance/gate passes do not override this rejection. Fresh isolated repair assigned to kernel16_review591_author in a new review611 worktree at587aca8 under full-goal owner authorization; source integration and landing withheld. Review and repair contract retained in decisions/20261003-kernel-policy-lifecycle611-repair.md and evidence/kernel16/branch-repair/branch611/.
+
+
+Repair611 author confirmed fresh solewriter tree at587aca8821d352b73463dff2ffd02cbdf55e19e5. Ranked policy and lifecycle hypotheses recorded in kernel16-review611-assessment.json. Public regressions under construction; no new red/green evidence or services reported yet. Root requested separate suite/environment changes, fresh-policy positive, cached report/acceptance revalidation and preservation of historical cleanup/checkpoints/waits.
