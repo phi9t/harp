@@ -18,8 +18,9 @@ interpreter. [The reconciliation](v02-reconciliation.md), [PLAN.md](PLAN.md)
 and tickets26–32 define the additional work and preserve earlier evidence.
 
 Ticket26 is being implemented in its own worktree. jj19's final history-export
-repair passed both independent review axes, imported regressions and the root
-repository gate; branch review and gated landing remain pending. One fixed offline namespace cleanup
+repair passed both independent review axes, imported regressions, the root
+repository gate and wholebranch631; evaluation is accepted and exact-tip gated
+landing is next. One fixed offline namespace cleanup
 case has independently verified terminal0 cleanup measurements; full conformance
 is partial because original prelaunch controller ordering remains unverified.
 It does not admit a Trae or paid provider launch. Historical quarantines and

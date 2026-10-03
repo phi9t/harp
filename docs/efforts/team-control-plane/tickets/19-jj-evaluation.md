@@ -1,10 +1,10 @@
 # 19 jj-evaluation: Evaluate optional jj workspace backend
 
 Type: task
-Status: claimed
+Status: resolved
 Owner: corenius-jj19
 Blocked by: 11, 15, 16
-Claimed: 2026-10-03T16:56:53Z expires 2026-10-04T16:56:53Z
+Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
 
@@ -25,11 +25,11 @@ No shared checkout conversion, required kernel dependency or unrestricted cross-
 
 ## Acceptance
 
-- [ ] Establish a failing public behavioral fixture for the required outcome.
-- [ ] Implement the smallest slice and record fresh passing evidence.
-- [ ] Rewrite after verification; create divergent operations/stale workspaces; crash before working-copy update; add ignored/private files; export conflicts; run gate/evidence/GC and fast-forward integration fixtures. Retained immutable candidate proof stays correct; changed content requires new proof.
-- [ ] Standards and Spec reviews have no unresolved blocking finding.
-- [ ] Record artifact/run IDs, limitations and handoff to dependent tickets.
+- [x] Establish a failing public behavioral fixture for the required outcome.
+- [x] Implement the smallest slice and record fresh passing evidence.
+- [x] Rewrite after verification; create divergent operations/stale workspaces; crash before working-copy update; add ignored/private files; export conflicts; run gate/evidence/GC and fast-forward integration fixtures. Retained immutable candidate proof stays correct; changed content requires new proof.
+- [x] Standards and Spec reviews have no unresolved blocking finding.
+- [x] Record artifact/run IDs, limitations and handoff to dependent tickets.
 
 ## Execution sequence
 
@@ -48,3 +48,5 @@ No shared checkout conversion, required kernel dependency or unrestricted cross-
 - 2026-10-03T17:36:01Z lead: Repair1 resolves original verification-order/proof-reuse finding. Both axes then required handoff-only retention repair2; bytecode is excluded from authoritative durable inventory while earlier metadata remains historical. Fresh Spec and Standards PASS, all112 selected public paths and six reviewed source/input records verified and transferred to the root. Exact frozen ticket/SPEC inputs are archived under evidence/jj19/repair1-verification-binding; current canonical contracts are not overwritten. Root gate/branch review remain pending. Evidence: ../evidence/jj19-repair2-root-integration.json. RFC0002 supersedes optional/deferred target; evaluation acceptance is distinct from preferred-backend25 qualification.
 - 2026-10-03T18:06:00Z lead: Wholebranch630 rejects private-file validation limited to current tree while bundles include reachable history. Root confirmed; acceptance/landing withheld despite gate82804 PASS. Final bounded repair3/3 assigned in fresh isolated history-export tree atd819a94. Original100 evidence records are now retained alongside repair1/2 metadata, with212 total mapped records hash-checked. See ../decisions/20261003-jj19-history-export-repair630.md and ../evidence/jj19-branch630-rejection.json.
 - 2026-10-03T18:38:11Z lead: Repair3 frozen fixture0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf has fresh independent Spec PASS and Standards PASS; one duplication heuristic is nonblocking. Root verified/transferred276 bound paths, preserved213 prior evidence files and current canonical ticket history, and integrated exact three reviewed source/report postimages. Frozen author ticket remains at its indexed source-snapshot path. Fresh imported regression and repository gate are running; branch review/acceptance/landing remain pending. See ../evidence/jj19/repair3-history-export/root-integration.json and root-conformance/.
+- 2026-10-03T19:00:51Z lead: Both imported actual regressions and required rootgate40945 pass exit0. Wholebranch631 accepts264756e..94aa15f with terminal0/no issues. Evaluation accepted within the recorded path/type/native-export limitations; source postimages remain exact. Detached exact-tip gate/FF landing follows. RFC0002's preferred jj backend still requires separate25 qualification; no v2/live/restore proof is implied. Exact acceptance: ../evidence/jj19/repair3-root-tests/accepted-evaluation.json.
+- 2026-10-03T19:00:51Z corenius-jj19: resolved

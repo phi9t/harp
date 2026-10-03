@@ -1,14 +1,14 @@
 # Current completion audit
 
-Audit refreshed: 2026-10-03; repair3 conformance and rootgate40945 PASS; fresh branch review pending
+Audit refreshed: 2026-10-03; jj19 evaluation accepted after repair3, gate40945 and wholebranch631; gated landing pending
 
 Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). Corenius only; no scope reduction. Kernel acceptance is not live Trae, independent-lead or restore completion.
 
 ## Authoritative current observations
 
 - Local main264756edd550225449202b6f20ac4b560808d14e contains the accepted kernel and its exact source. Current isolated reference-design contains later preserved evidence and state records awaiting gated integration.
-- Tracker resolves tickets10–18 within their historical scoped accepted/deferred contracts; tickets04 and19–32 remain incomplete. RFC0002 supersedes optional/deferred Kata/jj target via new28/revised25, not by relabeling old evidence.
-- jj19 repair3 has fresh independent Standards/Spec PASS. Root retained276 bound paths, preserving213 prior evidence files and canonical ticket history. Exact imported history-export/verification-binding regressions and repository gate40945 pass exit0; wholebranch630 remains retained rejected history. Fresh branch review is pending. No jj acceptance/backend adoption is claimed.
+- Tracker resolves tickets10–18 within their historical scoped accepted/deferred contracts and19 as an accepted bounded evaluation; tickets04 and20–32 remain incomplete. RFC0002 supersedes optional/deferred Kata/jj target via new28/revised25, not by relabeling old evidence.
+- jj19 repair3 has fresh independent Standards/Spec PASS. Root retained276 bound paths, preserving213 prior evidence files and canonical ticket history. Exact imported history-export/verification-binding regressions and repository gate40945 pass exit0; wholebranch631 passes terminal0/no issues, while630 remains retained rejected history. Evaluation acceptance is scoped; backend25 adoption and v2 assembly remain incomplete. Detached exact-tip gate/landing is next.
 - v0.2 contracts have independent architectural PASS and an acyclic dependency graph. Independent adversarial Spec gate also passes. Tickets26–32 define exact intent/plan, scope/jobs/epochs, ledger API/cursors, interpreter, physical integration, independent execution and assembled proof. Ticket26 has begun after a retained actual public API RED; no v0.2 product unit is accepted yet.
 - Trae20's historical four-incarnation/nine-attempt synthetic failure remains spent and retained. One fixed offline setup-noise case ran once: independent adjudication verifies the cleanup measurements, but full conformance is partial because original prelaunch controller ordering remains unverified. Its allowance is spent; no retry or runtime/provider admission follows. Exact records and review are retained under evidence/trae20-offline-result1/.
 - Repaired STATE machine markers and used the existing effort API: dehydrate committed d1df44739e56b1cf8ebfa1a349f88e377996cbf5; rehydrate returns no drift. Dirty author trees remain separate from this machine snapshot and remain preserved.
@@ -30,7 +30,7 @@ rows remain incomplete; candidate checks do not substitute for reviewed integrat
 | 16: End-to-end durable kernel and operator CLI | [Canonical requirements/acceptance](tickets/16-kernel-proof.md) | Accepted and landed at264756edd550225449202b6f20ac4b560808d14e: exact48-file source freeze, independent Standards/Spec, rootgate12, wholebranch617 and detached exact-tip repository gate. Historical failed1813 remains quarantined under its independent acceptance disposition; no clean historical shutdown claim. |
 | 17: Evaluate Kata and select ledger integration | [Canonical requirements/acceptance](tickets/17-kata-evaluation.md) | Historical accepted/deferred evaluation with exact manifest; RFC0002 first-class-ledger target is implemented separately by28. |
 | 18: Optional approved-planning and projection adapter | [Canonical requirements/acceptance](tickets/18-kata-adapter.md) | Historical explicit deferred disposition; no adapter claimed and no substitute for new28 acceptance. |
-| 19: Evaluate jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Repair3 Standards/Spec PASS,276 retained bound paths, both imported regressions GREEN and rootgate40945 PASS; fresh branch review/landing pending. Original defer recommendation remains historical; backend25 requires separate qualification. |
+| 19: Evaluate jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Accepted bounded evaluation: repair3 both axes PASS,276 retained bound paths, both imported regressions GREEN, rootgate40945 and wholebranch631 PASS; detached exact-tip gate/landing pending. Original defer recommendation remains historical; backend25 requires separate qualification. |
 | 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Incomplete; one offline cleanup measurement passes independently, full conformance partial due to missing original launch-control provenance; actual pinned runtime/config/RPC behavior remains outstanding |
 | 21: Live Trae adapter with supervised recovery | [Canonical requirements/acceptance](tickets/21-trae-adapter.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 22: Codex lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/22-codex-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
@@ -52,7 +52,7 @@ is missing or unaccepted, never inferred from simulator/schema/feasibility alone
 
 ## Current next evidence boundary
 
-Finish independent conformance/branch acceptance of jj19 repair3 and complete26→27. v0.2 contract review already passes. Separately durably freeze the Trae launch controller and qualify its configuration/RPC/guard before any concrete synthetic runtime admission; preserve partial historical cleanup provenance. Required ledger/backend/scope/interpreter/integration assembly, live adapter/lead/restore gates remain outstanding. No whole-goal completion is claimed.
+Finish exact-tip gated jj19 landing and complete26→27. v0.2 contract review already passes. Separately reconcile the future Trae controller's review findings and qualify configuration/RPC/guard before any concrete synthetic runtime admission; preserve partial historical cleanup provenance. Required ledger/backend/scope/interpreter/integration assembly, live adapter/lead/restore gates remain outstanding. No whole-goal completion is claimed.
 
 ## Historical next-evidence snapshots (superseded)
 

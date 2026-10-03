@@ -1,0 +1,23 @@
+{
+  "ticket": 19,
+  "status": "accepted evaluation, gated landing pending",
+  "source_postimages": {
+    "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+    "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e"
+  },
+  "source_input_map": "../repair3-history-export/root-integration.json",
+  "independent_conformance": "../repair3-history-export/root-conformance/",
+  "root_regressions": "checks.json",
+  "root_gate": "repository-gate-result.json",
+  "whole_branch_review": "branch631-result.json",
+  "old_rejections": "../../jj19-branch630-rejection.json retained",
+  "recommendation": "jj is preferred worker candidate under RFC0002; implementation/adoption requires separate25 after27/30/31",
+  "limitations": [
+    "qualified path/type contract only, no arbitrary secret-content guarantee",
+    "candidate-bundle interoperability distinct from native export diagnostics",
+    "old evaluation defer is historical, no v2/live/restore completion",
+    "dirty author worktrees remain retained, not silently discarded"
+  ],
+  "metadata_after_review": "only acceptance/status records may change; exact reviewed source postimages remain fixed before detached gate"
+}
