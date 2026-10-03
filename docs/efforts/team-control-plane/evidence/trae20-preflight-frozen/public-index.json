@@ -1,0 +1,190 @@
+{
+  "selection": "owned public summary, origins, request digests/keys, identities and terminal records; excludes config values, request bodies, runtime databases, credentials and raw service logs",
+  "files": [
+    {
+      "path": "exhausted-envelope-refusal.json",
+      "bytes": 110,
+      "sha256": "1a7f5470b794b6c98e14237b72fb7105063a603f9ac5bfbfcb691dd4bef497c2"
+    },
+    {
+      "path": "live-trae-executable-preflight.md",
+      "bytes": 3124,
+      "sha256": "f22a1c686f6c65cbffb4365b31cb85264c31b28eb97bb86c86ff11427a6f8550"
+    },
+    {
+      "path": "public/run1/binary.json",
+      "bytes": 183,
+      "sha256": "025834d68fdfcc0c7bbac52b6a9fda04a234f5220fb079c13665a5ed11ae7a24"
+    },
+    {
+      "path": "public/run1/identity.json",
+      "bytes": 124,
+      "sha256": "3071b61fe826bf2316fa1bc7200c43b4b9831d25fa117376bf71b661f51935ae"
+    },
+    {
+      "path": "public/run1/launch.json",
+      "bytes": 797,
+      "sha256": "07753404444243d62f40f874170949cdb87c6e8219d7272738de8f8446a64af6"
+    },
+    {
+      "path": "public/run1/network-denial.json",
+      "bytes": 248,
+      "sha256": "1844b4164a303a4c95d71f860b22d409d3390ec9db6c58c346afdba29588412b"
+    },
+    {
+      "path": "public/run1/server-terminal.json",
+      "bytes": 46,
+      "sha256": "e0ceacfb45bdd938f5d3e08fa3573eaffd6e6455f7438ba768a3ace56f4b7225"
+    },
+    {
+      "path": "public/run1/terminal.json",
+      "bytes": 156,
+      "sha256": "0ac4820612592c993d43026d637643a77158f6b6e14894198a9306993ce5afb2"
+    },
+    {
+      "path": "public/run2/binary.json",
+      "bytes": 183,
+      "sha256": "025834d68fdfcc0c7bbac52b6a9fda04a234f5220fb079c13665a5ed11ae7a24"
+    },
+    {
+      "path": "public/run2/identity.json",
+      "bytes": 124,
+      "sha256": "f1ee12e5f49d0becf39f01069aa92ae736c3ca0b48d5d474e40c0759659cbc76"
+    },
+    {
+      "path": "public/run2/launch.json",
+      "bytes": 778,
+      "sha256": "7893097e01bcd665d2d6ec735e97027d3b539551cb73720489faf65a7c8e0593"
+    },
+    {
+      "path": "public/run2/network-denial.json",
+      "bytes": 248,
+      "sha256": "1844b4164a303a4c95d71f860b22d409d3390ec9db6c58c346afdba29588412b"
+    },
+    {
+      "path": "public/run2/server-terminal.json",
+      "bytes": 46,
+      "sha256": "9e910f4bc85a7b0718e83d837c3dce84a04791bf5f834160953ca7864cea5a7a"
+    },
+    {
+      "path": "public/run2/terminal.json",
+      "bytes": 156,
+      "sha256": "0ac4820612592c993d43026d637643a77158f6b6e14894198a9306993ce5afb2"
+    },
+    {
+      "path": "public/run3/binary.json",
+      "bytes": 183,
+      "sha256": "025834d68fdfcc0c7bbac52b6a9fda04a234f5220fb079c13665a5ed11ae7a24"
+    },
+    {
+      "path": "public/run3/config-origins.json",
+      "bytes": 2101,
+      "sha256": "f1952113174633319df27a86de27ec906d22beeb821e69d6d379749b4bb86a0e"
+    },
+    {
+      "path": "public/run3/identity.json",
+      "bytes": 124,
+      "sha256": "42b0839a527794a9bc5d804c4bf80c471d7c23485bfd6d394c9843d488308d17"
+    },
+    {
+      "path": "public/run3/initialize.json",
+      "bytes": 184,
+      "sha256": "32e79ca4f9cba3d309a904cfd3e2aec2e40c07691986b6b2fa2b7fb016ba1524"
+    },
+    {
+      "path": "public/run3/launch.json",
+      "bytes": 823,
+      "sha256": "6931c9deb74d3f90bdf49ab11b6570447777ae94e74446bb98e659c93e716a69"
+    },
+    {
+      "path": "public/run3/network-denial.json",
+      "bytes": 248,
+      "sha256": "1844b4164a303a4c95d71f860b22d409d3390ec9db6c58c346afdba29588412b"
+    },
+    {
+      "path": "public/run3/server-terminal.json",
+      "bytes": 46,
+      "sha256": "9e910f4bc85a7b0718e83d837c3dce84a04791bf5f834160953ca7864cea5a7a"
+    },
+    {
+      "path": "public/run3/terminal.json",
+      "bytes": 156,
+      "sha256": "46a40f90d0d7d97a55144da3e9b3d7e95aa6fa00f7a89f21505f714b7fa48bf4"
+    },
+    {
+      "path": "public/run4/binary.json",
+      "bytes": 183,
+      "sha256": "025834d68fdfcc0c7bbac52b6a9fda04a234f5220fb079c13665a5ed11ae7a24"
+    },
+    {
+      "path": "public/run4/config-origins.json",
+      "bytes": 2101,
+      "sha256": "0a2e1a3677a195ab6b818f776233f29e46594eb7645d8e837ac5ba0a8ccfe17a"
+    },
+    {
+      "path": "public/run4/identity.json",
+      "bytes": 124,
+      "sha256": "f55aa5999776ab24c7b53d71782d5cabd372d9d928cff831d0d08bf629b75191"
+    },
+    {
+      "path": "public/run4/initialize.json",
+      "bytes": 184,
+      "sha256": "32e79ca4f9cba3d309a904cfd3e2aec2e40c07691986b6b2fa2b7fb016ba1524"
+    },
+    {
+      "path": "public/run4/launch.json",
+      "bytes": 823,
+      "sha256": "6931c9deb74d3f90bdf49ab11b6570447777ae94e74446bb98e659c93e716a69"
+    },
+    {
+      "path": "public/run4/model-list.json",
+      "bytes": 281,
+      "sha256": "7f100e4ba612292f1de8bb46f0ce6f3d2ee803eb0720f68fbf10ae64796a9e7b"
+    },
+    {
+      "path": "public/run4/network-denial.json",
+      "bytes": 248,
+      "sha256": "1844b4164a303a4c95d71f860b22d409d3390ec9db6c58c346afdba29588412b"
+    },
+    {
+      "path": "public/run4/provider-requests.json",
+      "bytes": 4209,
+      "sha256": "79cf296b6c399082ca400cc98f8ceba9343b9d20a4dc8e6244db0b971ae70d07"
+    },
+    {
+      "path": "public/run4/result.json",
+      "bytes": 213,
+      "sha256": "5eb84f6181def14259ce8694483337f4f5155dfcdc5869ee1b031b3a445c3e10"
+    },
+    {
+      "path": "public/run4/retained-protocol-selection.json",
+      "bytes": 681,
+      "sha256": "b81fd980fae2f77889ce34d6424ff6519fca69c0faf01c5b7ea4a1aa4a94215f"
+    },
+    {
+      "path": "public/run4/server-terminal.json",
+      "bytes": 47,
+      "sha256": "eb6cc427df5085cf1ea376b731aa95af18b510db10f851ab6d677e61e9b0040e"
+    },
+    {
+      "path": "public/run4/terminal.json",
+      "bytes": 156,
+      "sha256": "3006ac06d05d2c89475dc1ff0e41c316cf5a9d5b10d27edf84ab024f9652088f"
+    },
+    {
+      "path": "public/run4/thread-start.json",
+      "bytes": 89,
+      "sha256": "c445384d5a55c82073c715e6795da916e4ab96861fdb6bfc7000c6367ae6ef74"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3689,
+      "sha256": "987230ee88e833ab6cc976392ee911da8dd00d03cc2b47a4d342e01c4f4deac6"
+    },
+    {
+      "path": "trae_private_preflight.py",
+      "bytes": 12649,
+      "sha256": "d0e8e7227b1d6dc3912f217b2712e9bee175744101eabe4266418699444d7bfc"
+    }
+  ]
+}

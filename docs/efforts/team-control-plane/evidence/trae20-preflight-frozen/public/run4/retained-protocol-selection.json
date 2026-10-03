@@ -1,0 +1,27 @@
+{
+  "source": "owned synthetic fixture rollout, selected IDs/event kinds only",
+  "records": [
+    {
+      "type": "event_msg",
+      "event_type": "task_started",
+      "turn_id": "01a1009d-546d-7072-a482-5b3b5176adb4"
+    },
+    {
+      "type": "turn_context",
+      "turn_id": "01a1009d-546d-7072-a482-5b3b5176adb4",
+      "model": "gpt-5.5",
+      "cwd": "/fixture/repository"
+    },
+    {
+      "type": "event_msg",
+      "event_type": "thread_settings_applied",
+      "turn_id": null
+    },
+    {
+      "type": "event_msg",
+      "event_type": "item_completed",
+      "turn_id": "01a1009d-546d-7072-a482-5b3b5176adb4"
+    }
+  ],
+  "terminal_notifications_unobserved": true
+}

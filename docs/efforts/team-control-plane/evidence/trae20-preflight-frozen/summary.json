@@ -1,0 +1,88 @@
+{
+  "commit_read": "264756edd550225449202b6f20ac4b560808d14e",
+  "runs": [
+    {
+      "incarnation": 1,
+      "handle": 71788,
+      "exit": 1,
+      "namespace_remaining_members": [],
+      "physically_stopped": true,
+      "requests_attempted": 0,
+      "requests_accepted": 0,
+      "fixture_retained": "/tmp/corenius-trae20-preflight-run1",
+      "model_turn_starts": 0
+    },
+    {
+      "incarnation": 2,
+      "handle": 86369,
+      "exit": 1,
+      "namespace_remaining_members": [],
+      "physically_stopped": true,
+      "requests_attempted": 0,
+      "requests_accepted": 0,
+      "fixture_retained": "/tmp/corenius-trae20-preflight-run2",
+      "model_turn_starts": 0
+    },
+    {
+      "incarnation": 3,
+      "handle": 27102,
+      "exit": 1,
+      "namespace_remaining_members": [],
+      "physically_stopped": true,
+      "requests_attempted": 0,
+      "requests_accepted": 0,
+      "fixture_retained": "/tmp/corenius-trae20-preflight-run3",
+      "model_turn_starts": 0
+    },
+    {
+      "incarnation": 4,
+      "handle": 76883,
+      "exit": 0,
+      "namespace_remaining_members": [],
+      "physically_stopped": true,
+      "requests_attempted": 9,
+      "requests_accepted": 6,
+      "fixture_retained": "/tmp/corenius-trae20-preflight-run4",
+      "model_turn_starts": 1
+    }
+  ],
+  "starts": 1,
+  "incarnations_spent": 4,
+  "synthetic_requests_attempted": 9,
+  "synthetic_requests_accepted": 6,
+  "synthetic_requests_refused": 3,
+  "external_provider_requests": 0,
+  "paid_provider_requests": 0,
+  "automatic_retry_observed": true,
+  "envelope_satisfied": false,
+  "ready_for_live_provider": false,
+  "ordinary_token_cost_ceiling_proven": false,
+  "streaming_contract_proven": false,
+  "discovery_observed": "model/list advertised metadata; no synthetic GET discovery; POST /v1/responses observed",
+  "logical_disposition": "quarantine unsupported turn; no adoption or successful result",
+  "turn_id": "01a1009d-546d-7072-a482-5b3b5176adb4",
+  "thread_id": "01a1009d-5449-7422-a8b5-137a96cfc783",
+  "model": "gpt-5.5",
+  "physical_disposition": "all four private PID namespaces empty after terminal wait; fixtures retained",
+  "terminal_notifications": "not observed; retained rollout task_started/turn_context/item_completed selection only",
+  "known_limits": [
+    "first three incarnations had no script/capsule digest captured before launch; cannot retroactively claim recorded digest",
+    "snapshot result.json reports four requests before shutdown; final provider-requests.json nine is authoritative",
+    "request handler capped accepted requests but did not immediately stop native retries",
+    "private store has generated builtin skills and runtime databases; no inherited home/config mounted, no claim all tool discovery disabled"
+  ],
+  "remaining_blockers": [
+    "reviewed cumulative request gate stops first exhausted attempt/native retries",
+    "verified ordinary-turn hard token/cost ceiling at sole egress",
+    "actual supported streaming response with trusted terminal notification",
+    "full04/20 recovery matrix including detach/restart/steer/interrupt/unknown starts not executed"
+  ],
+  "primary_local_hypotheses": {
+    "request_max_retries": "embedded token observed, qualified config semantics unverified",
+    "stream_max_retries": "embedded token observed, qualified config semantics unverified",
+    "max_output_tokens": "embedded token observed; actual request JSON lacks this field",
+    "CODEX_OSS_BASE_URL": "actual lmstudio POST /v1/responses routing observed for supplied /v1 endpoint"
+  },
+  "launch_disabled": true,
+  "schema_manifest": "docs/efforts/team-control-plane/research/live-trae-private-entry-manifest.json"
+}
