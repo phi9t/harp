@@ -1,0 +1,26 @@
+{
+  "label": "final-exclusions-control-red",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--slice",
+    "exclusions",
+    "--unsafe-control",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-exclusions-control-red.json"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:21:44.393363+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "command_source_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "expected_exit": 1,
+  "exit": 1,
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf\",\n  \"unsafe_control\": true,\n  \"observations\": {\n    \"ignored_private\": {\n      \"fresh_excluded\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-g8j524uj/private/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-g8j524uj/private\",\n        \"operation\": \"26ba8a9ecfa256def81b02b68fc0409121221a6cf74ca1fd91e4f20e3f6186b3c826c1d49136f6675d0303650ea38442387fa53b67c7e03d4cebef109ab4c9ba\",\n        \"change\": \"tskntuknmowmmmtrqzvwmwmnslqwqtmz\",\n        \"commit\": \"efd3f9c2cd13c16db153437a7b1ce0684f78d00a\",\n        \"tree\": \"187c9ad549d4c2a5305978f5304db7f74f1bd376\",\n        \"conflict\": false,\n        \"captured_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"allowed_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"base_commit\": \"9d864dc0083f7670c38afef03e0f311c152f7df0\"\n      },\n      \"tracked_private_still_captured\": true\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"failed\",\n  \"failure\": \"unsafe outcome accepted: ignore rules alone cannot remove tracked private content\",\n  \"failure_type\": \"AssertionError\",\n  \"slice\": \"exclusions\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:21:44.979020+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-exclusions-control-red.json",
+  "output_sha256": "32d7feb6c747f608bb11761275746de50c374ede16f10248ade794b93d205192"
+}

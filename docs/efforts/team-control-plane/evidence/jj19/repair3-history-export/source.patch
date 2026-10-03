@@ -1,0 +1,326 @@
+diff --git a/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md b/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md
+index 68c76cb..bc06dfe 100644
+--- a/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md
++++ b/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md
+@@ -1,8 +1,8 @@
+ # Pinned jj workspace evaluation (ticket 19)
+ 
+-Status: repair 1 qualification evidence refreshed; fresh independent conformance review and owner reconciliation pending.
++Status: repair 3/3 history-export qualification evidence refreshed; fresh independent conformance, branch gate and root integration pending.
+ Historical recommendation under the evaluated Git-first baseline: **defer backend adoption**, retain Git as the supported backend.
+-That historical recommendation is preserved in the [original report preimage](../evidence/jj19/repair1-verification-binding/preimage-jj-workspace-evaluation.md). It is inference, not an accepted architectural decision. RFC 0002 v0.2 at commit `768bb943e9a95b9e761e3d1e7de08c0ac8df74b4` now names jj the preferred worker VCS candidate, subject to qualification. Root must reconcile that owner direction into canonical SPEC/tickets before ticket 25 disposition; this evaluation grants no implementation or shared-store conversion authority.
++That historical recommendation is preserved in the [original report preimage](../evidence/jj19/repair1-verification-binding/preimage-jj-workspace-evaluation.md). It is inference, not an accepted architectural decision. RFC 0002 v0.2 at commit `768bb943e9a95b9e761e3d1e7de08c0ac8df74b4` names jj the preferred worker VCS candidate, subject to qualification. Current canonical SPEC and tickets 25–32 reflect that owner direction; this evaluation grants no implementation or shared-store conversion authority.
+ 
+ Read/evaluated: 2026-10-03. Corenius exact base read: `264756edd550225449202b6f20ac4b560808d14e`.
+ Jujutsu source read/executed: `af45d57de7163cc5f17f3df178a31577e4951ea3`.
+@@ -11,9 +11,9 @@ Only the absolute pinned executable was invoked. The unrelated PATH `jj` helper
+ 
+ ## Outcome and recommendation
+ 
+-All five final behavior slices passed, and all five unsafe public controls failed at their intended behavioral assertion. The evaluation uses an executable, disposable shim exposing create_attempt, inspect, checkpoint, freeze_candidate, prepare_integration and release. It does not install a production workspace service or change kernel/provider/workflow/schema behavior. Every attempt starts in its own repository store at a recorded exact base; one trusted fixture writer owns every disposable workspace. The peer shared-store case deliberately measures unrestricted raw CLI authority.
++Repair 1 retained five passing behavior slices and five unsafe controls that failed at their intended behavioral assertions. Repair 3 adds actual deleted-private-history and forged-manifest reds, a passing history contract, and fresh identity/exclusions/integration greens with their failing controls. The evaluation uses an executable, disposable shim exposing create_attempt, inspect, checkpoint, freeze_candidate, prepare_integration and release. It does not install a production workspace service or change kernel/provider/workflow/schema behavior. Every attempt starts in its own repository store at a recorded exact base; one trusted fixture writer owns every disposable workspace. The peer shared-store case deliberately measures unrestricted raw CLI authority.
+ 
+-The results show jj can preserve immutable exported candidates and recover a specific interrupted checkout, while its convenient defaults add authority-sensitive behavior. Status snapshots edits; shared workspaces can rewrite each other's changes; no-snapshot status can reconcile repository operation heads; ignored tracked content remains captured; successful Git export can leave a conflicted bookmark's old Git ref. These require explicit service authorization, exact-operation inspection, private/path/type validation and pre-export ambiguity rejection. No measured reduction in lost work, recovery effort or integration cost was established against Git. The earlier Git-first recommendation reflected that limited measurement. The current preferred-candidate direction still needs explicit qualification and root reconciliation. Any ticket 25 implementation requires authority for its production broker integration, pin/toolchain maintenance and security review.
++The results show jj can preserve immutable exported candidates and recover a specific interrupted checkout, while its convenient defaults add authority-sensitive behavior. Status snapshots edits; shared workspaces can rewrite each other's changes; no-snapshot status can reconcile repository operation heads; ignored tracked content remains captured; successful Git export can leave a conflicted bookmark's old Git ref. These require explicit service authorization, exact-operation inspection, private/path/type validation and pre-export ambiguity rejection. No measured reduction in lost work, recovery effort or integration cost was established against Git. The earlier Git-first recommendation reflected that limited measurement. The current preferred-candidate direction still needs explicit qualification and acceptance. Any ticket 25 implementation requires authority for its production broker integration, pin/toolchain maintenance and security review.
+ 
+ ## Requirement and accepted-seam coverage
+ 
+@@ -21,16 +21,16 @@ The results show jj can preserve immutable exported candidates and recover a spe
+ | --- | --- | --- |
+ | create_attempt / inspect: separate exact-base attempt/store/workspace identities | [authority](../evidence/jj19/repair1-verification-binding/final-authority-green.json), [identity](../evidence/jj19/repair1-verification-binding/final-identity-green.json) | Manifests record store/workspace, full operation/change, exact commit/tree and base. Exact-operation inspection plus no-snapshot operation lookup leaves edits uncaptured; ordinary status red changes operation/commit/tree. Evaluator checks explicit snapshot authority, not production broker credentials. |
+ | checkpoint: explicit snapshot authority and journal preparation | [authority](../evidence/jj19/repair1-verification-binding/final-authority-green.json), all final JSON durable_preexecution_journal fields | Unauthorized checkpoint refuses; authorized status captures edits. Prepared command journal is fsynced before execution and retained byte-for-byte. This journal is an evaluation fixture, not a replacement for kernel state. |
+-| freeze_candidate: old immutable proof after content and metadata rewrite | [identity](../evidence/jj19/repair1-verification-binding/final-identity-green.json), [red](../evidence/jj19/repair1-verification-binding/final-identity-red.json) | An independent Git checkout runs the actual acceptance suite before the content rewrite. Reuse consumes a stored receipt and refuses changed commit/tree; fresh changed verification binds a new receipt. Original reimport still passes; description-only rewrite also refuses the changed commit proof. See the [ordering regression](../evidence/jj19/repair1-verification-binding/final-contract-green.json). |
++| freeze_candidate: old immutable proof after content and metadata rewrite | [fresh identity contract](../evidence/jj19/repair3-history-export/final-identity-contract-green.json), [fresh control](../evidence/jj19/repair3-history-export/final-identity-control-red.json) | An independent Git checkout runs the actual acceptance suite before the content rewrite. Reuse consumes a stored receipt and refuses changed commit/tree; fresh changed verification binds a new receipt. Original reimport still passes; description-only rewrite also refuses the changed commit proof. The fresh contract retains the approved ordering regression. |
+ | stale workspace and divergent operation recovery, preserved other-attempt authority | [authority](../evidence/jj19/repair1-verification-binding/final-authority-green.json) | Peer content restore produces actual stale status refusal; update-stale repairs it. Two historical-operation descriptions create divergent revisions; automatic reconciliation is observed and ambiguous change selection refuses freeze. Separate-store other attempt is unchanged before/after. Raw shared-store isolation is explicitly disproven, not claimed as a security boundary. |
+ | interrupted operation before working-copy update, no assumed rollback | [crash](../evidence/jj19/repair1-verification-binding/final-crash-green.json), [red](../evidence/jj19/repair1-verification-binding/final-crash-red.json) | Real strace syscall-delay injection and SIGKILL; durable operation is observed while disk bytes remain old. Native stale refusal followed by update-stale restores exact target. Owned tracer waited, traced jj PID absent, fixture removed. Scope is this specific Linux checkout boundary. |
+-| private/ignored/out-of-scope files, capsule paths, content/bookmark ambiguity | [exclusions](../evidence/jj19/repair1-verification-binding/final-exclusions-green.json), [red](../evidence/jj19/repair1-verification-binding/final-exclusions-red.json) | Fresh ignored private file absent; already-tracked private file survives ignore but freeze refuses. Nonignored unexpected path and allowed-name symlink refuse. Real bwrap allows workspace write and denies sibling write. Actual content conflict and conflicted bookmark refuse candidate freeze; native export exits recorded, old Git bookmark retained. |
+-| prepare_integration: exact Git export and existing gate/evidence/GC/fast-forward tooling | [integration](../evidence/jj19/repair1-verification-binding/final-integration-green.json), [red](../evidence/jj19/repair1-verification-binding/final-integration-red.json) | Exported commit/tree independently inspected; failing existing land gate leaves disposable main unchanged; correct gate lands exactly the verified tip by fast-forward. Existing evidence verifies then rejects tampering. GC dry/dirty resources preserved; safe merged tree removed. Existing tooling suites: wt 12, land 8, evidence 15 tests passed. |
++| private/ignored/out-of-scope files, capsule paths, content/bookmark ambiguity | [fresh exclusions](../evidence/jj19/repair3-history-export/final-exclusions-green.json), [history contract](../evidence/jj19/repair3-history-export/final-history-green.json), [history RED](../evidence/jj19/repair3-history-export/baseline-history-red-bound.json) | Fresh ignored private file absent; already-tracked private file survives ignore but freeze refuses. A clean descendant with private/disallowed ancestor paths refuses candidate export before any public ref or bundle. Nonignored unexpected path and allowed-name symlink refuse. Real bwrap allows workspace write and denies sibling write. Actual content conflict and conflicted bookmark refuse candidate freeze; native export exits recorded, old Git bookmark retained. |
++| prepare_integration: exact candidate bundle and existing gate/evidence/GC/fast-forward tooling | [fresh integration](../evidence/jj19/repair3-history-export/final-integration-green.json), [fresh control](../evidence/jj19/repair3-history-export/final-integration-control-red.json) | Candidate operation/commit/tree/path manifest and every bundled ancestor tree validated before publication. Exported commit/tree independently inspected; failing existing land gate leaves disposable main unchanged; correct gate lands exactly the verified tip by fast-forward. Existing evidence verifies then rejects tampering. GC dry/dirty resources preserved; safe merged tree removed. Existing tooling suites: wt 12, land 8, evidence 15 tests passed. |
+ | release | Final identity/crash/integration release manifests and each JSON fixture_removed | jj workspace forget is followed by removal of owned disposable fixture repositories after commands/process cleanup. No kernel capacity/usage or unknown-runtime release is simulated. |
+ 
+-## Concrete final identities
++## Recorded repair 1 identities
+ 
+-The complete full IDs, argv, exits, stdout/stderr, environments, repository identities and prepared journals are retained in the linked JSON and the repair [public-proof-index](../evidence/jj19/repair1-verification-binding/public-proof-index.json). The original index and evidence remain unchanged. Identifiers are observations, not mutable aliases.
++The following identities belong to repair 1 and remain historical. The current repair 3 IDs, argv, exits, stdout/stderr, environments, repository identities and prepared journals are in its [public proof index](../evidence/jj19/repair3-history-export/public-proof-index.json). Earlier authoritative handoff is [repair 2](../evidence/jj19/repair1-verification-binding/repair2-final-handoff.json); its prior indexes and evidence remain unchanged. Identifiers are observations, not mutable aliases.
+ 
+ - Retained original candidate: commit `61e14e49dea0655034728f3df206301dd8fc522b`, tree `12ce35e9b9c1d3e3a2a2034871dfff2e623724de`, base `996c09d1c1e7d188c6c21853979f0fadf1b56c80`; original proof `sha256:bca9895650cbd33e0b1fc0658cd3cd2562415873fb61ea51d4e9315dd97186ab`; bundle SHA256 `0450db8651c672686532816429f93ffaa6dc6d1287e1ec22518b1a8d7604f3cc`.
+ - Content rewrite with the same change ID: commit `f34104198073f2a441f123caba4473a1dabb8f60`, tree `2c8e5f052d00273d60fdbfd6a78e37be07d473d8`; fresh proof `sha256:0281ea7510a6034afced5fe75230fd34700e8ac04add61d0a52bf736fa9c3b02`; bundle SHA256 `9f6b0ecdf1b759e4a5e14b19220144d8d8b0494bef050a821c180eba854da7f6`. The original proof reuse is recorded as refused.
+@@ -47,6 +47,24 @@ Each content-addressed receipt binds exact candidate commit/tree/base, specifica
+ 
+ Both bundles and all three receipts survive fixture cleanup in [retained-candidate artifacts](../evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-original-before-rewrite.json). [Fresh post-cleanup reverification](../evidence/jj19/repair1-verification-binding/retained-artifact-reverification.json) imports both saved bundles into new private disposable checkouts and runs the acceptance suite successfully. The original receipt remains attached to the original candidate.
+ 
++## Repair 3/3: refuse contaminated candidate history before publication
++
++This bounded response to wholebranch630 reads repair base `d819a946c742e9a2178564c4fd0c481ff02f7ae8`. The approved seam is the evaluation's freeze/prepare interface, with a regular-file path contract of `.gitignore` and `artifact.txt`. The original evaluated SPEC/ticket inputs remain archived under repair 1; no old proof is upgraded into v0.2 implementation evidence.
++
++The [actual baseline RED](../evidence/jj19/repair3-history-export/baseline-history-red-bound.json) runs preimage fixture SHA256 `2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552`. It commits synthetic `private.env`, creates a descendant, deletes the private file, restores the ignore rule and freezes a clean tip. The existing prepare operation then creates a bundle. A separate Git import recovers the literal synthetic private content from ancestor `76cd75fb305562d181e5946b58f4e6b41739d641`, although candidate `635adac234ff32f8ddd078a0fb5da0e9a3e73d54` has only the allowed tip paths. The recoverable [RED bundle](../evidence/jj19/repair3-history-export/baseline-red-bound-artifacts/private-history.bundle) is retained; no earlier evidence is sanitized. A second [binding RED](../evidence/jj19/repair3-history-export/binding-red.json) shows a direct call publishing a bundle despite a forged tree identity.
++
++Repaired fixture SHA256 `0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf` first journals the exact proposed candidate, ref and bundle. Prepare re-freezes the exact commit at its captured immutable operation and compares the complete manifest, including store/workspace, change, tree, base and allowed/captured paths. It then validates the path/type contract in every commit tree reachable from the candidate: precisely the graph included by this fixture's Git bundle invocation, which has no exclusion revisions. Private/disallowed paths or symlink/submodule entries refuse the entire export. Refusal journals the exact candidate and reason before any fixture ref or bundle publication. There is no history rewrite, pruning or repair of contaminated content.
++
++The [fresh history contract](../evidence/jj19/repair3-history-export/final-history-green.json) passes: deleted private and disallowed ancestor paths refuse; 12 forged/stale bindings refuse without ref/bundle publication. A correctly bound historical candidate `3389d6f17d592a606593c969eb6233c8b5357f89` / tree `12ce35e9b9c1d3e3a2a2034871dfff2e623724de` still exports and independently verifies after mutable `@` changes. An unrelated private bookmark is neither published nor included in its bundle. The [fresh unsafe control](../evidence/jj19/repair3-history-export/final-history-control-red.json) disables the guards and again exports recoverable synthetic ancestor bytes.
++
++Prepare now publishes only the validated candidate ref from the existing jj Git object store and creates its exact bundle. This is candidate-bundle Git interoperability. Separate native `jj git export` diagnostics remain in the [fresh conflict/exclusion fixture](../evidence/jj19/repair3-history-export/final-exclusions-green.json), including the recorded old conflicted-bookmark Git ref; prepare does not export unrelated bookmarks implicitly.
++
++The [fresh identity contract](../evidence/jj19/repair3-history-export/final-identity-contract-green.json) still proves verification before rewrite, changed content needs a fresh proof, original retained proof stays exact, and metadata rewrite cannot reuse another commit's proof. [Four post-cleanup reverifications](../evidence/jj19/repair3-history-export/retained-artifact-reverification.json) import saved history/identity bundles into fresh private verifier checkouts and run the actual acceptance suite. New receipts bind the current specification bytes (`d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c`) solely as their recorded verification context; the suite checks disposable artifact behavior and does not establish v0.2 backend conformance. Existing repair 1 receipts are unchanged.
++
++[Fresh integration](../evidence/jj19/repair3-history-export/final-integration-green.json) lands exact disposable commit `72d6f60a1032b9a1734f63bd0198615ac199e22c` / tree `855bfa8e43bd52235bbed4531cdec66a0e63998f`, after a failed gate preserves its mainline. Evidence verification rejects tampering, GC preserves dry/dirty resources and removes safe merged resources, and the existing 12 wt / 8 land / 15 evidence tests pass. [Run ledger](../evidence/jj19/repair3-history-export/run-ledger.json) binds every retained command, terminal and source hash. The initial ledger-wrapper relative-path error is separately classified; its completed behavioral RED remains retained and a uniquely named bound rerun establishes the terminal. All owned disposable roots were removed. Prior 213 evidence files, including the original 100 and repair 1/2 metadata, remain byte-for-byte unchanged.
++
++This guard recognizes disallowed paths/types in this exact reachable candidate graph. It does not detect private bytes hidden in allowed-content filenames, prove confidentiality, mediate raw shared-store access, or establish arbitrary Git-history/export completeness. The previously measured crash seam was unchanged and was not rerun. Final [source freeze](../evidence/jj19/repair3-history-export/source-freeze.json), [proof index](../evidence/jj19/repair3-history-export/public-proof-index.json) and [handoff](../evidence/jj19/repair3-history-export/final-handoff.json) retain normal Git-selectable sources, preimages and proofs; independent root review and integration remain pending.
++
+ ## Measured Git comparison
+ 
+ [The real Git baseline](../evidence/jj19/repair1-verification-binding/final-git_baseline-green.json) creates a separate repository and attempt branch. Git status leaves HEAD unchanged after shell edits; checkpoint requires explicit add/commit. Its retained checkpoint `f9ebe78dd9b82f7cc3e23de10de87a4e609f6591` / tree `af3732e7ad58e86bbbd53aa2cf103f1da1caa069` stays available after a replacement candidate `a5122eb31d846183c30c033505df4d293564ce29` / tree `f87eef25a5f7961514b935496d4ab4af95c6c74d`, and an independent bundle import preserves the old exact candidate. Repository-only update-ref deliberately leaves old checkout bytes; explicit reset to the recorded target reconciles repository/checkout state. This is public state-separation/reconciliation evidence, **not** a Git SIGKILL demonstration.
+@@ -69,11 +87,13 @@ Pinned source [cli_util.rs](https://github.com/jj-vcs/jj/blob/af45d57de7163cc5f1
+ 
+ ## Reproduction and evidence classification
+ 
++For the history seam, run `python3 docs/efforts/team-control-plane/research/probes/test_jj_history_export.py --binary /data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj --output /tmp/jj19-history-contract.json`; add `--unsafe-control` for its recoverable-private-history RED. Exact repair 3 commands are retained in its run ledger.
++
+ From the repair tree, run `python3 docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py --binary /data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj --output /tmp/jj19-verification-contract.json`. The ordinary executable fixture still accepts `--slice identity|authority|crash|exclusions|integration|git_baseline`; its `--unsafe-control` intentionally falsifies unsafe proof reuse, inspection, rollback, ignore-only or failed-gate assumptions.
+ 
+-[Final run ledger](../evidence/jj19/repair1-verification-binding/final-run-ledger.json) records every exact command and terminal: five intended behavioral reds (exit 1), five jj greens and the Git baseline (exit 0). All bind repaired fixture SHA256 `2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552`; all owned fixture roots were removed. The integration green also reruns the existing wt/land/evidence suites (12/8/15 tests).
++[Final run ledger](../evidence/jj19/repair1-verification-binding/final-run-ledger.json) records every exact command and terminal: five intended behavioral reds (exit 1), five jj greens and the Git baseline (exit 0). Those repair 1 runs bind fixture SHA256 `2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552`; all owned fixture roots were removed. The integration green also reruns the existing wt/land/evidence suites (12/8/15 tests).
+ 
+-All original [run classifications](../evidence/jj19/run-classification.json), intermediate setup/oracle failures, original source-bound evidence and the report preimage remain intact. Repair 1 adds uniquely named receipts rather than replacing them. Earlier `focused-*` / `fresh-*` repair runs precede the final explicit pre-rewrite journal event and are superseded by `final-*` for current source claims. No additional architectural repair iteration was consumed; this is the first bounded response to the Important verification-order finding.
++All original [run classifications](../evidence/jj19/run-classification.json), intermediate setup/oracle failures, original source-bound evidence and the report preimage remain intact. Repair 1 adds uniquely named receipts rather than replacing them. Earlier `focused-*` / `fresh-*` repair runs precede the final explicit pre-rewrite journal event and are superseded by `final-*` for current source claims. Repair 1 was the first bounded response to the Important verification-order finding. Repair 2 retained the durable inventory correctly; repair 3/3 addresses candidate-history export without changing architecture.
+ 
+ ## Limits and dependent handoff
+ 
+@@ -81,6 +101,6 @@ No shared checkout was converted; no real mainline/ref, remote, provider, creden
+ 
+ Crash evidence covers SIGKILL after durable operation publication before one working-copy lock/update, not storage corruption, arbitrary asynchronous writes, lost historical operations, power loss, remote pushes or external job rollback. Capsule evidence covers real write confinement, not confidentiality or a production insula integration. Separate repository stores avoid cross-attempt mutable sharing; this evaluation does not prove a mediated shared-store authorization service. Existing Git gate/evidence/GC compatibility is demonstrated after exact export/import, not unchanged support for native jj workspace directories. No throughput or comparative human-effort benefit was measured.
+ 
+-Final syntax, report-link/proof-hash checks, tracker lint and diff checks pass; [exact repair checks](../evidence/jj19/repair1-verification-binding/final-checks.json) distinguish these from the full repository gate. The author did not run check.sh because its team-control-plane hook launches real Cargo/Postgres/Temporal while root retains that exclusive slot.
++Repair 3 [focused final checks](../evidence/jj19/repair3-history-export/final-checks.json) record syntax, tracker lint, diff and durable-proof checks; final handoff closure verifies every local report link and indexed byte. Repair 1 syntax, report-link/proof-hash checks, tracker lint and diff checks passed; [those exact repair checks](../evidence/jj19/repair1-verification-binding/final-checks.json) distinguish these from the full repository gate. The author did not run check.sh because its team-control-plane hook launches real Cargo/Postgres/Temporal while root retains that exclusive slot.
+ 
+-Root owns Standards/Spec conformance, fresh independent branch verification and integration; ticket 19 stays claimed until those gates are accepted. Ticket 25 stays blocked on an explicit owner adopt/defer decision. The earlier defer recommendation is historical; root must reconcile RFC 0002 v0.2's preferred-candidate direction before deciding ticket 25. The qualification evidence is retained without adopting or implementing a backend.
++Root owns Standards/Spec conformance, fresh independent branch verification and integration; ticket 19 stays claimed until those gates are accepted. Ticket 25 remains subject to its current v0.2 blockers and explicit qualification. The earlier defer recommendation is historical; RFC 0002 v0.2's preferred-candidate direction governs current implementation planning. The qualification evidence is retained without adopting or implementing a backend.
+diff --git a/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py b/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py
+index f889040..c642c22 100644
+--- a/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py
++++ b/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py
+@@ -131,8 +131,13 @@ class Evaluation:
+         self.jj(repo, 'status')
+         return self.inspect(repo)
+ 
+-    def freeze_candidate(self, repo, allowed=('.gitignore', 'artifact.txt'), revision='@'):
+-        candidate = self.inspect(repo, revision)
++    def freeze_candidate(self, repo, allowed=('.gitignore', 'artifact.txt'), revision='@', operation=None):
++        if operation is not None:
++            resolved = self.jj(repo, '--ignore-working-copy', '--at-operation=' + operation,
++                               'op', 'log', '--limit', '1', '--no-graph', '--template', 'id')
++            if resolved != operation:
++                raise Refused('immutable operation ID required')
++        candidate = self.inspect(repo, revision, operation=operation)
+         paths = self.git(self.store(repo), 'ls-tree', '-r', '--name-only', candidate['commit'], bare=True).splitlines()
+         bookmarks = self.jj(repo, '--at-operation=' + candidate['operation'], 'bookmark', 'list')
+         if not self.unsafe and (candidate['conflict'] or '(conflicted)' in bookmarks):
+@@ -143,17 +148,47 @@ class Evaluation:
+         if not self.unsafe and any(line.startswith(('120000 ', '160000 ')) for line in entries.splitlines()):
+             raise Refused('symlink/submodule outside regular-file capture contract')
+         candidate['captured_paths'] = paths
++        candidate['allowed_paths'] = sorted(allowed)
+         candidate['base_commit'] = self.jj(repo, '--at-operation=' + candidate['operation'], 'log',
+                                            '--no-graph', '-r', candidate['commit'] + '-', '-T', 'commit_id')
+         return candidate
+ 
+     def prepare_integration(self, repo, candidate, name='candidate'):
+         # Exact immutable candidate, not a re-resolved change/bookmark/@ alias.
+-        self.jj(repo, 'git', 'export')
+         store = self.store(repo)
+-        self.git(store, 'update-ref', 'refs/fixture/' + name, candidate['commit'], bare=True)
+         bundle = self.root / (name + '.bundle')
+-        self.git(store, 'bundle', 'create', str(bundle), 'refs/fixture/' + name, bare=True)
++        ref = 'refs/fixture/' + name
++        self.journal({'phase': 'integration prepared', 'candidate': candidate, 'ref': ref, 'bundle': str(bundle)})
++        history = []
++        try:
++            if not self.unsafe:
++                bound = self.freeze_candidate(repo, revision=candidate['commit'], operation=candidate['operation'])
++                if bound != candidate:
++                    raise Refused('candidate manifest does not match its exact operation/commit/capture binding')
++            # bundle create has no exclusion revisions: every reachable ancestor is included.
++            commits = self.git(store, 'rev-list', candidate['commit'], bare=True).splitlines()
++            for commit in commits:
++                paths = self.git(store, 'ls-tree', '-r', '--name-only', commit, bare=True).splitlines()
++                entries = self.git(store, 'ls-tree', '-r', commit, bare=True)
++                if not self.unsafe and (set(paths) - {'.gitignore', 'artifact.txt'}
++                                        or any(p.startswith('private') for p in paths)):
++                    raise Refused('disallowed/private captured path in exported history: ' + commit)
++                if not self.unsafe and any(line.startswith(('120000 ', '160000 '))
++                                           for line in entries.splitlines()):
++                    raise Refused('symlink/submodule in exported history: ' + commit)
++                history.append({'commit': commit, 'captured_paths': paths,
++                                'tree': self.git(store, 'rev-parse', commit + '^{tree}', bare=True)})
++        except (KeyError, TypeError, RuntimeError) as error:
++            self.journal({'phase': 'integration refused', 'candidate': candidate, 'reason': str(error)})
++            raise Refused(str(error)) from error
++        self.journal({'phase': 'integration history validated', 'candidate': candidate, 'history': history})
++        # Candidate objects already exist in the jj Git store. Publish only the audited graph;
++        # native jj git export would additionally publish unrelated bookmarks.
++        self.git(store, 'update-ref', ref, candidate['commit'], bare=True)
++        self.git(store, 'bundle', 'create', str(bundle), ref, bare=True)
++        self.result['observations'].setdefault('candidate_exports', []).append(
++            {'candidate': candidate.copy(), 'history': history, 'ref': ref, 'bundle': str(bundle),
++             'bundle_sha256': digest(bundle.read_bytes())})
+         return bundle
+ 
+     def release(self, repo):
+diff --git a/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md b/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md
+index 558612c..7329501 100644
+--- a/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md
++++ b/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md
+@@ -46,3 +46,5 @@ No shared checkout conversion, required kernel dependency or unrestricted cross-
+ 
+ - 2026-10-03T16:56:53Z lead: Original frozen evaluation rehashed; Standards PASS, Spec Important verification-order gap. Acceptance withheld. Isolated repair1/3 assigned; see ../evidence/jj19-conformance-round0.json and ../decisions/20261003-jj19-verification-repair.md.
+ - 2026-10-03T17:36:01Z lead: Repair1 resolves original verification-order/proof-reuse finding. Both axes then required handoff-only retention repair2; bytecode is excluded from authoritative durable inventory while earlier metadata remains historical. Fresh Spec and Standards PASS, all112 selected public paths and six reviewed source/input records verified and transferred to the root. Exact frozen ticket/SPEC inputs are archived under evidence/jj19/repair1-verification-binding; current canonical contracts are not overwritten. Root gate/branch review remain pending. Evidence: ../evidence/jj19-repair2-root-integration.json. RFC0002 supersedes optional/deferred target; evaluation acceptance is distinct from preferred-backend25 qualification.
++
++- 2026-10-03T18:24:07Z corenius-jj19-history-export-repair: Isolated repair 3/3 responds to wholebranch630: actual clean-tip/private-ancestor RED and forged-manifest RED retained; prepare validates exact captured operation/commit/tree/path binding and every ancestor tree in its candidate bundle before publishing. It preserves historical candidates, refuses contaminated history without pruning, and publishes no unrelated bookmarks. Fresh history/identity/exclusions/integration checks, four retained-candidate reverifications and 35 Python tooling tests pass; unsafe controls fail as intended. All prior 213 evidence files remain unchanged. Evidence: ../evidence/jj19/repair3-history-export/final-handoff.json. No backend adoption, providers, production runtimes, full gate, shared history mutation or commit; root owns independent reviews, final gate and integration. Status remains claimed.
+diff --git a/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py b/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py
+new file mode 100644
+index 0000000..2c62194
+--- /dev/null
++++ b/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py
+@@ -0,0 +1,140 @@
++#!/usr/bin/env python3
++"""Public export regression: deleting a private path does not authorize its history."""
++from __future__ import annotations
++import argparse
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import shutil
++
++SYNTHETIC = 'SYNTHETIC_PRIVATE_HISTORY_DO_NOT_EXPORT\n'
++
++
++def private_history(evaluation, module, path='private.env', name='private-history'):
++    repo = evaluation.create_attempt(name)
++    (repo / '.gitignore').write_text('')
++    (repo / path).write_text(SYNTHETIC)
++    ancestor = evaluation.checkpoint(repo, True)
++    evaluation.jj(repo, 'new', '-m', 'descendant of synthetic private checkpoint')
++    (repo / path).unlink()
++    (repo / '.gitignore').write_text('private.env\n')
++    (repo / 'artifact.txt').write_text('verified-original\n')
++    evaluation.checkpoint(repo, True)
++    evaluation.jj(repo, 'bookmark', 'create', name + '-bookmark', '-r', ancestor['commit'])
++    candidate = evaluation.freeze_candidate(repo)
++    assert candidate['captured_paths'] == ['.gitignore', 'artifact.txt']
++    store = evaluation.store(repo)
++    before = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
++    observed = {'ancestor': ancestor, 'clean_candidate': candidate, 'refs_before': before}
++    evaluation.result['observations'][name.replace('-', '_')] = observed
++    try:
++        bundle = evaluation.prepare_integration(repo, candidate, name)
++    except module.Refused as error:
++        observed['refusal'] = str(error)
++        after = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
++        observed['refs_after'] = after
++        assert before == after, 'refusal published a Git ref'
++        assert not (evaluation.root / (name + '.bundle')).exists(), 'refusal published a bundle'
++        journal = [json.loads(line) for line in (evaluation.root / 'operations.jsonl').read_text().splitlines()]
++        assert any(entry.get('phase') == 'integration refused' and entry.get('candidate') == candidate
++                   for entry in journal), 'refusal did not journal the exact candidate'
++        return
++    imported = evaluation.root / (name + '-import'); imported.mkdir()
++    evaluation.git(imported, 'init', '-q')
++    evaluation.git(imported, 'fetch', str(bundle), 'refs/fixture/' + name)
++    recovered = evaluation.git(imported, 'show', ancestor['commit'] + ':' + path)
++    assert recovered == SYNTHETIC.strip(), 'RED setup did not recover the synthetic ancestor content'
++    observed.update(bundle_sha256=hashlib.sha256(bundle.read_bytes()).hexdigest(),
++                    recovered_private_content=recovered, recoverable=True)
++    raise AssertionError('private ancestor bytes remain recoverable from the exported clean-tip bundle')
++
++
++def manifest_binding(evaluation, module):
++    repo = evaluation.create_attempt('manifest-binding')
++    (repo / 'artifact.txt').write_text('verified-original\n')
++    evaluation.checkpoint(repo, True)
++    original = evaluation.freeze_candidate(repo)
++    (repo / 'artifact.txt').write_text('rewritten-source\n')
++    evaluation.checkpoint(repo, True)
++    changed = evaluation.freeze_candidate(repo)
++    store = evaluation.store(repo)
++    variants = [('tree', '0' * 40), ('commit', changed['commit']), ('commit', '@'),
++                ('operation', '@'), ('store', str(evaluation.root / 'another-store')),
++                ('workspace', str(evaluation.root / 'another-workspace')), ('base_commit', '0' * 40),
++                ('captured_paths', ['.gitignore', 'artifact.txt', 'private.env']),
++                ('allowed_paths', ['.gitignore', 'artifact.txt', 'private.env']),
++                ('conflict', True), ('change', 'mutable-navigation-is-not-proof'), ('backend', 'git')]
++    attempts = []; evaluation.result['observations']['manifest_refusals'] = attempts
++    for index, (field, value) in enumerate(variants):
++        forged = original.copy(); forged[field] = value
++        name = 'forged-' + str(index)
++        before = evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True)
++        try:
++            evaluation.prepare_integration(repo, forged, name)
++        except module.Refused as error:
++            attempts.append({'field': field, 'candidate': forged, 'refusal': str(error)})
++            assert evaluation.git(store, 'for-each-ref', '--format=%(refname) %(objectname)', bare=True) == before
++            assert not (evaluation.root / (name + '.bundle')).exists()
++            continue
++        raise AssertionError('direct prepare accepted forged/stale ' + field + ' and published a bundle')
++    # A correctly bound historical candidate remains exportable after mutable @ changes.
++    # An unrelated private bookmark must not accompany this clean candidate graph.
++    (repo / '.gitignore').write_text(''); (repo / 'private.env').write_text(SYNTHETIC)
++    private = evaluation.checkpoint(repo, True)
++    evaluation.jj(repo, 'bookmark', 'create', 'unrelated-private', '-r', private['commit'])
++    candidate_bundle = evaluation.prepare_integration(repo, original, 'retained-clean')
++    receipt = evaluation.verify_candidate(original, candidate_bundle, 'original', 'retained-clean', 'retained-clean')
++    assert evaluation.reuse_verification(original, receipt)
++    ref = evaluation.git(store, 'rev-parse', '--verify', 'refs/heads/unrelated-private', bare=True, check=False)
++    assert ref.returncode != 0, 'candidate preparation silently exported an unrelated private bookmark'
++    imported = Path(json.loads(receipt.read_text())['verifier']['workspace'])
++    recovered = evaluation.git(imported, 'cat-file', '-e', private['commit'] + ':private.env', check=False)
++    assert recovered.returncode != 0, 'candidate bundle included unrelated private history'
++    evaluation.result['observations']['retained_clean'] = {'candidate': original, 'rewritten': changed,
++        'unrelated_private': private, 'receipt': json.loads(receipt.read_text()),
++        'bundle_sha256': hashlib.sha256(candidate_bundle.read_bytes()).hexdigest(),
++        'unrelated_ref_absent': True, 'unrelated_private_object_absent': True}
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--binary', required=True)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--fixture', type=Path, default=Path(__file__).with_name('jj_workspace_evaluation.py'))
++    parser.add_argument('--retain-artifacts', type=Path)
++    parser.add_argument('--case', choices=['private-history', 'manifest-binding', 'disallowed-history', 'all'], default='all')
++    parser.add_argument('--unsafe-control', action='store_true')
++    args = parser.parse_args()
++    spec = importlib.util.spec_from_file_location('jj_fixture', args.fixture)
++    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
++    evaluation = module.Evaluation(args.binary, args.unsafe_control)
++    code = 0
++    try:
++        if args.case in ('private-history', 'all'):
++            private_history(evaluation, module)
++        if args.case in ('manifest-binding', 'all'):
++            manifest_binding(evaluation, module)
++        if args.case in ('disallowed-history', 'all'):
++            private_history(evaluation, module, 'unexpected.txt', 'disallowed-history')
++        evaluation.result['outcome'] = 'passed'
++    except Exception as error:
++        evaluation.result.update(outcome='failed', failure=str(error), failure_type=type(error).__name__)
++        code = 1
++    finally:
++        if args.retain_artifacts:
++            args.retain_artifacts.mkdir(parents=True, exist_ok=False)
++            for p in sorted(evaluation.root.glob('*.bundle')) + sorted(evaluation.root.glob('verification-*.json')):
++                shutil.copyfile(p, args.retain_artifacts / p.name)
++        evaluation.result['durable_preexecution_journal'] = (evaluation.root / 'operations.jsonl').read_text()
++        evaluation.tmp.cleanup()
++        evaluation.result.update(slice='history-export-contract', fixture_removed=not evaluation.root.exists(),
++                                 case=args.case, regression_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
++        args.output.write_text(json.dumps(evaluation.result, indent=2) + '\n')
++    print(json.dumps({key: evaluation.result[key] for key in ('outcome', 'fixture_sha256', 'fixture_removed', 'failure')
++                      if key in evaluation.result}, indent=2))
++    return code
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())

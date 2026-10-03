@@ -1,0 +1,27 @@
+{
+  "scope": "root imported actual jj history-export and immutable verification-binding regressions",
+  "binary": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+  "tests": [
+    {
+      "path": "history-green.json",
+      "bytes": 379443,
+      "sha256": "41bc8abd56ac1f1ba0db03e77b1b3f7b60ca77641b049174c26b25150fc594e7",
+      "outcome": "passed",
+      "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "fixture_removed": true,
+      "tool_exit": 0
+    },
+    {
+      "path": "verification-binding-green.json",
+      "bytes": 135670,
+      "sha256": "3416a08e377ec226dd4d18d5dd73543f7c79f4a8cc23baf1681be39b5ac90554",
+      "outcome": "passed",
+      "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "fixture_removed": true,
+      "tool_exit": 0
+    }
+  ],
+  "root_gate": "40945 pending",
+  "branch_review": "not started",
+  "evaluation_accepted": false
+}

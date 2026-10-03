@@ -1,0 +1,172 @@
+{
+  "source_base": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "repair_iteration": 3,
+  "scope": "evaluation-only approved candidate capture/export seam; no backend adoption or production changes",
+  "source_records": [
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "size": 40541
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "size": 8468
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "sha256": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+      "size": 24591
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "sha256": "0b0712e9d4d98453ddc41eafcb5bf5528b2892c84151d908d75f578e675dce36",
+      "size": 4407
+    },
+    {
+      "path": "CONSTITUTION.md",
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097",
+      "size": 3484
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9",
+      "size": 3080
+    },
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "size": 2816
+    },
+    {
+      "path": "docs/agents/agentic-engineering.md",
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926",
+      "size": 9722
+    },
+    {
+      "path": "docs/agents/skill-orchestration.md",
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0",
+      "size": 9818
+    },
+    {
+      "path": "docs/agents/issue-tracker.md",
+      "sha256": "9d7300ea195b3c876228c9fc66f2223a09c5d2b793e2b483b236311d85f57be8",
+      "size": 2166
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "d1c761842b735501af6a5a2b8ee93aaf4cc878bd0fbcb4c9b7ce5d272c83b52c",
+      "size": 33123
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/accepted-evaluation-spec-v1.md",
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040",
+      "size": 31371
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/accepted-evaluation-ticket19-input.md",
+      "sha256": "7098d6b81f8639590e1aca6c88bd57f840fd9022f6953843689773712df2678f",
+      "size": 5129
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+      "sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9",
+      "size": 5347
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4",
+      "size": 984
+    },
+    {
+      "path": "tools/agents/wt.py",
+      "sha256": "73bd39606b3c17530985d2f71ade06cd19abcebf409dd76409396d1b16ce4b4f",
+      "size": 12485
+    },
+    {
+      "path": "tools/agents/land.py",
+      "sha256": "c253686e0d35ea4939e3164803216bdeb7fee6672d127b23514e38066cf72e1c",
+      "size": 10206
+    },
+    {
+      "path": "tools/agents/evidence.py",
+      "sha256": "144b813ec2279933558477e491411c093c3957fe47afc75fc6e99633322e2bd5",
+      "size": 17561
+    },
+    {
+      "path": "tools/agents/test_wt.py",
+      "sha256": "059767e4a816986f95cd1f2518a1b738bbaf00f4be823c8055dc4204817f1c64",
+      "size": 9757
+    },
+    {
+      "path": "tools/agents/test_land.py",
+      "sha256": "fb50ab542ce8530c0cf6e8ac6438ccf3f0a9d91ac47f1e1bb89332795956c6be",
+      "size": 9738
+    },
+    {
+      "path": "tools/agents/test_evidence.py",
+      "sha256": "e9a892c4dfbf7d43ebd55a2e7a2ac28c4e77e647a05f7eb794702a491d1a9578",
+      "size": 16198
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-snapshots/docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "sha256": "37a5e3b2f151daedb14761ff91eeecd2aae11727d2ddb5b88512ced681bc3bfd",
+      "size": 24591
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-snapshots/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "size": 40541
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-snapshots/docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "size": 8468
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-snapshots/docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "sha256": "0b0712e9d4d98453ddc41eafcb5bf5528b2892c84151d908d75f578e675dce36",
+      "size": 4407
+    }
+  ],
+  "preimages": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/19-jj-evaluation.md",
+      "sha256": "eb2e9865f50d8d9e04d5010b83c9ecdc51b67fd7b60d6163c7c37a3bbc804da2",
+      "size": 3510
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/jj-workspace-evaluation.md",
+      "sha256": "5282b39e95cdac5c2e51e02cc9d7cc4fd8a54fdbd662cd20e360b065eadce30c",
+      "size": 17565
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/jj_workspace_evaluation-history-only.py",
+      "sha256": "7c58414110650c199ffc2420f6ce92720caec176eb5042da4d51daf369bb07a8",
+      "size": 39767
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/jj_workspace_evaluation.py",
+      "sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+      "size": 37876
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/test_jj_history_export-binding-red.py",
+      "sha256": "ed697c076f979f3cf0dcef47a6ef512d43f6eb56efd5740196300da461e1b73d",
+      "size": 5864
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/preimages/test_jj_history_export-red.py",
+      "sha256": "cc895e6f72e246ceeb305acbf9bfe9594f2c90abc646b9c63e986c3c5c741230",
+      "size": 4635
+    }
+  ],
+  "patch": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source.patch",
+    "sha256": "7f7253272ab510c9a69270c6977d9cfe487c2a91ec58e7fefea9046bceef3b55",
+    "size": 42924
+  },
+  "final_fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "retention_status": "normal Git-selectable evidence; no ignored/generated cache indexed",
+  "historical_metadata": "repair1/repair2 freeze/index/handoff retained byte-for-byte; old metadata remains historical"
+}

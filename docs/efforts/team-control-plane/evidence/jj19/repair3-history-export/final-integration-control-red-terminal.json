@@ -1,0 +1,26 @@
+{
+  "label": "final-integration-control-red",
+  "argv": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--slice",
+    "integration",
+    "--unsafe-control",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-integration-control-red.json"
+  ],
+  "cwd": "/tmp/corenius-jj19-history-export-repair",
+  "started_utc": "2026-10-03T18:21:45.025396+00:00",
+  "fixture_path": "/tmp/corenius-jj19-history-export-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+  "fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "command_source_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "expected_exit": 1,
+  "exit": 1,
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf\",\n  \"unsafe_control\": true,\n  \"observations\": {\n    \"candidate_exports\": [\n      {\n        \"candidate\": {\n          \"backend\": \"jj-git\",\n          \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pjkvjz75/export/.jj/repo/store/git\",\n          \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pjkvjz75/export\",\n          \"operation\": \"bda4e2a86cf3436bd169b40a4f5029290ce665e3a04ec44c9fe8044cc55fbd352f4f6709b1266b00ed030f38a2b9760162ac82f9a7be61ef5818c2934aa289df\",\n          \"change\": \"rlrurkqonoumvzwmumwyytqtsooyorty\",\n          \"commit\": \"50c80841f5f3ef0ba82f340ef257c3dde3c696e4\",\n          \"tree\": \"855bfa8e43bd52235bbed4531cdec66a0e63998f\",\n          \"conflict\": false,\n          \"captured_paths\": [\n            \".gitignore\",\n            \"artifact.txt\"\n          ],\n          \"allowed_paths\": [\n            \".gitignore\",\n            \"artifact.txt\"\n          ],\n          \"base_commit\": \"1cd6d533d70370e0cdfd76bcfd2d96ce5ba5ab54\"\n        },\n        \"history\": [\n          {\n            \"commit\": \"50c80841f5f3ef0ba82f340ef257c3dde3c696e4\",\n            \"captured_paths\": [\n              \".gitignore\",\n              \"artifact.txt\"\n            ],\n            \"tree\": \"855bfa8e43bd52235bbed4531cdec66a0e63998f\"\n          },\n          {\n            \"commit\": \"1cd6d533d70370e0cdfd76bcfd2d96ce5ba5ab54\",\n            \"captured_paths\": [\n              \".gitignore\",\n              \"artifact.txt\"\n            ],\n            \"tree\": \"187c9ad549d4c2a5305978f5304db7f74f1bd376\"\n          },\n          {\n            \"commit\": \"547a720d0ba309735d4dfce3e612c575d3ec7e49\",\n            \"captured_paths\": [\n              \".gitignore\",\n              \"artifact.txt\"\n            ],\n            \"tree\": \"187c9ad549d4c2a5305978f5304db7f74f1bd376\"\n          }\n        ],\n        \"ref\": \"refs/fixture/integration\",\n        \"bundle\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pjkvjz75/integration.bundle\",\n        \"bundle_sha256\": \"00e30467e5d2b6ca8d4089f31472b18adfb4c777277641e0e83a12318154f479\"\n      }\n    ],\n    \"failed_gate\": {\n      \"exit\": 5,\n      \"mainline_after\": \"1cd6d533d70370e0cdfd76bcfd2d96ce5ba5ab54\",\n      \"candidate\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pjkvjz75/export/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-pjkvjz75/export\",\n        \"operation\": \"bda4e2a86cf3436bd169b40a4f5029290ce665e3a04ec44c9fe8044cc55fbd352f4f6709b1266b00ed030f38a2b9760162ac82f9a7be61ef5818c2934aa289df\",\n        \"change\": \"rlrurkqonoumvzwmumwyytqtsooyorty\",\n        \"commit\": \"50c80841f5f3ef0ba82f340ef257c3dde3c696e4\",\n        \"tree\": \"855bfa8e43bd52235bbed4531cdec66a0e63998f\",\n        \"conflict\": false,\n        \"captured_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"allowed_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"base_commit\": \"1cd6d533d70370e0cdfd76bcfd2d96ce5ba5ab54\"\n      }\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"failed\",\n  \"failure\": \"failed gate did not authorize landing\",\n  \"failure_type\": \"AssertionError\",\n  \"slice\": \"integration\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "finished_utc": "2026-10-03T18:21:45.531182+00:00",
+  "output": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-integration-control-red.json",
+  "output_sha256": "40c99b1a4e32cc9e92a6d74f7ec420a2c8b4f514941f3793e03f48e4150c2244"
+}

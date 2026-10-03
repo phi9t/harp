@@ -1,0 +1,8 @@
+{
+  "classification": "evidence wrapper path-normalization failure after completed behavioral RED; not a behavioral control",
+  "output": "baseline-history-red.json",
+  "failure_type": "ValueError",
+  "failure": "relative_to called on relative output path with absolute root",
+  "retained_fixture_output": true,
+  "rerun_uses_unique_filename": true
+}

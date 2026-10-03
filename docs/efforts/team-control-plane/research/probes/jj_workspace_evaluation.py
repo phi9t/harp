@@ -131,8 +131,13 @@ class Evaluation:
         self.jj(repo, 'status')
         return self.inspect(repo)
 
-    def freeze_candidate(self, repo, allowed=('.gitignore', 'artifact.txt'), revision='@'):
-        candidate = self.inspect(repo, revision)
+    def freeze_candidate(self, repo, allowed=('.gitignore', 'artifact.txt'), revision='@', operation=None):
+        if operation is not None:
+            resolved = self.jj(repo, '--ignore-working-copy', '--at-operation=' + operation,
+                               'op', 'log', '--limit', '1', '--no-graph', '--template', 'id')
+            if resolved != operation:
+                raise Refused('immutable operation ID required')
+        candidate = self.inspect(repo, revision, operation=operation)
         paths = self.git(self.store(repo), 'ls-tree', '-r', '--name-only', candidate['commit'], bare=True).splitlines()
         bookmarks = self.jj(repo, '--at-operation=' + candidate['operation'], 'bookmark', 'list')
         if not self.unsafe and (candidate['conflict'] or '(conflicted)' in bookmarks):
@@ -143,17 +148,47 @@ class Evaluation:
         if not self.unsafe and any(line.startswith(('120000 ', '160000 ')) for line in entries.splitlines()):
             raise Refused('symlink/submodule outside regular-file capture contract')
         candidate['captured_paths'] = paths
+        candidate['allowed_paths'] = sorted(allowed)
         candidate['base_commit'] = self.jj(repo, '--at-operation=' + candidate['operation'], 'log',
                                            '--no-graph', '-r', candidate['commit'] + '-', '-T', 'commit_id')
         return candidate
 
     def prepare_integration(self, repo, candidate, name='candidate'):
         # Exact immutable candidate, not a re-resolved change/bookmark/@ alias.
-        self.jj(repo, 'git', 'export')
         store = self.store(repo)
-        self.git(store, 'update-ref', 'refs/fixture/' + name, candidate['commit'], bare=True)
         bundle = self.root / (name + '.bundle')
-        self.git(store, 'bundle', 'create', str(bundle), 'refs/fixture/' + name, bare=True)
+        ref = 'refs/fixture/' + name
+        self.journal({'phase': 'integration prepared', 'candidate': candidate, 'ref': ref, 'bundle': str(bundle)})
+        history = []
+        try:
+            if not self.unsafe:
+                bound = self.freeze_candidate(repo, revision=candidate['commit'], operation=candidate['operation'])
+                if bound != candidate:
+                    raise Refused('candidate manifest does not match its exact operation/commit/capture binding')
+            # bundle create has no exclusion revisions: every reachable ancestor is included.
+            commits = self.git(store, 'rev-list', candidate['commit'], bare=True).splitlines()
+            for commit in commits:
+                paths = self.git(store, 'ls-tree', '-r', '--name-only', commit, bare=True).splitlines()
+                entries = self.git(store, 'ls-tree', '-r', commit, bare=True)
+                if not self.unsafe and (set(paths) - {'.gitignore', 'artifact.txt'}
+                                        or any(p.startswith('private') for p in paths)):
+                    raise Refused('disallowed/private captured path in exported history: ' + commit)
+                if not self.unsafe and any(line.startswith(('120000 ', '160000 '))
+                                           for line in entries.splitlines()):
+                    raise Refused('symlink/submodule in exported history: ' + commit)
+                history.append({'commit': commit, 'captured_paths': paths,
+                                'tree': self.git(store, 'rev-parse', commit + '^{tree}', bare=True)})
+        except (KeyError, TypeError, RuntimeError) as error:
+            self.journal({'phase': 'integration refused', 'candidate': candidate, 'reason': str(error)})
+            raise Refused(str(error)) from error
+        self.journal({'phase': 'integration history validated', 'candidate': candidate, 'history': history})
+        # Candidate objects already exist in the jj Git store. Publish only the audited graph;
+        # native jj git export would additionally publish unrelated bookmarks.
+        self.git(store, 'update-ref', ref, candidate['commit'], bare=True)
+        self.git(store, 'bundle', 'create', str(bundle), ref, bare=True)
+        self.result['observations'].setdefault('candidate_exports', []).append(
+            {'candidate': candidate.copy(), 'history': history, 'ref': ref, 'bundle': str(bundle),
+             'bundle_sha256': digest(bundle.read_bytes())})
         return bundle
 
     def release(self, repo):

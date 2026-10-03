@@ -1,0 +1,70 @@
+{
+  "repair_iteration": 3,
+  "branch": "codex/jj19-history-export-repair",
+  "source_base": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "final_fixture_sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+  "history_regression_sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+  "source_freeze": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source-freeze.json",
+    "sha256": "2d646f8da63e6185d04706375dfa2b268f5691af5636b99bb932ad2a2ea73c3e",
+    "size": 7150
+  },
+  "public_proof_index": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/public-proof-index.json",
+    "sha256": "e5416ca4e428bebbbbb8ffa8c5b50b248b10b6527a433c3b9da40f8596f81f98",
+    "size": 91517
+  },
+  "patch": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/source.patch",
+    "sha256": "7f7253272ab510c9a69270c6977d9cfe487c2a91ec58e7fefea9046bceef3b55",
+    "size": 42924
+  },
+  "changed_source_paths": [
+    "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+    "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+    "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md"
+  ],
+  "baseline_red": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/baseline-history-red-bound.json",
+    "sha256": "b90779618e7bbad0995318a61f1f7a4762a67c21e8553c44085378811459113a",
+    "size": 48334
+  },
+  "binding_red": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/binding-red.json",
+    "sha256": "1dabab4ff6e3e80f3a6ab1f2407aca36ddd1d3d904fd8f6eb0984b14c4c6421f",
+    "size": 40975
+  },
+  "history_green": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-history-green.json",
+    "sha256": "c1cb581686221b1b037c588c3c7ba43f0ea34a8bee78357e64ac8c5c6904781d",
+    "size": 379183
+  },
+  "final_ledger": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/run-ledger.json",
+    "sha256": "8d19562ecb751f257bd4c9721e41d6db7b8da803e7af58dfdfbf89f8b6342630",
+    "size": 47876
+  },
+  "checks": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/final-checks.json",
+    "sha256": "c663b413024d26a92f3b9645f94741f9af34b21979ef041c52536fac0f882760",
+    "size": 2244
+  },
+  "post_cleanup_reverification": {
+    "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/retained-artifact-reverification.json",
+    "sha256": "3202f1ca39802d3064bd20095ea627ae81ce5cffee9bc173d24fcbdb7b3e8b65",
+    "size": 56800
+  },
+  "closure_command": [
+    "/usr/bin/python3",
+    "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/verify-final-handoff.py"
+  ],
+  "retention_checks": "all indexed bytes and final metadata normal Git-selectable; all prior 213 files unchanged",
+  "qualification_limit": "candidate-bundle Git interoperability, separate native export diagnostics; private path/type contract only; no confidentiality or arbitrary crash/history claim",
+  "authority_limits": [
+    "No commit, stage, push, mainline/remote mutation, shared history rewrite, pruning, providers, Cargo, Postgres, Temporal or full gate",
+    "Root owns fresh independent Standards/Spec/branch review and exact integration; author cannot review own repair",
+    "Current v0.2 preferred-candidate direction remains; no default backend adoption or implementation claim"
+  ],
+  "observed_at": "2026-10-03T18:24:07Z"
+}

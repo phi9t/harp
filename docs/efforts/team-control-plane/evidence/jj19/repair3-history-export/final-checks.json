@@ -1,0 +1,70 @@
+{
+  "repair_base": "d819a946c742e9a2178564c4fd0c481ff02f7ae8",
+  "scope": "focused offline checks; root owns full gate, independent reviews and integration",
+  "sources": [
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "sha256": "0223e87add1595353f2e6d787ab275b0ea1df6c1666436e2f9094872027e65bf",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_history_export.py",
+      "sha256": "c201173d5615e59e6f91e7c1748e92cc1968b827a41e997ec00c68e227009f8e",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+      "sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/retained-reverification-command.py",
+      "sha256": "1a5a78515852983d0557f28c517afbc086df20cdc4f3b5b4af4114193e8f47d1",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair3-history-export/run-ledger-command.py",
+      "sha256": "eda960c6be63eab064a1e35fa4a78999602ff45b5750f2d34eae5553d83238cf",
+      "syntax": "passed"
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "tools/agents/tracker.py",
+        "lint",
+        "team-control-plane"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "unchanged_historical_file_count": 213,
+  "receipt_digests": "four retained proof IDs verified",
+  "final_source_bound_greens": 5,
+  "final_source_bound_behavioral_controls": 4,
+  "tooling_tests": {
+    "wt": 12,
+    "land": 8,
+    "evidence": 15,
+    "total": 35
+  },
+  "report_link_and_index_closure": "checked after final handoff construction; exact closure script retained"
+}
