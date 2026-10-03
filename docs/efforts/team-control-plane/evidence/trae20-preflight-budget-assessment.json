@@ -1,0 +1,47 @@
+{
+  "status": "original four-incarnation preflight exhausted; launches stopped; final author public proof freeze pending",
+  "source_commit_read": "264756edd550225449202b6f20ac4b560808d14e",
+  "author": "/root/kernel16_review584_author",
+  "reported_actual_runs": [
+    {
+      "incarnation": 1,
+      "session": 71788,
+      "exit": 1,
+      "outcome": "no-daemon unsupported app-server"
+    },
+    {
+      "incarnation": 2,
+      "session": 86369,
+      "exit": 1,
+      "outcome": "newline codec rejected by Unix WebSocket transport"
+    },
+    {
+      "incarnation": 3,
+      "session": 27102,
+      "exit": 1,
+      "outcome": "private initialize/config works; synthetic model metadata unresolved before request"
+    },
+    {
+      "incarnation": 4,
+      "session": 76883,
+      "exit": 0,
+      "outcome": "advertised model reaches synthetic Responses endpoint, but request envelope violated"
+    }
+  ],
+  "reported_final_request_counts": {
+    "attempted": 9,
+    "accepted": 6,
+    "denied": 3,
+    "snapshot_before_shutdown": 4,
+    "authoritative": "final after-shutdown provider-requests.json; root selected-proof verification pending"
+  },
+  "reported_containment": "all four namespace inventories empty; no external or paid-provider traffic",
+  "readiness": {
+    "six_request_envelope": false,
+    "no_automatic_retry": false,
+    "streaming": false,
+    "hard_token_cost_ceiling": false
+  },
+  "next_action": "independent primary retry-control research and frozen proof review; no new runtime launches or budget reset",
+  "limits": "Reported actual handles/counts are not a root full public-proof audit or live-provider acceptance."
+}
