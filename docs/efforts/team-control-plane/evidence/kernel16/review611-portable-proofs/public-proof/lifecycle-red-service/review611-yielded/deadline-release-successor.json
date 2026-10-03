@@ -1,0 +1,55 @@
+{
+  "after_state": "yielded",
+  "before_state": "yielded",
+  "episode": "e0ec8f86-138e-4a52-a55e-4cd862425e06",
+  "execution": "dedaaad0-59ea-4d81-9d5b-f2491de13660",
+  "mission": {
+    "data": {
+      "admitted_attempts": 0,
+      "admitted_episodes": 1,
+      "capacity": 1,
+      "control_revision": 0,
+      "dispatch_paused": false,
+      "episode_deadline_seconds": 2,
+      "git_commit": "9f3c13394aeffea1ade07aede7696f8eb8544567",
+      "git_path": "SPEC.md",
+      "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-2c1fee67-5e3e-454c-8114-0adbf11d15f8/store",
+      "id": "76f37dac-0af9-4e63-a80a-964bb3efa726",
+      "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+      "max_attempts": 2,
+      "max_episodes": 3,
+      "max_repairs": 1,
+      "objective": "deadline lifecycle public proof",
+      "used_capacity": 0
+    },
+    "revision": 2,
+    "schema_version": 1,
+    "snapshot_time": "2026-10-03 06:09:19.102098+00"
+  },
+  "monitor_result": {
+    "argv": [
+      "/bin/sleep",
+      "10"
+    ],
+    "candidate": null,
+    "completion": {
+      "kind": "monitor_wait"
+    },
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 2971937,
+      "pid": 2971937,
+      "start_ticks": 42333730
+    },
+    "execution": "dedaaad0-59ea-4d81-9d5b-f2491de13660",
+    "exit_code": 137,
+    "logs": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "namespace_stopped": true,
+    "recovery_epoch": "e290947f-b0fd-47ca-b4f3-b1c1dc78248a",
+    "signal": null
+  },
+  "successor": {
+    "Err": "dependency_unmet"
+  }
+}

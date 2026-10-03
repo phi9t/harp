@@ -1,0 +1,38 @@
+{
+  "accepted": {
+    "accepted": true,
+    "candidate_id": "1054e9cd3f683c4c061cd0fdb4e4b22707690c5e3f5003c252d8ba6bc4ea644a",
+    "report_id": "13dd70bf041bf721fcd3f1ffede8bd0f3181c9a8765de011380ba57bb6c3ca7f",
+    "revision": 8
+  },
+  "fresh_execution": "7d8a1568-9974-4d19-9de5-5ca278a6731c",
+  "report": {
+    "candidate": {
+      "artifact": "30df9ac011acfc0202bb7be6dce21f7e7c89b4c13125dcc45678a1f65b734e0e",
+      "base": "eadc948685a5a9502098ab799c09ee8d5338612a",
+      "commit": "326fa44e2459f8486b13d675409e883215d118af",
+      "deliverables": [
+        "src/result"
+      ],
+      "generation": 1,
+      "risks": [],
+      "spec_digest": "727821bdf7e9e95e6f9178b4526bf64d9e9cd04cc830fa20cc7675ac8111e9de",
+      "spec_revision": 2,
+      "tree": "f6b3bc641318aac78c23269f0a7c3a720c194a15"
+    },
+    "checks": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'actual candidate'; cat src/result"
+        ],
+        "exit_code": 0,
+        "logs": "e5be8cc7c8cd3eb53e6232d7433625a2f7fa87f9195ddab95fbf94fcfc8f0992"
+      }
+    ],
+    "environment": "800228292becb64b5ca090963c8fd3b6236e40b4ae4599a0872fb3c11a3eefbe",
+    "resolved_decisions": true,
+    "suite": "273d9693920660d445d7d2b6850d5abd1f82f7fbd806ca4cac0d3dc074283fac"
+  }
+}

@@ -1,0 +1,38 @@
+    Checking team-control-plane v0.1.0 (/tmp/corenius-kernel16-review611-author/crates/team-control-plane)
+error: this `if` statement can be collapsed
+    --> tests/assembled_cancellation.rs:4067:13
+     |
+4067 | /             if view.state==supervisor::ExecutionState::Stopped {
+4068 | |                 if let Some(result)=supervisor.result(&token,execution.id).await.unwrap() {break result;}
+4069 | |             }
+     | |_____________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+     = note: `-D clippy::collapsible-if` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+     |
+4067 ~             if view.state==supervisor::ExecutionState::Stopped
+4068 ~                 && let Some(result)=supervisor.result(&token,execution.id).await.unwrap() {break result;}
+     |
+
+error: could not compile `team-control-plane` (test "assembled_cancellation") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: this `if` statement can be collapsed
+    --> tests/assembled_vertical.rs:8411:17
+     |
+8411 | / ...   if let Some(result) = supervisor.result("assembled-verifier", execution.id).await.unwrap() {
+8412 | | ...       if supervisor.inspect("assembled-verifier", execution.id).await.unwrap().state == supervisor::ExecutionState::Stopped ...
+8413 | | ...   }
+     | |_______^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+     = note: `-D clippy::collapsible-if` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+     |
+8411 ~                 if let Some(result) = supervisor.result("assembled-verifier", execution.id).await.unwrap()
+8412 ~                     && supervisor.inspect("assembled-verifier", execution.id).await.unwrap().state == supervisor::ExecutionState::Stopped {break result;}
+     |
+
+error: could not compile `team-control-plane` (test "assembled_vertical") due to 1 previous error

@@ -1,0 +1,27 @@
+{
+  "execution": "fffa61ad-0d2f-4738-9b15-9cd5a468fa1f",
+  "mission": {
+    "data": {
+      "admitted_attempts": 0,
+      "admitted_episodes": 2,
+      "capacity": 1,
+      "control_revision": 0,
+      "dispatch_paused": false,
+      "episode_deadline_seconds": 2,
+      "git_commit": "cde0a754695fa53e125143e9edd9450d56c697c2",
+      "git_path": "SPEC.md",
+      "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-29912a14-ae01-4eb7-b887-505b511179fd/store",
+      "id": "03b7c0ea-dae9-4ef5-b29b-2dfdd81b71e8",
+      "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+      "max_attempts": 2,
+      "max_episodes": 3,
+      "max_repairs": 1,
+      "objective": "deadline lifecycle public proof",
+      "used_capacity": 0
+    },
+    "revision": 3,
+    "schema_version": 1,
+    "snapshot_time": "2026-10-03 06:26:57.512617+00"
+  },
+  "successor": "f5d48a9f-d04f-4afd-8c26-0a027ab0d926"
+}

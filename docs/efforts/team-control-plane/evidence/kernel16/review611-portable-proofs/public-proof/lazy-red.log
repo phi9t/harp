@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review611-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.00s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 6 tests
+test review611_expiry_without_execution_cannot_retire_episode ... ok
+test review611_deadline_stop_release_allows_same_lead_successor ... ok
+test review611_predeadline_release_preserves_yield_checkpoint_wait ... ok
+
+thread 'review611_release_before_expiry_allows_later_same_lead_successor' (3815415) panicked at tests/assembled_cancellation.rs:4107:37:
+physically stopped released expired episode must permit a fresh same-lead successor: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review611_release_before_expiry_allows_later_same_lead_successor ... FAILED
+test review611_release_preserves_yielded_checkpoint_wait ... ok
+test review611_uncertain_native_effect_cannot_retire_expired_episode ... ok
+
+failures:
+
+failures:
+    review611_release_before_expiry_allows_later_same_lead_successor
+
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 30 filtered out; finished in 8.24s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

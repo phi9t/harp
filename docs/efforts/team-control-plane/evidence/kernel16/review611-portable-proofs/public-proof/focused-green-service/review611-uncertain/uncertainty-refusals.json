@@ -1,0 +1,36 @@
+{
+  "effects": 1,
+  "episode_state": "active",
+  "mission": {
+    "data": {
+      "admitted_attempts": 0,
+      "admitted_episodes": 1,
+      "capacity": 1,
+      "control_revision": 0,
+      "dispatch_paused": false,
+      "episode_deadline_seconds": 2,
+      "git_commit": "51564299d188a0c804651a1e2b9445bb3a9dba63",
+      "git_path": "SPEC.md",
+      "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-48130339-5f2a-4581-9516-8224769ef23c/store",
+      "id": "0d303fb8-8af8-49be-b347-2d976032d870",
+      "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+      "max_attempts": 2,
+      "max_episodes": 3,
+      "max_repairs": 1,
+      "objective": "deadline lifecycle public proof",
+      "used_capacity": 1
+    },
+    "revision": 2,
+    "schema_version": 1,
+    "snapshot_time": "2026-10-03 06:12:18.149416+00"
+  },
+  "release": {
+    "Err": "dependency_unmet"
+  },
+  "successor": {
+    "Err": "dependency_unmet"
+  },
+  "usage": {
+    "kind": "unknown"
+  }
+}

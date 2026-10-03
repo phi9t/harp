@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review611-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.80s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 7 tests
+test review611_expiry_without_execution_cannot_retire_episode ... ok
+test review611_deadline_stop_release_allows_same_lead_successor ... ok
+test review611_predeadline_release_preserves_yield_checkpoint_wait ... ok
+test review611_release_before_expiry_allows_later_same_lead_successor ... ok
+test review611_release_preserves_yielded_checkpoint_wait ... ok
+test review611_stopped_unreleased_execution_cannot_retire_expired_episode ... ok
+test review611_uncertain_native_effect_cannot_retire_expired_episode ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 30 filtered out; finished in 10.47s
+
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 3 tests
+test review611_environment_change_cannot_relabel_old_success ... ok
+test review611_cached_verify_rechecks_changed_policy ... ok
+test review611_suite_change_cannot_relabel_old_success ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 57 filtered out; finished in 2.29s
+

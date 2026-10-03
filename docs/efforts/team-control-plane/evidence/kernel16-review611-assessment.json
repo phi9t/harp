@@ -218,12 +218,35 @@
     "cause_observed": "namespace_stopped false from monitor quarantined finalstate; failure before verifier assertion",
     "next": "fresh unchanged fullmatrix",
     "preserved": "priorfailedfull childstderr and cleanup",
-    "cleanup_limit": "child panicked before fixturefinish/publicclaim; no childfixturecleanupproof. Root requested exact identity-based physical reconciliation beforefreeze; Temporalcleanup alone insufficient."
+    "cleanup_limit": "child panicked before fixturefinish/publicclaim; no childfixturecleanupproof. Root requested exact identity-based physical reconciliation beforefreeze; Temporalcleanup alone insufficient.",
+    "physical_reconciliation": {
+      "root": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255",
+      "episode": "46ebcbb6-9b34-465e-8e48-edceae7e42c6",
+      "execution": "ab7bea80-fede-4395-a212-b3797da3c5da",
+      "retained": "exact effect/invocation identities",
+      "missing": "PID/manifest/result identities were DB-only; failed-run disposablePG removed",
+      "status": "retained unresolved/quarantined; current attributable process audit pending",
+      "restrictions": "no reuse/refund/delete/ambiguous kill; absence of matching proc paths cannot prove historical stop"
+    }
   },
   "unchanged_full_matrix_retry": {
     "session": 27825,
-    "status": "running",
+    "status": "PASS",
     "log": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/full-final2.log",
-    "source_changes": "none"
+    "source_changes": "none",
+    "terminal_exit": 0,
+    "parent_passed": 184,
+    "nested_child_passed": 1,
+    "failed": 0,
+    "ignored_owned_entrypoints": 8,
+    "parent_summary_groups": 15
+  },
+  "strict_checks": {
+    "session": 60401,
+    "status": "failed; behavior-preserving test lint cleanup applied; rerun pending",
+    "command": "locked offline alltargets Clippy -D warnings",
+    "terminal_exit": 101,
+    "cause": "two collapsible_if warnings in new test polling loops",
+    "source_scope": "test let-chain cleanup/rustfmt only; production unchanged"
   }
 }

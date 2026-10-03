@@ -1,0 +1,46 @@
+{
+  "status": "root verified frozen candidate; independent conformance pending",
+  "base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+  "freeze": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/freeze",
+  "patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
+  "freeze_index_sha256": "068612fe6a9dc8c3cc2991b0dc397bf7f276299ef57a924832fd2ca108197a7a",
+  "verified": {
+    "indexed_files": 463,
+    "live_sources": 48,
+    "git_base_preimages": 5,
+    "exact_live_patch": true
+  },
+  "final_checks": {
+    "focused": {
+      "session": 46984,
+      "exit": 0,
+      "passed": 10
+    },
+    "strict_clippy": {
+      "session": 99330,
+      "exit": 0
+    },
+    "full_matrix": {
+      "session": 27825,
+      "exit": 0,
+      "parent_passed": 184,
+      "owned_child_ignored": 8,
+      "limitation": "Before two equivalent test-only let-chain lint edits; root full gate still required."
+    }
+  },
+  "failed_fixture": {
+    "status": "unresolved quarantine",
+    "root": "/tmp/kernel16-159140f6-1323-4ebb-86b8-a8e038828255",
+    "missing": [
+      "exact PID identities",
+      "database manifest/result/stop observations"
+    ],
+    "limitation": "Path attribution found no current matches; does not prove namespace shutdown. No kill/delete/reuse/refund performed."
+  },
+  "reviews_dispatched": {
+    "Standards": "/root/kernel16_review584_author",
+    "Spec": "/root/kernel16_acceptance580"
+  },
+  "accepted": false,
+  "landed": false
+}

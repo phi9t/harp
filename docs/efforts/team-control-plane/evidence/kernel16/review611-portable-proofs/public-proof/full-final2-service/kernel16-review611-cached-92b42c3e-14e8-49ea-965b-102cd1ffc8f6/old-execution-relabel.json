@@ -1,0 +1,65 @@
+{
+  "configure_revision": 7,
+  "old_execution": "43be8ffb-afe4-45c2-9f43-07426d6e2f54",
+  "old_report": {
+    "candidate": {
+      "artifact": "1f9e75770572c35047628c24e28762773c60a82e5155e4842688545e9392150f",
+      "base": "6944b8ea532bc49c79bf6cf8c59d9722fa3548f6",
+      "commit": "779fcf9f2059e42af4a186a6f98caa42386d85d3",
+      "deliverables": [
+        "src/result"
+      ],
+      "generation": 1,
+      "risks": [],
+      "spec_digest": "79a658b8eedff1ec008d62e16ec33a489eb06fad501a487dafcb3542058f2161",
+      "spec_revision": 2,
+      "tree": "f6b3bc641318aac78c23269f0a7c3a720c194a15"
+    },
+    "checks": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'actual candidate'; cat src/result"
+        ],
+        "exit_code": 0,
+        "logs": "e35d37a426a3233c30e52de0773b9d570a80ad5b117f5a9e4ea4a8b159800b3e"
+      }
+    ],
+    "environment": "14ab2782a7b3f365f1727fa8b62e889228cf215360e6153ffad8b45c92a52732",
+    "resolved_decisions": true,
+    "suite": "273d9693920660d445d7d2b6850d5abd1f82f7fbd806ca4cac0d3dc074283fac"
+  },
+  "relabeled_report": {
+    "candidate": {
+      "artifact": "1f9e75770572c35047628c24e28762773c60a82e5155e4842688545e9392150f",
+      "base": "6944b8ea532bc49c79bf6cf8c59d9722fa3548f6",
+      "commit": "779fcf9f2059e42af4a186a6f98caa42386d85d3",
+      "deliverables": [
+        "src/result"
+      ],
+      "generation": 1,
+      "risks": [],
+      "spec_digest": "79a658b8eedff1ec008d62e16ec33a489eb06fad501a487dafcb3542058f2161",
+      "spec_revision": 2,
+      "tree": "f6b3bc641318aac78c23269f0a7c3a720c194a15"
+    },
+    "checks": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "test \"$(cat src/result)\" = 'actual candidate'; cat src/result"
+        ],
+        "exit_code": 0,
+        "logs": "e35d37a426a3233c30e52de0773b9d570a80ad5b117f5a9e4ea4a8b159800b3e"
+      }
+    ],
+    "environment": "14ab2782a7b3f365f1727fa8b62e889228cf215360e6153ffad8b45c92a52732",
+    "resolved_decisions": true,
+    "suite": "f75e4eb0e86a1a9a7ee112204dd8d55019782abf36ec4d36c955ac044fffcbf2"
+  },
+  "reuse": {
+    "Err": "dependency_unmet"
+  }
+}

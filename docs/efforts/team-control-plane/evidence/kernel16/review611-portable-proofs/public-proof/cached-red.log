@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review611-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.04s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+
+thread 'review611_cached_verify_rechecks_changed_policy' (3149915) panicked at tests/assembled_vertical.rs:8443:45:
+called `Result::unwrap_err()` on an `Ok` value: ArtifactResult { revision: 6, candidate_id: Some("6154c671ea1b60e6f1d08efd067b870e8c0cb17dc525cdd4407bb4ebe50438dc"), report_id: Some("909c59659afdf82d19ace1b3c431aa989d8850187a84879bb09551a38ba808a4"), accepted: false }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review611_cached_verify_rechecks_changed_policy ... FAILED
+
+failures:
+
+failures:
+    review611_cached_verify_rechecks_changed_policy
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 59 filtered out; finished in 0.78s
+
+error: test failed, to rerun pass `--test assembled_vertical`
