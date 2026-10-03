@@ -58,3 +58,41 @@ scope authority; this capture makes no claim about the implemented behavior.
 Adoption is complete when the reconciliation is durable and affected worker
 assignments reference the reconciled contracts. Publication of this RFC alone
 is not implementation or qualification completion.
+
+## v0.2 owner-supplied correction
+
+[Complete v0.2 discussion](0002-persistent-engineering-teams-v02-source.md)
+is preserved byte-for-byte with provenance in the source manifest. Its external
+product claims and illustrative workflow code are supplied design input, not
+independently verified capabilities or production implementation.
+
+This revision changes the requested target architecture:
+
+- kenn-io/kata becomes the first-class work ledger. Corenius retains admitted
+  intent, execution authority, budgets, acceptance and promotion; a Kata claim
+  or close never grants execution authority or proves acceptance.
+- Admission pins a WorkRef and exact ticket revision into an IntentRevision.
+  Later ticket edits require explicit admission before changing execution intent.
+- Integrate through qualified Kata APIs and cursor-based events, never its
+  internal tables. Keep independently owned persistence schemas.
+- jj becomes the preferred worker VCS candidate, subject to executable
+  qualification. Isolate worker repositories; evolving change IDs are lineage,
+  while verification binds immutable commits and trees. Git-compatible protected
+  integration and this repository's fast-forward-only rules remain in force.
+- Temporal coordinates independently addressable execution scopes using short
+  Activities, durable waits, signals as wakeups and bounded reconciliation.
+  Signals and replayed state confer no authority; every consequential broker
+  operation checks current authority transactionally.
+- Armada/Insula supervises external jobs independently. A stable interpreter
+  executes versioned declarative plans; custom workflow code requires normal
+  review, replay/versioning qualification and promotion.
+
+The implementation lead must reconcile this correction against the earlier
+Kata deferral and jj evaluation before affected implementation proceeds. Preserve
+existing acceptance evidence, record migration and compatibility decisions, and
+map the revised ownership boundaries and protocols into canonical SPEC/tickets.
+In particular, qualify wakeup races, lost acknowledgments, outbox/event cursor
+recovery, ticket revision changes, exact-candidate landing and history rollover.
+No shared VCS conversion, new runtime spend or bypass of verification gates is
+authorized merely by this documentation capture. Acknowledgment and durable
+reconciliation remain the adoption criteria.
