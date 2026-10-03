@@ -2146,3 +2146,6 @@ Repair611 finalfocused83199 terminal0:6/6 public tests passed against final four
 
 
 Repair611 lazy-red60492 terminal101; reconciled-focused34565 terminal0 with7lifecycle+3policy cases passing. Author confirmed all authority/provenrelease/uncertainty checks are under broker transaction. Final fullmatrix launching, includes three previous regressions; handle/finalresult pending. No root sourceintegration or concurrent service use.
+
+
+Repair611 full-final1813 actualterminal101. Allthree previous regressions passed, but unknown_episode_blocks_preallocated_verifier_launch failed because owned_episode_usage_worker child failed. Assembledsummary56passed/1failed/3ownedentrypointignored. Author preserves run/cleanup and diagnoses retained child evidence before source edits or rerun. No passing fullmatrix/freeze claim.

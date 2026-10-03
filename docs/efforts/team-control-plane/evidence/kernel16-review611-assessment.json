@@ -193,8 +193,37 @@
     }
   },
   "full_final_matrix": {
-    "status": "author launching; live handle pending",
+    "status": "failed; owned usage child diagnosis pending",
     "scope": "alltargets realPG/Temporal including prior3regressionfailures",
-    "source_files_changed": 5
+    "source_files_changed": 5,
+    "session": 1813,
+    "log": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/full-final.log",
+    "source_writes": "stopped",
+    "prior_regressions": "all3 prior regressioncases passed; this does not make matrix green",
+    "terminal_exit": 101,
+    "assembled_vertical": {
+      "passed": 56,
+      "failed": 1,
+      "ignored": 3
+    },
+    "failed_test": "unknown_episode_blocks_preallocated_verifier_launch",
+    "failure": "owned_episode_usage_worker child failed; parent report omits inner stderr"
+  },
+  "failed_child_diagnostic": {
+    "session": 56376,
+    "terminal_exit": 0,
+    "passed": 1,
+    "source_changes": "none",
+    "classification": "failure not reproduced on exact focused rerun; not provenflake",
+    "cause_observed": "namespace_stopped false from monitor quarantined finalstate; failure before verifier assertion",
+    "next": "fresh unchanged fullmatrix",
+    "preserved": "priorfailedfull childstderr and cleanup",
+    "cleanup_limit": "child panicked before fixturefinish/publicclaim; no childfixturecleanupproof. Root requested exact identity-based physical reconciliation beforefreeze; Temporalcleanup alone insufficient."
+  },
+  "unchanged_full_matrix_retry": {
+    "session": 27825,
+    "status": "running",
+    "log": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/full-final2.log",
+    "source_changes": "none"
   }
 }
