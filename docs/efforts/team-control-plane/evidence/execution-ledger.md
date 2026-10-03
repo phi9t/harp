@@ -2137,3 +2137,6 @@ Review611 session86801 terminal exit1: High verification execution provenance om
 
 
 Repair611 author confirmed fresh solewriter tree at587aca8821d352b73463dff2ffd02cbdf55e19e5. Ranked policy and lifecycle hypotheses recorded in kernel16-review611-assessment.json. Public regressions under construction; no new red/green evidence or services reported yet. Root requested separate suite/environment changes, fresh-policy positive, cached report/acceptance revalidation and preservation of historical cleanup/checkpoints/waits.
+
+
+Repair611 first focused green10605 terminal0: five public tests passed, including separate suite/environment changes with a fresh actual verification execution and acceptance, deadline successor admission, yielded wait preservation and unknown-native-usage refusal. Author consumer trace found cached Verify bypasses execution-policy revalidation; cached Accept already rechecks. Additional same-scope test-first cachedVerify slice is required before final-source fullmatrix/freeze. Earlier focused green is not proof of this subsequent source.

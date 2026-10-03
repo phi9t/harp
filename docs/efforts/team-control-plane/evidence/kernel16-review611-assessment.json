@@ -62,5 +62,33 @@
     "production_changes": "none observed",
     "classification": "mixed; deadline regression meaningful, not whole-run behavioral red",
     "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-lifecycle-proofs/index.json"
+  },
+  "production_repair_observation": {
+    "status": "isolated candidate changed; not integrated",
+    "files": [
+      "src/artifacts.rs",
+      "src/supervisor.rs"
+    ],
+    "policy": "optional immutable suite/environment manifest binding captured under allocation lock; report/current policy comparison; missing binding refuses verification",
+    "lifecycle": "released execution retires only associated admitted/active episode; yielded states and waits preserved",
+    "focused_green": {
+      "session": 10605,
+      "status": "running as reported by author",
+      "observed_test_results": {
+        "cancellation": 3,
+        "policy": 2,
+        "failures": 0
+      },
+      "terminal_exit": 0,
+      "note": "tests subsequently expanded; final-source coverage requires rerun/full matrix"
+    },
+    "schema_changes": false,
+    "cached_verify_followup": {
+      "finding": "cached Verify returns retained receipt without shared execution policy provenance revalidation; cached Accept revalidates",
+      "scope": "same611 policy provenance repair",
+      "next": "public oldpolicy Verify then Configure then cachedVerify red; minimal shared verification recheck",
+      "controls": "unchanged-policy replay remains idempotent without new report/revision/charges",
+      "final_source_verified": false
+    }
   }
 }
