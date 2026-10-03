@@ -75,15 +75,17 @@
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-green.log",
-      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/12-actual-host-green.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/12-actual-host-green.log.txt",
       "sha256": "c6d92f0d84f2b03647abdbdcfc8bed8b68bc6e4c52fb3bb4eea49eabfc5c4cb4",
-      "bytes": 98
+      "bytes": 98,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/12-actual-host-green.log"
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-red.log",
-      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/13-actual-host-red.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/13-actual-host-red.log.txt",
       "sha256": "e0b6588322e800e89036886a22cac6f5992ddf300cac1eb580a18f1b319a1c14",
-      "bytes": 917
+      "bytes": 917,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/13-actual-host-red.log"
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/case.json",
@@ -93,15 +95,17 @@
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stderr.log",
-      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/15-final-pure-stderr.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/15-final-pure-stderr.log.txt",
       "sha256": "a3368a96609729e1369d057dfefa6cbe072afa751335d84019542cf280c86090",
-      "bytes": 106
+      "bytes": 106,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/15-final-pure-stderr.log"
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stdout.log",
-      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/16-final-pure-stdout.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/16-final-pure-stdout.log.txt",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0
+      "bytes": 0,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/16-final-pure-stdout.log"
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-terminal.json",
@@ -111,9 +115,10 @@
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/profile-fences-green.log",
-      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/18-profile-fences-green.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/18-profile-fences-green.log.txt",
       "sha256": "d679fc3ad8e7eab020d24d55774886d0d611584cafd122a5cfd169337c6f9cbb",
-      "bytes": 106
+      "bytes": 106,
+      "original_ignored_retention_path": "docs/efforts/team-control-plane/evidence/trae20-offline-prelaunch-round0/18-profile-fences-green.log"
     },
     {
       "original_path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/red-source.json",
@@ -157,5 +162,6 @@
     "exact injected JSONDecodeError asserted",
     "raw owned.jsonl durably exported before temporary cleanup"
   ],
-  "runtime_admission": "withheld"
+  "runtime_admission": "withheld",
+  "retention_correction": "Raw .log bytes archived byte-exact with .log.txt suffix because repository ignore rules exclude .log; all authoritative mapped paths now normally Git-selectable."
 }
