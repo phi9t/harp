@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-10-03T17:55:42Z",
+  "session": 82804,
+  "exit": 0,
+  "terminal": "check: all green",
+  "candidate": "720ab7783e1b36e9e8a675f497f9c66ef2b1d87b",
+  "log_sha256": "de7a13f892a7ee4ed0add3a132faa2dfe0128f44ce94a646c80b7d3a740299ac",
+  "root_jj_contract": "PASS actual imported verification-before-rewrite / stale proof refusal / fresh changed proof",
+  "committed_public_records_hash_checked": 112,
+  "branch_review": "pending",
+  "no_full_goal_completion": true
+}
