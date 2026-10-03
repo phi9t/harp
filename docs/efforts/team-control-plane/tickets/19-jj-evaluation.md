@@ -44,4 +44,4 @@ No shared checkout conversion, required kernel dependency or unrestricted cross-
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
 - 2026-10-03T16:56:53Z corenius-jj19: claimed until 2026-10-04T16:56:53Z
 
-- 2026-10-03T16:56:53.662690+00:00 lead: Original frozen evaluation rehashed; Standards PASS, Spec Important verification-order gap. Acceptance withheld. Isolated repair1/3 assigned; see ../evidence/jj19-conformance-round0.json and ../decisions/20261003-jj19-verification-repair.md.
+- 2026-10-03T16:56:53Z lead: Original frozen evaluation rehashed; Standards PASS, Spec Important verification-order gap. Acceptance withheld. Isolated repair1/3 assigned; see ../evidence/jj19-conformance-round0.json and ../decisions/20261003-jj19-verification-repair.md.
