@@ -1,8 +1,34 @@
 # Effort: durable team control plane
 
-Status: approved baseline; admission implementation underway
-Base: main at `963f58b31e518a8162dfe719e386ef9d9843321f`
-Lead: Codex design session; replaceable in the proposed system
+Status: accepted v1 kernel; v0.2 implementation and runtime qualification underway
+Base: main at `264756edd550225449202b6f20ac4b560808d14e`
+Lead: replaceable Codex implementation coordinator
+
+## Current execution contract
+
+Corenius alone is the active scope. The owner-authorized objective is the
+complete persistent engineering-team implementation, including verification
+and gated fast-forward landing; see
+[full-goal authority](decisions/20261003-owner-authorizes-full-goal-execution.md).
+The accepted kernel is v1 evidence, not completion of live runtime, independent
+lead or restore requirements. RFC0002 v0.2 is the current architectural target:
+Kata as first-class work ledger, qualified jj worker workspaces, durable
+ExecutionScopes, independently supervised jobs and a stable per-scope Plan
+interpreter. [The reconciliation](v02-reconciliation.md), [PLAN.md](PLAN.md)
+and tickets26–32 define the additional work and preserve earlier evidence.
+
+Ticket26 is being implemented in its own worktree. jj19's final history-export
+repair is frozen for independent review. One fixed offline namespace cleanup
+case has independently verified terminal0 cleanup measurements; full conformance
+is partial because original prelaunch controller ordering remains unverified.
+It does not admit a Trae or paid provider launch. Historical quarantines and
+spent budgets remain recorded. [STATE.md](STATE.md) and the
+[completion audit](completion-audit.md) carry current progress.
+
+## Preserved discovery and execution history
+
+The following sections retain the earlier discovery scope and approvals.
+They do not limit or replace the current execution contract above.
 
 ## Intent
 

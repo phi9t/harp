@@ -1,0 +1,11 @@
+{
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+  "cwd": "/tmp/corenius-trae20-budget-repair-author",
+  "started_record": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/started.json",
+  "owned_command_pid": 3472175,
+  "exit": 0,
+  "seconds": 0.1638053249916993,
+  "proof_exists": true,
+  "raw_owner_events_exist": true
+}

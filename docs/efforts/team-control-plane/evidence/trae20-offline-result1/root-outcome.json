@@ -1,0 +1,31 @@
+{
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "admission_commit": "75b9830220f5d8b284c6c693053fe188b90e839c",
+  "disposition": "PARTIAL; physical cleanup measurements verified, prelaunch control ordering unverified",
+  "physical_namespace_starts": 1,
+  "automatic_retries": 0,
+  "runtime_provider_service_starts": 0,
+  "result_index_sha256": "f95d1dfa7dce996d2eb9a199cf5c87cb425afe6abb88b26a71d0e0ba7baf8ee6",
+  "review_files": {
+    "report.md": "e74dfc155b244a7a1cf5f5c738a0e2773dd03763b42a883325ea2147061639ec",
+    "metadata.json": "d1a4d39af41be99b879d278250cd918fff4ee4635ef5d6c32af129235fa0d422"
+  },
+  "original_controller": "inline author-attested tool chunk2d9dec; no independently retrieved original transcript or durably frozen controller",
+  "author_attestation": "O_EXCL + short-write check + file and directory fsync preceded Popen; remains attested, not independently proven",
+  "root_readonly_process_observation": {
+    "owned_pids": [
+      3472175,
+      3472193,
+      3472194,
+      3472195
+    ],
+    "proc_paths_present": false,
+    "limit": "post-run absence supplements retained exact shutdown; does not prove original prelaunch order"
+  },
+  "historical_quarantines": [
+    1749400,
+    1793051
+  ],
+  "historical_budget": "old4 incarnations/9 incoming attempts/1 turn start retained and spent; conditional new runtime budget remains unadmitted",
+  "next_boundary": "durably freeze and independently review controller before any further admission; no rerun repairs original provenance"
+}

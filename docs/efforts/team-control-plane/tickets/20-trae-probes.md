@@ -42,3 +42,4 @@ No unbudgeted model probes, real user workspace, provider fork or assumption fro
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T18:33:56Z lead: One concretely admitted offline setup-noise case ran once. Independent adjudication passes exact physical cleanup measurements; full conformance remains partial because original prelaunch controller ordering is unverified. All12 frozen records, raw events, exact grant and independent review are retained in ../evidence/trae20-offline-result1/. No rerun, budget reset or actual Trae/provider admission follows; see ../decisions/20261003-trae-offline-result1-partial.md.

@@ -1,0 +1,210 @@
+{
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "reviewed_at_utc": "2026-10-03T18:33:56.481404+00:00",
+  "disposition": "PARTIAL_CHANGES_REQUIRED_FOR_FULL_ADMITTED_CASE_ACCEPTANCE",
+  "physical_cleanup_measurements": "PASS_EXACT_FIXED_OFFLINE_SETUP_NOISE_CASE",
+  "full_admission_conformance": "UNVERIFIED_PRELAUNCH_CONTROL_ORDERING",
+  "scope": "One independent read-only adjudication of already executed bounded offline namespace case; no repeat physical verification",
+  "freeze_root": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-result-freeze",
+  "result_index_sha256": "f95d1dfa7dce996d2eb9a199cf5c87cb425afe6abb88b26a71d0e0ba7baf8ee6",
+  "indexed_records_verified": 12,
+  "record_checks": [
+    {
+      "path": "started.json",
+      "bytes": 1295,
+      "sha256": "70886701467b502e24eaab9caae6788bb1a8c414e124aba7750d3fa1d027cf57",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "terminal.json",
+      "bytes": 745,
+      "sha256": "6817c400d5bf62ce62dc0faf0029014f19027cc4392ddab912dc1a383626e8e9",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "author-adjudication.json",
+      "bytes": 894,
+      "sha256": "34c88ad3d5b4727554f5f02fc185bef513c8674e7adb4196239bc8fc54f4fef3",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "physical-stdout.log.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "physical-stderr.log.txt",
+      "bytes": 98,
+      "sha256": "854504245d6014ff548d7e6ee458e3a5bc59a346ac1125215dfebb71e4098498",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "physical-noise-proof.json",
+      "bytes": 1324,
+      "sha256": "f8dcb5a5233b3c02bb7bc8fb5aba05fdf47ef90084e4bee5417dde4aba3f5fff",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "physical-noise-proof.owned.jsonl",
+      "bytes": 2274,
+      "sha256": "ed85c12eb96e8bfdf2806535b5737b11bce809ad22f463c9baaf2f9ed6a85f15",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "admitted-case.json",
+      "bytes": 1693,
+      "sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+      "bytes_match": true,
+      "sha256_match": true
+    },
+    {
+      "path": "admitted-public-index.json",
+      "bytes": 1369,
+      "sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0",
+      "bytes_match": true,
+      "sha256_match": true
+    }
+  ],
+  "grant_commit": "75b9830220f5d8b284c6c693053fe188b90e839c",
+  "grant_inputs": [
+    {
+      "path": "docs/efforts/team-control-plane/decisions/20261003-trae-offline-namespace-admission1.md",
+      "sha256": "0ebb8059ba23f6fbbfab51feb9634747d654508b771f04ed1fae1007a9e69187",
+      "bytes": 1336
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/admission.json",
+      "sha256": "e906eb00befe37ac9bab63d88cbbe779af126213ac57b0b6a2461a3bc78c27bb",
+      "bytes": 2891
+    }
+  ],
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "admitted_case_sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+  "admitted_index_sha256": "2d87eb20ec4418c59f800bc1a238175acd8837b2dcbca4eeee769c9c582fdfd0",
+  "source_checks": [
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "committed_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/00-trae_namespace_supervisor.py",
+      "committed_matches_frozen": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "committed_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/01-trae_namespace_fixture.py",
+      "committed_matches_frozen": true,
+      "live_matches_frozen": true
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "committed_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/02-test_trae_namespace.py",
+      "committed_matches_frozen": true,
+      "live_matches_frozen": true
+    }
+  ],
+  "verified_predicates": {
+    "grant_operation_case_source_command_identity": true,
+    "terminal_exit": 0,
+    "terminal_seconds": 0.1638053249916993,
+    "exact_reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "raw_stage_order": [
+      "namespace_owned",
+      "stopped",
+      "setup_failed"
+    ],
+    "raw_identity_consistency": true,
+    "raw_shutdown_equals_exported": true,
+    "raw_failure_equals_exported": true,
+    "namespace": "pid:[4026539690]",
+    "namespace_pin": {
+      "device": 4,
+      "inode": 4026539690
+    },
+    "anchor": {
+      "pid": 3472194,
+      "start_ticks": 46710788,
+      "namespace": "pid:[4026539690]",
+      "inner_pid": 1
+    },
+    "descendant": {
+      "pid": 3472195,
+      "start_ticks": 46710792,
+      "namespace": "pid:[4026539690]",
+      "inner_pid": 2
+    },
+    "inventory_before_count": 2,
+    "inventory_after": [],
+    "launcher_terminal": true,
+    "quarantined": false,
+    "physical_stop": "pidfd_SIGKILL",
+    "inventory_error": null,
+    "physical_error": null,
+    "uncertainty_fields": []
+  },
+  "control_provenance_gap": {
+    "requirement": "Durable exclusive started record, file and parent directory fsync before launching the admitted command",
+    "independently_verified": false,
+    "started_status_claim": "started_before_launch",
+    "started_at_claim": "2026-10-03T18:18:47.537895+00:00",
+    "author_attested_tool_chunk": "2d9dec",
+    "attestation_received_via": "Parent /root message; author-attested original visible tool input, not independently retrieved original transcript",
+    "attested_sequence": [
+      "os.open(started.json, O_EXCL)",
+      "short-write check",
+      "os.fsync(file descriptor)",
+      "close file descriptor",
+      "os.open(folder,O_DIRECTORY)",
+      "os.fsync(directory descriptor)",
+      "close directory descriptor",
+      "outputs.open(xb)",
+      "subprocess.Popen([/bin/bash,-c,case.command])"
+    ],
+    "required_resolution": "Retrieve existing original executed controller or transcript; preserve the provenance gap if unavailable. No rerun.",
+    "future_prevention": "Freeze durable launch controller before admission"
+  },
+  "author_adjudication_used_as_proof": false,
+  "historical_quarantines_preserved": [
+    1749400,
+    1793051
+  ],
+  "spent_budgets": "unchanged; no refund/reuse authorized",
+  "reviewer_physical_launches": 0,
+  "reviewer_test_runs": 0,
+  "reviewer_runtime_provider_service_launches": 0,
+  "author_or_root_tree_mutations": false,
+  "report_sha256": "e74dfc155b244a7a1cf5f5c738a0e2773dd03763b42a883325ea2147061639ec"
+}

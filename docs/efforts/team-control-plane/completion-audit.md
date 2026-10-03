@@ -10,7 +10,7 @@ Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). 
 - Tracker resolves tickets10–18 within their historical scoped accepted/deferred contracts; tickets04 and19–32 remain incomplete. RFC0002 supersedes optional/deferred Kata/jj target via new28/revised25, not by relabeling old evidence.
 - jj19 repair2 has independent Standards/Spec PASS. Root retained all112 selected records and six reviewed source/input bindings with an explicit immutable input map; no current contract was overwritten. Imported actual verification regression passes. Root repo gate82804 passes; branch630 requires final history-export repair3/3. No jj acceptance/backend adoption is claimed.
 - v0.2 contracts have independent architectural PASS and an acyclic dependency graph. Independent adversarial Spec gate also passes. Tickets26–32 define exact intent/plan, scope/jobs/epochs, ledger API/cursors, interpreter, physical integration, independent execution and assembled proof. Ticket26 has begun after a retained actual public API RED; no v0.2 product unit is accepted yet.
-- Trae20's historical four-incarnation/nine-attempt synthetic failure remains spent and retained. Guard repair is offline preparation only, with independent source/runtime admission still required. No paid provider launch is admitted.
+- Trae20's historical four-incarnation/nine-attempt synthetic failure remains spent and retained. One fixed offline setup-noise case ran once: independent adjudication verifies the cleanup measurements, but full conformance is partial because original prelaunch controller ordering remains unverified. Its allowance is spent; no retry or runtime/provider admission follows. Exact records and review are retained under evidence/trae20-offline-result1/.
 - Repaired STATE machine markers and used the existing effort API: dehydrate committed d1df44739e56b1cf8ebfa1a349f88e377996cbf5; rehydrate returns no drift. Dirty author trees remain separate from this machine snapshot and remain preserved.
 - Codex22, Claude23, live adapter21 and upgrade/restore24 have no completion evidence yet. Handoff and production readiness are not claimed.
 
@@ -31,7 +31,7 @@ rows remain incomplete; candidate checks do not substitute for reviewed integrat
 | 17: Evaluate Kata and select ledger integration | [Canonical requirements/acceptance](tickets/17-kata-evaluation.md) | Historical accepted/deferred evaluation with exact manifest; RFC0002 first-class-ledger target is implemented separately by28. |
 | 18: Optional approved-planning and projection adapter | [Canonical requirements/acceptance](tickets/18-kata-adapter.md) | Historical explicit deferred disposition; no adapter claimed and no substitute for new28 acceptance. |
 | 19: Evaluate jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Repair2 Standards/Spec PASS, exact retained proofs/source; imported contract GREEN; root gate82804 PASS but630 rejects reachable-history privacy; repair3/3 underway. Original defer recommendation remains historical. |
-| 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
+| 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Incomplete; one offline cleanup measurement passes independently, full conformance partial due to missing original launch-control provenance; actual pinned runtime/config/RPC behavior remains outstanding |
 | 21: Live Trae adapter with supervised recovery | [Canonical requirements/acceptance](tickets/21-trae-adapter.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 22: Codex lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/22-codex-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 23: Claude lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/23-claude-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
@@ -52,7 +52,7 @@ is missing or unaccepted, never inferred from simulator/schema/feasibility alone
 
 ## Current next evidence boundary
 
-Finish root verification/branch acceptance of repaired jj19 and final v0.2 contract review, then implement26→27. Separately prove the Trae offline guard's inventory/cleanup before synthetic runtime admission. Required ledger/backend/scope/interpreter/integration assembly, live adapter/lead/restore gates remain outstanding. No whole-goal completion is claimed.
+Finish independent conformance/branch acceptance of jj19 repair3 and complete26→27. v0.2 contract review already passes. Separately durably freeze the Trae launch controller and qualify its configuration/RPC/guard before any concrete synthetic runtime admission; preserve partial historical cleanup provenance. Required ledger/backend/scope/interpreter/integration assembly, live adapter/lead/restore gates remain outstanding. No whole-goal completion is claimed.
 
 ## Historical next-evidence snapshots (superseded)
 

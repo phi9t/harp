@@ -1,0 +1,37 @@
+{
+  "base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "cwd": "/tmp/corenius-trae20-budget-repair-author",
+  "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+  "status": "unadmitted",
+  "maximum_namespace_starts": 1,
+  "maximum_fixture_seconds": 10,
+  "maximum_command_seconds": 30,
+  "auto_retry": false,
+  "trae_launches": 0,
+  "provider_or_service_launches": 0,
+  "expected_reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "proof": ".scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.json",
+  "raw_owner_events": ".scratch/team-control-plane/trae20-budget-repair/oracle-repair-20261003-v1/physical-noise-proof.owned.jsonl",
+  "raw_export": "exact bytes fsynced in finally before TemporaryDirectory cleanup; O_EXCL prevents overwrite",
+  "historical_quarantines": [
+    1749400,
+    1793051
+  ],
+  "sources": [
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 4336,
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2"
+    }
+  ]
+}

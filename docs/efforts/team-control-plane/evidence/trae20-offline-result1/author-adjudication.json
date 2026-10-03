@@ -1,0 +1,31 @@
+{
+  "operation_id": "corenius-offline-namespace-20261003-oracle1",
+  "status": "candidate_positive_pending_root_independent_adjudication",
+  "checks": {
+    "terminal_zero": true,
+    "within_command_limit": true,
+    "exact_reason": true,
+    "setsid_observed": true,
+    "owned_pid1": true,
+    "namespace_pin_matches": true,
+    "pidfd_sigkill": true,
+    "complete_before_two_members": true,
+    "empty_after": true,
+    "launcher_terminal": true,
+    "no_quarantine": true,
+    "no_uncertainty": true,
+    "exact_stage_order": true,
+    "raw_identity_consistent": true,
+    "raw_shutdown_matches": true,
+    "raw_failure_matches": true,
+    "sources_unchanged": true
+  },
+  "scope": "one fixed offline injected setup-failure cleanup only",
+  "namespace_starts": 1,
+  "runtime_or_provider_starts": 0,
+  "automatic_retry": false,
+  "historical_quarantines": [
+    1749400,
+    1793051
+  ]
+}
