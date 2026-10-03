@@ -154,7 +154,10 @@ async fn record(f: &Fixture, key: &str, seconds: i64) -> Record {
     }
 }
 async fn worker_record(f: &Fixture) -> Record {
-    let episode = f.worker_episode("operator-same-task-role").await;
+    worker_record_named(f, "operator-same-task-role").await
+}
+async fn worker_record_named(f: &Fixture, key: &str) -> Record {
+    let episode = f.worker_episode(key).await;
     let ex = f
         .supervisor()
         .await
@@ -1436,4 +1439,265 @@ async fn review580_crash(fast: bool, survivor: bool, rotate: bool) {
         serde_json::to_value(repeated_result.unwrap()).unwrap()
     );
     assert_eq!(capacity, 0);
+}
+
+#[tokio::test]
+async fn same_principal_cross_role_episode_summaries_agree_with_exact_denial() {
+    let out = evidence("same-principal-role");
+    let f = Fixture::new().await;
+    let r = worker_record(&f).await;
+    let outcome = std::panic::AssertUnwindSafe(async {
+        let token = "same-principal-verifier";
+        f.broker
+            .execute(
+                &f.owner,
+                envelope(
+                    f.epoch,
+                    "same-principal-verifier-grant",
+                    0,
+                    Command::GrantCredential {
+                        credential_id: Uuid::new_v4(),
+                        principal_id: f.worker,
+                        role: Role::Verifier,
+                        mission_id: Some(f.mission),
+                        task_id: Some(f.task),
+                        generation: Some(1),
+                        token_hash: token_hash(token),
+                        expires_in_seconds: 300,
+                    },
+                ),
+            )
+            .await
+            .unwrap();
+        for (command, id) in [
+            ("inspect-execution", r.execution),
+            ("inspect-episode-operation", r.operation),
+        ] {
+            denied(
+                cli(
+                    &f,
+                    f.epoch,
+                    token,
+                    &[command, &id.to_string()],
+                    &out,
+                    command,
+                ),
+                ErrorCode::Unauthorized,
+            );
+            for (label, bearer) in [("worker", "assembled-worker"), ("owner", f.owner.as_str())] {
+                success(cli(
+                    &f,
+                    f.epoch,
+                    bearer,
+                    &[command, &id.to_string()],
+                    &out,
+                    &format!("{label}-{command}"),
+                ));
+            }
+        }
+        let status = success(cli(
+            &f,
+            f.epoch,
+            token,
+            &["status"],
+            &out,
+            "verifier-status",
+        ));
+        assert_eq!(
+            (&status["executions"], &status["unresolved_operations"]),
+            (&serde_json::json!([]), &serde_json::json!([])),
+            "both cross-role episode summary collections must be empty"
+        );
+        assert_eq!(status["more_executions"], false);
+        assert_eq!(status["more_operations"], false);
+        for bearer in ["assembled-worker", f.owner.as_str()] {
+            let status = Kernel::new(f.broker.clone()).status(bearer).await.unwrap();
+            assert_eq!(ids(&status, "executions"), BTreeSet::from([r.execution]));
+            assert_eq!(
+                ids(&status, "unresolved_operations"),
+                BTreeSet::from([r.operation])
+            );
+        }
+    })
+    .catch_unwind()
+    .await;
+    cleanup(&f, &[r], f.epoch, &f.owner, &out).await;
+    f.finish().await;
+    std::fs::write(out.join("fixture-removed.json"), b"{\"removed\":true}").unwrap();
+    if let Err(error) = outcome {
+        std::panic::resume_unwind(error);
+    }
+}
+
+async fn role_boundary_record(f: &Fixture, token: &str, key: &str, worker: bool) -> Record {
+    mailbox::MailboxService::new(f.broker.clone()).execute(&f.owner, mail(f.epoch, &format!("{key}-notice"), serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":format!("admit finite pagination record {key}"),"reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+    let episode = if worker {
+        f.worker_episode(key).await
+    } else {
+        let mailbox = mailbox::MailboxService::new(f.broker.clone());
+        let input = Uuid::new_v4();
+        let episode = Uuid::new_v4();
+        mailbox.execute(token, mail(f.epoch, &format!("{key}-capture"), serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":null,"purpose":"planning","limit":4}))).await.unwrap();
+        let packet = mailbox
+            .record(token, mailbox::RecordKind::Input, input)
+            .await
+            .unwrap();
+        mailbox.execute(token, mail(f.epoch, &format!("{key}-admit"), serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":null,"purpose":"planning","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+        episode
+    };
+    let s = f.supervisor().await;
+    let ex = s
+        .create_episode(token, episode, vec![], CreateFault::None)
+        .await
+        .unwrap();
+    let operation = Uuid::new_v4();
+    EpisodeGateway::new(f.broker.clone())
+        .prepare(
+            token,
+            StartRequest {
+                id: operation,
+                episode,
+                execution: ex.id,
+                runtime: RuntimeIdentity {
+                    runtime_kind: "operator-undispatched-native".into(),
+                    runtime_version: "1".into(),
+                    deployment: f.epoch.to_string(),
+                    thread_store: f
+                        .root
+                        .join(format!("private-boundary-{episode}"))
+                        .to_str()
+                        .unwrap()
+                        .into(),
+                    endpoint: "never-dispatched".into(),
+                    environment: "bwrap-private-git".into(),
+                },
+                argv: vec![
+                    "/bin/echo".into(),
+                    format!("private-boundary-effect-{operation}"),
+                ],
+            },
+        )
+        .await
+        .unwrap();
+    let r = Record {
+        mission: f.mission,
+        principal: f.worker,
+        token: token.into(),
+        episode,
+        execution: ex.id,
+        operation,
+    };
+    // Public checkpoints advance the episode frontier; public physical observation
+    // and release free capacity without fabricating rows or dispatching a runtime.
+    mailbox::MailboxService::new(f.broker.clone()).execute(token, mail(f.epoch, &format!("{key}-yield"), serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"finite pagination record","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+    s.cancel(&f.owner, ex.id).await.unwrap();
+    let observed = s.reconcile(&f.owner, ex.id).await.unwrap();
+    assert_eq!(observed.state, ExecutionState::Stopped);
+    assert!(observed.members.is_empty());
+    assert!(observed.controller.is_none() && observed.launcher.is_none());
+    s.release(&f.owner, ex.id).await.unwrap();
+    assert_eq!(
+        s.inspect(&f.owner, ex.id).await.unwrap().state,
+        ExecutionState::Released
+    );
+    r
+}
+
+#[tokio::test]
+async fn same_principal_role_filter_precedes_thirty_two_row_bounds() {
+    let out = evidence("same-principal-role-boundary");
+    let f = Fixture::with_limits(2, 8, 80).await;
+    let mut records = Vec::new();
+    let outcome = std::panic::AssertUnwindSafe(async {
+        let token = "same-principal-boundary-lead";
+        grant(&f, f.mission, f.worker, token, Role::Lead, 300).await;
+        let bridge = temporal::Bridge::new(f.broker.clone());
+        bridge
+            .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
+            .await
+            .unwrap();
+        bridge
+            .register(&f.owner, temporal::AggregateKind::Mission, f.mission, 0)
+            .await
+            .unwrap();
+        for index in 0..1 {
+            records.push(
+                role_boundary_record(&f, "assembled-worker", &format!("hidden-{index}"), true)
+                    .await,
+            );
+        }
+        let kernel = Kernel::new(f.broker.clone());
+        let hidden = kernel.status(token).await.unwrap();
+        std::fs::write(
+            out.join("unauthorized-only.json"),
+            serde_json::to_vec_pretty(&hidden).unwrap(),
+        )
+        .unwrap();
+        let hidden_executions: BTreeSet<_> = records.iter().map(|r| r.execution).collect();
+        let hidden_operations: BTreeSet<_> = records.iter().map(|r| r.operation).collect();
+        for index in 0..33 {
+            records.push(role_boundary_record(&f, token, &format!("visible-{index}"), false).await);
+            if index >= 30 {
+                let status = success(cli(
+                    &f,
+                    f.epoch,
+                    token,
+                    &["status"],
+                    &out,
+                    &format!("visible-boundary-{}", index + 1),
+                ));
+                for (collection, more, hidden_ids) in [
+                    ("executions", "more_executions", &hidden_executions),
+                    (
+                        "unresolved_operations",
+                        "more_operations",
+                        &hidden_operations,
+                    ),
+                ] {
+                    assert_eq!(
+                        status[collection].as_array().unwrap().len(),
+                        (index + 1).min(32)
+                    );
+                    assert_eq!(status[more], index == 32);
+                    assert!(ids(&status, collection).is_disjoint(hidden_ids));
+                }
+            }
+        }
+        assert_eq!(
+            (&hidden["executions"], &hidden["unresolved_operations"]),
+            (&serde_json::json!([]), &serde_json::json!([]))
+        );
+        assert_eq!(hidden["more_executions"], false);
+        assert_eq!(hidden["more_operations"], false);
+        let worker = kernel.status("assembled-worker").await.unwrap();
+        assert_eq!(worker["executions"].as_array().unwrap().len(), 1);
+        assert_eq!(worker["unresolved_operations"].as_array().unwrap().len(), 1);
+        assert_eq!(worker["more_executions"], false);
+        assert_eq!(worker["more_operations"], false);
+        let owner = kernel.status(&f.owner).await.unwrap();
+        assert_eq!(owner["executions"].as_array().unwrap().len(), 32);
+        assert_eq!(owner["unresolved_operations"].as_array().unwrap().len(), 32);
+        assert_eq!(owner["more_executions"], true);
+        assert_eq!(owner["more_operations"], true);
+    })
+    .catch_unwind()
+    .await;
+    // Every successfully returned record already carries a public release proof.
+    for r in &records {
+        assert_eq!(
+            f.supervisor()
+                .await
+                .inspect(&f.owner, r.execution)
+                .await
+                .unwrap()
+                .state,
+            ExecutionState::Released
+        );
+    }
+    std::fs::write(out.join("cleanup.json"), serde_json::to_vec_pretty(&serde_json::json!({"released_executions":records.iter().map(|r|r.execution).collect::<Vec<_>>(),"no_controller_launcher_or_members":true,"model_requests":0,"dispatched_runtime_operations":0})).unwrap()).unwrap();
+    f.finish().await;
+    std::fs::write(out.join("fixture-removed.json"), b"{\"removed\":true}").unwrap();
+    if let Err(error) = outcome {
+        std::panic::resume_unwind(error);
+    }
 }

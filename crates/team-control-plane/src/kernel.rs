@@ -242,10 +242,15 @@ impl Kernel {
         let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
         storage::validate_actor_generation(&tx, &actor).await?;
         let owner = actor.role == crate::Role::Owner;
+        let role =
+            serde_json::to_value(&actor.role).map_err(|_| err(ErrorCode::InvalidArgument))?;
+        let role = role
+            .as_str()
+            .ok_or_else(|| err(ErrorCode::InvalidArgument))?;
         let missions = tx.query("SELECT jsonb_build_object('id',m.id,'revision',m.revision,'capacity',m.capacity,'used_capacity',m.used_capacity,'admitted_attempts',m.admitted_attempts,'admitted_episodes',m.admitted_episodes,'max_attempts',m.max_attempts,'max_episodes',m.max_episodes,'max_repairs',m.max_repairs,'consumed_repairs',(SELECT count(*) FROM kernel_repair_charges r WHERE r.mission_id=m.id),'deadline_seconds',m.deadline_seconds,'dispatch_paused',coalesce((SELECT paused FROM kernel_mission_control WHERE mission_id=m.id),false),'control_revision',coalesce((SELECT revision FROM kernel_mission_control WHERE mission_id=m.id),0)) FROM missions m WHERE ($1 OR m.id=$2) ORDER BY m.id LIMIT 33", &[&owner,&actor.mission]).await?;
         let more = missions.len() > 32;
         let missions: Vec<Value> = missions.into_iter().take(32).map(|r| r.get(0)).collect();
-        let execution_rows=tx.query("SELECT jsonb_build_object('id',w.id,'mission',coalesce(x.mission_id,t.mission_id),'task',coalesce(x.task_id,a.task_id),'attempt',coalesce(x.attempt_id,a.id),'episode',x.episode_id,'role',coalesce(x.role,'worker'),'observed_state',w.state,'desired_cancel',w.desired_cancel,'deadline',w.deadline,'quarantine_reason',w.quarantine_reason,'candidate_artifact',w.manifest->'candidate'->'artifact','capacity_released',CASE WHEN x.owns_capacity THEN x.capacity_released ELSE NOT EXISTS(SELECT 1 FROM reservations z WHERE z.attempt_id=coalesce(x.attempt_id,a.id) AND z.execution_id=w.id AND z.state='reserved') END,'capacity_held',CASE WHEN x.owns_capacity THEN NOT x.capacity_released ELSE EXISTS(SELECT 1 FROM reservations z WHERE z.attempt_id=coalesce(x.attempt_id,a.id) AND z.execution_id=w.id AND z.state='reserved') END) FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id AND x.execution_id IS NULL LEFT JOIN tasks t ON t.id=a.task_id WHERE ($1 OR (coalesce(x.mission_id,t.mission_id)=$2 AND ($3::uuid IS NULL OR coalesce(x.task_id,a.task_id)=$3) AND coalesce(x.principal_id,a.worker_id)=$4)) ORDER BY w.id LIMIT 33", &[&owner,&actor.mission,&actor.task,&actor.principal]).await?;
+        let execution_rows=tx.query("SELECT jsonb_build_object('id',w.id,'mission',coalesce(x.mission_id,t.mission_id),'task',coalesce(x.task_id,a.task_id),'attempt',coalesce(x.attempt_id,a.id),'episode',x.episode_id,'role',coalesce(x.role,'worker'),'observed_state',w.state,'desired_cancel',w.desired_cancel,'deadline',w.deadline,'quarantine_reason',w.quarantine_reason,'candidate_artifact',w.manifest->'candidate'->'artifact','capacity_released',CASE WHEN x.owns_capacity THEN x.capacity_released ELSE NOT EXISTS(SELECT 1 FROM reservations z WHERE z.attempt_id=coalesce(x.attempt_id,a.id) AND z.execution_id=w.id AND z.state='reserved') END,'capacity_held',CASE WHEN x.owns_capacity THEN NOT x.capacity_released ELSE EXISTS(SELECT 1 FROM reservations z WHERE z.attempt_id=coalesce(x.attempt_id,a.id) AND z.execution_id=w.id AND z.state='reserved') END) FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id LEFT JOIN attempts a ON a.id=w.attempt_id AND x.execution_id IS NULL LEFT JOIN tasks t ON t.id=a.task_id WHERE ($1 OR (coalesce(x.mission_id,t.mission_id)=$2 AND ($3::uuid IS NULL OR coalesce(x.task_id,a.task_id)=$3) AND coalesce(x.principal_id,a.worker_id)=$4 AND (x.execution_id IS NULL OR x.role=$5))) ORDER BY w.id LIMIT 33", &[&owner,&actor.mission,&actor.task,&actor.principal,&role]).await?;
         let more_executions = execution_rows.len() > 32;
         let executions: Vec<Value> = execution_rows
             .into_iter()
@@ -264,7 +269,7 @@ impl Kernel {
                       ELSE EXISTS(SELECT 1 FROM reservations z WHERE z.attempt_id=x.attempt_id AND z.execution_id=x.execution_id AND z.state='reserved') END) AS record
                 FROM episode_runtime_operations o
                 JOIN episode_executions x ON x.execution_id=o.execution_id
-                WHERE ($1 OR (x.mission_id=$2 AND ($3::uuid IS NULL OR x.task_id=$3) AND x.principal_id=$4))
+                WHERE ($1 OR (x.mission_id=$2 AND ($3::uuid IS NULL OR x.task_id=$3) AND x.principal_id=$4 AND x.role=$5))
                   AND (o.state IN ('prepared','dispatching','outcome_unknown','quarantined')
                     OR (o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero'))
                 UNION ALL
@@ -282,7 +287,7 @@ impl Kernel {
                   AND (o.state IN ('prepared','dispatching','outcome_unknown','quarantined')
                     OR (o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero'))
             ) unresolved ORDER BY id,protocol LIMIT 33",
-            &[&owner,&actor.mission,&actor.task,&actor.principal],
+            &[&owner,&actor.mission,&actor.task,&actor.principal,&role],
         ).await?;
         let more_operations = operation_rows.len() > 32;
         let unresolved_operations: Vec<Value> = operation_rows
