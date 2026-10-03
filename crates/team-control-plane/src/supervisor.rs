@@ -90,8 +90,17 @@ pub struct WorkspaceManifest {
     pub log_path: PathBuf,
     #[serde(default)]
     pub candidate: Option<crate::artifacts::Candidate>,
+    /// Captured under the allocation lock; missing historical bindings cannot
+    /// establish a successful gate under a subsequently configured policy.
+    #[serde(default)]
+    pub verification_policy: Option<VerificationPolicy>,
     #[serde(default)]
     pub input: Option<EpisodeInput>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct VerificationPolicy {
+    pub suite: String,
+    pub environment: String,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct EpisodeInput {
@@ -525,6 +534,7 @@ impl Supervisor {
         if role == "verifier" && source.is_none() {
             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
         }
+        let mut verification_policy = None;
         if let Some((candidate, bytes)) = &source {
             if !matches!(role.as_str(), "worker" | "verifier")
                 || candidate.generation != row.get::<_, Option<i64>>(10).ok_or_else(invalid)?
@@ -533,11 +543,17 @@ impl Supervisor {
             {
                 return Err(invalid());
             }
-            let current=tx.query_opt("SELECT c.candidate,p.base FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id JOIN artifact_policies p ON p.task_id=a.task_id WHERE a.task_id=$1", &[&task]).await?.ok_or_else(||crate::domain::err(ErrorCode::DependencyUnmet))?;
+            let current=tx.query_opt("SELECT c.candidate,p.base,p.suite,p.environment FROM artifact_current a JOIN artifact_candidates c ON c.id=a.candidate_id JOIN artifact_policies p ON p.task_id=a.task_id WHERE a.task_id=$1", &[&task]).await?.ok_or_else(||crate::domain::err(ErrorCode::DependencyUnmet))?;
             if current.get::<_, serde_json::Value>(0) != json(candidate)?
                 || current.get::<_, String>(1) != candidate.base
             {
                 return Err(crate::domain::err(ErrorCode::StaleGeneration));
+            }
+            if role == "verifier" {
+                verification_policy = Some(VerificationPolicy {
+                    suite: current.get(2),
+                    environment: current.get(3),
+                });
             }
         }
         if role == "worker" {
@@ -597,6 +613,7 @@ impl Supervisor {
             scopes,
             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
             candidate: source.as_ref().map(|s| s.0.clone()),
+            verification_policy,
             input: Some(EpisodeInput {
                 id: row.get::<_, Option<Uuid>>(7).ok_or_else(invalid)?,
                 digest: row.get(6),
@@ -771,6 +788,7 @@ impl Supervisor {
             scopes,
             log_path: self.root.join(".execution-logs").join(format!("{id}.log")),
             candidate: None,
+            verification_policy: None,
             input: None,
         };
         tx.execute("INSERT INTO supervised_workspaces(id,attempt_id,manifest,state) VALUES($1,$2,$3,'registered')",&[&id,&attempt,&json(&manifest)?]).await?;
@@ -1027,6 +1045,12 @@ impl Supervisor {
             &[&id],
         )
         .await?;
+        // A released execution has independently established shutdown and known
+        // effects/usage. Retire only its expired live episode; predeadline
+        // checkpoints and yielded waits remain authoritative. Budgets stay consumed.
+        if let Some(episode) = v.manifest.episode {
+            tx.execute("UPDATE mailbox_episodes e SET state=CASE WHEN w.desired_cancel THEN 'cancelled' ELSE 'completed' END FROM episode_executions x JOIN supervised_workspaces w ON w.id=x.execution_id WHERE e.id=$1 AND x.episode_id=e.id AND x.execution_id=$2 AND w.state='released' AND e.state IN ('admitted','active') AND e.deadline<=clock_timestamp()", &[&episode,&id]).await?;
+        }
         // Only physically proven stop plus completed deletion refunds the concurrent slot.
         // Attempt/episode admission counters remain consumed.
         if v.manifest.episode.is_some() {
@@ -1179,6 +1203,76 @@ async fn recover_result(
         },
     };
     let _winner = persist_result(tx, &result).await?;
+    Ok(())
+}
+/// Admission may encounter an episode released before its deadline. Reconcile
+/// only the expired, current caller's exact registered completion; expiry alone
+/// and a mutable released flag cannot establish shutdown or refund a claim.
+pub(crate) async fn retire_expired_released_episodes(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    mission: Uuid,
+    epoch: Uuid,
+) -> Result<()> {
+    let role = json(&actor.role)?;
+    let role = role.as_str().ok_or_else(invalid)?;
+    let rows = tx
+        .query(
+            "SELECT e.id,w.id,w.manifest,r.result
+         FROM mailbox_episodes e
+         JOIN episode_executions x ON x.episode_id=e.id
+         JOIN supervised_workspaces w ON w.id=x.execution_id
+         JOIN kernel_execution_results r ON r.execution_id=w.id
+         LEFT JOIN tasks t ON t.id=e.task_id
+         LEFT JOIN mission_leads l ON l.mission_id=e.mission_id
+         WHERE e.principal_id=$1 AND x.principal_id=$1
+           AND e.mission_id=$2 AND x.mission_id=$2
+           AND e.role=$3 AND x.role=$3
+           AND e.recovery_epoch=$4 AND x.recovery_epoch=$4
+           AND ($5::uuid IS NULL OR e.task_id=$5)
+           AND e.task_id IS NOT DISTINCT FROM x.task_id
+           AND e.task_generation IS NOT DISTINCT FROM t.generation
+           AND (e.lead_generation IS NULL OR
+                (e.lead_generation=coalesce(l.generation,0)
+                 AND (l.principal_id IS NULL OR l.principal_id=$1)))
+           AND e.state IN ('admitted','active') AND e.deadline<=clock_timestamp()
+           AND w.state='released' AND w.members='[]'::jsonb
+           AND w.init_process IS NOT NULL
+           AND r.result->>'namespace_stopped'='true'
+           AND ((x.owns_capacity AND x.capacity_released) OR
+                (NOT x.owns_capacity AND EXISTS(SELECT 1 FROM reservations z
+                 WHERE z.execution_id=w.id AND z.state='released')))
+           AND EXISTS(SELECT 1 FROM supervised_observations s
+               WHERE s.execution_id=w.id AND s.state='stopped'
+                 AND s.members='[]'::jsonb
+                 AND EXISTS(SELECT 1 FROM supervised_observations p
+                     WHERE p.execution_id=w.id AND p.state IN ('running','cancelling')
+                       AND p.members @> jsonb_build_array(w.init_process)
+                       AND p.observed_at<=s.observed_at))",
+            &[&actor.principal, &mission, &role, &epoch, &actor.task],
+        )
+        .await?;
+    for row in rows {
+        let episode: Uuid = row.get(0);
+        let execution: Uuid = row.get(1);
+        let manifest: WorkspaceManifest = decode(row.get(2))?;
+        let result: ExecutionResult = decode(row.get(3))?;
+        if manifest.episode != Some(episode)
+            || manifest.mission != Some(mission)
+            || manifest.recovery_epoch != epoch
+            || result.execution != execution
+            || result.recovery_epoch != epoch
+            || !result.namespace_stopped
+            || manifest.path.exists()
+            || log_digest(&manifest, execution)? != result.logs
+        {
+            return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+        }
+        // Release is historical evidence: recheck current operation/usage
+        // uncertainty, including every task-bound sibling, before retiring.
+        runtime_release_known(tx, &manifest).await?;
+        tx.execute("UPDATE mailbox_episodes e SET state=CASE WHEN w.desired_cancel THEN 'cancelled' ELSE 'completed' END FROM supervised_workspaces w WHERE e.id=$1 AND w.id=$2 AND e.state IN ('admitted','active') AND e.deadline<=clock_timestamp()", &[&episode,&execution]).await?;
+    }
     Ok(())
 }
 async fn runtime_release_known(tx: &Transaction<'_>, manifest: &WorkspaceManifest) -> Result<()> {

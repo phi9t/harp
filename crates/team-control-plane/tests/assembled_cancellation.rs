@@ -3926,3 +3926,457 @@ async fn review580_owned_continuation_usage_worker() {
         "real receipt resolves usage without another Start"
     );
 }
+
+async fn review611_lead_mission(f: &Fixture, label: &str) -> (Uuid, Uuid, String) {
+    let mission = Uuid::new_v4();
+    let principal = Uuid::new_v4();
+    let token = format!("review611-{label}-{}", Uuid::new_v4());
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                &format!("{label}-mission"),
+                0,
+                Command::CreateMission {
+                    id: mission,
+                    objective: "deadline lifecycle public proof".into(),
+                    input: GitInput {
+                        repository: f.root.join("store").to_str().unwrap().into(),
+                        commit: f.base.clone(),
+                        path: "SPEC.md".into(),
+                        digest: artifacts::sha256(b"produce exact src/result"),
+                    },
+                    policy: Policy {
+                        capacity: 1,
+                        max_attempts: 2,
+                        max_episodes: 3,
+                        max_repairs: 1,
+                        episode_deadline_seconds: 2,
+                    },
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    f.broker
+        .execute(
+            &f.owner,
+            envelope(
+                f.epoch,
+                &format!("{label}-grant"),
+                0,
+                Command::GrantCredential {
+                    credential_id: Uuid::new_v4(),
+                    principal_id: principal,
+                    role: Role::Lead,
+                    mission_id: Some(mission),
+                    task_id: None,
+                    generation: None,
+                    token_hash: token_hash(&token),
+                    expires_in_seconds: 300,
+                },
+            ),
+        )
+        .await
+        .unwrap();
+    (mission, principal, token)
+}
+async fn review611_admit_lead(
+    f: &Fixture,
+    mission: Uuid,
+    principal: Uuid,
+    token: &str,
+    key: &str,
+) -> Result<Uuid> {
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    mailbox.execute(&f.owner,mail(f.epoch,&format!("{key}-notice"),serde_json::json!({"kind":"send","mission":mission,"id":Uuid::new_v4(),"recipients":[principal],"message_kind":"notice","text":format!("new planning frontier {key}"),"reply_to":null,"attention":"normal","artifacts":[]}))).await?;
+    let input = Uuid::new_v4();
+    let episode = Uuid::new_v4();
+    mailbox.execute(token,mail(f.epoch,&format!("{key}-capture"),serde_json::json!({"kind":"capture_input","mission":mission,"id":input,"attempt":null,"purpose":"planning","limit":4}))).await?;
+    let packet = mailbox
+        .record(token, mailbox::RecordKind::Input, input)
+        .await?;
+    mailbox.execute(token,mail(f.epoch,&format!("{key}-admit"),serde_json::json!({"kind":"admit_episode","mission":mission,"id":episode,"attempt":null,"purpose":"planning","input_packet":input,"input_digest":packet["digest"]}))).await?;
+    Ok(episode)
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_deadline_stop_release_allows_same_lead_successor() {
+    review611_deadline_release(false, false).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_release_preserves_yielded_checkpoint_wait() {
+    review611_deadline_release(true, false).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_release_before_expiry_allows_later_same_lead_successor() {
+    review611_deadline_release(false, true).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_predeadline_release_preserves_yield_checkpoint_wait() {
+    review611_deadline_release(true, true).await;
+}
+async fn review611_deadline_release(yielded: bool, release_early: bool) {
+    use futures::FutureExt;
+    use std::time::{Duration, Instant};
+    let f = Fixture::new().await;
+    let (mission, principal, token) =
+        review611_lead_mission(&f, if yielded { "yielded" } else { "deadline" }).await;
+    let supervisor = f.supervisor().await;
+    let mailbox = mailbox::MailboxService::new(f.broker.clone());
+    let episode = review611_admit_lead(&f, mission, principal, &token, "review611-first")
+        .await
+        .unwrap();
+    let execution = supervisor
+        .create_episode(&token, episode, vec![], supervisor::CreateFault::None)
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap()).join(
+        if release_early && yielded {
+            "review611-predeadline-yielded"
+        } else if release_early {
+            "review611-release-before-expiry"
+        } else if yielded {
+            "review611-yielded"
+        } else {
+            "review611-deadline"
+        },
+    );
+    std::fs::create_dir_all(&out).unwrap();
+    let outcome=std::panic::AssertUnwindSafe(async {
+        supervisor.start(&token,execution.id,if release_early { vec!["/bin/true".into()] } else { vec!["/bin/sleep".into(),"10".into()] },2).await.unwrap();
+        let deadline=Instant::now()+Duration::from_secs(8);
+        if !release_early {
+        loop {
+            let view=supervisor.inspect(&token,execution.id).await.unwrap();
+            if view.state==supervisor::ExecutionState::Running {break;}
+            assert!(Instant::now()<deadline,"real capsule must reach running before canonical deadline");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        }
+        let checkpoint=Uuid::new_v4();
+        if yielded && !release_early {
+            temporal::Bridge::new(f.broker.clone()).register(&f.owner,temporal::AggregateKind::Mission,mission,0).await.unwrap();
+            let question=Uuid::new_v4();
+            mailbox.execute(&token,mail(f.epoch,"review611-wait-question",serde_json::json!({"kind":"send","mission":mission,"id":question,"recipients":[principal],"message_kind":"question","text":"retain this pending planning question","reply_to":null,"attention":"critical","artifacts":[]}))).await.unwrap();
+            mailbox.execute(&token,mail(f.epoch,"review611-yield",serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":checkpoint,"summary":"retain public checkpoint and pending wait","artifacts":[]},"questions":[question],"dependencies":[],"executions":[]}))).await.unwrap();
+        }
+        let result=loop {
+            let view=supervisor.inspect(&token,execution.id).await.unwrap();
+            if view.state==supervisor::ExecutionState::Stopped
+                && let Some(result)=supervisor.result(&token,execution.id).await.unwrap() {break result;}
+            assert!(Instant::now()<deadline,"deadline must independently stop capsule and persist monitor result");
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        };
+        assert!(result.namespace_stopped);
+        if release_early { assert_eq!(result.exit_code,Some(0)); } else { assert_ne!(result.exit_code,Some(0),"deadline shutdown cannot claim workload success"); }
+        if !release_early {
+        let expired_yield=mailbox.execute(&token,mail(f.epoch,"review611-expired-yield",serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"expired episodes cannot use a new yield to unblock admission","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await;
+        assert_eq!(expired_yield.unwrap_err().code,ErrorCode::DependencyUnmet);
+        }
+        let before=mailbox.record(&token,mailbox::RecordKind::Episode,episode).await.unwrap();
+        supervisor.release(&token,execution.id).await.unwrap();
+        let mut after=mailbox.record(&token,mailbox::RecordKind::Episode,episode).await.unwrap();
+        if release_early {
+            assert_eq!(after["state"],before["state"],"predeadline release must preserve the opportunity to checkpoint");
+            if yielded {
+                temporal::Bridge::new(f.broker.clone()).register(&f.owner,temporal::AggregateKind::Mission,mission,0).await.unwrap();
+                let question=Uuid::new_v4();
+                mailbox.execute(&token,mail(f.epoch,"review611-wait-question",serde_json::json!({"kind":"send","mission":mission,"id":question,"recipients":[principal],"message_kind":"question","text":"retain this pending planning question","reply_to":null,"attention":"critical","artifacts":[]}))).await.unwrap();
+                mailbox.execute(&token,mail(f.epoch,"review611-yield",serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":checkpoint,"summary":"checkpoint after known release before deadline","artifacts":[]},"questions":[question],"dependencies":[],"executions":[]}))).await.unwrap();
+                after=mailbox.record(&token,mailbox::RecordKind::Episode,episode).await.unwrap();
+            }
+            tokio::time::sleep(Duration::from_millis(2100)).await;
+        }
+        let mission_view=f.broker.snapshot(&f.owner,SnapshotQuery::Mission(mission)).await.unwrap();
+        assert_eq!(mission_view.data["used_capacity"],0);
+        assert_eq!(mission_view.data["admitted_episodes"],1);
+        let successor=review611_admit_lead(&f,mission,principal,&token,"review611-successor").await;
+        std::fs::write(out.join("deadline-release-successor.json"),serde_json::to_vec_pretty(&serde_json::json!({"execution":execution.id,"episode":episode,"monitor_result":result,"before_state":before["state"],"after_state":after["state"],"mission":mission_view,"successor":successor.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
+        if yielded {
+            if !release_early {assert_eq!(before["state"],"yielded");} assert_eq!(after["state"],"yielded");
+            assert_eq!(successor.unwrap_err().code,ErrorCode::DependencyUnmet,"known stop must not silently satisfy a pending wait");
+            let recorded=mailbox.record(&token,mailbox::RecordKind::Checkpoint,checkpoint).await.unwrap();
+            let (db,connection)=tokio_postgres::connect(&f.dsn,tokio_postgres::NoTls).await.unwrap();tokio::spawn(async move {connection.await.unwrap()});
+            let pending:i64=db.query_one("SELECT count(*) FROM mailbox_waits WHERE episode_id=$1 AND NOT satisfied",&[&episode]).await.unwrap().get(0);
+            assert_eq!(pending,1);
+            std::fs::write(out.join("checkpoint-wait-preserved.json"),serde_json::to_vec_pretty(&serde_json::json!({"checkpoint":recorded,"pending_waits":pending})).unwrap()).unwrap();
+        } else {
+            let successor=successor.expect("physically stopped released expired episode must permit a fresh same-lead successor");
+            let final_episode=mailbox.record(&token,mailbox::RecordKind::Episode,episode).await.unwrap();
+            assert!(matches!(final_episode["state"].as_str(),Some("cancelled"|"completed")));
+            let handle=supervisor.create_episode(&token,successor,vec![],supervisor::CreateFault::None).await.unwrap();
+            supervisor.cancel(&token,handle.id).await.unwrap();supervisor.release(&token,handle.id).await.unwrap();
+            let final_view=f.broker.snapshot(&f.owner,SnapshotQuery::Mission(mission)).await.unwrap();
+            assert_eq!(final_view.data["used_capacity"],0);assert_eq!(final_view.data["admitted_episodes"],2);
+            std::fs::write(out.join("successor-public-positive.json"),serde_json::to_vec_pretty(&serde_json::json!({"successor":successor,"execution":handle.id,"mission":final_view})).unwrap()).unwrap();
+        }
+    }).catch_unwind().await;
+    if supervisor
+        .inspect(&f.owner, execution.id)
+        .await
+        .unwrap()
+        .state
+        != supervisor::ExecutionState::Released
+    {
+        supervisor.cancel(&f.owner, execution.id).await.unwrap();
+        let deadline = Instant::now() + Duration::from_secs(8);
+        loop {
+            let view = supervisor.reconcile(&f.owner, execution.id).await.unwrap();
+            if view.state == supervisor::ExecutionState::Stopped
+                && supervisor
+                    .result(&f.owner, execution.id)
+                    .await
+                    .unwrap()
+                    .is_some()
+            {
+                break;
+            }
+            assert!(Instant::now() < deadline);
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+        supervisor.release(&f.owner, execution.id).await.unwrap();
+    }
+    let released = supervisor.inspect(&f.owner, execution.id).await.unwrap();
+    assert!(released.members.is_empty());
+    std::fs::write(out.join("cleanup.json"),serde_json::to_vec(&serde_json::json!({"execution":execution.id,"state":released.state,"members":released.members,"model_requests":0})).unwrap()).unwrap();
+    let root = f.root.clone();
+    f.finish().await;
+    std::fs::write(
+        out.join("fixture-removed.json"),
+        serde_json::to_vec(&serde_json::json!({"removed":!root.exists()})).unwrap(),
+    )
+    .unwrap();
+    if let Err(error) = outcome {
+        std::panic::resume_unwind(error);
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_uncertain_native_effect_cannot_retire_expired_episode() {
+    let f = Fixture::new().await;
+    let (mission, principal, token) = review611_lead_mission(&f, "uncertain").await;
+    let episode = review611_admit_lead(&f, mission, principal, &token, "review611-uncertain-first")
+        .await
+        .unwrap();
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(&token, episode, vec![], supervisor::CreateFault::None)
+        .await
+        .unwrap();
+    let root = f.root.join("review611-unregistered-native");
+    std::fs::create_dir(&root).unwrap();
+    let identity = gateway::RuntimeIdentity {
+        runtime_kind: "unregistered-external-effect".into(),
+        runtime_version: "1".into(),
+        deployment: f.epoch.to_string(),
+        thread_store: root.to_str().unwrap().into(),
+        endpoint: "actual-child-process".into(),
+        environment: "model-free".into(),
+    };
+    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
+    let operation = Uuid::new_v4();
+    gateway
+        .prepare(
+            &token,
+            episode_runtime::StartRequest {
+                id: operation,
+                episode,
+                execution: execution.id,
+                runtime: identity.clone(),
+                argv: vec!["/bin/true".into()],
+            },
+        )
+        .await
+        .unwrap();
+    let mut runtime = UnregisteredEpisodeEffect(
+        gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
+        None,
+    );
+    let journal = gateway
+        .dispatch(&f.owner, operation, &mut runtime)
+        .await
+        .unwrap();
+    assert_eq!(journal.usage, episode_runtime::UsageObservation::Unknown);
+    assert_eq!(runtime.0.effect_count().unwrap(), 1);
+    assert!(runtime.1.as_mut().unwrap().try_wait().unwrap().is_none());
+    let before_episode = mailbox::MailboxService::new(f.broker.clone())
+        .record(&token, mailbox::RecordKind::Episode, episode)
+        .await
+        .unwrap();
+    tokio::time::sleep(std::time::Duration::from_millis(2100)).await;
+    supervisor.cancel(&token, execution.id).await.unwrap();
+    assert_eq!(
+        supervisor
+            .inspect(&token, execution.id)
+            .await
+            .unwrap()
+            .state,
+        supervisor::ExecutionState::Stopped
+    );
+    let release = supervisor.release(&token, execution.id).await;
+    let successor = review611_admit_lead(
+        &f,
+        mission,
+        principal,
+        &token,
+        "review611-uncertain-successor",
+    )
+    .await;
+    let episode_record = mailbox::MailboxService::new(f.broker.clone())
+        .record(&token, mailbox::RecordKind::Episode, episode)
+        .await
+        .unwrap();
+    let mission_view = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap())
+        .join("review611-uncertain");
+    std::fs::create_dir_all(&out).unwrap();
+    std::fs::write(out.join("uncertainty-refusals.json"),serde_json::to_vec_pretty(&serde_json::json!({"release":release.as_ref().map_err(|e|&e.code),"successor":successor.as_ref().map_err(|e|&e.code),"episode_state":episode_record["state"],"mission":mission_view,"effects":runtime.0.effect_count().unwrap(),"usage":journal.usage})).unwrap()).unwrap();
+    let mut child = runtime.1.take().unwrap();
+    let pid = child.id();
+    child.kill().unwrap();
+    let terminal = child.wait().unwrap();
+    drop(runtime);
+    std::fs::write(out.join("cleanup.json"),serde_json::to_vec(&serde_json::json!({"native_child_pid":pid,"waited":true,"terminal":terminal.to_string(),"physical_capacity_refunded":false,"model_requests":0})).unwrap()).unwrap();
+    let root = f.root.clone();
+    f.finish().await;
+    std::fs::write(
+        out.join("fixture-removed.json"),
+        serde_json::to_vec(&serde_json::json!({"removed":!root.exists()})).unwrap(),
+    )
+    .unwrap();
+    assert_eq!(release.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(successor.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(episode_record["state"], before_episode["state"]);
+    assert_eq!(episode_record["state"], "active");
+    assert_eq!(mission_view.data["used_capacity"], 1);
+    assert_eq!(mission_view.data["admitted_episodes"], 1);
+}
+
+#[tokio::test]
+async fn review611_expiry_without_execution_cannot_retire_episode() {
+    let f = Fixture::new().await;
+    let (mission, principal, token) = review611_lead_mission(&f, "unallocated").await;
+    let episode = review611_admit_lead(
+        &f,
+        mission,
+        principal,
+        &token,
+        "review611-unallocated-first",
+    )
+    .await
+    .unwrap();
+    tokio::time::sleep(std::time::Duration::from_millis(2100)).await;
+    let successor = review611_admit_lead(
+        &f,
+        mission,
+        principal,
+        &token,
+        "review611-unallocated-successor",
+    )
+    .await;
+    let recorded = mailbox::MailboxService::new(f.broker.clone())
+        .record(&token, mailbox::RecordKind::Episode, episode)
+        .await
+        .unwrap();
+    let view = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap())
+        .join("review611-unallocated");
+    std::fs::create_dir_all(&out).unwrap();
+    std::fs::write(out.join("expiry-is-not-stop-proof.json"),serde_json::to_vec_pretty(&serde_json::json!({"episode":episode,"state":recorded["state"],"successor":successor.as_ref().map_err(|e|&e.code),"mission":view})).unwrap()).unwrap();
+    let root = f.root.clone();
+    f.finish().await;
+    std::fs::write(
+        out.join("cleanup.json"),
+        serde_json::to_vec(
+            &serde_json::json!({"removed":!root.exists(),"executions":0,"model_requests":0}),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    assert_eq!(successor.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(recorded["state"], "admitted");
+    assert_eq!(view.data["used_capacity"], 1);
+    assert_eq!(view.data["admitted_episodes"], 1);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_stopped_unreleased_execution_cannot_retire_expired_episode() {
+    use std::time::{Duration, Instant};
+    let f = Fixture::new().await;
+    let (mission, principal, token) = review611_lead_mission(&f, "unreleased").await;
+    let episode =
+        review611_admit_lead(&f, mission, principal, &token, "review611-unreleased-first")
+            .await
+            .unwrap();
+    let supervisor = f.supervisor().await;
+    let execution = supervisor
+        .create_episode(&token, episode, vec![], supervisor::CreateFault::None)
+        .await
+        .unwrap();
+    supervisor
+        .start(&token, execution.id, vec!["/bin/true".into()], 2)
+        .await
+        .unwrap();
+    let deadline = Instant::now() + Duration::from_secs(8);
+    loop {
+        if supervisor
+            .inspect(&token, execution.id)
+            .await
+            .unwrap()
+            .state
+            == supervisor::ExecutionState::Stopped
+            && supervisor
+                .result(&token, execution.id)
+                .await
+                .unwrap()
+                .is_some()
+        {
+            break;
+        }
+        assert!(Instant::now() < deadline);
+        tokio::time::sleep(Duration::from_millis(20)).await;
+    }
+    tokio::time::sleep(Duration::from_millis(2100)).await;
+    let successor = review611_admit_lead(
+        &f,
+        mission,
+        principal,
+        &token,
+        "review611-unreleased-successor",
+    )
+    .await;
+    let recorded = mailbox::MailboxService::new(f.broker.clone())
+        .record(&token, mailbox::RecordKind::Episode, episode)
+        .await
+        .unwrap();
+    let view = f
+        .broker
+        .snapshot(&f.owner, SnapshotQuery::Mission(mission))
+        .await
+        .unwrap();
+    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap())
+        .join("review611-unreleased");
+    std::fs::create_dir_all(&out).unwrap();
+    std::fs::write(out.join("stop-is-not-release-proof.json"),serde_json::to_vec_pretty(&serde_json::json!({"episode":episode,"execution":execution.id,"state":recorded["state"],"successor":successor.as_ref().map_err(|e|&e.code),"mission":view})).unwrap()).unwrap();
+    supervisor.release(&token, execution.id).await.unwrap();
+    let released = supervisor.inspect(&token, execution.id).await.unwrap();
+    assert_eq!(released.state, supervisor::ExecutionState::Released);
+    assert!(released.members.is_empty());
+    let root = f.root.clone();
+    f.finish().await;
+    std::fs::write(out.join("cleanup.json"),serde_json::to_vec(&serde_json::json!({"removed":!root.exists(),"released_execution":execution.id,"model_requests":0})).unwrap()).unwrap();
+    assert_eq!(successor.unwrap_err().code, ErrorCode::DependencyUnmet);
+    assert_eq!(recorded["state"], "admitted");
+    assert_eq!(view.data["used_capacity"], 1);
+    assert_eq!(view.data["admitted_episodes"], 1);
+}

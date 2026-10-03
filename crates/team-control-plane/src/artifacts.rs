@@ -397,6 +397,9 @@ impl ArtifactService {
        if task.revision!=result.revision || task.status!="repair_required" {return Err(err(ErrorCode::StaleRevision));}
        self.repair_evidence(&tx,&task,envelope.task,candidate_id,report_id).await?;
    }
+   if let ArtifactCommand::Verify { verification } = &envelope.command {
+       self.verify_execution_report(&tx,envelope.task,actor.principal,verification).await?;
+   }
    if result.accepted { self.verify_evidence(&tx,result.candidate_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?,result.report_id.as_deref().ok_or_else(||err(ErrorCode::InvalidArgument))?).await?; }
    tx.commit().await?; return Ok(result);
   }
@@ -537,6 +540,9 @@ impl ArtifactService {
         if requirement.get::<_, Uuid>(0) != self.broker.epoch {
             return Err(err(ErrorCode::DependencyUnmet));
         }
+        let policy = load_policy(tx, task).await?;
+        validate_candidate(&report.candidate, &load_task(tx, task).await?, &policy)?;
+        validate_report(report, &policy)?;
         for check in &report.checks {
             let bytes = self.store.read(&check.logs)?;
             let evidence: serde_json::Value =
@@ -577,6 +583,12 @@ impl ArtifactService {
                 || result.recovery_epoch != self.broker.epoch
                 || result.candidate.as_ref() != Some(&report.candidate)
                 || manifest.candidate.as_ref() != Some(&report.candidate)
+                || manifest.verification_policy.as_ref().is_none_or(|bound| {
+                    bound.suite != report.suite
+                        || bound.environment != report.environment
+                        || bound.suite != policy.suite
+                        || bound.environment != policy.environment
+                })
                 || result.argv != check.command
                 || result.completion != crate::supervisor::CompletionProvenance::MonitorWait
                 || result.exit_code != Some(check.exit_code)

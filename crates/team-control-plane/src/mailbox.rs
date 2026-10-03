@@ -1307,6 +1307,13 @@ impl MailboxService {
             if unresolved {
                 return Err(err(ErrorCode::DependencyUnmet));
             }
+            crate::supervisor::retire_expired_released_episodes(
+                tx,
+                actor,
+                mission,
+                self.broker.epoch,
+            )
+            .await?;
             if tx.query_opt("SELECT id FROM mailbox_episodes WHERE principal_id=$1 AND state IN ('admitted','active','outcome_unknown','quarantined')", &[&actor.principal]).await?.is_some() {
                 return Err(err(ErrorCode::DependencyUnmet));
             }

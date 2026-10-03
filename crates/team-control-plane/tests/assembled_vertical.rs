@@ -8340,3 +8340,159 @@ fn legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion() 
 fn task_free_lead_registered_original_unknown_before_monitor_launches_once() {
     run_owned_episode_usage_case("lead-original");
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_suite_change_cannot_relabel_old_success() {
+    Box::pin(review611_policy_change(false, false)).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_environment_change_cannot_relabel_old_success() {
+    Box::pin(review611_policy_change(true, false)).await;
+}
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review611_cached_verify_rechecks_changed_policy() {
+    Box::pin(review611_policy_change(false, true)).await;
+}
+async fn review611_policy_change(environment_change: bool, cached: bool) {
+    use futures::FutureExt;
+    let f = Fixture::new().await;
+    let supervisor = f.supervisor().await;
+    let service = artifacts::ArtifactService::open(f.broker.clone(), &f.root.join("artifacts"))
+        .await
+        .unwrap();
+    let out = evidence_directory(if cached {
+        "review611-cached"
+    } else if environment_change {
+        "review611-environment"
+    } else {
+        "review611-suite"
+    });
+    let mut executions = Vec::new();
+    let outcome = std::panic::AssertUnwindSafe(async {
+        let mailbox = mailbox::MailboxService::new(f.broker.clone());
+        temporal::Bridge::new(f.broker.clone()).register(&f.owner, temporal::AggregateKind::Task, f.task, 0).await.unwrap();
+        let worker_episode = f.worker_episode("review611-producer").await;
+        let worker = supervisor.create_episode("assembled-worker", worker_episode, vec![], supervisor::CreateFault::None).await.unwrap();
+        executions.push(worker.id);
+        let command = vec!["/bin/sh".into(), "-c".into(), "test \"$(cat src/result)\" = 'actual candidate'; cat src/result".into()];
+        let old_suite = artifacts::sha256(b"review611-suite-v1");
+        let old_environment = artifacts::sha256(b"review611-environment-v1");
+        let suite = if environment_change {old_suite.clone()} else {artifacts::sha256(b"review611-suite-v2")};
+        let environment = if environment_change {artifacts::sha256(b"review611-environment-v2")} else {old_environment.clone()};
+        let envelope = |key: &str, revision, command| artifacts::ArtifactEnvelope {key:key.into(), task:f.task, expected_revision:revision, generation:1, recovery_epoch:f.epoch, command};
+        let configure = |suite: String, environment: String| artifacts::ArtifactCommand::Configure {verifier:f.verifier, lead_acceptance:false, base:f.base.clone(), suite, environment, mandatory_commands:vec![command.clone()]};
+        let revision = service.snapshot(&f.owner, f.task).await.unwrap().revision;
+        let configured = service.execute(&f.owner, envelope("review611-old-policy", revision, configure(old_suite.clone(), old_environment.clone())), artifacts::ReferenceFault::None).await.unwrap();
+        std::fs::write(worker.path.join("src/result"), b"actual candidate\n").unwrap();
+        git(&worker.path, &["add", "src/result"]);
+        git(&worker.path, &["-c","user.name=Fixture","-c","user.email=fixture@example.invalid","commit","-qm","actual policy fixture candidate"]);
+        let bundle = f.root.join("review611-candidate.bundle");
+        git(&worker.path, &["bundle", "create", bundle.to_str().unwrap(), "HEAD"]);
+        let bytes = std::fs::read(bundle).unwrap();
+        let digest = artifacts::sha256(&bytes);
+        service.publish_evidence("assembled-worker", f.task, &digest, &bytes).await.unwrap();
+        let candidate = artifacts::Candidate {commit:git(&worker.path, &["rev-parse","HEAD"]),tree:git(&worker.path, &["rev-parse","HEAD^{tree}"]),base:f.base.clone(),spec_digest:f.spec.clone(),spec_revision:2,generation:1,artifact:digest,deliverables:vec!["src/result".into()],risks:vec![]};
+        service.execute("assembled-worker", envelope("review611-submit", configured.revision, artifacts::ArtifactCommand::Submit {candidate:candidate.clone()}), artifacts::ReferenceFault::None).await.unwrap();
+        supervisor.cancel("assembled-worker", worker.id).await.unwrap();
+        supervisor.release("assembled-worker", worker.id).await.unwrap();
+        let mut old_report = None;
+        for fresh in [false, true] {
+            let label = if fresh {"fresh"} else {"old"};
+            mailbox.execute(&f.owner, mail(f.epoch, &format!("review611-{label}-notice"), serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.verifier],"message_kind":"notice","text":format!("perform actual {label} policy gate"),"reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
+            let input = Uuid::new_v4(); let episode = Uuid::new_v4();
+            mailbox.execute("assembled-verifier", mail(f.epoch, &format!("review611-{label}-capture"), serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"verification","limit":4}))).await.unwrap();
+            let packet = mailbox.record("assembled-verifier", mailbox::RecordKind::Input, input).await.unwrap();
+            mailbox.execute("assembled-verifier", mail(f.epoch, &format!("review611-{label}-admit"), serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"verification","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
+            let execution = supervisor.create_episode_from_candidate("assembled-verifier", episode, &service, supervisor::CreateFault::None).await.unwrap();
+            executions.push(execution.id);
+            supervisor.start("assembled-verifier", execution.id, command.clone(), 30).await.unwrap();
+            let deadline = std::time::Instant::now()+Duration::from_secs(8);
+            let result = loop {
+                if let Some(result) = supervisor.result("assembled-verifier", execution.id).await.unwrap()
+                    && supervisor.inspect("assembled-verifier", execution.id).await.unwrap().state == supervisor::ExecutionState::Stopped {break result;}
+                assert!(std::time::Instant::now()<deadline, "owned monitor must publish actual stop and exit");
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            };
+            assert_eq!(result.exit_code, Some(0)); assert!(result.namespace_stopped);
+            let output = supervisor.logs("assembled-verifier", execution.id).await.unwrap();
+            assert_eq!(output, b"actual candidate\n");
+            let evidence = serde_json::to_vec(&serde_json::json!({"trusted_monitor_result":result,"output":String::from_utf8(output).unwrap()})).unwrap();
+            let logs = artifacts::sha256(&evidence);
+            service.publish_evidence("assembled-verifier", f.task, &logs, &evidence).await.unwrap();
+            let report = artifacts::Verification {candidate:candidate.clone(),suite:if fresh {suite.clone()} else {old_suite.clone()},environment:if fresh {environment.clone()} else {old_environment.clone()},checks:vec![artifacts::Check {command:command.clone(),exit_code:0,logs}],resolved_decisions:true};
+            // Keep this proof independent of the separate lifecycle repair: an
+            // explicit public checkpoint closes the first admitted episode.
+            mailbox.execute("assembled-verifier", mail(f.epoch, &format!("review611-{label}-yield"), serde_json::json!({"kind":"yield_episode","episode":episode,"checkpoint":{"id":Uuid::new_v4(),"summary":"actual policy gate stopped","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
+            supervisor.release("assembled-verifier", execution.id).await.unwrap();
+            if !fresh {
+                let old_revision = service.snapshot(&f.owner, f.task).await.unwrap().revision;
+                let cached_command = envelope("review611-original-verify", old_revision, artifacts::ArtifactCommand::Verify { verification: report.clone() });
+                if cached {
+                    let first = service.execute("assembled-verifier", cached_command.clone(), artifacts::ReferenceFault::None).await.unwrap();
+                    let replay = service.execute("assembled-verifier", cached_command.clone(), artifacts::ReferenceFault::None).await.unwrap();
+                    assert_eq!(serde_json::to_value(&first).unwrap(), serde_json::to_value(&replay).unwrap());
+                    assert_eq!(service.snapshot(&f.owner, f.task).await.unwrap().revision, first.revision, "unchanged policy replay cannot add a revision");
+                    retain_bytes(&out.join("unchanged-policy-replay.json"), &serde_json::to_vec_pretty(&serde_json::json!({"first":first,"replay":replay})).unwrap());
+                }
+                let revision = service.snapshot(&f.owner, f.task).await.unwrap().revision;
+                let configured = service.execute(&f.owner, envelope("review611-change-policy", revision, configure(suite.clone(), environment.clone())), artifacts::ReferenceFault::None).await.unwrap();
+                if cached {
+                    let stale_replay = service.execute("assembled-verifier", cached_command, artifacts::ReferenceFault::None).await;
+                    retain_bytes(&out.join("changed-policy-replay.json"), &serde_json::to_vec_pretty(&serde_json::json!({"old_execution":execution.id,"configure_revision":configured.revision,"replay":stale_replay.as_ref().map_err(|e|&e.code)})).unwrap());
+                    assert_eq!(stale_replay.unwrap_err().code, ErrorCode::StaleRevision, "cached Verify must retain current-policy stale-report error precedence");
+                }
+                let mut relabeled = report.clone(); relabeled.suite=suite.clone(); relabeled.environment=environment.clone();
+                let reuse = service.execute("assembled-verifier", envelope("review611-relabel-old-success", configured.revision, artifacts::ArtifactCommand::Verify {verification:relabeled.clone()}), artifacts::ReferenceFault::None).await;
+                retain_bytes(&out.join("old-execution-relabel.json"), &serde_json::to_vec_pretty(&serde_json::json!({"old_execution":execution.id,"old_report":report,"relabeled_report":relabeled,"configure_revision":configured.revision,"reuse":reuse.as_ref().map_err(|e|&e.code)})).unwrap());
+                assert_eq!(reuse.unwrap_err().code, ErrorCode::DependencyUnmet, "a real old successful gate cannot be relabeled under changed policy");
+                assert_eq!(service.snapshot(&f.owner,f.task).await.unwrap().status,if cached {"verifying"} else {"submitted"});
+                old_report = Some(report);
+            } else {
+                assert_ne!(old_report.as_ref().unwrap().checks[0].logs, report.checks[0].logs, "fresh proof must come from a second real execution");
+                let revision=service.snapshot(&f.owner,f.task).await.unwrap().revision;
+                let verified=service.execute("assembled-verifier", envelope("review611-fresh-verify", revision, artifacts::ArtifactCommand::Verify {verification:report.clone()}), artifacts::ReferenceFault::None).await.unwrap();
+                let accepted=service.execute(&f.owner,envelope("review611-fresh-accept",verified.revision,artifacts::ArtifactCommand::Accept {candidate_id:verified.candidate_id.unwrap(),report_id:verified.report_id.unwrap()}),artifacts::ReferenceFault::None).await.unwrap();
+                assert!(accepted.accepted);
+                retain_bytes(&out.join("fresh-policy-positive.json"), &serde_json::to_vec_pretty(&serde_json::json!({"fresh_execution":execution.id,"report":report,"accepted":accepted})).unwrap());
+            }
+        }
+    }).catch_unwind().await;
+    for id in &executions {
+        let view = supervisor.inspect(&f.owner, *id).await.unwrap();
+        if view.state != supervisor::ExecutionState::Released {
+            supervisor.cancel(&f.owner, *id).await.unwrap();
+            let deadline = std::time::Instant::now() + Duration::from_secs(8);
+            loop {
+                let view = supervisor.reconcile(&f.owner, *id).await.unwrap();
+                if view.state == supervisor::ExecutionState::Stopped
+                    && (view.launcher.is_none()
+                        || supervisor.result(&f.owner, *id).await.unwrap().is_some())
+                {
+                    break;
+                }
+                assert!(
+                    std::time::Instant::now() < deadline,
+                    "owned policy fixture cleanup"
+                );
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            }
+            supervisor.release(&f.owner, *id).await.unwrap();
+        }
+    }
+    retain_bytes(
+        &out.join("cleanup.json"),
+        &serde_json::to_vec(
+            &serde_json::json!({"released_executions":executions,"model_requests":0}),
+        )
+        .unwrap(),
+    );
+    let root = f.root.clone();
+    f.finish().await;
+    retain_bytes(
+        &out.join("fixture-removed.json"),
+        &serde_json::to_vec(&serde_json::json!({"removed":!root.exists()})).unwrap(),
+    );
+    if let Err(error) = outcome {
+        std::panic::resume_unwind(error);
+    }
+}
