@@ -1,3 +1,48 @@
+# Current Corenius control-plane session
+
+<!-- effort:machine:start -->
+```json
+{
+  "base_branch": "main",
+  "base_commit": "264756edd550225449202b6f20ac4b560808d14e",
+  "dehydrated": "2026-10-03T16:50:26Z",
+  "effort": "team-control-plane",
+  "runs": [],
+  "worktrees": [
+    {
+      "branch": "codex/reference-design",
+      "dirty": [],
+      "head": "9aa6967979f9093306685c20f2b3a1764cf99f0a",
+      "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+      "pushed": false
+    }
+  ]
+}
+```
+<!-- effort:machine:end -->
+
+## Where we are
+
+The user explicitly redirects this session to Corenius alone. The complete six-phase goal remains active. Main is264756edd550225449202b6f20ac4b560808d14e; the root's isolated reference-design checkout is9aa6967979f9093306685c20f2b3a1764cf99f0a. The kernel is live-admitted and landed. jj19's frozen evaluation recommends deferral; separate Standards/Spec reviews are underway. The Trae guard is an offline partial candidate; no new runtime admission or live-provider proof. All earlier negative evidence and outstanding live lead/restore requirements remain preserved.
+
+## Next actions
+
+Reconcile jj19 independent review, verify its frozen bytes, integrate only ready work, and resolve the conditional jj backend with an explicit decision. Finish Trae transport/budget/namespace prerequisites through its own author tree and independently review before launching the bounded synthetic-only cases. Then prove actual supported adapter behavior, independent Codex/Claude lead missions, and restore/upgrade readiness.
+
+## Open questions
+
+Trae runtime and provider hard-budget guarantees remain unproven; no successful mock or synthetic local stop can establish remote billing cessation. No remote is configured.
+
+## Traps
+
+The older attachment's planning-only snapshot is superseded by landed kernel evidence. Sureal work is stopped and preserved. The jj and Trae author trees contain uncommitted frozen work and must not be edited by the root or represented as landed. Existing exhausted synthetic probe budgets are not reset. The old hand-written STATE lacked required machine markers; this repair enables the existing effort API without inventing recovered state.
+
+## Do not redo
+
+Do not rerun or rewrite the kernel's accepted fault matrix merely to reconstruct context. Retain historical rejected and uncertain dispositions. Never equate kernel acceptance with completion of the six-phase goal.
+
+## Prior durable snapshots (preserved)
+
 # State: durable team control plane
 
 Status: verified kernel landed; full six-phase goal active.
