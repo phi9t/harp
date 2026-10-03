@@ -1,6 +1,6 @@
 # Durable team control plane implementation plan
 
-Status: approved baseline; implementation underway
+Status: approved baseline; kernel accepted/landed; optional evaluation and live prerequisites underway
 Source commit read: `963f58b31e518a8162dfe719e386ef9d9843321f`
 Spec: [SPEC.md](SPEC.md)
 Preserved intent: [RFC](../../rfcs/0001-durable-team-control-plane.md)
@@ -11,6 +11,14 @@ Make Corenius the executable reference for a persistent engineering team with
 replaceable Codex/Claude leads and TraeCLI workers: assignments, decisions,
 questions, budgets and evidence survive failure, uncertain execution is
 reconciled before retry, and acceptance binds the exact verified candidate.
+
+## Current execution checkpoint
+
+Kernel16 is accepted and landed on main at `264756edd550225449202b6f20ac4b560808d14e`, with independent conformance, integrated checks, whole-branch617 review and fresh detached exact-tip gate. Optional Kata adapter18 is resolved as deferred under evaluated17; Git planning remains authoritative. jj19 remains under executable evaluation and has not been adopted.
+
+Initial synthetic Trae preflight exhausted four incarnations and observed nine attempted requests, exceeding the six-request/no-retry envelope. Routing and stopped namespaces are evidence; live execution readiness is not established. The original failure remains retained. The [bounded repair](decisions/20261003-trae-synthetic-budget-repair.md) and [counting clarification](decisions/20261003-trae-budget-admission-clarification.md) authorize offline guard preparation with independent critique; no new runtime admission has occurred. Denied retries count as attempts, discovery gets no free allowance, and stopping a local stream does not prove remote billing stopped.
+
+Independent lead demonstrations and upgrade/backup/rollback-restore remain required. Current ticket statuses, [STATE.md](STATE.md) and [completion audit](completion-audit.md) distinguish acceptance from preparation and evidence from inference; the milestone contracts below remain unchanged.
 
 ## Architecture and implementation baseline
 
