@@ -135,5 +135,11 @@
         "preserve current-policy validation precedence before provenance"
       ]
     }
+  },
+  "ordering_regression": {
+    "terminal_exit": 101,
+    "behavior": "two public predeadline release controls encounter prematurely completed episode; originaldeadline/yielded/unknowncontrols pass",
+    "classification": "meaningful premature-retirement red; subsequent expiry/admission assertion not reached",
+    "next": "preserve predeadline checkpoint flow and independently exercise laterexpiry successor admission"
   }
 }
