@@ -1,5 +1,41 @@
 # State: durable team control plane
 
+Status: verified kernel landed; full six-phase goal active.
+Updated: 2026-10-03T07:13:16.531167+00:00
+Local main: `264756edd550225449202b6f20ac4b560808d14e`.
+Root worktree: `/data02/home/philip.yang/workspace/corenius-codex-reference-design`.
+Branch: `codex/reference-design`; post-landing evidence commits through `f49cf4758939a2ae32ee9dc7c84035e66fb51f39` await subsequent gated integration.
+
+## Goal and authority
+
+Make Corenius the executable reference for durable teams with replaceable Codex/Claude leads and TraeCLI workers. Preserve assignments, decisions, questions and evidence through failures; prevent unsafe retries; accept verified candidates. All six phases in [PLAN.md](PLAN.md) and [SPEC.md](SPEC.md) remain required. [Full-goal owner authority](decisions/20261003-owner-authorizes-full-goal-execution.md) covers necessary implementation, repairs, independent reviews, commits and gated fast-forward landing. Technical capabilities still require proof; no remote is configured.
+
+## Accepted state
+
+Tickets10–17 are resolved within their explicit scopes. Kernel16 source `fc0d9b147ab4244af5025314d622c1aebb98fc6d` received independent bounded Standards/Spec PASS, integrated rootgate12 terminal0, wholebranch617 terminal0/no issues, and a fresh detached exact-tip repository gate. Landing session91313 terminal0 fast-forwarded main to264756e. All48 landed source hashes match the reviewed freeze; user untracked transcript export is preserved.
+
+Kata17 evaluated/deferred. Conditional adapter18 is resolved through its explicit deferred path in the lead branch; no adapter implementation is claimed. Git-approved planning remains the baseline.
+
+## Current work
+
+- jj19 author: `/tmp/corenius-jj19-evaluation-author`, branch `codex/jj19-evaluation-author`, base264756e, own ticket claim. Uses pinned absolute jj executable only, disposable fixtures/private config; no shared conversion or implicit backend25 adoption.
+- Trae prerequisite author: `/tmp/corenius-trae20-preflight-author`, branch `codex/trae20-preflight-author`, base264756e. Synthetic endpoint only, private filesystem/PID/network boundary, all other egress denied. Runs1/2 failed unsupported no-daemon/transport codec respectively and stopped namespaces. Corrected Unix WebSocket/config routing next; approved aggregate probe budget is not reset.
+- Post-landing branch/worktree inventory:62 worktrees/59 branches. Only divergent historical product refs are two mb-evidence refs to known-defective4ed6397, preserved as superseded. Active dirty work remains separate from ancestry claims; [inventory](evidence/post-kernel-worktree-inventory.json) does not claim every uncommitted byte landed.
+
+## Retained limitations
+
+Failed1813 fixture remains quarantined, with exact execution/episode/effect and recovered Bubblewrap PID/namespace metadata retained. Privileged process/thread/namespace-fd inventory found no matching survivor and no permission blind spots. Historical shutdown/result/accounting provenance remains unavailable. Independent verifier adjudicated this as the permitted precise unresolved disposition; no historical clean/flake claim, adoption, deletion, refund or reuse is justified. [Disposition](evidence/kernel16-review611-acceptance-disposition.json).
+
+Model-free kernel proof does not establish live Trae recovery, paid-provider hard budget enforcement, independent leads or rollback restore. Colliding-v2 Continue-As-New remains payload-level proof; unsupported legacy restart quarantines safely rather than proving successful legacy transfer.
+
+## Remaining goal
+
+Complete jj19 and optional-backend25 decision; live Trae20/adapter21; independent Codex22 and Claude23 demonstrations; upgrade/backup/rollback-restore24 with external recovery epoch and post-backup orphan reconciliation. Continue relevant-work preservation and gated integration across branches. The complete goal is not achieved. [Completion audit](completion-audit.md) and current ticket contracts are authoritative; historical snapshots below are superseded.
+
+## Historical snapshots (superseded)
+
+# State: durable team control plane
+
 Status: implementing the approved baseline; full goal active.
 Updated: 2026-10-02T21:42:28.765927+00:00
 Local main: `1f164156261a3aa927c823919bf73d6e6d11a771`.
