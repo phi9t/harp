@@ -6,7 +6,7 @@ Objective: the full persistent engineering-team goal in [PLAN.md](PLAN.md),
 including actual PostgreSQL/Temporal kernel, live Trae behavior, independent
 Codex/Claude demonstrations and restore readiness. No scope reduction.
 
-Current checkpoint: whole-branch611 rejected source e6676bf. Authorized isolated repair611 has genuine policy, cached-policy, deadline and ordering regressions, but its first fullmatrix28026 exited101. Corrected validation precedence and checkpoint-safe two-ordering recovery remain under implementation. Kernel16 acceptance and landing are pending; no later-phase completion is claimed.
+Current checkpoint: repair611 committed source fc0d9b147ab4244af5025314d622c1aebb98fc6d matches all48 frozen reviewed source hashes. Bounded Standards/Spec and integrated rootgate12 passed; wholebranch617 is pending. Full ticket16 audit confirms current behavior but retains unresolved failed1813 physical outcome; newly discovered Bubblewrap PID/namespace metadata is under independent survivor audit. Acceptance and landing remain pending; no later-phase completion is claimed.
 
 ## Authoritative observations
 

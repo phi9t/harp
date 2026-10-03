@@ -2158,3 +2158,6 @@ Independent Spec reviewer580 terminal bounded PASS alongside Standards584 PASS. 
 
 
 Rootgate12 actualsession46372 terminal0, check all green. All48 source hashes reverified before sourcecommit fc0d9b147ab4244af5025314d622c1aebb98fc6d and all48 committedGitblob hashes match frozenreviewedcandidate. Fresh wholebranchreview wrapper started actualsession61562 against main; verdict pending. Rootgate result/cleanup retained separately. No ticket acceptance or mainlanding yet.
+
+
+Fullticket audit580 found historical failed1813 shutdown evidence unresolved despite currentbehavior PASS. Root fixture fileinventory then discovered retained bwrap execution.info with childPID4188604 and five namespace inode identities; earlier missingPID claim requires correction (startticks/DBproof stillmissing). Exactinfo/nativeeffect selected retained in review611-quarantine-recovery; independent currentnamespace-survivor audit assigned580 read-only, no signal/delete/reuse/refund. Branch617 stilllive; no acceptance.

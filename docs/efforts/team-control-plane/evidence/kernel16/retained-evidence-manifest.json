@@ -7511,6 +7511,26 @@
       "sha256": "01a21bcfd0a4b518fb0743c2679f6b687d92dbba77f79481fd41a276c6e62384"
     },
     {
+      "path": "review611-quarantine-recovery/bwrap-execution.info",
+      "bytes": 194,
+      "sha256": "447da9fcb6b8693340589493cdcb711fa7dbbf55bce1bac3f971e2562b83d2ba"
+    },
+    {
+      "path": "review611-quarantine-recovery/discovery.json",
+      "bytes": 1060,
+      "sha256": "acdab077238a141b65e454c78dda3b4cbea6a44932f1bb492c12de54c9c5a4e8"
+    },
+    {
+      "path": "review611-quarantine-recovery/namespace-selected.json",
+      "bytes": 3303,
+      "sha256": "dbe6a73727b1dcf1bac52677cd0e234b47f46043bf6570f6dcdade7af91cf559"
+    },
+    {
+      "path": "review611-quarantine-recovery/native.effect",
+      "bytes": 839,
+      "sha256": "42a339131f1ed51bfa3c1b17cbf14d7b44fb34ca4988d57d09f7f21dae1de991"
+    },
+    {
       "path": "review611-root-gate12/retention-index.json",
       "bytes": 5712,
       "sha256": "d09871b951b6a6eab55feee984b7078a713f63a60de752867bead4650641d270"
@@ -7833,5 +7853,6 @@
   ],
   "file_count": 1121,
   "total_bytes": 10934040,
-  "frozen_repair_patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62"
+  "frozen_repair_patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
+  "quarantine_status": "retained PID/namespace metadata found; unprivileged scan incomplete; elevated independent audit pending"
 }

@@ -1,7 +1,9 @@
 # Kernel candidate handoff
 
-Status: whole-branch611 rejected e6676bf with verification-policy provenance and deadline episode-lifecycle findings. Authorized isolated repair611 assigned; not accepted or landed.
-Commit read: `e6676bf6c6d05ab850ddde17aa71f6932be495f5`.
+Status: repair611 integrated at fc0d9b1; independent bounded Standards/Spec and root repository gate12 passed. Whole-branch617 and full ticket acceptance remain pending; not landed.
+Commit read: `fc0d9b147ab4244af5025314d622c1aebb98fc6d`.
+
+Current evidence: all48 committed source hashes match the frozen five-file repair; patch SHA c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62. Final ten focused tests, strict Clippy and integrated repository gate12 passed. Public proofs and gate results are retained in kernel16/review611-portable-proofs and kernel16/review611-root-gate12. Earlier paragraphs are historical checkpoints, not current acceptance. Failed full1813 remains an unresolved physical-failure exception. A subsequent fixture inventory discovered retained child PID and namespace identities in Bubblewrap metadata, correcting the earlier broad missing-PID assertion; an independent namespace-survivor audit is pending. Database stop/result observations and process start ticks remain unavailable. Later passes do not establish historical cleanup or a flake.
 
 The approved Rust/PostgreSQL/Temporal kernel preserves task, episode, runtime and physical execution identities separately. Authenticated broker operations own state changes; Temporal owns durable waits; supervised workspaces hold real effects. UI attachment does not confer execution ownership. Unknown effects or usage remain visible and retain capacity. Registered original-launch admission permits only completion of the previously authorized launch; repeated public Start and monitor calls are refused.
 
