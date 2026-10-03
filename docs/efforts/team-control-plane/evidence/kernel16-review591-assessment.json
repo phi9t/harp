@@ -38,7 +38,12 @@
   "committed_source_files_verified": 48,
   "whole_branch_review": {
     "session": 86801,
-    "status": "running",
-    "base": "main"
+    "job": 611,
+    "terminal_exit": 1,
+    "status": "CHANGES REQUIRED",
+    "findings": [
+      "verification policy digest provenance",
+      "deadline episode terminal disposition"
+    ]
   }
 }

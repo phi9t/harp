@@ -2129,3 +2129,8 @@ Repair591 conformance: Standards PASS (one nonblocking fixture duplication heuri
 
 
 Root gate11 session13545 terminal exit0; all repository checks green. Retained19 cleanupJSON records and exact raw run/exit. All48 source hashes reverified before sourcecommit e6676bf6c6d05ab850ddde17aa71f6932be495f5 and again against committed Git blobs. Whole-branch review session86801 launched against main; pending. Main remains unchanged; ticket16 acceptance and landing pending.
+
+
+### Whole-branch611 rejection and authorized repair
+
+Review611 session86801 terminal exit1: High verification execution provenance omits immutable suite/environment policy digests; Medium deadline-stopped released lead episode remains live and prevents successor admission. Earlier conformance/gate passes do not override this rejection. Fresh isolated repair assigned to kernel16_review591_author in a new review611 worktree at587aca8 under full-goal owner authorization; source integration and landing withheld. Review and repair contract retained in decisions/20261003-kernel-policy-lifecycle611-repair.md and evidence/kernel16/branch-repair/branch611/.

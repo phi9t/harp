@@ -58,3 +58,8 @@ Owner explicitly approved oneadditionalbounded591repair/reviewround. Approval re
 ### Repair591 frozen candidate verified
 
 Root verified all 48 current source files, all 130 frozen files, the exact patch and two Git-base preimages. Retained 76 selected public proof files plus four metadata/patch records. The full matrix records 174 parent-suite passes, zero failures and eight owned subprocess entrypoints ignored; its separately nested child records one pass. Independent Standards and Spec reviews are pending. No source integration or landing has occurred. The owner’s full-goal authorization supersedes routine repair permission stops; see `decisions/20261003-owner-authorizes-full-goal-execution.md`.
+
+
+### Whole-branch611 rejection and authorized repair
+
+Review611 session86801 terminal exit1: High verification execution provenance omits immutable suite/environment policy digests; Medium deadline-stopped released lead episode remains live and prevents successor admission. Earlier conformance/gate passes do not override this rejection. Fresh isolated repair assigned to kernel16_review591_author in a new review611 worktree at587aca8 under full-goal owner authorization; source integration and landing withheld. Review and repair contract retained in decisions/20261003-kernel-policy-lifecycle611-repair.md and evidence/kernel16/branch-repair/branch611/.

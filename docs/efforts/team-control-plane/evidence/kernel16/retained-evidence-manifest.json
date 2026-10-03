@@ -1,9 +1,9 @@
 {
   "observed_at": "2026-10-03T05:53:36.742628+00:00",
-  "status": "retained evidence inventory, not acceptance; role repair verified, whole-branch611 pending",
+  "status": "retained evidence inventory, not acceptance; whole-branch611 rejected; isolated repair assigned",
   "candidate": "e6676bf6c6d05ab850ddde17aa71f6932be495f5",
-  "pending_review_job": 611,
-  "last_review_job": 591,
+  "pending_review_job": null,
+  "last_review_job": 611,
   "files": [
     {
       "path": "author/manifest.json",
@@ -5484,8 +5484,23 @@
       "path": "review591-root-gate11/run.log",
       "sha256": "39f4ea81afb9f4d324a86b614118c11805aa30ad676207b649293acc84f7493e",
       "bytes": 32130
+    },
+    {
+      "path": "branch-repair/branch611/classification.json",
+      "bytes": 393,
+      "sha256": "536125949d74f0821f5dc0bc7c2eb263f0c6d98b87a787a131ac05c1d02c0f8c"
+    },
+    {
+      "path": "branch-repair/branch611/run.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "branch-repair/branch611/run.log",
+      "bytes": 1777,
+      "sha256": "23b084f33fb07fef385a2db22595795c10a5eb65b6d5b1c7bd16261ea5720f71"
     }
   ],
-  "file_count": 1096,
-  "total_bytes": 10921373
+  "file_count": 1099,
+  "total_bytes": 10923545
 }

@@ -79,3 +79,8 @@ demonstrations22/23, optional disposition18/19/25 and upgrade/restore24 remain
 required. Live execution still needs proven isolation and resource enforcement.
 Owner continuation and gated landing authority are recorded; they do not accept
 unfinished work or authorize deleting or rewriting shared branches.
+
+
+### Whole-branch611 rejection and authorized repair
+
+Review611 session86801 terminal exit1: High verification execution provenance omits immutable suite/environment policy digests; Medium deadline-stopped released lead episode remains live and prevents successor admission. Earlier conformance/gate passes do not override this rejection. Fresh isolated repair assigned to kernel16_review591_author in a new review611 worktree at587aca8 under full-goal owner authorization; source integration and landing withheld. Review and repair contract retained in decisions/20261003-kernel-policy-lifecycle611-repair.md and evidence/kernel16/branch-repair/branch611/.

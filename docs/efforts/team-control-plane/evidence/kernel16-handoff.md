@@ -1,6 +1,6 @@
 # Kernel candidate handoff
 
-Status: repair591 independently reviewed on Standards and Spec, exactly integrated and committed; root full repository gate11 passed. Whole-branch review611 is running. Ticket16 is not accepted or landed.
+Status: whole-branch611 rejected e6676bf with verification-policy provenance and deadline episode-lifecycle findings. Authorized isolated repair611 assigned; not accepted or landed.
 Commit read: `e6676bf6c6d05ab850ddde17aa71f6932be495f5`.
 
 The approved Rust/PostgreSQL/Temporal kernel preserves task, episode, runtime and physical execution identities separately. Authenticated broker operations own state changes; Temporal owns durable waits; supervised workspaces hold real effects. UI attachment does not confer execution ownership. Unknown effects or usage remain visible and retain capacity. Registered original-launch admission permits only completion of the previously authorized launch; repeated public Start and monitor calls are refused.
