@@ -1,0 +1,19 @@
+# Public proposal, NOT proof of pinned Trae parser acceptance or key semantics.
+model = "gpt-5.5"
+model_provider = "corenius-synthetic"
+approval_policy = "never"
+sandbox_mode = "read-only"
+
+[model_providers.corenius-synthetic]
+name = "Corenius owned synthetic fixture"
+base_url = "http://127.0.0.1:1234/v1"
+wire_api = "responses"
+requires_openai_auth = false
+supports_websockets = false
+request_max_retries = 0
+stream_max_retries = 0
+request_timeout_ms = 1000
+stream_idle_timeout_ms = 1000
+
+[model_providers.corenius-synthetic.request_overrides.extra_body]
+max_output_tokens = 32

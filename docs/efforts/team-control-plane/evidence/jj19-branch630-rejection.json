@@ -1,0 +1,16 @@
+{
+  "job": 630,
+  "range": "264756e..ba5dfa3",
+  "session": 20281,
+  "exit": 1,
+  "verdict": "CHANGES REQUIRED",
+  "finding": "Current-tree path checks do not protect reachable history exported by bundle; private file deletion leaves recoverable private bytes.",
+  "repair": "3/3 history-export capture contract",
+  "root_gate_prior": {
+    "session": 82804,
+    "exit": 0
+  },
+  "landing": "withheld",
+  "review_sha256": "2422a2ba892bc9dd21c462e83b55aac3a537fd6edae9038c39ebd07613d9c99f",
+  "review_output": "Reviewing branch \"codex/reference-design\": 19 commits since main\nEnqueued job 630 for 264756e..ba5dfa3 (agent: codex)\nWaiting for review to complete... done!\n\nReview (by codex)\n------------------------------------------------------------\n## Review Findings\n\n- **Severity**: Medium\n- **Location**: `docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py:156`\n- **Problem**: Private-file validation checks only the candidate\u2019s current tree, but the Git bundle exports its reachable history. Committing `private.env`, creating a descendant, and deleting the file lets `freeze_candidate` pass while the exported bundle still contains recoverable private bytes. The exclusions fixture does not exercise this case.\n- **Fix**: Validate the history included in the export against the private-file contract. Add a behavioral regression that commits private content, deletes it in a descendant, and verifies that export is refused.\n\n## Summary\n\nThe changes preserve qualification evidence, add jj verification fixtures, and reconcile the control-plane plan with the v0.2 architecture.\n"
+}

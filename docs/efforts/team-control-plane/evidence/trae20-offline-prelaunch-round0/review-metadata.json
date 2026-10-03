@@ -1,0 +1,278 @@
+{
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "reviewed_at_utc": "2026-10-03T18:07:43.642289+00:00",
+  "scope": "Read-only prelaunch review of exactly one frozen offline namespace setup-noise case; no Trae/provider/runtime qualification",
+  "verdict": "CHANGES_REQUIRED",
+  "source_safety_blockers_found": [],
+  "proof_blockers": [
+    {
+      "id": "P1",
+      "file": "tools/probes/test_trae_namespace.py",
+      "finding": "Generic NamespaceSetupError permits unrelated setup failures to qualify",
+      "required_repair": "Assert proof.reason equals the exact injected JSONDecodeError reason",
+      "required_reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "id": "P2",
+      "file": "tools/probes/test_trae_namespace.py",
+      "finding": "TemporaryDirectory removes raw owned.jsonl events on test return",
+      "required_repair": "Export exact raw event bytes to a durable sidecar beside exported proof before temporary cleanup"
+    }
+  ],
+  "author_root": "/tmp/corenius-trae20-budget-repair-author",
+  "freeze_root": "/tmp/corenius-trae20-budget-repair-author/.scratch/team-control-plane/trae20-budget-repair/inventory-repair/freeze",
+  "freeze_base": "4b3d2634d85b62f21d97ab9c41b0d50b282d89ae",
+  "public_index_sha256": "b4460fe0667d814100fe86adf2ee6bd7af22519d53cc3ef247d74c7eb45cebbe",
+  "case_sha256": "6b90f061182e3684632ad45c4594448c4e99a5fb350e527a0f51ae56dd738b30",
+  "case": {
+    "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/inventory-repair/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+    "worktree": "/tmp/corenius-trae20-budget-repair-author",
+    "maximum_namespace_starts": 1,
+    "maximum_fixture_seconds": 10,
+    "maximum_command_seconds": 30,
+    "auto_retry": false,
+    "trae_launches": 0,
+    "providers": 0,
+    "network_services": 0,
+    "status": "unadmitted",
+    "sources": [
+      {
+        "path": "tools/probes/test_trae_namespace.py",
+        "bytes": 2767,
+        "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+      },
+      {
+        "path": "tools/probes/trae_namespace_fixture.py",
+        "bytes": 1502,
+        "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+      },
+      {
+        "path": "tools/probes/trae_namespace_supervisor.py",
+        "bytes": 13476,
+        "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+      }
+    ],
+    "historical_quarantines": [
+      1749400,
+      1793051
+    ]
+  },
+  "decision": "/data02/home/philip.yang/workspace/corenius-codex-reference-design/docs/efforts/team-control-plane/decisions/20261003-trae-offline-inventory-repair.md",
+  "decision_sha256": "41eee245c80ccc7921501c2850e466a50acc587c24c4212ecab667936a454d2c",
+  "indexed_records_verified": 25,
+  "source_records_verified": 11,
+  "indexed_record_checks": [
+    {
+      "path": "tools/probes/test_trae_candidate.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_inventory.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_round.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_synthetic_guard.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/test_trae_transport.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.toml",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "tools/probes/trae_synthetic_guard.py",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/20261003-trae-budget-inventory-repair.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-green.log",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/actual-host-red.log",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/case.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stderr.log",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-stdout.log",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/final-pure-terminal.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/profile-fences-green.log",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/red-source.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/inventory-repair/status.md",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/namespace-failures-scoped-inventory.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": ".scratch/team-control-plane/trae20-budget-repair/namespace-membership-inspection-gap.json",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "candidate.patch",
+      "sha256_match": true,
+      "bytes_match": true
+    },
+    {
+      "path": "physical-case.patch",
+      "sha256_match": true,
+      "bytes_match": true
+    }
+  ],
+  "source_records": [
+    {
+      "path": "tools/probes/test_trae_candidate.py",
+      "bytes": 1360,
+      "sha256": "3daddf2b65885eece36d81dd2a04430c9447d951a6fd2ae631bd61fcf1c10db3"
+    },
+    {
+      "path": "tools/probes/test_trae_inventory.py",
+      "bytes": 4133,
+      "sha256": "4da0304f43b0c183e7ac72d71fcb83ab6341f73eb750eca082e13d01724d1838"
+    },
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 2767,
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+    },
+    {
+      "path": "tools/probes/test_trae_round.py",
+      "bytes": 6219,
+      "sha256": "0c3402b6e5400ef8ee0ea88fb76f01adc6e998022dc58a46ae295cd6eaeaeaaf"
+    },
+    {
+      "path": "tools/probes/test_trae_synthetic_guard.py",
+      "bytes": 6150,
+      "sha256": "7884adc86cb888c14679597249f164fa5b10413b1cb575388fb4febd723b8657"
+    },
+    {
+      "path": "tools/probes/test_trae_transport.py",
+      "bytes": 7117,
+      "sha256": "0edca413d7ab7e019210be31194f3ff61e4f2e892259fe8f431a7feaa566df6a"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.py",
+      "bytes": 1948,
+      "sha256": "55b399fc2e2ebc05a8e1448756eeb28ec9acf8374da7b09c0a7ac918466b7c9b"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_candidate.toml",
+      "bytes": 580,
+      "sha256": "62472f9c00526067c118ed3345c3bea60e36ecf79ecfaebef94e4e3c42fcbf26"
+    },
+    {
+      "path": "tools/probes/trae_synthetic_guard.py",
+      "bytes": 25293,
+      "sha256": "99ef23a101efa15214497d886ae36da7b3e23dacafdfb028a6f1d4a59a973556"
+    }
+  ],
+  "live_source_matches": true,
+  "root_outer_positive_contract": {
+    "test_terminal": 0,
+    "reason": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "setsid_descendant_observed": true,
+    "anchor_inner_pid": 1,
+    "validated_namespace_pin": true,
+    "physical_stop": "pidfd_SIGKILL",
+    "durable_raw_event_stages": [
+      "namespace_owned",
+      "stopped",
+      "setup_failed"
+    ],
+    "inventory_after": [],
+    "launcher_terminal": true,
+    "quarantined": false,
+    "cleanup_uncertain": "absent",
+    "retention_uncertain": "absent in setup and shutdown proof"
+  },
+  "admission": "withheld; source/test-only repair and new freeze required before re-review",
+  "historical_quarantines_preserved": [
+    1749400,
+    1793051
+  ],
+  "reviewer_executed_tests": false,
+  "reviewer_executed_fixture": false,
+  "reviewer_provider_launches": 0,
+  "reviewer_runtime_launches": 0,
+  "author_or_root_tree_mutations": false,
+  "report_sha256": "1673d2aa18a31f95348aa005e1d270dc03e53e6b9d5ba78e66409aa4f554f14a"
+}

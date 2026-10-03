@@ -1,0 +1,33 @@
+{
+  "command": "TRAE_OFFLINE_NAMESPACE_PROOF=.scratch/team-control-plane/trae20-budget-repair/inventory-repair/physical-noise-proof.json PYTHONPATH=tools/probes timeout --signal=TERM --kill-after=2s 28s python3 -m unittest test_trae_namespace.NamespaceBehavior.test_injected_setup_noise_stops_exact_namespace_and_descendants",
+  "worktree": "/tmp/corenius-trae20-budget-repair-author",
+  "maximum_namespace_starts": 1,
+  "maximum_fixture_seconds": 10,
+  "maximum_command_seconds": 30,
+  "auto_retry": false,
+  "trae_launches": 0,
+  "providers": 0,
+  "network_services": 0,
+  "status": "unadmitted",
+  "sources": [
+    {
+      "path": "tools/probes/test_trae_namespace.py",
+      "bytes": 2767,
+      "sha256": "d41f9db197d327d8fe3e100790eaedf8dc7b00df2f91dda23b9c5e899921a40a"
+    },
+    {
+      "path": "tools/probes/trae_namespace_fixture.py",
+      "bytes": 1502,
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f"
+    },
+    {
+      "path": "tools/probes/trae_namespace_supervisor.py",
+      "bytes": 13476,
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710"
+    }
+  ],
+  "historical_quarantines": [
+    1749400,
+    1793051
+  ]
+}
