@@ -138,8 +138,63 @@
   },
   "ordering_regression": {
     "terminal_exit": 101,
-    "behavior": "two public predeadline release controls encounter prematurely completed episode; originaldeadline/yielded/unknowncontrols pass",
-    "classification": "meaningful premature-retirement red; subsequent expiry/admission assertion not reached",
-    "next": "preserve predeadline checkpoint flow and independently exercise laterexpiry successor admission"
+    "behavior": "released-before-expiry episode prematurely completed; separate yield test failed setup duplicate registration",
+    "classification": "mixed: release-before-expiry meaningful premature-retirement red; predeadline-yield duplicated bridge registration fixture failure",
+    "next": "preserve predeadline checkpoint flow and independently exercise laterexpiry successor admission",
+    "session": 76288,
+    "correction": "author fixed helper ordering/unique paths; fresh lazy-boundary red60492 running"
+  },
+  "lazy_boundary_red": {
+    "session": 60492,
+    "status": "terminal confirmed byauthor",
+    "production_state": "expired-only Release retirement and validation precedence restored; lazy helper absent",
+    "expected": "releasebeforedeadline thenexpiry successor refusal; predeadline checkpoint passes; noexecution expiry refusal",
+    "observed": {
+      "passed_controls": 5,
+      "failed_regression": 1,
+      "regression": "known stopped execution released beforedeadline still blocks samelead admission afterexpiry"
+    },
+    "classification": "meaningful targeted recoveryred; controls pass",
+    "terminal_exit": 101
+  },
+  "reconciliation_candidate": {
+    "source_files_changed": 5,
+    "new_source_files": 0,
+    "seam": "AdmitEpisode calls retire_expired_released_episodes before live-exclusivity check",
+    "observed_checks": [
+      "current principal/role/mission/epoch/task/lead generation",
+      "expired admitted/active only",
+      "registered released empty-members execution and durable stopped/result history",
+      "once-only capacity release evidence",
+      "manifest/result identities, deletedworkspace and retainedlogdigest",
+      "runtime_release_known rechecks sibling operation uncertainty"
+    ],
+    "scope": "read-only candidate observation, not conformancePASS",
+    "focused_test_status": {
+      "observed_passes": 10,
+      "failures": 0,
+      "groups": {
+        "lifecycle": 7,
+        "policy": 3
+      },
+      "coverage": [
+        "bothdeadline/releaseorders",
+        "predeadlineyield",
+        "yieldedwait",
+        "noexecutionexpiry",
+        "unreleasedstop",
+        "unknownnativeusage",
+        "suite/environmentdrift",
+        "cachedVerify"
+      ],
+      "terminal_session": "confirmed byauthor",
+      "session": 34565,
+      "terminal_exit": 0
+    }
+  },
+  "full_final_matrix": {
+    "status": "author launching; live handle pending",
+    "scope": "alltargets realPG/Temporal including prior3regressionfailures",
+    "source_files_changed": 5
   }
 }
