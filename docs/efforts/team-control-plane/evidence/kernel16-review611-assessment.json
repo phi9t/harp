@@ -50,6 +50,17 @@
     "behavior": "suite-only and environment-only changes both admit relabeled old successful execution report; unwrap_err received Ok ArtifactResult revision7",
     "classification": "meaningful policy-provenance behavioral red observed in public log",
     "cleanup": "both fixture and service cleanupJSON observed; terminal records pending",
-    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-policy-proofs/index.json"
+    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-policy-proofs/index.json",
+    "terminal_confirmation": "author polled session51275 terminal101"
+  },
+  "lifecycle_red_observation": {
+    "session": 69225,
+    "terminal_exit": 101,
+    "observed_behavior": "real sleep capsule deadline-stop, recorded result, release/capacity0 still refuses fresh samelead successor with DependencyUnmet",
+    "passing_control_observed": "release preserves yielded checkpoint/wait",
+    "unknown_usage_control": "corrected public control91648 terminal0 1testPASS unchangedproduction",
+    "production_changes": "none observed",
+    "classification": "mixed; deadline regression meaningful, not whole-run behavioral red",
+    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-lifecycle-proofs/index.json"
   }
 }
