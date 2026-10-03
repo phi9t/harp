@@ -6,6 +6,8 @@ Objective: the full persistent engineering-team goal in [PLAN.md](PLAN.md),
 including actual PostgreSQL/Temporal kernel, live Trae behavior, independent
 Codex/Claude demonstrations and restore readiness. No scope reduction.
 
+Current checkpoint: source `e6676bf6c6d05ab850ddde17aa71f6932be495f5` includes the independently reviewed role-isolation repair. Root repository gate11 passed with19 retained cleanup records. Whole-branch review611 is running; kernel ticket16 acceptance and landing remain pending. The owner authorized continued full-goal execution. Older checkpoint descriptions below are historical and do not override this status.
+
 ## Authoritative observations
 
 - Specification, 16 implementation/evaluation tickets and preserved RFC exist.

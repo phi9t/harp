@@ -1,7 +1,7 @@
 # Kernel candidate handoff
 
-Status: whole-branch591 rejected9055b99 with confirmed role-isolation finding. Three-iteration budget exhausted; explicit one-round extension requested and unanswered. Not accepted or landed.
-Commit read: `9055b9976d429229e5d42b2e86eb04dbc30da5bf`.
+Status: repair591 independently reviewed on Standards and Spec, exactly integrated and committed; root full repository gate11 passed. Whole-branch review611 is running. Ticket16 is not accepted or landed.
+Commit read: `e6676bf6c6d05ab850ddde17aa71f6932be495f5`.
 
 The approved Rust/PostgreSQL/Temporal kernel preserves task, episode, runtime and physical execution identities separately. Authenticated broker operations own state changes; Temporal owns durable waits; supervised workspaces hold real effects. UI attachment does not confer execution ownership. Unknown effects or usage remain visible and retain capacity. Registered original-launch admission permits only completion of the previously authorized launch; repeated public Start and monitor calls are refused.
 
@@ -14,3 +14,6 @@ Final repair evidence: both584 gaps have meaningful physical reds and passing fu
 Limits carried forward: actual retained v1 history replay is proven; colliding-v2 rollover is a payload roundtrip, not forced actual Continue-As-New. Unsupported legacy gateway restart quarantines safely; successful legacy takeover is not established. Persistent inaccessible inventory quarantines without a proven historical EACCES cause. None of this proves live Trae detach, telemetry, cancellation or recovery, independent Codex/Claude demonstrations, or rollback restore.
 
 Dependent work after acceptance: close conditional Kata adapter18 as deferred under accepted evaluation17; evaluate jj19 and decide optional backend25; prove bounded isolated live Trae20 before adapter21; run independent Codex22 and Claude23 lead demonstrations; then perform upgrade/backup/restore24 including fresh external recovery epoch and post-backup orphan reconciliation before opening dispatch/admission/GC. Existing ticket dependencies and acceptance contracts remain authoritative. No provider request or restore drill has been authorized by this evidence alone; existing owner authority and recorded finite live envelope still apply.
+
+
+Current repair591 evidence supersedes the pending-authority status of the historical paragraphs above. The owner approved the role repair and subsequently authorized full-goal execution. Both episode summary queries now enforce role equality before ordering and limits. Two public regressions passed after meaningful disclosure/pagination reds. Root verified48 source files,130 frozen files and two exact Git-base preimages; retained76 public proof files. Author matrix:174 parent passes plus one separately nested child, zero failures, eight owned subprocess entrypoints ignored. Standards and Spec PASS; root gate11 exit0 with19 cleanup records. Source commit e6676bf matches all48 frozen hashes. Whole-branch611 remains pending; passing conformance and tests do not yet accept ticket16.

@@ -1,8 +1,8 @@
 {
-  "observed_at": "2026-10-03T00:21:36.427125+00:00",
-  "status": "retained evidence inventory, not acceptance; role-isolation591 rejection unresolved",
-  "candidate": "9055b9976d429229e5d42b2e86eb04dbc30da5bf",
-  "pending_review_job": null,
+  "observed_at": "2026-10-03T05:53:36.742628+00:00",
+  "status": "retained evidence inventory, not acceptance; role repair verified, whole-branch611 pending",
+  "candidate": "e6676bf6c6d05ab850ddde17aa71f6932be495f5",
+  "pending_review_job": 611,
   "last_review_job": 591,
   "files": [
     {
@@ -4974,8 +4974,518 @@
       "path": "worktree-tips-before-review555-repairs.json",
       "bytes": 12563,
       "sha256": "de92d085e54e186cd8c8e47fb1d398294e37d6485b2bfbbe041b74bfe45fd9d8"
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/diff-check.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/fmt.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-public-summary.log",
+      "sha256": "d9ec87ff2bab832027d0ae934d230566f38b5e683b1ff52c80847fdb7ddd0d99",
+      "bytes": 18456
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/cleanup.json",
+      "sha256": "02903afac1335040f6f9b666a1fd3999aa7f0458795a2f858cf3248191f2a0bd",
+      "bytes": 183
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-episode-operation.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-episode-operation.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-episode-operation.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-execution.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-execution.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/inspect-execution.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/verifier-status.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/verifier-status.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role/verifier-status.stdout",
+      "sha256": "6f12ecc0d4dea8f5ded68e7e3665e8ef2751011c82c41fb3b86ac31793cb334c",
+      "bytes": 523
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/cleanup.json",
+      "sha256": "1bbeaba3570bfce657f82bb667a68a3273595a339d027a4d8bc46547296440ce",
+      "bytes": 1635
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/unauthorized-only.json",
+      "sha256": "8987fd74291e0ef64e5e1813ecaf2a05c16840831f040e8e1085d9aba6dfc0a0",
+      "bytes": 677
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-31.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-31.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-31.stdout",
+      "sha256": "a38b31ef85f3e490965ddd8e604e995d235a39a3e3bdb68b232081038be88d39",
+      "bytes": 23185
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-32.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-32.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-32.stdout",
+      "sha256": "e61b00a4b9e9329b45698e7733d37e4544961c2c099ca8774d9acbe4b2d669d5",
+      "bytes": 23916
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-33.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-33.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full-service/same-principal-role-boundary/visible-boundary-33.stdout",
+      "sha256": "406f67cfa5868781620574695b8295c925544e7a1f5b0ddae5e64330f1e1e0af",
+      "bytes": 23914
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/full.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/cleanup.json",
+      "sha256": "62919420bd9f00890392777f0745afc5dea83d2b656c9018266f8bc2b644f945",
+      "bytes": 183
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-episode-operation.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-episode-operation.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-episode-operation.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-execution.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-execution.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/inspect-execution.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/verifier-status.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/verifier-status.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role/verifier-status.stdout",
+      "sha256": "0365fb695204e00a4690853d98afd177af83ee471647e87ba03b6bddffde5d73",
+      "bytes": 523
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/cleanup.json",
+      "sha256": "f06b33e7321b56851e34708b61e0e7f238da0d088f1525b8636fdf98d32e18ca",
+      "bytes": 1635
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/unauthorized-only.json",
+      "sha256": "53227168f0bc98fa5cb48eba3fc818d427f1cd31565e7153ae994c9fb41ee569",
+      "bytes": 677
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-31.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-31.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-31.stdout",
+      "sha256": "43703ab60906e2fa2684328a9de470b4998dc45d04ba052e06cf3b179bc35493",
+      "bytes": 23185
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-32.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-32.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-32.stdout",
+      "sha256": "78de03559aae2e5f2e5b47934339e34892acf1417a4a12756eb5675fd92850bd",
+      "bytes": 23916
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-33.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-33.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green-service/same-principal-role-boundary/visible-boundary-33.stdout",
+      "sha256": "1c47c54bf9603ccd5454d27c7593c1fa127e011964df6cc45c5e6006ffbf8c19",
+      "bytes": 23913
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/green.log",
+      "sha256": "94c0b8013ebe0c78ef40fd387bfd6b133f5e75d1c791eece009b45cbaa71fe04",
+      "bytes": 594
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/cleanup.json",
+      "sha256": "e004e7643cedc64332ec897fa84ef3d24f606ade167d95637b563cefc43e7265",
+      "bytes": 183
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/fixture-removed.json",
+      "sha256": "6cc414d30b7c369c1e36ec58d6404909878ba54f9bb5abdeb613d4d871c48734",
+      "bytes": 16
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-episode-operation.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-episode-operation.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-episode-operation.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-execution.exit",
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-execution.stderr",
+      "sha256": "5b2a06ffd4266592e3ee4b5b25c51bb1682ba182286417216a4e75b04faf8d26",
+      "bytes": 24
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/inspect-execution.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/verifier-status.exit",
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+      "bytes": 1
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/verifier-status.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both-service/same-principal-role/verifier-status.stdout",
+      "sha256": "e728a54ad3742be4eddbff5923fd1efbb2aad8a25643a06a9768c6a27f2ff26f",
+      "bytes": 1387
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-both.log",
+      "sha256": "721482e7dce289b7577c76f0313cb56191766d4ad2e716ba6a9b922af790d2e4",
+      "bytes": 2489
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-boundary2-service/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-boundary2-service/same-principal-role-boundary/visible-boundary-31.stdout",
+      "sha256": "3363e9b4ca73b52e309425acc3d9aeadb7cd20c5b40e8363b206822450b8d7e1",
+      "bytes": 24054
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-boundary2.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c",
+      "bytes": 4
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/red-boundary2.log",
+      "sha256": "f7d494f992ae2388fa17102ccad46117929fda9ae9550389d1be82e57d3df5f6",
+      "bytes": 927
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/strict.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-portable-proofs/public-proof/strict.log",
+      "sha256": "4e04cd3bf07127b1195662e1e512967c5f5d16157c4fb83a6ecc8cc080cca9c0",
+      "bytes": 180
+    },
+    {
+      "path": "review591-portable-proofs/public-proof-index.json",
+      "sha256": "55502d3d70881b29186d0e9124616d1720953d720b122d05272c303a57a38e89",
+      "bytes": 15345
+    },
+    {
+      "path": "review591-portable-proofs/repair.patch",
+      "sha256": "eebc19a3c9e184171a88bb3e4f3c3c78af61bf94bc04e79698c37074b8dc52a9",
+      "bytes": 17919
+    },
+    {
+      "path": "review591-portable-proofs/source-manifest.json",
+      "sha256": "e7ba9ffdbe0cfba406c63be2f7e12c6fa196747763139f555876ed35f5ea2b18",
+      "bytes": 12764
+    },
+    {
+      "path": "review591-portable-proofs/terminal-cleanup.json",
+      "sha256": "d5792593190780bd0a866f6cd12d45a2b74ce9856a83d9a56bd4fea49f3b7364",
+      "bytes": 2068
+    },
+    {
+      "path": "review591-root-gate11/classification.json",
+      "sha256": "c15bd45816ed11989afa1ffdf33300423751727cc9fb4e716cef9729f8b24271",
+      "bytes": 206
+    },
+    {
+      "path": "review591-root-gate11/cleanup/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    },
+    {
+      "path": "review591-root-gate11/cleanup/historical/cleanup.json",
+      "sha256": "ed66e20d1bd28cdf2457541fd5d9f4cb476a79eb22b86d114b92f2cd6b6213fe",
+      "bytes": 183
+    },
+    {
+      "path": "review591-root-gate11/cleanup/issuer-expiry/cleanup.json",
+      "sha256": "733a0fc25f640b6a258b224b766bfd5ced5639558ca668e3d160ec6b5987a9ef",
+      "bytes": 183
+    },
+    {
+      "path": "review591-root-gate11/cleanup/kernel16-binary-output-3721af60-9c67-4373-b016-9126940690f3/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f",
+      "bytes": 74
+    },
+    {
+      "path": "review591-root-gate11/cleanup/known/cleanup.json",
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414",
+      "bytes": 105
+    },
+    {
+      "path": "review591-root-gate11/cleanup/legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68",
+      "bytes": 93
+    },
+    {
+      "path": "review591-root-gate11/cleanup/legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d",
+      "bytes": 92
+    },
+    {
+      "path": "review591-root-gate11/cleanup/merged-journals/cleanup.json",
+      "sha256": "4e262684206b6d5a7bbdb2ee860116dec5f9ee30d6f54b2e29b0999a5f587b12",
+      "bytes": 1503
+    },
+    {
+      "path": "review591-root-gate11/cleanup/monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/overflow/cleanup.json",
+      "sha256": "97f85f39390cae7c1cb0fa6b64dbc5df3a0d66fea58c36d0a7726cbb349da8a9",
+      "bytes": 1635
+    },
+    {
+      "path": "review591-root-gate11/cleanup/review580-crash/cleanup.json",
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/review580-fast-crash/cleanup.json",
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/review584-crash-rotate/cleanup.json",
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2",
+      "bytes": 75
+    },
+    {
+      "path": "review591-root-gate11/cleanup/same-principal-role/cleanup.json",
+      "sha256": "c8bc045a5fa538025511c08856ecfd92d109ee3b65f9156ab72ccc16863194be",
+      "bytes": 183
+    },
+    {
+      "path": "review591-root-gate11/cleanup/same-principal-role-boundary/cleanup.json",
+      "sha256": "25b00d79b0de8d6c2e89bb8c27421dde1196b6ce76fb8a5bfa878f162efc341a",
+      "bytes": 1635
+    },
+    {
+      "path": "review591-root-gate11/cleanup/unknown-effect/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    },
+    {
+      "path": "review591-root-gate11/cleanup/unknown-usage/cleanup.json",
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda",
+      "bytes": 78
+    },
+    {
+      "path": "review591-root-gate11/run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "review591-root-gate11/run.log",
+      "sha256": "39f4ea81afb9f4d324a86b614118c11805aa30ad676207b649293acc84f7493e",
+      "bytes": 32130
     }
   ],
-  "file_count": 994,
-  "total_bytes": 10637885
+  "file_count": 1096,
+  "total_bytes": 10921373
 }

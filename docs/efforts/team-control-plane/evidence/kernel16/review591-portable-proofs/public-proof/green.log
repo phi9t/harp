@@ -1,0 +1,10 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review591-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.86s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 2 tests
+test same_principal_cross_role_episode_summaries_agree_with_exact_denial ... ok
+test same_principal_role_filter_precedes_thirty_two_row_bounds ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 6.62s
+

@@ -1,0 +1,235 @@
+Real owned PostgreSQL and Temporal; run-temporal.sh --offline --all-targets; terminal exit0
+     Running unittests src/lib.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-a29f28cf14a65847)
+running 9 tests
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test temporal::wait_wire_tests::typed_same_uuid_preserves_both_protocols_through_rollover_payload ... ok
+test temporal::wait_wire_tests::v1_admission_wait_roundtrips_without_changing_wire_shape ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running unittests src/main.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-3c3505c360800375)
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/artifacts.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/artifacts-6b4cc15f8fc222e4)
+running 11 tests
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+test verifier_credential_has_no_lead_execution_authority ... ok
+test repeated_failed_report_hash_requires_each_exact_charged_verification_cycle ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.29s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+running 30 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once ... ok
+test cancelled_prepared_episode_retains_current_workflow_progress ... ok
+test colliding_episode_and_admission_waits_drive_both_protocols ... ok
+test confirmed_episode_effect_cannot_borrow_unused_workspace_stop ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test owned_nested_cancel_worker ... ignored, owned native runtime process; parent controls lifetime
+test paused_prepared_episode_remains_guarded_workflow_progress ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test ready_unknown_episode_cannot_authorize_an_unrelated_physical_launch ... ok
+test review571_cancelled_unallocated_verifier_releases_capacity_once ... ok
+test review571_cancelled_unallocated_worker_continuation_releases_separate_capacity_once ... ok
+test review571_imported_worker_unresolved_yield_requires_quarantine ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+test review571_old_public_yield_then_cancel_must_not_refund_twice ... ok
+test review571_persisted_old_public_yield_claim_survives_repaired_cancel ... ignored, requires exact pre-repair baseline server binary
+test review571_native_cancel_cleans_bound_work_after_work_revocation ... ok
+test review571_unresolved_yield_execution_requires_explicit_quarantine ... ok
+test review571_uncertain_allocated_sibling_retains_capacity ... ok
+test review580_owned_continuation_usage_worker ... ignored, owned singleton native transport subprocess
+running 1 test
+test review580_allocated_continuation_history_does_not_hold_original_unbound_claim ... ok
+test review580_owned_continuation_usage_worker ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 29 filtered out; finished in 2.11s
+test review580_unbound_original_and_allocated_continuation_hold_unknown_usage ... ok
+test task_free_lead_unknown_episode_cannot_authorize_new_physical_work ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+test unbound_refund_allows_capacity_one_replacement_without_budget_refund ... ok
+test result: ok. 27 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 12.77s
+     Running tests/assembled_capacity.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_capacity-4bca225ae55533d0)
+running 4 tests
+test capacity_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test stopped_capsule_unknown_effect_retains_physical_capacity ... ok
+test stopped_capsule_unknown_usage_retains_physical_capacity ... ok
+test two_running_capsules_refuse_third_and_cancel_deadline_refund_once ... ok
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 33.05s
+     Running tests/assembled_kernel.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_kernel-464fe3bd7af85e68)
+running 4 tests
+test authenticated_operator_status_is_a_public_cli_view_without_execution_ownership ... ok
+test lead_episode_allocates_a_real_workspace_without_synthetic_task_or_worker_authority ... ok
+test operator_cli_cancels_running_capsule_with_nested_background_children ... ok
+test operator_cli_inspects_cancels_reconciles_and_releases_independently_owned_execution ... ok
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.83s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+running 13 tests
+test failed_known_legacy_effect_with_unknown_usage_remains_discoverable ... ok
+test legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only ... ok
+test alternate_current_grant_cannot_make_expired_issuing_execution_current ... ok
+test merged_journals_share_one_bound_and_preserve_colliding_operation_ids ... ok
+test operator_historical_records_require_current_lead_and_recovery_epoch_authority ... ok
+test review580_fast_monitor_crash_retains_exact_launch_stop_certificate ... ok
+test review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result ... ok
+test review580_surviving_monitor_thread_group_retains_capacity ... ok
+test review584_crash_then_rotate_finalizes_historical_execution ... ok
+test same_principal_cross_role_episode_summaries_agree_with_exact_denial ... ok
+test monitor_finalizes_large_output_under_owned_measured_memory_limit ... ok
+test same_principal_role_filter_precedes_thirty_two_row_bounds ... ok
+test thirty_three_actual_operator_records_bound_summary_and_allow_omitted_exact_lookup ... ok
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 27.78s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+running 57 tests
+test actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate ... ok
+test actual_candidate_and_measured_report_integrity_blocks_acceptance ... ok
+test actual_sealed_packet_and_write_scope_resist_workload_tampering ... ok
+test assembled_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test assembled_sdk_worker ... ignored, owned SDK subprocess; parent fixture controls lifetime
+test broker_process_restart_preserves_owned_work_and_bounded_operator_exact_lookup ... ok
+test actual_legacy_gateway_restart_safely_quarantines_without_another_start ... ok
+test canonical_mission_progress_drives_planning_episode_journals ... ok
+test confirmed_native_effect_without_usage_observation_retains_reservation ... ok
+test cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate ... ok
+test episode_native_lost_reply_holds_physical_capacity ... ok
+test execution_launch_does_not_extend_the_canonical_episode_deadline ... ok
+test delayed_monitor_cannot_borrow_another_live_grant_after_issuer_expiry ... ok
+test foreign_legacy_controller_cannot_attest_or_acquire_retained_store ... ok
+test failed_current_gate_fences_preallocated_worker_without_charging_new_work ... ok
+test legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion ... ok
+test legacy_confirmed_start_without_measured_usage_retains_reservation ... ok
+test missing_assembled_verification_policy_denies_allocation_before_filesystem_effects ... ok
+test original_registered_launch_survives_own_unknown_before_monitor ... ok
+test owned_episode_usage_worker ... ignored, owned physical-runtime subprocess; parent fixture controls lifetime
+test physical_monitor_rechecks_current_scope_generation_and_epoch ... ok
+test genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch ... ok
+test public_all_episode_roles_exhaust_the_approved_finite_budget_without_double_charge ... ok
+test public_episode_native_start_journal_has_no_synthetic_admission ... ok
+test postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate ... ok
+test public_operator_inspects_exact_episode_journal_without_execution_ownership ... ok
+test public_operator_reconciles_registered_live_native_operation_without_start_or_transfer ... ok
+test public_paused_gateway_claim_performs_no_runtime_rpc ... ok
+test public_failed_verification_repairs_are_authorized_idempotent_and_bounded ... ok
+test public_status_discovers_genuine_legacy_unknown_effect_and_unknown_usage ... ok
+test public_registered_legacy_usage_query_requires_exact_receipt ... ok
+test public_takeover_reconciles_actual_sdk_crash_after_effect_without_second_start ... ok
+test public_takeover_rejects_native_fifo_without_blocking_or_transferring_authority ... ok
+test public_takeover_transfers_only_to_registered_live_sdk_transport ... ok
+test public_takeover_refuses_unknown_inventory_and_unproven_processes ... ok
+test real_sdk_cancelled_native_prepared_wait_retains_current_workflow ... ok
+test real_sdk_planning_episode_dispatches_its_own_capsule ... ok
+test real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel ... ok
+test registered_launch_rejects_wrong_argv_and_foreign_origin_and_stored_argv ... ok
+test registered_sdk_usage_query_requires_exact_measured_receipt ... ok
+test registered_takeover_refuses_actual_running_unfinished_workload ... ok
+test real_temporal_assembled_vertical ... ok
+test review580_actual_large_retained_log_allows_authenticated_takeover ... ok
+test review571_completed_verifier_provenance_survives_producer_expiry ... ok
+test review580_recovered_real_verifier_cannot_verify_or_accept_exact_candidate ... ok
+test review580_retained_monitor_result_without_completion_supports_verify_accept ... ok
+test runtime_registration_authenticates_before_observing_process_or_filesystem ... ok
+test stopped_capsule_with_unknown_runtime_effect_keeps_capacity ... ok
+test successful_invalid_utf8_verifier_output_supports_verify_and_accept ... ok
+test task_free_lead_registered_original_unknown_before_monitor_launches_once ... ok
+test trusted_exit_result_rejects_misleading_stdout_success_marker ... ok
+test unknown_episode_blocks_monitor_after_controller_claim ... ok
+test review580_takeover_preserves_raw_log_security_and_receipt_size_controls ... ok
+test unknown_episode_blocks_preallocated_verifier_launch ... ok
+test unknown_legacy_usage_blocks_continuation_before_budget_charge ... ok
+test unknown_legacy_usage_blocks_monitor_after_controller_claim ... ok
+test unknown_legacy_usage_blocks_previously_admitted_verifier_launch ... ok
+test result: ok. 54 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 122.76s
+     Running tests/gateway.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/gateway-344beed7e3e5d6d2)
+running 4 tests
+test fault_runtime_creates_an_effect_for_every_repeated_mutation_rpc ... ok
+test fault_runtime_surfaces_unexpected_subprocess_failure ... ok
+test gateway_crash_child ... ok
+test durable_gateway_contract ... ok
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.17s
+     Running tests/kernel.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/kernel-a8df179696d69707)
+running 16 tests
+test admission_is_durable_atomic_and_idempotent ... ok
+test a_cached_command_never_restores_wider_authority ... ok
+test command_snapshots_respect_task_scopes ... ok
+test authority_expiry_scopes_generations_and_epoch_rotation ... ok
+test dependencies_change_spec_digest_and_retain_immutable_history ... ok
+test dependencies_validation_and_immutable_approval ... ok
+test distinct_assignments_capacity_and_cumulative_budget ... ok
+test event_sequences_have_typed_aggregate_namespaces ... ok
+test episode_budget_and_competing_capacity_are_independent_limits ... ok
+test http_auth_forged_fields_and_reconnect ... ok
+test missing_resource_rejection_stays_rejected_after_resource_appears ... ok
+test rejected_command_is_durable_and_cannot_be_reused ... ok
+test rejected_snapshot_retains_its_original_task_scope ... ok
+test schema_and_transport_fail_closed ... ok
+test token_expires_while_waiting_for_the_transaction_lock ... ok
+test rollback_at_every_admission_write_stage ... ok
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.19s
+     Running tests/mailbox.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/mailbox-62f37e5d50b24a27)
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.49s
+     Running tests/mailbox_artifacts.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/mailbox_artifacts-c4f343aa47b0f20c)
+running 2 tests
+test executable_serve_registers_configured_artifact_http_and_mcp_seam ... ok
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.84s
+     Running tests/mailbox_delivery.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/mailbox_delivery-9500caf5c58e9f1b)
+running 3 tests
+test bounded_input_batches_advance_without_empty_polling ... ok
+test physical_fault_runtime_repeats_are_not_deduplicated_by_operation_id ... ok
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.32s
+     Running tests/supervisor.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/supervisor-c9beed5c4d9a7f01)
+running 20 tests
+running 1 test
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+running 1 test
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test certified_pid1_whole_group_exit_recovers_without_namespace_inode_signals ... ok
+test crash_create_helper ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+running 1 test
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... ok
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+running 1 test
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... ok
+test repair_current_owner_recovers_execution_after_recovery_epoch_rotation ... ok
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... ok
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... ok
+test repair_schema_guard_precedes_open_and_monitor_effects ... ok
+test repair_symlink_ancestor_rejected_before_any_external_write ... ok
+test repair_worker_principal_must_own_attempt_for_create_and_control ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... ok
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.52s
+     Running tests/temporal.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/temporal-f10feb9922cd1a9b)
+running 8 tests
+test command_identity_contains_operation_family ... ok
+test queued_old_generation_driver_cannot_dispatch_after_close_and_replacement ... ok
+test public_migration_installs_transactional_workflow_registry ... ok
+test real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint ... ok
+test sigkill_fixture_rejects_unexpected_prior_exit ... ok
+test temporal_worker_process ... ignored, child worker process; parent fixture owns lifetime
+test verifier_cannot_suppress_initial_wakeup ... ok
+test real_temporal_recovers_lost_hints_rollover_and_retained_replay ... ok
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 12.18s

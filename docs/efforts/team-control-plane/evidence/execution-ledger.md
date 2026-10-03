@@ -2116,3 +2116,16 @@ Rootfullgate10session32923 terminal0,17cleanuprecords retained. Exactfourfilefin
 Wholebranch591session99070terminal1CHANGESREQUIRED: kernelstatus summaries omitrolefilter for sameprincipal crossrole grants. Rejection retainedbranch591. Repairbudget3/3exhausted; authorread-only assessment assigned. No patch/test/newreviewround or landing; concreteextension scope followsassessment.
 
 Confirmed591 role-isolation finding: sameprincipal grants permitted, summarySQL omitsrole while exactinspect requiresit. Concreteone-round queryfilter/publicsameprincipal+paginationproof proposal recorded20261003-kernel-role-isolation591-proposal.md. Explicitbudgetextension request pending; automaticgoalcontinuation is not an approval. No patch/runtime/landing launched.
+
+User approved requestedone-round extension. Concreteapprovedcontract recorded, fresh cleancontextauthorassigned kernel16_review591_author at3e2622e. Publicsameprincipalrole/paginationredgreen andfullgates required; no implicitunlimitedbudget or landing.
+
+
+### Repair591 frozen candidate verified
+
+Root verified all 48 current source files, all 130 frozen files, the exact patch and two Git-base preimages. Retained 76 selected public proof files plus four metadata/patch records. The full matrix records 174 parent-suite passes, zero failures and eight owned subprocess entrypoints ignored; its separately nested child records one pass. Independent Standards and Spec reviews are pending. No source integration or landing has occurred. The owner’s full-goal authorization supersedes routine repair permission stops; see `decisions/20261003-owner-authorizes-full-goal-execution.md`.
+
+
+Repair591 conformance: Standards PASS (one nonblocking fixture duplication heuristic), Spec PASS (76 public hashes independently checked). Exact frozen patch integrated into root; all48 source hashes match. Root gate11 launched as session13545 and observed live in the required real PostgreSQL/Temporal gate. Source commit, branch review and landing remain pending.
+
+
+Root gate11 session13545 terminal exit0; all repository checks green. Retained19 cleanupJSON records and exact raw run/exit. All48 source hashes reverified before sourcecommit e6676bf6c6d05ab850ddde17aa71f6932be495f5 and again against committed Git blobs. Whole-branch review session86801 launched against main; pending. Main remains unchanged; ticket16 acceptance and landing pending.

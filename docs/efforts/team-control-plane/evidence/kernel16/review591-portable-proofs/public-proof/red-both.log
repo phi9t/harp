@@ -1,0 +1,26 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review591-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.04s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 2 tests
+
+thread 'same_principal_role_filter_precedes_thirty_two_row_bounds' (1203513) panicked at tests/support/assembled.rs:281:275:
+called `Result::unwrap()` on an `Err` value: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test same_principal_role_filter_precedes_thirty_two_row_bounds ... FAILED
+
+thread 'same_principal_cross_role_episode_summaries_agree_with_exact_denial' (1203512) panicked at tests/assembled_operator.rs:1463:9:
+assertion `left == right` failed: both cross-role episode summary collections must be empty
+  left: (Array [Object {"attempt": String("f937a84d-19ed-4de9-af55-99096107de4c"), "candidate_artifact": Null, "capacity_held": Bool(true), "capacity_released": Bool(false), "deadline": Null, "desired_cancel": Bool(false), "episode": String("04f7d6fd-59ed-42bd-af08-4c2444f5baec"), "id": String("9c3f161f-050e-4e40-bae2-6e9858db279e"), "mission": String("4d3626b1-5622-469c-9cae-2e9477922b41"), "observed_state": String("ready"), "quarantine_reason": Null, "role": String("worker"), "task": String("3d49df40-cc97-4cc5-b1b7-a6dc5eb70712")}], Array [Object {"attempt": String("f937a84d-19ed-4de9-af55-99096107de4c"), "capacity_held": Bool(true), "effect_id": Null, "episode": String("04f7d6fd-59ed-42bd-af08-4c2444f5baec"), "execution": String("9c3f161f-050e-4e40-bae2-6e9858db279e"), "id": String("5f4741d0-84e5-494c-9e2b-9f0ecc5d97a5"), "kind": String("start"), "mission": String("4d3626b1-5622-469c-9cae-2e9477922b41"), "protocol": String("episode_native"), "state": String("prepared"), "task": String("3d49df40-cc97-4cc5-b1b7-a6dc5eb70712"), "thread_id": Null, "turn_id": Null, "usage": Object {"kind": String("unknown")}}])
+ right: (Array [], Array [])
+test same_principal_cross_role_episode_summaries_agree_with_exact_denial ... FAILED
+
+failures:
+
+failures:
+    same_principal_cross_role_episode_summaries_agree_with_exact_denial
+    same_principal_role_filter_precedes_thirty_two_row_bounds
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.89s
+
+error: test failed, to rerun pass `--test assembled_operator`

@@ -51,3 +51,10 @@ Final repair584 has full author matrix173/0/8 and strict/fmt/diff0, verified48-f
 Current source9055b9976d429229e5d42b2e86eb04dbc30da5bf has exactfinalrepair3/3; author173/0/8 strict0 bothconformancePASS rootgate10terminal0/17cleanuprecords/all48Gitblobmatches. Wholebranch591 session99070 live; no acceptance or landing. Currenthandoff/completion row refreshed; historicalrejections retained. Fullgoalstillactive.
 
 Finalwholebranch591 rejected9055b99 with oneMedium role-isolation finding in episode status summaries. Existing3/3repairbudget exhausted; read-only validity assessment assigned, no furtherpatch/landing authorized by this budget. Mainunchanged; fullgoalincomplete.
+
+Owner explicitly approved oneadditionalbounded591repair/reviewround. Approval recorded20261003-kernel-role-isolation591-approved-extension.md; prior3/3historynotreset. Fresh isolatedkernel16_review591_author solewrites /tmp/corenius-kernel16-review591-author at3e2622e source905same; ownsCargo/PG/Temporal. Fullgoalincomplete; no mainline movement.
+
+
+### Repair591 frozen candidate verified
+
+Root verified all 48 current source files, all 130 frozen files, the exact patch and two Git-base preimages. Retained 76 selected public proof files plus four metadata/patch records. The full matrix records 174 parent-suite passes, zero failures and eight owned subprocess entrypoints ignored; its separately nested child records one pass. Independent Standards and Spec reviews are pending. No source integration or landing has occurred. The owner’s full-goal authorization supersedes routine repair permission stops; see `decisions/20261003-owner-authorizes-full-goal-execution.md`.

@@ -7,6 +7,38 @@
   ],
   "rootcause": "summarySQL lacksrolewhileexactinspectchecksrole;testprincipalsdistinct",
   "proposal": "decisions/20261003-kernel-role-isolation591-proposal.md",
-  "budget": "exhausted3/3; oneadditionalboundediterationrequested",
-  "status": "awaitingownerdecision; noimplementation"
+  "budget": "oneadditionalround; prior3/3notreset",
+  "status": "approved; isolatedworktreecreated, authorassignmentnext",
+  "owner_extension": "explicit approved oneadditionalboundedround",
+  "worktree": "/tmp/corenius-kernel16-review591-author",
+  "base": "3e2622ecdb860e656e80f3023da8738e90fe4ac4",
+  "root_freeze_verification": {
+    "source_files": 48,
+    "freeze_files": 130,
+    "exact_git_preimages": 2,
+    "patch_sha256": "eebc19a3c9e184171a88bb3e4f3c3c78af61bf94bc04e79698c37074b8dc52a9",
+    "retained_public_files": 76,
+    "retained_metadata_files": 4,
+    "parent_test_passed": 174,
+    "owned_subprocess_entrypoints_ignored": 8,
+    "nested_child_passed": 1,
+    "reviews": {
+      "Standards": "PASS; nonblocking helper duplication heuristic",
+      "Spec": "PASS; 175 passes including separately nested child, 174 parent"
+    },
+    "integration": "exact patch applied; all48 root source hashes match"
+  },
+  "root_gate": {
+    "session": 13545,
+    "status": "PASS",
+    "terminal_exit": 0,
+    "retained_cleanup_records": 19
+  },
+  "source_commit": "e6676bf6c6d05ab850ddde17aa71f6932be495f5",
+  "committed_source_files_verified": 48,
+  "whole_branch_review": {
+    "session": 86801,
+    "status": "running",
+    "base": "main"
+  }
 }
