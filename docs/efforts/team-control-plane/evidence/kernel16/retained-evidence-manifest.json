@@ -1,6 +1,6 @@
 {
   "observed_at": "2026-10-03T06:56:41.271967+00:00",
-  "status": "retained evidence verified; bounded kernel accepted; landing pending",
+  "status": "verified retained evidence; bounded kernel accepted and landed264756e",
   "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d",
   "pending_review_job": null,
   "last_review_job": 617,
@@ -4744,6 +4744,161 @@
       "path": "current-worktree-tips.json",
       "bytes": 999,
       "sha256": "620991fedcb960b102de01d64049dac530aeaab6399d9af7eb775cff1e171367"
+    },
+    {
+      "path": "final-landing/result.json",
+      "bytes": 311,
+      "sha256": "258af29af3f4674d9cc88e4ddb6d7e7fdca945c2b501448c85c5d74c70869a8b"
+    },
+    {
+      "path": "final-landing/run.log",
+      "bytes": 32927,
+      "sha256": "c7639128fd311426da6a5dbd6556e2b1d074ab8bbfd3c96a3c3a65c0a4164167"
+    },
+    {
+      "path": "final-landing/service/cleanup.json",
+      "bytes": 34,
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "final-landing/service/historical/cleanup.json",
+      "bytes": 183,
+      "sha256": "652a70beb7a3bee88ba5b0959ec0669953c3c1c735c8d6e932669ed7d808f2ed"
+    },
+    {
+      "path": "final-landing/service/issuer-expiry/cleanup.json",
+      "bytes": 183,
+      "sha256": "448ac4aed486ce709f5fc06f3e870f381d9aedcdd3243b501a07fa5b717b2d0f"
+    },
+    {
+      "path": "final-landing/service/kernel16-binary-output-ba513986-67e5-414c-8e63-6dee3cd9a16f/cleanup.json",
+      "bytes": 74,
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f"
+    },
+    {
+      "path": "final-landing/service/kernel16-review611-cached-4aacb86a-29d0-4e5a-a007-11be350e29b0/cleanup.json",
+      "bytes": 161,
+      "sha256": "58dcb0d7f4323c21e976f06522e1f362df81a1290c0f2f633308faa52d409a74"
+    },
+    {
+      "path": "final-landing/service/kernel16-review611-environment-95adb627-8210-4d8e-bb17-6aff861189bd/cleanup.json",
+      "bytes": 161,
+      "sha256": "b71982e0d47a56bc585a540cfbba3db110699f5572c260c70fa5b93e629b32f1"
+    },
+    {
+      "path": "final-landing/service/kernel16-review611-suite-b2965d3e-74d6-4ad0-b9a7-23d0958c2af7/cleanup.json",
+      "bytes": 161,
+      "sha256": "ad0662ba165233635d8ca0f45ddb319baf14778bf8e1472575607224c4f3b102"
+    },
+    {
+      "path": "final-landing/service/known/cleanup.json",
+      "bytes": 105,
+      "sha256": "18a01f03507fb428d4fe4ca851c6bbd338f478b1cbcdea7159a7a0dc81fe0414"
+    },
+    {
+      "path": "final-landing/service/legacy-quarantined/cleanup.json",
+      "bytes": 93,
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68"
+    },
+    {
+      "path": "final-landing/service/legacy-running/cleanup.json",
+      "bytes": 92,
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d"
+    },
+    {
+      "path": "final-landing/service/merged-journals/cleanup.json",
+      "bytes": 1503,
+      "sha256": "7fd5c60241579f3d07423fea0a22aa9355969b4a7671f5cb6d5fc2bd63d24fa0"
+    },
+    {
+      "path": "final-landing/service/monitor-memory-1048576-read-error-false/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "final-landing/service/monitor-memory-1048576-read-error-true/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "final-landing/service/monitor-memory-134217728-read-error-false/cleanup.json",
+      "bytes": 75,
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "final-landing/service/overflow/cleanup.json",
+      "bytes": 1635,
+      "sha256": "c58aebfaf0374c48b2b718fa87ce909bb6366c72f8256ba1334e50db6639ecf1"
+    },
+    {
+      "path": "final-landing/service/review580-crash/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "final-landing/service/review580-fast-crash/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "final-landing/service/review584-crash-rotate/cleanup.json",
+      "bytes": 75,
+      "sha256": "7ec4d1733e4bb078f944298494303bc415fe29523674bfa4f9bd2798465d43f2"
+    },
+    {
+      "path": "final-landing/service/review611-deadline/cleanup.json",
+      "bytes": 103,
+      "sha256": "c518a674a4e3ba95ccbb25c4e4ece16bc5b4d27c371050a9bfe8dcf2e7363ca2"
+    },
+    {
+      "path": "final-landing/service/review611-predeadline-yielded/cleanup.json",
+      "bytes": 103,
+      "sha256": "47bbbb3f41ef8a57cd41d1cc977e17417241bee5d852ef9dc021db9d75244188"
+    },
+    {
+      "path": "final-landing/service/review611-release-before-expiry/cleanup.json",
+      "bytes": 103,
+      "sha256": "06da7e49dca0df95c96c242e4227b7a553719b762720ea94a1560b8678fdf194"
+    },
+    {
+      "path": "final-landing/service/review611-unallocated/cleanup.json",
+      "bytes": 50,
+      "sha256": "25de86ec7f56999b7f012b62d2bec34e895565dc66f4d3b8a0d26f09b4211af7"
+    },
+    {
+      "path": "final-landing/service/review611-uncertain/cleanup.json",
+      "bytes": 128,
+      "sha256": "660d4d4c3be212412b49ec03a40f2005c7f14a35854f0c48eb20ae3d2a2943da"
+    },
+    {
+      "path": "final-landing/service/review611-unreleased/cleanup.json",
+      "bytes": 95,
+      "sha256": "7d7312e0e037fb30d90c3b2ae330f9d13e9d4d666225bd77ac681af748237b39"
+    },
+    {
+      "path": "final-landing/service/review611-yielded/cleanup.json",
+      "bytes": 103,
+      "sha256": "6a18b8df6c455c9a830a692bbfe228d81c20dd85a1f53993f9991d9a6ebbb032"
+    },
+    {
+      "path": "final-landing/service/same-principal-role-boundary/cleanup.json",
+      "bytes": 1635,
+      "sha256": "7590edf9e8e278ca37c1406645e26ad57a10801d008a442b5f1a32fcd2a63b74"
+    },
+    {
+      "path": "final-landing/service/same-principal-role/cleanup.json",
+      "bytes": 183,
+      "sha256": "95b33bbc641919c8dfe8f0a06da59fa55d2e103d6409ddfde04888986d455f4d"
+    },
+    {
+      "path": "final-landing/service/unknown-effect/cleanup.json",
+      "bytes": 78,
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
+    },
+    {
+      "path": "final-landing/service/unknown-usage/cleanup.json",
+      "bytes": 78,
+      "sha256": "474aa8bc7b4232677dab83b6424d8be209a9602b2407a6ed9f8813ab7cdc0fda"
     },
     {
       "path": "inventory-repair/full-service.log",

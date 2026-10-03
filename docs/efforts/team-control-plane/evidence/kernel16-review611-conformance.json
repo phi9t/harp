@@ -1,5 +1,5 @@
 {
-  "status": "bounded kernel accepted; exact-tip detached landing gate pending",
+  "status": "bounded kernel accepted and main fast-forward landed after fresh detached exact-tip gate",
   "base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
   "patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
   "source_count_verified": 48,
@@ -35,7 +35,7 @@
   },
   "limitation": "Failed1813 fixture remains unresolved quarantine; missing PID/database shutdown proof. No cleanup/flake claim.",
   "accepted": true,
-  "landed": false,
+  "landed": true,
   "root_gate": {
     "session": 46372,
     "exit": 0,
@@ -48,5 +48,11 @@
     "exit": 0,
     "verdict": "PASS no issues found",
     "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d"
+  },
+  "landing": {
+    "session": 91313,
+    "exit": 0,
+    "tip": "264756edd550225449202b6f20ac4b560808d14e",
+    "main_source_hashes_verified": 48
   }
 }

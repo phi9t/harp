@@ -1,8 +1,8 @@
 # 18 kata-adapter: Optional approved-planning and projection adapter
 
 Type: task
-Status: open
-Owner:
+Status: resolved
+Owner: codex-lead
 Blocked by: 16, 17
 Claimed:
 Label: implementation:planned
@@ -25,11 +25,19 @@ No shared-table coupling, distributed-transaction claim or custom issue UI.
 
 ## Acceptance
 
-- [ ] Establish a failing public behavioral fixture for the required outcome.
-- [ ] Implement the smallest slice and record fresh passing evidence.
-- [ ] Lose Kata availability and acknowledgments, duplicate projection commands, edit admitted issue content and close an unverified issue. Broker recovery continues; no implicit assignment, acceptance or new revision.
-- [ ] Standards and Spec reviews have no unresolved blocking finding.
-- [ ] Record artifact/run IDs, limitations and handoff to dependent tickets.
+- [x] Accepted evaluation17 records the explicitly approved deferred decision.
+- [x] Kernel16 prerequisite is accepted and landed; retain Git planning boundary.
+- [x] No Kata adapter or adoption is claimed; limitations and future adoption obligations are recorded.
+
+## Deferred scope
+
+The following original adoption-only criteria are not applicable to the selected deferred path:
+
+- Public failing behavioral fixture and smallest implementation slice with passing evidence.
+- Kata outage/lost acknowledgement, duplicate projection, admitted-content edit and unverified-close fault probes for a production adapter.
+- Standards/Spec review and artifact/run handoff for that adapter implementation.
+
+Evaluation17's actual probes and independent reviews remain evidence for deferral, not proof that a production adapter exists.
 
 ## Execution sequence
 
@@ -49,3 +57,10 @@ Ticket17 recommends and records [defer within the approved first-kernel baseline
 Retain the Git planning boundary; no Kata adapter or adoption work is requested.
 This ticket remains open pending kernel16, then resolves explicitly through its
 conditional deferred path; adoption-only behavioral boxes are not implementation claims.
+- 2026-10-03T07:10:41Z codex-lead: claimed until 2026-10-04T07:10:41Z
+
+
+## Answer
+
+Resolved through the explicit deferred branch. Kernel16 is accepted and landed at `264756edd550225449202b6f20ac4b560808d14e`; ticket17 evaluation/independent reviews and the [approved deferral decision](../decisions/20261001-kata-deferred-first-kernel.md) establish that Kata is optional and deferred. Preserve Git-approved planning and PostgreSQL execution authority. No Kata adapter, migration, hooks or runtime deployment was implemented or adopted. Original adoption-only behavioral criteria above are explicitly not applicable to this conditional deferral; no passing implementation claim is made. Future adoption requires a new explicit decision and the adapter fault proofs.
+- 2026-10-03T07:11:04Z codex-lead: resolved

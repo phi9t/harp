@@ -6,7 +6,7 @@ Objective: the full persistent engineering-team goal in [PLAN.md](PLAN.md),
 including actual PostgreSQL/Temporal kernel, live Trae behavior, independent
 Codex/Claude demonstrations and restore readiness. No scope reduction.
 
-Current checkpoint: kernel16 accepted at source fc0d9b147ab4244af5025314d622c1aebb98fc6d. All48 hashes match freeze; bounded Standards/Spec, rootgate12 and wholebranch617 PASS. Independent verifier adjudicated retained failed1813 quarantine as allowed unresolved outcome, with current privileged namespace inventory but no historical shutdown claim. Final exact-tip detached gate and fast-forward landing pending. Remaining optional adapters, live Trae, independent leads and restore work preserve the full goal.
+Current checkpoint: kernel16 accepted at source fc0d9b147ab4244af5025314d622c1aebb98fc6d. All48 hashes match freeze; bounded Standards/Spec, rootgate12 and wholebranch617 PASS. Independent verifier adjudicated retained failed1813 quarantine as allowed unresolved outcome, with current privileged namespace inventory but no historical shutdown claim. Final exact-tip detached gate passed and main fast-forwarded to264756edd550225449202b6f20ac4b560808d14e; all48 landed source hashes verified. Remaining optional adapters, live Trae, independent leads and restore work preserve the full goal.
 
 ## Authoritative observations
 

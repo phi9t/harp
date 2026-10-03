@@ -1,6 +1,6 @@
 # Kernel candidate handoff
 
-Status: kernel16 accepted at source fc0d9b1; independent bounded Standards/Spec, root repository gate12 and whole-branch617 passed. Exact-tip detached landing gate pending; not landed.
+Status: kernel16 accepted and landed on main at264756edd550225449202b6f20ac4b560808d14e after a fresh detached exact-tip repository gate. All48 landed source files match the reviewed freeze.
 Commit read: `fc0d9b147ab4244af5025314d622c1aebb98fc6d`.
 
 Current evidence: all48 committed source hashes match the frozen five-file repair; patch SHA c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62. Final ten focused tests, strict Clippy and integrated repository gate12 passed. Public proofs and gate results are retained in kernel16/review611-portable-proofs and kernel16/review611-root-gate12. Earlier paragraphs are historical checkpoints, not current acceptance. Failed full1813 remains an unresolved physical-failure exception. A subsequent fixture inventory discovered retained child PID and namespace identities in Bubblewrap metadata, correcting the earlier broad missing-PID assertion; an independent namespace-survivor audit is pending. Database stop/result observations and process start ticks remain unavailable. Later passes do not establish historical cleanup or a flake.
@@ -25,3 +25,6 @@ Current repair611 checkpoint: source remains isolated and unintegrated at author
 
 
 Final kernel disposition: wholebranch617 terminal0, no issues. The independent verifier confirms current retained quarantine satisfies the allowed unresolved outcome. Elevated process/thread/namespace-fd scan has no matching namespace survivors and no permission blind spot. Historical shutdown, original DB stop/result and historical accounting remain unverified; preserve fixture and prohibit adoption/delete/refund/reuse. Kernel acceptance does not accept live provider, optional adapter, independent lead or restore requirements.
+
+
+Landing verified: actual session91313 terminal0; final detached repository gate passed, main fast-forwarded from1f16415 to264756e. User untracked transcript preserved; no shared rebase/reset/forcepush occurred. Raw gate/landing result retained under kernel16/final-landing/. Current worker follow-ons are isolated jj19 evaluation and synthetic-endpoint Trae prerequisite proof; no paid-provider traffic or live recovery acceptance is inferred.
