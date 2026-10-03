@@ -1,6 +1,6 @@
 # Current completion audit
 
-Audit refreshed: 2026-10-03T17:36:01Z; integration gate pending
+Audit refreshed: 2026-10-03; gate82804 PASS; wholebranch630 rejects history export
 
 Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). Corenius only; no scope reduction. Kernel acceptance is not live Trae, independent-lead or restore completion.
 
@@ -8,8 +8,8 @@ Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). 
 
 - Local main264756edd550225449202b6f20ac4b560808d14e contains the accepted kernel and its exact source. Current isolated reference-design contains later preserved evidence and state records awaiting gated integration.
 - Tracker resolves tickets10–18 within their historical scoped accepted/deferred contracts; tickets04 and19–32 remain incomplete. RFC0002 supersedes optional/deferred Kata/jj target via new28/revised25, not by relabeling old evidence.
-- jj19 repair2 has independent Standards/Spec PASS. Root retained all112 selected records and six reviewed source/input bindings with an explicit immutable input map; no current contract was overwritten. Imported actual verification regression passes. Root repo gate and branch acceptance are pending; no jj backend adoption is claimed.
-- v0.2 contracts have independent architectural PASS and an acyclic dependency graph. Independent adversarial Spec gate also passes. Tickets26–32 define exact intent/plan, scope/jobs/epochs, ledger API/cursors, interpreter, physical integration, independent execution and assembled proof; none is implemented or accepted yet.
+- jj19 repair2 has independent Standards/Spec PASS. Root retained all112 selected records and six reviewed source/input bindings with an explicit immutable input map; no current contract was overwritten. Imported actual verification regression passes. Root repo gate82804 passes; branch630 requires final history-export repair3/3. No jj acceptance/backend adoption is claimed.
+- v0.2 contracts have independent architectural PASS and an acyclic dependency graph. Independent adversarial Spec gate also passes. Tickets26–32 define exact intent/plan, scope/jobs/epochs, ledger API/cursors, interpreter, physical integration, independent execution and assembled proof. Ticket26 has begun after a retained actual public API RED; no v0.2 product unit is accepted yet.
 - Trae20's historical four-incarnation/nine-attempt synthetic failure remains spent and retained. Guard repair is offline preparation only, with independent source/runtime admission still required. No paid provider launch is admitted.
 - Repaired STATE machine markers and used the existing effort API: dehydrate committed d1df44739e56b1cf8ebfa1a349f88e377996cbf5; rehydrate returns no drift. Dirty author trees remain separate from this machine snapshot and remain preserved.
 - Codex22, Claude23, live adapter21 and upgrade/restore24 have no completion evidence yet. Handoff and production readiness are not claimed.
@@ -30,14 +30,14 @@ rows remain incomplete; candidate checks do not substitute for reviewed integrat
 | 16: End-to-end durable kernel and operator CLI | [Canonical requirements/acceptance](tickets/16-kernel-proof.md) | Accepted and landed at264756edd550225449202b6f20ac4b560808d14e: exact48-file source freeze, independent Standards/Spec, rootgate12, wholebranch617 and detached exact-tip repository gate. Historical failed1813 remains quarantined under its independent acceptance disposition; no clean historical shutdown claim. |
 | 17: Evaluate Kata and select ledger integration | [Canonical requirements/acceptance](tickets/17-kata-evaluation.md) | Historical accepted/deferred evaluation with exact manifest; RFC0002 first-class-ledger target is implemented separately by28. |
 | 18: Optional approved-planning and projection adapter | [Canonical requirements/acceptance](tickets/18-kata-adapter.md) | Historical explicit deferred disposition; no adapter claimed and no substitute for new28 acceptance. |
-| 19: Evaluate jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Repair2 Standards/Spec PASS, exact retained proofs/source; imported contract GREEN; root gate/branch acceptance pending. Original defer recommendation remains historical. |
+| 19: Evaluate jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Repair2 Standards/Spec PASS, exact retained proofs/source; imported contract GREEN; root gate82804 PASS but630 rejects reachable-history privacy; repair3/3 underway. Original defer recommendation remains historical. |
 | 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 21: Live Trae adapter with supervised recovery | [Canonical requirements/acceptance](tickets/21-trae-adapter.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 22: Codex lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/22-codex-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 23: Claude lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/23-claude-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 24: Upgrade, restore and persistent-use handoff | [Canonical requirements/acceptance](tickets/24-restore-rollout.md) | Incomplete: [source-grounded preflight](research/restore-inventory-preflight.md) identifies missing post-backup inventory, fresh recovery epoch/checkpoint and dispatch/admission/GC closure; no restore drill |
 | 25: qualify preferred jj worker backend | [Canonical requirements/acceptance](tickets/25-jj-backend.md) | Incomplete;19 evaluation is not adoption; scope/job/protected-gate prerequisites and actual backend proof required |
-| 26: admitted intent, acceptance and Plan contracts | [Canonical contract](tickets/26-intent-plan-contracts.md) | Planned; no product implementation or acceptance |
+| 26: admitted intent, acceptance and Plan contracts | [Canonical contract](tickets/26-intent-plan-contracts.md) | Isolated implementation26 underway after real public HTTP RED; no acceptance |
 | 27: durable scopes, jobs and conserved allocation | [Canonical contract](tickets/27-durable-scopes.md) | Planned; no migration/assembly acceptance |
 | 28: first-class Kata work-ledger adapter | [Canonical contract](tickets/28-kata-work-ledger.md) | Planned; historical17/18 proof remains scoped |
 | 29: per-scope stable Plan interpreter | [Canonical contract](tickets/29-scope-plan-interpreter.md) | Planned; accepted13 remains mission/task v1 bridge proof |

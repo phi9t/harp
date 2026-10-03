@@ -5,14 +5,14 @@
 {
   "base_branch": "main",
   "base_commit": "264756edd550225449202b6f20ac4b560808d14e",
-  "dehydrated": "2026-10-03T16:57:32Z",
+  "dehydrated": "2026-10-03T18:15:31Z",
   "effort": "team-control-plane",
   "runs": [],
   "worktrees": [
     {
       "branch": "codex/reference-design",
       "dirty": [],
-      "head": "926b9a35391a6499917436bf9f1cd4e34259668e",
+      "head": "e6602590767f258e99beb304533ee6a5ab4c49d3",
       "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
       "pushed": false
     }
@@ -25,11 +25,11 @@
 
 The user explicitly redirects this session to Corenius alone. The complete goal remains active. Main is `264756edd550225449202b6f20ac4b560808d14e`; root reference-design has captured RFC0002 through `942f037800102f3d786ac547e72f11ab928b50ae` and subsequent work awaiting integration. The accepted kernel is v1 evidence. RFC0002's owner correction selects Kata as first-class work ledger, jj as preferred worker VCS candidate to qualify, scope-owned jobs and a stable per-scope Temporal Plan interpreter. The [reconciliation](v02-reconciliation.md) and new tickets26–32 preserve old evidence and define migration, authority and qualification boundaries. Independent Architecture and adversarial Spec gates both pass; exact reviews are retained under evidence/v02-adoption/.
 
-jj19 repair2 has independent Standards and Spec PASS. Root verified and retained all112 selected public/source-input records under an explicit path map, preserving current canonical contracts. Its actual imported verification regression passes; whole repository integration gate82804 passes exit0. Whole-branch review is pending. This is evaluated jj behavior, not backend25 adoption or v0.2 assembly. Trae's pure offline guard has26 passing tests but remains unadmitted: physical inventory/cleanup and runtime configuration/RPC prerequisites need proof. All historical failed namespaces/budgets remain quarantined or spent. Sureal remains stopped and preserved.
+jj19 repair2 has independent Standards and Spec PASS. Root verified and retained112 selected repair records plus100 original evaluation evidence records under an explicit path map, preserving current canonical contracts. Its actual imported verification regression passes; whole repository integration gate82804 passes exit0. Wholebranch630 rejects a reachable-history private-file gap; final repair3/3 is assigned and acceptance/landing are withheld. This is evaluated jj behavior, not backend25 adoption or v0.2 assembly. Trae's pure offline guard has26 passing tests and eight inventory tests reported; it remains unadmitted. The test-only oracle now asserts the exact injected cause and retains raw owner events; fresh independent review precedes one bounded physical case. Runtime configuration/RPC prerequisites still need proof. All historical failed namespaces/budgets remain quarantined or spent. Sureal remains stopped and preserved.
 
 ## Next actions
 
-Retain final v0.2 critique/spec outcomes, integrate jj19 only after current root gate and branch review, ticket26 is now assigned to the fresh isolated writer tree at720ab7783e1b36e9e8a675f497f9c66ef2b1d87b. Follow26→27 before independent ledger28/execution31 work;31 enables interpreter29/protected gate30, then qualified jj25 and assembly32. Live21 follows20/32; independent lead22/23 and restore24 remain required. Finish the Trae offline inventory repair and independently admit one bounded physical stand-in before any new synthetic runtime case. No indefinite Kata/jj deferral can satisfy the new target.
+Retain final v0.2 critique/spec outcomes, integrate jj19 only after current root gate and branch review, ticket26 is now assigned to sole writer `/root/corenius_jj19_verification_repair/intent26_implementer` in `/data02/home/philip.yang/workspace/corenius-codex-intent26-contracts`, branch `codex-intent26/contracts`, base `720ab7783e1b36e9e8a675f497f9c66ef2b1d87b`. Its real HTTP404vs200 behavioral RED is retained; implementation is underway, not accepted. Follow26→27 before independent ledger28/execution31 work;31 enables interpreter29/protected gate30, then qualified jj25 and assembly32. Live21 follows20/32; independent lead22/23 and restore24 remain required. Finish the Trae offline inventory repair and independently admit one bounded physical stand-in before any new synthetic runtime case. No indefinite Kata/jj deferral can satisfy the new target.
 
 ## Open questions
 
