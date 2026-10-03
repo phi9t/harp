@@ -2140,3 +2140,6 @@ Repair611 author confirmed fresh solewriter tree at587aca8821d352b73463dff2ffd02
 
 
 Repair611 first focused green10605 terminal0: five public tests passed, including separate suite/environment changes with a fresh actual verification execution and acceptance, deadline successor admission, yielded wait preservation and unknown-native-usage refusal. Author consumer trace found cached Verify bypasses execution-policy revalidation; cached Accept already rechecks. Additional same-scope test-first cachedVerify slice is required before final-source fullmatrix/freeze. Earlier focused green is not proof of this subsequent source.
+
+
+Repair611 finalfocused83199 terminal0:6/6 public tests passed against final four-file source, including cached unchanged-policy idempotency and changed-policy refusal. Author launched full realPG/Temporal alltargets session28026; source writes stopped pending checks, exclusive build/service slot retained. Fullmatrix/freeze/reviews/rootintegration remain pending.

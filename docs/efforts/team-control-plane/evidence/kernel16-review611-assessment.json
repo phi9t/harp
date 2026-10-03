@@ -88,7 +88,26 @@
       "scope": "same611 policy provenance repair",
       "next": "public oldpolicy Verify then Configure then cachedVerify red; minimal shared verification recheck",
       "controls": "unchanged-policy replay remains idempotent without new report/revision/charges",
-      "final_source_verified": false
+      "final_source_verified": false,
+      "red": {
+        "session": 1772,
+        "terminal_exit": 101,
+        "behavior": "unchangedpolicy replay identical receipt/revision passes; afterConfigure cachedreplay incorrectly returns old appliedrevision6"
+      },
+      "fix": "three-line cachedVerify shared execution-report guard",
+      "focused_final": {
+        "session": 83199,
+        "terminal_exit": 0,
+        "passed": 6,
+        "failed": 0
+      }
     }
+  },
+  "full_matrix": {
+    "session": 28026,
+    "status": "running",
+    "command": "run-temporal.sh --offline --all-targets",
+    "source_writes": "stopped pending checks",
+    "build_service_slot": "author retains exclusive ownership"
   }
 }
