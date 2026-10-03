@@ -1,10 +1,10 @@
 # 19 jj-evaluation: Evaluate optional jj workspace backend
 
 Type: task
-Status: open
-Owner:
+Status: claimed
+Owner: corenius-jj19
 Blocked by: 11, 15, 16
-Claimed:
+Claimed: 2026-10-03T16:56:53Z expires 2026-10-04T16:56:53Z
 Label: implementation:planned
 Parent: ../PLAN.md
 
@@ -42,3 +42,6 @@ No shared checkout conversion, required kernel dependency or unrestricted cross-
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T16:56:53Z corenius-jj19: claimed until 2026-10-04T16:56:53Z
+
+- 2026-10-03T16:56:53.662690+00:00 lead: Original frozen evaluation rehashed; Standards PASS, Spec Important verification-order gap. Acceptance withheld. Isolated repair1/3 assigned; see ../evidence/jj19-conformance-round0.json and ../decisions/20261003-jj19-verification-repair.md.

@@ -1,43 +1,17 @@
 # Current completion audit
 
-Audit updated: 2026-10-02T20:33:57.222360+00:00
+Audit refreshed: 2026-10-03T16:54:00.349620+00:00
 
-Objective: the full persistent engineering-team goal in [PLAN.md](PLAN.md),
-including actual PostgreSQL/Temporal kernel, live Trae behavior, independent
-Codex/Claude demonstrations and restore readiness. No scope reduction.
+Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). Corenius only; no scope reduction. Kernel acceptance is not live Trae, independent-lead or restore completion.
 
-Current checkpoint: kernel16 accepted at source fc0d9b147ab4244af5025314d622c1aebb98fc6d. All48 hashes match freeze; bounded Standards/Spec, rootgate12 and wholebranch617 PASS. Independent verifier adjudicated retained failed1813 quarantine as allowed unresolved outcome, with current privileged namespace inventory but no historical shutdown claim. Final exact-tip detached gate passed and main fast-forwarded to264756edd550225449202b6f20ac4b560808d14e; all48 landed source hashes verified. Remaining optional adapters, live Trae, independent leads and restore work preserve the full goal.
+## Authoritative current observations
 
-## Authoritative observations
-
-- Specification, 16 implementation/evaluation tickets and preserved RFC exist.
-- Accepted standalone Rust/PostgreSQL admission crate is integrated in the isolated
-  root checkout; accepted product Temporal lifecycle exists; completed live proof remains absent.
-- Ticket10 fresh integration gate passed 16 real-PG/114Python/71Rust tests and
-  both independent review axes passed after one repair round.
-- PostgreSQL feasibility report records real isolated client/transaction tests;
-  this is not ticket10 admission behavior or durable crash proof.
-- Temporal feasibility passed compile/restart/CAN/offline replay with a failing
-  incompatible replay control; product workflow13 now separately passes actual SDK/PG behavior and review.
-- Owner baseline approved; kernel decisions03/05/06/07/08/09 resolved.
-  Live probe design04 remains separately gated.
-- The accepted baseline and manifest-backed historical evidence now landed on local
-  `main` through independent review and exact-tip repository gates, most recently
-  at `1f164156261a3aa927c823919bf73d6e6d11a771`. No remote is configured.
-  [Landing disposition](worktree-landing.md) preserves unfinished work and
-  historical branches without claiming their completion.
-- Unpublished ticket16 usage work now has focused actual PostgreSQL/Temporal
-  proof: registered legacy receipts resolve the observed assembled release
-  failure; six invalid receipt controls retain unknown usage, unauthorized
-  callers are refused, restored exact receipts add no native execution, and
-  an unregistered observer retains its reservation. A subsequent actual SDK
-  foreign-controller test rejects retained-store binding and usage attestation
-  while preserving original ownership and capacity. See the append-only
-  [execution ledger](evidence/execution-ledger.md) for exact commands/results
-  and log hashes. The later review11 full matrix, two-axis review and root gate6 are proven
-  as recorded below; final branch review and ticket acceptance remain pending. The
-  historical authority rejection alone does not prove legacy takeover. These are model-free fixture
-  results, not Trae telemetry or recovery guarantees.
+- Local main264756edd550225449202b6f20ac4b560808d14e contains the accepted kernel and its exact source. Current isolated reference-design contains later preserved evidence and state records awaiting gated integration.
+- Tracker resolves tickets10–18 within their scoped accepted/deferred contracts; tickets04 and19–25 remain incomplete.
+- jj19 frozen113-file index and110 source entries rehash exactly. Standards review passes; Spec review is pending. No jj backend adoption or implementation is claimed.
+- Trae20's historical four-incarnation/nine-attempt synthetic failure remains spent and retained. Guard repair is offline preparation only, with independent source/runtime admission still required. No paid provider launch is admitted.
+- Repaired STATE machine markers and used the existing effort API: dehydrate committed d1df44739e56b1cf8ebfa1a349f88e377996cbf5; rehydrate returns no drift. Dirty author trees remain separate from this machine snapshot and remain preserved.
+- Codex22, Claude23, live adapter21 and upgrade/restore24 have no completion evidence yet. Handoff and production readiness are not claimed.
 
 ## Requirement evidence by canonical task
 
@@ -52,16 +26,16 @@ rows remain incomplete; candidate checks do not substitute for reviewed integrat
 | 13: Durable mission/task workflows and database command bridge | [Canonical requirements/acceptance](tickets/13-temporal-bridge.md) | Accepted repair1: both axes PASS, actual SDK/PG retry/timer/CAN/offline replay, queued dispatch fence, durable Run ID and fresh 221-test root gate |
 | 14: Scoped agent tools, durable mailbox and replaceable lead context | [Canonical requirements/acceptance](tickets/14-mailbox-lead.md) | Proven for ticket scope: independent Spec/Standards round0 and shared-glue PASS; fresh252-test joint gate/fmt/strict Clippy; joint187-file accepted manifest. Physical provider/Supervisor assembly remains16 |
 | 15: Attempt workspaces and independent workload supervision | [Canonical requirements/acceptance](tickets/15-supervised-environments.md) | Accepted finalrepair3: both axes and joint-glue PASS; verified namespace/PID1 shutdown, exact manifest, fresh245-test root gate |
-| 16: End-to-end durable kernel and operator CLI | [Canonical requirements/acceptance](tickets/16-kernel-proof.md) | Unaccepted/unlanded source9055b99. Finalrepair584 both gaps have physical reds/greens, independent Standards/Spec PASS after allauthorityconsumer tracing, authormatrix173/0/8 strict/fmt/diff0 rootgate10exit0 with17cleanuprecords. All48committedsourcehashes verified. Wholebranch591 rejected9055b99: sameprincipal crossrole episode-status disclosure confirmed. Existing3/3repairbudget exhausted; oneboundedextension requested and unanswered. Historical rejections retained; no acceptance/landing. |
+| 16: End-to-end durable kernel and operator CLI | [Canonical requirements/acceptance](tickets/16-kernel-proof.md) | Accepted and landed at264756edd550225449202b6f20ac4b560808d14e: exact48-file source freeze, independent Standards/Spec, rootgate12, wholebranch617 and detached exact-tip repository gate. Historical failed1813 remains quarantined under its independent acceptance disposition; no clean historical shutdown claim. |
 | 17: Evaluate Kata and select ledger integration | [Canonical requirements/acceptance](tickets/17-kata-evaluation.md) | Accepted/deferred: actual remote/API/upgrade/restore and approved broker mapping/replay/projection proof; two-axis repair2 pass; exact manifest |
-| 18: Optional approved-planning and projection adapter | [Canonical requirements/acceptance](tickets/18-kata-adapter.md) | Explicit deferred disposition recorded; final conditional tracker closure waits for kernel16 |
-| 19: Evaluate optional jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Missing product behavioral acceptance |
-| 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Missing product behavioral acceptance |
-| 21: Live Trae adapter with supervised recovery | [Canonical requirements/acceptance](tickets/21-trae-adapter.md) | Missing product behavioral acceptance |
-| 22: Codex lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/22-codex-demonstration.md) | Missing product behavioral acceptance |
-| 23: Claude lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/23-claude-demonstration.md) | Missing product behavioral acceptance |
+| 18: Optional approved-planning and projection adapter | [Canonical requirements/acceptance](tickets/18-kata-adapter.md) | Resolved through explicit deferred disposition; no Kata adapter claimed. Kernel16 prerequisite is now accepted. |
+| 19: Evaluate optional jj workspace backend | [Canonical requirements/acceptance](tickets/19-jj-evaluation.md) | Frozen executable evaluation: five jj slices, five unsafe controls and Git comparison; Standards PASS, Spec review pending. Defer recommendation is not yet accepted. |
+| 20: Measure actual Trae control and recovery capabilities | [Canonical requirements/acceptance](tickets/20-trae-probes.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
+| 21: Live Trae adapter with supervised recovery | [Canonical requirements/acceptance](tickets/21-trae-adapter.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
+| 22: Codex lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/22-codex-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
+| 23: Claude lead end-to-end reference demonstration | [Canonical requirements/acceptance](tickets/23-claude-demonstration.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 | 24: Upgrade, restore and persistent-use handoff | [Canonical requirements/acceptance](tickets/24-restore-rollout.md) | Incomplete: [source-grounded preflight](research/restore-inventory-preflight.md) identifies missing post-backup inventory, fresh recovery epoch/checkpoint and dispatch/admission/GC closure; no restore drill |
-| 25: optional accepted jj workspace implementation | [Canonical requirements/acceptance](tickets/25-jj-backend.md) | Missing product behavioral acceptance |
+| 25: optional accepted jj workspace implementation | [Canonical requirements/acceptance](tickets/25-jj-backend.md) | Incomplete; required behavioral and independent admission evidence remains outstanding |
 
 All SPEC domain fields, commands, transitions, concurrency/auth invariants,
 failure-matrix rows and deployment/retention/restore conditions map to these

@@ -1,0 +1,21 @@
+{
+  "reviewed_at": "2026-10-03T16:56:53.662690+00:00",
+  "fixed_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "frozen_fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027",
+  "frozen_patch_sha256": "826158a2e6c03447dc652fd20a4757f42c5aa05d1eb67f1719691e6b87e20438",
+  "Standards": {
+    "verdict": "PASS",
+    "important_or_critical": 0,
+    "evidence": "110 source entries,113 freeze-index entries,99 public-proof entries rehashed; all11 final records source-bound; bounded scopes and unsafe controls distinguished."
+  },
+  "Spec": {
+    "verdict": "REPAIR_REQUIRED",
+    "severity": "Important",
+    "requirement": "ticket19 rewrite after verification; changed content requires new proof",
+    "finding": "Original candidate was exported and hashed before rewrite, but actual independent verifier import/content check first occurred afterward. Local ID comparison did not reuse recorded verification; changed candidate had no fresh verification.",
+    "location": "research/probes/jj_workspace_evaluation.py:176\u2013192",
+    "required_repair": "Execute original verification before rewrite, retain exact proof binding, refuse old proof for changed candidate, and actually verify changed candidate."
+  },
+  "test_reruns": "None by reviewers; current receipts/source inspected",
+  "disposition": "Acceptance withheld; isolated repair1/3 assigned; original evidence preserved"
+}

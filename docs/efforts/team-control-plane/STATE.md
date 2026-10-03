@@ -5,14 +5,14 @@
 {
   "base_branch": "main",
   "base_commit": "264756edd550225449202b6f20ac4b560808d14e",
-  "dehydrated": "2026-10-03T16:50:26Z",
+  "dehydrated": "2026-10-03T16:56:53Z",
   "effort": "team-control-plane",
   "runs": [],
   "worktrees": [
     {
       "branch": "codex/reference-design",
       "dirty": [],
-      "head": "9aa6967979f9093306685c20f2b3a1764cf99f0a",
+      "head": "d1df44739e56b1cf8ebfa1a349f88e377996cbf5",
       "path": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
       "pushed": false
     }
