@@ -1,0 +1,53 @@
+{
+  "records": [
+    {
+      "reviewed_path": "tools/probes/trae_namespace_supervisor.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/00-trae_namespace_supervisor.py",
+      "sha256": "17da83b6cda1b85a012291093b0a610ccadd92630f8b59afc99b148eaa691710",
+      "bytes": 13476
+    },
+    {
+      "reviewed_path": "tools/probes/trae_namespace_fixture.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/01-trae_namespace_fixture.py",
+      "sha256": "3f2e13a1b11eacd99a26e7563eccf671dc0f31d8d45c8fee18645b5b17dc002f",
+      "bytes": 1502
+    },
+    {
+      "reviewed_path": "tools/probes/test_trae_namespace.py",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/02-test_trae_namespace.py",
+      "sha256": "feb166643f4debfa970a1320bf96650860da005ac7ad19c3e011cd1fdaa827b2",
+      "bytes": 4336
+    },
+    {
+      "reviewed_path": "source.patch",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/03-source.patch",
+      "sha256": "a6af5b6a0d08ee179844bb3dddcd8d84cf26e52819faf3589699a3422ffd76a9",
+      "bytes": 20564
+    },
+    {
+      "reviewed_path": "test-only-review.diff",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/04-test-only-review.diff",
+      "sha256": "9eac8743ea847eebc9219355645b681b25ce3731c7de9b6100ac9961d8685fba",
+      "bytes": 4776
+    },
+    {
+      "reviewed_path": "case.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/05-case.json",
+      "sha256": "f992b0fa7404ee9b2d420f9d974eec51a1bd3bfeae11bab2d3e99ff43d2f8e8d",
+      "bytes": 1693
+    },
+    {
+      "reviewed_path": "pure-serialization.log",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/06-pure-serialization.log.txt",
+      "sha256": "efb99eb71404a7d59b4dd44eb3087bdad8789ed3ed51ccfb439bbbe822c711e2",
+      "bytes": 308
+    },
+    {
+      "reviewed_path": "checks.json",
+      "retained_path": "docs/efforts/team-control-plane/evidence/trae20-offline-admission1/07-checks.json",
+      "sha256": "70f729e961aaefafff351a266166577487d6c4091501e9bffde531522ee98422",
+      "bytes": 467
+    }
+  ],
+  "scope": "prelaunch exact offline case, no runtime/provider qualification"
+}

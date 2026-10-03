@@ -1,0 +1,74 @@
+diff --git a/.scratch/team-control-plane/trae20-budget-repair/inventory-repair/freeze/tools/probes/test_trae_namespace.py b/tools/probes/test_trae_namespace.py
+index 90b3ac5702b2b5de62211784ae9405016cd293e7..9edda0e7f3cc7d60f1a33a15a1fa83d922598e36 100644
+--- a/.scratch/team-control-plane/trae20-budget-repair/inventory-repair/freeze/tools/probes/test_trae_namespace.py
++++ b/tools/probes/test_trae_namespace.py
+@@ -6,6 +6,25 @@ import tempfile
+ import unittest
+ from trae_namespace_supervisor import NamespaceSupervisor, NamespaceSetupError
+ 
++def export_owned_proof(proof, evidence, destination):
++    """Test-only export: exact raw owner bytes, preserved even on oracle failure."""
++    destination=Path(destination)
++    sidecar=destination.with_suffix('.owned.jsonl')
++    raw=Path(evidence).read_bytes() if Path(evidence).exists() else b''
++    for path,data in ((sidecar,raw),(destination,(json.dumps(proof,indent=2)+'\n').encode())):
++        descriptor=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
++        try:
++            if os.write(descriptor,data)!=len(data):
++                raise OSError('short test proof export')
++            os.fsync(descriptor)
++        finally:
++            os.close(descriptor)
++    directory=os.open(destination.parent,os.O_RDONLY|os.O_DIRECTORY)
++    try:os.fsync(directory)
++    finally:os.close(directory)
++    return sidecar
++
++
+ class NamespaceBehavior(unittest.TestCase):
+     def test_descendant_inventory_is_exact_and_shutdown_is_empty(self):
+         with tempfile.TemporaryDirectory() as tmp:
+@@ -28,18 +47,28 @@ class NamespaceBehavior(unittest.TestCase):
+             evidence=Path(tmp)/'owned.jsonl'
+             ledger=Path(tmp)/'owner-ledger';ledger.write_text('owned sentinel')
+             supervisor=NamespaceSupervisor(evidence)
+-            with self.assertRaises(NamespaceSetupError) as raised:
+-                supervisor.start_fixture(Path(tmp)/'owner-ledger',noise=True)
+-            proof=raised.exception.proof
+-            out=os.environ.get('TRAE_OFFLINE_NAMESPACE_PROOF')
+-            if out:Path(out).write_text(json.dumps(proof,indent=2)+'\n')
+-            self.assertTrue(any(o['role']=='setsid-descendant' for o in proof['observations']))
+-            self.assertIsNotNone(proof['anchor'])
+-            self.assertEqual(proof['anchor']['inner_pid'],1)
+-            self.assertEqual(proof['shutdown']['inventory_after'],[])
+-            self.assertFalse(proof['shutdown']['quarantined'])
+-            self.assertTrue(proof['shutdown']['launcher_terminal'])
+-            self.assertIsNotNone(proof['shutdown']['namespace_pin'])
+-            self.assertEqual(proof['shutdown']['physical_stop'],'pidfd_SIGKILL')
+-            stages=[json.loads(line)['stage'] for line in evidence.read_text().splitlines()]
+-            self.assertIn('namespace_owned',stages);self.assertIn('stopped',stages);self.assertIn('setup_failed',stages)
++            proof={'test_failure':'expected setup exception not yet observed'}
++            try:
++                with self.assertRaises(NamespaceSetupError) as raised:
++                    supervisor.start_fixture(Path(tmp)/'owner-ledger',noise=True)
++                proof=raised.exception.proof
++                self.assertEqual(proof['reason'],'JSONDecodeError: Expecting value: line 1 column 1 (char 0)')
++                self.assertTrue(any(o['role']=='setsid-descendant' for o in proof['observations']))
++                self.assertIsNotNone(proof['anchor'])
++                self.assertEqual(proof['anchor']['inner_pid'],1)
++                self.assertEqual(proof['shutdown']['inventory_after'],[])
++                self.assertFalse(proof['shutdown']['quarantined'])
++                self.assertTrue(proof['shutdown']['launcher_terminal'])
++                self.assertIsNotNone(proof['shutdown']['namespace_pin'])
++                self.assertEqual(proof['shutdown']['physical_stop'],'pidfd_SIGKILL')
++                stages=[json.loads(line)['stage'] for line in evidence.read_text().splitlines()]
++                self.assertIn('namespace_owned',stages);self.assertIn('stopped',stages);self.assertIn('setup_failed',stages)
++            finally:
++                # An unexpected return/assertion must not leave this test's fixture.
++                if supervisor.process is not None and supervisor.shutdown is None:
++                    try:proof['shutdown']=supervisor.stop()
++                    except BaseException as error:proof['cleanup_uncertain']=type(error).__name__+': '+str(error)
++                if supervisor.setup_failure is not None and 'reason' not in proof:
++                    proof=supervisor.setup_failure
++                out=os.environ.get('TRAE_OFFLINE_NAMESPACE_PROOF')
++                if out:export_owned_proof(proof,evidence,out)
