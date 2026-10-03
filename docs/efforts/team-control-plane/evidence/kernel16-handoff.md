@@ -1,6 +1,6 @@
 # Kernel candidate handoff
 
-Status: repair611 integrated at fc0d9b1; independent bounded Standards/Spec and root repository gate12 passed. Whole-branch617 and full ticket acceptance remain pending; not landed.
+Status: kernel16 accepted at source fc0d9b1; independent bounded Standards/Spec, root repository gate12 and whole-branch617 passed. Exact-tip detached landing gate pending; not landed.
 Commit read: `fc0d9b147ab4244af5025314d622c1aebb98fc6d`.
 
 Current evidence: all48 committed source hashes match the frozen five-file repair; patch SHA c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62. Final ten focused tests, strict Clippy and integrated repository gate12 passed. Public proofs and gate results are retained in kernel16/review611-portable-proofs and kernel16/review611-root-gate12. Earlier paragraphs are historical checkpoints, not current acceptance. Failed full1813 remains an unresolved physical-failure exception. A subsequent fixture inventory discovered retained child PID and namespace identities in Bubblewrap metadata, correcting the earlier broad missing-PID assertion; an independent namespace-survivor audit is pending. Database stop/result observations and process start ticks remain unavailable. Later passes do not establish historical cleanup or a flake.
@@ -22,3 +22,6 @@ Current repair591 evidence supersedes the pending-authority status of the histor
 
 
 Current repair611 checkpoint: source remains isolated and unintegrated at author base587aca8. Suite-only/environment-only and cached-policy regressions reproduced; deadline successor and predeadline ordering regressions reproduced. First finalfocused6/6 passed, but fullmatrix28026 exit101 exposed validation-precedence and premature checkpoint retirement failures. The final candidate must preserve predeadline release→Yield and recover both deadline→release and release→deadline orders without repeated human Release, with proof-backed current-authority lazy admission reconciliation. Independent focused critique is retained in kernel16-review611-reconciliation-critique.json. Earlier focused passes do not cover subsequent repair changes; new focused/full checks, freeze and conformance reviews remain required.
+
+
+Final kernel disposition: wholebranch617 terminal0, no issues. The independent verifier confirms current retained quarantine satisfies the allowed unresolved outcome. Elevated process/thread/namespace-fd scan has no matching namespace survivors and no permission blind spot. Historical shutdown, original DB stop/result and historical accounting remain unverified; preserve fixture and prohibit adoption/delete/refund/reuse. Kernel acceptance does not accept live provider, optional adapter, independent lead or restore requirements.

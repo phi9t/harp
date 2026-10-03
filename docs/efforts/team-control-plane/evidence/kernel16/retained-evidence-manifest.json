@@ -1,9 +1,9 @@
 {
   "observed_at": "2026-10-03T06:56:41.271967+00:00",
-  "status": "retained evidence, not acceptance; bounded conformance/rootgate12 PASS; wholebranch617 pending",
+  "status": "retained evidence verified; bounded kernel accepted; landing pending",
   "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d",
-  "pending_review_job": 617,
-  "last_review_job": 611,
+  "pending_review_job": null,
+  "last_review_job": 617,
   "files": [
     {
       "path": "author/manifest.json",
@@ -429,6 +429,21 @@
       "path": "branch-repair/branch611/run.log",
       "bytes": 1777,
       "sha256": "23b084f33fb07fef385a2db22595795c10a5eb65b6d5b1c7bd16261ea5720f71"
+    },
+    {
+      "path": "branch-repair/branch617/classification.json",
+      "bytes": 309,
+      "sha256": "65fb8f00d4fbee3f1c41c77cf3bbdba9138a199a0af61d022ed842b2c3bdd49c"
+    },
+    {
+      "path": "branch-repair/branch617/run.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "branch-repair/branch617/run.log",
+      "bytes": 424,
+      "sha256": "c80f3406eaa5d487cb61fbf61ef2c3a3bf07a16836017a1985eb9fb96d0f715a"
     },
     {
       "path": "branch-repair/budget-stack-diagnosis.txt",
@@ -7531,6 +7546,16 @@
       "sha256": "42a339131f1ed51bfa3c1b17cbf14d7b44fb34ca4988d57d09f7f21dae1de991"
     },
     {
+      "path": "review611-quarantine-recovery/privileged-namespace-audit.py",
+      "bytes": 2202,
+      "sha256": "f51643ed9bb281612339af1d94c05db76d6aa784687922ba517dff785f291d80"
+    },
+    {
+      "path": "review611-quarantine-recovery/privileged-namespace-result.json",
+      "bytes": 931,
+      "sha256": "ba7afbe986e2159621a396a5b47aec1ee84801545645f0804c19623c5a002207"
+    },
+    {
       "path": "review611-root-gate12/retention-index.json",
       "bytes": 5712,
       "sha256": "d09871b951b6a6eab55feee984b7078a713f63a60de752867bead4650641d270"
@@ -7854,5 +7879,5 @@
   "file_count": 1121,
   "total_bytes": 10934040,
   "frozen_repair_patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
-  "quarantine_status": "retained PID/namespace metadata found; unprivileged scan incomplete; elevated independent audit pending"
+  "quarantine_status": "privileged readonly scan no survivors/no permission gaps; historical exact-incarnation shutdown not proven"
 }

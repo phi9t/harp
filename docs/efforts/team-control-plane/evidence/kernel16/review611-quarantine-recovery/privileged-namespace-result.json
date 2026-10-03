@@ -1,0 +1,37 @@
+{
+  "started_unix": 1791010834.348487,
+  "ended_unix": 1791010835.066746,
+  "effective_uid": 0,
+  "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+  "targets": {
+    "ipc": "4026539790",
+    "mnt": "4026539788",
+    "net": "4026539792",
+    "pid": "4026539791",
+    "uts": "4026539789"
+  },
+  "child": {
+    "pid": 4188604,
+    "present": false,
+    "errno": 2
+  },
+  "matching_task_namespaces": [],
+  "matching_namespace_fd_holders": [],
+  "counts": {
+    "processes": 3048,
+    "threads": 17982,
+    "nsreads": 88078,
+    "fdreads": 11521
+  },
+  "errors_by_kind_errno": {
+    "ns:2": 1832,
+    "fd:2": 1
+  },
+  "non_disappearance_errors": [],
+  "limitations": [
+    "non-atomic single proc sweep; concurrent creation/exit possible",
+    "proc visibility bounded to this host proc mount",
+    "original boot/starttick identity absent; no historical shutdown certificate",
+    "read-only; no signals/deletion/refund/reuse"
+  ]
+}

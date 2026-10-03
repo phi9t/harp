@@ -1,5 +1,5 @@
 {
-  "status": "bounded conformance PASS; integrated root gate PASS; committed source matches frozen reviewed candidate; wholebranch review pending",
+  "status": "bounded kernel accepted; exact-tip detached landing gate pending",
   "base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
   "patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
   "source_count_verified": 48,
@@ -34,12 +34,19 @@
     "scope": "bounded five-file source conformance, not full ticket acceptance or historical cleanup"
   },
   "limitation": "Failed1813 fixture remains unresolved quarantine; missing PID/database shutdown proof. No cleanup/flake claim.",
-  "accepted": false,
+  "accepted": true,
   "landed": false,
   "root_gate": {
     "session": 46372,
     "exit": 0,
     "status": "terminal PASS; check all green"
   },
-  "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d"
+  "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d",
+  "whole_branch_review": {
+    "job": 617,
+    "session": 61562,
+    "exit": 0,
+    "verdict": "PASS no issues found",
+    "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d"
+  }
 }

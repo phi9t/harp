@@ -1,0 +1,32 @@
+{
+  "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d",
+  "reviewer": "/root/kernel16_acceptance580",
+  "disposition": "current safe quarantine achieved; missing historical shutdown certificate alone is not acceptance blocker",
+  "contract": [
+    "failed stop enters quarantine, holds conflicting capacity and prohibits workspace reuse",
+    "all effects stopped or quarantine with survivor evidence",
+    "no duplicate effects or false acceptance; uncertainty visible and holds capacity"
+  ],
+  "achieved": [
+    "retained exact execution/episode/effect identities",
+    "privileged current process/thread/namespace-fd inventory has no match and no permission blind spot",
+    "precise unresolved state; no signals/deletion/reuse/relaunch/refund"
+  ],
+  "unverified": [
+    "historical exact-incarnation shutdown",
+    "original database result/stop observations",
+    "historical accounting state"
+  ],
+  "restrictions": [
+    "no historical clean/flake/cancel-completed claim",
+    "no adoption/delete/refund/reuse without additional authority and evidence"
+  ],
+  "whole_branch_review": {
+    "job": 617,
+    "session": 61562,
+    "exit": 0,
+    "verdict": "PASS no issues found"
+  },
+  "formal_ticket_acceptance": "accepted bounded kernel; no full-goal acceptance",
+  "landing": "pending final exact-tip detached gate"
+}
