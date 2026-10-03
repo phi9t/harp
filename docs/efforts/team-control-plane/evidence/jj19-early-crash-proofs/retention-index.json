@@ -1,0 +1,27 @@
+{
+  "status": "early actual crash red/green retained; author final freeze, independent reviews and adoption decision pending",
+  "pin": "jj0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3",
+  "limits": "Fixture boundary requires final classification; not general crash safety or backend adoption proof",
+  "files": [
+    {
+      "path": "crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "crash-red.log",
+      "bytes": 10571,
+      "sha256": "4ffdf00c08ed1026cc1d25570c71f02e862b7623bab13d333d001d83501e918c"
+    },
+    {
+      "path": "crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "crash-green.log",
+      "bytes": 12264,
+      "sha256": "6be3343144d600b704b7c3758e33f9d12fa94997a69a5934ff31069774dd5e18"
+    }
+  ]
+}
