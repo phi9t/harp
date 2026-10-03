@@ -3,7 +3,7 @@
 Type: task
 Status: open
 Owner:
-Blocked by: 12, 15, 16, 20
+Blocked by: 12, 15, 16, 20, 32
 Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
@@ -42,3 +42,4 @@ No blind retries, arbitrary endpoint load balancing or fake-runtime results labe
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T17:36:01Z lead: RFC0002 scope ownership and assembled32 proof are required before live adapter acceptance. Bounded20 investigation remains independent; runtime admission and provider budgets remain separately measured.

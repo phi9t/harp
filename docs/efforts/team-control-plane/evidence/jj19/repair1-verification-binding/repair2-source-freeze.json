@@ -1,0 +1,79 @@
+{
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "repair_iteration": "2/3 (handoff retention only)",
+  "source_records": [
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "bytes": 37876,
+      "sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "bytes": 17565,
+      "sha256": "5282b39e95cdac5c2e51e02cc9d7cc4fd8a54fdbd662cd20e360b065eadce30c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "bytes": 5129,
+      "sha256": "7098d6b81f8639590e1aca6c88bd57f840fd9022f6953843689773712df2678f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+      "bytes": 5347,
+      "sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "bytes": 984,
+      "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "bytes": 31371,
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+    }
+  ],
+  "preimages": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj_workspace_evaluation.py",
+      "sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj-workspace-evaluation.md",
+      "sha256": "3e45338570b94df1db57390064dad2f0bd2b46240c1fd842ec198db982da89ea"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-19-jj-evaluation.md",
+      "sha256": "16f9480bd660e1464b5b5f8d5e034188c2ddc68f219b30e82d891461aac4dc6a"
+    }
+  ],
+  "patch_scope": "delta from transferred baseline: probe, acceptance suite, behavioral regression, report and ticket; evidence directory is transferred separately via public proof index",
+  "patch_sha256": "76551f4875c28bb7ad46d7000c3c35a49fc5210d3ab7bc4d25f7714d1befccc4",
+  "retention_status": "authoritative repair2 source freeze; executable/source records and patch remain unchanged",
+  "historical_metadata": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/public-proof-index.json",
+      "bytes": 26134,
+      "sha256": "c4874d3f4ceddeb374b2228228b10fde568a7b050ca36fce607240569b5778cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/source-freeze.json",
+      "bytes": 2279,
+      "sha256": "0f98905c54312d7887c9ccba9d09325490fe49e3b9d1a02e80d90df1cb52040d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-handoff.json",
+      "bytes": 3297,
+      "sha256": "d97e6d6d13f1d8efc68a10be48708e95071e3064fb40d5e58e89f6907897dcc8"
+    }
+  ],
+  "retention_correction": {
+    "excluded_incidental_file": {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/__pycache__/preimage-jj_workspace_evaluation.cpython-311.pyc",
+      "bytes": 54984,
+      "sha256": "b3f0193377b2f5fa1e9fdce9eb06bb2d622fdece38868396d078a3d39304e54c"
+    },
+    "reason": "The original repair1 index is historical inventory metadata: it included one ignored, regenerable Python cache file. This authoritative repair2 index excludes that incidental bytecode. Source, acceptance suite, recorded verifier commands/results, receipt bindings and bundle bytes are unchanged. Bytecode regeneration can change the cache bytes without changing any retained behavior or evidence assertion; all asserted identities are bound to source/proof/artifact hashes, not that cache."
+  },
+  "observed_at": "2026-10-03T17:32:45.448153+00:00"
+}

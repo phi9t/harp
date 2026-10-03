@@ -1,0 +1,22 @@
+{
+  "run": "fresh-git_baseline-green",
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--slice",
+    "git_baseline",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-git_baseline-green.json"
+  ],
+  "exit": 0,
+  "expected_exit": 0,
+  "outcome": "passed",
+  "failure": null,
+  "fixture_sha256": "bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2",
+  "fixture_removed": true,
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2\",\n  \"unsafe_control\": false,\n  \"observations\": {\n    \"git_baseline\": {\n      \"base\": \"a56ab07bfc51f55ca92ffe05365ce2927b30c148\",\n      \"checkpoint_commit\": \"542c1ff5de41b8ad71ced54af00321c350d87e5d\",\n      \"checkpoint_tree\": \"af3732e7ad58e86bbbd53aa2cf103f1da1caa069\",\n      \"rewritten_commit\": \"f5647ec6daf7feaccc13a41a0d681f9250f4ef11\",\n      \"rewritten_tree\": \"f87eef25a5f7961514b935496d4ab4af95c6c74d\",\n      \"bundle_sha256\": \"ab4b3473479842a32c4717f07b35583322ef85d7b08c0bbf8af297b99c04b097\",\n      \"status_does_not_snapshot\": true,\n      \"repository_vs_working_copy\": {\n        \"repository_commit\": \"f5647ec6daf7feaccc13a41a0d681f9250f4ef11\",\n        \"working_copy_content\": \"git-checkpoint\\n\",\n        \"status\": \"M  artifact.txt\"\n      },\n      \"explicit_reconciliation_exact\": true,\n      \"fault_scope\": \"public update-ref/reset separation only; no Git crash injection claimed\"\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"passed\",\n  \"slice\": \"git_baseline\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "observed_at": "2026-10-03T17:04:41.015905+00:00"
+}

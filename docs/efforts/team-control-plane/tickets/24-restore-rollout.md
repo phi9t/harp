@@ -3,7 +3,7 @@
 Type: task
 Status: open
 Owner:
-Blocked by: 16, 18, 21, 22, 23, 25
+Blocked by: 16, 21, 22, 23, 25, 28, 29, 30, 31, 32
 Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
@@ -17,7 +17,7 @@ unresolved owner decisions remain explicit; open does not mean execution-ready.
 
 ## Interface contract
 
-Restore returns a recovery inventory and explicit authorization checkpoint before dispatch. Unknown inventory coverage keeps target closed. Migration/runtime credentials are separate; optional adopted backends have their own compatible backup/upgrade evidence.
+Restore returns a recovery inventory and explicit authorization checkpoint before dispatch. Unknown inventory coverage keeps target closed. Migration/runtime credentials are separate; selected Kata/jj/Execution adapters, scope ownership and Plan/interpreter histories have compatible backup/upgrade evidence. Historical18 deferral does not satisfy first-class ledger28 acceptance.
 
 ## Exclusions
 
@@ -42,3 +42,4 @@ No production deployment, automatic merge, unmeasured RPO/RTO or active multi-ho
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T17:36:01Z lead: v0.2 adds scope/job ownership migration, Kata cursors/unknown mutations, retained jj candidates and interpreter/physical integration journal to restore qualification. No accepted16 evidence is relabeled.

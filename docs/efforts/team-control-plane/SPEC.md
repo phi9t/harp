@@ -1,6 +1,6 @@
 # Specification: durable team control plane
 
-Status: baseline approved; implementation in progress
+Status: v1 kernel accepted; v0.2 contract Architecture/Spec gates pass; qualification outstanding
 Source commit read: Corenius `963f58b31e518a8162dfe719e386ef9d9843321f`
 Scope: first single-host durable kernel, then a measured Trae integration
 Owner input: [preserved RFC](../../rfcs/0001-durable-team-control-plane.md)
@@ -19,7 +19,32 @@ external to those reasoning processes. Success means safe recovery with
 inspectable evidence, including a precise stopped state where recovery cannot
 be established; it does not mean keeping every conversation alive.
 
-## Approved implementation baseline
+## Superseding v0.2 target
+
+The owner's [RFC0002 correction](../../rfcs/0002-persistent-engineering-teams.md)
+supersedes the optional-Kata/deferred-jj target below. The precise proposed
+requirements and compatibility boundary are in
+[v02-reconciliation.md](v02-reconciliation.md), implemented through tickets26–32
+and revised25. Independent [Architecture/Spec conformance](evidence/v02-adoption/conformance.json)
+passes; source capture alone is not product adoption or capability qualification.
+
+Kata is the first-class work ledger through qualified APIs/events. PostgreSQL
+owns admitted WorkRef/IntentRevision, scopes, grants, effects, budgets and exact
+acceptance. jj is the preferred worker VCS candidate subject to qualification;
+private worker stores and immutable candidate proofs precede live selection.
+Temporal uses independently addressable scope workflows and a versioned
+declarative Plan IR under a stable interpreter. Armada/Insula jobs are owned by
+durable scopes and independently supervised. Git protected integration remains
+fast-forward-only and requires a physical journaled CAS gate.
+
+AcceptanceContract, PlanRevision, RoleEpoch, ScopeEpoch, WorkspaceGeneration,
+RuntimeIncarnation and deployment recovery epoch are separate axes. Existing
+lead_generation already separates the lead seat from worker task generation.
+Accepted v1 proof retains its original specification and subject; new scope,
+adapter, integration and interpreter requirements need new proof. Current
+Markdown tracker/policy and sibling repositories are unchanged.
+
+## Historical approved v1 implementation baseline
 
 The owner approved the recommended baseline. See the
 [decision record](decisions/20261001-approved-baseline.md). Live-probe budgets
@@ -323,7 +348,7 @@ repair or lead review, not indefinite continuation. Legitimate long jobs use
 Execution handles and deadlines; silence alone is not failure. Capacity occupied
 by an uncertain live execution stays occupied until safely resolved.
 
-## Kata integration contract
+## Kata integration contract (retained v1 baseline)
 
 Kata is a candidate implementation of the planning ledger and human issue UI,
 backed by its own PostgreSQL schema. Broker execution tables remain separate;
@@ -353,7 +378,7 @@ attention and scoped credentials) against adapter, synchronization and operating
 cost. Keep Kata out of the kernel critical path if it cannot enforce the chosen
 authority boundary. No custom issue UI until that evaluation is recorded.
 
-## Workspace backend and jj integration
+## Workspace backend and jj integration (retained v1 baseline)
 
 The workspace service exposes create_attempt, inspect, checkpoint,
 freeze_candidate, prepare_integration and release. Its returned manifest binds
@@ -437,8 +462,8 @@ artifacts, not implementation-private flags or terminal keywords.
 | DB/artifact publication crash | No accepted missing artifact; orphan is safely collectible | Kernel |
 | Candidate/base/spec changes | Prior report cannot accept changed integration candidate | Kernel and fixture Git |
 | Budget crash / unknown spend | Reservation retained; no budget bypass via replacement | Kernel |
-| Kata edit/claim/close and projection loop | Proposal/projection only; no implicit launch/acceptance or duplicate binding | Optional adapter |
-| jj rewrite/stale workspace/divergent operation | Immutable candidate remains identifiable; no stale proof or cross-attempt rewrite accepted | Optional VCS adapter |
+| Kata edit/claim/close and projection loop | Proposal/projection only; no implicit launch/acceptance or duplicate binding | Selected v0.2 adapter |
+| jj rewrite/stale workspace/divergent operation | Immutable candidate remains identifiable; no stale proof or cross-attempt rewrite accepted | Preferred backend qualification |
 | Restore with pre-restore credential and surviving post-backup job | Old grant rejected by recovery epoch; unrecorded job quarantined/adopted; no duplicate job | Restore drill |
 
 A fake runtime proves broker protocol behavior, not Trae semantics. Live proof
@@ -450,7 +475,8 @@ before calling the repository a multi-runtime engineering reference.
 
 ## Build sequence and exit
 
-Use the [proposed implementation breakdown](implementation-breakdown.md).
+Use [PLAN.md](PLAN.md)'s superseding v0.2 execution graph. The earlier
+[implementation breakdown](implementation-breakdown.md) is retained v1 history.
 Kernel acceptance requires real PostgreSQL transactions, real Temporal replay
 and lifecycle tests, and a deterministic fault runtime. Live acceptance adds
 actual provider and capsule behavior. Product rollout requires owner-approved

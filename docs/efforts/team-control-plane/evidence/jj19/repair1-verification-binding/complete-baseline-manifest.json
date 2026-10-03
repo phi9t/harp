@@ -1,0 +1,522 @@
+{
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "branch": "codex/jj19-verification-repair",
+  "records": [
+    {
+      "path": "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "bytes": 3913,
+      "sha256": "16f9480bd660e1464b5b5f8d5e034188c2ddc68f219b30e82d891461aac4dc6a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "bytes": 14658,
+      "sha256": "3e45338570b94df1db57390064dad2f0bd2b46240c1fd842ec198db982da89ea"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "bytes": 33429,
+      "sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-authority-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-authority-green.json",
+      "bytes": 102154,
+      "sha256": "cf63ffcbb28535b0b8d9794121e512f236d82530a87aa493aa93d2b1f2ddb0b2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-authority-red.json",
+      "bytes": 36729,
+      "sha256": "2f07a03ae3e782e5b6d18bd46fa00da5bb2b455a7fa9a7da6def75097dc844e1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-crash-green.json",
+      "bytes": 95640,
+      "sha256": "d97bc5dfc364d15cbfdbeb193059d3d99f328ca9955af2669856ec5489ea0a9a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-crash-red.json",
+      "bytes": 72823,
+      "sha256": "bf921c51681c4e66fb72a6111e0dad740d1c244da353437d0dd46b9e6a568e84"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-exclusions-green.json",
+      "bytes": 207520,
+      "sha256": "227a2eff2d96a7010ff5f0426fd177b4785b7a4ec510a676e5f4d78f88dfc09d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-exclusions-red.json",
+      "bytes": 57906,
+      "sha256": "705c6e71e8c854533334ee899ffb9724e439fc2c44a158d9b4b899effedbb179"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-identity-green.json",
+      "bytes": 70441,
+      "sha256": "4556130eae13079aaa95fb3a3593fba01b323a7d394c50298e4f7f1a04238238"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-identity-red.json",
+      "bytes": 49032,
+      "sha256": "7d6092c332e75326fcfd7c5c63165b264d7602ce229f7bb897a84124f7266d7b"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-integration-green.json",
+      "bytes": 68800,
+      "sha256": "a03aa64e626b349f211a9a2258902b0204cfc71c068bddcd9c90ec827ace8232"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-integration-red.json",
+      "bytes": 46792,
+      "sha256": "7c9805bf67869db587a573bd0ac6a803279e68e1d074494909fe91df20646525"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/candidate-run-ledger.json",
+      "bytes": 6609,
+      "sha256": "5dbefa39544eb0c04021ec396923fb3cbf61b06d0cd32f377368328178d0fe2f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/final-checks.json",
+      "bytes": 1123,
+      "sha256": "896e3697c625cdde64e28958b87ed84cac8bed58c2b16bc65d7198ac8dd57f9e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green.json",
+      "bytes": 20949,
+      "sha256": "4daa422e4869fce11acc772912606d0196ab1c3685914cb332831c31a6ceb912"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green2.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green2.json",
+      "bytes": 30857,
+      "sha256": "c66b8f5cbfab3ffb3f471fa12a3bd1e711fbd741838f87929d1baf74cc6ce75a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green3.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green3.json",
+      "bytes": 31035,
+      "sha256": "6c868969674a763a2325e48b293045b734baec39640f3d2652127cbb400c4206"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green4.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green4.json",
+      "bytes": 34219,
+      "sha256": "e3bd7ecfb05ccbf5726511f79c06b8139595700428121a8dd9187b6947dfa1e3"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green5.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green5.json",
+      "bytes": 51765,
+      "sha256": "c1b61b84b5161fccc71adaf9520fd14e478961ff9358cc13986f84bc5a57ba4f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green6.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-green6.json",
+      "bytes": 60286,
+      "sha256": "fa05baf0c7828c11acb861a0539bf82b95f4378be16bb22ac90f5ff9d3a6fa49"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/authority-red.json",
+      "bytes": 20318,
+      "sha256": "291148c971298c24df96183088425e19e6103097f0caf38eff164f8a86f33703"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/crash-green.json",
+      "bytes": 59649,
+      "sha256": "01631be0f7b3a8ff16d9b462050e8c5adeb64e35da132679d49be07bcd809126"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/crash-red.json",
+      "bytes": 45553,
+      "sha256": "2740ddc18cc50969e8694ab1712211be6d1b8ab650e579aab841876a9e80a7ef"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/exclusions-green.json",
+      "bytes": 111165,
+      "sha256": "adc0c6e0a9fd1b67ee43cce859ed8b074f04932c7e3dab1b1a66b67909b2c921"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/exclusions-red.json",
+      "bytes": 32778,
+      "sha256": "b6edbb6a0815a72f286cca61ed4c21104a5e992a7608a2395e2c9e41fcbc014a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-authority-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-authority-green.json",
+      "bytes": 99244,
+      "sha256": "f9d2cd717373f562f27316ace7ffcd9b0ee527e91c671dfebc1db82a92d9722a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-authority-red.json",
+      "bytes": 33833,
+      "sha256": "9551a3a5881227587c9e4921a39e37d294011b5c0b122a7c220f34eef68b3bb8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-crash-green.json",
+      "bytes": 92696,
+      "sha256": "9989cbd0f549abff27f832df645b631557c10fe08192b188ee3c6edc65d0587e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-crash-red.json",
+      "bytes": 69897,
+      "sha256": "d03099ee45ebf5ba5b78d8d6eb36b5acdf7ded4539ce7778ae28ffd8bb3c8f22"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-exclusions-green.json",
+      "bytes": 186159,
+      "sha256": "7ca2750703ac62b3ee005756c8c396775bc930638acac6842f668386cba4f97a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-exclusions-red.json",
+      "bytes": 54698,
+      "sha256": "93249f6cbf6a5aa639216debcc057a7fe205fc11632708ef4797e3228ac6d9f8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-identity-green.json",
+      "bytes": 66393,
+      "sha256": "d2dfc03b5f40a50ad65e2d2ef7e19e2f060328a097f111c2137ffa1e68399d76"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-identity-red.json",
+      "bytes": 45856,
+      "sha256": "d05c950698bdc483498e9ef7ed8d06321d15bd414eab4c953927e9b05a0a943b"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-integration-green.json",
+      "bytes": 66456,
+      "sha256": "8c4d9fce0bf7eda600f02b2a6eba383135796d49e8beb1fe28e976dc55bce468"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-integration-red.json",
+      "bytes": 44448,
+      "sha256": "a0f28e53a2d6767cfc484e13d27671e84794c758cbdfe5669acc52cc627f2914"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/final-run-ledger.json",
+      "bytes": 6529,
+      "sha256": "661353d8c1c7ae69895c31bafd53c22772578bb6e2c21fc1d80d4bc66a0d47d1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/git-baseline-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/git-baseline-green.json",
+      "bytes": 23673,
+      "sha256": "6ce7a61872ac126a38842cf38963fad31274b4123d39b429b70c28d8a6b88fb5"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/identity-green.json",
+      "bytes": 39728,
+      "sha256": "b66f1d17e912968c8b56c85b1d23883c7da846c55cb76941ec7a8aa9a74c1b17"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/identity-red.json",
+      "bytes": 6511,
+      "sha256": "4c0171be168485c2162ce7496a9f36b6c287280a8512a308ab3fecf9f16f7cc3"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/integration-green.json",
+      "bytes": 42482,
+      "sha256": "1cc52bc2dfaf2b6ac2d27606597618c1807e4ec069f485639bbb138e17d6ea43"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/history/integration-red.json",
+      "bytes": 26606,
+      "sha256": "b7e6a4f14ec334510c4ccd25910aa7fdb311c4c412ff9e39d90ec9dd924442d2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/public-proof-index.json",
+      "bytes": 16489,
+      "sha256": "62bca9e668cd75b808fc03b72003cb35c81e46ecc113dc75b6b69c88fc8f5d8c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/run-classification.json",
+      "bytes": 13698,
+      "sha256": "b9852800bb7ef20d31aff6cfa2dcc3427190d26cd8c106bdd1833d604b792b23"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-authority-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-authority-green.json",
+      "bytes": 102242,
+      "sha256": "3e35cbce4f3b8de9c48ff32df14c788dff4c7112161aced0112db5cdf966a2fc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-authority-red.json",
+      "bytes": 36817,
+      "sha256": "665277bea2b8a37596094c58fba5fdb470fa224545d76f04678a912c54746e10"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-crash-green.json",
+      "bytes": 95728,
+      "sha256": "be7b5299fc81d1bb5c294bd9505cac6fffb543855f9ec234f21c74bcfc0c5bcc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-crash-red.json",
+      "bytes": 72911,
+      "sha256": "06b0d98433d074bcf29a9bb9ea82763d70142bc1da0506e9b55540667a746589"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-exclusions-green.json",
+      "bytes": 207608,
+      "sha256": "f12da507dc28675296634cc392e3e8e8ec529c4f79287bf94ba5c41849c9755c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-exclusions-red.json",
+      "bytes": 57994,
+      "sha256": "b082b08b68e6511189e0a9750480b7829fd1237c1678a1565c8337ae22c6b75a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-git_baseline-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-git_baseline-green.json",
+      "bytes": 23761,
+      "sha256": "2ac5c7a4fdbfdfefc253d320e181fd00ed39b810c075c5b92c922febcf701e6e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-identity-green.json",
+      "bytes": 70529,
+      "sha256": "323cd6a769ded2c078098a5a9ea14be07e88e22998f72301852b0d93326639a6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-identity-red.json",
+      "bytes": 49120,
+      "sha256": "29f71f929e2edcc3d9773619747e03ded184844a440b10b6508e347a273e9a65"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-integration-green.json",
+      "bytes": 68888,
+      "sha256": "39eab2f55b7e7e605827534d7c51552dd56a606222e06f0e5074748e8c0ae9d6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-integration-red.json",
+      "bytes": 46880,
+      "sha256": "f89ecd75c297d141945bb005ea0881e57298d81aea5c7aef11fc99c171ac3cb1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/verified-run-ledger.json",
+      "bytes": 8210,
+      "sha256": "cff9ec63717c98b4a0fbd919a62d6e35bed65dd2a7121434326f2c7202113ebd"
+    }
+  ],
+  "completion_note": "Includes files omitted by the initial extension-filtered inventory; existing files use their captured preimage hashes."
+}

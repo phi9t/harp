@@ -3,7 +3,7 @@
 Type: task
 Status: open
 Owner:
-Blocked by: 11, 14, 21
+Blocked by: 11, 14, 21, 32
 Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
@@ -42,3 +42,4 @@ No invented throughput benefit, real mainline merge or unlimited repair loop.
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T17:36:01Z lead: Reference run uses accepted v0.2 ledger/scope/Plan/backend/job/protected-gate contracts; replacement lead cannot rely on hidden transcript state. No broadened model budget implied.

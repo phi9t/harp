@@ -1,0 +1,121 @@
+{
+  "repair_iteration": "2/3 (handoff retention only)",
+  "scope": "Read-only hashes and normal Git file-selection audit; no evaluation or test reruns.",
+  "old_index_records": 108,
+  "old_index_normally_git_selected_records": 107,
+  "excluded_incidental_records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/__pycache__/preimage-jj_workspace_evaluation.cpython-311.pyc",
+      "bytes": 54984,
+      "sha256": "b3f0193377b2f5fa1e9fdce9eb06bb2d622fdece38868396d078a3d39304e54c"
+    }
+  ],
+  "unchanged_source_records": [
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "bytes": 37876,
+      "sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "bytes": 17565,
+      "sha256": "5282b39e95cdac5c2e51e02cc9d7cc4fd8a54fdbd662cd20e360b065eadce30c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "bytes": 5129,
+      "sha256": "7098d6b81f8639590e1aca6c88bd57f840fd9022f6953843689773712df2678f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+      "bytes": 5347,
+      "sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "bytes": 984,
+      "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "bytes": 31371,
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+    }
+  ],
+  "unchanged_source_preimages": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj_workspace_evaluation.py",
+      "sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj-workspace-evaluation.md",
+      "sha256": "3e45338570b94df1db57390064dad2f0bd2b46240c1fd842ec198db982da89ea"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-19-jj-evaluation.md",
+      "sha256": "16f9480bd660e1464b5b5f8d5e034188c2ddc68f219b30e82d891461aac4dc6a"
+    }
+  ],
+  "unchanged_original_evidence_files": 100,
+  "unchanged_final_verification_receipts": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-changed-after-rewrite.json",
+      "bytes": 3298,
+      "sha256": "4aa19e26802135ba66ddf0b3e49cb26bf9ac7bd89a0395da36ff0b65a573776f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-original-before-rewrite.json",
+      "bytes": 3311,
+      "sha256": "47751301a1356abec0f167b37d552e993d7c6d4d6616b1514f0cbfd7dd0ba1fb"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-retained-original-after-rewrite.json",
+      "bytes": 3351,
+      "sha256": "ea70deb853151acb9df5a75be4b6d0abf9d7c7fdabf6777fc80d3e1962fd6149"
+    }
+  ],
+  "unchanged_final_bundles": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/candidate.bundle",
+      "bytes": 693,
+      "sha256": "0450db8651c672686532816429f93ffaa6dc6d1287e1ec22518b1a8d7604f3cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/changed-candidate.bundle",
+      "bytes": 700,
+      "sha256": "9f6b0ecdf1b759e4a5e14b19220144d8d8b0494bef050a821c180eba854da7f6"
+    }
+  ],
+  "unchanged_historical_metadata": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/public-proof-index.json",
+      "bytes": 26134,
+      "sha256": "c4874d3f4ceddeb374b2228228b10fde568a7b050ca36fce607240569b5778cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/source-freeze.json",
+      "bytes": 2279,
+      "sha256": "0f98905c54312d7887c9ccba9d09325490fe49e3b9d1a02e80d90df1cb52040d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-handoff.json",
+      "bytes": 3297,
+      "sha256": "d97e6d6d13f1d8efc68a10be48708e95071e3064fb40d5e58e89f6907897dcc8"
+    }
+  ],
+  "normal_git_selection_command": [
+    "git",
+    "ls-files",
+    "--cached",
+    "--others",
+    "--exclude-standard",
+    "--",
+    "<explicit retained paths>"
+  ],
+  "normal_git_selection_exit": 0,
+  "retained_old_records_checked": 107,
+  "source_patch_sha256_unchanged": "76551f4875c28bb7ad46d7000c3c35a49fc5210d3ab7bc4d25f7714d1befccc4",
+  "fixture_sha256_unchanged": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+  "explanation": "The original repair1 index is historical inventory metadata: it included one ignored, regenerable Python cache file. This authoritative repair2 index excludes that incidental bytecode. Source, acceptance suite, recorded verifier commands/results, receipt bindings and bundle bytes are unchanged. Bytecode regeneration can change the cache bytes without changing any retained behavior or evidence assertion; all asserted identities are bound to source/proof/artifact hashes, not that cache.",
+  "observed_at": "2026-10-03T17:32:45.448153+00:00"
+}

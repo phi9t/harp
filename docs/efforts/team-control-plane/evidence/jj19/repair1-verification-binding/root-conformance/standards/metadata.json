@@ -1,0 +1,32 @@
+{
+  "authoritative_sha256": {
+    "repair2-public-proof-index.json": "df3b6feaf0a2aee88ee59f2c067078ea6e8af5ab495047f9a3ef38010e590f98",
+    "repair2-source-freeze.json": "82a7b0246decebb11d6406036fa62362227669424d825a2a9ad6ef75080c9f13",
+    "repair2-final-handoff.json": "b46763871a2a0b3f22b29ab96fdefb474e0b75626dcd615374f18aa50552cf6c"
+  },
+  "current_index_records": 110,
+  "current_index_mismatches": [],
+  "ignored_current_records": [],
+  "check_ignore_exit": 1,
+  "ordinary_git_eligible_records": 110,
+  "not_eligible": [],
+  "preserved_prior_records": 107,
+  "removed_records": [
+    "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/__pycache__/preimage-jj_workspace_evaluation.cpython-311.pyc"
+  ],
+  "changed_preserved_records": [],
+  "source_records_same": true,
+  "source_preimages_same": true,
+  "patch_same": true,
+  "prior_review_source_mismatches": [],
+  "historical_metadata_matches": true,
+  "metadata_refs_exact": true,
+  "tests_runtimes_run": false,
+  "verdict": "PASS",
+  "axis": "Standards handoff-only repair2",
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "base": "264756edd550225449202b6f20ac4b560808d14e",
+  "prior_important_finding": "closed",
+  "findings": [],
+  "report_sha256": "fbd1f742ae0c4be58d9e09c98a00434e65bc9f7d62494d759dc176061f2e25f4"
+}

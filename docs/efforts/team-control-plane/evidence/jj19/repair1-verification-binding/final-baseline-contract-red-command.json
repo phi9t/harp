@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-baseline-contract-red.json",
+    "--fixture",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj_workspace_evaluation.py"
+  ],
+  "exit": 1,
+  "stdout": "{\n  \"outcome\": \"failed\",\n  \"fixture_sha256\": \"6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027\",\n  \"fixture_removed\": true,\n  \"failure\": \"first independent verifier fetch occurs after content rewrite\"\n}\n",
+  "stderr": ""
+}

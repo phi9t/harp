@@ -1,0 +1,258 @@
+{
+  "records": [
+    {
+      "retained_proof_id": "sha256:bca9895650cbd33e0b1fc0658cd3cd2562415873fb61ea51d4e9315dd97186ab",
+      "candidate_commit": "61e14e49dea0655034728f3df206301dd8fc522b",
+      "candidate_tree": "12ce35e9b9c1d3e3a2a2034871dfff2e623724de",
+      "specification": {
+        "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/SPEC.md",
+        "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+      },
+      "suite": {
+        "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+        "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+      },
+      "bundle_path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/candidate.bundle",
+      "bundle_sha256": "0450db8651c672686532816429f93ffaa6dc6d1287e1ec22518b1a8d7604f3cc",
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "JJ_CONFIG": "",
+        "HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite/private-home",
+        "XDG_CONFIG_HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite/config",
+        "XDG_CACHE_HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite/cache",
+        "GIT_CONFIG_GLOBAL": "/dev/null",
+        "GIT_CONFIG_SYSTEM": "/dev/null",
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_TERMINAL_PROMPT": "0",
+        "GIT_EDITOR": "/bin/false",
+        "EDITOR": "/bin/false",
+        "GIT_AUTHOR_NAME": "Fixture",
+        "GIT_AUTHOR_EMAIL": "fixture@example.invalid",
+        "GIT_COMMITTER_NAME": "Fixture",
+        "GIT_COMMITTER_EMAIL": "fixture@example.invalid",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+            "init",
+            "-q"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+            "fetch",
+            "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/candidate.bundle",
+            "refs/fixture/candidate"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": "From /tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/candidate.bundle\n * branch            refs/fixture/candidate -> FETCH_HEAD\n"
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+            "rev-parse",
+            "FETCH_HEAD"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "61e14e49dea0655034728f3df206301dd8fc522b\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+            "rev-parse",
+            "FETCH_HEAD^{tree}"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "12ce35e9b9c1d3e3a2a2034871dfff2e623724de\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+            "checkout",
+            "-q",
+            "--detach",
+            "61e14e49dea0655034728f3df206301dd8fc522b"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "/usr/bin/python3",
+            "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+            "--expected",
+            "original"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/original-before-rewrite",
+          "exit": 0,
+          "stdout": "{\"artifact_sha256\": \"8bd9dac0f8ad6c8cc97e4ea36dd8c239c8ad9ac486cec60f67f05d7beaa76f5e\", \"expected\": \"original\", \"outcome\": \"passed\"}\n",
+          "stderr": ""
+        }
+      ],
+      "outcome": "passed"
+    },
+    {
+      "retained_proof_id": "sha256:0281ea7510a6034afced5fe75230fd34700e8ac04add61d0a52bf736fa9c3b02",
+      "candidate_commit": "f34104198073f2a441f123caba4473a1dabb8f60",
+      "candidate_tree": "2c8e5f052d00273d60fdbfd6a78e37be07d473d8",
+      "specification": {
+        "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/SPEC.md",
+        "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+      },
+      "suite": {
+        "path": "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+        "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+      },
+      "bundle_path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/changed-candidate.bundle",
+      "bundle_sha256": "9f6b0ecdf1b759e4a5e14b19220144d8d8b0494bef050a821c180eba854da7f6",
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "JJ_CONFIG": "",
+        "HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite/private-home",
+        "XDG_CONFIG_HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite/config",
+        "XDG_CACHE_HOME": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite/cache",
+        "GIT_CONFIG_GLOBAL": "/dev/null",
+        "GIT_CONFIG_SYSTEM": "/dev/null",
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_TERMINAL_PROMPT": "0",
+        "GIT_EDITOR": "/bin/false",
+        "EDITOR": "/bin/false",
+        "GIT_AUTHOR_NAME": "Fixture",
+        "GIT_AUTHOR_EMAIL": "fixture@example.invalid",
+        "GIT_COMMITTER_NAME": "Fixture",
+        "GIT_COMMITTER_EMAIL": "fixture@example.invalid",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+            "init",
+            "-q"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+            "fetch",
+            "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/changed-candidate.bundle",
+            "refs/fixture/changed-candidate"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": "From /tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/changed-candidate.bundle\n * branch            refs/fixture/changed-candidate -> FETCH_HEAD\n"
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+            "rev-parse",
+            "FETCH_HEAD"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "f34104198073f2a441f123caba4473a1dabb8f60\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+            "rev-parse",
+            "FETCH_HEAD^{tree}"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "2c8e5f052d00273d60fdbfd6a78e37be07d473d8\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "git",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "-C",
+            "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+            "checkout",
+            "-q",
+            "--detach",
+            "f34104198073f2a441f123caba4473a1dabb8f60"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "/usr/bin/python3",
+            "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+            "--expected",
+            "changed"
+          ],
+          "cwd": "/data02/home/philip.yang/devx/tmp/jj19-repair1-artifact-reverify-qkn8aand/changed-after-rewrite",
+          "exit": 0,
+          "stdout": "{\"artifact_sha256\": \"bcdf41df2544c1c245597ed28a9aadd1498bb77a6d0a307e5c78ec1258135c99\", \"expected\": \"changed\", \"outcome\": \"passed\"}\n",
+          "stderr": ""
+        }
+      ],
+      "outcome": "passed"
+    }
+  ],
+  "fixture_removed": true,
+  "observed_at": "2026-10-03T17:09:01.899662+00:00"
+}

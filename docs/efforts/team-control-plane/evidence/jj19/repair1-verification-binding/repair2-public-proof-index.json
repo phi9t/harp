@@ -1,0 +1,596 @@
+{
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "repair_iteration": "2/3 (handoff retention only)",
+  "authority": "This is the current durable proof index; repair1 public-proof-index/source-freeze/final-handoff are retained historical metadata.",
+  "paths": "repository relative",
+  "records": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/baseline-contract-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/baseline-contract-red.json",
+      "bytes": 70790,
+      "sha256": "7c1876f1e8da7ea93fa30cb257575b6a750d3adfb45c7c5d1370399e9d7d3605"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/baseline-manifest.json",
+      "bytes": 21614,
+      "sha256": "a2f6fc4671c4ce8f8f2ca28623f7a6388c15354a4ce628561917780efbe59b03"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/complete-baseline-manifest.json",
+      "bytes": 21757,
+      "sha256": "4e83d0caa2a632d74cb2f7d5b083380822f1b59e8609e0babfd9b05e9a5b35c4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-green-command.json",
+      "bytes": 6102,
+      "sha256": "5a1256ca1dc5b7b0a1fa180d031a8bdf7f7d38d0fd18c6622424483cf39cfa12"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-green.json",
+      "bytes": 102242,
+      "sha256": "6d8667c97c17a0ef685f59851128df80e7697f9633028f1d7d1793d40c28564f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-red-command.json",
+      "bytes": 2875,
+      "sha256": "463574e73c58aba7fbab3875ef8818e04f651188a4a8e7ae1475b3144a648f05"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-red.json",
+      "bytes": 36817,
+      "sha256": "2c9c1430b57a4cdc44c048772217e5f6a35384347aa3c1d093c13b82cae31480"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-baseline-contract-red-command.json",
+      "bytes": 953,
+      "sha256": "aff23106eeac6ff08946d93216ed2d40781aa88faecc0667ab622291d5a5cac9"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-baseline-contract-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-baseline-contract-red.json",
+      "bytes": 70790,
+      "sha256": "f622fcc5cd4d64040cdd5017975a1f22f5b7447a8ce46423a7dcbbf00eef917c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-checks.json",
+      "bytes": 1856,
+      "sha256": "af4f0951c5e68a8d7a1fda1bb9f5b9af49cc7e7d95a561340c01ab9defea23c4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-contract-green-command.json",
+      "bytes": 871,
+      "sha256": "c99fd9ad1a39be7cedf9e1c48466fc75c154e1ed66a1d20c9b743fe39bbf07eb"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-contract-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-contract-green.json",
+      "bytes": 99007,
+      "sha256": "ee19429e5ba7b6aea315ead7b54e13f62ce786b1744ab0cd48edc7399b6a1d04"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-green-command.json",
+      "bytes": 13708,
+      "sha256": "85617c58ba612f71858791dea63b28e4bfaf106692850f82fdb291f06270b82a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-green.json",
+      "bytes": 95728,
+      "sha256": "21fe2d5e9af927e37a141f8c0587e88d926ed21787e766946252f796f4210533"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-red-command.json",
+      "bytes": 11971,
+      "sha256": "b23d1673e90f138ab170ef41481271d0b82ed09d483dc9c5c9a8097e57071256"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-crash-red.json",
+      "bytes": 72911,
+      "sha256": "8da9c7c34a43954f612f98bc4a2ed82afde9287abeee9fd9f13b04539a772e7a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-green-command.json",
+      "bytes": 4726,
+      "sha256": "d6da4dd1bf69422bf33d9233c7b70502b13cb9bdf6ce7c598ba390341e55fe66"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-green.json",
+      "bytes": 207608,
+      "sha256": "1662c5cdd35bfd5f8e29e69ab58e08be8be6f4bf7e42ba712ee97a3680651c93"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-red-command.json",
+      "bytes": 2512,
+      "sha256": "185a84124988203ec9e001ae5be4851a0b2d013567c6c20fc4ad244f68dd4088"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-exclusions-red.json",
+      "bytes": 57994,
+      "sha256": "c512a8efab60baf9d70ee038b88e53ddcf7fe630b441eea4971c7b08a1a1c3da"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-git_baseline-green-command.json",
+      "bytes": 2279,
+      "sha256": "371b0b0aa1a2292757d4c19a54d3b83e70a88346923e8bb9cf60be7b8ae381a4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-git_baseline-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-git_baseline-green.json",
+      "bytes": 23761,
+      "sha256": "8081f29e43fad821e49b3d90992ae90b0ecae2d76ac9cdf5a65a3f3b3078e0eb"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-handoff.json",
+      "bytes": 3297,
+      "sha256": "d97e6d6d13f1d8efc68a10be48708e95071e3064fb40d5e58e89f6907897dcc8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-green-command.json",
+      "bytes": 18627,
+      "sha256": "164a2df91e5f8059175a784609948ef6ca4b5099cb970d0efd22953d6ae7d0ac"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-green.json",
+      "bytes": 98860,
+      "sha256": "040992e21a50740cfbfea579b0467b082eb354f7dc2d7039e9f3f5fb7eb11805"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-red-command.json",
+      "bytes": 7672,
+      "sha256": "5bc7627310cefdba4c6d69aecbebd3dfb9c8186e6170a5fa78fdb04a3a9f7f31"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-identity-red.json",
+      "bytes": 58783,
+      "sha256": "2dcebb5a195366a7db58fa16b7d7f614f854c2cb77e15dfbe276c713d5df43c8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-green-command.json",
+      "bytes": 9370,
+      "sha256": "2af6ca1f5b6c399a33fb931b7009c1a56b2262e5ce15e27f7781171ca1a22056"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-green.json",
+      "bytes": 68936,
+      "sha256": "79c59aaf797981a5c51c9263875cb6ff114c04c912ed94beba88749a6204655c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-red-command.json",
+      "bytes": 2461,
+      "sha256": "8e0e6bd4f2fbbd86156500326dea85b644de5e8bbb3621bac859eb6f206d7905"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-integration-red.json",
+      "bytes": 46884,
+      "sha256": "500271d5d21f43540fdb567c1b3947628901d08db7e45fc1b68b8f667ac9aa12"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/candidate.bundle",
+      "bytes": 693,
+      "sha256": "0450db8651c672686532816429f93ffaa6dc6d1287e1ec22518b1a8d7604f3cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/changed-candidate.bundle",
+      "bytes": 700,
+      "sha256": "9f6b0ecdf1b759e4a5e14b19220144d8d8b0494bef050a821c180eba854da7f6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-changed-after-rewrite.json",
+      "bytes": 3298,
+      "sha256": "4aa19e26802135ba66ddf0b3e49cb26bf9ac7bd89a0395da36ff0b65a573776f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-original-before-rewrite.json",
+      "bytes": 3311,
+      "sha256": "47751301a1356abec0f167b37d552e993d7c6d4d6616b1514f0cbfd7dd0ba1fb"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-retained-candidate-artifacts/verification-retained-original-after-rewrite.json",
+      "bytes": 3351,
+      "sha256": "ea70deb853151acb9df5a75be4b6d0abf9d7c7fdabf6777fc80d3e1962fd6149"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-run-ledger.json",
+      "bytes": 9599,
+      "sha256": "d7c8e0595319c5a50c4f9a1c0f778cd7687f517de14f21d7b1672e6716abc854"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/focused-contract-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/focused-contract-green.json",
+      "bytes": 98494,
+      "sha256": "01b6662a9947296024681ec46224038c7ee217bf88c4265e67289c81d37e1663"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/focused-identity-control-red-command.json",
+      "bytes": 7344,
+      "sha256": "5025cca633f0656618d020575cca47d0d3733fd2b44d88cf1ca9842c03995044"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/focused-identity-control-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/focused-identity-control-red.json",
+      "bytes": 58270,
+      "sha256": "9e8f966bb9d69cc17fc92f0ff400000e56e50520181adda2253ed81054b58aa2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-green-command.json",
+      "bytes": 6102,
+      "sha256": "2fa552cb66f2915a24da25fcf66e218344d89b019c0d5eeddfaf8873cef23de4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-green.json",
+      "bytes": 102242,
+      "sha256": "3586743c13b3bb12581c05babe962662113e6ff14f4f2493ca788bef2ce79363"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-red-command.json",
+      "bytes": 2875,
+      "sha256": "84aa2f8c7093f755b617a3a328ceb9ad5c0a65c10596555c2e9ee9b8484e54b3"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-authority-red.json",
+      "bytes": 36817,
+      "sha256": "9d359e9df2e37316404a3e1a4efadd2ad40fb2f45e9bff0b270c1f4546179800"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-green-command.json",
+      "bytes": 13708,
+      "sha256": "d75a769b2d02841121cebe08731f72b585d3b40885b386bcf613095ac2b0b3b5"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-green.json",
+      "bytes": 95728,
+      "sha256": "7c284badaf82fc1852032832fab0f6728e09d2d2b09700c569ffca69a70d0860"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-red-command.json",
+      "bytes": 11971,
+      "sha256": "8f35b3c69b040a1d30aa1b25f3595af4c99124fc5335aa88ce8f37c4eea84f74"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-crash-red.json",
+      "bytes": 72911,
+      "sha256": "ccf29dd365c4c381e84afacc9391bcd19e2c8f65a1ea573236df5f480c6d1c96"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-green-command.json",
+      "bytes": 4726,
+      "sha256": "f84669f13bffe7ebdaaaa6d752bc3f24497be90c0928393ba55b76032da0b069"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-green.json",
+      "bytes": 207608,
+      "sha256": "1ee0cb0926cd83ffa7679dd2b65aae993533dc82653fbbd4188580ec9b5ec4b1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-red-command.json",
+      "bytes": 2512,
+      "sha256": "ecf3f2112e1f5bf9239cacd34c05cb86fe5ee7313de3e02dd6fee5a19ab33b60"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-red.json",
+      "bytes": 57994,
+      "sha256": "f6e52741cc3d83e6218734172d2e4c9f5902f03be889e00b9951012b2c36ef3d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-git_baseline-green-command.json",
+      "bytes": 2279,
+      "sha256": "649218fa52a2c9d855e1c004b1611b8a129cbf8894518b4f85eb47af7a58a884"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-git_baseline-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-git_baseline-green.json",
+      "bytes": 23761,
+      "sha256": "38a68575734f03b8583b4058885dbfbb3ab48316c08ad0a307f30b68646d45fd"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-green-command.json",
+      "bytes": 18627,
+      "sha256": "fee041dae6cc019a70d01b6b927d9fa91fe7b6e8393b7870db07f8501a335892"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-green.json",
+      "bytes": 98347,
+      "sha256": "1a66942a28a5b0085541d30c24fb8b9eb525228c01782911d1a089ecc3595329"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-red-command.json",
+      "bytes": 7672,
+      "sha256": "ab9706e16273e6db43443c89c3f1adf2eb338a73480465f33a0964906609ddd8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-identity-red.json",
+      "bytes": 58270,
+      "sha256": "c573909510cfdde0b6eaa3073984fa99fdeac2885c684eecc88f0aa8e73fd51f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-green-command.json",
+      "bytes": 9370,
+      "sha256": "d52a7f08ed423098beb0a3c2bcaf0be802e8bd2432381d58909c9cec11d79a14"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-green.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-green.json",
+      "bytes": 68936,
+      "sha256": "098dfcfc64ea47bc8440aac28274b5e8dd745504fc0599a3f51cb498584636e6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-red-command.json",
+      "bytes": 2461,
+      "sha256": "df11f1213938ed8de8022063070f3bf22d88a3d22d32d7e469c0823b316cf3e0"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-red.exit",
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-red.json",
+      "bytes": 46884,
+      "sha256": "4881d10ac2b99d7e47dac06962065a00440dbea7bed02c5653cb15ef919ebe8d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-run-ledger.json",
+      "bytes": 9599,
+      "sha256": "238606da5f1f0d75ffc779ae266dd12bae2096968c2bf66bb52125bd784dff4c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-19-jj-evaluation.md",
+      "bytes": 3913,
+      "sha256": "16f9480bd660e1464b5b5f8d5e034188c2ddc68f219b30e82d891461aac4dc6a"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj-workspace-evaluation.md",
+      "bytes": 14658,
+      "sha256": "3e45338570b94df1db57390064dad2f0bd2b46240c1fd842ec198db982da89ea"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/preimage-jj_workspace_evaluation.py",
+      "bytes": 33429,
+      "sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/repair1-source.patch",
+      "bytes": 43410,
+      "sha256": "76551f4875c28bb7ad46d7000c3c35a49fc5210d3ab7bc4d25f7714d1befccc4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-artifact-reverification.json",
+      "bytes": 11312,
+      "sha256": "8ac5698252bd15b03d6f46e79bb292cc544467f45d7308adcc09fa793a856d92"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-candidate-artifacts/candidate.bundle",
+      "bytes": 695,
+      "sha256": "d2cfc151ba65632564338b9779d70334fcb478e10c99fdae964023ccf8b190ce"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-candidate-artifacts/changed-candidate.bundle",
+      "bytes": 702,
+      "sha256": "7d5c32412f2e63c99d2e6576ab2fc05bf0c2cec8c7b31ad6cdb66e7515564694"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-candidate-artifacts/verification-changed-after-rewrite.json",
+      "bytes": 3298,
+      "sha256": "277de3c1c28641f54263aac3368d6e9c5fedfb0a1dc6b4985bf05b54b310ed2d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-candidate-artifacts/verification-original-before-rewrite.json",
+      "bytes": 3311,
+      "sha256": "c9a4bf9fdafa96df980c47b092c0bd7b9eb7d8d8a4156ab68c76c0492fa90e8c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/retained-candidate-artifacts/verification-retained-original-after-rewrite.json",
+      "bytes": 3351,
+      "sha256": "fa04251240b4608432d5c11bb218a0310e342583a6d38a6d9c3f59a82a887bd8"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/source-freeze.json",
+      "bytes": 2279,
+      "sha256": "0f98905c54312d7887c9ccba9d09325490fe49e3b9d1a02e80d90df1cb52040d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "bytes": 37876,
+      "sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/jj-workspace-evaluation.md",
+      "bytes": 17565,
+      "sha256": "5282b39e95cdac5c2e51e02cc9d7cc4fd8a54fdbd662cd20e360b065eadce30c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/19-jj-evaluation.md",
+      "bytes": 5129,
+      "sha256": "7098d6b81f8639590e1aca6c88bd57f840fd9022f6953843689773712df2678f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/test_jj_verification_binding.py",
+      "bytes": 5347,
+      "sha256": "1dd2034d12b431efdc934d93ab73560b726884526d1ed3fd7221b779201c3af9"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/research/probes/verify_jj_candidate.py",
+      "bytes": 984,
+      "sha256": "f32acf99ce7f95338e9dc5801019fd82953a52b1ec906aa5802d0efedffcf9b4"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "bytes": 31371,
+      "sha256": "eea32d2c1eae575e6d9c6de1e2317fe36a8cd0c945b29375346511df05638040"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/public-proof-index.json",
+      "bytes": 26134,
+      "sha256": "c4874d3f4ceddeb374b2228228b10fde568a7b050ca36fce607240569b5778cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/repair2-source-freeze.json",
+      "bytes": 4031,
+      "sha256": "82a7b0246decebb11d6406036fa62362227669424d825a2a9ad6ef75080c9f13"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/repair2-retention-checks.json",
+      "bytes": 5738,
+      "sha256": "52abf60dcbb0ed938c67ac4234cf71f7c5e47af511c80f2024a4d81b2a944508"
+    }
+  ],
+  "excluded_incidental_files": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/__pycache__/preimage-jj_workspace_evaluation.cpython-311.pyc",
+      "bytes": 54984,
+      "sha256": "b3f0193377b2f5fa1e9fdce9eb06bb2d622fdece38868396d078a3d39304e54c"
+    }
+  ],
+  "historical_metadata": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/public-proof-index.json",
+      "bytes": 26134,
+      "sha256": "c4874d3f4ceddeb374b2228228b10fde568a7b050ca36fce607240569b5778cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/source-freeze.json",
+      "bytes": 2279,
+      "sha256": "0f98905c54312d7887c9ccba9d09325490fe49e3b9d1a02e80d90df1cb52040d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-handoff.json",
+      "bytes": 3297,
+      "sha256": "d97e6d6d13f1d8efc68a10be48708e95071e3064fb40d5e58e89f6907897dcc8"
+    }
+  ],
+  "excluded_digest_metadata": [
+    "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/repair2-public-proof-index.json",
+    "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/repair2-final-handoff.json"
+  ],
+  "excluded_digest_metadata_reason": "Index excludes itself and the handoff that pins its digest to avoid a checksum cycle. Both are normal Git-selected durable metadata; the root handoff separately pins their hashes.",
+  "counts": {
+    "historical_index": 108,
+    "excluded_incidental": 1,
+    "preserved_prior_durable_records": 107,
+    "added_durable_metadata_records": 3,
+    "authoritative_records": 110
+  },
+  "retention_explanation": "The original repair1 index is historical inventory metadata: it included one ignored, regenerable Python cache file. This authoritative repair2 index excludes that incidental bytecode. Source, acceptance suite, recorded verifier commands/results, receipt bindings and bundle bytes are unchanged. Bytecode regeneration can change the cache bytes without changing any retained behavior or evidence assertion; all asserted identities are bound to source/proof/artifact hashes, not that cache.",
+  "observed_at": "2026-10-03T17:32:45.448153+00:00"
+}

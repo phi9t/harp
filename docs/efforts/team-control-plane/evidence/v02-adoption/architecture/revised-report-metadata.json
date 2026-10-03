@@ -1,0 +1,102 @@
+{
+  "verdict": "PASS",
+  "reviewer": "/root/corenius_v02_adoption_critique",
+  "review": "independent architectural adoption re-review",
+  "source_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "commit_read": "942f037800102f3d786ac547e72f11ab928b50ae",
+  "accepted_v1_kernel": "264756edd550225449202b6f20ac4b560808d14e",
+  "prior_important_findings_closed": [
+    "admitted-only prerequisite invalidation",
+    "dimensioned inclusive allocation conservation",
+    "legacy NULL Attempt provenance",
+    "caller authority/delegation map"
+  ],
+  "traceability_correction_closed": true,
+  "new_material_findings": [],
+  "graph_acyclic": true,
+  "current_blockers": {
+    "21": "12, 15, 16, 20, 32",
+    "22": "11, 14, 21, 32",
+    "23": "11, 14, 21, 32",
+    "24": "16, 21, 22, 23, 25, 28, 29, 30, 31, 32",
+    "25": "19, 27, 30, 31",
+    "26": "16",
+    "27": "15, 26",
+    "28": "17, 26, 27",
+    "29": "13, 26, 27, 31",
+    "30": "11, 27, 31",
+    "31": "15, 27",
+    "32": "25, 28, 29, 30, 31"
+  },
+  "sources": [
+    {
+      "path": "CONTEXT.md",
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173",
+      "bytes": 2816
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "sha256": "e8f227b8a30005cf8548d628b19fc24cc9a214f89191a6cb3ec6878043baffb1",
+      "bytes": 21348
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "sha256": "048f985576c54267a9a0377b4fc84141ab0bc4c0bbe20c89156ef5960e0bb4f1",
+      "bytes": 33105
+    },
+    {
+      "path": "docs/efforts/team-control-plane/PLAN.md",
+      "sha256": "cbb88a13597df9ff4c870c366bea8e7528e1135607ac052e7d4af9b49ee5130e",
+      "bytes": 17327
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/25-jj-backend.md",
+      "sha256": "b8a0761eaee998c6bf80de71b2e9886512387a64b25cb88ac72d177cd46e3df6",
+      "bytes": 2799
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "sha256": "433d413b4d0ae29634c5ebf11d836925046df69aa684fe07b47e44d6503ca18b",
+      "bytes": 3386
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/27-durable-scopes.md",
+      "sha256": "49ddb1e679a7d9f72ca542ca10aa7c3efb5eb2931da426ef043951ead35a5cd2",
+      "bytes": 3403
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/28-kata-work-ledger.md",
+      "sha256": "64cab600c839090d7776b6e143444df9fdc46b435f92b25e72492ebbd6b7c968",
+      "bytes": 2892
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/29-scope-plan-interpreter.md",
+      "sha256": "79b18255808c8a70251e064c7388bcf16d10cb0f1741d5cbb2e8b7a7b344a6aa",
+      "bytes": 2804
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/30-protected-integration.md",
+      "sha256": "3d8f925056d542abe51b93853f053d7385c024cd0ff0111900ce7b9bb8d2443f",
+      "bytes": 2771
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/31-independent-execution.md",
+      "sha256": "52dc90583dcbd5fe1fe42f8c3794168a7946e8a7160eed51db866c6aff81f928",
+      "bytes": 2973
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/32-v02-assembled-proof.md",
+      "sha256": "3f7cee3f29a36e052a9d68caf944c41d011bc299c46f52cc0cead90df9e4f1dd",
+      "bytes": 2542
+    }
+  ],
+  "report_sha256": "c65bebef18a3b8f0191a81df80c4011098a57749b85d603a83fb83fe574baa5d",
+  "reviewed_source_mutations": false,
+  "tests_or_gates_run": false,
+  "runtime_or_provider_launches": false,
+  "external_capability_qualification_claimed": false,
+  "limits": [
+    "architectural critique only; separate specification gate remains",
+    "implementation/qualification/restore/live/full-goal acceptance not claimed"
+  ]
+}

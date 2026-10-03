@@ -1,0 +1,109 @@
+{
+  "repair_iteration": "2/3 (handoff retention only)",
+  "branch": "codex/jj19-verification-repair",
+  "source_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "final_fixture_sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+  "patch": "repair1-source.patch",
+  "source_freeze": "repair2-source-freeze.json",
+  "baseline_red": "final-baseline-contract-red.json",
+  "contract_green": "final-contract-green.json",
+  "command_order": {
+    "original_suite_event": 30,
+    "rewrite_prepared_event": 31,
+    "changed_suite_event": 53,
+    "retained_original_suite_event": 59
+  },
+  "proof_ids": [
+    "sha256:bca9895650cbd33e0b1fc0658cd3cd2562415873fb61ea51d4e9315dd97186ab",
+    "sha256:0281ea7510a6034afced5fe75230fd34700e8ac04add61d0a52bf736fa9c3b02",
+    "sha256:1fa5dde0580c6107e49d6e5bb01a428a234f7cb77243207dc713207d64d3d488"
+  ],
+  "actual_reuse_decisions": [
+    {
+      "proof_id": "sha256:bca9895650cbd33e0b1fc0658cd3cd2562415873fb61ea51d4e9315dd97186ab",
+      "candidate_commit": "f34104198073f2a441f123caba4473a1dabb8f60",
+      "candidate_tree": "2c8e5f052d00273d60fdbfd6a78e37be07d473d8",
+      "disposition": "refused"
+    },
+    {
+      "proof_id": "sha256:0281ea7510a6034afced5fe75230fd34700e8ac04add61d0a52bf736fa9c3b02",
+      "candidate_commit": "f34104198073f2a441f123caba4473a1dabb8f60",
+      "candidate_tree": "2c8e5f052d00273d60fdbfd6a78e37be07d473d8",
+      "disposition": "accepted"
+    },
+    {
+      "proof_id": "sha256:bca9895650cbd33e0b1fc0658cd3cd2562415873fb61ea51d4e9315dd97186ab",
+      "candidate_commit": "61e14e49dea0655034728f3df206301dd8fc522b",
+      "candidate_tree": "12ce35e9b9c1d3e3a2a2034871dfff2e623724de",
+      "disposition": "accepted"
+    },
+    {
+      "proof_id": "sha256:0281ea7510a6034afced5fe75230fd34700e8ac04add61d0a52bf736fa9c3b02",
+      "candidate_commit": "a0b5f18d82af433c074da203ddd8e655e032a4b0",
+      "candidate_tree": "2c8e5f052d00273d60fdbfd6a78e37be07d473d8",
+      "disposition": "refused"
+    }
+  ],
+  "final_ledger": "final-run-ledger.json",
+  "retained_artifact_directory": "final-retained-candidate-artifacts",
+  "post_cleanup_reverification": "retained-artifact-reverification.json",
+  "owner_direction": {
+    "commit_read": "768bb943e9a95b9e761e3d1e7de08c0ac8df74b4",
+    "path": "docs/rfcs/0002-persistent-engineering-teams.md",
+    "section": "v0.2 owner-supplied correction",
+    "handoff": "jj is now the preferred worker VCS candidate subject to executable qualification. Preserve original defer recommendation as historical; root must reconcile canonical SPEC/tickets before ticket25 disposition."
+  },
+  "authority_limits": [
+    "No Cargo/Postgres/Temporal/provider/live-Trae/full-gate/shared-main edits",
+    "No production backend, ticket25 implementation, shared-store conversion, commits or landing",
+    "Same host UID: independent processes and private verifier environment are evaluation evidence, not authenticated role isolation",
+    "Root retains fresh Standards/Spec, branch verification, architectural reconciliation and integration"
+  ],
+  "historical_original_evidence": "100 original evidence files hash-identical; original report/ticket/probe preimages retained; final-* supersedes focused-*/fresh-* repair evidence for current source claims",
+  "observed_at": "2026-10-03T17:32:45.448153+00:00",
+  "source_freeze_sha256": "82a7b0246decebb11d6406036fa62362227669424d825a2a9ad6ef75080c9f13",
+  "public_proof_index": "repair2-public-proof-index.json",
+  "public_proof_index_sha256": "df3b6feaf0a2aee88ee59f2c067078ea6e8af5ab495047f9a3ef38010e590f98",
+  "retention_checks": "repair2-retention-checks.json",
+  "retention_checks_sha256": "52abf60dcbb0ed938c67ac4234cf71f7c5e47af511c80f2024a4d81b2a944508",
+  "historical_metadata": [
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/public-proof-index.json",
+      "bytes": 26134,
+      "sha256": "c4874d3f4ceddeb374b2228228b10fde568a7b050ca36fce607240569b5778cc"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/source-freeze.json",
+      "bytes": 2279,
+      "sha256": "0f98905c54312d7887c9ccba9d09325490fe49e3b9d1a02e80d90df1cb52040d"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-handoff.json",
+      "bytes": 3297,
+      "sha256": "d97e6d6d13f1d8efc68a10be48708e95071e3064fb40d5e58e89f6907897dcc8"
+    }
+  ],
+  "old_new_counts": {
+    "historical_index": 108,
+    "excluded_incidental": 1,
+    "preserved_prior_durable_records": 107,
+    "added_durable_metadata_records": 3,
+    "authoritative_records": 110
+  },
+  "retention_explanation": "The original repair1 index is historical inventory metadata: it included one ignored, regenerable Python cache file. This authoritative repair2 index excludes that incidental bytecode. Source, acceptance suite, recorded verifier commands/results, receipt bindings and bundle bytes are unchanged. Bytecode regeneration can change the cache bytes without changing any retained behavior or evidence assertion; all asserted identities are bound to source/proof/artifact hashes, not that cache.",
+  "unchanged_assertions": {
+    "original_evidence_files": 100,
+    "source_records": 6,
+    "source_preimages": 3,
+    "final_receipts": 3,
+    "final_bundles": 2,
+    "fixture_sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+    "source_patch_sha256": "76551f4875c28bb7ad46d7000c3c35a49fc5210d3ab7bc4d25f7714d1befccc4"
+  },
+  "repair2_authority_limits": [
+    "Handoff metadata only; no executable source changes",
+    "No evaluation/tests, providers/runtimes, Cargo/Postgres/Temporal, commits or landing",
+    "Fresh independent review remains root-owned"
+  ],
+  "repair2_source_delta": "None; the repair1 source patch and all executable/source hashes are unchanged."
+}

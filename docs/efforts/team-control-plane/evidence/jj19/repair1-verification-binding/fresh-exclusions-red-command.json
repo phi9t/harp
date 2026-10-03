@@ -1,0 +1,23 @@
+{
+  "run": "fresh-exclusions-red",
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--slice",
+    "exclusions",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-exclusions-red.json",
+    "--unsafe-control"
+  ],
+  "exit": 1,
+  "expected_exit": 1,
+  "outcome": "failed",
+  "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+  "fixture_sha256": "bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2",
+  "fixture_removed": true,
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2\",\n  \"unsafe_control\": true,\n  \"observations\": {\n    \"ignored_private\": {\n      \"fresh_excluded\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-6gbtx7a3/private/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-6gbtx7a3/private\",\n        \"operation\": \"b0f380e36590caada941421562e527a9625d159bce8f67738c3b8e2e79e4292430ae255d4663a96e8285b390df231e0ef0b91c39fcd0eddc2e7d1dfcd7b73de8\",\n        \"change\": \"qpqnumnpsxmmsvuwrpuqwmtkztnqvwul\",\n        \"commit\": \"3106a4f2c4403e75bb169c4015d3ad662055412d\",\n        \"tree\": \"187c9ad549d4c2a5305978f5304db7f74f1bd376\",\n        \"conflict\": false,\n        \"captured_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"base_commit\": \"3a661ca10839e423b76c9d2e44a4642c14e96c14\"\n      },\n      \"tracked_private_still_captured\": true\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"failed\",\n  \"failure\": \"unsafe outcome accepted: ignore rules alone cannot remove tracked private content\",\n  \"failure_type\": \"AssertionError\",\n  \"slice\": \"exclusions\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "observed_at": "2026-10-03T17:04:38.756682+00:00"
+}

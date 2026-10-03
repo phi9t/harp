@@ -1,0 +1,353 @@
+{
+  "verdict": "PASS",
+  "critical_findings": [],
+  "important_findings": [],
+  "suggestions": [
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "line": 31,
+      "summary": "Remove dangling/repeated Reads expose canonical wording."
+    },
+    {
+      "path": "docs/rfcs/0002-persistent-engineering-teams-design-source.md",
+      "line": 558,
+      "summary": "Assign or explicitly disposition bounded model-checking method during ticket32 planning."
+    }
+  ],
+  "review_root": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+  "fixed_base": "942f037800102f3d786ac547e72f11ab928b50ae",
+  "accepted_v1_base": "264756edd550225449202b6f20ac4b560808d14e",
+  "review_scope": "independent adversarial document SPEC gate; RFC0002 v0.2, reconciliation, precedence, root glossary, tickets25-32 and live/restore blockers21-24; narrow v1 code/source inspection only",
+  "four_prior_ambiguities": "resolved",
+  "ticket_graph": {
+    "1": [],
+    "2": [],
+    "3": [
+      2
+    ],
+    "4": [
+      1
+    ],
+    "5": [],
+    "6": [
+      5
+    ],
+    "7": [
+      2,
+      5
+    ],
+    "8": [
+      5
+    ],
+    "9": [
+      3,
+      6,
+      7,
+      8
+    ],
+    "10": [
+      3,
+      5,
+      9
+    ],
+    "11": [
+      10
+    ],
+    "12": [
+      10
+    ],
+    "13": [
+      10,
+      12
+    ],
+    "14": [
+      10,
+      11,
+      13
+    ],
+    "15": [
+      10,
+      12
+    ],
+    "16": [
+      11,
+      13,
+      14,
+      15
+    ],
+    "17": [
+      5,
+      10
+    ],
+    "18": [
+      16,
+      17
+    ],
+    "19": [
+      11,
+      15,
+      16
+    ],
+    "20": [
+      4,
+      16
+    ],
+    "21": [
+      12,
+      15,
+      16,
+      20,
+      32
+    ],
+    "22": [
+      11,
+      14,
+      21,
+      32
+    ],
+    "23": [
+      11,
+      14,
+      21,
+      32
+    ],
+    "24": [
+      16,
+      21,
+      22,
+      23,
+      25,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "25": [
+      19,
+      27,
+      30,
+      31
+    ],
+    "26": [
+      16
+    ],
+    "27": [
+      15,
+      26
+    ],
+    "28": [
+      17,
+      26,
+      27
+    ],
+    "29": [
+      13,
+      26,
+      27,
+      31
+    ],
+    "30": [
+      11,
+      27,
+      31
+    ],
+    "31": [
+      15,
+      27
+    ],
+    "32": [
+      25,
+      28,
+      29,
+      30,
+      31
+    ]
+  },
+  "acyclic": true,
+  "topological_order": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    26,
+    27,
+    31,
+    30,
+    25,
+    28,
+    29,
+    32,
+    21,
+    22,
+    23,
+    24
+  ],
+  "implementation_or_capability_pass": false,
+  "prohibited_actions_performed": [],
+  "inputs": [
+    {
+      "path": "CONSTITUTION.md",
+      "bytes": 3484,
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 3080,
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "path": "CONTEXT.md",
+      "bytes": 2816,
+      "sha256": "ad8123fe1ca43f804476d9334fc47937a48674f809a46d024882f658b4e8d173"
+    },
+    {
+      "path": "docs/rfcs/0002-persistent-engineering-teams.md",
+      "bytes": 5796,
+      "sha256": "f48b9e62209a88850cf0ab7db0d9ed5c7923afdc1ffea9805e5999ee13610d7f"
+    },
+    {
+      "path": "docs/rfcs/0002-persistent-engineering-teams-v02-source.md",
+      "bytes": 34089,
+      "sha256": "33b24f19a50efa958bc3978ea5b41b60fa2a39bc5faf29158c504657f3977e05"
+    },
+    {
+      "path": "docs/rfcs/0002-persistent-engineering-teams-design-source.md",
+      "bytes": 53045,
+      "sha256": "0924b4faf2657dcffc46cd54e4844e4827626a95d89afb84a629bfb482ba95cb"
+    },
+    {
+      "path": "docs/rfcs/0002-persistent-engineering-teams-sources.json",
+      "bytes": 1047,
+      "sha256": "399f57871936d4d9f23d067792e71d0d017e097dbaeed2d4af7994f8746a4b30"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/v02-reconciliation.md",
+      "bytes": 21348,
+      "sha256": "e8f227b8a30005cf8548d628b19fc24cc9a214f89191a6cb3ec6878043baffb1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/SPEC.md",
+      "bytes": 33105,
+      "sha256": "048f985576c54267a9a0377b4fc84141ab0bc4c0bbe20c89156ef5960e0bb4f1"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/PLAN.md",
+      "bytes": 17327,
+      "sha256": "cbb88a13597df9ff4c870c366bea8e7528e1135607ac052e7d4af9b49ee5130e"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/21-trae-adapter.md",
+      "bytes": 2471,
+      "sha256": "646e173e1436fc87c626da8c8ed03b87b5278671f57e4311e86d2ccd733ffcb3"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/22-codex-demonstration.md",
+      "bytes": 2397,
+      "sha256": "719db8816b1a1da9308ce8796b5a9f89456a23f09d3574b255fb2b9b24e93404"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/23-claude-demonstration.md",
+      "bytes": 2320,
+      "sha256": "f1c02ac323f4c48c76fd833d0c1a5e3ec45b3993dd5dea8711b7ac73329a3c6c"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/24-restore-rollout.md",
+      "bytes": 2771,
+      "sha256": "5a68c4cef79658676660caa6a75ed1e8e41a652f347c8d50662c57f8d1211ba6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/25-jj-backend.md",
+      "bytes": 2799,
+      "sha256": "b8a0761eaee998c6bf80de71b2e9886512387a64b25cb88ac72d177cd46e3df6"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/26-intent-plan-contracts.md",
+      "bytes": 3386,
+      "sha256": "433d413b4d0ae29634c5ebf11d836925046df69aa684fe07b47e44d6503ca18b"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/27-durable-scopes.md",
+      "bytes": 3403,
+      "sha256": "49ddb1e679a7d9f72ca542ca10aa7c3efb5eb2931da426ef043951ead35a5cd2"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/28-kata-work-ledger.md",
+      "bytes": 2892,
+      "sha256": "64cab600c839090d7776b6e143444df9fdc46b435f92b25e72492ebbd6b7c968"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/29-scope-plan-interpreter.md",
+      "bytes": 2804,
+      "sha256": "79b18255808c8a70251e064c7388bcf16d10cb0f1741d5cbb2e8b7a7b344a6aa"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/30-protected-integration.md",
+      "bytes": 2771,
+      "sha256": "3d8f925056d542abe51b93853f053d7385c024cd0ff0111900ce7b9bb8d2443f"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/31-independent-execution.md",
+      "bytes": 2973,
+      "sha256": "52dc90583dcbd5fe1fe42f8c3794168a7946e8a7160eed51db866c6aff81f928"
+    },
+    {
+      "path": "docs/efforts/team-control-plane/tickets/32-v02-assembled-proof.md",
+      "bytes": 2542,
+      "sha256": "3f7cee3f29a36e052a9d68caf944c41d011bc299c46f52cc0cead90df9e4f1dd"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "bytes": 1738,
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0006.sql",
+      "bytes": 11782,
+      "sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85"
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0007.sql",
+      "bytes": 13543,
+      "sha256": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742"
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "bytes": 104201,
+      "sha256": "8a6a5e6d68a7089f591945082b998f430039b3d5df34f1081f7aaa0ac3cbd30a"
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "bytes": 125877,
+      "sha256": "6631d70e24fc3b983ef305fcaaf1c60e2bef4c17f6b4a6cb65852529f17d37b3"
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "bytes": 52941,
+      "sha256": "551bbecdb5d5279369f773ba79e38ea6dec2372fc7a3f7c1846baabf45f63b57"
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "bytes": 50413,
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6"
+    }
+  ],
+  "report_sha256": "8bbbe743adc20ca8492a9fdd74d08f9a64916e53c9557be72024c29e30c6a349",
+  "observed_at": "2026-10-03T17:49:13.129977+00:00"
+}

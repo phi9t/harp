@@ -3,7 +3,7 @@
 Type: task
 Status: open
 Owner:
-Blocked by: 11, 14, 21
+Blocked by: 11, 14, 21, 32
 Claimed:
 Label: implementation:planned
 Parent: ../PLAN.md
@@ -42,3 +42,4 @@ No reuse of Codex results as Claude behavioral proof or unapproved live budget.
 ## Comments
 
 - 2026-10-01T05:48:16Z lead: Detailed planning task created at the owner's request. No execution or architectural decision is implied.
+- 2026-10-03T17:36:01Z lead: Independent Claude run uses the same accepted v0.2 contracts as22 with separate candidates/evidence/budget; hidden-transcript replacement is measured rather than inferred.

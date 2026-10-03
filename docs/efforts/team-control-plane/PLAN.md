@@ -1,6 +1,6 @@
 # Durable team control plane implementation plan
 
-Status: approved baseline; kernel accepted/landed; optional evaluation and live prerequisites underway
+Status: v1 kernel accepted/landed; v0.2 contracts reviewed; implementation/qualification outstanding
 Source commit read: `963f58b31e518a8162dfe719e386ef9d9843321f`
 Spec: [SPEC.md](SPEC.md)
 Preserved intent: [RFC](../../rfcs/0001-durable-team-control-plane.md)
@@ -14,11 +14,11 @@ reconciled before retry, and acceptance binds the exact verified candidate.
 
 ## Current execution checkpoint
 
-Kernel16 is accepted and landed on main at `264756edd550225449202b6f20ac4b560808d14e`, with independent conformance, integrated checks, whole-branch617 review and fresh detached exact-tip gate. Optional Kata adapter18 is resolved as deferred under evaluated17; Git planning remains authoritative. jj19 remains under executable evaluation and has not been adopted.
+Kernel16 is accepted and landed on main at `264756edd550225449202b6f20ac4b560808d14e`, with independent conformance, integrated checks, whole-branch617 review and fresh detached exact-tip gate. Historical Kata adapter18 is resolved as deferred under evaluated17. RFC0002 subsequently makes Kata first-class and jj the preferred worker candidate to qualify; tickets28/25 implement that target without relabeling earlier evidence. jj19 remains under executable evaluation and no backend has been adopted.
 
 Initial synthetic Trae preflight exhausted four incarnations and observed nine attempted requests, exceeding the six-request/no-retry envelope. Routing and stopped namespaces are evidence; live execution readiness is not established. The original failure remains retained. The [bounded repair](decisions/20261003-trae-synthetic-budget-repair.md) and [counting clarification](decisions/20261003-trae-budget-admission-clarification.md) authorize offline guard preparation with independent critique; no new runtime admission has occurred. Denied retries count as attempts, discovery gets no free allowance, and stopping a local stream does not prove remote billing stopped.
 
-Independent lead demonstrations and upgrade/backup/rollback-restore remain required. Current ticket statuses, [STATE.md](STATE.md) and [completion audit](completion-audit.md) distinguish acceptance from preparation and evidence from inference; the milestone contracts below remain unchanged.
+Independent lead demonstrations and upgrade/backup/rollback-restore remain required. Current ticket statuses, [STATE.md](STATE.md) and [completion audit](completion-audit.md) distinguish acceptance from preparation. The superseding graph below adds the v0.2 prerequisites; older milestone sequencing remains historical.
 
 ## Architecture and implementation baseline
 
@@ -29,9 +29,11 @@ Activities and idempotent broker operations. Execution supervisors own actual
 workloads and attempt workspaces. Agent tools and operator views call the same
 authenticated command boundary.
 
-Use Git workspaces and approved Git planning input first. Evaluate Kata for
-ledger/UI reuse and jj for workspace/change management independently. Neither
-becomes an execution authority or a prerequisite for the durable kernel.
+Kata is the first-class work ledger through qualified APIs/events. jj is the
+preferred worker backend candidate, with private stores and immutable proofs.
+Neither owns execution authority. Versioned declarative plans run under a
+stable per-scope Temporal interpreter, and scope-owned external jobs survive
+reasoning-process replacement. The accepted v1 kernel remains its own baseline.
 Preferred workflow stack is Rust, contingent on a pinned SDK feasibility gate;
 Python is the fallback without changing the broker contract. These baseline defaults were explicitly approved by the owner; see the
 [decision](decisions/20261001-approved-baseline.md). Live-probe resource limits
@@ -58,7 +60,36 @@ owner skills are not directly invocable in this harness. No duplicate
 - Quarantine holds conflicting capacity and prevents unsafe workspace reuse.
 - Existing Markdown planning and human integration policy stays effective pending an explicit policy decision.
 - Every mission has a finite admitted budget; replacement does not reset it.
-- No deployment, commits, pushes, PRs or human merge are performed by this planning task.
+- No production deployment is implied. Existing owner authorization covers necessary reviewed commits and gated fast-forward landing; no shared history rewrite or branch deletion.
+
+## Superseding v0.2 execution graph
+
+Contracts and fault coverage: [v02-reconciliation.md](v02-reconciliation.md).
+Independent [Architecture/Spec conformance](evidence/v02-adoption/conformance.json) passes. Every new
+ticket is independently reviewable and uses the existing isolated execution,
+red/green, two-axis conformance and branch-review gates.
+
+| Ticket | Outcome | Blockers |
+| --- | --- | --- |
+| [26](tickets/26-intent-plan-contracts.md) | WorkRef, admitted IntentRevision, exact dependencies, AcceptanceContract/PlanRevision | 16 |
+| [27](tickets/27-durable-scopes.md) | Durable scopes, job ownership, independent epochs and conserved allocation | 15, 26 |
+| [28](tickets/28-kata-work-ledger.md) | Qualified work-ledger API/events, decomposition and cursor recovery | 17, 26, 27 |
+| [31](tickets/31-independent-execution.md) | Independently supervised ExecutionContract and inventory | 15, 27 |
+| [29](tickets/29-scope-plan-interpreter.md) | Per-scope stable interpreter, wake races and versioned rollover | 13, 26, 27, 31 |
+| [30](tickets/30-protected-integration.md) | Physical protected-ref CAS, exact grant and uncertain-effect journal | 11, 27, 31 |
+| [25](tickets/25-jj-backend.md) | Preferred worker VCS qualification and accepted backend | 19, 27, 30, 31 |
+| [32](tickets/32-v02-assembled-proof.md) | Real PG/Temporal assembled v0.2 evidence | 25, 28, 29, 30, 31 |
+
+Ticket20's bounded research can finish independently. Live21 waits for20/32;
+separate lead demonstrations22/23 follow21/32. Restore24 covers selected
+adapters, scope migration, interpreter versions and surviving jobs. API-only
+Kata/jj learning may proceed without implying production integration or spend.
+
+## Historical v1 implementation breakdown
+
+The following milestone descriptions preserve the approved first-kernel
+sequence and its rationale. The graph above and current tickets supersede
+optional/deferred target choices and prerequisites for remaining work.
 
 ## Milestone 0: settle the implementation boundary
 
@@ -216,10 +247,12 @@ and kernel matrix → 16; capability pinning → 20; restore/retention/readiness
 
 ## Definition of done
 
-Corenius has a reviewed executable control plane, measured Trae adapter,
+Corenius has the accepted v0.2 scope/ledger/interpreter/backend/integration
+assembly, a reviewed executable control plane, measured Trae adapter,
 separate Codex/Claude reference runs and a restore/upgrade handoff. Every required
 fault recovers or reports a precise safe stop; task acceptance is tied to actual
-verified content. Optional products have explicit evidence-backed decisions.
+verified content. Selected products have qualified contracts and explicit
+limitations; unsupported capabilities are recorded rather than silently deferred.
 The final human handoff names remaining limitations and has fresh test/review
 results. A written plan, fake runtime success or healthy terminal does not meet
 this definition.

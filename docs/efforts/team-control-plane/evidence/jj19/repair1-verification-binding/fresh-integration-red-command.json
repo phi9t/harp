@@ -1,0 +1,23 @@
+{
+  "run": "fresh-integration-red",
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--slice",
+    "integration",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/fresh-integration-red.json",
+    "--unsafe-control"
+  ],
+  "exit": 1,
+  "expected_exit": 1,
+  "outcome": "failed",
+  "failure": "failed gate did not authorize landing",
+  "fixture_sha256": "bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2",
+  "fixture_removed": true,
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"bde16354a6884ff61747ceee28f0aaf5e3f727530678e5c99ee12ba5498ae7f2\",\n  \"unsafe_control\": true,\n  \"observations\": {\n    \"failed_gate\": {\n      \"exit\": 5,\n      \"mainline_after\": \"6ee7bcc087c45e5ba8ff27a3f1e2bdd3003342db\",\n      \"candidate\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-zubbi5bg/export/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-zubbi5bg/export\",\n        \"operation\": \"878e6e63005d3d7e6665828ca6b963e1c6e7c0b978cf14879e5eb133e6f29d202a43a6b9ac4ee829e01707ac764cca7b0760f9314a23ae78d0e7fc5118b2e5eb\",\n        \"change\": \"ruqwuyyzqolpypozvxrvwzztntzklkqu\",\n        \"commit\": \"89d916b98e686929ad45c184bde7075830afce6f\",\n        \"tree\": \"855bfa8e43bd52235bbed4531cdec66a0e63998f\",\n        \"conflict\": false,\n        \"captured_paths\": [\n          \".gitignore\",\n          \"artifact.txt\"\n        ],\n        \"base_commit\": \"6ee7bcc087c45e5ba8ff27a3f1e2bdd3003342db\"\n      }\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"failed\",\n  \"failure\": \"failed gate did not authorize landing\",\n  \"failure_type\": \"AssertionError\",\n  \"slice\": \"integration\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": "",
+  "observed_at": "2026-10-03T17:04:39.707974+00:00"
+}

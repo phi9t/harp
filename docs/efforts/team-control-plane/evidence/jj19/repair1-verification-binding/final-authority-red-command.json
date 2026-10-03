@@ -1,0 +1,23 @@
+{
+  "run": "final-authority-red",
+  "argv": [
+    "/usr/bin/python3",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+    "--binary",
+    "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+    "--slice",
+    "authority",
+    "--output",
+    "/tmp/corenius-jj19-verification-repair/docs/efforts/team-control-plane/evidence/jj19/repair1-verification-binding/final-authority-red.json",
+    "--unsafe-control"
+  ],
+  "exit": 1,
+  "expected_exit": 1,
+  "outcome": "failed",
+  "failure": "status inspection silently acquired snapshot authority",
+  "fixture_sha256": "2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552",
+  "fixture_removed": true,
+  "observed_at": "2026-10-03T17:07:15.061575+00:00",
+  "stdout": "{\n  \"source_base\": \"264756edd550225449202b6f20ac4b560808d14e\",\n  \"pin\": \"af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"binary_sha256\": \"15fe28e44398552177ce01ba69dd17b52151e8e604ccf82fe587acd40ba13be4\",\n  \"fixture_sha256\": \"2ba714b3ee741ee1bf6f3449ce2837f1f3a150ab43825a5b2a906e81a82f0552\",\n  \"unsafe_control\": true,\n  \"observations\": {\n    \"inspection\": {\n      \"before\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-c12x4pz7/authority/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-c12x4pz7/authority\",\n        \"operation\": \"835035846917cfa35fac1787af298081e0985295765c2ff1e71b2605d67f2c9fbf40431ffc059981ac574d0961bde4a50a65c0774f357d678d2a6de8ce109c14\",\n        \"change\": \"nnvkwnlzwomwpmlslrwnqltwottswnwo\",\n        \"commit\": \"e67ad9f539c04391d81c73b5f17c85541178beb4\",\n        \"tree\": \"187c9ad549d4c2a5305978f5304db7f74f1bd376\",\n        \"conflict\": false\n      },\n      \"after\": {\n        \"backend\": \"jj-git\",\n        \"store\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-c12x4pz7/authority/.jj/repo/store/git\",\n        \"workspace\": \"/data02/home/philip.yang/devx/tmp/corenius-jj19-c12x4pz7/authority\",\n        \"operation\": \"c22cf2324bc0a82df0ffc06157d5c25489fb44c5401b54389c11b6f7beca21d0700198a1ad2928040d76ff3cf7e8d695346f78f95fe5715c7f7f1a09fcdfc3aa\",\n        \"change\": \"nnvkwnlzwomwpmlslrwnqltwottswnwo\",\n        \"commit\": \"63597e0e98b296d08aeed1ae6daaa85385788c10\",\n        \"tree\": \"d7e6365d26e5e29c3578854b48f34c56ede22926\",\n        \"conflict\": false\n      }\n    }\n  },\n  \"version\": \"jj 0.44.0-af45d57de7163cc5f17f3df178a31577e4951ea3\",\n  \"outcome\": \"failed\",\n  \"failure\": \"status inspection silently acquired snapshot authority\",\n  \"failure_type\": \"AssertionError\",\n  \"slice\": \"authority\",\n  \"fixture_removed\": true\n}\n",
+  "stderr": ""
+}
