@@ -1116,19 +1116,25 @@ async fn monitor_finalizes_large_output_under_owned_measured_memory_limit() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result() {
-    review580_crash(false, false).await;
+    review580_crash(false, false, false).await;
 }
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn review580_fast_monitor_crash_retains_exact_launch_stop_certificate() {
-    review580_crash(true, false).await;
+    review580_crash(true, false, false).await;
 }
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn review580_surviving_monitor_thread_group_retains_capacity() {
-    review580_crash(true, true).await;
+    review580_crash(true, true, false).await;
 }
-async fn review580_crash(fast: bool, survivor: bool) {
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn review584_crash_then_rotate_finalizes_historical_execution() {
+    review580_crash(false, false, true).await;
+}
+async fn review580_crash(fast: bool, survivor: bool, rotate: bool) {
     let f = Fixture::new().await;
-    let out = evidence(if survivor {
+    let out = evidence(if rotate {
+        "review584-crash-rotate"
+    } else if survivor {
         "review580-surviving-thread"
     } else if fast {
         "review580-fast-crash"
@@ -1208,16 +1214,39 @@ async fn review580_crash(fast: bool, survivor: bool) {
         tokio::time::sleep(Duration::from_millis(20)).await;
     }
     db.batch_execute("SELECT pg_advisory_unlock(580580); DROP TRIGGER review580_gate ON kernel_execution_results; DROP FUNCTION review580_gate()").await.unwrap();
-    let fresh_owner = format!("review580-owner-{}", Uuid::new_v4());
-    grant(
-        &f,
-        f.mission,
-        Uuid::new_v4(),
-        &fresh_owner,
-        Role::Owner,
-        300,
+    let current_epoch = if rotate { Uuid::new_v4() } else { f.epoch };
+    let fresh_owner = if rotate {
+        f.broker
+            .rotate_epoch(&f.owner, current_epoch)
+            .await
+            .unwrap()
+    } else {
+        let token = format!("review580-owner-{}", Uuid::new_v4());
+        grant(&f, f.mission, Uuid::new_v4(), &token, Role::Owner, 300).await;
+        token
+    };
+    let broker = Broker::connect(&f.dsn, current_epoch).await.unwrap();
+    let supervisor = supervisor::Supervisor::open(
+        broker.clone(),
+        &f.root.join("workspaces"),
+        env!("CARGO_BIN_EXE_team-control-plane"),
     )
-    .await;
+    .await
+    .unwrap();
+    if rotate {
+        assert!(
+            supervisor
+                .inspect("assembled-worker", execution.id)
+                .await
+                .is_err()
+        );
+        assert!(
+            supervisor
+                .start(&fresh_owner, execution.id, vec!["/bin/true".into()], 30)
+                .await
+                .is_err()
+        );
+    }
     if survivor {
         // Negative controller-identity fault uses a genuine owned live thread
         // group with a zombie leader; it cannot manufacture successful Stop.
@@ -1368,8 +1397,7 @@ async fn review580_crash(fast: bool, survivor: bool) {
         .await
         .unwrap();
     let repeated_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
-    let capacity = f
-        .broker
+    let capacity = broker
         .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
         .await
         .unwrap()
@@ -1379,6 +1407,7 @@ async fn review580_crash(fast: bool, survivor: bool) {
     let epoch = f.epoch;
     let root = f.root.clone();
     f.finish().await;
+    std::fs::write(out.join("cleanup.json"), serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"crashed_monitor_reaped":true,"complete_stop":stopped["members"]==serde_json::json!([])})).unwrap()).unwrap();
     assert!(!root.exists(), "owned cleanup before recovery oracle");
     for (kind, denied, absent) in controls {
         assert_eq!(denied.unwrap_err(), ErrorCode::DependencyUnmet, "{kind}");
@@ -1396,6 +1425,12 @@ async fn review580_crash(fast: bool, survivor: bool) {
     assert_eq!(result.controller, controller);
     assert_eq!(result.logs, independent_digest);
     assert_eq!(result.recovery_epoch, epoch);
+    match result.completion {
+        supervisor::CompletionProvenance::RecoveredStop { recovery_epoch, .. } => {
+            assert_eq!(recovery_epoch, current_epoch)
+        }
+        _ => panic!("crashed monitor cannot claim monitor-wait completion"),
+    }
     assert_eq!(
         serde_json::to_value(&result).unwrap(),
         serde_json::to_value(repeated_result.unwrap()).unwrap()

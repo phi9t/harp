@@ -230,10 +230,6 @@ pub(crate) async fn authorize(
 }
 pub(crate) async fn execution_current(tx: &Transaction<'_>, id: Uuid, epoch: Uuid) -> Result<bool> {
     crate::kernel::schema(tx).await?;
-    let cancelled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM attempts a WHERE a.desired_cancel AND (a.id=(SELECT attempt_id FROM supervised_workspaces WHERE id=$1) OR a.id=(SELECT attempt_id FROM episode_executions WHERE execution_id=$1)))", &[&id]).await?.get(0);
-    if cancelled {
-        return Ok(false);
-    }
     if let Some(row)=tx.query_opt("SELECT x.recovery_epoch,e.task_generation,t.generation,e.lead_generation,coalesce(l.generation,0),x.principal_id,l.principal_id,x.role FROM episode_executions x JOIN mailbox_episodes e ON e.id=x.episode_id LEFT JOIN tasks t ON t.id=x.task_id LEFT JOIN mission_leads l ON l.mission_id=x.mission_id WHERE x.execution_id=$1", &[&id]).await? {
         let credential_current:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_executions x JOIN credentials c ON c.id=x.credential_id JOIN mailbox_episodes e ON e.id=x.episode_id WHERE x.execution_id=$1 AND c.principal_id=x.principal_id AND c.role=x.role AND c.mission_id=x.mission_id AND c.task_id IS NOT DISTINCT FROM x.task_id AND c.generation IS NOT DISTINCT FROM e.task_generation AND c.recovery_epoch=$2 AND c.expires_at>clock_timestamp() AND (c.role<>'lead' OR c.lead_generation=e.lead_generation))", &[&id,&epoch]).await?.get(0);
         if !credential_current {return Ok(false);}
@@ -266,13 +262,17 @@ async fn execution_reservation_current(tx: &Transaction<'_>, id: Uuid) -> Result
     }
     Ok(tx.query_one("SELECT EXISTS(SELECT 1 FROM reservations z WHERE z.state='reserved' AND z.execution_id=$1)", &[&id]).await?.get(0))
 }
-// Terminal tasks retain inspection/release authority but cannot dispatch work.
+// Cancellation and terminal tasks retain inspection/cleanup authority but cannot dispatch work.
 pub(crate) async fn execution_dispatch_current(
     tx: &Transaction<'_>,
     id: Uuid,
     epoch: Uuid,
 ) -> Result<bool> {
     if !execution_current(tx, id, epoch).await? {
+        return Ok(false);
+    }
+    let cancelled:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM attempts a WHERE a.desired_cancel AND (a.id=(SELECT attempt_id FROM supervised_workspaces WHERE id=$1) OR a.id=(SELECT attempt_id FROM episode_executions WHERE execution_id=$1)))", &[&id]).await?.get(0);
+    if cancelled {
         return Ok(false);
     }
     let terminal: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM tasks t WHERE t.status IN ('accepted','cancelled') AND (t.id=(SELECT task_id FROM episode_executions WHERE execution_id=$1) OR t.id=(SELECT a.task_id FROM supervised_workspaces w JOIN attempts a ON a.id=w.attempt_id WHERE w.id=$1)))", &[&id]).await?.get(0);
@@ -1145,10 +1145,7 @@ async fn recover_result(
     };
     let init: ProcessIdentity = decode(init)?;
     let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
-    if v.state != ExecutionState::Stopped
-        || !v.members.is_empty()
-        || v.manifest.recovery_epoch != broker.epoch
-    {
+    if v.state != ExecutionState::Stopped || !v.members.is_empty() {
         return Err(rejected());
     }
     let controller = v.controller.clone().ok_or_else(rejected)?;

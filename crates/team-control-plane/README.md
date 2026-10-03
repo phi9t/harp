@@ -179,7 +179,9 @@ mutations. Existing physical work then follows the strict supervisor stop path.
 Reconciliation records `cancelled` only after stopped effects are established;
 uncertain effects or inventory record `quarantined`. Unknown usage retains its
 reservation even when physical effects stop. Cancellation does not refund capacity
-implicitly. Workspace `cancel` is a physical stop operation; use the canonical
+implicitly. A current Worker retains scoped execution inspection, logs, results,
+history and bounded cancel/reconcile/release authority; cancellation fences
+dispatch separately from credential and generation validity. Workspace `cancel` is a physical stop operation; use the canonical
 Attempt command to revoke the Attempt's continuing authority.
 
 `GET /v1/kernel/status` returns a database `snapshot_time`, the recovery epoch,
@@ -210,7 +212,7 @@ original slot; unresolved effects, usage and execution checkpoints still hold
 capacity, and cumulative admission budgets are never refunded.
 
 Authenticated reconciliation/release can finalize a launched episode after its
-original monitor crashes. It requires an immutable exact launch/Stop observation,
+original monitor crashes, including after epoch rotation under a current Owner. It requires an immutable exact launch/Stop observation,
 fresh certified PID1 finalization, terminated monitor and launcher thread groups,
 known effects/usage, and a stable securely opened retained log. Recovery records
 `completion.kind=recovered_stop`, the original execution/monitor/epoch, and the

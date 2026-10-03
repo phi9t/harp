@@ -504,11 +504,7 @@ async fn owned_nested_cancel_case() {
         let server =
             tokio::spawn(async move { axum::serve(listener, http::router(broker)).await.unwrap() });
         let client = reqwest::Client::new();
-        let token = if mode == "known-physical" {
-            "assembled-worker"
-        } else {
-            &f.owner
-        };
+        let token = "assembled-worker";
         let cancel = serde_json::json!({"schema_version":1,"key":"cancel-live","expected_revision":3,"expected_generation":1,"recovery_epoch":f.epoch,"command":{"kind":"cancel_attempt","task_id":f.task,"attempt_id":f.attempt,"reason":"cancel actual nested live writer"}});
         let response = client
             .post(format!("http://{address}/v1/commands"))
@@ -596,8 +592,18 @@ async fn owned_nested_cancel_case() {
             1,
             "domain cancellation does not infer reservation refund"
         );
+        let worker_inspect = supervisor.inspect("assembled-worker", execution.id).await;
+        let worker_logs = supervisor.logs("assembled-worker", execution.id).await;
+        let worker_result = supervisor.result("assembled-worker", execution.id).await;
+        let worker_history = supervisor.history("assembled-worker", execution.id).await;
+        let worker_cancel = supervisor.cancel("assembled-worker", execution.id).await;
+        let worker_reconcile = supervisor.reconcile("assembled-worker", execution.id).await;
+        let worker_release = supervisor.release("assembled-worker", execution.id).await;
         if mode == "known-physical" {
-            supervisor.release(&f.owner, execution.id).await.unwrap();
+            if worker_release.is_err() {
+                // Preserve physical fixture cleanup even for the intended red.
+                supervisor.release(&f.owner, execution.id).await.unwrap();
+            }
             assert_eq!(
                 supervisor
                     .inspect(&f.owner, execution.id)
@@ -675,8 +681,44 @@ async fn owned_nested_cancel_case() {
         let evidence =
             std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
         std::fs::write(evidence.join(format!("cancel-{mode}-evidence.json")),serde_json::to_vec(&serde_json::json!({"observed_before":before_members,"disposition":disposition,"task":snapshot.data,"stopped_output_bytes":output.len()})).unwrap()).unwrap();
+        std::fs::write(evidence.join(format!("worker-cleanup-{mode}.json")), serde_json::to_vec(&serde_json::json!({"inspect":worker_inspect.as_ref().map_err(|e|&e.code),"logs":worker_logs.as_ref().map(|v|v.len()).map_err(|e|&e.code),"result":worker_result.as_ref().map_err(|e|&e.code),"history":worker_history.as_ref().map(|v|v.len()).map_err(|e|&e.code),"cancel":worker_cancel.as_ref().map_err(|e|&e.code),"reconcile":worker_reconcile.as_ref().map_err(|e|&e.code),"release":worker_release.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
         server.abort();
+        let root = f.root.clone();
         f.finish().await;
+        std::fs::write(evidence.join(format!("cleanup-{mode}.json")),serde_json::to_vec(&serde_json::json!({"fixture_removed":!root.exists(),"physical_stop_proven":true,"http_server_aborted":true})).unwrap()).unwrap();
+        assert!(
+            worker_inspect.is_ok(),
+            "cancelled current Worker retains inspection: {worker_inspect:?}"
+        );
+        assert!(
+            worker_logs.is_ok(),
+            "cancelled current Worker retains raw logs"
+        );
+        assert!(
+            worker_result.is_ok(),
+            "cancelled current Worker retains result lookup"
+        );
+        assert!(
+            worker_history.is_ok(),
+            "cancelled current Worker retains history"
+        );
+        assert!(
+            worker_cancel.is_ok(),
+            "cancelled current Worker retains bounded Stop"
+        );
+        assert!(
+            worker_reconcile.is_ok(),
+            "cancelled current Worker retains reconciliation"
+        );
+        if mode == "known-physical" {
+            worker_release.unwrap();
+        } else {
+            assert_eq!(
+                worker_release.unwrap_err().code,
+                ErrorCode::DependencyUnmet,
+                "unknown usage/effects still hold capacity for Worker"
+            );
+        }
     }
 }
 
