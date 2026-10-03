@@ -33,5 +33,23 @@
       "terminal reconciliation preserves yielded/completed checkpoints and waits",
       "uncertainty does not permit premature release"
     ]
+  },
+  "first_public_policy_probe_observation": {
+    "path": "/tmp/corenius-kernel16-review611-author/.scratch/team-control-plane/review611/policy-red.log",
+    "observed_result": "two tests fail at fixture InvalidArgument unwrap before policy-refusal assertion",
+    "classification": "fixture/setup failure; not meaningful behavioral red",
+    "source_diff_observed": "112 added fixture lines only, production unchanged",
+    "next": "author corrects fixture and repeats unchanged production; retains actual terminal/cleanup records",
+    "session": 16685,
+    "terminal_exit": 101,
+    "cause": "capture_input limit32 exceeded public maximum16; fixture corrected to4, production unchanged"
+  },
+  "policy_red2_observation": {
+    "session": 51275,
+    "terminal_exit": 101,
+    "behavior": "suite-only and environment-only changes both admit relabeled old successful execution report; unwrap_err received Ok ArtifactResult revision7",
+    "classification": "meaningful policy-provenance behavioral red observed in public log",
+    "cleanup": "both fixture and service cleanupJSON observed; terminal records pending",
+    "retained_records": "docs/efforts/team-control-plane/evidence/kernel16/review611-early-policy-proofs/index.json"
   }
 }
