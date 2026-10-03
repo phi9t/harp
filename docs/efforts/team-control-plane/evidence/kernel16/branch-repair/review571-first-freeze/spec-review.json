@@ -1,0 +1,9 @@
+{
+  "axis": "Spec",
+  "verdict": "CHANGES REQUIRED",
+  "manifest_sha256": "1d479d0f1d21a96fdde3109997552090ed9b53e4357b3a30d81196c300d6be5e",
+  "patch_sha256": "4c807616a205407654898a5853aeddd13fa836b96c8171d9fc8b13503bf42382",
+  "finding": "P1 imported first Worker episode owned_capacity=false bypasses unresolved checkpoint quarantine; cancellation may refund Attempt without stopped-effects evidence",
+  "requirement": "Cancellation complete only after runtime and environment evidence establish stopped effects; ambiguous checkpoint retains capacity and exposes uncertainty",
+  "scope": "First freeze not accepted; author must public-red first episode then ownership-independent uncertainty guard and fresh final verification"
+}

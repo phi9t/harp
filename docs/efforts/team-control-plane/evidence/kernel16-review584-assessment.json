@@ -1,0 +1,123 @@
+{
+  "candidate": "480d7c22bdfd926e1534c4680988d63d50618d2e",
+  "job": 584,
+  "assessments": {
+    "author": "bothvalid static",
+    "independentSpec": "bothvalid static"
+  },
+  "contract": "decisions/20261002-kernel-cleanup-repair584.md",
+  "iteration": "3/3 existing round; no reset",
+  "author": "/root/kernel16_review584_author",
+  "worktree": "/tmp/corenius-kernel16-review584-author",
+  "branch": "codex/kernel16-review584-author",
+  "status": "assigned; no behavioral evidence yet",
+  "runtime_slot": "exclusive author Cargo/PG/Temporal",
+  "acceptance": "notaccepted/notlanded",
+  "rotation_regression": {
+    "session": 19570,
+    "log": "/tmp/corenius-kernel16-review584-evidence/red-rotation.log",
+    "observed_oracle": "replacement current Owner release DependencyUnmet after real monitor crash and epoch rotation",
+    "terminal_cleanup": "awaiting author handle poll and proof records",
+    "source": "public test only; production unchanged at observation",
+    "red_exit": 101,
+    "green_test": "1pass0failed directly read",
+    "retained": "evidence/kernel16/branch-repair/review584-{red,green}-rotation",
+    "cleanup": "exact author cleanup reference pending",
+    "green_exit": 0,
+    "green_exit_evidence": "set-e sequential commands reached workerred",
+    "cleanup_correction": "no cleanup.json; f.finish/rootabsence and runner trap, explicit owned-container observation pending"
+  },
+  "worker_regression": {
+    "combined_greenrotation_then_redworker_session": 76532,
+    "status": "author polling; no outcome yet",
+    "exit": 101,
+    "oracle": "cancelled current Worker inspect StaleGeneration",
+    "retained": "evidence/kernel16/branch-repair/review584-red-worker",
+    "focused": {
+      "session": 68791,
+      "exit": 101,
+      "classification": "setupmissingTEMPORAL_ADDRESS;26passes inclcurrentWorkerknown/unknowncleanup"
+    }
+  },
+  "artifact_guard": {
+    "session": 96963,
+    "exit": 0,
+    "realTemporal": true
+  },
+  "matrix": {
+    "session": 26814,
+    "status": "terminal0 verifiedlog/exit",
+    "log": "/tmp/corenius-kernel16-review584-evidence/matrix.log",
+    "completed_cancellation": {
+      "passed": 27,
+      "failed": 0,
+      "ignored": 3
+    },
+    "completed_groups": {
+      "operator": {
+        "passed": 11,
+        "failed": 0
+      },
+      "vertical": {
+        "passed": 54,
+        "failed": 0,
+        "ignored": 3
+      },
+      "supervisor": {
+        "passed": 20,
+        "failed": 0
+      }
+    },
+    "exit": 0,
+    "passed_including_nested_children": 173,
+    "failed": 0,
+    "ignored": 8,
+    "retained": "evidence/kernel16/branch-repair/review584-matrix-green"
+  },
+  "cleanup_observation": {
+    "retained": "evidence/kernel16/branch-repair/review584-cleanup-observation/container-observation-live-matrix.json",
+    "scope": "author readonly dockerps-a inventory; sole currentmatrix PG fixture; prior terminatedautoremovedfixtures absent",
+    "no_kill": true
+  },
+  "strict": {
+    "session": 79620,
+    "exit": 0,
+    "source": "authorpolled; freezevalidationindex pending"
+  },
+  "freeze": {
+    "manifest_sha256": "f33924b2c43308086c0c723c9f2a97578d8691339557d4b8e2692fad3c8c1c69",
+    "patch_sha256": "f615f7aba1e3278ecc612f8baeb9bccfe6036edaed7700d6f1004c740d54f66a",
+    "root_verified_source": 48,
+    "root_verified_Gitpreimages": 4,
+    "runtime_slot_released": true,
+    "index_limitation": "broad inventory includes databases/service logs; selected public proofs retained separately"
+  },
+  "conformance": {
+    "Standards": "PASS /root/review584_standards",
+    "Spec": "PASS /root/kernel16_acceptance580",
+    "scope": "fourfilefinalrepair, notwholegoalacceptance"
+  },
+  "root_integration": {
+    "48_Gitpreimages_verified": true,
+    "48_postimages_match_freeze": true,
+    "gate10": {
+      "session": 32923,
+      "exit": 0,
+      "cleanup_records": 17,
+      "retained": "evidence/kernel16/branch-repair/review584-root-gate10"
+    }
+  },
+  "source_commit": "9055b9976d429229e5d42b2e86eb04dbc30da5bf",
+  "all48_committed_blobs_match_freeze": true,
+  "whole_branch_review": {
+    "session": 99070,
+    "status": "terminal1CHANGESREQUIRED",
+    "iteration": "final3/3",
+    "job": 591,
+    "range": "1f16415..9055b99",
+    "findings": [
+      "sameprincipalVerifier can seeWorker episode summary IDs"
+    ],
+    "repair_budget": "3/3exhausted; ownerextension neededbeforepatch"
+  }
+}

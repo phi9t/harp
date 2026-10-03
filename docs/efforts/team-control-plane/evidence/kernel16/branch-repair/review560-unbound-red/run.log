@@ -1,0 +1,24 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.04s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+test cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once ... FAILED
+
+failures:
+
+---- cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once stdout ----
+
+thread 'cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once' (2469267) panicked at tests/assembled_cancellation.rs:2143:5:
+assertion `left == right` failed: known-unused cancelled admission must release its concurrent slot
+  left: Number(1)
+ right: Number(0)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.28s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

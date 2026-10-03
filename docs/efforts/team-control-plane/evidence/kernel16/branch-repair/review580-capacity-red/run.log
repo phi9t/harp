@@ -1,0 +1,21 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review580-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.95s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'review580_allocated_continuation_history_does_not_hold_original_unbound_claim' (3663901) panicked at tests/assembled_cancellation.rs:3620:5:
+assertion `left == right` failed: retained separately owned execution history must not hold the original unbound reservation
+  left: Number(1)
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review580_allocated_continuation_history_does_not_hold_original_unbound_claim ... FAILED
+
+failures:
+
+failures:
+    review580_allocated_continuation_history_does_not_hold_original_unbound_claim
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 27 filtered out; finished in 0.47s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

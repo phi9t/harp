@@ -1,0 +1,92 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.42s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 50 tests
+test actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate ... ok
+test actual_candidate_and_measured_report_integrity_blocks_acceptance ... ok
+test actual_sealed_packet_and_write_scope_resist_workload_tampering ... ok
+test assembled_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test assembled_sdk_worker ... ignored, owned SDK subprocess; parent fixture controls lifetime
+test broker_process_restart_preserves_owned_work_and_bounded_operator_exact_lookup ... ok
+test actual_legacy_gateway_restart_safely_quarantines_without_another_start ... ok
+test canonical_mission_progress_drives_planning_episode_journals ... ok
+test confirmed_native_effect_without_usage_observation_retains_reservation ... FAILED
+test cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate ... ok
+test episode_native_lost_reply_holds_physical_capacity ... FAILED
+test execution_launch_does_not_extend_the_canonical_episode_deadline ... ok
+test delayed_monitor_cannot_borrow_another_live_grant_after_issuer_expiry ... ok
+test foreign_legacy_controller_cannot_attest_or_acquire_retained_store ... ok
+test failed_current_gate_fences_preallocated_worker_without_charging_new_work ... ok
+test legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion ... FAILED
+test legacy_confirmed_start_without_measured_usage_retains_reservation ... ok
+test missing_assembled_verification_policy_denies_allocation_before_filesystem_effects ... ok
+test original_registered_launch_survives_own_unknown_before_monitor ... ok
+test owned_episode_usage_worker ... ignored, owned physical-runtime subprocess; parent fixture controls lifetime
+test physical_monitor_rechecks_current_scope_generation_and_epoch ... ok
+test genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch ... ok
+test public_all_episode_roles_exhaust_the_approved_finite_budget_without_double_charge ... ok
+test public_episode_native_start_journal_has_no_synthetic_admission ... ok
+test postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate ... ok
+test public_operator_inspects_exact_episode_journal_without_execution_ownership ... ok
+test public_operator_reconciles_registered_live_native_operation_without_start_or_transfer ... ok
+test public_paused_gateway_claim_performs_no_runtime_rpc ... ok
+test public_failed_verification_repairs_are_authorized_idempotent_and_bounded ... ok
+test public_registered_legacy_usage_query_requires_exact_receipt ... ok
+test public_status_discovers_genuine_legacy_unknown_effect_and_unknown_usage ... ok
+test public_takeover_reconciles_actual_sdk_crash_after_effect_without_second_start ... ok
+test public_takeover_rejects_native_fifo_without_blocking_or_transferring_authority ... ok
+test public_takeover_refuses_unknown_inventory_and_unproven_processes ... ok
+test public_takeover_transfers_only_to_registered_live_sdk_transport ... ok
+test real_sdk_cancelled_native_prepared_wait_retains_current_workflow ... ok
+test real_sdk_planning_episode_dispatches_its_own_capsule ... ok
+test real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel ... ok
+test registered_launch_rejects_wrong_argv_and_foreign_origin_and_stored_argv ... ok
+test registered_sdk_usage_query_requires_exact_measured_receipt ... ok
+test registered_takeover_refuses_actual_running_unfinished_workload ... ok
+test real_temporal_assembled_vertical ... ok
+test runtime_registration_authenticates_before_observing_process_or_filesystem ... ok
+test trusted_exit_result_rejects_misleading_stdout_success_marker ... ok
+test stopped_capsule_with_unknown_runtime_effect_keeps_capacity ... ok
+test unknown_episode_blocks_monitor_after_controller_claim ... ok
+test unknown_episode_blocks_preallocated_verifier_launch ... ok
+test unknown_legacy_usage_blocks_continuation_before_budget_charge ... ok
+test unknown_legacy_usage_blocks_monitor_after_controller_claim ... ok
+test unknown_legacy_usage_blocks_previously_admitted_verifier_launch ... ok
+
+failures:
+
+---- confirmed_native_effect_without_usage_observation_retains_reservation stdout ----
+
+thread 'confirmed_native_effect_without_usage_observation_retains_reservation' (4026672) panicked at tests/assembled_vertical.rs:5904:13:
+assertion `left == right` failed: fault adapter requires one actually executed native effect
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- episode_native_lost_reply_holds_physical_capacity stdout ----
+
+thread 'episode_native_lost_reply_holds_physical_capacity' (4029384) panicked at tests/assembled_vertical.rs:4883:5:
+assertion `left == right` failed
+  left: FailedKnown
+ right: OutcomeUnknown
+
+---- legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion stdout ----
+[release-diagnostic] episode operations=[Object {"id": String("2b6e0064-dd38-428c-8875-17ef688dda61"), "state": String("prepared"), "usage": Object {"kind": String("unknown")}}]
+[release-diagnostic] legacy_first=true, legacy operations=[Object {"id": String("0a9b058d-0657-4293-83b7-dc2da79c6706"), "state": String("confirmed"), "usage": Object {"kind": String("unknown")}}]
+completed actual shared-store exclusion legacy_first=true, invocations=1 effects=1
+
+thread 'legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion' (4033199) panicked at tests/assembled_vertical.rs:5469:13:
+assertion `left == right` failed
+  left: FailedKnown
+ right: Confirmed
+
+
+failures:
+    confirmed_native_effect_without_usage_observation_retains_reservation
+    episode_native_lost_reply_holds_physical_capacity
+    legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion
+
+test result: FAILED. 44 passed; 3 failed; 3 ignored; 0 measured; 0 filtered out; finished in 85.92s
+
+error: test failed, to rerun pass `--test assembled_vertical`

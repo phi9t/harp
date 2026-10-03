@@ -1,0 +1,29 @@
+{
+  "session": 46335,
+  "terminal_exit": 101,
+  "classification": "meaningful public behavioral red",
+  "oracle": "after cleanup, used_capacity1 instead of0 after separate continuation cancel/release",
+  "scope": "first recovery580 slice; no passing claim",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "11dc2c7f37be4d58ee0dfebb044e0bfbf2a8ea2e54ac966aa83c68bd2aad4d2f"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-capacity.json",
+      "sha256": "47ac8e188d5b17c7b0ddef8cf58add2028e32dac79ebab0ff3b1e2504231b22b"
+    }
+  ]
+}

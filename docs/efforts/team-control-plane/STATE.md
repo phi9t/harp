@@ -1,135 +1,53 @@
 # State: durable team control plane
 
-Status: implementing the approved baseline; the full goal remains active.
-Repository base: `963f58b31e518a8162dfe719e386ef9d9843321f`.
+Status: implementing the approved baseline; full goal active.
+Updated: 2026-10-02T21:42:28.765927+00:00
+Local main: `1f164156261a3aa927c823919bf73d6e6d11a771`.
 Root worktree: `/data02/home/philip.yang/workspace/corenius-codex-reference-design`.
-Branch: `codex/reference-design`. All changes remain uncommitted.
+Branch: `codex/reference-design`; committed candidate `dd8e14cff65c00e7936c2d0ce9471aed973c777f`.
 
 ## Goal and authority
 
-Make Corenius the executable reference for a persistent engineering team with
-replaceable Codex/Claude leads and TraeCLI workers. Preserve assignments,
-decisions and evidence through failures, prevent unsafe retries, and accept
-only verified candidates. The complete scope is in [PLAN.md](PLAN.md) and
-[SPEC.md](SPEC.md); kernel acceptance does not replace live demonstrations or
-upgrade/restore readiness.
+Make Corenius the executable reference for persistent replaceable Codex/Claude leads and TraeCLI workers. Preserve assignments, decisions and evidence through failures, prevent unsafe retries, and accept only verified candidates. The complete six-phase scope remains in [PLAN.md](PLAN.md) and [SPEC.md](SPEC.md).
 
-The owner [approved the recommended baseline](decisions/20261001-approved-baseline.md):
-Rust broker/gateway and Temporal worker, PostgreSQL execution authority,
-Git-approved planning, and supervised environments. Kata is
-[deferred for the first kernel](decisions/20261001-kata-deferred-first-kernel.md).
-jj remains an optional backend evaluation. No commit, push, PR or deployment
-has been authorized. Paid/live probes need a concrete reviewed package and
-separate scope/resource approval. No paid model or live Trae server has run.
+The owner approved the recommended Rust/PostgreSQL/Temporal baseline and authorized continuation, worker replacement and gated landing across worktrees. [Continuation authority](decisions/20261002-continuation-authority.md) and [landing authority](decisions/20261001-landing-authority.md) preserve this scope. No additional permission is currently required for the kernel work. No remote is configured. Necessary technical provider-isolation and bounded-execution prerequisites remain to prove before live work.
 
-## Accepted work
+## Accepted and landed baseline
 
-Tickets10–15 are accepted with real PostgreSQL behavior, independent Standards
-and Spec reviews, and fresh root integration checks. The current exact source
-boundary is [ticket14's joint accepted manifest](evidence/ticket14-accepted-manifest.json).
-The latest root gate passed252 tests (138 Rust/114 Python) plus one intentionally ignored child
-helper exercised by its parent. Formatting and Clippy with warnings denied
-passed. This proves the local model-free kernel components, not live-provider
-or multi-host recovery.
+Tickets10–15 and17 are accepted within their explicit scopes and landed to local main. Current main includes subsequent accepted baseline updates through `1f164156261a3aa927c823919bf73d6e6d11a771`. Kata remains deferred for the first kernel; conditional ticket18 closure awaits16. jj has a pinned executable preflight, not ticket19 acceptance or backend adoption.
 
-Ticket17's Kata evaluation is accepted and deferred; its actual API, broker
-mapping, upgrade and restore evidence is retained. Ticket18's final conditional
-closure waits for kernel16. jj0.44.0 has a bounded executable preflight, not
-backend19 acceptance or adoption.
+## Current kernel candidate
 
-## Work in progress
+Ticket16 remains claimed, unaccepted and unlanded. Final repair source is committed as `c4599e8be5720ff7da74ce886069ff0da0560b80`. Freeze3 has independent Standards and Spec PASS; root verified all48 integrated and committed blobs and passed whole repository gate7 with exit0 and Temporal cleanup. Author matrix passed159 tests with0 failures and7 explicit ignores; final strict lint, formatting, diff and affected native test passed. Committed branch review575 (`main..c4599e8`) finished CHANGES REQUIRED with four new operator-visibility and log-evidence findings. Independent architectural assessment confirmed all four gaps in operator projections and byte-stream evidence. The [bounded interface contract](decisions/20261002-kernel-interface-repair575.md) is recorded; a new isolated author at `/tmp/corenius-kernel16-review575-author`, base `c4599e8`, has established meaningful public reds and focused greens for all four findings. All seven operator fixtures pass, including exact omitted-Mission pause/resume, legacy running/quarantined discovery, foreign-scope refusal and unreadable-log refusal. Real invalid-UTF8 verifier output supports Verify/Accept; a128MiB raw log finalizes under measured64MiB monitor headroom. The full real PostgreSQL/Temporal matrix passed on author session78915:162 tests,0 failures,7 explicit ignores,16 groups. Root verified all48 frozen files and7 Git preimages; independent Standards and Spec reviews both passed against immutable manifest `6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b`. Strict lint, formatting and diff checks passed. Root integrated seven reviewed files and verified all48 postimages; whole repository gate8 passed on session13946. Repair is committed as `dd8e14cff65c00e7936c2d0ce9471aed973c777f`; root verified all48 committed Git blobs against the reviewed freeze. Fresh whole-branch review580 on session36530 terminated1 with three Medium recovery findings: original unused reservation refund after continuation cancellation, monitor-crash recovery finalization, and retained logs over1MiB blocking takeover. Author and independent Spec confirmed all three existing-contract gaps. The [recovery contract](decisions/20261002-kernel-recovery-repair580.md) records provenance, immutable race handling and secure log rules; iteration2 of the existing three-iteration round is assigned to a fresh isolated author at `/tmp/corenius-kernel16-review580-author`, exactbase dd8e14c. The first public capacity regression reproduced used_capacity1 after cancellation/release; its focused green now proves capacity2→0, duplicate reconciliation, replacement admission and unchanged cumulative budgets. Real monitor-crash focused green now proves replacementOwner finalization/release with unknownexit and immutable repeated result. LegitimateVerifier refusal, same-sequence capacity/recovery guards and CAS controls remain pending; actual large-log takeover regression is being run. Acceptance and landing remain pending. Earlier SIGABRT setup failure left an owned SDK orphan; identity-bound termination and three exact owned-root removals are retained, superseding the incorrect initial no-spawn claim. Acceptance, final evidence commit and exact-tip gated landing remain pending. [Candidate evidence](evidence/kernel16-review571.json).
 
-- Ticket14 accepted: both independent round0 axes, separate shared-glue review,
-  and fresh joint gate/fmt/strict Clippy passed. The joint187-file manifest SHA256
-  is `ab1370237832f6ac7a105a8c235f556aa3e2b758adab5be1c0e6b8a32306c844`.
-  Runtime/Supervisor assembly and validated Execution handles remain16.
-- Ticket16 has a completed [read-only integration preflight](research/kernel-integration-preflight.md)
-  in its isolated future worktree. All100 accepted baseline files and33 reviewed
-  inputs were hash-verified. It maps missing runtime/workflow assembly, operator
-  controls and role-neutral physical Execution allocation. Ticket14 is now resolved; ticket16 is claimed by `codex-kernel` and delegated
-  to `/root/artifacts11`. It verified the100-file prior baseline and reseeded/hash-verified all187
-  joint accepted files before implementation. Focused actualCLI/realPG status and Lead workspace allocation have observed
-  red-green evidence. Additive0007 and role-neutral allocation are in progress;
-  Actual SDK registered-driver dispatch and a bounded worker/candidate/Verifier
-  capsule/Owner-accept fixture pass. Physical pause, uncertain-runtime capacity,
-  exact issuing-credential expiry and trusted wait-status observations also have
-  retained behavioral red-green evidence. Trusted monitor comparison now rejects
-  fabricated success in a focused actual SDK fixture; pre-Verifier report bypass
-  and missing-policy allocation negatives pass. Actual SDK Lead planning reads
-  sealed captured input; actual Worker continuation imports retained candidate
-  bytes, reads new captured context and produces src/resumed. Fresh focused
-  lifecycle then submits the post-resume candidate and checks both deliverables
-  in independent Verifier capsules through registered SDK episode dispatch before
-  explicit Owner acceptance. Focused model-free SDK crash-after-effect takeover
-  now proves persisted replacement ownership, same native IDs, actual replacement
-  Activity observation and one invocation/effect. Public FIFO inventory rejection
-  has retained bounded red/green evidence with unchanged authority. Nine marked
-  inventory/process takeover negatives pass, preserving ownership and unknown
-  capacity. Configured SDK recovery now passes actual Continue-As-New and
-  unchanged-history replay, plus cached-transfer wrong-token/Worker/pause-revision
-  negatives. This uses supported500ms sticky timeout; default10s is not a recovery
-  SLA claim. Public live native reconciliation now passes missing/corrupt/symlink
-  receipt and unauthorized caller controls, holding unknown capacity until the
-  original receipt is restored without another Start or ownership transfer.
-  All-role cumulative8-episode admissions and shared legacy/episode runtime-store
-  exclusion pass focused checks. Genuine repair-budget lifecycle passes with distinct SDK repair candidates
-  and measured independent failures; measured/unknown usage remains an active
-  implementation gap. Managed sandbox cleanup passed fmt and strict offline
-  Clippy for both crates; restored root access now permits sockets/Docker/bwrap.
-  Exact13-path cleanup was reconciled only after all1336 pre/post hashes matched.
-  Full crash/reconciliation matrix and remaining current-authority/context-integrity
-  negatives and frozen independent review remain incomplete. No ticket16 frozen
-  proof or independent review is available. The preflight grants no live launch authority.
+Branch571 rejected the preceding `da7ff9b` candidate with three confirmed lifecycle findings. The approved [repair contract](decisions/20261002-kernel-lifecycle-repair571.md) now has public proof for once-only unallocated Worker/Verifier capacity recovery without cumulative budget refunds, genuine old-binary Yield compatibility, authenticated bound Cancel after work revocation, and historical verifier evidence surviving producer expiry while live authority remains enforced. The first repair freeze failed Spec for imported first Worker unresolved Yield; genuine public regression showed premature refund while an actual job remained live. The final guard quarantines both imported and independently reserved episodes and holds their capacity. Earlier failures, candidates and reviews remain retained historical evidence, not current acceptance.
 
+The [independent requirement audit](evidence/kernel16-acceptance-audit-review571.json) identifies no additional required kernel gap. Historical namespace observation EACCES cause remains unproven; persistent inaccessible inventory quarantines and holds capacity. Controlled late-completing pre-failure verifier and mixed-check physical fixtures remain unexercised. Colliding-v2 rollover is proven at payload level, not forced actual Continue-As-New. Successful registered SDK takeover is demonstrated; unsupported legacy gateway recovery quarantines safely. No live-provider or rollback-restore property is inferred from model-free kernel evidence.
 
-The accepted supervisor preserves strict controller-loss and32-command concurrency tests.
-It verifies original namespace PID1 while the workload is gated, then requires
-proven finalized process-group exit or an independently verified namespace
-handle through inventory/signaling. Namespace-link disappearance, leader-Z,
-unreadable observations and cached booleans do not prove complete shutdown.
-Unknown execution retains capacity. The
-[PID1 source contract and bounded OS observations](research/pid1-finalization-contract.md)
-are retained with hashes; the vendor-kernel distinction and untested failure
-modes remain explicit. Raw PID observations also require the original boot and
-observer PID frame.
+## Remaining full-goal work
 
-## Next gates
+After16 acceptance: explicitly close deferred18; complete jj evaluation19 and conditional backend25; prove live Trae probes20 and adapter21; independently demonstrate Codex22 and Claude23 leads; verify upgrades, backups and restore24. Current restart recovery does not prove rollback restore. No live Trae/model-provider demonstration or complete restore has run.
 
-Implement16's complete
-assign/start/yield/resume/submit/verify/accept proof and operator controls.
-The optional-backend evaluations, live Trae recovery, independent lead demos,
-and upgrade/backup/restore tasks remain required by the full plan. The
-[restore preflight](research/restore-inventory-preflight.md) identifies missing
-independent post-backup inventory and restore-time retention/dispatch gates;
-current restart recovery does not prove rollback recovery.
+The [completion audit](completion-audit.md) tracks requirements without shrinking the full objective. Historical implementation chronology, including the superseded state snapshot, is preserved in [implementation-history.md](implementation-history.md). This is a manual durable state record; `effort.py dehydrate` is not invoked while reviewed evidence changes are pending because it auto-commits.
 
-[Private Trae preparation](research/live-trae-private-entry-preflight.md) now
-retains complete initialization/config/thread/job schemas. Actual store
-isolation, synthetic-provider routing, spend enforcement and runtime recovery
-remain unexercised. The [provider documentation review](research/live-trae-provider-configuration.md)
-found legacy YAML custom endpoints, but no version-matched TOML routing contract
-or documented hard ordinary-turn spend bound. Equivalent source searches stop
-until new primary evidence is available. This preparation grants no launch approval.
+### Recovery580 verification update
 
-## Landed baseline
+The final focused run `42143` exited zero: nine public parent tests plus the owned singleton child passed. Proof includes capacity refunds and unknown-usage retention, delayed/fast real monitor crash, surviving-thread termination refusal, exact-candidate recovered-Verifier refusal, historical missing-provenance monitor Verify/Accept compatibility, actual large-log takeover and seven security cases. Full PostgreSQL/Temporal matrix `20645` is in progress; no immutable source freeze, independent conformance verdict, new root gate or landing exists yet. Earlier aborted run and exact process cleanup remain retained. The whole six-phase goal remains incomplete.
 
-The owner-authorized baseline is committed and fast-forward landed to local main
-at `15a5ead8622d36d06723d8f11edfa769898e3b5c`, after independent Standards/Spec
-round1 passes and the exact committed-tip repository gate. No remote is configured.
-This includes accepted10–15/17, retained proof logs and recovered historical
-evidence; it does not include unfinished16 or complete the full goal.
+Full matrix `20645` is now terminal `101`, with vertical process stack overflow in a historical two-scenario verifier wrapper. The author identified shared future growth and is applying a consistent heap boundary at fixture entry rather than changing stack limits or narrowing scenarios. Exact orphan cleanup is required before rerunning. The previous final focused pass remains valid at its tested source, but does not establish a full-suite pass.
 
-## Handoff discipline
+Corrected-source matrix `25437` uses the shared boxed fixture entry across all scenarios and `matrix-corrected-heap.log`. The accidental unchanged-source run is terminal101 and excluded; cleanup is verified with retained author reference scans and root process checks. Corrected matrix cancellation group has 27 passed/3 ignored and capacity group is in progress, not full acceptance. Ticket19 jj evaluation remains blocked by16; no dependency bypass or live provider run was launched.
 
-This is a manual state record, not a committed `effort.py dehydrate` snapshot.
-The tool auto-commits, so this manual record preserves reviewed changes explicitly.
-The owner has now [authorized gated landing across worktrees](decisions/20261001-landing-authority.md);
-commits and landing still require the applicable review and exact-tip checks.
-One writer per worktree remains enforced. Reused agent contexts are a documented tool-cap
-fallback; reviewers remain separate from each candidate's author.
+Both independent repair580 conformance axes PASS. Exact seven-file reviewed patch integrated into isolated root tree on dd8 base, with all48 preimages/postimages verified. Full repository gate9 session3092 is live. Root source remains uncommitted pending gate; main is unchanged and six-phase goal still incomplete.
 
-The latest work accepted supervisor15 with both review axes, separate shared-glue
-review and fresh252-test joint integration evidence, and preserved16's read-only
-integration preflight. Mailbox14 is accepted with independent reviews and joint evidence. Earlier chronological records are preserved in
-[implementation-history.md](implementation-history.md). The
-[completion audit](completion-audit.md) records all remaining requirements.
+Current source HEAD is `480d7c22bdfd926e1534c4680988d63d50618d2e`: exact reviewed recovery580 repair, all48 Git blobs verified. Root gate9 passed terminal0 with14 retained cleanup records. Whole-branch job584 (`1f16415..480d7c2`, session94656) is live; acceptance and mainline landing remain pending. Main stays1f16415. The full six-phase goal is active.
+
+Wholebranch584 rejected480d7c2 with two Medium findings: historical stopped crash recovery afterepochrotation and cancelled currentWorker inspection/cleanup authority. Independent assessments requested. Prior green checks remain evidence but not acceptance. No mainline movement; final allowed repair would iteration3/3, no budget reset.
+
+Final repair3/3 now assigned after both assessments: fresh isolated kernel16_review584_author at480d7c2. Canonical cleanup contract20261002-kernel-cleanup-repair584.md; author owns exclusive runtime slot, root source unchanged. No public proof yet; full goal and ticket16 remain incomplete.
+
+Final repair584 has full author matrix173/0/8 and strict/fmt/diff0, verified48-file freeze plus4exact480preimages. Both independent conformance axes PASS after allauthorityconsumer tracing. Exactfourfilepatch integrated roottree on480base with48postimages verified; root fullgate10 session32923 polledlive, sourceuncommitted. Selected37publicproof/terminal/cleanuprecords retained separately from broadruntimeinventory. No sourceacceptance/landing yet; fullsixphasegoal remainsactive.
+
+Current source9055b9976d429229e5d42b2e86eb04dbc30da5bf has exactfinalrepair3/3; author173/0/8 strict0 bothconformancePASS rootgate10terminal0/17cleanuprecords/all48Gitblobmatches. Wholebranch591 session99070 live; no acceptance or landing. Currenthandoff/completion row refreshed; historicalrejections retained. Fullgoalstillactive.
+
+Finalwholebranch591 rejected9055b99 with oneMedium role-isolation finding in episode status summaries. Existing3/3repairbudget exhausted; read-only validity assessment assigned, no furtherpatch/landing authorized by this budget. Mainunchanged; fullgoalincomplete.

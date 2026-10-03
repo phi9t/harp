@@ -1,0 +1,29 @@
+{
+  "session": 25683,
+  "terminal_exit": 101,
+  "classification": "meaningful public fast-crash red",
+  "oracle": "replacementOwner releaseDependencyUnmet after actual immediateworkload Stop/precommit monitordeath/cleanup",
+  "scope": "no gatewayoperation/usage ambiguity; launched init has no running observation predecessor",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "74f5543bc805fbb7041c93492ff7525442cc502b5ff2b35166f04727edd3abe8"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-fast-crash/crash.json",
+      "sha256": "fece13cb9de356f0c41952f6cf5282accfb7da3a11869ad54736c06fdc741fb1"
+    }
+  ]
+}

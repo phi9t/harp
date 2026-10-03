@@ -1,0 +1,51 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review584-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.19s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 30 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once ... ok
+test cancelled_prepared_episode_retains_current_workflow_progress ... ok
+test colliding_episode_and_admission_waits_drive_both_protocols ... ok
+test confirmed_episode_effect_cannot_borrow_unused_workspace_stop ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test owned_nested_cancel_worker ... ignored, owned native runtime process; parent controls lifetime
+test paused_prepared_episode_remains_guarded_workflow_progress ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test ready_unknown_episode_cannot_authorize_an_unrelated_physical_launch ... ok
+test review571_cancelled_unallocated_verifier_releases_capacity_once ... ok
+test review571_cancelled_unallocated_worker_continuation_releases_separate_capacity_once ... ok
+test review571_imported_worker_unresolved_yield_requires_quarantine ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+test review571_native_cancel_cleans_bound_work_after_work_revocation ... ok
+test review571_persisted_old_public_yield_claim_survives_repaired_cancel ... ignored, requires exact pre-repair baseline server binary
+test review571_old_public_yield_then_cancel_must_not_refund_twice ... ok
+test review571_unresolved_yield_execution_requires_explicit_quarantine ... ok
+test review571_uncertain_allocated_sibling_retains_capacity ... ok
+test review580_owned_continuation_usage_worker ... ignored, owned singleton native transport subprocess
+test review580_unbound_original_and_allocated_continuation_hold_unknown_usage ... FAILED
+test review580_allocated_continuation_history_does_not_hold_original_unbound_claim ... ok
+test task_free_lead_unknown_episode_cannot_authorize_new_physical_work ... ok
+test unbound_refund_allows_capacity_one_replacement_without_budget_refund ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+
+failures:
+
+---- review580_unbound_original_and_allocated_continuation_hold_unknown_usage stdout ----
+
+thread 'review580_unbound_original_and_allocated_continuation_hold_unknown_usage' (807141) panicked at tests/assembled_cancellation.rs:3763:47:
+called `Result::unwrap()` on an `Err` value: NotPresent
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    review580_unbound_original_and_allocated_continuation_hold_unknown_usage
+
+test result: FAILED. 26 passed; 1 failed; 3 ignored; 0 measured; 0 filtered out; finished in 9.90s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

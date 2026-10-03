@@ -1,0 +1,15 @@
+{
+  "reviewer": "/root/review575_spec",
+  "verdict": "PASS",
+  "manifest_sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+  "findings": [],
+  "verified_sources": 48,
+  "verified_preimages": 7,
+  "matrix_inspected": {
+    "groups": 16,
+    "passed": 162,
+    "failed": 0,
+    "ignored": 7
+  },
+  "scope": "four bounded contracts; read-only; no full ticket16 or live/restore acceptance"
+}

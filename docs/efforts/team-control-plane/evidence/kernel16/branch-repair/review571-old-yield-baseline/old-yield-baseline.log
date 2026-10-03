@@ -1,0 +1,9 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review571-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.53s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+test old_public_yield_then_cancel_must_not_refund_twice ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 20 filtered out; finished in 0.50s
+

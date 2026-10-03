@@ -1,0 +1,32 @@
+{
+  "run": "green3",
+  "terminal_exit": 0,
+  "classification": "behavioral green",
+  "scope": "focused public fixture; not full kernel acceptance",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "4414f275f670383223b044bbee071175aec3fb5277a18676bac60483307f7593"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "kernel16-binary-output-d857ea6c-5aa2-47c2-bb46-bd95e2b1ec2f/cleanup.json",
+      "sha256": "ae912e9fe36c4ddb58fd6d5fd7f0bec053c51d7905f4546fdee294842e6f187f"
+    },
+    {
+      "path": "kernel16-binary-output-d857ea6c-5aa2-47c2-bb46-bd95e2b1ec2f/proof.json",
+      "sha256": "83b93c1edfe04609de10005931c1785fb39e6853b90f6ccdcbe7b2d9ca5da678"
+    }
+  ]
+}

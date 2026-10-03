@@ -1,0 +1,28 @@
+{
+  "terminated_sdk_worker": {
+    "pid": 3073469,
+    "start_ticks": 39397357,
+    "signal": "SIGTERM",
+    "executable_gone": true
+  },
+  "owned_roots": [
+    {
+      "root": "/data02/home/philip.yang/devx/tmp/kernel16-4608d699-0c57-47e3-8eea-651ac075edaa",
+      "prior_exists": true,
+      "process_cmdline_cwd_fd_references": 0,
+      "removed": true
+    },
+    {
+      "root": "/data02/home/philip.yang/devx/tmp/kernel16-6ed5fdc3-3052-422e-bc7e-85c5a41e505c",
+      "prior_exists": true,
+      "process_cmdline_cwd_fd_references": 0,
+      "removed": true
+    },
+    {
+      "root": "/data02/home/philip.yang/devx/tmp/kernel16-4ff0ea1b-ca7e-4e9e-98b0-f02a92b4e127",
+      "prior_exists": true,
+      "process_cmdline_cwd_fd_references": 0,
+      "removed": true
+    }
+  ]
+}

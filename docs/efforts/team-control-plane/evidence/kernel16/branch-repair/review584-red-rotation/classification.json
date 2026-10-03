@@ -1,0 +1,19 @@
+{
+  "status": "terminal19570 exit101",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "52bb9e87309cb8eb73ff7fbc40c429f994513693c947602499598412e5d152e7"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review584-crash-rotate/crash.json",
+      "sha256": "a6e1ec1195cc6e71776aab5c71793e8f8e0f83556bf992332fb2b80dd1a55d67"
+    }
+  ],
+  "cleanup": "Correction: no cleanup.json. Actual test f.finish/rootabsence before oracle and run-postgres EXIT trap; explicit post-run ownedcontainer observation pending",
+  "scope": "physicalcrash then epochrotation cleanup; not fullsuite acceptance"
+}

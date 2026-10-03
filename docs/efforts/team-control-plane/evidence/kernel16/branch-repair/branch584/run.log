@@ -1,0 +1,23 @@
+Reviewing branch "codex/reference-design": 7 commits since main
+Enqueued job 584 for 1f16415..480d7c2 (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:1150`
+- **Problem**: Epoch rotation permanently blocks recovery of a stopped episode whose monitor crashed before persisting its result. The immutable manifest retains the original epoch, so `recover_result` always rejects the current Owner, even when processes are finalized and effects and usage are known. Since release requires that result, the workspace and capacity remain stranded.
+- **Fix**: Allow authenticated historical cleanup using the existing process, stop-observation, log, and usage checks. Preserve the original execution epoch and record the current finalizer epoch separately. Add a crash-then-rotate recovery test.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:199`, `:233`
+- **Problem**: Canonical cancellation removes the current Worker’s inspection and cleanup access to episode executions. `desired_cancel` makes `execution_current` false, and authorization applies that check to inspection, logs, results, reconciliation, and release. A Worker who cancels its own Attempt therefore cannot inspect the stopped execution or release its reservation, although its credential and generation remain current. Legacy Attempt executions retain this access.
+- **Fix**: Separate cancellation’s dispatch fence from inspection and cleanup authorization, retaining credential, scope, generation, and epoch checks. Cover Worker cancellation followed by inspection and release.
+
+## Summary
+
+The changes assemble durable episode execution, supervised verification, cancellation, operator controls, and recovery evidence around PostgreSQL and Temporal.

@@ -1,0 +1,13 @@
+{
+  "candidate": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+  "job": 571,
+  "findings": {
+    "unallocated_episode_refund": "independently confirmed; prior Yield double-refund compatibility must be settled",
+    "native_cancel_after_revocation": "independently confirmed; exact Cancel cleanup only with all current auth/binding gates",
+    "expired_producer_evidence": "independently confirmed; historical provenance separate from livecaller authority"
+  },
+  "architecture": "same Rust/PostgreSQL/Temporal baseline; no schema/stack/provider expansion proposed",
+  "repair_tree": "/tmp/corenius-kernel16-review571-author",
+  "tree_status": "exactbase initiallyclean; implementation not dispatched",
+  "pending": "accounting compatibility clarification before boundedrepair"
+}

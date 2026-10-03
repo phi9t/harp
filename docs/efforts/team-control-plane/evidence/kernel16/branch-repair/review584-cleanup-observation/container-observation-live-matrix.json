@@ -1,0 +1,22 @@
+{
+  "observed_utc": "2026-10-02T23:56:37.297169+00:00",
+  "matching_containers": [
+    {
+      "Command": "\"docker-entrypoint.s\u2026\"",
+      "CreatedAt": "2026-10-02 23:55:26 +0000 UTC",
+      "ID": "a0c027a761cf",
+      "Image": "postgres",
+      "Labels": "",
+      "LocalVolumes": "0",
+      "Mounts": "",
+      "Names": "corenius-kernel-pg-1790985326-819655",
+      "Networks": "bridge",
+      "Ports": "127.0.0.1:10667->5432/tcp",
+      "RunningFor": "About a minute ago",
+      "Size": "63B (virtual 437MB)",
+      "State": "running",
+      "Status": "Up About a minute"
+    }
+  ],
+  "meaning": "Observation only: current matrix fixture still running; previous terminated auto-remove fixture containers absent from matching retained inventory. No container mutation."
+}

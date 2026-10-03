@@ -1,0 +1,23 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.98s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 15 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test cancelled_unallocated_attempt_refunds_only_concurrent_capacity_once ... ok
+test cancelled_prepared_episode_retains_current_workflow_progress ... ok
+test colliding_episode_and_admission_waits_drive_both_protocols ... ok
+test confirmed_episode_effect_cannot_borrow_unused_workspace_stop ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test paused_prepared_episode_remains_guarded_workflow_progress ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.57s
+

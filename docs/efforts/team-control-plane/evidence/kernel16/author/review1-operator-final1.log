@@ -1,0 +1,11 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.50s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 3 tests
+test operator_historical_records_require_current_lead_and_recovery_epoch_authority ... ok
+test alternate_current_grant_cannot_make_expired_issuing_execution_current ... ok
+test thirty_three_actual_operator_records_bound_summary_and_allow_omitted_exact_lookup ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.32s
+

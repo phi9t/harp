@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review584-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.95s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 1 test
+test review584_crash_then_rotate_finalizes_historical_execution ... FAILED
+
+failures:
+
+---- review584_crash_then_rotate_finalizes_historical_execution stdout ----
+
+thread 'review584_crash_then_rotate_finalizes_historical_execution' (763662) panicked at tests/assembled_operator.rs:1398:5:
+replacement Owner must release real stopped crash without guessing exit: Err(Error { code: DependencyUnmet })
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    review584_crash_then_rotate_finalizes_historical_execution
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.68s
+
+error: test failed, to rerun pass `--test assembled_operator`

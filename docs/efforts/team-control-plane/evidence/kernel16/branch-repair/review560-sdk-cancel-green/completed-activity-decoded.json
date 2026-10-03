@@ -1,0 +1,27 @@
+[
+  {
+    "event_id": 8,
+    "operations": [
+      {
+        "admission_id": "d0d1ae1d-1afe-4a07-9431-ce7d95a52445",
+        "journals": [
+          [
+            "4e376185-3bf5-4c86-ad67-25f064bace03",
+            "prepared"
+          ]
+        ],
+        "limitation": "gateway_dispatch_fenced"
+      },
+      {
+        "episode_id": "d0d1ae1d-1afe-4a07-9431-ce7d95a52445",
+        "journals": [
+          [
+            "108d9c3a-236f-42bb-a97e-727a73355c21",
+            "prepared"
+          ]
+        ],
+        "limitation": "episode_dispatch_fenced"
+      }
+    ]
+  }
+]

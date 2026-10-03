@@ -1,0 +1,33 @@
+{
+  "session": 83141,
+  "terminal_exit": 101,
+  "classification": "meaningful public behavioral red",
+  "oracle": "authenticated takeover dependency_unmet after actual2097153-byte output retained, executionreleased, oldtransportdead and replacementregistered; cleanup before oracle",
+  "scope": "third recovery580 slice; no productfix yet at red",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "813b52d60539233bffe551fa506456d9dbf34a6a466c2e645919e9742ac7d615"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "kernel16-large-log-34954e34-3271-4e88-bff3-a59e50b2b7c0/large-log.json",
+      "sha256": "9e262c6ddb77a4d0a9afc3ba8eb95289b56ac0b813337b81eb6a27c9e4913ce9"
+    },
+    {
+      "path": "kernel16-large-log-34954e34-3271-4e88-bff3-a59e50b2b7c0/actual-execution-result.json",
+      "sha256": "3d09d07b2d853ac9743897c6acf64a5710f184784ec1c6c79db45187b6f64e7c"
+    }
+  ]
+}

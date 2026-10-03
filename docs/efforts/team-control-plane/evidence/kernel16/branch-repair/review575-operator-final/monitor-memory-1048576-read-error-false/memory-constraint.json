@@ -1,0 +1,15 @@
+{
+  "address_space_limit_bytes": 156123136,
+  "baseline": "Name:\tteam-control-pl\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t3147675\nNgid:\t0\nPid:\t3147675\nPPid:\t3145603\nTracerPid:\t0\nUid:\t1018\t1018\t1018\t1018\nGid:\t1018\t1018\t1018\t1018\nFDSize:\t64\nGroups:\t27 991 993 1000 1018 \nNStgid:\t3147675\nNSpid:\t3147675\nNSpgid:\t3147675\nNSsid:\t3143359\nVmPeak:\t  152044 kB\nVmSize:\t   86928 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   12228 kB\nVmRSS:\t   12228 kB\nRssAnon:\t    1340 kB\nRssFile:\t    1908 kB\nRssShmem:\t    8980 kB\nVmData:\t    2444 kB\nVmStk:\t     536 kB\nVmExe:\t   10104 kB\nVmLib:\t    2100 kB\nVmPTE:\t      76 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nThreads:\t2\nSigQ:\t14/15994057\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000080001000\nSigCgt:\t0000000100000440\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\nNoNewPrivs:\t0\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tconditional enabled\nCpus_allowed:\tffffff,ffffffff,ffffffff,ffffffff,ffffffff,ffffffff,ffffffff\nCpus_allowed_list:\t0-215\nMems_allowed:\t00000000,00000003\nMems_allowed_list:\t0-1\nvoluntary_ctxt_switches:\t108\nnonvoluntary_ctxt_switches:\t0\n",
+  "constraint_applied_after_workload_spawn": true,
+  "controller": {
+    "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+    "namespace": "pid:[4026531836]",
+    "namespace_pid": 3147675,
+    "pid": 3147675,
+    "start_ticks": 39439711
+  },
+  "headroom_bytes": 67108864,
+  "limits": "Limit                     Soft Limit           Hard Limit           Units     \nMax cpu time              unlimited            unlimited            seconds   \nMax file size             unlimited            unlimited            bytes     \nMax data size             unlimited            unlimited            bytes     \nMax stack size            8388608              unlimited            bytes     \nMax core file size        0                    unlimited            bytes     \nMax resident set          unlimited            unlimited            bytes     \nMax processes             65535                unlimited            processes \nMax open files            1024768              1024768              files     \nMax locked memory         unlimited            unlimited            bytes     \nMax address space         156123136            156123136            bytes     \nMax file locks            unlimited            unlimited            locks     \nMax pending signals       15994057             15994057             signals   \nMax msgqueue size         819200               819200               bytes     \nMax nice priority         0                    0                    \nMax realtime priority     0                    0                    \nMax realtime timeout      unlimited            unlimited            us        \n",
+  "raw_log_bytes": 1048576
+}

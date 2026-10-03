@@ -1,0 +1,20 @@
+{
+  "session": 62239,
+  "exit": 101,
+  "classification": "intentional SIGTERM of accidental unchanged-source launch; not validation",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "b0d744d47449b3889a722c71395c43238a2d6b7b1ab4fa8c200fb35e04b376f5"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "author-stop.json",
+      "sha256": "fba9151c11f864b6f70e3947132ecd505e5ced2a617d2349bee9fa95c3417ccf"
+    }
+  ],
+  "cleanup": "descendant/reference completion requested; signal record alone is insufficient"
+}

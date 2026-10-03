@@ -1,0 +1,17 @@
+{
+  "session": 20645,
+  "status": "terminal101; vertical process SIGABRT stack overflow",
+  "failing_test": "review571_completed_verifier_provenance_survives_producer_expiry",
+  "scope": "earlier passing groups partial only; full matrix not green",
+  "cleanup": "requested before another runtime run",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "edfb07ec259f6ce9e582db200503bc8d8941ab2c411a9b73ddd7e66d134e8722"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    }
+  ]
+}

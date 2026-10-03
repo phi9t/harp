@@ -1,0 +1,11 @@
+{
+  "scenarios": 2,
+  "verified": "liveOwner initialAccept and historicalAcceptreplay afterproducerexpiry preserve receipt; same normallypermittedproducer snapshot is Unauthorized afterexpiry",
+  "trusted_verifier": "exit0 real capsule report",
+  "cleanup": "Temporal listenerclosed",
+  "terminal": {
+    "handle": 59099,
+    "exit": 0,
+    "author_polled": true
+  }
+}

@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.73s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+test failed_current_gate_fences_preallocated_worker_without_charging_new_work ... FAILED
+
+failures:
+
+---- failed_current_gate_fences_preallocated_worker_without_charging_new_work stdout ----
+
+thread 'failed_current_gate_fences_preallocated_worker_without_charging_new_work' (4004916) panicked at tests/assembled_vertical.rs:4466:9:
+failed gate must preserve new native fenced SDK Activity progress
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    failed_current_gate_fences_preallocated_worker_without_charging_new_work
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 49 filtered out; finished in 26.43s
+
+error: test failed, to rerun pass `--test assembled_vertical`

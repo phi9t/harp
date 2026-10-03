@@ -1,0 +1,28 @@
+{
+  "session": 60011,
+  "terminal_exit": 0,
+  "classification": "focused physical recovery green",
+  "scope": "real monitorcrash replacementOwner finalize/release/repeated immutable result; legitimate Verifier and guard/CAS controls pending",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "0c31c22086dbeb1bdacfd6844fe32cabf1a3ad26efe29fa3c68e2702787dd57b"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review580-crash/crash.json",
+      "sha256": "80a48a458d97f2094e18d19ec180947e79bc23fa2346234ad3e96674356fe6f3"
+    }
+  ]
+}

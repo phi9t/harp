@@ -1,0 +1,21 @@
+{
+  "processes": [
+    {
+      "pid": 77666,
+      "start_ticks": "39854847",
+      "argv": "/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66 --exact assembled_sdk_worker --ignored --nocapture ",
+      "epoch": "a6746daa-4ac8-4204-b627-70a295b4138b",
+      "roots": [
+        "/data02/home/philip.yang/devx/tmp/kernel16-1b8b2d44-350e-4c34-81c2-9eda9da108a5/runtime",
+        "/data02/home/philip.yang/devx/tmp/kernel16-1b8b2d44-350e-4c34-81c2-9eda9da108a5/workspaces"
+      ],
+      "signal": "SIGKILL",
+      "roots_disposition": "preserved",
+      "exact_incarnation_gone": true
+    }
+  ],
+  "references": [],
+  "roots": [
+    "/data02/home/philip.yang/devx/tmp/kernel16-1b8b2d44-350e-4c34-81c2-9eda9da108a5"
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "observed_at": "2026-10-02T18:48:23.704097+00:00",
+  "main": "1f164156261a3aa927c823919bf73d6e6d11a771",
+  "worktrees": [
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/main",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/courier-wt",
+      "HEAD": "1a662cca7389172fde3894ab76354818c08036a7",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/repo",
+      "HEAD": "dff59f0c8f4b696a2e652f806c807a6610ce5632",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/.local/share/kata-spike/trae-probe",
+      "HEAD": "1a662cca7389172fde3894ab76354818c08036a7",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-aime-hardening",
+      "HEAD": "a8e7e30805f92571765fc891877e50054d479792",
+      "branch": "refs/heads/aime-harness-hardening",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-b1",
+      "HEAD": "b8a3742a100ed952161f7ee81b6fab3d59a856a3",
+      "branch": "refs/heads/claude/b1-worker-supervisor",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-artifact-acceptance",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/artifact-acceptance",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-gateway-journal",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/gateway-journal",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-jj-preflight",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/jj-preflight",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kata-evaluation",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-kernel-proof",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kernel-proof",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-mailbox-lead",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/mailbox-lead",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+      "HEAD": "66e221a97465bfc4e17917a76b2db18fc657e97f",
+      "branch": "refs/heads/codex/reference-design",
+      "ancestor_of_main": false
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-supervised-environments",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/supervised-environments",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-temporal-bridge",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/temporal-bridge",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-collab-spike",
+      "HEAD": "049d79f42bef9be78951356eaece0957e9333585",
+      "branch": "refs/heads/claude/collab-spike",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-efforts",
+      "HEAD": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+      "branch": "refs/heads/claude/durable-efforts",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-kernel-admission",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/kernel-admission",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-m1-sync",
+      "HEAD": "680651de81c45c82371f615e02395d9c5821b330",
+      "branch": "refs/heads/claude/m1-sync-local-trackers",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-m3-interception",
+      "HEAD": "1ba387ad07dc25ba9ba5bdc5d6aedba3764bcac1",
+      "branch": "refs/heads/claude/m3-interception",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-mb",
+      "HEAD": "366361b5a46045823cf6b45941c66ad8379dfebe",
+      "branch": "refs/heads/claude/milestone-b",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-multi-agent-bench",
+      "HEAD": "0d107b1776a87bee8d1def23f7e56af6a87f3456",
+      "branch": "refs/heads/effort/multi-agent-bench",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-postgres-feasibility",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/codex/postgres-feasibility",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-research-control-plane-sources",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/research/control-plane-sources",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-research-trae-runtime",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "branch": "refs/heads/research/trae-runtime",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-temporal-spike",
+      "HEAD": "963f58b31e518a8162dfe719e386ef9d9843321f",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-tmuxh",
+      "HEAD": "55964db2acb2171f8c64d867f58aa2109d25b771",
+      "branch": "refs/heads/claude/tmuxh",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-c",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-c",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh1-py-inventory",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh1-py-inventory",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh2-rs-scheduler",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh2-rs-scheduler",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-mh3-cxx-engine",
+      "HEAD": "02a6eaf892f8953ea92a5f9b85269e0f7b225cc0",
+      "branch": "refs/heads/worker/author-mh3-cxx-engine",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-pr",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-pr",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-author-t",
+      "HEAD": "145eb116a0fd41156aadc825b9883391901099bc",
+      "branch": "refs/heads/worker/author-t",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-1",
+      "HEAD": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+      "branch": "refs/heads/worker/blade-author-1",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-2",
+      "HEAD": "2469854f28ce3533e7c808b0949ebbbb886911f5",
+      "branch": "refs/heads/worker/blade-author-2",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-blade-author-3",
+      "HEAD": "1d77de7698e53ec3878e4dea982b5856bfc24d65",
+      "branch": "refs/heads/worker/blade-author-3",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-capsule-smoke",
+      "HEAD": "da5900683dbb56173d1b5b06f227ccfee1dbf404",
+      "branch": "refs/heads/worker/capsule-smoke",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-claims",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-claims",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence",
+      "ancestor_of_main": false
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence-2",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence-2",
+      "ancestor_of_main": false
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-land",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-land",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-msg",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-msg",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-tracker",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-tracker",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-wt-core",
+      "HEAD": "8aee00ad4a5745f8cdb553dd41fa0fd190a3566a",
+      "branch": "refs/heads/worker/mb-wt-core",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mechanism",
+      "HEAD": "03368f42253dd344c6230d8381fc855f4b7af698",
+      "branch": "refs/heads/claude/worker-mechanism",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-blade",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-blade",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-blade-cuda",
+      "HEAD": "57ef679a5a9d4894d090024e0655f437ed182b31",
+      "branch": "refs/heads/worker/research-blade-cuda",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-insula",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-insula",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-research-tasks",
+      "HEAD": "62f4f322e877ab03835d9e2a27da3a0383caccfb",
+      "branch": "refs/heads/worker/research-tasks",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-trial2",
+      "HEAD": "e0d55e2fbd196ca00365426c7fca55804d86a726",
+      "branch": "refs/heads/worker/trial2",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-verify",
+      "HEAD": "bccdcee8f0a47115bec8fa835b4c1763be72cdc4",
+      "branch": "refs/heads/traecli/verify-milano-reference",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-author",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/codex/kernel16-author",
+      "ancestor_of_main": true
+    },
+    {
+      "worktree": "/tmp/corenius-kernel16-capacity",
+      "HEAD": "1f164156261a3aa927c823919bf73d6e6d11a771",
+      "branch": "refs/heads/codex/kernel16-capacity",
+      "ancestor_of_main": true
+    }
+  ],
+  "note": "Read-only committed-tip ancestry; dirty contributions need separate exact-source review. No branches/worktrees altered."
+}

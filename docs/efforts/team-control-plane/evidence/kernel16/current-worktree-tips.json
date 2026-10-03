@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-02T17:26:46.884048+00:00",
+  "main": "1f164156261a3aa927c823919bf73d6e6d11a771",
+  "registered_count": 53,
+  "tips_not_ancestors": [
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-codex-reference-design",
+      "HEAD": "2316e09f002b68eb366accebaea9579ae3aad089",
+      "branch": "refs/heads/codex/reference-design",
+      "tip_in_main": false
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence",
+      "tip_in_main": false
+    },
+    {
+      "worktree": "/data02/home/philip.yang/workspace/corenius-worker-mb-evidence-2",
+      "HEAD": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "branch": "refs/heads/worker/mb-evidence-2",
+      "tip_in_main": false
+    }
+  ],
+  "scope": "Read-only committed-tip inventory; dirty contributions require retained content dispositions, not ancestry alone."
+}

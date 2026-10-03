@@ -1,0 +1,719 @@
+1529416 00000000019c22e0 <assembled_vertical::assembled_engineering_fixture::{{closure}}>:
+ 19c22e0:	41 56                	push   %r14
+ 19c22e2:	53                   	push   %rbx
+ 19c22e3:	49 89 e3             	mov    %rsp,%r11
+ 19c22e6:	49 81 eb 00 50 17 00 	sub    $0x175000,%r11
+ 19c22ed:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 19c22f4:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 19c22fb:	00 
+ 19c22fc:	4c 39 dc             	cmp    %r11,%rsp
+ 19c22ff:	75 ec                	jne    19c22ed <assembled_vertical::assembled_engineering_fixture::{{closure}}+0xd>
+ 19c2301:	48 81 ec 48 06 00 00 	sub    $0x648,%rsp
+ 19c2308:	48 89 bc 24 f8 65 00 	mov    %rdi,0x65f8(%rsp)
+ 19c230f:	00 
+ 19c2310:	48 89 b4 24 08 66 00 	mov    %rsi,0x6608(%rsp)
+ 19c2317:	00 
+ 19c2318:	48 89 bc 24 98 c2 16 	mov    %rdi,0x16c298(%rsp)
+ 19c231f:	00 
+ 19c2320:	48 89 bc 24 b8 c2 16 	mov    %rdi,0x16c2b8(%rsp)
+ 19c2327:	00 
+ 19c2328:	0f b6 87 e9 39 00 00 	movzbl 0x39e9(%rdi),%eax
+ 19c232f:	48 89 84 24 00 66 00 	mov    %rax,0x6600(%rsp)
+ 19c2336:	00 
+ 19c2337:	48 8b 8c 24 00 66 00 	mov    0x6600(%rsp),%rcx
+ 19c233e:	00 
+ 19c233f:	48 8d 05 2e ab c9 fe 	lea    -0x13654d2(%rip),%rax        # 65ce74 <GCC_except_table0+0x566e0>
+ 19c2346:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 19c234a:	48 01 c8             	add    %rcx,%rax
+ 19c234d:	ff e0                	jmp    *%rax
+ 19c234f:	0f 0b                	ud2
+ 19c2351:	48 8b 84 24 f8 65 00 	mov    0x65f8(%rsp),%rax
+ 19c2358:	00 
+ 19c2359:	c6 80 c3 39 00 00 00 	movb   $0x0,0x39c3(%rax)
+ 19c2360:	c6 84 24 97 c2 16 00 	movb   $0x0,0x16c297(%rsp)
+ 19c2367:	00 
+ 19c2368:	c6 80 e8 39 00 00 00 	movb   $0x0,0x39e8(%rax)
+
+79424 000000000247b0d0 <team_control_plane::artifacts::ArtifactService::apply::{{closure}}>:
+ 247b0d0:	41 57                	push   %r15
+ 247b0d2:	41 56                	push   %r14
+ 247b0d4:	53                   	push   %rbx
+ 247b0d5:	49 89 e3             	mov    %rsp,%r11
+ 247b0d8:	49 81 eb 00 30 01 00 	sub    $0x13000,%r11
+ 247b0df:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 247b0e6:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 247b0ed:	00 
+ 247b0ee:	4c 39 dc             	cmp    %r11,%rsp
+ 247b0f1:	75 ec                	jne    247b0df <team_control_plane::artifacts::ArtifactService::apply::{{closure}}+0xf>
+ 247b0f3:	48 81 ec 40 06 00 00 	sub    $0x640,%rsp
+ 247b0fa:	48 89 b4 24 a8 06 00 	mov    %rsi,0x6a8(%rsp)
+ 247b101:	00 
+ 247b102:	48 89 bc 24 b0 06 00 	mov    %rdi,0x6b0(%rsp)
+ 247b109:	00 
+ 247b10a:	48 89 bc 24 b8 06 00 	mov    %rdi,0x6b8(%rsp)
+ 247b111:	00 
+ 247b112:	48 89 94 24 c8 06 00 	mov    %rdx,0x6c8(%rsp)
+ 247b119:	00 
+ 247b11a:	48 89 b4 24 90 2c 01 	mov    %rsi,0x12c90(%rsp)
+ 247b121:	00 
+ 247b122:	48 89 b4 24 a8 2c 01 	mov    %rsi,0x12ca8(%rsp)
+ 247b129:	00 
+ 247b12a:	0f b6 86 1f 05 00 00 	movzbl 0x51f(%rsi),%eax
+ 247b131:	48 89 84 24 c0 06 00 	mov    %rax,0x6c0(%rsp)
+ 247b138:	00 
+ 247b139:	48 8b 8c 24 c0 06 00 	mov    0x6c0(%rsp),%rcx
+ 247b140:	00 
+ 247b141:	48 8d 05 38 c6 21 fe 	lea    -0x1de39c8(%rip),%rax        # 697780 <GCC_except_table0+0x90fec>
+ 247b148:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 247b14c:	48 01 c8             	add    %rcx,%rax
+ 247b14f:	ff e0                	jmp    *%rax
+ 247b151:	0f 0b                	ud2
+ 247b153:	48 8b 84 24 a8 06 00 	mov    0x6a8(%rsp),%rax
+
+70440 0000000001a2bb50 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2bb50:	49 89 e3             	mov    %rsp,%r11
+ 1a2bb53:	49 81 eb 00 10 01 00 	sub    $0x11000,%r11
+ 1a2bb5a:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a2bb61:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a2bb68:	00 
+ 1a2bb69:	4c 39 dc             	cmp    %r11,%rsp
+ 1a2bb6c:	75 ec                	jne    1a2bb5a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa>
+ 1a2bb6e:	48 81 ec 28 03 00 00 	sub    $0x328,%rsp
+ 1a2bb75:	48 89 b4 24 98 05 00 	mov    %rsi,0x598(%rsp)
+ 1a2bb7c:	00 
+ 1a2bb7d:	48 89 bc 24 a0 05 00 	mov    %rdi,0x5a0(%rsp)
+ 1a2bb84:	00 
+ 1a2bb85:	48 89 bc 24 a8 05 00 	mov    %rdi,0x5a8(%rsp)
+ 1a2bb8c:	00 
+ 1a2bb8d:	48 89 94 24 b8 05 00 	mov    %rdx,0x5b8(%rsp)
+ 1a2bb94:	00 
+ 1a2bb95:	48 89 b4 24 a0 0a 01 	mov    %rsi,0x10aa0(%rsp)
+ 1a2bb9c:	00 
+ 1a2bb9d:	48 89 b4 24 b0 0a 01 	mov    %rsi,0x10ab0(%rsp)
+ 1a2bba4:	00 
+ 1a2bba5:	0f b6 86 d8 01 00 00 	movzbl 0x1d8(%rsi),%eax
+ 1a2bbac:	48 89 84 24 b0 05 00 	mov    %rax,0x5b0(%rsp)
+ 1a2bbb3:	00 
+ 1a2bbb4:	48 8b 8c 24 b0 05 00 	mov    0x5b0(%rsp),%rcx
+ 1a2bbbb:	00 
+ 1a2bbbc:	48 8d 05 49 16 c3 fe 	lea    -0x13ce9b7(%rip),%rax        # 65d20c <GCC_except_table0+0x56a78>
+ 1a2bbc3:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a2bbc7:	48 01 c8             	add    %rcx,%rax
+ 1a2bbca:	ff e0                	jmp    *%rax
+ 1a2bbcc:	0f 0b                	ud2
+ 1a2bbce:	48 8b 84 24 98 05 00 	mov    0x598(%rsp),%rax
+ 1a2bbd5:	00 
+ 1a2bbd6:	c6 80 da 01 00 00 00 	movb   $0x0,0x1da(%rax)
+ 1a2bbdd:	c6 84 24 7f 0a 01 00 	movb   $0x0,0x10a7f(%rsp)
+
+57192 0000000002483250 <team_control_plane::artifacts::ArtifactService::execute::{{closure}}>:
+ 2483250:	41 56                	push   %r14
+ 2483252:	53                   	push   %rbx
+ 2483253:	49 89 e3             	mov    %rsp,%r11
+ 2483256:	49 81 eb 00 d0 00 00 	sub    $0xd000,%r11
+ 248325d:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 2483264:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 248326b:	00 
+ 248326c:	4c 39 dc             	cmp    %r11,%rsp
+ 248326f:	75 ec                	jne    248325d <team_control_plane::artifacts::ArtifactService::execute::{{closure}}+0xd>
+ 2483271:	48 81 ec 68 0f 00 00 	sub    $0xf68,%rsp
+ 2483278:	48 89 b4 24 08 03 00 	mov    %rsi,0x308(%rsp)
+ 248327f:	00 
+ 2483280:	48 89 bc 24 10 03 00 	mov    %rdi,0x310(%rsp)
+ 2483287:	00 
+ 2483288:	48 89 bc 24 18 03 00 	mov    %rdi,0x318(%rsp)
+ 248328f:	00 
+ 2483290:	48 89 94 24 28 03 00 	mov    %rdx,0x328(%rsp)
+ 2483297:	00 
+ 2483298:	48 89 b4 24 28 da 00 	mov    %rsi,0xda28(%rsp)
+ 248329f:	00 
+ 24832a0:	48 89 b4 24 40 da 00 	mov    %rsi,0xda40(%rsp)
+ 24832a7:	00 
+ 24832a8:	0f b6 86 69 06 00 00 	movzbl 0x669(%rsi),%eax
+ 24832af:	48 89 84 24 20 03 00 	mov    %rax,0x320(%rsp)
+ 24832b6:	00 
+ 24832b7:	48 8b 8c 24 20 03 00 	mov    0x320(%rsp),%rcx
+ 24832be:	00 
+ 24832bf:	48 8d 05 3e 45 21 fe 	lea    -0x1debac2(%rip),%rax        # 697804 <GCC_except_table0+0x91070>
+ 24832c6:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 24832ca:	48 01 c8             	add    %rcx,%rax
+ 24832cd:	ff e0                	jmp    *%rax
+ 24832cf:	0f 0b                	ud2
+ 24832d1:	48 8b b4 24 08 03 00 	mov    0x308(%rsp),%rsi
+ 24832d8:	00 
+
+40776 0000000001a29610 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a29610:	49 89 e3             	mov    %rsp,%r11
+ 1a29613:	49 81 eb 00 90 00 00 	sub    $0x9000,%r11
+ 1a2961a:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a29621:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a29628:	00 
+ 1a29629:	4c 39 dc             	cmp    %r11,%rsp
+ 1a2962c:	75 ec                	jne    1a2961a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa>
+ 1a2962e:	48 81 ec 48 0f 00 00 	sub    $0xf48,%rsp
+ 1a29635:	48 89 b4 24 10 01 00 	mov    %rsi,0x110(%rsp)
+ 1a2963c:	00 
+ 1a2963d:	48 89 bc 24 18 01 00 	mov    %rdi,0x118(%rsp)
+ 1a29644:	00 
+ 1a29645:	48 89 bc 24 20 01 00 	mov    %rdi,0x120(%rsp)
+ 1a2964c:	00 
+ 1a2964d:	48 89 94 24 30 01 00 	mov    %rdx,0x130(%rsp)
+ 1a29654:	00 
+ 1a29655:	48 89 b4 24 18 9e 00 	mov    %rsi,0x9e18(%rsp)
+ 1a2965c:	00 
+ 1a2965d:	48 89 b4 24 20 9e 00 	mov    %rsi,0x9e20(%rsp)
+ 1a29664:	00 
+ 1a29665:	0f b6 86 d8 00 00 00 	movzbl 0xd8(%rsi),%eax
+ 1a2966c:	48 89 84 24 28 01 00 	mov    %rax,0x128(%rsp)
+ 1a29673:	00 
+ 1a29674:	48 8b 8c 24 28 01 00 	mov    0x128(%rsp),%rcx
+ 1a2967b:	00 
+ 1a2967c:	48 8d 05 59 3b c3 fe 	lea    -0x13cc4a7(%rip),%rax        # 65d1dc <GCC_except_table0+0x56a48>
+ 1a29683:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a29687:	48 01 c8             	add    %rcx,%rax
+ 1a2968a:	ff e0                	jmp    *%rax
+ 1a2968c:	0f 0b                	ud2
+ 1a2968e:	48 8b 84 24 10 01 00 	mov    0x110(%rsp),%rax
+ 1a29695:	00 
+ 1a29696:	c6 80 d9 00 00 00 00 	movb   $0x0,0xd9(%rax)
+ 1a2969d:	48 89 c7             	mov    %rax,%rdi
+
+17560 0000000001a288a0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a288a0:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a288a7:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a288ae:	00 
+ 1a288af:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a288b6:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a288bd:	00 
+ 1a288be:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a288c5:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a288cc:	00 
+ 1a288cd:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 1a288d4:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 1a288db:	00 
+ 1a288dc:	48 81 ec 98 04 00 00 	sub    $0x498,%rsp
+ 1a288e3:	48 89 74 24 68       	mov    %rsi,0x68(%rsp)
+ 1a288e8:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a288ed:	48 89 7c 24 78       	mov    %rdi,0x78(%rsp)
+ 1a288f2:	48 89 94 24 88 00 00 	mov    %rdx,0x88(%rsp)
+ 1a288f9:	00 
+ 1a288fa:	48 89 b4 24 70 44 00 	mov    %rsi,0x4470(%rsp)
+ 1a28901:	00 
+ 1a28902:	48 89 b4 24 78 44 00 	mov    %rsi,0x4478(%rsp)
+ 1a28909:	00 
+ 1a2890a:	0f b6 86 58 23 00 00 	movzbl 0x2358(%rsi),%eax
+ 1a28911:	48 89 84 24 80 00 00 	mov    %rax,0x80(%rsp)
+ 1a28918:	00 
+ 1a28919:	48 8b 8c 24 80 00 00 	mov    0x80(%rsp),%rcx
+ 1a28920:	00 
+ 1a28921:	48 8d 05 94 48 c3 fe 	lea    -0x13cb76c(%rip),%rax        # 65d1bc <GCC_except_table0+0x56a28>
+ 1a28928:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a2892c:	48 01 c8             	add    %rcx,%rax
+ 1a2892f:	ff e0                	jmp    *%rax
+ 1a28931:	0f 0b                	ud2
+ 1a28933:	48 8b 7c 24 68       	mov    0x68(%rsp),%rdi
+ 1a28938:	48 81 c7 10 02 00 00 	add    $0x210,%rdi
+
+15672 00000000022df350 <team_control_plane::supervisor::execution_dispatch_current::{{closure}}>:
+ 22df350:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 22df357:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 22df35e:	00 
+ 22df35f:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 22df366:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 22df36d:	00 
+ 22df36e:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 22df375:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 22df37c:	00 
+ 22df37d:	48 81 ec 38 0d 00 00 	sub    $0xd38,%rsp
+ 22df384:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+ 22df389:	48 89 74 24 70       	mov    %rsi,0x70(%rsp)
+ 22df38e:	48 89 bc 24 28 3c 00 	mov    %rdi,0x3c28(%rsp)
+ 22df395:	00 
+ 22df396:	48 89 bc 24 30 3c 00 	mov    %rdi,0x3c30(%rsp)
+ 22df39d:	00 
+ 22df39e:	0f b6 47 51          	movzbl 0x51(%rdi),%eax
+ 22df3a2:	48 89 44 24 68       	mov    %rax,0x68(%rsp)
+ 22df3a7:	48 8b 4c 24 68       	mov    0x68(%rsp),%rcx
+ 22df3ac:	48 8d 05 45 6f 3a fe 	lea    -0x1c590bb(%rip),%rax        # 6862f8 <GCC_except_table0+0x7fb64>
+ 22df3b3:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 22df3b7:	48 01 c8             	add    %rcx,%rax
+ 22df3ba:	ff e0                	jmp    *%rax
+ 22df3bc:	0f 0b                	ud2
+ 22df3be:	48 8b 44 24 60       	mov    0x60(%rsp),%rax
+ 22df3c3:	48 8b 48 48          	mov    0x48(%rax),%rcx
+ 22df3c7:	48 89 48 40          	mov    %rcx,0x40(%rax)
+ 22df3cb:	0f 10 00             	movups (%rax),%xmm0
+ 22df3ce:	0f 11 40 20          	movups %xmm0,0x20(%rax)
+ 22df3d2:	0f 10 40 10          	movups 0x10(%rax),%xmm0
+ 22df3d6:	0f 11 40 30          	movups %xmm0,0x30(%rax)
+ 22df3da:	48 8b 70 40          	mov    0x40(%rax),%rsi
+ 22df3de:	0f 10 40 20          	movups 0x20(%rax),%xmm0
+ 22df3e2:	0f 29 84 24 80 0c 00 	movaps %xmm0,0xc80(%rsp)
+
+10680 00000000024962c0 <team_control_plane::artifacts::current_failed_verification::{{closure}}>:
+ 24962c0:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 24962c7:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 24962ce:	00 
+ 24962cf:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 24962d6:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 24962dd:	00 
+ 24962de:	48 81 ec b8 09 00 00 	sub    $0x9b8,%rsp
+ 24962e5:	48 89 b4 24 88 00 00 	mov    %rsi,0x88(%rsp)
+ 24962ec:	00 
+ 24962ed:	48 89 bc 24 90 00 00 	mov    %rdi,0x90(%rsp)
+ 24962f4:	00 
+ 24962f5:	48 89 bc 24 98 00 00 	mov    %rdi,0x98(%rsp)
+ 24962fc:	00 
+ 24962fd:	48 89 94 24 a8 00 00 	mov    %rdx,0xa8(%rsp)
+ 2496304:	00 
+ 2496305:	48 89 b4 24 40 28 00 	mov    %rsi,0x2840(%rsp)
+ 249630c:	00 
+ 249630d:	48 89 b4 24 48 28 00 	mov    %rsi,0x2848(%rsp)
+ 2496314:	00 
+ 2496315:	0f b6 86 c9 00 00 00 	movzbl 0xc9(%rsi),%eax
+ 249631c:	48 89 84 24 a0 00 00 	mov    %rax,0xa0(%rsp)
+ 2496323:	00 
+ 2496324:	48 8b 8c 24 a0 00 00 	mov    0xa0(%rsp),%rcx
+ 249632b:	00 
+ 249632c:	48 8d 05 11 16 20 fe 	lea    -0x1dfe9ef(%rip),%rax        # 697944 <GCC_except_table0+0x911b0>
+ 2496333:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 2496337:	48 01 c8             	add    %rcx,%rax
+ 249633a:	ff e0                	jmp    *%rax
+ 249633c:	0f 0b                	ud2
+ 249633e:	48 8b 84 24 88 00 00 	mov    0x88(%rsp),%rax
+ 2496345:	00 
+ 2496346:	c6 80 c8 00 00 00 00 	movb   $0x0,0xc8(%rax)
+ 249634d:	48 8b 88 c0 00 00 00 	mov    0xc0(%rax),%rcx
+ 2496354:	48 89 48 70          	mov    %rcx,0x70(%rax)
+
+7128 0000000002495a70 <team_control_plane::artifacts::implementation_enabled::{{closure}}>:
+ 2495a70:	48 81 ec 00 10 00 00 	sub    $0x1000,%rsp
+ 2495a77:	48 c7 04 24 00 00 00 	movq   $0x0,(%rsp)
+ 2495a7e:	00 
+ 2495a7f:	48 81 ec d8 0b 00 00 	sub    $0xbd8,%rsp
+ 2495a86:	48 89 7c 24 28       	mov    %rdi,0x28(%rsp)
+ 2495a8b:	48 89 74 24 38       	mov    %rsi,0x38(%rsp)
+ 2495a90:	48 89 bc 24 10 1b 00 	mov    %rdi,0x1b10(%rsp)
+ 2495a97:	00 
+ 2495a98:	48 89 bc 24 18 1b 00 	mov    %rdi,0x1b18(%rsp)
+ 2495a9f:	00 
+ 2495aa0:	0f b6 47 50          	movzbl 0x50(%rdi),%eax
+ 2495aa4:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+ 2495aa9:	48 8b 4c 24 30       	mov    0x30(%rsp),%rcx
+ 2495aae:	48 8d 05 7b 1e 20 fe 	lea    -0x1dfe185(%rip),%rax        # 697930 <GCC_except_table0+0x9119c>
+ 2495ab5:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 2495ab9:	48 01 c8             	add    %rcx,%rax
+ 2495abc:	ff e0                	jmp    *%rax
+ 2495abe:	0f 0b                	ud2
+ 2495ac0:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+ 2495ac5:	48 8b 08             	mov    (%rax),%rcx
+ 2495ac8:	48 89 48 28          	mov    %rcx,0x28(%rax)
+ 2495acc:	0f 10 40 08          	movups 0x8(%rax),%xmm0
+ 2495ad0:	0f 11 40 30          	movups %xmm0,0x30(%rax)
+ 2495ad4:	0f 10 40 18          	movups 0x18(%rax),%xmm0
+ 2495ad8:	0f 11 40 40          	movups %xmm0,0x40(%rax)
+ 2495adc:	48 8b 70 28          	mov    0x28(%rax),%rsi
+ 2495ae0:	0f 10 40 30          	movups 0x30(%rax),%xmm0
+ 2495ae4:	0f 29 84 24 90 0f 00 	movaps %xmm0,0xf90(%rsp)
+ 2495aeb:	00 
+ 2495aec:	48 8b 05 35 0a 84 01 	mov    0x1840a35(%rip),%rax        # 3cd6528 <_DYNAMIC+0x28e18>
+ 2495af3:	48 8d bc 24 08 08 00 	lea    0x808(%rsp),%rdi
+ 2495afa:	00 
+ 2495afb:	48 8d 94 24 90 0f 00 	lea    0xf90(%rsp),%rdx
+ 2495b02:	00 
+
+776 0000000001a28f00 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a28f00:	48 81 ec 08 03 00 00 	sub    $0x308,%rsp
+ 1a28f07:	48 89 7c 24 38       	mov    %rdi,0x38(%rsp)
+ 1a28f0c:	48 89 74 24 48       	mov    %rsi,0x48(%rsp)
+ 1a28f11:	48 89 bc 24 b8 02 00 	mov    %rdi,0x2b8(%rsp)
+ 1a28f18:	00 
+ 1a28f19:	48 89 bc 24 c0 02 00 	mov    %rdi,0x2c0(%rsp)
+ 1a28f20:	00 
+ 1a28f21:	0f b6 87 50 02 00 00 	movzbl 0x250(%rdi),%eax
+ 1a28f28:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+ 1a28f2d:	48 8b 4c 24 40       	mov    0x40(%rsp),%rcx
+ 1a28f32:	48 8d 05 93 42 c3 fe 	lea    -0x13cbd6d(%rip),%rax        # 65d1cc <GCC_except_table0+0x56a38>
+ 1a28f39:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a28f3d:	48 01 c8             	add    %rcx,%rax
+ 1a28f40:	ff e0                	jmp    *%rax
+ 1a28f42:	0f 0b                	ud2
+ 1a28f44:	48 8b 74 24 38       	mov    0x38(%rsp),%rsi
+ 1a28f49:	48 8d bc 24 80 01 00 	lea    0x180(%rsp),%rdi
+ 1a28f50:	00 
+ 1a28f51:	48 89 7c 24 30       	mov    %rdi,0x30(%rsp)
+ 1a28f56:	ba 28 01 00 00       	mov    $0x128,%edx
+ 1a28f5b:	48 8b 05 16 4a 28 02 	mov    0x2284a16(%rip),%rax        # 3cad978 <memcpy@GLIBC_2.14>
+ 1a28f62:	ff d0                	call   *%rax
+ 1a28f64:	48 8b 74 24 30       	mov    0x30(%rsp),%rsi
+ 1a28f69:	48 8b 05 78 89 28 02 	mov    0x2288978(%rip),%rax        # 3cb18e8 <_DYNAMIC+0x41d8>
+ 1a28f70:	48 8d 7c 24 58       	lea    0x58(%rsp),%rdi
+ 1a28f75:	ff d0                	call   *%rax
+ 1a28f77:	eb 65                	jmp    1a28fde <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xde>
+ 1a28f79:	31 c0                	xor    %eax,%eax
+ 1a28f7b:	a8 01                	test   $0x1,%al
+ 1a28f7d:	75 fa                	jne    1a28f79 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x79>
+ 1a28f7f:	e9 8f 00 00 00       	jmp    1a29013 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x113>
+ 1a28f84:	31 c0                	xor    %eax,%eax
+ 1a28f86:	a8 01                	test   $0x1,%al
+ 1a28f88:	75 fa                	jne    1a28f84 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x84>
+
+744 0000000001a2aba0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2aba0:	48 81 ec e8 02 00 00 	sub    $0x2e8,%rsp
+ 1a2aba7:	4c 89 44 24 10       	mov    %r8,0x10(%rsp)
+ 1a2abac:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+ 1a2abb1:	48 89 54 24 20       	mov    %rdx,0x20(%rsp)
+ 1a2abb6:	48 89 7c 24 28       	mov    %rdi,0x28(%rsp)
+ 1a2abbb:	48 89 7c 24 30       	mov    %rdi,0x30(%rsp)
+ 1a2abc0:	48 89 b4 24 c0 02 00 	mov    %rsi,0x2c0(%rsp)
+ 1a2abc7:	00 
+ 1a2abc8:	48 89 94 24 c8 02 00 	mov    %rdx,0x2c8(%rsp)
+ 1a2abcf:	00 
+ 1a2abd0:	48 89 8c 24 d0 02 00 	mov    %rcx,0x2d0(%rsp)
+ 1a2abd7:	00 
+ 1a2abd8:	c6 84 24 bf 02 00 00 	movb   $0x0,0x2bf(%rsp)
+ 1a2abdf:	00 
+ 1a2abe0:	c6 84 24 bf 02 00 00 	movb   $0x1,0x2bf(%rsp)
+ 1a2abe7:	01 
+ 1a2abe8:	48 8b 06             	mov    (%rsi),%rax
+ 1a2abeb:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+ 1a2abf0:	48 8b 46 08          	mov    0x8(%rsi),%rax
+ 1a2abf4:	48 8b 00             	mov    (%rax),%rax
+ 1a2abf7:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+ 1a2abfc:	48 8b 76 10          	mov    0x10(%rsi),%rsi
+ 1a2ac00:	48 8b 05 69 31 28 02 	mov    0x2283169(%rip),%rax        # 3cadd70 <_DYNAMIC+0x660>
+ 1a2ac07:	48 8d bc 24 88 02 00 	lea    0x288(%rsp),%rdi
+ 1a2ac0e:	00 
+ 1a2ac0f:	ff d0                	call   *%rax
+ 1a2ac11:	eb 29                	jmp    1a2ac3c <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x9c>
+ 1a2ac13:	f6 84 24 bf 02 00 00 	testb  $0x1,0x2bf(%rsp)
+ 1a2ac1a:	01 
+ 1a2ac1b:	0f 85 77 01 00 00    	jne    1a2ad98 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x1f8>
+ 1a2ac21:	e9 65 01 00 00       	jmp    1a2ad8b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x1eb>
+ 1a2ac26:	48 89 c1             	mov    %rax,%rcx
+ 1a2ac29:	89 d0                	mov    %edx,%eax
+ 1a2ac2b:	48 89 8c 24 d8 02 00 	mov    %rcx,0x2d8(%rsp)
+
+664 0000000001a2b160 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2b160:	48 81 ec 98 02 00 00 	sub    $0x298,%rsp
+ 1a2b167:	48 89 4c 24 50       	mov    %rcx,0x50(%rsp)
+ 1a2b16c:	48 89 54 24 58       	mov    %rdx,0x58(%rsp)
+ 1a2b171:	48 89 74 24 60       	mov    %rsi,0x60(%rsp)
+ 1a2b176:	48 89 7c 24 68       	mov    %rdi,0x68(%rsp)
+ 1a2b17b:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a2b180:	48 89 b4 24 70 02 00 	mov    %rsi,0x270(%rsp)
+ 1a2b187:	00 
+ 1a2b188:	48 89 94 24 78 02 00 	mov    %rdx,0x278(%rsp)
+ 1a2b18f:	00 
+ 1a2b190:	48 89 8c 24 80 02 00 	mov    %rcx,0x280(%rsp)
+ 1a2b197:	00 
+ 1a2b198:	c6 84 24 6f 02 00 00 	movb   $0x0,0x26f(%rsp)
+ 1a2b19f:	00 
+ 1a2b1a0:	c6 84 24 6f 02 00 00 	movb   $0x1,0x26f(%rsp)
+ 1a2b1a7:	01 
+ 1a2b1a8:	48 8d 35 dd 28 c3 fe 	lea    -0x13cd723(%rip),%rsi        # 65da8c <GCC_except_table0+0x572f8>
+ 1a2b1af:	48 8b 05 7a a6 28 02 	mov    0x228a67a(%rip),%rax        # 3cb5830 <_DYNAMIC+0x8120>
+ 1a2b1b6:	48 8d bc 24 88 00 00 	lea    0x88(%rsp),%rdi
+ 1a2b1bd:	00 
+ 1a2b1be:	48 89 7c 24 78       	mov    %rdi,0x78(%rsp)
+ 1a2b1c3:	ba 54 00 00 00       	mov    $0x54,%edx
+ 1a2b1c8:	ff d0                	call   *%rax
+ 1a2b1ca:	48 8b 7c 24 78       	mov    0x78(%rsp),%rdi
+ 1a2b1cf:	48 8b 05 02 a7 28 02 	mov    0x228a702(%rip),%rax        # 3cb58d8 <_DYNAMIC+0x81c8>
+ 1a2b1d6:	ff d0                	call   *%rax
+ 1a2b1d8:	48 89 84 24 80 00 00 	mov    %rax,0x80(%rsp)
+ 1a2b1df:	00 
+ 1a2b1e0:	eb 29                	jmp    1a2b20b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xab>
+ 1a2b1e2:	f6 84 24 6f 02 00 00 	testb  $0x1,0x26f(%rsp)
+ 1a2b1e9:	01 
+ 1a2b1ea:	0f 85 32 02 00 00    	jne    1a2b422 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x2c2>
+ 1a2b1f0:	e9 20 02 00 00       	jmp    1a2b415 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x2b5>
+ 1a2b1f5:	48 89 c1             	mov    %rax,%rcx
+
+440 0000000001a33310 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a33310:	48 81 ec b8 01 00 00 	sub    $0x1b8,%rsp
+ 1a33317:	4c 89 4c 24 10       	mov    %r9,0x10(%rsp)
+ 1a3331c:	4c 89 44 24 18       	mov    %r8,0x18(%rsp)
+ 1a33321:	48 89 4c 24 20       	mov    %rcx,0x20(%rsp)
+ 1a33326:	48 89 d0             	mov    %rdx,%rax
+ 1a33329:	48 8b 54 24 20       	mov    0x20(%rsp),%rdx
+ 1a3332e:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+ 1a33333:	48 89 f0             	mov    %rsi,%rax
+ 1a33336:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+ 1a3333b:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+ 1a33340:	48 89 7c 24 38       	mov    %rdi,0x38(%rsp)
+ 1a33345:	48 89 7c 24 40       	mov    %rdi,0x40(%rsp)
+ 1a3334a:	48 89 84 24 88 01 00 	mov    %rax,0x188(%rsp)
+ 1a33351:	00 
+ 1a33352:	48 89 b4 24 90 01 00 	mov    %rsi,0x190(%rsp)
+ 1a33359:	00 
+ 1a3335a:	48 89 94 24 98 01 00 	mov    %rdx,0x198(%rsp)
+ 1a33361:	00 
+ 1a33362:	4c 89 84 24 a0 01 00 	mov    %r8,0x1a0(%rsp)
+ 1a33369:	00 
+ 1a3336a:	48 8d 0d ff 9d 18 02 	lea    0x2189dff(%rip),%rcx        # 3bbd170 <prost_wkt_types::pbmask::_::_::__CTOR+0x224f0>
+ 1a33371:	48 8b 05 e0 c5 27 02 	mov    0x227c5e0(%rip),%rax        # 3caf958 <_DYNAMIC+0x2248>
+ 1a33378:	48 8d 7c 24 48       	lea    0x48(%rsp),%rdi
+ 1a3337d:	ff d0                	call   *%rax
+ 1a3337f:	eb 29                	jmp    1a333aa <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x9a>
+ 1a33381:	48 8b 7c 24 10       	mov    0x10(%rsp),%rdi
+ 1a33386:	48 8b 05 cb 26 28 02 	mov    0x22826cb(%rip),%rax        # 3cb5a58 <_DYNAMIC+0x8348>
+ 1a3338d:	ff d0                	call   *%rax
+ 1a3338f:	e9 36 01 00 00       	jmp    1a334ca <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x1ba>
+ 1a33394:	48 89 c1             	mov    %rax,%rcx
+ 1a33397:	89 d0                	mov    %edx,%eax
+ 1a33399:	48 89 8c 24 a8 01 00 	mov    %rcx,0x1a8(%rsp)
+ 1a333a0:	00 
+ 1a333a1:	89 84 24 b0 01 00 00 	mov    %eax,0x1b0(%rsp)
+
+440 0000000001a2b8c0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2b8c0:	48 81 ec b8 01 00 00 	sub    $0x1b8,%rsp
+ 1a2b8c7:	4c 89 4c 24 10       	mov    %r9,0x10(%rsp)
+ 1a2b8cc:	4c 89 44 24 18       	mov    %r8,0x18(%rsp)
+ 1a2b8d1:	48 89 4c 24 20       	mov    %rcx,0x20(%rsp)
+ 1a2b8d6:	48 89 d0             	mov    %rdx,%rax
+ 1a2b8d9:	48 8b 54 24 20       	mov    0x20(%rsp),%rdx
+ 1a2b8de:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+ 1a2b8e3:	48 89 f0             	mov    %rsi,%rax
+ 1a2b8e6:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+ 1a2b8eb:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+ 1a2b8f0:	48 89 7c 24 38       	mov    %rdi,0x38(%rsp)
+ 1a2b8f5:	48 89 7c 24 40       	mov    %rdi,0x40(%rsp)
+ 1a2b8fa:	48 89 84 24 88 01 00 	mov    %rax,0x188(%rsp)
+ 1a2b901:	00 
+ 1a2b902:	48 89 b4 24 90 01 00 	mov    %rsi,0x190(%rsp)
+ 1a2b909:	00 
+ 1a2b90a:	48 89 94 24 98 01 00 	mov    %rdx,0x198(%rsp)
+ 1a2b911:	00 
+ 1a2b912:	4c 89 84 24 a0 01 00 	mov    %r8,0x1a0(%rsp)
+ 1a2b919:	00 
+ 1a2b91a:	48 8d 0d 07 15 19 02 	lea    0x2191507(%rip),%rcx        # 3bbce28 <prost_wkt_types::pbmask::_::_::__CTOR+0x221a8>
+ 1a2b921:	48 8b 05 30 40 28 02 	mov    0x2284030(%rip),%rax        # 3caf958 <_DYNAMIC+0x2248>
+ 1a2b928:	48 8d 7c 24 48       	lea    0x48(%rsp),%rdi
+ 1a2b92d:	ff d0                	call   *%rax
+ 1a2b92f:	eb 29                	jmp    1a2b95a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x9a>
+ 1a2b931:	48 8b 7c 24 10       	mov    0x10(%rsp),%rdi
+ 1a2b936:	48 8b 05 1b a1 28 02 	mov    0x228a11b(%rip),%rax        # 3cb5a58 <_DYNAMIC+0x8348>
+ 1a2b93d:	ff d0                	call   *%rax
+ 1a2b93f:	e9 36 01 00 00       	jmp    1a2ba7a <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x1ba>
+ 1a2b944:	48 89 c1             	mov    %rax,%rcx
+ 1a2b947:	89 d0                	mov    %edx,%eax
+ 1a2b949:	48 89 8c 24 a8 01 00 	mov    %rcx,0x1a8(%rsp)
+ 1a2b950:	00 
+ 1a2b951:	89 84 24 b0 01 00 00 	mov    %eax,0x1b0(%rsp)
+
+344 0000000001a29260 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a29260:	48 81 ec 58 01 00 00 	sub    $0x158,%rsp
+ 1a29267:	48 89 74 24 48       	mov    %rsi,0x48(%rsp)
+ 1a2926c:	48 89 7c 24 50       	mov    %rdi,0x50(%rsp)
+ 1a29271:	48 89 7c 24 58       	mov    %rdi,0x58(%rsp)
+ 1a29276:	48 89 b4 24 f8 00 00 	mov    %rsi,0xf8(%rsp)
+ 1a2927d:	00 
+ 1a2927e:	c6 84 24 f7 00 00 00 	movb   $0x0,0xf7(%rsp)
+ 1a29285:	00 
+ 1a29286:	48 8b 02             	mov    (%rdx),%rax
+ 1a29289:	48 89 84 24 00 01 00 	mov    %rax,0x100(%rsp)
+ 1a29290:	00 
+ 1a29291:	48 8b 42 08          	mov    0x8(%rdx),%rax
+ 1a29295:	48 89 84 24 08 01 00 	mov    %rax,0x108(%rsp)
+ 1a2929c:	00 
+ 1a2929d:	48 8b 42 10          	mov    0x10(%rdx),%rax
+ 1a292a1:	48 89 84 24 10 01 00 	mov    %rax,0x110(%rsp)
+ 1a292a8:	00 
+ 1a292a9:	48 8d 7c 24 78       	lea    0x78(%rsp),%rdi
+ 1a292ae:	48 8d b4 24 00 01 00 	lea    0x100(%rsp),%rsi
+ 1a292b5:	00 
+ 1a292b6:	e8 f5 4b 4a ff       	call   ecdeb0 <std::fs::read>
+ 1a292bb:	48 ba 00 00 00 00 00 	movabs $0x8000000000000000,%rdx
+ 1a292c2:	00 00 80 
+ 1a292c5:	31 c0                	xor    %eax,%eax
+ 1a292c7:	b9 01 00 00 00       	mov    $0x1,%ecx
+ 1a292cc:	48 39 54 24 78       	cmp    %rdx,0x78(%rsp)
+ 1a292d1:	48 0f 44 c1          	cmove  %rcx,%rax
+ 1a292d5:	48 a9 01 00 00 00    	test   $0x1,%rax
+ 1a292db:	74 7e                	je     1a2935b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xfb>
+ 1a292dd:	48 8b 84 24 80 00 00 	mov    0x80(%rsp),%rax
+ 1a292e4:	00 
+ 1a292e5:	48 89 84 24 28 01 00 	mov    %rax,0x128(%rsp)
+ 1a292ec:	00 
+ 1a292ed:	48 8d 3d 75 a4 c3 fe 	lea    -0x13c5b8b(%rip),%rdi        # 663769 <GCC_except_table0+0x5cfd5>
+
+312 0000000001a2adb0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2adb0:	48 81 ec 38 01 00 00 	sub    $0x138,%rsp
+ 1a2adb7:	48 89 74 24 40       	mov    %rsi,0x40(%rsp)
+ 1a2adbc:	48 89 f8             	mov    %rdi,%rax
+ 1a2adbf:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+ 1a2adc4:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+ 1a2adc9:	48 89 7c 24 50       	mov    %rdi,0x50(%rsp)
+ 1a2adce:	48 89 84 24 e8 00 00 	mov    %rax,0xe8(%rsp)
+ 1a2add5:	00 
+ 1a2add6:	48 89 bc 24 f0 00 00 	mov    %rdi,0xf0(%rsp)
+ 1a2addd:	00 
+ 1a2adde:	e8 1d b1 4a ff       	call   ed5f00 <<std::path::PathBuf as core::ops::deref::Deref>::deref>
+ 1a2ade3:	48 89 c7             	mov    %rax,%rdi
+ 1a2ade6:	48 89 d6             	mov    %rdx,%rsi
+ 1a2ade9:	ff 15 51 a6 28 02    	call   *0x228a651(%rip)        # 3cb5440 <_DYNAMIC+0x7d30>
+ 1a2adef:	48 89 c7             	mov    %rax,%rdi
+ 1a2adf2:	48 89 d6             	mov    %rdx,%rsi
+ 1a2adf5:	e8 96 90 ab ff       	call   14e3e90 <core::option::Option<T>::is_none_or>
+ 1a2adfa:	a8 01                	test   $0x1,%al
+ 1a2adfc:	0f 85 f3 00 00 00    	jne    1a2aef5 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x145>
+ 1a2ae02:	48 8b 74 24 50       	mov    0x50(%rsp),%rsi
+ 1a2ae07:	48 8d bc 24 b8 00 00 	lea    0xb8(%rsp),%rdi
+ 1a2ae0e:	00 
+ 1a2ae0f:	ff 15 13 a6 28 02    	call   *0x228a613(%rip)        # 3cb5428 <_DYNAMIC+0x7d18>
+ 1a2ae15:	48 ba 00 00 00 00 00 	movabs $0x8000000000000000,%rdx
+ 1a2ae1c:	00 00 80 
+ 1a2ae1f:	31 c0                	xor    %eax,%eax
+ 1a2ae21:	b9 01 00 00 00       	mov    $0x1,%ecx
+ 1a2ae26:	48 39 94 24 b8 00 00 	cmp    %rdx,0xb8(%rsp)
+ 1a2ae2d:	00 
+ 1a2ae2e:	48 0f 44 c1          	cmove  %rcx,%rax
+ 1a2ae32:	48 a9 01 00 00 00    	test   $0x1,%rax
+ 1a2ae38:	74 7e                	je     1a2aeb8 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x108>
+ 1a2ae3a:	48 8b 84 24 c0 00 00 	mov    0xc0(%rsp),%rax
+ 1a2ae41:	00 
+
+280 0000000001a2b5f0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2b5f0:	48 81 ec 18 01 00 00 	sub    $0x118,%rsp
+ 1a2b5f7:	48 89 7c 24 40       	mov    %rdi,0x40(%rsp)
+ 1a2b5fc:	48 89 74 24 50       	mov    %rsi,0x50(%rsp)
+ 1a2b601:	48 89 bc 24 c8 00 00 	mov    %rdi,0xc8(%rsp)
+ 1a2b608:	00 
+ 1a2b609:	48 89 bc 24 d0 00 00 	mov    %rdi,0xd0(%rsp)
+ 1a2b610:	00 
+ 1a2b611:	0f b6 47 40          	movzbl 0x40(%rdi),%eax
+ 1a2b615:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+ 1a2b61a:	48 8b 4c 24 48       	mov    0x48(%rsp),%rcx
+ 1a2b61f:	48 8d 05 d6 1b c3 fe 	lea    -0x13ce42a(%rip),%rax        # 65d1fc <GCC_except_table0+0x56a68>
+ 1a2b626:	48 63 0c 88          	movslq (%rax,%rcx,4),%rcx
+ 1a2b62a:	48 01 c8             	add    %rcx,%rax
+ 1a2b62d:	ff e0                	jmp    *%rax
+ 1a2b62f:	0f 0b                	ud2
+ 1a2b631:	48 8b 44 24 40       	mov    0x40(%rsp),%rax
+ 1a2b636:	48 8b 48 20          	mov    0x20(%rax),%rcx
+ 1a2b63a:	48 89 8c 24 b0 00 00 	mov    %rcx,0xb0(%rsp)
+ 1a2b641:	00 
+ 1a2b642:	0f 10 00             	movups (%rax),%xmm0
+ 1a2b645:	0f 10 48 10          	movups 0x10(%rax),%xmm1
+ 1a2b649:	0f 29 8c 24 a0 00 00 	movaps %xmm1,0xa0(%rsp)
+ 1a2b650:	00 
+ 1a2b651:	0f 29 84 24 90 00 00 	movaps %xmm0,0x90(%rsp)
+ 1a2b658:	00 
+ 1a2b659:	48 8b 50 28          	mov    0x28(%rax),%rdx
+ 1a2b65d:	48 8d 7c 24 60       	lea    0x60(%rsp),%rdi
+ 1a2b662:	48 8d b4 24 90 00 00 	lea    0x90(%rsp),%rsi
+ 1a2b669:	00 
+ 1a2b66a:	e8 a1 e9 11 00       	call   1b4a010 <axum::serve::serve>
+ 1a2b66f:	eb 62                	jmp    1a2b6d3 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xe3>
+ 1a2b671:	31 c0                	xor    %eax,%eax
+ 1a2b673:	a8 01                	test   $0x1,%al
+ 1a2b675:	75 fa                	jne    1a2b671 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0x81>
+
+184 0000000001a32ff0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a32ff0:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+ 1a32ff7:	48 89 74 24 40       	mov    %rsi,0x40(%rsp)
+ 1a32ffc:	48 89 f8             	mov    %rdi,%rax
+ 1a32fff:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+ 1a33004:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+ 1a33009:	48 89 44 24 68       	mov    %rax,0x68(%rsp)
+ 1a3300e:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a33013:	e8 b8 94 48 00       	call   1ebc4d0 <core::result::Result<T,E>::as_ref>
+ 1a33018:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
+ 1a3301f:	00 
+ 1a33020:	48 89 94 24 90 00 00 	mov    %rdx,0x90(%rsp)
+ 1a33027:	00 
+ 1a33028:	48 f7 84 24 88 00 00 	testq  $0x1,0x88(%rsp)
+ 1a3302f:	00 01 00 00 00 
+ 1a33034:	74 65                	je     1a3309b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xab>
+ 1a33036:	48 8b 84 24 90 00 00 	mov    0x90(%rsp),%rax
+ 1a3303d:	00 
+ 1a3303e:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
+ 1a33045:	00 
+ 1a33046:	48 8d 3d 1c 07 c3 fe 	lea    -0x13cf8e4(%rip),%rdi        # 663769 <GCC_except_table0+0x5cfd5>
+ 1a3304d:	48 8d 0d 0c e4 18 02 	lea    0x218e40c(%rip),%rcx        # 3bc1460 <prost_wkt_types::pbmask::_::_::__CTOR+0x267e0>
+ 1a33054:	4c 8d 05 e5 a0 18 02 	lea    0x218a0e5(%rip),%r8        # 3bbd140 <prost_wkt_types::pbmask::_::_::__CTOR+0x224c0>
+ 1a3305b:	48 8b 05 fe c8 27 02 	mov    0x227c8fe(%rip),%rax        # 3caf960 <_DYNAMIC+0x2250>
+ 1a33062:	be 2b 00 00 00       	mov    $0x2b,%esi
+ 1a33067:	48 8d 94 24 98 00 00 	lea    0x98(%rsp),%rdx
+ 1a3306e:	00 
+ 1a3306f:	ff d0                	call   *%rax
+ 1a33071:	eb 26                	jmp    1a33099 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa9>
+ 1a33073:	48 89 c1             	mov    %rax,%rcx
+ 1a33076:	89 d0                	mov    %edx,%eax
+ 1a33078:	48 89 8c 24 a8 00 00 	mov    %rcx,0xa8(%rsp)
+ 1a3307f:	00 
+ 1a33080:	89 84 24 b0 00 00 00 	mov    %eax,0xb0(%rsp)
+ 1a33087:	48 8b 84 24 a8 00 00 	mov    0xa8(%rsp),%rax
+
+184 0000000001a2b470 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2b470:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+ 1a2b477:	48 89 74 24 40       	mov    %rsi,0x40(%rsp)
+ 1a2b47c:	48 89 f8             	mov    %rdi,%rax
+ 1a2b47f:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+ 1a2b484:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+ 1a2b489:	48 89 44 24 68       	mov    %rax,0x68(%rsp)
+ 1a2b48e:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a2b493:	e8 38 10 49 00       	call   1ebc4d0 <core::result::Result<T,E>::as_ref>
+ 1a2b498:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
+ 1a2b49f:	00 
+ 1a2b4a0:	48 89 94 24 90 00 00 	mov    %rdx,0x90(%rsp)
+ 1a2b4a7:	00 
+ 1a2b4a8:	48 f7 84 24 88 00 00 	testq  $0x1,0x88(%rsp)
+ 1a2b4af:	00 01 00 00 00 
+ 1a2b4b4:	74 65                	je     1a2b51b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xab>
+ 1a2b4b6:	48 8b 84 24 90 00 00 	mov    0x90(%rsp),%rax
+ 1a2b4bd:	00 
+ 1a2b4be:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
+ 1a2b4c5:	00 
+ 1a2b4c6:	48 8d 3d 9c 82 c3 fe 	lea    -0x13c7d64(%rip),%rdi        # 663769 <GCC_except_table0+0x5cfd5>
+ 1a2b4cd:	48 8d 0d 8c 5f 19 02 	lea    0x2195f8c(%rip),%rcx        # 3bc1460 <prost_wkt_types::pbmask::_::_::__CTOR+0x267e0>
+ 1a2b4d4:	4c 8d 05 05 19 19 02 	lea    0x2191905(%rip),%r8        # 3bbcde0 <prost_wkt_types::pbmask::_::_::__CTOR+0x22160>
+ 1a2b4db:	48 8b 05 7e 44 28 02 	mov    0x228447e(%rip),%rax        # 3caf960 <_DYNAMIC+0x2250>
+ 1a2b4e2:	be 2b 00 00 00       	mov    $0x2b,%esi
+ 1a2b4e7:	48 8d 94 24 98 00 00 	lea    0x98(%rsp),%rdx
+ 1a2b4ee:	00 
+ 1a2b4ef:	ff d0                	call   *%rax
+ 1a2b4f1:	eb 26                	jmp    1a2b519 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa9>
+ 1a2b4f3:	48 89 c1             	mov    %rax,%rcx
+ 1a2b4f6:	89 d0                	mov    %edx,%eax
+ 1a2b4f8:	48 89 8c 24 a8 00 00 	mov    %rcx,0xa8(%rsp)
+ 1a2b4ff:	00 
+ 1a2b500:	89 84 24 b0 00 00 00 	mov    %eax,0xb0(%rsp)
+ 1a2b507:	48 8b 84 24 a8 00 00 	mov    0xa8(%rsp),%rax
+
+184 0000000001a2a8c0 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}>:
+ 1a2a8c0:	48 81 ec b8 00 00 00 	sub    $0xb8,%rsp
+ 1a2a8c7:	48 89 74 24 40       	mov    %rsi,0x40(%rsp)
+ 1a2a8cc:	48 89 f8             	mov    %rdi,%rax
+ 1a2a8cf:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+ 1a2a8d4:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+ 1a2a8d9:	48 89 44 24 68       	mov    %rax,0x68(%rsp)
+ 1a2a8de:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+ 1a2a8e3:	e8 e8 1b 49 00       	call   1ebc4d0 <core::result::Result<T,E>::as_ref>
+ 1a2a8e8:	48 89 84 24 88 00 00 	mov    %rax,0x88(%rsp)
+ 1a2a8ef:	00 
+ 1a2a8f0:	48 89 94 24 90 00 00 	mov    %rdx,0x90(%rsp)
+ 1a2a8f7:	00 
+ 1a2a8f8:	48 f7 84 24 88 00 00 	testq  $0x1,0x88(%rsp)
+ 1a2a8ff:	00 01 00 00 00 
+ 1a2a904:	74 65                	je     1a2a96b <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xab>
+ 1a2a906:	48 8b 84 24 90 00 00 	mov    0x90(%rsp),%rax
+ 1a2a90d:	00 
+ 1a2a90e:	48 89 84 24 98 00 00 	mov    %rax,0x98(%rsp)
+ 1a2a915:	00 
+ 1a2a916:	48 8d 3d 4c 8e c3 fe 	lea    -0x13c71b4(%rip),%rdi        # 663769 <GCC_except_table0+0x5cfd5>
+ 1a2a91d:	48 8d 0d 3c 6b 19 02 	lea    0x2196b3c(%rip),%rcx        # 3bc1460 <prost_wkt_types::pbmask::_::_::__CTOR+0x267e0>
+ 1a2a924:	4c 8d 05 25 24 19 02 	lea    0x2192425(%rip),%r8        # 3bbcd50 <prost_wkt_types::pbmask::_::_::__CTOR+0x220d0>
+ 1a2a92b:	48 8b 05 2e 50 28 02 	mov    0x228502e(%rip),%rax        # 3caf960 <_DYNAMIC+0x2250>
+ 1a2a932:	be 2b 00 00 00       	mov    $0x2b,%esi
+ 1a2a937:	48 8d 94 24 98 00 00 	lea    0x98(%rsp),%rdx
+ 1a2a93e:	00 
+ 1a2a93f:	ff d0                	call   *%rax
+ 1a2a941:	eb 26                	jmp    1a2a969 <assembled_vertical::assembled_engineering_fixture::{{closure}}::{{closure}}+0xa9>
+ 1a2a943:	48 89 c1             	mov    %rax,%rcx
+ 1a2a946:	89 d0                	mov    %edx,%eax
+ 1a2a948:	48 89 8c 24 a8 00 00 	mov    %rcx,0xa8(%rsp)
+ 1a2a94f:	00 
+ 1a2a950:	89 84 24 b0 00 00 00 	mov    %eax,0xb0(%rsp)
+ 1a2a957:	48 8b 84 24 a8 00 00 	mov    0xa8(%rsp),%rax

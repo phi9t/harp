@@ -1,0 +1,14 @@
+{
+  "terminal_exit": 101,
+  "author_handle": 97352,
+  "meaningful_red": true,
+  "oracle": "authenticated exact Mission snapshot lacks dispatch_paused (null instead of true)",
+  "production_preimage": "c4599e8 unchanged perauthor/currentrootobservation",
+  "setup_failures_excluded": [
+    "red1",
+    "red1b",
+    "green1",
+    "red1c"
+  ],
+  "scope": "control projection only; resumed/denial green controls pending"
+}

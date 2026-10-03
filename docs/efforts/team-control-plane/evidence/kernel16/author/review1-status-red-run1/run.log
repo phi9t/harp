@@ -1,0 +1,30 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+warning: unused import: `uuid::Uuid`
+ --> tests/assembled_cancellation.rs:7:5
+  |
+7 | use uuid::Uuid;
+  |     ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `team-control-plane` (test "assembled_cancellation") generated 1 warning (run `cargo fix --test "assembled_cancellation" -p team-control-plane` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.32s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'lost_pause_response_fresh_status_exposes_control_revision_and_db_time' (2888358) panicked at tests/assembled_cancellation.rs:104:5:
+assertion `left == right` failed: pause control revision must be recovered from fresh public status, separately from Mission revision
+  left: Null
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... FAILED
+
+failures:
+
+failures:
+    lost_pause_response_fresh_status_exposes_control_revision_and_db_time
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.23s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

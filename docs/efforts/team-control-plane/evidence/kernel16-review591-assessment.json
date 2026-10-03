@@ -1,0 +1,12 @@
+{
+  "commit": "9055b9976d429229e5d42b2e86eb04dbc30da5bf",
+  "finding": "validsameprincipalcrossroleepisodestatusdisclosure",
+  "assessments": [
+    "authorread-onlyvalid",
+    "rootqueriesconfirmroleomission"
+  ],
+  "rootcause": "summarySQL lacksrolewhileexactinspectchecksrole;testprincipalsdistinct",
+  "proposal": "decisions/20261003-kernel-role-isolation591-proposal.md",
+  "budget": "exhausted3/3; oneadditionalboundediterationrequested",
+  "status": "awaitingownerdecision; noimplementation"
+}

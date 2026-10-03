@@ -1,0 +1,19 @@
+{
+  "status": "exit0 established by set-e sequence before redworker76532",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "0db3d675024b98fb4cceece447ef5f800bd418012e555bab90c3ecb1b31bd108"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "review584-crash-rotate/crash.json",
+      "sha256": "8f9640143eae76259bf07fbf6c591e4851e49b1b0682160f1c34a1bdf8fcba66"
+    }
+  ],
+  "cleanup": "Correction: no cleanup.json. Actual test f.finish/rootabsence before oracle and run-postgres EXIT trap; explicit post-run ownedcontainer observation pending",
+  "scope": "physicalcrash then epochrotation cleanup; not fullsuite acceptance"
+}

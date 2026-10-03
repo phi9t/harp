@@ -1,0 +1,38 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.61s
+     Running tests/artifacts.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/artifacts-6b4cc15f8fc222e4)
+
+running 11 tests
+ticket11 integration first=488493c19e8e13a2b77d10e40c7af4ecaebb3d20 tree=b04b15949e427f8f5d1fe00f6897e6ee8583d5c6 base=d5c01647f01c31039b5d50adf20d34936a7f38ae changed=6a48f52a93d8f1899d59039dd36ea17f9eae32b8 tree=9a14d110bfc119b637c9682a9d28d5b2ab9659df base=7bfefbbefdab997b407559178b49d64667d3f7da
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+ticket11 real_git_pg task=f043168d-5435-40f1-85b3-3a377b5d15e0 first_commit=ce52c9cc6653eb2a916d5c67254f5137e4ca674a first_tree=d6557d9fe1b9a641b4ee252acab136ca97e6ca5d first_base=9ba00587d31b40792de582bb0677909e181679d9 first_artifact=8eaa8a15470c27bdd67e19b239d6aa38c5bb19a05ed2f1ddfe7d79bee11aca8f first_logs=3b80ea02be4c24b77b3ee7d4beefbe9ca1f3270279bbde710751025a2e9ac51b new_commit=3e27a7904d62a1477f9a309b428c8cf3d93d5ac1 new_tree=9a28de91917846619ccb976493b56a13e5409793 new_base=f3ce82d0f521fa07a2b70aec75015fd1dbf61287 new_artifact=d511bd1b534c75b856b940fe9b23e5ea0e098459e581c3d456d42036b9a6963e new_logs=66db851ecaa6ba5912340c5bc837b75f824c0b8149be3328e3169a5b862d26ba accepted_candidate=91b96187a7ecbd4b27c72679451aa98ec3017c881375737c02bf9777a04bf6bd accepted_report=f116c4c90b0ffa879e06ec5fb6659bd9a63f7a887d73dd7410fe8d5c5766857e
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+ticket11 task=4c809123-7747-492f-a343-14a5e2923541 epoch=895dedf0-80df-4652-ba92-89b575efa9aa candidate=f01df677fd2095e289528e67be22fc8ba0e0729fd0f09989aaca145a737d5f5d artifact=387b75ea1990ff5f32d97d80a9d6e90de0cb7012a40b9da0404987c1c9794037
+ticket11 verification=44dde1aaab4faaa9888dde656be6dcb786ff5fcf65d31eba31821424e2d25e44
+test exact_independent_verification_and_explicit_acceptance ... ok
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+test verifier_credential_has_no_lead_execution_authority ... ok
+test repeated_failed_report_hash_requires_each_exact_charged_verification_cycle ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.16s
+
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 9 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test cancelled_attempt_retains_historical_gateway_progress_without_pending_effects ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test stopped_launched_episode_retains_workspace_until_monitor_result_is_durable ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.73s
+

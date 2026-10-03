@@ -1,0 +1,87 @@
+{
+  "after": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 2,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "d834eea3f4d4f7f824cd77e414ed07170b3eed93",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-e226336d-3e42-43de-a0b7-9b80ca28a0cc/store",
+    "id": "ea554c12-e36f-41e6-a863-67021d8d3afb",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 2,
+    "max_episodes": 3,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 0
+  },
+  "before": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 2,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "d834eea3f4d4f7f824cd77e414ed07170b3eed93",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-e226336d-3e42-43de-a0b7-9b80ca28a0cc/store",
+    "id": "ea554c12-e36f-41e6-a863-67021d8d3afb",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 2,
+    "max_episodes": 3,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 2
+  },
+  "cancel": {
+    "attempt_id": "09da8f01-9aa0-4609-a619-cff6545696c1",
+    "disposition": "cancellation_requested",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "7198fe22-2e29-4879-a8fe-f20533ce2105",
+    "reservation_id": null,
+    "revision": 4,
+    "schema_version": 1
+  },
+  "done": {
+    "attempt_id": "09da8f01-9aa0-4609-a619-cff6545696c1",
+    "disposition": "cancelled",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "7198fe22-2e29-4879-a8fe-f20533ce2105",
+    "reservation_id": null,
+    "revision": 5,
+    "schema_version": 1
+  },
+  "execution": {
+    "id": "cff03f51-d6ae-49a7-87d1-2b71b9a6413b",
+    "path": "/data02/home/philip.yang/devx/tmp/kernel16-e226336d-3e42-43de-a0b7-9b80ca28a0cc/workspaces/cff03f51-d6ae-49a7-87d1-2b71b9a6413b"
+  },
+  "repeat": {
+    "attempt_id": "09da8f01-9aa0-4609-a619-cff6545696c1",
+    "disposition": "cancelled",
+    "generation": 1,
+    "operation_id": null,
+    "recovery_epoch": "7198fe22-2e29-4879-a8fe-f20533ce2105",
+    "reservation_id": null,
+    "revision": 6,
+    "schema_version": 1
+  },
+  "replacement": {
+    "Ok": {
+      "attempt_id": "17d25e22-8028-4247-b941-4c808a7b885d",
+      "disposition": "applied",
+      "generation": 1,
+      "operation_id": "72804694-3384-44c2-b803-db7b2702cd8c",
+      "recovery_epoch": "7198fe22-2e29-4879-a8fe-f20533ce2105",
+      "reservation_id": "16c722db-f889-4163-99c2-0960120e422b",
+      "revision": 3,
+      "schema_version": 1
+    }
+  },
+  "third": {
+    "Err": "budget_exhausted"
+  }
+}

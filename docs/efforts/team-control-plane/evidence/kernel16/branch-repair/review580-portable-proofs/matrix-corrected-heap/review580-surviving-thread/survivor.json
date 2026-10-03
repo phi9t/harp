@@ -1,0 +1,33 @@
+{
+  "actual_controller_fault": {
+    "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+    "namespace": "pid:[4026531836]",
+    "namespace_pid": 152771,
+    "pid": 152771,
+    "start_ticks": 39891938
+  },
+  "cleanup_terminal": "signal: 9 (SIGKILL)",
+  "held": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 1,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "c973dd06ed955f02210ca69d0e0a9905a5bbea4a",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-79c82c31-38dd-417a-9539-cb269a615bd8/store",
+    "id": "b05b8689-7571-4995-a679-46fa8e8b5763",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 8,
+    "max_episodes": 8,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 1
+  },
+  "leader_zombie_but_whole_group_not_ready": true,
+  "release": {
+    "Err": "dependency_unmet"
+  },
+  "result": null
+}

@@ -1,0 +1,15 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review571-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.10s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 7 tests
+test review571_cancelled_unallocated_verifier_releases_capacity_once ... ok
+test review571_cancelled_unallocated_worker_continuation_releases_separate_capacity_once ... ok
+test review571_old_public_yield_then_cancel_must_not_refund_twice ... ok
+test review571_persisted_old_public_yield_claim_survives_repaired_cancel ... ignored, requires exact pre-repair baseline server binary
+test review571_native_cancel_cleans_bound_work_after_work_revocation ... ok
+test review571_uncertain_allocated_sibling_retains_capacity ... ok
+test review571_unresolved_yield_execution_requires_explicit_quarantine ... ok
+
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 19 filtered out; finished in 2.27s
+

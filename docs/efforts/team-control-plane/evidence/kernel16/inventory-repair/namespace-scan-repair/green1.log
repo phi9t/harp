@@ -1,0 +1,9 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.08s
+     Running unittests src/lib.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 1 test
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+

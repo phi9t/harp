@@ -1,0 +1,27 @@
+Review for job 560 (by codex)
+Tokens: 181.5k ctx (2.2M cached) · 10.0k out · ~$0.68
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/episode_runtime.rs:714`
+- **Problem**: The driver handles fenced Prepared operations only when dispatch returns `DependencyUnmet`. Cancellation, task acceptance, or a failed verification gate makes `execution_dispatch_current` return false, producing `StaleGeneration` instead. Temporal treats that error as nonretryable, so a retained Prepared episode can terminate the current workflow and prevent further recovery or repair.
+- **Fix**: Return fenced journal progress for revoked execution authority while continuing to reject stale workflow authority. Add a native-episode cancellation or failed-gate integration test.
+
+---
+
+- **Severity**: High
+- **Location**: `crates/team-control-plane/src/supervisor.rs:280`
+- **Problem**: `physical_usage_known` checks only legacy gateway operations. A verifier allocated before a Worker episode acquires unknown usage can still launch through `Supervisor::start` or `start-execution`; the monitor repeats the same incomplete check. This bypasses the episode gateway’s usage fence.
+- **Fix**: Check unresolved episode operations for the same Attempt at both physical launch checks, excluding the operation associated with the execution being launched. Test a preallocated verifier against unknown episode usage.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/admission.rs:245`
+- **Problem**: Cancelling an assigned Attempt before workspace allocation can reconcile to `cancelled` while permanently retaining its capacity reservation. Allocation is then forbidden, and the only release path requires an existing execution ID. Repeated cancellations can exhaust Mission capacity despite no dispatched work.
+- **Fix**: Provide an explicit, idempotent release path for unbound reservations whose cancellation and absence of dispatched effects are established; preserve cumulative admission counters.
+
+## Summary
+
+The change assembles durable episode execution, supervised verification, operator recovery, cancellation, and typed Temporal waits.

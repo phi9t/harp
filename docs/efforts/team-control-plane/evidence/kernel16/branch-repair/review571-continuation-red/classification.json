@@ -1,0 +1,6 @@
+{
+  "behavior": "public cancel/reconcile twice leaves usedcapacity1 expected0",
+  "classification": "meaningful behavioral red; author75613 polled terminal101",
+  "initial_run": "setupfailure excluded",
+  "cleanup": "owned run-postgres trap completed; explicit Docker cleanup confirmation pending"
+}

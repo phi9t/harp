@@ -1,0 +1,19 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 16.78s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+
+thread 'cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate' (3243684) panicked at tests/assembled_vertical.rs:3729:52:
+called `Result::unwrap()` on an `Err` value: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate ... FAILED
+
+failures:
+
+failures:
+    cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 39 filtered out; finished in 4.98s
+
+error: test failed, to rerun pass `--test assembled_vertical`

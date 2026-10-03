@@ -1,0 +1,9 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review575-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.14s
+     Running tests/assembled_operator.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 1 test
+test legacy_attempt_execution_is_visible_to_replacement_owner_and_worker_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.75s
+

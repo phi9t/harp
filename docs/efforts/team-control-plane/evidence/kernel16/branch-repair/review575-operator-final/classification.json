@@ -1,0 +1,96 @@
+{
+  "run": "focused-operator",
+  "terminal_exit": 0,
+  "classification": "focused behavioral green",
+  "scope": "not full kernel acceptance",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "23aa8276a43de77b839bd9ce07af0b80fc8177d3919be2cf272670b76d76ff7e"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-true/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-true/result.json",
+      "sha256": "e609a2a1f1b99d81e288b4cda77b0aa1ee0f91c35bf8088540716c6f5bf40c36"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-true/memory-constraint.json",
+      "sha256": "6182115bb11d4e7712ab0ad85194c34d2bdb604949672e5bdb805d3059451ff6"
+    },
+    {
+      "path": "overflow/cleanup.json",
+      "sha256": "1bac68ebee83dcbd7817a9787adcdd00ed4192e07d3b841e920d63f42ceeae14"
+    },
+    {
+      "path": "overflow/omitted-mission-resumed.json",
+      "sha256": "93367c1f5e7cc5afab2e5b9bdbf75154e51d27d01f08eda0a757e23fabdbd6c4"
+    },
+    {
+      "path": "overflow/omitted-mission-exact-control.json",
+      "sha256": "730c44f935393c6e2444705283bb6ee99a90919c60d789ebdf7d50b0dd27c65f"
+    },
+    {
+      "path": "historical/cleanup.json",
+      "sha256": "3857aaf4ad4fd9bc30bf58056139225d5fdd9612216b596968f76ab0d0ee4c38"
+    },
+    {
+      "path": "monitor-memory-134217728-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "monitor-memory-134217728-read-error-false/result.json",
+      "sha256": "8e23fc81883ef4af2277c11e15e0ccdf0e98877a43c48e53dc0e080c12f167e3"
+    },
+    {
+      "path": "monitor-memory-134217728-read-error-false/memory-constraint.json",
+      "sha256": "db824da3f7a0616252e3df732ecaa1f7916bb42f52780661be3211d9ea3301e5"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-false/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-false/result.json",
+      "sha256": "99a456cb83b4843f869e3133fe370c15d6290d72e9de31212f8d6a6bc2c4e8c0"
+    },
+    {
+      "path": "monitor-memory-1048576-read-error-false/memory-constraint.json",
+      "sha256": "ac70f6d1ee4d9cfd66070562001c10b5328a6790605694120fc58113414e1dbd"
+    },
+    {
+      "path": "merged-journals/cleanup.json",
+      "sha256": "eb946779153c81871ad68cfd31633197191b6b4fff16481464dccf91137029a8"
+    },
+    {
+      "path": "legacy-quarantined/cleanup.json",
+      "sha256": "f89a339715c705e58ad2e022a972cc59a72401c17d3f8dff5043385ab4701b68"
+    },
+    {
+      "path": "legacy-quarantined/public-status.json",
+      "sha256": "00a55bc4674c2c14032e9c6e79e07a808f0e040c922e73b6f043a9621b879532"
+    },
+    {
+      "path": "legacy-running/cleanup.json",
+      "sha256": "aeba7ceb68f60a9864ee7fa542338c7ef900096203c946c54207790e3a318d2d"
+    },
+    {
+      "path": "legacy-running/public-status.json",
+      "sha256": "c3f0a94cd03691501e7f0b2822b7637f2bf7f3fba28dc04f0cfe4a2bdfc82365"
+    },
+    {
+      "path": "issuer-expiry/cleanup.json",
+      "sha256": "8693579e23970a830cd5834236d9fbae315b918e97814a344843d6914aff18d7"
+    }
+  ]
+}

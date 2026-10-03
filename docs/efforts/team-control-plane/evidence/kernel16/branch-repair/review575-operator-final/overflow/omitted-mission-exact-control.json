@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "snapshot_time": "2026-10-02 22:07:06.52243+00",
+  "data": {
+    "admitted_attempts": 0,
+    "admitted_episodes": 1,
+    "capacity": 2,
+    "control_revision": 1,
+    "dispatch_paused": true,
+    "episode_deadline_seconds": 30,
+    "git_commit": "d8e626c79d00c833c22461a35ad63309af525d6b",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-2517dfa8-3eb3-475f-b042-60c9893fd4bd/store",
+    "id": "f678c736-f0b3-4e29-b71b-e6a63da0d872",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 8,
+    "max_episodes": 8,
+    "max_repairs": 3,
+    "objective": "actual finite operator mission overflow-10",
+    "used_capacity": 1
+  }
+}

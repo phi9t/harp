@@ -1,0 +1,251 @@
+{
+  "foreign": {
+    "executions": [
+      {
+        "attempt": null,
+        "candidate_artifact": null,
+        "capacity_held": true,
+        "capacity_released": false,
+        "deadline": null,
+        "desired_cancel": false,
+        "episode": "f5fc3804-dfbe-4f44-a819-6da60ddb9560",
+        "id": "0d271e7e-1b71-4798-aea1-344d7ab1e93d",
+        "mission": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "observed_state": "ready",
+        "quarantine_reason": null,
+        "role": "lead",
+        "task": null
+      }
+    ],
+    "missions": [
+      {
+        "admitted_attempts": 0,
+        "admitted_episodes": 1,
+        "capacity": 2,
+        "consumed_repairs": 0,
+        "control_revision": 0,
+        "deadline_seconds": 30,
+        "dispatch_paused": false,
+        "id": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "max_attempts": 8,
+        "max_episodes": 8,
+        "max_repairs": 3,
+        "revision": 2,
+        "used_capacity": 1
+      }
+    ],
+    "more_executions": false,
+    "more_missions": false,
+    "more_operations": false,
+    "recovery_epoch": "8bc559db-b2c4-4326-b9e0-73f4f09767ea",
+    "schema_version": 1,
+    "snapshot_time": "2026-10-02 22:06:55.464123+00",
+    "unresolved_operations": [
+      {
+        "attempt": null,
+        "capacity_held": true,
+        "effect_id": null,
+        "episode": "f5fc3804-dfbe-4f44-a819-6da60ddb9560",
+        "execution": "0d271e7e-1b71-4798-aea1-344d7ab1e93d",
+        "id": "9fe3e5af-14bc-496c-b8fa-b696859216c3",
+        "kind": "start",
+        "mission": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "protocol": "episode_native",
+        "state": "prepared",
+        "task": null,
+        "thread_id": null,
+        "turn_id": null,
+        "usage": {
+          "kind": "unknown"
+        }
+      }
+    ]
+  },
+  "held_capacity": 1,
+  "observed": {
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 3145944,
+      "pid": 3145944,
+      "start_ticks": 39439567
+    },
+    "launcher": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 3146168,
+      "pid": 3146168,
+      "start_ticks": 39439570
+    },
+    "manifest": {
+      "attempt": "21641753-b4c0-4f1a-bd19-5577d3ef3686",
+      "base": "b3b95be5d6a0e3ceb4e30d0084db2d479c87afbc",
+      "candidate": null,
+      "episode": null,
+      "generation": 1,
+      "input": null,
+      "log_path": "/data02/home/philip.yang/devx/tmp/kernel16-9d0ca915-48b6-4523-9193-6748ac5211e0/workspaces/.execution-logs/51c63bc2-af32-47a3-8108-8ccbf3e7be02.log",
+      "mission": "8db4c48b-d023-4e5b-a339-e17a53351636",
+      "path": "/data02/home/philip.yang/devx/tmp/kernel16-9d0ca915-48b6-4523-9193-6748ac5211e0/workspaces/51c63bc2-af32-47a3-8108-8ccbf3e7be02",
+      "recovery_epoch": "8bc559db-b2c4-4326-b9e0-73f4f09767ea",
+      "scopes": [
+        {
+          "kind": "directory",
+          "path": "src"
+        }
+      ],
+      "spec_digest": "3d8df44dd3e28d832559712edc37acabbc8d0190e6547a5c504885dc70c6c01b",
+      "store": "/data02/home/philip.yang/devx/tmp/kernel16-9d0ca915-48b6-4523-9193-6748ac5211e0/store",
+      "task": "fe9ba338-849b-44bf-8433-438e4d65ae61",
+      "write_scope": [
+        "src"
+      ]
+    },
+    "members": [
+      {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026539771]",
+        "namespace_pid": 1,
+        "pid": 3146172,
+        "start_ticks": 39439571
+      }
+    ],
+    "quarantine_reason": null,
+    "state": "running"
+  },
+  "owner": {
+    "executions": [
+      {
+        "attempt": null,
+        "candidate_artifact": null,
+        "capacity_held": true,
+        "capacity_released": false,
+        "deadline": null,
+        "desired_cancel": false,
+        "episode": "f5fc3804-dfbe-4f44-a819-6da60ddb9560",
+        "id": "0d271e7e-1b71-4798-aea1-344d7ab1e93d",
+        "mission": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "observed_state": "ready",
+        "quarantine_reason": null,
+        "role": "lead",
+        "task": null
+      },
+      {
+        "attempt": "21641753-b4c0-4f1a-bd19-5577d3ef3686",
+        "candidate_artifact": null,
+        "capacity_held": true,
+        "capacity_released": false,
+        "deadline": "2026-10-02T22:07:25.375857+00:00",
+        "desired_cancel": false,
+        "episode": null,
+        "id": "51c63bc2-af32-47a3-8108-8ccbf3e7be02",
+        "mission": "8db4c48b-d023-4e5b-a339-e17a53351636",
+        "observed_state": "running",
+        "quarantine_reason": null,
+        "role": "worker",
+        "task": "fe9ba338-849b-44bf-8433-438e4d65ae61"
+      }
+    ],
+    "missions": [
+      {
+        "admitted_attempts": 0,
+        "admitted_episodes": 1,
+        "capacity": 2,
+        "consumed_repairs": 0,
+        "control_revision": 0,
+        "deadline_seconds": 30,
+        "dispatch_paused": false,
+        "id": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "max_attempts": 8,
+        "max_episodes": 8,
+        "max_repairs": 3,
+        "revision": 2,
+        "used_capacity": 1
+      },
+      {
+        "admitted_attempts": 1,
+        "admitted_episodes": 1,
+        "capacity": 2,
+        "consumed_repairs": 0,
+        "control_revision": 0,
+        "deadline_seconds": 30,
+        "dispatch_paused": false,
+        "id": "8db4c48b-d023-4e5b-a339-e17a53351636",
+        "max_attempts": 8,
+        "max_episodes": 8,
+        "max_repairs": 3,
+        "revision": 2,
+        "used_capacity": 1
+      }
+    ],
+    "more_executions": false,
+    "more_missions": false,
+    "more_operations": false,
+    "recovery_epoch": "8bc559db-b2c4-4326-b9e0-73f4f09767ea",
+    "schema_version": 1,
+    "snapshot_time": "2026-10-02 22:06:55.446342+00",
+    "unresolved_operations": [
+      {
+        "attempt": null,
+        "capacity_held": true,
+        "effect_id": null,
+        "episode": "f5fc3804-dfbe-4f44-a819-6da60ddb9560",
+        "execution": "0d271e7e-1b71-4798-aea1-344d7ab1e93d",
+        "id": "9fe3e5af-14bc-496c-b8fa-b696859216c3",
+        "kind": "start",
+        "mission": "4e82c2c3-37b1-40fd-a81b-3730ba3fd31e",
+        "protocol": "episode_native",
+        "state": "prepared",
+        "task": null,
+        "thread_id": null,
+        "turn_id": null,
+        "usage": {
+          "kind": "unknown"
+        }
+      }
+    ]
+  },
+  "worker": {
+    "executions": [
+      {
+        "attempt": "21641753-b4c0-4f1a-bd19-5577d3ef3686",
+        "candidate_artifact": null,
+        "capacity_held": true,
+        "capacity_released": false,
+        "deadline": "2026-10-02T22:07:25.375857+00:00",
+        "desired_cancel": false,
+        "episode": null,
+        "id": "51c63bc2-af32-47a3-8108-8ccbf3e7be02",
+        "mission": "8db4c48b-d023-4e5b-a339-e17a53351636",
+        "observed_state": "running",
+        "quarantine_reason": null,
+        "role": "worker",
+        "task": "fe9ba338-849b-44bf-8433-438e4d65ae61"
+      }
+    ],
+    "missions": [
+      {
+        "admitted_attempts": 1,
+        "admitted_episodes": 1,
+        "capacity": 2,
+        "consumed_repairs": 0,
+        "control_revision": 0,
+        "deadline_seconds": 30,
+        "dispatch_paused": false,
+        "id": "8db4c48b-d023-4e5b-a339-e17a53351636",
+        "max_attempts": 8,
+        "max_episodes": 8,
+        "max_repairs": 3,
+        "revision": 2,
+        "used_capacity": 1
+      }
+    ],
+    "more_executions": false,
+    "more_missions": false,
+    "more_operations": false,
+    "recovery_epoch": "8bc559db-b2c4-4326-b9e0-73f4f09767ea",
+    "schema_version": 1,
+    "snapshot_time": "2026-10-02 22:06:55.454954+00",
+    "unresolved_operations": []
+  }
+}

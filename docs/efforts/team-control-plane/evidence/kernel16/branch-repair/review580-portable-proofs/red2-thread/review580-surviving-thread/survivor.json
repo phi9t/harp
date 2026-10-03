@@ -1,0 +1,72 @@
+{
+  "actual_controller_fault": {
+    "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+    "namespace": "pid:[4026531836]",
+    "namespace_pid": 4062693,
+    "pid": 4062693,
+    "start_ticks": 39813894
+  },
+  "cleanup_terminal": "signal: 9 (SIGKILL)",
+  "held": {
+    "admitted_attempts": 1,
+    "admitted_episodes": 1,
+    "capacity": 2,
+    "control_revision": 0,
+    "dispatch_paused": false,
+    "episode_deadline_seconds": 30,
+    "git_commit": "bf80603e8a92ce4add8661c839c2b5faab866ceb",
+    "git_path": "SPEC.md",
+    "git_repository": "/data02/home/philip.yang/devx/tmp/kernel16-6740afb3-850e-4796-863e-0bdafb2e38f9/store",
+    "id": "249180d4-1a57-4deb-bc5c-95138a273d42",
+    "input_digest": "881fa3537a1d388a9b61011411583564a434fdc7ad8b821de142d378e7bbead3",
+    "max_attempts": 8,
+    "max_episodes": 8,
+    "max_repairs": 3,
+    "objective": "complete durable kernel proof",
+    "used_capacity": 0
+  },
+  "leader_zombie_but_whole_group_not_ready": true,
+  "release": {
+    "Ok": null
+  },
+  "result": {
+    "argv": [
+      "/bin/sh",
+      "-c",
+      "printf actual-crash-output"
+    ],
+    "candidate": null,
+    "completion": {
+      "finalizer": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026531836]",
+        "namespace_pid": 4062363,
+        "pid": 4062363,
+        "start_ticks": 39813854
+      },
+      "init_process": {
+        "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+        "namespace": "pid:[4026539779]",
+        "namespace_pid": 1,
+        "pid": 4062689,
+        "start_ticks": 39813886
+      },
+      "kind": "recovered_stop",
+      "recovery_epoch": "afb20edb-5812-4818-9a1d-1e280b935d1e",
+      "stop_observation": "c502a0fe-ef0b-49d1-9476-57ccb8405073"
+    },
+    "controller": {
+      "boot_id": "6f48f645-3b26-40c9-93fb-db4190c7629b",
+      "namespace": "pid:[4026531836]",
+      "namespace_pid": 4062693,
+      "pid": 4062693,
+      "start_ticks": 39813894
+    },
+    "execution": "08e2b481-0164-4114-83bb-d4ef240a9af6",
+    "exit_code": null,
+    "logs": "5b8a788f6f549f1c3b940cbd98cbf2d73a10c77293b8e7b0ec164200b048131a",
+    "namespace_stopped": true,
+    "recovery_epoch": "afb20edb-5812-4818-9a1d-1e280b935d1e",
+    "signal": null
+  }
+}

@@ -1,0 +1,506 @@
+== python3 tools/agents/test_worker.py
+/usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2543617 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2543897 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2543935 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2543975 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+worker: /data02/home/philip.yang/devx/tmp/tmpsmsn_b6h/corenius-worker-t1 already exists; choose another name or remove it
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2543993 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.worker: task file /data02/home/philip.yang/devx/tmp/tmp309cjzkd/task.md.nope not found
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544095 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544136 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544206 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544348 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544410 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544460 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+../usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544513 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544648 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544685 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544717 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544757 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..worker: --sandbox insula needs --capsule: the capsule is what enforces the paths
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544809 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2544991 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2545046 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./usr/lib/python3.11/subprocess.py:1125: ResourceWarning: subprocess 2545146 is still running
+  _warn("subprocess %s is still running" % self.pid,
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.
+----------------------------------------------------------------------
+Ran 23 tests in 14.567s
+
+OK
+== python3 tools/agents/test_effort.py
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.595s
+
+OK
+== python3 tools/test_sync_agentic_workflow.py
+........................
+----------------------------------------------------------------------
+Ran 24 tests in 0.267s
+
+OK
+== python3 tools/agents/tracker.py lint
+== sh tools/agents/checks.d/10-wt.sh
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.435s
+
+OK
+== sh tools/agents/checks.d/20-land.sh
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.669s
+
+OK
+== sh tools/agents/checks.d/30-tracker.sh
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.095s
+
+OK
+== sh tools/agents/checks.d/40-msg.sh
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.095s
+
+OK
+== sh tools/agents/checks.d/50-evidence.sh
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.356s
+
+OK
+== sh tools/agents/checks.d/60-claims.sh
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.066s
+
+OK
+== sh tools/agents/checks.d/70-team-control-plane.sh
+   Compiling team-control-plane v0.1.0 (/data02/home/philip.yang/workspace/corenius-codex-reference-design/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.22s
+     Running unittests src/lib.rs (target/debug/deps/team_control_plane-a29f28cf14a65847)
+
+running 7 tests
+test supervisor::observation_tests::incarnation_replacement_between_proof_and_inventory_never_signals_new_members ... ok
+test supervisor::observation_tests::foreign_or_unproven_observer_frames_cannot_classify_original_pids ... ok
+test supervisor::observation_tests::membership_errors_retain_structured_provenance_and_disappearance_semantics ... ok
+test supervisor::observation_tests::observation_uncertainty_is_never_proof_of_absence ... ok
+test supervisor::observation_tests::only_certified_original_whole_group_finalization_proves_exit ... ok
+test supervisor::observation_tests::pinned_inventory_transient_permission_error_requires_fresh_complete_scan ... ok
+test supervisor::observation_tests::whole_scan_retries_preserve_pin_bounds_and_fresh_signal_authority ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (target/debug/deps/team_control_plane-3c3505c360800375)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/artifacts.rs (target/debug/deps/artifacts-6b4cc15f8fc222e4)
+
+running 10 tests
+test changed_base_prepares_and_checks_actual_git_integration_candidate ... ok
+test core_migrate_installs_verifier_grants_without_artifact_constructor ... ok
+test evidence_reads_are_scoped_and_revalidate_parent_authority ... ok
+test actual_git_bytes_and_independent_executed_logs_bind_postgres_acceptance ... ok
+test exact_independent_verification_and_explicit_acceptance ... ok
+test grace_collection_removes_unreferenced_fault_orphans_only ... ok
+test publication_is_verified_and_faults_leave_no_eligible_manifest ... ok
+test verifier_credential_has_no_lead_execution_authority ... ok
+test old_base_spec_candidate_and_report_never_accept_current_candidate ... ok
+test verifier_grants_are_narrow_and_rechecked_for_cached_report_reads_and_mutations ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.68s
+
+     Running tests/assembled_cancellation.rs (target/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 7 tests
+test actual_monitor_claim_rechecks_durable_attempt_cancellation_before_workload ... ok
+test confirmed_legacy_start_cannot_borrow_stopped_workspace_from_arguments ... ok
+test confirmed_legacy_start_without_bound_physical_stop_remains_quarantined ... ok
+test lost_pause_response_fresh_status_exposes_control_revision_and_db_time ... ok
+test public_attempt_cancel_revokes_preadmitted_delayed_and_future_dispatch ... ok
+test legacy_and_imported_episode_cannot_share_one_physical_reservation ... ok
+test public_cancel_stops_actual_nested_writers_and_never_refunds_unknown ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.15s
+
+     Running tests/assembled_capacity.rs (target/debug/deps/assembled_capacity-4bca225ae55533d0)
+
+running 4 tests
+test capacity_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test stopped_capsule_unknown_effect_retains_physical_capacity ... ok
+test stopped_capsule_unknown_usage_retains_physical_capacity ... ok
+test two_running_capsules_refuse_third_and_cancel_deadline_refund_once ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 32.62s
+
+     Running tests/assembled_kernel.rs (target/debug/deps/assembled_kernel-464fe3bd7af85e68)
+
+running 4 tests
+test authenticated_operator_status_is_a_public_cli_view_without_execution_ownership ... ok
+test lead_episode_allocates_a_real_workspace_without_synthetic_task_or_worker_authority ... ok
+test operator_cli_cancels_running_capsule_with_nested_background_children ... ok
+test operator_cli_inspects_cancels_reconciles_and_releases_independently_owned_execution ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s
+
+     Running tests/assembled_operator.rs (target/debug/deps/assembled_operator-d53a93e51090b3f9)
+
+running 5 tests
+test failed_known_legacy_effect_with_unknown_usage_remains_discoverable ... ok
+test alternate_current_grant_cannot_make_expired_issuing_execution_current ... ok
+test operator_historical_records_require_current_lead_and_recovery_epoch_authority ... ok
+test merged_journals_share_one_bound_and_preserve_colliding_operation_ids ... ok
+test thirty_three_actual_operator_records_bound_summary_and_allow_omitted_exact_lookup ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.83s
+
+     Running tests/assembled_vertical.rs (target/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 42 tests
+test actual_candidate_and_measured_report_integrity_blocks_acceptance ... ok
+test actual_changed_git_base_requires_new_candidate_and_independent_sdk_gate ... ok
+test actual_sealed_packet_and_write_scope_resist_workload_tampering ... ok
+test assembled_episode_sdk_worker ... ignored, owned episode SDK subprocess; parent fixture controls lifetime
+test assembled_sdk_worker ... ignored, owned SDK subprocess; parent fixture controls lifetime
+test broker_process_restart_preserves_owned_work_and_bounded_operator_exact_lookup ... ok
+test actual_legacy_gateway_restart_safely_quarantines_without_another_start ... ok
+test canonical_mission_progress_drives_planning_episode_journals ... ok
+test confirmed_native_effect_without_usage_observation_retains_reservation ... ok
+test cancelled_attempt_cannot_submit_cached_report_or_accept_measured_candidate ... ok
+test episode_native_lost_reply_holds_physical_capacity ... ok
+test execution_launch_does_not_extend_the_canonical_episode_deadline ... ok
+test foreign_legacy_controller_cannot_attest_or_acquire_retained_store ... ok
+test delayed_monitor_cannot_borrow_another_live_grant_after_issuer_expiry ... ok
+test legacy_and_episode_public_dispatch_share_the_same_physical_store_exclusion ... ok
+test legacy_confirmed_start_without_measured_usage_retains_reservation ... ok
+test missing_assembled_verification_policy_denies_allocation_before_filesystem_effects ... ok
+test genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch ... ok
+test physical_monitor_rechecks_current_scope_generation_and_epoch ... ok
+test public_all_episode_roles_exhaust_the_approved_finite_budget_without_double_charge ... ok
+test public_episode_native_start_journal_has_no_synthetic_admission ... ok
+test postallocation_base_change_preserves_snapshot_but_requires_fresh_current_gate ... ok
+test public_operator_inspects_exact_episode_journal_without_execution_ownership ... ok
+test public_operator_reconciles_registered_live_native_operation_without_start_or_transfer ... ok
+test public_paused_gateway_claim_performs_no_runtime_rpc ... ok
+test public_failed_verification_repairs_are_authorized_idempotent_and_bounded ... ok
+test public_registered_legacy_usage_query_requires_exact_receipt ... ok
+test public_status_discovers_genuine_legacy_unknown_effect_and_unknown_usage ... ok
+test public_takeover_reconciles_actual_sdk_crash_after_effect_without_second_start ... ok
+test public_takeover_rejects_native_fifo_without_blocking_or_transferring_authority ... ok
+test public_takeover_refuses_unknown_inventory_and_unproven_processes ... ok
+test public_takeover_transfers_only_to_registered_live_sdk_transport ... ok
+test real_sdk_planning_episode_dispatches_its_own_capsule ... ok
+test registered_sdk_usage_query_requires_exact_measured_receipt ... ok
+test registered_takeover_refuses_actual_running_unfinished_workload ... ok
+test runtime_registration_authenticates_before_observing_process_or_filesystem ... ok
+test stopped_capsule_with_unknown_runtime_effect_keeps_capacity ... ok
+test real_temporal_assembled_vertical ... ok
+test trusted_exit_result_rejects_misleading_stdout_success_marker ... ok
+test unknown_legacy_usage_blocks_continuation_before_budget_charge ... ok
+test unknown_legacy_usage_blocks_monitor_after_controller_claim ... ok
+test unknown_legacy_usage_blocks_previously_admitted_verifier_launch ... ok
+
+test result: ok. 40 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 74.81s
+
+     Running tests/gateway.rs (target/debug/deps/gateway-344beed7e3e5d6d2)
+
+running 4 tests
+test fault_runtime_creates_an_effect_for_every_repeated_mutation_rpc ... ok
+test fault_runtime_surfaces_unexpected_subprocess_failure ... ok
+test gateway_crash_child ... ok
+test durable_gateway_contract ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.32s
+
+     Running tests/kernel.rs (target/debug/deps/kernel-a8df179696d69707)
+
+running 16 tests
+test admission_is_durable_atomic_and_idempotent ... ok
+test a_cached_command_never_restores_wider_authority ... ok
+test command_snapshots_respect_task_scopes ... ok
+test authority_expiry_scopes_generations_and_epoch_rotation ... ok
+test dependencies_change_spec_digest_and_retain_immutable_history ... ok
+test dependencies_validation_and_immutable_approval ... ok
+test distinct_assignments_capacity_and_cumulative_budget ... ok
+test event_sequences_have_typed_aggregate_namespaces ... ok
+test episode_budget_and_competing_capacity_are_independent_limits ... ok
+test http_auth_forged_fields_and_reconnect ... ok
+test missing_resource_rejection_stays_rejected_after_resource_appears ... ok
+test rejected_command_is_durable_and_cannot_be_reused ... ok
+test rejected_snapshot_retains_its_original_task_scope ... ok
+test schema_and_transport_fail_closed ... ok
+test token_expires_while_waiting_for_the_transaction_lock ... ok
+test rollback_at_every_admission_write_stage ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.68s
+
+     Running tests/mailbox.rs (target/debug/deps/mailbox-62f37e5d50b24a27)
+
+running 1 test
+test mailbox_http_authenticates_before_persisting_and_never_trusts_sender_text ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+     Running tests/mailbox_artifacts.rs (target/debug/deps/mailbox_artifacts-c4f343aa47b0f20c)
+
+running 2 tests
+test executable_serve_registers_configured_artifact_http_and_mcp_seam ... ok
+test actual_git_submission_and_independent_verification_share_http_mcp_authority ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+
+     Running tests/mailbox_delivery.rs (target/debug/deps/mailbox_delivery-9500caf5c58e9f1b)
+
+running 3 tests
+test bounded_input_batches_advance_without_empty_polling ... ok
+test physical_fault_runtime_repeats_are_not_deduplicated_by_operation_id ... ok
+test delivery_uses_durable_exact_episode_and_physical_conditional_turn ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.90s
+
+     Running tests/supervisor.rs (target/debug/deps/supervisor-c9beed5c4d9a7f01)
+
+running 20 tests
+
+running 1 test
+test actual_bwrap_launcher_sigkill_stops_all_namespace_members ... ok
+
+running 1 test
+test actual_create_sigkill_boundaries_leave_durable_reconcilable_registration ... ok
+test cancel_stops_nested_setsid_children_and_fences_shared_git ... ok
+test certified_pid1_whole_group_exit_recovers_without_namespace_inode_signals ... ok
+test crash_create_helper ... ok
+test deadline_and_controller_sigkill_use_complete_namespace_stop ... ok
+
+running 1 test
+test initiating_agent_sigkill_leaves_independent_inspect_and_cancel_handle ... ok
+test registered_before_create_and_unknown_gap_is_quarantined ... ok
+test concurrent_short_commands_treat_disappeared_proc_tasks_as_exited ... ok
+
+running 1 test
+test registered_create_crash_and_gc_launch_race_never_reuse_workspace ... ok
+test repair_actual_in_progress_git_survivor_never_proves_stop_or_refunds ... ok
+test repair_current_owner_recovers_execution_after_recovery_epoch_rotation ... ok
+test repair_current_owner_recovers_superseded_execution_and_refunds_only_proven_stop ... ok
+test repair_existing_and_explicit_missing_files_are_exact_capsule_write_scope ... ok
+test repair_schema_guard_precedes_open_and_monitor_effects ... ok
+test repair_symlink_ancestor_rejected_before_any_external_write ... ok
+test repair_worker_principal_must_own_attempt_for_create_and_control ... ok
+test stale_generation_fences_dispatch_and_cancels_existing_namespace ... ok
+test uncertain_namespace_quarantines_capacity_and_current_credentials_are_required ... ok
+test repair_launch_rechecks_epoch_generation_deadline_and_cancel_after_claim ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.45s
+
+     Running tests/temporal.rs (target/debug/deps/temporal-f10feb9922cd1a9b)
+
+running 8 tests
+test command_identity_contains_operation_family ... ok
+test queued_old_generation_driver_cannot_dispatch_after_close_and_replacement ... ok
+test public_migration_installs_transactional_workflow_registry ... ok
+test real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint ... FAILED
+test sigkill_fixture_rejects_unexpected_prior_exit ... ok
+test temporal_worker_process ... ignored, child worker process; parent fixture owns lifetime
+test verifier_cannot_suppress_initial_wakeup ... ok
+test real_temporal_recovers_lost_hints_rollover_and_retained_replay ... ok
+
+failures:
+
+---- real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint stdout ----
+
+thread 'real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint' (2641828) panicked at tests/temporal.rs:1375:5:
+actual Continue-As-New advances canonical incarnation while mailbox checkpoint remains durable
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    real_temporal_mailbox_wait_survives_worker_death_and_lost_answer_hint
+
+test result: FAILED. 6 passed; 1 failed; 1 ignored; 0 measured; 0 filtered out; finished in 12.53s
+
+error: test failed, to rerun pass `--test temporal`
+FAILED: sh tools/agents/checks.d/70-team-control-plane.sh
+== cargo test --offline
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running unittests src/lib.rs (target/debug/deps/corenius-9b31f3ee96d12ce7)
+
+running 20 tests
+test eval::tests::extracts_final_answer_and_fallback_number ... ok
+test eval::tests::classifies_failure_kinds_in_priority_order ... ok
+test eval::tests::prompt_keeps_aime_runs_math_only ... ok
+test eval::tests::no_final_with_matching_number_is_not_a_pass ... ok
+test eval::tests::normalizes_gair_rows_into_aime_cases ... ok
+test eval::tests::regrade_sample_updates_only_derived_fields ... ok
+test eval::tests::run_metrics_handle_empty_samples ... ok
+test eval::tests::run_metrics_preserve_order_and_compute_percentiles ... ok
+test eval::tests::score_aime_response_requires_final_marker ... ok
+test eval::tests::scorer_delta_reports_changed_and_skips_unchanged_samples ... ok
+test eval::tests::selects_cases_by_year_offset_limit_and_filter_id ... ok
+test eval::tests::builds_manifest_with_dataset_digest ... ok
+test provider::acp::tests::default_profile_adds_no_serve_args_or_session_meta ... ok
+test eval::tests::summarizes_samples_by_year ... ok
+test eval::tests::triage_markdown_covers_pass_wrong_and_error ... ok
+test eval::tests::run_aime_regrade_fails_for_empty_samples ... ok
+test provider::acp::tests::provider_args_append_profile_after_model ... ok
+test provider::acp::tests::isolated_profile_disables_features_tools_and_skills ... ok
+test eval::tests::run_aime_regrade_reports_malformed_sample_line ... ok
+test eval::tests::run_aime_regrade_writes_regraded_samples_and_delta ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/corenius-cc2536c3f178a475)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli_tui.rs (target/debug/deps/cli_tui-422e32b8e84386eb)
+
+running 26 tests
+test tui_state_renders_streaming_approval_and_tool_result ... ok
+test scripted_acp_assert_consumed_fails_on_unconsumed_script - should panic ... ok
+test eval_aime_regrade_fails_for_missing_samples ... ok
+test eval_aime_rejects_truncated_default_cache ... ok
+test eval_aime_regrade_writes_independent_artifacts ... ok
+test provider_smoke_traecli_can_print_streamed_chunks ... ok
+test eval_aime_replay_replays_failed_samples_by_default ... ok
+test eval_aime_records_fresh_provider_per_sample_mode ... ok
+test eval_aime_replay_filter_id_selects_failed_sample ... ok
+test eval_aime_replay_fails_for_missing_or_empty_selection ... ok
+test eval_aime_sanity_isolates_acp_session_by_default ... ok
+test eval_aime_sanity_runs_tracked_dataset_and_writes_artifacts ... ok
+test eval_aime_sanity_can_inherit_user_config ... ok
+test insula_select_and_doctor_dry_run_work_from_cli ... ok
+test eval_aime_sanity_records_fresh_provider_per_sample_mode ... ok
+test provider_smoke_traecli_uses_acp_child ... ok
+test scripted_acp_can_emit_malformed_json_line ... ok
+test eval_aime_supports_year_limit_offset_filter_and_refresh_fetch ... ok
+test eval_aime_scripted_acp_covers_success_wrong_no_final_and_provider_error ... ok
+test eval_aime_sanity_skips_timeout_probes_by_default ... ok
+test provider_supervise_traecli_reports_current_process_tree ... ok
+test eval_aime_scripted_acp_covers_contamination_and_timeout ... ok
+test eval_aime_sanity_keeps_partial_text_on_timeout ... ok
+test eval_aime_sanity_retries_stalls_and_keeps_partial_text ... ok
+test provider_smoke_traecli_can_emit_supervisor_snapshots ... ok
+test eval_aime_runs_cached_full_dataset_and_writes_triage ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/core.rs (target/debug/deps/core-8d1edcc2ee52cc65)
+
+running 5 tests
+test crate_exposes_version ... ok
+test policy_allows_read_and_asks_for_shell ... ok
+test turn_handle_aborts_active_provider_work ... ok
+test approval_event_is_emitted_before_runner_waits_for_answer ... ok
+test transcript_replays_jsonl_into_current_projection ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/insula.rs (target/debug/deps/insula-805a31dd3ef3fa89)
+
+running 3 tests
+test bwrap_plan_is_deterministic_and_filters_environment ... ok
+test validates_selection_and_rejects_bad_rootfs ... ok
+test selection_file_round_trips_and_enforces_digest ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/interception.rs (target/debug/deps/interception-95ac67a93420a523)
+
+running 3 tests
+test agent_request_reusing_prompt_id_ends_turn_early ... ok
+test protocol_client_can_observe_and_deny_fs_write_but_not_direct_write ... ok
+test shipped_client_advertises_nothing_and_answers_nothing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+
+     Running tests/provider_acp.rs (target/debug/deps/provider_acp-f14aa6be0f609344)
+
+running 5 tests
+test acp_prompt_reports_json_rpc_errors ... ok
+test acp_prompt_streams_agent_chunks_and_usage_from_fake_server ... ok
+test acp_provider_streams_chunks_before_prompt_completes ... ok
+test acp_prompt_supervision_reports_child_lifecycle ... ok
+test acp_prompt_timeout_kills_child_process ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+     Running tests/provider_codex.rs (target/debug/deps/provider_codex-a36670deb9bc431e)
+
+running 3 tests
+test parser_rejects_malformed_and_truncated_sse ... ok
+test codex_stream_reports_failure_and_max_step_exhaustion ... ok
+test codex_stream_handles_text_tool_continuation_and_usage ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/supervisor.rs (target/debug/deps/supervisor-cea04579559ccaa4)
+
+running 3 tests
+test parses_ps_rows_with_command_spaces ... ok
+test snapshot_includes_root_and_descendants_only ... ok
+test snapshot_flags_missing_root_and_bad_process_states ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/tools.rs (target/debug/deps/tools-4c419cd88fcc2c43)
+
+running 3 tests
+test default_tool_definitions_have_stable_capabilities ... ok
+test shell_tool_delegates_to_runner ... ok
+test read_file_stays_under_workspace ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests corenius
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+check: FAILED

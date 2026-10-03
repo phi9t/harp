@@ -1,0 +1,31 @@
+{
+  "source_base": "1f164156261a3aa927c823919bf73d6e6d11a771",
+  "scope": "Focused inventory repair evidence; final source acceptance pending.",
+  "files": [
+    {
+      "path": "namespace-scan-repair/red1.log",
+      "sha256": "b81d61c1a18d33c6cdbca813d72ddf46b83a3e8c3360d7c3912beaf488323c57",
+      "bytes": 1078
+    },
+    {
+      "path": "namespace-scan-repair/green1.log",
+      "sha256": "88d5ec6bcc7b9aa7ddfbacab04bd1e8a50727bb25253f9175a1b73fbbbee3007",
+      "bytes": 541
+    },
+    {
+      "path": "namespace-scan-repair/controls1.log",
+      "sha256": "ab26853bb7ef81aa0d09035f01223b3c75d04040d044933d98dbde518e0ab27c",
+      "bytes": 1196
+    },
+    {
+      "path": "namespace-scan-physical1/run.log",
+      "sha256": "848b8050f245e66fc0247f2d5a33ac487160f5ff5945f8efc8559eed208b6645",
+      "bytes": 1604
+    },
+    {
+      "path": "namespace-scan-physical1/cleanup.json",
+      "sha256": "4d6cc8a85479e7bc1c6a1b08af0711b591f0b4520130f5176f191e677d335c96",
+      "bytes": 34
+    }
+  ]
+}

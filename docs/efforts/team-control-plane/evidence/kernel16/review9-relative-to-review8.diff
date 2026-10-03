@@ -1,0 +1,1699 @@
+--- review8/crates/team-control-plane/src/episode_runtime.rs
++++ review9/crates/team-control-plane/src/episode_runtime.rs
+@@ -288,7 +288,7 @@
+         service_bearer: &str,
+         workflow: &crate::temporal::WorkflowRef,
+         episode: Uuid,
+-    ) -> Result<Option<Uuid>> {
++    ) -> Result<Option<EpisodeOperation>> {
+         let mut c = storage::client(&self.broker.dsn).await?;
+         let tx = c.transaction().await?;
+         storage::lock(&tx).await?;
+@@ -296,15 +296,32 @@
+         storage::active(&tx, self.broker.epoch).await?;
+         let service = auth::authenticate(&tx, service_bearer, self.broker.epoch).await?;
+         service.owner()?;
++        crate::temporal::workflow_dispatch_guard(&tx, self.broker.epoch, workflow).await?;
++        match workflow.kind {
++            crate::temporal::AggregateKind::Mission => {
++                service.scope(workflow.aggregate_id, None)?
++            }
++            crate::temporal::AggregateKind::Task => {
++                let mission: Uuid = tx
++                    .query_one(
++                        "SELECT mission_id FROM tasks WHERE id=$1",
++                        &[&workflow.aggregate_id],
++                    )
++                    .await?
++                    .get(0);
++                service.scope(mission, Some(workflow.aggregate_id))?;
++            }
++        }
++
+         let Some(row)=tx.query_opt("SELECT o.id,x.mission_id,x.task_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE o.episode_id=$1", &[&episode]).await? else {tx.commit().await?;return Ok(None);};
+         let mission: Uuid = row.get(1);
+         let task: Option<Uuid> = row.get(2);
+         service.scope(mission, task)?;
+         crate::temporal::episode_dispatch_guard(&tx, self.broker.epoch, workflow, mission, task)
+             .await?;
+-        let id = row.get(0);
++        let operation = load(&tx, row.get(0)).await?;
+         tx.commit().await?;
+-        Ok(Some(id))
++        Ok(Some(operation))
+     }
+     /// Immutable current packet and physical binding are committed before any RPC.
+     pub async fn prepare(&self, bearer: &str, request: StartRequest) -> Result<EpisodeOperation> {
+@@ -568,6 +585,8 @@
+                     .all(|s| !s.is_empty() && s.len() <= 1024) =>
+             {
+                 if confirm_native(&tx, prepared, store, &turn, self.broker.epoch).await? {
++                    record_effect_binding(&tx, prepared, &turn, self.controller, self.broker.epoch)
++                        .await?;
+                     record_usage(&tx, prepared, &usage, self.broker.epoch).await?;
+                     (
+                         "confirmed",
+@@ -646,7 +665,7 @@
+     fn drive<'a>(
+         &'a self,
+         workflow: &'a crate::temporal::WorkflowRef,
+-        wait: Uuid,
++        wait: crate::temporal::WaitRef,
+     ) -> std::pin::Pin<
+         Box<
+             dyn std::future::Future<Output = Result<crate::temporal::OperationProgress>>
+@@ -655,33 +674,63 @@
+         >,
+     > {
+         Box::pin(async move {
++            let Some(episode) = wait.episode_id() else {
++                return if let Some(fallback) = &self.fallback {
++                    fallback.drive(workflow, wait).await
++                } else {
++                    Ok(crate::temporal::OperationProgress {
++                        admission_id: wait.admission_id(),
++                        episode_id: None,
++                        journals: vec![],
++                        limitation: Some("legacy_operation_driver_unconfigured".into()),
++                    })
++                };
++            };
+             let mut runtime = self.runtime.lock().await;
+-            if let Some(id) = self
++            let Some(journal) = self
+                 .gateway
+-                .journal(&self.service_bearer, workflow, wait)
++                .journal(&self.service_bearer, workflow, episode)
+                 .await?
++            else {
++                return Ok(crate::temporal::OperationProgress {
++                    admission_id: None,
++                    episode_id: Some(episode),
++                    journals: vec![],
++                    limitation: Some("episode_journal_missing".into()),
++                });
++            };
++            let mut limitation = None;
++            let operation = match self
++                .gateway
++                .dispatch_guarded(
++                    &self.service_bearer,
++                    journal.id,
++                    runtime.as_mut(),
++                    Some(workflow),
++                )
++                .await
+             {
+-                let operation = self
+-                    .gateway
+-                    .dispatch_guarded(&self.service_bearer, id, runtime.as_mut(), Some(workflow))
+-                    .await?;
+-                Ok(crate::temporal::OperationProgress {
+-                    admission_id: None,
+-                    episode_id: Some(wait),
+-                    journals: vec![(id, operation.state)],
+-                    limitation: None,
+-                })
+-            } else if let Some(fallback) = &self.fallback {
+-                drop(runtime);
+-                fallback.drive(workflow, wait).await
+-            } else {
+-                Ok(crate::temporal::OperationProgress {
+-                    admission_id: Some(wait),
+-                    episode_id: None,
+-                    journals: vec![],
+-                    limitation: Some("legacy_operation_driver_unconfigured".into()),
+-                })
+-            }
++                Ok(operation) => operation,
++                Err(error) if error.code == ErrorCode::DependencyUnmet => {
++                    let current = self
++                        .gateway
++                        .journal(&self.service_bearer, workflow, episode)
++                        .await?
++                        .ok_or_else(|| err(ErrorCode::NotFound))?;
++                    if current.state != OperationState::Prepared {
++                        return Err(error);
++                    }
++                    limitation = Some("episode_dispatch_fenced".into());
++                    current
++                }
++                Err(error) => return Err(error),
++            };
++            Ok(crate::temporal::OperationProgress {
++                admission_id: None,
++                episode_id: Some(episode),
++                journals: vec![(operation.id, operation.state)],
++                limitation,
++            })
+         })
+     }
+ }
+@@ -699,6 +748,76 @@
+         usage: serde_json::from_value(row.get(7))
+             .map_err(|_| err(ErrorCode::IncompatibleSchema))?,
+     })
++}
++
++/// Effect correspondence is independent of usage certainty. A generic reply
++/// cannot borrow a workspace Stop; only registered pinned native evidence can.
++pub(crate) async fn record_effect_binding(
++    tx: &tokio_postgres::Transaction<'_>,
++    prepared: &PreparedStart,
++    turn: &NativeTurn,
++    controller: Uuid,
++    epoch: Uuid,
++) -> Result<()> {
++    use std::os::unix::fs::MetadataExt;
++    if !tx
++        .query_one(
++            "SELECT EXISTS(SELECT 1 FROM kernel_transports WHERE controller=$1)",
++            &[&controller],
++        )
++        .await?
++        .get::<_, bool>(0)
++    {
++        return Ok(());
++    }
++    let transport = crate::model_free_runtime::transport(tx, controller).await?;
++    if transport.epoch != epoch || transport.identity != prepared.start.runtime {
++        return Ok(());
++    }
++    let directory = crate::model_free_runtime::open_directory(&transport.native_root)?;
++    let metadata = directory
++        .metadata()
++        .map_err(|_| err(ErrorCode::DependencyUnmet))?;
++    if metadata.dev() != transport.native_directory.device
++        || metadata.ino() != transport.native_directory.inode
++        || metadata.uid() != transport.native_directory.owner
++    {
++        return Ok(());
++    }
++    let observed = match crate::model_free_runtime::observe_directory(
++        &directory,
++        &transport.identity,
++        prepared,
++    ) {
++        EpisodeObservation::Effect(native) | EpisodeObservation::EffectMeasured(native, _) => {
++            native
++        }
++        EpisodeObservation::Inconclusive(_) => return Ok(()),
++    };
++    if observed.thread != turn.thread
++        || observed.turn != turn.turn
++        || observed.effect != turn.effect
++    {
++        return Ok(());
++    }
++    let row = tx
++        .query_one(
++            "SELECT init_process,manifest FROM supervised_workspaces WHERE id=$1",
++            &[&prepared.start.execution],
++        )
++        .await?;
++    let init: Option<serde_json::Value> = row.get(0);
++    let manifest: crate::supervisor::WorkspaceManifest =
++        serde_json::from_value(row.get(1)).map_err(|_| err(ErrorCode::IncompatibleSchema))?;
++    if init.is_none()
++        || manifest.episode != Some(prepared.start.episode)
++        || manifest.recovery_epoch != epoch
++        || manifest.path.parent() != Some(transport.workspace_root.as_path())
++    {
++        return Ok(());
++    }
++    tx.execute("INSERT INTO episode_runtime_evidence(id,operation_id,evidence) VALUES($1,$2,$3)", &[&Uuid::new_v4(),&prepared.start.id,&serde_json::json!({"kind":"registered_native_execution_bound","request":prepared,"controller":controller,"recovery_epoch":epoch,"turn":turn,"init_process":init})]).await?;
++    Ok(())
+ }
+ 
+ pub(crate) async fn record_usage(
+--- review8/crates/team-control-plane/src/supervisor.rs
++++ review9/crates/team-control-plane/src/supervisor.rs
+@@ -2042,6 +2042,44 @@
+     for row in &ids {
+         reconcile_locked(tx, row.get(0)).await?;
+     }
++    // Native confirmation can precede monitor launch publication. Re-observe the
++    // registered pinned receipt only after reconciliation has inspected physical
++    // state; no waiting under this lock and no native mutation/retry occurs.
++    let native=tx.query("SELECT o.request,o.controller,o.recovery_epoch FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM episode_runtime_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='registered_native_execution_bound')", &[&attempt]).await?;
++    for row in native {
++        let prepared: crate::episode_runtime::PreparedStart = serde_json::from_value(row.get(0))
++            .map_err(|_| crate::domain::err(ErrorCode::IncompatibleSchema))?;
++        let operation = tx
++            .query_one(
++                "SELECT thread_id,turn_id,effect_id FROM episode_runtime_operations WHERE id=$1",
++                &[&prepared.start.id],
++            )
++            .await?;
++        let turn = crate::episode_runtime::NativeTurn {
++            thread: operation
++                .get::<_, Option<String>>(0)
++                .ok_or_else(unavailable)?,
++            turn: operation
++                .get::<_, Option<String>>(1)
++                .ok_or_else(unavailable)?,
++            effect: operation
++                .get::<_, Option<String>>(2)
++                .ok_or_else(unavailable)?,
++        };
++        match crate::episode_runtime::record_effect_binding(
++            tx,
++            &prepared,
++            &turn,
++            row.get(1),
++            row.get(2),
++        )
++        .await
++        {
++            Ok(()) => {}
++            Err(error) if error.code == ErrorCode::DependencyUnmet => {}
++            Err(error) => return Err(error),
++        }
++    }
+     let uncertain:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state='quarantined') OR EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state IN ('dispatching','outcome_unknown','quarantined')) OR EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state IN ('dispatching','outcome_unknown','quarantined'))", &[&attempt]).await?.get(0);
+     let stopped:bool=tx.query_one("SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces w WHERE (w.attempt_id=$1 OR EXISTS(SELECT 1 FROM episode_executions x WHERE x.execution_id=w.id AND x.attempt_id=$1)) AND w.state NOT IN ('stopped','released'))", &[&attempt]).await?.get(0);
+     // A confirmed RPC proves its native effect exists, not that it is stopped.
+@@ -2049,7 +2087,8 @@
+     // original operation/effect to this execution. Caller arguments alone do
+     // not establish that correspondence or permit borrowing its Stop proof.
+     let unbound_native:bool=tx.query_one("SELECT EXISTS(SELECT 1 FROM gateway_operations o WHERE o.attempt_id=$1 AND o.kind='start' AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM supervised_workspaces w LEFT JOIN episode_executions x ON x.execution_id=w.id WHERE w.id::text=o.request->'arguments'->>'execution' AND (w.attempt_id=o.attempt_id OR x.attempt_id=o.attempt_id) AND EXISTS(SELECT 1 FROM kernel_gateway_usage_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='legacy_native_usage_observed' AND e.evidence->'intent'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'usage'=o.usage AND e.evidence->'usage'->>'kind'='measured_zero')))", &[&attempt]).await?.get(0);
+-    let disposition = if uncertain || unbound_native {
++    let unbound_episode: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id JOIN supervised_workspaces w ON w.id=x.execution_id WHERE x.attempt_id=$1 AND o.state='confirmed' AND NOT EXISTS(SELECT 1 FROM episode_runtime_evidence e WHERE e.operation_id=o.id AND e.evidence->>'kind'='registered_native_execution_bound' AND e.evidence->'request'=o.request AND e.evidence->>'controller'=o.controller::text AND e.evidence->>'recovery_epoch'=o.recovery_epoch::text AND e.evidence->'init_process'=w.init_process AND e.evidence->'turn'->>'thread'=o.thread_id AND e.evidence->'turn'->>'turn'=o.turn_id AND e.evidence->'turn'->>'effect'=o.effect_id))", &[&attempt]).await?.get(0);
++    let disposition = if uncertain || unbound_native || unbound_episode {
+         "quarantined"
+     } else if stopped {
+         "cancelled"
+--- review8/crates/team-control-plane/src/temporal.rs
++++ review9/crates/team-control-plane/src/temporal.rs
+@@ -39,6 +39,45 @@
+         }
+     }
+ }
++/// Historical v1 raw waits are admission-only and retain their original JSON
++/// shape on replay. V2 references carry an explicit protocol discriminator.
++#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(untagged)]
++pub enum WaitRef {
++    LegacyAdmission(Uuid),
++    V2(TypedWait),
++}
++#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(tag = "protocol", content = "id", rename_all = "snake_case")]
++pub enum TypedWait {
++    Admission(Uuid),
++    Episode(Uuid),
++}
++impl WaitRef {
++    pub fn admission(id: Uuid) -> Self {
++        Self::V2(TypedWait::Admission(id))
++    }
++    pub fn episode(id: Uuid) -> Self {
++        Self::V2(TypedWait::Episode(id))
++    }
++    pub fn admission_id(self) -> Option<Uuid> {
++        match self {
++            Self::LegacyAdmission(id) | Self::V2(TypedWait::Admission(id)) => Some(id),
++            _ => None,
++        }
++    }
++    pub fn episode_id(self) -> Option<Uuid> {
++        match self {
++            Self::V2(TypedWait::Episode(id)) => Some(id),
++            _ => None,
++        }
++    }
++}
++impl From<Uuid> for WaitRef {
++    fn from(id: Uuid) -> Self {
++        Self::LegacyAdmission(id)
++    }
++}
+ /// Workflow generation differs from an attempt generation. No bearer is serialized.
+ #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+ pub struct WorkflowRef {
+@@ -52,7 +91,7 @@
+ pub struct WorkflowInput {
+     pub reference: WorkflowRef,
+     pub cursor: i64,
+-    pub waits: Vec<Uuid>,
++    pub waits: Vec<WaitRef>,
+ }
+ #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+ #[serde(rename_all = "snake_case")]
+@@ -77,7 +116,7 @@
+     pub cursor: i64,
+     pub closed: bool,
+     pub canonical_revision: i64,
+-    pub waits: Vec<Uuid>,
++    pub waits: Vec<WaitRef>,
+     pub operations: Vec<OperationProgress>,
+     #[serde(default)]
+     pub mailbox_attention: Vec<crate::mailbox::WaitAttention>,
+@@ -404,7 +443,7 @@
+                 .await?
+                 .get(0),
+         };
+-        let mut waits:Vec<Uuid>=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|v.get(0)).collect()};
++        let mut waits:Vec<WaitRef>=match r.kind {AggregateKind::Mission=>Vec::new(),AggregateKind::Task=>tx.query("SELECT o.id FROM operations o JOIN attempts a ON a.id=o.attempt_id WHERE a.task_id=$1 ORDER BY o.id",&[&r.aggregate_id]).await?.iter().map(|v|WaitRef::admission(v.get(0))).collect()};
+         crate::kernel::schema(&tx).await?;
+         // A canonical Mission owns planning; a genuine Task owns its Worker and
+         // Verifier episodes. Unknown journals stay observable, never fresh RPC candidates.
+@@ -412,7 +451,7 @@
+             AggregateKind::Mission=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.mission_id=$1 AND x.task_id IS NULL ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
+             AggregateKind::Task=>tx.query("SELECT o.episode_id FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.task_id=$1 ORDER BY o.episode_id", &[&r.aggregate_id]).await?,
+         };
+-        waits.extend(episodes.into_iter().map(|row| row.get::<_, Uuid>(0)));
++        waits.extend(episodes.into_iter().map(|row| WaitRef::episode(row.get(0))));
+         let p = Progress {
+             cursor: row.get(0),
+             closed: row.get(1),
+@@ -622,8 +661,8 @@
+                 }
+                 let observed = if progress.closed {
+                     OperationProgress {
+-                        admission_id: Some(*admission),
+-                        episode_id: None,
++                        admission_id: admission.admission_id(),
++                        episode_id: admission.episode_id(),
+                         journals: Vec::new(),
+                         limitation: Some("workflow_closed".into()),
+                     }
+@@ -634,8 +673,8 @@
+                             .await
+                             .map_err(activity_error)?,
+                         None => OperationProgress {
+-                            admission_id: Some(*admission),
+-                            episode_id: None,
++                            admission_id: admission.admission_id(),
++                            episode_id: admission.episode_id(),
+                             journals: Vec::new(),
+                             limitation: Some("operation_driver_unconfigured".into()),
+                         },
+@@ -810,7 +849,7 @@
+     fn drive<'a>(
+         &'a self,
+         reference: &'a WorkflowRef,
+-        admission_id: Uuid,
++        admission_id: WaitRef,
+     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<OperationProgress>> + Send + 'a>>;
+ }
+ impl Bridge {
+@@ -914,10 +953,13 @@
+     fn drive<'a>(
+         &'a self,
+         r: &'a WorkflowRef,
+-        admission: Uuid,
++        wait: WaitRef,
+     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<OperationProgress>> + Send + 'a>>
+     {
+         Box::pin(async move {
++            let admission = wait
++                .admission_id()
++                .ok_or_else(|| err(ErrorCode::InvalidArgument))?;
+             let mut runtime = {
+                 self.queued
+                     .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+@@ -1002,7 +1044,11 @@
+     }
+     Ok(())
+ }
+-async fn workflow_dispatch_guard(tx: &Transaction<'_>, epoch: Uuid, r: &WorkflowRef) -> Result<()> {
++pub(crate) async fn workflow_dispatch_guard(
++    tx: &Transaction<'_>,
++    epoch: Uuid,
++    r: &WorkflowRef,
++) -> Result<()> {
+     storage::active(tx, epoch).await?;
+     if r.recovery_epoch != epoch
+         || r.workflow_id != workflow_id(&r.kind, r.aggregate_id, r.generation, epoch)
+@@ -1140,3 +1186,37 @@
+         })
+     }
+ }
++
++#[cfg(test)]
++mod wait_wire_tests {
++    use super::*;
++    #[test]
++    fn v1_admission_wait_roundtrips_without_changing_wire_shape() {
++        let id = Uuid::new_v4();
++        let bytes = serde_json::to_vec(&vec![id]).unwrap();
++        let waits: Vec<WaitRef> = serde_json::from_slice(&bytes).unwrap();
++        assert_eq!(waits[0].admission_id(), Some(id));
++        assert_eq!(waits[0].episode_id(), None);
++        assert_eq!(serde_json::to_vec(&waits).unwrap(), bytes);
++    }
++    #[test]
++    fn typed_same_uuid_preserves_both_protocols_through_rollover_payload() {
++        let id = Uuid::new_v4();
++        let input = WorkflowInput {
++            reference: WorkflowRef {
++                kind: AggregateKind::Task,
++                aggregate_id: Uuid::new_v4(),
++                generation: 1,
++                recovery_epoch: Uuid::new_v4(),
++                workflow_id: "wire-control".into(),
++            },
++            cursor: 7,
++            waits: vec![WaitRef::admission(id), WaitRef::episode(id)],
++        };
++        let bytes = serde_json::to_vec(&input).unwrap();
++        let restored: WorkflowInput = serde_json::from_slice(&bytes).unwrap();
++        assert_eq!(restored, input);
++        assert_ne!(restored.waits[0], restored.waits[1]);
++        assert_eq!(serde_json::to_vec(&restored).unwrap(), bytes);
++    }
++}
+--- review8/crates/team-control-plane/tests/artifacts.rs
++++ review9/crates/team-control-plane/tests/artifacts.rs
+@@ -2095,11 +2095,13 @@
+         .await
+         .unwrap();
+     assert_eq!(status["missions"][0]["consumed_repairs"], 3);
+-    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
+-    std::fs::write(
+-        evidence.join("identical-report-cycles.json"),
+-        serde_json::to_vec(&serde_json::json!({"report_id":report_id,"status":status})).unwrap(),
+-    )
+-    .unwrap();
++    if let Ok(evidence) = std::env::var("TEMPORAL_FIXTURE_EVIDENCE") {
++        std::fs::write(
++            std::path::Path::new(&evidence).join("identical-report-cycles.json"),
++            serde_json::to_vec(&serde_json::json!({"report_id":report_id,"status":status}))
++                .unwrap(),
++        )
++        .unwrap();
++    }
+     std::fs::remove_dir_all(root).unwrap();
+ }
+--- review8/crates/team-control-plane/tests/assembled_cancellation.rs
++++ review9/crates/team-control-plane/tests/assembled_cancellation.rs
+@@ -580,7 +580,7 @@
+             .snapshot(&f.owner, SnapshotQuery::Task(f.task))
+             .await
+             .unwrap();
+-        if mode == "unknown-effect" {
++        if mode != "known-physical" {
+             assert_eq!(disposition, "quarantined");
+             assert_eq!(snapshot.data["status"], "running");
+         } else {
+@@ -1131,7 +1131,53 @@
+                 assert!(tokio::time::Instant::now() < deadline);
+                 tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+             }
+-            supervisor.release(&f.owner, first.id).await.unwrap();
++            let mut released_before_final_wait = false;
++            if supervisor
++                .inspect(&f.owner, first.id)
++                .await
++                .unwrap()
++                .manifest
++                .episode
++                .is_some()
++            {
++                let before_result = supervisor.result(&f.owner, first.id).await.unwrap();
++                let evidence =
++                    std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++                std::fs::write(evidence.join("reservation-stop-finalization.json"),serde_json::to_vec(&serde_json::json!({"execution":first.id,"result_before_release":before_result,"workspace":supervisor.inspect(&f.owner,first.id).await.unwrap()})).unwrap()).unwrap();
++                if before_result.is_none() {
++                    match supervisor.release(&f.owner, first.id).await {
++                        Ok(()) => {
++                            assert!(
++                                supervisor
++                                    .result(&f.owner, first.id)
++                                    .await
++                                    .unwrap()
++                                    .is_some(),
++                                "successful release must have durable finalization"
++                            );
++                            released_before_final_wait = true;
++                        }
++                        Err(error) => assert_eq!(error.code, ErrorCode::DependencyUnmet),
++                    }
++                    std::fs::write(evidence.join("reservation-early-release-outcome.json"),serde_json::to_vec(&serde_json::json!({"released":released_before_final_wait,"result_after":supervisor.result(&f.owner,first.id).await.unwrap()})).unwrap()).unwrap();
++                }
++                let deadline = tokio::time::Instant::now() + std::time::Duration::from_secs(8);
++                while supervisor
++                    .result(&f.owner, first.id)
++                    .await
++                    .unwrap()
++                    .is_none()
++                {
++                    assert!(
++                        tokio::time::Instant::now() < deadline,
++                        "launched reservation fixture needs actual durable monitor finalization"
++                    );
++                    tokio::time::sleep(std::time::Duration::from_millis(20)).await;
++                }
++            }
++            if !released_before_final_wait {
++                supervisor.release(&f.owner, first.id).await.unwrap();
++            }
+             assert_eq!(
+                 supervisor
+                     .release(&f.owner, first.id)
+@@ -1232,7 +1278,7 @@
+         f.owner.clone(),
+         Box::new(runtime),
+     );
+-    let progress = driver.drive(&reference, f.admission).await;
++    let progress = driver.drive(&reference, f.admission.into()).await;
+     let historical = gateway.read(&f.owner, create).await.unwrap();
+     let pending = gateway.read(&f.owner, start).await.unwrap();
+     let count = std::fs::read_dir(&root)
+@@ -1245,7 +1291,7 @@
+     bridge.close(&f.owner, &reference).await.unwrap();
+     assert_eq!(
+         driver
+-            .drive(&reference, f.admission)
++            .drive(&reference, f.admission.into())
+             .await
+             .unwrap_err()
+             .code,
+@@ -1263,7 +1309,7 @@
+     assert_eq!(successor.generation, reference.generation + 1);
+     assert_eq!(
+         driver
+-            .drive(&reference, f.admission)
++            .drive(&reference, f.admission.into())
+             .await
+             .unwrap_err()
+             .code,
+@@ -1435,3 +1481,649 @@
+     assert_eq!(result.exit_code, None);
+     assert_eq!(result.signal, Some(libc::SIGKILL));
+ }
++
++struct UnregisteredEpisodeEffect(gateway_fault::FaultRuntime, Option<std::process::Child>);
++impl Drop for UnregisteredEpisodeEffect {
++    fn drop(&mut self) {
++        if let Some(child) = self.1.as_mut() {
++            if child.try_wait().unwrap().is_none() {
++                child.kill().unwrap();
++            }
++            child.wait().unwrap();
++        }
++    }
++}
++impl episode_runtime::EpisodeRuntime for UnregisteredEpisodeEffect {
++    fn identity(&self) -> gateway::RuntimeIdentity {
++        self.0.identity.clone()
++    }
++    fn capabilities(&self) -> gateway::CapabilityProfile {
++        gateway::RuntimeAdapter::inspect(&self.0)
++    }
++    fn start<'a>(
++        &'a mut self,
++        request: &'a episode_runtime::PreparedStart,
++    ) -> std::pin::Pin<
++        Box<dyn std::future::Future<Output = episode_runtime::EpisodeReply> + Send + 'a>,
++    > {
++        Box::pin(async move {
++            let intent = gateway::Intent {
++                id: request.start.id,
++                admission_id: Uuid::nil(),
++                kind: gateway::OperationKind::Start,
++                binding_id: request.start.episode,
++                arguments: serde_json::json!({"execution":request.start.execution}),
++                generation: 1,
++            };
++            self.1 = Some(
++                std::process::Command::new("/bin/sleep")
++                    .arg("30")
++                    .spawn()
++                    .unwrap(),
++            );
++            match gateway::RuntimeAdapter::execute(&mut self.0, &intent, None) {
++                gateway::RuntimeReply::Confirmed {
++                    thread_id,
++                    effect_id,
++                } => episode_runtime::EpisodeReply::Confirmed(episode_runtime::NativeTurn {
++                    thread: thread_id.unwrap(),
++                    turn: effect_id.clone(),
++                    effect: effect_id,
++                }),
++                _ => panic!("actual external fixture did not confirm"),
++            }
++        })
++    }
++    fn observe<'a>(
++        &'a mut self,
++        _: &'a episode_runtime::PreparedStart,
++    ) -> std::pin::Pin<
++        Box<dyn std::future::Future<Output = episode_runtime::EpisodeObservation> + Send + 'a>,
++    > {
++        Box::pin(async {
++            episode_runtime::EpisodeObservation::Inconclusive(
++                "unregistered effect has no independent physical binding".into(),
++            )
++        })
++    }
++}
++#[tokio::test]
++async fn confirmed_episode_effect_cannot_borrow_unused_workspace_stop() {
++    let f = Fixture::new().await;
++    let episode = f.worker_episode("unregistered-episode-effect").await;
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let root = f.root.join("unregistered-episode-native");
++    std::fs::create_dir(&root).unwrap();
++    let identity = gateway::RuntimeIdentity {
++        runtime_kind: "unregistered-external-effect".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "actual-child-process".into(),
++        environment: "model-free".into(),
++    };
++    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    let operation = Uuid::new_v4();
++    gateway
++        .prepare(
++            "assembled-worker",
++            episode_runtime::StartRequest {
++                id: operation,
++                episode,
++                execution: execution.id,
++                runtime: identity.clone(),
++                argv: vec!["/bin/true".into()],
++            },
++        )
++        .await
++        .unwrap();
++    let mut runtime = UnregisteredEpisodeEffect(
++        gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
++        None,
++    );
++    let journal = gateway
++        .dispatch(&f.owner, operation, &mut runtime)
++        .await
++        .unwrap();
++    assert_eq!(journal.state, gateway::OperationState::Confirmed);
++    assert_eq!(journal.usage, episode_runtime::UsageObservation::Unknown);
++    assert_eq!(runtime.0.effect_count().unwrap(), 1);
++    assert!(runtime.1.as_mut().unwrap().try_wait().unwrap().is_none());
++    let cancel = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "cancel-unbound-episode",
++                3,
++                Command::CancelAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                    reason: "actual confirmed external effect never launched allocated workspace"
++                        .into(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let reconciled = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "reconcile-unbound-episode",
++                cancel.revision,
++                Command::ReconcileAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let view = supervisor.inspect(&f.owner, execution.id).await.unwrap();
++    assert_eq!(view.state, supervisor::ExecutionState::Stopped);
++    let survivor_pid = runtime.1.as_ref().unwrap().id();
++    assert!(
++        runtime.1.as_mut().unwrap().try_wait().unwrap().is_none(),
++        "unregistered external execution survives canonical workspace Stop"
++    );
++    let status = kernel::Kernel::new(f.broker.clone())
++        .status(&f.owner)
++        .await
++        .unwrap();
++    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++    std::fs::write(evidence.join("confirmed-unbound-episode.json"),serde_json::to_vec(&serde_json::json!({"journal":journal,"reconciled":reconciled,"workspace":view,"status":status,"surviving_owned_child":survivor_pid})).unwrap()).unwrap();
++    drop(runtime);
++    f.finish().await;
++    assert_eq!(
++        reconciled.disposition, "quarantined",
++        "unused workspace Stop cannot certify an unrelated confirmed episode effect"
++    );
++}
++
++#[tokio::test]
++async fn paused_prepared_episode_remains_guarded_workflow_progress() {
++    use temporal::OperationDriver;
++    let f = Fixture::new().await;
++    let episode = f.worker_episode("paused-episode").await;
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let root = f.root.join("paused-episode-native");
++    std::fs::create_dir(&root).unwrap();
++    let identity = gateway::RuntimeIdentity {
++        runtime_kind: "kernel16-inprocess-native".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "owned-local-subprocess".into(),
++        environment: "bwrap-private-git".into(),
++    };
++    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    let operation = Uuid::new_v4();
++    gateway
++        .prepare(
++            "assembled-worker",
++            episode_runtime::StartRequest {
++                id: operation,
++                episode,
++                execution: execution.id,
++                runtime: identity.clone(),
++                argv: vec!["/bin/true".into()],
++            },
++        )
++        .await
++        .unwrap();
++    let runtime = episode_native::NativeOsRuntime {
++        root: root.clone(),
++        identity,
++        supervisor: supervisor.clone(),
++        service: f.owner.clone(),
++        lose_reply: false,
++        hold_reply: false,
++    };
++    let driver = episode_runtime::EpisodeOperationDriver::new(
++        gateway,
++        f.owner.clone(),
++        Box::new(runtime),
++        None,
++    );
++    let bridge = temporal::Bridge::new(f.broker.clone());
++    let reference = bridge
++        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    kernel::Kernel::new(f.broker.clone())
++        .pause(
++            &f.owner,
++            f.mission,
++            "pause-episode-driver",
++            0,
++            true,
++            "durable workflow must wait",
++        )
++        .await
++        .unwrap();
++    let progress = driver
++        .drive(&reference, temporal::WaitRef::episode(episode))
++        .await;
++    assert!(std::fs::read_dir(&root).unwrap().next().is_none());
++
++    let missing = temporal::WaitRef::episode(Uuid::new_v4());
++    assert_eq!(
++        driver
++            .drive(&reference, missing)
++            .await
++            .unwrap()
++            .limitation
++            .as_deref(),
++        Some("episode_journal_missing")
++    );
++    bridge.close(&f.owner, &reference).await.unwrap();
++    assert_eq!(
++        driver
++            .drive(&reference, temporal::WaitRef::episode(episode))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    assert_eq!(
++        driver.drive(&reference, missing).await.unwrap_err().code,
++        ErrorCode::StaleGeneration
++    );
++    let successor = bridge
++        .register(
++            &f.owner,
++            temporal::AggregateKind::Task,
++            f.task,
++            reference.generation,
++        )
++        .await
++        .unwrap();
++    assert_eq!(successor.generation, reference.generation + 1);
++    assert_eq!(
++        driver
++            .drive(&reference, temporal::WaitRef::episode(episode))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::StaleGeneration
++    );
++    supervisor.cancel(&f.owner, execution.id).await.unwrap();
++    supervisor.release(&f.owner, execution.id).await.unwrap();
++    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++    std::fs::write(
++        evidence.join("paused-episode-driver.json"),
++        serde_json::to_vec(&serde_json::json!({"progress":progress.as_ref().map_err(|e|&e.code)}))
++            .unwrap(),
++    )
++    .unwrap();
++    f.finish().await;
++    let progress=progress.expect("temporarily fenced Prepared episode must remain workflow progress, not nonretryable Activity failure");
++    assert_eq!(
++        progress.journals,
++        vec![(operation, gateway::OperationState::Prepared)]
++    );
++    assert_eq!(
++        progress.limitation.as_deref(),
++        Some("episode_dispatch_fenced")
++    );
++}
++
++#[tokio::test]
++async fn colliding_episode_and_admission_waits_drive_both_protocols() {
++    use temporal::OperationDriver;
++    let f = Fixture::new().await;
++    let mailbox = mailbox::MailboxService::new(f.broker.clone());
++    let input = Uuid::new_v4();
++    let episode = f.admission;
++    mailbox.execute("assembled-worker",mail(f.epoch,"collision-capture",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"implementation","limit":4}))).await.unwrap();
++    let packet = mailbox
++        .record("assembled-worker", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    mailbox.execute("assembled-worker",mail(f.epoch,"collision-admit",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let root = f.root.join("collision-native");
++    std::fs::create_dir(&root).unwrap();
++    let identity = gateway::RuntimeIdentity {
++        runtime_kind: "unregistered-collision-native".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "actual-child-process".into(),
++        environment: "model-free".into(),
++    };
++    let episode_gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    let episode_operation = Uuid::new_v4();
++    episode_gateway
++        .prepare(
++            "assembled-worker",
++            episode_runtime::StartRequest {
++                id: episode_operation,
++                episode,
++                execution: execution.id,
++                runtime: identity.clone(),
++                argv: vec!["/bin/true".into()],
++            },
++        )
++        .await
++        .unwrap();
++    let legacy_root = f.root.join("collision-legacy");
++    std::fs::create_dir(&legacy_root).unwrap();
++    let mut legacy_identity = identity.clone();
++    legacy_identity.thread_store = legacy_root.to_str().unwrap().into();
++    let legacy = gateway::Gateway::new(f.broker.clone());
++    let binding = Uuid::new_v4();
++    let legacy_operation = Uuid::new_v4();
++    legacy
++        .bind(&f.owner, binding, f.admission, &legacy_identity, None, 1)
++        .await
++        .unwrap();
++    legacy
++        .prepare(
++            &f.owner,
++            gateway::Intent {
++                id: legacy_operation,
++                admission_id: f.admission,
++                binding_id: binding,
++                generation: 1,
++                kind: gateway::OperationKind::Create,
++                arguments: serde_json::json!({}),
++            },
++        )
++        .await
++        .unwrap();
++    let bridge = temporal::Bridge::new(f.broker.clone());
++    let reference = bridge
++        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    let fallback = std::sync::Arc::new(temporal::GatewayOperationDriver::new(
++        bridge.clone(),
++        legacy.clone(),
++        f.owner.clone(),
++        Box::new(gateway_fault::FaultRuntime::new(
++            legacy_root,
++            gateway_fault::Fault::None,
++            legacy_identity,
++        )),
++    ));
++    let driver = episode_runtime::EpisodeOperationDriver::new(
++        episode_gateway,
++        f.owner.clone(),
++        Box::new(UnregisteredEpisodeEffect(
++            gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
++            None,
++        )),
++        Some(fallback),
++    );
++    let progress = bridge.progress(&f.owner, &reference).await.unwrap();
++    let mut observed = vec![];
++    for wait in &progress.waits {
++        observed.push(driver.drive(&reference, *wait).await.unwrap());
++    }
++    let legacy_state = legacy.read(&f.owner, legacy_operation).await.unwrap().state;
++    let evidence = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++    std::fs::write(evidence.join("colliding-waits.json"),serde_json::to_vec(&serde_json::json!({"progress":progress,"observed":observed,"legacy_state":legacy_state})).unwrap()).unwrap();
++    drop(driver);
++    supervisor.cancel(&f.owner, execution.id).await.unwrap();
++    f.finish().await;
++    assert_eq!(
++        legacy_state,
++        gateway::OperationState::Confirmed,
++        "same UUID must retain and dispatch both typed protocols"
++    );
++}
++
++#[tokio::test]
++async fn foreign_task_episode_uuid_cannot_hijack_legacy_admission_wait() {
++    use temporal::OperationDriver;
++    let f = Fixture::new().await;
++    let foreign_task = Uuid::new_v4();
++    let worker = Uuid::new_v4();
++    f.broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "foreign-task",
++                0,
++                Command::CreateTask {
++                    id: foreign_task,
++                    mission_id: f.mission,
++                    spec: TaskSpec {
++                        dependencies: vec![],
++                        objective: "foreign scoped task".into(),
++                        input: GitInput {
++                            repository: f.root.join("store").to_str().unwrap().into(),
++                            commit: f.base.clone(),
++                            path: "SPEC.md".into(),
++                            digest: artifacts::sha256(b"produce exact src/result"),
++                        },
++                        acceptance: vec!["retain scope".into()],
++                        deliverables: vec!["src/result".into()],
++                        write_scope: vec!["src".into()],
++                    },
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let spec = f
++        .broker
++        .snapshot(&f.owner, SnapshotQuery::Task(foreign_task))
++        .await
++        .unwrap()
++        .data["spec_digest"]
++        .as_str()
++        .unwrap()
++        .to_owned();
++    f.broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "foreign-admit",
++                1,
++                Command::AdmitTask {
++                    task_id: foreign_task,
++                    spec_digest: spec,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    f.broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "foreign-grant",
++                0,
++                Command::GrantCredential {
++                    credential_id: Uuid::new_v4(),
++                    principal_id: worker,
++                    role: Role::Worker,
++                    mission_id: Some(f.mission),
++                    task_id: Some(foreign_task),
++                    generation: Some(1),
++                    token_hash: token_hash("foreign-worker"),
++                    expires_in_seconds: 30,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let assigned = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "foreign-assign",
++                2,
++                Command::AssignAttempt {
++                    task_id: foreign_task,
++                    worker_id: worker,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let attempt = assigned.attempt_id.unwrap();
++    kernel::Kernel::new(f.broker.clone())
++        .require_supervised_verification(&f.owner, foreign_task)
++        .await
++        .unwrap();
++    let mailbox = mailbox::MailboxService::new(f.broker.clone());
++    let input = Uuid::new_v4();
++    let episode = f.admission;
++    mailbox.execute("foreign-worker",mail(f.epoch,"foreign-capture",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":attempt,"purpose":"implementation","limit":4}))).await.unwrap();
++    let packet = mailbox
++        .record("foreign-worker", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    mailbox.execute("foreign-worker",mail(f.epoch,"foreign-episode",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "foreign-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let root = f.root.join("foreign-episode-native");
++    std::fs::create_dir(&root).unwrap();
++    let legacy_root = f.root.join("foreign-collision-legacy");
++    std::fs::create_dir(&legacy_root).unwrap();
++    let identity = gateway::RuntimeIdentity {
++        runtime_kind: "unregistered-collision-native".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "actual-child-process".into(),
++        environment: "model-free".into(),
++    };
++    let episode_gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    episode_gateway
++        .prepare(
++            "foreign-worker",
++            episode_runtime::StartRequest {
++                id: Uuid::new_v4(),
++                episode,
++                execution: execution.id,
++                runtime: identity.clone(),
++                argv: vec!["/bin/true".into()],
++            },
++        )
++        .await
++        .unwrap();
++    let mut legacy_identity = identity.clone();
++    legacy_identity.thread_store = legacy_root.to_str().unwrap().into();
++    let legacy = gateway::Gateway::new(f.broker.clone());
++    let binding = Uuid::new_v4();
++    let operation = Uuid::new_v4();
++    legacy
++        .bind(&f.owner, binding, f.admission, &legacy_identity, None, 1)
++        .await
++        .unwrap();
++    legacy
++        .prepare(
++            &f.owner,
++            gateway::Intent {
++                id: operation,
++                admission_id: f.admission,
++                binding_id: binding,
++                generation: 1,
++                kind: gateway::OperationKind::Create,
++                arguments: serde_json::json!({}),
++            },
++        )
++        .await
++        .unwrap();
++    let bridge = temporal::Bridge::new(f.broker.clone());
++    let reference = bridge
++        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    let fallback = std::sync::Arc::new(temporal::GatewayOperationDriver::new(
++        bridge.clone(),
++        legacy.clone(),
++        f.owner.clone(),
++        Box::new(gateway_fault::FaultRuntime::new(
++            legacy_root,
++            gateway_fault::Fault::None,
++            legacy_identity,
++        )),
++    ));
++    let driver = episode_runtime::EpisodeOperationDriver::new(
++        episode_gateway,
++        f.owner.clone(),
++        Box::new(UnregisteredEpisodeEffect(
++            gateway_fault::FaultRuntime::new(root, gateway_fault::Fault::None, identity),
++            None,
++        )),
++        Some(fallback),
++    );
++    let progress = driver
++        .drive(&reference, temporal::WaitRef::admission(f.admission))
++        .await
++        .unwrap();
++    assert_eq!(progress.admission_id, Some(f.admission));
++    assert_eq!(
++        progress.journals,
++        vec![(operation, gateway::OperationState::Confirmed)]
++    );
++    assert_eq!(
++        driver
++            .drive(&reference, temporal::WaitRef::episode(episode))
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::Unauthorized
++    );
++    assert_eq!(
++        supervisor
++            .inspect(&f.owner, execution.id)
++            .await
++            .unwrap()
++            .state,
++        supervisor::ExecutionState::Ready
++    );
++    supervisor.cancel(&f.owner, execution.id).await.unwrap();
++    supervisor.release(&f.owner, execution.id).await.unwrap();
++    drop(driver);
++    f.finish().await;
++}
+--- review8/crates/team-control-plane/tests/assembled_vertical.rs
++++ review9/crates/team-control-plane/tests/assembled_vertical.rs
+@@ -362,7 +362,9 @@
+         .unwrap();
+     f.finish().await;
+     assert!(
+-        progress.waits.contains(&episode),
++        progress
++            .waits
++            .contains(&temporal::WaitRef::episode(episode)),
+         "canonical Mission workflow must expose its real planning episode journal to registered OperationDriver"
+     );
+ }
+@@ -2155,7 +2157,11 @@
+     let driver = std::sync::Arc::new(episode_runtime::EpisodeOperationDriver::new(
+         episode_gateway,
+         bearer.clone(),
+-        Box::new(native),
++        if std::env::var("ASSEMBLED_DROP_USAGE").ok().as_deref() == Some("1") {
++            Box::new(UnmeasuredNativeReply { native })
++        } else {
++            Box::new(native)
++        },
+         Some(fallback),
+     ));
+     let activities =
+@@ -6741,3 +6747,389 @@
+         verified
+     }).await.expect("fresh independent same-candidate Verifier phase failed")
+ }
++
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn real_sdk_paused_colliding_waits_resume_and_registered_unknown_usage_cancel() {
++    use base64::Engine;
++    use temporalio_client::{
++        Client, ClientOptions, Connection, WorkflowExecutionInfo, WorkflowFetchHistoryOptions,
++        envconfig::LoadClientConfigProfileOptions,
++    };
++    let f = Fixture::new().await;
++    let out = evidence_directory("sdk-paused-collision");
++    let mailbox = mailbox::MailboxService::new(f.broker.clone());
++    let input = Uuid::new_v4();
++    let episode = f.admission;
++    mailbox.execute("assembled-worker",mail(f.epoch,"sdk-collision-capture",serde_json::json!({"kind":"capture_input","mission":f.mission,"id":input,"attempt":f.attempt,"purpose":"implementation","limit":4}))).await.unwrap();
++    let packet = mailbox
++        .record("assembled-worker", mailbox::RecordKind::Input, input)
++        .await
++        .unwrap();
++    mailbox.execute("assembled-worker",mail(f.epoch,"sdk-collision-admit",serde_json::json!({"kind":"admit_episode","mission":f.mission,"id":episode,"attempt":f.attempt,"purpose":"implementation","input_packet":input,"input_digest":packet["digest"]}))).await.unwrap();
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let legacy_root = f.root.join("sdk-collision-legacy");
++    let native_root = f.root.join("sdk-collision-episode");
++    std::fs::create_dir(&legacy_root).unwrap();
++    std::fs::create_dir(&native_root).unwrap();
++    let identity = RuntimeIdentity {
++        runtime_kind: "kernel16-owned-os".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: legacy_root.to_str().unwrap().into(),
++        endpoint: "owned-local-subprocess".into(),
++        environment: "bwrap-private-git".into(),
++    };
++    let mut episode_identity = identity.clone();
++    episode_identity.runtime_kind = "kernel16-inprocess-native".into();
++    episode_identity.thread_store = native_root.to_str().unwrap().into();
++    let episode_gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    let episode_operation = Uuid::new_v4();
++    episode_gateway
++        .prepare(
++            "assembled-worker",
++            episode_runtime::StartRequest {
++                id: episode_operation,
++                episode,
++                execution: execution.id,
++                runtime: episode_identity.clone(),
++                argv: vec![
++                    "/bin/sh".into(),
++                    "-c".into(),
++                    "printf actual-resumed > src/live; while :; do sleep 0.02; done".into(),
++                ],
++            },
++        )
++        .await
++        .unwrap();
++    let binding = Uuid::new_v4();
++    let legacy_operation = Uuid::new_v4();
++    let create = Intent {
++        id: legacy_operation,
++        admission_id: f.admission,
++        binding_id: binding,
++        generation: 1,
++        kind: OperationKind::Create,
++        arguments: serde_json::json!({}),
++    };
++    let bridge = Bridge::new(f.broker.clone());
++    let reference = bridge
++        .register(&f.owner, AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    kernel::Kernel::new(f.broker.clone())
++        .pause(
++            &f.owner,
++            f.mission,
++            "sdk-collision-pause",
++            0,
++            true,
++            "observe durable paused Prepared progress",
++        )
++        .await
++        .unwrap();
++    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { connection.await.unwrap() });
++    let principal: Uuid = db
++        .query_one(
++            "SELECT principal_id FROM credentials WHERE token_hash=$1",
++            &[&token_hash(&f.owner)],
++        )
++        .await
++        .unwrap()
++        .get(0);
++    let queue = format!("sdk-collision-{}", f.epoch);
++    let log = std::fs::File::create(f.root.join("sdk-collision.log")).unwrap();
++    let process = Process::new(std::env::current_exe().unwrap())
++        .args([
++            "--exact",
++            "assembled_sdk_worker",
++            "--ignored",
++            "--nocapture",
++        ])
++        .env_clear()
++        .env("PATH", "/usr/bin:/bin")
++        .env(
++            "TEMPORAL_ADDRESS",
++            std::env::var("TEMPORAL_ADDRESS").unwrap(),
++        )
++        .env("ASSEMBLED_DSN", &f.dsn)
++        .env("ASSEMBLED_EPOCH", f.epoch.to_string())
++        .env("ASSEMBLED_BEARER", &f.owner)
++        .env("ASSEMBLED_PRINCIPAL", principal.to_string())
++        .env("ASSEMBLED_QUEUE", &queue)
++        .env("ASSEMBLED_RUNTIME_ROOT", &legacy_root)
++        .env(
++            "ASSEMBLED_IDENTITY",
++            serde_json::to_string(&identity).unwrap(),
++        )
++        .env(
++            "ASSEMBLED_PREPARE",
++            serde_json::json!({"admission":f.admission,"binding":binding,"create":create})
++                .to_string(),
++        )
++        .env("ASSEMBLED_WORKSPACES", f.root.join("workspaces"))
++        .env("ASSEMBLED_EPISODE_RUNTIME_ROOT", &native_root)
++        .env(
++            "ASSEMBLED_EPISODE_IDENTITY",
++            serde_json::to_string(&episode_identity).unwrap(),
++        )
++        .env("ASSEMBLED_DROP_USAGE", "1")
++        .stdin(Stdio::null())
++        .stdout(Stdio::from(log.try_clone().unwrap()))
++        .stderr(Stdio::from(log))
++        .process_group(0)
++        .spawn()
++        .unwrap();
++    let mut child = OwnedWorker(process);
++    let deadline = std::time::Instant::now() + Duration::from_secs(8);
++    while db
++        .query_one(
++            "SELECT count(*) FROM kernel_transports WHERE process_identity->>'pid'=$1",
++            &[&child.0.id().to_string()],
++        )
++        .await
++        .unwrap()
++        .get::<_, i64>(0)
++        < 2
++    {
++        assert!(child.0.try_wait().unwrap().is_none());
++        assert!(std::time::Instant::now() < deadline);
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    }
++    let (conn, options) =
++        ClientOptions::load_from_config(LoadClientConfigProfileOptions::default()).unwrap();
++    let client = Client::new(Connection::connect(conn).await.unwrap(), options).unwrap();
++    let wake = bridge
++        .pending_wakeups(&f.owner, &reference)
++        .await
++        .unwrap()
++        .remove(0);
++    bridge
++        .deliver(&f.owner, &client, &queue, &wake)
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + Duration::from_secs(20);
++    loop {
++        let progress = bridge.progress(&f.owner, &reference).await.unwrap();
++        let run = progress.observed.unwrap().run_id;
++        let history = WorkflowExecutionInfo::builder()
++            .namespace("default")
++            .workflow_id(&reference.workflow_id)
++            .run_id(&run)
++            .build()
++            .bind_untyped(client.clone())
++            .fetch_history(WorkflowFetchHistoryOptions::default())
++            .to_json()
++            .await
++            .unwrap();
++        let value: serde_json::Value = serde_json::from_slice(&history).unwrap();
++        let complete = value["events"]
++            .as_array()
++            .unwrap()
++            .iter()
++            .filter(|event| event["event_type"] == 12)
++            .any(|event| {
++                event["attributes"]["ActivityTaskCompletedEventAttributes"]["result"]["payloads"]
++                    .as_array()
++                    .is_some_and(|payloads| {
++                        payloads.iter().any(|payload| {
++                            let Some(data) = payload["data"].as_str() else {
++                                return false;
++                            };
++                            let Ok(bytes) = base64::engine::general_purpose::STANDARD.decode(data)
++                            else {
++                                return false;
++                            };
++                            let Ok(p) = serde_json::from_slice::<serde_json::Value>(&bytes) else {
++                                return false;
++                            };
++                            p["operations"].as_array().is_some_and(|operations| {
++                                operations.iter().any(|o| {
++                                    o["episode_id"] == episode.to_string()
++                                        && o["limitation"] == "episode_dispatch_fenced"
++                                }) && operations.iter().any(|o| {
++                                    o["admission_id"] == f.admission.to_string()
++                                        && o["limitation"] == "gateway_dispatch_fenced"
++                                })
++                            })
++                        })
++                    })
++            });
++        if complete {
++            retain_bytes(
++                &out.join("paused-completed-activity-history.json"),
++                &history,
++            );
++            break;
++        }
++        assert!(
++            std::time::Instant::now() < deadline,
++            "actual SDK paused typed waits did not complete guarded Activity"
++        );
++        tokio::time::sleep(Duration::from_millis(50)).await;
++    }
++    assert!(std::fs::read_dir(&native_root).unwrap().next().is_none());
++    assert!(!execution.path.join("src/live").exists());
++    kernel::Kernel::new(f.broker.clone())
++        .pause(
++            &f.owner,
++            f.mission,
++            "sdk-collision-resume",
++            1,
++            false,
++            "resume same durable workflow",
++        )
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + Duration::from_secs(15);
++    loop {
++        let row = db
++            .query_one(
++                "SELECT state,usage FROM episode_runtime_operations WHERE id=$1",
++                &[&episode_operation],
++            )
++            .await
++            .unwrap();
++        if row.get::<_, String>(0) == "confirmed" && execution.path.join("src/live").exists() {
++            assert_eq!(
++                row.get::<_, serde_json::Value>(1),
++                serde_json::json!({"kind":"unknown"})
++            );
++            break;
++        }
++        assert!(std::time::Instant::now() < deadline);
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    }
++    assert_eq!(
++        Gateway::new(f.broker.clone())
++            .read(&f.owner, legacy_operation)
++            .await
++            .unwrap()
++            .state,
++        OperationState::Confirmed
++    );
++    let binding_rows = db
++        .query(
++            "SELECT evidence FROM episode_runtime_evidence WHERE operation_id=$1 ORDER BY id",
++            &[&episode_operation],
++        )
++        .await
++        .unwrap()
++        .iter()
++        .map(|r| r.get::<_, serde_json::Value>(0))
++        .collect::<Vec<_>>();
++    let workspace = db
++        .query_one(
++            "SELECT state,init_process,manifest FROM supervised_workspaces WHERE id=$1",
++            &[&execution.id],
++        )
++        .await
++        .unwrap();
++    retain_bytes(&out.join("binding-before-cancel.json"),&serde_json::to_vec(&serde_json::json!({"evidence":binding_rows,"state":workspace.get::<_,String>(0),"init":workspace.get::<_,Option<serde_json::Value>>(1),"manifest":workspace.get::<_,serde_json::Value>(2)})).unwrap());
++    retain_native(&native_root, &out, "binding-diagnostic");
++    let cancel = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "sdk-collision-cancel",
++                3,
++                Command::CancelAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                    reason:
++                        "registered native effect is independently bound; usage remains unknown"
++                            .into(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + Duration::from_secs(8);
++    let mut cancel_revision = cancel.revision;
++    let reconciled = loop {
++        let result = f
++            .broker
++            .execute(
++                &f.owner,
++                envelope(
++                    f.epoch,
++                    &format!("sdk-collision-reconcile-{}", Uuid::new_v4()),
++                    cancel_revision,
++                    Command::ReconcileAttempt {
++                        task_id: f.task,
++                        attempt_id: f.attempt,
++                    },
++                ),
++            )
++            .await
++            .unwrap();
++        cancel_revision = result.revision;
++        if result.disposition == "cancelled" {
++            break result;
++        }
++        if std::time::Instant::now() >= deadline {
++            retain_bytes(&out.join("binding-failed-cancel.json"),&serde_json::to_vec(&serde_json::json!({"reconcile":result,"workspace":supervisor.inspect(&f.owner,execution.id).await.unwrap(),"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap());
++            panic!("registered bound Stop must complete cancel without claiming known usage");
++        }
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    };
++    assert_eq!(
++        supervisor
++            .release(&f.owner, execution.id)
++            .await
++            .unwrap_err()
++            .code,
++        ErrorCode::DependencyUnmet
++    );
++    let deadline = std::time::Instant::now() + Duration::from_secs(8);
++    while supervisor
++        .result(&f.owner, execution.id)
++        .await
++        .unwrap()
++        .is_none()
++    {
++        assert!(std::time::Instant::now() < deadline);
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    }
++    let status = kernel::Kernel::new(f.broker.clone())
++        .status(&f.owner)
++        .await
++        .unwrap();
++    assert_eq!(
++        f.broker
++            .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++            .await
++            .unwrap()
++            .data["used_capacity"],
++        1
++    );
++    retain_bytes(&out.join("registered-unknown-usage-cancel.json"),&serde_json::to_vec(&serde_json::json!({"cancel":reconciled,"status":status,"result":supervisor.result(&f.owner,execution.id).await.unwrap()})).unwrap());
++    child.0.kill().unwrap();
++    let terminal = child.0.wait().unwrap();
++    retain_bytes(
++        &out.join("sdk-terminal.json"),
++        &serde_json::to_vec(
++            &serde_json::json!({"pid":child.0.id(),"waited":true,"terminal":terminal.to_string()}),
++        )
++        .unwrap(),
++    );
++    retain_bytes(
++        &out.join("sdk.log"),
++        &std::fs::read(f.root.join("sdk-collision.log")).unwrap(),
++    );
++    drop(db);
++    f.finish().await;
++}
+--- review8/crates/team-control-plane/tests/mailbox_delivery.rs
++++ review9/crates/team-control-plane/tests/mailbox_delivery.rs
+@@ -834,7 +834,8 @@
+         ));
+         let queued_driver = driver.clone();
+         let reference = _workflow.clone();
+-        let pending = tokio::spawn(async move { queued_driver.drive(&reference, admission).await });
++        let pending =
++            tokio::spawn(async move { queued_driver.drive(&reference, admission.into()).await });
+         let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+         while driver.queued() != 1 {
+             assert!(std::time::Instant::now() < deadline);
+--- review8/crates/team-control-plane/tests/temporal.rs
++++ review9/crates/team-control-plane/tests/temporal.rs
+@@ -402,12 +402,12 @@
+         f.owner.clone(),
+         Box::new(runtime),
+     );
+-    let observed = driver.drive(&next, admission).await.unwrap();
++    let observed = driver.drive(&next, admission.into()).await.unwrap();
+     assert_eq!(
+         observed.journals[0],
+         (intent.id, OperationState::OutcomeUnknown)
+     );
+-    let again = driver.drive(&next, admission).await.unwrap();
++    let again = driver.drive(&next, admission.into()).await.unwrap();
+     assert_eq!(again.journals[0], observed.journals[0]);
+     let invocations = std::fs::read_dir(&directory)
+         .unwrap()
+@@ -510,7 +510,11 @@
+     );
+     f.bridge.close(&f.owner, &next).await.unwrap();
+     assert_eq!(
+-        driver.drive(&next, admission).await.unwrap_err().code,
++        driver
++            .drive(&next, admission.into())
++            .await
++            .unwrap_err()
++            .code,
+         ErrorCode::StaleGeneration,
+         "terminal driver cannot execute prepared operations"
+     );
+@@ -758,7 +762,8 @@
+     ));
+     let childdriver = driver.clone();
+     let reference = r.clone();
+-    let pending = tokio::spawn(async move { childdriver.drive(&reference, admission).await });
++    let pending =
++        tokio::spawn(async move { childdriver.drive(&reference, admission.into()).await });
+     for _ in 0..100 {
+         if driver.queued() == 1 {
+             break;

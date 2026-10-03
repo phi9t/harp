@@ -1,0 +1,26 @@
+{
+  "session": 32923,
+  "exit": 0,
+  "scope": "fullrepositorygate",
+  "cleanup_records": [
+    "cleanup/cleanup.json",
+    "cleanup/monitor-memory-134217728-read-error-false/cleanup.json",
+    "cleanup/issuer-expiry/cleanup.json",
+    "cleanup/historical/cleanup.json",
+    "cleanup/review580-crash/cleanup.json",
+    "cleanup/review580-fast-crash/cleanup.json",
+    "cleanup/overflow/cleanup.json",
+    "cleanup/monitor-memory-1048576-read-error-false/cleanup.json",
+    "cleanup/monitor-memory-1048576-read-error-true/cleanup.json",
+    "cleanup/merged-journals/cleanup.json",
+    "cleanup/known/cleanup.json",
+    "cleanup/legacy-quarantined/cleanup.json",
+    "cleanup/review584-crash-rotate/cleanup.json",
+    "cleanup/legacy-running/cleanup.json",
+    "cleanup/unknown-usage/cleanup.json",
+    "cleanup/unknown-effect/cleanup.json",
+    "cleanup/kernel16-binary-output-f6aeb853-641d-4710-817c-7915f80035bc/cleanup.json"
+  ],
+  "source_commit": "9055b9976d429229e5d42b2e86eb04dbc30da5bf",
+  "all48_committed_git_blobs_match_freeze": true
+}

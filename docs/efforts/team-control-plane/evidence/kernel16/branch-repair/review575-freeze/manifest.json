@@ -1,0 +1,285 @@
+{
+  "base": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "source_file_count": 48,
+  "changed_file_count": 7,
+  "source": [
+    {
+      "path": "crates/team-control-plane/Cargo.lock",
+      "sha256": "acf6034494c031493bc0f2198ffac3a5c4ec3f5493c6e315a2cd83f31ff3a905",
+      "bytes": 85457
+    },
+    {
+      "path": "crates/team-control-plane/Cargo.toml",
+      "sha256": "b885f2cc61d11a62736659cbd5c20b0ba537204f5201792ed40752689ce5cecb",
+      "bytes": 876
+    },
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "f7868b4616b2f200f91dfdda72d3a15a155a9026b544553d41f99a660eb0b97a",
+      "bytes": 13507
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0001.sql",
+      "sha256": "e75b38d1184ab809493062659a851d5dc1819fcd4c3634c306817e1051bdd3ce",
+      "bytes": 6830
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0002.sql",
+      "sha256": "48211d540602d7096ce23857dfb71122650aea84f344dcaf2a90a0a8f4ed8fbd",
+      "bytes": 2497
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0003.sql",
+      "sha256": "48640057f21fa13fcda699ad295b76eb184402b296a5dc0562c3487602e03dfb",
+      "bytes": 1715
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0004.sql",
+      "sha256": "468961daf8347d4bf4c34ec3fa908734b3d163b3009d3279df7d8cb140d7b1cc",
+      "bytes": 2931
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0005.sql",
+      "sha256": "90f5cc7cfead83d233e088f029a4a09a6f7ea796cced4b65d29138993a10c66f",
+      "bytes": 1738
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0006.sql",
+      "sha256": "263076cbc1dbd0e1801e7867423aee942bb4072717d3630dc84e1cb033451c85",
+      "bytes": 11782
+    },
+    {
+      "path": "crates/team-control-plane/migrations/0007.sql",
+      "sha256": "b9b1d43a2fabb2fd7d8a675e856ecd764d95c86178164eb9caab65c9ebd48742",
+      "bytes": 13543
+    },
+    {
+      "path": "crates/team-control-plane/src/admission.rs",
+      "sha256": "93477fa608ddae6cf78094baa4a906ff4a130eef4a7647a2ac2896109b2ed40c",
+      "bytes": 19619
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "070cd3b588aaeb29a6c72656f3d16d563eea583676acc5b9c7585f34166baa04",
+      "bytes": 52164
+    },
+    {
+      "path": "crates/team-control-plane/src/auth.rs",
+      "sha256": "5ee31767eabdcb15f85b2bcb0c870baa56ac336d6a11cb55552f4f8fcc5c7594",
+      "bytes": 6455
+    },
+    {
+      "path": "crates/team-control-plane/src/domain.rs",
+      "sha256": "9ec569c71730610e1e0617cb0ab5e8c9a80152a9eaf3877a25489148e0b52966",
+      "bytes": 3760
+    },
+    {
+      "path": "crates/team-control-plane/src/episode_runtime.rs",
+      "sha256": "9ab38286c93ac0a8aca7b19d1d99f624698f8f5d1e46da674bbfd585e613618a",
+      "bytes": 42667
+    },
+    {
+      "path": "crates/team-control-plane/src/gateway.rs",
+      "sha256": "711dbcabb48f9a8e8bbde2a2d6ffed858a472186b8aae467b1b90b1d0ccc1de1",
+      "bytes": 36901
+    },
+    {
+      "path": "crates/team-control-plane/src/http.rs",
+      "sha256": "270e791c5862dee192006a1e6ab15148c67999756772e29bedcc34ac5049ad92",
+      "bytes": 9410
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel.rs",
+      "sha256": "b926b979b3ed099bd23e6f45f2ced18df8134282a23c70ef3da23cee6ae154e7",
+      "bytes": 21565
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel_usage.rs",
+      "sha256": "b96d897d1d25ad564e870b6f4dd6067ef5f2174f6a67261e9cf7f17a87b0cd79",
+      "bytes": 6657
+    },
+    {
+      "path": "crates/team-control-plane/src/lib.rs",
+      "sha256": "7cdfdc948f900c107f4691cf309f13af8a43b6d031c9bfd56735dd6cb05661fa",
+      "bytes": 367
+    },
+    {
+      "path": "crates/team-control-plane/src/mailbox.rs",
+      "sha256": "947214efc2e8acec94909c2ea9ebfd9d6fa5809de438cde9e76871dd8218e877",
+      "bytes": 103998
+    },
+    {
+      "path": "crates/team-control-plane/src/main.rs",
+      "sha256": "fe6dc49d8dbea8b0f792d0d2a887e6d8a4a12f53f6dfcb24f9d1e9fe7f1db3cd",
+      "bytes": 14304
+    },
+    {
+      "path": "crates/team-control-plane/src/mcp.rs",
+      "sha256": "668be9b2c8d6bdc656f2785561c69f650138d1a28dca7e24746131f34190e7bc",
+      "bytes": 20937
+    },
+    {
+      "path": "crates/team-control-plane/src/model_free_runtime.rs",
+      "sha256": "828bcb01c33aa3e22c2a96e86a4dd8f9ca6b86368fd55dbc1d2ef630129ef6d2",
+      "bytes": 28076
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "1f82186552c3cab463de92e9adaabfee432d4730dd4573c2b8eb1ea37fc13c68",
+      "bytes": 16071
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "750454981c0b6ab9c8db7d6ced2cbca73f7df9fa89effbfb8e80b15f6c0e0b60",
+      "bytes": 114118
+    },
+    {
+      "path": "crates/team-control-plane/src/temporal.rs",
+      "sha256": "f9c2c136d335edc9f36c207db7a28316db4d142dc7284c0c566b5f87cc1677a6",
+      "bytes": 50413
+    },
+    {
+      "path": "crates/team-control-plane/src/validation.rs",
+      "sha256": "5b1d7876d513341a5aeb5fd72dd9ef30902b47b2cdc7530ac94d96bd907d9d83",
+      "bytes": 4356
+    },
+    {
+      "path": "crates/team-control-plane/tests/artifacts.rs",
+      "sha256": "4c20334ffb13d46211d85ad4db0b39b7806a7c4e090ae30fb38999838c308862",
+      "bytes": 62847
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_cancellation.rs",
+      "sha256": "d7baf7f94d18d1f58dc0f2bee33508eb41f528354e8cb16d6e4593ddbcf409a9",
+      "bytes": 129975
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_capacity.rs",
+      "sha256": "4d905462e47b4ebb461adb2078c76c5ffe4f61b3ff46185c96dea7f66275958d",
+      "bytes": 32647
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_kernel.rs",
+      "sha256": "c9aeb931acb26856b67aae38cc00853e338d1e73f2ab168dae8449d1ae3da557",
+      "bytes": 23348
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_operator.rs",
+      "sha256": "808a8179408c8f2763de646f78f3c1de647e952424f11f5d885bb0d06f86fa4b",
+      "bytes": 48897
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_vertical.rs",
+      "sha256": "dee242f22518b2beea5c9b4e1c92d534b30802321e5d7da22eec0a05a2ed36b0",
+      "bytes": 333531
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/fault_runtime.py",
+      "sha256": "138da8241dfdcbc03433d517d77b9a8959eda61b241d6cc35c7aa93842cb33e2",
+      "bytes": 1579
+    },
+    {
+      "path": "crates/team-control-plane/tests/fixtures/mailbox_runtime.py",
+      "sha256": "8a241bbf16db24d3b8d8992845329801a1dd71899c4402d9f119fa460877a17e",
+      "bytes": 2343
+    },
+    {
+      "path": "crates/team-control-plane/tests/gateway.rs",
+      "sha256": "74845568a703f3bac9866d5c18cdb9938a3f2489bcbdb9766bffc004ed5c54a0",
+      "bytes": 33599
+    },
+    {
+      "path": "crates/team-control-plane/tests/kernel.rs",
+      "sha256": "3ca7ba0c9c53b2a892f69bf5f7fac20bd3e23f9a220dd1df0f8072e57a57f97c",
+      "bytes": 41285
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox.rs",
+      "sha256": "db3fdf36ec163a8eaf70cb0e0a8c6efab927a7ad5784723a807c281fb1baa5d5",
+      "bytes": 50467
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_artifacts.rs",
+      "sha256": "4b64302535c79c46a1b1e97d71251d0f74cc3f6d6b101bce525b29dfef055e66",
+      "bytes": 42045
+    },
+    {
+      "path": "crates/team-control-plane/tests/mailbox_delivery.rs",
+      "sha256": "d0264dc9dadb784649f5fad0dd9cf58db248d128f4cf4a9f25a95ee0e3e570c3",
+      "bytes": 48039
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-postgres.sh",
+      "sha256": "af163dec7040ab6ed54df40ad9b0495979b37108d62d863c540907ef8b7cdc48",
+      "bytes": 2049
+    },
+    {
+      "path": "crates/team-control-plane/tests/run-temporal.sh",
+      "sha256": "f9733c85171f5fd8dc0c479bf508eb6454c17c20cdea287b65f061963cc34340",
+      "bytes": 1335
+    },
+    {
+      "path": "crates/team-control-plane/tests/supervisor.rs",
+      "sha256": "6bf8461a3fdb85d2b6e45f672634bf22f551c56b169d084896683efd24f692da",
+      "bytes": 43770
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/assembled.rs",
+      "sha256": "db79340520fb679ce3a2876e635a1c264f2bbc39d6291f2031c72dabf53ca963",
+      "bytes": 11170
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/episode_native.rs",
+      "sha256": "0b7115f3578d6c9c7db89b422aba3bed5286b9394ef7ae71b83f776271a137ac",
+      "bytes": 148
+    },
+    {
+      "path": "crates/team-control-plane/tests/support/gateway_fault.rs",
+      "sha256": "517e3d178b60c82598d9f5674d86250075ce93a0921078e6182093c922d4e41d",
+      "bytes": 5053
+    },
+    {
+      "path": "crates/team-control-plane/tests/temporal.rs",
+      "sha256": "ff22a90495d131bed0e1fa0ab94bded06fc77f1e409da42ca9c1aa3b9516a510",
+      "bytes": 52189
+    }
+  ],
+  "preimages": [
+    {
+      "path": "crates/team-control-plane/README.md",
+      "sha256": "49774778894c1078212cf3802dd10c0fff95bc3519b3a46fa0b31c617f7bca52",
+      "bytes": 12548
+    },
+    {
+      "path": "crates/team-control-plane/src/artifacts.rs",
+      "sha256": "e6687922802a5f18b6fb40bda9505616040f1e42affd1464e585eb03eed7dc3a",
+      "bytes": 51180
+    },
+    {
+      "path": "crates/team-control-plane/src/kernel.rs",
+      "sha256": "182039cff58ab1b32f7a73c5a9df3f03cbd338437eca102eadf171ae1078342d",
+      "bytes": 20927
+    },
+    {
+      "path": "crates/team-control-plane/src/storage.rs",
+      "sha256": "68222e8420154ac22b86c80ba821faf21c16935afed6782b5849caaf7df30021",
+      "bytes": 15858
+    },
+    {
+      "path": "crates/team-control-plane/src/supervisor.rs",
+      "sha256": "c278fd824788eedf3f6ba0c32a15210a74c813ef4618f229b3c45921e57beb7d",
+      "bytes": 113627
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_operator.rs",
+      "sha256": "865e79a2e3549df82b37eaf0b8c14ed8db4f136e601464ab7fcf391441b89d2e",
+      "bytes": 33883
+    },
+    {
+      "path": "crates/team-control-plane/tests/assembled_vertical.rs",
+      "sha256": "dda56a06c522aacfb0195ea52512ecf2d5332550770b7377c5946db0e2da2a79",
+      "bytes": 327959
+    }
+  ],
+  "patch_sha256": "23ef97df592c409cff0aebb8b8c6c5d4407c489acac7655b1c33a8b9f5757f58"
+}

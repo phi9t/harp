@@ -1,0 +1,22 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review575-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.22s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+test successful_invalid_utf8_verifier_output_supports_verify_and_accept ... FAILED
+
+failures:
+
+---- successful_invalid_utf8_verifier_output_supports_verify_and_accept stdout ----
+
+thread 'successful_invalid_utf8_verifier_output_supports_verify_and_accept' (3100108) panicked at tests/assembled_vertical.rs:3783:18:
+successful invalid UTF8 output must Verify using exact decoded raw bytes: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    successful_invalid_utf8_verifier_output_supports_verify_and_accept
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 52 filtered out; finished in 5.14s
+
+error: test failed, to rerun pass `--test assembled_vertical`

@@ -1,0 +1,1380 @@
+diff --git a/crates/team-control-plane/README.md b/crates/team-control-plane/README.md
+index 94f096497681a089bdb73310109e7b72c631e118..344a060ce3faf846551dee20b976cf2717347e1b 100644
+--- a/crates/team-control-plane/README.md
++++ b/crates/team-control-plane/README.md
+@@ -203,3 +203,23 @@ are ambiguous and rejected. The decoded original bytes must match the trusted
+ monitor digest; command, candidate, exit status and authority bindings still apply.
+ Monitor finalization hashes every raw log byte incrementally with a fixed buffer.
+ Unreadable logs or incomplete stop evidence cannot establish releasable success.
++
++An original unbound Attempt reservation and separately owned continuation slots
++reconcile independently. Stopped continuation history does not consume the
++original slot; unresolved effects, usage and execution checkpoints still hold
++capacity, and cumulative admission budgets are never refunded.
++
++Authenticated reconciliation/release can finalize a launched episode after its
++original monitor crashes. It requires an immutable exact launch/Stop observation,
++fresh certified PID1 finalization, terminated monitor and launcher thread groups,
++known effects/usage, and a stable securely opened retained log. Recovery records
++`completion.kind=recovered_stop`, the original execution/monitor/epoch, and the
++actual finalizer/current epoch/stop observation. Exit and signal remain unknown;
++this result cannot pass verification or acceptance. Historical results without
++`completion` retain original monitor-wait semantics. Result insertion is immutable
++and preserves the stored winner across repeated or concurrent finalization.
++
++Takeover securely classifies retained raw `.log` files without a size limit or
++whole-file allocation. Native JSON receipts and bootstrap `.info` metadata retain
++the 1 MiB bound; unsafe files, incomplete inventory and active work still refuse
++transfer.
+diff --git a/crates/team-control-plane/src/artifacts.rs b/crates/team-control-plane/src/artifacts.rs
+index f11039b084e48bd92df41b2cc394cdc7e93a803a..f00a9ad6121e3e63ddd276267194e13e8b84a241 100644
+--- a/crates/team-control-plane/src/artifacts.rs
++++ b/crates/team-control-plane/src/artifacts.rs
+@@ -578,6 +578,7 @@ impl ArtifactService {
+                 || result.candidate.as_ref() != Some(&report.candidate)
+                 || manifest.candidate.as_ref() != Some(&report.candidate)
+                 || result.argv != check.command
++                || result.completion != crate::supervisor::CompletionProvenance::MonitorWait
+                 || result.exit_code != Some(check.exit_code)
+                 || result.signal.is_some()
+                 || !result.namespace_stopped
+diff --git a/crates/team-control-plane/src/model_free_runtime.rs b/crates/team-control-plane/src/model_free_runtime.rs
+index 654b59550cf047fd9d3db3e1149ec66c0f61d9b9..95cac43cbe781adddbd5471467cab520945d5c82 100644
+--- a/crates/team-control-plane/src/model_free_runtime.rs
++++ b/crates/team-control-plane/src/model_free_runtime.rs
+@@ -415,19 +415,22 @@ pub(crate) fn entries(directory: &std::fs::File) -> crate::Result<Vec<std::ffi::
+     }
+     Ok(entries)
+ }
+-pub(crate) fn native_file(
++pub(crate) fn secure_file(
+     directory: &std::fs::File,
+     name: &std::ffi::OsStr,
+-) -> crate::Result<Vec<u8>> {
++) -> crate::Result<std::fs::File> {
+     use std::{
+         ffi::CString,
+-        io::Read,
+         os::{
+             fd::{AsRawFd, FromRawFd},
+             unix::{ffi::OsStrExt, fs::MetadataExt},
+         },
+     };
+     let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
++    if name.as_bytes().contains(&b'/') || name.as_bytes().is_empty() || name == "." || name == ".."
++    {
++        return Err(rejected());
++    }
+     let name = CString::new(name.as_bytes()).map_err(|_| rejected())?;
+     let raw = unsafe {
+         libc::openat(
+@@ -445,10 +448,21 @@ pub(crate) fn native_file(
+         || metadata.uid() != unsafe { libc::geteuid() }
+         || metadata.nlink() != 1
+         || metadata.mode() & 0o022 != 0
+-        || metadata.len() > 1_048_576
+     {
+         return Err(rejected());
+     }
++    Ok(file)
++}
++pub(crate) fn native_file(
++    directory: &std::fs::File,
++    name: &std::ffi::OsStr,
++) -> crate::Result<Vec<u8>> {
++    use std::io::Read;
++    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
++    let file = secure_file(directory, name)?;
++    if file.metadata().map_err(|_| rejected())?.len() > 1_048_576 {
++        return Err(rejected());
++    }
+     let mut bytes = vec![];
+     file.take(1_048_577)
+         .read_to_end(&mut bytes)
+@@ -628,7 +642,13 @@ pub(crate) async fn inventory(
+                 {
+                     return Err(rejected());
+                 }
+-                native_file(&logs, &log)?;
++                // Raw retained output is securely classified without materializing
++                // contents or borrowing the native JSON receipt size bound.
++                if path.extension().is_some_and(|s| s == "log") {
++                    secure_file(&logs, &log)?;
++                } else {
++                    native_file(&logs, &log)?;
++                }
+             }
+             continue;
+         }
+diff --git a/crates/team-control-plane/src/supervisor.rs b/crates/team-control-plane/src/supervisor.rs
+index acd631486bd4521bb443b5b9116dcb861046c8e0..58523adb8df10b821c9f25b6062065af9b7d9198 100644
+--- a/crates/team-control-plane/src/supervisor.rs
++++ b/crates/team-control-plane/src/supervisor.rs
+@@ -120,6 +120,21 @@ pub struct ExecutionResult {
+     pub signal: Option<i32>,
+     pub namespace_stopped: bool,
+     pub logs: String,
++    #[serde(default)]
++    pub completion: CompletionProvenance,
++}
++/// Original wait status and recovered shutdown are distinct evidence.
++#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
++#[serde(tag = "kind", rename_all = "snake_case")]
++pub enum CompletionProvenance {
++    #[default]
++    MonitorWait,
++    RecoveredStop {
++        finalizer: ProcessIdentity,
++        recovery_epoch: Uuid,
++        stop_observation: Uuid,
++        init_process: ProcessIdentity,
++    },
+ }
+ #[derive(Clone, Debug)]
+ pub struct Supervisor {
+@@ -936,6 +951,12 @@ impl Supervisor {
+         storage::lock(&tx).await?;
+         authorize(&tx, &self.broker, token, id, true).await?;
+         reconcile_locked(&tx, id).await?;
++        let v = authorize(&tx, &self.broker, token, id, true).await?;
++        match recover_result(&tx, &self.broker, id, &v).await {
++            Ok(()) => {}
++            Err(e) if e.code == ErrorCode::DependencyUnmet => {}
++            Err(e) => return Err(e),
++        }
+         tx.commit().await?;
+         self.inspect(token, id).await
+     }
+@@ -971,6 +992,7 @@ impl Supervisor {
+         if !matches!(v.state, ExecutionState::Stopped | ExecutionState::Deleting) {
+             return Err(crate::domain::err(ErrorCode::DependencyUnmet));
+         }
++        recover_result(&tx, &self.broker, id, &v).await?;
+         // Namespace Stop can precede launcher reaping and immutable result
+         // persistence. A launched episode retains its workspace until both facts
+         // are durable; an allocation cancelled before launch has no result.
+@@ -1025,6 +1047,143 @@ impl Supervisor {
+         Ok(())
+     }
+ }
++// Never overwrite an immutable winner, including a recovered unknown exit.
++async fn persist_result(tx: &Transaction<'_>, result: &ExecutionResult) -> Result<ExecutionResult> {
++    tx.execute("INSERT INTO kernel_execution_results(execution_id,result) VALUES($1,$2) ON CONFLICT(execution_id) DO NOTHING", &[&result.execution,&json(result)?]).await?;
++    decode(
++        tx.query_one(
++            "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
++            &[&result.execution],
++        )
++        .await?
++        .get(0),
++    )
++}
++fn log_digest(manifest: &WorkspaceManifest, id: Uuid) -> Result<String> {
++    use sha2::{Digest, Sha256};
++    use std::{io::Read, os::unix::fs::MetadataExt};
++    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
++    let root = manifest.path.parent().ok_or_else(rejected)?;
++    if manifest.log_path != root.join(".execution-logs").join(format!("{id}.log")) {
++        return Err(rejected());
++    }
++    let directory = crate::model_free_runtime::open_directory(&root.join(".execution-logs"))?;
++    let name = manifest.log_path.file_name().ok_or_else(rejected)?;
++    let mut file = crate::model_free_runtime::secure_file(&directory, name)?;
++    let stamp = |m: fs::Metadata| {
++        (
++            m.dev(),
++            m.ino(),
++            m.uid(),
++            m.mode(),
++            m.nlink(),
++            m.len(),
++            m.mtime(),
++            m.mtime_nsec(),
++            m.ctime(),
++            m.ctime_nsec(),
++        )
++    };
++    let before = stamp(file.metadata().map_err(|_| rejected())?);
++    let mut digest = Sha256::new();
++    let mut buffer = [0u8; 65536];
++    loop {
++        let count = file.read(&mut buffer).map_err(|_| rejected())?;
++        if count == 0 {
++            break;
++        }
++        digest.update(&buffer[..count]);
++    }
++    if before != stamp(file.metadata().map_err(|_| rejected())?)
++        || before
++            != stamp(
++                crate::model_free_runtime::secure_file(&directory, name)?
++                    .metadata()
++                    .map_err(|_| rejected())?,
++            )
++    {
++        return Err(rejected());
++    }
++    // The pathname must still denote the pinned registered directory incarnation.
++    if crate::model_free_runtime::directory_identity(&root.join(".execution-logs"))? != {
++        let m = directory.metadata().map_err(|_| rejected())?;
++        crate::model_free_runtime::DirectoryIdentity {
++            device: m.dev(),
++            inode: m.ino(),
++            owner: m.uid(),
++        }
++    } {
++        return Err(rejected());
++    }
++    Ok(format!("{:x}", digest.finalize()))
++}
++async fn recover_result(
++    tx: &Transaction<'_>,
++    broker: &Broker,
++    id: Uuid,
++    v: &ExecutionView,
++) -> Result<()> {
++    if v.manifest.episode.is_none()
++        || tx
++            .query_opt(
++                "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
++                &[&id],
++            )
++            .await?
++            .is_some()
++    {
++        return Ok(());
++    }
++    let row = tx
++        .query_one(
++            "SELECT init_process,argv FROM supervised_workspaces WHERE id=$1",
++            &[&id],
++        )
++        .await?;
++    let Some(init) = row.get::<_, Option<serde_json::Value>>(0) else {
++        return Ok(());
++    };
++    let init: ProcessIdentity = decode(init)?;
++    let rejected = || crate::domain::err(ErrorCode::DependencyUnmet);
++    if v.state != ExecutionState::Stopped
++        || !v.members.is_empty()
++        || v.manifest.recovery_epoch != broker.epoch
++    {
++        return Err(rejected());
++    }
++    let controller = v.controller.clone().ok_or_else(rejected)?;
++    let launcher = v.launcher.as_ref().ok_or_else(rejected)?;
++    observer_frame(Some(&controller)).map_err(|_| rejected())?;
++    if !process_finalized(&controller).map_err(|_| rejected())?
++        || !process_finalized(launcher).map_err(|_| rejected())?
++        || !finalized(&init).map_err(|_| rejected())?
++    {
++        return Err(rejected());
++    }
++    // This append-only stop came from the complete observer for the launched
++    // immutable PID1 incarnation. A mutable stopped string is insufficient.
++    let observation=tx.query_opt("SELECT s.id FROM supervised_observations s WHERE s.execution_id=$1 AND s.state='stopped' AND s.members='[]'::jsonb AND EXISTS(SELECT 1 FROM supervised_observations r WHERE r.execution_id=s.execution_id AND r.state IN ('running','cancelling') AND r.members @> $2::jsonb AND r.observed_at<=s.observed_at) ORDER BY s.observed_at,s.id LIMIT 1", &[&id,&json(&vec![init.clone()])?]).await?.ok_or_else(rejected)?;
++    runtime_release_known(tx, &v.manifest).await?;
++    let result = ExecutionResult {
++        execution: id,
++        argv: decode(row.get(1))?,
++        candidate: v.manifest.candidate.clone(),
++        recovery_epoch: v.manifest.recovery_epoch,
++        controller,
++        exit_code: None,
++        signal: None,
++        namespace_stopped: true,
++        logs: log_digest(&v.manifest, id)?,
++        completion: CompletionProvenance::RecoveredStop {
++            finalizer: identity(std::process::id()).map_err(|_| rejected())?,
++            recovery_epoch: broker.epoch,
++            stop_observation: observation.get(0),
++            init_process: init,
++        },
++    };
++    let _winner = persist_result(tx, &result).await?;
++    Ok(())
++}
+ async fn runtime_release_known(tx: &Transaction<'_>, manifest: &WorkspaceManifest) -> Result<()> {
+     // Namespace shutdown proves local membership only. It cannot resolve a
+     // separately dispatched provider operation whose reply/effect is unknown.
+@@ -1385,6 +1544,7 @@ fn observer_frame(controller: Option<&ProcessIdentity>) -> std::io::Result<()> {
+ }
+ // Only the certified original PID1 can establish namespace-wide finalization.
+ // A missing namespace link or leader zombie state is deliberately insufficient.
++#[cfg(test)]
+ fn observe_finalized(
+     init: &ProcessIdentity,
+     boot: std::io::Result<String>,
+@@ -1394,6 +1554,14 @@ fn observe_finalized(
+     if init.namespace_pid != Some(1) {
+         return Ok(false);
+     }
++    observe_thread_group_finalized(init, boot, read_stat, group_ready)
++}
++fn observe_thread_group_finalized(
++    init: &ProcessIdentity,
++    boot: std::io::Result<String>,
++    read_stat: impl Fn(u32) -> std::io::Result<String>,
++    group_ready: impl FnOnce(u32) -> std::io::Result<bool>,
++) -> std::io::Result<bool> {
+     if boot?.trim() != init.boot_id {
+         return Err(std::io::Error::other("original PID1 boot fence differs"));
+     }
+@@ -1421,8 +1589,14 @@ fn observe_finalized(
+     Ok(ready)
+ }
+ fn finalized(init: &ProcessIdentity) -> std::io::Result<bool> {
++    if init.namespace_pid != Some(1) {
++        return Ok(false);
++    }
++    process_finalized(init)
++}
++fn process_finalized(init: &ProcessIdentity) -> std::io::Result<bool> {
+     use std::os::fd::FromRawFd;
+-    observe_finalized(
++    observe_thread_group_finalized(
+         init,
+         fs::read_to_string("/proc/sys/kernel/random/boot_id"),
+         |pid| fs::read_to_string(format!("/proc/{pid}/stat")),
+@@ -1987,6 +2161,9 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
+         &[&id, &json(&init)?, &json(&vec![init.clone()])?, &json(&identity(child.id()).map_err(|_|unavailable())?)?],
+     )
+     .await?;
++    // Keep the exact launch incarnation attributable even if a fast workload
++    // exits before the first changed inventory observation.
++    tx.execute("INSERT INTO supervised_observations(id,execution_id,state,members) VALUES($1,$2,'running',$3)", &[&Uuid::new_v4(),&id,&json(&vec![init.clone()])?]).await?;
+     tx.commit().await?;
+     // The workload can only start after this commit. Pipe closure/failure cannot declare stop.
+     child
+@@ -2059,30 +2236,13 @@ async fn monitor(broker: Broker, id: Uuid, gate: Option<MonitorGate>) -> Result<
+             exit_code: exit.code(),
+             signal: exit.signal(),
+             namespace_stopped: final_state == "stopped",
+-            logs: {
+-                use sha2::{Digest, Sha256};
+-                use std::io::Read;
+-                let mut log = fs::File::open(&manifest.log_path).map_err(|_| unavailable())?;
+-                let mut digest = Sha256::new();
+-                let mut buffer = [0_u8; 64 * 1024];
+-                loop {
+-                    let count = log.read(&mut buffer).map_err(|_| unavailable())?;
+-                    if count == 0 {
+-                        break;
+-                    }
+-                    digest.update(&buffer[..count]);
+-                }
+-                format!("{:x}", digest.finalize())
+-            },
++            logs: log_digest(&manifest, id)?,
++            completion: CompletionProvenance::MonitorWait,
+         };
+         let tx = c.transaction().await?;
+         storage::lock(&tx).await?;
+         crate::kernel::schema(&tx).await?;
+-        tx.execute(
+-            "INSERT INTO kernel_execution_results(execution_id,result) VALUES($1,$2)",
+-            &[&id, &json(&result)?],
+-        )
+-        .await?;
++        let _winner = persist_result(&tx, &result).await?;
+         tx.commit().await?;
+     }
+     Ok(())
+@@ -2220,14 +2380,16 @@ pub(crate) async fn reconcile_attempt_cancel(
+         tx.execute("WITH released AS (UPDATE mailbox_episodes e SET owned_capacity=false WHERE e.attempt_id=$1 AND e.owned_capacity AND e.state='cancelled' AND e.start_operation IS NULL AND NOT EXISTS(SELECT 1 FROM episode_executions x WHERE x.episode_id=e.id) AND NOT EXISTS(SELECT 1 FROM mailbox_checkpoints c WHERE c.episode_id=e.id) RETURNING mission_id) UPDATE missions m SET used_capacity=m.used_capacity-r.n FROM (SELECT mission_id,count(*) AS n FROM released GROUP BY mission_id) r WHERE m.id=r.mission_id", &[&attempt]).await?;
+     }
+     if disposition == "cancelled" {
+-        // No allocation means there is no execution handle to release. Establish
+-        // the stronger no-effects fact under the same admission lock; never
+-        // refund admitted attempts/episodes or guess usage from a null binding.
++        // Independently owned continuation history is not the original claim.
++        // Require no original physical binding and stopped, known effects and
++        // usage under the admission lock; cumulative budgets remain consumed.
+         let unused: bool = tx.query_one(
+-            "SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM episode_executions WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state<>'prepared') AND NOT EXISTS(SELECT 1 FROM operations WHERE attempt_id=$1 AND (kind<>'prepare_attempt' OR state<>'prepared'))",
++            "SELECT NOT EXISTS(SELECT 1 FROM supervised_workspaces WHERE attempt_id=$1) AND NOT EXISTS(SELECT 1 FROM episode_executions WHERE attempt_id=$1 AND NOT owns_capacity) AND NOT EXISTS(SELECT 1 FROM gateway_operations WHERE attempt_id=$1 AND state<>'prepared') AND NOT EXISTS(SELECT 1 FROM operations WHERE attempt_id=$1 AND (kind<>'prepare_attempt' OR state<>'prepared'))",
+             &[&attempt],
+         ).await?.get(0);
+-        if unused {
++        let unknown_usage = crate::kernel::legacy_usage_unknown(tx, attempt).await?
++            || tx.query_one("SELECT EXISTS(SELECT 1 FROM episode_runtime_operations o JOIN episode_executions x ON x.execution_id=o.execution_id WHERE x.attempt_id=$1 AND o.state IN ('confirmed','failed_known') AND COALESCE(o.usage->>'kind','unknown')<>'measured_zero')", &[&attempt]).await?.get::<_, bool>(0);
++        if unused && !unknown_usage {
+             tx.execute("WITH released AS (UPDATE reservations SET state='released' WHERE attempt_id=$1 AND execution_id IS NULL AND state='reserved' RETURNING mission_id) UPDATE missions SET used_capacity=used_capacity-1 WHERE id IN (SELECT mission_id FROM released)", &[&attempt]).await?;
+         }
+     }
+diff --git a/crates/team-control-plane/tests/assembled_cancellation.rs b/crates/team-control-plane/tests/assembled_cancellation.rs
+index 6bc9cdd784696b7c344c3a941332a9b36006fc07..9302e894e19b77f1d667f755ce20c0af4b563c56 100644
+--- a/crates/team-control-plane/tests/assembled_cancellation.rs
++++ b/crates/team-control-plane/tests/assembled_cancellation.rs
+@@ -3591,3 +3591,296 @@ async fn review571_unresolved_yield(imported: bool) {
+         before.data["admitted_episodes"]
+     );
+ }
++
++#[tokio::test]
++async fn review580_allocated_continuation_history_does_not_hold_original_unbound_claim() {
++    let f = Fixture::with_limits(2, 2, 3).await;
++    temporal::Bridge::new(f.broker.clone())
++        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    let first = f.worker_episode("review580-first").await;
++    let mailbox = mailbox::MailboxService::new(f.broker.clone());
++    mailbox.execute("assembled-worker", mail(f.epoch, "review580-yield", serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"unused imported Worker","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
++    mailbox.execute("assembled-worker", mail(f.epoch, "review580-notice", serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"Resume","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
++    let continuation = f.worker_episode("review580-continuation").await;
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            continuation,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let before = f
++        .broker
++        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++        .await
++        .unwrap()
++        .data;
++    let cancel = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-cancel",
++                3,
++                Command::CancelAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                    reason: "cancel separate allocation".into(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let done = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-reconcile",
++                cancel.revision,
++                Command::ReconcileAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    supervisor.release(&f.owner, execution.id).await.unwrap();
++    let repeated = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-repeat",
++                done.revision,
++                Command::ReconcileAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let after = f
++        .broker
++        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++        .await
++        .unwrap()
++        .data;
++    let replacement = ready_capacity_task(&f, "review580-replacement").await;
++    let admitted = assign_capacity_task(&f, replacement, "review580-admit-replacement").await;
++    let third = ready_capacity_task(&f, "review580-third").await;
++    let exhausted = assign_capacity_task(&f, third, "review580-budget-stays-consumed").await;
++    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++    std::fs::write(out.join("review580-capacity.json"),serde_json::to_vec_pretty(&serde_json::json!({"execution":execution,"before":before,"after":after,"cancel":cancel,"done":done,"repeat":repeated,"replacement":admitted.as_ref().map_err(|e|&e.code),"third":exhausted.as_ref().map_err(|e|&e.code)})).unwrap()).unwrap();
++    let root = f.root.clone();
++    f.finish().await;
++    assert!(!root.exists(), "cleanup before capacity oracle");
++    assert_eq!(before["used_capacity"], 2);
++    assert_eq!(
++        after["used_capacity"], 0,
++        "retained separately owned execution history must not hold the original unbound reservation"
++    );
++    assert_eq!(after["admitted_attempts"], 1);
++    assert_eq!(after["admitted_episodes"], 2);
++    assert!(admitted.is_ok());
++    assert_eq!(exhausted.unwrap_err().code, ErrorCode::BudgetExhausted);
++}
++
++#[test]
++fn review580_unbound_original_and_allocated_continuation_hold_unknown_usage() {
++    use std::os::unix::process::CommandExt;
++    let mut child = std::process::Command::new(std::env::current_exe().unwrap())
++        .args([
++            "--exact",
++            "review580_owned_continuation_usage_worker",
++            "--ignored",
++            "--nocapture",
++        ])
++        .env_clear()
++        .env("PATH", "/usr/bin:/bin")
++        .env(
++            "TEAM_CONTROL_PLANE_TEST_DSN",
++            std::env::var("TEAM_CONTROL_PLANE_TEST_DSN").unwrap(),
++        )
++        .env(
++            "TEMPORAL_FIXTURE_EVIDENCE",
++            std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap(),
++        )
++        .env(
++            "TEMPORAL_ADDRESS",
++            std::env::var("TEMPORAL_ADDRESS").unwrap(),
++        )
++        .process_group(0)
++        .spawn()
++        .unwrap();
++    let terminal = child.wait().unwrap();
++    assert!(
++        terminal.success(),
++        "owned continuation usage fixture terminal {terminal}"
++    );
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++#[ignore = "owned singleton native transport subprocess"]
++async fn review580_owned_continuation_usage_worker() {
++    use std::time::Duration;
++    let f = Fixture::new().await;
++    temporal::Bridge::new(f.broker.clone())
++        .register(&f.owner, temporal::AggregateKind::Task, f.task, 0)
++        .await
++        .unwrap();
++    let mailbox = mailbox::MailboxService::new(f.broker.clone());
++    let first = f.worker_episode("review580-usage-first").await;
++    mailbox.execute("assembled-worker",mail(f.epoch,"review580-usage-yield",serde_json::json!({"kind":"yield_episode","episode":first,"checkpoint":{"id":Uuid::new_v4(),"summary":"unused imported Worker","artifacts":[]},"questions":[],"dependencies":[],"executions":[]}))).await.unwrap();
++    mailbox.execute("assembled-worker",mail(f.epoch,"review580-usage-notice",serde_json::json!({"kind":"send","mission":f.mission,"id":Uuid::new_v4(),"recipients":[f.worker],"message_kind":"notice","text":"resume","reply_to":null,"attention":"normal","artifacts":[]}))).await.unwrap();
++    let episode = f.worker_episode("review580-usage-continuation").await;
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode(
++            "assembled-worker",
++            episode,
++            vec![],
++            supervisor::CreateFault::None,
++        )
++        .await
++        .unwrap();
++    let root = f.root.join("review580-unknown-native");
++    std::fs::create_dir(&root).unwrap();
++    let identity = gateway::RuntimeIdentity {
++        runtime_kind: "kernel16-inprocess-native".into(),
++        runtime_version: "1".into(),
++        deployment: f.epoch.to_string(),
++        thread_store: root.to_str().unwrap().into(),
++        endpoint: "owned-async-os".into(),
++        environment: "bwrap-private-git".into(),
++    };
++    let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++    let operation = Uuid::new_v4();
++    gateway
++        .prepare(
++            "assembled-worker",
++            episode_runtime::StartRequest {
++                id: operation,
++                episode,
++                execution: execution.id,
++                runtime: identity.clone(),
++                argv: vec![
++                    "/bin/sh".into(),
++                    "-c".into(),
++                    "sleep 1; printf unknown-usage".into(),
++                ],
++            },
++        )
++        .await
++        .unwrap();
++    let mut runtime = UnmeasuredCancellationNative(episode_native::NativeOsRuntime {
++        root: root.clone(),
++        identity,
++        supervisor: supervisor.clone(),
++        service: f.owner.clone(),
++        lose_reply: false,
++        hold_reply: false,
++    });
++    gateway.register_runtime(&f.owner, &runtime).await.unwrap();
++    let op = gateway
++        .dispatch(&f.owner, operation, &mut runtime)
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + Duration::from_secs(15);
++    while supervisor
++        .result(&f.owner, execution.id)
++        .await
++        .unwrap()
++        .is_none()
++    {
++        assert!(std::time::Instant::now() < deadline);
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    }
++    let cancel = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-usage-cancel",
++                3,
++                Command::CancelAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                    reason: "unknown continuation usage".into(),
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let reconciled = f
++        .broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-usage-reconcile",
++                cancel.revision,
++                Command::ReconcileAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let held_release = supervisor.release(&f.owner, execution.id).await;
++    let held = f
++        .broker
++        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++        .await
++        .unwrap()
++        .data;
++    let resolved = gateway.reconcile(&f.owner, operation).await.unwrap();
++    supervisor.release(&f.owner, execution.id).await.unwrap();
++    f.broker
++        .execute(
++            &f.owner,
++            envelope(
++                f.epoch,
++                "review580-usage-known-reconcile",
++                reconciled.revision,
++                Command::ReconcileAttempt {
++                    task_id: f.task,
++                    attempt_id: f.attempt,
++                },
++            ),
++        )
++        .await
++        .unwrap();
++    let after = f
++        .broker
++        .snapshot(&f.owner, SnapshotQuery::Mission(f.mission))
++        .await
++        .unwrap()
++        .data;
++    let out = std::path::PathBuf::from(std::env::var("TEMPORAL_FIXTURE_EVIDENCE").unwrap());
++    std::fs::write(out.join("review580-continuation-usage.json"),serde_json::to_vec_pretty(&serde_json::json!({"operation":op,"held_release":held_release.as_ref().map_err(|e|&e.code),"held":held,"resolved":resolved,"after":after})).unwrap()).unwrap();
++    let root = f.root.clone();
++    f.finish().await;
++    assert!(!root.exists());
++    assert_eq!(op.usage, episode_runtime::UsageObservation::Unknown);
++    assert_eq!(held_release.unwrap_err().code, ErrorCode::DependencyUnmet);
++    assert_eq!(
++        held["used_capacity"], 2,
++        "unknown continuation usage retains both independent claims"
++    );
++    assert_eq!(
++        after["used_capacity"], 0,
++        "real receipt resolves usage without another Start"
++    );
++}
+diff --git a/crates/team-control-plane/tests/assembled_operator.rs b/crates/team-control-plane/tests/assembled_operator.rs
+index 842455b69271d0f7f49be99f2b953fec2128b576..9a26a1ec0581f680e0c6cf1118df4f65a8e1e4a7 100644
+--- a/crates/team-control-plane/tests/assembled_operator.rs
++++ b/crates/team-control-plane/tests/assembled_operator.rs
+@@ -1113,3 +1113,292 @@ async fn monitor_finalizes_large_output_under_owned_measured_memory_limit() {
+         assert_eq!(capacity, 0);
+     }
+ }
++
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_real_monitor_crash_after_stop_recovers_unknown_immutable_result() {
++    review580_crash(false, false).await;
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_fast_monitor_crash_retains_exact_launch_stop_certificate() {
++    review580_crash(true, false).await;
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_surviving_monitor_thread_group_retains_capacity() {
++    review580_crash(true, true).await;
++}
++async fn review580_crash(fast: bool, survivor: bool) {
++    let f = Fixture::new().await;
++    let out = evidence(if survivor {
++        "review580-surviving-thread"
++    } else if fast {
++        "review580-fast-crash"
++    } else {
++        "review580-crash"
++    });
++    let (db, connection) = tokio_postgres::connect(&f.dsn, tokio_postgres::NoTls)
++        .await
++        .unwrap();
++    tokio::spawn(async move { connection.await.unwrap() });
++    // Gate only the real immutable persistence boundary, after real namespace Stop.
++    db.batch_execute("CREATE FUNCTION review580_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN PERFORM pg_advisory_xact_lock(580580); RETURN NEW; END $$; CREATE TRIGGER review580_gate BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_gate(); SELECT pg_advisory_lock(580580)").await.unwrap();
++    let episode = f.worker_episode("review580-crash-worker").await;
++    let supervisor = f.supervisor().await;
++    let execution = supervisor
++        .create_episode("assembled-worker", episode, vec![], CreateFault::None)
++        .await
++        .unwrap();
++    supervisor
++        .start(
++            "assembled-worker",
++            execution.id,
++            vec![
++                "/bin/sh".into(),
++                "-c".into(),
++                if fast {
++                    "printf actual-crash-output"
++                } else {
++                    "sleep 1; printf actual-crash-output"
++                }
++                .into(),
++            ],
++            30,
++        )
++        .await
++        .unwrap();
++    let deadline = std::time::Instant::now() + Duration::from_secs(15);
++    let stopped = loop {
++        let row = db.query_one("SELECT state,controller,launcher,init_process,members FROM supervised_workspaces WHERE id=$1",&[&execution.id]).await.unwrap();
++        let waiting: bool = db.query_one("SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE wait_event='advisory' AND query LIKE 'INSERT INTO kernel_execution_results%')",&[]).await.unwrap().get(0);
++        if row.get::<_, String>(0) == "stopped" && waiting {
++            break serde_json::json!({"state":row.get::<_,String>(0),"controller":row.get::<_,serde_json::Value>(1),"launcher":row.get::<_,serde_json::Value>(2),"init_process":row.get::<_,serde_json::Value>(3),"members":row.get::<_,serde_json::Value>(4)});
++        }
++        assert!(
++            std::time::Instant::now() < deadline,
++            "real monitor persistence gate must be reached"
++        );
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    };
++    let controller: supervisor::ProcessIdentity =
++        serde_json::from_value(stopped["controller"].clone()).unwrap();
++    let stat = std::fs::read_to_string(format!("/proc/{}/stat", controller.pid)).unwrap();
++    let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
++        .split_whitespace()
++        .collect();
++    assert_eq!(
++        fields[19].parse::<u64>().unwrap(),
++        controller.start_ticks,
++        "kill exact owned monitor only"
++    );
++    assert_eq!(
++        std::fs::read_to_string("/proc/sys/kernel/random/boot_id")
++            .unwrap()
++            .trim(),
++        controller.boot_id
++    );
++    assert_eq!(
++        unsafe { libc::kill(controller.pid as i32, libc::SIGKILL) },
++        0
++    );
++    let deadline = std::time::Instant::now() + Duration::from_secs(10);
++    while std::path::Path::new(&format!("/proc/{}", controller.pid)).exists() {
++        assert!(
++            std::time::Instant::now() < deadline,
++            "owned monitor reaper must collect crashed process"
++        );
++        tokio::time::sleep(Duration::from_millis(20)).await;
++    }
++    db.batch_execute("SELECT pg_advisory_unlock(580580); DROP TRIGGER review580_gate ON kernel_execution_results; DROP FUNCTION review580_gate()").await.unwrap();
++    let fresh_owner = format!("review580-owner-{}", Uuid::new_v4());
++    grant(
++        &f,
++        f.mission,
++        Uuid::new_v4(),
++        &fresh_owner,
++        Role::Owner,
++        300,
++    )
++    .await;
++    if survivor {
++        // Negative controller-identity fault uses a genuine owned live thread
++        // group with a zombie leader; it cannot manufacture successful Stop.
++        let mut child=Process::new("/usr/bin/python3").args(["-c","import ctypes,threading,time; threading.Thread(target=lambda:time.sleep(30)).start(); time.sleep(1); ctypes.CDLL(None).syscall(60,0)"]).env_clear().env("PATH","/usr/bin:/bin").stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null()).spawn().unwrap();
++        let pid = child.id();
++        let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
++        let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
++            .split_whitespace()
++            .collect();
++        let replacement = supervisor::ProcessIdentity {
++            pid,
++            start_ticks: fields[19].parse().unwrap(),
++            boot_id: controller.boot_id.clone(),
++            namespace: std::fs::read_link(format!("/proc/{pid}/ns/pid"))
++                .unwrap()
++                .to_string_lossy()
++                .into(),
++            namespace_pid: Some(pid),
++        };
++        db.execute(
++            "UPDATE supervised_workspaces SET controller=$2 WHERE id=$1",
++            &[&execution.id, &serde_json::to_value(&replacement).unwrap()],
++        )
++        .await
++        .unwrap();
++        let deadline = std::time::Instant::now() + Duration::from_secs(5);
++        loop {
++            let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
++            if stat[stat.rfind(')').unwrap() + 2..]
++                .split_whitespace()
++                .next()
++                == Some("Z")
++            {
++                break;
++            }
++            assert!(std::time::Instant::now() < deadline);
++            tokio::time::sleep(Duration::from_millis(20)).await;
++        }
++        let fd = unsafe { libc::syscall(libc::SYS_pidfd_open, pid, 0) } as i32;
++        assert!(fd >= 0);
++        let mut poll = libc::pollfd {
++            fd,
++            events: libc::POLLIN,
++            revents: 0,
++        };
++        assert_eq!(unsafe { libc::poll(&mut poll, 1, 0) }, 0);
++        unsafe { libc::close(fd) };
++        supervisor
++            .reconcile(&fresh_owner, execution.id)
++            .await
++            .unwrap();
++        let release = supervisor.release(&fresh_owner, execution.id).await;
++        let result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++        let held = f
++            .broker
++            .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
++            .await
++            .unwrap()
++            .data;
++        let stat = std::fs::read_to_string(format!("/proc/{pid}/stat")).unwrap();
++        assert_eq!(
++            stat[stat.rfind(')').unwrap() + 2..]
++                .split_whitespace()
++                .nth(19)
++                .unwrap()
++                .parse::<u64>()
++                .unwrap(),
++            replacement.start_ticks
++        );
++        child.kill().unwrap();
++        let terminal = child.wait().unwrap();
++        std::fs::write(out.join("survivor.json"),serde_json::to_vec_pretty(&serde_json::json!({"actual_controller_fault":replacement,"leader_zombie_but_whole_group_not_ready":true,"release":release.as_ref().map_err(|e|&e.code),"result":result,"held":held,"cleanup_terminal":terminal.to_string()})).unwrap()).unwrap();
++        let root = f.root.clone();
++        f.finish().await;
++        assert!(!root.exists());
++        assert!(
++            result.is_none(),
++            "surviving monitor threads forbid recovered result"
++        );
++        assert_eq!(release.unwrap_err().code, ErrorCode::DependencyUnmet);
++        assert_eq!(held["used_capacity"], 1);
++        return;
++    }
++    let independent_digest = artifacts::sha256(
++        &std::fs::read(
++            supervisor
++                .inspect(&fresh_owner, execution.id)
++                .await
++                .unwrap()
++                .manifest
++                .log_path,
++        )
++        .unwrap(),
++    );
++    let original_log = supervisor
++        .inspect(&fresh_owner, execution.id)
++        .await
++        .unwrap()
++        .manifest
++        .log_path;
++    let withheld = original_log.with_extension("withheld");
++    let mut controls = vec![];
++    for kind in ["symlink", "fifo", "unsafe-mode", "directory"] {
++        std::fs::rename(&original_log, &withheld).unwrap();
++        match kind {
++            "symlink" => std::os::unix::fs::symlink(&withheld, &original_log).unwrap(),
++            "fifo" => {
++                use std::os::unix::ffi::OsStrExt;
++                let name = std::ffi::CString::new(original_log.as_os_str().as_bytes()).unwrap();
++                assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
++            }
++            "unsafe-mode" => {
++                use std::os::unix::fs::PermissionsExt;
++                std::fs::write(&original_log, b"unsafe").unwrap();
++                std::fs::set_permissions(&original_log, std::fs::Permissions::from_mode(0o666))
++                    .unwrap();
++            }
++            "directory" => std::fs::create_dir(&original_log).unwrap(),
++            _ => unreachable!(),
++        }
++        supervisor
++            .reconcile(&fresh_owner, execution.id)
++            .await
++            .unwrap();
++        let denied = supervisor.release(&fresh_owner, execution.id).await;
++        let absent = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++        controls.push((kind, denied.map_err(|e| e.code), absent));
++        if kind == "directory" {
++            std::fs::remove_dir(&original_log).unwrap();
++        } else {
++            std::fs::remove_file(&original_log).unwrap();
++        }
++        std::fs::rename(&withheld, &original_log).unwrap();
++    }
++    let unauthorized = supervisor.reconcile("wrong-token", execution.id).await;
++    let missing = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++    let (a, b) = tokio::join!(
++        supervisor.reconcile(&fresh_owner, execution.id),
++        supervisor.reconcile(&fresh_owner, execution.id)
++    );
++    let view = a.unwrap();
++    b.unwrap();
++    let first = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++    let release = supervisor.release(&fresh_owner, execution.id).await;
++    let final_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++    let repeat = supervisor
++        .reconcile(&fresh_owner, execution.id)
++        .await
++        .unwrap();
++    let repeated_result = supervisor.result(&fresh_owner, execution.id).await.unwrap();
++    let capacity = f
++        .broker
++        .snapshot(&fresh_owner, SnapshotQuery::Mission(f.mission))
++        .await
++        .unwrap()
++        .data["used_capacity"]
++        .clone();
++    std::fs::write(out.join("crash.json"),serde_json::to_vec_pretty(&serde_json::json!({"execution":execution,"independent_raw_digest":independent_digest,"controls":controls,"unauthorized":unauthorized.as_ref().map_err(|e|&e.code),"original_stop":stopped,"before":missing,"view":view,"first":first,"release":release.as_ref().map_err(|e|&e.code),"result":final_result,"repeat":repeat,"repeated_result":repeated_result,"capacity":capacity})).unwrap()).unwrap();
++    let epoch = f.epoch;
++    let root = f.root.clone();
++    f.finish().await;
++    assert!(!root.exists(), "owned cleanup before recovery oracle");
++    for (kind, denied, absent) in controls {
++        assert_eq!(denied.unwrap_err(), ErrorCode::DependencyUnmet, "{kind}");
++        assert!(absent.is_none());
++    }
++    assert_eq!(unauthorized.unwrap_err().code, ErrorCode::Unauthorized);
++    assert!(missing.is_none(), "crash aborted actual result persistence");
++    assert!(
++        release.is_ok(),
++        "replacement Owner must release real stopped crash without guessing exit: {release:?}"
++    );
++    let result = final_result.expect("durable recovered result");
++    assert_eq!(result.exit_code, None);
++    assert_eq!(result.signal, None);
++    assert_eq!(result.controller, controller);
++    assert_eq!(result.logs, independent_digest);
++    assert_eq!(result.recovery_epoch, epoch);
++    assert_eq!(
++        serde_json::to_value(&result).unwrap(),
++        serde_json::to_value(repeated_result.unwrap()).unwrap()
++    );
++    assert_eq!(capacity, 0);
++}
+diff --git a/crates/team-control-plane/tests/assembled_vertical.rs b/crates/team-control-plane/tests/assembled_vertical.rs
+index 5cea02c24463d36f30b3ec09eb2cb58fcec06c65..5e9b0bc6c6369163217611a10cfd2f91cc04f012 100644
+--- a/crates/team-control-plane/tests/assembled_vertical.rs
++++ b/crates/team-control-plane/tests/assembled_vertical.rs
+@@ -1115,6 +1115,24 @@ async fn registered_takeover_refuses_actual_running_unfinished_workload() {
+     planning_sdk_fixture(true, true, Some("unfinished")).await;
+ }
+ 
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_actual_large_retained_log_allows_authenticated_takeover() {
++    planning_sdk_fixture(true, false, Some("large-log")).await;
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_takeover_preserves_raw_log_security_and_receipt_size_controls() {
++    for kind in [
++        "log-symlink",
++        "log-fifo",
++        "log-mode",
++        "log-hardlink",
++        "log-orphan",
++        "info-oversized",
++        "native-oversized",
++    ] {
++        planning_sdk_fixture(true, false, Some(kind)).await;
++    }
++}
+ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Option<&str>) {
+     use temporalio_client::{
+         Client, ClientOptions, Connection, envconfig::LoadClientConfigProfileOptions,
+@@ -1155,7 +1173,8 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+         environment: "bwrap-private-git".into(),
+     };
+     let operation = Uuid::new_v4();
+-    episode_runtime::EpisodeGateway::new(f.broker.clone()).prepare("assembled-lead",episode_runtime::StartRequest{id:operation,episode,execution:execution.id,runtime:identity.clone(),argv:vec!["/bin/sh".into(),"-c".into(),"python3 -c 'import json; p=json.load(open(\"/episode-input.json\")); assert p[\"role\"]==\"lead\" and p[\"task\"] is None and p[\"attempt\"] is None'; status=$?; if test \"$status\" != 0; then exit \"$status\"; fi; cat SPEC.md; printf '\\nactual-planning-capsule\\n'".into()]}).await.unwrap();
++    let large_log = negative == Some("large-log");
++    episode_runtime::EpisodeGateway::new(f.broker.clone()).prepare("assembled-lead",episode_runtime::StartRequest{id:operation,episode,execution:execution.id,runtime:identity.clone(),argv:vec!["/bin/sh".into(),"-c".into(),if large_log { "head -c 2097153 /dev/zero" } else { "python3 -c 'import json; p=json.load(open(\"/episode-input.json\")); assert p[\"role\"]==\"lead\" and p[\"task\"] is None and p[\"attempt\"] is None'; status=$?; if test \"$status\" != 0; then exit \"$status\"; fi; cat SPEC.md; printf '\\nactual-planning-capsule\\n'" }.into()]}).await.unwrap();
+     let bridge = Bridge::new(f.broker.clone());
+     let workflow = bridge
+         .register(&f.owner, AggregateKind::Mission, f.mission, 0)
+@@ -1547,6 +1566,14 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+         &out.join("actual-execution-result.json"),
+         &serde_json::to_vec(&result).unwrap(),
+     );
++    if large_log {
++        supervisor
++            .release("assembled-lead", execution.id)
++            .await
++            .unwrap();
++
++        retain_bytes(&out.join("large-log.json"),&serde_json::to_vec(&serde_json::json!({"execution":execution.id,"bytes":2_097_153,"raw_sha256":result.as_ref().unwrap().logs,"released_before_takeover":true})).unwrap());
++    }
+     let mut takeover_result = None;
+     let mut unfinished = None;
+     if takeover {
+@@ -1642,7 +1669,56 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+             serde_json::from_slice(&std::fs::read(&original_effect).unwrap()).unwrap();
+         let mut injected = None;
+         let mut withheld = None;
++        let mut restored_target = original_effect.clone();
+         match negative {
++            Some(
++                kind
++                @ ("log-symlink" | "log-fifo" | "log-mode" | "log-hardlink" | "info-oversized"),
++            ) => {
++                use std::os::unix::{ffi::OsStrExt, fs::PermissionsExt};
++                let target = if kind == "info-oversized" {
++                    view.manifest.log_path.with_extension("info")
++                } else {
++                    view.manifest.log_path.clone()
++                };
++                let held = f.root.join("withheld-execution-file");
++                std::fs::rename(&target, &held).unwrap();
++                match kind {
++                    "log-symlink" => std::os::unix::fs::symlink(&held, &target).unwrap(),
++                    "log-fifo" => {
++                        let name = std::ffi::CString::new(target.as_os_str().as_bytes()).unwrap();
++                        assert_eq!(unsafe { libc::mkfifo(name.as_ptr(), 0o600) }, 0);
++                    }
++                    "log-mode" => {
++                        std::fs::write(&target, b"unsafe").unwrap();
++                        std::fs::set_permissions(&target, std::fs::Permissions::from_mode(0o666))
++                            .unwrap();
++                    }
++                    "log-hardlink" => std::fs::hard_link(&held, &target).unwrap(),
++                    "info-oversized" => std::fs::write(&target, vec![b' '; 1_048_577]).unwrap(),
++                    _ => unreachable!(),
++                }
++                injected = Some(target.clone());
++                withheld = Some(held);
++                restored_target = target;
++            }
++            Some("log-orphan") => {
++                let target = view
++                    .manifest
++                    .log_path
++                    .parent()
++                    .unwrap()
++                    .join(format!("{}.log", Uuid::new_v4()));
++                std::fs::write(&target, b"orphan").unwrap();
++                injected = Some(target);
++            }
++            Some("native-oversized") => {
++                let held = f.root.join("withheld-native-effect");
++                std::fs::rename(&original_effect, &held).unwrap();
++                std::fs::write(&original_effect, vec![b' '; 1_048_577]).unwrap();
++                injected = Some(original_effect.clone());
++                withheld = Some(held);
++            }
+             Some("fifo") => {
+                 use std::{ffi::CString, os::unix::ffi::OsStrExt};
+                 let path = root.join(format!("{}.effect", Uuid::new_v4()));
+@@ -1696,14 +1772,14 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+                 "1",
+             ]);
+         let (output, forced) = bounded_operator_cli(command).await;
+-        if negative.is_some() {
++        if negative.is_some() && !large_log {
+             let actual:Uuid=db.query_one("SELECT controller FROM gateway_stores WHERE identity=(SELECT store FROM episode_runtime_operations WHERE id=$1)", &[&Uuid::parse_str(&operation).unwrap()]).await.unwrap().get(0);
+             assert_eq!(
+                 actual, old_controller,
+                 "rejected inventory cannot transfer control"
+             );
+         }
+-        let first_rejected = negative.is_some();
++        let first_rejected = negative.is_some() && !large_log;
+         if first_rejected {
+             assert!(
+                 !output.status.success(),
+@@ -1742,7 +1818,7 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+                 std::fs::remove_file(path).unwrap();
+             }
+             if let Some(path) = withheld {
+-                std::fs::rename(path, &original_effect).unwrap();
++                std::fs::rename(path, &restored_target).unwrap();
+             }
+             if negative == Some("changed-root") {
+                 std::fs::remove_dir(&root).unwrap();
+@@ -2034,17 +2110,19 @@ async fn planning_sdk_fixture(takeover: bool, unknown_start: bool, negative: Opt
+     if let Some(workspace) = unfinished {
+         supervisor.release(&f.owner, workspace.id).await.unwrap();
+     }
+-    supervisor
+-        .release("assembled-lead", execution.id)
+-        .await
+-        .unwrap();
++    if !large_log {
++        supervisor
++            .release("assembled-lead", execution.id)
++            .await
++            .unwrap();
++    }
+     f.finish().await;
+     if let Some((output, replacement, forced)) = takeover_result {
+         assert!(
+             !forced,
+             "public takeover must classify nonregular native files without blocking the broker transaction"
+         );
+-        if negative.is_some() {
++        if negative.is_some() && !large_log {
+             assert!(!output.status.success());
+             retain_bytes(&out.join("takeover-error-stderr.bin"), &output.stderr);
+             let error: serde_json::Value = serde_json::from_slice(&output.stderr).unwrap();
+@@ -2189,6 +2267,14 @@ async fn successful_invalid_utf8_verifier_output_supports_verify_and_accept() {
+     assembled_engineering_fixture(EngineeringScenario::BinaryOutput).await;
+ }
+ #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_retained_monitor_result_without_completion_supports_verify_accept() {
++    assembled_engineering_fixture(EngineeringScenario::LegacyMonitorShape).await;
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn review580_recovered_real_verifier_cannot_verify_or_accept_exact_candidate() {
++    assembled_engineering_fixture(EngineeringScenario::RecoveredVerifier).await;
++}
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+ async fn real_temporal_assembled_vertical() {
+     assembled_engineering_fixture(EngineeringScenario::Complete).await;
+ }
+@@ -2258,6 +2344,8 @@ enum EngineeringScenario {
+     ExpiredProducerAcceptReplay,
+     Complete,
+     BinaryOutput,
++    RecoveredVerifier,
++    LegacyMonitorShape,
+     CancelMeasuredCandidate,
+     AcceptedTerminal,
+     RepairBudget,
+@@ -2272,7 +2360,14 @@ enum EngineeringScenario {
+     UnknownLegacyPhysicalClaim,
+     UnknownLegacyMonitorClaim,
+ }
+-async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
++fn assembled_engineering_fixture(
++    scenario: EngineeringScenario,
++) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()>>> {
++    // Every scenario, including wrappers that run multiple scenarios, shares
++    // one heap boundary instead of embedding this large assembled future.
++    Box::pin(assembled_engineering_fixture_body(scenario))
++}
++async fn assembled_engineering_fixture_body(scenario: EngineeringScenario) {
+     let repair_budget = scenario == EngineeringScenario::RepairBudget;
+     let usage_query = matches!(
+         scenario,
+@@ -3179,12 +3274,14 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+     let artifacts = artifacts::ArtifactService::open(f.broker.clone(), &f.root.join("artifacts"))
+         .await
+         .unwrap();
++    let artifact_task = f.task;
++    let artifact_epoch = f.epoch;
+     let artifact_command = |key: &str, revision, command| artifacts::ArtifactEnvelope {
+         key: key.into(),
+-        task: f.task,
++        task: artifact_task,
+         expected_revision: revision,
+         generation: 1,
+-        recovery_epoch: f.epoch,
++        recovery_epoch: artifact_epoch,
+         command,
+     };
+     let mut checks:Vec<Vec<String>>=vec![vec!["/bin/sh".into(),"-c".into(),"test \"$(cat src/result)\" = 'exact result' && test \"$(cat src/resumed)\" = 'resumed-from-retained-bytes' && cat src/result src/resumed; status=$?; printf 'gate_exit=%s\\n' \"$status\"; exit \"$status\"".into()]];
+@@ -3614,6 +3711,14 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+     } else {
+         false
+     };
++    if scenario == EngineeringScenario::LegacyMonitorShape {
++        // Compatibility reader fixture: retain the historical additive-field
++        // shape of the actual monitor wait result, without claiming an old binary.
++        db.batch_execute("CREATE FUNCTION review580_legacy_shape() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN NEW.result=NEW.result-'completion'; RETURN NEW; END $$; CREATE TRIGGER review580_legacy_shape BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_legacy_shape()").await.unwrap();
++    }
++    if scenario == EngineeringScenario::RecoveredVerifier {
++        db.batch_execute("CREATE FUNCTION review580_verifier_gate() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN PERFORM pg_advisory_xact_lock(580581); RETURN NEW; END $$; CREATE TRIGGER review580_verifier_gate BEFORE INSERT ON kernel_execution_results FOR EACH ROW EXECUTE FUNCTION review580_verifier_gate(); SELECT pg_advisory_lock(580581)").await.unwrap();
++    }
+     episode_runtime::EpisodeGateway::new(f.broker.clone())
+         .prepare(
+             "assembled-verifier",
+@@ -3645,6 +3750,61 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+         assert!(std::time::Instant::now() < deadline);
+         tokio::time::sleep(Duration::from_millis(20)).await;
+     };
++    if scenario == EngineeringScenario::RecoveredVerifier {
++        loop {
++            let waiting:bool=db.query_one("SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE wait_event='advisory' AND query LIKE 'INSERT INTO kernel_execution_results%')",&[]).await.unwrap().get(0);
++            if waiting {
++                break;
++            }
++            assert!(
++                std::time::Instant::now() < deadline,
++                "real Verifier persistence gate"
++            );
++            tokio::time::sleep(Duration::from_millis(20)).await;
++        }
++        let controller = verifier_view.controller.as_ref().unwrap();
++        let stat = std::fs::read_to_string(format!("/proc/{}/stat", controller.pid)).unwrap();
++        let fields: Vec<_> = stat[stat.rfind(')').unwrap() + 2..]
++            .split_whitespace()
++            .collect();
++        assert_eq!(fields[19].parse::<u64>().unwrap(), controller.start_ticks);
++        assert_eq!(
++            std::fs::read_to_string("/proc/sys/kernel/random/boot_id")
++                .unwrap()
++                .trim(),
++            controller.boot_id
++        );
++        assert_eq!(
++            unsafe { libc::kill(controller.pid as i32, libc::SIGKILL) },
++            0
++        );
++        while std::path::Path::new(&format!("/proc/{}", controller.pid)).exists() {
++            assert!(
++                std::time::Instant::now() < deadline,
++                "owned crashed Verifier monitor collected"
++            );
++            tokio::time::sleep(Duration::from_millis(20)).await;
++        }
++        db.batch_execute("SELECT pg_advisory_unlock(580581); DROP TRIGGER review580_verifier_gate ON kernel_execution_results; DROP FUNCTION review580_verifier_gate()").await.unwrap();
++        let observations:Vec<serde_json::Value>=db.query("SELECT jsonb_build_object('id',id,'state',state,'members',members) FROM supervised_observations WHERE execution_id=$1 ORDER BY observed_at,id",&[&verifier_execution.id]).await.unwrap().into_iter().map(|r|r.get(0)).collect();
++        let gateway = episode_runtime::EpisodeGateway::new(f.broker.clone());
++        let operation: Uuid = db
++            .query_one(
++                "SELECT id FROM episode_runtime_operations WHERE execution_id=$1",
++                &[&verifier_execution.id],
++            )
++            .await
++            .unwrap()
++            .get(0);
++        let inspected = gateway.inspect(&f.owner, operation).await.unwrap();
++        let measured = gateway.reconcile(&f.owner, operation).await.unwrap();
++        let out = evidence_directory("review580-recovered-verifier");
++        retain_bytes(&out.join("before-recovery.json"),&serde_json::to_vec(&serde_json::json!({"stop":verifier_view,"observations":observations,"original_operation":inspected,"measured_operation":measured})).unwrap());
++        supervisor
++            .reconcile(&f.owner, verifier_execution.id)
++            .await
++            .unwrap();
++    }
+     let trusted_result = loop {
+         if let Some(result) = supervisor
+             .result("assembled-verifier", verifier_execution.id)
+@@ -3659,7 +3819,9 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+         );
+         tokio::time::sleep(Duration::from_millis(20)).await;
+     };
+-    assert_eq!(trusted_result.exit_code, Some(0));
++    if scenario != EngineeringScenario::RecoveredVerifier {
++        assert_eq!(trusted_result.exit_code, Some(0));
++    }
+     assert_eq!(trusted_result.signal, None);
+     assert!(trusted_result.namespace_stopped);
+     assert_eq!(trusted_result.argv, checks[0]);
+@@ -3682,11 +3844,53 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+     } else {
+         serde_json::to_vec(&serde_json::json!({"candidate":candidate,"measured_commit":measured_commit,"measured_tree":measured_tree,"measured_base":measured_base,"execution":verifier_execution.id,"episode":verifier_episode,"input_packet":verifier_input,"command":checks[0],"trusted_monitor_result":trusted_result,"output":String::from_utf8(output.clone()).unwrap()})).unwrap()
+     };
++    let log = if scenario == EngineeringScenario::LegacyMonitorShape {
++        let mut evidence: serde_json::Value = serde_json::from_slice(&log).unwrap();
++        let original: serde_json::Value = db
++            .query_one(
++                "SELECT result FROM kernel_execution_results WHERE execution_id=$1",
++                &[&verifier_execution.id],
++            )
++            .await
++            .unwrap()
++            .get(0);
++        assert!(original.get("completion").is_none());
++        evidence["trusted_monitor_result"] = original;
++        serde_json::to_vec(&evidence).unwrap()
++    } else {
++        log
++    };
+     let log_digest = artifacts::sha256(&log);
+     artifacts
+         .publish_evidence("assembled-verifier", f.task, &log_digest, &log)
+         .await
+         .unwrap();
++    if scenario == EngineeringScenario::RecoveredVerifier {
++        Box::pin(async {
++        let snapshot=artifacts.snapshot("assembled-verifier",f.task).await.unwrap();
++        let report=artifacts::Verification {candidate:candidate.clone(),suite:artifacts::sha256(&serde_json::to_vec(&checks).unwrap()),environment:artifacts::sha256(b"actual-bwrap-private-git-v1"),checks:vec![artifacts::Check{command:checks[0].clone(),exit_code:0,logs:log_digest}],resolved_decisions:true};
++        let verify=artifact_fixture_call(artifacts.clone(),"assembled-verifier".into(),artifact_command("review580-refuse-unknown-verifier",snapshot.revision,artifacts::ArtifactCommand::Verify {verification:report.clone()}),artifacts::ReferenceFault::None).await;
++        let accept=artifact_fixture_call(artifacts.clone(),f.owner.clone(),artifact_command("review580-refuse-unverified-candidate",snapshot.revision,artifacts::ArtifactCommand::Accept {candidate_id:artifacts::sha256(&serde_json::to_vec(&candidate).unwrap()),report_id:artifacts::sha256(&serde_json::to_vec(&report).unwrap())}),artifacts::ReferenceFault::None).await;
++        let retained=supervisor.result(&f.owner,verifier_execution.id).await.unwrap();
++        let (a,b)=tokio::join!(supervisor.reconcile(&f.owner,verifier_execution.id),supervisor.reconcile(&f.owner,verifier_execution.id));
++        a.unwrap();b.unwrap();
++        let repeated=supervisor.result(&f.owner,verifier_execution.id).await.unwrap();
++        let out=evidence_directory("review580-recovered-verifier");
++        retain_bytes(&out.join("proof.json"),&serde_json::to_vec(&serde_json::json!({"candidate":candidate,"report":report,"result":trusted_result,"raw_output_sha256":artifacts::sha256(&output),"verify":verify.as_ref().map_err(|e|&e.code),"accept":accept.as_ref().map_err(|e|&e.code),"before_repeat":retained,"after_repeat":repeated})).unwrap());
++        child.kill();
++        for id in [execution.id,continuation_execution.id,verifier_execution.id] {
++            if supervisor.inspect(&f.owner,id).await.unwrap().state==supervisor::ExecutionState::Stopped {supervisor.release(&f.owner,id).await.unwrap();}
++        }
++        let root=f.root.clone();std::sync::Arc::try_unwrap(f).unwrap_or_else(|_|panic!("recovery fixture retained")).finish().await;
++        assert!(!root.exists());
++        assert_eq!(trusted_result.exit_code,None);assert_eq!(trusted_result.signal,None);
++        assert!(matches!(trusted_result.completion,supervisor::CompletionProvenance::RecoveredStop{..}));
++        assert_eq!(verify.unwrap_err().code,ErrorCode::DependencyUnmet);
++        assert_eq!(accept.unwrap_err().code,ErrorCode::DependencyUnmet);
++        assert_eq!(serde_json::to_value(retained).unwrap(),serde_json::to_value(repeated).unwrap());
++        }).await;
++        return;
++    }
+     if changed_after_allocation {
+         let current = artifacts.snapshot(&f.owner, f.task).await.unwrap();
+         let stale = artifact_fixture_call(
+@@ -3823,6 +4027,16 @@ async fn assembled_engineering_fixture(scenario: EngineeringScenario) {
+     )
+     .await
+     .unwrap();
++    if scenario == EngineeringScenario::LegacyMonitorShape {
++        Box::pin(async {
++        let accepted=artifact_fixture_call(artifacts.clone(),f.owner.clone(),artifact_command("review580-accept-legacy-shape",verified.revision,artifacts::ArtifactCommand::Accept {candidate_id:verified.candidate_id.clone().unwrap(),report_id:verified.report_id.clone().unwrap()}),artifacts::ReferenceFault::None).await;
++        let out=evidence_directory("review580-legacy-monitor-shape");retain_bytes(&out.join("proof.json"),&serde_json::to_vec(&serde_json::json!({"verified":verified,"accepted":accepted.as_ref().map_err(|e|&e.code),"evidence":serde_json::from_slice::<serde_json::Value>(&log).unwrap()})).unwrap());
++        child.kill();for id in [execution.id,continuation_execution.id,verifier_execution.id] {if supervisor.inspect(&f.owner,id).await.unwrap().state==supervisor::ExecutionState::Stopped {supervisor.release(&f.owner,id).await.unwrap();}}
++        let root=f.root.clone();std::sync::Arc::try_unwrap(f).unwrap_or_else(|_|panic!("legacy shape fixture retained")).finish().await;
++        assert!(!root.exists());assert!(accepted.unwrap().accepted);
++        }).await;
++        return;
++    }
+     if matches!(
+         scenario,
+         EngineeringScenario::ExpiredProducerBeforeAccept

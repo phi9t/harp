@@ -1,0 +1,25 @@
+{
+  "candidate": "review11",
+  "manifest_sha256": "771a0ffeef17a560f694ce255c9dda83041964a3e91f834705219195614acf87",
+  "Standards": "PASS",
+  "Spec": "PASS",
+  "blocking_findings": 0,
+  "production_refactors": "deferred nonblocking naming and directory-validation smells",
+  "root_integration": "five reviewed paths copied after all48 preimages verified; all48 postimages match",
+  "acceptance": false,
+  "next": "independent finding validity and architectural repair assessment",
+  "root_gate": {
+    "session": 41863,
+    "exit": 0,
+    "status": "PASS",
+    "log": "kernel16/branch-repair/root-gate6/kernel16-root-gate6.log",
+    "source": "all48 committedsource hashes verified"
+  },
+  "source_commit": "da7ff9b84765e7f00555926e2d0ad6b4a5a22ae7",
+  "branch_review": {
+    "job": 571,
+    "exit": 1,
+    "verdict": "CHANGES REQUIRED",
+    "findings": 3
+  }
+}

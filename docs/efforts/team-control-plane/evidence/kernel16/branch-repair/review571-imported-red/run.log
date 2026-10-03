@@ -1,0 +1,21 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review571-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.16s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'review571_imported_worker_unresolved_yield_requires_quarantine' (2424002) panicked at tests/assembled_cancellation.rs:3573:5:
+assertion `left == right` failed: nonempty unresolved execution checkpoint must expose uncertainty
+  left: "cancelled"
+ right: "quarantined"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test review571_imported_worker_unresolved_yield_requires_quarantine ... FAILED
+
+failures:
+
+failures:
+    review571_imported_worker_unresolved_yield_requires_quarantine
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.33s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

@@ -1,0 +1,29 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.16s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 2 tests
+test unknown_episode_blocks_preallocated_verifier_launch ... FAILED
+test unknown_episode_blocks_monitor_after_controller_claim ... FAILED
+
+failures:
+
+---- unknown_episode_blocks_preallocated_verifier_launch stdout ----
+
+thread 'unknown_episode_blocks_preallocated_verifier_launch' (3658756) panicked at tests/assembled_vertical.rs:7301:55:
+called `Result::unwrap()` on an `Err` value: Error { code: DependencyUnmet }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- unknown_episode_blocks_monitor_after_controller_claim stdout ----
+
+thread 'unknown_episode_blocks_monitor_after_controller_claim' (3658754) panicked at tests/assembled_vertical.rs:7510:55:
+called `Result::unwrap()` on an `Err` value: Error { code: DependencyUnmet }
+
+
+failures:
+    unknown_episode_blocks_monitor_after_controller_claim
+    unknown_episode_blocks_preallocated_verifier_launch
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 45 filtered out; finished in 0.67s
+
+error: test failed, to rerun pass `--test assembled_vertical`

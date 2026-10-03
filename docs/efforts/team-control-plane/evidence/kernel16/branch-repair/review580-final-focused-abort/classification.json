@@ -1,0 +1,18 @@
+{
+  "session": 96409,
+  "exit": 101,
+  "classification": "mixed focused run; vertical test process aborted with stack overflow",
+  "proven": "cancellation2 and operator3 passed, including surviving-thread refusal",
+  "not_proven": "vertical suite and full matrix",
+  "cleanup": "author requested exact orphan cleanup; not yet verified",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "ce60213d873011b749e8934138e9d5c15d47badd81980f4629e0d51b2382dd55"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    }
+  ]
+}

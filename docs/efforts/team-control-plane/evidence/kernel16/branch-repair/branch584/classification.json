@@ -1,0 +1,12 @@
+{
+  "job": 584,
+  "session": 94656,
+  "exit": 1,
+  "candidate": "480d7c22bdfd926e1534c4680988d63d50618d2e",
+  "findings": [
+    "epoch-rotated stopped crash recovery reservation stranded",
+    "current Worker cancellation revokes inspection/cleanup episode access"
+  ],
+  "assessment": "two independent read-only assessments requested; no repair yet",
+  "budget": "iteration2 candidate rejected; next repair would final iteration3 of3"
+}

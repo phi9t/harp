@@ -1,0 +1,55 @@
+{
+  "reviewer": "/root/kernel16_acceptance575",
+  "scope": "full ticket16 requirement audit; read-only, no independent execution",
+  "manifest_sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+  "verified_sources": 48,
+  "required_behavioral_blockers": [],
+  "matrix_independently_read": {
+    "bytes": 17500,
+    "groups": 16,
+    "passed": 162,
+    "failed": 0,
+    "ignored": 7,
+    "all_groups_ok": true
+  },
+  "focused_classifications": {
+    "directories": 9,
+    "all_referenced_files_exist": true,
+    "all_sha256_match": true
+  },
+  "covered": [
+    "real PG/Temporal full engineering lifecycle",
+    "authenticated bounded status and exact inspection",
+    "lost pause response and omitted Mission recovery",
+    "legacy Attempt execution discovery",
+    "cancel/reconcile/physical-stop fencing and capacity release",
+    "registered SDK exclusive takeover and uncertainty quarantine",
+    "view/broker/workflow-worker/gateway failure recovery",
+    "duplicate delivery/concurrent admission/stale revision",
+    "intent-before-RPC unknown effects",
+    "store/thread alias exclusion",
+    "generic workflow replay/rollover/terminal wakeup",
+    "durable mailbox/lead/question recovery",
+    "old attempt and mutable workspace fencing",
+    "publication crash and corrupt evidence refusal",
+    "arbitrary-byte verifier output Verify/Accept",
+    "bounded monitor finalization and failed-read refusal",
+    "changed candidate/base/spec",
+    "finite budgets and unknown usage",
+    "meaningful public red/green proofs"
+  ],
+  "pending": [
+    "root gate8 terminal outcome",
+    "candidate commit and freeze linkage",
+    "new whole-branch review",
+    "final evidence inventory and ticket handoff",
+    "exact-tip landing"
+  ],
+  "limitations": [
+    "main matrix does not rerun separately proven old-binary compatibility",
+    "actual collision-v2 history replay not established",
+    "legacy gateway restart may safely quarantine rather than successful takeover",
+    "live providers and rollback restore remain later unverified requirements"
+  ],
+  "correction": "Default rg hid gitignored logs; direct filesystem inspection verified complete matrix and focused logs. Initial missing-log statements withdrawn."
+}

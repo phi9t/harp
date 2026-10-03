@@ -1,0 +1,21 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.56s
+     Running tests/assembled_cancellation.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_cancellation-fcafaed7d2cd97f1)
+
+running 1 test
+
+thread 'colliding_episode_and_admission_waits_drive_both_protocols' (2294617) panicked at tests/assembled_cancellation.rs:1531:5:
+assertion `left == right` failed: same UUID must retain and dispatch both typed protocols
+  left: Prepared
+ right: Confirmed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test colliding_episode_and_admission_waits_drive_both_protocols ... FAILED
+
+failures:
+
+failures:
+    colliding_episode_and_admission_waits_drive_both_protocols
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.64s
+
+error: test failed, to rerun pass `--test assembled_cancellation`

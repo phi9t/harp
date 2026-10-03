@@ -1,0 +1,48 @@
+    Checking team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+error: this `if` statement can be collapsed
+   --> src/mailbox.rs:466:9
+    |
+466 | /         if let Some(task) = actor.task {
+467 | |             if tx
+468 | |                 .query_one(
+469 | |                     "SELECT status IN ('accepted','cancelled') FROM tasks WHERE id=$1",
+...   |
+477 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+466 ~         if let Some(task) = actor.task
+467 ~             && tx
+468 |                 .query_one(
+...
+475 |                 return Err(err(ErrorCode::DependencyUnmet));
+476 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> src/supervisor.rs:242:5
+    |
+242 | /     if let Some(row) = tx
+243 | |         .query_opt(
+244 | |             "SELECT owns_capacity,capacity_released FROM episode_executions WHERE execution_id=$1",
+245 | |             &[&id],
+...   |
+252 | |     }
+    | |_____^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+247 ~         .await?
+248 ~         && row.get::<_, bool>(0) {
+249 |             return Ok(!row.get::<_, bool>(1));
+250 ~         }
+    |
+
+error: could not compile `team-control-plane` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `team-control-plane` (lib test) due to 2 previous errors

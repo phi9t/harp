@@ -1,0 +1,30 @@
+Reviewing branch "codex/reference-design": 6 commits since main
+Enqueued job 580 for 1f16415..dd8e14c (agent: codex)
+Waiting for review to complete... done!
+
+Review (by codex)
+------------------------------------------------------------
+## Review Findings
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:2227`
+- **Problem**: Cancellation permanently retains an unused Attempt reservation when a separately charged continuation was allocated. For example, yield the imported Worker episode without allocating it, allocate a continuation, then cancel and release that continuation. Its slot is refunded, but its retained `episode_executions` row prevents refunding the original unbound reservation. No execution handle exists to release that remaining slot.
+- **Fix**: Reconcile the original reservation independently of separately owned execution history, requiring stopped effects and known usage. Add coverage for this cancellation sequence.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/supervisor.rs:979`
+- **Problem**: A monitor crash or final result persistence failure permanently prevents releasing a launched episode. Reconciliation can establish `stopped`, but release requires a result that only the original monitor writes. Restarting the monitor rejects the retained execution state, so workspace and capacity remain held even when effects and usage are known.
+- **Fix**: Add recovery finalization that verifies monitor and launcher termination and preserves unknown exit status without allowing successful verification. Test a crash between stop observation and result persistence.
+
+---
+
+- **Severity**: Medium
+- **Location**: `crates/team-control-plane/src/model_free_runtime.rs:631`
+- **Problem**: Takeover reads retained execution logs through `native_file`, which rejects files larger than 1 MiB. Legitimate larger output—including the newly supported 128 MiB case—therefore prevents controller takeover even after every workload stops. Releasing workspaces does not resolve this because logs remain retained.
+- **Fix**: Validate execution logs separately from bounded native JSON receipts, using bounded streaming reads when hashing is needed. Add a takeover test with a retained log exceeding 1 MiB.
+
+## Summary
+
+The change assembles durable episode execution, cancellation, verification evidence, and operator recovery around PostgreSQL, Temporal, and the supervisor.

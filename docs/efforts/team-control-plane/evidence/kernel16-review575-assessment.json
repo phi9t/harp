@@ -1,0 +1,119 @@
+{
+  "commit_read": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+  "reviewers": [
+    "/root/kernel16_review571_author",
+    "/root/kernel16_review571_spec_final"
+  ],
+  "findings_valid": 4,
+  "architecture": "operator readmodel incomplete across supported allocation protocols; trusted logs incorrectly modeled as text/whole-memorybuffers",
+  "decision": "../decisions/20261002-kernel-interface-repair575.md",
+  "sole_writer": "/tmp/corenius-kernel16-review575-author",
+  "new_branch": "codex/kernel16-review575-author",
+  "scope": "four existingcontract slices; no schema/dependency/provider expansion",
+  "acceptance": false,
+  "interface_critique": {
+    "reviewer": "/root/kernel16_review571_spec_final",
+    "verdict": "choseninterface sound",
+    "binary_parser": "representation exclusivity by field presence, including null; exact base64 encoding, valid types/decode and original-byte digest",
+    "memory_proof": "only owned monitor constrained; calibrate startup fits, log exceeds allocation headroom; record identity/limit, independently streamhash, cleanup before oracle; no truncation"
+  },
+  "initial_fixture_attempts": {
+    "red1": "terminal101 credential setup Unauthorized; not behavioralred",
+    "red1b": "terminal101 scoped Owner grant InvalidArgument; not behavioralred",
+    "premature_product_edit": "author reported snapshot edit before meaningfulred; instructed poll94818 then withdraw own edit to exactbase and run genuine red",
+    "green1_session94818": "live perauthor; no valid behavioral proof claim"
+  },
+  "byte_fixture_setup": {
+    "red3": "compile inference error; terminal101 notbehavioral",
+    "red3b": "borrow/move compile error; terminal101 notbehavioral",
+    "red3c": "SIGABRT stackoverflow before intendedoracle; terminal101 notbehavioral",
+    "command_order_correction": "rawbyte printf moved before final exit; gate exit preserved",
+    "cleanup_required": "verify owned resources after abort because Drop cannot be assumed",
+    "product_artifacts_supervisor": "unchanged before genuine public rawbyte red"
+  },
+  "focused_repair575_current": {
+    "base": "c4599e8be5720ff7da74ce886069ff0da0560b80",
+    "source_tree": "/tmp/corenius-kernel16-review575-author",
+    "binary_red": {
+      "session": 68954,
+      "exit": 101,
+      "evidence": "kernel16/branch-repair/review575-binary-output-red/"
+    },
+    "binary_green": {
+      "session": 65336,
+      "exit": 0,
+      "evidence": "kernel16/branch-repair/review575-binary-output-green/"
+    },
+    "memory_red": {
+      "session": 10228,
+      "exit": 101,
+      "evidence": "kernel16/branch-repair/review575-monitor-memory-red/"
+    },
+    "memory_green": {
+      "session": 37056,
+      "exit": 0,
+      "evidence": "kernel16/branch-repair/review575-monitor-memory-green/"
+    },
+    "operator_final": {
+      "session": 50554,
+      "exit": 0,
+      "passed": 7,
+      "evidence": "kernel16/branch-repair/review575-operator-final/"
+    },
+    "full_matrix": {
+      "session": 78915,
+      "terminal_exit": 0,
+      "groups": 16,
+      "passed": 162,
+      "failed": 0,
+      "ignored": 7,
+      "filtered": 0,
+      "evidence": "kernel16/branch-repair/review575-matrix/"
+    },
+    "cleanup_correction": "Earlier no-spawn claim for red3c was incorrect. Retained author identity-bound SIGTERM/executable-disappearance and zero-reference removal evidence for three owned setup-failure roots at kernel16/branch-repair/review575-setup-cleanup/cleanup.json. This is cleanup evidence, not a passing behavioral red.",
+    "acceptance": "unproven; full checks, immutable independent review, root gate and branch review required",
+    "freeze": {
+      "manifest_sha256": "6ad5e6e759050e7e2ca2d7150c2141b0d55336d2411d44db1ce0b1aac59ac51b",
+      "patch_sha256": "23ef97df592c409cff0aebb8b8c6c5d4407c489acac7655b1c33a8b9f5757f58",
+      "source_files": 48,
+      "git_preimages": 7,
+      "root_verified": true,
+      "evidence": "kernel16/branch-repair/review575-freeze/"
+    },
+    "strict": {
+      "session": 34361,
+      "terminal_exit": 0,
+      "fmt_exit": 0,
+      "diff_check_exit": 0,
+      "evidence": "kernel16/branch-repair/review575-validation/"
+    },
+    "independent_review": {
+      "standards": "PASS",
+      "spec": "PASS",
+      "evidence": "kernel16/branch-repair/review575-freeze/"
+    },
+    "root_integration": {
+      "changed_files": 7,
+      "verified_source_postimages": 48,
+      "base": "c4599e8be5720ff7da74ce886069ff0da0560b80"
+    },
+    "root_gate8": {
+      "session": 13946,
+      "terminal_exit": 0,
+      "evidence": "kernel16/branch-repair/root-gate8/"
+    },
+    "committed_candidate": {
+      "commit": "dd8e14cff65c00e7936c2d0ce9471aed973c777f",
+      "verified_git_source_blobs": 48
+    },
+    "whole_branch_review": {
+      "job": 580,
+      "session": 36530,
+      "terminal_exit": 1,
+      "verdict": "CHANGES REQUIRED",
+      "findings": 3,
+      "evidence": "kernel16/branch-repair/branch580/",
+      "assessment": "pending independent validity and architecture assessment"
+    }
+  }
+}

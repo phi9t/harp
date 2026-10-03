@@ -1,0 +1,36 @@
+{
+  "processes": [
+    {
+      "pid": 4106378,
+      "start_ticks": "39823366",
+      "argv": "/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66 --exact assembled_episode_sdk_worker --ignored --nocapture ",
+      "epoch": "b16ac7e5-0089-481c-93ad-dc0f7bbcb9f0",
+      "roots": [
+        "/data02/home/philip.yang/devx/tmp/kernel16-f244a336-26c2-4bc3-9345-94f760ea458f/episode-sdk-native",
+        "/data02/home/philip.yang/devx/tmp/kernel16-f244a336-26c2-4bc3-9345-94f760ea458f/workspaces"
+      ],
+      "signal": "SIGKILL",
+      "roots_disposition": "preserved",
+      "exact_incarnation_gone": true
+    },
+    {
+      "pid": 4106379,
+      "start_ticks": "39823366",
+      "argv": "/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66 --exact assembled_sdk_worker --ignored --nocapture ",
+      "epoch": "141f1f4a-5ffb-4576-b225-e4d75ca1fba0",
+      "roots": [
+        "/data02/home/philip.yang/devx/tmp/kernel16-ccee9391-ae28-4863-b1ad-d419c460e099/runtime",
+        "/data02/home/philip.yang/devx/tmp/kernel16-ccee9391-ae28-4863-b1ad-d419c460e099/workspaces"
+      ],
+      "signal": "SIGKILL",
+      "roots_disposition": "preserved",
+      "exact_incarnation_gone": true
+    }
+  ],
+  "zero_root_references": true,
+  "roots": [
+    "/data02/home/philip.yang/devx/tmp/kernel16-f244a336-26c2-4bc3-9345-94f760ea458f",
+    "/data02/home/philip.yang/devx/tmp/kernel16-ccee9391-ae28-4863-b1ad-d419c460e099"
+  ],
+  "correction": "Initial unnecessary startticks threshold caused cleanup script assertion before kills; subsequent focused compile started before corrected cleanup. Both owned SDKs explicitly stopped while compile still running."
+}

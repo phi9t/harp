@@ -1,0 +1,12 @@
+{
+  "axis": "Standards",
+  "verdict": "PASS",
+  "manifest_sha256": "1d479d0f1d21a96fdde3109997552090ed9b53e4357b3a30d81196c300d6be5e",
+  "patch_sha256": "4c807616a205407654898a5853aeddd13fa836b96c8171d9fc8b13503bf42382",
+  "verified_files": 48,
+  "nonblocking": [
+    "Possible duplicated checkpoint eligibility predicates; judgment call",
+    "Native cancel shell fixture proves direct-child cleanup, not complete descendant membership"
+  ],
+  "scope": "First freeze only; Spec rejected candidate; matrix/strict and acceptance pending"
+}

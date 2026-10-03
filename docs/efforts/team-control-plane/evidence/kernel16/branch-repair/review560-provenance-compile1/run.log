@@ -1,0 +1,39 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-review560-author/crates/team-control-plane)
+error[E0433]: cannot find type `UsageObservation` in this scope
+    --> tests/assembled_vertical.rs:7342:40
+     |
+7342 |     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+     |                                        ^^^^^^^^^^^^^^^^ use of undeclared type `UsageObservation`
+     |
+help: an enum with a similar name exists
+     |
+7342 -     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+7342 +     assert_eq!(journal.operation.usage,Observation::Unknown);
+     |
+
+error[E0433]: cannot find type `UsageObservation` in this scope
+    --> tests/assembled_vertical.rs:7558:40
+     |
+7558 |     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+     |                                        ^^^^^^^^^^^^^^^^ use of undeclared type `UsageObservation`
+     |
+help: an enum with a similar name exists
+     |
+7558 -     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+7558 +     assert_eq!(journal.operation.usage,Observation::Unknown);
+     |
+
+error[E0433]: cannot find type `UsageObservation` in this scope
+    --> tests/assembled_vertical.rs:7894:40
+     |
+7894 |     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+     |                                        ^^^^^^^^^^^^^^^^ use of undeclared type `UsageObservation`
+     |
+help: an enum with a similar name exists
+     |
+7894 -     assert_eq!(journal.operation.usage,UsageObservation::Unknown);
+7894 +     assert_eq!(journal.operation.usage,Observation::Unknown);
+     |
+
+For more information about this error, try `rustc --explain E0433`.
+error: could not compile `team-control-plane` (test "assembled_vertical") due to 3 previous errors

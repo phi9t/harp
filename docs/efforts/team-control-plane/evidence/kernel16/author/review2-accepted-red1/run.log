@@ -1,0 +1,12 @@
+   Compiling team-control-plane v0.1.0 (/tmp/corenius-kernel16-author/crates/team-control-plane)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.11s
+     Running tests/assembled_vertical.rs (/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66)
+
+running 1 test
+
+thread 'genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch' (3725163) has overflowed its stack
+fatal runtime error: stack overflow, aborting
+error: test failed, to rerun pass `--test assembled_vertical`
+
+Caused by:
+  process didn't exit successfully: `/tmp/corenius-kernel16-managed-handoff/target-control-plane/debug/deps/assembled_vertical-4ab01d6e60e7fb66 genuinely_accepted_task_revokes_cached_new_and_prepared_worker_dispatch --exact --nocapture` (signal: 6, SIGABRT: process abort signal)

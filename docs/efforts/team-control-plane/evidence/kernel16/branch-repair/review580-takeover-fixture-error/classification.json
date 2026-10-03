@@ -1,0 +1,17 @@
+{
+  "session": 7306,
+  "terminal_exit": 101,
+  "classification": "fixture oracle error; not accepted red",
+  "reason": "large-log successcase accidentally treated as negative, retried takeover unwrap before fixturefinish; inventory unchanged until corrected public red",
+  "cleanup": "author reports RAII collection and Temporal/PG shutdown; exact ownedprocess/root proof pending",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "cd228642a06ff9530b7cbe8d4c699afe1b975cf7ee13b302a808e233af9424ac"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "run": "red4",
+  "terminal_exit": 101,
+  "classification": "behavioral red",
+  "scope": "focused public fixture; not full kernel acceptance",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "68eb288259cc4c24ea09af3eac57b29fe6039c120d0599acfb3e4cca3ba11d82"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "monitor-memory-134217728/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "monitor-memory-134217728/result.json",
+      "sha256": "5ae21eec71fb6317b6a7ac518a163c19942b5985fdf40e73a686218479f5578c"
+    },
+    {
+      "path": "monitor-memory-134217728/memory-constraint.json",
+      "sha256": "67e2efbf96825d05d855f145919a6fe3e02b3e0cd961002220357e35abb3673b"
+    },
+    {
+      "path": "monitor-memory-1048576/cleanup.json",
+      "sha256": "64c33d2596f46f3ac124bff2ca42065a482fe190212d64dc54dd491fab7c5d6d"
+    },
+    {
+      "path": "monitor-memory-1048576/result.json",
+      "sha256": "e14aac32a866ca18859b0adc86734b72549e670cda1001585c6e7fff08a78168"
+    },
+    {
+      "path": "monitor-memory-1048576/memory-constraint.json",
+      "sha256": "23a614972da30c368cb450e95a09a5c78670eb2a4d12f525f4c9c5d9500c0dd4"
+    }
+  ]
+}

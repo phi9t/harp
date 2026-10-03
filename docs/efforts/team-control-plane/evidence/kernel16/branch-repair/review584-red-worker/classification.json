@@ -1,0 +1,29 @@
+{
+  "session": 76532,
+  "exit": 101,
+  "oracle": "cancelled current Worker inspection Err(StaleGeneration) after physical fixture finish; owned child exit101",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "e2afd8485777cde1842bb93eeb0bcfbd7f84c9598521bbca133c5a15e5a339e9"
+    },
+    {
+      "path": "postgres-final.json",
+      "sha256": "507474db83e46fe4d006c7b157afff0dcbf3413818ace613bf5ffbae86297fe1"
+    },
+    {
+      "path": "nested-worker-terminal.json",
+      "sha256": "de0058f0c402507a7c8532ee7b42358af974b34c4a6c9b2db393c9686ac267f0"
+    },
+    {
+      "path": "cancel-known-physical-evidence.json",
+      "sha256": "e138d14b7b7f1ff18d7c841b39eea1481e81860129daf5749d06fc56737ce401"
+    },
+    {
+      "path": "nested-worker-stderr.log",
+      "sha256": "73cc6a3ebec0427e65d04af0f4c9197e4894aee456aa7796a3abec0df3b285f4"
+    }
+  ],
+  "preceding_rotation_green": "set-e sequentialcommand completed exit0",
+  "cleanup": "physical record and terminalchild retained; explicit containercheck pending"
+}

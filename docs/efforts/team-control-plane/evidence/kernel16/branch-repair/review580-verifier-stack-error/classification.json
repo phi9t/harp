@@ -1,0 +1,17 @@
+{
+  "session": 65776,
+  "terminal_exit": 101,
+  "classification": "fixture SIGABRT stack overflow; no behavioral green",
+  "reason": "added Verifier crash branch grows shared async fixture",
+  "cleanup": "exact owned survivor cleanup pending author proof; RAII not assumed after abort",
+  "files": [
+    {
+      "path": "run.log",
+      "sha256": "ae0a82074922793b88dc112db0622c2cda6bfe46fa8f811c72079d4f0a5e3cab"
+    },
+    {
+      "path": "run.exit",
+      "sha256": "39b8dc3fc8b44765c8e6f1adee04c5b465e555ab791cc42d0d9e810d5b64297c"
+    }
+  ]
+}
