@@ -2149,3 +2149,12 @@ Repair611 lazy-red60492 terminal101; reconciled-focused34565 terminal0 with7life
 
 
 Repair611 full-final1813 actualterminal101. Allthree previous regressions passed, but unknown_episode_blocks_preallocated_verifier_launch failed because owned_episode_usage_worker child failed. Assembledsummary56passed/1failed/3ownedentrypointignored. Author preserves run/cleanup and diagnoses retained child evidence before source edits or rerun. No passing fullmatrix/freeze claim.
+
+
+Repair611 final freeze independently verified by root:463 indexed files,48 live sources,5 exact Git base preimages and exact patch c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62. Full retry27825 terminal0:184 parent passes/8 owned-child ignores (185 including nested child), after failed1813 without production changes. Equivalent two test-only let-chain lint edits followed; finalfocused46984 terminal0 ten passes and strict99330 terminal0. Selected407 public records plus four freeze metadata/patch files retained, with retention index; aggregate1533 retained manifest records verified. Standards reviewer584 independently PASS; Spec review running. Failed1813 fixture remains unresolved quarantine with missing exact PID/database stop evidence, not proven flake or cleanup. No source integration, acceptance or landing yet.
+
+
+Independent Spec reviewer580 terminal bounded PASS alongside Standards584 PASS. Root preintegration checked all48 current source bytes against frozen unchanged files/five Gitbasepreimages; exact binary patch applied and all48 postintegration source hashes matched. Root integrated full repository gate12 started actual session46372, confirmed live by write_stdin; sole Cargo/PG/Temporal slot owned by root. Source remains uncommitted pending gate; wholebranchreview/acceptance/landing still pending.
+
+
+Rootgate12 actualsession46372 terminal0, check all green. All48 source hashes reverified before sourcecommit fc0d9b147ab4244af5025314d622c1aebb98fc6d and all48 committedGitblob hashes match frozenreviewedcandidate. Fresh wholebranchreview wrapper started actualsession61562 against main; verdict pending. Rootgate result/cleanup retained separately. No ticket acceptance or mainlanding yet.

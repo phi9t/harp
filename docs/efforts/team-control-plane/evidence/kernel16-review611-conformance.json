@@ -1,0 +1,45 @@
+{
+  "status": "bounded conformance PASS; integrated root gate PASS; committed source matches frozen reviewed candidate; wholebranch review pending",
+  "base": "587aca8821d352b73463dff2ffd02cbdf55e19e5",
+  "patch_sha256": "c8d951d97e2df906508ce5c97b7c4be91fe8789b07eca53ab74953eefc192b62",
+  "source_count_verified": 48,
+  "changed_files": [
+    "crates/team-control-plane/src/artifacts.rs",
+    "crates/team-control-plane/src/mailbox.rs",
+    "crates/team-control-plane/src/supervisor.rs",
+    "crates/team-control-plane/tests/assembled_cancellation.rs",
+    "crates/team-control-plane/tests/assembled_vertical.rs"
+  ],
+  "Standards": {
+    "reviewer": "kernel16_review584_author",
+    "verdict": "PASS",
+    "blocking_findings": 0,
+    "evidence_verified": {
+      "indexed_files": 463,
+      "live_sources": 48,
+      "exact_patch": true
+    },
+    "scope": "bounded five-file source conformance, not full ticket acceptance or historical cleanup"
+  },
+  "Spec": {
+    "reviewer": "kernel16_acceptance580",
+    "verdict": "PASS",
+    "blocking_findings": 0,
+    "evidence_verified": {
+      "indexed_files": 463,
+      "selected_public_proofs": 407,
+      "live_sources": 48,
+      "exact_patch": true
+    },
+    "scope": "bounded five-file source conformance, not full ticket acceptance or historical cleanup"
+  },
+  "limitation": "Failed1813 fixture remains unresolved quarantine; missing PID/database shutdown proof. No cleanup/flake claim.",
+  "accepted": false,
+  "landed": false,
+  "root_gate": {
+    "session": 46372,
+    "exit": 0,
+    "status": "terminal PASS; check all green"
+  },
+  "candidate": "fc0d9b147ab4244af5025314d622c1aebb98fc6d"
+}
