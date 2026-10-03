@@ -1,0 +1,38 @@
+{
+  "actual_terminal_handles": {
+    "66033": 0,
+    "52875": 0,
+    "33283": 0,
+    "50170": 0,
+    "45882": 0
+  },
+  "final_fixture_sha256": "6b6d77da93dca09d47450addd2e731cd9ac2ecd30d52c14cd612aaba1a2cf027",
+  "syntax": 0,
+  "report_links": 0,
+  "source_bound_final_outcomes": {
+    "behavioral_controls_exit1": 5,
+    "passing_jj_slices_exit0": 5,
+    "passing_git_baseline_exit0": 1
+  },
+  "existing_tooling_fixtures": {
+    "test_wt.py": {
+      "exit": 0,
+      "tests": 12
+    },
+    "test_land.py": {
+      "exit": 0,
+      "tests": 8
+    },
+    "test_evidence.py": {
+      "exit": 0,
+      "tests": 15
+    }
+  },
+  "tracker_lint_exit": 0,
+  "diff_check_exit": 0,
+  "repository_gate": "Not run by author: check.sh includes checks.d/70-team-control-plane.sh invoking real Temporal/PG/Cargo, prohibited while root holds exclusive slot. Existing gate/landing/evidence/GC behavior exercised on exported disposable candidate; root retains integration gate.",
+  "provider_calls": 0,
+  "shared_checkout_mutations": 0,
+  "all_final_owned_fixture_roots_removed": true,
+  "observed_at": "2026-10-03T07:31:01.722107+00:00"
+}

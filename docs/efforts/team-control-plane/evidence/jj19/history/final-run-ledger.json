@@ -1,0 +1,177 @@
+[
+  {
+    "run": "final-identity-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "identity",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-identity-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "mutable change identity accepted rewritten candidate",
+    "fixture_removed": true
+  },
+  {
+    "run": "final-identity-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "identity",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-identity-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true
+  },
+  {
+    "run": "final-authority-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "authority",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-authority-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "status inspection silently acquired snapshot authority",
+    "fixture_removed": true
+  },
+  {
+    "run": "final-authority-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "authority",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-authority-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true
+  },
+  {
+    "run": "final-crash-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "crash",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-crash-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "SIGKILL did not roll back durable repository operation",
+    "fixture_removed": true
+  },
+  {
+    "run": "final-crash-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "crash",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-crash-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true
+  },
+  {
+    "run": "final-exclusions-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "exclusions",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-exclusions-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "unsafe outcome accepted: ignore rules alone cannot remove tracked private content",
+    "fixture_removed": true
+  },
+  {
+    "run": "final-exclusions-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "exclusions",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-exclusions-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true
+  },
+  {
+    "run": "final-integration-red",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "integration",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-integration-red.json",
+      "--unsafe-control"
+    ],
+    "terminal": 1,
+    "outcome": "failed",
+    "failure": "failed gate did not authorize landing",
+    "fixture_removed": true
+  },
+  {
+    "run": "final-integration-green",
+    "argv": [
+      "python3",
+      "/tmp/corenius-jj19-evaluation-author/docs/efforts/team-control-plane/research/probes/jj_workspace_evaluation.py",
+      "--binary",
+      "/data02/home/philip.yang/workspace/corenius-codex-reference-design/.scratch/team-control-plane/jj-preflight/source/target/release/jj",
+      "--slice",
+      "integration",
+      "--output",
+      "/tmp/corenius-jj19-evaluation-author/.scratch/team-control-plane/jj19/final-integration-green.json"
+    ],
+    "terminal": 0,
+    "outcome": "passed",
+    "failure": null,
+    "fixture_removed": true
+  }
+]
