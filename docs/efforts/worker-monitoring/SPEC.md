@@ -99,6 +99,18 @@ No single numerical drift score authorizes intervention. Show individual signals
 
 Test-oracle changes require a comparison of old/new assertion, intent invariant, fixture validity and retained failed evidence. Classify legitimate measurement correction separately from a weakened contract. Independent review adjudicates disputed changes. Exhausted repair caps surface to the human or authorized architecture owner; a new ticket cannot silently renew the cap.
 
+## Context efficiency and removal of stale working material
+
+Owner explicitly requires active compaction, clearing and removal of bad working context when necessary. Include context health in every 15-minute review, independently of task alignment. Read public runtime usage metadata only: latest request input/cached input/output, reported context window, cumulative deltas, compaction events and subsequent request size. Uncached input is input minus cached input when the counters are compatible. File bytes and lifetime input counters are not the current context size; these observations do not establish dollar cost. Missing telemetry stays unknown.
+
+Initial operator heuristics: warn around 100k input; at 120k input or 50% of reported window, prepare a checkpoint/compact at the next safe boundary; at 150k or 60%, require compact/fresh working context before the next bounded phase. These are tunable engineering thresholds, not a scientific smart-zone claim or a financial budget system. Account for the static instruction/tool-schema floor; repeated compaction cannot remove that floor. Apply efficiency checks to implementing workers and coordinating/monitoring leads so the supervisor does not accumulate an ever-growing replay.
+
+Choose the smallest effective intervention. First trim avoidable new input: exact source ranges/diffs, bounded test tails, artifact references and one finding at a time rather than repeated full logs/files. At a useful phase boundary, compact when relevant continuity remains valuable. Clear/start fresh when old context is irrelevant or corrupted, after recording the current task brief, specification/acceptance revisions, source/dirty-state identity, verified facts versus hypotheses, relevant negative results, remaining findings/repair round, active jobs and uncertain effects. Aim for a small dynamic handoff of roughly 4–8k tokens plus selectively retrieved primary evidence; do not claim this bounds the runtime's total static prompt.
+
+Do not remove original transcripts/evidence or rewrite history. Remove superseded plans, rejected assumptions, repeated raw output and unrelated material from the active working context; retain their provenance outside it. A known-bad assertion must be explicitly superseded and excluded from future briefs, rather than being repeatedly summarized as a fact. Preserve essential negative knowledge so the worker does not repeat disproven approaches.
+
+Compaction/clear requires a real supported runtime operation and verified outcome. Sending '/compact' as ordinary model text or merely producing a handoff is not success. If no explicit child-compaction control is available, record the limitation and let the coordinator create a fresh non-inheriting thread/episode after the old writer is quiescent and execution effects are reconciled. No second author may write into a live workspace. Compaction does not reset authority, claims, acceptance or repair allowances. Verify the following request materially reduces dynamic input, or investigate why it did not. Context removal may happen sooner if tainted instructions or contradictory summaries threaten correct execution, with required state captured first.
+
 ## Intervention policy
 
 | Level | Trigger | Authorized action |
