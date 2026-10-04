@@ -9,3 +9,5 @@ Spec: ../SPEC.md
 Private Git workspace backend, retained immutable candidates, separate verification materializations, explicit acceptance and journaled conditional ref landing. Prove two simultaneous candidates, stale-base reintegration with fresh evidence, crash after ref update, unauthorized ref writes and retryable cleanup.
 
 Claim an isolated worktree before implementation. Retain public behavioral red-green evidence, exact source identity and independent Standards/Spec review. No shared branch rewriting.
+
+Owner clarification: include controller-owned workspace/branch/bookmark inventory, one-writer binding, dirty/untracked preservation, retained object/evidence references and identity-bound cleanup/drift diagnostics. Git/jj workspace hygiene must not delete or rewrite shared work.
