@@ -3,6 +3,71 @@
 Language for the persistent engineering team and its authority boundaries.
 These definitions describe the domain; they do not claim implementation readiness.
 
+## Fleet, execution and developer systems
+
+**Armada**:
+The fleet-management plane for SSH-accessible compute, including machine identity,
+routes, reachability, capabilities, health and ownership context.
+_Avoid_: Workload executor, Insula lifecycle owner, cluster scheduler.
+
+**Insula**:
+A live bwrap-based hermetic execution instance with declared inputs, projections
+and runtime policy.
+_Avoid_: Capsule or environment as a separate runtime domain object, rootfs, fleet manager.
+
+**Insula contract**:
+The immutable resolved definition of an Insula's base filesystem, dependency
+closure, workspace and host/device projections, and runtime policy.
+_Avoid_: Live Insula, capsule contract, mutable host configuration.
+
+**Insula ID**:
+The identity of a specific live Insula instance, separate from its contract's
+content identity.
+_Avoid_: Contract digest, rootfs digest, RuntimeIncarnation.
+
+**rootfs**:
+A frozen base filesystem artifact from which an Insula starts.
+_Avoid_: Running environment, live Insula, workspace.
+
+**dependency bundle**:
+An immutable additional closure of tools, packages or dependencies projected
+into an Insula.
+_Avoid_: Mutable host installation, workspace projection.
+
+**workspace projection**:
+The declared code or project state exposed inside an Insula.
+_Avoid_: rootfs, dependency bundle, unrestricted host filesystem.
+
+**DevX**:
+The developer-experience system that creates and maintains durable developer
+Insulas and the tools used within them.
+_Avoid_: Fleet inventory, general cluster execution system.
+
+**Metallica**:
+The cluster execution system that realizes Insula-based workloads across compute
+resources and distributed roles or Pods.
+_Avoid_: SSH wrapper, Armada execution, one cluster-wide Insula.
+
+**TorchTitan**:
+The workload system that defines training semantics within the supplied execution
+architecture.
+_Avoid_: Fleet management, Insula substrate, distributed placement authority.
+
+**SGLang**:
+The workload system that defines serving semantics within the supplied execution
+architecture.
+_Avoid_: Fleet management, Insula substrate, distributed placement authority.
+
+**hermetic**:
+Conformance to an explicitly resolved toolchain, dependency closure, filesystem
+inputs and execution assumptions, rather than ambient host inheritance.
+_Avoid_: Network-isolated, hostile-code security guarantee, reproducibility guarantee.
+
+**network-isolated**:
+An Insula's explicitly constrained network connectivity, independent of its
+hermetic input closure.
+_Avoid_: Hermetic as a synonym, default property of every Insula.
+
 ## Work and outcomes
 
 **WorkRef**:

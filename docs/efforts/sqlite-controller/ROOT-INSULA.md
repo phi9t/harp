@@ -9,22 +9,22 @@ Source read: Corenius main `a21316f` (`src/insula.rs`, `tools/insula/capsule.py`
 
 Run each complete local engineering team inside one independently owned root Insula: controller, SQLite, Kata adapter/local fixture, runtime gateway, lead, two workers, verifier, dashboard, monitoring and tmux. Narrower child Insulas constrain each reasoning process and its tools. Multiple instances may use identical internal paths and local ports without sharing mutable state or control authority. Restarting a controller or closing a view must not implicitly terminate the root or surviving workers.
 
-Insula vocabulary: the immutable **rootfs image** contains the software; a **capsule** combines it with a declared runtime mount/environment/command plan. “Root Insula” here means the root capsule for one team instance, not host root privileges. Child capsules share only explicitly admitted inputs. Insula's current reference implementation does not claim a hostile-code sandbox; hardening and negative qualification are additional Corenius work.
+Vocabulary follows [RFC 0003](../../rfcs/0003-execution-vocabulary-reset.md) and the [glossary](../../../CONTEXT.md). A **rootfs** is a frozen base filesystem artifact. An **Insula contract** resolves that base, dependency bundles, workspace/device/host projections and runtime policy. An **Insula** is the live execution instance. “Root Insula” means the parent instance for one team, not host root privileges. Child Insulas share only admitted inputs. Hermeticity and network isolation are separate properties; existing isolation criteria remain binding. The inspected reference implementation does not establish hostile-code containment; additional Corenius qualification remains necessary.
 
-Alternatives: private directories alone prevent some name collisions but leave processes, loopback and inherited control resources shared. Independent flat capsules avoid nested-launch requirements but need an explicit external grouping and networking arrangement. Recommend the nested team root with a small host supervisor; record flat capsules as a distinct alternative if nesting is unavailable, never silently call host execution isolated.
+Alternatives: private directories alone prevent some name collisions but leave processes, loopback and inherited control resources shared. Independent flat Insulas avoid nested-launch requirements but need an explicit external grouping and networking arrangement. Recommend the nested team root with a small host supervisor; record flat Insulas as a distinct alternative if nesting is unavailable, never silently call host execution isolated.
 
 ```text
 Host: outer qualification harness + instance supervisor
-  └─ root capsule: instance I / root incarnation R
+  └─ root Insula: instance I / root incarnation R
        ├─ independent root init / execution supervisor
        ├─ controller + SQLite + Kata adapter/local fixture
        ├─ canonical Git + artifacts + monitor ledger
        ├─ runtime gateway + scoped participant bridges
        ├─ dashboard + operator tmux server
-       ├─ lead capsule: Codex app-server, own state, scoped lead tools
-       ├─ worker A capsule: own app-server/state/private Git/Attempt
-       ├─ worker B capsule: own app-server/state/private Git/Attempt
-       └─ verifier capsule: exact Candidate, restricted evidence channel
+       ├─ lead Insula: Codex app-server, own state, scoped lead tools
+       ├─ worker A Insula: own app-server/state/private Git/Attempt
+       ├─ worker B Insula: own app-server/state/private Git/Attempt
+       └─ verifier Insula: exact Candidate, restricted evidence channel
 ```
 
 Separate app-server per role/Attempt is the first qualified configuration, all beneath the same root. A shared app-server remains possible only after demonstrating per-thread tool execution isolation and capability confinement; distinct cwd or thread ID is not a filesystem/process isolation mechanism. Replacement retains binding provenance and continuity while changing RuntimeIncarnation or Attempt where required.
@@ -48,7 +48,7 @@ SQLite is embedded in the controller, not an extra database daemon. Bind its ent
 
 Set `HOME`, `CODEX_HOME`, XDG state/config/cache/runtime directories, tmp/cache/build locations, Git config and Kata deployment/project explicitly per role/instance. These are a freshly constructed allowlist, not inherited host environment. Codex stores local state under `CODEX_HOME`; isolate it rather than binding host `.codex`. [Official Codex configuration](https://learn.chatgpt.com/docs/config-file/config-advanced).
 
-Private Git repositories include their own `.git` and, when qualified, `.jj`; no shared writable worktree metadata, alternate objects or host canonical mount. A root capsule owns its canonical repository. If several instances ultimately target the same remote protected branch, filesystem separation does not serialize remote landing: require one shared landing authority or a qualified conditional remote update/reconciliation protocol. The initial trial uses separate destinations; no claim of cross-instance shared-mainline safety follows from it.
+Private Git repositories include their own `.git` and, when qualified, `.jj`; no shared writable worktree metadata, alternate objects or host canonical mount. A root Insula owns its canonical repository. If several instances ultimately target the same remote protected branch, filesystem separation does not serialize remote landing: require one shared landing authority or a qualified conditional remote update/reconciliation protocol. The initial trial uses separate destinations; no claim of cross-instance shared-mainline safety follows from it.
 
 Bound writable disk capacity and inode consumption per instance, with separate Attempt/scratch/log allocations and controller persistence headroom. Use qualified filesystem quotas or equivalent storage containment; CPU/memory/process limits cannot prevent one instance exhausting another's storage. Protect retained Candidates/evidence from indiscriminate log cleanup. If the host cannot enforce storage containment, advertise namespace/state isolation with that explicit limit, not general noninterference. Qualification fills A's allocation while B continues committing/checkpointing its SQLite database and retaining artifacts.
 
@@ -68,7 +68,7 @@ The gateway enforces allowed destinations and scoped requests; deny arbitrary tu
 
 Provider credentials belong to runtime-only projections or a mediated provider connector, not general tool environments. App-server and arbitrary shell tools sharing one writable home, environment and process view would defeat that distinction. Qualify a nested tool-execution boundary or supported executor integration for all tool paths: shell, filesystem tools, MCP, patches, helper processes and background jobs. Merely wrapping some shell commands does not suffice. If credential/process separation cannot be proved, report the limitation and block the corresponding isolation claim.
 
-The root supervisor may create children; workers may request bounded Executions through the controller but cannot choose arbitrary mounts or enter root/parent namespaces. Further child/tool capsules require supervisor-authorized plans, not worker-held root-launch authority. Capability disabling/seccomp must be chosen so required nested tool launches work while untrusted tools cannot rearrange authority. Do not blindly apply `--disable-userns` to a parent that must launch nested capsules. [Bubblewrap options](https://github.com/containers/bubblewrap/blob/main/bwrap.xml).
+The root supervisor may create children; workers may request bounded Executions through the controller but cannot choose arbitrary mounts or enter root/parent namespaces. Further child/tool Insulas require supervisor-authorized plans, not worker-held root-launch authority. Capability disabling/seccomp must be chosen so required nested tool launches work while untrusted tools cannot rearrange authority. Do not blindly apply `--disable-userns` to a parent that must launch nested Insulas. [Bubblewrap options](https://github.com/containers/bubblewrap/blob/main/bwrap.xml).
 
 ## Transport, UI and monitoring
 
@@ -84,7 +84,7 @@ Keep the 15-minute alignment/context monitor and durable cursors under `/state/m
 
 ## Lifecycle and recovery
 
-Admission sequence: validate instance/lock/storage/image -> establish owned supervision/cgroup -> launch root init -> establish private ingress/egress -> reconcile persisted state and runtime bindings -> start controller/projections -> admit role capsules -> attach views -> permit dispatch. First failure blocks later admissions; retain owned-resource receipts for cleanup. Launcher crash recovery must reconcile any root started before its acknowledgement was saved.
+Admission sequence: validate instance/lock/storage/image -> establish owned supervision/cgroup -> launch root init -> establish private ingress/egress -> reconcile persisted state and runtime bindings -> start controller/projections -> admit role Insulas -> attach views -> permit dispatch. First failure blocks later admissions; retain owned-resource receipts for cleanup. Launcher crash recovery must reconcile any root started before its acknowledgement was saved.
 
 Persist host execution intents/observations in a separate supervisor-owned registry: instance/storage identity, host boot identity, root incarnation, stable launch operation, owned cgroup identity, observed process identity/start time and launch outcome. This is an execution journal, not another team scheduler or writer of controller task state. Supervisor death may release the lifetime lock while children are still alive or terminating. On restart, reacquire the lock and adopt or quarantine recorded survivors before any replacement launch; lock acquisition does not prove the previous root stopped. Unknown launch outcomes remain unresolved. Qualify death before/after acknowledgement separately from controller and root-init failures, and never signal a resource resolved only through a recycled PID/name.
 
