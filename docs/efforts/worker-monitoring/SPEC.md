@@ -113,7 +113,7 @@ Before review credit, retain the complete allowed visible-item inputs and select
 
 The analyzer has a deadline and bounded retries per sealed batch. Exhaustion retains the batch as review-pending/attention-needed and exposes coverage lag; it does not advance the reviewed frontier or automatically halt otherwise authorized work. Parsing/source corruption is distinct from worker drift. Safety-critical command enforcement remains in the controller even while monitoring is degraded. The scheduler coalesces pending batches, gives each stream fair service and keeps monitoring overhead bounded; it must not swamp the worker with repeated checkpoints or block ordinary controller queries.
 
-Current operational bridge: this observer sends instructions to the existing implementation coordinator through its durable mailbox and confirmed literal tmux submission. The coordinator owns its child worker and delivers scoped corrections. This is bootstrap operation, not a claim that the new controller API is live. Do not mutate or attach another scheduler to the child worker.
+Current operational bridge: this observer sends instructions to the existing implementation coordinator through its durable mailbox and the installed native existing-thread queue, with confirmed literal tmux delivery as an alternative. Queue/submission receipts do not establish coordinator adoption. The coordinator owns its child worker and delivers scoped corrections. This is bootstrap operation, not a claim that the new controller API is live. Do not mutate or attach another scheduler to the child worker.
 
 ## User control center
 
