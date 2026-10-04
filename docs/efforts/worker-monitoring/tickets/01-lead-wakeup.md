@@ -1,8 +1,10 @@
-# 01 main-lead Codex review wakeup
+# 01 lead-wakeup: main-lead Codex review wakeup
 
 Type: task
-Status: specified
-Owner: sqlite-baseline observer
+Status: resolved
+Owner: lead-monitor-wake
+Blocked by:
+Claimed:
 Spec: ../SPEC.md
 Route: narrow bootstrap implementation of owner-selected15-minute main-lead wake cadence; product monitoring remains separately gated.
 
@@ -12,6 +14,15 @@ At most one prepared/queued/unknown/reviewing wake exists. Ambiguous dispatch re
 
 The prompt names the canonical monitor spec, private assessment ledger, execution coordinator state path and current Codex adapter. It tells the lead to inspect current assignments, review new visible actions in batches against goals/specs/tickets/plan, preserve history gaps, intervene through the coordinator when supported, record evidence/cursors, begin/finish the wake and stay quiet unless meaningful drift/completion/failure/human attention occurs. No financial budget feature or full controller integration.
 
-Acceptance: subprocess-boundary tests prove two racing ticks yield at most one actual queue request, successful delivery receipts, timeout/ambiguous acknowledgment suppression, wrong-thread refusal, pending/reviewing coalescing, completion enabling the next tick, stopped configuration refusal and restart reconciliation without duplicate queue. Tests use an actual owned fake CLI process for fault cases, not production credentials. Real existing-main-thread queue submission and supervised timer installation are root-owned operational qualification after code review.
+## Acceptance
+
+- [x] Subprocess-boundary tests prove two racing ticks yield at most one actual queue request, successful delivery receipts, timeout/ambiguous acknowledgment suppression, wrong-thread refusal, pending/reviewing coalescing, completion enabling the next tick, stopped configuration refusal and restart reconciliation without duplicate queue.
+- [x] Tests use an actual owned fake CLI process for fault cases, not production credentials.
+- [x] Real existing-main-thread queue submission and supervised timer installation have root-owned operational qualification after code review.
 
 Root retains responsibility for docs, systemd timer/service installation, actual delivery, independent review and FF-only integration. Do not edit root's checkout, install a timer, queue any real messages, push/rebase or land main. Final handoff: clean commit, exact test commands/results, risks and state protocol.
+
+## Comments
+
+- 2026-10-04T18:00:00Z sqlite-baseline: owner selected the exact main lead and approximately15-minute cadence. Separate-context author owns codex/monitor-wakeup; root retains installation and qualification. Native queue probe received exact-thread receipt, not a completed review.
+- 2026-10-04T18:25:00Z sqlite-baseline: narrow wake-helper acceptance at b034844 with independent Standards/Spec PASS, defect review647 PASS, fresh root9 focused and99 Python checks PASS. Local unit verified/enabled; exact lead queue receipt recorded. Automatic presentation/completed analysis remain separately unqualified; no full production monitor or mainline acceptance implied.

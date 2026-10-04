@@ -1,6 +1,6 @@
 # Incremental worker supervision
 
-Status: proposed mechanism; initial manual observation initialized, unattended monitor not deployed.
+Status: Codex main-lead wake scheduler implemented and active; observation/cursor review is manual; the production ingestion/analysis/controller integration below remains proposed and unqualified.
 Priority: support the retained SQLite-controller baseline; preserve the active ticket04 writer and its review gates.
 Source read: execution coordinator a75c520761e5f93f078abdfd1d99f24369499b99; initial ticket04 product 2b1887b8c8c6e0ea806487271ae77fc3b743f63d; evidence tip f85fcd15a912a59a9af7e4d0da56329f38a5c298; live repair checkout is mutable and unaccepted. Local transcript observations are dated 2026-10-04. Proposed behavior below is not an implementation claim.
 
@@ -141,4 +141,4 @@ Explicit negative cases include overlapping live/backfill batches published in e
 
 ## Initial operational limits
 
-This design does not deploy an unattended timer or native hosted automation. Manual cursor-led reviews and coordinator checkpoints can begin immediately. A recurring runner must be explicitly implemented, supervised and tested before claiming continuous coverage. Runtime export internals are pinned local observations, not a portable or stable API guarantee. Raw transcripts are private; share redacted analytical receipts and independently pinned evidence.
+The bootstrap local15-minute timer is active and a real exact-thread queue receipt has been recorded. This is not native hosted automation or proof of automatic presentation/completed review. The first genuine wake must establish those remaining facts. Manual cursor-led reviews and coordinator checkpoints are operational; the full production ingestion/retention/calibration pipeline remains pending. Runtime export internals are pinned local observations, not a portable or stable API guarantee. Raw transcripts are private; share redacted analytical receipts and independently pinned evidence.
