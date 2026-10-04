@@ -20,11 +20,17 @@ Start with controller-owned SQLite monitoring tables plus private evidence artif
 
 ## Turn and action semantics
 
+Owner clarification: implement a Codex transcript adapter first. TraeCLI is a future adapter over the same normalized action/batch contract, not a first-iteration prerequisite. The main lead is the analyst: exact session01a10084-dc3a-7743-b0c1-4694d5ecc621 (corenius-frontier). The implementation coordinator remains a separate session that owns its worker. A periodic scheduler wakes this main lead about every15minutes to read new material and compare it with current goals, specs, tickets and planned work items. Scheduling does not decide engineering alignment.
+
 A formal runtime turn is one episode started by the runtime. It may contain many model/tool exchanges and last over an hour. An action step is a completed observable tool call, public agent message, peer communication, or compaction boundary. Pending tools remain separately observable; token deltas and reasoning records are excluded from analytical inputs.
 
 Observed worker01a1078b-d944-7c82-a392-50333a175a77 had two formal turns and roughly two hundred completed command exchanges on initial inspection. Therefore never wait only for five formal turns.
 
 Initial batching policy: seal on the earliest of 20 completed action steps, five completed formal turns, 10 minutes since the first unreviewed action, or a context/assignment/handoff boundary. Time-based batches can end mid-turn; retain parent turn and unresolved tool identities. A separate liveness tick inspects prolonged pending work without fabricating a completed action. An actual running build or experiment may explain silence.
+
+The15-minute analyst wake cadence and batch segmentation are distinct. At a wake, the lead processes bounded mini-batches from its saved reviewed cursor until caught up or its review deadline is reached, then persists the next cursor and explicit backlog. It also checks the current execution/assignment binding and planned work items, so the monitor follows the next authorized worker rather than analyzing a retired worker indefinitely. Historical backfill remains separately visible.
+
+Bootstrap wake admission uses a dedicated local supervised timer, exact main-lead thread identity and durable wake ledger. At most one wake may be queued, outcome-unknown or under review. The lead claims it when beginning and completes it after saving its assessments/cursors; subsequent ticks coalesce while it is outstanding. A timeout or lost queue acknowledgement stays unresolved rather than being blindly replayed. Timer installation and queue receipts do not themselves establish presentation, review completion or uninterrupted host availability. Stop the timer when the baseline is independently complete, or at an explicit human pause/cancellation; record its final coverage.
 
 Urgent controller-observed authority violations can trigger immediate policy enforcement without waiting for a batch. An LLM suspicion alone cannot kill a process, modify files, accept a candidate, or revoke authority.
 
