@@ -1,7 +1,7 @@
 # Worker supervision and drift review
 
 Type: effort
-Status: bootstrap Codex lead-wake timer active; manual cursor-led reviews operational; automatic presentation/completion and full production monitor remain pending
+Status: bootstrap Codex lead-wake timer active; first scheduled wake presented/reviewed/finished; manual cursor-led reviews operational; sustained timeliness and full production monitor remain pending
 Owner: sqlite-baseline observer; active execution coordinator retains worker ownership
 Priority: support the highest-priority retained SQLite-controller baseline
 Spec: SPEC.md

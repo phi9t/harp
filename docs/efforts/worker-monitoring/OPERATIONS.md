@@ -34,6 +34,8 @@ Queued real probe01a10815-d7dc-7911-8183-aa49cc389d4c confirms dispatch to the e
 
 Update: the one-shot probe was presented in the exact lead thread after setup; see evidence/probe-presentation.md. It is distinct from the outstanding scheduled wake, whose presentation and completed review remain pending. Do not claim the one-shot probe completed that review or advance its cursor.
 
+Subsequent update: scheduled wake2d80dd33-f95f-4290-a3e0-63970a1cea43 was presented, claimed, reviewed and finished after atomic ledger publication; see evidence/periodic-review-0001.md. Seven scoped batches cover96 selected visible actions through raw2314, with backfill121 and gap122–1262 retained. The bootstrap allowlist now includes FileChange and clock.sleep Extension events in that new range; earlier receipts retain their narrower coverage. This proves one delivered review cycle, not sustained timeliness or the proposed production monitor.
+
 ## Installed bootstrap and operator commands
 
 Timer: `corenius-lead-monitor-01a10084.timer`, local systemd user unit, enabled and active. Installed helper is content-addressed below `/data02/home/philip.yang/.local/lib/corenius/monitor-wake/501e060e1ce1892e0da3755eb6b6ea4b4812dae420e81d9847828c68733129ae/monitor_wake.py`. Its configuration/journal directory is `wake/` within the persistent monitor directory. These operating paths are local deployment records, not portable defaults.
