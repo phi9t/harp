@@ -32,6 +32,8 @@ The initial observation ledger stores event identities/hashes and manual assessm
 
 Queued real probe01a10815-d7dc-7911-8183-aa49cc389d4c confirms dispatch to the exact main lead, not automatic presentation or completed review. The first genuine post-setup wake must establish those remaining facts. Product mini-batch ingestion, retention, drift calibration and dashboard integration follow their specification and independent gates.
 
+Update: the one-shot probe was presented in the exact lead thread after setup; see evidence/probe-presentation.md. It is distinct from the outstanding scheduled wake, whose presentation and completed review remain pending. Do not claim the one-shot probe completed that review or advance its cursor.
+
 ## Installed bootstrap and operator commands
 
 Timer: `corenius-lead-monitor-01a10084.timer`, local systemd user unit, enabled and active. Installed helper is content-addressed below `/data02/home/philip.yang/.local/lib/corenius/monitor-wake/501e060e1ce1892e0da3755eb6b6ea4b4812dae420e81d9847828c68733129ae/monitor_wake.py`. Its configuration/journal directory is `wake/` within the persistent monitor directory. These operating paths are local deployment records, not portable defaults.
