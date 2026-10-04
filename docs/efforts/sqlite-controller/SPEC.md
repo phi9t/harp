@@ -1,7 +1,7 @@
 # Local controller and SQLite milestone
 
 Status: owner-selected baseline; implementation and independent qualification pending.
-Source read: a21316f. Owner selected controller + SQLite after the two-worker design discussion. This spec supersedes PostgreSQL/Temporal/Kata/jj requirements for this first operational milestone, not historical evidence or the longer-term vision.
+Source read: a21316f. Owner selected controller + SQLite after the two-worker design discussion. This spec supersedes the earlier larger first-release roadmap and the initial SQLite draft that deferred Kata. Kata is included as the work ledger. Git is the required initial workspace/landing backend; jj qualification is explicitly tracked behind the same workspace contract. Historical evidence and the longer-term vision remain preserved.
 
 ## Goal
 
@@ -9,7 +9,19 @@ Give the MTS a coherent lead and control-center interface that executes two boun
 
 ## Deployment and authority
 
-One local controller service is the sole authoritative writer. Lead, two worker slots, CLI and dashboard issue authenticated commands through its API. The lead is replaceable. Workers cannot update canonical refs or controller storage. No PostgreSQL, Temporal, Kata, jj or financial budget system is required to run this milestone. Preserve existing implementations and unfinished work without deleting or rewriting shared branches. No automatic historical-state migration is implied; a fresh project starts with explicit intent and a pinned repository base.
+One local controller service is the sole authoritative writer. Lead, two worker slots, CLI and dashboard issue authenticated commands through its API. The lead is replaceable. Workers cannot update canonical refs or controller storage. No PostgreSQL, Temporal or financial budget system is required to run this milestone. Kata integration is required; jj is a qualified optional workspace backend and cannot replace exact Git-compatible candidate/landing guarantees without proof. Preserve existing implementations and unfinished work without deleting or rewriting shared branches. No automatic historical-state migration is implied; a fresh project starts with explicit intent and a pinned repository base.
+
+## Highest priority and permanent baseline
+
+Owner explicitly instructs: implement this whole baseline, park all unrelated work, then use this retained system to build richer versions. No unrelated feature, larger orchestration migration or speculative infrastructure work precedes baseline acceptance. Park existing work at safe recorded boundaries; preserve branches, dirty work, jobs and evidence. Unknown effects still require reconciliation; parking never means deleting or abandoning live executions. Maintain this as a supported runnable local mode with its own configuration, documentation and regression suite. Future features must not make PostgreSQL, Temporal, extra agents or a new VCS mandatory for this baseline. Fixes may evolve it compatibly; retain supported recovery and explicit migration contracts.
+
+## Kata and participant protocol
+
+All participants use the Corenius API for shared coordination. Kata owns human-facing work items, dependencies and source task revisions; SQLite owns execution, assignments, admitted brief revisions, decisions, acceptance and operations. Use Kata supported APIs, not its internal tables. Bind tasks to deployment/project/item identity. Capture an exact source revision and content digest at admission. Worker tools provide own assignment, relevant linked tasks, progress, questions, follow-up proposals and candidate submission. Workers receive no unrestricted Kata credentials and cannot independently claim, alter acceptance/dependencies or close work as accepted. Controller publishes progress and disposition through idempotent journaled synchronization. Kata changes during execution become visible revision proposals, never silent assignment changes. Offline/unconfirmed synchronization remains visible and retryable; Kata closure is not acceptance. Worker-to-worker messages route through Corenius with explicit sender/recipient and durable delivery/acknowledgement state.
+
+## VCS workspace contract
+
+Expose create_workspace(base), capture_candidate, materialize_candidate, compare, land(candidate, expected_trunk) and retire_workspace behind a narrow controller-owned interface. Git private repositories are the supported first backend. Qualification of jj covers private metadata isolation, pinned executable/configuration, exact retained commit identities, repair/history retention and interoperability with the Git protected landing gate. Mutable jj change IDs are engineering lineage, not verification identity. Preserve existing jj evaluation evidence without treating it as backend acceptance.
 
 ## SQLite storage
 
@@ -51,6 +63,6 @@ Behavioral proof through public controller APIs and real on-disk SQLite/Git/proc
 
 ## Execution sequence
 
-01 storage and public command seam -> 02 supervised attempt recovery -> 03 immutable submission, verification and serialized landing -> 04 lead/control-center projections -> 05 assembled two-worker and isolation proof. Preserve and reuse suitable domain/runtime code after inspection; do not mechanically port the complete PostgreSQL/Temporal kernel or maintain multiple authoritative stores.
+01 storage and public command seam -> 02 supervised attempt recovery. Ticket03 Kata protocol and ticket04 Git workspace/landing proceed after01 (execution-dependent checks also require02); ticket05 lead/control center consumes their public seams. Ticket06 assembled proof requires01–05. Ticket07 jj qualification is tracked separately and does not delay a fully Git-backed baseline. Preserve and reuse suitable domain/runtime code after inspection; do not mechanically port the complete PostgreSQL/Temporal kernel or maintain multiple authoritative stores.
 
 Route: gated architectural work. Existing approved design conversation supplies intent; independent critique, ticket conformance and final branch review remain required. Matt owner skills are unavailable in this harness; apply the repository crosswalk directly with available supporting skills.
