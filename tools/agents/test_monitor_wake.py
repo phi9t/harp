@@ -110,6 +110,139 @@ print('Queued message 01a10815-d7dc-7911-8183-aa49cc389d4c for thread ' + args[2
         self.assertEqual(json.loads(outputs[0][0])["outstanding"]["id"],
                          json.loads(outputs[1][0])["outstanding"]["id"])
 
+    def test_dispatch_brief_requires_one_nonblocking_filtered_observer(self):
+        self.init()
+        message = self.call("tick")["outstanding"]["prompt"]
+        for instruction in (
+            "exactly one fresh-context observe-only subagent",
+            "fork_turns=none", "Do not wait", "delegate-finish",
+            "self-contained", "current execution/assignment binding",
+            "one observation-ledger writer", "pending backlog",
+            "filter BEFORE any model input or tool output",
+            "Do not print raw JSONL", "Reasoning", "allowlist",
+            "fresh reviewer context", "no assessment or cursor progress",
+            "Main lead owns adjudication", "coordinator alone owns corrections",
+            "overrides the retained spec", "Dispatch policy source:", "sha256=",
+        ):
+            self.assertIn(instruction, message)
+        self.assertLess(message.index("filter BEFORE"), message.index("Compare newly visible"))
+
+    def delegate(self, wake, reviewer="/root/wake-observer"):
+        return self.call("delegate", "--wake", wake, "--reviewer", reviewer,
+                         "--brief", "Source-bound public brief: spec, binding, policy, bounded review.")
+
+    def test_receipt_grants_only_one_reviewer_and_bounded_finish(self):
+        self.init()
+        wake = self.call("tick")["outstanding"]["id"]
+        self.delegate_before_begin(wake)
+        self.call("begin", "--wake", wake)
+        for thread in (OTHER, ""):
+            self.call("delegate", "--wake", wake, "--reviewer", "/root/wake-observer",
+                      "--brief", "source-bound brief", thread=thread, code=1)
+        result = self.delegate(wake)
+        receipt = result["delegation"]
+        self.assertEqual(receipt["wake"], wake)
+        self.assertEqual(receipt["reviewer"], "/root/wake-observer")
+        self.assertEqual(receipt["sources"]["ledger"], str(self.root / "ledger"))
+        self.assertEqual(self.delegate(wake)["delegation"], receipt)
+        self.call("delegate", "--wake", wake, "--reviewer", "/root/duplicate",
+                  "--brief", receipt["brief"], code=1)
+        self.call("delegate", "--wake", wake, "--reviewer", receipt["reviewer"],
+                  "--brief", "changed brief", code=1)
+        self.assertEqual(self.call("tick")["outstanding"]["status"], "reviewing")
+        for reviewer, assessment in (("/root/duplicate", "ledger receipt 1"), (receipt["reviewer"], "")):
+            self.call("delegate-finish", "--wake", wake, "--reviewer", reviewer,
+                      "--assessment", assessment, thread=OTHER, code=1)
+        result = self.call("delegate-finish", "--wake", wake, "--reviewer", receipt["reviewer"],
+                           "--assessment", "ledger receipt 1; covered cursor 20; backlog 21+",
+                           thread=OTHER)
+        self.assertIsNone(result["outstanding"])
+        self.call("delegate-finish", "--wake", wake, "--reviewer", receipt["reviewer"],
+                  "--assessment", "ledger receipt 1; covered cursor 20; backlog 21+", thread=OTHER)
+        self.assertNotEqual(self.call("tick")["outstanding"]["id"], wake)
+        self.assertEqual(len(self.requests()), 2)
+
+    def delegate_before_begin(self, wake):
+        self.call("delegate", "--wake", wake, "--reviewer", "/root/wake-observer",
+                  "--brief", "source-bound brief", code=1)
+
+    def test_reviewer_loss_leaves_reviewing_and_private_receipt(self):
+        self.init()
+        wake = self.call("tick")["outstanding"]["id"]
+        self.call("begin", "--wake", wake)
+        self.call("delegate-finish", "--wake", wake, "--reviewer", "/root/wake-observer",
+                  "--assessment", "unrecorded", thread=OTHER, code=1)
+        receipt = self.delegate(wake)["delegation"]
+        path = self.state / "delegates" / (wake + ".json")
+        self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(path.parent.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(json.loads(path.read_text()), receipt)
+        for _ in range(2):
+            self.assertEqual(self.call("tick")["outstanding"]["status"], "reviewing")
+        self.assertEqual(len(self.requests()), 1)
+
+    def test_explicit_recovery_preserves_receipt_and_fences_old_finish(self):
+        self.init()
+        wake = self.call("tick")["outstanding"]["id"]
+        self.call("begin", "--wake", wake)
+        previous = self.delegate(wake)["delegation"]
+        args = ("--wake", wake, "--reviewer", "/root/fresh-observer", "--brief", "fresh public brief",
+                "--prior-reviewer", previous["reviewer"])
+        self.call("delegate", *args, code=1)
+        self.call("delegate", *args, "--recovery-reason", "incident 1; native status confirms interrupted and idle",
+                  thread=OTHER, code=1)
+        recovered = self.call("delegate", *args, "--recovery-reason",
+                              "incident 1; native status confirms interrupted and idle")["delegation"]
+        self.assertEqual(recovered["predecessor"], previous)
+        self.assertNotEqual(recovered["reviewer"], previous["reviewer"])
+        self.call("delegate-finish", "--wake", wake, "--reviewer", previous["reviewer"],
+                  "--assessment", "stale publication", thread=OTHER, code=1)
+        self.assertEqual(self.call("status")["outstanding"]["status"], "reviewing")
+        self.call("delegate-finish", "--wake", wake, "--reviewer", recovered["reviewer"],
+                  "--assessment", "fresh receipt 2; cursor 20; remaining backlog", thread=OTHER)
+
+    def test_racing_delegate_receipts_admit_one_identity(self):
+        config = self.init()["config"]
+        wake = self.call("tick")["outstanding"]["id"]
+        self.call("begin", "--wake", wake)
+        processes = [subprocess.Popen(self.argv("delegate", "--wake", wake,
+                     "--reviewer", reviewer, "--brief", "exact source-bound public brief"),
+                     env=self.env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                     for reviewer in ("/root/observer-a", "/root/observer-b")]
+        outputs = [p.communicate(timeout=8) for p in processes]
+        self.assertEqual(sorted(p.returncode for p in processes), [0, 1], outputs)
+        status = self.call("status")
+        self.assertEqual(status["config"], config)
+        self.assertEqual(status["outstanding"]["status"], "reviewing")
+        self.assertIn(status["delegation"]["reviewer"], ("/root/observer-a", "/root/observer-b"))
+        self.call("stop")
+        self.call("delegate", "--wake", wake, "--reviewer", "/root/replacement", "--brief", "new brief",
+                  "--prior-reviewer", status["delegation"]["reviewer"],
+                  "--recovery-reason", "old reviewer quiescent", code=1)
+        self.call("delegate-finish", "--wake", wake, "--reviewer", status["delegation"]["reviewer"],
+                  "--assessment", "saved coverage before stop; remaining backlog", thread=OTHER)
+        self.call("tick", code=1)
+
+    def test_recovery_cannot_reuse_any_retired_identity(self):
+        self.init()
+        wake = self.call("tick")["outstanding"]["id"]
+        self.call("begin", "--wake", wake)
+        first = self.delegate(wake)["delegation"]
+        second = self.call("delegate", "--wake", wake, "--reviewer", "/root/observer-b",
+                           "--brief", "public brief B", "--prior-reviewer", first["reviewer"],
+                           "--recovery-reason", "A quiescent; incident 1")["delegation"]
+        self.call("delegate", "--wake", wake, "--reviewer", first["reviewer"],
+                  "--brief", "public brief A again", "--prior-reviewer", second["reviewer"],
+                  "--recovery-reason", "B quiescent; incident 2", code=1)
+        third = self.call("delegate", "--wake", wake, "--reviewer", "/root/observer-c",
+                          "--brief", "public brief C", "--prior-reviewer", second["reviewer"],
+                          "--recovery-reason", "B quiescent; incident 2")["delegation"]
+        for receipt in (first, second):
+            self.call("delegate-finish", "--wake", wake, "--reviewer", receipt["reviewer"],
+                      "--assessment", "stale publication", thread=OTHER, code=1)
+        self.assertEqual(self.call("status")["delegation"], third)
+        self.assertEqual(self.call("status")["outstanding"]["status"], "reviewing")
+
     def test_uncertain_dispatch_survives_restart_and_suppresses_retry(self):
         for mode in ("ambiguous", "wrong", "nonzero", "duplicate", "wait", "large"):
             with self.subTest(mode=mode):
