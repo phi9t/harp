@@ -112,6 +112,42 @@ class StateViewTests(unittest.TestCase):
         self.assertIn('runtime-unmapped', text)
         self.assertNotIn('Worker slot 0', text)
 
+    def test_controller_operations_show_unknown_metadata_without_payload_or_observation(self):
+        self.controller['operations'] = [
+            {'id': 'unknown-operation', 'attempt': 'operation-attempt', 'kind': 'command',
+             'state': 'unknown', 'payload': {'credentials': 'HIDDEN-OPERATION-PAYLOAD'},
+             'observation': {'private_reasoning': 'HIDDEN-OPERATION-OBSERVATION'}}]
+        self.write_inputs()
+        text = self.rendered('controller')
+        for expected in ['operations:', 'unknown-operation', 'operation-attempt',
+                         'kind: command', 'state: unknown']:
+            self.assertIn(expected, text)
+        self.assertNotIn('HIDDEN-OPERATION', text)
+        self.assertNotIn('payload:', text)
+        self.assertNotIn('observation:', text)
+
+    def test_workspace_published_attempt_claims_survive_unavailable_inventory(self):
+        del self.controller['filesystem']
+        self.controller['attempts'] = [
+            {'id': 'published-attempt', 'task': 'published-task', 'workspace': '/work/claim',
+             'source': 'claim-source', 'base': 'claim-base', 'state': 'running',
+             'credentials': 'HIDDEN-ATTEMPT-CREDENTIALS',
+             'private_reasoning': 'HIDDEN-ATTEMPT-REASONING'}]
+        self.controller['workers'] = [
+            {'attempt': {'id': 'published-worker-attempt', 'slot': 2,
+                         'worktree': '/work/worker-claim', 'source': 'worker-source',
+                         'base': 'worker-base', 'body': 'HIDDEN-WORKER-BODY'},
+             'runtime': {'document': 'HIDDEN-RUNTIME-DOCUMENT'}}]
+        self.write_inputs()
+        text = self.rendered('workspaces')
+        for expected in ['Attempts (controller published claims)', 'published-attempt',
+                         '/work/claim', 'claim-source', 'claim-base',
+                         'Worker attempts (controller published claims)', 'published-worker-attempt',
+                         '/work/worker-claim', 'worker-source', 'worker-base',
+                         'Controller filesystem (published inventory): unavailable']:
+            self.assertIn(expected, text)
+        self.assertNotIn('HIDDEN-', text)
+
     def test_kata_has_exact_identity_dependencies_and_sync_without_daemon_guess(self):
         text = self.rendered('kata')
         for expected in ['kata-trial', 'trial-project', 'uid-1', 'First task',

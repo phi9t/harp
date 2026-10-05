@@ -233,7 +233,8 @@ def controller(snapshot):
     lines += field('Implementation writer state (CURRENT)', cur, 'writer_state')
     lines += claims('Tasks (CURRENT claims)', cur, 'tickets')
     lines += native(snapshot)
-    for key, schema in [('tasks', [TASK]), ('attempts', [ATTEMPT]), ('questions', [QUESTION]),
+    for key, schema in [('tasks', [TASK]), ('attempts', [ATTEMPT]), ('operations', [OPERATION]),
+                        ('questions', [QUESTION]),
                         ('unknown_effects', [OPERATION]), ('runtime_uncertainty', [OPERATION]),
                         ('runtime_bindings', [RUNTIME]), ('sources', [SOURCE]),
                         ('synchronization', SYNC), ('candidates', [WORKSPACE]),
@@ -266,6 +267,9 @@ def workspaces(snapshot):
         lines += field(key, cur, key, WORKSPACE if key in ('candidate', 'landing') else SCALAR)
     lines += claims('Evidence (CURRENT claims)', cur, 'focused_results')
     lines += ['', provenance(snapshot, 'Product controller')]
+    lines += field('Attempts (controller published claims)', data, 'attempts', [ATTEMPT])
+    lines += field('Worker attempts (controller published claims)', data, 'workers',
+                   [{'slot': SCALAR, 'attempt': ATTEMPT}])
     filesystem_schema = [WORKSPACE] if isinstance(data.get('filesystem'), list) else FILESYSTEM
     for label, key, schema in [('Controller filesystem (published inventory)', 'filesystem', filesystem_schema),
                                ('Controller candidates', 'candidates', [WORKSPACE]),
