@@ -1,8 +1,10 @@
-# 04 — Maintain every published runtime client
+# 04 all-runtime-clients: Maintain every published runtime client
 
-Status: implemented and independently reviewed; live product recovery pending
-Blocked by: none
-
+Type: task
+Status: open
+Owner:
+Blocked by:
+Claimed:
 ## Owner request
 
 Keep a Codex client open for the lead and all workers, including both live
@@ -70,3 +72,11 @@ fall back to launching another runtime client. Owned operator clients retain
 precedence. Missing/dead external panes remain explicit without replacement.
 Prior external membership becomes unknown when runtime source is unavailable
 or stale. Original source times/digests and static-source limitations remain visible.
+
+## Acceptance
+
+- [ ] Implement the bounded requirements and pass focused tests and independent review.
+
+## Comments
+
+- 2026-10-05T05:54:54Z main-lead: Normalize tracker metadata for landing; retained prior disposition: implemented and independently reviewed; live product recovery pending. Product baseline acceptance and runtime readiness are unchanged.

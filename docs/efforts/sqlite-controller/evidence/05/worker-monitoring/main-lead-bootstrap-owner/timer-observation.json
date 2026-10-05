@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-05T02:55:00.620568+00:00",
+  "command": [
+    "systemctl",
+    "--user",
+    "show",
+    "corenius-lead-monitor-01a10084.timer",
+    "-p",
+    "ActiveState",
+    "-p",
+    "SubState",
+    "-p",
+    "UnitFileState"
+  ],
+  "observed": {
+    "ActiveState": "active",
+    "SubState": "waiting",
+    "UnitFileState": "enabled"
+  },
+  "scope": "Read-only earlier current-turn observation; no enable/start/stop/second timer or helper status/journal call. Mainlead observation/wake ledgers unchanged."
+}

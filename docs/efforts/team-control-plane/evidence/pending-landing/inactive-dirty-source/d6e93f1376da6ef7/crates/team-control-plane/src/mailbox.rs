@@ -1,0 +1,1923 @@
+//! Durable, authenticated mailbox commands. Runtime delivery and acknowledgment are separate receipts.
+use crate::{auth, domain::err, storage, *};
+use serde::{Deserialize, Serialize};
+use tokio_postgres::Transaction;
+use uuid::Uuid;
+
+#[derive(Clone)]
+pub struct MailboxService {
+    broker: Broker,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Envelope {
+    pub schema_version: u32,
+    pub key: String,
+    pub recovery_epoch: Uuid,
+    pub command: MailboxCommand,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum MailboxCommand {
+    CaptureInput {
+        mission: Uuid,
+        id: Uuid,
+        attempt: Option<Uuid>,
+        purpose: EpisodePurpose,
+        limit: i64,
+    },
+    PrepareDelivery {
+        id: Uuid,
+        message: Uuid,
+        episode: Uuid,
+        required_decision: Option<Uuid>,
+        required_approval: Option<Uuid>,
+    },
+    BindRuntimeTurn {
+        episode: Uuid,
+        start_operation: Uuid,
+        runtime_turn: String,
+    },
+    Propose {
+        mission: Uuid,
+        id: Uuid,
+        proposal: Proposal,
+    },
+    Decide {
+        proposal: Uuid,
+        approved: bool,
+        rationale: String,
+    },
+    RequestApproval {
+        mission: Uuid,
+        id: Uuid,
+        task: Option<Uuid>,
+        generation: Option<i64>,
+        executor: Uuid,
+        operation: ApprovalOperation,
+        expires_in_seconds: i64,
+    },
+    GrantApproval {
+        request: Uuid,
+        rationale: String,
+    },
+    ConsumeApproval {
+        request: Uuid,
+        operation: ApprovalOperation,
+    },
+    YieldEpisode {
+        episode: Uuid,
+        checkpoint: Checkpoint,
+        questions: Vec<Uuid>,
+        dependencies: Vec<Uuid>,
+        executions: Vec<ExecutionReference>,
+    },
+    Resolve {
+        message: Uuid,
+        answer: Uuid,
+    },
+    Present {
+        message: Uuid,
+        episode: Uuid,
+        input_digest: String,
+        runtime_turn: Option<String>,
+    },
+    Acknowledge {
+        message: Uuid,
+        episode: Uuid,
+    },
+    AdmitEpisode {
+        mission: Uuid,
+        id: Uuid,
+        attempt: Option<Uuid>,
+        input_digest: String,
+        #[serde(default)]
+        input_packet: Option<Uuid>,
+        purpose: EpisodePurpose,
+    },
+    ReplaceLead {
+        mission: Uuid,
+        expected_generation: i64,
+        principal: Uuid,
+        credential_id: Uuid,
+        token_hash: String,
+        expires_in_seconds: i64,
+    },
+    Send {
+        mission: Uuid,
+        id: Uuid,
+        recipients: Vec<Recipient>,
+        message_kind: MessageKind,
+        text: String,
+        reply_to: Option<Uuid>,
+        attention: Attention,
+        artifacts: Vec<ArtifactReference>,
+    },
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum Proposal {
+    Task {
+        spec: TaskSpec,
+    },
+    Plan {
+        summary: String,
+        tasks: Vec<TaskSpec>,
+    },
+}
+/// Approval binds arguments; it never expands the executor's existing role or dispatches I/O.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ApprovalOperation {
+    pub family: ApprovalFamily,
+    pub arguments: serde_json::Value,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ApprovalFamily {
+    PublishAcceptedArtifacts,
+    ProtectedIntegration,
+    RuntimeControl,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(untagged)]
+pub enum Recipient {
+    Principal(Uuid),
+    MissionLead { mission_lead: Uuid },
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MessageKind {
+    Question,
+    Answer,
+    Proposal,
+    Notice,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum Attention {
+    Normal,
+    Critical,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum EpisodePurpose {
+    Planning,
+    Implementation,
+    Verification,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ArtifactReference {
+    pub task: Uuid,
+    pub digest: String,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Checkpoint {
+    pub id: Uuid,
+    pub summary: String,
+    pub artifacts: Vec<ArtifactReference>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExecutionReference {
+    #[serde(default)]
+    pub provenance: ExecutionProvenance,
+    pub id: Uuid,
+    pub supervisor: String,
+    pub attempt: Uuid,
+    pub generation: i64,
+    pub recovery_epoch: Uuid,
+}
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ExecutionProvenance {
+    #[default]
+    Unresolved,
+}
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum RecordKind {
+    Input,
+    Delivery,
+    Proposal,
+    Decision,
+    Approval,
+    Episode,
+    Checkpoint,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Receipt {
+    pub id: Uuid,
+    pub disposition: String,
+}
+fn invalid() -> Error {
+    err(ErrorCode::InvalidArgument)
+}
+pub(crate) async fn migrate(tx: &Transaction<'_>) -> Result<()> {
+    let exists: bool = tx
+        .query_one(
+            "SELECT to_regclass('mailbox_schema_version') IS NOT NULL",
+            &[],
+        )
+        .await?
+        .get(0);
+    if !exists {
+        tx.batch_execute(include_str!("../migrations/0006.sql"))
+            .await?;
+    }
+    schema(tx).await
+}
+pub(crate) async fn schema(tx: &Transaction<'_>) -> Result<()> {
+    if !tx
+        .query_one(
+            "SELECT to_regclass('mailbox_schema_version') IS NOT NULL",
+            &[],
+        )
+        .await?
+        .get::<_, bool>(0)
+    {
+        return Err(err(ErrorCode::IncompatibleSchema));
+    }
+    let rows = tx
+        .query("SELECT version FROM mailbox_schema_version", &[])
+        .await?;
+    if rows.len() != 1 || rows[0].get::<_, i32>(0) != 1 {
+        return Err(err(ErrorCode::IncompatibleSchema));
+    }
+    Ok(())
+}
+impl MailboxService {
+    pub fn new(broker: Broker) -> Self {
+        Self { broker }
+    }
+    /// Addressing grants this message alone; it never grants the sender's task history.
+    pub async fn message(&self, bearer: &str, id: Uuid) -> Result<serde_json::Value> {
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        let row=tx.query_opt("SELECT m.mission_id,to_jsonb(m) FROM mailbox_messages m WHERE m.id=$1 AND (m.sender=$2 OR EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3 AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$2)))) OR ($3 AND m.kind='question' AND m.sender_lead_generation IS NOT NULL AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$2)))",&[&id,&actor.principal,&(actor.role==Role::Lead)]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+        actor.scope(row.get(0), actor.task)?;
+        let mut result: serde_json::Value = row.get(1);
+        let presentations=tx.query("SELECT to_jsonb(p) FROM mailbox_presentations p WHERE message_id=$1 AND principal_id=$2 ORDER BY recorded_at,id",&[&id,&actor.principal]).await?.into_iter().map(|r|r.get::<_,serde_json::Value>(0)).collect::<Vec<_>>();
+        let acknowledgments=tx.query("SELECT to_jsonb(a) FROM mailbox_acknowledgments a JOIN mailbox_presentations p ON p.id=a.presentation_id WHERE p.message_id=$1 AND a.principal_id=$2 ORDER BY a.recorded_at,a.id",&[&id,&actor.principal]).await?.into_iter().map(|r|r.get::<_,serde_json::Value>(0)).collect::<Vec<_>>();
+        result["presentations"] = serde_json::json!(presentations);
+        result["acknowledgments"] = serde_json::json!(acknowledgments);
+        result["resolution"] = tx
+            .query_opt(
+                "SELECT to_jsonb(r) FROM mailbox_resolutions r WHERE message_id=$1",
+                &[&id],
+            )
+            .await?
+            .map(|r| r.get::<_, serde_json::Value>(0))
+            .unwrap_or(serde_json::Value::Null);
+        tx.commit().await?;
+        Ok(result)
+    }
+    pub async fn record(
+        &self,
+        bearer: &str,
+        kind: RecordKind,
+        id: Uuid,
+    ) -> Result<serde_json::Value> {
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        let sql = match kind {
+            RecordKind::Input => {
+                "SELECT p.mission_id,p.task_id,p.principal_id,to_jsonb(p) FROM mailbox_inputs p WHERE p.id=$1"
+            }
+            RecordKind::Delivery => {
+                actor.owner()?;
+                "SELECT e.mission_id,e.task_id,d.by_principal,to_jsonb(d)||jsonb_build_object('operation_state',(SELECT state FROM gateway_operations o WHERE o.id=d.id),'transport_only',true) FROM mailbox_delivery_intents d JOIN mailbox_episodes e ON e.id=d.episode_id WHERE d.id=$1"
+            }
+            RecordKind::Proposal => {
+                "SELECT p.mission_id,NULL::uuid,p.principal_id,to_jsonb(p) FROM mailbox_proposals p WHERE p.id=$1"
+            }
+            RecordKind::Decision => {
+                "SELECT p.mission_id,NULL::uuid,d.by_principal,to_jsonb(d)||jsonb_build_object('proposal',to_jsonb(p)) FROM mailbox_decisions d JOIN mailbox_proposals p ON p.id=d.proposal_id WHERE d.id=$1"
+            }
+            RecordKind::Approval => {
+                "SELECT r.mission_id,r.task_id,r.requester,to_jsonb(r)||jsonb_build_object('grant',(SELECT to_jsonb(g) FROM mailbox_approval_grants g WHERE g.request_id=r.id),'consumption',(SELECT to_jsonb(c) FROM mailbox_approval_consumptions c WHERE c.request_id=r.id)) FROM mailbox_approval_requests r WHERE r.id=$1"
+            }
+            RecordKind::Episode => {
+                "SELECT e.mission_id,e.task_id,e.principal_id,to_jsonb(e)||jsonb_build_object('input_provenance',CASE WHEN e.input_packet IS NULL THEN 'caller_asserted_logical' ELSE 'broker_captured' END) FROM mailbox_episodes e WHERE e.id=$1"
+            }
+            RecordKind::Checkpoint => {
+                "SELECT e.mission_id,e.task_id,c.principal_id,to_jsonb(c) FROM mailbox_checkpoints c JOIN mailbox_episodes e ON e.id=c.episode_id WHERE c.id=$1"
+            }
+        };
+        let row = tx
+            .query_opt(sql, &[&id])
+            .await?
+            .ok_or_else(|| err(ErrorCode::NotFound))?;
+        actor.scope(row.get(0), row.get(1))?;
+        if matches!(kind, RecordKind::Input)
+            && actor.role != Role::Owner
+            && actor.principal != row.get::<_, Uuid>(2)
+        {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        let value: serde_json::Value = row.get(3);
+        let named_executor = matches!(kind, RecordKind::Approval)
+            && value["executor"] == serde_json::json!(actor.principal);
+        if !matches!(actor.role, Role::Owner | Role::Lead)
+            && (matches!(
+                kind,
+                RecordKind::Proposal | RecordKind::Decision | RecordKind::Delivery
+            ) || (actor.principal != row.get::<_, Uuid>(2) && !named_executor))
+        {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        tx.commit().await?;
+        Ok(value)
+    }
+    pub async fn context(
+        &self,
+        bearer: &str,
+        mission: Uuid,
+        page: ContextPage,
+    ) -> Result<serde_json::Value> {
+        let limit = page.limit.unwrap_or(16);
+        if !(1..=32).contains(&limit) {
+            return Err(invalid());
+        }
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        if !matches!(actor.role, Role::Owner | Role::Lead) {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        actor.scope(mission, None)?;
+        let current = tx
+            .query_opt(
+                "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                &[&mission],
+            )
+            .await?
+            .map(|r| r.get::<_, i64>(0))
+            .unwrap_or(0);
+        let row=tx.query_opt("SELECT revision,jsonb_build_object('id',id,'objective',left(objective,4096),'objective_truncated',length(objective)>4096,'input_digest',input_digest,'git_commit',git_commit,'source_path_preview',left(git_path,512),'capacity',capacity,'max_attempts',max_attempts,'max_episodes',max_episodes,'max_repairs',max_repairs,'episode_deadline_seconds',deadline_seconds),jsonb_build_object('capacity',capacity-used_capacity,'attempts',max_attempts-admitted_attempts,'episodes',max_episodes-admitted_episodes),clock_timestamp()::text FROM missions WHERE id=$1",&[&mission]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+        let frontier:String=tx.query_one("SELECT concat((SELECT coalesce(sum(revision),0) FROM tasks WHERE mission_id=$1),':',(SELECT count(*) FROM mailbox_messages WHERE mission_id=$1),':',(SELECT count(*) FROM mailbox_decisions d JOIN mailbox_proposals p ON p.id=d.proposal_id WHERE p.mission_id=$1),':',(SELECT count(*) FROM mailbox_resolutions r JOIN mailbox_messages m ON m.id=r.message_id WHERE m.mission_id=$1),':',(SELECT coalesce(max(e.sequence),0) FROM gateway_evidence e JOIN gateway_operations o ON o.id=e.operation_id JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE t.mission_id=$1))",&[&mission]).await?.get(0);
+        let extra_frontier:String=tx.query_one("SELECT concat((SELECT count(*) FROM mailbox_checkpoints c JOIN mailbox_episodes e ON e.id=c.episode_id WHERE e.mission_id=$1),':',(SELECT count(*) FROM mailbox_proposals WHERE mission_id=$1),':',(SELECT count(*) FROM mailbox_approval_requests WHERE mission_id=$1),':',(SELECT count(*) FROM mailbox_approval_grants g JOIN mailbox_approval_requests a ON a.id=g.request_id WHERE a.mission_id=$1),':',(SELECT count(*) FROM mailbox_approval_consumptions c JOIN mailbox_approval_requests a ON a.id=c.request_id WHERE a.mission_id=$1),':',(SELECT count(*) FROM mailbox_acknowledgments a JOIN mailbox_presentations p ON p.id=a.presentation_id JOIN mailbox_messages m ON m.id=p.message_id WHERE m.mission_id=$1),':',(SELECT count(*) FROM artifact_reports r JOIN artifact_candidates c ON c.id=r.candidate_id JOIN tasks t ON t.id=c.task_id WHERE t.mission_id=$1))", &[&mission]).await?.get(0);
+        let version = crate::validation::digest(&(
+            row.get::<_, i64>(0),
+            current,
+            &frontier,
+            &extra_frontier,
+            self.broker.epoch,
+        ))?;
+        let cursor = page
+            .cursor
+            .map(|v| serde_json::from_str::<ContextCursor>(&v).map_err(|_| invalid()))
+            .transpose()?;
+        if cursor.as_ref().is_some_and(|c| c.version != version) {
+            return Err(err(ErrorCode::StaleRevision));
+        }
+        let after_rank = cursor.as_ref().map(|c| c.rank).unwrap_or(-1);
+        let after_kind = cursor.as_ref().map(|c| c.kind.as_str()).unwrap_or("");
+        let after_id = cursor.as_ref().map(|c| c.id).unwrap_or(Uuid::nil());
+        let is_lead = actor.role == Role::Lead;
+        let candidates = r#"WITH attention AS (
+ SELECT CASE WHEN m.attention='critical' THEN 0 ELSE 3 END AS rank,'message'::text AS kind,m.id,jsonb_build_object('kind','message','id',m.id,'message_kind',m.kind,'attention',m.attention,'summary',left(m.text,256),'summary_truncated',length(m.text)>256) AS data FROM mailbox_messages m WHERE m.mission_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_resolutions x WHERE x.message_id=m.id) AND (m.sender=$2 OR ($3 AND m.kind='question' AND m.sender_lead_generation IS NOT NULL) OR EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3))))
+ UNION ALL SELECT CASE WHEN o.state IN ('outcome_unknown','quarantined','dispatching') THEN 0 ELSE 2 END,'operation',o.id,jsonb_build_object('kind','operation','id',o.id,'attempt',o.attempt_id,'binding',o.binding_id,'state',o.state,'operation_kind',o.kind) FROM gateway_operations o JOIN attempts a ON a.id=o.attempt_id JOIN tasks t ON t.id=a.task_id WHERE t.mission_id=$1 AND o.state NOT IN ('confirmed','failed_known')
+ UNION ALL SELECT 1,'decision',d.id,jsonb_build_object('kind','decision','id',d.id,'proposal',d.proposal_id,'approved',d.approved,'proposal_digest',d.proposal_digest,'rationale',left(d.rationale,256),'rationale_truncated',length(d.rationale)>256) FROM mailbox_decisions d JOIN mailbox_proposals p ON p.id=d.proposal_id WHERE p.mission_id=$1
+ UNION ALL SELECT 2,'task',t.id,jsonb_build_object('kind','task','id',t.id,'status',t.status,'generation',t.generation,'approved_digest',t.approved_digest,'admitted_revision',(SELECT sequence FROM events e WHERE e.aggregate_kind='task' AND e.aggregate_id=t.id AND e.kind='task.admit' AND e.payload->>'spec_digest'=t.approved_digest ORDER BY sequence DESC LIMIT 1),'spec_digest',t.spec_digest,'spec_reference',jsonb_build_object('task',t.id,'digest',t.spec_digest)) FROM tasks t WHERE t.mission_id=$1
+ UNION ALL SELECT 1,'checkpoint',c.id,jsonb_build_object('kind','checkpoint','id',c.id,'episode',e.id,'task',e.task_id,'generation',e.task_generation,'lead_generation',e.lead_generation,'state',e.state,'summary',left(c.checkpoint->>'summary',256),'summary_truncated',length(c.checkpoint->>'summary')>256,'executions',c.executions,'artifacts',c.checkpoint->'artifacts') FROM mailbox_checkpoints c JOIN mailbox_episodes e ON e.id=c.episode_id WHERE e.mission_id=$1
+ UNION ALL SELECT 1,'proposal',p.id,jsonb_build_object('kind','proposal','id',p.id,'digest',p.digest,'lead_generation',p.lead_generation) FROM mailbox_proposals p WHERE p.mission_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_decisions d WHERE d.proposal_id=p.id)
+ UNION ALL SELECT 0,'approval',a.id,jsonb_build_object('kind','approval','id',a.id,'task',a.task_id,'generation',a.generation,'executor',a.executor,'operation_digest',a.argument_digest,'expired',a.expires_at<=clock_timestamp(),'granted',EXISTS(SELECT 1 FROM mailbox_approval_grants g WHERE g.request_id=a.id)) FROM mailbox_approval_requests a WHERE a.mission_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_approval_consumptions c WHERE c.request_id=a.id)
+ UNION ALL SELECT 2,'candidate',a.task_id,jsonb_build_object('kind','candidate','id',a.task_id,'candidate',a.candidate_id,'report',a.accepted_report) FROM artifact_current a JOIN tasks t ON t.id=a.task_id WHERE t.mission_id=$1
+ ) "#;
+        let counts = tx
+            .query_one(
+                &format!(
+                    "{candidates} SELECT count(*),count(*) FILTER(WHERE rank=0) FROM attention"
+                ),
+                &[&mission, &actor.principal, &is_lead],
+            )
+            .await?;
+        let records=tx.query(&format!("{candidates} SELECT rank,kind,id,data FROM attention WHERE (rank,kind,id)>($4,$5,$6) ORDER BY rank,kind,id LIMIT $7"),&[&mission,&actor.principal,&is_lead,&after_rank,&after_kind,&after_id,&(limit+1)]).await?;
+        let has_more = records.len() > limit as usize;
+        let selected = &records[..records.len().min(limit as usize)];
+        let next = if has_more {
+            selected
+                .last()
+                .map(|r| ContextCursor {
+                    version: version.clone(),
+                    rank: r.get(0),
+                    kind: r.get(1),
+                    id: r.get(2),
+                })
+                .map(|c| serde_json::to_string(&c).map_err(|_| invalid()))
+                .transpose()?
+        } else {
+            None
+        };
+        let result = serde_json::json!({"schema_version":1,"revision":row.get::<_,i64>(0),"snapshot_time":row.get::<_,String>(3),"lead_generation":current,"approved":row.get::<_,serde_json::Value>(1),"remaining_budget":row.get::<_,serde_json::Value>(2),"attention":selected.iter().map(|r|r.get::<_,serde_json::Value>(3)).collect::<Vec<_>>(),"critical_total":counts.get::<_,i64>(1),"total":counts.get::<_,i64>(0),"next":next,"mission_reference":format!("/v1/snapshots/mission/{mission}"),"external_execution_binding":"supervisor_registry_unconfigured"});
+        tx.commit().await?;
+        Ok(result)
+    }
+    pub async fn execute(&self, bearer: &str, mut e: Envelope) -> Result<Receipt> {
+        if e.schema_version != 1
+            || e.recovery_epoch != self.broker.epoch
+            || e.key.is_empty()
+            || e.key.len() > 256
+        {
+            return Err(invalid());
+        }
+        if let MailboxCommand::Send { recipients, .. } = &mut e.command {
+            recipients.sort();
+            recipients.dedup();
+        }
+        let mut c = storage::client(&self.broker.dsn).await?;
+        let tx = c.transaction().await?;
+        storage::lock(&tx).await?;
+        schema(&tx).await?;
+        storage::active(&tx, self.broker.epoch).await?;
+        let actor = auth::authenticate(&tx, bearer, self.broker.epoch).await?;
+        storage::validate_actor_generation(&tx, &actor).await?;
+        authorize_current_command(&tx, &actor, self.broker.epoch, &e.command).await?;
+        let (family, mission) = match &e.command {
+            MailboxCommand::CaptureInput { mission, .. } => ("episode.input_capture", *mission),
+            MailboxCommand::PrepareDelivery { episode, .. } => {
+                actor.owner()?;
+                (
+                    "message.delivery_prepare",
+                    tx.query_opt(
+                        "SELECT mission_id FROM mailbox_episodes WHERE id=$1",
+                        &[episode],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::NotFound))?
+                    .get(0),
+                )
+            }
+            MailboxCommand::BindRuntimeTurn { episode, .. } => {
+                actor.owner()?;
+                (
+                    "episode.runtime_bind",
+                    tx.query_opt(
+                        "SELECT mission_id FROM mailbox_episodes WHERE id=$1",
+                        &[episode],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::NotFound))?
+                    .get(0),
+                )
+            }
+            MailboxCommand::Propose { mission, .. } => ("proposal.record", *mission),
+            MailboxCommand::Decide { proposal, .. } => (
+                "proposal.decide",
+                tx.query_opt(
+                    "SELECT mission_id FROM mailbox_proposals WHERE id=$1",
+                    &[proposal],
+                )
+                .await?
+                .ok_or_else(|| err(ErrorCode::NotFound))?
+                .get(0),
+            ),
+            MailboxCommand::RequestApproval { mission, .. } => ("approval.request", *mission),
+            MailboxCommand::GrantApproval { request, .. }
+            | MailboxCommand::ConsumeApproval { request, .. } => {
+                let family = if matches!(&e.command, MailboxCommand::GrantApproval { .. }) {
+                    actor.owner()?;
+                    "approval.grant"
+                } else {
+                    "approval.consume"
+                };
+                (
+                    family,
+                    tx.query_opt(
+                        "SELECT mission_id FROM mailbox_approval_requests WHERE id=$1",
+                        &[request],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::NotFound))?
+                    .get(0),
+                )
+            }
+            MailboxCommand::Send { mission, .. } => ("message.send", *mission),
+            MailboxCommand::ReplaceLead { mission, .. } => {
+                actor.owner()?;
+                ("lead.replace", *mission)
+            }
+            MailboxCommand::AdmitEpisode { mission, .. } => ("episode.admit", *mission),
+            MailboxCommand::YieldEpisode { episode, .. } => (
+                "episode.yield",
+                tx.query_opt(
+                    "SELECT mission_id FROM mailbox_episodes WHERE id=$1 AND principal_id=$2",
+                    &[episode, &actor.principal],
+                )
+                .await?
+                .ok_or_else(|| err(ErrorCode::Unauthorized))?
+                .get(0),
+            ),
+            MailboxCommand::Resolve { message, .. }
+            | MailboxCommand::Present { message, .. }
+            | MailboxCommand::Acknowledge { message, .. } => {
+                let family = match &e.command {
+                    MailboxCommand::Resolve { .. } => "message.resolve",
+                    MailboxCommand::Present { .. } => "message.present",
+                    _ => "message.ack",
+                };
+                (
+                    family,
+                    tx.query_opt(
+                        "SELECT mission_id FROM mailbox_messages WHERE id=$1",
+                        &[message],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::NotFound))?
+                    .get(0),
+                )
+            }
+        };
+        actor.scope(mission, actor.task)?;
+        let scope = if matches!(
+            family,
+            "lead.replace" | "episode.runtime_bind" | "message.delivery_prepare"
+        ) {
+            auth::RecordScope::Owner
+        } else if let Some(task) = actor.task {
+            auth::RecordScope::Task { mission, task }
+        } else {
+            auth::RecordScope::Mission(mission)
+        };
+        let digest = crate::validation::digest(&e.command)?;
+        if let Some(row) = tx.query_opt("SELECT digest,result,disposition,scope_kind,scope_mission,scope_task FROM mailbox_commands WHERE principal_id=$1 AND family=$2 AND key=$3", &[&actor.principal,&family,&e.key]).await? {
+            auth::RecordScope::from_columns(row.get(3), row.get(4), row.get(5))?.authorize(&actor)?;
+            if row.get::<_,String>(0) != digest { return Err(err(ErrorCode::IdempotencyConflict)); }
+            let value = row.get(1);
+            return if row.get::<_,String>(2) == "rejected" { Err(serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable))?) } else { serde_json::from_value(value).map_err(|_|err(ErrorCode::TemporarilyUnavailable)) };
+        }
+        tx.batch_execute("SAVEPOINT mailbox_mutation").await?;
+        let outcome = self.apply(&tx, &actor, e.clone()).await;
+        if let Err(error) = &outcome {
+            tx.batch_execute("ROLLBACK TO SAVEPOINT mailbox_mutation")
+                .await?;
+            if matches!(
+                error.code,
+                ErrorCode::Unauthorized
+                    | ErrorCode::TemporarilyUnavailable
+                    | ErrorCode::IncompatibleSchema
+            ) {
+                return outcome;
+            }
+        }
+        let (disposition, result) = match &outcome {
+            Ok(receipt) => ("applied", serde_json::to_value(receipt)),
+            Err(error) => ("rejected", serde_json::to_value(error)),
+        };
+        let (kind, scope_mission, scope_task) = scope.columns();
+        tx.execute("INSERT INTO mailbox_commands(principal_id,family,key,digest,result,disposition,scope_kind,scope_mission,scope_task,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)", &[&actor.principal,&family,&e.key,&digest,&result.map_err(|_|invalid())?,&disposition,&kind,&scope_mission,&scope_task,&self.broker.epoch]).await?;
+        tx.commit().await?;
+        outcome
+    }
+    async fn apply(
+        &self,
+        tx: &Transaction<'_>,
+        actor: &auth::Actor,
+        e: Envelope,
+    ) -> Result<Receipt> {
+        if let MailboxCommand::CaptureInput {
+            mission,
+            id,
+            attempt,
+            ref purpose,
+            limit,
+        } = e.command
+        {
+            if !(1..=16).contains(&limit) {
+                return Err(invalid());
+            }
+            actor.scope(mission, actor.task)?;
+            let packet = capture_packet(
+                tx,
+                actor,
+                self.broker.epoch,
+                mission,
+                attempt,
+                purpose,
+                limit,
+            )
+            .await?;
+            let digest = crate::validation::digest(&packet)?;
+            tx.execute("INSERT INTO mailbox_inputs(id,mission_id,task_id,principal_id,recovery_epoch,digest,packet) VALUES($1,$2,$3,$4,$5,$6,$7)", &[&id,&mission,&actor.task,&actor.principal,&self.broker.epoch,&digest,&packet]).await?;
+            for message in packet["messages"].as_array().ok_or_else(invalid)? {
+                let message: Uuid =
+                    serde_json::from_value(message["id"].clone()).map_err(|_| invalid())?;
+                tx.execute(
+                    "INSERT INTO mailbox_input_messages(input_id,message_id) VALUES($1,$2)",
+                    &[&id, &message],
+                )
+                .await?;
+            }
+            return Ok(Receipt {
+                id,
+                disposition: "input_captured".into(),
+            });
+        }
+        if let MailboxCommand::PrepareDelivery {
+            id,
+            message,
+            episode,
+            required_decision,
+            required_approval,
+        } = e.command
+        {
+            actor.owner()?;
+            let row=tx.query_opt("SELECT e.mission_id,e.task_generation,e.input_digest,e.turn_id,e.recovery_epoch,e.deadline>clock_timestamp(),e.state,t.generation,o.request,to_jsonb(m) FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id JOIN gateway_operations o ON o.id=e.start_operation AND o.kind='start' AND o.state='confirmed' JOIN mailbox_messages m ON m.id=$2 AND m.mission_id=e.mission_id WHERE e.id=$1 AND e.role='worker' AND EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND r.principal_id=e.principal_id)", &[&episode,&message]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+            if row.get::<_, Uuid>(4) != self.broker.epoch
+                || row.get::<_, Option<i64>>(1) != Some(row.get::<_, i64>(7))
+            {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            if !row.get::<_, bool>(5) || row.get::<_, String>(6) != "active" {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            if tx
+                .query_opt(
+                    "SELECT id FROM mailbox_delivery_intents WHERE message_id=$1 AND episode_id=$2",
+                    &[&message, &episode],
+                )
+                .await?
+                .is_some()
+            {
+                return Err(err(ErrorCode::IdempotencyConflict));
+            }
+            let workflow=tx.query_opt("SELECT workflow_id,generation FROM workflow_registry WHERE aggregate_kind='task' AND aggregate_id=(SELECT task_id FROM mailbox_episodes WHERE id=$1) AND recovery_epoch=$2 AND NOT closed ORDER BY generation DESC LIMIT 1", &[&episode,&self.broker.epoch]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+            let workflow_reference = crate::temporal::WorkflowRef {
+                kind: crate::temporal::AggregateKind::Task,
+                aggregate_id: tx
+                    .query_one(
+                        "SELECT task_id FROM mailbox_episodes WHERE id=$1",
+                        &[&episode],
+                    )
+                    .await?
+                    .get(0),
+                generation: workflow.get(1),
+                recovery_epoch: self.broker.epoch,
+                workflow_id: workflow.get(0),
+            };
+            let start: crate::gateway::Intent = serde_json::from_value(row.get(8))
+                .map_err(|_| err(ErrorCode::IncompatibleSchema))?;
+            let input: serde_json::Value = row.get(9);
+            let input_digest = crate::validation::digest(&input)?;
+            let expected_turn = row
+                .get::<_, Option<String>>(3)
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+            let intent = crate::gateway::Intent {
+                id,
+                admission_id: start.admission_id,
+                binding_id: start.binding_id,
+                generation: start.generation,
+                kind: crate::gateway::OperationKind::Steer,
+                arguments: serde_json::json!({"mailbox_delivery":id,"input":input,"input_digest":input_digest,"episode_input_digest":row.get::<_,String>(2),"expected_turn":expected_turn}),
+            };
+            tx.execute("INSERT INTO mailbox_delivery_intents(id,message_id,episode_id,gateway_intent,input_digest,episode_input_digest,expected_turn,required_decision,required_approval,by_principal,recovery_epoch,workflow_reference) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)", &[&id,&message,&episode,&serde_json::to_value(intent).map_err(|_|invalid())?,&input_digest,&row.get::<_,String>(2),&expected_turn,&required_decision,&required_approval,&actor.principal,&self.broker.epoch,&serde_json::to_value(workflow_reference).map_err(|_|invalid())?]).await?;
+            return Ok(Receipt {
+                id,
+                disposition: "delivery_prepared".into(),
+            });
+        }
+        if let MailboxCommand::BindRuntimeTurn {
+            episode,
+            start_operation,
+            ref runtime_turn,
+        } = e.command
+        {
+            actor.owner()?;
+            if runtime_turn.is_empty() || runtime_turn.len() > 1024 {
+                return Err(invalid());
+            }
+            let row=tx.query_opt("SELECT e.mission_id,e.attempt_id,e.task_generation,e.recovery_epoch,e.deadline>clock_timestamp(),e.state,e.input_digest,e.principal_id,t.generation,a.worker_id,e.input_packet FROM mailbox_episodes e JOIN tasks t ON t.id=e.task_id JOIN attempts a ON a.id=e.attempt_id WHERE e.id=$1 AND e.role='worker' AND e.purpose='implementation'", &[&episode]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+            actor.scope(row.get(0), None)?;
+            if row.get::<_, Uuid>(3) != self.broker.epoch
+                || row.get::<_, Option<i64>>(2) != Some(row.get::<_, i64>(8))
+                || row.get::<_, Uuid>(7) != row.get::<_, Uuid>(9)
+            {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            if !row.get::<_, bool>(4)
+                || !matches!(row.get::<_, String>(5).as_str(), "admitted" | "active")
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let start=tx.query_opt("SELECT attempt_id,generation,request,state FROM gateway_operations WHERE id=$1 AND kind='start'", &[&start_operation]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+            if start.get::<_, Uuid>(0) != row.get::<_, Uuid>(1)
+                || start.get::<_, i64>(1) != row.get::<_, i64>(8)
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if start.get::<_, String>(3) != "confirmed"
+                || start.get::<_, serde_json::Value>(2)["arguments"]["input_digest"]
+                    != row.get::<_, String>(6)
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            if tx.query_opt("SELECT id FROM gateway_evidence WHERE operation_id=$1 AND evidence->>'kind'='confirmed_start_turn' AND evidence->>'runtime_turn'=$2", &[&start_operation,runtime_turn]).await?.is_none() {return Err(err(ErrorCode::DependencyUnmet));}
+            let input = row
+                .get::<_, Option<Uuid>>(10)
+                .ok_or_else(|| err(ErrorCode::DependencyUnmet))?;
+            let packet: serde_json::Value = tx
+                .query_one("SELECT packet FROM mailbox_inputs WHERE id=$1", &[&input])
+                .await?
+                .get(0);
+            let request: serde_json::Value = start.get(2);
+            if request["arguments"]["input_packet"] != serde_json::json!(input)
+                || request["arguments"]["input"] != packet
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+
+            if let Some(bound)=tx.query_opt("SELECT start_operation,runtime_turn FROM mailbox_episode_runtime_bindings WHERE episode_id=$1", &[&episode]).await? {
+                if bound.get::<_,Uuid>(0)!=start_operation || bound.get::<_,String>(1)!=*runtime_turn { return Err(err(ErrorCode::IdempotencyConflict)); }
+            } else {
+                tx.execute("INSERT INTO mailbox_episode_runtime_bindings(episode_id,start_operation,runtime_turn,by_principal,recovery_epoch) VALUES($1,$2,$3,$4,$5)", &[&episode,&start_operation,runtime_turn,&actor.principal,&self.broker.epoch]).await?;
+                tx.execute("UPDATE mailbox_episodes SET start_operation=$2,turn_id=$3,state='active' WHERE id=$1", &[&episode,&start_operation,runtime_turn]).await?;
+            }
+            return Ok(Receipt {
+                id: episode,
+                disposition: "runtime_bound".into(),
+            });
+        }
+        if let MailboxCommand::Propose {
+            mission,
+            id,
+            ref proposal,
+        } = e.command
+        {
+            if actor.role != Role::Lead || actor.task.is_some() {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            actor.scope(mission, None)?;
+            if serde_json::to_vec(proposal).map_err(|_| invalid())?.len() > 32768 {
+                return Err(invalid());
+            }
+            let specs = match proposal {
+                Proposal::Task { spec } => std::slice::from_ref(spec),
+                Proposal::Plan { summary, tasks } => {
+                    if summary.trim().is_empty() || summary.len() > 4096 || tasks.len() > 32 {
+                        return Err(invalid());
+                    }
+                    tasks.as_slice()
+                }
+            };
+            for spec in specs {
+                crate::validation::validate(&Command::CreateTask {
+                    id: Uuid::nil(),
+                    mission_id: mission,
+                    spec: spec.clone(),
+                })?;
+            }
+            let generation = tx
+                .query_opt(
+                    "SELECT generation FROM mission_leads WHERE mission_id=$1 AND principal_id=$2",
+                    &[&mission, &actor.principal],
+                )
+                .await?
+                .map(|r| r.get::<_, i64>(0))
+                .unwrap_or(0);
+            tx.execute("INSERT INTO mailbox_proposals(id,mission_id,principal_id,lead_generation,proposal,digest,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7)", &[&id,&mission,&actor.principal,&generation,&serde_json::to_value(proposal).map_err(|_|invalid())?,&crate::validation::digest(proposal)?,&self.broker.epoch]).await?;
+            return Ok(Receipt {
+                id,
+                disposition: "proposed".into(),
+            });
+        }
+        if let MailboxCommand::Decide {
+            proposal,
+            approved,
+            ref rationale,
+        } = e.command
+        {
+            if !matches!(actor.role, Role::Owner | Role::Lead) || actor.task.is_some() {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if rationale.trim().is_empty() || rationale.len() > 4096 {
+                return Err(invalid());
+            }
+            let row = tx
+                .query_opt(
+                    "SELECT mission_id,digest,recovery_epoch FROM mailbox_proposals WHERE id=$1",
+                    &[&proposal],
+                )
+                .await?
+                .ok_or_else(|| err(ErrorCode::NotFound))?;
+            actor.scope(row.get(0), None)?;
+            if row.get::<_, Uuid>(2) != self.broker.epoch {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            if tx
+                .query_opt(
+                    "SELECT id FROM mailbox_decisions WHERE proposal_id=$1",
+                    &[&proposal],
+                )
+                .await?
+                .is_some()
+            {
+                return Err(err(ErrorCode::IdempotencyConflict));
+            }
+            let generation = if actor.role == Role::Lead {
+                Some(tx.query_opt("SELECT generation FROM mission_leads WHERE mission_id=$1 AND principal_id=$2", &[&row.get::<_,Uuid>(0),&actor.principal]).await?.map(|r|r.get::<_,i64>(0)).unwrap_or(0))
+            } else {
+                None
+            };
+            let id = Uuid::new_v4();
+            tx.execute("INSERT INTO mailbox_decisions(id,proposal_id,by_principal,lead_generation,approved,rationale,proposal_digest,recovery_epoch) VALUES($1,$2,$3,$4,$5,$6,$7,$8)", &[&id,&proposal,&actor.principal,&generation,&approved,rationale,&row.get::<_,String>(1),&self.broker.epoch]).await?;
+            return Ok(Receipt {
+                id,
+                disposition: "decided".into(),
+            });
+        }
+        if let MailboxCommand::RequestApproval {
+            mission,
+            id,
+            task,
+            generation,
+            executor,
+            ref operation,
+            expires_in_seconds,
+        } = e.command
+        {
+            if !operation.arguments.is_object()
+                || serde_json::to_vec(operation).map_err(|_| invalid())?.len() > 16384
+                || !(1..=3600).contains(&expires_in_seconds)
+                || task.is_some() != generation.is_some()
+            {
+                return Err(invalid());
+            }
+            actor.scope(mission, task)?;
+            if let Some(task) = task {
+                let current = tx
+                    .query_opt(
+                        "SELECT generation FROM tasks WHERE id=$1 AND mission_id=$2",
+                        &[&task, &mission],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::NotFound))?
+                    .get::<_, i64>(0);
+                if generation != Some(current) {
+                    return Err(err(ErrorCode::StaleGeneration));
+                }
+            }
+            if !current_principal(tx, executor, mission, task, self.broker.epoch).await? {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            let digest = crate::validation::digest(operation)?;
+            let lead_generation = if actor.role == Role::Lead {
+                tx.query_opt(
+                    "SELECT generation FROM mission_leads WHERE mission_id=$1 AND principal_id=$2",
+                    &[&mission, &actor.principal],
+                )
+                .await?
+                .map(|r| r.get::<_, i64>(0))
+            } else {
+                None
+            };
+            tx.execute("INSERT INTO mailbox_approval_requests(id,mission_id,task_id,generation,requester,requester_lead_generation,executor,operation,argument_digest,recovery_epoch,expires_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,clock_timestamp()+($11::bigint*interval '1 second'))", &[&id,&mission,&task,&generation,&actor.principal,&lead_generation,&executor,&serde_json::to_value(operation).map_err(|_|invalid())?,&digest,&self.broker.epoch,&expires_in_seconds]).await?;
+            return Ok(Receipt {
+                id,
+                disposition: "requested".into(),
+            });
+        }
+        if let MailboxCommand::GrantApproval {
+            request,
+            ref rationale,
+        } = e.command
+        {
+            actor.owner()?;
+            if rationale.is_empty() || rationale.len() > 4096 {
+                return Err(invalid());
+            }
+            let row = approval_current(tx, request, self.broker.epoch).await?;
+            if tx
+                .query_opt(
+                    "SELECT request_id FROM mailbox_approval_grants WHERE request_id=$1",
+                    &[&request],
+                )
+                .await?
+                .is_some()
+            {
+                return Err(err(ErrorCode::IdempotencyConflict));
+            }
+            tx.execute("INSERT INTO mailbox_approval_grants(request_id,by_principal,rationale,argument_digest) VALUES($1,$2,$3,$4)", &[&request,&actor.principal,rationale,&row.get::<_,String>(5)]).await?;
+            return Ok(Receipt {
+                id: request,
+                disposition: "granted".into(),
+            });
+        }
+        if let MailboxCommand::ConsumeApproval {
+            request,
+            ref operation,
+        } = e.command
+        {
+            let row = approval_current(tx, request, self.broker.epoch).await?;
+            actor.scope(row.get(0), row.get(1))?;
+            if actor.principal != row.get::<_, Uuid>(3)
+                || (actor.role == Role::Verifier
+                    && operation.family == ApprovalFamily::RuntimeControl)
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if crate::validation::digest(operation)? != row.get::<_, String>(5) {
+                return Err(err(ErrorCode::IdempotencyConflict));
+            }
+            if tx
+                .query_opt(
+                    "SELECT request_id FROM mailbox_approval_grants WHERE request_id=$1",
+                    &[&request],
+                )
+                .await?
+                .is_none()
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            if tx
+                .query_opt(
+                    "SELECT request_id FROM mailbox_approval_consumptions WHERE request_id=$1",
+                    &[&request],
+                )
+                .await?
+                .is_some()
+            {
+                return Err(err(ErrorCode::IdempotencyConflict));
+            }
+            let id = Uuid::new_v4();
+            tx.execute("INSERT INTO mailbox_approval_consumptions(id,request_id,executor,argument_digest,recovery_epoch) VALUES($1,$2,$3,$4,$5)", &[&id,&request,&actor.principal,&row.get::<_,String>(5),&self.broker.epoch]).await?;
+            return Ok(Receipt {
+                id,
+                disposition: "consumed".into(),
+            });
+        }
+        if let MailboxCommand::YieldEpisode {
+            episode,
+            ref checkpoint,
+            ref questions,
+            ref dependencies,
+            ref executions,
+        } = e.command
+        {
+            if checkpoint.summary.is_empty()
+                || checkpoint.summary.len() > 16384
+                || checkpoint.artifacts.len() > 32
+                || questions.len() + dependencies.len() > 64
+                || executions.len() > 32
+            {
+                return Err(invalid());
+            }
+            let row=tx.query_opt("SELECT mission_id,principal_id,state,recovery_epoch,task_id,task_generation,lead_generation,attempt_id,owned_capacity,start_operation,deadline>clock_timestamp() FROM mailbox_episodes WHERE id=$1 FOR UPDATE",&[&episode]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+            let mission: Uuid = row.get(0);
+            validate_artifacts(tx, actor, mission, &checkpoint.artifacts).await?;
+            actor.scope(mission, actor.task)?;
+            if row.get::<_, Uuid>(1) != actor.principal
+                || row.get::<_, Uuid>(3) != self.broker.epoch
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            let task: Option<Uuid> = row.get(4);
+            if let Some(task) = task
+                && row.get::<_, Option<i64>>(5)
+                    != Some(
+                        tx.query_one("SELECT generation FROM tasks WHERE id=$1", &[&task])
+                            .await?
+                            .get::<_, i64>(0),
+                    )
+            {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            if let Some(generation) = row.get::<_, Option<i64>>(6)
+                && generation
+                    != tx
+                        .query_opt(
+                            "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                            &[&mission],
+                        )
+                        .await?
+                        .map(|r| r.get::<_, i64>(0))
+                        .unwrap_or(0)
+            {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            if !row.get::<_, bool>(10)
+                || !matches!(row.get::<_, String>(2).as_str(), "admitted" | "active")
+            {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            for execution in executions {
+                if Some(execution.attempt) != row.get::<_, Option<Uuid>>(7)
+                    || Some(execution.generation) != row.get::<_, Option<i64>>(5)
+                    || execution.recovery_epoch != self.broker.epoch
+                    || execution.supervisor.is_empty()
+                    || execution.supervisor.len() > 1024
+                {
+                    return Err(err(ErrorCode::Unauthorized));
+                }
+            }
+            let aggregate = task.unwrap_or(mission);
+            let kind = if task.is_some() { "task" } else { "mission" };
+            let workflow:String=tx.query_opt("SELECT workflow_id FROM workflow_registry WHERE aggregate_kind=$1 AND aggregate_id=$2 AND recovery_epoch=$3 AND NOT closed ORDER BY generation DESC LIMIT 1",&[&kind,&aggregate,&self.broker.epoch]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?.get(0);
+            for question in questions {
+                if tx.query_opt("SELECT m.id FROM mailbox_messages m WHERE m.id=$1 AND m.mission_id=$2 AND m.kind='question' AND (m.sender=$3 OR ($4 AND m.sender_lead_generation IS NOT NULL AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$3)))",&[question,&mission,&actor.principal,&(actor.role==Role::Lead)]).await?.is_none(){return Err(err(ErrorCode::Unauthorized));}
+                let answer=tx.query_opt("SELECT id FROM mailbox_messages WHERE reply_to=$1 AND kind='answer' ORDER BY created_at,id LIMIT 1",&[question]).await?.map(|r|r.get::<_,Uuid>(0));
+                tx.execute("INSERT INTO mailbox_waits(episode_id,kind,reference_id,workflow_id,satisfied) VALUES($1,'question',$2,$3,$4) ON CONFLICT DO NOTHING",&[&episode,question,&workflow,&answer.is_some()]).await?;
+                if let Some(answer) = answer {
+                    tx.execute("INSERT INTO mailbox_wait_satisfactions(episode_id,kind,reference_id,evidence_id) VALUES($1,'question',$2,$3) ON CONFLICT DO NOTHING",&[&episode,question,&answer]).await?;
+                }
+            }
+            for dependency in dependencies {
+                let dependency_row = tx
+                    .query_opt(
+                        "SELECT status FROM tasks WHERE id=$1 AND mission_id=$2",
+                        &[dependency, &mission],
+                    )
+                    .await?
+                    .ok_or_else(|| err(ErrorCode::Unauthorized))?;
+                if let Some(task) = task
+                    && tx.query_opt("SELECT dependency_id FROM dependencies WHERE task_id=$1 AND dependency_id=$2",&[&task,dependency]).await?.is_none(){return Err(err(ErrorCode::Unauthorized));}
+                let satisfied = dependency_row.get::<_, String>(0) == "accepted";
+                tx.execute("INSERT INTO mailbox_waits(episode_id,kind,reference_id,workflow_id,satisfied) VALUES($1,'task',$2,$3,$4) ON CONFLICT DO NOTHING",&[&episode,dependency,&workflow,&satisfied]).await?;
+            }
+            tx.execute("INSERT INTO mailbox_checkpoints(id,episode_id,principal_id,checkpoint,executions) VALUES($1,$2,$3,$4,$5)",&[&checkpoint.id,&episode,&actor.principal,&serde_json::to_value(checkpoint).map_err(|_|invalid())?,&serde_json::to_value(executions).map_err(|_|invalid())?]).await?;
+            tx.execute(
+                "UPDATE mailbox_episodes SET state='yielded' WHERE id=$1",
+                &[&episode],
+            )
+            .await?;
+            // No external dispatch was recorded: an unstarted planning episode has no physical effect.
+            // Known/unknown executions and runtime starts never refund capacity merely on yield.
+            if row.get::<_, bool>(8)
+                && row.get::<_, Option<Uuid>>(9).is_none()
+                && executions.is_empty()
+            {
+                tx.execute("UPDATE missions SET used_capacity=used_capacity-1,revision=revision+1 WHERE id=$1",&[&mission]).await?;
+            }
+            wake(tx, &workflow).await?;
+            let result = Receipt {
+                id: episode,
+                disposition: "yielded".into(),
+            };
+            return Ok(result);
+        }
+        if let MailboxCommand::Resolve { message, answer } = e.command {
+            let question = tx
+                .query_opt(
+                    "SELECT mission_id,sender,kind,sender_lead_generation FROM mailbox_messages WHERE id=$1",
+                    &[&message],
+                )
+                .await?
+                .ok_or_else(|| err(ErrorCode::NotFound))?;
+            let owns_lead_seat = actor.role == Role::Lead
+                && question.get::<_, Option<i64>>(3).is_some()
+                && tx.query_opt("SELECT mission_id FROM mission_leads WHERE mission_id=$1 AND principal_id=$2", &[&question.get::<_, Uuid>(0), &actor.principal]).await?.is_some();
+            if (question.get::<_, Uuid>(1) != actor.principal && !owns_lead_seat)
+                || question.get::<_, String>(2) != "question"
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            actor.scope(question.get(0), actor.task)?;
+            if tx.query_opt("SELECT a.id FROM mailbox_messages a JOIN mailbox_recipients r ON r.message_id=a.id WHERE a.id=$1 AND a.reply_to=$2 AND a.kind='answer' AND a.mission_id=$3 AND (r.principal_id=$4 OR (r.lead_seat AND $5))",&[&answer,&message,&question.get::<_,Uuid>(0),&actor.principal,&owns_lead_seat]).await?.is_none(){return Err(err(ErrorCode::Unauthorized));}
+            if let Some(record) = tx
+                .query_opt(
+                    "SELECT answer_id FROM mailbox_resolutions WHERE message_id=$1",
+                    &[&message],
+                )
+                .await?
+            {
+                if record.get::<_, Uuid>(0) != answer {
+                    return Err(err(ErrorCode::IdempotencyConflict));
+                }
+            } else {
+                tx.execute("INSERT INTO mailbox_resolutions(message_id,answer_id,principal_id) VALUES($1,$2,$3)",&[&message,&answer,&actor.principal]).await?;
+            }
+            let result = Receipt {
+                id: message,
+                disposition: "resolved".into(),
+            };
+            return Ok(result);
+        }
+        if let MailboxCommand::Present {
+            message, episode, ..
+        }
+        | MailboxCommand::Acknowledge { message, episode } = &e.command
+        {
+            let row=tx.query_opt("SELECT m.mission_id,e.principal_id,e.input_digest,e.turn_id,e.state,e.deadline>clock_timestamp(),e.recovery_epoch,e.task_id,e.task_generation,e.lead_generation,e.input_packet FROM mailbox_messages m JOIN mailbox_recipients r ON r.message_id=m.id JOIN mailbox_episodes e ON e.id=$2 AND e.mission_id=m.mission_id WHERE m.id=$1 AND (r.principal_id=$3 OR (r.lead_seat AND $4 AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$3)))",&[message,episode,&actor.principal,&(actor.role==Role::Lead)]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+            actor.scope(row.get(0), actor.task)?;
+            if row.get::<_, Uuid>(1) != actor.principal
+                || row.get::<_, Uuid>(6) != self.broker.epoch
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if let Some(task) = row.get::<_, Option<Uuid>>(7) {
+                let current: i64 = tx
+                    .query_one("SELECT generation FROM tasks WHERE id=$1", &[&task])
+                    .await?
+                    .get(0);
+                if row.get::<_, Option<i64>>(8) != Some(current) {
+                    return Err(err(ErrorCode::StaleGeneration));
+                }
+            }
+            if let Some(generation) = row.get::<_, Option<i64>>(9) {
+                let current = tx
+                    .query_opt(
+                        "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                        &[&row.get::<_, Uuid>(0)],
+                    )
+                    .await?
+                    .map(|r| r.get::<_, i64>(0))
+                    .unwrap_or(0);
+                if generation != current {
+                    return Err(err(ErrorCode::StaleGeneration));
+                }
+            }
+            let disposition = match &e.command {
+                MailboxCommand::Present {
+                    input_digest,
+                    runtime_turn,
+                    ..
+                } => {
+                    // A delivery packet has its own immutable digest. Transport
+                    // confirmation permits a recipient receipt but never creates it.
+                    let confirmed_packet = tx.query_opt("SELECT 1 FROM mailbox_delivery_intents d JOIN gateway_operations o ON o.id=d.id WHERE d.message_id=$1 AND d.episode_id=$2 AND d.input_digest=$3 AND d.expected_turn=$4 AND d.recovery_epoch=$5 AND o.state='confirmed'", &[message,episode,input_digest,runtime_turn,&self.broker.epoch]).await?.is_some();
+                    if !confirmed_packet
+                        && let Some(packet) = row.get::<_, Option<Uuid>>(10)
+                            && tx.query_opt("SELECT input_id FROM mailbox_input_messages WHERE input_id=$1 AND message_id=$2", &[&packet,message]).await?.is_none() {return Err(err(ErrorCode::DependencyUnmet));}
+                    if (row.get::<_, String>(2) != *input_digest && !confirmed_packet)
+                        || row.get::<_, Option<String>>(3) != *runtime_turn
+                        || !row.get::<_, bool>(5)
+                        || !matches!(row.get::<_, String>(4).as_str(), "admitted" | "active")
+                    {
+                        return Err(err(ErrorCode::DependencyUnmet));
+                    }
+                    tx.execute("INSERT INTO mailbox_presentations(id,message_id,episode_id,principal_id,input_digest,runtime_turn) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(message_id,episode_id,principal_id) DO NOTHING",&[&Uuid::new_v4(),message,episode,&actor.principal,input_digest,runtime_turn]).await?;
+                    "presented"
+                }
+                MailboxCommand::Acknowledge { .. } => {
+                    let presentation:Uuid=tx.query_opt("SELECT id FROM mailbox_presentations WHERE message_id=$1 AND episode_id=$2 AND principal_id=$3",&[message,episode,&actor.principal]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?.get(0);
+                    tx.execute("INSERT INTO mailbox_acknowledgments(id,presentation_id,principal_id) VALUES($1,$2,$3) ON CONFLICT(presentation_id) DO NOTHING",&[&Uuid::new_v4(),&presentation,&actor.principal]).await?;
+                    "acknowledged"
+                }
+                _ => unreachable!(),
+            };
+            let result = Receipt {
+                id: *message,
+                disposition: disposition.into(),
+            };
+            return Ok(result);
+        }
+        if let MailboxCommand::AdmitEpisode {
+            mission,
+            id,
+            attempt,
+            ref input_digest,
+            input_packet,
+            ref purpose,
+        } = e.command
+        {
+            actor.scope(mission, actor.task)?;
+            if input_digest.len() != 64
+                || !input_digest
+                    .bytes()
+                    .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase())
+            {
+                return Err(invalid());
+            }
+            if !matches!(
+                (&actor.role, purpose),
+                (Role::Lead, EpisodePurpose::Planning)
+                    | (Role::Worker, EpisodePurpose::Implementation)
+                    | (Role::Verifier, EpisodePurpose::Verification)
+            ) {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if let Some(packet) = input_packet {
+                validate_input_packet(
+                    tx,
+                    actor,
+                    self.broker.epoch,
+                    mission,
+                    InputReference {
+                        id: packet,
+                        digest: input_digest,
+                    },
+                    purpose,
+                    attempt,
+                )
+                .await?;
+            }
+            let mut task = None;
+            let mut task_generation = None;
+            let mut imported = false;
+            if let Some(attempt) = attempt {
+                let row=tx.query_opt("SELECT a.task_id,a.generation,a.worker_id,a.recovery_epoch,t.mission_id,t.generation FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1",&[&attempt]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+                task = Some(row.get::<_, Uuid>(0));
+                task_generation = Some(row.get::<_, i64>(1));
+                actor.scope(row.get(4), task)?;
+                if row.get::<_, Uuid>(4) != mission
+                    || row.get::<_, Uuid>(3) != self.broker.epoch
+                    || row.get::<_, i64>(1) != row.get::<_, i64>(5)
+                {
+                    return Err(err(ErrorCode::StaleGeneration));
+                }
+                if actor.role == Role::Worker && row.get::<_, Uuid>(2) != actor.principal {
+                    return Err(err(ErrorCode::Unauthorized));
+                }
+                if actor.role == Role::Lead {
+                    return Err(err(ErrorCode::Unauthorized));
+                }
+                imported = actor.role == Role::Worker
+                    && !tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes WHERE attempt_id=$1 AND role='worker')", &[&attempt]).await?.get::<_,bool>(0);
+            } else if actor.role != Role::Lead {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if tx.query_opt("SELECT id FROM mailbox_episodes WHERE principal_id=$1 AND state IN ('admitted','active','outcome_unknown','quarantined')", &[&actor.principal]).await?.is_some() {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            if actor.role == Role::Verifier {
+                let verification=tx.query_opt("SELECT p.verifier,c.implementer,t.status FROM tasks t JOIN artifact_policies p ON p.task_id=t.id JOIN artifact_current a ON a.task_id=t.id JOIN artifact_candidates c ON c.id=a.candidate_id WHERE t.id=$1", &[&task]).await?.ok_or_else(||err(ErrorCode::DependencyUnmet))?;
+                if verification.get::<_, Uuid>(0) != actor.principal
+                    || verification.get::<_, Uuid>(1) == actor.principal
+                {
+                    return Err(err(ErrorCode::Unauthorized));
+                }
+                if !matches!(
+                    verification.get::<_, String>(2).as_str(),
+                    "submitted" | "verifying"
+                ) {
+                    return Err(err(ErrorCode::DependencyUnmet));
+                }
+            }
+            // A yielded principal resumes only after the recorded dependencies are satisfied.
+            // This runs under the same admission lock as the budget charge and episode insert.
+            let blocked: bool = tx.query_one(
+                "SELECT EXISTS(SELECT 1 FROM mailbox_waits w JOIN mailbox_episodes ep ON ep.id=w.episode_id WHERE ep.principal_id=$1 AND ep.mission_id=$2 AND ep.recovery_epoch=$3 AND ep.state='yielded' AND NOT w.satisfied)",
+                &[&actor.principal, &mission, &self.broker.epoch],
+            ).await?.get(0);
+            if blocked {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let frontier =
+                event_digest(tx, actor, self.broker.epoch, mission, task_generation).await?;
+            let event_digest = if let Some(input) = input_packet {
+                let messages: Vec<Uuid> = tx.query("SELECT message_id FROM mailbox_input_messages WHERE input_id=$1 ORDER BY message_id", &[&input]).await?.iter().map(|row| row.get(0)).collect();
+                let prior_frontier: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes ep LEFT JOIN mailbox_inputs p ON p.id=ep.input_packet WHERE ep.mission_id=$1 AND ep.principal_id=$2 AND ep.recovery_epoch=$3 AND (ep.event_digest=$4 OR p.packet->>'event_digest'=$4))", &[&mission,&actor.principal,&self.broker.epoch,&frontier]).await?.get(0);
+                let unseen: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_input_messages current WHERE current.input_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_input_messages prior JOIN mailbox_episodes ep ON ep.input_packet=prior.input_id JOIN mailbox_inputs p ON p.id=prior.input_id WHERE prior.message_id=current.message_id AND ep.principal_id=$2 AND ep.recovery_epoch=$3 AND p.packet->>'event_digest'=$4))", &[&input,&actor.principal,&self.broker.epoch,&frontier]).await?.get(0);
+                if prior_frontier && !unseen {
+                    return Err(err(ErrorCode::DependencyUnmet));
+                }
+                crate::validation::digest(
+                    &serde_json::json!({"frontier":frontier,"messages":messages}),
+                )?
+            } else {
+                let prior_captured: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_episodes ep JOIN mailbox_inputs p ON p.id=ep.input_packet WHERE ep.mission_id=$1 AND ep.principal_id=$2 AND ep.recovery_epoch=$3 AND p.packet->>'event_digest'=$4)", &[&mission,&actor.principal,&self.broker.epoch,&frontier]).await?.get(0);
+                if prior_captured {
+                    return Err(err(ErrorCode::DependencyUnmet));
+                }
+                frontier
+            };
+            if tx.query_opt("SELECT id FROM mailbox_episodes WHERE mission_id=$1 AND principal_id=$2 AND recovery_epoch=$3 AND event_digest=$4", &[&mission, &actor.principal, &self.broker.epoch, &event_digest]).await?.is_some() {
+                return Err(err(ErrorCode::DependencyUnmet));
+            }
+            let owned_capacity = actor.role != Role::Worker;
+            let budget=tx.query_one("SELECT capacity,used_capacity,max_episodes,admitted_episodes,deadline_seconds FROM missions WHERE id=$1 FOR UPDATE",&[&mission]).await?;
+            if !imported && budget.get::<_, i64>(3) >= budget.get::<_, i64>(2) {
+                return Err(err(ErrorCode::BudgetExhausted));
+            }
+            if owned_capacity && budget.get::<_, i64>(1) >= budget.get::<_, i64>(0) {
+                return Err(err(ErrorCode::CapacityExhausted));
+            }
+            let charge = if imported { 0i64 } else { 1 };
+            let capacity = if owned_capacity { 1i64 } else { 0 };
+            let lead_generation = if actor.role == Role::Lead {
+                Some(
+                    tx.query_opt(
+                        "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                        &[&mission],
+                    )
+                    .await?
+                    .map(|r| r.get::<_, i64>(0))
+                    .unwrap_or(0),
+                )
+            } else {
+                None
+            };
+            let role = serde_json::to_value(&actor.role).map_err(|_| invalid())?;
+            let purpose = serde_json::to_value(purpose).map_err(|_| invalid())?;
+            tx.execute("UPDATE missions SET admitted_episodes=admitted_episodes+$2,used_capacity=used_capacity+$3,revision=revision+1 WHERE id=$1",&[&mission,&charge,&capacity]).await?;
+            tx.execute("INSERT INTO mailbox_episodes(id,mission_id,principal_id,role,purpose,attempt_id,task_id,task_generation,lead_generation,recovery_epoch,input_digest,deadline,state,owned_capacity,event_digest,input_packet) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,clock_timestamp()+($12::bigint*interval '1 second'),'admitted',$13,$14,$15)",&[&id,&mission,&actor.principal,&role.as_str().unwrap(),&purpose.as_str().unwrap(),&attempt,&task,&task_generation,&lead_generation,&self.broker.epoch,input_digest,&budget.get::<_,i64>(4),&owned_capacity,&event_digest,&input_packet]).await?;
+            let result = Receipt {
+                id,
+                disposition: "admitted".into(),
+            };
+            return Ok(result);
+        }
+        if let MailboxCommand::ReplaceLead {
+            mission,
+            expected_generation,
+            principal,
+            credential_id,
+            ref token_hash,
+            expires_in_seconds,
+        } = e.command
+        {
+            actor.owner()?;
+            if expected_generation < 0
+                || expires_in_seconds <= 0
+                || expires_in_seconds > 86400
+                || token_hash.len() != 64
+                || !token_hash.bytes().all(|b| b.is_ascii_hexdigit())
+            {
+                return Err(invalid());
+            }
+            let generation = tx
+                .query_opt(
+                    "SELECT generation FROM mission_leads WHERE mission_id=$1 FOR UPDATE",
+                    &[&mission],
+                )
+                .await?
+                .map(|r| r.get::<_, i64>(0))
+                .unwrap_or(0);
+            if generation != expected_generation {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+            let next = generation.checked_add(1).ok_or_else(invalid)?;
+            tx.execute("INSERT INTO mission_leads(mission_id,generation,principal_id) VALUES($1,$2,$3) ON CONFLICT(mission_id) DO UPDATE SET generation=EXCLUDED.generation,principal_id=EXCLUDED.principal_id",&[&mission,&next,&principal]).await?;
+            tx.execute("INSERT INTO lead_replacements(id,mission_id,generation,principal_id,by_principal) VALUES($1,$2,$3,$4,$5)",&[&credential_id,&mission,&next,&principal,&actor.principal]).await?;
+            tx.execute("INSERT INTO credentials(id,principal_id,role,mission_id,recovery_epoch,token_hash,expires_at,lead_generation) VALUES($1,$2,'lead',$3,$4,$5,clock_timestamp()+($6::bigint*interval '1 second'),$7)",&[&credential_id,&principal,&mission,&self.broker.epoch,token_hash,&expires_in_seconds,&next]).await?;
+            let result = Receipt {
+                id: credential_id,
+                disposition: "applied".into(),
+            };
+            return Ok(result);
+        }
+        let MailboxCommand::Send {
+            mission,
+            id,
+            mut recipients,
+            message_kind,
+            text,
+            reply_to,
+            attention,
+            artifacts,
+        } = e.command
+        else {
+            return Err(invalid());
+        };
+        actor.scope(mission, actor.task)?;
+        if recipients.is_empty()
+            || recipients.len() > 32
+            || text.is_empty()
+            || text.len() > 16384
+            || artifacts.len() > 32
+        {
+            return Err(invalid());
+        }
+        validate_artifacts(tx, actor, mission, &artifacts).await?;
+        recipients.sort();
+        recipients.dedup();
+        let mut physical = std::collections::BTreeMap::<Uuid, bool>::new();
+        for recipient in &recipients {
+            let (principal, seat) = match recipient {
+                Recipient::Principal(principal) => (*principal, false),
+                Recipient::MissionLead { mission_lead } => {
+                    if *mission_lead != mission {
+                        return Err(err(ErrorCode::Unauthorized));
+                    }
+                    let principal = tx
+                        .query_opt(
+                            "SELECT principal_id FROM mission_leads WHERE mission_id=$1",
+                            &[&mission],
+                        )
+                        .await?
+                        .ok_or_else(|| err(ErrorCode::DependencyUnmet))?
+                        .get::<_, Uuid>(0);
+                    (principal, true)
+                }
+            };
+            if !current_principal(tx, principal, mission, None, self.broker.epoch).await? {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            physical
+                .entry(principal)
+                .and_modify(|s| *s |= seat)
+                .or_insert(seat);
+        }
+        if let Some(parent) = reply_to
+            && tx.query_opt("SELECT m.id FROM mailbox_messages m JOIN mailbox_recipients r ON r.message_id=m.id WHERE m.id=$1 AND m.mission_id=$2 AND (r.principal_id=$3 OR (r.lead_seat AND $4 AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$3)))",&[&parent,&mission,&actor.principal,&(actor.role==Role::Lead)]).await?.is_none(){return Err(err(ErrorCode::Unauthorized));}
+        if matches!(message_kind, MessageKind::Answer) {
+            let parent = reply_to.ok_or_else(invalid)?;
+            let question=tx.query_opt("SELECT sender,sender_lead_generation FROM mailbox_messages WHERE id=$1 AND mission_id=$2 AND kind='question'",&[&parent,&mission]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+            let canonical_lead_answer =
+                question.get::<_, Option<i64>>(1).is_some() && physical.values().any(|seat| *seat);
+            if !physical.contains_key(&question.get::<_, Uuid>(0)) && !canonical_lead_answer {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+        }
+        let sender_lead_generation = if actor.role == Role::Lead {
+            tx.query_opt(
+                "SELECT generation FROM mission_leads WHERE mission_id=$1 AND principal_id=$2",
+                &[&mission, &actor.principal],
+            )
+            .await?
+            .map(|r| r.get::<_, i64>(0))
+        } else {
+            None
+        };
+        let role = serde_json::to_value(&actor.role).map_err(|_| invalid())?;
+        let kind = serde_json::to_value(&message_kind).map_err(|_| invalid())?;
+        let attention = serde_json::to_value(attention).map_err(|_| invalid())?;
+        tx.execute("INSERT INTO mailbox_messages(id,mission_id,sender,sender_role,task_id,task_generation,kind,text,reply_to,attention,artifacts,sender_lead_generation,recovery_epoch,attempt_id,approved_spec_digest,spec_revision) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,(SELECT id FROM attempts WHERE task_id=$5 AND generation=$6 AND recovery_epoch=$13 ORDER BY id LIMIT 1),(SELECT approved_digest FROM tasks WHERE id=$5),(SELECT sequence FROM events WHERE aggregate_kind='task' AND aggregate_id=$5 AND kind='task.admit' AND payload->>'spec_digest'=(SELECT approved_digest FROM tasks WHERE id=$5) ORDER BY sequence DESC LIMIT 1))",&[&id,&mission,&actor.principal,&role.as_str().unwrap(),&actor.task,&actor.generation,&kind.as_str().unwrap(),&text,&reply_to,&attention.as_str().unwrap(),&serde_json::json!(artifacts),&sender_lead_generation,&self.broker.epoch]).await?;
+        for (recipient, lead_seat) in physical {
+            tx.execute(
+                "INSERT INTO mailbox_recipients(message_id,principal_id,lead_seat) VALUES($1,$2,$3)",
+                &[&id, &recipient, &lead_seat],
+            )
+            .await?;
+        }
+        if matches!(message_kind, MessageKind::Answer) {
+            let parent = reply_to.ok_or_else(invalid)?;
+            let waits=tx.query("UPDATE mailbox_waits SET satisfied=true WHERE kind='question' AND reference_id=$1 AND NOT satisfied RETURNING episode_id,workflow_id",&[&parent]).await?;
+            for wait in waits {
+                let episode: Uuid = wait.get(0);
+                let workflow: String = wait.get(1);
+                tx.execute("INSERT INTO mailbox_wait_satisfactions(episode_id,kind,reference_id,evidence_id) VALUES($1,'question',$2,$3) ON CONFLICT DO NOTHING",&[&episode,&parent,&id]).await?;
+                wake(tx, &workflow).await?;
+            }
+        }
+        let result = Receipt {
+            id,
+            disposition: "persisted".into(),
+        };
+        Ok(result)
+    }
+}
+
+async fn wake(tx: &Transaction<'_>, workflow: &str) -> Result<()> {
+    tx.execute("INSERT INTO workflow_wakeups(id,workflow_id,sequence) SELECT $1,workflow_id,next_sequence FROM workflow_registry WHERE workflow_id=$2 AND NOT closed ON CONFLICT(workflow_id,sequence) DO UPDATE SET delivered=false",&[&Uuid::new_v4(),&workflow]).await?;
+    Ok(())
+}
+
+#[derive(Clone, Debug, Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+pub struct ContextPage {
+    pub limit: Option<i64>,
+    pub cursor: Option<String>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ContextCursor {
+    version: String,
+    rank: i32,
+    kind: String,
+    id: Uuid,
+}
+
+async fn approval_current(
+    tx: &Transaction<'_>,
+    request: Uuid,
+    epoch: Uuid,
+) -> Result<tokio_postgres::Row> {
+    let row=tx.query_opt("SELECT mission_id,task_id,generation,executor,recovery_epoch,argument_digest,expires_at>clock_timestamp(),requester,requester_lead_generation FROM mailbox_approval_requests WHERE id=$1", &[&request]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+    if row.get::<_, Uuid>(4) != epoch || !row.get::<_, bool>(6) {
+        return Err(err(ErrorCode::StaleGeneration));
+    }
+    if let Some(task) = row.get::<_, Option<Uuid>>(1) {
+        let generation: i64 = tx
+            .query_one("SELECT generation FROM tasks WHERE id=$1", &[&task])
+            .await?
+            .get(0);
+        if row.get::<_, Option<i64>>(2) != Some(generation) {
+            return Err(err(ErrorCode::StaleGeneration));
+        }
+    }
+    // An Owner grant is canonical authority independent of the requesting
+    // conversation. Executor, task generation, epoch and expiry remain fenced.
+    if let Some(generation) = row.get::<_, Option<i64>>(8)
+        && tx
+            .query_opt(
+                "SELECT request_id FROM mailbox_approval_grants WHERE request_id=$1",
+                &[&request],
+            )
+            .await?
+            .is_none()
+    {
+        let current = tx
+            .query_opt(
+                "SELECT generation,principal_id FROM mission_leads WHERE mission_id=$1",
+                &[&row.get::<_, Uuid>(0)],
+            )
+            .await?
+            .ok_or_else(|| err(ErrorCode::StaleGeneration))?;
+        if current.get::<_, i64>(0) != generation
+            || current.get::<_, Uuid>(1) != row.get::<_, Uuid>(7)
+        {
+            return Err(err(ErrorCode::StaleGeneration));
+        }
+    }
+    Ok(row)
+}
+
+async fn validate_artifacts(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    mission: Uuid,
+    artifacts: &[ArtifactReference],
+) -> Result<()> {
+    for artifact in artifacts {
+        if !crate::validation::hex(&artifact.digest, 64) {
+            return Err(invalid());
+        }
+        actor.scope(mission, Some(artifact.task))?;
+        if tx
+            .query_opt(
+                "SELECT id FROM tasks WHERE id=$1 AND mission_id=$2",
+                &[&artifact.task, &mission],
+            )
+            .await?
+            .is_none()
+        {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        if !registered_artifact(tx, artifact.task, &artifact.digest).await? {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+    }
+    Ok(())
+}
+async fn registered_artifact(tx: &Transaction<'_>, task: Uuid, digest: &str) -> Result<bool> {
+    Ok(tx.query_one("SELECT EXISTS(SELECT 1 FROM artifact_candidates c WHERE c.task_id=$1 AND c.artifact=$2 UNION ALL SELECT 1 FROM artifact_report_logs l JOIN artifact_reports r ON l.report_id=r.id JOIN artifact_candidates c ON c.id=r.candidate_id WHERE c.task_id=$1 AND l.digest=$2)", &[&task,&digest]).await?.get(0))
+}
+pub(crate) async fn shared_artifact(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    message: Uuid,
+    digest: &str,
+) -> Result<Uuid> {
+    schema(tx).await?;
+    if !crate::validation::hex(digest, 64) {
+        return Err(invalid());
+    }
+    let row=tx.query_opt("SELECT m.mission_id,m.artifacts FROM mailbox_messages m WHERE m.id=$1 AND (m.sender=$2 OR EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3 AND EXISTS(SELECT 1 FROM mission_leads l WHERE l.mission_id=m.mission_id AND l.principal_id=$2)))))", &[&message,&actor.principal,&(actor.role==Role::Lead)]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+    actor.scope(row.get(0), actor.task)?;
+    let refs: Vec<ArtifactReference> =
+        serde_json::from_value(row.get(1)).map_err(|_| err(ErrorCode::TemporarilyUnavailable))?;
+    let reference = refs
+        .iter()
+        .find(|r| r.digest == digest)
+        .ok_or_else(|| err(ErrorCode::Unauthorized))?;
+    if !registered_artifact(tx, reference.task, digest).await? {
+        return Err(err(ErrorCode::Unauthorized));
+    }
+    Ok(reference.task)
+}
+
+pub(crate) struct DispatchPermit {
+    pub delivery: Uuid,
+    pub expected_turn: String,
+}
+/// Gateway calls this after its transport/queue lock, inside its durable claim transaction.
+pub(crate) async fn dispatch_permit(
+    tx: &Transaction<'_>,
+    epoch: Uuid,
+    bearer: &str,
+    intent: &crate::gateway::Intent,
+) -> Result<Option<DispatchPermit>> {
+    let Some(tag) = intent.arguments.get("mailbox_delivery") else {
+        return Ok(None);
+    };
+    schema(tx).await?;
+    let delivery: Uuid = serde_json::from_value(tag.clone()).map_err(|_| invalid())?;
+    let actor = auth::authenticate(tx, bearer, epoch).await?;
+    actor.owner()?;
+    let row=tx.query_opt("SELECT d.gateway_intent,d.expected_turn,d.episode_input_digest,d.recovery_epoch,d.required_decision,d.required_approval,d.workflow_reference,e.mission_id,e.task_id,e.task_generation,e.lead_generation,e.recovery_epoch,e.deadline>clock_timestamp(),e.state,e.turn_id,e.input_digest,t.generation,e.principal_id,a.worker_id FROM mailbox_delivery_intents d JOIN mailbox_episodes e ON e.id=d.episode_id JOIN tasks t ON t.id=e.task_id JOIN attempts a ON a.id=e.attempt_id WHERE d.id=$1", &[&delivery]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+    if intent.id != delivery
+        || row.get::<_, serde_json::Value>(0)
+            != serde_json::to_value(intent).map_err(|_| invalid())?
+    {
+        return Err(err(ErrorCode::IdempotencyConflict));
+    }
+    if row.get::<_, Uuid>(3) != epoch
+        || row.get::<_, Uuid>(11) != epoch
+        || row.get::<_, Option<i64>>(9) != Some(row.get::<_, i64>(16))
+        || intent.generation != row.get::<_, i64>(16)
+        || row.get::<_, Uuid>(17) != row.get::<_, Uuid>(18)
+    {
+        return Err(err(ErrorCode::StaleGeneration));
+    }
+    if !row.get::<_, bool>(12)
+        || row.get::<_, String>(13) != "active"
+        || row.get::<_, Option<String>>(14).as_deref() != Some(row.get::<_, String>(1).as_str())
+        || row.get::<_, String>(15) != row.get::<_, String>(2)
+    {
+        return Err(err(ErrorCode::DependencyUnmet));
+    }
+    let reference: crate::temporal::WorkflowRef =
+        serde_json::from_value(row.get(6)).map_err(|_| err(ErrorCode::IncompatibleSchema))?;
+    crate::temporal::dispatch_guard(tx, epoch, &reference, intent.admission_id).await?;
+    if let Some(decision) = row.get::<_, Option<Uuid>>(4)
+        && tx.query_opt("SELECT d.id FROM mailbox_decisions d JOIN mailbox_proposals p ON p.id=d.proposal_id WHERE d.id=$1 AND p.mission_id=$2 AND d.approved AND d.recovery_epoch=$3", &[&decision,&row.get::<_,Uuid>(7),&epoch]).await?.is_none() { return Err(err(ErrorCode::DependencyUnmet)); }
+    if let Some(request) = row.get::<_, Option<Uuid>>(5) {
+        let approval = approval_current(tx, request, epoch).await?;
+        if approval.get::<_, Uuid>(3) != actor.principal
+            || approval.get::<_, Uuid>(0) != row.get::<_, Uuid>(7)
+            || approval.get::<_, Option<Uuid>>(1) != Some(row.get::<_, Uuid>(8))
+            || approval.get::<_, Option<i64>>(2) != Some(intent.generation)
+        {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        let operation = ApprovalOperation {
+            family: ApprovalFamily::RuntimeControl,
+            arguments: serde_json::to_value(intent).map_err(|_| invalid())?,
+        };
+        if crate::validation::digest(&operation)? != approval.get::<_, String>(5) {
+            return Err(err(ErrorCode::IdempotencyConflict));
+        }
+        if tx.query_opt("SELECT c.id FROM mailbox_approval_consumptions c JOIN mailbox_approval_grants g ON g.request_id=c.request_id WHERE c.request_id=$1 AND c.executor=$2 AND c.recovery_epoch=$3 AND c.argument_digest=$4 AND g.argument_digest=c.argument_digest", &[&request,&actor.principal,&epoch,&approval.get::<_,String>(5)]).await?.is_none() { return Err(err(ErrorCode::DependencyUnmet)); }
+    }
+    Ok(Some(DispatchPermit {
+        delivery,
+        expected_turn: row.get(1),
+    }))
+}
+pub(crate) async fn claim_delivery(
+    tx: &Transaction<'_>,
+    permit: &DispatchPermit,
+    operation: Uuid,
+    controller: Uuid,
+) -> Result<()> {
+    tx.execute("INSERT INTO mailbox_delivery_claims(delivery_id,gateway_operation,controller) VALUES($1,$2,$3)", &[&permit.delivery,&operation,&controller]).await?;
+    Ok(())
+}
+
+pub(crate) async fn complete_expected_turn(
+    tx: &Transaction<'_>,
+    permit: &DispatchPermit,
+    observed_turn: Option<&str>,
+) -> Result<()> {
+    let row = tx
+        .query_one(
+            "SELECT episode_id FROM mailbox_delivery_intents WHERE id=$1",
+            &[&permit.delivery],
+        )
+        .await?;
+    let episode: Uuid = row.get(0);
+    tx.execute("INSERT INTO mailbox_episode_turn_completions(episode_id,delivery_id,expected_turn,observed_turn) VALUES($1,$2,$3,$4)", &[&episode,&permit.delivery,&permit.expected_turn,&observed_turn]).await?;
+    tx.execute("UPDATE mailbox_episodes SET state='completed' WHERE id=$1 AND turn_id=$2 AND state='active'", &[&episode,&permit.expected_turn]).await?;
+    // This certifies an agent turn boundary only. Attempt reservations and external
+    // Execution status are unchanged; no stop, refund, or task acceptance follows.
+    Ok(())
+}
+
+/// Canonical wait references observed by the existing Temporal drain Activity.
+/// These are mailbox dependencies, never admission operations or task statuses.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct WaitAttention {
+    pub episode: Uuid,
+    pub kind: String,
+    pub reference: Uuid,
+    pub satisfied: bool,
+    pub checkpoint: Uuid,
+}
+
+pub(crate) async fn workflow_attention(
+    tx: &Transaction<'_>,
+    epoch: Uuid,
+    reference: &crate::temporal::WorkflowRef,
+    actor: &auth::Actor,
+) -> Result<Vec<WaitAttention>> {
+    schema(tx).await?;
+    // Timer-driven Activity observation repairs a lost acceptance hint using
+    // canonical PostgreSQL status, without creating a second scheduler.
+    let changed=tx.query("UPDATE mailbox_waits w SET satisfied=true FROM mailbox_episodes e,tasks t WHERE w.episode_id=e.id AND w.workflow_id=$1 AND e.recovery_epoch=$2 AND w.kind='task' AND w.reference_id=t.id AND t.status='accepted' AND NOT w.satisfied RETURNING w.episode_id,w.reference_id", &[&reference.workflow_id,&epoch]).await?;
+    for row in &changed {
+        tx.execute("INSERT INTO mailbox_wait_satisfactions(episode_id,kind,reference_id,evidence_id) VALUES($1,'task',$2,$2) ON CONFLICT DO NOTHING", &[&row.get::<_,Uuid>(0),&row.get::<_,Uuid>(1)]).await?;
+    }
+    if !changed.is_empty() {
+        wake(tx, &reference.workflow_id).await?;
+    }
+    let broad = matches!(actor.role, Role::Owner | Role::Lead);
+    Ok(tx.query("SELECT w.episode_id,w.kind,w.reference_id,w.satisfied,c.id FROM mailbox_waits w JOIN mailbox_episodes e ON e.id=w.episode_id JOIN mailbox_checkpoints c ON c.episode_id=e.id WHERE w.workflow_id=$1 AND e.recovery_epoch=$2 AND ($3 OR e.principal_id=$4) ORDER BY w.episode_id,w.kind,w.reference_id", &[&reference.workflow_id,&epoch,&broad,&actor.principal]).await?.iter().map(|row|WaitAttention{episode:row.get(0),kind:row.get(1),reference:row.get(2),satisfied:row.get(3),checkpoint:row.get(4)}).collect())
+}
+
+async fn current_principal(
+    tx: &Transaction<'_>,
+    principal: Uuid,
+    mission: Uuid,
+    task: Option<Uuid>,
+    epoch: Uuid,
+) -> Result<bool> {
+    Ok(tx.query_one("SELECT EXISTS(SELECT 1 FROM credentials c LEFT JOIN tasks t ON t.id=c.task_id LEFT JOIN mission_leads l ON l.mission_id=c.mission_id WHERE c.principal_id=$1 AND c.recovery_epoch=$4 AND c.expires_at>clock_timestamp() AND (c.role='owner' OR (c.mission_id=$2 AND ($3::uuid IS NULL OR c.task_id IS NULL OR c.task_id=$3) AND ((c.role='lead' AND c.lead_generation=coalesce(l.generation,0) AND (l.principal_id IS NULL OR l.principal_id=c.principal_id)) OR (c.role IN ('worker','verifier') AND c.generation=t.generation AND t.mission_id=c.mission_id)))))", &[&principal,&mission,&task,&epoch]).await?.get(0))
+}
+
+async fn authorize_current_command(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    epoch: Uuid,
+    command: &MailboxCommand,
+) -> Result<()> {
+    match command {
+        MailboxCommand::Propose { .. } if actor.role != Role::Lead || actor.task.is_some() => {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        MailboxCommand::Decide { .. }
+            if !matches!(actor.role, Role::Owner | Role::Lead) || actor.task.is_some() =>
+        {
+            return Err(err(ErrorCode::Unauthorized));
+        }
+        MailboxCommand::AdmitEpisode {
+            mission,
+            attempt,
+            purpose,
+            ..
+        }
+        | MailboxCommand::CaptureInput {
+            mission,
+            attempt,
+            purpose,
+            ..
+        } => {
+            if !matches!(
+                (&actor.role, purpose),
+                (Role::Lead, EpisodePurpose::Planning)
+                    | (Role::Worker, EpisodePurpose::Implementation)
+                    | (Role::Verifier, EpisodePurpose::Verification)
+            ) {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if let Some(attempt) = attempt {
+                let row=tx.query_opt("SELECT a.task_id,a.worker_id,a.generation,t.generation,a.recovery_epoch,t.mission_id FROM attempts a JOIN tasks t ON t.id=a.task_id WHERE a.id=$1", &[attempt]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+                actor.scope(row.get(5), Some(row.get(0)))?;
+                if row.get::<_, Uuid>(5) != *mission
+                    || row.get::<_, Uuid>(4) != epoch
+                    || row.get::<_, i64>(2) != row.get::<_, i64>(3)
+                {
+                    return Err(err(ErrorCode::StaleGeneration));
+                }
+                if actor.role == Role::Lead
+                    || (actor.role == Role::Worker && row.get::<_, Uuid>(1) != actor.principal)
+                {
+                    return Err(err(ErrorCode::Unauthorized));
+                }
+            } else if actor.role != Role::Lead || actor.task.is_some() {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+        }
+        MailboxCommand::YieldEpisode { episode, .. }
+        | MailboxCommand::Present { episode, .. }
+        | MailboxCommand::Acknowledge { episode, .. } => {
+            let row=tx.query_opt("SELECT e.mission_id,e.task_id,e.role,e.recovery_epoch,e.task_generation,t.generation,e.lead_generation,coalesce(l.generation,0) FROM mailbox_episodes e LEFT JOIN tasks t ON t.id=e.task_id LEFT JOIN mission_leads l ON l.mission_id=e.mission_id WHERE e.id=$1 AND e.principal_id=$2", &[episode,&actor.principal]).await?.ok_or_else(||err(ErrorCode::Unauthorized))?;
+            actor.scope(row.get(0), row.get(1))?;
+            if serde_json::to_value(&actor.role).map_err(|_| invalid())? != row.get::<_, String>(2)
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+            if row.get::<_, Uuid>(3) != epoch
+                || row.get::<_, Option<i64>>(4) != row.get::<_, Option<i64>>(5)
+                || row
+                    .get::<_, Option<i64>>(6)
+                    .is_some_and(|g| g != row.get::<_, i64>(7))
+            {
+                return Err(err(ErrorCode::StaleGeneration));
+            }
+        }
+        MailboxCommand::ConsumeApproval { request, operation } => {
+            let row = approval_current(tx, *request, epoch).await?;
+            actor.scope(row.get(0), row.get(1))?;
+            if row.get::<_, Uuid>(3) != actor.principal
+                || (actor.role == Role::Verifier
+                    && operation.family == ApprovalFamily::RuntimeControl)
+            {
+                return Err(err(ErrorCode::Unauthorized));
+            }
+        }
+        _ => {}
+    }
+    Ok(())
+}
+
+async fn capture_packet(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    epoch: Uuid,
+    mission: Uuid,
+    attempt: Option<Uuid>,
+    purpose: &EpisodePurpose,
+    limit: i64,
+) -> Result<serde_json::Value> {
+    let mission_data:serde_json::Value=tx.query_opt("SELECT jsonb_build_object('id',id,'objective',objective,'repository',git_repository,'commit',git_commit,'path',git_path,'input_digest',input_digest,'policy',jsonb_build_object('capacity',capacity,'max_attempts',max_attempts,'max_episodes',max_episodes,'max_repairs',max_repairs,'episode_deadline_seconds',deadline_seconds)) FROM missions WHERE id=$1", &[&mission]).await?.ok_or_else(||err(ErrorCode::NotFound))?.get(0);
+    let task_data = if let Some(task) = actor.task {
+        tx.query_one("SELECT jsonb_build_object('id',t.id,'generation',t.generation,'approved_digest',t.approved_digest,'spec',(SELECT to_jsonb(s) FROM task_specs s WHERE s.task_id=t.id AND s.digest=t.approved_digest),'spec_revision',(SELECT sequence FROM events e WHERE e.aggregate_kind='task' AND e.aggregate_id=t.id AND e.kind='task.admit' AND e.payload->>'spec_digest'=t.approved_digest ORDER BY sequence DESC LIMIT 1),'candidate',(SELECT candidate_id FROM artifact_current WHERE task_id=t.id)) FROM tasks t WHERE t.id=$1 AND t.mission_id=$2", &[&task,&mission]).await?.get::<_,serde_json::Value>(0)
+    } else {
+        serde_json::Value::Null
+    };
+    let lead = actor.role == Role::Lead;
+    let messages=tx.query("SELECT to_jsonb(m) FROM mailbox_messages m WHERE m.mission_id=$1 AND NOT EXISTS(SELECT 1 FROM mailbox_resolutions x WHERE x.message_id=m.id) AND NOT EXISTS(SELECT 1 FROM mailbox_acknowledgments a JOIN mailbox_presentations p ON p.id=a.presentation_id WHERE p.message_id=m.id AND a.principal_id=$2) AND (EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3))) OR ($3 AND m.kind='question' AND m.sender_lead_generation IS NOT NULL)) ORDER BY CASE WHEN m.attention='critical' THEN 0 ELSE 1 END,m.created_at,m.id LIMIT $4", &[&mission,&actor.principal,&lead,&(limit+1)]).await?;
+    let more = messages.len() > limit as usize;
+    let lead_generation = if lead {
+        Some(
+            tx.query_opt(
+                "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                &[&mission],
+            )
+            .await?
+            .map(|r| r.get::<_, i64>(0))
+            .unwrap_or(0),
+        )
+    } else {
+        None
+    };
+    let packet = serde_json::json!({"schema_version":1,"event_digest":event_digest(tx,actor,epoch,mission,actor.generation).await?,"principal":actor.principal,"role":actor.role,"purpose":purpose,"recovery_epoch":epoch,"mission":mission_data,"task":task_data,"attempt":attempt,"lead_generation":lead_generation,"messages":messages.iter().take(limit as usize).map(|row|row.get::<_,serde_json::Value>(0)).collect::<Vec<_>>(),"more_messages":more,"mission_reference":format!("/v1/snapshots/mission/{mission}")});
+    if serde_json::to_vec(&packet).map_err(|_| invalid())?.len() > 524288 {
+        return Err(invalid());
+    }
+    Ok(packet)
+}
+struct InputReference<'a> {
+    id: Uuid,
+    digest: &'a str,
+}
+async fn validate_input_packet(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    epoch: Uuid,
+    mission: Uuid,
+    input: InputReference<'_>,
+    purpose: &EpisodePurpose,
+    attempt: Option<Uuid>,
+) -> Result<()> {
+    let row=tx.query_opt("SELECT principal_id,mission_id,task_id,recovery_epoch,digest,packet FROM mailbox_inputs WHERE id=$1", &[&input.id]).await?.ok_or_else(||err(ErrorCode::NotFound))?;
+    let packet: serde_json::Value = row.get(5);
+    if row.get::<_, Uuid>(0) != actor.principal
+        || row.get::<_, Uuid>(1) != mission
+        || row.get::<_, Option<Uuid>>(2) != actor.task
+        || packet["role"] != serde_json::to_value(&actor.role).map_err(|_| invalid())?
+        || packet["purpose"] != serde_json::to_value(purpose).map_err(|_| invalid())?
+        || packet["attempt"] != serde_json::json!(attempt)
+    {
+        return Err(err(ErrorCode::Unauthorized));
+    }
+    if row.get::<_, Uuid>(3) != epoch {
+        return Err(err(ErrorCode::StaleGeneration));
+    }
+    if row.get::<_, String>(4) != input.digest {
+        return Err(err(ErrorCode::IdempotencyConflict));
+    }
+    if packet["event_digest"] != event_digest(tx, actor, epoch, mission, actor.generation).await? {
+        return Err(err(ErrorCode::StaleRevision));
+    }
+    let consumed: bool = tx.query_one("SELECT EXISTS(SELECT 1 FROM mailbox_input_messages im WHERE im.input_id=$1 AND (EXISTS(SELECT 1 FROM mailbox_resolutions r WHERE r.message_id=im.message_id) OR EXISTS(SELECT 1 FROM mailbox_presentations p JOIN mailbox_acknowledgments a ON a.presentation_id=p.id WHERE p.message_id=im.message_id AND a.principal_id=$2)))", &[&input.id,&actor.principal]).await?.get(0);
+    if consumed {
+        return Err(err(ErrorCode::StaleRevision));
+    }
+    if let Some(task) = actor.task {
+        let current = tx
+            .query_one(
+                "SELECT generation,approved_digest FROM tasks WHERE id=$1",
+                &[&task],
+            )
+            .await?;
+        if packet["task"]["generation"] != serde_json::json!(current.get::<_, i64>(0))
+            || packet["task"]["approved_digest"]
+                != serde_json::json!(current.get::<_, Option<String>>(1))
+        {
+            return Err(err(ErrorCode::StaleGeneration));
+        }
+    }
+    if actor.role == Role::Lead {
+        let generation = tx
+            .query_opt(
+                "SELECT generation FROM mission_leads WHERE mission_id=$1",
+                &[&mission],
+            )
+            .await?
+            .map(|row| row.get::<_, i64>(0))
+            .unwrap_or(0);
+        if packet["lead_generation"] != serde_json::json!(generation) {
+            return Err(err(ErrorCode::StaleGeneration));
+        }
+    }
+    Ok(())
+}
+
+async fn event_digest(
+    tx: &Transaction<'_>,
+    actor: &auth::Actor,
+    epoch: Uuid,
+    mission: Uuid,
+    task_generation: Option<i64>,
+) -> Result<String> {
+    let frontier:serde_json::Value=tx.query_one("SELECT jsonb_build_object('messages',(SELECT count(*) FROM mailbox_messages m WHERE m.mission_id=$1 AND EXISTS(SELECT 1 FROM mailbox_recipients r WHERE r.message_id=m.id AND (r.principal_id=$2 OR (r.lead_seat AND $3)))),'task_revisions',(SELECT coalesce(sum(t.revision),0) FROM tasks t WHERE t.mission_id=$1 AND ($4::uuid IS NULL OR t.id=$4)),'decisions',(SELECT count(*) FROM mailbox_decisions d JOIN mailbox_proposals p ON p.id=d.proposal_id WHERE p.mission_id=$1 AND $3),'approvals',(SELECT count(*) FROM mailbox_approval_grants g JOIN mailbox_approval_requests a ON a.id=g.request_id WHERE a.mission_id=$1 AND ($3 OR a.executor=$2 OR a.requester=$2)),'wait_satisfactions',(SELECT count(*) FROM mailbox_wait_satisfactions s JOIN mailbox_episodes e ON e.id=s.episode_id WHERE e.mission_id=$1 AND e.principal_id=$2 AND e.recovery_epoch=$6),'lead_generation',CASE WHEN $3 THEN (SELECT coalesce(max(generation),0) FROM mission_leads WHERE mission_id=$1) ELSE 0 END,'task_generation',$5::bigint,'epoch',$6::uuid)", &[&mission,&actor.principal,&(actor.role==Role::Lead),&actor.task,&task_generation,&epoch]).await?.get(0);
+    crate::validation::digest(&frontier)
+}

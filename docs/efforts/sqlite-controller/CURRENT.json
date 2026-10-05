@@ -1,13 +1,13 @@
 {
   "version": "happy-path-4",
-  "observed_at": "2026-10-05T05:27:49.333225+00:00",
+  "observed_at": "2026-10-05T05:44:15.503225+00:00",
   "coordinator": "/root",
-  "writer": "/root/sqlite06_model_link_author",
-  "writer_state": "Explicit fresh ACK and durable root admission; sole model-link GREEN writer",
-  "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
+  "writer": null,
+  "writer_state": "No active implementation writer; two independent review axes on immutable prototype candidate",
+  "thread": null,
   "worktree": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
   "base": "43d585c27055081d267e54ed6a1a1860d5c8b455",
-  "source": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+  "source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
   "tickets": {
     "01": "accepted",
     "02": "accepted",
@@ -24,7 +24,7 @@
     "04": 3,
     "EMPTY_diagnostics": 2
   },
-  "next": "Sole GREEN implementation, necessary adjacent fixtures; narrowly scoped commit then two independent review axes before new literal live trial",
+  "next": "Independent exact-candidate Standards/Spec; scoped disposition; fresh launcher for approved live command",
   "unknowns": [
     "original process/session disappearance cause unestablished",
     "controller restoration and native binding reconciliation pending",
@@ -60,7 +60,7 @@
     "fullbaseline hardening/sourcefreeze/integration/release later"
   ],
   "context": {
-    "action": "Fresh non-inheriting writer admitted after predecessor quiescence; first positive input pending measurement",
+    "action": "Model-link author quiesced at120852; no next phase in stale context",
     "prior_input": 123724,
     "prior_cached": 121600,
     "prior_output": 2684,
@@ -74,20 +74,20 @@
       "window": 258400,
       "proof": "public metadata; next positive request measured"
     },
-    "current_last_input": null,
-    "current_cached": null,
-    "current_output": null,
+    "current_last_input": 120852,
+    "current_cached": 120064,
+    "current_output": 479,
     "current_window": 258400,
-    "current_measured_at": "2026-10-05T05:22:15.368Z",
+    "current_measured_at": "2026-10-05T05:39:18.483Z",
     "boundary_action": "Checkpoint requested; actual acknowledgement/compaction/fresh successor pending",
     "running_gate_interruption": false,
     "previous_thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282"
   },
   "last_writer": {
-    "actor": "/root/sqlite06_replacement_launch",
-    "thread": "01a10a6e-9b17-75a3-b7dc-c201b81c0282",
-    "state": "completed/quiescent after three causal RED tests exit101; no current checks or applying effects",
-    "handoff_sha256": "7e8d8336ef4e1b787b06576c2282c979183a80adbef3cc1185d5b8f80a8d8fa0"
+    "actor": "/root/sqlite06_model_link_author",
+    "thread": "01a10a86-8959-7022-a25a-8504f165f2a0",
+    "state": "completed/quiescent; all scoped checks ended",
+    "handoff_sha256": "ee4732cd738924e87c7be99d63c33f8de33284462a134d94d49d67c8e3bd0a4e"
   },
   "evidence": "864a3da625fabf839abca8bdd08672dfb24e0785",
   "projection_kind": "coordinator-owned manual canonical projection; product controller projection qualification remains pending",
@@ -118,8 +118,8 @@
   "next_executable_attachment": "tmux attach -t corenius-team",
   "next_launch": {
     "cwd": "/data02/home/philip.yang/workspace/corenius-sqlite06-happy-path",
-    "command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T040926Z-c8403c/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/replacement1/target",
-    "state": "ACTUALstart0; outer failed1; retained services; do not repeat bootstrap"
+    "command": "python3 tools/agents/sqlite_baseline.py start --session corenius-team --reuse-kata /tmp/cb-20261005T050033Z-84eb5a/kata.json --target-dir /data02/home/philip.yang/workspace/corenius-sqlite06-happy-path/.scratch/sqlite06-happy-path/model-link/continuation-target --model gpt-6.1-sol",
+    "state": "Reviewed-candidate trial pending independent disposition; old84eb retained, no duplicate old bootstrap"
   },
   "relay": {
     "source": "539856b74af3ac3ed1d38f3f18f883f6e3864572ddff679a788c172bcb13712c",
@@ -252,6 +252,24 @@
     "existing_config_identity": "immutable; no bypass/migration",
     "next_deployment": "fresh disposable state in existing corenius-team after independent scoped review; explicit Kata reuse/new project",
     "old_trial": "preserved idle actors, outer actualexit1 and capacity failure",
-    "cap_reset": false
+    "cap_reset": false,
+    "author_results": {
+      "focused": "actualexit0/3passed",
+      "harness": "actualexit0/4passed",
+      "adjacent": "actualexit0/24lib+9controlcenter",
+      "native_boundary": "three focused checks running; final exact snapshot/review pending",
+      "provenance": "current actor public report; exact logs/pins to audit at snapshot"
+    }
+  },
+  "working_candidate": {
+    "base": "6f074c3f0ca0c8e729605893f9f23e1efefa3ac4",
+    "commit": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+    "tree": "cc14262c740c935ebfbbfee4285c1710f6c7f6ec",
+    "dirty": false,
+    "kind": "prototype candidate snapshot; not final baseline source freeze"
+  },
+  "reviewers": {
+    "Standards": "/root/sqlite06_model_standards_review",
+    "Spec": "/root/sqlite06_model_spec_review"
   }
 }

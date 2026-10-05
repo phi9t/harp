@@ -1,5 +1,9 @@
 # Effort: durable team control plane
 
+> Retained historical roadmap. Current assignment and acceptance are in
+> `docs/efforts/sqlite-controller/CURRENT.json`. Actor names below describe their
+> recorded phase; this landing does not renew execution authority.
+
 ## Owner supersession: retained SQLite baseline first
 
 The owner supersedes this roadmap's current execution priority with `docs/efforts/sqlite-controller/SPEC.md` and `CONTROLLED-TRIAL.md` (owner commits9d90222, d18e413 and f775734). The richer PostgreSQL/Temporal roadmap is parked, preserved and unfinished. No rejected/unaccepted old source is imported into the new baseline. All old branches, dirty work, evidence and unresolved effects remain retained. No work in Sureal is resumed.

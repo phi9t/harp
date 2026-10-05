@@ -1,0 +1,604 @@
+diff --git a/crates/sqlite-controller/src/codex.rs b/crates/sqlite-controller/src/codex.rs
+index 3d5a5c5..3f3ef6e 100644
+--- a/crates/sqlite-controller/src/codex.rs
++++ b/crates/sqlite-controller/src/codex.rs
+@@ -27,6 +27,26 @@ pub struct Config {
+     topology: String,
+     transport_root: PathBuf,
+     servers: Vec<Server>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    model: Option<String>,
++}
++// Exact installed, visible model slugs observed for the retained native profile.
++fn selected_model(model: Option<&str>) -> Result<&str, String> {
++    let model = model.unwrap_or("gpt-6-sol");
++    if !matches!(
++        model,
++        "gpt-6.1-sol"
++            | "gpt-6-astra"
++            | "gpt-6-sol"
++            | "gpt-6-luna"
++            | "gpt-5.6-sol"
++            | "gpt-5.6-terra"
++            | "gpt-5.6-luna"
++            | "gpt-5.5"
++    ) {
++        return Err("native selected model is not in the installed profile".into());
++    }
++    Ok(model)
+ }
+ #[derive(Deserialize, Serialize)]
+ #[serde(deny_unknown_fields)]
+@@ -203,6 +223,7 @@ impl CodexRuntime {
+     pub fn open(path: &Path, controller: &Controller) -> Result<Self, String> {
+         let config: Config = serde_json::from_slice(&fs::read(path).map_err(|e| e.to_string())?)
+             .map_err(|e| e.to_string())?;
++        selected_model(config.model.as_deref())?;
+         if config.schema_migration != "1-to-2"
+             || !matches!(config.topology.as_str(), "shared" | "separate")
+         {
+@@ -1357,6 +1378,9 @@ impl CodexRuntime {
+             }
+             let turn_id = text(matching[0], "id")?;
+             document["turn_id"] = json!(turn_id);
++            if let Some(model) = intent["model"].as_str() {
++                document["model"] = json!(model);
++            }
+             let status = matching[0]["status"].as_str();
+             document["current_turn"] = json!({"id":turn_id,"native_status":status,"state":match status {Some("inProgress")=>"active",Some("completed"|"interrupted"|"failed")=>"terminal",_=>"unknown"},"source":"typed_native_history"});
+             let mut c = controller
+@@ -1490,6 +1514,9 @@ impl CodexRuntime {
+                 params["input"] = json!([{"type":"text","text":intent["text"],"text_elements":[]}]);
+             }
+             if kind == "codex_turn" {
++                if let Some(model) = intent["model"].as_str() {
++                    params["model"] = json!(model);
++                }
+                 params["environments"] = json!([{"environmentId":document["environment_id"],"cwd":"/workspace","runtimeWorkspaceRoots":["/workspace"]}]);
+                 params["clientUserMessageId"] = json!(operation);
+                 params["approvalPolicy"] = json!("never");
+@@ -1602,6 +1629,9 @@ impl CodexRuntime {
+                 {
+                     let turn_id = text(&value["turn"], "id")?;
+                     document["turn_id"] = json!(turn_id);
++                    if let Some(model) = intent["model"].as_str() {
++                        document["model"] = json!(model);
++                    }
+                     let status = value["turn"]["status"].as_str();
+                     document["current_turn"] = json!({"id":turn_id,"native_status":status,"state":match status {Some("inProgress")=>"active",Some("completed"|"interrupted"|"failed")=>"terminal",_=>"unknown"},"source":"native_acknowledgement"});
+                     db(tx.execute(
+@@ -1848,6 +1878,8 @@ impl CodexRuntime {
+             return Err(format!("remote executor not ready: {status}"));
+         }
+         let environments = json!([{"environmentId":document["environment_id"],"cwd":"/workspace","runtimeWorkspaceRoots":["/workspace"]}]);
++        let model =
++            selected_model(document["model"].as_str().or(self.config.model.as_deref()))?.to_owned();
+         if document["thread_id"].is_null()
+             && let Some(observed) = self.confirmed_creation(controller, id, "thread/start")?
+         {
+@@ -1886,8 +1918,9 @@ impl CodexRuntime {
+                     std::thread::sleep(Duration::from_millis(10));
+                 }
+             }
+-            let result=self.mutation(controller,id,&worker.project,"thread/start",&json!({"model":"gpt-6-sol","modelProvider":"corenius-relay","cwd":"/workspace","approvalPolicy":"never","sandbox":"danger-full-access","environments":environments,"dynamicTools":crate::gateway::specifications()}),ws)?;
++            let result=self.mutation(controller,id,&worker.project,"thread/start",&json!({"model":model,"modelProvider":"corenius-relay","cwd":"/workspace","approvalPolicy":"never","sandbox":"danger-full-access","environments":environments,"dynamicTools":crate::gateway::specifications()}),ws)?;
+             document["thread_id"] = result["thread"]["id"].clone();
++            document["model"] = json!(model);
+             if document["thread_id"].as_str().is_none() {
+                 return Err("native thread identity missing".into());
+             }
+@@ -1908,7 +1941,7 @@ impl CodexRuntime {
+                 db(c.query_row("SELECT COUNT(*) FROM codex_operations WHERE binding=?1 AND kind='turn/start' AND state<>'confirmed'",[id],|r|r.get::<_,i64>(0)))?
+             };
+             if prior_unknown == 0 {
+-                let result=self.mutation(controller,id,&worker.project,"turn/start",&json!({"threadId":document["thread_id"],"clientUserMessageId":Uuid::new_v4().to_string(),"input":[{"type":"text","text":body,"text_elements":[]}],"environments":environments}),ws)?;
++                let result=self.mutation(controller,id,&worker.project,"turn/start",&json!({"model":model,"threadId":document["thread_id"],"clientUserMessageId":Uuid::new_v4().to_string(),"input":[{"type":"text","text":body,"text_elements":[]}],"environments":environments}),ws)?;
+                 document["turn_id"] = result["turn"]["id"].clone();
+                 if document["turn_id"].as_str().is_none() {
+                     return Err("native turn identity missing".into());
+@@ -2074,6 +2107,7 @@ struct TurnCommand {
+     text: Option<String>,
+     expected_turn: Option<String>,
+     expected_binding: Option<Value>,
++    model: Option<String>,
+ }
+ pub(super) fn prepare(
+     tx: &rusqlite::Transaction<'_>,
+@@ -2129,8 +2163,38 @@ pub(super) fn prepare(
+     if kind != "codex_turn" && input.expected_turn.as_deref() != document["turn_id"].as_str() {
+         return Err("native expected turn mismatch".into());
+     }
++    if kind != "codex_turn" && input.model.is_some() {
++        return Err("native model selection requires a new turn".into());
++    }
+     let operation = Uuid::new_v4().to_string();
+-    let intent = json!({"role":role,"authority_epoch":epoch,"text":input.text,"expected_turn":input.expected_turn,"principal":p.id,"principal_epoch":p.epoch});
++    let mut intent = json!({"role":role,"authority_epoch":epoch,"text":input.text,"expected_turn":input.expected_turn,"principal":p.id,"principal_epoch":p.epoch});
++    if kind == "codex_turn" {
++        let configured: Option<String> = if input.model.is_none() && document["model"].is_null() {
++            let raw: Option<String> = db(tx
++                .query_row(
++                    "SELECT document FROM codex_configuration WHERE id=1",
++                    [],
++                    |r| r.get(0),
++                )
++                .optional())?;
++            raw.map(|raw| {
++                serde_json::from_str::<Config>(&raw)
++                    .map(|c| c.model)
++                    .map_err(|e| e.to_string())
++            })
++            .transpose()?
++            .flatten()
++        } else {
++            None
++        };
++        intent["model"] = json!(selected_model(
++            input
++                .model
++                .as_deref()
++                .or(document["model"].as_str())
++                .or(configured.as_deref())
++        )?);
++    }
+     db(tx.execute(
+         "INSERT INTO codex_operations VALUES(?1,?2,?3,?4,'prepared',?5,NULL)",
+         params![operation, project, id, kind, intent.to_string()],
+@@ -2201,6 +2265,7 @@ mod repair1_dispatcher_tests {
+                 topology: "shared".into(),
+                 transport_root: root.path().into(),
+                 servers: vec![],
++                model: None,
+             },
+             connections: Mutex::new(HashMap::new()),
+             lifecycle: Mutex::new(()),
+@@ -2257,3 +2322,292 @@ mod repair1_dispatcher_tests {
+         );
+     }
+ }
++
++#[cfg(test)]
++mod selected_model_tests {
++    use super::*;
++    use std::io::Read;
++    const TOKEN: &str = "selected-model-fixture-secret";
++    fn command(
++        c: &Controller,
++        auth: Value,
++        kind: &str,
++        key: &str,
++        args: Value,
++    ) -> Result<Value, String> {
++        let revision = c.handle(json!({"auth":{"principal":"operator","token":TOKEN},"project":"p","query":{"kind":"snapshot","args":{}}}))?["revision"].clone();
++        c.handle(json!({"auth":auth,"project":"p","command":{"kind":kind,"idempotency_key":key,"expected_revision":revision,"args":args}}))
++    }
++    pub(super) fn fixture() -> (
++        tempfile::TempDir,
++        Controller,
++        Value,
++        Value,
++        Value,
++        Binding,
++        CodexRuntime,
++    ) {
++        let root = tempfile::tempdir().unwrap();
++        let c = Controller::open(root.path().join("state.db"), TOKEN).unwrap();
++        let auth = json!({"principal":"operator","token":TOKEN});
++        c.handle(json!({"auth":auth,"project":"p","command":{"kind":"create_project","idempotency_key":"project","expected_revision":0,"args":{"name":"p","base":"0123456789abcdef0123456789abcdef01234567"}}})).unwrap();
++        command(&c, auth.clone(), "create_task", "task", json!({"task":"task","brief":"intent","work_ref":{"deployment":"fixture","project":"p","item":"task"},"source_revision":"r1"})).unwrap();
++        let worker =
++            command(&c, auth.clone(), "admit", "admit", json!({"task":"task"})).unwrap()["result"]
++                .clone();
++        let lead =
++            command(&c, auth.clone(), "replace_lead", "lead", json!({})).unwrap()["result"].clone();
++        let doc = json!({"thread_id":"lead-thread","server_store":"store","server_incarnation":"incarnation","environment_id":"env","turn_id":"old","current_turn":{"state":"terminal"},"ui_input_ready":true});
++        {
++            let db = c.connection.lock().unwrap();
++            db.execute_batch(include_str!("codex_schema.sql")).unwrap();
++            db.execute(
++                "INSERT INTO codex_bindings VALUES('lead-binding','p','lead',NULL,1,?1,'bound')",
++                [doc.to_string()],
++            )
++            .unwrap();
++        }
++        let binding = Binding {
++            project: "p".into(),
++            attempt: worker["attempt"].as_str().unwrap().into(),
++            operation: "fixture".into(),
++            scope_epoch: 1,
++            base: worker["base"].as_str().unwrap().into(),
++            brief: worker["brief"].as_str().unwrap().into(),
++        };
++        let runtime = CodexRuntime { config:serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[]})).unwrap(), connections:Mutex::new(HashMap::new()), lifecycle:Mutex::new(()) };
++        (root, c, lead, worker, doc, binding, runtime)
++    }
++    pub(super) fn native_peer(mut peer: UnixStream) -> std::thread::JoinHandle<Value> {
++        std::thread::spawn(move || {
++            let mut head = [0u8; 2];
++            peer.read_exact(&mut head).unwrap();
++            let mut length = (head[1] & 127) as usize;
++            if length == 126 {
++                let mut bytes = [0u8; 2];
++                peer.read_exact(&mut bytes).unwrap();
++                length = u16::from_be_bytes(bytes) as usize;
++            }
++            if length == 127 {
++                let mut bytes = [0u8; 8];
++                peer.read_exact(&mut bytes).unwrap();
++                length = u64::from_be_bytes(bytes) as usize;
++            }
++            let mut mask = [0u8; 4];
++            peer.read_exact(&mut mask).unwrap();
++            let mut body = vec![0; length];
++            peer.read_exact(&mut body).unwrap();
++            for (i, b) in body.iter_mut().enumerate() {
++                *b ^= mask[i % 4];
++            }
++            let request: Value = serde_json::from_slice(&body).unwrap();
++            let body=json!({"id":request["id"],"result":{"turn":{"id":"model-turn","status":"completed","items":[]}}}).to_string().into_bytes();
++            let mut frame = vec![0x81];
++            if body.len() < 126 {
++                frame.push(body.len() as u8);
++            } else {
++                frame.push(126);
++                frame.extend((body.len() as u16).to_be_bytes());
++            }
++            frame.extend(body);
++            peer.write_all(&frame).unwrap();
++            request
++        })
++    }
++    #[test]
++    fn selected_model_core_command_preserves_role_and_idempotency_fences() {
++        let (_root, c, lead, worker, _, _, _) = fixture();
++        let args = json!({"role":"lead","text":"selected","model":"gpt-6.1-sol","expected_binding":{"thread_id":"lead-thread"}});
++        let auth = json!({"principal":lead["principal"],"token":lead["token"]});
++        let revision=c.handle(json!({"auth":{"principal":"operator","token":TOKEN},"project":"p","query":{"kind":"snapshot","args":{}}})).unwrap()["revision"].clone();
++        let request = json!({"auth":auth,"project":"p","command":{"kind":"codex_turn","idempotency_key":"selected-core","expected_revision":revision,"args":args}});
++        let receipt = c.handle(request.clone()).unwrap();
++        assert_eq!(c.handle(request.clone()).unwrap(), receipt);
++        let mut changed = request.clone();
++        changed["command"]["args"]["model"] = json!("gpt-6-sol");
++        assert!(
++            c.handle(changed)
++                .unwrap_err()
++                .contains("idempotency argument mismatch")
++        );
++        let mut foreign = args.clone();
++        foreign["expected_binding"]["thread_id"] = json!("foreign");
++        assert!(
++            command(&c, auth.clone(), "codex_turn", "foreign", foreign)
++                .unwrap_err()
++                .contains("binding guard")
++        );
++        let worker_auth = json!({"principal":worker["principal"],"token":worker["token"]});
++        let operations_before: i64 = c
++            .connection
++            .lock()
++            .unwrap()
++            .query_row("SELECT COUNT(*) FROM codex_operations", [], |r| r.get(0))
++            .unwrap();
++        assert!(
++            command(&c, worker_auth, "codex_turn", "worker-forbidden", args)
++                .unwrap_err()
++                .contains("authorization")
++        );
++        let operations_after: i64 = c
++            .connection
++            .lock()
++            .unwrap()
++            .query_row("SELECT COUNT(*) FROM codex_operations", [], |r| r.get(0))
++            .unwrap();
++        assert_eq!(
++            operations_after, operations_before,
++            "denied worker creates no dispatch intent"
++        );
++        assert!(
++            command(
++                &c,
++                auth.clone(),
++                "codex_turn",
++                "unsupported",
++                json!({"role":"lead","text":"selected","model":"not-installed"})
++            )
++            .is_err()
++        );
++        for kind in ["codex_steer", "codex_interrupt"] {
++            assert!(command(&c,auth.clone(),kind,kind,json!({"role":"lead","text":"selected","expected_turn":"old","model":"gpt-6.1-sol"})).is_err());
++        }
++        for (key, expected) in [
++            ("legacy-default", "gpt-6-sol"),
++            ("configured-default", "gpt-6.1-sol"),
++            ("bound-default", "gpt-6-astra"),
++        ] {
++            if key == "configured-default" {
++                c.connection.lock().unwrap().execute("INSERT INTO codex_configuration VALUES(1,?1)",[json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"}).to_string()]).unwrap();
++            } else if key == "bound-default" {
++                c.connection.lock().unwrap().execute("UPDATE codex_bindings SET document=json_set(document,'$.model','gpt-6-astra') WHERE id='lead-binding'",[]).unwrap();
++            }
++            let receipt = command(
++                &c,
++                auth.clone(),
++                "codex_turn",
++                key,
++                json!({"role":"lead","text":"omitted model"}),
++            )
++            .unwrap();
++            let intent: Value = serde_json::from_str(
++                &c.connection
++                    .lock()
++                    .unwrap()
++                    .query_row(
++                        "SELECT intent FROM codex_operations WHERE id=?1",
++                        [receipt["result"]["operation"].as_str().unwrap()],
++                        |r| r.get::<_, String>(0),
++                    )
++                    .unwrap(),
++            )
++            .unwrap();
++            assert_eq!(intent["model"], expected);
++        }
++    }
++    #[test]
++    fn selected_model_worker_initial_turn_and_thread_intents_match_configuration() {
++        let (_root, c, _, worker, _, binding, mut runtime) = fixture();
++        runtime.config=serde_json::from_value(json!({"schema_migration":"1-to-2","topology":"shared","transport_root":"/tmp/model-fixture","servers":[],"model":"gpt-6.1-sol"})).unwrap();
++        let mut doc = json!({"server_id":"fixture-server","server_store":"fixture-store","server_incarnation":"incarnation","environment_id":"env","executor":{"incarnation":"executor"}});
++        {
++            let db = c.connection.lock().unwrap();
++            db.execute(
++                "INSERT INTO codex_bindings VALUES('worker-binding','p','attempt',?1,1,?2,'bound')",
++                params![worker["attempt"].as_str(), doc.to_string()],
++            )
++            .unwrap();
++        }
++        let (mut ws, mut peer) = NativeWs::owned_test_pair();
++        let capture = std::thread::spawn(move || {
++            let mut calls = vec![];
++            for expected in [
++                "environment/status",
++                "thread/start",
++                "turn/start",
++                "thread/read",
++            ] {
++                let mut head = [0u8; 2];
++                peer.read_exact(&mut head).unwrap();
++                let mut n = (head[1] & 127) as usize;
++                if n == 126 {
++                    let mut bytes = [0u8; 2];
++                    peer.read_exact(&mut bytes).unwrap();
++                    n = u16::from_be_bytes(bytes) as usize;
++                }
++                if n == 127 {
++                    let mut bytes = [0u8; 8];
++                    peer.read_exact(&mut bytes).unwrap();
++                    n = u64::from_be_bytes(bytes) as usize;
++                }
++                let mut mask = [0u8; 4];
++                peer.read_exact(&mut mask).unwrap();
++                let mut body = vec![0; n];
++                peer.read_exact(&mut body).unwrap();
++                for (i, b) in body.iter_mut().enumerate() {
++                    *b ^= mask[i % 4];
++                }
++                let call: Value = serde_json::from_slice(&body).unwrap();
++                assert_eq!(call["method"], expected);
++                let result = match expected {
++                    "environment/status" => json!({"status":"ready"}),
++                    "thread/start" => json!({"thread":{"id":"worker-thread"}}),
++                    "turn/start" => {
++                        json!({"turn":{"id":"worker-turn","status":"completed","items":[]}})
++                    }
++                    _ => {
++                        json!({"thread":{"id":"worker-thread","environments":[{"environmentId":"env","cwd":"/workspace","runtimeWorkspaceRoots":["/workspace"]}],"turns":[{"id":"worker-turn","status":"completed","items":[]}]}})
++                    }
++                };
++                let body = json!({"id":call["id"],"result":result})
++                    .to_string()
++                    .into_bytes();
++                let mut frame = vec![0x81];
++                if body.len() < 126 {
++                    frame.push(body.len() as u8);
++                } else {
++                    frame.push(126);
++                    frame.extend((body.len() as u16).to_be_bytes());
++                }
++                frame.extend(body);
++                peer.write_all(&frame).unwrap();
++                calls.push(call);
++            }
++            calls
++        });
++        let app =
++            json!({"runtime":{"incarnation":"incarnation"},"capability":"fixture-app-secret"});
++        let executor =
++            json!({"runtime":{"incarnation":"executor"},"capability":"fixture-worker-secret"});
++        runtime
++            .configure_thread(
++                &c,
++                "worker-binding",
++                &mut doc,
++                &mut ws,
++                NativeInputs {
++                    app: &app,
++                    executor: &executor,
++                    worker: &binding,
++                    body: "useful worker intent",
++                },
++            )
++            .unwrap();
++        let sent = capture.join().unwrap();
++        for call in sent
++            .iter()
++            .filter(|c| matches!(c["method"].as_str(), Some("thread/start" | "turn/start")))
++        {
++            assert_eq!(call["params"]["model"], "gpt-6.1-sol");
++        }
++        let db = c.connection.lock().unwrap();
++        let mut statement=db.prepare("SELECT intent FROM codex_operations WHERE binding='worker-binding' AND kind IN ('thread/start','turn/start')").unwrap();
++        let intents = statement
++            .query_map([], |r| r.get::<_, String>(0))
++            .unwrap()
++            .map(|r| serde_json::from_str::<Value>(&r.unwrap()).unwrap())
++            .collect::<Vec<_>>();
++        assert_eq!(intents.len(), 2);
++        assert!(intents.iter().all(|i| i["model"] == "gpt-6.1-sol"));
++    }
++}
+diff --git a/crates/sqlite-controller/src/native_ui.rs b/crates/sqlite-controller/src/native_ui.rs
+index 6ea63af..c68bc4e 100644
+--- a/crates/sqlite-controller/src/native_ui.rs
++++ b/crates/sqlite-controller/src/native_ui.rs
+@@ -362,6 +362,17 @@ impl CodexRuntime {
+                 ))?
+             };
+             let mut args = json!({"role":"lead","text":text,"expected_binding":{"thread_id":document["thread_id"],"server_store":document["server_store"],"server_incarnation":document["server_incarnation"],"environment_id":document["environment_id"]}});
++            if !params["model"].is_null() {
++                if kind == "codex_turn" {
++                    args["model"] = params["model"].clone();
++                } else if params["model"].as_str()
++                    != Some(selected_model(
++                        document["model"].as_str().or(self.config.model.as_deref()),
++                    )?)
++                {
++                    return Err("native UI active turn model cannot change".into());
++                }
++            }
+             if kind != "codex_turn" {
+                 args["expected_turn"] = document["turn_id"].clone();
+             }
+@@ -485,3 +496,84 @@ impl CodexRuntime {
+         }
+     }
+ }
++
++#[cfg(test)]
++mod selected_model_ui_tests {
++    use super::super::selected_model_tests::{fixture, native_peer};
++    use super::*;
++    #[test]
++    fn selected_model_native_ui_records_identity_and_reaches_actual_adapter() {
++        let (_root, c, lead, _, mut doc, binding, runtime) = fixture();
++        let request = json!({"auth":{"principal":lead["principal"],"token":lead["token"]},"project":"p","native_ui":{"method":"turn/start","params":{"threadId":"lead-thread","clientUserMessageId":"selected-model-ui","model":"gpt-6.1-sol","input":[{"type":"text","text":"selected model","text_elements":[]}]}}});
++        let error = runtime
++            .ui_input(
++                &c,
++                &serde_json::from_value(request.clone()).unwrap(),
++                "lead-binding",
++                &doc,
++                1,
++            )
++            .unwrap_err();
++        assert!(error.contains("is prepared"), "{error}");
++        let intent: Value = {
++            let db = c.connection.lock().unwrap();
++            serde_json::from_str(
++                &db.query_row(
++                    "SELECT intent FROM codex_operations WHERE kind='codex_turn'",
++                    [],
++                    |r| r.get::<_, String>(0),
++                )
++                .unwrap(),
++            )
++            .unwrap()
++        };
++        assert_eq!(intent["model"], "gpt-6.1-sol");
++        let mut changed = request.clone();
++        changed["native_ui"]["params"]["model"] = json!("gpt-6-sol");
++        assert!(
++            runtime
++                .ui_input(
++                    &c,
++                    &serde_json::from_value(changed).unwrap(),
++                    "lead-binding",
++                    &doc,
++                    1
++                )
++                .unwrap_err()
++                .contains("stable input arguments changed")
++        );
++        let (mut ws, peer) = NativeWs::owned_test_pair();
++        ws.allow_thread("lead-thread").unwrap();
++        let capture = native_peer(peer);
++        runtime
++            .dispatch_prepared(&c, "lead-binding", &mut doc, &mut ws, &binding)
++            .unwrap();
++        let sent = capture.join().unwrap();
++        assert_eq!(sent["method"], "turn/start");
++        assert_eq!(sent["params"]["model"], "gpt-6.1-sol");
++        assert_eq!(
++            sent["params"]["clientUserMessageId"]
++                .as_str()
++                .unwrap()
++                .len(),
++            36
++        );
++        assert_eq!(doc["model"], "gpt-6.1-sol");
++        doc["current_turn"]["state"] = json!("active");
++        let mut changed = request.clone();
++        changed["native_ui"]["params"]["clientUserMessageId"] = json!("changed-active-model");
++        changed["native_ui"]["params"]["model"] = json!("gpt-6-sol");
++        assert!(
++            runtime
++                .ui_input(
++                    &c,
++                    &serde_json::from_value(changed).unwrap(),
++                    "lead-binding",
++                    &doc,
++                    1
++                )
++                .unwrap_err()
++                .contains("active turn model")
++        );
++    }
++}
+diff --git a/tools/agents/sqlite_baseline.py b/tools/agents/sqlite_baseline.py
+index 759f74b..0b94409 100644
+--- a/tools/agents/sqlite_baseline.py
++++ b/tools/agents/sqlite_baseline.py
+@@ -27,6 +27,8 @@ BIN = pathlib.Path('/data02/home/philip.yang/.codex/packages/standalone/releases
+ KATA = pathlib.Path('/data02/home/philip.yang/workspace/corenius-codex-kata-evaluation/.scratch/team-control-plane/kata17/kata-pinned')
+ CATALOG = pathlib.Path('/data02/home/philip.yang/devx/tmp/corenius-sqlite-topology-sms522gg/catalog.json')
+ CONFIG = CATALOG.parent / 'codex/config.toml'
++MODELS = ['gpt-6.1-sol', 'gpt-6-astra', 'gpt-6-sol', 'gpt-6-luna',
++          'gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.5']
+ TARGET = REPO / '.scratch/sqlite06-happy-path/target'
+ CONTROLLER = TARGET / 'debug/corenius-sqlite-controller'
+ SCHEMA = 'e587a3d5ffab12e528589e14d385b04d1192b9ae6914ce008cd3ea507e5aa455'
+@@ -362,6 +364,7 @@ def run(root):
+             write(root / (name + '.json'),{'root':str(root / name),
+                                          'profile':{'executable':'/usr/bin/python3','args':['/run/codex/launcher.py'],'codex':profile}})
+         write(root / 'native.json',{'schema_migration':'1-to-2','topology':'separate','transport_root':str(root / 't-app'),
++                                   'model':manifest.get('selected_model','gpt-6-sol'),
+                                    'servers':[{'id':'native','supervisor_socket':str(root / 'controlplanes.sock'),
+                                                'auth_ref':'CONTROLPLANE_SECRET','transport_root':str(root / 't-app'),
+                                                'worker_supervisor_socket':str(root / 'workers.sock'),
+@@ -487,6 +490,7 @@ def start(args):
+     root = pathlib.Path('/tmp/cb-' + run_id)
+     root.mkdir(mode=0o700)
+     manifest = {'run_id':run_id,'root':str(root),'session':args.session or 'corenius-baseline-' + run_id,
++                'selected_model':args.model or 'gpt-6-sol',
+                 'source_commit':git(REPO,'rev-parse','HEAD'),'source_tree':git(REPO,'rev-parse','HEAD^{tree}'),
+                 'runner':pin(SELF),'relay':pin(SELF.with_name('sqlite_responses_relay.py')),'controller':pin(CONTROLLER),
+                 'codex':pin(BIN / 'codex'),'kata':pin(KATA),'launch':['python3',str(SELF),'start'],
+@@ -515,6 +519,7 @@ def main():
+     p.add_argument('--session', help='use this existing tmux session with uniquely named trial windows')
+     p.add_argument('--reuse-kata', type=pathlib.Path, help='reuse this exact private Kata configuration and authenticated instance')
+     p.add_argument('--target-dir', type=pathlib.Path, help='build continuation binaries separately')
++    p.add_argument('--model', choices=MODELS, help='select an installed model for this new disposable run')
+     for name in ['status','input','_run','_service','_role']:
+         p = commands.add_parser(name)
+         p.add_argument('run',type=pathlib.Path)
+diff --git a/tools/agents/test_sqlite_baseline.py b/tools/agents/test_sqlite_baseline.py
+index b9efafb..d127ffd 100644
+--- a/tools/agents/test_sqlite_baseline.py
++++ b/tools/agents/test_sqlite_baseline.py
+@@ -16,7 +16,7 @@ class BaselineEntry(unittest.TestCase):
+         script = pathlib.Path(__file__).with_name('sqlite_baseline.py')
+         result = subprocess.run(['python3', str(script), 'start', '--help'], capture_output=True, text=True)
+         self.assertEqual(result.returncode, 0)
+-        for option in ['--session', '--reuse-kata', '--target-dir']:
++        for option in ['--session', '--reuse-kata', '--target-dir', '--model']:
+             self.assertIn(option, result.stdout)
+ 
+     def test_reuse_kata_qualifies_instance_before_copying_private_grant(self):

@@ -1,0 +1,238 @@
+{
+  "identity": {
+    "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+    "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+    "tree": "8db411c5342d0adf63abb597773a8b00926f2a45"
+  },
+  "scope": "Five repair2 defects only; PASS is a focused-control disposition, not whole Standards/ticket acceptance",
+  "result": "PASS (five controls resolved)",
+  "controls": [
+    {
+      "id": "STD05-010",
+      "branch_control": "B1",
+      "disposition": "RESOLVED",
+      "proof": "physical-git-five exit0; independently checked three no-mutation refusals each at real applying barrier and actual deadline-derived unknown journal; one physical ref/landing event/recovered result and before-admission repair positive. Declared prepared SQL unit refuses with no state/event/receipt.",
+      "limits": "Prepared-row probe is explicitly logical; applying/unknown and recovered ref checks are real owned Git/supervisor effects. Journal not fabricated."
+    },
+    {
+      "id": "STD05-011",
+      "branch_control": "B2",
+      "disposition": "RESOLVED",
+      "proof": "native-revision-both exit0, actual shared/separate Codex0.159.3 plus deterministic provider; public progress advances revision after saving UI intent. Initial null receipt/zero core receipts/zero native operations; exact retry gets one core receipt and native operation. Independent check shows only expected_revision changed, exact params/binding/kind/args preserved and one actual user/client-correlated native input. Changed/foreign/revoked retries refuse; admitted exact replay stays exact.",
+      "limits": "No paid/live model qualification; existing FI barrier only creates the real public-command interleaving. Saved/actual-native observation comparison uses public typed history."
+    },
+    {
+      "id": "STD05-012",
+      "branch_control": "B3",
+      "disposition": "RESOLVED",
+      "proof": "real-kata-amendment-corrected exit0, actual pinned Kata0.24.0 and physical Git filesystem capture. Exact selected version/digest/revision/WorkRef approved jointly with new brief and admitted version; new attempt and actual metadata/comment synchronization confirmed. All filesystem bytes/hash match selected physical Git commit; old brief/version retained. Invented/foreign/mismatched/closed/active and worker authorization refuse; real change between proposal and approval refuses with exact state/source preservation.",
+      "limits": "Initial added hook KeyError(source) is retained as reviewer setup failure. Correction reads current source body from its actual public projection. Current-lead revocation is independently proven at shared auth seam/native scope; no separate revoked-lead upstream Kata driver call is claimed."
+    },
+    {
+      "id": "STD05-013",
+      "branch_control": "B4",
+      "disposition": "RESOLVED",
+      "proof": "monitor-transport-full exit0, all-public20 correction pipeline with4x65536-byte UTF8 fields. Actual socket/dashboard/MCP; monitor_context24955 bytes, records12463 bytes; all80 complete fields exact through refs, hashes, offsets and20 independently checked socket pages against read-only SQL original documents. Original own/peer observer/operator tests plus added cursor/field/hash/bytes and revoked-worker negatives. Reads preserve coverage/assessment/revision.",
+      "limits": "Authorized cancellation follows the read comparison solely to qualify revoked scope; no deletion, review credit or cap change."
+    },
+    {
+      "id": "STD05-014",
+      "branch_control": "B5",
+      "disposition": "RESOLVED",
+      "proof": "Actual authenticated native gateway ping/pong then thread/read in both native topologies, same native operation count. Real unconfigured TCP fixture echoes binary-safe ping/close, allows pong then ordinary configured-refusal RPC, refuses six malformed controls. Added empty/125-byte ping, empty close, partial control frame deadline1.014s, unsupported binary and wrong auth negatives.",
+      "limits": "Unconfigured fixture explicitly native_configured=false; actual native gateway is separately configured and qualified. Existing client/tool-reply denial is retained/source-reviewed and root full-gate scope; no new full TUI client suite repeated."
+    }
+  ],
+  "runs": [
+    {
+      "name": "physical-git-five",
+      "command": [
+        "env",
+        "CORENIUS_TEST_GIT_MODES=repair3-applying,repair3-unknown",
+        "/usr/bin/python3",
+        "tests/support/git_protocol.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 32.75129723548889,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS original repair B1 real applying/unknown/ref recovery and positive repair controls, independent no-mutation checks.",
+      "receipt": "physical-git-five-receipt.json",
+      "receipt_sha256": "4d02d08693e2a6c370beddb697e2ac794ec8550abf089afb7d657a6c9042cbf2",
+      "log": "physical-git-five.log",
+      "log_sha256": "194126f801047f8c785a87e2452f1a5460e0c9d54092d5d8500bb81e1a901b49",
+      "start": "physical-git-five-start.json",
+      "start_sha256": "a67c22df1537b076b538803e47edceb35e7756e99ab333acf26be5b26721720f",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "name": "real-kata-amendment",
+      "command": [
+        "env",
+        "CONTROLLER_BINARY=/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller",
+        "CORENIUS_KATA_REPAIR_CASE=brief-amendment",
+        "/usr/bin/python3",
+        "tests/support/kata_protocol.py"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller",
+      "exit": 1,
+      "duration_seconds": 1.1330351829528809,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "REVIEWER SETUP FAIL KeyError(source) in added hook after genuine changed-before-approval refusal; no product-red or later assertions credit.",
+      "receipt": "real-kata-amendment-receipt.json",
+      "receipt_sha256": "1b4d391da56c1fe47b663cd61cc872bf94deb580ac5870414b76e3ae1a1d7ac4",
+      "log": "real-kata-amendment.log",
+      "log_sha256": "44c0f629c8ad96e570b1576dedaeb7843e311a3161808dd8e438a1b1f834f780",
+      "start": "real-kata-amendment-start.json",
+      "start_sha256": "999a23692ebaef905a5335e6d820a142ef396869be1da4d6ce97b11738ebb78c",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "name": "real-kata-amendment-corrected",
+      "command": [
+        "env",
+        "CONTROLLER_BINARY=/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller",
+        "CORENIUS_KATA_REPAIR_CASE=brief-amendment",
+        "/usr/bin/python3",
+        "tests/support/kata_protocol.py"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 1.6908848285675049,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS B3 actual pinned Kata/physical filesystem Git capture/new admission/real sync with independent changed-before-approval and atomic provenance checks.",
+      "receipt": "real-kata-amendment-corrected-receipt.json",
+      "receipt_sha256": "51be4bf92abca56f9b75ae2f34f0825240f6380376979d145d3d0e98e5f9367b",
+      "log": "real-kata-amendment-corrected.log",
+      "log_sha256": "d6c29acdecf3b1efa109d64f952b6e984c93e0e9921e393cb4f7de13fd0ef079",
+      "start": "real-kata-amendment-corrected-start.json",
+      "start_sha256": "1b9f3ba5af241013e925c66bf1108b55586940e9a944e3c7890bb2bf11e87cac",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "3c0a591988a80b085c97365d006b8c209fcfbf68eaef121d4df049f0255193bf"
+    },
+    {
+      "name": "monitor-transport-full",
+      "command": [
+        "/usr/bin/python3",
+        "tests/support/monitor_projection.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 7.5412561893463135,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS B4 actual socket/dashboard/MCP,20documents80UTF8fields, independent20pages/read-onlySQL/refusal/coverage controls.",
+      "receipt": "monitor-transport-full-receipt.json",
+      "receipt_sha256": "9643c66d9fcaf8a97d655b0dfdba8a764b18864ed33511544510410654641d76",
+      "log": "monitor-transport-full.log",
+      "log_sha256": "2b7477fea6ab2a5d0fb96cb48419b15a3a913d27ddf411f0a16f3724831cc5e4",
+      "start": "monitor-transport-full-start.json",
+      "start_sha256": "6f1f55bdfb638bec8b68b1f6b3f0b55e5f6be0c30936eb440d2d559e9255af55",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "name": "websocket-controls",
+      "command": [
+        "/usr/bin/python3",
+        "tests/support/websocket_controls.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 1.3556632995605469,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS B5 unconfigured authentic TCP positive/bounds; native_configured=false explicit.",
+      "receipt": "websocket-controls-receipt.json",
+      "receipt_sha256": "fe213589ccd9c8a2ee3e99c12da144406e937b5efe12de07793bfff48e3aebc5",
+      "log": "websocket-controls.log",
+      "log_sha256": "87fb995fc32e98b3a5d657c21f0ece82254e244d99a45939e43437901a428c78",
+      "start": "websocket-controls-start.json",
+      "start_sha256": "f5f57bbc496325927a02af550d25097f4526ee1a7bd8e6cf77f5e499794947bc",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "name": "native-revision-both",
+      "command": [
+        "env",
+        "CORENIUS_TEST_CONTROL_CENTER=1",
+        "CORENIUS_TEST_REPAIR3_UI=1",
+        "CORENIUS_TEST_RETAIN_RAW=1",
+        "/usr/bin/python3",
+        "tests/support/native_registry.py",
+        "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller",
+      "exit": 0,
+      "duration_seconds": 87.13619041442871,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS B2/B5 actual shared/separate native revision race/retry and authenticated gateway controls plus original actual native protocol controls.",
+      "receipt": "native-revision-both-receipt.json",
+      "receipt_sha256": "5c26cf356f169475a03194b222920c94705257007f69293cacd2519387f0210c",
+      "log": "native-revision-both.log",
+      "log_sha256": "c4162cacb122bdf519ae0313d908a499eeefb661b8bc0d77bbcc7743533e7506",
+      "start": "native-revision-both-start.json",
+      "start_sha256": "6c94a0367d0bafa92a23f8fb3be4ce1b389827bb905ca1ad519172563bcf779f",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "name": "original-controls-prepared-runtime",
+      "command": [
+        "env",
+        "CARGO_TARGET_DIR=/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/reviewer-target",
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--features",
+        "fault-injection",
+        "--lib",
+        "standards_",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate",
+      "exit": 0,
+      "duration_seconds": 18.003372192382812,
+      "timedout": false,
+      "deadline_seconds": 600,
+      "qualification": "PASS5 own independent probes: original007/008/009 unchanged assertion sources run fresh, prepared SQL guard and exact24logicalhistory+2slots runtime context.21 candidate original units filtered, not repeated here.",
+      "receipt": "original-controls-prepared-runtime-receipt.json",
+      "receipt_sha256": "cc20c643df095bbc665380839d4eb168c99edde631992307aec7e2874c9426ce",
+      "log": "original-controls-prepared-runtime.log",
+      "log_sha256": "4b20ae311a32f54064b404cd3e43783c872c08810c8990d72de444062d2fdfff",
+      "start": "original-controls-prepared-runtime-start.json",
+      "start_sha256": "70e361d2f434f456b7ea6607cbb85a8455681dd2dbc484530c98667be7fd5376",
+      "source_unchanged": true,
+      "probe_unchanged": true,
+      "source_archive_sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6",
+      "probe_archive_sha256": "f78d97842d031e704c2ca727d479c7c8a386be1609e5f7040d5bd8f152556041"
+    }
+  ],
+  "source_unchanged": true,
+  "evidence_index": "evidence-index.json"
+}

@@ -1,0 +1,24 @@
+{
+  "confirmed_facts": [
+    "S05-R3-C1 actual native starvation with peer delivery positive",
+    "S05-R3-C2 actual stale predecessor progress with new-report positive",
+    "all49 source pins and prior199 evidence entries unchanged",
+    "all owned runs terminal"
+  ],
+  "hypotheses": [],
+  "negative_controls": [
+    "revoked old lead refused",
+    "revoked old attempt progress refused",
+    "peer authorized correction actually delivered",
+    "new attempt report replaces stale view"
+  ],
+  "caps": "05final3/3;02/04 3/3;EMPTY2/2",
+  "active_owned_jobs": [],
+  "uncertainties": [
+    "Root final gate/EVID acceptance independent",
+    "No live/06 baseline claim",
+    "Current request token/window telemetry unavailable"
+  ],
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "reports": "addendum.md/json; immutable prior scope path in source-binding.json"
+}

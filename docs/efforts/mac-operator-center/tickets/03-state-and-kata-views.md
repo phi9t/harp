@@ -1,7 +1,10 @@
-# 03 — Kata and controller state panes
+# 03 state-and-kata-views: Kata and controller state panes
 
-Status: implemented and independently reviewed; live product recovery pending
-Blocked by: none
+Type: task
+Status: resolved
+Owner:
+Blocked by:
+Claimed:
 Spec: ../EFFORT.md
 
 ## Owner request
@@ -76,3 +79,11 @@ Reject boolean/nonfinite/out-of-range timestamps. Preserve legacy ISO sources.
 Display source availability and one-time snapshot claims separately from runtime
 liveness. Read kata_source_path for provenance/identity only; never render requests.
 No core/source-file changes or trial-window mutations are authorized by this UI slice.
+
+## Acceptance
+
+- [x] Implement the bounded requirements and pass focused tests and independent review.
+
+## Comments
+
+- 2026-10-05T05:54:54Z main-lead: Normalize tracker metadata for landing; retained prior disposition: implemented and independently reviewed; live product recovery pending. Product baseline acceptance and runtime readiness are unchanged.

@@ -1,0 +1,84 @@
+{
+  "observed_at": "2026-10-05T05:44:15.503225+00:00",
+  "source_commit": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+  "source_tree": "cc14262c740c935ebfbbfee4285c1710f6c7f6ec",
+  "files": [
+    {
+      "path": "author-freeze.json",
+      "sha256": "ee4732cd738924e87c7be99d63c33f8de33284462a134d94d49d67c8e3bd0a4e",
+      "bytes": 9275
+    },
+    {
+      "path": "candidate-fixed-base.diff",
+      "sha256": "f60c730b56022ad2d108a78432dbcfcd09f42782b3b804d627ad273ab75a8a45",
+      "bytes": 30210
+    },
+    {
+      "path": "logs/author-check-focused-final.log",
+      "sha256": "211fb425a8ba4874a6c77405a14b98f983ca9935b4b7cd179b198c3853dcf01b",
+      "bytes": 802
+    },
+    {
+      "path": "logs/author-check-durable_native_configuration_refuses_retargeted_topology.log",
+      "sha256": "5398a333052c1d9ed30bffd4909c3f1f821f83150da2a60be67577685f0baafc",
+      "bytes": 77982
+    },
+    {
+      "path": "logs/author-check-actual_native_scoped_tui_attachment_and_literal_input.log",
+      "sha256": "bfc7252a9cc911425a3716170818941cf0cbd34e2c65d58b9234c62917e891ee",
+      "bytes": 106916
+    },
+    {
+      "path": "logs/author-check-unknown_native_start_refuses_new_turn_until_reconciled.log",
+      "sha256": "46365b0eae9068df7a73f09ba9d036b52d4873e5abf4065277bc6fe3c8db74aa",
+      "bytes": 99864
+    },
+    {
+      "path": "logs/author-adjacent-controller.log",
+      "sha256": "c0336e3a10fbffb81038ed3b033e7b8fe2b0f424bdd0fe3374856ac2e70e6c7b",
+      "bytes": 3864
+    },
+    {
+      "path": "logs/author-harness-green.log",
+      "sha256": "6af2389aec9ed4c00af610b47658f749b17b26da36f2d8e3dfb87b12d81dc0d0",
+      "bytes": 123
+    },
+    {
+      "path": "logs/harness-unsupported-model.log",
+      "sha256": "7581a3c6d351c7c1fbcb15885703d70fdc29fb75ec75bb60f11989c1157e9308",
+      "bytes": 521
+    },
+    {
+      "path": "logs/author-green.log",
+      "sha256": "b5324d650ea4afbf21afbd3d53fb8a885a8e002c16a9434d85f0c3c363f0604f",
+      "bytes": 1621
+    },
+    {
+      "path": "logs/author-green-fixture-complete.log",
+      "sha256": "3846ec6e3ac485612e4e0828ac4528968d0006ec6871213f98fdb91cdb54db34",
+      "bytes": 1329
+    },
+    {
+      "path": "logs/author-red.log",
+      "sha256": "fecddadce8c1d62a0e68d569448e291f6d29b236e689cb2ea0a62bd776051392",
+      "bytes": 2021
+    },
+    {
+      "path": "fixture-corrections.diff",
+      "sha256": "2fc8b3edd8345aaa9ae11fb9f7b2037b45ba6df2391d44a47e66b48235b0dba4",
+      "bytes": 24131
+    },
+    {
+      "path": "fixture-corrections.json",
+      "sha256": "17bd9c60b12ac962580bbbbdf47a785f9007c68629ce7b1cf1288d4f537b76b9",
+      "bytes": 1154
+    }
+  ],
+  "actual_sources_verified": {
+    "crates/sqlite-controller/src/codex.rs": "680598070634abac04d97571a1fce15d20ca9c26d4f03d18e71ffdf241adbd1a",
+    "crates/sqlite-controller/src/native_ui.rs": "a90230118c24fd0aad50782474d131392f8d7502689e184d9c93e8ae9b6b19ba",
+    "tools/agents/sqlite_baseline.py": "52cf7036fe270847451b2b9a324ee1b3ad7ac8aaa1fc1618b67de0389f4883d9",
+    "tools/agents/test_sqlite_baseline.py": "59a1a0d21c31c6403da191fd42943f5a27f5878aa305a2dd838a2c64a1cec2e4"
+  },
+  "qualification": "Writer-scoped proofs; independent review and live model-specific trial pending. No final baseline source-freeze/release claim."
+}

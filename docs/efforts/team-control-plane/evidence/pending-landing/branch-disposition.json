@@ -1,0 +1,170 @@
+{
+  "observed_at": "2026-10-05T05:57:07.949186+00:00",
+  "main_before": "a21316f",
+  "sources": [
+    {
+      "branch": "codex-intent26/candidate-import2",
+      "source": "29bd30a38c6253c3144756323eee6b78fca89699",
+      "ahead_of_original_main": 24,
+      "disposition": "parked docs/evidence retained; rejected source archived, not activated"
+    },
+    {
+      "branch": "codex-intent26/outcome-lifecycle1",
+      "source": "9d6b48238c1aea393d300ff73d6a3a971f3b2de0",
+      "ahead_of_original_main": 18,
+      "disposition": "parked docs/evidence retained; rejected source archived, not activated"
+    },
+    {
+      "branch": "codex/mac-binding-observation",
+      "source": "880d37114e33084e5ea0cf42d849cdcb37a17a24",
+      "ahead_of_original_main": 41,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-external-observer-views",
+      "source": "3ef84a59009b06e1adeba635566612f8e446ce1b",
+      "ahead_of_original_main": 38,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-operator-dashboard",
+      "source": "2b030ea0538c733596bd0abef745bcfd89413add",
+      "ahead_of_original_main": 22,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-operator-tmux",
+      "source": "52c14104e13deca6c7b73520b7a3b7c6d55ededa",
+      "ahead_of_original_main": 23,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-runtime-roster-envelope",
+      "source": "894fc88fd7298bef9cd0f2410e44aa1a2894af30",
+      "ahead_of_original_main": 35,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-runtime-views",
+      "source": "7837501da2373f883eef4405392624bb21e51d7c",
+      "ahead_of_original_main": 30,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/mac-state-views",
+      "source": "5a8047f74a862ac6cf30b7da0e92c7e4e79af860",
+      "ahead_of_original_main": 34,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/monitor-wakeup",
+      "source": "b034844ef108580ad9ba3b3d05b77bb859a18077",
+      "ahead_of_original_main": 9,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/reference-design",
+      "source": "c99be598333b8d7b18a566f3ca239c3c1733f07e",
+      "ahead_of_original_main": 29,
+      "disposition": "parked docs/evidence retained; rejected source archived, not activated"
+    },
+    {
+      "branch": "codex/rfc0002-capture",
+      "source": "768bb943e9a95b9e761e3d1e7de08c0ac8df74b4",
+      "ahead_of_original_main": 3,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/sqlite-controller-baseline",
+      "source": "abe87156cc89a991f5059ee2f4a9eedcd60ca1f4",
+      "ahead_of_original_main": 42,
+      "disposition": "monitoring/MAC/RFC content consolidated fromabe8715; original ref retained"
+    },
+    {
+      "branch": "codex/sqlite-controller-execution",
+      "source": "c498c389ec58e87496f2c62ef854ec1d69795fc7",
+      "ahead_of_original_main": 45,
+      "disposition": "coordinator public state/evidence consolidated fromc498c38 and bounded dirty snapshot"
+    },
+    {
+      "branch": "codex/team-operating-improvements",
+      "source": "81d9d831fa31a7fb85a5a2cf80bfeb312d7a611d",
+      "ahead_of_original_main": 17,
+      "disposition": "two unique operating packet files retained as historical/proposed"
+    },
+    {
+      "branch": "sqlite01/storage",
+      "source": "15ae62ca8eaa39c3f5e96bed6aa8dfea23951fcf",
+      "ahead_of_original_main": 10,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite01verify/check",
+      "source": "15ae62ca8eaa39c3f5e96bed6aa8dfea23951fcf",
+      "ahead_of_original_main": 10,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite02/runtime",
+      "source": "b55bd9c3e6e44bbb03b8e1ca026e9a3210d8829f",
+      "ahead_of_original_main": 28,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite02verify/check",
+      "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+      "ahead_of_original_main": 50,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite03/kata",
+      "source": "d121795f7c15c02a2c2cec685f5bc30fb570a363",
+      "ahead_of_original_main": 32,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite04/git",
+      "source": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+      "ahead_of_original_main": 40,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite05/c1c2-happy",
+      "source": "864a3da625fabf839abca8bdd08672dfb24e0785",
+      "ahead_of_original_main": 53,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite05/control-center",
+      "source": "d529d1f55c1f7183fd801734e5d35405d9bee676",
+      "ahead_of_original_main": 49,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite05/repair3",
+      "source": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+      "ahead_of_original_main": 51,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "sqlite06/happy-path",
+      "source": "483f1bc6e3fe1a3e03ac727afd903b84461c414b",
+      "ahead_of_original_main": 58,
+      "disposition": "SQLite source/evidence subsumed by483f1bc; original ref retained"
+    },
+    {
+      "branch": "worker/mb-evidence",
+      "source": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "ahead_of_original_main": 1,
+      "disposition": "superseded by accepted main1715155; not reapplied"
+    },
+    {
+      "branch": "worker/mb-evidence-2",
+      "source": "4ed6397a41b7acdcc743ade886f182eebd25a7b7",
+      "ahead_of_original_main": 1,
+      "disposition": "superseded by accepted main1715155; not reapplied"
+    }
+  ],
+  "all_original_branches_and_worktrees_preserved": true,
+  "remote_configured": false
+}

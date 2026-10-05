@@ -1,0 +1,319 @@
+{
+  "id": "04-r1-live02",
+  "created_at": "2026-10-04T18:11:22.206491+00:00",
+  "source": "e6ab0abb9ff58e08669398034e693a2190ef46a1",
+  "source_stream": "/data02/home/philip.yang/.codex/sessions/2026/10/04/rollout-2026-10-04T15-32-48-01a1078b-d944-7c82-a392-50333a175a77.jsonl",
+  "start_ordinal": 1540,
+  "end_ordinal": 1643,
+  "predecessor": 1539,
+  "seal_reason": "ten-minute mid-turn review boundary; source events remain attached to the same turn",
+  "source_prefix_sha256": "83b284f431d23e2699fd4931caa9ac2f9fc3ddb20762d7675d3096f20b51ed11",
+  "reviewed_visible_steps": 14,
+  "step_reviews": [
+    {
+      "sequence_root_parser": 236,
+      "ordinal": 1546,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-64ce5d6e-84bb-469b-8aa1-9e90928bcd54",
+      "kind": "CommandExecution",
+      "input_sha256": "b6441a2c2cc71993528df7b076d62e2afaa7228ac4d71c7802d22eda5062dffa",
+      "findings": [
+        5
+      ],
+      "assessment": "necessary gate selection",
+      "observation": "Read exact native tests/profile/gate; no new runtime authority or live model claim.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 237,
+      "ordinal": 1553,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-c0794c60-e8d7-4369-9873-b8776381c2ad",
+      "kind": "CommandExecution",
+      "input_sha256": "ca24c9954186b94b02a7613e1f81be4d3cdb102877345e5b9d8fa340b875487b",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "necessary evidence packaging",
+      "observation": "List current tests and exact repair evidence; no broad unrelated search.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 238,
+      "ordinal": 1566,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-35237905-465b-4cec-b9cf-4cf71885eb0a",
+      "kind": "CommandExecution",
+      "input_sha256": "93d935b67ec2a1a2d29bccdf95c52d4317e92db64eb6300f2d1c4b22959df7a7",
+      "findings": [
+        5
+      ],
+      "assessment": "necessary retained identity inspection",
+      "observation": "Inspect narrow existing native fixture receipts; no new experiment or progress credit.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 239,
+      "ordinal": 1573,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-143d0510-99f9-4613-b240-1c83321b732f",
+      "kind": "CommandExecution",
+      "input_sha256": "743684dd138b09ec41a81fb82091684fbfdc4c83255e637da8bb232a6bfeb713",
+      "findings": [
+        5
+      ],
+      "assessment": "focused result reread",
+      "observation": "Observed2/2PASS35.75 is the existing matched driver result, not a new experiment.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 240,
+      "ordinal": 1582,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-1176a839-434d-46f5-9992-946c93f50146",
+      "kind": "CommandExecution",
+      "input_sha256": "273cb5925d4d626d8e6f389d67b05313a5c320bc9d26000e7039fa859ad58aec",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "necessary retention setup",
+      "observation": "Writes source-pinned recorder while reading running affected gate; no terminal full-gate result credited here.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 241,
+      "ordinal": 1590,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "msg_03f2df0ed35d305e016ac29324ed1887d282d7074a8c220217",
+      "kind": "AgentMessage",
+      "input_sha256": "7506583b8e1a710595d7aaa9f64210021bf58aaac7b8511c0b0de026d57cae41",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "public frozen-source report",
+      "observation": "States source freeze and current qualification/packaging; prior failures retained.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 242,
+      "ordinal": 1594,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-944427a2-9771-4e34-8e6f-2e477ca53547",
+      "kind": "CommandExecution",
+      "input_sha256": "4042bb45dd08ccd018e1089f960cf09bed366249a39e455fe60ac0479142fdd0",
+      "findings": [
+        5
+      ],
+      "assessment": "necessary protocol inspection",
+      "observation": "Read running log and exact restart/selected-stop fixture; original connection mismatch controls remain.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 243,
+      "ordinal": 1597,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-d7b16d2a-5d49-426a-8d27-9b2a7cf569e8",
+      "kind": "CommandExecution",
+      "input_sha256": "d9ed496f72bef2dd870f71c21a09633ce3674c41e77e7aafcc70ce4cd3591491",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "necessary bounded gate setup",
+      "observation": "Creates explicit bounded author runner/source pairs; not a scheduler or acceptance path.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 244,
+      "ordinal": 1605,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-ca5818d9-5c49-4b71-a63b-53a7ef0b8164",
+      "kind": "CommandExecution",
+      "input_sha256": "e98778ee315a0f07e6af1b88d72bc25d3bd4494006aa2e8a0fb657b1000228d0",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "partial gate observation",
+      "observation": "Actual runtime15 PASS2.30; other results are not inferred from command exit.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 245,
+      "ordinal": 1618,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-7caf8501-efea-4ba1-a3bf-d5e769602ab2",
+      "kind": "CommandExecution",
+      "input_sha256": "4e0a5302c09f5e2267bdfa04a90a71415bdef63e44f8b74b2323b29ce8458232",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "focused assembled result observed",
+      "observation": "Actual Git2/Kata8/process4/public20/runtime15 totals49; source-paired gate-affected-run.json, separate from independent full gate.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 246,
+      "ordinal": 1623,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "call_qbL21Q8m0cIle4Yk6pFnIZxy",
+      "kind": "SubAgentActivity",
+      "input_sha256": "3b56a2d4062f329c24bc2746e6e6914f23a55cc37a95a254a7e10191a71740db",
+      "findings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "assessment": "peer checkpoint",
+      "observation": "No duplicate progress credit for the same affected run.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 247,
+      "ordinal": 1629,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-ae3a8cde-d9db-44e8-b251-30cb6ed162cc",
+      "kind": "CommandExecution",
+      "input_sha256": "e32b0c4bbebe00efbb32d6beff09e8d22a0da9595783b886ee4c394c83d1f3f6",
+      "findings": [
+        5
+      ],
+      "assessment": "owned gate started",
+      "observation": "Native command start is not its successful completion; execution remains pending until terminal result.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 248,
+      "ordinal": 1634,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-184c2646-b379-47fe-bd4d-8b966325f8cd",
+      "kind": "CommandExecution",
+      "input_sha256": "c0212b506cb0157302d5d0ec0deaf3d4223e7cdebbae191a08532e9c836c5c65",
+      "findings": [
+        1,
+        7,
+        8
+      ],
+      "assessment": "necessary tool pinning",
+      "observation": "Pins trusted executable/tool hashes; no unrelated capability expansion.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    },
+    {
+      "sequence_root_parser": 249,
+      "ordinal": 1643,
+      "turn": "01a107df-12d9-79f3-a2f1-8c4051863e60",
+      "item": "exec-18f36ec9-9254-4e54-81fe-d4bebe98dbef",
+      "kind": "CommandExecution",
+      "input_sha256": "06d434eee36381611288ab8f6f719cbc4a0cbe92b257d450c56e02b0569691dc",
+      "findings": [
+        5
+      ],
+      "assessment": "focused gate result observed",
+      "observation": "Actual4 native checks PASS71.61 test seconds; author wrapper72.05. Inherited pending controls and root full gate remained pending at this boundary.",
+      "private_reasoning": "excluded",
+      "next_discriminating_test": "independent frozen-source full gate, retained-artifact audit and branch adjudication; no repeated healthy nudge"
+    }
+  ],
+  "coverage": {
+    "root_historical_contiguous_reviewed": 0,
+    "root_live_origin": 1471,
+    "external_owner_receipts": [
+      [
+        13,
+        121
+      ],
+      [
+        1263,
+        1470
+      ]
+    ],
+    "history122_1262": "unreviewed",
+    "owner_vs_root_step_numbering": "different local normalizers; raw ordinals authoritative, not relabeled"
+  },
+  "advisory": {
+    "goal_drift_established": false,
+    "replacement_trigger_established": false,
+    "private_reasoning_analyzed": false,
+    "acceptance_granted": false,
+    "unresolved": "complete gate/final retention pending; branch646 later FAIL2 requires coordinator adjudication; F4 freshverify-afteraccept composition confirmed, not a cap reset"
+  },
+  "attachments": [
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/frozen-source-check.json",
+      "sha256": "078b1461568812e496e6a76855d4e4711b19a93b1e074a1e2c113c1d08ac8bc4"
+    },
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/standards.json",
+      "sha256": "db958f16e061dd0480cfb6ac3f319870ed4f63717c5486247aba48ffc0b657cd"
+    },
+    {
+      "path": ".scratch/sqlite-controller/reviews/04/repair1/branch-646.json",
+      "sha256": "11d1166dd1926441131abf1b4d2e7944a1a5ea265a85445f1af33d8dc81dd194"
+    }
+  ]
+}

@@ -1,0 +1,2492 @@
+{
+  "schema": "corenius.sqlite-controller.complete-independent-evidence-index.v1",
+  "axis": "Standards",
+  "result": "FAIL2",
+  "base": "291f04a5abd9274e4fd0034fd36927b0a4c4d236",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+  "entries": [
+    {
+      "path": "addendum-branch653.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/addendum-branch653.json",
+      "bytes": 9283,
+      "sha256": "a6b3ef3126dc5d2c932f6d2c4650a26970792cda4c004da966f760febc18a543"
+    },
+    {
+      "path": "addendum-branch653.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/addendum-branch653.md",
+      "bytes": 2667,
+      "sha256": "3b65445e7f7ffc962c3aed42d91422feaed9947b30ac43a1f700cd4ef5f0c40b"
+    },
+    {
+      "path": "administration-initial-read-failure.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/administration-initial-read-failure.json",
+      "bytes": 275,
+      "sha256": "1c8132a8cd57dc5918b783d0dd683d7582a3a9d5cfcb3fe42e16a04bbca6a4aa"
+    },
+    {
+      "path": "admission-verification.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/admission-verification.json",
+      "bytes": 815,
+      "sha256": "c51ffbd956576536819e11b4e1e6fffb618a107921bbb390ea0e62e915bd59a4"
+    },
+    {
+      "path": "branch-probe/.scratch/sqlite-controller/04/fixtures/standards-progress-generation-g4-zhl4fcbp.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/.scratch/sqlite-controller/04/fixtures/standards-progress-generation-g4-zhl4fcbp.tar.gz",
+      "bytes": 64804,
+      "sha256": "e2c4105c3944eab22b8a041c418aa2edc4ece31f9b7f0873a35807a4efa02da4"
+    },
+    {
+      "path": "branch-probe/.scratch/sqlite-controller/native/shared-cnr-f1hw4g8x.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/.scratch/sqlite-controller/native/shared-cnr-f1hw4g8x.tar.gz",
+      "bytes": 675650,
+      "sha256": "a82cd7ed8c024f8b7fbdd8f0e654ecb4b140e3e0adeaff1405748750173bed54"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31510,
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 21649,
+      "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 54869,
+      "sha256": "10d98fdabfebb7f98fba14782642bf0be19157aa852c16d97f7b543b3f3691e5"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 41645,
+      "sha256": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "bytes": 7956,
+      "sha256": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 90445,
+      "sha256": "86462fa87b1bafaf857bbb89ee71ff78e97eb32cbb08e0dacb1e9a31b394460c"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "bytes": 4860,
+      "sha256": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/standards_branch653.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/standards_branch653.py",
+      "bytes": 5867,
+      "sha256": "7a5e6a3c18299fc2beeaca866208dc87a3509d6f9ca49c74be3c8edf44ec0595"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/standards_progress_generation.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/standards_progress_generation.py",
+      "bytes": 2394,
+      "sha256": "54da6e3698204339320d7b38164001783995084b9d54a071db687abf69f9d5a9"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "bytes": 4300,
+      "sha256": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905"
+    },
+    {
+      "path": "branch-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "branch-probe-input.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe-input.tar.gz",
+      "bytes": 249155,
+      "sha256": "4b8a66142e31c2b824768154f0b74aaa92d9e4cc574e13ddc33221f978344e6d"
+    },
+    {
+      "path": "branch-probe-rationale.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-probe-rationale.json",
+      "bytes": 603,
+      "sha256": "0fd0085fc43bdebbbf35831850752671cd446afff8680702e38a9c9b97384eb6"
+    },
+    {
+      "path": "branch-progress-corrected/.scratch/sqlite-controller/04/fixtures/standards-progress-generation-g4-zca_7it_.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/.scratch/sqlite-controller/04/fixtures/standards-progress-generation-g4-zca_7it_.tar.gz",
+      "bytes": 67005,
+      "sha256": "661f5ff95f5b2712692e86c076f22a384a9ce9985c4d026e0d4536eb392449c7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31510,
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 21649,
+      "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 54869,
+      "sha256": "10d98fdabfebb7f98fba14782642bf0be19157aa852c16d97f7b543b3f3691e5"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 41645,
+      "sha256": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "bytes": 7956,
+      "sha256": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 90445,
+      "sha256": "86462fa87b1bafaf857bbb89ee71ff78e97eb32cbb08e0dacb1e9a31b394460c"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "bytes": 4860,
+      "sha256": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/standards_branch653.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/standards_branch653.py",
+      "bytes": 5867,
+      "sha256": "7a5e6a3c18299fc2beeaca866208dc87a3509d6f9ca49c74be3c8edf44ec0595"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/standards_progress_generation.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/standards_progress_generation.py",
+      "bytes": 2417,
+      "sha256": "14b03a22a2da3acfc9a026901e6b77bfab0d6dac7773b2adb292772fda70dbbc"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "bytes": 4300,
+      "sha256": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905"
+    },
+    {
+      "path": "branch-progress-corrected/crates/sqlite-controller/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "branch-progress-corrected-input.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch-progress-corrected-input.tar.gz",
+      "bytes": 249197,
+      "sha256": "6b8125c51ad320c1affdcadf0dc0f1950194990afbf67b257c92b5e9326ceb09"
+    },
+    {
+      "path": "branch653-native-correction-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-native-correction-receipt.json",
+      "bytes": 46664,
+      "sha256": "029bd8edf7e2f8025c9d3a2f162d4c2974696f8b1705e3e988a5d9c6593ff198"
+    },
+    {
+      "path": "branch653-native-correction-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-native-correction-start.json",
+      "bytes": 13401,
+      "sha256": "2754b2eb35862c0642d72027ecf1a7aa0e0c82f6ce77a47a6d34723053081c7d"
+    },
+    {
+      "path": "branch653-native-correction.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-native-correction.log",
+      "bytes": 39372,
+      "sha256": "1a346a40abdeb7416638e6e955a7f5e46511d04408370329ced81df548047fe8"
+    },
+    {
+      "path": "branch653-public.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-public.json",
+      "bytes": 2070,
+      "sha256": "03f76ce121a9a4a6994bc465e9f599197a3a95d34e93ce4184d882ba9e4d5810"
+    },
+    {
+      "path": "branch653-real-progress-corrected-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress-corrected-receipt.json",
+      "bytes": 42139,
+      "sha256": "e74adeb614270b31754763a2f380fb11f15ece0bcd7ab564c3229e247065b3d5"
+    },
+    {
+      "path": "branch653-real-progress-corrected-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress-corrected-start.json",
+      "bytes": 13225,
+      "sha256": "16b9d415f8b00ecdb94ecb9feb1827c4fdf14dafa72ea666e30326afadc1ac72"
+    },
+    {
+      "path": "branch653-real-progress-corrected.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress-corrected.log",
+      "bytes": 5352,
+      "sha256": "0478048ce9266fd8060f8448568d493ba4058aba930e45a23fa5209975f44f71"
+    },
+    {
+      "path": "branch653-real-progress-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress-receipt.json",
+      "bytes": 42126,
+      "sha256": "04ab6e54f8b6900f9db8fa214acbdde17a729cb56b0d9c1aa9d2a98f9570a1ae"
+    },
+    {
+      "path": "branch653-real-progress-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress-start.json",
+      "bytes": 13212,
+      "sha256": "c1e0a602f26d830824d957f2e7c69a22c3c4d64f62fd5c00f40be342d540f56f"
+    },
+    {
+      "path": "branch653-real-progress.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/branch653-real-progress.log",
+      "bytes": 1782,
+      "sha256": "e28e772909ed449e00fd2c97cecbd138e4f417e1ab5d737571a6ff8d60737b91"
+    },
+    {
+      "path": "commit-log.txt",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/commit-log.txt",
+      "bytes": 607,
+      "sha256": "b8f2b2bc856366f3aba8a366710e40661f5f0410c5e697750f0d381e314b3bc6"
+    },
+    {
+      "path": "context-efficiency-adoption.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/context-efficiency-adoption.json",
+      "bytes": 1007,
+      "sha256": "3f83d0d71640cf0a80a69241027b352feb023ea6f0c268672bc8d7faf691843a"
+    },
+    {
+      "path": "environment-pins.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/environment-pins.json",
+      "bytes": 641,
+      "sha256": "b32897b1ef297a3acac8e176ecad2267e1c1d90a07f0a4cd1a75a98571485215"
+    },
+    {
+      "path": "five-control-report.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/five-control-report.json",
+      "bytes": 14450,
+      "sha256": "1be40faf4e0ebaac9eb17dabd422b47f92c0812b7c96e806b0a778fe633ccb71"
+    },
+    {
+      "path": "five-control-report.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/five-control-report.md",
+      "bytes": 2542,
+      "sha256": "b92a8b10ba9d2e1f59cfd25aeceedec41a119a0d08e9110c5917a87cadba46e4"
+    },
+    {
+      "path": "focused-build-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/focused-build-receipt.json",
+      "bytes": 57002,
+      "sha256": "c7699c9b0af510e616eb691f7bb051b0eb9a37e2bcefdf58be3173bbc74930c7"
+    },
+    {
+      "path": "focused-build-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/focused-build-start.json",
+      "bytes": 12630,
+      "sha256": "eebf80959d4c00ec072736364bf591f010037fda51e5137113218b9d081f0506"
+    },
+    {
+      "path": "focused-build.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/focused-build.log",
+      "bytes": 1423,
+      "sha256": "94163033446909b1245d7b9c00717d60747e0d3fdc7e559236e7e59340f7a7f9"
+    },
+    {
+      "path": "freeze-evidence.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/freeze-evidence.py",
+      "bytes": 3924,
+      "sha256": "2b9969f61e93b78349c1c828369e5f8a5f9691efbc88a8c572839188aeea15a9"
+    },
+    {
+      "path": "full-range-change-index.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/full-range-change-index.json",
+      "bytes": 19077,
+      "sha256": "09680d6aba0caae4c6a0ae0677ba31a1ce1b31d3fad6eb0f7c6a26dc11bdd183"
+    },
+    {
+      "path": "full.diff",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/full.diff",
+      "bytes": 2742117,
+      "sha256": "f9a992626349d486eba674a3dbb751fdab5dcd104d51f787f5f7fe776d7c71b4"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/briefs/05-final-independent-review.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/briefs/05-final-independent-review.md",
+      "bytes": 5728,
+      "sha256": "1666f80d818fa82dfce3b80ed90997f2acbf768c9d9271bae06880b9a63c834f"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/briefs/05-repair1-independent-review.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/briefs/05-repair1-independent-review.md",
+      "bytes": 5075,
+      "sha256": "fa798481b1c4dfec9b39a7cf5e0fe66503ae20884e690031a548be47521d70fb"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/briefs/05-repair2-independent-review.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/briefs/05-repair2-independent-review.md",
+      "bytes": 7398,
+      "sha256": "ee3efedf658fc8b80658221d9a2147bd5cec9c20a9d040d8186c1b4fb3e62e44"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/briefs/05-repair3-independent-review.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/briefs/05-repair3-independent-review.md",
+      "bytes": 5453,
+      "sha256": "6242061d5e9efe0de0902b3029a09c2ef040b015ffcf8f44975c4af344c55ef3"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/monitoring05r3/05-repair3-pre-source-root-matrix.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/monitoring05r3/05-repair3-pre-source-root-matrix.json",
+      "bytes": 26152,
+      "sha256": "9df34387bf21c32d7953c494d29632c02a97d671e619bc55bb2251a0311d4139"
+    },
+    {
+      "path": "inputs/.scratch/sqlite-controller/monitoring05r3/05-source7b20-review-admission.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/.scratch/sqlite-controller/monitoring05r3/05-source7b20-review-admission.json",
+      "bytes": 13561,
+      "sha256": "bfa9cad5dee5ac3e6533fccac98eecf6171e9e8d8df4c1b094bf58751c3f0dd0"
+    },
+    {
+      "path": "inputs/AGENTS.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/AGENTS.md",
+      "bytes": 3080,
+      "sha256": "bf1b2bbf08307936e96a840913802c480d64b0d894dd7f8838542a93543a0df9"
+    },
+    {
+      "path": "inputs/CONSTITUTION.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/CONSTITUTION.md",
+      "bytes": 3484,
+      "sha256": "c31d804fa579c5842a679b5b94dcf31a2af88a7e5f9b0ffe43355c8e85e85097"
+    },
+    {
+      "path": "inputs/context-efficiency/SPEC104-114.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/context-efficiency/SPEC104-114.md",
+      "bytes": 3197,
+      "sha256": "ce0ad35755a33ac9244060c4aa264472f0aae13b792cf0cdda5c3c4da06fa33d"
+    },
+    {
+      "path": "inputs/context-efficiency/context-efficiency-0001.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/context-efficiency/context-efficiency-0001.md",
+      "bytes": 3463,
+      "sha256": "185035e4a5c47679be528011118b79257fc07dca26fe67b46bea37737d2be6c1"
+    },
+    {
+      "path": "inputs/docs/agents/agentic-engineering.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/agents/agentic-engineering.md",
+      "bytes": 9722,
+      "sha256": "16c1893b6e49b4208dd675d73e8240b6ea2e33c41d81cdb778348200ecf0d926"
+    },
+    {
+      "path": "inputs/docs/agents/domain.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/agents/domain.md",
+      "bytes": 2045,
+      "sha256": "25be404b58798b3cb2d51c93dba2ab052fc3a425632185726ac3f5fcff193b99"
+    },
+    {
+      "path": "inputs/docs/agents/skill-orchestration.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/agents/skill-orchestration.md",
+      "bytes": 9818,
+      "sha256": "a0ff11c8641f6496c0ba896ea551642e3b27e92f4dae89a9f28bcef88dc7d5c0"
+    },
+    {
+      "path": "inputs/docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/efforts/sqlite-controller/CONTROLLED-TRIAL.md",
+      "bytes": 6969,
+      "sha256": "35742c7434829af4f8ef24f3a987877fcac248a8fac10bc6c7d4eb1a427b5e96"
+    },
+    {
+      "path": "inputs/docs/efforts/sqlite-controller/SPEC.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/efforts/sqlite-controller/SPEC.md",
+      "bytes": 19565,
+      "sha256": "959ca8540ffe9cd958c45a8a2f289c3d8808cc88996b482bb3db686a1e331479"
+    },
+    {
+      "path": "inputs/docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/SPEC.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/SPEC.md",
+      "bytes": 19133,
+      "sha256": "78a429db4b9847fa99f1acf55d2c656c879856f55d18e5ae1be8847631f67a76"
+    },
+    {
+      "path": "inputs/docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/initial-review.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/efforts/sqlite-controller/evidence/05/worker-monitoring/owner/initial-review.md",
+      "bytes": 4619,
+      "sha256": "c5872aab9944d50be85d59a29a0c0d825026512643b2fbd355cae8ffc69073db"
+    },
+    {
+      "path": "inputs/docs/efforts/sqlite-controller/tickets/05-lead-control-center.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/docs/efforts/sqlite-controller/tickets/05-lead-control-center.md",
+      "bytes": 5099,
+      "sha256": "509b854df96145996f962fa9df4794a510bb24ca827c5b3c2c0131e079b451a4"
+    },
+    {
+      "path": "inputs/prior-repair2/report.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/prior-repair2/report.json",
+      "bytes": 40298,
+      "sha256": "343cdb9aadcc375abc36396cc60cfc0a7e447215c78ae7bc329beffb3931dd23"
+    },
+    {
+      "path": "inputs/prior-repair2/report.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/inputs/prior-repair2/report.md",
+      "bytes": 12120,
+      "sha256": "7eb847e965d61c34b9af0c89820a9e256788f3726db97f3b600de4af8a793e52"
+    },
+    {
+      "path": "kata-hook-correction.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-hook-correction.json",
+      "bytes": 575,
+      "sha256": "a017c52e6135f822fe87e3cffff11baa53a4b31764019b5bfd684d6815d1f306"
+    },
+    {
+      "path": "kata-hook-original.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-hook-original.py",
+      "bytes": 9838,
+      "sha256": "e65f0cac773a8ffbe0ab5f316f6e7b232a8a1c50f7eac1b388bfe5b4a032d954"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31510,
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 21649,
+      "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 54960,
+      "sha256": "aec19a46944359f79b585c4620146a4bfe67cfb08c4d92221be11e3a9e6fefe5"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 41917,
+      "sha256": "91f710b3053becb83ad2f5b6ef96a42999a72e9b52ae436f0fe1afb61839812d"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "bytes": 8084,
+      "sha256": "c911f503e6939cae0c3bf6dd5a0150c587dfda01f0b49fb0d71e67a0a76a9b85"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 90254,
+      "sha256": "fedbd14a13573647d094b3099bce0bef0ddac8e621682c4fb361ef034a5d0197"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "bytes": 4989,
+      "sha256": "4e80f6347812ff3c3d727713826bea81288236c21ae20bfebe361951427b3866"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/standards_repair3_checks.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/standards_repair3_checks.py",
+      "bytes": 9900,
+      "sha256": "15078aac7cf4878f7aab529889ef2a48f101719befae619872c6e3536f58ab03"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "bytes": 4404,
+      "sha256": "4121b99dea546d579e8108d115e3d0a52b94956b70fe748074bd4226ccfaac2f"
+    },
+    {
+      "path": "kata-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "kata-probe-input.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-probe-input.tar.gz",
+      "bytes": 249950,
+      "sha256": "3c0a591988a80b085c97365d006b8c209fcfbf68eaef121d4df049f0255193bf"
+    },
+    {
+      "path": "kata-short-socket-root-rationale.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/kata-short-socket-root-rationale.json",
+      "bytes": 519,
+      "sha256": "40b7f0c6c8a984def38f34532686ef36c0c525fc95c5d0ac2ca3d58381571138"
+    },
+    {
+      "path": "monitor-transport-full-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/monitor-transport-full-receipt.json",
+      "bytes": 26689,
+      "sha256": "9643c66d9fcaf8a97d655b0dfdba8a764b18864ed33511544510410654641d76"
+    },
+    {
+      "path": "monitor-transport-full-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/monitor-transport-full-start.json",
+      "bytes": 13050,
+      "sha256": "6f1f55bdfb638bec8b68b1f6b3f0b55e5f6be0c30936eb440d2d559e9255af55"
+    },
+    {
+      "path": "monitor-transport-full.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/monitor-transport-full.log",
+      "bytes": 4554,
+      "sha256": "2b7477fea6ab2a5d0fb96cb48419b15a3a913d27ddf411f0a16f3724831cc5e4"
+    },
+    {
+      "path": "native-public-observations.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/native-public-observations.json",
+      "bytes": 19473,
+      "sha256": "09c0462ece20ddaa988f0fc3e7ebd2e62b04245657ac28edb7cd2c35d51083f0"
+    },
+    {
+      "path": "native-revision-both-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/native-revision-both-receipt.json",
+      "bytes": 78891,
+      "sha256": "5c26cf356f169475a03194b222920c94705257007f69293cacd2519387f0210c"
+    },
+    {
+      "path": "native-revision-both-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/native-revision-both-start.json",
+      "bytes": 13243,
+      "sha256": "6c94a0367d0bafa92a23f8fb3be4ce1b389827bb905ca1ad519172563bcf779f"
+    },
+    {
+      "path": "native-revision-both.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/native-revision-both.log",
+      "bytes": 97287,
+      "sha256": "c4162cacb122bdf519ae0313d908a499eeefb661b8bc0d77bbcc7743533e7506"
+    },
+    {
+      "path": "original-controls-prepared-runtime-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/original-controls-prepared-runtime-receipt.json",
+      "bytes": 59237,
+      "sha256": "cc20c643df095bbc665380839d4eb168c99edde631992307aec7e2874c9426ce"
+    },
+    {
+      "path": "original-controls-prepared-runtime-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/original-controls-prepared-runtime-start.json",
+      "bytes": 11818,
+      "sha256": "70e361d2f434f456b7ea6607cbb85a8455681dd2dbc484530c98667be7fd5376"
+    },
+    {
+      "path": "original-controls-prepared-runtime.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/original-controls-prepared-runtime.log",
+      "bytes": 3301,
+      "sha256": "4b20ae311a32f54064b404cd3e43783c872c08810c8990d72de444062d2fdfff"
+    },
+    {
+      "path": "owned-archive-index.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/owned-archive-index.json",
+      "bytes": 457900,
+      "sha256": "a42268c55c0acf72010509823f5948a504e71c9b6231fc180080a062b9545e4f"
+    },
+    {
+      "path": "owned-fixture-archives/real-kata-amendment-corrected-k3-9_tcrnj9.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/owned-fixture-archives/real-kata-amendment-corrected-k3-9_tcrnj9.tar.gz",
+      "bytes": 163620,
+      "sha256": "94f023b87bec75f915f4e2fe95b653fc9ac912feaad23d46b0af9aa27f8d915b"
+    },
+    {
+      "path": "owned-fixture-archives/real-kata-amendment-k3-e9qwovte.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/owned-fixture-archives/real-kata-amendment-k3-e9qwovte.tar.gz",
+      "bytes": 82407,
+      "sha256": "afc11f3e11fff28f0bb3958e65c93a302519a44756b187d57fc70ed170412a40"
+    },
+    {
+      "path": "owned-process-final-dispositions.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/owned-process-final-dispositions.json",
+      "bytes": 472625,
+      "sha256": "67a74f85fd403ef3dd7b476337163972c480e830f90c07c4de4530b29de6b675"
+    },
+    {
+      "path": "physical-git-five-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-git-five-receipt.json",
+      "bytes": 59560,
+      "sha256": "4d02d08693e2a6c370beddb697e2ac794ec8550abf089afb7d657a6c9042cbf2"
+    },
+    {
+      "path": "physical-git-five-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-git-five-start.json",
+      "bytes": 13167,
+      "sha256": "a67c22df1537b076b538803e47edceb35e7756e99ab333acf26be5b26721720f"
+    },
+    {
+      "path": "physical-git-five.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-git-five.log",
+      "bytes": 62316,
+      "sha256": "194126f801047f8c785a87e2452f1a5460e0c9d54092d5d8500bb81e1a901b49"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/04/fixtures/repair3-applying-g4-pzq2p_tl.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/04/fixtures/repair3-applying-g4-pzq2p_tl.tar.gz",
+      "bytes": 124702,
+      "sha256": "afd2fb619af0a2e49539a844d502b8d0c4acef54a5318362dea80aa1ce10686d"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-mb9ffo6g.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/04/fixtures/repair3-unknown-g4-mb9ffo6g.tar.gz",
+      "bytes": 124041,
+      "sha256": "ba7ccf42c40717ca922669ded92e1b48cdec373ec7365fd625e298b9b44353a8"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/05-repair3/fixtures/monitor05-9l7zjeht.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/05-repair3/fixtures/monitor05-9l7zjeht.tar.gz",
+      "bytes": 264672,
+      "sha256": "b2f11e52d47024b607fa0261ce4bb17bd260ea29f507de24059373207a83fccd"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/05-repair3/fixtures/ws05-pw59koxc.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/05-repair3/fixtures/ws05-pw59koxc.tar.gz",
+      "bytes": 22858,
+      "sha256": "51e4d525ad598d03adc9a248986f2a70c38a180c2f8ebbd376c7d72f41b2f0ad"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/native/separate-cnr-ztjgys0p.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/native/separate-cnr-ztjgys0p.tar.gz",
+      "bytes": 1493196,
+      "sha256": "f3c421d97914cf79baabecc6bf856463ca8dc24bc3052731b2ead1420ef2016f"
+    },
+    {
+      "path": "physical-probe/.scratch/sqlite-controller/native/shared-cnr-bqq3s6f5.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/.scratch/sqlite-controller/native/shared-cnr-bqq3s6f5.tar.gz",
+      "bytes": 837773,
+      "sha256": "43622858ae55f601cb6e2fcda90618720c62d0a5bf31931e17fea89c85f400fc"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31510,
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 21649,
+      "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 54960,
+      "sha256": "aec19a46944359f79b585c4620146a4bfe67cfb08c4d92221be11e3a9e6fefe5"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 41917,
+      "sha256": "91f710b3053becb83ad2f5b6ef96a42999a72e9b52ae436f0fe1afb61839812d"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "bytes": 8084,
+      "sha256": "c911f503e6939cae0c3bf6dd5a0150c587dfda01f0b49fb0d71e67a0a76a9b85"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 90254,
+      "sha256": "fedbd14a13573647d094b3099bce0bef0ddac8e621682c4fb361ef034a5d0197"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "bytes": 4989,
+      "sha256": "4e80f6347812ff3c3d727713826bea81288236c21ae20bfebe361951427b3866"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/standards_repair3_checks.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/standards_repair3_checks.py",
+      "bytes": 9838,
+      "sha256": "e65f0cac773a8ffbe0ab5f316f6e7b232a8a1c50f7eac1b388bfe5b4a032d954"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "bytes": 4404,
+      "sha256": "4121b99dea546d579e8108d115e3d0a52b94956b70fe748074bd4226ccfaac2f"
+    },
+    {
+      "path": "physical-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "physical-probe-input.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/physical-probe-input.tar.gz",
+      "bytes": 249932,
+      "sha256": "84cd82609c96e3bced3e725ff1224f68e8f6dac91b01b9e8169ed3bc272426c2"
+    },
+    {
+      "path": "probe-crate/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "probe-crate/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "probe-crate/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "probe-crate/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "probe-crate/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "probe-crate/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "probe-crate/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "probe-crate/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "probe-crate/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "probe-crate/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "probe-crate/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "probe-crate/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "probe-crate/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "probe-crate/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "probe-crate/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "probe-crate/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/lib.rs",
+      "bytes": 36022,
+      "sha256": "ebf351a4f4b1983df7141f1669cccc6b48b4ec5324f8aee0477ca068093fb9bb"
+    },
+    {
+      "path": "probe-crate/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "probe-crate/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "probe-crate/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "probe-crate/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/native_ui.rs",
+      "bytes": 28371,
+      "sha256": "6b20f9086b5b708a74a71f1888b16db33494e9f40d8ede1dcb2a7af0d0a1accc"
+    },
+    {
+      "path": "probe-crate/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "probe-crate/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "probe-crate/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "probe-crate/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "probe-crate/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/service.rs",
+      "bytes": 14622,
+      "sha256": "a377ba703fd95ad04bf173df16b187075cf56477fef5ee55f1f5c96f8a2c4a4e"
+    },
+    {
+      "path": "probe-crate/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "probe-crate/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "probe-crate/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "probe-crate/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "probe-crate/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "probe-crate/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "probe-crate/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "probe-crate/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "probe-crate/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "probe-crate/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "probe-crate/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "probe-crate/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "probe-crate/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "probe-crate/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "probe-crate/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/git_protocol.py",
+      "bytes": 54869,
+      "sha256": "10d98fdabfebb7f98fba14782642bf0be19157aa852c16d97f7b543b3f3691e5"
+    },
+    {
+      "path": "probe-crate/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/kata_protocol.py",
+      "bytes": 41645,
+      "sha256": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94"
+    },
+    {
+      "path": "probe-crate/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/monitor_projection.py",
+      "bytes": 7956,
+      "sha256": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b"
+    },
+    {
+      "path": "probe-crate/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "probe-crate/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "probe-crate/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/native_registry.py",
+      "bytes": 90254,
+      "sha256": "fedbd14a13573647d094b3099bce0bef0ddac8e621682c4fb361ef034a5d0197"
+    },
+    {
+      "path": "probe-crate/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "probe-crate/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/repair3_native_ui.py",
+      "bytes": 4860,
+      "sha256": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed"
+    },
+    {
+      "path": "probe-crate/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/websocket_controls.py",
+      "bytes": 4300,
+      "sha256": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905"
+    },
+    {
+      "path": "probe-crate/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "probe-crate-input.tar.gz",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-crate-input.tar.gz",
+      "bytes": 251594,
+      "sha256": "f78d97842d031e704c2ca727d479c7c8a386be1609e5f7040d5bd8f152556041"
+    },
+    {
+      "path": "probe-prefix-verification.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-prefix-verification.json",
+      "bytes": 1683,
+      "sha256": "550fabd10e0e63a39fe75d90f1707871be8f276c31b04186fa8262f7092d02e8"
+    },
+    {
+      "path": "probe-rationale.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/probe-rationale.json",
+      "bytes": 579,
+      "sha256": "351734e18c91bedcda8a2129a43d051334c264fffcac19ab0ce0b23e77012b55"
+    },
+    {
+      "path": "product-full.diff",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/product-full.diff",
+      "bytes": 465070,
+      "sha256": "8fee546b31132514de7154d7015d722b900dcc0e49f4311caf702c02e4991419"
+    },
+    {
+      "path": "product-repair3.diff",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/product-repair3.diff",
+      "bytes": 56630,
+      "sha256": "418636810bbf67a44b5035651e0f10b7d2f5e791dbf699775bb82633331650eb"
+    },
+    {
+      "path": "progress-filter-correction.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/progress-filter-correction.json",
+      "bytes": 502,
+      "sha256": "23faefbc674296755e69a570f25ee99753fc9ada78fde52bf678ba85f7373622"
+    },
+    {
+      "path": "real-kata-amendment-corrected-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment-corrected-receipt.json",
+      "bytes": 26781,
+      "sha256": "51be4bf92abca56f9b75ae2f34f0825240f6380376979d145d3d0e98e5f9367b"
+    },
+    {
+      "path": "real-kata-amendment-corrected-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment-corrected-start.json",
+      "bytes": 13171,
+      "sha256": "1b9f3ba5af241013e925c66bf1108b55586940e9a944e3c7890bb2bf11e87cac"
+    },
+    {
+      "path": "real-kata-amendment-corrected.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment-corrected.log",
+      "bytes": 1003,
+      "sha256": "d6c29acdecf3b1efa109d64f952b6e984c93e0e9921e393cb4f7de13fd0ef079"
+    },
+    {
+      "path": "real-kata-amendment-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment-receipt.json",
+      "bytes": 26785,
+      "sha256": "1b4d391da56c1fe47b663cd61cc872bf94deb580ac5870414b76e3ae1a1d7ac4"
+    },
+    {
+      "path": "real-kata-amendment-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment-start.json",
+      "bytes": 13175,
+      "sha256": "999a23692ebaef905a5335e6d820a142ef396869be1da4d6ce97b11738ebb78c"
+    },
+    {
+      "path": "real-kata-amendment.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/real-kata-amendment.log",
+      "bytes": 832,
+      "sha256": "44c0f629c8ad96e570b1576dedaeb7843e311a3161808dd8e438a1b1f834f780"
+    },
+    {
+      "path": "repair3.diff",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/repair3.diff",
+      "bytes": 1197706,
+      "sha256": "a75786a057525876c606b3ec2d957b8a1b8a0817bdd717874dc4e991500af708"
+    },
+    {
+      "path": "report.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/report.json",
+      "bytes": 59089,
+      "sha256": "d6f4792ecb978a2186c19c889cf71e0c0d656679f75206e674ff50ff5599544d"
+    },
+    {
+      "path": "report.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/report.md",
+      "bytes": 3117,
+      "sha256": "70f5685410317c6fd60008c42003fa8afa86b05e0963d1dfbec65e3cf1951b23"
+    },
+    {
+      "path": "review-executable-pins.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/review-executable-pins.json",
+      "bytes": 953,
+      "sha256": "d2c974fef14b72c92ac5ed3cbcbfb3ae3b6bc54b31cebd6ba171ab5347752a1f"
+    },
+    {
+      "path": "reviewer-target/debug/deps/corenius_sqlite_controller-8b1b9af281467a5f",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/reviewer-target/debug/deps/corenius_sqlite_controller-8b1b9af281467a5f",
+      "bytes": 33564912,
+      "sha256": "d52a0b31dc856b9dcf6e29c54c313066b18f390c83d86ee494b00a665b6d78d7"
+    },
+    {
+      "path": "run-owned-branch.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/run-owned-branch.py",
+      "bytes": 4401,
+      "sha256": "41f019eb52ae252c3531d146d13772a3af13ad6cb37c936a3ee532802c96498b"
+    },
+    {
+      "path": "run-owned-kata.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/run-owned-kata.py",
+      "bytes": 4397,
+      "sha256": "f49c80f663c649b3a3b111e861594f7ca6479d84b0015fbcb435878235ce33f9"
+    },
+    {
+      "path": "run-owned-progress-corrected.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/run-owned-progress-corrected.py",
+      "bytes": 4427,
+      "sha256": "85766a9791936c04920d4b2445c37d6211bb22b5e1e6610c74dbf702ba6d1989"
+    },
+    {
+      "path": "run-owned-units.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/run-owned-units.py",
+      "bytes": 4399,
+      "sha256": "84265a9617d6413635b6be3a22200c7f9adc6285e20160bc774a30a29523ef6a"
+    },
+    {
+      "path": "run-owned.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/run-owned.py",
+      "bytes": 4405,
+      "sha256": "826c12c3d589676db34b58d2caf352dbcd237e8a0a737af1cc2055ebbe9a7568"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/Cargo.lock",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/Cargo.lock",
+      "bytes": 14744,
+      "sha256": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/Cargo.toml",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/Cargo.toml",
+      "bytes": 432,
+      "sha256": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/README.md",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/README.md",
+      "bytes": 42842,
+      "sha256": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/bin/corenius-attempt-gate.rs",
+      "bytes": 909,
+      "sha256": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs",
+      "bytes": 1213,
+      "sha256": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/client.rs",
+      "bytes": 8113,
+      "sha256": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/codex.rs",
+      "bytes": 101944,
+      "sha256": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/codex_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/codex_schema.sql",
+      "bytes": 879,
+      "sha256": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/control.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/control.rs",
+      "bytes": 25630,
+      "sha256": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/control_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/control_schema.sql",
+      "bytes": 7003,
+      "sha256": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/gateway.rs",
+      "bytes": 21280,
+      "sha256": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/git.rs",
+      "bytes": 68315,
+      "sha256": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/git_workspace.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/git_workspace.rs",
+      "bytes": 35876,
+      "sha256": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/kata.rs",
+      "bytes": 55608,
+      "sha256": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/kata_schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/kata_schema.sql",
+      "bytes": 2994,
+      "sha256": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/lib.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/lib.rs",
+      "bytes": 31510,
+      "sha256": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/main.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/main.rs",
+      "bytes": 3881,
+      "sha256": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/monitor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_profile.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/native_profile.rs",
+      "bytes": 8219,
+      "sha256": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_ui.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/native_ui.rs",
+      "bytes": 21649,
+      "sha256": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/native_ws.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/native_ws.rs",
+      "bytes": 33723,
+      "sha256": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/query.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/query.rs",
+      "bytes": 11248,
+      "sha256": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/runtime.rs",
+      "bytes": 16041,
+      "sha256": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/schema.sql",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/schema.sql",
+      "bytes": 5678,
+      "sha256": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/service.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/service.rs",
+      "bytes": 9170,
+      "sha256": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/supervisor.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/supervisor.rs",
+      "bytes": 50406,
+      "sha256": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/ui_gateway.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/ui_gateway.rs",
+      "bytes": 10544,
+      "sha256": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/src/view.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/src/view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/support/codex_insula.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/support/codex_insula.py",
+      "bytes": 6791,
+      "sha256": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/client.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/client.rs",
+      "bytes": 6930,
+      "sha256": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/codex.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/codex.rs",
+      "bytes": 17584,
+      "sha256": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/control_center.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/control_center.rs",
+      "bytes": 21988,
+      "sha256": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/git.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/git.rs",
+      "bytes": 3509,
+      "sha256": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/kata.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/kata.rs",
+      "bytes": 1775,
+      "sha256": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/process.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/process.rs",
+      "bytes": 11048,
+      "sha256": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/public.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/public.rs",
+      "bytes": 30630,
+      "sha256": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/runtime.rs",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/runtime.rs",
+      "bytes": 38617,
+      "sha256": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/client_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/client_projection.py",
+      "bytes": 8316,
+      "sha256": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/control_center_native.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/control_center_native.py",
+      "bytes": 33316,
+      "sha256": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/git_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/git_protocol.py",
+      "bytes": 54869,
+      "sha256": "10d98fdabfebb7f98fba14782642bf0be19157aa852c16d97f7b543b3f3691e5"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/kata_protocol.py",
+      "bytes": 41645,
+      "sha256": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/monitor_projection.py",
+      "bytes": 7956,
+      "sha256": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_init.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/native_init.py",
+      "bytes": 2005,
+      "sha256": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_profile.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/native_profile.py",
+      "bytes": 4907,
+      "sha256": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/native_registry.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/native_registry.py",
+      "bytes": 90254,
+      "sha256": "fedbd14a13573647d094b3099bce0bef0ddac8e621682c4fb361ef034a5d0197"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/repair2_native_ui.py",
+      "bytes": 6412,
+      "sha256": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/repair3_native_ui.py",
+      "bytes": 4860,
+      "sha256": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/websocket_controls.py",
+      "bytes": 4300,
+      "sha256": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905"
+    },
+    {
+      "path": "snapshot/crates/sqlite-controller/tests/support/wsutil.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/snapshot/crates/sqlite-controller/tests/support/wsutil.py",
+      "bytes": 2208,
+      "sha256": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    {
+      "path": "source-after-final.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/source-after-final.json",
+      "bytes": 22959,
+      "sha256": "399df50e86a473d7c71df925275369e2f8391ac352ce668190c9dfbde6495bcb"
+    },
+    {
+      "path": "source-before.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/source-before.json",
+      "bytes": 13069,
+      "sha256": "5b3022742296dc6c9ccfca93642ac3f1b15390f220a79323396a20fe697fe3e6"
+    },
+    {
+      "path": "source.tar",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/source.tar",
+      "bytes": 153344000,
+      "sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6"
+    },
+    {
+      "path": "target/debug/corenius-attempt-gate",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-attempt-gate",
+      "bytes": 4734304,
+      "sha256": "ac2bf9966759f09746b5743e9e4e337078d82490d07e6127d78068720f536a0c"
+    },
+    {
+      "path": "target/debug/corenius-attempt-supervisor",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-attempt-supervisor",
+      "bytes": 22407800,
+      "sha256": "38243fe845eb5a6f248e681c41a7747d2bfee336d892c18a717688804e26f274"
+    },
+    {
+      "path": "target/debug/corenius-sqlite-controller",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/target/debug/corenius-sqlite-controller",
+      "bytes": 29879344,
+      "sha256": "c1c76b8ff0881555af39643d9fea872da8c7848476238dbac8999e105d2e1575"
+    },
+    {
+      "path": "tool-pins.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/tool-pins.json",
+      "bytes": 2767,
+      "sha256": "e8e26a362c283b3c1ac3125351e60220f1093d33b22509e47d4feb796727dff7"
+    },
+    {
+      "path": "unit-probe-rationale.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/unit-probe-rationale.json",
+      "bytes": 636,
+      "sha256": "cc205a5f88dd807dd7d8acbdb1f0f6bf59a0cd2df13dbc63b894772a2f0d3c12"
+    },
+    {
+      "path": "websocket-controls-receipt.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/websocket-controls-receipt.json",
+      "bytes": 26673,
+      "sha256": "fe213589ccd9c8a2ee3e99c12da144406e937b5efe12de07793bfff48e3aebc5"
+    },
+    {
+      "path": "websocket-controls-start.json",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/websocket-controls-start.json",
+      "bytes": 13050,
+      "sha256": "f5f57bbc496325927a02af550d25097f4526ee1a7bd8e6cf77f5e499794947bc"
+    },
+    {
+      "path": "websocket-controls.log",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/websocket-controls.log",
+      "bytes": 1817,
+      "sha256": "87fb995fc32e98b3a5d657c21f0ece82254e244d99a45939e43437901a428c78"
+    },
+    {
+      "path": "write-report.py",
+      "absolute_path": "/data02/home/philip.yang/devx/tmp/sqlite05-standards-repair3-7b20-2rq2njus/write-report.py",
+      "bytes": 27294,
+      "sha256": "18d082fb2d6790e72d70f64facecc5dfe5d3ea157de558d8d17f294b199b4a53"
+    }
+  ],
+  "file_count": 413,
+  "bytes": 262445909,
+  "coverage": "Every own report/addendum/five-control disposition, source/spec/prior/context input, scripts/rationale, full source archive/diffs, original+corrected probe input archives and current copied sourcefiles, all11 actual start/receipt/raw logs with per-run49 source/probe maps,11 full actual fixture archives with2154 member hashes/original paths, all49 exact expanded candidate files and retained executables. External owned Kata raw fixtures are represented by exact full archives with original printed root paths; no private trace analysis.",
+  "excluded": "Expanded full-repo duplicate snapshot beyond49 explicit inputs is represented by exact source.tar. Generic Cargo caches/build outputs beyond retained executed binaries are excluded. This index and final anchor excluded from self-index to avoid cycles. External read-only tooling/runtime files are pinned in tool-pins/environment files and were not mutated."
+}

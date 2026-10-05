@@ -1,0 +1,83 @@
+{
+  "frozen_at_utc": "2026-10-05T02:34:18.458455+00:00",
+  "axis": "Standards",
+  "result": "FAIL2",
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "tree": "8db411c5342d0adf63abb597773a8b00926f2a45",
+  "files": {
+    "report.md": {
+      "bytes": 3117,
+      "sha256": "70f5685410317c6fd60008c42003fa8afa86b05e0963d1dfbec65e3cf1951b23"
+    },
+    "report.json": {
+      "bytes": 59089,
+      "sha256": "d6f4792ecb978a2186c19c889cf71e0c0d656679f75206e674ff50ff5599544d"
+    },
+    "five-control-report.md": {
+      "bytes": 2542,
+      "sha256": "b92a8b10ba9d2e1f59cfd25aeceedec41a119a0d08e9110c5917a87cadba46e4"
+    },
+    "five-control-report.json": {
+      "bytes": 14450,
+      "sha256": "1be40faf4e0ebaac9eb17dabd422b47f92c0812b7c96e806b0a778fe633ccb71"
+    },
+    "addendum-branch653.md": {
+      "bytes": 2667,
+      "sha256": "3b65445e7f7ffc962c3aed42d91422feaed9947b30ac43a1f700cd4ef5f0c40b"
+    },
+    "addendum-branch653.json": {
+      "bytes": 9283,
+      "sha256": "a6b3ef3126dc5d2c932f6d2c4650a26970792cda4c004da966f760febc18a543"
+    },
+    "evidence-index.json": {
+      "bytes": 141324,
+      "sha256": "1ad48c9361d721427f59b8b5543e24b05e13d72ff5bfb7b0ed047629f25871e5"
+    },
+    "source.tar": {
+      "bytes": 153344000,
+      "sha256": "e8d088e220ebaefb1c118ec3ab2b209ae9a0b7e3d91c56647de3f56d2b1a17d6"
+    },
+    "source-before.json": {
+      "bytes": 13069,
+      "sha256": "5b3022742296dc6c9ccfca93642ac3f1b15390f220a79323396a20fe697fe3e6"
+    },
+    "source-after-final.json": {
+      "bytes": 22959,
+      "sha256": "399df50e86a473d7c71df925275369e2f8391ac352ce668190c9dfbde6495bcb"
+    },
+    "tool-pins.json": {
+      "bytes": 2767,
+      "sha256": "e8e26a362c283b3c1ac3125351e60220f1093d33b22509e47d4feb796727dff7"
+    },
+    "environment-pins.json": {
+      "bytes": 641,
+      "sha256": "b32897b1ef297a3acac8e176ecad2267e1c1d90a07f0a4cd1a75a98571485215"
+    },
+    "owned-archive-index.json": {
+      "bytes": 457900,
+      "sha256": "a42268c55c0acf72010509823f5948a504e71c9b6231fc180080a062b9545e4f"
+    },
+    "owned-process-final-dispositions.json": {
+      "bytes": 472625,
+      "sha256": "67a74f85fd403ef3dd7b476337163972c480e830f90c07c4de4530b29de6b675"
+    },
+    "admission-verification.json": {
+      "bytes": 815,
+      "sha256": "c51ffbd956576536819e11b4e1e6fffb618a107921bbb390ea0e62e915bd59a4"
+    },
+    "context-efficiency-adoption.json": {
+      "bytes": 1007,
+      "sha256": "3f83d0d71640cf0a80a69241027b352feb023ea6f0c268672bc8d7faf691843a"
+    }
+  },
+  "index_entries_verified": 413,
+  "index_mismatches": [],
+  "all_owned_artifacts_read_only": true,
+  "49_source_inputs_unchanged": true,
+  "all11_runs_source_and_probe_maps_unchanged": true,
+  "owned_resource_observations": 160,
+  "native_Git_handles": 26,
+  "owned_same_live": 0,
+  "owned_unknown": 0,
+  "no_acceptance_or_fourth_repair": true
+}

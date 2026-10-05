@@ -1,0 +1,178 @@
+[
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_worker.py"
+    ],
+    "exit": 0,
+    "seconds": 15.274,
+    "log": "gate-00.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_effort.py"
+    ],
+    "exit": 0,
+    "seconds": 0.742,
+    "log": "gate-01.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_wt.py"
+    ],
+    "exit": 0,
+    "seconds": 0.6,
+    "log": "gate-02.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_land.py"
+    ],
+    "exit": 0,
+    "seconds": 0.791,
+    "log": "gate-03.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_tracker.py"
+    ],
+    "exit": 0,
+    "seconds": 0.188,
+    "log": "gate-04.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_msg.py"
+    ],
+    "exit": 0,
+    "seconds": 0.16,
+    "log": "gate-05.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_evidence.py"
+    ],
+    "exit": 0,
+    "seconds": 0.476,
+    "log": "gate-06.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/test_claims.py"
+    ],
+    "exit": 0,
+    "seconds": 0.132,
+    "log": "gate-07.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/test_sync_agentic_workflow.py"
+    ],
+    "exit": 0,
+    "seconds": 0.374,
+    "log": "gate-08.log"
+  },
+  {
+    "command": [
+      "python3",
+      "tools/agents/tracker.py",
+      "lint"
+    ],
+    "exit": 0,
+    "seconds": 0.065,
+    "log": "gate-09.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/agents",
+      "-p",
+      "test_mac*.py"
+    ],
+    "exit": 0,
+    "seconds": 37.935,
+    "log": "gate-10.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/agents",
+      "-p",
+      "test_sqlite*.py"
+    ],
+    "exit": 0,
+    "seconds": 1.95,
+    "log": "gate-11.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/agents",
+      "-p",
+      "test_monitor*.py"
+    ],
+    "exit": 0,
+    "seconds": 6.547,
+    "log": "gate-12.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 18.436,
+    "log": "gate-13.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.397,
+    "log": "gate-14.log"
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "crates/sqlite-controller/Cargo.toml",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 5.764,
+    "log": "gate-15.log"
+  }
+]

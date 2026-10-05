@@ -1,0 +1,207 @@
+{
+  "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+  "count": 33,
+  "entries": [
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/addendum.json",
+      "relative_path": "addendum.json",
+      "bytes": 8787,
+      "sha256": "f657870a912e180dad4091ba837e2d628ae8d787fe160cf7c1ee995381fa43d8"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/addendum.md",
+      "relative_path": "addendum.md",
+      "bytes": 2354,
+      "sha256": "7d76ed8cfcdef658bbb16014ae375c42c7a7fd3dafbd23f13ecd2ba6b7b07d10"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/branch653-public.json",
+      "relative_path": "branch653-public.json",
+      "bytes": 2810,
+      "sha256": "1d4d1430fd234aef243c9ae0f92b1408b3f4b178264f65dfde15efef59fb4d23"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/cleanup.json",
+      "relative_path": "cleanup.json",
+      "bytes": 22018,
+      "sha256": "bc5c132ede3d979a5c5aaf766816362322715542445cdee0446652344402d020"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver-v2.py",
+      "relative_path": "correction-driver-v2.py",
+      "bytes": 767,
+      "sha256": "1bbdb62dfba27141cd7fb97c59302b425490c33a73528ca71d7ce0321db0cda2"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-driver.py",
+      "relative_path": "correction-driver.py",
+      "bytes": 909,
+      "sha256": "4f14e0b63dd681d7d08d437572f61065fa24ea3399ea12270fbf30c63928ea32"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-exercise.py",
+      "relative_path": "correction-exercise.py",
+      "bytes": 5557,
+      "sha256": "7eed19d46bf99945886b055cea9cbcefe4993d95b551d9c2ed778dfd3812a7f0"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-result.json",
+      "relative_path": "correction-result.json",
+      "bytes": 8327,
+      "sha256": "84404f1c4b142e20ca8836c4ba2812027bce001104bfd1dea58277914b73af43"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.log",
+      "relative_path": "correction-v2.log",
+      "bytes": 43545,
+      "sha256": "cd9b8c8a332e93066069746d00390101de1ebcdbbf496acc12f9ac5fab64682a"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction-v2.run.json",
+      "relative_path": "correction-v2.run.json",
+      "bytes": 744,
+      "sha256": "fbad234fb5ec1201313d5a808bc10515e7681865acfe3f53b64b99c970827525"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.log",
+      "relative_path": "correction.log",
+      "bytes": 38977,
+      "sha256": "be2eb007456e6cdb1d57cfcecf74ad3bfdb91a8e9a94e56101100c55adeacb40"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/correction.run.json",
+      "relative_path": "correction.run.json",
+      "bytes": 741,
+      "sha256": "93c30640dd4b7ce349db5f6ed66c3b5c407f9538198a8e07e4fa909c84b176cb"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/derivations.json",
+      "relative_path": "derivations.json",
+      "bytes": 1545,
+      "sha256": "17fce69485b70b3d5cf9fd9af9e4bb2961f45ca0eccf5384fb6dc2f4d3abf48e"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/failed-setup-public-state.json",
+      "relative_path": "failed-setup-public-state.json",
+      "bytes": 1533,
+      "sha256": "efdbc7c23030732a6377582dcca68f2bd8120982001e29150e22a62ec959ad59"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/failed-state.db",
+      "relative_path": "failed-state.db",
+      "bytes": 4096,
+      "sha256": "ecebcfef853ac1d1a44fc652c28ae7a95f8fce2a9b8d2a64c9dd5315ec865abb"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/failed-state.db-shm",
+      "relative_path": "failed-state.db-shm",
+      "bytes": 32768,
+      "sha256": "9b31a2afd73af91bcf51d85f999c49ace08921dff6f869460c0cefcd79af48ba"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/failed-state.db-wal",
+      "relative_path": "failed-state.db-wal",
+      "bytes": 3246592,
+      "sha256": "f35acbc94d39e108a7eef58c542b670cf6d8c32685ece7c2c65e1eaea2f157cc"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/finalize-addendum.py",
+      "relative_path": "finalize-addendum.py",
+      "bytes": 14506,
+      "sha256": "92a1ad6663f9e32e5174ba1fa5fa4fe8cff7c334dcea54dc05f33d9701a2d558"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/fixture-v2.diff",
+      "relative_path": "fixture-v2.diff",
+      "bytes": 10393,
+      "sha256": "8eb5e9026a4248f6cb18e2dcd7b2e02f458fa1c20836f35cd881926ddaebedc8"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/handoff.json",
+      "relative_path": "handoff.json",
+      "bytes": 873,
+      "sha256": "6e6463a6f8f33ed5aec6218926d8c76b2d2cf7d1d783f98fdfe981913f6502ef"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/monitor.rs",
+      "relative_path": "monitor.rs",
+      "bytes": 78014,
+      "sha256": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/native-fixtures/shared-cnr-qu6309lz.tar.gz",
+      "relative_path": "native-fixtures/shared-cnr-qu6309lz.tar.gz",
+      "bytes": 679048,
+      "sha256": "2b6dd889e93d316e0bc72005ebb1dc03b24d7e1a959e50a15c10dbd0778a137d"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/native-fixtures-v2/shared-cnr-d0c9peh_.tar.gz",
+      "relative_path": "native-fixtures-v2/shared-cnr-d0c9peh_.tar.gz",
+      "bytes": 567462,
+      "sha256": "f598f77da522b8f084ef2451726a5e2e68e6a4114feb73f38a2717821ef88009"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/native-registry-v2.py",
+      "relative_path": "native-registry-v2.py",
+      "bytes": 81891,
+      "sha256": "dc915b7a56164db6245ebf6c48a7f37c58f7e2ecfe5cef34190ff9897db30b13"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/probe-retention/.scratch/sqlite-controller/04/fixtures/review-progress-attempt-provenance-g4-6yzpa2s4.tar.gz",
+      "relative_path": "probe-retention/.scratch/sqlite-controller/04/fixtures/review-progress-attempt-provenance-g4-6yzpa2s4.tar.gz",
+      "bytes": 75074,
+      "sha256": "03196e49891327f06e3d1b297f6b3dc29a7b2160d60c650e5004a6ef1aa326cd"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress-probe.py",
+      "relative_path": "progress-probe.py",
+      "bytes": 3290,
+      "sha256": "79fe54062e1f0922717323cbbced8b4f03dd4ae9392840b254e1f62bccb34c3f"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress-result.json",
+      "relative_path": "progress-result.json",
+      "bytes": 5207,
+      "sha256": "e4a85801f49c03f433fe12d5f21a81fbdc4d8782679242ac7a532a5d90d9ef32"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.log",
+      "relative_path": "progress.log",
+      "bytes": 6017,
+      "sha256": "45fe29c91aadc0af6f86705c1fae8c1aea4aa2e9763fcf33a1e2d49e5094e339"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/progress.run.json",
+      "relative_path": "progress.run.json",
+      "bytes": 471,
+      "sha256": "00b1e744712ad41196a107c0282b81d270cd49fa9e14084f583dce15183723a8"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/run.py",
+      "relative_path": "run.py",
+      "bytes": 1050,
+      "sha256": "a51eb8600e5e5f5c84f2f3a943d7a22ff89c19155624a8f49ccc4308735b65cb"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/source-after.json",
+      "relative_path": "source-after.json",
+      "bytes": 6289,
+      "sha256": "ade3074e8cda32c3dfa14857676e7b4277b116b3fec9f4f1e40b3a7387ee45cf"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/source-binding.json",
+      "relative_path": "source-binding.json",
+      "bytes": 602,
+      "sha256": "d0b68d955aef3d4d78d80a33368b0fd648e684778a764974c7d38a056c204d0d"
+    },
+    {
+      "path": "/data02/home/philip.yang/devx/tmp/sqlite05-7b20-spec-addendum-_tp_lfrn/view.rs",
+      "relative_path": "view.rs",
+      "bytes": 31281,
+      "sha256": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f"
+    }
+  ],
+  "exclusions": [
+    "Self index and Python bytecode. No build or source mutation in addendum. Source/binaries linked to immutable previous evidence with exact hashes."
+  ]
+}

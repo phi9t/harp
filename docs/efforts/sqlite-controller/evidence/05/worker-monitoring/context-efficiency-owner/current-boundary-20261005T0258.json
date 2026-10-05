@@ -1,0 +1,143 @@
+{
+  "created_at": "2026-10-05T02:58:46.090224+00:00",
+  "goal": "Retained Corenius-only SQLite controller baseline; accepted01\u201304, unaccepted05,06blocked. NoPG/Temporal or financial budget baseline.",
+  "accepted04": {
+    "product_source": "e31d57bc9ab739d5b4473c387a9320d176adf07b",
+    "helper": "f439e9a1bbab958c0ced1a49026cac4207d7db64",
+    "evidence_tip": "706ca8e491ee9c3e5e73ab9b34bb9fd7f6d4bc92",
+    "clean_quiescent_writer": true,
+    "F4_lifecycle_composition": "historical repair2 requirement resolved under final retained04 independent gates; do not reintroduce as unresolved/current repair2",
+    "nine_matrix": "docs/efforts/sqlite-controller/evidence/04/independent-review/repair3/nine-finding-root-matrix.json SHAf65b58717a46d8448eb9e64f05c61d225e23ed8b6719bf320d09fe5bf90e8edd"
+  },
+  "current05": {
+    "source": "7b20a886576c125c634913edadc4bb6f8c115352",
+    "evidence_tip": "43d585c27055081d267e54ed6a1a1860d5c8b455",
+    "last_writer_thread": "01a10458-ceff-7243-9b2b-0d24db5d2880",
+    "writer_state": "completed/quiescent/frozen",
+    "currently_authorized_running_writer": null,
+    "round": "3/3 exhausted; no new repair admitted",
+    "review": "Spec/Standards/branch653 actualFAIL2",
+    "verified": "root129FI incl40native+14default/fmt/strictClippy/build PASS with exact unchanged source; both originalfive repair controls independently resolved",
+    "remaining": "C1superseded correction queue; C2predecessor progress. Historical RED/GREEN and allsource/testpairs retained in final05disposition; passing repro exit proves defect, not productPASS.",
+    "disposition": "docs/efforts/sqlite-controller/evidence/05/independent-review/repair3/review-result.json",
+    "active_owned_tests_and_author_jobs": "none; root16411terminalexit0 and actor completed",
+    "unknown_effects": "Historical unknown journal effects retained as unknown; absence of original PID/start identities is not reconciliation. No new runtime/effect dispatch.",
+    "next_bounded_action": "Await explicit owner ONEadditional narrow repair/re-review authority. Then fresh non-inheriting isolated author after quiescence/effect reconciliation, exact C1/C2 RED/GREEN and inherited tests/gates. No duplicate author or cap reset."
+  },
+  "context_observations": {
+    "sqlite04": {
+      "source": "/data02/home/philip.yang/.codex/sessions/2026/10/04/rollout-2026-10-04T15-32-48-01a1078b-d944-7c82-a392-50333a175a77.jsonl",
+      "latest_positive_request": {
+        "kind": "request",
+        "at": "2026-10-04T19:02:53.094Z",
+        "offset": 10698567,
+        "input": 86524,
+        "cached": 86016,
+        "uncached": 508,
+        "output": 179,
+        "window": 258400
+      },
+      "occupancy_proxy": 0.33484520123839007,
+      "scope": "Public token metadata and actual canonical compacted envelope only; private reasoning/prompts/compaction body excluded; zero/reset/cumulative counters uncredited.",
+      "latest_observed_compaction": {
+        "event": {
+          "kind": "compaction",
+          "at": "2026-10-04T18:37:17.008Z",
+          "offset": 9636660,
+          "canonical_envelope": "compacted"
+        },
+        "last_positive_before": {
+          "kind": "request",
+          "at": "2026-10-04T18:34:55.300Z",
+          "offset": 9634926,
+          "input": 196196,
+          "cached": 191872,
+          "uncached": 4324,
+          "output": 653,
+          "window": 258400
+        },
+        "first_positive_after": {
+          "kind": "request",
+          "at": "2026-10-04T18:37:27.324Z",
+          "offset": 9772374,
+          "input": 28654,
+          "cached": 12032,
+          "uncached": 16622,
+          "output": 39,
+          "window": 258400
+        },
+        "reduced_following_input": true,
+        "new_command_issued_by_this_receipt": false
+      }
+    },
+    "last_sqlite05": {
+      "source": "/data02/home/philip.yang/.codex/sessions/2026/10/04/rollout-2026-10-04T00-38-11-01a10458-ceff-7243-9b2b-0d24db5d2880.jsonl",
+      "latest_positive_request": {
+        "kind": "request",
+        "at": "2026-10-05T02:11:47.852Z",
+        "offset": 7883480,
+        "input": 61645,
+        "cached": 61056,
+        "uncached": 589,
+        "output": 169,
+        "window": 258400
+      },
+      "occupancy_proxy": 0.2385642414860681,
+      "scope": "Public token metadata and actual canonical compacted envelope only; private reasoning/prompts/compaction body excluded; zero/reset/cumulative counters uncredited.",
+      "latest_observed_compaction": {
+        "event": {
+          "kind": "compaction",
+          "at": "2026-10-05T02:07:27.236Z",
+          "offset": 7267287,
+          "canonical_envelope": "compacted"
+        },
+        "last_positive_before": {
+          "kind": "request",
+          "at": "2026-10-05T02:04:30.202Z",
+          "offset": 7265553,
+          "input": 224815,
+          "cached": 103040,
+          "uncached": 121775,
+          "output": 243,
+          "window": 258400
+        },
+        "first_positive_after": {
+          "kind": "request",
+          "at": "2026-10-05T02:07:36.171Z",
+          "offset": 7406658,
+          "input": 29421,
+          "cached": 12032,
+          "uncached": 17389,
+          "output": 154,
+          "window": 258400
+        },
+        "reduced_following_input": true,
+        "new_command_issued_by_this_receipt": false
+      }
+    },
+    "coordinator": {
+      "source": "/data02/home/philip.yang/.codex/sessions/2026/10/01/rollout-2026-10-01T01-39-09-01a0f51d-8b62-7930-862f-c4b44d7d0bb7.jsonl",
+      "latest_positive_request": {
+        "kind": "request",
+        "at": "2026-10-05T02:56:24.980Z",
+        "offset": 167151933,
+        "input": 182961,
+        "cached": 181632,
+        "uncached": 1329,
+        "output": 1996,
+        "window": 258400
+      },
+      "occupancy_proxy": 0.7080534055727554,
+      "scope": "Public token metadata and actual canonical compacted envelope only; private reasoning/prompts/compaction body excluded; zero/reset/cumulative counters uncredited.",
+      "latest_observed_compaction": {
+        "in_bounded_tail": false,
+        "no_full_history_inference": true
+      }
+    }
+  },
+  "capability": "No explicit current root/child compact API exposed. Pinned localCLI help exposes queue and no compact command. Do not submit /compact as ordinarytext or count this summary as compaction. Actual past compactions are independently measured above; current coordinator grows again and requires supported measuredcompact/fresh context before next boundedphase. No duplicate writer can be admitted during cap hold.",
+  "thresholds": "warn100k; safecheckpoint120k/50%; before-nextphase150k/60%,tunable. Static prompt/tool-schema floor UNKNOWN; repeated compaction cannot establish/remove it. Dynamic handoff target4\u20138ktokens, not totalprompt/cost guarantee.",
+  "retained_negative_knowledge": "Old rejectedPG/Temporal baseline plans, historicalF4unresolved label, zero-reset counts, PASSsource/filenames, queued-as-ack claims and duplicate normalized-record counts are excluded from active facts. Preserve originals and actual raw2388 step-review supplement; history122\u20131262UNREVIEWED.",
+  "mainlead": "Existing15mintimer/ledger under01a10084, no second scheduler/ledger writes. Current assignmentupdate queuedreceipt01a109fb-2086-7dd1-ac38-3989e9ce8334; presentation/ackUNKNOWN.",
+  "privacy": "No private reasoning analyzed or transcripts deleted. Source paths/byte offsets only establish provenance, never context size."
+}

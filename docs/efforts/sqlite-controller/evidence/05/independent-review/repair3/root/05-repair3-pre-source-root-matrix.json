@@ -1,0 +1,294 @@
+{
+  "sealed_at": "2026-10-05T01:52:59.336885+00:00",
+  "authority": "authenticated root sole coordinator",
+  "phase": "BEFORE repaired SOURCE freeze, current49file binding",
+  "writer": "/data02/home/philip.yang/workspace/corenius-sqlite05-repair3",
+  "base": "d529d1f55c1f7183fd801734e5d35405d9bee676",
+  "author_matrix_sha256": "99dabd931ccfecf913782514dcae173e225bc0190d7772ce3e5737cc4c641d2c",
+  "matrix": {
+    "recorded_at": "2026-10-05T01:51:30.989027+00:00",
+    "phase": "before SOURCE freeze; final relevant015 running, final focused-native/fmt/default build pending",
+    "base": "d529d1f55c1f7183fd801734e5d35405d9bee676",
+    "source_files": {
+      "crates/sqlite-controller/Cargo.lock": "69a14c11e43bb6c39633cb3aafd388704865ac668408cfa3af16cee0315da91a",
+      "crates/sqlite-controller/Cargo.toml": "86c40fe9e5783f6fff5db10580d722e4ede4b775327c77fb122e0df6ad831114",
+      "crates/sqlite-controller/README.md": "7f180292e675175398d7485bf33e4f6fe47ee6458b926058d0e05926fadbebce",
+      "crates/sqlite-controller/src/bin/corenius-attempt-gate.rs": "8a7aa69173625759b2c3fceba0384be1c9b5653839299f6b3ca7e00302380626",
+      "crates/sqlite-controller/src/bin/corenius-attempt-supervisor.rs": "8454f5f3205e1f431ed1c39e1bf0ee9376b5dc77ee965215300cad06e0507be7",
+      "crates/sqlite-controller/src/client.rs": "2daa5373a73ab5da1b68dbc4080984131161725bd5ec0df5c0411ad91e0980b5",
+      "crates/sqlite-controller/src/codex.rs": "dd9c6e9bda2d1cc40f8386a7e2b665f3f23ec60346d4b26c2b051fbcb4424be8",
+      "crates/sqlite-controller/src/codex_schema.sql": "4b6100587ecf35dfe244cf41dedb635f96c826a370496fe251f3d4a3a6d39b8e",
+      "crates/sqlite-controller/src/control.rs": "b7a48d4ac55f3578f1bd0396b0661f1b424dc6b4a7a038e21c428040862bd95b",
+      "crates/sqlite-controller/src/control_schema.sql": "812187178d58453730047dfd1fce64a65c8fe9cdc5e3940866499d70147fa3c2",
+      "crates/sqlite-controller/src/gateway.rs": "f5c0f2dbf5c4db1910fc696a79a7718b1054be2a6f2fd1116e925bee76a5ee18",
+      "crates/sqlite-controller/src/git.rs": "961f4168c2db415bcf867f28d23378ca1da347d11b01d6d1778e2302633040d6",
+      "crates/sqlite-controller/src/git_workspace.rs": "419898d124c28632ef5044dcfa15472465a3d90874f32eb6c82ae4c2bc84e0b7",
+      "crates/sqlite-controller/src/kata.rs": "dace9a7f905a3c566c6e547ece679bcc333bc953855bcbb21af4bc9ace65c22f",
+      "crates/sqlite-controller/src/kata_schema.sql": "33996df812cdc06daddc69a771cbc756c43a1262cd622114e7559887a0ec1bfe",
+      "crates/sqlite-controller/src/lib.rs": "68c93308f18276c9b0c781bf41eda4fe75b79950c74eebf4aa0e5e3775488ee4",
+      "crates/sqlite-controller/src/main.rs": "0ffdefa9f62f0af23854d1bbe8b82980223513f0dfaed0753715de495950e5f7",
+      "crates/sqlite-controller/src/monitor.rs": "3c4cb7517799eca4fe9b1d96093927ac7a784eaaaef1bb5e6f53dbd9f83b4561",
+      "crates/sqlite-controller/src/native_profile.rs": "30a204102486a831dd4eddeb74c8ce4217aebf08ae43750f108131116c8943e9",
+      "crates/sqlite-controller/src/native_ui.rs": "815a720057e7af7dc69f9be1246a16191c261ca5b0335e716e3550fa7648efc3",
+      "crates/sqlite-controller/src/native_ws.rs": "ae9c6afd4d61335c13e5ee325a04c57b38da03eb63ca8d765808d3f24c1583e7",
+      "crates/sqlite-controller/src/query.rs": "97b86202a3850cca30e7379053f7b0dcd19c45ab756901be71af9f028799fd31",
+      "crates/sqlite-controller/src/runtime.rs": "8d02ea5ba2734b86ffad4c6fcb24781930f5667768a79925eadc1e34d9a7b8a0",
+      "crates/sqlite-controller/src/schema.sql": "6bdabbf4d08ce7692e04a7b23a0163dc9fb7971717535c7fa9081b9ddaada2d7",
+      "crates/sqlite-controller/src/service.rs": "d79c9ffea1ebfeebee47f31e4dc4352b12f605f7492f046136aa77818061d061",
+      "crates/sqlite-controller/src/supervisor.rs": "92c7036e09d7b6e974f511b32f0c7daa41f1a58f2931fcc3641919534b2b1a8f",
+      "crates/sqlite-controller/src/ui_gateway.rs": "58a07ebec5b6c4075f5945e0fbf8cf871b6c07fbe8dad78550016dd89ca702f9",
+      "crates/sqlite-controller/src/view.rs": "d8c87224e2fb0baa285468c7696f4a30a2dc709d723357560774491d44fe906f",
+      "crates/sqlite-controller/support/codex_insula.py": "d749ad030f6ac45ae70d00b6989dccee7ca1e5cccc5f12cb560b770f0a62ec8f",
+      "crates/sqlite-controller/tests/client.rs": "43275d2ee4dc9a05d2e19bba3ad0e5dc551979f00fa0952802cd0e3d90124f32",
+      "crates/sqlite-controller/tests/codex.rs": "8ec909df07c0c5d0980febb3e955a8b33620118c5e2cdf54f148d81877043671",
+      "crates/sqlite-controller/tests/control_center.rs": "c7aa9443d8b2a78f86de5e4242f298fd65a67245d66503fcca464a0e0e66e91c",
+      "crates/sqlite-controller/tests/git.rs": "6babc34e20b43dcb72e381f8fac6ed165a489b8d707ced1b628c35595c820b40",
+      "crates/sqlite-controller/tests/kata.rs": "09a2746aef3925e33283759033fe395b0fa0f6e807e4d9f8469619aaf78195fa",
+      "crates/sqlite-controller/tests/process.rs": "ad80595324c31f9ee302e40451ef1aba62da2e7e40b9b1dc4471c0b5bdf50d02",
+      "crates/sqlite-controller/tests/public.rs": "e3ac2486d1a3e9b3d118b7ba520985a1e8ba75bae3ac3f13c4580e4dc02c3aae",
+      "crates/sqlite-controller/tests/runtime.rs": "abbcd63464adecb897fc349b8d2507157ead3f631d673f1d24c3837387acfbde",
+      "crates/sqlite-controller/tests/support/client_projection.py": "ff07efd8da395edebb28427585e2a847df1fbbe940eb2b7b04c7c7fc6885e51c",
+      "crates/sqlite-controller/tests/support/control_center_native.py": "dfd53a24dbeadf6136de13baed6c30b0fd40803718e526cf0403fa227b536299",
+      "crates/sqlite-controller/tests/support/git_protocol.py": "10d98fdabfebb7f98fba14782642bf0be19157aa852c16d97f7b543b3f3691e5",
+      "crates/sqlite-controller/tests/support/kata_protocol.py": "8d603d8bdc0a3cc950dbef796875c113a32c714a57b25867374a9963a8e0be94",
+      "crates/sqlite-controller/tests/support/monitor_projection.py": "c01fdb68c04bf0594b24877b6a29ee734f0d167378c6a8211efed0f4abcbdc1b",
+      "crates/sqlite-controller/tests/support/native_init.py": "736b12e882ad398f0244996442cd8897943e0bd49a9334f97d522b4fd89c42e8",
+      "crates/sqlite-controller/tests/support/native_profile.py": "6ec3a387376d994d7bf1a935ad0ffde61836bcd87da43f676de98c28c41fb63c",
+      "crates/sqlite-controller/tests/support/native_registry.py": "fedbd14a13573647d094b3099bce0bef0ddac8e621682c4fb361ef034a5d0197",
+      "crates/sqlite-controller/tests/support/repair2_native_ui.py": "af8fe44e37180d394b1aa38348331b8044f20fff4524a695b5a6800dbfa81e7b",
+      "crates/sqlite-controller/tests/support/repair3_native_ui.py": "a605b2c20f1ff92b0c3add0a659e25cab8657cd542462e4d37f7ca75e55c81ed",
+      "crates/sqlite-controller/tests/support/websocket_controls.py": "d09cfbcea906527ae2caf2aa6113f96249cfe631b80b8df95553e47492d4b905",
+      "crates/sqlite-controller/tests/support/wsutil.py": "035c38d41197db3dd13d217e19d90f468cb7566aaf66c57c69d042c95b6aaf3f"
+    },
+    "inherited_nine": {
+      "recorded_at": "2026-10-05T01:45:11.292062+00:00",
+      "inherited_matrix": "docs/efforts/sqlite-controller/evidence/04/independent-review/repair3/nine-finding-root-matrix.json",
+      "inherited_sha256": "f65b58717a46d8448eb9e64f05c61d225e23ed8b6719bf320d09fe5bf90e8edd",
+      "findings": [
+        {
+          "finding": 1,
+          "topic": "trusted imports",
+          "original_actual_failure": "shadow-red",
+          "declared_hypothesis": "Worker cwd shadows trusted Python imports and forges repository status.",
+          "changed_fixture_rationale": "Worker module writes a positive execution marker; candidate evaluation remains deliberately enabled.",
+          "focused_result": "Actual untracked work retained and shadow module not executed.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 2,
+          "topic": "landing authority",
+          "original_actual_failure": "authority-red",
+          "declared_hypothesis": "Initial request journal does not authorize a later physical-ref admission after lead replacement.",
+          "changed_fixture_rationale": "Declared barriers bracket the actionable admission; before replacement must refuse, after replacement must preserve admitted decision.",
+          "focused_result": "Pre-admission replacement refuses physical effect; post-admission decision lands/reconciles.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 3,
+          "topic": "recovered publication",
+          "original_actual_failure": "publication-red",
+          "declared_hypothesis": "Physical confirmation omitted the shared revision/event/receipt/Kata publication transaction.",
+          "changed_fixture_rationale": "First Kata revision oracle included autonomous acknowledgement revisions; final fixture pauses automatic runtime for domain observation, then calls public Kata reconcile.",
+          "focused_result": "Both ref crash boundaries; replacement, cursor, one landing revision/event/receipt and exactly two confirmed Kata effects. Kata2/2 PASS9.47s.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 4,
+          "topic": "terminal lifecycle",
+          "original_actual_failure": "terminal-capture-red,terminal-accept-red,accepted-capture-red; repair2 composition-red: fresh proof passed, reports1->2/revision9->10, original accepted proof could no longer land",
+          "declared_hypothesis": "Fresh verification on accepted state supersedes the accepted proof; even a late semantic refusal consumes the newest git-verify operation. Validate candidate/task inside the existing journal-admission transaction before operation insertion.",
+          "changed_fixture_rationale": "New public mode uses actual private Git, fixed isolated suite and stable verifier key. Identical RED/GREEN driver; no timing shim, model, journal injection or semantic oracle change.",
+          "focused_result": "composition-green2/2 PASS7.56s (run elapsed9.03s): refused accepted/landed fresh verification without new operation/report/task/revision, stable original proof replayed, original exact accepted proof landed.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 5,
+          "topic": "selected stop retry",
+          "original_actual_failure": "native-final-driver-red",
+          "declared_hypothesis": "Pending unsubscribe retry falls back to immutable old stop instead of the exact qualification used when the operation was admitted.",
+          "changed_fixture_rationale": "Shared first GREEN changed connection due to active peer and correctly refused. Final fixture retires peer before restart; same final driver replayed genuine RED in owned initial-stop source materialization. Disposal failure also retained.",
+          "focused_result": "Matched same-driver RED2/2 FAIL50.94s and GREEN2/2 PASS35.75s; same logical ID/current selected stop, original stop immutable.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 6,
+          "topic": "inventory responsiveness",
+          "original_actual_failure": "inventory-red",
+          "declared_hypothesis": "Untrusted slow Git inspection runs while holding the single SQLite connection mutex.",
+          "changed_fixture_rationale": "Real clean filter sleeps six seconds and records execution; concurrent status/progress/cancel must finish while inventory stays blocked.",
+          "focused_result": "Controls prompt with blocked inspection; snapshot revision/age/drift explicit;2/2 PASS8.30s.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 7,
+          "topic": "final output",
+          "original_actual_failure": "final-output-red",
+          "declared_hypothesis": "Exit-first polling accepts a fast exited oversized producer with a truncated passing log.",
+          "changed_fixture_rationale": "Declared FI waits for owned verifier exit before polling; candidate handles closed pipe and exits zero. First correction recorded limit but ignored it in verdict, retained failure.",
+          "focused_result": "Actual exit zero + output-bound limit refuses verification/acceptance; bounded diagnostics and owned PID/start/wait retained.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 8,
+          "topic": "archive producer",
+          "original_actual_failure": "archive-red",
+          "declared_hypothesis": "Archive storage/diagnostics are bounded only after tar finishes.",
+          "changed_fixture_rationale": "64MiB sparse owned scratch fixture avoids host disk filling; first public failure exposes actual expanded archive size, then owned truncation isolates retry.",
+          "focused_result": "Producer pipe bound32MiB/deadline30s/diagnostics1MiB; owned pidfd termination/wait recorded; root preserved and public retry succeeds.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        },
+        {
+          "finding": 9,
+          "topic": "partial deletion",
+          "original_actual_failure": "partial-red",
+          "declared_hypothesis": "Recovery requires intact .git/owner rather than original journaled root/disposition authority.",
+          "changed_fixture_rationale": "Actual recursive .git deletion and owner removal precede declared crash; later replacement/alias/new-file controls are owned fixture mutations and restored only by fixture.",
+          "focused_result": "Same operation/retention/root/stop resumes after real deletion; replacement/alias/new work remains preserved;2/2 PASS13.50s.",
+          "root_independent_scope": "repair1 full82/native29 plus Standards/Spec exact source e6; current e31 affected49/native4/default/fmt/strictClippy/build plus R2 Standards/Spec;34 source binding and31 unchanged components. Final helper649 Standards/Spec and root relocated/retention PASS.",
+          "current_unresolved_controls": "No remaining ticket04 blocker. Final assembled/live06 and recurring observer05/06 remain release requirements; unknown historical domain rows remain unknown.",
+          "repair_cap": "04final3of3 consumed;02registry3of3 preserved, linkedcleanup04 qualified, no fourth repair or cap reset"
+        }
+      ],
+      "current_control_qualification": "inherited only; source6f2 root73241 native39PASS + Git normal compound comparison failure retained. No author full native rerun. New five controls and narrow normal fixture adjudication separate.",
+      "caps": "05 repair3/3;02 and04 repair3/3 exhausted; EMPTY diagnostics2/2 exhausted; no renewal."
+    },
+    "new_five": [
+      {
+        "control": "B1",
+        "topic": "repair versus admitted landing",
+        "red": {
+          "run": "006-landing-red",
+          "exit": 101,
+          "seconds": 30.516405713977292,
+          "log_sha256": "026ef654bb74dcb571bb8cf358dca5cf4429c1c8cc4ee1f8c4ed4bc6130c12a0"
+        },
+        "green": {
+          "run": "011-landing-kata-green",
+          "exit": 101,
+          "seconds": 33.61072125204373,
+          "log_sha256": "30fa15f9babd8917bb016a60b8356971f5a49087a2b4ef7dcb9ad9560c0fa1f6"
+        },
+        "proof_scope": "two physical applying/unknown cases PASS; task/events/receipt unchanged on denial; one physical/recovered landing; before-landing repair positive and terminal states preserved",
+        "qualification": "011overall101 from later unrelated Kata test-only closure failure; Git2/2PASS"
+      },
+      {
+        "control": "B2",
+        "topic": "unadmitted native UI retry",
+        "red": {
+          "run": "009-native-ui-red",
+          "exit": 101,
+          "seconds": 78.4740260989638,
+          "log_sha256": "69a9baa95232dba48107793d603a7e143e0ce0eec19bd5cb113f1a89f345896b"
+        },
+        "green": {
+          "run": "010-native-ui-green",
+          "exit": 0,
+          "seconds": 89.30803090403788,
+          "log_sha256": "ea332bba6471ddd3c662a29e53c36b619463f597ed036fbc9e4629bd4f8ab57e"
+        },
+        "proof_scope": "shared/separate real pinned native; public progress14\u219215;0 receipt/operation before retry,1 afterward; current unchanged replay and changed/foreign/revoked negatives",
+        "qualification": "focused author proof, not independent acceptance"
+      },
+      {
+        "control": "B3",
+        "topic": "captured Kata brief approval",
+        "red": {
+          "run": "007-kata-red",
+          "exit": 101,
+          "seconds": 2.570577329955995,
+          "log_sha256": "f0fcdc1e88a2a3cf63648a676d3a671ec58f904868805c7fd591825132bb694e"
+        },
+        "green": {
+          "run": "012-kata-green",
+          "exit": 0,
+          "seconds": 1.4680504360003397,
+          "log_sha256": "a7d1b1dce29c253f621c84704e757891d431210ce45da9d833c3c4387b5149ea"
+        },
+        "proof_scope": "actual pinned Kata + physical Git commit/snapshot change; selected immutable source; atomic approved digest/admission; offline receipt replay; changed/foreign/invented/active/closed refusals; actual metadata sync",
+        "qualification": "focused author proof, not independent acceptance"
+      },
+      {
+        "control": "B4",
+        "topic": "bounded monitoring projections",
+        "red": {
+          "run": "003-monitor-red",
+          "exit": 101,
+          "seconds": 2.5678944010287523,
+          "log_sha256": "9f1a17c621bf4cb2e0b905ac905d3abe870df6d9dae68fb656260563e1454b55"
+        },
+        "green": {
+          "run": "005-monitor-green",
+          "exit": 0,
+          "seconds": 4.771558198030107,
+          "log_sha256": "a6e9329989d3012e141f82624b2add37ad84e75fc7be8bc2c6fc8e8ea0a16cf5"
+        },
+        "proof_scope": "20 public authorized corrections;20complete documents/80fields via exact byte/digest references; actual socket/dashboard/MCP; peer/changed-reference/UTF8 negatives",
+        "qualification": "focused author proof, not independent acceptance"
+      },
+      {
+        "control": "B5",
+        "topic": "WebSocket controls",
+        "red": {
+          "run": "001-websocket-red",
+          "exit": 101,
+          "seconds": 17.087529584998265,
+          "log_sha256": "bf58f72b81135cc827337a82c46bde68ae8ce56c092202be31b047b0e6f650e1"
+        },
+        "green": {
+          "run": "002-websocket-green",
+          "exit": 0,
+          "seconds": 1.6667260809335858,
+          "log_sha256": "a8e440093ad4e76d9c679b130929af648e5deef7c97c97ac40dffa25eaa73944"
+        },
+        "proof_scope": "authenticated real TCP ping/pong/close and6malformed refusals; native shared/separate ping then thread/read with no extra operation also run010",
+        "qualification": "focused author proof, not independent acceptance"
+      }
+    ],
+    "normal_fixture_ruling": "root3b7eac386e352e6111bc0ee824b32529fe16d9be39f90cf6f3845173d32f07e5; original73241exit101; only inspection.process.pid/start_ticks excluded, everyotherfield/exit0/waited/refresh check retained; final015 actually executes normal",
+    "all_failures": [
+      "004test expected correction top-level fields, actual document reference; later005 reconstructs entire document/80fields",
+      "006unused Kata driver/tests edited during Git run; all production/executed Git inputs identical; explicit limited-proof source-drift disposition retained",
+      "008unsupported upstream PATCHstatus test setup after successful approval/admission/sync",
+      "011closure body below upstream40charminimum; Git tests2PASS, corrected existing valid closure body012PASS"
+    ],
+    "caps": "same05final3/3,02/04exhausted3/3,EMPTYdiagnostics2/2consumed; no new allowance",
+    "unresolved": "no author acceptance; final gates and root exact-source independent review/branch/fullgate pending; historical80070raw/tuple causeUNKNOWN and04coverage122\u2013126unreviewed retained",
+    "authority": "root sole canonical status/admission/acceptance; old trees frozen; no subagents/modelcalls/tmux/sharedref mutations",
+    "retention_limits": {
+      "runs001_006": "Prelaunch full source map/archive retained, no after-source map. No retroactive same-source proof.006explicit unused Kata test/driver drift; only production+executed Git inputs were unchanged.",
+      "runs007_012": "Before/after maps unchanged; independently root-audited all578 archived member inputs001\u2013012.",
+      "run001_002_fixture_delta": "Only added wire-call logging; original assertions unchanged.",
+      "root_audit_sha256": "d6b0e5f77d2a4d234c8a954ffe9fb2cceb0a3441612161487b9e67409723f9b5",
+      "native_history": "Root6f2fullgate remains overallFAIL101;69native+4Git archives and627original identities0same-present audit separate; no sourceacceptance/unknown-history rewrite."
+    }
+  },
+  "original04_nine_exact_subset_verified": true,
+  "five_focused_actual_run_records_verified": true,
+  "focused_root_audit_sha256": "d6b0e5f77d2a4d234c8a954ffe9fb2cceb0a3441612161487b9e67409723f9b5",
+  "source_inputs_verified": 49,
+  "root_disposition": "Matrix sealed for future exact SOURCE independent review admission; NOT acceptance, final015/remaining native/default/fmt/build and independent gates pending. SOURCE must exactly match49 pinned files or renewed matrix/source binding before freeze. Original outputs/fixture failures/missing-after-maps retained. No cap extension.",
+  "correction": "Author unresolved coverage string122\u2013126 is typo; canonical historical04 UNREVIEWED interval is122\u20131262, owner1263\u20131470 separate spot-check. Root preserves precise interval, no backfill claim.",
+  "unresolved": [
+    "final source gates/independent axes/branch not yet run",
+    "06 live/assembled/restore/portable recurring qualification pending",
+    "original80070 raw/failedtuple/cause unknown",
+    "04history122\u20131262 unreviewed"
+  ],
+  "root_signals_sent": 0
+}

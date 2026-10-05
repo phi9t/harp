@@ -1,0 +1,49 @@
+{
+  "measured_at": "2026-10-05T02:22:05.791878+00:00",
+  "worker_source": "/data02/home/philip.yang/.codex/sessions/2026/10/04/rollout-2026-10-04T00-38-11-01a10458-ceff-7243-9b2b-0d24db5d2880.jsonl",
+  "worker_compaction": {
+    "raw": 1153,
+    "at": "2026-10-05T02:07:27.240Z",
+    "last_actual_positive_request_before": {
+      "raw": 1146,
+      "at": "2026-10-05T02:04:30.202Z",
+      "input": 224815,
+      "cached": 103040,
+      "window": 258400
+    },
+    "first_actual_positive_request_after": {
+      "raw": 1162,
+      "at": "2026-10-05T02:07:36.171Z",
+      "input": 29421,
+      "cached": 12032,
+      "window": 258400
+    },
+    "ignored_reset_counter": {
+      "raw": 1152,
+      "at": "2026-10-05T02:07:27.238Z",
+      "input": 0,
+      "cached": 0,
+      "window": 258400
+    }
+  },
+  "worker_latest_request": {
+    "raw": 1226,
+    "at": "2026-10-05T02:11:47.852Z",
+    "input": 61645,
+    "cached": 61056,
+    "window": 258400
+  },
+  "root_source": "/data02/home/philip.yang/.codex/sessions/2026/10/01/rollout-2026-10-01T01-39-09-01a0f51d-8b62-7930-862f-c4b44d7d0bb7.jsonl",
+  "root_latest_request": {
+    "at": "2026-10-05T02:21:14.579Z",
+    "input": 208474,
+    "cached": 190080,
+    "window": 258400
+  },
+  "scope": "Public token telemetry and actual compaction metadata only; private reasoning/prompt bodies excluded. Input/window is occupancy proxy, cumulative/cost unknown.",
+  "capability": "No explicit child or root compact control exposed. Plaintext /compact/summary uncredited. Root current same-phase final verification continues; next phase requires measured compact/fresh handoff. Subsequent implementation uses fresh non-inheriting child after quiescence/effect reconciliation and cap authority; current writer frozen/quiescent, no replacement admitted.",
+  "thresholds": "120k/50% safe boundary;150k/60% before nextphase; tunable",
+  "root_threshold_exceeded": true,
+  "correction": "Originalv1 retained: last_request_before mistakenly selected reset-counter0 immediately before compaction, not actual request. v2 selects last positive reported request, keeps reset explicitly uncredited; no evidence deletion.",
+  "corrected_at": "2026-10-05T02:23:07.306576+00:00"
+}

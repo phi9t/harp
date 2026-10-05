@@ -1,5 +1,9 @@
 # Current completion audit
 
+> Retained historical/proposed record. Current assignment and acceptance are in
+> `docs/efforts/sqlite-controller/CURRENT.json`. Instructions and actor names below
+> describe their recorded phase; this landing grants no renewed execution authority.
+
 Audit refreshed: 2026-10-03; Corenius alone; ticket26 repair2 addresses a reproduced current-verification bypass; imported offline controller awaits portable evidence audit and assembled gates
 
 Objective: the complete persistent engineering-team goal in [PLAN.md](PLAN.md). Corenius only; no scope reduction. Kernel acceptance is not live Trae, independent-lead or restore completion.

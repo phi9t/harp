@@ -1,0 +1,15 @@
+{
+  "job_id": 653,
+  "output": "## Review Findings\n\n- **Severity**: Medium\n- **Location**: `crates/sqlite-controller/src/monitor.rs:1187`\n- **Problem**: Replacing a lead can permanently block correction delivery. The oldest requested correction remains queued when its author\u2019s authority is superseded, so every subsequent drain selects it and returns without considering newer corrections. Reauthorizing that finding also returns the existing correction without updating its authorization.\n- **Fix**: Give superseded authorizations an explicit disposition, allow authenticated reauthorization, and continue selecting eligible corrections. Add a regression covering lead replacement with queued corrections.\n\n---\n\n- **Severity**: Medium\n- **Location**: `crates/sqlite-controller/src/view.rs:567`\n- **Problem**: Worker progress is selected by task rather than attempt. After a task is repaired and admitted again, its new worker displays the previous attempt\u2019s latest progress until another report arrives, potentially presenting an obsolete completion claim alongside the new assignment.\n- **Fix**: Bind progress selection to the current attempt or admission interval, and identify historical reports separately. Test readmission before the replacement worker publishes progress.\n\n## Summary\n\nThe change adds scoped dashboard, MCP and native UI controls, bounded history reads, and advisory monitoring with durable delivery records.",
+  "verdict_bool": 0,
+  "created_at": "2026-10-05T02:09:20Z",
+  "job": {
+    "id": 653,
+    "git_ref": "291f04a5abd9274e4fd0034fd36927b0a4c4d236..7b20a886576c125c634913edadc4bb6f8c115352",
+    "status": "done",
+    "started_at": "2026-10-05T02:02:36Z",
+    "finished_at": "2026-10-05T02:09:20Z",
+    "review_type": "default",
+    "verdict": "F"
+  }
+}

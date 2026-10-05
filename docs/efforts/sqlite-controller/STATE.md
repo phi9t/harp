@@ -3,7 +3,7 @@
 Updated: 2026-10-05T05:16:38.885903+00:00
 Canonical projection: [CURRENT.json](CURRENT.json), happy-path-4.
 
-Root owns coordination. CURRENT records the sole admitted writer, thread, worktree and source. Fresh author `/root/sqlite06_model_link_author` holds model-link GREEN ownership after the predecessor quiesced. The sealed RED handoff matches all source and evidence pins.
+Root owns coordination. CURRENT records ownership and source. The model-link author is quiescent at candidate `483f1bc`. Independent Standards and Spec reviews are active. No implementation writer or new live deployment is admitted during review.
 
 The actual replacement trial is `/tmp/cb-20261005T050033Z-84eb5a` in `corenius-team`. Controller, dashboard, real Codex lead and scoped native lead observer are retained. Kata instance `01M45415JGMBCGXVAN68BNGFD9` uses new project `01M456YRGAEKPQVYZM0Z2M7JA6`. Mainlead owns operator tools and views. Public controller/Kata/roster export paths appear in CURRENT. Private grants stay inside launch wrappers.
 
