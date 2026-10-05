@@ -2,6 +2,7 @@
 """Behavior checks for read-only public state panes; no provider calls."""
 import datetime as dt
 import fcntl
+import hashlib
 import importlib.util
 import json
 import os
@@ -170,6 +171,89 @@ class StateViewTests(unittest.TestCase):
             self.assertRegex(text, r'role: impl-worker\s+current: True')
             self.assertRegex(text, r'role: product-worker-2\s+current: none')
             self.assertNotIn('HIDDEN-', text)
+
+    def test_unavailable_controller_export_separates_historical_success_from_current_state(self):
+        self.controller = {
+            'observed_at': self.stamp, 'status': 'unavailable',
+            'source': 'coordinator current observation; controller socket refused',
+            'deployment': '/public/trial', 'project': 'demo', 'control_center': None,
+            'last_successful_observation': {
+                'observed_at': '2026-10-05T03:50:00Z',
+                'state': 'historical successful RPC; no current liveness claim',
+                'cursor': 114, 'occupied_slots': 2, 'tasks': {'solo': 'landed', 'b': 'submitted'},
+                'physical_ref': 'historical-ref', 'auth': 'HIDDEN-HISTORY-AUTH',
+                'workers': [{'runtime': 'HIDDEN-HISTORY-RUNTIME'}]},
+            'acceptance': 'baseline unqualified', 'credentials': 'HIDDEN-EXPORT-CREDENTIALS'}
+        self.write_inputs()
+        digest = hashlib.sha256((self.root / 'controller.json').read_bytes()).hexdigest()
+        for view in ['controller', 'workspaces']:
+            text = self.rendered(view)
+            for expected in ['Product controller: unavailable', '/public/trial', 'project: demo',
+                             'controller socket refused', self.stamp, 'sha256:' + digest,
+                             'Last successful controller observation (history; no current liveness)',
+                             '2026-10-05T03:50:00Z', 'cursor: 114', 'historical-ref',
+                             'Historical task state claims', 'solo: landed', 'baseline unqualified']:
+                self.assertIn(expected, text)
+            self.assertNotIn('HIDDEN-', text)
+        text = self.rendered('controller')
+        self.assertIn('Worker slot 1: unknown', text)
+        self.assertIn('Worker slot 2: unknown', text)
+        self.assertIn('tasks: unavailable', text)
+
+    def test_available_controller_envelope_projects_nested_state_with_original_source_identity(self):
+        self.controller = {'observed_at': self.stamp, 'status': 'observed',
+                           'source': 'coordinator public RPC export', 'deployment': '/public/trial',
+                           'project': 'demo', 'control_center': self.controller,
+                           'last_successful_observation': None}
+        self.controller['control_center']['credentials'] = 'HIDDEN-NESTED-CREDENTIALS'
+        self.write_inputs()
+        text = self.rendered('controller')
+        for expected in ['Export status: observed', 'runtime-one', 'runtime-two', 'revision: 7',
+                         '/public/trial', 'project: demo', 'coordinator public RPC export']:
+            self.assertIn(expected, text)
+        self.assertNotIn('HIDDEN-', text)
+        self.assertIn('/work/attempt', self.rendered('workspaces'))
+        self.controller['control_center']['workers'] = 'malformed'
+        self.write_inputs()
+        self.assertIn('malformed', self.rendered('controller'))
+
+    def test_kata_item_export_distinguishes_native_status_and_synchronized_execution(self):
+        self.kata = {
+            'observed_at': self.stamp, 'status': 'observed', 'source': 'actual Kata HTTP read',
+            'deployment': '/public/trial', 'origin_instance_uid': 'origin-uid', 'project_uid': 'project-uid',
+            'items': [{'task': 'solo', 'workref': {'origin_instance_uid': 'origin-uid',
+                                                'project_uid': 'project-uid', 'item_uid': 'item-uid',
+                                                'credentials': 'HIDDEN-WORKREF-CREDENTIALS'},
+                       'source_revision': 10, 'status': 'open',
+                       'corenius.execution': {'state': 'landed', 'task_state': 'landed',
+                           'observed_attempt_state': 'exited', 'attempt': 'synced-attempt',
+                           'brief': 'synced-brief', 'controller_revision': 59, 'event_seq': 59,
+                           'reported_progress': 'Public progress\x1b[31m\x00\u202e' + 'x' * 10000,
+                           'reported_progress_bytes': 10015, 'reported_progress_truncated': False,
+                           'private_reasoning': 'HIDDEN-EXECUTION-REASONING',
+                           'tool_payload': {'report': 'HIDDEN-EXECUTION-REPORT'}},
+                       'extra': {'auth': 'HIDDEN-ITEM-AUTH'}}],
+            'controller_authority': 'SQLite/controller; summaries may lag unavailable controller',
+            'auth': 'HIDDEN-KATA-AUTH'}
+        self.write_inputs()
+        text = self.rendered('kata')
+        for expected in ['Export status: observed', 'actual Kata HTTP read', 'origin-uid', 'project-uid',
+                         'item-uid', 'Task: solo', 'Source revision: 10', 'Native Kata status: open',
+                         'Synchronized execution (corenius.execution; may lag; no runtime liveness)',
+                         'state: landed', 'observed_attempt_state: exited', 'synced-attempt',
+                         'synced-brief', 'controller_revision: 59', 'event_seq: 59',
+                         'Public progress', 'display text limited to 300 chars',
+                         'summaries may lag unavailable controller']:
+            self.assertIn(expected, text)
+        for excluded in ['HIDDEN-', '\x1b', '\x00', '\u202e']:
+            self.assertNotIn(excluded, text)
+        self.assertLess(len(text), 10000)
+        self.kata['items'][0]['corenius.execution']['reported_progress'] = {'summary': 'HIDDEN-PROGRESS'}
+        self.write_inputs()
+        self.assertNotIn('HIDDEN-', self.rendered('kata'))
+        self.kata['items'] = ['malformed']
+        self.write_inputs()
+        self.assertIn('Kata: unavailable', self.rendered('kata'))
 
     def test_kata_has_exact_identity_dependencies_and_sync_without_daemon_guess(self):
         text = self.rendered('kata')
