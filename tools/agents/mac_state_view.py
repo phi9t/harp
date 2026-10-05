@@ -29,6 +29,9 @@ ATTEMPT = dict.fromkeys(('id', 'task', 'slot', 'brief', 'base', 'state', 'status
                          'source', 'epoch'))
 RUNTIME = dict.fromkeys(('id', 'role', 'attempt', 'authority_epoch', 'state',
                          'thread', 'endpoint', 'runtime_incarnation'))
+NATIVE_SOURCE = dict.fromkeys(('source', 'role', 'current', 'observed_at', 'digest'))
+NATIVE_BINDING = dict.fromkeys(('role', 'thread', 'endpoint', 'cwd', 'window', 'current'))
+NATIVE_BINDING.update(sources=[NATIVE_SOURCE])
 WORKSPACE = dict.fromkeys(('id', 'attempt', 'task', 'workspace', 'worktree', 'path', 'cwd',
                            'source', 'base', 'revision', 'generation', 'workspace_generation',
                            'owner', 'state', 'status', 'head', 'commit_id', 'tree_id',
@@ -246,8 +249,7 @@ def controller(snapshot):
 
 def native(snapshot):
     data = snapshot['sources']['Manifest']['data']
-    schema = dict.fromkeys(('role', 'thread', 'endpoint', 'cwd', 'window', 'current'))
-    return ['', provenance(snapshot, 'Manifest')] + field('Native bindings (manager)', data, 'bindings', [schema])
+    return ['', provenance(snapshot, 'Manifest')] + field('Native bindings (manager)', data, 'bindings', [NATIVE_BINDING])
 
 
 def kata(snapshot):
@@ -277,8 +279,7 @@ def workspaces(snapshot):
         lines += field(label, data, key, schema)
     manifest = snapshot['sources']['Manifest']['data']
     lines += ['', provenance(snapshot, 'Manifest')]
-    lines += field('Native view cwd (manager)', manifest, 'bindings',
-                   [dict.fromkeys(('role', 'thread', 'endpoint', 'cwd', 'window', 'current'))])
+    lines += field('Native view cwd (manager)', manifest, 'bindings', [NATIVE_BINDING])
     return lines
 
 

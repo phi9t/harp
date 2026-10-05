@@ -148,6 +148,29 @@ class StateViewTests(unittest.TestCase):
             self.assertIn(expected, text)
         self.assertNotIn('HIDDEN-', text)
 
+    def test_shared_native_binding_preserves_independent_source_roles_and_states(self):
+        self.manifest['bindings'] = [{
+            'role': 'impl-worker', 'thread': 'shared-thread', 'endpoint': 'unix:///shared',
+            'cwd': '/work/shared', 'window': '@5', 'current': True,
+            'sources': [
+                {'source': 'implementation', 'role': 'impl-worker', 'current': True,
+                 'credentials': 'HIDDEN-IMPLEMENTATION-CREDENTIALS'},
+                {'source': 'runtime_bindings', 'role': 'product-worker-2', 'current': None,
+                 'observed_at': self.stamp, 'digest': 'runtime-membership-digest',
+                 'private_reasoning': 'HIDDEN-PRODUCT-REASONING',
+                 'extra': {'api_key': 'HIDDEN-PRODUCT-KEY'}}]}]
+        self.write_inputs()
+        for view in ['controller', 'workspaces']:
+            text = self.rendered(view)
+            for expected in ['shared-thread', 'unix:///shared', '/work/shared',
+                             'source: implementation', 'source: runtime_bindings',
+                             'product-worker-2', 'observed_at: ' + self.stamp,
+                             'digest: runtime-membership-digest']:
+                self.assertIn(expected, text)
+            self.assertRegex(text, r'role: impl-worker\s+current: True')
+            self.assertRegex(text, r'role: product-worker-2\s+current: none')
+            self.assertNotIn('HIDDEN-', text)
+
     def test_kata_has_exact_identity_dependencies_and_sync_without_daemon_guess(self):
         text = self.rendered('kata')
         for expected in ['kata-trial', 'trial-project', 'uid-1', 'First task',
