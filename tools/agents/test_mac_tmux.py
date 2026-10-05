@@ -86,6 +86,192 @@ class MaintenanceTests(unittest.TestCase):
         return dict(role=role, thread=thread, cwd=str(self.root),
                     endpoint=self.config['endpoint'], current=True, **fields)
 
+    def publish_external(self, bindings, age_seconds=0):
+        path = self.root / 'external.json'
+        self.config['external_views_path'] = str(path)
+        path.write_text(json.dumps({'observed_at': time.time() - age_seconds, 'bindings': bindings}))
+        return path
+
+    def external_observer(self, thread=None):
+        thread = thread or str(uuid.UUID(int=80))
+        window = self.tmux('new-window', '-d', '-P', '-F', '#{window_id}', '-t', '=operator:',
+                           '-n', 'trial-lead-original', 'sleep 3600')
+        pane = self.tmux('display-message', '-p', '-t', window, '#{pane_id}')
+        self.tmux('set-option', '-w', '-t', window, '@core_private_grant', 'PRIVATE_GRANT_SENTINEL')
+        return {'role': 'lead', 'thread': thread, 'endpoint': 'ws://127.0.0.1:17189',
+                'cwd': '/workspace', 'window': window, 'pane': pane}
+
+    def observer_metadata(self, observer):
+        return (self.tmux('display-message', '-p', '-t', observer['window'], '#{window_name}'),
+                self.tmux('show-options', '-w', '-t', observer['window']),
+                self.tmux('display-message', '-p', '-t', '=operator:', '#{window_id}'))
+
+    def publish_observer_runtime(self, observer, age_seconds=0, **fields):
+        runtime = {key: observer[key] for key in ('role', 'thread', 'endpoint', 'cwd')}
+        path = self.publish_runtime([dict(runtime, current=True, **fields)], age_seconds)
+        value = json.loads(path.read_text())
+        value['observed_at'] = time.time() - age_seconds
+        value['projection_kind'] = 'coordinator snapshot; refresh not claimed'
+        path.write_text(json.dumps(value))
+        return path
+
+    def assert_observer_not_mutated(self, observer, commands):
+        mutations = {'new-window', 'set-option', 'rename-window', 'select-window', 'respawn-pane',
+                     'respawn-window', 'kill-window', 'kill-pane', 'send-keys'}
+        for command in commands:
+            verb = command[len(self.tmux_argv)]
+            if verb in mutations:
+                self.assertNotIn(observer['window'], command)
+                self.assertNotIn(observer['pane'], command)
+        self.assertNotIn('PRIVATE_GRANT_SENTINEL', json.dumps(commands))
+
+    def test_external_observer_reused_readonly_despite_role_changes_and_host_cwd(self):
+        self.reconcile()
+        observer = self.external_observer()
+        path = self.publish_external([observer])
+        runtime_path = self.publish_observer_runtime(observer)
+        before = self.observer_metadata(observer)
+        ids, count = self.views(), len(self.commands)
+        first = self.reconcile()
+        self.assertEqual(first['health'], 'ok')
+        view = next(b for b in first['bindings'] if b['thread'] == observer['thread'])
+        self.assertIs(view.get('managed'), False)
+        self.assertEqual((view['window'], view['pane']), (observer['window'], observer['pane']))
+        self.assertEqual(view['external_reference']['digest'], hashlib.sha256(path.read_bytes()).hexdigest())
+        self.assertEqual(view['external_reference']['observed_at'], json.loads(path.read_text())['observed_at'])
+        self.assertEqual(view['sources'][0]['projection_kind'], 'coordinator snapshot; refresh not claimed')
+        value = json.loads(runtime_path.read_text())
+        value['bindings'][0]['role'] = 'replacement-lead'
+        runtime_path.write_text(json.dumps(value))
+        second = self.reconcile()
+        self.assertEqual(next(b for b in second['bindings'] if b['thread'] == observer['thread'])['role'], 'replacement-lead')
+        self.assertEqual(self.views(), ids)
+        self.assertEqual(self.observer_metadata(observer), before)
+        self.assert_observer_not_mutated(observer, self.commands[count:])
+        self.assertFalse(any(c[len(self.tmux_argv)] == 'new-window' for c in self.commands[count:]))
+        self.assertNotIn('PRIVATE_GRANT_SENTINEL', json.dumps(second))
+
+    def test_bad_external_refs_fail_closed_and_preserve_prior_unknown_observer(self):
+        self.reconcile()
+        observer = self.external_observer()
+        path = self.publish_external([observer])
+        self.publish_observer_runtime(observer)
+        first = self.reconcile()
+        prior = next(b for b in first['bindings'] if b['thread'] == observer['thread'])
+        ids, before = self.views(), self.observer_metadata(observer)
+        variants = [(None, 'missing'), ('{', 'degraded'),
+                    (json.dumps({'observed_at': time.time() - 360, 'bindings': [observer]}), 'stale'),
+                    (json.dumps({'observed_at': time.time(), 'bindings': [observer, observer]}), 'degraded'),
+                    (json.dumps({'observed_at': time.time(), 'bindings': [observer],
+                                 'auth': 'SECRET_SENTINEL'}), 'degraded')]
+        for content, status in variants:
+            with self.subTest(status=status):
+                if content is None:
+                    path.unlink()
+                else:
+                    path.write_text(content)
+                count = len(self.commands)
+                report = self.reconcile()
+                self.assertEqual(report['health'], 'degraded')
+                self.assertEqual(report['external_views_source']['status'], status)
+                view = next(b for b in report['bindings'] if b['thread'] == observer['thread'])
+                self.assertIs(view['current'], None)
+                self.assertIs(view['managed'], False)
+                self.assertEqual(view['sources'], [dict(prior['sources'][0], current=None)])
+                self.assertEqual(self.views(), ids)
+                self.assertEqual(self.observer_metadata(observer), before)
+                self.assertFalse(any(c[len(self.tmux_argv)] == 'new-window' for c in self.commands[count:]))
+                self.assert_observer_not_mutated(observer, self.commands[count:])
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+
+    def test_vanished_external_pane_reports_pending_and_never_replaces_client(self):
+        self.reconcile()
+        observer = self.external_observer()
+        self.publish_external([observer])
+        self.publish_observer_runtime(observer)
+        self.reconcile()
+        self.tmux('split-window', '-d', '-t', observer['window'], 'sleep 3600')
+        self.tmux('kill-pane', '-t', observer['pane'])  # Disposable fixture only.
+        ids, count = self.views(), len(self.commands)
+        report = self.reconcile()
+        view = next(b for b in report['bindings'] if b['thread'] == observer['thread'])
+        self.assertIsNone(view['current'])
+        self.assertIs(view['managed'], False)
+        self.assertTrue(any('external observer pending' in error for error in report['errors']))
+        self.assertEqual(self.views(), ids)
+        self.assertFalse(any(c[len(self.tmux_argv)] == 'new-window' for c in self.commands[count:]))
+        self.assert_observer_not_mutated(observer, self.commands[count:])
+
+    def test_external_refs_never_admit_without_fresh_runtime_and_owned_view_wins(self):
+        self.reconcile()
+        observer = self.external_observer()
+        self.publish_external([observer])
+        runtime_path = self.publish_observer_runtime(observer, age_seconds=360)
+        ids = self.views()
+        report = self.reconcile()
+        self.assertFalse(any(b['thread'] == observer['thread'] for b in report['bindings']))
+        self.assertEqual(self.views(), ids)
+        self.publish_observer_runtime(observer)
+        first = self.reconcile()
+        runtime_path.write_text(json.dumps({'observed_at': time.time(), 'status': 'unavailable', 'bindings': []}))
+        report = self.reconcile()
+        view = next(b for b in report['bindings'] if b['thread'] == observer['thread'])
+        self.assertIsNone(view['current'])
+        self.assertEqual(view['sources'], [dict(next(b for b in first['bindings']
+                         if b['thread'] == observer['thread'])['sources'][0], current=None)])
+        self.assertEqual(self.views(), ids)
+        duplicate = dict(observer, thread=THREAD1, endpoint=self.config['endpoint'])
+        self.publish_external([duplicate])
+        self.publish_observer_runtime(duplicate)
+        count, before = len(self.commands), self.observer_metadata(observer)
+        report = self.reconcile()
+        managed = [b for b in report['bindings'] if b['thread'] == THREAD1]
+        self.assertEqual(len(managed), 1)
+        self.assertIs(managed[0]['managed'], True)
+        self.assertNotEqual(managed[0]['window'], observer['window'])
+        self.assertEqual(self.observer_metadata(observer), before)
+        self.assert_observer_not_mutated(observer, self.commands[count:])
+
+    def test_invalid_or_absent_external_ref_cannot_launch_first_runtime_client(self):
+        self.reconcile()
+        observer = self.external_observer()
+        self.publish_observer_runtime(observer)
+        path = self.publish_external([])
+        ids = self.views()
+        values = [{'observed_at': time.time(), 'bindings': []},
+                  {'observed_at': time.time(), 'bindings': [dict(observer, pane='%999999')]},
+                  {'observed_at': time.time(), 'bindings': [dict(observer, current=True)]},
+                  {'observed_at': time.time(), 'bindings': [dict(observer, endpoint='ws://u:SECRET_SENTINEL@host/')]},
+                  {'observed_at': time.time(), 'bindings': [dict(observer, thread=THREAD2)]}]
+        for value in values:
+            with self.subTest(fields=sorted(value['bindings'][0]) if value['bindings'] else []):
+                path.write_text(json.dumps(value))
+                count = len(self.commands)
+                report = self.reconcile()
+                self.assertFalse(any(b['thread'] == observer['thread'] for b in report['bindings']))
+                self.assertEqual(report['health'], 'degraded')
+                self.assertEqual(self.views(), ids)
+                self.assertFalse(any(c[len(self.tmux_argv)] == 'new-window' for c in self.commands[count:]))
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
+
+    def test_external_mode_does_not_probe_legacy_core_launch_metadata(self):
+        self.reconcile()
+        observer = self.external_observer()
+        for field in ('role', 'thread'):
+            self.tmux('set-option', '-w', '-t', observer['window'], '@corenius_' + field, observer[field])
+        argv = self.tool.resume_argv(self.config, observer)
+        legacy = self.root / 'core-legacy.json'
+        legacy.write_text(json.dumps({'session': 'operator', 'bindings': [dict(observer, argv=argv)]}))
+        self.config['adopt_manifest_path'] = str(legacy)
+        path = self.publish_external([observer])
+        path.unlink()
+        self.publish_observer_runtime(observer)
+        before, count = self.observer_metadata(observer), len(self.commands)
+        self.reconcile()
+        self.assertFalse(any('#{pane_start_command}' in c for c in self.commands[count:]))
+        self.assertEqual(self.observer_metadata(observer), before)
+        self.assert_observer_not_mutated(observer, self.commands[count:])
+
     def test_published_lead_and_two_product_workers_have_exact_native_clients(self):
         self.current.write_text(json.dumps({'writer': None, 'thread': None,
             'writer_state': 'no active implementation writer'}))
@@ -228,6 +414,47 @@ class MaintenanceTests(unittest.TestCase):
                                      for c in self.commands[before_commands:]))
                 self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
                 self.assertNotIn('SECRET_SENTINEL', json.dumps(self.commands))
+
+    def test_numeric_projection_time_preserves_source_and_unknown_membership(self):
+        thread = str(uuid.UUID(int=70))
+        path = self.publish_runtime([self.runtime_worker(thread)])
+        stamp = time.time()
+        kind = 'coordinator snapshot of author public scoped roster; refresh not claimed'
+        path.write_text(json.dumps({'observed_at': stamp, 'projection_kind': kind,
+                                    'bindings': [self.runtime_worker(thread)]}))
+        first = self.reconcile()
+        self.assertEqual(first['health'], 'ok')
+        source = first['runtime_bindings_source']
+        self.assertEqual(source['observed_at'], stamp)
+        self.assertEqual(source['projection_kind'], kind)
+        self.assertEqual(source['digest'], hashlib.sha256(path.read_bytes()).hexdigest())
+        view = next(b for b in first['bindings'] if b['thread'] == thread)
+        self.assertEqual(view['sources'][0]['observed_at'], stamp)
+        self.assertEqual(view['sources'][0]['projection_kind'], kind)
+        ids = self.views()
+        path.unlink()
+        report = self.reconcile()
+        retained = next(b for b in report['bindings'] if b['thread'] == thread)
+        self.assertIsNone(retained['current'])
+        self.assertEqual(retained['sources'], [dict(view['sources'][0], current=None)])
+        self.assertEqual(self.views(), ids)
+
+    def test_numeric_time_and_projection_kind_reject_unsafe_envelopes(self):
+        path = self.publish_runtime([])
+        self.reconcile()
+        ids = self.views()
+        valid = {'observed_at': time.time(), 'projection_kind': 'public snapshot',
+                 'bindings': [self.runtime_worker(str(uuid.UUID(int=71)))]}
+        variants = [dict(valid, observed_at=value) for value in (True, float('nan'), float('inf'), 1e100)]
+        variants += [dict(valid, projection_kind=value) for value in ('x' * 4097, {'auth': 'SECRET_SENTINEL'})]
+        variants += [dict(valid, auth='SECRET_SENTINEL')]
+        for value in variants:
+            with self.subTest(timestamp_type=type(value['observed_at']).__name__):
+                path.write_text(json.dumps(value))
+                report = self.reconcile()
+                self.assertEqual(report['runtime_bindings_source']['status'], 'degraded')
+                self.assertEqual(self.views(), ids)
+                self.assertNotIn('SECRET_SENTINEL', json.dumps(report))
 
     def test_positive_envelope_and_legacy_rosters_admit_valid_public_clients(self):
         for number, status in enumerate((None, 'observed', 'available', 'ok'), 50):

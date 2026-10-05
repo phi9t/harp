@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 import fcntl
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -52,6 +53,21 @@ def endpoint(value):
     return value
 
 
+def observed_time(value):
+    """Accept a timezone-bearing ISO timestamp or a finite numeric Unix epoch."""
+    if isinstance(value, bool):
+        raise ValueError('timestamp cannot be boolean')
+    if isinstance(value, (int, float)):
+        if not math.isfinite(value):
+            raise ValueError('timestamp must be finite')
+        return datetime.fromtimestamp(value, timezone.utc)
+    stamp = text(value, 'observed_at')
+    observed = datetime.fromisoformat(stamp.replace('Z', '+00:00'))
+    if observed.tzinfo is None:
+        raise ValueError('timestamp requires timezone')
+    return observed
+
+
 def binding(value, default_endpoint):
     if not isinstance(value, dict):
         raise ValueError('binding must be an object')
@@ -61,6 +77,31 @@ def binding(value, default_endpoint):
     return {'role': text(value.get('role'), 'role'), 'thread': thread,
             'cwd': text(value.get('cwd'), 'cwd'),
             'endpoint': endpoint(value.get('endpoint', default_endpoint))}
+
+
+def public_binding(item, external=False):
+    fields = {'role', 'thread', 'cwd', 'endpoint'} | ({'window', 'pane'} if external else {'current'})
+    if not isinstance(item, dict) or set(item) != fields:
+        raise ValueError('invalid public binding fields')
+    if any(not isinstance(item[field], str) or len(item[field]) > 4096
+           for field in ('role', 'thread', 'cwd', 'endpoint')):
+        raise ValueError('invalid binding text')
+    view = binding(item, None)
+    address = urlsplit(view['endpoint'])
+    if address.username is not None or address.password is not None or address.query or address.fragment:
+        raise ValueError('credential-bearing endpoints are unsupported')
+    if address.scheme in ('ws', 'wss') and not address.hostname:
+        raise ValueError('WebSocket endpoint requires a host')
+    if external:
+        for field, pattern in (('window', r'@[0-9]+'), ('pane', r'%[0-9]+')):
+            if not isinstance(item[field], str) or not re.fullmatch(pattern, item[field]):
+                raise ValueError('invalid external reference ID')
+            view[field] = item[field]
+    else:
+        if not isinstance(item['current'], bool):
+            raise ValueError('current must be boolean')
+        view['current'] = item['current']
+    return view
 
 
 def validate_config(config):
@@ -85,8 +126,9 @@ def validate_config(config):
         raise ValueError('extra_bindings must be a list')
     for extra in extras:
         binding(extra, config['endpoint'])
-    if 'runtime_bindings_path' in config:
-        text(config['runtime_bindings_path'], 'runtime_bindings_path')
+    for field in ('runtime_bindings_path', 'external_views_path'):
+        if field in config:
+            text(config[field], field)
 
 
 @contextmanager
@@ -158,7 +200,7 @@ def runtime_bindings(config, errors):
             raise ValueError('runtime roster too large')
         value = json.loads(raw)
         if (not isinstance(value, dict) or not {'observed_at', 'bindings'} <= set(value)
-                or not set(value) <= {'observed_at', 'bindings', 'status', 'reason'}):
+                or not set(value) <= {'observed_at', 'bindings', 'status', 'reason', 'projection_kind'}):
             raise ValueError('invalid public roster fields')
         declared_status = value.get('status')
         if 'status' in value and (not isinstance(declared_status, str)
@@ -168,10 +210,12 @@ def runtime_bindings(config, errors):
             reason = text(value['reason'], 'reason')
             if len(reason) > 4096:
                 raise ValueError('reason too large')
-        stamp = text(value['observed_at'], 'observed_at')
-        observed = datetime.fromisoformat(stamp.replace('Z', '+00:00'))
-        if observed.tzinfo is None:
-            raise ValueError('timestamp requires timezone')
+        if 'projection_kind' in value:
+            kind = text(value['projection_kind'], 'projection_kind')
+            if len(kind) > 4096:
+                raise ValueError('projection_kind too large')
+        stamp = value['observed_at']
+        observed = observed_time(stamp)
         age = (datetime.now(timezone.utc) - observed).total_seconds()
         if age < -60:
             raise ValueError('timestamp is in the future')
@@ -180,21 +224,10 @@ def runtime_bindings(config, errors):
             raise ValueError('invalid bindings list')
         views = []
         for item in items:
-            if not isinstance(item, dict) or set(item) != {'role', 'thread', 'cwd', 'endpoint', 'current'}:
-                raise ValueError('invalid public binding fields')
-            if not isinstance(item['current'], bool):
-                raise ValueError('current must be boolean')
-            if any(not isinstance(item[field], str) or len(item[field]) > 4096
-                   for field in ('role', 'thread', 'cwd', 'endpoint')):
-                raise ValueError('invalid binding text')
-            view = binding(item, None)  # A runtime endpoint never inherits a default.
-            address = urlsplit(view['endpoint'])
-            if address.username is not None or address.password is not None or address.query or address.fragment:
-                raise ValueError('credential-bearing endpoints are unsupported')
-            if address.scheme in ('ws', 'wss') and not address.hostname:
-                raise ValueError('WebSocket endpoint requires a host')
-            views.append(dict(view, current=item['current']))
+            views.append(public_binding(item))
         source.update(observed_at=stamp, digest=hashlib.sha256(raw).hexdigest())
+        if 'projection_kind' in value:
+            source['projection_kind'] = value['projection_kind']
         if declared_status is not None:
             source['declared_status'] = declared_status
         if declared_status in RUNTIME_UNAVAILABLE_STATUSES:
@@ -212,6 +245,64 @@ def runtime_bindings(config, errors):
     except (OSError, ValueError, TypeError, OverflowError, RecursionError):
         pass
     errors.append('runtime bindings ' + source['status'] + '; public roster unavailable or invalid')
+    return [], source
+
+
+def external_panes(tmux, target, errors):
+    """Read only IDs and liveness of panes actually in the configured session."""
+    try:
+        result = tmux.run('list-panes', '-s', '-t', target, '-F', '#{window_id}\t#{pane_id}\t#{pane_dead}')
+        panes = {}
+        for line in result.stdout.splitlines():
+            window, pane, dead = line.split('\t')
+            if not re.fullmatch(r'@[0-9]+', window) or not re.fullmatch(r'%[0-9]+', pane) or dead not in {'0', '1'}:
+                raise ValueError('invalid pane metadata')
+            panes[(window, pane)] = dead == '0'
+        return panes
+    except (RuntimeError, ValueError):
+        errors.append('external observer pending; session pane metadata unavailable')
+        return {}
+
+
+def external_views(config, panes, errors):
+    """Operator references observe existing clients; they never authorize launches."""
+    source = {'status': 'disabled', 'observed_at': None, 'digest': None}
+    path = config.get('external_views_path')
+    if not path:
+        return [], source
+    source['status'] = 'degraded'
+    try:
+        with Path(path).open('rb') as handle:
+            raw = handle.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise ValueError('external references too large')
+        value = json.loads(raw)
+        if not isinstance(value, dict) or set(value) != {'observed_at', 'bindings'}:
+            raise ValueError('invalid external reference fields')
+        observed = observed_time(value['observed_at'])
+        age = (datetime.now(timezone.utc) - observed).total_seconds()
+        if age < -60 or not isinstance(value['bindings'], list) or len(value['bindings']) > 256:
+            raise ValueError('invalid external references')
+        views = [public_binding(item, external=True) for item in value['bindings']]
+        keys = {(view['endpoint'], view['thread']) for view in views}
+        ids = {(view['window'], view['pane']) for view in views}
+        if len(keys) != len(views) or len(ids) != len(views):
+            raise ValueError('duplicate external references')
+        source.update(observed_at=value['observed_at'], digest=hashlib.sha256(raw).hexdigest())
+        if age > 300:
+            source['status'] = 'stale'
+            errors.append('external references stale; observer admission pending')
+            return views, source  # Protect these windows, without admitting references.
+        if not all(panes.get((view['window'], view['pane'])) for view in views):
+            errors.append('external observer pending; referenced pane unavailable in configured session')
+            return views, source
+        source['status'] = 'ok'
+        return views, source
+    except FileNotFoundError:
+        source['status'] = 'missing'
+    except (OSError, ValueError, TypeError, OverflowError, RecursionError):
+        pass
+    errors.append('external references ' + source['status'] + '; observer admission pending')
     return [], source
 
 
@@ -238,8 +329,9 @@ def desired_bindings(config, errors):
     except (OSError, ValueError, TypeError) as exc:
         errors.append('CURRENT unavailable or invalid: ' + str(exc))
     runtime, runtime_source = runtime_bindings(config, errors)
-    wanted.extend(sourced(view, 'runtime_bindings', observed_at=runtime_source['observed_at'],
-                          digest=runtime_source['digest']) for view in runtime)
+    runtime_provenance = {key: runtime_source[key] for key in ('observed_at', 'digest', 'projection_kind')
+                          if key in runtime_source}
+    wanted.extend(sourced(view, 'runtime_bindings', **runtime_provenance) for view in runtime)
     # An operator binding can share a view with another role, but never another store.
     unique = {}
     for item in wanted:
@@ -270,12 +362,15 @@ def retained_sources(prior, current_known, runtime_source):
             if item['source'] == 'implementation' and not current_known:
                 item['current'] = None
             if item['source'] == 'runtime_bindings':
-                for field in ('observed_at', 'digest'):
-                    item[field] = text(source.get(field), field)
+                observed_time(source.get('observed_at'))
+                item['observed_at'] = source['observed_at']
+                item['digest'] = text(source.get('digest'), 'digest')
+                if 'projection_kind' in source:
+                    item['projection_kind'] = text(source['projection_kind'], 'projection_kind')
                 if runtime_source['status'] not in {'ok', 'disabled'}:
                     item['current'] = None
             retained.append(item)
-        except ValueError:
+        except (ValueError, OSError, OverflowError):
             continue
     return retained
 
@@ -292,7 +387,7 @@ def window_rows(tmux, target):
     return rows
 
 
-def adopt(config, tmux, rows, errors):
+def adopt(config, tmux, rows, errors, protected=()):
     path = config.get('adopt_manifest_path')
     if not path:
         return
@@ -305,7 +400,7 @@ def adopt(config, tmux, rows, errors):
             raise ValueError('adoption bindings must be a list of objects')
         for item in old_bindings:
             row = next((r for r in rows if r['window'] == item.get('window')), None)
-            if not row or row['owner'] == config['owner']:
+            if not row or row['owner'] == config['owner'] or row['window'] in protected:
                 continue
             if row['owner'] or row['role'] != item.get('role') or row['thread'] != item.get('thread'):
                 raise ValueError('adoption window identity differs')
@@ -367,7 +462,15 @@ def _reconcile(config, tmux_argv, runner):
             raise ValueError('manifest owner or session differs; refusing unrelated state')
     wanted, current_known, runtime_source = desired_bindings(config, errors)
     rows = window_rows(tmux, target)
-    adopt(config, tmux, rows, errors)
+    prior_external = [view for view in previous.get('bindings', [])
+                      if isinstance(view, dict) and view.get('managed') is False]
+    panes = external_panes(tmux, target, errors) if config.get('external_views_path') or prior_external else {}
+    references, external_source = external_views(config, panes, errors)
+    protected = {view['window'] for view in references}
+    protected.update(view.get('window') for view in prior_external if isinstance(view.get('window'), str))
+    if not config.get('external_views_path'):
+        adopt(config, tmux, rows, errors, protected)
+    # External observer mode never upgrades core windows via legacy launch probing.
     if not any(r['name'] == 'overview' for r in rows):
         errors.append('overview unavailable; dashboard deployment needed')
     # Metadata is evidence for owned views only; unowned windows are never guessed.
@@ -381,7 +484,7 @@ def _reconcile(config, tmux_argv, runner):
             if key in known:
                 errors.append('duplicate owned view retained: ' + view['thread'])
                 continue
-            known[key] = dict(view, window=row['window'])
+            known[key] = dict(view, window=row['window'], managed=True)
             # Prior source claims enrich an existing validated view; they admit none.
             for prior in previous.get('bindings', []):
                 if (isinstance(prior, dict) and prior.get('window') == row['window']
@@ -391,8 +494,45 @@ def _reconcile(config, tmux_argv, runner):
                     known[key]['sources'] = retained_sources(prior, current_known, runtime_source)
         except (ValueError, TypeError):
             errors.append('owned window has invalid binding metadata: ' + row['window'])
+    # Keep previously admitted external references visible even when a source or
+    # pane disappears. They never become owned windows or replacement launches.
+    for prior in prior_external:
+        try:
+            view = public_binding({field: prior.get(field) for field in
+                                   ('role', 'thread', 'endpoint', 'cwd', 'window', 'pane')}, external=True)
+            key = (view['endpoint'], view['thread'])
+            if key in known:
+                continue  # A validated owned view takes precedence.
+            membership_source = runtime_source if external_source['status'] == 'ok' else {'status': 'degraded'}
+            sources = retained_sources(prior, current_known, membership_source)
+            live = panes.get((view['window'], view['pane']), False)
+            current = None if not live or external_source['status'] != 'ok' else (
+                None if any(source['current'] is None for source in sources) else False)
+            known[key] = dict(view, managed=False, current=current, sources=sources,
+                              external_reference=prior.get('external_reference', {}))
+            if not live:
+                errors.append('external observer pending; prior referenced pane unavailable')
+        except (ValueError, TypeError):
+            errors.append('external observer pending; prior reference metadata invalid')
+    if runtime_source['status'] == 'ok' and external_source['status'] == 'ok':
+        for reference in references:
+            key = (reference['endpoint'], reference['thread'])
+            desired = wanted.get(key)
+            if key in known and known[key].get('managed') is not False:
+                continue
+            if not desired or not any(source['source'] == 'runtime_bindings' and source['current'] is True
+                                      for source in desired['sources']):
+                continue
+            known[key] = dict(reference, role=desired['role'], managed=False, current=True,
+                              sources=desired['sources'], external_reference={
+                                  'observed_at': external_source['observed_at'], 'digest': external_source['digest'],
+                                  'role': reference['role']})
     for key, view in wanted.items():
         if key in known or not view['current']:
+            continue
+        if config.get('external_views_path') and any(source['source'] == 'runtime_bindings'
+                                                     for source in view['sources']):
+            errors.append('external observer pending; validated existing runtime reference required')
             continue
         # A legacy-looking unowned UUID is ambiguous, not permission to duplicate it.
         if any(r['thread'] == view['thread'] and r['owner'] != config['owner']
@@ -414,9 +554,12 @@ def _reconcile(config, tmux_argv, runner):
                               ('@corenius_role', view['role']), ('@corenius_endpoint', view['endpoint']),
                               ('@corenius_cwd', view['cwd']), ('automatic-rename', 'off')):
             tmux.set_window(window, option, value)
-        known[key] = dict(view, window=window)
+        known[key] = dict(view, window=window, managed=True)
     bindings = []
     for key, view in known.items():
+        if view.get('managed') is False:
+            bindings.append(view)
+            continue  # Never tag, rename, respawn, select, or send input to external windows.
         dead = tmux.run('list-panes', '-t', view['window'], '-F', '#{pane_dead}').stdout.splitlines()
         if not dead or any(value != '0' for value in dead):
             errors.append('native view exited; retained without replacement: ' + view['window'])
@@ -443,6 +586,7 @@ def _reconcile(config, tmux_argv, runner):
     report = {'session': config['session'], 'owner': config['owner'],
               'observed_at': datetime.now(timezone.utc).isoformat(), 'bindings': bindings,
               'runtime_bindings_source': runtime_source,
+              'external_views_source': external_source,
               'health': 'degraded' if errors else 'ok', 'errors': errors}
     atomic_manifest(manifest_path, report)
     return report
